@@ -3,10 +3,7 @@
 		<div class="row">
 			<div class="col-12 p-0">
 				<div class="companies-list-container">
-					<div
-						ref="companies"
-						class="companies companies-list scrolling"
-					>
+					<div ref="companies" class="companies companies-list scrolling">
 						<NuxtImg
 							v-for="(img, index) in shuffledCompanies"
 							:key="index"
@@ -24,10 +21,10 @@
 
 <script lang="ts" setup>
 	import { computed } from "vue"
-	const companiesLogos = import.meta.glob<{ src: string }>(
-		"~/assets/companies/*.svg",
-		{ eager: true, import: "default" },
-	)
+	const companiesLogos = import.meta.glob<{ src: string }>("~/assets/companies/*.svg", {
+		eager: true,
+		import: "default",
+	})
 
 	defineProps<{
 		inverted?: boolean

@@ -12,11 +12,7 @@ export default function () {
 				if (Array.isArray(data.hProperties.className)) {
 					data.hProperties.className.push("table", "table-dark")
 				} else {
-					data.hProperties.className = [
-						data.hProperties.className,
-						"table",
-						"table-dark",
-					]
+					data.hProperties.className = [data.hProperties.className, "table", "table-dark"]
 				}
 			} else {
 				data.hProperties.className = "table table-dark"

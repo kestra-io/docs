@@ -3,9 +3,7 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="container">
-					<div
-						class="row d-flex justify-content-center align-items-center"
-					>
+					<div class="row d-flex justify-content-center align-items-center">
 						<div class="col-lg-6 col-sm-12">
 							<NuxtImg
 								class="w-100"
@@ -63,11 +61,7 @@
 				color: $white;
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 2.16%,
-						#5c47f5 65.09%
-					);
+					background: linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

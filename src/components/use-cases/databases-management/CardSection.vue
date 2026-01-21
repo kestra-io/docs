@@ -10,8 +10,7 @@
 	import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue"
 	import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue"
 
-	const challengesTitle =
-		"Overcome Common <br> Databases Management Challenges"
+	const challengesTitle = "Overcome Common <br> Databases Management Challenges"
 
 	const cardsData = [
 		{

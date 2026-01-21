@@ -1,13 +1,11 @@
 <template>
 	<div class="mt-5">
 		<div class="header-container">
-			<div
-				class="header container d-flex flex-column align-items-center gap-3"
-			>
+			<div class="header container d-flex flex-column align-items-center gap-3">
 				<h1 data-usal="fade-l">Blueprints</h1>
 				<h4 data-usal="fade-r">
-					The first step is always the hardest. Explore blueprints to
-					kick-start your next flow
+					The first step is always the hardest. Explore blueprints to kick-start your next
+					flow
 				</h4>
 				<div class="col-12 search-input position-relative">
 					<input
@@ -52,12 +50,8 @@
 				v-else
 				class="col-12 d-flex flex-column align-items-center justify-content-center py-5"
 			>
-				<h4 class="text-white mb-4">
-					No blueprints for your selection
-				</h4>
-				<button class="rounded-button active" @click="resetFilters">
-					Reset all tags
-				</button>
+				<h4 class="text-white mb-4">No blueprints for your selection</h4>
+				<button class="rounded-button active" @click="resetFilters">Reset all tags</button>
 			</div>
 
 			<CommonPaginationContainer
@@ -128,16 +122,11 @@
 
 		if (
 			activeTags.value.length &&
-			!(
-				activeTags.value.length === 1 &&
-				activeTags.value[0].name === "All tags"
-			)
+			!(activeTags.value.length === 1 && activeTags.value[0].name === "All tags")
 		) {
 			filtered = filtered.filter((blueprint) =>
 				activeTags.value.every((tag) => {
-					return blueprint.tags?.some(
-						(blueprintTag) => blueprintTag === tag.id,
-					)
+					return blueprint.tags?.some((blueprintTag) => blueprintTag === tag.id)
 				}),
 			)
 		}
@@ -201,9 +190,7 @@
 	const setBlueprints = (allBlueprints: Blueprint[], total: number) => {
 		blueprints.value = allBlueprints || []
 		totalBlueprints.value = total || 0
-		totalPages.value = itemsPerPage.value
-			? Math.ceil(total / itemsPerPage.value)
-			: 0
+		totalPages.value = itemsPerPage.value ? Math.ceil(total / itemsPerPage.value) : 0
 	}
 
 	onMounted(() => {
@@ -211,18 +198,13 @@
 		if (url.searchParams.has("page"))
 			currentPage.value = parseInt(url.searchParams.get("page") as string)
 		if (url.searchParams.has("size"))
-			itemsPerPage.value = parseInt(
-				url.searchParams.get("size") as string,
-			)
+			itemsPerPage.value = parseInt(url.searchParams.get("size") as string)
 		setTimeout(() => {
-			if (url.searchParams.has("q"))
-				searchQuery.value = url.searchParams.get("q") as string
+			if (url.searchParams.has("q")) searchQuery.value = url.searchParams.get("q") as string
 		}, 200)
 		if (url.searchParams.has("tags")) {
 			const tagIds = (url.searchParams.get("tags") as string).split(",")
-			const foundTags = tags.value.filter(
-				(item) => item.id && tagIds.includes(item.id),
-			)
+			const foundTags = tags.value.filter((item) => item.id && tagIds.includes(item.id))
 			if (foundTags.length > 0) {
 				activeTags.value = foundTags
 			}

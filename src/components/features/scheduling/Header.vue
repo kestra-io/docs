@@ -4,19 +4,12 @@
 			<div class="col-md-6 align-items-center d-flex">
 				<div>
 					<h1 data-usal="fade-r" class="title-1 title">Scheduling</h1>
-					<h1 data-usal="fade-r" class="title-2 title">
-						and Automation
-					</h1>
+					<h1 data-usal="fade-r" class="title-2 title">and Automation</h1>
 					<p class="baseline mb-0 pb-3" data-usal="fade-l">
-						Automate scheduled and event-driven workflows with
-						Kestra
+						Automate scheduled and event-driven workflows with Kestra
 					</p>
 					<div class="cta">
-						<a
-							href="/demo"
-							class="btn btn-dark mt-2 me-3"
-							data-usal="zoomin"
-						>
+						<a href="/demo" class="btn btn-dark mt-2 me-3" data-usal="zoomin">
 							Talk to us
 						</a>
 						<a

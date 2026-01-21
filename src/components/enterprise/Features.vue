@@ -13,8 +13,8 @@
 								<h4 class="card-title">SSO/OIDC and RBAC</h4>
 							</div>
 							<p class="card-text">
-								Fine-grained Role-Based Access Control for
-								users, user groups and roles
+								Fine-grained Role-Based Access Control for users, user groups and
+								roles
 							</p>
 						</div>
 					</div>
@@ -28,9 +28,8 @@
 								<h4 class="card-title">Service Accounts</h4>
 							</div>
 							<p class="card-text">
-								Create custom service accounts with programmatic
-								access allowing you to trigger workflows from
-								external systems
+								Create custom service accounts with programmatic access allowing you
+								to trigger workflows from external systems
 							</p>
 						</div>
 					</div>
@@ -40,15 +39,12 @@
 					<div class="card" data-usal="zoomin">
 						<div class="card-body">
 							<div class="cart-title-container">
-								<span class="card-icon"
-									><FormTextboxPassword
-								/></span>
+								<span class="card-icon"><FormTextboxPassword /></span>
 								<h4 class="card-title">Secrets Management</h4>
 							</div>
 							<p class="card-text">
-								Store secrets or integrate your secret manager
-								to ensure that your passwords and keys remain
-								secure
+								Store secrets or integrate your secret manager to ensure that your
+								passwords and keys remain secure
 							</p>
 						</div>
 					</div>
@@ -60,17 +56,12 @@
 					<div class="card" data-usal="zoomin">
 						<div class="card-body">
 							<div class="cart-title-container">
-								<span class="card-icon"
-									><ViewDashboardVariantOutline
-								/></span>
-								<h4 class="card-title">
-									Organization Blueprints
-								</h4>
+								<span class="card-icon"><ViewDashboardVariantOutline /></span>
+								<h4 class="card-title">Organization Blueprints</h4>
 							</div>
 							<p class="card-text">
-								Reuse custom code thanks to verified and
-								documented workflow templates built by your team
-								for your team
+								Reuse custom code thanks to verified and documented workflow
+								templates built by your team for your team
 							</p>
 						</div>
 					</div>
@@ -81,14 +72,11 @@
 						<div class="card-body">
 							<div class="cart-title-container">
 								<span class="card-icon"><Cog /></span>
-								<h4 class="card-title">
-									Configuration Management
-								</h4>
+								<h4 class="card-title">Configuration Management</h4>
 							</div>
 							<p class="card-text">
-								Avoid boilerplate code thanks to namespace-level
-								secrets, variables and default configuration for
-								specific tasks
+								Avoid boilerplate code thanks to namespace-level secrets, variables
+								and default configuration for specific tasks
 							</p>
 						</div>
 					</div>
@@ -102,9 +90,8 @@
 								<h4 class="card-title">Audit Logs</h4>
 							</div>
 							<p class="card-text">
-								All events such as modifing or executing flows
-								are automatically tracked to provide a holistic
-								audit trail
+								All events such as modifing or executing flows are automatically
+								tracked to provide a holistic audit trail
 							</p>
 						</div>
 					</div>

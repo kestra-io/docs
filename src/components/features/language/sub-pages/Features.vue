@@ -6,10 +6,7 @@
 			</div>
 		</div>
 		<div class="row d-flex justify-content-center">
-			<div
-				class="col-12 col-md-6 col-lg-4 mb-4"
-				v-for="cardItem in features.childList"
-			>
+			<div class="col-12 col-md-6 col-lg-4 mb-4" v-for="cardItem in features.childList">
 				<div class="card h-100" data-usal="fade-r">
 					<div class="card-body mx-2">
 						<div class="d-flex align-items-center gap-3">
@@ -67,11 +64,7 @@
 			font-size: $font-size-3xl;
 
 			&-animated {
-				background: linear-gradient(
-					90deg,
-					#e151f7 57.52%,
-					#5c47f5 92.48%
-				);
+				background: linear-gradient(90deg, #e151f7 57.52%, #5c47f5 92.48%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

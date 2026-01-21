@@ -11,8 +11,6 @@
 	}>()
 
 	const { totalPlugins } = usePluginsCount(
-		props.subgroups
-			? computed<any[]>(() => props.subgroups ?? [])
-			: undefined,
+		props.subgroups ? computed<any[]>(() => props.subgroups ?? []) : undefined,
 	)
 </script>

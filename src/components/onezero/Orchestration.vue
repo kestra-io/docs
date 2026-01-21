@@ -14,11 +14,7 @@
 					class="feature"
 					:data-usal="`zoomin delay-${100 + index * 50}`"
 				>
-					<NuxtImg
-						:src="feature.image"
-						:alt="feature.title"
-						class="feature-image"
-					/>
+					<NuxtImg :src="feature.image" :alt="feature.title" class="feature-image" />
 					<h3>{{ feature.title }}</h3>
 					<p>{{ feature.description }}</p>
 				</div>
@@ -31,9 +27,8 @@
 					data-usal="zoomin delay-300"
 				/>
 				<h3 data-usal="fade-u delay-350">
-					We pioneered declarative orchestration. With 1.0, AI
-					elevates that paradigm; teams express intent in natural
-					language while maintaining full governance.
+					We pioneered declarative orchestration. With 1.0, AI elevates that paradigm;
+					teams express intent in natural language while maintaining full governance.
 				</h3>
 				<div class="profile" data-usal="fade-u delay-400">
 					<NuxtImg
@@ -101,11 +96,7 @@
 				}
 
 				.gradient {
-					background: linear-gradient(
-						90deg,
-						#8c4bff 0%,
-						#658af9 100%
-					);
+					background: linear-gradient(90deg, #8c4bff 0%, #658af9 100%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

@@ -1,9 +1,5 @@
 <template>
-	<div
-		class="card bg-dark-2"
-		:class="number ? 'number-card' : ''"
-		data-usal="zoomin"
-	>
+	<div class="card bg-dark-2" :class="number ? 'number-card' : ''" data-usal="zoomin">
 		<div class="card-body">
 			<div class="d-flex gap-3 title-block">
 				<span v-if="icon" class="card-icon">
@@ -68,19 +64,11 @@
 				<h4 v-if="title" class="card-title">{{ title }}</h4>
 				<h4 v-if="titleHtml" class="card-title" v-html="titleHtml"></h4>
 			</div>
-			<div
-				v-if="bottomMenuBar && bottomMenuBar.length"
-				class="bottom-menu"
-			>
+			<div v-if="bottomMenuBar && bottomMenuBar.length" class="bottom-menu">
 				<div
 					class="bottom-menu-item"
 					v-for="menuItem in bottomMenuBar"
-					@click="
-						() =>
-							isClickable
-								? (menuItem.active = !menuItem.active)
-								: null
-					"
+					@click="() => (isClickable ? (menuItem.active = !menuItem.active) : null)"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -94,17 +82,11 @@
 							:fill="menuItem.active ? '#CDD5EF' : '#9CA1DE'"
 						/>
 					</svg>
-					<span :class="menuItem.active && 'active'">{{
-						menuItem.text
-					}}</span>
+					<span :class="menuItem.active && 'active'">{{ menuItem.text }}</span>
 				</div>
 			</div>
 			<p v-if="description" class="card-text">{{ description }}</p>
-			<p
-				v-if="descriptionHtml"
-				class="card-text"
-				v-html="descriptionHtml"
-			/>
+			<p v-if="descriptionHtml" class="card-text" v-html="descriptionHtml" />
 			<p v-if="$slots.descriptionHtml" class="card-text">
 				<slot name="descriptionHtml"></slot>
 			</p>
@@ -238,11 +220,7 @@
 					font-size: $h2-font-size;
 					font-style: normal;
 					font-weight: 100;
-					background: linear-gradient(
-						90deg,
-						#e151f7 2.16%,
-						#5c47f5 65.09%
-					);
+					background: linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

@@ -5,8 +5,7 @@ import identify from "~/utils/identify"
 import { API_URL } from "astro:env/client"
 import { GTM_ID } from "astro:env/client"
 
-const isEurope =
-	Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
+const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
 const cookieConsent = CookieConsent
 
 window.addEventListener("DOMContentLoaded", () => {

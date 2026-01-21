@@ -14,11 +14,7 @@
 		<div v-if="index !== content.items.length - 1">
 			<div class="row">
 				<div class="col-1 arrow">
-					<img
-						class="icon"
-						:src="content.icon"
-						:alt="content.title"
-					/>
+					<img class="icon" :src="content.icon" :alt="content.title" />
 				</div>
 			</div>
 		</div>

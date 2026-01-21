@@ -59,10 +59,7 @@
 				if (!directory) return ""
 
 				const specialCases = { ui: "UI", "ai-tools": "AI Tools" }
-				return (
-					specialCases[directory] ||
-					directory.split("-").map(upperFirst).join(" ")
-				)
+				return specialCases[directory] || directory.split("-").map(upperFirst).join(" ")
 			},
 		},
 	})

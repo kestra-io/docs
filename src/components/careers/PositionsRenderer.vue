@@ -7,20 +7,14 @@
 		>
 			<ul class="list-unstyled d-flex flex-column gap-3">
 				<li data-usal="fade-l" v-for="doc in positions" :key="doc.id">
-					<a
-						class="d-flex align-items-center bg-dark-2"
-						:href="`/careers/${doc.id}`"
-					>
+					<a class="d-flex align-items-center bg-dark-2" :href="`/careers/${doc.id}`">
 						<div class="d-flex align-items-center gap-3">
 							<img v-bind="emojiPeople" alt="emoji_people" />
 							<span>
 								{{ doc.title }}
 							</span>
 							<span class="loc">
-								(Remote /<template
-									v-for="loc in doc.locations"
-									:key="loc.code"
-								>
+								(Remote /<template v-for="loc in doc.locations" :key="loc.code">
 									<span class="ms-1" :title="loc.name">{{
 										loc.emoji
 									}}</span> </template

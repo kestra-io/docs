@@ -5,9 +5,7 @@
 				<h1 class="title fw-light" data-usal="fade-r">
 					{{ content.title }}
 				</h1>
-				<div
-					class="d-flex gap-2 flex-wrap justify-content-center align-items-center mt-4"
-				>
+				<div class="d-flex gap-2 flex-wrap justify-content-center align-items-center mt-4">
 					<template v-for="action in content.cta">
 						<a :href="action.href" :target="action.target">
 							<button class="btn" :class="action.style">

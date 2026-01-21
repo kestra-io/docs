@@ -22,9 +22,7 @@ export function extractSourcesFromMarkdown(content: string): Source[] {
 		let match
 		while ((match = regex.exec(content)) !== null) {
 			const [, title, url] = match
-			const fullUrl = url.startsWith("/")
-				? `https://kestra.io${url}`
-				: url
+			const fullUrl = url.startsWith("/") ? `https://kestra.io${url}` : url
 			sources.push({
 				title: title.trim(),
 				url: fullUrl,
@@ -34,8 +32,7 @@ export function extractSourcesFromMarkdown(content: string): Source[] {
 	})
 
 	return sources.filter(
-		(source, index, self) =>
-			index === self.findIndex((s) => s.url === source.url),
+		(source, index, self) => index === self.findIndex((s) => s.url === source.url),
 	)
 }
 

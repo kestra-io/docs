@@ -70,11 +70,7 @@
 			bottom: -70px;
 			right: -100px;
 			z-index: -1;
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 			filter: blur(100px);
 		}
 	}
@@ -113,10 +109,7 @@
 		font-weight: 400;
 		font-size: $font-size-3xl;
 		span {
-			background: var(
-				--Text_gradient,
-				linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
-			);
+			background: var(--Text_gradient, linear-gradient(90deg, #e151f7 2%, #5c47f5 65%));
 			background-clip: text;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;

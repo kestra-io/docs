@@ -1,21 +1,10 @@
 <template>
 	<div class="container example">
-		<h1
-			data-usal="fade-l"
-			class="title text-center mb-5 fw-light"
-			v-html="content.tag"
-		></h1>
-		<div
-			class="row card-group card-centered no-shadow mb-2"
-			:class="content.cardGroup"
-		>
+		<h1 data-usal="fade-l" class="title text-center mb-5 fw-light" v-html="content.tag"></h1>
+		<div class="row card-group card-centered no-shadow mb-2" :class="content.cardGroup">
 			<template v-for="(item, index) in content.items">
 				<div class="col-md-4 mb-4">
-					<div
-						class="card"
-						:class="index === 1 && 'mask'"
-						data-usal="zoomin"
-					>
+					<div class="card" :class="index === 1 && 'mask'" data-usal="zoomin">
 						<div class="card-body">
 							<NuxtImg
 								width="69px"
@@ -86,10 +75,7 @@
 	.title {
 		font-size: $font-size-3xl;
 		span {
-			background: var(
-				--Text_gradient,
-				linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
-			);
+			background: var(--Text_gradient, linear-gradient(90deg, #e151f7 2%, #5c47f5 65%));
 			background-clip: text;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
@@ -104,11 +90,7 @@
 			width: 176px;
 			bottom: -80px;
 			right: -96px;
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 			filter: blur(100px);
 			z-index: -1;
 		}

@@ -1,9 +1,5 @@
 import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
-import {
-	isEntryAPluginElementPredicate,
-	slugify,
-	subGroupName,
-} from "@kestra-io/ui-libs"
+import { isEntryAPluginElementPredicate, slugify, subGroupName } from "@kestra-io/ui-libs"
 
 function toNavTitle(title: string) {
 	let startCaseTitle = title.charAt(0).toUpperCase() + title.slice(1)
@@ -27,9 +23,7 @@ function subGroupWrapperNav(subGroupWrapper: Plugin, parentUrl: string) {
 				children: (value as PluginElement[])
 					.filter(({ deprecated }) => !deprecated)
 					.map((item) => ({
-						title: item.cls.substring(
-							item.cls.lastIndexOf(".") + 1,
-						),
+						title: item.cls.substring(item.cls.lastIndexOf(".") + 1),
 						path: `${parentUrl}/${slugify(item.cls)}`,
 					})),
 			}
@@ -43,22 +37,14 @@ interface Navigation {
 	isPage?: boolean
 }
 
-export function generateNavigationFromSubgroups(
-	pluginsSubGroups: Plugin[],
-): Navigation[] {
+export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): Navigation[] {
 	const subGroupsByGroup = pluginsSubGroups.reduce(
 		(result, subGroupWrapper) => {
-			const filteredElementsByTypeEntries = Object.entries(
-				subGroupWrapper,
-			)
-				.filter(([key, value]) =>
-					isEntryAPluginElementPredicate(key, value),
-				)
+			const filteredElementsByTypeEntries = Object.entries(subGroupWrapper)
+				.filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
 				.map(([elementType, elements]) => [
 					elementType,
-					(elements as PluginElement[]).filter(
-						({ deprecated }) => !deprecated,
-					),
+					(elements as PluginElement[]).filter(({ deprecated }) => !deprecated),
 				])
 				.filter(([, elements]) => elements.length > 0)
 
@@ -68,8 +54,7 @@ export function generateNavigationFromSubgroups(
 
 			subGroupWrapper = Object.fromEntries([
 				...Object.entries(subGroupWrapper).filter(
-					([key, value]) =>
-						!isEntryAPluginElementPredicate(key, value),
+					([key, value]) => !isEntryAPluginElementPredicate(key, value),
 				),
 				...filteredElementsByTypeEntries,
 			])
@@ -91,28 +76,19 @@ export function generateNavigationFromSubgroups(
 			let pluginChildren
 			if (subGroupsWrappers.length > 1) {
 				pluginChildren = subGroupsWrappers
-					.filter(
-						(subGroupWrapper) =>
-							subGroupWrapper.subGroup !== undefined,
-					)
+					.filter((subGroupWrapper) => subGroupWrapper.subGroup !== undefined)
 					.map((subGroupWrapper) => {
 						const subGroupUrl = `${rootPluginUrl}/${slugify(subGroupName(subGroupWrapper))}`
 						return {
 							title: toNavTitle(subGroupWrapper.title),
 							path: subGroupUrl,
-							children: subGroupWrapperNav(
-								subGroupWrapper,
-								subGroupUrl,
-							),
+							children: subGroupWrapperNav(subGroupWrapper, subGroupUrl),
 						}
 					})
 			}
 			// There is no subgroups, we skip that part and directly put plugin elements below
 			else {
-				pluginChildren = subGroupWrapperNav(
-					subGroupsWrappers[0],
-					rootPluginUrl,
-				)
+				pluginChildren = subGroupWrapperNav(subGroupsWrappers[0], rootPluginUrl)
 			}
 			return {
 				title: toNavTitle(plugin.title),

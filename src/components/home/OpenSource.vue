@@ -7,27 +7,15 @@
 			</h2>
 
 			<div class="features">
-				<div
-					v-for="feature in features"
-					:key="feature.title"
-					class="feature"
-				>
-					<NuxtImg
-						v-bind="feature.image"
-						:alt="feature.title"
-						class="feature-image"
-					/>
+				<div v-for="feature in features" :key="feature.title" class="feature">
+					<NuxtImg v-bind="feature.image" :alt="feature.title" class="feature-image" />
 					<h3>{{ feature.title }}</h3>
 					<p>{{ feature.description }}</p>
 				</div>
 			</div>
 
 			<div class="lead-indicators">
-				<div
-					v-for="{ title, value } of leadIndicators"
-					:key="title"
-					class="lead-indicator"
-				>
+				<div v-for="{ title, value } of leadIndicators" :key="title" class="lead-indicator">
 					<h3>{{ value }}</h3>
 					<p>{{ title }}</p>
 				</div>
@@ -115,8 +103,7 @@
 		span.gradient {
 			display: block;
 			// font color gradient from #8C4BFF to #FF6A00
-			background: linear-gradient(90deg, #8c4bff 0%, #6fb0ff 100%)
-				no-repeat center;
+			background: linear-gradient(90deg, #8c4bff 0%, #6fb0ff 100%) no-repeat center;
 			background-size: cover;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;

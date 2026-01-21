@@ -104,10 +104,7 @@
 					</div>
 				</div>
 				<div class="info-block">
-					<span
-						>Customer Success Program & <br />Enterprise Support
-						With SLA</span
-					>
+					<span>Customer Success Program & <br />Enterprise Support With SLA</span>
 				</div>
 			</div>
 		</div>
@@ -182,11 +179,7 @@
 		.border-top-block {
 			width: 100%;
 			border: none;
-			background-image: linear-gradient(
-				270deg,
-				rgba(16, 16, 45, 0) 26.08%,
-				#343393 74.89%
-			);
+			background-image: linear-gradient(270deg, rgba(16, 16, 45, 0) 26.08%, #343393 74.89%);
 			height: 1px;
 			display: none;
 			@media only screen and (max-width: 575px) {
@@ -255,11 +248,7 @@
 				.list {
 					width: 100%;
 					max-width: 330px;
-					background: linear-gradient(
-						180deg,
-						#21242e 0%,
-						#1a1c24 100%
-					);
+					background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 					border: none;
 					border-radius: 20px;
 					padding: $rem-1;
@@ -393,21 +382,13 @@
 					display: flex;
 					flex-direction: column;
 					gap: 12px;
-					background: linear-gradient(
-						180deg,
-						#21242e 0%,
-						#1a1c24 100%
-					);
+					background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 					align-items: center;
 
 					&::before {
 						border-radius: 20px;
 						content: "";
-						background-image: linear-gradient(
-							180deg,
-							#2b313e 0%,
-							#131725 100%
-						);
+						background-image: linear-gradient(180deg, #2b313e 0%, #131725 100%);
 
 						top: -1px;
 						left: -1px;

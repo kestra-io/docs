@@ -1,33 +1,20 @@
 <template>
 	<div class="h-100 d-flex flex-column mh-100">
 		<AiChatHeader @openSearch="$emit('backToSearch')" />
-		<div
-			class="content scroller"
-			id="contentContainer"
-			ref="contentContainer"
-		>
+		<div class="content scroller" id="contentContainer" ref="contentContainer">
 			<div v-if="messages.length === 0" class="message welcome">
 				<div class="avatar">
 					<img src="/icon-simple.svg" alt="Kestra AI" />
 				</div>
 				<div class="bubble">
-					<p>
-						Hi! I'm your Kestra AI assistant.<br />Ask me anything
-						about workflows.
-					</p>
+					<p>Hi! I'm your Kestra AI assistant.<br />Ask me anything about workflows.</p>
 				</div>
 			</div>
 
-			<div
-				v-if="messages.length === 0 && randomQuestion"
-				class="examples"
-			>
+			<div v-if="messages.length === 0 && randomQuestion" class="examples">
 				<h6>EXAMPLE QUESTIONS</h6>
 				<div class="cards">
-					<template
-						v-for="(question, index) in randomQuestion"
-						:key="index"
-					>
+					<template v-for="(question, index) in randomQuestion" :key="index">
 						<div class="card" @click="askQuestion(question)">
 							{{ question }}
 						</div>
@@ -36,10 +23,7 @@
 			</div>
 
 			<div v-if="messages.length > 0" class="messages">
-				<template
-					v-for="(message, messageIndex) of messages"
-					:key="messageIndex"
-				>
+				<template v-for="(message, messageIndex) of messages" :key="messageIndex">
 					<div :class="`message message-${message.role}`">
 						<div class="avatar">
 							<div v-if="message.role === 'user'" class="user">
@@ -56,10 +40,7 @@
 						</div>
 						<div class="bubble">
 							<template v-if="message.role === 'assistant'">
-								<div
-									v-if="message.markdown"
-									@click="handleContentClick"
-								>
+								<div v-if="message.markdown" @click="handleContentClick">
 									<MDCParserAndRenderer
 										class="bd-markdown"
 										:content="message.markdown"
@@ -80,10 +61,7 @@
 							<p v-else>{{ message.content }}</p>
 
 							<div
-								v-if="
-									message.role === 'assistant' &&
-									message.sources?.length
-								"
+								v-if="message.role === 'assistant' && message.sources?.length"
 								class="sources"
 							>
 								<h6>SOURCES</h6>
@@ -110,9 +88,7 @@
 								</div>
 							</div>
 
-							<span class="timestamp">{{
-								formatTimestamp(message.timestamp)
-							}}</span>
+							<span class="timestamp">{{ formatTimestamp(message.timestamp) }}</span>
 						</div>
 					</div>
 				</template>
@@ -120,11 +96,7 @@
 					class="d-flex justify-content-end me-3 mb-1"
 					v-if="!isLoading && messages.length > 0"
 				>
-					<button
-						type="submit"
-						class="btn btn-sm btn-dark"
-						@click="clearMessage"
-					>
+					<button type="submit" class="btn btn-sm btn-dark" @click="clearMessage">
 						<TrashCan />
 						Start a new prompt
 					</button>
@@ -144,10 +116,7 @@
 					@keydown.enter="handleEnterKey"
 					@input="autoResize"
 				></textarea>
-				<Send
-					@click="sendMessage"
-					:disabled="isLoading || !userInput.trim()"
-				/>
+				<Send @click="sendMessage" :disabled="isLoading || !userInput.trim()" />
 			</div>
 		</div>
 	</div>
@@ -162,10 +131,7 @@
 	import TrashCan from "vue-material-design-icons/TrashCan.vue"
 	import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
 	import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
-	import {
-		extractSourcesFromMarkdown,
-		isInternalLink,
-	} from "~/utils/sources.ts"
+	import { extractSourcesFromMarkdown, isInternalLink } from "~/utils/sources.ts"
 	import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 	import { API_URL } from "astro:env/client"
 
@@ -222,9 +188,7 @@
 		]
 
 		// Shuffle and pick 3 questions once on mount
-		randomQuestion.value = [...questions]
-			.sort(() => Math.random() - 0.5)
-			.slice(0, 3)
+		randomQuestion.value = [...questions].sort(() => Math.random() - 0.5).slice(0, 3)
 	})
 
 	const emit = defineEmits<{
@@ -233,10 +197,7 @@
 	}>()
 
 	const createUUID = () => {
-		return (
-			new Date().getTime().toString(16) +
-			Math.floor(1e7 * Math.random()).toString(16)
-		)
+		return new Date().getTime().toString(16) + Math.floor(1e7 * Math.random()).toString(16)
 	}
 
 	const userInput = ref<string>("")
@@ -276,10 +237,7 @@
 		if (textareaRef.value) {
 			textareaRef.value.style.height = "auto"
 			const maxHeight = 150
-			const newHeight = Math.min(
-				textareaRef.value.scrollHeight,
-				maxHeight,
-			)
+			const newHeight = Math.min(textareaRef.value.scrollHeight, maxHeight)
 			textareaRef.value.style.height = `${newHeight}px`
 			textareaRef.value.style.overflowY =
 				textareaRef.value.scrollHeight > maxHeight ? "auto" : "hidden"
@@ -353,9 +311,7 @@
 		}
 
 		if (value.id === "completed") {
-			const sources = extractSourcesFromMarkdown(
-				messages.value[indexToUpdate].content,
-			)
+			const sources = extractSourcesFromMarkdown(messages.value[indexToUpdate].content)
 			if (sources.length > 0) {
 				messages.value[indexToUpdate].sources = sources
 			}
@@ -388,29 +344,24 @@
 		messages.value.push(loadingMessage)
 
 		try {
-			const chatHistory: ChatHistoryItem[] = messages.value
-				.slice(0, -1)
-				.map((msg) => ({
-					role: msg.role,
-					content: msg.content,
-					timestamp: msg.timestamp,
-				}))
+			const chatHistory: ChatHistoryItem[] = messages.value.slice(0, -1).map((msg) => ({
+				role: msg.role,
+				content: msg.content,
+				timestamp: msg.timestamp,
+			}))
 
 			const signal = abortController.value.signal
 
-			const response = await fetch(
-				`${API_URL}/search-ai/${conversationId.value}`,
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						messages: chatHistory,
-						distinctId: posthog.get_distinct_id(),
-					}),
-					credentials: "include",
-					signal: signal,
-				},
-			)
+			const response = await fetch(`${API_URL}/search-ai/${conversationId.value}`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					messages: chatHistory,
+					distinctId: posthog.get_distinct_id(),
+				}),
+				credentials: "include",
+				signal: signal,
+			})
 
 			posthog.capture("search_ai", {
 				text: trimmedInput,
@@ -418,10 +369,7 @@
 			})
 
 			if (response.status !== 200) {
-				console.error(
-					"API request failed with status:",
-					response.status,
-				)
+				console.error("API request failed with status:", response.status)
 				return
 			}
 
@@ -451,9 +399,7 @@
 			console.error("Error sending message:", error)
 			messages.value.pop()
 			messages.value.push(
-				createSystemMessage(
-					"Oops! Something went wrong. Please try again later.",
-				),
+				createSystemMessage("Oops! Something went wrong. Please try again later."),
 			)
 		} finally {
 			isLoading.value = false

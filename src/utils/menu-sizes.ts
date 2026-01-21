@@ -118,9 +118,7 @@ export function menuSize(name: string, size: number): MenuSizeResult {
 			width: menuSizes[name][getBreakpoint(size)].width,
 			height: menuSizes[name][getBreakpoint(size)].height,
 		},
-		headerArrowTranslateX:
-			menuSizes[name][getBreakpoint(size)].headerArrowTranslateX,
-		headerMenuTranslateX:
-			menuSizes[name][getBreakpoint(size)].headerMenuTranslateX,
+		headerArrowTranslateX: menuSizes[name][getBreakpoint(size)].headerArrowTranslateX,
+		headerMenuTranslateX: menuSizes[name][getBreakpoint(size)].headerMenuTranslateX,
 	}
 }

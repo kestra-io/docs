@@ -2,20 +2,15 @@
 	<HomeCard class="container card-block">
 		<div class="plugin-text">
 			<h2 class="text-white">
-				<span>{{ totalPlugins }}+</span> Plugins<br />That Integrate
-				With<br />Your <span>Stack</span>
+				<span>{{ totalPlugins }}+</span> Plugins<br />That Integrate With<br />Your
+				<span>Stack</span>
 			</h2>
-			<h2 class="text-white mobile">
-				Integrate With<br />Your <span>Stack</span>
-			</h2>
+			<h2 class="text-white mobile">Integrate With<br />Your <span>Stack</span></h2>
 			<p>
-				Connect with third-party systems, data sources, and
-				applications. And if you require a custom integration, our
-				platform makes it easy to build custom plugins.
+				Connect with third-party systems, data sources, and applications. And if you require
+				a custom integration, our platform makes it easy to build custom plugins.
 			</p>
-			<a href="/plugins" class="btn btn-md btn-primary"
-				>See All Plugins</a
-			>
+			<a href="/plugins" class="btn btn-md btn-primary">See All Plugins</a>
 		</div>
 		<div class="plugin-logos-grid">
 			<a v-for="plugin in plugins" :key="plugin.link" :href="plugin.link">
@@ -123,8 +118,7 @@
 			text-align: center;
 			span {
 				color: $primary;
-				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-					no-repeat center;
+				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 				background-size: cover;
 				background-clip: text;
 				-webkit-background-clip: text;

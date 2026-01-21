@@ -1,8 +1,4 @@
-import {
-	isEntryAPluginElementPredicate,
-	type Plugin,
-	type PluginElement,
-} from "@kestra-io/ui-libs"
+import { isEntryAPluginElementPredicate, type Plugin, type PluginElement } from "@kestra-io/ui-libs"
 
 function isFullEntryAPluginElementPredicate(
 	elementsArray: [elementType: string, elements: any],
@@ -33,19 +29,13 @@ export function getListOfPlugins(inputPlugins: Plugin[]): Plugin[] {
 		.filter((plugin): plugin is Plugin => plugin !== undefined)
 }
 
-export function getPluginsWithoutDeprecated(
-	plugins: Plugin[],
-): PluginElement[] {
+export function getPluginsWithoutDeprecated(plugins: Plugin[]): PluginElement[] {
 	return plugins.flatMap((p) => {
 		let filteredElementsEntries = Object.entries(p)
-			.filter(([key, value]) =>
-				isEntryAPluginElementPredicate(key, value),
-			)
+			.filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
 			.map(([elementType, elements]) => [
 				elementType,
-				(elements as PluginElement[]).filter(
-					({ deprecated }) => !deprecated,
-				),
+				(elements as PluginElement[]).filter(({ deprecated }) => !deprecated),
 			])
 			.filter(([, elements]) => elements.length > 0)
 

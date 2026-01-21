@@ -3,9 +3,8 @@
 		<Section class="about">
 			<h2>Orchestration <span>Simplified</span></h2>
 			<p>
-				From automating data pipelines to accelerating machine learning
-				model deployment, Kestra streamlines complex workflows across a
-				wide range of industries and domains.
+				From automating data pipelines to accelerating machine learning model deployment,
+				Kestra streamlines complex workflows across a wide range of industries and domains.
 			</p>
 
 			<div class="row">
@@ -101,11 +100,7 @@
 			margin-bottom: $spacer;
 
 			span {
-				background: linear-gradient(
-					90deg,
-					#e151f7 18.28%,
-					#5c47f5 35.74%
-				);
+				background: linear-gradient(90deg, #e151f7 18.28%, #5c47f5 35.74%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

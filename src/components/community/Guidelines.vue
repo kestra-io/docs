@@ -13,24 +13,15 @@
 						<Card :icon="ChartBoxOutline" :cardInfo="makeEasy" />
 					</div>
 					<div class="col-md-6 col-sm-12 p-3">
-						<Card
-							:icon="AccountGroupOutline"
-							:cardInfo="relevantChannel"
-						/>
+						<Card :icon="AccountGroupOutline" :cardInfo="relevantChannel" />
 					</div>
 					<div class="col-md-6 col-sm-12 p-3">
-						<Card
-							:icon="AccountGroupOutline"
-							:cardInfo="dontSpam"
-						/>
+						<Card :icon="AccountGroupOutline" :cardInfo="dontSpam" />
 					</div>
 					<div class="d-flex flex-wrap justify-content-center">
 						<p>
-							If you have any questions, don't hestitate to ask us
-							on
-							<a target="_blank" href="https://kestra.io/slack"
-								>Slack</a
-							>
+							If you have any questions, don't hestitate to ask us on
+							<a target="_blank" href="https://kestra.io/slack">Slack</a>
 						</p>
 					</div>
 				</div>

@@ -888,8 +888,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description:
-          "The filters to apply, some can override chart definition like\
+        description: "The filters to apply, some can override chart definition like\
           \ labels & namespace"
         content:
           application/json:
@@ -928,8 +927,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description:
-          "The filters to apply, some can override chart definition like\
+        description: "The filters to apply, some can override chart definition like\
           \ labels & namespace"
         content:
           application/json:
@@ -2016,8 +2014,7 @@ paths:
     get:
       tags:
         - Executions
-      summary:
-        Get all flow ids for a namespace. Data returned are FlowForExecution
+      summary: Get all flow ids for a namespace. Data returned are FlowForExecution
         containing minimal information about a Flow for when you are allowed to executing
         but not reading.
       operationId: listFlowExecutionsByNamespace
@@ -2249,8 +2246,7 @@ paths:
     post:
       tags:
         - Executions
-      summary:
-        Create new executions from old ones filter by query parameters. Keep
+      summary: Create new executions from old ones filter by query parameters. Keep
         the flow revision
       operationId: replayExecutionsByQuery
       parameters:
@@ -3540,8 +3536,7 @@ paths:
             type: string
         - name: destinationOnly
           in: query
-          description:
-            "If true, list only destination dependencies, otherwise list\
+          description: "If true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -3645,8 +3640,7 @@ paths:
             type: string
         - name: isOnKillCascade
           in: query
-          description:
-            Specifies whether killing the execution also kill all subflow
+          description: Specifies whether killing the execution also kill all subflow
             executions.
           required: true
           explode: false
@@ -3730,8 +3724,7 @@ paths:
     post:
       tags:
         - Executions
-      summary:
-        Create a new execution from an old one and start it from a specified
+      summary: Create a new execution from an old one and start it from a specified
         task run id
       operationId: replayExecution
       parameters:
@@ -3758,8 +3751,7 @@ paths:
             nullable: true
         - name: breakpoints
           in: query
-          description:
-            "Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -3781,8 +3773,7 @@ paths:
     post:
       tags:
         - Executions
-      summary:
-        Create a new execution from an old one and start it from a specified
+      summary: Create a new execution from an old one and start it from a specified
         task run id
       operationId: replayExecutionWithinputs
       parameters:
@@ -3809,8 +3800,7 @@ paths:
             nullable: true
         - name: breakpoints
           in: query
-          description:
-            "Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -3923,8 +3913,7 @@ paths:
             type: string
         - name: breakpoints
           in: query
-          description:
-            "\"Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "\"Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -3939,8 +3928,7 @@ paths:
         "204":
           description: On success
         "409":
-          description:
-            If the executions is not in the 'BREAKPOINT' state or has no
+          description: If the executions is not in the 'BREAKPOINT' state or has no
             breakpoint
   /api/v1/{tenant}/executions/{executionId}/resume/validate:
     post:
@@ -4092,8 +4080,7 @@ paths:
             nullable: true
         - name: breakpoints
           in: query
-          description:
-            "Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -4762,8 +4749,7 @@ paths:
               properties:
                 fileUpload:
                   type: string
-                  description:
-                    "The file to import, can be a ZIP archive or a multi-objects\
+                  description: "The file to import, can be a ZIP archive or a multi-objects\
                     \ YAML file"
                   format: binary
             encoding:
@@ -5243,8 +5229,7 @@ paths:
             type: string
         - name: destinationOnly
           in: query
-          description:
-            "If true, list only destination dependencies, otherwise list\
+          description: "If true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -6086,8 +6071,7 @@ paths:
     get:
       tags:
         - Metrics
-      summary:
-        "Get tasks id that have metrics for a specific flow, include deleted\
+      summary: "Get tasks id that have metrics for a specific flow, include deleted\
         \ or renamed tasks"
       operationId: listTasksWithMetrics
       parameters:
@@ -6190,8 +6174,7 @@ paths:
       tags:
         - Namespaces
       summary: List namespaces for autocomplete
-      description:
-        "Returns a list of namespaces for use in autocomplete fields, optionally\
+      description: "Returns a list of namespaces for use in autocomplete fields, optionally\
         \ allowing to filter by query and ids. Used especially for binding creation."
       operationId: autocompleteNamespaces
       parameters:
@@ -6318,8 +6301,7 @@ paths:
             type: string
         - name: destinationOnly
           in: query
-          description:
-            "if true, list only destination dependencies, otherwise list\
+          description: "if true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -6643,8 +6625,7 @@ paths:
     get:
       tags:
         - Files
-      summary:
-        "Get namespace file stats such as size, creation & modification dates\
+      summary: "Get namespace file stats such as size, creation & modification dates\
         \ and type"
       operationId: getFileMetadatas
       parameters:
@@ -7871,8 +7852,7 @@ components:
         disabled:
           type: boolean
         labels:
-          description:
-            Labels as a list of Label (key/value pairs) or as a map of
+          description: Labels as a list of Label (key/value pairs) or as a map of
             string to string.
           oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
@@ -7971,8 +7951,7 @@ components:
             - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
         stopAfter:
-          title:
-            List of execution states after which a trigger should be stopped
+          title: List of execution states after which a trigger should be stopped
             (a.k.a. disabled).
           type: array
           items:
@@ -7982,8 +7961,7 @@ components:
         failOnTriggerError:
           type: boolean
         allowConcurrent:
-          title:
-            Specifies whether a trigger is allowed to start a new execution even
+          title: Specifies whether a trigger is allowed to start a new execution even
             if a previous run is still in progress.
           type: boolean
         assets:
@@ -8861,8 +8839,7 @@ components:
             disabled:
               type: boolean
             labels:
-              description:
-                Labels as a list of Label (key/value pairs) or as a map of
+              description: Labels as a list of Label (key/value pairs) or as a map of
                 string to string.
               oneOf:
                 - $ref: "#/components/schemas/Map_Object.Object_"
@@ -8914,8 +8891,7 @@ components:
             outputs:
               title: Output values available and exposes to other flows.
               type: array
-              description:
-                Output values make information about the execution of your
+              description: Output values make information about the execution of your
                 Flow available and expose for other Kestra flows to use. Output values
                 are similar to return values in programming languages.
               items:
@@ -8929,8 +8905,7 @@ components:
             checks:
               title: Conditions evaluated before the flow is executed.
               type: array
-              description:
-                "A list of conditions that are evaluated before the flow\
+              description: "A list of conditions that are evaluated before the flow\
                 \ is executed.  If no checks are defined, the flow executes normally."
               items:
                 $ref: "#/components/schemas/Check"
@@ -8978,8 +8953,7 @@ components:
             disabled:
               type: boolean
             labels:
-              description:
-                Labels as a list of Label (key/value pairs) or as a map of
+              description: Labels as a list of Label (key/value pairs) or as a map of
                 string to string.
               oneOf:
                 - $ref: "#/components/schemas/Map_Object.Object_"
@@ -9220,8 +9194,7 @@ components:
             disabled:
               type: boolean
             labels:
-              description:
-                Labels as a list of Label (key/value pairs) or as a map of
+              description: Labels as a list of Label (key/value pairs) or as a map of
                 string to string.
               oneOf:
                 - $ref: "#/components/schemas/Map_Object.Object_"
@@ -9237,8 +9210,7 @@ components:
             outputs:
               title: Output values available and exposes to other flows.
               type: array
-              description:
-                Output values make information about the execution of your
+              description: Output values make information about the execution of your
                 Flow available and expose for other Kestra flows to use. Output values
                 are similar to return values in programming languages.
               items:
@@ -9296,8 +9268,7 @@ components:
             - $ref: "#/components/schemas/Property_Object_"
         prefill:
           title: The suggested value for the input.
-          description:
-            Optional UI hint for pre-filling the input. Cannot be used
+          description: Optional UI hint for pre-filling the input. Cannot be used
             together with a default value.
           allOf:
             - $ref: "#/components/schemas/Property_Object_"
@@ -9376,15 +9347,13 @@ components:
           minLength: 1
           pattern: "^[\\p{Ll}][\\p{L}0-9._-]*$"
           type: string
-          x-pattern-message:
-            Invalid label key. A valid key contains only lowercase
+          x-pattern-message: Invalid label key. A valid key contains only lowercase
             letters numbers hyphens (-) underscores (_) or periods (.) and must begin
             with a lowercase letter.
         value:
           minLength: 1
           type: string
-      description:
-        A key/value pair that can be attached to a Flow or Execution. Labels
+      description: A key/value pair that can be attached to a Flow or Execution. Labels
         are often used to organize and categorize objects.
     Level:
       type: string

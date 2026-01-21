@@ -1,16 +1,10 @@
 <template>
 	<section class="workflows">
 		<div class="container">
-			<div
-				v-for="section in workflowSections"
-				:key="section.id"
-				class="section-block"
-			>
+			<div v-for="section in workflowSections" :key="section.id" class="section-block">
 				<header
 					class="section-header"
-					:data-usal="
-						!isMobile ? `fade-up duration-400 delay-50` : undefined
-					"
+					:data-usal="!isMobile ? `fade-up duration-400 delay-50` : undefined"
 				>
 					<h2>{{ section.title }}</h2>
 					<p>{{ section.description }}</p>
@@ -24,11 +18,7 @@
 								:alt="section.mainFeature.title"
 								width="1076"
 								height="608"
-								:data-usal="
-									!isMobile
-										? 'fade-up duration-500 delay-70'
-										: undefined
-								"
+								:data-usal="!isMobile ? 'fade-up duration-500 delay-70' : undefined"
 							/>
 						</div>
 						<div class="feature-content">

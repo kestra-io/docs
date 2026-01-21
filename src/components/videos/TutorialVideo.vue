@@ -22,11 +22,7 @@
 		<div class="video-content">
 			<p class="category">{{ video.category }}</p>
 			<h3 class="title">{{ video.title }}</h3>
-			<time
-				v-if="video.publicationDate"
-				class="video-info"
-				:datetime="video.publicationDate"
-			>
+			<time v-if="video.publicationDate" class="video-info" :datetime="video.publicationDate">
 				{{ getYMD(video.publicationDate) }}
 			</time>
 			<p class="author">{{ video.author }}</p>

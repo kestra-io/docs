@@ -1,10 +1,6 @@
 <template>
 	<div class="container base-container mt-5">
-		<h3
-			data-usal="fade-l"
-			class="title fw-light pb-3"
-			v-html="content.title"
-		></h3>
+		<h3 data-usal="fade-l" class="title fw-light pb-3" v-html="content.title"></h3>
 		<CardGroup :content="content" />
 	</div>
 </template>

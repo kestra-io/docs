@@ -4,15 +4,9 @@
 			<div class="content-wrapper">
 				<div class="content">
 					<h1 class="title">Out of the Box Features</h1>
-					<h1 class="title highlight">
-						Add New Workflows in Minutes
-					</h1>
+					<h1 class="title highlight">Add New Workflows in Minutes</h1>
 					<div class="features-grid">
-						<div
-							v-for="(feature, index) in features"
-							:key="index"
-							class="feature-item"
-						>
+						<div v-for="(feature, index) in features" :key="index" class="feature-item">
 							<h5>{{ feature.title }}</h5>
 							<p class="feature-text">
 								{{ feature.description }}
@@ -133,11 +127,7 @@
 						margin-bottom: -0.5rem;
 					}
 					&.highlight {
-						background: linear-gradient(
-							90.21deg,
-							#8c4bff 36.32%,
-							#658af9 63.11%
-						);
+						background: linear-gradient(90.21deg, #8c4bff 36.32%, #658af9 63.11%);
 						-webkit-background-clip: text;
 						-webkit-text-fill-color: transparent;
 						background-clip: text;

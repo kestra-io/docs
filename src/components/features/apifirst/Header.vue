@@ -2,15 +2,12 @@
 	<div class="container-fluid">
 		<div class="container">
 			<div class="row">
-				<div
-					class="col-md-5 align-items-center d-flex order-1 order-md-0"
-				>
+				<div class="col-md-5 align-items-center d-flex order-1 order-md-0">
 					<div>
 						<h1 data-usal="fade-r">API-First Design</h1>
 						<p class="baseline" data-usal="fade-l">
-							Kestra is designed in an API-first way, enabling
-							programmatic access to all actions from managing
-							workflows to user administration
+							Kestra is designed in an API-first way, enabling programmatic access to
+							all actions from managing workflows to user administration
 						</p>
 						<div class="cta d-flex gap-3">
 							<a
@@ -68,11 +65,7 @@
 				margin-bottom: 16px;
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 2.16%,
-						#5c47f5 65.09%
-					);
+					background: linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

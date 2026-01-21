@@ -9,10 +9,7 @@
 					<br class="d-none d-xxl-block" />
 					With Kestra
 				</h2>
-				<a
-					to="/demo"
-					class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block"
-				>
+				<a to="/demo" class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block">
 					Talk to us
 				</a>
 			</aside>
@@ -41,10 +38,7 @@
 					</div>
 				</div>
 			</div>
-			<a
-				to="/demo"
-				class="btn btn-primary btn-gradient mt-2 d-xxl-none d-block mx-auto"
-			>
+			<a to="/demo" class="btn btn-primary btn-gradient mt-2 d-xxl-none d-block mx-auto">
 				Talk to us
 			</a>
 		</div>

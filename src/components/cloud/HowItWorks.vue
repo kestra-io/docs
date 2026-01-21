@@ -2,11 +2,7 @@
 	<div class="container my-5 how-it-works">
 		<h2>How It Works</h2>
 		<div class="row my-5 pb-5">
-			<div
-				v-for="(column, index) in columns"
-				:key="index"
-				class="col-md-12 col-lg"
-			>
+			<div v-for="(column, index) in columns" :key="index" class="col-md-12 col-lg">
 				<div class="numbers-wrapper mb-3">
 					<div class="numbers">{{ index + 1 }}</div>
 				</div>
@@ -31,8 +27,7 @@
 		},
 		{
 			title: "Get Started",
-			description:
-				"Your instance is ready, start building and running workflows.",
+			description: "Your instance is ready, start building and running workflows.",
 		},
 		{
 			title: "30 Days Free",

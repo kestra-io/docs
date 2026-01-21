@@ -49,9 +49,7 @@
 	const blueprints = (await $fetch(`${API_URL}/blueprints/versions/latest`))
 		.results as Blueprint[]
 
-	const tags = (await $fetch(
-		`${API_URL}/blueprints/versions/latest/tags`,
-	)) as BlueprintTag[]
+	const tags = (await $fetch(`${API_URL}/blueprints/versions/latest/tags`)) as BlueprintTag[]
 </script>
 
 <style lang="scss" scoped>

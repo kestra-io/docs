@@ -76,15 +76,9 @@
 												</h3>
 												<p
 													class="video-info"
-													v-if="
-														featuredVideo.publicationDate
-													"
+													v-if="featuredVideo.publicationDate"
 												>
-													{{
-														getYMD(
-															featuredVideo.publicationDate,
-														)
-													}}
+													{{ getYMD(featuredVideo.publicationDate) }}
 												</p>
 												<p class="canal-name">
 													{{ featuredVideo.author }}
@@ -235,10 +229,7 @@
 		return videoId ? `https://www.youtube.com/embed/${videoId}` : ""
 	}
 
-	function findKeyByValue(
-		map: Map<string, string>,
-		value: string,
-	): string | undefined {
+	function findKeyByValue(map: Map<string, string>, value: string): string | undefined {
 		for (const [key, val] of map.entries()) {
 			if (val === value) return key
 		}
@@ -252,8 +243,7 @@
 		}))
 
 		if (props.currentCategory === "All videos") {
-			featuredVideo.value =
-				videoData.find((item) => item.isFeatured) || null
+			featuredVideo.value = videoData.find((item) => item.isFeatured) || null
 			videos.value = videoData.filter((video) => !video.isFeatured)
 		} else {
 			featuredVideo.value = null
@@ -399,11 +389,7 @@
 			left: 10%;
 			z-index: -147;
 			filter: blur(110px);
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 		}
 	}
 

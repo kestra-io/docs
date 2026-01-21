@@ -3,18 +3,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 text-right">
-					<NuxtImg
-						v-bind="ContributorsImg"
-						class="mb-4 img-fluid"
-						data-usal="fade-l"
-					/>
-					<h2 class="mb-4" data-usal="fade-l">
-						Kestra is built in the open
-					</h2>
+					<NuxtImg v-bind="ContributorsImg" class="mb-4 img-fluid" data-usal="fade-l" />
+					<h2 class="mb-4" data-usal="fade-l">Kestra is built in the open</h2>
 					<p data-usal="fade-r">
-						Inspire and get inspired. Join our community of
-						maintainers and contributors and help us improve our
-						open-source product.
+						Inspire and get inspired. Join our community of maintainers and contributors
+						and help us improve our open-source product.
 					</p>
 				</div>
 				<div class="col-md-6">
@@ -61,9 +54,7 @@
 								Pull requests <br />
 								<span class="number">
 									<CountTo
-										:endVal="
-											metrics ? metrics.pullRequests : 0
-										"
+										:endVal="metrics ? metrics.pullRequests : 0"
 										:duration="4000"
 									></CountTo>
 								</span>
@@ -87,11 +78,7 @@
 								Contributors <br />
 								<span class="number">
 									<CountTo
-										:endVal="
-											contributors
-												? contributors.length
-												: 0
-										"
+										:endVal="contributors ? contributors.length : 0"
 										:duration="4000"
 									>
 									</CountTo>

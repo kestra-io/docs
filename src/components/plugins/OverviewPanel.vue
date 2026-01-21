@@ -1,20 +1,15 @@
 <template>
 	<div>
-		<div
-			class="d-none d-lg-flex align-items-center justify-content-between overview-header"
-		>
+		<div class="d-none d-lg-flex align-items-center justify-content-between overview-header">
 			<strong class="text-white fw-bold fs-6 h6">OVERVIEW</strong>
 			<span aria-describedby="overview-tooltip" class="info-icon-wrapper">
 				<InformationOutline class="info-icon" />
 			</span>
 			<div role="tooltip" id="overview-tooltip">
 				<p>
-					Plugins have a Min. Compatible Kestra Version i.e. a Kestra
-					version from where the corresponding plugin version is
-					compatible.
-					<a href="https://kestra.io/docs/releases" target="_blank">
-						Learn more
-					</a>
+					Plugins have a Min. Compatible Kestra Version i.e. a Kestra version from where
+					the corresponding plugin version is compatible.
+					<a href="https://kestra.io/docs/releases" target="_blank"> Learn more </a>
 				</p>
 			</div>
 		</div>
@@ -29,9 +24,7 @@
 						<h6>{{ releaseVersions[0]?.version }}</h6>
 						<span class="latest-badge">Latest</span>
 					</div>
-					<small>{{
-						formatDate(releaseVersions[0]?.publishedAt)
-					}}</small>
+					<small>{{ formatDate(releaseVersions[0]?.publishedAt) }}</small>
 					<a
 						v-if="releasesUrl"
 						:href="`${releasesUrl}/tag/v${releaseVersions[0]?.version}`"
@@ -43,16 +36,10 @@
 					</a>
 					<small v-if="!kestraCore" class="kestra-ver">
 						Min. Compatible Kestra Version:
-						<span class="core-ver">{{
-							releaseVersions[0]?.kestraVersion
-						}}</span>
+						<span class="core-ver">{{ releaseVersions[0]?.kestraVersion }}</span>
 					</small>
 				</div>
-				<details
-					v-if="releaseVersions.length > 1"
-					@toggle="onToggle"
-					class="old-versions"
-				>
+				<details v-if="releaseVersions.length > 1" @toggle="onToggle" class="old-versions">
 					<summary class="older-summary">
 						Previous Versions
 						<component
@@ -78,9 +65,7 @@
 							</a>
 							<small v-if="!kestraCore" class="kestra-ver">
 								Min. Compatible Kestra Version:
-								<span class="core-ver">{{
-									v?.kestraVersion
-								}}</span>
+								<span class="core-ver">{{ v?.kestraVersion }}</span>
 							</small>
 						</div>
 					</div>
@@ -98,17 +83,10 @@
 			</div>
 		</div>
 
-		<div
-			v-if="categories?.length > 0"
-			class="d-none d-lg-block categories-section"
-		>
+		<div v-if="categories?.length > 0" class="d-none d-lg-block categories-section">
 			<strong class="h6">Plugin Type</strong>
 			<div class="categories">
-				<span
-					v-for="category in categories"
-					:key="category"
-					class="category-tag"
-				>
+				<span v-for="category in categories" :key="category" class="category-tag">
 					{{ formatCategoryName(category) }}
 				</span>
 			</div>
@@ -179,9 +157,7 @@
 		}).format(new Date(publishedAt))
 	}
 
-	const releaseVersions = computed<ReleaseInfo[]>(
-		() => props.version?.versions ?? [],
-	)
+	const releaseVersions = computed<ReleaseInfo[]>(() => props.version?.versions ?? [])
 
 	const onToggle = (e: Event): void => {
 		const target = e?.target as HTMLDetailsElement | null
@@ -203,17 +179,11 @@
 			: null,
 	)
 
-	const createdBy = computed(
-		() => metadataItem.value?.createdBy ?? "Kestra Core Team",
-	)
-	const managedBy = computed(
-		() => metadataItem.value?.managedBy ?? "Kestra Core Team",
-	)
+	const createdBy = computed(() => metadataItem.value?.createdBy ?? "Kestra Core Team")
+	const managedBy = computed(() => metadataItem.value?.managedBy ?? "Kestra Core Team")
 
 	const kestraCore = computed(
-		() =>
-			props.releasesUrl ===
-			"https://github.com/kestra-io/kestra/releases",
+		() => props.releasesUrl === "https://github.com/kestra-io/kestra/releases",
 	)
 </script>
 

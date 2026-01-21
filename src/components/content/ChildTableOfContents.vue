@@ -23,16 +23,11 @@
 					link.children &&
 					(p.max === undefined || level < p.max) &&
 					(link.children.length > 1 ||
-						(link.children.length === 1 &&
-							link.children[0].path !== link.path))
+						(link.children.length === 1 && link.children[0].path !== link.path))
 
 				if (hasChildren) {
 					return h("li", null, [
-						h(
-							"a",
-							{ href: link.path },
-							link.sidebarTitle || link.title,
-						),
+						h("a", { href: link.path }, link.sidebarTitle || link.title),
 						RecursiveLinks({
 							items: link.children!,
 							level: level + 1,
@@ -41,30 +36,14 @@
 					])
 				}
 
-				return h(
-					"li",
-					null,
-					h(
-						"a",
-						{ href: link.path },
-						link.sidebarTitle || link.title,
-					),
-				)
+				return h("li", null, h("a", { href: link.path }, link.sidebarTitle || link.title))
 			}),
 		)
 </script>
 
 <template>
-	<slot
-		v-if="$slots.default"
-		:navigation="props.navigation"
-		:max="props.max"
-	/>
+	<slot v-if="$slots.default" :navigation="props.navigation" :max="props.max" />
 	<template v-else>
-		<RecursiveLinks
-			:items="props.navigation ?? []"
-			:level="0"
-			:max="props.max"
-		/>
+		<RecursiveLinks :items="props.navigation ?? []" :level="0" :max="props.max" />
 	</template>
 </template>

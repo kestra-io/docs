@@ -2,10 +2,7 @@
 	<div class="mb-5 mt-1" role="button">
 		<a class="text-dark" :href="blog.path">
 			<img
-				v-if="
-					typeof blog.image === 'string' &&
-					blog.image?.startsWith('https://')
-				"
+				v-if="typeof blog.image === 'string' && blog.image?.startsWith('https://')"
 				width="300"
 				loading="lazy"
 				:alt="blog.title"
@@ -24,9 +21,7 @@
 				<span class="small-text category">{{ blog.category }}</span>
 				<h6 class="my-1">{{ blog.title }}</h6>
 				<BlogCardDetails
-					:authors="
-						blog.authors || (blog.author ? [blog.author] : [])
-					"
+					:authors="blog.authors || (blog.author ? [blog.author] : [])"
 					:date="blog.date.toString()"
 				/>
 			</div>

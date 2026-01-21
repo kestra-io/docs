@@ -18,10 +18,7 @@
 				>
 					<span class="toc-label">Table of Contents</span>
 					<span class="toc-chevron" aria-hidden>
-						<ChevronUp
-							class="chev-icon"
-							v-if="tableOfContentsExpanded"
-						/>
+						<ChevronUp class="chev-icon" v-if="tableOfContentsExpanded" />
 						<ChevronDown class="chev-icon" v-else />
 					</span>
 				</button>
@@ -36,14 +33,9 @@
 
 				<div class="collapse bd-toc-collapse" id="tocContents">
 					<slot name="header"></slot>
-					<strong class="d-none d-lg-block h6 mb-2"
-						>Table of Contents</strong
-					>
+					<strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
 					<nav id="nav-toc">
-						<ul
-							class="ps-0 pt-2 pt-lg-0 mb-2"
-							v-for="tableOfContent in links"
-						>
+						<ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in links">
 							<li
 								v-if="
 									(tableOfContent.depth ?? 0) > 1 &&
@@ -60,18 +52,10 @@
 									>{{ tableOfContent.text }}</a
 								>
 							</li>
-							<ul
-								class="ps-0 pt-2 pt-lg-0"
-								v-if="tableOfContent?.children?.length"
-							>
-								<template
-									v-for="item in tableOfContent?.children"
-								>
+							<ul class="ps-0 pt-2 pt-lg-0" v-if="tableOfContent?.children?.length">
+								<template v-for="item in tableOfContent?.children">
 									<li
-										v-if="
-											(item.depth ?? 0) > 1 &&
-											(item.depth ?? 0) < 6
-										"
+										v-if="(item.depth ?? 0) > 1 && (item.depth ?? 0) < 6"
 										@click="closeToc"
 										:class="{ 'mt-3': item.depth === 2 }"
 									>
@@ -137,9 +121,7 @@
 		},
 	)
 
-	const { y: scrollY } = useScroll(
-		typeof window !== "undefined" ? window : undefined,
-	)
+	const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined)
 
 	const tableOfContentsExpanded = ref(false)
 
@@ -186,9 +168,7 @@
 
 	const updateActiveLink = (id: string): void => {
 		removeActiveClasses()
-		const link = document.querySelector(
-			`#nav-toc a[href="#${id}"]`,
-		) as HTMLElement
+		const link = document.querySelector(`#nav-toc a[href="#${id}"]`) as HTMLElement
 		link?.classList.add("active")
 		link?.scrollIntoView({ block: "nearest" })
 	}
@@ -204,13 +184,9 @@
 	}
 
 	const menuNavigate = (e: Event): void => {
-		const anchor = (e.target as HTMLElement)?.closest(
-			"a",
-		) as HTMLAnchorElement | null
+		const anchor = (e.target as HTMLElement)?.closest("a") as HTMLAnchorElement | null
 		const href = anchor?.getAttribute("href")
-		const id = href?.startsWith("#")
-			? href.substring(1)
-			: anchor?.name || ""
+		const id = href?.startsWith("#") ? href.substring(1) : anchor?.name || ""
 
 		if (!id) return
 
@@ -234,21 +210,13 @@
 		document.getElementById("tocContents")?.classList.remove("show")
 	}
 
-	const activateMenuItem = (
-		item: TocLink,
-		index: number,
-		linkArray: TocLink[],
-	): void => {
+	const activateMenuItem = (item: TocLink, index: number, linkArray: TocLink[]): void => {
 		if (!item?.id) return
 
-		const currEl = document
-			.querySelector(`#${item.id}`)
-			?.getBoundingClientRect()
+		const currEl = document.querySelector(`#${item.id}`)?.getBoundingClientRect()
 		const prevEl =
 			index > 0 && linkArray[index - 1]?.id
-				? document
-						.querySelector(`#${linkArray[index - 1]!.id}`)
-						?.getBoundingClientRect()
+				? document.querySelector(`#${linkArray[index - 1]!.id}`)?.getBoundingClientRect()
 				: null
 
 		if (typeof currEl?.top === "number" && currEl.top <= 160) {
@@ -301,13 +269,7 @@
 				border: 0;
 				border-left-width: 1px;
 				border-style: solid;
-				border-image: linear-gradient(
-						to bottom,
-						#181818,
-						#5c5c5c,
-						#181818
-					)
-					1 100%;
+				border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
 			}
 
 			&.plugin {

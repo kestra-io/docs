@@ -1,7 +1,5 @@
 <template>
-	<a download href="/kestra-logo-kit.zip">
-		<LinkVariant /> Download Logo Pack
-	</a>
+	<a download href="/kestra-logo-kit.zip"> <LinkVariant /> Download Logo Pack </a>
 </template>
 
 <script setup>

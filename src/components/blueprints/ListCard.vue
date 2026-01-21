@@ -1,14 +1,10 @@
 <template>
 	<a :href="href">
 		<div class="card bg-dark-2">
-			<div
-				class="card-body d-flex flex-column justify-content-between gap-3"
-			>
+			<div class="card-body d-flex flex-column justify-content-between gap-3">
 				<div>
 					<div class="card-text">
-						<span class="tag-box" v-for="tag in tagsList">{{
-							tag
-						}}</span>
+						<span class="tag-box" v-for="tag in tagsList">{{ tag }}</span>
 					</div>
 					<h6 class="description" v-if="blueprint.title">
 						{{
@@ -19,11 +15,7 @@
 					</h6>
 				</div>
 				<div class="d-flex flex-wrap gap-3">
-					<div
-						class="icon bg-dark-4"
-						v-for="n in blueprint.includedTasks"
-						:key="n"
-					>
+					<div class="icon bg-dark-4" v-for="n in blueprint.includedTasks" :key="n">
 						<CommonTaskIcon :cls="n" />
 					</div>
 				</div>
@@ -64,11 +56,7 @@
 		border-radius: 8px;
 		border: $block-border;
 		height: 100%;
-		background-image: linear-gradient(
-			180deg,
-			$black-9 0%,
-			rgba($black-9, 0.27) 100%
-		);
+		background-image: linear-gradient(180deg, $black-9 0%, rgba($black-9, 0.27) 100%);
 
 		.card-body {
 			padding: 2rem !important;

@@ -33,9 +33,7 @@ const fetch = async (
 	// Create JWKS from your team domain
 	let JWKS = null
 	try {
-		JWKS = createRemoteJWKSet(
-			new URL(`${CLOUDFLARE_TEAM_DOMAIN}/cdn-cgi/access/certs`),
-		)
+		JWKS = createRemoteJWKSet(new URL(`${CLOUDFLARE_TEAM_DOMAIN}/cdn-cgi/access/certs`))
 	} catch (error) {
 		// Token verification failed
 		const message = error instanceof Error ? error.message : "Unknown error"
@@ -47,9 +45,7 @@ const fetch = async (
 		})
 		const stacktrace = error instanceof Error ? error.stack : ""
 
-		return sendError(
-			`Invalid createRemoteJWKSet: ${message}\n${full}\n${debug}\n${stacktrace}`,
-		)
+		return sendError(`Invalid createRemoteJWKSet: ${message}\n${full}\n${debug}\n${stacktrace}`)
 	}
 
 	// Verify the JWT
@@ -72,9 +68,7 @@ const fetch = async (
 		})
 		const stacktrace = error instanceof Error ? error.stack : ""
 
-		return sendError(
-			`Invalid jwtVerify: ${message}\n${full}\n${debug}\n${stacktrace}`,
-		)
+		return sendError(`Invalid jwtVerify: ${message}\n${full}\n${debug}\n${stacktrace}`)
 	}
 }
 

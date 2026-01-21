@@ -36,30 +36,19 @@
 </template>
 
 <script setup lang="ts">
-	import {
-		subGroupName,
-		slugify,
-		type PluginElement,
-		type Plugin,
-	} from "@kestra-io/ui-libs"
+	import { subGroupName, slugify, type PluginElement, type Plugin } from "@kestra-io/ui-libs"
 	import { formatElementName } from "~/utils/pluginUtils"
 	import { computed, ref } from "vue"
 
-	const {
-		groupedElements,
-		pluginName,
-		subGroup,
-		wrapperClass,
-		showLine,
-		routeParts,
-	} = defineProps<{
-		groupedElements: Record<string, PluginElement[]>
-		pluginName: string
-		subGroup?: Plugin
-		wrapperClass?: string
-		showLine?: boolean
-		routeParts: string[]
-	}>()
+	const { groupedElements, pluginName, subGroup, wrapperClass, showLine, routeParts } =
+		defineProps<{
+			groupedElements: Record<string, PluginElement[]>
+			pluginName: string
+			subGroup?: Plugin
+			wrapperClass?: string
+			showLine?: boolean
+			routeParts: string[]
+		}>()
 
 	const getElementHref = (element: PluginElement) => {
 		const base = `/plugins/${pluginName}`

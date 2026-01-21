@@ -1,7 +1,7 @@
 {
 	"name": "kestra.io",
-	"private": true,
 	"version": "1.0.0",
+	"private": true,
 	"description": "Kestra.io website",
 	"type": "module",
 	"scripts": {
@@ -19,7 +19,7 @@
 		"workers:build-deploy": "npm run workers:build && npm run workers:deploy",
 		"cf-typegen": "wrangler types",
 		"lint": "oxlint . --fix",
-		"format": "prettier --write ."
+		"format": "oxfmt . --write && prettier --write **/*.astro"
 	},
 	"dependencies": {
 		"@astrojs/cloudflare": "^12.6.8",
@@ -54,6 +54,7 @@
 		"medium-zoom": "^1.1.0",
 		"mermaid": "^11.12.2",
 		"nitro-cloudflare-dev": "^0.2.2",
+		"oxfmt": "^0.26.0",
 		"oxlint": "^1.41.0",
 		"posthog-js": "^1.328.0",
 		"prettier": "^3.8.0",

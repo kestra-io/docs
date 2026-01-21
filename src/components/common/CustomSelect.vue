@@ -45,9 +45,7 @@
 	}>()
 
 	const selectedLabel = computed(() => {
-		return (
-			props.options.find((o) => o.value === props.modelValue)?.label ?? ""
-		)
+		return props.options.find((o) => o.value === props.modelValue)?.label ?? ""
 	})
 
 	const selectOption = (option: { value: string; label: string }) => {

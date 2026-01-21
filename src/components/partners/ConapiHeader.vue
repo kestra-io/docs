@@ -2,22 +2,13 @@
 	<div class="container-fluid">
 		<div class="hero hero-sm container">
 			<div class="mb-5 pb-5 row align-items-center">
-				<div
-					class="col-lg-5 align-items-center d-flex order-1 order-lg-0"
-				>
+				<div class="col-lg-5 align-items-center d-flex order-1 order-lg-0">
 					<div>
-						<NuxtImg
-							height="56"
-							loading="lazy"
-							format="webp"
-							:src="logo"
-							:alt="logo"
-						/>
+						<NuxtImg height="56" loading="lazy" format="webp" :src="logo" :alt="logo" />
 						<h1>Conapi & Kestra Partnership</h1>
 						<p class="text-white baseline fs-4">
-							Conapi brings its integration expertise to the
-							Kestra ecosystem, specializing in connecting legacy
-							infrastructure with modern solutions
+							Conapi brings its integration expertise to the Kestra ecosystem,
+							specializing in connecting legacy infrastructure with modern solutions
 						</p>
 						<div class="cta">
 							<a
@@ -30,10 +21,7 @@
 					</div>
 				</div>
 				<div class="col-lg-7 order-0 order-lg-1">
-					<img
-						class="hero-image"
-						src="/partners/conapi/hero-conapi.png"
-					/>
+					<img class="hero-image" src="/partners/conapi/hero-conapi.png" />
 				</div>
 			</div>
 		</div>
@@ -47,9 +35,7 @@
 					</div>
 					<div class="counter-box">
 						<h6>Kestra Expertise</h6>
-						<p>
-							System Integration, API Management, Messaging (JMS)
-						</p>
+						<p>System Integration, API Management, Messaging (JMS)</p>
 					</div>
 					<div class="line-separator"></div>
 					<div class="counter-box">
@@ -59,10 +45,7 @@
 					<div class="line-separator"></div>
 					<div class="counter-box">
 						<h6>Solution</h6>
-						<p>
-							Conapi is an integration-focused consultancy and
-							Gravitee partner.
-						</p>
+						<p>Conapi is an integration-focused consultancy and Gravitee partner.</p>
 					</div>
 				</div>
 			</Section>
@@ -89,11 +72,7 @@
 			position: absolute;
 			z-index: -147;
 			filter: blur(100px);
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 		}
 
 		&::after {
@@ -136,11 +115,7 @@
 			}
 
 			:deep(span) {
-				background: linear-gradient(
-					90deg,
-					#e151f7 65.38%,
-					#5c47f5 82.43%
-				);
+				background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

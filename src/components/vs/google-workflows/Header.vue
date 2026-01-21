@@ -21,10 +21,7 @@
 						</div>
 					</div>
 				</div>
-				<div
-					class="col-md-6 d-flex justify-content-center"
-					data-usal="zoomin"
-				>
+				<div class="col-md-6 d-flex justify-content-center" data-usal="zoomin">
 					<img
 						class="zoom img-fluid"
 						src="/landing/vs/google-workflows/header.svg"

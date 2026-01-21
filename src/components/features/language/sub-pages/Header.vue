@@ -2,9 +2,7 @@
 	<div class="container-fluid">
 		<div class="hero container">
 			<div class="row justify-content-between">
-				<div
-					class="col-md-6 align-items-center d-flex order-1 order-md-0"
-				>
+				<div class="col-md-6 align-items-center d-flex order-1 order-md-0">
 					<div class="text-white">
 						<h1 data-usal="fade-r" class="heading">
 							Orchestrate <br />
@@ -26,10 +24,7 @@
 						</div>
 					</div>
 				</div>
-				<div
-					class="col-md-5 order-0 order-md-1 mt-3 img-container"
-					data-usal="zoomin"
-				>
+				<div class="col-md-5 order-0 order-md-1 mt-3 img-container" data-usal="zoomin">
 					<NuxtImg
 						width="925px"
 						height="745px"
@@ -91,11 +86,7 @@
 		}
 
 		span {
-			background: linear-gradient(
-				90.03deg,
-				#e151f7 2.16%,
-				#5c47f5 65.09%
-			);
+			background: linear-gradient(90.03deg, #e151f7 2.16%, #5c47f5 65.09%);
 			background-clip: text;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;

@@ -7,8 +7,8 @@
 					<span class="highlight"> Preview Mode </span>
 				</h2>
 				<h5 class="mt-3">
-					Instantly access a read-only version of Kestra to explore
-					its interface and workflows, no setup required.
+					Instantly access a read-only version of Kestra to explore its interface and
+					workflows, no setup required.
 				</h5>
 				<div class="row mt-4">
 					<div class="col-6">
@@ -17,8 +17,8 @@
 							Access to Kestra interface
 						</h6>
 						<p>
-							Enter your details to immediately receive your
-							read-only demo environment.
+							Enter your details to immediately receive your read-only demo
+							environment.
 						</p>
 					</div>
 					<div class="col-6">
@@ -27,8 +27,7 @@
 							Explore Kestra Firsthand
 						</h6>
 						<p>
-							Navigate and experience the Kestra interface
-							directly—no setup required.
+							Navigate and experience the Kestra interface directly—no setup required.
 						</p>
 					</div>
 					<div class="col-6 mt-3">
@@ -37,8 +36,8 @@
 							Discover Kestra Features
 						</h6>
 						<p>
-							Familiarize yourself with Kestra’s UI, workflow
-							structure, and capabilities at your own pace.
+							Familiarize yourself with Kestra’s UI, workflow structure, and
+							capabilities at your own pace.
 						</p>
 					</div>
 					<div class="col-6 mt-3">
@@ -66,9 +65,7 @@
 					<div v-if="message" class="alert alert-danger mt-3 mb-0">
 						{{ message }}
 					</div>
-					<h4 class="mb-4">
-						Request Access to Kestra Preview Environment
-					</h4>
+					<h4 class="mb-4">Request Access to Kestra Preview Environment</h4>
 					<div class="col-6">
 						<label for="firstname">
 							<span class="text-danger">*</span>
@@ -100,18 +97,10 @@
 							<span class="text-danger">*</span>
 							Company Email
 						</label>
-						<input
-							name="email"
-							type="email"
-							class="form-control"
-							id="email"
-							required
-						/>
+						<input name="email" type="email" class="form-control" id="email" required />
 					</div>
 					<div class="col-12 mt-4 pb-5 d-flex justify-content-center">
-						<button type="submit" class="btn btn-primary w-100">
-							Submit
-						</button>
+						<button type="submit" class="btn btn-primary w-100">Submit</button>
 					</div>
 				</form>
 			</div>
@@ -211,12 +200,9 @@
 							(e: any) => e.errorType === "BLOCKED_EMAIL",
 						).length > 0
 					) {
-						message.value =
-							"Please use a professional email address"
+						message.value = "Please use a professional email address"
 					} else {
-						message.value =
-							error.response?.data?.message ||
-							"Form submission error"
+						message.value = error.response?.data?.message || "Form submission error"
 					}
 				})
 		}

@@ -53,12 +53,9 @@ export const middlewareISRCache = defineMiddleware(async (context, next) => {
 					status: 200,
 					headers: {
 						"Content-Type": "text/html; charset=utf-8",
-						"Cache-Control":
-							"public, s-maxage=31536000, stale-while-revalidate",
+						"Cache-Control": "public, s-maxage=31536000, stale-while-revalidate",
 						"X-Cache-Status": "HIT",
-						"X-Cache-Age": String(
-							Math.floor((Date.now() - cached.timestamp) / 1000),
-						),
+						"X-Cache-Age": String(Math.floor((Date.now() - cached.timestamp) / 1000)),
 					},
 				})
 			} else {
@@ -72,12 +69,9 @@ export const middlewareISRCache = defineMiddleware(async (context, next) => {
 					status: 200,
 					headers: {
 						"Content-Type": "text/html; charset=utf-8",
-						"Cache-Control":
-							"public, s-maxage=31536000, stale-while-revalidate",
+						"Cache-Control": "public, s-maxage=31536000, stale-while-revalidate",
 						"X-Cache-Status": "STALE",
-						"X-Cache-Age": String(
-							Math.floor((Date.now() - cached.timestamp) / 1000),
-						),
+						"X-Cache-Age": String(Math.floor((Date.now() - cached.timestamp) / 1000)),
 					},
 				})
 
@@ -85,9 +79,7 @@ export const middlewareISRCache = defineMiddleware(async (context, next) => {
 				context.locals.runtime.ctx.waitUntil(
 					(async () => {
 						try {
-							console.log(
-								`[ISR] Regenerating in background: ${url.pathname}`,
-							)
+							console.log(`[ISR] Regenerating in background: ${url.pathname}`)
 
 							// Generate fresh page
 							const freshResponse = await next()
@@ -96,9 +88,7 @@ export const middlewareISRCache = defineMiddleware(async (context, next) => {
 							// Update cache
 							await cache.set(url.pathname, freshHtml, 60)
 
-							console.log(
-								`[ISR] Background regeneration complete: ${url.pathname}`,
-							)
+							console.log(`[ISR] Background regeneration complete: ${url.pathname}`)
 						} catch (error) {
 							console.error(
 								`[ISR] Background regeneration failed: ${url.pathname}`,
@@ -124,9 +114,7 @@ export const middlewareISRCache = defineMiddleware(async (context, next) => {
 				const html = await response.text()
 
 				// Store in cache (non-blocking)
-				context.locals.runtime.ctx.waitUntil(
-					cache.set(url.pathname, html, 60),
-				)
+				context.locals.runtime.ctx.waitUntil(cache.set(url.pathname, html, 60))
 
 				// Return response with cache miss header
 				return new Response(html, {

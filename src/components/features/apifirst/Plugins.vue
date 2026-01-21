@@ -4,9 +4,8 @@
 			<div class="mb-5">
 				<h2 class="title">Plugin-Powered <span>Flexibility</span></h2>
 				<p class="desc">
-					Choose from over {{ totalPlugins }} plugins that offer
-					direct integration with third-party services, databases,
-					messaging systems, and more.
+					Choose from over {{ totalPlugins }} plugins that offer direct integration with
+					third-party services, databases, messaging systems, and more.
 				</p>
 				<LayoutPlugins />
 			</div>
@@ -52,11 +51,7 @@
 			}
 
 			span {
-				background: linear-gradient(
-					91deg,
-					#e151f7 43.87%,
-					#5c47f5 55.51%
-				);
+				background: linear-gradient(91deg, #e151f7 43.87%, #5c47f5 55.51%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -83,11 +78,7 @@
 
 				h2 {
 					margin-bottom: calc($spacer * 2);
-					background: linear-gradient(
-						90.03deg,
-						#e151f7 2.16%,
-						#5c47f5 65.09%
-					);
+					background: linear-gradient(90.03deg, #e151f7 2.16%, #5c47f5 65.09%);
 					-webkit-text-fill-color: transparent;
 					background-clip: text;
 					text-fill-color: transparent;

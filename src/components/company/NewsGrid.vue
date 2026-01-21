@@ -13,10 +13,7 @@
 				class="news-card"
 				:data-usal="`fade-u delay-${200 + index * 100}`"
 			>
-				<a
-					:href="news.url"
-					:target="news.external ? '_blank' : '_self'"
-				>
+				<a :href="news.url" :target="news.external ? '_blank' : '_self'">
 					<div class="card-content">
 						<span class="card-category">{{ news.source }}</span>
 						<h3 class="card-title">{{ news.title }}</h3>

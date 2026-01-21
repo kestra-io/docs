@@ -1,7 +1,5 @@
 <template>
-	<div
-		class="position-relative container-fluid d-flex justify-content-center"
-	>
+	<div class="position-relative container-fluid d-flex justify-content-center">
 		<div class="position-relative">
 			<NuxtImg
 				width="774px"
@@ -22,18 +20,14 @@
 				/>
 			</div>
 		</div>
-		<div
-			class="description position-absolute start-50 translate-middle text-center w-50"
-		>
+		<div class="description position-absolute start-50 translate-middle text-center w-50">
 			<h2>Kestra Partner <br /><span>Ecosystem</span></h2>
 			<span class="text"
-				>Whether you are building something new, upgrading a legacy
-				stack, or re-platforming, you can trust Kestra and our partner
-				ecosystem to make that journey a success.</span
+				>Whether you are building something new, upgrading a legacy stack, or
+				re-platforming, you can trust Kestra and our partner ecosystem to make that journey
+				a success.</span
 			><br />
-			<a href="#form" class="btn btn-animated btn-purple-animated mt-4"
-				>Become a partner</a
-			>
+			<a href="#form" class="btn btn-animated btn-purple-animated mt-4">Become a partner</a>
 		</div>
 	</div>
 </template>
@@ -62,11 +56,7 @@
 				margin-bottom: 1rem;
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 35.49%,
-						#5c47f5 65.98%
-					);
+					background: linear-gradient(90deg, #e151f7 35.49%, #5c47f5 65.98%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

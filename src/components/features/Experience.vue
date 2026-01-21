@@ -9,13 +9,8 @@
 			>
 				<div class="section-title" v-if="section.title">
 					<h2>
-						<template
-							v-for="(part, idx) in splitHighlight(section.title)"
-							:key="idx"
-						>
-							<span v-if="part.highlight" class="highlight">{{
-								part.text
-							}}</span>
+						<template v-for="(part, idx) in splitHighlight(section.title)" :key="idx">
+							<span v-if="part.highlight" class="highlight">{{ part.text }}</span>
 							<template v-else>{{ part.text }}</template>
 						</template>
 					</h2>
@@ -38,9 +33,7 @@
 						>
 							<h3>
 								<component :is="card.icon" class="icon" />
-								<span class="text-truncate">{{
-									card.title
-								}}</span>
+								<span class="text-truncate">{{ card.title }}</span>
 							</h3>
 							<p>{{ card.description }}</p>
 							<a :href="card.link" class="cta">
@@ -276,8 +269,7 @@
 						},
 						{
 							title: "API First",
-							description:
-								"Start flows programmatically via API, CLI, or Kestra UI.",
+							description: "Start flows programmatically via API, CLI, or Kestra UI.",
 							cta: "Kestra API reference",
 							link: "https://kestra.io/docs/api-reference",
 							icon: Api,
@@ -317,16 +309,14 @@
 					cards: [
 						{
 							title: "Built on the JVM",
-							description:
-								"Benefit from high performance and memory efficiency.",
+							description: "Benefit from high performance and memory efficiency.",
 							cta: "Kestra Architecture",
 							link: "https://kestra.io/docs/architecture",
 							icon: CoffeeOutline,
 						},
 						{
 							title: "No Single Point of Failure",
-							description:
-								"Designed for fault tolerant, reliable execution.",
+							description: "Designed for fault tolerant, reliable execution.",
 							cta: "System reliability",
 							link: "https://kestra.io/docs/architecture/deployment-architecture#high-availability-deployment",
 							icon: BackupRestore,
@@ -343,16 +333,14 @@
 					cards: [
 						{
 							title: "Dashboards and Metrics",
-							description:
-								"Monitor performance and usage directly in the UI.",
+							description: "Monitor performance and usage directly in the UI.",
 							cta: "Metrics and observability",
 							link: "https://kestra.io/docs/ui/dashboard",
 							icon: ViewDashboardEdit,
 						},
 						{
 							title: "Execution Details",
-							description:
-								"Access full logs and task-level status in real time.",
+							description: "Access full logs and task-level status in real time.",
 							cta: "Inspecting logs",
 							link: "https://kestra.io/docs/ui/logs",
 							icon: ReceiptTextClockOutline,
@@ -412,11 +400,7 @@
 			right: 0;
 			bottom: 0;
 			height: 2582px;
-			background-image: radial-gradient(
-				circle,
-				#e0dfe3 1px,
-				transparent 1px
-			);
+			background-image: radial-gradient(circle, #e0dfe3 1px, transparent 1px);
 			background-size: 20px 20px;
 			opacity: 0.4;
 			z-index: 1;

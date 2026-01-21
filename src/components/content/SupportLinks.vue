@@ -38,8 +38,7 @@
 		},
 		{
 			label: "Help Center",
-			description:
-				"Contact support for help with your Enterprise account",
+			description: "Contact support for help with your Enterprise account",
 			href: "https://kestra.io/demo",
 			icon: LifebuoyIcon,
 		},

@@ -52,38 +52,26 @@
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="row justify-content-center">
-							<div
-								class="col-12 col-md-7 px-5 px-md-0"
-								data-usal="fade-r"
-							>
+							<div class="col-12 col-md-7 px-5 px-md-0" data-usal="fade-r">
 								<h3 class="mb-3">Declarative Configuration</h3>
 								<p>
-									Terraform uses its HashiCorp Configuration
-									Language (HCL), while Kestra flows are
-									defined in YAML. This alignment in
-									declarative interfaces ensures not only a
-									smooth transition but also makes it easy to
-									use both technologies together.
+									Terraform uses its HashiCorp Configuration Language (HCL), while
+									Kestra flows are defined in YAML. This alignment in declarative
+									interfaces ensures not only a smooth transition but also makes
+									it easy to use both technologies together.
 								</p>
 							</div>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="row justify-content-center">
-							<div
-								class="col-12 col-md-7 px-5 px-md-0"
-								data-usal="fade-l"
-							>
-								<h3 class="mb-3">
-									Modularity in the Infrastructure Management
-								</h3>
+							<div class="col-12 col-md-7 px-5 px-md-0" data-usal="fade-l">
+								<h3 class="mb-3">Modularity in the Infrastructure Management</h3>
 								<p>
-									Kestra's Terraform provider is designed to
-									easily manage all resources using Terraform.
-									This includes, among others, flows,
-									namespace, and user management, as well as
-									secrets. Check the list of available
-									resources in our
+									Kestra's Terraform provider is designed to easily manage all
+									resources using Terraform. This includes, among others, flows,
+									namespace, and user management, as well as secrets. Check the
+									list of available resources in our
 									<a
 										href="/docs/terraform"
 										class="text-decoration-underline link-offset-2"
@@ -94,10 +82,7 @@
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
-						<div
-							class="resource-management-image"
-							data-usal="fade-r"
-						>
+						<div class="resource-management-image" data-usal="fade-r">
 							<NuxtImg
 								loading="lazy"
 								format="webp"
@@ -109,15 +94,11 @@
 							/>
 						</div>
 					</div>
-					<div
-						class="col-12 col-md-6 px-5 px-md-0"
-						data-usal="zoomin"
-					>
+					<div class="col-12 col-md-6 px-5 px-md-0" data-usal="zoomin">
 						<p class="mt-5 text-white text-center">
-							The inherent modularity in both, Terraform and
-							Kestra, allows you to create reusable blocks of
-							code. These can be shared across multiple teams or
-							projects, contributing to maintainable operations.
+							The inherent modularity in both, Terraform and Kestra, allows you to
+							create reusable blocks of code. These can be shared across multiple
+							teams or projects, contributing to maintainable operations.
 						</p>
 					</div>
 				</div>
@@ -178,8 +159,7 @@
 				position: absolute;
 				height: 291px;
 				width: 292px;
-				background: url("/terraform/configurations-right-bg-light.svg")
-					no-repeat;
+				background: url("/terraform/configurations-right-bg-light.svg") no-repeat;
 				right: -7.5rem;
 				top: -8.25rem;
 				z-index: 1;
@@ -190,8 +170,7 @@
 				position: absolute;
 				height: 552px;
 				width: 1044px;
-				background: url("/terraform/configurations-left-bg-light.svg")
-					no-repeat;
+				background: url("/terraform/configurations-left-bg-light.svg") no-repeat;
 				left: -15rem;
 				top: -6.25rem;
 				z-index: 1;
@@ -211,8 +190,7 @@
 				position: absolute;
 				height: 551px;
 				width: 974px;
-				background: url("/terraform/resource-management-bg-light.svg")
-					no-repeat;
+				background: url("/terraform/resource-management-bg-light.svg") no-repeat;
 				left: -18rem;
 				top: -6.25rem;
 				z-index: 1;

@@ -2,9 +2,7 @@
 	<div ref="container" class="container-fluid bg-dark-4 px-4">
 		<div class="container">
 			<div class="mb-5 language-agnostic">
-				<h2 class="title">
-					Language Agnostic <span>Orchestration</span>
-				</h2>
+				<h2 class="title">Language Agnostic <span>Orchestration</span></h2>
 				<div class="row d-flex justify-content-center">
 					<div
 						class="col-12 col-md-6 col-lg-4 mb-4"
@@ -36,8 +34,7 @@
 						title: "Orchestrate your Python Scripts",
 						description:
 							"Dive deeper to discover how Kestra optimizes Python script execution across diverse environments.",
-						imageSource:
-							"/landing/features/language/card-pages/python-card.svg",
+						imageSource: "/landing/features/language/card-pages/python-card.svg",
 						imageAlt: "Python Scripts",
 						pageHref: "/features/code-in-any-language/python",
 					},
@@ -46,8 +43,7 @@
 						title: "Orchestrate your R Scripts",
 						description:
 							"Discover Kestra's powerful orchestration capabilities for R scripts, simplifying complex data analytics.",
-						imageSource:
-							"/landing/features/language/card-pages/r-card.svg",
+						imageSource: "/landing/features/language/card-pages/r-card.svg",
 						imageAlt: "/R Scripts",
 						pageHref: "/features/code-in-any-language/r",
 					},
@@ -56,8 +52,7 @@
 						title: "Orchestrate your Julia Scripts",
 						description:
 							"Learn about Kestra’s support for Julia, optimizing high-performance numerical analysis and computational projects.",
-						imageSource:
-							"/landing/features/language/card-pages/julia-card.svg",
+						imageSource: "/landing/features/language/card-pages/julia-card.svg",
 						imageAlt: "Julia Scripts",
 						pageHref: "/features/code-in-any-language/julia",
 					},
@@ -97,11 +92,7 @@
 			}
 
 			span {
-				background: linear-gradient(
-					91deg,
-					#e151f7 43.87%,
-					#5c47f5 55.51%
-				);
+				background: linear-gradient(91deg, #e151f7 43.87%, #5c47f5 55.51%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

@@ -2,9 +2,7 @@
 	<div class="container-fluid bg-dark-4">
 		<div class="hero hero-sm container">
 			<div class="row">
-				<div
-					class="col-lg-6 align-items-center d-flex order-1 order-lg-0"
-				>
+				<div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
 					<div>
 						<h1 data-usal="fade-r">
 							<span v-if="titleBefore">{{ titleBefore }}</span>
@@ -95,11 +93,7 @@
 			}
 
 			span {
-				background: linear-gradient(
-					90deg,
-					#e151f7 65.38%,
-					#5c47f5 82.43%
-				);
+				background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

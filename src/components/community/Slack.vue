@@ -1,10 +1,6 @@
 <template>
 	<div v-if="widget" class="widget-chat">
-		<a
-			href="https://kestra.io/slack"
-			target="_blank"
-			class="btn btn-sm btn-primary rounded"
-		>
+		<a href="https://kestra.io/slack" target="_blank" class="btn btn-sm btn-primary rounded">
 			<Slack title="" />
 			Slack
 			<span v-if="online" class="online">{{ onlineText }} members</span>
@@ -67,9 +63,7 @@
 	const props = defineProps<{ widget?: boolean; online?: number }>()
 
 	const onlineText = computed(() => {
-		return props.online === undefined
-			? ""
-			: Intl.NumberFormat("en-US").format(props.online)
+		return props.online === undefined ? "" : Intl.NumberFormat("en-US").format(props.online)
 	})
 </script>
 

@@ -15,8 +15,7 @@
 						<p class="my-3 subtitle">{{ content.logo.subtitle }}</p>
 					</div>
 					<h4 class="title fw-light">
-						Leroy Merlin France enabling data <br />mesh
-						architecture and 900% <br />
+						Leroy Merlin France enabling data <br />mesh architecture and 900% <br />
 						increase in productivity with Kestra:<br />
 					</h4>
 					<p class="description my-4 fw-light">
@@ -24,10 +23,7 @@
 					</p>
 					<div class="d-flex flex-wrap gap-2">
 						<a :href="content.cta.href">
-							<button
-								class="btn btn-dark"
-								:class="content.cta.style"
-							>
+							<button class="btn btn-dark" :class="content.cta.style">
 								{{ content.cta.text }}
 							</button>
 						</a>
@@ -88,11 +84,7 @@
 			left: 256px;
 			z-index: 1;
 			filter: blur(100px);
-			background: linear-gradient(
-				180deg,
-				rgba(24, 172, 255, 0) 0%,
-				#17ff58 100%
-			);
+			background: linear-gradient(180deg, rgba(24, 172, 255, 0) 0%, #17ff58 100%);
 		}
 	}
 

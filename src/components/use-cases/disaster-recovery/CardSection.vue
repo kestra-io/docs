@@ -10,8 +10,7 @@
 	import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue"
 	import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue"
 
-	const challengesTitle =
-		"<span>Key Benefits</span> of Using Kestra for<br/> Disaster Recovery"
+	const challengesTitle = "<span>Key Benefits</span> of Using Kestra for<br/> Disaster Recovery"
 	const cardsData = [
 		{
 			icon: Cogs,
@@ -33,8 +32,7 @@
 			icon: TimerCogOutline,
 			cardInfo: {
 				title: "Data Security",
-				description:
-					"Secure backup storage and automated recovery processes",
+				description: "Secure backup storage and automated recovery processes",
 			},
 		},
 		{
@@ -49,8 +47,7 @@
 			icon: CloudRefreshVariant,
 			cardInfo: {
 				title: "Increase Efficiency",
-				description:
-					"Automate disaster recovery workflows, reducing manual intervention.",
+				description: "Automate disaster recovery workflows, reducing manual intervention.",
 			},
 		},
 	]

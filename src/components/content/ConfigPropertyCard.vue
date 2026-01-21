@@ -9,17 +9,13 @@
 				<tr>
 					<td class="label">Default</td>
 					<td>
-						<prose-code-inline>{{
-							defaultValue
-						}}</prose-code-inline>
+						<prose-code-inline>{{ defaultValue }}</prose-code-inline>
 					</td>
 				</tr>
 				<tr v-if="validValues">
 					<td class="label">Valid values:</td>
 					<td>
-						<prose-code-inline
-							>[ {{ validValues }} ]</prose-code-inline
-						>
+						<prose-code-inline>[ {{ validValues }} ]</prose-code-inline>
 					</td>
 				</tr>
 			</tbody>

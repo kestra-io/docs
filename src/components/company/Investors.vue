@@ -5,10 +5,11 @@
 			<p class="subtitle">
 				Kestra is proudly backed by two strategic funding rounds: a
 				<strong>$3M Pre-seed</strong> <br class="d-none d-lg-block" />
-				and an <strong>$8M Seed round</strong>, supported by visionary
-				leaders and founders <br class="d-none d-lg-block" />
-				from industry-leading companies. These investments fuel Kestra's
-				mission to<br class="d-none d-lg-block" />
+				and an <strong>$8M Seed round</strong>, supported by visionary leaders and founders
+				<br class="d-none d-lg-block" />
+				from industry-leading companies. These investments fuel Kestra's mission to<br
+					class="d-none d-lg-block"
+				/>
 				redefine orchestration.
 			</p>
 		</div>
@@ -20,17 +21,8 @@
 				class="logo"
 				:data-usal="`zoomin delay-${300 + index * 100}`"
 			>
-				<a
-					:href="logo.link"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="logo-link"
-				>
-					<NuxtImg
-						:src="logo.src"
-						:alt="logo.name"
-						class="logo-image"
-					/>
+				<a :href="logo.link" target="_blank" rel="noopener noreferrer" class="logo-link">
+					<NuxtImg :src="logo.src" :alt="logo.name" class="logo-image" />
 				</a>
 			</div>
 		</div>
@@ -42,11 +34,7 @@
 				class="profile"
 				:data-usal="`fade-u delay-${300 + index * 50}`"
 			>
-				<NuxtImg
-					:src="profile.image"
-					:alt="profile.name"
-					class="profile-img"
-				/>
+				<NuxtImg :src="profile.image" :alt="profile.name" class="profile-img" />
 				<div class="profile-text">
 					<h6 class="profile-name">{{ profile.name }}</h6>
 					<p class="profile-title">{{ profile.title }}</p>

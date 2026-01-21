@@ -31,9 +31,7 @@ const logger = defineMiddleware(async (context, next) => {
 		method: context.request.method,
 		url: context.request.url,
 		status: response.status,
-		ip: !context.isPrerendered
-			? context.request.headers.get("x-real-ip")
-			: null,
+		ip: !context.isPrerendered ? context.request.headers.get("x-real-ip") : null,
 		length: response.headers.get("content-length"),
 		route: context.routePattern,
 		routeParams: context.params,
@@ -80,11 +78,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 
 	// we don't want .html extensions (historical reason)
 	if (originalUrl.endsWith(".html")) {
-		return sendRedirect(
-			originalUrl
-				.substring(0, originalUrl.length - 5)
-				.toLocaleLowerCase(),
-		)
+		return sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase())
 	}
 
 	// all urls should be lowercase
@@ -95,10 +89,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 		!context.url.pathname.startsWith("/meta/")
 	) {
 		return sendRedirect(
-			originalUrl.replace(
-				context.url.pathname,
-				context.url.pathname.toLocaleLowerCase(),
-			),
+			originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()),
 		)
 	}
 
@@ -126,10 +117,7 @@ const securityHeaders = defineMiddleware(async (context, next) => {
 	const contentSecurityPolicy: string = Object.entries(
 		contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
 	)
-		.filter(
-			([key]) =>
-				import.meta.env.DEV && key !== "upgrade-insecure-requests",
-		)
+		.filter(([key]) => import.meta.env.DEV && key !== "upgrade-insecure-requests")
 		.map(([key, value]) => {
 			let line = key
 
@@ -145,10 +133,7 @@ const securityHeaders = defineMiddleware(async (context, next) => {
 		})
 		.join("; ")
 
-	response.headers.set(
-		"x-frame-options",
-		import.meta.env.DEV ? "SAMEORIGIN" : "DENY",
-	)
+	response.headers.set("x-frame-options", import.meta.env.DEV ? "SAMEORIGIN" : "DENY")
 	response.headers.set("x-content-type-options", "nosniff")
 	response.headers.set("x-download-options", "nosniff")
 	response.headers.set(

@@ -10,10 +10,7 @@
 
 				<div class="icon-scroll">
 					<div class="carousel">
-						<template
-							v-for="plugin in pluginCarousel"
-							:key="plugin.name"
-						>
+						<template v-for="plugin in pluginCarousel" :key="plugin.name">
 							<div>
 								<img :src="plugin.logo" :alt="plugin.name" />
 							</div>
@@ -22,11 +19,7 @@
 				</div>
 
 				<div class="align-self-lg-start">
-					<Link
-						href="/plugins"
-						text="See all plugins"
-						class="text-white"
-					/>
+					<Link href="/plugins" text="See all plugins" class="text-white" />
 				</div>
 			</div>
 		</div>
@@ -50,10 +43,7 @@
 
 	const pluginLogos = computed(() => props.plugins ?? [])
 
-	const pluginCarousel = computed(() => [
-		...pluginLogos.value,
-		...pluginLogos.value,
-	])
+	const pluginCarousel = computed(() => [...pluginLogos.value, ...pluginLogos.value])
 
 	onMounted(() => {
 		if (lottieContainer.value) {

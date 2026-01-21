@@ -2,9 +2,7 @@
 	<div class="container-fluid bg-dark-4">
 		<div class="container">
 			<div class="container-title mb-5">
-				<h2 class="title">
-					Orchestrating {{ title }} Scripts with <span>Kestra</span>
-				</h2>
+				<h2 class="title">Orchestrating {{ title }} Scripts with <span>Kestra</span></h2>
 			</div>
 			<div
 				class="row mb-5 align-items-center justify-content-between"
@@ -85,11 +83,7 @@
 					}
 
 					span {
-						background: linear-gradient(
-							90.03deg,
-							#e151f7 2.16%,
-							#5c47f5 65.09%
-						);
+						background: linear-gradient(90.03deg, #e151f7 2.16%, #5c47f5 65.09%);
 						background-clip: text;
 						-webkit-background-clip: text;
 						-webkit-text-fill-color: transparent;
@@ -130,11 +124,7 @@
 					position: absolute;
 					content: "";
 					filter: blur(65px);
-					background: linear-gradient(
-						180deg,
-						rgba(98, 24, 255, 0) 0%,
-						#6117ff 100%
-					);
+					background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 					z-index: -2;
 				}
 			}
@@ -169,11 +159,7 @@
 					position: absolute;
 					content: "";
 					filter: blur(79px);
-					background: linear-gradient(
-						180deg,
-						rgba(98, 24, 255, 0) 0%,
-						#6117ff 100%
-					);
+					background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 					z-index: -2;
 					right: 530px;
 					bottom: 220px;

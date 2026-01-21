@@ -3,9 +3,7 @@ import { editionLabelAndColorByPrefix } from "../badgeMaps.mjs"
 export function badge(data, attributes, node) {
 	const { version, editions } = attributes
 	if (!version && !editions) {
-		throw new Error(
-			"badge directive requires either version or editions attributes",
-		)
+		throw new Error("badge directive requires either version or editions attributes")
 	}
 	const editionList = editions ? editions.split(",").map((e) => e.trim()) : []
 	data.hName = "div"

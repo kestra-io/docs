@@ -1,10 +1,7 @@
 <template>
 	<section class="lifecycle">
 		<div class="container">
-			<div
-				class="row align-items-center"
-				data-usal="fade-u delay-0 duration-500 ease-out"
-			>
+			<div class="row align-items-center" data-usal="fade-u delay-0 duration-500 ease-out">
 				<div class="col-12 col-xl-6">
 					<h1>
 						<span class="highlight">Governed</span> Configuration<br
@@ -20,24 +17,20 @@
 
 				<div class="col-12 col-xl-6">
 					<p>
-						Kestra wraps your automation in enterprise governance
-						and syncs it bi-directionally with your service desk for
-						a secure, fully tracked lifecycle.
+						Kestra wraps your automation in enterprise governance and syncs it
+						bi-directionally with your service desk for a secure, fully tracked
+						lifecycle.
 					</p>
 				</div>
 			</div>
 
 			<div class="new-section d-flex flex-column flex-xl-row">
-				<div
-					class="card-item dark-bg"
-					data-usal="slide-r delay-50 duration-600 ease-out"
-				>
+				<div class="card-item dark-bg" data-usal="slide-r delay-50 duration-600 ease-out">
 					<h2>Ansible Playbooks, Automated the Right Way</h2>
 					<p>
-						Wrap your playbooks in a production-grade layer. Gain
-						structured inputs, secret injection, parallel execution,
-						and granular logging without changing a single line of
-						code.
+						Wrap your playbooks in a production-grade layer. Gain structured inputs,
+						secret injection, parallel execution, and granular logging without changing
+						a single line of code.
 					</p>
 					<Link
 						href="/docs/how-to-guides/ansible"
@@ -51,11 +44,9 @@
 				>
 					<h2>Automated Infrastructure Ticketing Lifecycle</h2>
 					<p>
-						Enable true self-service infrastructure. Kestra turns
-						catalog requests into provisioned resources,
-						automatically updates the CMDB, and closes the ticket
-						with audit proof, delivering assets in minutes, not
-						days.
+						Enable true self-service infrastructure. Kestra turns catalog requests into
+						provisioned resources, automatically updates the CMDB, and closes the ticket
+						with audit proof, delivering assets in minutes, not days.
 					</p>
 					<Link
 						href="/docs/how-to-guides/servicenow-trigger"

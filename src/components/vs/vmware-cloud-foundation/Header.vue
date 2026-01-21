@@ -2,13 +2,10 @@
 	<div class="container-fluid">
 		<div class="hero container">
 			<div class="row">
-				<div
-					class="col-md-6 order-1 order-md-0 align-items-center d-flex"
-				>
+				<div class="col-md-6 order-1 order-md-0 align-items-center d-flex">
 					<div>
 						<h1 data-usal="fade-r">
-							Migrate from Aria Operations & Cloud Foundation to
-							Kestra
+							Migrate from Aria Operations & Cloud Foundation to Kestra
 						</h1>
 						<p class="baseline" data-usal="fade-l">
 							Pick the right choice for your company

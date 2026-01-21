@@ -8,10 +8,7 @@
 					class="alert alert-success"
 					v-html="message"
 				/>
-				<div
-					v-if="valid === false && message"
-					class="alert alert-danger"
-				>
+				<div v-if="valid === false && message" class="alert alert-danger">
 					{{ message }}
 				</div>
 				<form
@@ -30,17 +27,13 @@
 						placeholder="Email"
 						required
 					/>
-					<button
-						type="submit"
-						class="btn btn-animated btn-purple-animated"
-					>
+					<button type="submit" class="btn btn-animated btn-purple-animated">
 						Subscribe
 					</button>
 				</form>
 
 				<p class="mt-3" data-usal="zoomin">
-					Stay up to date with the latest features and changes to
-					Kestra
+					Stay up to date with the latest features and changes to Kestra
 				</p>
 			</div>
 		</div>

@@ -27,14 +27,9 @@ export const useSidebarScroll = () => {
 		return true
 	}
 
-	const isElementInView = (
-		element: HTMLElement,
-		container: HTMLElement,
-	): boolean => {
-		const { top: containerTop, bottom: containerBottom } =
-			container.getBoundingClientRect()
-		const { top: elementTop, bottom: elementBottom } =
-			element.getBoundingClientRect()
+	const isElementInView = (element: HTMLElement, container: HTMLElement): boolean => {
+		const { top: containerTop, bottom: containerBottom } = container.getBoundingClientRect()
+		const { top: elementTop, bottom: elementBottom } = element.getBoundingClientRect()
 
 		return elementTop >= containerTop && elementBottom <= containerBottom
 	}

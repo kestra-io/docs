@@ -51,18 +51,13 @@ export const formatPluginName = (raw?: string): string => {
 
 export const formatCategoryName = (category: string): string => {
 	const DONT_CAPITALIZE = ["AI", "BI"]
-	return DONT_CAPITALIZE.includes(category)
-		? category
-		: formatPluginName(category.toLowerCase())
+	return DONT_CAPITALIZE.includes(category) ? category : formatPluginName(category.toLowerCase())
 }
 
 export const capitalize = (str: string): string =>
 	str ? str.charAt(0).toUpperCase() + str.slice(1) : ""
 
-export const getPluginTitle = (
-	plugin: Plugin,
-	metadataMap: PluginMetadata,
-): string => {
+export const getPluginTitle = (plugin: Plugin, metadataMap: PluginMetadata): string => {
 	const key = plugin?.subGroup ?? plugin?.group
 	const title = metadataMap?.[key]?.title ?? plugin?.title ?? ""
 	return capitalize(title.replace(/\s*\(EE\)\s*$/i, ""))
@@ -80,9 +75,7 @@ export function getBlueprintsHeading(
 	pluginType?: string,
 	customId?: string | null,
 ): { text: string; id: string } {
-	const formattedPluginName = formatPluginName(
-		pluginWrapper?.group ?? pluginName,
-	)
+	const formattedPluginName = formatPluginName(pluginWrapper?.group ?? pluginName)
 
 	let text: string
 

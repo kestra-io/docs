@@ -2,24 +2,14 @@
 	<div class="slider">
 		<div>
 			<Carousel v-bind="settings" :breakpoints="breakpoints">
-				<Slide
-					v-for="(slide, slideIndex) in testimonialData"
-					:key="slideIndex"
-				>
+				<Slide v-for="(slide, slideIndex) in testimonialData" :key="slideIndex">
 					<div class="carousel--item">
 						<div class="content">
-							<img
-								class="slide-svg"
-								v-bind="sliderIcon"
-								alt="Carousel img"
-							/>
+							<img class="slide-svg" v-bind="sliderIcon" alt="Carousel img" />
 							<span>{{ slide.message }}</span>
 							<div class="person">
 								<div class="company-logo">
-									<img
-										v-bind="slide.logo"
-										:alt="`${slide.name} company logo`"
-									/>
+									<img v-bind="slide.logo" :alt="`${slide.name} company logo`" />
 								</div>
 								<div class="person-info">
 									<p>{{ slide.name }}</p>
@@ -35,32 +25,22 @@
 												<div
 													class="mobile-btn-prev carousel-control carousel-control-prev"
 												>
-													<img
-														v-bind="leftArrow"
-														alt="prev"
-													/>
+													<img v-bind="leftArrow" alt="prev" />
 												</div>
 											</template>
 											<template #next>
 												<div
 													class="mobile-btn-next carousel-control carousel-control-next"
 												>
-													<img
-														v-bind="rightArrow"
-														alt="next"
-													/>
+													<img v-bind="rightArrow" alt="next" />
 												</div>
 											</template>
 										</Navigation>
 									</div>
 									<div
 										class="dot"
-										v-for="(
-											slide, index
-										) in testimonialData"
-										:class="
-											slideIndex === index && 'active'
-										"
+										v-for="(slide, index) in testimonialData"
+										:class="slideIndex === index && 'active'"
 									/>
 								</div>
 							</div>
@@ -70,16 +50,12 @@
 				<template #addons>
 					<Navigation v-if="testimonialData.length > 1">
 						<template #next>
-							<div
-								class="carousel-btn carousel-control carousel-control-next"
-							>
+							<div class="carousel-btn carousel-control carousel-control-next">
 								<img v-bind="rightArrow" alt="next" />
 							</div>
 						</template>
 						<template #prev>
-							<div
-								class="carousel-btn carousel-control carousel-control-prev"
-							>
+							<div class="carousel-btn carousel-control carousel-control-prev">
 								<img v-bind="leftArrow" alt="prev" />
 							</div>
 						</template>
@@ -90,15 +66,11 @@
 		<div class="ready-scale">
 			<p>Ready to Scale Your Workflows</p>
 			<span>
-				Kestra Enterprise delivers the security, control, and
-				flexibility you need to scale operations with confidence.
-				Empower your team, streamline governance, and harness reliable
-				infrastructure to drive growth without compromise.
+				Kestra Enterprise delivers the security, control, and flexibility you need to scale
+				operations with confidence. Empower your team, streamline governance, and harness
+				reliable infrastructure to drive growth without compromise.
 			</span>
-			<a
-				href="/demo"
-				class="demo-btn btn btn-animated btn-purple-animated"
-			>
+			<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 				<span>Talk to us</span>
 			</a>
 		</div>
@@ -223,11 +195,7 @@
 		:deep(.content) {
 			-webkit-backdrop-filter: blur(74px) !important;
 			backdrop-filter: blur(74px) !important;
-			background: linear-gradient(
-				347.23deg,
-				#1c1c2699 9.24%,
-				#2b293299 106.62%
-			) !important;
+			background: linear-gradient(347.23deg, #1c1c2699 9.24%, #2b293299 106.62%) !important;
 			border-radius: 20px;
 			display: flex;
 			flex-direction: column;

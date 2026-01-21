@@ -2,10 +2,7 @@
 	<div class="row">
 		<div class="col-md-10">
 			<h3>Source</h3>
-			<div
-				class="mt-4 relative code mb-3 main-code-block"
-				:class="{ hide: hideCode }"
-			>
+			<div class="mt-4 relative code mb-3 main-code-block" :class="{ hide: hideCode }">
 				<MDCParserAndRenderer class="bd-markdown" :content="flow" />
 				<div class="show-more" :class="{ hide: !hideCode }">
 					<a href="" @click.prevent="hideCode = !hideCode">
@@ -22,13 +19,8 @@
 			<MDCParserAndRenderer class="bd-markdown" :content="description" />
 		</div>
 		<div class="col-md-2">
-			<div
-				class="plugins-icons"
-				v-if="page.includedTasks && page.includedTasks.length"
-			>
-				<div
-					class="d-flex justify-content-center flex-column plugins-container"
-				>
+			<div class="plugins-icons" v-if="page.includedTasks && page.includedTasks.length">
+				<div class="d-flex justify-content-center flex-column plugins-container">
 					<div
 						class="plugin-icon card bg-dark-2"
 						v-for="icon in page.includedTasks"
@@ -94,10 +86,7 @@
 			getLastWord(value) {
 				if (!value) return ""
 				const lastWord = value.substring(value.lastIndexOf(".") + 1)
-				const formattedLastWord = lastWord.replace(
-					/([a-z])([A-Z])/g,
-					"$1 $2",
-				)
+				const formattedLastWord = lastWord.replace(/([a-z])([A-Z])/g, "$1 $2")
 				return formattedLastWord
 			},
 		},

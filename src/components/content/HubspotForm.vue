@@ -13,9 +13,7 @@
 
 			uuid.value = "hs_" + Date.now()
 
-			let parse = JSON.parse(
-				slots.default()[0].children.default()[0].children,
-			)
+			let parse = JSON.parse(slots.default()[0].children.default()[0].children)
 			parse.target = "#" + uuid.value
 
 			let eventName = null

@@ -14,30 +14,23 @@
 							alt="A YAML sample of code for declarative language and construction of Kestra's flows"
 						/>
 					</div>
-					<div
-						class="col-md-6 py-3 py-sm-5 px-2 px-sm-5"
-						data-usal="fade-r"
-					>
+					<div class="col-md-6 py-3 py-sm-5 px-2 px-sm-5" data-usal="fade-r">
 						<h3>YAML for Declarative Orchestration</h3>
 						<ul>
 							<li>
-								<strong>Data structures:</strong> YAML supports
-								various data structures, such as mappings,
-								sequences, and scalars, allowing for the
-								flexible representation of complex data
-								workflows.
+								<strong>Data structures:</strong> YAML supports various data
+								structures, such as mappings, sequences, and scalars, allowing for
+								the flexible representation of complex data workflows.
 							</li>
 							<li>
-								<strong>Comments:</strong> Inline comments in
-								YAML files facilitate better communication and
-								documentation within data teams, ensuring
+								<strong>Comments:</strong> Inline comments in YAML files facilitate
+								better communication and documentation within data teams, ensuring
 								clarity and understanding of workflow logic.
 							</li>
 							<li>
-								<strong>Custom tags and types:</strong> YAML
-								allows for the definition of custom tags and
-								types, enabling the creation of domain-specific
-								languages and abstractions tailored to your data
+								<strong>Custom tags and types:</strong> YAML allows for the
+								definition of custom tags and types, enabling the creation of
+								domain-specific languages and abstractions tailored to your data
 								orchestration needs.
 							</li>
 						</ul>
@@ -54,24 +47,21 @@
 					<ul>
 						<li>
 							<strong>Accelerate time to value:</strong>
-							Declarative orchestration modernized the creation
-							and maintenance of data pipelines, enabling data
-							teams to deliver results faster and more
+							Declarative orchestration modernized the creation and maintenance of
+							data pipelines, enabling data teams to deliver results faster and more
 							efficiently.
 						</li>
 						<li>
 							<strong>Speed up your development cycles:</strong>
-							By using a declarative approach, data teams can
-							quickly adapt to changing business requirements
-							without the need to overhaul complex procedural
-							code.
+							By using a declarative approach, data teams can quickly adapt to
+							changing business requirements without the need to overhaul complex
+							procedural code.
 						</li>
 						<li>
 							<strong>Reduce maintenance burden:</strong>
-							Declarative workflows help minimize errors by
-							allowing data teams to focus on defining the desired
-							outcome, while Kestra's orchestrator takes care of
-							the execution.
+							Declarative workflows help minimize errors by allowing data teams to
+							focus on defining the desired outcome, while Kestra's orchestrator takes
+							care of the execution.
 						</li>
 					</ul>
 				</div>
@@ -108,8 +98,7 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			background: url("/landing/features/declarative/declarative-glow.svg")
-				no-repeat;
+			background: url("/landing/features/declarative/declarative-glow.svg") no-repeat;
 			z-index: 2;
 			background-size: 40% 100%;
 			top: -5%;

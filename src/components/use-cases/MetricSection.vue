@@ -6,10 +6,7 @@
 					<div class="info-content">
 						<div class="info-item">
 							<div class="icon-block">
-								<img
-									src="../demo/assets/arrow-up-thin.svg?url"
-									alt="Work"
-								/>
+								<img src="../demo/assets/arrow-up-thin.svg?url" alt="Work" />
 								<p>{{ percent }}%</p>
 							</div>
 							<p>{{ percentText }}</p>
@@ -22,10 +19,7 @@
 						<div class="info-item align-items-start">
 							<h3>{{ companyInfo.personName }}</h3>
 							<p class="subtitle">{{ companyInfo.personRole }}</p>
-							<img
-								:src="companyInfo.logo"
-								:alt="companyInfo.logoAlt"
-							/>
+							<img :src="companyInfo.logo" :alt="companyInfo.logoAlt" />
 						</div>
 					</div>
 				</div>
@@ -178,11 +172,7 @@
 	.red .business-container {
 		&::after,
 		&::before {
-			background: linear-gradient(
-				180deg,
-				rgba(253, 114, 120, 0) 11.24%,
-				#e3262f 72.98%
-			);
+			background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #e3262f 72.98%);
 		}
 
 		.subtitle {
@@ -191,9 +181,8 @@
 
 		.icon-block {
 			img {
-				filter: brightness(0) saturate(100%) invert(75%) sepia(55%)
-					saturate(5609%) hue-rotate(315deg) brightness(107%)
-					contrast(101%);
+				filter: brightness(0) saturate(100%) invert(75%) sepia(55%) saturate(5609%)
+					hue-rotate(315deg) brightness(107%) contrast(101%);
 			}
 		}
 	}

@@ -16,8 +16,7 @@ export function ensureMeetingsScriptLoaded(): Promise<void> {
 			return
 		}
 		const script = document.createElement("script")
-		script.src =
-			"https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
+		script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
 		script.defer = true
 		script.addEventListener("load", () => resolve())
 		document.body.appendChild(script)

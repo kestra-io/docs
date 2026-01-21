@@ -3,12 +3,10 @@
 		<div class="hero hero-sm mx-2 sm-mx-0">
 			<div class="row" data-usal="fade-r">
 				<div class="col-12 col-md-8 col-lg-6 order-1 order-md-0">
-					<h1>
-						Deploy All Your Workflows With our Terraform Provider
-					</h1>
+					<h1>Deploy All Your Workflows With our Terraform Provider</h1>
 					<p class="description mt-3">
-						Manage and deploy Kestra workflows directly<br />within
-						your existing Terraform environment
+						Manage and deploy Kestra workflows directly<br />within your existing
+						Terraform environment
 					</p>
 					<div class="d-flex flex-wrap gap-2">
 						<a href="/docs/terraform">
@@ -17,9 +15,7 @@
 							</button>
 						</a>
 						<a href="/docs/terraform">
-							<button
-								class="btn btn-animated btn-purple-animated"
-							>
+							<button class="btn btn-animated btn-purple-animated">
 								Get Started
 							</button>
 						</a>

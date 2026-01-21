@@ -27,33 +27,24 @@
 			</span>
 		</div>
 
-		<div
-			class="row row-cols-1 row-cols-md-3 g-4"
-			v-if="releasesPaginated.length > 0"
-		>
+		<div class="row row-cols-1 row-cols-md-3 g-4" v-if="releasesPaginated.length > 0">
 			<div v-for="r in releasesPaginated" :key="r.tag_name" class="col">
 				<a
 					class="card h-100 text-decoration-none text-reset release-card"
 					:href="`/docs/changelog/${encodeURIComponent(r.tag_name)}`"
 				>
 					<div class="card-body">
-						<div
-							class="d-flex justify-content-between align-items-start mb-2"
-						>
+						<div class="d-flex justify-content-between align-items-start mb-2">
 							<h5 class="card-title mb-0">
 								{{ r.name || r.tag_name }}
 							</h5>
 
-							<span
-								:class="`badge ${isMajor(r) ? 'badge-major' : 'badge-minor'}`"
-							>
+							<span :class="`badge ${isMajor(r) ? 'badge-major' : 'badge-minor'}`">
 								{{ isMajor(r) ? "Major" : "Minor" }}
 							</span>
 						</div>
 
-						<small
-							class="text-muted mb-2 d-flex align-items-center gap-1"
-						>
+						<small class="text-muted mb-2 d-flex align-items-center gap-1">
 							<b><CalendarRange /> Published on</b>
 							{{ new Date(r.published_at).toLocaleDateString() }}
 						</small>
@@ -170,8 +161,7 @@
 		changePage()
 	}
 
-	const isMajor = (r: Release) =>
-		r.tag_name.replace(/^v/, "").split(".").pop() === "0"
+	const isMajor = (r: Release) => r.tag_name.replace(/^v/, "").split(".").pop() === "0"
 
 	watch([searchQuery, currentFilter], () => (currentPage.value = 1))
 </script>

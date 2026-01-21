@@ -2,10 +2,7 @@
 	<div ref="container" class="container-fluid bg-dark-4">
 		<div class="container">
 			<div class="mb-5">
-				<h1
-					data-usal="fade-l"
-					class="title text-center card-title fw-light"
-				>
+				<h1 data-usal="fade-l" class="title text-center card-title fw-light">
 					Connect Your <span>Entire Stack</span> <br />
 					with Dedicated Plugins
 				</h1>
@@ -31,10 +28,7 @@
 		font-weight: 400;
 
 		span {
-			background: var(
-				--Text_gradient,
-				linear-gradient(90deg, #e151f7 2%, #5c47f5 65%)
-			);
+			background: var(--Text_gradient, linear-gradient(90deg, #e151f7 2%, #5c47f5 65%));
 			background-clip: text;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;

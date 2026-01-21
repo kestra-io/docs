@@ -18,10 +18,7 @@
 					</span>
 					<div>
 						<h4 class="card-title">{{ item.title }}</h4>
-						<MDCParserAndRenderer
-							:content="item.description"
-							class="bd-markdown"
-						/>
+						<MDCParserAndRenderer :content="item.description" class="bd-markdown" />
 					</div>
 				</div>
 			</div>

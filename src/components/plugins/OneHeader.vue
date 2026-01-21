@@ -35,29 +35,18 @@
 				class="page-icon"
 			/>
 		</div>
-		<div
-			class="title-content d-flex flex-column justify-space-between w-100"
-		>
+		<div class="title-content d-flex flex-column justify-space-between w-100">
 			<div class="d-flex align-items-center flex-wrap gap-3">
 				<span>{{ headingTitle }}</span>
-				<img
-					src="/landing/plugins/certified.svg"
-					alt="Certified"
-					class="mt-1"
-				/>
+				<img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
 			</div>
 			<div v-if="headingDescription" class="bd-markdown">
 				<MDCParserAndRenderer :content="headingDescription" />
 			</div>
 		</div>
-		<div
-			v-if="rootPlugin?.license"
-			class="title-actions d-flex flex-column gap-2 ps-4"
-		>
+		<div v-if="rootPlugin?.license" class="title-actions d-flex flex-column gap-2 ps-4">
 			<span class="btn enterprise-badge">Enterprise Edition</span>
-			<a href="/demo" class="btn btn-primary" target="_blank">
-				Talk to us
-			</a>
+			<a href="/demo" class="btn btn-primary" target="_blank"> Talk to us </a>
 		</div>
 	</h1>
 </template>

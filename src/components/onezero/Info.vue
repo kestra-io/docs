@@ -5,18 +5,15 @@
 				<div class="col-lg-6" data-usal="fade-r">
 					<div class="text-block">
 						<p class="description" data-usal="fade-u delay-50">
-							Orchestration has been a patchwork: fragile
-							schedulers, vendor lock-in, hand-rolled scripts, and
-							black-box platforms that slow delivery and break
-							governance.
+							Orchestration has been a patchwork: fragile schedulers, vendor lock-in,
+							hand-rolled scripts, and black-box platforms that slow delivery and
+							break governance.
 						</p>
 						<p class="highlight" data-usal="fade-u delay-100">
 							<strong>Kestra 1.0 (LTS)</strong>
-							unifies data, AI, infrastructure, and business
-							operations under one declarative control plane. Tell
-							the system what you want; Kestra figures out the
-							how, with full auditability and human-in-the-loop
-							approvals.
+							unifies data, AI, infrastructure, and business operations under one
+							declarative control plane. Tell the system what you want; Kestra figures
+							out the how, with full auditability and human-in-the-loop approvals.
 						</p>
 						<div data-usal="fade-u">
 							<a href="/demo" class="btn btn-lg btn-primary">

@@ -271,8 +271,7 @@ paths:
       tags:
         - Audit Logs
       summary: Retrieve the diff between audit logs from global resource like users
-      description:
-        Retrieves the diff between the current version and a selected previous
+      description: Retrieves the diff between the current version and a selected previous
         version of a given resource based on audit logs.
       operationId: getGlobalResourceDiffFromAuditLog
       parameters:
@@ -317,8 +316,7 @@ paths:
       tags:
         - Banners
       summary: Create an announcement banner
-      description:
-        Superadmin-only. Creates a global announcement banner visible to
+      description: Superadmin-only. Creates a global announcement banner visible to
         all tenants.
       operationId: createBanner
       requestBody:
@@ -448,8 +446,7 @@ paths:
       tags:
         - Auths
       summary: Sends an email to reset a password.
-      description:
-        "Sends an email to reset a password. Note that whatever the username\
+      description: "Sends an email to reset a password. Note that whatever the username\
         \ is found or not, the response will always be 200 to avoid leaking information."
       operationId: forgottenPassword
       parameters:
@@ -611,8 +608,7 @@ paths:
       tags:
         - Plugins
       summary: List installed plugin artifacts
-      description:
-        Superadmin-only. Lists all currently installed plugin artifacts.
+      description: Superadmin-only. Lists all currently installed plugin artifacts.
         Requires INFRASTRUCTURE permission.
       operationId: listVersionedPlugin
       parameters:
@@ -665,8 +661,7 @@ paths:
       tags:
         - Plugins
       summary: List available plugin artifacts
-      description:
-        Superadmin-only. Lists all plugin artifacts available for installation.
+      description: Superadmin-only. Lists all plugin artifacts available for installation.
         Requires INFRASTRUCTURE permission.
       operationId: listAvailableVersionedPlugins
       responses:
@@ -684,8 +679,7 @@ paths:
       tags:
         - Plugins
       summary: List available plugin artifacts for Kestra Secret Manager
-      description:
-        Superadmin-only. Lists all secret managers available for installation.
+      description: Superadmin-only. Lists all secret managers available for installation.
         Requires INFRASTRUCTURE permission.
       operationId: listAvailableVersionedPluginsForSecretManager
       responses:
@@ -703,8 +697,7 @@ paths:
       tags:
         - Plugins
       summary: List available plugin artifacts for Kestra Internal Storage
-      description:
-        Superadmin-only. Lists all internal storages available for installation.
+      description: Superadmin-only. Lists all internal storages available for installation.
         Requires INFRASTRUCTURE permission.
       operationId: listAvailableVersionedPluginsForStorage
       responses:
@@ -722,8 +715,7 @@ paths:
       tags:
         - Plugins
       summary: Install specified plugin artifacts
-      description:
-        Superadmin-only. Installs one or more plugin artifacts. Requires
+      description: Superadmin-only. Installs one or more plugin artifacts. Requires
         INFRASTRUCTURE permission.
       operationId: installVersionedPlugins
       requestBody:
@@ -748,8 +740,7 @@ paths:
       tags:
         - Plugins
       summary: Resolve versions for specified plugin artifacts
-      description:
-        Superadmin-only. Resolves compatible versions for a list of plugin
+      description: Superadmin-only. Resolves compatible versions for a list of plugin
         artifacts. Requires INFRASTRUCTURE permission.
       operationId: resolveVersionedPlugins
       requestBody:
@@ -774,8 +765,7 @@ paths:
       tags:
         - Plugins
       summary: Uninstall plugin artifacts
-      description:
-        Superadmin-only. Uninstalls one or more plugin artifacts. Requires
+      description: Superadmin-only. Uninstalls one or more plugin artifacts. Requires
         INFRASTRUCTURE permission.
       operationId: uninstallVersionedPlugins
       requestBody:
@@ -800,8 +790,7 @@ paths:
       tags:
         - Plugins
       summary: Upload a plugin artifact JAR file
-      description:
-        Superadmin-only. Uploads a plugin JAR file for installation. Requires
+      description: Superadmin-only. Uploads a plugin JAR file for installation. Requires
         INFRASTRUCTURE permission.
       operationId: uploadVersionedPlugins
       requestBody:
@@ -838,8 +827,7 @@ paths:
       tags:
         - Plugins
       summary: Retrieve details of a plugin artifact
-      description:
-        Superadmin-only. Retrieves metadata and available versions for
+      description: Superadmin-only. Retrieves metadata and available versions for
         a given plugin artifact. Requires INFRASTRUCTURE permission.
       operationId: getVersionedPluginDetails
       parameters:
@@ -868,8 +856,7 @@ paths:
       tags:
         - Plugins
       summary: Retrieve details of a specific plugin artifact version
-      description:
-        Superadmin-only. Retrieves metadata for a specific version of a
+      description: Superadmin-only. Retrieves metadata for a specific version of a
         plugin artifact. Requires INFRASTRUCTURE permission.
       operationId: getVersionedPluginDetailsFromVersion
       parameters:
@@ -1122,8 +1109,7 @@ paths:
       tags:
         - Auths
       summary: Update authenticated user details
-      description:
-        Updates the authenticated user's profile information and returns
+      description: Updates the authenticated user's profile information and returns
         the updated user.
       operationId: patchCurrentUser
       requestBody:
@@ -1209,8 +1195,7 @@ paths:
       tags:
         - Invitations
       summary: List invitations for the authenticated user
-      description:
-        Returns all invitations for the authenticated user's email across
+      description: Returns all invitations for the authenticated user's email across
         all tenants.
       operationId: findAllInvitationsForCurrentUser
       responses:
@@ -1537,8 +1522,7 @@ paths:
       tags:
         - Auths
       summary: Change a password for given token.
-      description:
-        "Change a password for given token. If password does not match\
+      description: "Change a password for given token. If password does not match\
         \ password policy, use can still retry."
       operationId: resetPassword
       requestBody:
@@ -1612,8 +1596,7 @@ paths:
       tags:
         - ServiceAccount
       summary: Create a service account
-      description:
-        Superadmin-only. CReate service account with access to multiple
+      description: Superadmin-only. CReate service account with access to multiple
         tenants.
       operationId: createServiceAccount
       requestBody:
@@ -1977,8 +1960,7 @@ paths:
       tags:
         - Tenants
       summary: Delete a tenant and all its resources
-      description:
-        "Superadmin-only. Deletes all resources linked to the tenant, including\
+      description: "Superadmin-only. Deletes all resources linked to the tenant, including\
         \ flows, namespaces, apps, etc."
       operationId: delete
       parameters:
@@ -2181,8 +2163,7 @@ paths:
       tags:
         - Users
       summary: Create a new user account
-      description:
-        Superadmin-only. Create a new user account with an optional password
+      description: Superadmin-only. Create a new user account with an optional password
         based authentication method.
       operationId: createUser
       requestBody:
@@ -2233,8 +2214,7 @@ paths:
       tags:
         - Users
       summary: Update a user account
-      description:
-        Superadmin-only. Update an existing user account with an optional
+      description: Superadmin-only. Update an existing user account with an optional
         password based authentication method.
       operationId: updateUser
       parameters:
@@ -2571,8 +2551,7 @@ paths:
       tags:
         - Misc
       summary: Retrieve list of actions
-      description:
-        "Actions are used to restrict possible operations for each permission.\
+      description: "Actions are used to restrict possible operations for each permission.\
         \ Each action must be one of the following: CREATE, READ, UPDATE, DELETE.\
         \ Using permissions and actions together, you can control access to resources\
         \ e.g. only allow a user to read a flow, but not update or delete it."
@@ -2600,8 +2579,7 @@ paths:
       tags:
         - Misc
       summary: Retrieve list of permissions
-      description:
-        "Permissions are used to control access to resources within the\
+      description: "Permissions are used to control access to resources within the\
         \ Kestra platform. Example of permissions are: FLOW, EXECUTION, NAMESPACE,\
         \ APP, TEST, etc."
       operationId: listPermissions
@@ -2873,8 +2851,7 @@ paths:
               properties:
                 fileUpload:
                   type: string
-                  description:
-                    "The file to import, can be a ZIP archive or a multi-objects\
+                  description: "The file to import, can be a ZIP archive or a multi-objects\
                     \ YAML file"
                   format: binary
             encoding:
@@ -3746,8 +3723,7 @@ paths:
             type: string
         - name: destinationOnly
           in: query
-          description:
-            "If true, list only destination dependencies, otherwise list\
+          description: "If true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -4082,8 +4058,7 @@ paths:
       tags:
         - Audit Logs
       summary: Retrieve the diff between audit logs
-      description:
-        Retrieves the diff between the current version and a selected previous
+      description: Retrieves the diff between the current version and a selected previous
         version of a given resource based on audit logs.
       operationId: getResourceDiffFromAuditLog
       parameters:
@@ -4336,8 +4311,7 @@ paths:
       tags:
         - Blueprints
       summary: List all blueprints
-      description:
-        Lists all community blueprints of the specified kind. Community
+      description: Lists all community blueprints of the specified kind. Community
         blueprints are shared and versioned.
       operationId: searchBlueprints
       parameters:
@@ -4407,8 +4381,7 @@ paths:
       tags:
         - Blueprint Tags
       summary: List blueprint tags matching the filter
-      description:
-        "Lists tags for community blueprints of the specified kind, optionally\
+      description: "Lists tags for community blueprints of the specified kind, optionally\
         \ filtered by query."
       operationId: listBlueprintTags
       parameters:
@@ -4476,8 +4449,7 @@ paths:
       tags:
         - Blueprints
       summary: Retrieve a blueprint graph
-      description:
-        Retrieves the topology graph representation of a specific community
+      description: Retrieves the topology graph representation of a specific community
         blueprint.
       operationId: getBlueprintGraph
       parameters:
@@ -4544,8 +4516,7 @@ paths:
       tags:
         - Blueprints
       summary: List all internal blueprints
-      description:
-        Lists all internal (custom) blueprints for the current tenant.
+      description: Lists all internal (custom) blueprints for the current tenant.
         Requires BLUEPRINT permission.
       operationId: searchInternalBlueprints
       parameters:
@@ -4606,8 +4577,7 @@ paths:
       tags:
         - Blueprints
       summary: Create a new internal blueprint
-      description:
-        Creates a new internal (custom) blueprint for the current tenant.
+      description: Creates a new internal (custom) blueprint for the current tenant.
         Requires BLUEPRINT permission.
       operationId: createInternalBlueprints
       parameters:
@@ -4636,8 +4606,7 @@ paths:
       tags:
         - Blueprint Tags
       summary: List all internal blueprint tags
-      description:
-        Lists all tags used by internal (custom) blueprints for the current
+      description: Lists all tags used by internal (custom) blueprints for the current
         tenant.
       operationId: internalBlueprintTags
       parameters:
@@ -4667,8 +4636,7 @@ paths:
       tags:
         - Blueprints
       summary: Retrieve an internal blueprint
-      description:
-        Retrieves details of a specific internal (custom) blueprint. Requires
+      description: Retrieves details of a specific internal (custom) blueprint. Requires
         BLUEPRINT permission.
       operationId: internalBlueprint
       parameters:
@@ -4694,8 +4662,7 @@ paths:
       tags:
         - Blueprints
       summary: Update an internal blueprint
-      description:
-        Updates an existing internal (custom) blueprint for the current
+      description: Updates an existing internal (custom) blueprint for the current
         tenant. Requires BLUEPRINT permission.
       operationId: updateInternalBlueprints
       parameters:
@@ -4729,8 +4696,7 @@ paths:
       tags:
         - Blueprints
       summary: Delete an internal blueprint
-      description:
-        Deletes an internal (custom) blueprint for the current tenant.
+      description: Deletes an internal (custom) blueprint for the current tenant.
         Requires BLUEPRINT permission.
       operationId: deleteInternalBlueprints
       parameters:
@@ -4754,8 +4720,7 @@ paths:
       tags:
         - Blueprints
       summary: Retrieve an internal blueprint source code
-      description:
-        Retrieves the YAML source code for a specific internal (custom)
+      description: Retrieves the YAML source code for a specific internal (custom)
         blueprint. Requires BLUEPRINT permission.
       operationId: internalBlueprintFlow
       parameters:
@@ -4782,8 +4747,7 @@ paths:
       tags:
         - Blueprints
       summary: Retrieve an flow blueprint
-      description:
-        Retrieves details of a specific flow blueprint. Requires BLUEPRINT
+      description: Retrieves details of a specific flow blueprint. Requires BLUEPRINT
         permission.
       operationId: getFlowBlueprint
       parameters:
@@ -4835,8 +4799,7 @@ paths:
       tags:
         - Blueprints
       summary: Retrieve an flow blueprint
-      description:
-        Retrieves details of a specific flow blueprint. Requires BLUEPRINT
+      description: Retrieves details of a specific flow blueprint. Requires BLUEPRINT
         permission.
       operationId: getFlowBlueprintById
       parameters:
@@ -4892,8 +4855,7 @@ paths:
       tags:
         - Blueprints
       summary: Delete an Flow Blueprint
-      description:
-        Deletes an Flow Blueprint for the current tenant. Requires BLUEPRINT
+      description: Deletes an Flow Blueprint for the current tenant. Requires BLUEPRINT
         permission.
       operationId: deleteFlowBlueprints
       parameters:
@@ -5280,8 +5242,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description:
-          "The filters to apply, some can override chart definition like\
+        description: "The filters to apply, some can override chart definition like\
           \ labels & namespace"
         content:
           application/json:
@@ -5320,8 +5281,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description:
-          "The filters to apply, some can override chart definition like\
+        description: "The filters to apply, some can override chart definition like\
           \ labels & namespace"
         content:
           application/json:
@@ -5345,8 +5305,7 @@ paths:
       parameters:
         - name: destinationOnly
           in: query
-          description:
-            "if true, list only destination dependencies, otherwise list\
+          description: "if true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -6482,8 +6441,7 @@ paths:
     get:
       tags:
         - Executions
-      summary:
-        Get all flow ids for a namespace. Data returned are FlowForExecution
+      summary: Get all flow ids for a namespace. Data returned are FlowForExecution
         containing minimal information about a Flow for when you are allowed to executing
         but not reading.
       operationId: listFlowExecutionsByNamespace
@@ -6727,8 +6685,7 @@ paths:
     post:
       tags:
         - Executions
-      summary:
-        Create new executions from old ones filter by query parameters. Keep
+      summary: Create new executions from old ones filter by query parameters. Keep
         the flow revision
       operationId: replayExecutionsByQuery
       parameters:
@@ -8080,8 +8037,7 @@ paths:
             type: string
         - name: destinationOnly
           in: query
-          description:
-            "If true, list only destination dependencies, otherwise list\
+          description: "If true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -8194,8 +8150,7 @@ paths:
             type: string
         - name: isOnKillCascade
           in: query
-          description:
-            Specifies whether killing the execution also kill all subflow
+          description: Specifies whether killing the execution also kill all subflow
             executions.
           required: true
           explode: false
@@ -8296,8 +8251,7 @@ paths:
     post:
       tags:
         - Executions
-      summary:
-        Create a new execution from an old one and start it from a specified
+      summary: Create a new execution from an old one and start it from a specified
         task run id
       operationId: replayExecution
       parameters:
@@ -8324,8 +8278,7 @@ paths:
             nullable: true
         - name: breakpoints
           in: query
-          description:
-            "Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -8350,8 +8303,7 @@ paths:
     post:
       tags:
         - Executions
-      summary:
-        Create a new execution from an old one and start it from a specified
+      summary: Create a new execution from an old one and start it from a specified
         task run id
       operationId: replayExecutionWithinputs
       parameters:
@@ -8378,8 +8330,7 @@ paths:
             nullable: true
         - name: breakpoints
           in: query
-          description:
-            "Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -8508,8 +8459,7 @@ paths:
             type: string
         - name: breakpoints
           in: query
-          description:
-            "\"Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "\"Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -8524,8 +8474,7 @@ paths:
         "204":
           description: On success
         "409":
-          description:
-            If the executions is not in the 'BREAKPOINT' state or has no
+          description: If the executions is not in the 'BREAKPOINT' state or has no
             breakpoint
         "200":
           description: resumeExecutionFromBreakpoint 200 response
@@ -8699,8 +8648,7 @@ paths:
             nullable: true
         - name: breakpoints
           in: query
-          description:
-            "Set a list of breakpoints at specific tasks 'id.value', separated\
+          description: "Set a list of breakpoints at specific tasks 'id.value', separated\
             \ by a coma."
           explode: false
           schema:
@@ -9415,8 +9363,7 @@ paths:
               properties:
                 fileUpload:
                   type: string
-                  description:
-                    "The file to import, can be a ZIP archive or a multi-objects\
+                  description: "The file to import, can be a ZIP archive or a multi-objects\
                     \ YAML file"
                   format: binary
             encoding:
@@ -9927,8 +9874,7 @@ paths:
             type: string
         - name: destinationOnly
           in: query
-          description:
-            "If true, list only destination dependencies, otherwise list\
+          description: "If true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -10341,8 +10287,7 @@ paths:
       tags:
         - Groups
       summary: Retrieve a group
-      description:
-        Retrieves details of a specific group by its ID within the current
+      description: Retrieves details of a specific group by its ID within the current
         tenant.
       operationId: getGroup
       parameters:
@@ -10499,8 +10444,7 @@ paths:
       tags:
         - Groups
       summary: Update a user's membership type in a group
-      description:
-        Allows a group owner or an authorized user to change the role of
+      description: Allows a group owner or an authorized user to change the role of
         a user within a group to OWNER or MEMBER.
       operationId: setUserMembershipForGroup
       parameters:
@@ -10547,8 +10491,7 @@ paths:
       tags:
         - Groups
       summary: Add a user to a group
-      description:
-        "Adds the specified user to the given group. If the user does not\
+      description: "Adds the specified user to the given group. If the user does not\
         \ already have access to the tenant, tenant access will be created automatically."
       operationId: addUserToGroup
       parameters:
@@ -10587,8 +10530,7 @@ paths:
       tags:
         - Groups
       summary: Remove a user from a group
-      description:
-        "Removes the specified user from the given group. If the user has\
+      description: "Removes the specified user from the given group. If the user has\
         \ no other group bindings within the tenant, their access to the tenant will\
         \ also be revoked."
       operationId: deleteUserFromGroup
@@ -11453,8 +11395,7 @@ paths:
       tags:
         - Invitations
       summary: Create an invitation
-      description:
-        Creates a new invitation and sends an email if the mail server
+      description: Creates a new invitation and sends an email if the mail server
         is enabled.
       operationId: createInvitation
       parameters:
@@ -11464,8 +11405,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description:
-          "Create a new invitation, send an email if the server-mail is\
+        description: "Create a new invitation, send an email if the server-mail is\
           \ enabled"
         content:
           application/json:
@@ -11480,8 +11420,7 @@ paths:
         "403":
           description: Insufficient privileges to invite a Superadmin user
         "409":
-          description:
-            "Invitation already exists for the given email, or user already\
+          description: "Invitation already exists for the given email, or user already\
             \ had access to the tenant"
       security:
         - bearerAuth: []
@@ -11491,8 +11430,7 @@ paths:
       tags:
         - Invitations
       summary: Retrieve all invitations for a given email
-      description:
-        Returns all invitations created for a given email address in the
+      description: Returns all invitations created for a given email address in the
         current tenant.
       operationId: listInvitationsByEmail
       parameters:
@@ -12273,8 +12211,7 @@ paths:
     get:
       tags:
         - Metrics
-      summary:
-        "Get tasks id that have metrics for a specific flow, include deleted\
+      summary: "Get tasks id that have metrics for a specific flow, include deleted\
         \ or renamed tasks"
       operationId: listTasksWithMetrics
       parameters:
@@ -12412,8 +12349,7 @@ paths:
       tags:
         - Namespaces
       summary: List namespaces for autocomplete
-      description:
-        "Returns a list of namespaces for use in autocomplete fields, optionally\
+      description: "Returns a list of namespaces for use in autocomplete fields, optionally\
         \ allowing to filter by query and ids. Used especially for binding creation."
       operationId: autocompleteNamespaces
       parameters:
@@ -12666,8 +12602,7 @@ paths:
             type: string
         - name: destinationOnly
           in: query
-          description:
-            "if true, list only destination dependencies, otherwise list\
+          description: "if true, list only destination dependencies, otherwise list\
             \ also source dependencies"
           required: true
           explode: false
@@ -13021,8 +12956,7 @@ paths:
     get:
       tags:
         - Files
-      summary:
-        "Get namespace file stats such as size, creation & modification dates\
+      summary: "Get namespace file stats such as size, creation & modification dates\
         \ and type"
       operationId: getFileMetadatas
       parameters:
@@ -14373,8 +14307,7 @@ paths:
       tags:
         - TestSuites
       summary: Create a test from YAML source
-      description:
-        Creates a new test from a YAML definition. Requires TEST permission
+      description: Creates a new test from a YAML definition. Requires TEST permission
         with the CREATE action.
       operationId: createTestSuite
       parameters:
@@ -14402,8 +14335,7 @@ paths:
       tags:
         - TestSuites
       summary: Delete multiple tests by id
-      description:
-        Deletes a test by namespace and ID. Requires TEST permission with
+      description: Deletes a test by namespace and ID. Requires TEST permission with
         the DELETE action.
       operationId: deleteTestSuitesByIds
       parameters:
@@ -14430,8 +14362,7 @@ paths:
       tags:
         - TestSuites
       summary: Disable multiple tests by id
-      description:
-        Disable a test by namespace and ID. Requires TEST permission with
+      description: Disable a test by namespace and ID. Requires TEST permission with
         the UPDATE action.
       operationId: disableTestSuitesByIds
       parameters:
@@ -14458,8 +14389,7 @@ paths:
       tags:
         - TestSuites
       summary: Enable multiple tests by id
-      description:
-        Enable a test by namespace and ID. Requires TEST permission with
+      description: Enable a test by namespace and ID. Requires TEST permission with
         the UPDATE action.
       operationId: enableTestSuitesByIds
       parameters:
@@ -14486,8 +14416,7 @@ paths:
       tags:
         - TestSuites
       summary: Search for tests results
-      description:
-        "with optional filtering by namespace, test suite ID and flow ID.\
+      description: "with optional filtering by namespace, test suite ID and flow ID.\
         \ Requires TEST permission with the READ action."
       operationId: searchTestSuitesResults
       parameters:
@@ -14610,8 +14539,7 @@ paths:
       tags:
         - TestSuites
       summary: Run multiple TestSuites by query
-      description:
-        Executes all TestSuites impacted by the specified filter. Requires
+      description: Executes all TestSuites impacted by the specified filter. Requires
         TEST permission with the CREATE action.
       operationId: runTestSuitesByQuery
       parameters:
@@ -14638,8 +14566,7 @@ paths:
       tags:
         - TestSuites
       summary: Search for tests
-      description:
-        Searches for tests with optional filtering by namespace and flow
+      description: Searches for tests with optional filtering by namespace and flow
         ID. Requires TEST permission with the READ action.
       operationId: searchTestSuites
       parameters:
@@ -14711,8 +14638,7 @@ paths:
       tags:
         - TestSuites
       summary: Validate a test
-      description:
-        Validates a test YAML definition without persisting it. Returns
+      description: Validates a test YAML definition without persisting it. Returns
         constraint violations if any. Requires TEST permission with the READ action.
       operationId: validateTestSuite
       parameters:
@@ -14740,8 +14666,7 @@ paths:
       tags:
         - TestSuites
       summary: Retrieve a test
-      description:
-        Retrieves a test by namespace and ID. Requires TEST permission
+      description: Retrieves a test by namespace and ID. Requires TEST permission
         with the READ action.
       operationId: getTestSuite
       parameters:
@@ -14773,8 +14698,7 @@ paths:
       tags:
         - TestSuites
       summary: Update a test from YAML source
-      description:
-        Updates an existing test with a new YAML definition. Requires TEST
+      description: Updates an existing test with a new YAML definition. Requires TEST
         permission with the UPDATE action.
       operationId: updateTestSuite
       parameters:
@@ -14813,8 +14737,7 @@ paths:
       tags:
         - TestSuites
       summary: Delete a test
-      description:
-        Deletes a test by namespace and ID. Requires TEST permission with
+      description: Deletes a test by namespace and ID. Requires TEST permission with
         the DELETE action.
       operationId: deleteTestSuite
       parameters:
@@ -14847,8 +14770,7 @@ paths:
       tags:
         - TestSuites
       summary: Run a full test
-      description:
-        Executes all test cases in the specified test. Requires TEST permission
+      description: Executes all test cases in the specified test. Requires TEST permission
         with the CREATE action.
       operationId: runTestSuite
       parameters:
@@ -15901,8 +15823,7 @@ components:
         disabled:
           type: boolean
         labels:
-          description:
-            Labels as a list of Label (key/value pairs) or as a map of
+          description: Labels as a list of Label (key/value pairs) or as a map of
             string to string.
           oneOf:
             - $ref: "#/components/schemas/Map_Object.Object_"
@@ -16001,8 +15922,7 @@ components:
             - type: array
             - $ref: "#/components/schemas/Map_Object.Object_"
         stopAfter:
-          title:
-            List of execution states after which a trigger should be stopped
+          title: List of execution states after which a trigger should be stopped
             (a.k.a. disabled).
           type: array
           items:
@@ -16012,8 +15932,7 @@ components:
         failOnTriggerError:
           type: boolean
         allowConcurrent:
-          title:
-            Specifies whether a trigger is allowed to start a new execution even
+          title: Specifies whether a trigger is allowed to start a new execution even
             if a previous run is still in progress.
           type: boolean
         assets:
@@ -17820,8 +17739,7 @@ components:
             disabled:
               type: boolean
             labels:
-              description:
-                Labels as a list of Label (key/value pairs) or as a map of
+              description: Labels as a list of Label (key/value pairs) or as a map of
                 string to string.
               oneOf:
                 - $ref: "#/components/schemas/Map_Object.Object_"
@@ -17873,8 +17791,7 @@ components:
             outputs:
               title: Output values available and exposes to other flows.
               type: array
-              description:
-                Output values make information about the execution of your
+              description: Output values make information about the execution of your
                 Flow available and expose for other Kestra flows to use. Output values
                 are similar to return values in programming languages.
               items:
@@ -17888,8 +17805,7 @@ components:
             checks:
               title: Conditions evaluated before the flow is executed.
               type: array
-              description:
-                "A list of conditions that are evaluated before the flow\
+              description: "A list of conditions that are evaluated before the flow\
                 \ is executed.  If no checks are defined, the flow executes normally."
               items:
                 $ref: "#/components/schemas/Check"
@@ -17937,8 +17853,7 @@ components:
             disabled:
               type: boolean
             labels:
-              description:
-                Labels as a list of Label (key/value pairs) or as a map of
+              description: Labels as a list of Label (key/value pairs) or as a map of
                 string to string.
               oneOf:
                 - $ref: "#/components/schemas/Map_Object.Object_"
@@ -18179,8 +18094,7 @@ components:
             disabled:
               type: boolean
             labels:
-              description:
-                Labels as a list of Label (key/value pairs) or as a map of
+              description: Labels as a list of Label (key/value pairs) or as a map of
                 string to string.
               oneOf:
                 - $ref: "#/components/schemas/Map_Object.Object_"
@@ -18196,8 +18110,7 @@ components:
             outputs:
               title: Output values available and exposes to other flows.
               type: array
-              description:
-                Output values make information about the execution of your
+              description: Output values make information about the execution of your
                 Flow available and expose for other Kestra flows to use. Output values
                 are similar to return values in programming languages.
               items:
@@ -18909,8 +18822,7 @@ components:
             - $ref: "#/components/schemas/Property_Object_"
         prefill:
           title: The suggested value for the input.
-          description:
-            Optional UI hint for pre-filling the input. Cannot be used
+          description: Optional UI hint for pre-filling the input. Cannot be used
             together with a default value.
           allOf:
             - $ref: "#/components/schemas/Property_Object_"
@@ -19266,15 +19178,13 @@ components:
           minLength: 1
           pattern: "^[\\p{Ll}][\\p{L}0-9._-]*$"
           type: string
-          x-pattern-message:
-            Invalid label key. A valid key contains only lowercase
+          x-pattern-message: Invalid label key. A valid key contains only lowercase
             letters numbers hyphens (-) underscores (_) or periods (.) and must begin
             with a lowercase letter.
         value:
           minLength: 1
           type: string
-      description:
-        A key/value pair that can be attached to a Flow or Execution. Labels
+      description: A key/value pair that can be attached to a Flow or Execution. Labels
         are often used to organize and categorize objects.
     LeftSidebarConfiguration:
       type: object
@@ -19730,8 +19640,7 @@ components:
             type: object
         outputsInInternalStorage:
           type: boolean
-      description:
-        A namespace is a logical grouping of flows and tasks. It is used
+      description: A namespace is a logical grouping of flows and tasks. It is used
         to organize and manage flows and tasks within Kestra.
       allOf:
         - $ref: "#/components/schemas/NamespaceLight"

@@ -2,15 +2,12 @@
 	<div class="container-fluid">
 		<div class="hero container">
 			<div class="row">
-				<div
-					class="col-md-7 align-items-center d-flex order-1 order-md-0"
-				>
+				<div class="col-md-7 align-items-center d-flex order-1 order-md-0">
 					<div>
 						<h1 data-usal="fade-r">Connect and Collaborate</h1>
 						<p class="baseline" data-usal="fade-l">
-							Connect with experts in the field, get support from
-							the community, exchange ideas and contribute your
-							code and feedback.
+							Connect with experts in the field, get support from the community,
+							exchange ideas and contribute your code and feedback.
 						</p>
 						<a
 							href="https://kestra.io/slack"

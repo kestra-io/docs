@@ -20,17 +20,12 @@
 						with Dedicated Plugins
 					</h3>
 					<p class="para mt-3" data-usal="fade-right ">
-						Integrate with your existing technology landscape using
-						Kestra's robust plugin architecture. From databases and
-						cloud services to custom applications, plugins enable
-						you to connect, schedule, and automate your entire tech
-						stack.
+						Integrate with your existing technology landscape using Kestra's robust
+						plugin architecture. From databases and cloud services to custom
+						applications, plugins enable you to connect, schedule, and automate your
+						entire tech stack.
 					</p>
-					<a
-						href="/plugins"
-						class="btn btn-dark mt-2"
-						data-usal="zoomin"
-					>
+					<a href="/plugins" class="btn btn-dark mt-2" data-usal="zoomin">
 						See all Plugins
 					</a>
 				</div>
@@ -62,10 +57,7 @@
 		}
 
 		&-animated {
-			background: var(
-				--Text_gradient,
-				linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
-			);
+			background: var(--Text_gradient, linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%));
 			background-clip: text;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;

@@ -8,17 +8,13 @@
 						Management
 					</h3>
 					<p>
-						Being API-first means Kestra integrates seemlessly with
-						CI/CD pipelines, offering a streamlined path from code
-						development in your local IDE to deployment through
-						tools like GitHub Actions. This integration ensures that
+						Being API-first means Kestra integrates seemlessly with CI/CD pipelines,
+						offering a streamlined path from code development in your local IDE to
+						deployment through tools like GitHub Actions. This integration ensures that
 						your workflows remain in sync with your codebase.
 					</p>
 				</div>
-				<div
-					class="col-md-6 order-0 order-md-0 mask mb-3"
-					data-usal="fade-l"
-				>
+				<div class="col-md-6 order-0 order-md-0 mask mb-3" data-usal="fade-l">
 					<NuxtImg
 						loading="lazy"
 						format="webp"
@@ -34,19 +30,14 @@
 				<div class="col-md-6 order-1 order-md-0" data-usal="fade-r">
 					<h3>Development Flexibility</h3>
 					<p>
-						Choose your development environment with confidence,
-						knowing that whether you prefer to code directly in the
-						Kestra UI or in your favorite IDE, our platform supports
-						your workflow. Our API-first approach guarantees that
-						your integration with Git and other version control
-						systems is straightforward, maintaining a single source
-						of truth for your projects.
+						Choose your development environment with confidence, knowing that whether
+						you prefer to code directly in the Kestra UI or in your favorite IDE, our
+						platform supports your workflow. Our API-first approach guarantees that your
+						integration with Git and other version control systems is straightforward,
+						maintaining a single source of truth for your projects.
 					</p>
 				</div>
-				<div
-					class="col-md-6 order-0 order-md-1 mask-1"
-					data-usal="fade-l"
-				>
+				<div class="col-md-6 order-0 order-md-1 mask-1" data-usal="fade-l">
 					<NuxtImg
 						loading="lazy"
 						format="webp"
@@ -99,11 +90,7 @@
 				right: 128px;
 				bottom: 112px;
 				z-index: -2;
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0),
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0), #6117ff 100%);
 				filter: blur(65px);
 			}
 
@@ -113,11 +100,7 @@
 				left: 43px;
 				top: -33px;
 				z-index: -1;
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0) 0%,
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 				filter: blur(100px);
 			}
 
@@ -141,11 +124,7 @@
 				right: 199px;
 				bottom: 52px;
 				z-index: -2;
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0) 0%,
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 				filter: blur(100px);
 				width: 14.375rem;
 				height: 10.375rem;

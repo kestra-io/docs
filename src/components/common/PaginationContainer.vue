@@ -24,9 +24,7 @@
 	})
 
 	const size = computed(() => {
-		return parseInt(
-			urlParams.value.get("size") ?? props.defaultSize.toString(),
-		)
+		return parseInt(urlParams.value.get("size") ?? props.defaultSize.toString())
 	})
 
 	const page = computed(() => {
@@ -82,11 +80,7 @@
 <template>
 	<div class="d-flex justify-content-between my-5 pagination-container">
 		<div class="items-per-page">
-			<select
-				v-if="totalPages > 1"
-				class="form-select bg-dark-2"
-				v-model="itemsPerPage"
-			>
+			<select v-if="totalPages > 1" class="form-select bg-dark-2" v-model="itemsPerPage">
 				<option
 					v-for="option in sizeOptions"
 					:key="option"

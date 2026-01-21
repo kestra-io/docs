@@ -1,9 +1,7 @@
 <template>
 	<section class="main">
 		<div class="container">
-			<div
-				class="d-flex flex-column align-items-center justify-content-center"
-			>
+			<div class="d-flex flex-column align-items-center justify-content-center">
 				<NuxtImg
 					src="/landing/onezero/one.png"
 					alt="1-0"
@@ -18,18 +16,13 @@
 					<h1>Introducing Kestra 1.0</h1>
 					<h3>The Declarative Agentic Orchestration Platform</h3>
 					<p>
-						Build and scale workflows faster with AI-assisted code,
-						autonomous agents, and production-ready features. Scale
-						AI workflows in days instead of weeks with full
-						governance and no vendor lock-in.
+						Build and scale workflows faster with AI-assisted code, autonomous agents,
+						and production-ready features. Scale AI workflows in days instead of weeks
+						with full governance and no vendor lock-in.
 					</p>
 				</div>
 				<div data-usal="fade-u delay-400">
-					<a
-						href="/demo"
-						target="_blank"
-						class="btn btn-primary my-4 mb-2"
-					>
+					<a href="/demo" target="_blank" class="btn btn-primary my-4 mb-2">
 						Book a Strategy Session
 					</a>
 				</div>
@@ -44,10 +37,7 @@
 					</div>
 				</div>
 				<div class="trusted-by" data-usal="fade-u delay-100">
-					<p>
-						Trusted by global Enterprises to run mission-critical
-						workflows
-					</p>
+					<p>Trusted by global Enterprises to run mission-critical workflows</p>
 					<div class="logos">
 						<img
 							v-for="(logo, index) in companyLogos"
@@ -137,8 +127,7 @@
 	.main {
 		position: relative;
 		width: 100%;
-		background: #07070a url("/landing/onezero/hero.webp") center top 40rem /
-			cover no-repeat;
+		background: #07070a url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
 		@include media-breakpoint-up(lg) {
 			background-position: center top 30rem;
 		}

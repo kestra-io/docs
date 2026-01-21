@@ -11,8 +11,8 @@
 			/>
 			<p class="title">Dark version</p>
 			<p class="description">
-				Use this version when working on a dark background to ensure our
-				name remains readable.
+				Use this version when working on a dark background to ensure our name remains
+				readable.
 			</p>
 		</div>
 
@@ -27,8 +27,7 @@
 			/>
 			<p class="title">Light version</p>
 			<p class="description">
-				This is the preferred option when working with a light
-				background.
+				This is the preferred option when working with a light background.
 			</p>
 		</div>
 
@@ -43,9 +42,8 @@
 			/>
 			<p class="title">Monogram</p>
 			<p class="description">
-				The wordmark colors adapt based on the background, while the
-				icon remains without a background when placed on a dark
-				background.
+				The wordmark colors adapt based on the background, while the icon remains without a
+				background when placed on a dark background.
 			</p>
 		</div>
 	</div>

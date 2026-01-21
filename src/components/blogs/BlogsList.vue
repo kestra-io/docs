@@ -3,11 +3,7 @@
 		<div v-if="slug === '/blogs/community'">
 			<h2 data-usal="fade-l">Community News</h2>
 			<div class="row mt-5">
-				<div
-					v-for="news in externalNews"
-					:key="news.id"
-					class="col-lg-4 col-md-6 col-12"
-				>
+				<div v-for="news in externalNews" :key="news.id" class="col-lg-4 col-md-6 col-12">
 					<BlogCard :blog="news" data-usal="zoomin" />
 				</div>
 			</div>
@@ -83,9 +79,7 @@
 					"
 				/>
 			</div>
-			<div
-				class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3 mb-4"
-			>
+			<div class="right-side-bar bg-dark-2 rounded-3 col-12 col-md-4 col-lg-3 mb-4">
 				<h5 class="heading mb-4">Latest Community News</h5>
 				<div v-for="news in externalNews" :key="news.id">
 					<BlogCard :blog="news" data-usal="zoomin" />
@@ -155,16 +149,10 @@
 			},
 			blogsList() {
 				const blogs = this.blogs.filter(
-					(e) =>
-						e.category === this.filter ||
-						this.filter === "All news",
+					(e) => e.category === this.filter || this.filter === "All news",
 				)
 				return blogs
-					.filter(
-						(e) =>
-							e.category === this.filter ||
-							this.filter === "All news",
-					)
+					.filter((e) => e.category === this.filter || this.filter === "All news")
 					.slice(0, blogs.length - 1)
 					.reverse()
 			},
@@ -196,9 +184,7 @@
 			this.fullSlug = Array.isArray(this.slug)
 				? `/blogs/${this.slug.join("/")}`
 				: this.slug || ""
-			const breadcrumbs = [
-				...new Set(this.fullSlug.split("/").filter((r) => r !== "")),
-			]
+			const breadcrumbs = [...new Set(this.fullSlug.split("/").filter((r) => r !== ""))]
 			this.pageList = breadcrumbs.map(
 				(___, index) => "/" + breadcrumbs.slice(0, index + 1).join("/"),
 			)
@@ -334,11 +320,7 @@
 			left: 10%;
 			z-index: -147;
 			filter: blur(110px);
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 		}
 	}
 

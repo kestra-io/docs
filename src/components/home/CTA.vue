@@ -5,12 +5,10 @@
 				<p class="pre-title">Ready to see it in action?</p>
 				<h2>Jump in</h2>
 				<p class="description">
-					Install Kestra Open-Source and get your first workflow ready
-					in less than 5 minutes.
+					Install Kestra Open-Source and get your first workflow ready in less than 5
+					minutes.
 				</p>
-				<a
-					href="/docs/quickstart#start-kestra"
-					class="btn btn-md btn-secondary"
+				<a href="/docs/quickstart#start-kestra" class="btn btn-md btn-secondary"
 					>Get Started</a
 				>
 			</HomeCard>
@@ -19,8 +17,7 @@
 				<p class="pre-title">Schedule a meeting</p>
 				<h2>Let's meet</h2>
 				<p class="description">
-					Connect with our product specialists and discuss your
-					project requirements.
+					Connect with our product specialists and discuss your project requirements.
 				</p>
 				<a href="/demo" class="btn btn-md btn-primary">Talk to us</a>
 			</HomeCard>

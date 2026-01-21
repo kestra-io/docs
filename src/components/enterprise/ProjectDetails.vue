@@ -5,23 +5,14 @@
 				<div class="info">
 					<p>Run Anything at Scale</p>
 					<span
-						>Kestra offers language-agnostic orchestration,
-						eliminating the need for glue code and allowing you to
-						execute tasks in any language. With built-in
-						high-availability options and full observability, Kestra
-						ensures resilient operations and clear insights, no
-						matter how complex your workflows.</span
+						>Kestra offers language-agnostic orchestration, eliminating the need for
+						glue code and allowing you to execute tasks in any language. With built-in
+						high-availability options and full observability, Kestra ensures resilient
+						operations and clear insights, no matter how complex your workflows.</span
 					>
 				</div>
-				<div
-					class="col-md-6 order-0 order-md-1 rounded-2"
-					data-usal="fade-l"
-				>
-					<img
-						class="image-fluid"
-						v-bind="anythingScale"
-						alt="Run Anything at Scale"
-					/>
+				<div class="col-md-6 order-0 order-md-1 rounded-2" data-usal="fade-l">
+					<img class="image-fluid" v-bind="anythingScale" alt="Run Anything at Scale" />
 				</div>
 			</div>
 			<div class="declarative">
@@ -29,37 +20,26 @@
 					<div class="block-item">
 						<p>Declarative</p>
 						<span
-							>Kestra’s declarative syntax in YAML offers a simple
-							learning curve while enabling powerful
-							orchestration. With both UI-based configuration and
-							the ability to scale to complex use cases, Kestra
-							ensures ease of use without sacrificing flexibility
-							or control.</span
+							>Kestra’s declarative syntax in YAML offers a simple learning curve
+							while enabling powerful orchestration. With both UI-based configuration
+							and the ability to scale to complex use cases, Kestra ensures ease of
+							use without sacrificing flexibility or control.</span
 						>
 					</div>
 					<div class="w-100 order-md-1 rounded-2" data-usal="fade-l">
-						<img
-							class="declarative-img"
-							v-bind="declarative"
-							alt="right icons"
-						/>
+						<img class="declarative-img" v-bind="declarative" alt="right icons" />
 					</div>
 				</div>
 				<div class="block">
 					<div class="block-item">
 						<p>Real Time & Event Driven</p>
 						<span
-							>Handle scheduled, real-time event-driven, and
-							API-based workflows effortlessly. Support
-							business-critical operations with real-time
-							automation, ensuring your workflows adapt and scale
-							to your needs.</span
+							>Handle scheduled, real-time event-driven, and API-based workflows
+							effortlessly. Support business-critical operations with real-time
+							automation, ensuring your workflows adapt and scale to your needs.</span
 						>
 					</div>
-					<div
-						class="real-time w-100 order-md-1 rounded-2"
-						data-usal="fade-l"
-					>
+					<div class="real-time w-100 order-md-1 rounded-2" data-usal="fade-l">
 						<img v-bind="realTime" alt="right icons" />
 					</div>
 				</div>
@@ -68,11 +48,10 @@
 				<div class="header">
 					<p>Integrate With {{ totalPlugins }} Plugins</p>
 					<span
-						>Connect with third-party systems, data sources, and
-						applications. And if you require a custom integration,
-						our platform makes plugin development simple, keeping
-						your workflows flexible, scalable, and fully aligned
-						with your enterprise goals.</span
+						>Connect with third-party systems, data sources, and applications. And if
+						you require a custom integration, our platform makes plugin development
+						simple, keeping your workflows flexible, scalable, and fully aligned with
+						your enterprise goals.</span
 					>
 				</div>
 
@@ -87,10 +66,7 @@
 				</div>
 			</div>
 
-			<a
-				href="/demo"
-				class="demo-btn btn btn-animated btn-purple-animated"
-			>
+			<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 				<span>Talk to us</span>
 			</a>
 		</div>
@@ -103,10 +79,10 @@
 	import anythingScale from "./assets/anything-scale.svg"
 	import declarative from "./assets/declarative.svg"
 	import realTime from "./assets/real-time.svg"
-	const pluginsLogos = import.meta.glob<{ src: string }>(
-		"./assets/plugin-*.svg",
-		{ eager: true, import: "default" },
-	)
+	const pluginsLogos = import.meta.glob<{ src: string }>("./assets/plugin-*.svg", {
+		eager: true,
+		import: "default",
+	})
 
 	const { totalPlugins } = usePluginsCount()
 
@@ -241,11 +217,7 @@
 					overflow: hidden;
 					justify-content: space-between;
 					width: 100%;
-					background: linear-gradient(
-						180deg,
-						#21242e 0%,
-						#1a1c24 100%
-					);
+					background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 					border-radius: 20px;
 
 					@media only screen and (max-width: 860px) {
@@ -303,11 +275,7 @@
 				background-image: url(./assets/plugins-bg.png);
 				@media only screen and (max-width: 1200px) {
 					background-image: unset;
-					background: linear-gradient(
-						180deg,
-						#21242e 0%,
-						#1a1c24 100%
-					);
+					background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 				}
 			}
 

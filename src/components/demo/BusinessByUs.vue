@@ -5,10 +5,7 @@
 				<div class="info-content">
 					<div class="info-item">
 						<div class="icon-block">
-							<img
-								src="./assets/arrow-up-thin.svg?url"
-								alt="Work"
-							/>
+							<img src="./assets/arrow-up-thin.svg?url" alt="Work" />
 							<p>900%</p>
 						</div>
 						<p>in data production</p>

@@ -49,16 +49,11 @@
 							:data-step="index + 1"
 							:class="{ active: index === currentStep }"
 						>
-							<div
-								class="gradient-border"
-								:class="`${step.id}-border`"
-							></div>
+							<div class="gradient-border" :class="`${step.id}-border`"></div>
 							<div class="step-content">
-								<span
-									class="step-label"
-									:class="`${step.id}-label`"
-									>{{ step.label }}</span
-								>
+								<span class="step-label" :class="`${step.id}-label`">{{
+									step.label
+								}}</span>
 								<h4>{{ step.title }}</h4>
 								<p>{{ step.description }}</p>
 							</div>
@@ -69,22 +64,12 @@
 
 			<footer class="footer">
 				<p>
-					With native triggers, declarative flows, and built-in
-					monitoring, Kestra gives you a clear path from workflow
-					creation to reliable execution across your stack
+					With native triggers, declarative flows, and built-in monitoring, Kestra gives
+					you a clear path from workflow creation to reliable execution across your stack
 				</p>
 				<div class="buttons">
-					<a
-						href="/demo"
-						class="btn btn-secondary mb-2"
-						target="_blank"
-					>
-						Talk to us
-					</a>
-					<a
-						href="/docs/quickstart#start-kestra"
-						class="btn btn-primary ms-3 mb-2"
-					>
+					<a href="/demo" class="btn btn-secondary mb-2" target="_blank"> Talk to us </a>
+					<a href="/docs/quickstart#start-kestra" class="btn btn-primary ms-3 mb-2">
 						Get Started!
 					</a>
 				</div>
@@ -183,10 +168,8 @@
 
 		const isNearlyCentered = centerDistance < viewportHeight * 0.1
 		const isWellPositioned =
-			top.value < viewportHeight * 0.5 &&
-			bottom.value > viewportHeight * 0.2
-		const visibleHeight =
-			Math.min(bottom.value, viewportHeight) - Math.max(top.value, 0)
+			top.value < viewportHeight * 0.5 && bottom.value > viewportHeight * 0.2
+		const visibleHeight = Math.min(bottom.value, viewportHeight) - Math.max(top.value, 0)
 		const visibility = visibleHeight / height.value
 
 		return isNearlyCentered && isWellPositioned && visibility > 0.6
@@ -231,17 +214,12 @@
 	}
 
 	const handleKeyboardEvent = (event: KeyboardEvent) => {
-		if (isExiting.value || window.innerWidth <= 992 || isTouching.value)
-			return
+		if (isExiting.value || window.innerWidth <= 992 || isTouching.value) return
 
 		if (event.key === "ArrowDown" || event.key === "ArrowUp") {
 			const inSection = isSectionCentered.value
 
-			if (
-				inSection &&
-				!isInWorkflowSection.value &&
-				!hasCompletedSteps.value
-			) {
+			if (inSection && !isInWorkflowSection.value && !hasCompletedSteps.value) {
 				event.preventDefault()
 				event.stopPropagation()
 
@@ -276,16 +254,11 @@
 	}
 
 	const handleWheelEvent = (event: WheelEvent) => {
-		if (isExiting.value || window.innerWidth <= 992 || isTouching.value)
-			return
+		if (isExiting.value || window.innerWidth <= 992 || isTouching.value) return
 
 		const inSection = isSectionCentered.value
 
-		if (
-			inSection &&
-			!isInWorkflowSection.value &&
-			!hasCompletedSteps.value
-		) {
+		if (inSection && !isInWorkflowSection.value && !hasCompletedSteps.value) {
 			event.preventDefault()
 			event.stopPropagation()
 
@@ -330,8 +303,7 @@
 	}
 
 	const handleTouchMove = (event: TouchEvent) => {
-		if (isExiting.value || window.innerWidth <= 992 || !isTouching.value)
-			return
+		if (isExiting.value || window.innerWidth <= 992 || !isTouching.value) return
 
 		const inSection = isSectionCentered.value
 
@@ -341,8 +313,7 @@
 	}
 
 	const handleTouchEnd = (event: TouchEvent) => {
-		if (isExiting.value || window.innerWidth <= 992 || !isTouching.value)
-			return
+		if (isExiting.value || window.innerWidth <= 992 || !isTouching.value) return
 
 		const touch = event.changedTouches[0]
 		const deltaY = touchStartY.value - touch.clientY
@@ -357,11 +328,7 @@
 
 		const inSection = isSectionCentered.value
 
-		if (
-			inSection &&
-			!isInWorkflowSection.value &&
-			!hasCompletedSteps.value
-		) {
+		if (inSection && !isInWorkflowSection.value && !hasCompletedSteps.value) {
 			event.preventDefault()
 			event.stopPropagation()
 
@@ -460,11 +427,7 @@
 				color: $white;
 
 				&.subheading {
-					background: linear-gradient(
-						89.89deg,
-						#9f79f3 37.64%,
-						#658af9 63.06%
-					);
+					background: linear-gradient(89.89deg, #9f79f3 37.64%, #658af9 63.06%);
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;
 					background-clip: text;
@@ -655,11 +618,7 @@
 			padding: 2rem;
 			background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 			border: 1px solid;
-			border-image-source: linear-gradient(
-				180deg,
-				#2b313e 0%,
-				#131725 100%
-			);
+			border-image-source: linear-gradient(180deg, #2b313e 0%, #131725 100%);
 			text-align: center;
 
 			p {

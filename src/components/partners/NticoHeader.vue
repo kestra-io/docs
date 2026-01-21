@@ -2,24 +2,15 @@
 	<div class="container-fluid">
 		<div class="hero hero-sm container">
 			<div class="mb-5 pb-5 row align-items-center">
-				<div
-					class="col-lg-5 align-items-center d-flex order-1 order-lg-0"
-				>
+				<div class="col-lg-5 align-items-center d-flex order-1 order-lg-0">
 					<div>
-						<NuxtImg
-							height="56"
-							loading="lazy"
-							format="webp"
-							:src="logo"
-							:alt="logo"
-						/>
+						<NuxtImg height="56" loading="lazy" format="webp" :src="logo" :alt="logo" />
 						<h1>
-							Ntico & Kestra: Your Partner for Data Orchestration
-							and ETL Solutions
+							Ntico & Kestra: Your Partner for Data Orchestration and ETL Solutions
 						</h1>
 						<p class="text-white baseline fs-4">
-							The Ntico team is ready to support you in your data
-							orchestration and ETL projects with Kestra.
+							The Ntico team is ready to support you in your data orchestration and
+							ETL projects with Kestra.
 						</p>
 						<div class="cta">
 							<a
@@ -32,10 +23,7 @@
 					</div>
 				</div>
 				<div class="col-lg-7 order-0 order-lg-1">
-					<img
-						class="hero-image"
-						src="/partners/ntico/hero-img.svg"
-					/>
+					<img class="hero-image" src="/partners/ntico/hero-img.svg" />
 				</div>
 			</div>
 		</div>
@@ -60,8 +48,8 @@
 					<div class="counter-box">
 						<h6>Solution</h6>
 						<p>
-							Ntico is a Digital Services Company that supports
-							you in digital transformation
+							Ntico is a Digital Services Company that supports you in digital
+							transformation
 						</p>
 					</div>
 				</div>
@@ -91,11 +79,7 @@
 			position: absolute;
 			z-index: -147;
 			filter: blur(100px);
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 		}
 
 		&::after {
@@ -138,11 +122,7 @@
 			}
 
 			:deep(span) {
-				background: linear-gradient(
-					90deg,
-					#e151f7 65.38%,
-					#5c47f5 82.43%
-				);
+				background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

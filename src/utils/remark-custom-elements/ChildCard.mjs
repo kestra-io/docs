@@ -6,9 +6,7 @@ const getFrontmatter = (markdown) => {
 	const charactersBetweenGroupedHyphens = /^---([\s\S]*?)---/
 	const metadataMatched = markdown.match(charactersBetweenGroupedHyphens)
 	const metadata = metadataMatched[1]
-	const content = markdown.slice(
-		(metadataMatched.index ?? 0) + (metadataMatched[0]?.length ?? 0),
-	)
+	const content = markdown.slice((metadataMatched.index ?? 0) + (metadataMatched[0]?.length ?? 0))
 
 	const lines = content.split("\n")
 	const firstNonBlankLine = lines.find((line) => line.trim().length > 0)
@@ -17,9 +15,7 @@ const getFrontmatter = (markdown) => {
 		if (firstNonBlankLine.startsWith("# ")) {
 			defaultMetadata.title = firstNonBlankLine.replace(/^# /, "").trim()
 		} else {
-			defaultMetadata.description = firstNonBlankLine
-				.replace(/^#+ /, "")
-				.trim()
+			defaultMetadata.description = firstNonBlankLine.replace(/^#+ /, "").trim()
 		}
 	}
 
@@ -46,8 +42,7 @@ export function ChildCard(data, _attributes, node, file) {
 		.readdirSync(directory)
 		.filter(
 			(f) =>
-				(f.endsWith(".md") || f.endsWith(".mdx")) &&
-				f !== path.basename(file.history[0]),
+				(f.endsWith(".md") || f.endsWith(".mdx")) && f !== path.basename(file.history[0]),
 		)
 	const richFiles = files.map((f) => ({
 		entry: f,
@@ -84,9 +79,7 @@ export function ChildCard(data, _attributes, node, file) {
 							hProperties: {
 								class: "card-icon-img",
 								src: richFile.data.icon ?? "/default-icon.svg",
-								alt:
-									richFile.data.title ??
-									richFile.entry.replace(/\.mdx?$/, ""),
+								alt: richFile.data.title ?? richFile.entry.replace(/\.mdx?$/, ""),
 								height: "50px",
 								width: "50px",
 							},
@@ -105,9 +98,7 @@ export function ChildCard(data, _attributes, node, file) {
 				children: [
 					{
 						type: "text",
-						value:
-							richFile.data.title ??
-							richFile.entry.replace(/\.mdx?$/, ""),
+						value: richFile.data.title ?? richFile.entry.replace(/\.mdx?$/, ""),
 					},
 				],
 			},

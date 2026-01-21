@@ -7,13 +7,11 @@
 
 	const faqItems = [
 		{
-			question:
-				"Is it easy to upgrade from Open Source edition to Kestra Enterprise?",
+			question: "Is it easy to upgrade from Open Source edition to Kestra Enterprise?",
 			answer: "Yes. Kestra 1.0 is our first Long-Term Support (LTS) release, tested and hardened for production use. Many features that were previously in Beta are now generally available incl. Unit Tests, SLAs, Plugin Versioning, and new Helm charts for stable deployments.",
 		},
 		{
-			question:
-				"Does the Enterprise Edition comes with Enterprise Support and SLAs?",
+			question: "Does the Enterprise Edition comes with Enterprise Support and SLAs?",
 			answer: "No. Kestra is fully open-source under the Apache 2.0 license. You can always export and run your flows, plugins, and configurations independently. For enterprise deployments, we also offer Kestra Enterprise and Kestra Cloud.",
 		},
 		{

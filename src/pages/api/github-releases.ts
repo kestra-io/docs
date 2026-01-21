@@ -41,10 +41,9 @@ export async function retrieveRepoReleases(repo: string) {
 
 	const headers: Record<string, string> = { "User-Agent": "request" }
 
-	const response = await fetch(
-		`https://api.github.com/repos/kestra-io/${repo}/releases`,
-		{ headers },
-	)
+	const response = await fetch(`https://api.github.com/repos/kestra-io/${repo}/releases`, {
+		headers,
+	})
 
 	if (!response.ok) {
 		if (response.status === 404) {
@@ -52,9 +51,7 @@ export async function retrieveRepoReleases(repo: string) {
 			await addToCache(result, [], 3600)
 			return result
 		}
-		console.error(
-			`GitHub API error for ${repo}: ${response.status} ${response.statusText}`,
-		)
+		console.error(`GitHub API error for ${repo}: ${response.status} ${response.statusText}`)
 		return { versions: [] }
 	}
 
@@ -74,9 +71,7 @@ export async function retrieveRepoReleases(repo: string) {
 					if (response.ok) {
 						const content = await response.text()
 						kestraVersion =
-							content
-								.match(/kestraVersion\s*=\s*(.+)/)?.[1]
-								?.trim() ?? null
+							content.match(/kestraVersion\s*=\s*(.+)/)?.[1]?.trim() ?? null
 					}
 					return {
 						version,

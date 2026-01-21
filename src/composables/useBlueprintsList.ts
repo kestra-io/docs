@@ -7,9 +7,7 @@ interface BlueprintsOptions {
 	q?: string
 }
 
-export async function useBlueprintsList(
-	options: BlueprintsOptions = {},
-): Promise<any> {
+export async function useBlueprintsList(options: BlueprintsOptions = {}): Promise<any> {
 	const { page = 1, size = 24, tags = "", q = "" } = options
 	const PARAMS = new URLSearchParams({
 		page: page.toString(),

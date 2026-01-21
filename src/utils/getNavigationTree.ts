@@ -46,9 +46,7 @@ export function getNavigationTree(
 	const navigationTreeResult: NavigationItem[] = []
 	for (const [section, titles] of Object.entries(navigationTree)) {
 		const sectionPage = docsPages.find(
-			(page) =>
-				section === page.data.title ||
-				section === page.data.sidebarTitle,
+			(page) => section === page.data.title || section === page.data.sidebarTitle,
 		)
 		const sectionNode: NavigationItem = {
 			title: section,
@@ -58,19 +56,14 @@ export function getNavigationTree(
 			children: titles
 				.map((title) => {
 					const page = docsPages.find(
-						(page) =>
-							title === page.data.sidebarTitle ||
-							title === page.data.title,
+						(page) => title === page.data.sidebarTitle || title === page.data.title,
 					)
 					return page
 						? {
 								title: page.data.title,
 								sidebarTitle: page.data.sidebarTitle,
 								path: `/docs/${page.id}`,
-								children: recursivelyBuildChildren(
-									page.id,
-									docsPages,
-								),
+								children: recursivelyBuildChildren(page.id, docsPages),
 							}
 						: undefined
 				})

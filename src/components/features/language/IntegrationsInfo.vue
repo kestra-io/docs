@@ -4,35 +4,28 @@
 			<div class="col-md-6 order-1 order-md-1" data-usal="fade-l">
 				<h3>Manage your Scripts with the Embedded Code Editor</h3>
 				<p>
-					The built-in code editor allows you to develop your
-					orchestration and business logic directly from the Kestra
-					UI. You can create and edit scripts and manage YAML
-					configurations all within Kestra's build-in IDE, eliminating
-					the need to switch between different environments or tools.
+					The built-in code editor allows you to develop your orchestration and business
+					logic directly from the Kestra UI. You can create and edit scripts and manage
+					YAML configurations all within Kestra's build-in IDE, eliminating the need to
+					switch between different environments or tools.
 				</p>
 				<ul>
 					<li>
-						<b>Unified Interface:</b>Centralize your development
-						tasks with an interface that combines scripting and
-						orchestration.
+						<b>Unified Interface:</b>Centralize your development tasks with an interface
+						that combines scripting and orchestration.
 					</li>
 					<li>
-						<b>Developer Efficiency: </b> Benefit from advanced
-						features like syntax highlighting, autocompletion, and
-						synthax validation.
+						<b>Developer Efficiency: </b> Benefit from advanced features like syntax
+						highlighting, autocompletion, and synthax validation.
 					</li>
 					<li>
-						<b>Language Flexibility:</b> Fully compatible with a
-						wide array of programming languages, ensuring your
-						existing codebase can be orchestrated without
-						modifications.
+						<b>Language Flexibility:</b> Fully compatible with a wide array of
+						programming languages, ensuring your existing codebase can be orchestrated
+						without modifications.
 					</li>
 				</ul>
 			</div>
-			<div
-				class="col-md-6 order-0 order-md-0 mask mb-3"
-				data-usal="fade-l"
-			>
+			<div class="col-md-6 order-0 order-md-0 mask mb-3" data-usal="fade-l">
 				<NuxtImg
 					loading="lazy"
 					format="webp"
@@ -48,12 +41,10 @@
 			<div class="col-md-6 order-1 order-md-0" data-usal="fade-r">
 				<h3>Docker Integration for Script Execution</h3>
 				<p>
-					Run your scripts in isolated environments with Docker.
-					Kestra's Docker support allows for consistent execution
-					across different environments, simplifying dependency
-					management and deployments. Define Docker parameters
-					directly within your workflow configurations for maximum
-					flexibility.
+					Run your scripts in isolated environments with Docker. Kestra's Docker support
+					allows for consistent execution across different environments, simplifying
+					dependency management and deployments. Define Docker parameters directly within
+					your workflow configurations for maximum flexibility.
 				</p>
 			</div>
 			<div class="col-md-6 order-0 order-md-1 mask-1" data-usal="fade-l">
@@ -111,11 +102,7 @@
 				right: 86px;
 				bottom: -4px;
 				z-index: -2;
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0),
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0), #6117ff 100%);
 				filter: blur(65px);
 			}
 			&::before {
@@ -124,9 +111,7 @@
 				left: -13px;
 				top: -65px;
 				z-index: -1;
-				background: linear-gradient(
-					(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%)
-				);
+				background: linear-gradient((180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%));
 				filter: blur(65px);
 			}
 		}
@@ -141,11 +126,7 @@
 				right: 86px;
 				bottom: 5px;
 				z-index: -2;
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0) 0%,
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 				filter: blur(65px);
 			}
 			&::before {
@@ -154,11 +135,7 @@
 				left: 3px;
 				top: 8px;
 				z-index: -1;
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0) 0%,
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 				filter: blur(65px);
 			}
 		}

@@ -12,10 +12,7 @@
 		>
 
 		<div class="tabs">
-			<div
-				class="activeMarker"
-				:style="{ left: `${displayTab * 25}%` }"
-			/>
+			<div class="activeMarker" :style="{ left: `${displayTab * 25}%` }" />
 			<button
 				v-for="(tab, index) in tabs"
 				:key="tab.label"
@@ -88,8 +85,7 @@
 			span {
 				display: block;
 				color: #8405ff;
-				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-					no-repeat center;
+				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 				background-size: cover;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

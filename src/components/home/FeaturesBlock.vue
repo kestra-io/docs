@@ -3,11 +3,7 @@
 		<div v-for="(feat, index) of features" class="block-content">
 			<div class="clipper">
 				<div class="img-block">
-					<NuxtImg
-						v-bind="feat.icon"
-						:width="feat.width"
-						alt="Feature Icon"
-					/>
+					<NuxtImg v-bind="feat.icon" :width="feat.width" alt="Feature Icon" />
 				</div>
 			</div>
 			<div class="arrow-box">
@@ -28,11 +24,7 @@
 							gradientUnits="userSpaceOnUse"
 						>
 							<stop :stop-color="feat.color" />
-							<stop
-								offset="1"
-								:stop-color="feat.color"
-								stop-opacity="0"
-							/>
+							<stop offset="1" :stop-color="feat.color" stop-opacity="0" />
 						</linearGradient>
 					</defs>
 					<g>
@@ -60,11 +52,7 @@
 		</div>
 		<div class="block-center-image">
 			<img v-bind="cube" alt="Feature Container" />
-			<img
-				v-bind="kestraLogo"
-				alt="Kestra Monogram"
-				class="kestra-logo"
-			/>
+			<img v-bind="kestraLogo" alt="Kestra Monogram" class="kestra-logo" />
 		</div>
 	</HomeCard>
 </template>

@@ -54,14 +54,9 @@
 	</ul>
 </template>
 <script lang="ts">
-	export const activeSlugInjectionKey = Symbol("activeSlug") as InjectionKey<
-		Ref<string>
-	>
-	export const closeSidebarInjectionKey = Symbol(
-		"closeSidebar",
-	) as InjectionKey<() => void>
-	const normalizePath = (path: string) =>
-		`${path}${path.endsWith("/") ? "" : "/"}`
+	export const activeSlugInjectionKey = Symbol("activeSlug") as InjectionKey<Ref<string>>
+	export const closeSidebarInjectionKey = Symbol("closeSidebar") as InjectionKey<() => void>
+	const normalizePath = (path: string) => `${path}${path.endsWith("/") ? "" : "/"}`
 </script>
 
 <script setup lang="ts">
@@ -105,13 +100,9 @@
 	const activeSlug = inject(activeSlugInjectionKey, ref(""))
 	const closeSidebar = inject(closeSidebarInjectionKey, () => {})
 	const isActive = computed(() =>
-		normalizePath(activeSlug.value).startsWith(
-			normalizePath(props.item.path),
-		),
+		normalizePath(activeSlug.value).startsWith(normalizePath(props.item.path)),
 	)
-	const toggled = ref<boolean>(
-		isActive.value || props.item.isSection === true,
-	)
+	const toggled = ref<boolean>(isActive.value || props.item.isSection === true)
 	const title = computed(() => props.item.sidebarTitle ?? props.item.title)
 
 	watch(activeSlug, (v) => {
@@ -125,8 +116,7 @@
 	})
 
 	onMounted(() => {
-		const { restoreScrollPosition, scrollToActiveIfNeeded } =
-			useSidebarScroll()
+		const { restoreScrollPosition, scrollToActiveIfNeeded } = useSidebarScroll()
 
 		nextTick(() => {
 			const wasRestored = restoreScrollPosition()
@@ -150,9 +140,7 @@
 			?.filter((i) => i.path.startsWith(path))
 			.forEach((i) => {
 				if (isActiveOrExpanded(i) || i.path === path) {
-					const childRef = document.querySelector(
-						`#childSideBar-${pathToId(i.path)}`,
-					)
+					const childRef = document.querySelector(`#childSideBar-${pathToId(i.path)}`)
 					if (childRef && "toggleWithChildrenHandling" in childRef) {
 						;(childRef as any).toggleWithChildrenHandling(i.path)
 					}
@@ -166,10 +154,7 @@
 	}
 
 	const pathToId = (path: string) => {
-		return path
-			.replaceAll("/", "_")
-			.replaceAll(".", "-")
-			.replaceAll("#", "__")
+		return path.replaceAll("/", "_").replaceAll(".", "-").replaceAll("#", "__")
 	}
 
 	const filterChildren = (item: NavigationItem) => {

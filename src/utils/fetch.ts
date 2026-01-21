@@ -2,10 +2,7 @@ import { API_URL } from "astro:env/client"
 
 const cacheObject: Record<string, any> = {}
 
-export async function $fetch<T = any>(
-	url: string,
-	init: RequestInit = {},
-): Promise<T> {
+export async function $fetch<T = any>(url: string, init: RequestInit = {}): Promise<T> {
 	let response: Response
 	if (cacheObject[url]) {
 		return cacheObject[url]
@@ -18,9 +15,7 @@ export async function $fetch<T = any>(
 	}
 
 	if (!response.ok) {
-		throw new Error(
-			`Fetch error: ${response.status} ${response.statusText} on url ${url}`,
-		)
+		throw new Error(`Fetch error: ${response.status} ${response.statusText} on url ${url}`)
 	}
 
 	const data = await response.json()
@@ -29,10 +24,7 @@ export async function $fetch<T = any>(
 	return data
 }
 
-export async function $fetchApi<T = any>(
-	url: string,
-	init: RequestInit = {},
-): Promise<T> {
+export async function $fetchApi<T = any>(url: string, init: RequestInit = {}): Promise<T> {
 	return $fetch<T>(`${API_URL}${url}`, init)
 }
 

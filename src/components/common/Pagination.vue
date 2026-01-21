@@ -33,11 +33,7 @@
 					>{{ n }}</a
 				>
 			</li>
-			<li
-				class="page-item"
-				@click="changePage({ direction: 'next' })"
-				role="button"
-			>
+			<li class="page-item" @click="changePage({ direction: 'next' })" role="button">
 				<a
 					class="page-link fw-bold arrow-button bg-dark-2"
 					:href="getPageUrl(currentPage + 1)"
@@ -88,27 +84,18 @@
 		},
 	)
 
-	function changePage(event: {
-		direction?: "previous" | "next"
-		pageNo?: number | "..."
-	}) {
+	function changePage(event: { direction?: "previous" | "next"; pageNo?: number | "..." }) {
 		const currentPage = props.currentPage
 		if (event.direction === "previous" && currentPage > 1) {
 			emit("update:currentPage", currentPage - 1)
-		} else if (
-			event.direction === "next" &&
-			currentPage < props.totalPages
-		) {
+		} else if (event.direction === "next" && currentPage < props.totalPages) {
 			emit("update:currentPage", currentPage + 1)
 		} else if (event.pageNo && event.pageNo !== morePagesPlaceholder) {
 			emit("update:currentPage", event.pageNo)
 		}
 	}
 
-	function paginate(
-		current_page: number,
-		last_page: number,
-	): (number | "...")[] {
+	function paginate(current_page: number, last_page: number): (number | "...")[] {
 		const pages: (number | "...")[] = []
 		for (let i = 1; i <= last_page; i++) {
 			const offset = 1
@@ -119,19 +106,14 @@
 				i === last_page
 			) {
 				pages.push(i)
-			} else if (
-				i === current_page - (offset + 1) ||
-				i === current_page + (offset + 1)
-			) {
+			} else if (i === current_page - (offset + 1) || i === current_page + (offset + 1)) {
 				pages.push(morePagesPlaceholder)
 			}
 		}
 		return pages
 	}
 
-	const pages = computed<(number | "...")[]>(() =>
-		paginate(props.currentPage, props.totalPages),
-	)
+	const pages = computed<(number | "...")[]>(() => paginate(props.currentPage, props.totalPages))
 </script>
 
 <style scoped lang="scss">

@@ -5,16 +5,10 @@
 			<template v-for="(post, index) of posts" :key="post.path">
 				<hr v-if="index > 0" />
 				<a :href="post.path" class="post-card">
-					<img
-						:src="post.image"
-						class="card-img-left"
-						:alt="post.title"
-					/>
+					<img :src="post.image" class="card-img-left" :alt="post.title" />
 					<div class="card-body">
 						<div class="card-details">
-							<span class="card-category">{{
-								post.category
-							}}</span>
+							<span class="card-category">{{ post.category }}</span>
 							<span class="card-date">{{
 								dateTimeFormat.format(new Date(post.date))
 							}}</span>
@@ -73,11 +67,7 @@
 			padding: 0.5rem 0;
 
 			&:hover {
-				background-image: radial-gradient(
-					circle,
-					rgba($primary, 0.3) 0%,
-					#13172500 30%
-				);
+				background-image: radial-gradient(circle, rgba($primary, 0.3) 0%, #13172500 30%);
 				background-position: -280px center;
 				background-repeat: no-repeat;
 			}

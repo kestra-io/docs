@@ -5,11 +5,7 @@
 				<div v-for="_case in cases" class="col-md-4" data-usal="fade-r">
 					<a :href="_case.link" class="d-flex flex-column gap-2">
 						<div class="img-block bg-dark-2">
-							<img
-								class="img-fluid"
-								:src="_case.img"
-								:alt="_case.title"
-							/>
+							<img class="img-fluid" :src="_case.img" :alt="_case.title" />
 						</div>
 						<h4 class="title">{{ _case.title }}</h4>
 						<p>{{ _case.description }}</p>
@@ -45,8 +41,7 @@
 				link: "/use-cases/modern-data-stack",
 				img: "/landing/usecases/mds/intro.svg",
 				title: "Modern Data Stack Integration",
-				description:
-					"Integrate leading data tools from the Modern Data Stack with Kestra",
+				description: "Integrate leading data tools from the Modern Data Stack with Kestra",
 			},
 			{
 				link: "/use-cases/ci-cd",

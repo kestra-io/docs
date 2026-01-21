@@ -22,9 +22,7 @@
 				:showDropdown="showStageDropdown"
 			/>
 		</div>
-		<div
-			:class="`col-xl col-md-${stage?.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`"
-		>
+		<div :class="`col-xl col-md-${stage?.length > 0 ? 6 : 12} pb-3 pb-xl-0 form-group`">
 			<Magnify class="magnify-icon" />
 			<input
 				type="text"
@@ -45,16 +43,8 @@
 		</div>
 	</div>
 	<div class="card-grid mb-2">
-		<a
-			class="card"
-			:href="item.path"
-			v-for="item in navigation"
-			:key="item.path"
-		>
-			<span
-				class="card-stage"
-				:style="`background-color: ${stages[item.stage]}`"
-			>
+		<a class="card" :href="item.path" v-for="item in navigation" :key="item.path">
+			<span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
 				{{ item.stage }}
 			</span>
 			<div>
@@ -67,17 +57,11 @@
 				/>
 				<h4 class="card-title">{{ item.title }}</h4>
 			</div>
-			<MDCParserAndRenderer
-				:content="item.description"
-				class="bd-markdown"
-			/>
+			<MDCParserAndRenderer :content="item.description" class="bd-markdown" />
 			<div class="topics">
-				<span
-					v-for="(topic, index) in item.topics"
-					:key="index"
-					class="topic-item"
-					>{{ topic }}</span
-				>
+				<span v-for="(topic, index) in item.topics" :key="index" class="topic-item">{{
+					topic
+				}}</span>
 			</div>
 		</a>
 	</div>

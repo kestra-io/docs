@@ -4,11 +4,7 @@
 			{{ capitalizedTitle }}
 		</h6>
 		<div class="task-icons">
-			<div
-				class="icon bg-dark-4"
-				v-for="n in blueprint.includedTasks"
-				:key="n"
-			>
+			<div class="icon bg-dark-4" v-for="n in blueprint.includedTasks" :key="n">
 				<TaskIcon :cls="n" />
 			</div>
 		</div>
@@ -16,11 +12,7 @@
 			<hr />
 			<div class="bottom-row">
 				<div class="tag-list" v-if="tagsList.length">
-					<span
-						v-for="(tag, idx) in tagsList"
-						:key="idx"
-						class="category-tag"
-					>
+					<span v-for="(tag, idx) in tagsList" :key="idx" class="category-tag">
 						{{ tag }}
 					</span>
 				</div>
@@ -54,8 +46,7 @@
 
 	const capitalizedTitle = computed(() =>
 		props.blueprint?.title
-			? props.blueprint.title.charAt(0).toUpperCase() +
-				props.blueprint.title.slice(1)
+			? props.blueprint.title.charAt(0).toUpperCase() + props.blueprint.title.slice(1)
 			: "",
 	)
 

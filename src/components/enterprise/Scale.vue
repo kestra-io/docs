@@ -7,8 +7,8 @@
 			<Section title="Scale with High Availability and Fault Tolerance">
 				<p data-usal="fade-r">
 					Ensure scalability and high availability with managed
-					<b>Kafka</b> and <b>Elasticsearch</b> integrated into the
-					Enterprise Edition to eliminate single point of failure.
+					<b>Kafka</b> and <b>Elasticsearch</b> integrated into the Enterprise Edition to
+					eliminate single point of failure.
 				</p>
 			</Section>
 		</div>
@@ -25,8 +25,7 @@
 
 	.container {
 		> div {
-			background: $purple-7 url("/landing/dot3.svg") no-repeat bottom
-				right;
+			background: $purple-7 url("/landing/dot3.svg") no-repeat bottom right;
 			color: var(--bs-white);
 		}
 

@@ -1,9 +1,6 @@
 <template>
 	<div class="container">
-		<Section
-			subtitle="Simple Workflow Definition in "
-			subtitle-after="YAML"
-		>
+		<Section subtitle="Simple Workflow Definition in " subtitle-after="YAML">
 			<div class="row card-group mb-2">
 				<div class="col-md-4 mb-4">
 					<Card

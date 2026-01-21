@@ -28,9 +28,7 @@
 			default: "FAQ",
 		},
 		items: {
-			type: Array as PropType<
-				Array<{ question: string; answer: string }>
-			>,
+			type: Array as PropType<Array<{ question: string; answer: string }>>,
 			default: () => [
 				{
 					question:
@@ -38,8 +36,7 @@
 					answer: "As easy as it takes to add the license key to the configuration file and restart your server!",
 				},
 				{
-					question:
-						"Does the Enterprise Edition comes with Enterprise Support and SLAs?",
+					question: "Does the Enterprise Edition comes with Enterprise Support and SLAs?",
 					answer: "Yes! In addition to all the feature sets, we're providing access to an exclusive customer portal, end-to-end customer onboarding, and guaranteed response time on support requests! Everything operates in a full Customer Success Framework.",
 				},
 				{

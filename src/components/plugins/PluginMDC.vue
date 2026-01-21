@@ -1,9 +1,7 @@
 <template>
 	<div class="bd-content">
 		<DocsFeatureScopeMarker
-			v-if="
-				page.editions || page.version || page.deprecated || page.release
-			"
+			v-if="page.editions || page.version || page.deprecated || page.release"
 			:page="page"
 		/>
 
@@ -22,9 +20,7 @@
 			<template v-slot:markdown="{ content }">
 				<MDC :value="content">
 					<template #default="mdcProps">
-						<pre v-if="mdcProps.error" style="color: white">{{
-							mdcProps.error
-						}}</pre>
+						<pre v-if="mdcProps.error" style="color: white">{{ mdcProps.error }}</pre>
 						<ContentRenderer
 							v-else-if="mdcProps?.body"
 							class="markdown"
@@ -63,11 +59,7 @@
 </template>
 
 <script setup lang="ts">
-	import {
-		SchemaToHtmlV2,
-		PluginIndex,
-		type PluginMetadata,
-	} from "@kestra-io/ui-libs"
+	import { SchemaToHtmlV2, PluginIndex, type PluginMetadata } from "@kestra-io/ui-libs"
 
 	defineProps<{
 		page: any
@@ -163,25 +155,17 @@
 			}
 
 			.collapsible-body .border {
-				#{--collapsible-border-color}: var(
-					--kestra-io-token-color-border-secondary
-				);
-				border-color: var(
-					--kestra-io-token-color-border-secondary
-				) !important;
+				#{--collapsible-border-color}: var(--kestra-io-token-color-border-secondary);
+				border-color: var(--kestra-io-token-color-border-secondary) !important;
 
 				> .property {
-					background: var(
-						--kestra-io-token-color-background-secondary
-					);
+					background: var(--kestra-io-token-color-background-secondary);
 
 					&:not(:has(.collapse-button.collapsed)) {
 						background: var(--kestra-io-neutral-gray300);
 
 						> .collapsible-body {
-							background: var(
-								--kestra-io-token-color-background-primary
-							);
+							background: var(--kestra-io-token-color-background-primary);
 						}
 					}
 				}
@@ -196,8 +180,7 @@
 				}
 
 				> *:not(:first-child) {
-					border-top: var(--bs-border-width) var(--bs-border-style)
-						$black-6;
+					border-top: var(--bs-border-width) var(--bs-border-style) $black-6;
 				}
 
 				.border:not(.type-box) {
@@ -209,14 +192,11 @@
 				color: var(--kestra-io-token-color-white);
 
 				.ref-type {
-					border-right: 1px solid
-						var(--kestra-io-token-color-border-primary);
+					border-right: 1px solid var(--kestra-io-token-color-border-primary);
 				}
 
 				&:has(.ref-type):hover {
-					background: var(
-						--kestra-io-token-color-background-hover-primary
-					) !important;
+					background: var(--kestra-io-token-color-background-hover-primary) !important;
 
 					.ref-type {
 						border-right: 1px solid var(--ks-border-secondary);

@@ -2,9 +2,7 @@
 	<div class="container-fluid">
 		<div class="container">
 			<div class="row g-0">
-				<div
-					class="col-md-6 p-5 d-flex flex-column text-white justify-content-center"
-				>
+				<div class="col-md-6 p-5 d-flex flex-column text-white justify-content-center">
 					<h6>OHHHH... 😔</h6>
 					<h1 @click="visible = !visible">
 						{{ title }}
@@ -27,12 +25,7 @@
 						</ul>
 						<pre>{{ JSON.stringify(error, null, 2) }}</pre>
 					</div>
-					<a
-						href="/"
-						class="btn btn-animated btn-purple-animated mb-2"
-					>
-						Back to home
-					</a>
+					<a href="/" class="btn btn-animated btn-purple-animated mb-2"> Back to home </a>
 				</div>
 				<div class="col-md-6 p-5">
 					<img v-bind="errorImage" class="img-fluid" alt="error" />
@@ -100,11 +93,7 @@
 
 			h1 {
 				font-size: 3.125rem;
-				background: linear-gradient(
-					90deg,
-					#e151f7 46.62%,
-					#5c47f5 55.05%
-				);
+				background: linear-gradient(90deg, #e151f7 46.62%, #5c47f5 55.05%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

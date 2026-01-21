@@ -19,35 +19,23 @@
 		</HomeCard>
 		<HomeCard class="card-block">
 			<div class="any-spider">
-				<div class="spider-box" style="top: 13.5%; left: 38.4%">
-					Business Automation
-				</div>
-				<div class="spider-box" style="top: 37%; left: 65%">
-					ML/AI Orchestration
-				</div>
+				<div class="spider-box" style="top: 13.5%; left: 38.4%">Business Automation</div>
+				<div class="spider-box" style="top: 37%; left: 65%">ML/AI Orchestration</div>
 				<div class="spider-box" style="top: 69%; left: 55%">
 					Infrastructure Orchestration
 				</div>
-				<div class="spider-box" style="top: 69%; left: 22%">
-					Data & API Orchestration
-				</div>
+				<div class="spider-box" style="top: 69%; left: 22%">Data & API Orchestration</div>
 				<div class="spider-box" style="top: 37%; left: 12%">
 					Batch or<br />
 					Real-Time ETL
 				</div>
-				<img
-					v-bind="anySpider"
-					alt="Any orchestration"
-					class="spider"
-				/>
+				<img v-bind="anySpider" alt="Any orchestration" class="spider" />
 			</div>
 			<h3>
 				<span>Any Orchestration</span><br />
 				Use Case
 			</h3>
-			<a class="learn-more" href="/use-cases">
-				Explore Use Cases<ArrowRightIcon />
-			</a>
+			<a class="learn-more" href="/use-cases"> Explore Use Cases<ArrowRightIcon /> </a>
 		</HomeCard>
 	</div>
 </template>
@@ -94,8 +82,7 @@
 			margin-bottom: 0.5rem;
 			span {
 				color: $primary;
-				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-					no-repeat center;
+				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 				background-size: 350px;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -205,11 +192,7 @@
 				left: 0;
 				z-index: -1;
 				margin: -1px;
-				background-image: linear-gradient(
-					to bottom,
-					#9c90d350 0%,
-					#ac82d6 100%
-				);
+				background-image: linear-gradient(to bottom, #9c90d350 0%, #ac82d6 100%);
 			}
 			.subject {
 				display: block;

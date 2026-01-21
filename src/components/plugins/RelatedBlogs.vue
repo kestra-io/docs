@@ -1,10 +1,6 @@
 <template>
 	<div v-if="posts && posts.length > 0" class="related-blogs">
-		<BlogList
-			:posts="posts"
-			title="Latest Blog Posts"
-			heading-id="latest-blog-posts"
-		/>
+		<BlogList :posts="posts" title="Latest Blog Posts" heading-id="latest-blog-posts" />
 	</div>
 </template>
 

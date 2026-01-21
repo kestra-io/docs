@@ -14,17 +14,8 @@
 				</div>
 
 				<div class="buttons">
-					<a
-						href="/demo"
-						class="btn btn-secondary mb-2"
-						target="_blank"
-					>
-						Talk to us
-					</a>
-					<a
-						href="/docs/quickstart#start-kestra"
-						class="btn btn-primary ms-3 mb-2"
-					>
+					<a href="/demo" class="btn btn-secondary mb-2" target="_blank"> Talk to us </a>
+					<a href="/docs/quickstart#start-kestra" class="btn btn-primary ms-3 mb-2">
 						Get Started!
 					</a>
 				</div>
@@ -47,8 +38,7 @@
 			inset: 0;
 			width: 100%;
 			height: 100%;
-			background: url("/landing/company/teams/gridbg.svg") center/cover
-				no-repeat fixed;
+			background: url("/landing/company/teams/gridbg.svg") center/cover no-repeat fixed;
 			z-index: -4;
 			pointer-events: none;
 		}
@@ -58,14 +48,12 @@
 			inset: 0;
 			width: 100%;
 			height: 100%;
-			background: url("/landing/overview/sm-platform-hero.png")
-				right/cover no-repeat;
+			background: url("/landing/overview/sm-platform-hero.png") right/cover no-repeat;
 			z-index: -3;
 
 			@include media-breakpoint-up(md) {
 				background-image:
-					url("/landing/overview/overview-top.png"),
-					url("/landing/overview/mix.svg");
+					url("/landing/overview/overview-top.png"), url("/landing/overview/mix.svg");
 				background-position:
 					35% 0%,
 					top right;
@@ -112,11 +100,7 @@
 				font-weight: 600;
 				font-size: 1.15rem;
 				line-height: 1.75rem;
-				background: linear-gradient(
-					94.69deg,
-					#51cff7 57.35%,
-					#4782f5 95.94%
-				);
+				background: linear-gradient(94.69deg, #51cff7 57.35%, #4782f5 95.94%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -124,11 +108,7 @@
 				margin-bottom: 0;
 
 				@include media-breakpoint-up(md) {
-					background: linear-gradient(
-						89.75deg,
-						#9f79f3 0.22%,
-						#658af9 99.78%
-					);
+					background: linear-gradient(89.75deg, #9f79f3 0.22%, #658af9 99.78%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

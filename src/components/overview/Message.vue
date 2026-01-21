@@ -3,24 +3,15 @@
 		<div class="container">
 			<div class="text-block">
 				<p>
-					By using Kestra as your orchestrator, you can easily
-					automate complex workflows, integrate with your
+					By using Kestra as your orchestrator, you can easily automate complex workflows,
+					integrate with your
 					<br />
-					existing data stack, and improve the speed and efficiency of
-					your data processing.
+					existing data stack, and improve the speed and efficiency of your data
+					processing.
 				</p>
 				<div class="buttons">
-					<a
-						href="/demo"
-						class="btn btn-secondary mb-2"
-						target="_blank"
-					>
-						Talk to us
-					</a>
-					<a
-						href="/docs/quickstart#start-kestra"
-						class="btn btn-primary ms-3 mb-2"
-					>
+					<a href="/demo" class="btn btn-secondary mb-2" target="_blank"> Talk to us </a>
+					<a href="/docs/quickstart#start-kestra" class="btn btn-primary ms-3 mb-2">
 						Get Started!
 					</a>
 				</div>

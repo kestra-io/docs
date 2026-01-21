@@ -3,13 +3,7 @@ import { generate } from "~/utils/ogImage.ts"
 
 export const prerender = false
 
-export async function GET({
-	request,
-	params,
-}: {
-	request: any
-	params: { path: string }
-}) {
+export async function GET({ request, params }: { request: any; params: { path: string } }) {
 	const docsMetadata = await loadDocsMetadata()
 	const path = params.path
 	const entry = docsMetadata.find((doc) => doc.id === `/${path}`)
@@ -23,12 +17,7 @@ export async function GET({
 		})
 	}
 
-	const svgString = generate(
-		request,
-		"Documentation",
-		entry.data.title,
-		entry.data.icon,
-	)
+	const svgString = generate(request, "Documentation", entry.data.title, entry.data.icon)
 
 	return new Response(svgString, {
 		headers: {

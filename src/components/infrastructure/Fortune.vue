@@ -20,8 +20,8 @@
 			<div class="right-div d-flex flex-column gap-5">
 				<div data-usal="fade-u delay-25 duration-500 ease-out">
 					<h2>
-						“We eliminated the high cost and risk of VMware vRA.
-						What used to take 6 months now takes 6 days with Kestra”
+						“We eliminated the high cost and risk of VMware vRA. What used to take 6
+						months now takes 6 days with Kestra”
 					</h2>
 					<small>Principal Hosting Lead</small>
 				</div>
@@ -46,9 +46,7 @@
 					class="d-flex flex-column align-items-start gap-3 flex-lg-row align-items-lg-center justify-content-lg-between"
 					data-usal="fade-u delay-100 duration-500 ease-out"
 				>
-					<h6>
-						How much risk and cost are you still accepting today?
-					</h6>
+					<h6>How much risk and cost are you still accepting today?</h6>
 					<a
 						href="/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
 						class="btn btn-secondary"

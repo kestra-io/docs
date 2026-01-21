@@ -18,14 +18,12 @@
 						<span class="gradient">Everywhere.</span>
 					</h1>
 					<p class="text">
-						We're redefining orchestration for developers everywhere
-						— challenging the status quo and traditional
-						limitations. Kestra empowers engineers to orchestrate
-						any workflow, in any language, on any infrastructure,
-						delivering unparalleled freedom and flexibility. By
-						simplifying complexity and eliminating constraints, we
-						enable developers to build faster, and collaborate
-						freely without compromise.
+						We're redefining orchestration for developers everywhere — challenging the
+						status quo and traditional limitations. Kestra empowers engineers to
+						orchestrate any workflow, in any language, on any infrastructure, delivering
+						unparalleled freedom and flexibility. By simplifying complexity and
+						eliminating constraints, we enable developers to build faster, and
+						collaborate freely without compromise.
 					</p>
 				</div>
 				<NuxtImg
@@ -35,11 +33,7 @@
 					width="224"
 					height="268"
 				/>
-				<NuxtImg
-					src="/landing/company/teams/flare.svg"
-					alt="Flare Effect"
-					class="flare"
-				/>
+				<NuxtImg src="/landing/company/teams/flare.svg" alt="Flare Effect" class="flare" />
 				<NuxtImg
 					src="/landing/company/teams/flare.svg"
 					alt="Flare Effect 2"
@@ -73,14 +67,13 @@
 					</h2>
 
 					<p class="text-white" data-usal="fade-u delay-300">
-						<strong>We are excited</strong> to see how
-						<strong>Kestra</strong> transform the way<br />
+						<strong>We are excited</strong> to see how <strong>Kestra</strong> transform
+						the way<br />
 						organizations approach orchestration.
 					</p>
 					<p class="text-white" data-usal="fade-u delay-400">
 						We believe that
-						<strong>Kestra's potential is limitless</strong>, and
-						we<br />
+						<strong>Kestra's potential is limitless</strong>, and we<br />
 						are eager to explore new
 						<strong>opportunities</strong> and<br />
 						<strong>partnerships</strong> as we move forward.
@@ -336,8 +329,7 @@
 						rgba(24, 25, 31, 0.3) 49.42%,
 						rgba(102, 108, 133, 0) 98.04%
 					),
-					url("/landing/company/teams/globe.svg") center/contain
-						no-repeat;
+					url("/landing/company/teams/globe.svg") center/contain no-repeat;
 				z-index: 1;
 				opacity: 0.8;
 			}
@@ -405,11 +397,7 @@
 					line-height: 1.2;
 
 					.gradient {
-						background: linear-gradient(
-							89.75deg,
-							#9f79f3 0.22%,
-							#658af9 99.78%
-						);
+						background: linear-gradient(89.75deg, #9f79f3 0.22%, #658af9 99.78%);
 						background-clip: text;
 						-webkit-background-clip: text;
 						-webkit-text-fill-color: transparent;
@@ -470,11 +458,7 @@
 		}
 
 		.gradient {
-			background: linear-gradient(
-				90.25deg,
-				#7c2eea 6.26%,
-				#658af9 53.85%
-			);
+			background: linear-gradient(90.25deg, #7c2eea 6.26%, #658af9 53.85%);
 			background-clip: text;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;

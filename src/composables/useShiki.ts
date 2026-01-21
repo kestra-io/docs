@@ -41,9 +41,7 @@ const langs = [
 	"yaml",
 ] as const
 
-let shikiPromise = null as Promise<
-	HighlighterGeneric<(typeof langs)[number], "github-dark">
-> | null
+let shikiPromise = null as Promise<HighlighterGeneric<(typeof langs)[number], "github-dark">> | null
 
 export function getShiki() {
 	if (!shikiPromise) {
@@ -66,8 +64,7 @@ export default function useShiki() {
 				for (const block of blocks) {
 					const preClassList = block.parentElement?.classList
 					// avoid rendering already highlighted code
-					if (!preClassList || preClassList.contains("shiki"))
-						continue
+					if (!preClassList || preClassList.contains("shiki")) continue
 					// check is there is a language class and extract it
 					const languageClass = Array.from(preClassList).find((c) =>
 						c.startsWith("language-"),
@@ -91,23 +88,15 @@ export default function useShiki() {
 								)
 								continue
 							}
-							console.error(
-								"Error highlighting code block 1",
-								block.innerHTML,
-							)
+							console.error("Error highlighting code block 1", block.innerHTML)
 							continue
 						}
 						const newCode = document.createElement("div")
 						newCode.innerHTML = html
-						const classList =
-							newCode.querySelector("pre")?.classList
-						const innerHTML =
-							newCode.querySelector("code")?.innerHTML
+						const classList = newCode.querySelector("pre")?.classList
+						const innerHTML = newCode.querySelector("code")?.innerHTML
 						if (!innerHTML) {
-							console.error(
-								"Error highlighting code block 2",
-								innerHTML,
-							)
+							console.error("Error highlighting code block 2", innerHTML)
 							continue
 						}
 						if (classList) {

@@ -1,14 +1,6 @@
 <template>
-	<nav
-		v-if="pluginWrapper || pluginsWithoutDeprecated.length > 0"
-		class="plugin-sidebar"
-	>
-		<div
-			class="search"
-			data-bs-toggle="modal"
-			data-bs-target="#search-modal"
-			title="Search"
-		>
+	<nav v-if="pluginWrapper || pluginsWithoutDeprecated.length > 0" class="plugin-sidebar">
+		<div class="search" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
 			<div class="input-group">
 				<div class="input-icon">
 					<span class="input-group-text"><Magnify /></span>
@@ -27,10 +19,7 @@
 				>
 					<summary class="subgroup-title">
 						<ChevronRight class="chevron-icon" />
-						<a
-							:href="navigateToSubgroup(subGroup)"
-							class="subgroup-link"
-						>
+						<a :href="navigateToSubgroup(subGroup)" class="subgroup-link">
 							{{ subGroupName(subGroup) }}
 						</a>
 					</summary>
@@ -44,10 +33,7 @@
 				</details>
 			</div>
 			<PluginElements
-				v-else-if="
-					pluginWrapper &&
-					Object.keys(groupedDirectElements).length > 0
-				"
+				v-else-if="pluginWrapper && Object.keys(groupedDirectElements).length > 0"
 				:grouped-elements="groupedDirectElements"
 				:plugin-name="pluginName"
 				:show-line="true"
@@ -60,23 +46,13 @@
 		<div class="plugin-links">
 			<div class="link-section">
 				<h4>Request a plugin</h4>
-				<a
-					to="https://kestra.io/slack"
-					external
-					target="_blank"
-					class="link"
-				>
+				<a to="https://kestra.io/slack" external target="_blank" class="link">
 					Ask on slack
 				</a>
 			</div>
 			<div class="link-section">
 				<h4>Create a plugin</h4>
-				<a
-					to="/docs/plugin-developer-guide"
-					external
-					target="_blank"
-					class="link"
-				>
+				<a to="/docs/plugin-developer-guide" external target="_blank" class="link">
 					Go to the developer platform
 				</a>
 			</div>
@@ -106,19 +82,13 @@
 		routeParts: string[]
 	}>()
 
-	const groupPluginElements = (
-		subGroup: Plugin,
-	): Record<string, PluginElement[]> =>
+	const groupPluginElements = (subGroup: Plugin): Record<string, PluginElement[]> =>
 		Object.fromEntries(
 			Object.entries(subGroup)
-				.filter(([key, value]) =>
-					isEntryAPluginElementPredicate(key, value),
-				)
+				.filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
 				.map(([key, value]) => [
 					key,
-					(value as PluginElement[]).filter(
-						({ deprecated }) => !deprecated,
-					),
+					(value as PluginElement[]).filter(({ deprecated }) => !deprecated),
 				]),
 		)
 
@@ -131,8 +101,7 @@
 	)
 
 	const isSubGroupOpen = (subGroup: Plugin) =>
-		props.routeParts.length >= 2 &&
-		slugify(subGroupName(subGroup)) === props.routeParts[1]
+		props.routeParts.length >= 2 && slugify(subGroupName(subGroup)) === props.routeParts[1]
 
 	const navigateToSubgroup = (subGroup: Plugin) =>
 		`/plugins/${props.pluginName}/${slugify(subGroupName(subGroup))}`
@@ -150,8 +119,7 @@
 			overflow-y: auto;
 			overflow-x: hidden;
 			min-width: 260px;
-			border-right: 1px solid
-				var(--kestra-io-token-color-border-secondary);
+			border-right: 1px solid var(--kestra-io-token-color-border-secondary);
 			z-index: 10;
 			background: #0a0b0d;
 		}

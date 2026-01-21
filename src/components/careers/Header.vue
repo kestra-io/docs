@@ -1,19 +1,13 @@
 <template>
 	<div class="header-container">
-		<div
-			class="header container d-flex flex-column align-items-center gap-3"
-		>
+		<div class="header container d-flex flex-column align-items-center gap-3">
 			<slot>
 				<h1 data-usal="fade-l">Join our <span>Team</span></h1>
 				<h4 data-usal="fade-r">
-					Drive innovation in a globally distributed, collaborative
-					environment
+					Drive innovation in a globally distributed, collaborative environment
 				</h4>
 				<a
-					:href="
-						(fullPath === '/careers' ? '' : '/careers') +
-						'#positions'
-					"
+					:href="(fullPath === '/careers' ? '' : '/careers') + '#positions'"
 					class="btn btn-animated btn-purple-animated"
 					data-usal="zoomin"
 				>
@@ -50,11 +44,7 @@
 				}
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 58.97%,
-						#5c47f5 85.36%
-					);
+					background: linear-gradient(90deg, #e151f7 58.97%, #5c47f5 85.36%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

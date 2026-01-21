@@ -2,9 +2,7 @@
 	<div class="card mb-3 bg-dark-2">
 		<div class="card-body d-flex flex-column justify-content-between">
 			<div class="d-flex flex-column">
-				<div
-					class="w-100 d-flex justify-content-between align-items-center"
-				>
+				<div class="w-100 d-flex justify-content-between align-items-center">
 					<span class="card-quote">“</span>
 					<NuxtImg
 						v-if="imgName"

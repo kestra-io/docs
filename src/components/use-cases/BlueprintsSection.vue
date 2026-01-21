@@ -33,11 +33,7 @@
 			left: 40%;
 			z-index: 1;
 			filter: blur(100px);
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 			pointer-events: none;
 		}
 

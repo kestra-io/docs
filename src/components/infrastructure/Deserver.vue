@@ -1,18 +1,12 @@
 <template>
 	<section class="deserver">
 		<div class="container">
-			<h2
-				class="deserver-heading"
-				data-usal="fade-u delay-0 duration-500 ease-out"
-			>
+			<h2 class="deserver-heading" data-usal="fade-u delay-0 duration-500 ease-out">
 				Infrastructure Teams Deserve a Better Way to Operate
 			</h2>
 
 			<div class="deserver-row">
-				<div
-					class="deserver-inner"
-					data-usal="slide-r delay-25 duration-500 ease-out"
-				>
+				<div class="deserver-inner" data-usal="slide-r delay-25 duration-500 ease-out">
 					<h3>Why Infrastructure Automation Fails Today</h3>
 					<ul class="list-unstyled">
 						<li v-for="(item, index) in WHY_FAILS" :key="index">
@@ -24,10 +18,7 @@
 					</ul>
 				</div>
 
-				<div
-					class="deserver-ellipse"
-					data-usal="zoomin delay-50 duration-600 ease-out"
-				>
+				<div class="deserver-ellipse" data-usal="zoomin delay-50 duration-600 ease-out">
 					<NuxtImg
 						src="/landing/infrastructure/extrude-sm.png"
 						alt="extrude"
@@ -53,10 +44,7 @@
 				>
 					<h3>The Kestra Unified Control Plane</h3>
 					<ul class="list-unstyled">
-						<li
-							v-for="(item, index) in KESTRA_BENEFITS"
-							:key="index"
-						>
+						<li v-for="(item, index) in KESTRA_BENEFITS" :key="index">
 							<div class="icon-wrap">
 								<Check />
 							</div>
@@ -71,13 +59,9 @@
 				data-usal="fade-u delay-100 duration-500 ease-out"
 			>
 				<h6 class="deserver-subheading">
-					Ready to replace vRA, Rundeck, Jenkins, Control-M, and
-					fragmented scripts?
+					Ready to replace vRA, Rundeck, Jenkins, Control-M, and fragmented scripts?
 				</h6>
-				<a
-					href="/demo"
-					class="btn btn-primary btn-gradient deserver-btn"
-				>
+				<a href="/demo" class="btn btn-primary btn-gradient deserver-btn">
 					Discuss Your Automation Landscape
 				</a>
 			</div>
@@ -216,11 +200,7 @@
 			left: 36%;
 			width: 240px;
 			height: 284px;
-			background: linear-gradient(
-				179.73deg,
-				#f5cbff 0.24%,
-				rgba(223, 223, 223, 0) 53.89%
-			);
+			background: linear-gradient(179.73deg, #f5cbff 0.24%, rgba(223, 223, 223, 0) 53.89%);
 			border-radius: 120px;
 			transform: rotate(75deg);
 			opacity: 1;

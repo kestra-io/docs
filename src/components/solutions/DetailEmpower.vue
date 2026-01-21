@@ -55,8 +55,7 @@
 		padding-bottom: $rem-2;
 		text-align: center;
 		border-radius: 8px;
-		background: $black-2 url("/landing/usecases/cicd/empower-bg.svg")
-			no-repeat;
+		background: $black-2 url("/landing/usecases/cicd/empower-bg.svg") no-repeat;
 
 		.main {
 			padding-top: 0;

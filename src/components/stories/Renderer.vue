@@ -3,8 +3,7 @@
 		<div class="info-ctn">
 			<div class="info-itm w-100">
 				<h3>
-					<span class="quote-mk">“</span>{{ story.quote
-					}}<span class="quote-mk">”</span>
+					<span class="quote-mk">“</span>{{ story.quote }}<span class="quote-mk">”</span>
 				</h3>
 				<p class="mb-0">{{ story.quotePerson }}</p>
 				<small>{{ story.quotePersonTitle }}</small>

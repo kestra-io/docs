@@ -15,9 +15,7 @@
 				</h3>
 				<p class="text">{{ blog.description }}</p>
 				<BlogCardDetails
-					:authors="
-						blog.authors || (blog.author ? [blog.author] : [])
-					"
+					:authors="blog.authors || (blog.author ? [blog.author] : [])"
 					:date="blog.date.toString()"
 				/>
 			</div>

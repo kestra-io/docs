@@ -13,9 +13,7 @@
 	onMounted(async () => {
 		try {
 			const response = await axios.get("/api/github")
-			stargazersText.value = Intl.NumberFormat("en-US").format(
-				response.data.stargazers,
-			)
+			stargazersText.value = Intl.NumberFormat("en-US").format(response.data.stargazers)
 		} catch (error) {
 			emit("apiError")
 		}

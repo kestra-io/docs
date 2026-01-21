@@ -18,11 +18,10 @@
 					<span class="title-animate">All Your Workflows</span>
 				</h2>
 				<p class="para mb-5">
-					Kestra simplifies your scheduling and automation tasks
-					through its declarative language, making workflow management
-					straightforward. Build to meet the high standards of
-					software engineers, it's designed to be user-friendly for
-					both engineers and business stakeholders.
+					Kestra simplifies your scheduling and automation tasks through its declarative
+					language, making workflow management straightforward. Build to meet the high
+					standards of software engineers, it's designed to be user-friendly for both
+					engineers and business stakeholders.
 				</p>
 			</div>
 		</div>
@@ -55,11 +54,7 @@
 			}
 
 			&-animate {
-				background: linear-gradient(
-					90deg,
-					#e151f7 24.82%,
-					#5c47f5 76.81%
-				);
+				background: linear-gradient(90deg, #e151f7 24.82%, #5c47f5 76.81%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

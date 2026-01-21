@@ -1,10 +1,6 @@
 <template>
 	<div class="container base-container mt-5">
-		<h3
-			data-usal="fade-l"
-			class="title fw-light pb-2"
-			v-html="content.title"
-		></h3>
+		<h3 data-usal="fade-l" class="title fw-light pb-2" v-html="content.title"></h3>
 		<div v-for="item in content.items">
 			<CustomDetails :title="item.title" class="card">
 				<p>

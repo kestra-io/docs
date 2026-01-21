@@ -38,11 +38,7 @@ const tocFromJsonSchema = (schema: JSONSchema) => {
 	): TocLink[] => {
 		return Object.entries(properties)
 			.sort(([_, a], [__, b]) => {
-				return Boolean(b.$required) === Boolean(a.$required)
-					? 0
-					: a.$required
-						? 1
-						: -1
+				return Boolean(b.$required) === Boolean(a.$required) ? 0 : a.$required ? 1 : -1
 			})
 			.map(([key, _prop]) => ({
 				id: prefix + key,
@@ -66,10 +62,7 @@ const tocFromJsonSchema = (schema: JSONSchema) => {
 			id: "properties",
 			depth: 2,
 			text: "Properties",
-			children: buildPropertiesToc(
-				"properties_",
-				schema.properties.properties,
-			),
+			children: buildPropertiesToc("properties_", schema.properties.properties),
 		})
 	}
 

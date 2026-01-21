@@ -6,8 +6,8 @@
 				<div class="col-md-10 col-lg-7 text-center">
 					<h3 data-usal="fade-l">Become a <span>Partner</span></h3>
 					<p>
-						If you are interested in becoming a Kestra partner,
-						please contact us with any questions.
+						If you are interested in becoming a Kestra partner, please contact us with
+						any questions.
 					</p>
 				</div>
 			</div>
@@ -48,11 +48,7 @@
 			font-weight: 400;
 
 			span {
-				background: linear-gradient(
-					90deg,
-					#e151f7 54.91%,
-					#5c47f5 66.79%
-				);
+				background: linear-gradient(90deg, #e151f7 54.91%, #5c47f5 66.79%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

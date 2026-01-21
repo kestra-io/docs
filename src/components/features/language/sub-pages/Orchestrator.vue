@@ -3,8 +3,7 @@
 		<div class="container">
 			<div class="container-title mb-4">
 				<h2 class="title">
-					Let Your Orchestrator Adapt to <span>Your Code</span>, Not
-					the Reverse
+					Let Your Orchestrator Adapt to <span>Your Code</span>, Not the Reverse
 				</h2>
 			</div>
 			<div class="row mb-5 align-items-center justify-content-between">
@@ -12,10 +11,7 @@
 					<h3>Zero Modifications, Full Integration</h3>
 					<p v-for="desc in description">{{ desc }}</p>
 				</div>
-				<div
-					class="col-md-6 order-0 order-md-0 mask mb-3"
-					data-usal="fade-l"
-				>
+				<div class="col-md-6 order-0 order-md-0 mask mb-3" data-usal="fade-l">
 					<NuxtImg
 						loading="lazy"
 						format="webp"
@@ -80,11 +76,7 @@
 					}
 
 					span {
-						background: linear-gradient(
-							90.03deg,
-							#e151f7 2.16%,
-							#5c47f5 65.09%
-						);
+						background: linear-gradient(90.03deg, #e151f7 2.16%, #5c47f5 65.09%);
 						background-clip: text;
 						-webkit-background-clip: text;
 						-webkit-text-fill-color: transparent;
@@ -126,11 +118,7 @@
 					right: 214px;
 					bottom: 142px;
 					z-index: -2;
-					background: linear-gradient(
-						180deg,
-						rgba(98, 24, 255, 0) 0%,
-						#6117ff 100%
-					);
+					background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 					filter: blur(65px);
 
 					@include media-breakpoint-down(lg) {

@@ -5,8 +5,7 @@
 				<span class="highlight">Orchestrate</span> And
 				<br class="d-none d-xl-block" />
 				<span class="indent"
-					><span class="highlight">Govern</span> The Entire
-					Infrastructure Lifecycle</span
+					><span class="highlight">Govern</span> The Entire Infrastructure Lifecycle</span
 				>
 			</h1>
 

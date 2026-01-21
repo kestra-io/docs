@@ -2,9 +2,7 @@
 	<div class="helpful text-center mt-5">
 		<p class="mb-0">Was this page helpful?</p>
 		<div class="mt-2">
-			<div
-				class="d-flex justify-content-center align-items-center gap-3 thumb"
-			>
+			<div class="d-flex justify-content-center align-items-center gap-3 thumb">
 				<button class="btn btn-dark me-3" @click="openModal(true)">
 					<ThumbUpOutline />
 					Yes
@@ -31,9 +29,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="feedbackModalLabel">
-							Send Feedback
-						</h5>
+						<h5 class="modal-title" id="feedbackModalLabel">Send Feedback</h5>
 						<Close @click="closeModal" />
 					</div>
 					<div class="modal-body">
@@ -46,10 +42,7 @@
 								<p class="feedback-text">{{ feedbackText }}</p>
 							</div>
 							<div class="mb-3">
-								<label
-									for="commentTextarea"
-									class="form-label comment-label"
-								>
+								<label for="commentTextarea" class="form-label comment-label">
 									Share your thoughts (Optional)
 								</label>
 								<textarea
@@ -63,17 +56,12 @@
 						</div>
 						<div v-else class="submitted-state text-center py-4">
 							<h5 class="mb-2">
-								Thanks for your feedback, we really appreciate
-								it. 🙏
+								Thanks for your feedback, we really appreciate it. 🙏
 							</h5>
 						</div>
 					</div>
 					<div class="modal-footer" v-if="!isSubmitted">
-						<button
-							type="button"
-							class="btn btn-sm btn-secondary"
-							@click="closeModal"
-						>
+						<button type="button" class="btn btn-sm btn-secondary" @click="closeModal">
 							Cancel
 						</button>
 						<button

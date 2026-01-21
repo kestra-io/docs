@@ -6,11 +6,7 @@
 				<h2 class="highlight">Declarative & Scalable by Design</h2>
 			</div>
 			<div class="feature-cards">
-				<div
-					v-for="card in featureCardsFirst"
-					:key="card.title"
-					class="card"
-				>
+				<div v-for="card in featureCardsFirst" :key="card.title" class="card">
 					<h3>{{ card.title }}</h3>
 					<p>{{ card.description }}</p>
 				</div>
@@ -29,17 +25,10 @@
 					<h5>Everything From The UI</h5>
 					<ul class="list-unstyled">
 						<li><ArrowRightThick />Live Update dependency Graph</li>
-						<li>
-							<ArrowRightThick />Integrated No-Code & Code Editor
-						</li>
+						<li><ArrowRightThick />Integrated No-Code & Code Editor</li>
 						<li><ArrowRightThick />Run Backfills in Few Clicks</li>
-						<li>
-							<ArrowRightThick />Built-in Documentation &
-							Blueprints
-						</li>
-						<li>
-							<ArrowRightThick />Custom Observability Dashboards
-						</li>
+						<li><ArrowRightThick />Built-in Documentation & Blueprints</li>
+						<li><ArrowRightThick />Custom Observability Dashboards</li>
 					</ul>
 				</div>
 				<NuxtImg
@@ -51,30 +40,17 @@
 				<div class="list list-3">
 					<h5>Everything As Code</h5>
 					<ul class="list-unstyled mt-1">
-						<div
-							class="d-flex flex-column align-items-center justify-center"
-						>
-							<div
-								class="d-flex flex-row align-items-center justify-center gap-3"
-							>
-								<li>
-									<ArrowRightThick />Autocompletion & Syntax
-									Validation
-								</li>
+						<div class="d-flex flex-column align-items-center justify-center">
+							<div class="d-flex flex-row align-items-center justify-center gap-3">
+								<li><ArrowRightThick />Autocompletion & Syntax Validation</li>
 								<li><ArrowRightThick />Git Sync</li>
 								<li><ArrowRightThick />CI/CD Integrations</li>
 							</div>
 							<div
 								class="d-flex flex-row align-items-center justify-center ps-5 gap-4"
 							>
-								<li>
-									<ArrowRightThick />Multi-Language Script
-									Tasks
-								</li>
-								<li>
-									<ArrowRightThick />Automatic Revision
-									History & Rollback
-								</li>
+								<li><ArrowRightThick />Multi-Language Script Tasks</li>
+								<li><ArrowRightThick />Automatic Revision History & Rollback</li>
 							</div>
 						</div>
 					</ul>
@@ -90,20 +66,14 @@
 					<ul class="list-unstyled">
 						<li><ArrowRightThick />UI or API execution</li>
 						<li><ArrowRightThick />Event & Real-time Triggers</li>
-						<li>
-							<ArrowRightThick />Dependency-based flow execution
-						</li>
+						<li><ArrowRightThick />Dependency-based flow execution</li>
 						<li><ArrowRightThick />No Infrastructure Setup</li>
 					</ul>
 				</div>
 			</div>
 
 			<div class="feature-cards">
-				<div
-					v-for="card in featureCardsSecond"
-					:key="card.title"
-					class="card"
-				>
+				<div v-for="card in featureCardsSecond" :key="card.title" class="card">
 					<h3>{{ card.title }}</h3>
 					<p>{{ card.description }}</p>
 				</div>
@@ -112,13 +82,7 @@
 	</section>
 	<svg width="0" height="0">
 		<defs>
-			<linearGradient
-				id="arrow-gradient"
-				x1="0%"
-				y1="0%"
-				x2="100%"
-				y2="0%"
-			>
+			<linearGradient id="arrow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
 				<stop offset="57.35%" stop-color="#51CFF7" />
 				<stop offset="95.94%" stop-color="#4782F5" />
 			</linearGradient>
@@ -179,11 +143,7 @@
 			}
 
 			.highlight {
-				background: linear-gradient(
-					90.21deg,
-					#8c4bff 36.32%,
-					#658af9 63.11%
-				);
+				background: linear-gradient(90.21deg, #8c4bff 36.32%, #658af9 63.11%);
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
 				background-clip: text;
@@ -238,11 +198,7 @@
 					padding: 30px 32px;
 					border-radius: 8px;
 					border: 1px solid transparent;
-					background: linear-gradient(
-						180deg,
-						#21242e 0%,
-						#1a1c24 100%
-					);
+					background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 					background-clip: padding-box;
 					position: relative;
 					box-shadow: 0px 12px 24px 8px rgba(0, 0, 0, 0.09);
@@ -256,11 +212,7 @@
 						bottom: 0;
 						border-radius: 8px;
 						padding: 1px;
-						background: linear-gradient(
-							180deg,
-							#2b313e 0%,
-							#131725 100%
-						);
+						background: linear-gradient(180deg, #2b313e 0%, #131725 100%);
 						mask:
 							linear-gradient($white 0 0) content-box,
 							linear-gradient($white 0 0);
@@ -330,12 +282,7 @@
 					bottom: -2rem;
 					border-radius: 0.5rem;
 					padding: 1px;
-					background: linear-gradient(
-						180deg,
-						#7830ec 0%,
-						#a5cff1 51.92%,
-						#15d1f6 100%
-					);
+					background: linear-gradient(180deg, #7830ec 0%, #a5cff1 51.92%, #15d1f6 100%);
 					mask:
 						linear-gradient($white 0 0) content-box,
 						linear-gradient($white 0 0);

@@ -94,12 +94,7 @@
 				<Check v-if="copied" />
 				<ContentCopy v-else />
 			</button>
-			<div
-				ref="copyTooltip"
-				v-if="!!copyIconResetTimer"
-				id="copied-tooltip"
-				role="tooltip"
-			>
+			<div ref="copyTooltip" v-if="!!copyIconResetTimer" id="copied-tooltip" role="tooltip">
 				Copied!
 				<div id="arrow" data-popper-arrow />
 			</div>

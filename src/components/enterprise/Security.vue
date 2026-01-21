@@ -6,16 +6,12 @@
 					<div class="features-item-content">
 						<h3>More Security</h3>
 						<p class="mt-3">
-							Ensures top-tier security with SSO, audit logs, and
-							revision history for complete transparency.
-							Integration with secrets managers and API tokens
-							enhances secure automation, while end-to-end
-							encryption protects your data at all times.
+							Ensures top-tier security with SSO, audit logs, and revision history for
+							complete transparency. Integration with secrets managers and API tokens
+							enhances secure automation, while end-to-end encryption protects your
+							data at all times.
 						</p>
-						<a
-							href="/demo"
-							class="demo-btn btn btn-animated btn-purple-animated"
-						>
+						<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 							<span>Talk to us</span>
 						</a>
 					</div>
@@ -24,15 +20,11 @@
 					<div class="features-item-content">
 						<h3>Better Governance</h3>
 						<p class="mt-3">
-							Give your team secured, isolated environments and
-							control over workflows. With tailored automation and
-							precise access management, you can ensure compliance
-							and efficiency at scale.
+							Give your team secured, isolated environments and control over
+							workflows. With tailored automation and precise access management, you
+							can ensure compliance and efficiency at scale.
 						</p>
-						<a
-							href="/demo"
-							class="demo-btn btn btn-animated btn-purple-animated"
-						>
+						<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 							<span>Talk to us</span>
 						</a>
 					</div>
@@ -41,17 +33,12 @@
 					<div class="features-item-content">
 						<h3>Scale With No Limits</h3>
 						<p class="mt-3">
-							Kestra Enterprise scales with no downtime. Its
-							reliable architecture and task runners, support both
-							internal and external execution, minimize risk and
-							provide performance insights—allowing you to
-							optimize without worrying about infrastructure
-							limitations.
+							Kestra Enterprise scales with no downtime. Its reliable architecture and
+							task runners, support both internal and external execution, minimize
+							risk and provide performance insights—allowing you to optimize without
+							worrying about infrastructure limitations.
 						</p>
-						<a
-							href="/demo"
-							class="demo-btn btn btn-animated btn-purple-animated"
-						>
+						<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 							<span>Talk to us</span>
 						</a>
 					</div>
@@ -85,26 +72,19 @@
 					<div>
 						<h3>More Security</h3>
 						<p class="mt-3">
-							Ensures top-tier security with SSO, audit logs, and
-							revision history for complete transparency.
-							Integration with secrets managers and API tokens
-							enhances secure automation, while end-to-end
-							encryption protects your data at all times.
+							Ensures top-tier security with SSO, audit logs, and revision history for
+							complete transparency. Integration with secrets managers and API tokens
+							enhances secure automation, while end-to-end encryption protects your
+							data at all times.
 						</p>
-						<a
-							href="/demo"
-							class="demo-btn btn btn-animated btn-purple-animated"
-						>
+						<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 							<span>Talk to us</span>
 						</a>
 					</div>
 				</div>
 			</div>
 			<div class="security-item mb-5-rem">
-				<div
-					class="col-md-6 order-0 order-md-1 rounded-2"
-					data-usal="fade-l"
-				>
+				<div class="col-md-6 order-0 order-md-1 rounded-2" data-usal="fade-l">
 					<img
 						class="img-fluid"
 						v-bind="imageUrls[1]"
@@ -115,15 +95,11 @@
 					<div>
 						<h3>Better Governance</h3>
 						<p class="mt-3">
-							Give your team secured, isolated environments and
-							control over workflows. With tailored automation and
-							precise access management, you can ensure compliance
-							and efficiency at scale.
+							Give your team secured, isolated environments and control over
+							workflows. With tailored automation and precise access management, you
+							can ensure compliance and efficiency at scale.
 						</p>
-						<a
-							href="/demo"
-							class="demo-btn btn btn-animated btn-purple-animated"
-						>
+						<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 							<span>Talk to us</span>
 						</a>
 					</div>
@@ -141,17 +117,12 @@
 					<div>
 						<h3>Scale with no limits</h3>
 						<p class="mt-3">
-							Kestra Enterprise scales with no downtime. Its
-							reliable architecture and task runners, support both
-							internal and external execution, minimize risk and
-							provide performance insights—allowing you to
-							optimize without worrying about infrastructure
-							limitations.
+							Kestra Enterprise scales with no downtime. Its reliable architecture and
+							task runners, support both internal and external execution, minimize
+							risk and provide performance insights—allowing you to optimize without
+							worrying about infrastructure limitations.
 						</p>
-						<a
-							href="/demo"
-							class="demo-btn btn btn-animated btn-purple-animated"
-						>
+						<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 							<span>Talk to us</span>
 						</a>
 					</div>
@@ -194,16 +165,12 @@
 				this.itemPositions.forEach((item, index) => {
 					const centerOfViewport = window.innerHeight / 2
 					const itemCenter = item.rect.top + item.rect.height / 2
-					const isCentered =
-						Math.abs(itemCenter - centerOfViewport) <= 150
+					const isCentered = Math.abs(itemCenter - centerOfViewport) <= 150
 					this.itemPositions[index] = { ...item, isCentered }
 				})
 			},
 			isItemInView(index) {
-				return (
-					this.itemPositions[index] &&
-					this.itemPositions[index].isCentered
-				)
+				return this.itemPositions[index] && this.itemPositions[index].isCentered
 			},
 			getCurrentImageIndex() {
 				for (let i = 0; i < this.itemPositions.length; i++) {
@@ -528,11 +495,7 @@
 					position: absolute;
 					width: calc($spacer * 12);
 					height: calc($spacer * 12);
-					background: linear-gradient(
-						180deg,
-						rgba(98, 24, 255, 0) 0%,
-						#6117ff 100%
-					);
+					background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 					filter: blur(100px);
 					z-index: -5;
 					left: 49rem;

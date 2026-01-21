@@ -5,15 +5,13 @@
 				<div class="col-md-6 d-flex flex-column justify-content-center">
 					<h2 data-usal="fade-l">Simple Yet <span>Powerful</span></h2>
 					<p data-usal="fade-r">
-						The declarative syntax in a YAML format significantly
-						reduces the barrier to entry. You can onboard new team
-						members quickly, and maintain your workflows with
-						minimal effort.
+						The declarative syntax in a YAML format significantly reduces the barrier to
+						entry. You can onboard new team members quickly, and maintain your workflows
+						with minimal effort.
 						<br /><br />
-						In just a few lines of YAML configuration, anyone in
-						your team can build their first scheduled workflow. With
-						that first success, your team members can start
-						automating more advanced use cases with confidence.
+						In just a few lines of YAML configuration, anyone in your team can build
+						their first scheduled workflow. With that first success, your team members
+						can start automating more advanced use cases with confidence.
 					</p>
 				</div>
 				<div class="col-md-6">
@@ -30,8 +28,7 @@
 								<div style="margin-left: 20px">
 									<span>type:</span>
 									io.kestra.plugin.core.log.Log<br />
-									<span>message:</span> Hello from a
-									declarative workflow!<br />
+									<span>message:</span> Hello from a declarative workflow!<br />
 								</div>
 							</div>
 							<span>triggers:</span><br />
@@ -109,11 +106,7 @@
 			margin-bottom: 1.576rem;
 
 			span {
-				background: linear-gradient(
-					90deg,
-					#e151f7 2.16%,
-					#5c47f5 65.09%
-				);
+				background: linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -209,13 +202,7 @@
 			}
 
 			&::before {
-				background: conic-gradient(
-					#b010fb,
-					#de97ff 10%,
-					#a227db,
-					transparent 50%,
-					#a610ec
-				);
+				background: conic-gradient(#b010fb, #de97ff 10%, #a227db, transparent 50%, #a610ec);
 			}
 		}
 

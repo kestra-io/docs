@@ -14,25 +14,23 @@
 						/>
 					</div>
 					<div class="title-bar">
-						<h2 class="title">
-							Workflow Integration and Automation
-						</h2>
+						<h2 class="title">Workflow Integration and Automation</h2>
 					</div>
 				</div>
 				<div class="options-item col-12 col-md-12 col-lg-4">
 					<div class="card-item">
 						<h6 class="title">In-Flow HTTP Requests</h6>
 						<p class="desc">
-							Utilize the <span>HTTP Request</span> task within
-							your workflows to connect to external APIs, fetch
-							data or trigger actions within your Kestra flows.
+							Utilize the <span>HTTP Request</span> task within your workflows to
+							connect to external APIs, fetch data or trigger actions within your
+							Kestra flows.
 						</p>
 					</div>
 					<div class="card-item">
 						<h6 class="title">Event-Driven Triggers</h6>
 						<p class="desc">
-							The <span>HTTP Trigger</span> opens your workflows
-							for integration with any external events.
+							The <span>HTTP Trigger</span> opens your workflows for integration with
+							any external events.
 						</p>
 					</div>
 					<a

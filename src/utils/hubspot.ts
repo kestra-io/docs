@@ -13,10 +13,7 @@ declare global {
 	}
 }
 
-export function hubspotFormCreate(
-	eventType: string,
-	data: Record<string, any>,
-) {
+export function hubspotFormCreate(eventType: string, data: Record<string, any>) {
 	const gtm = useGtm()
 	scriptLoad(() => {
 		const formData = {
@@ -29,9 +26,7 @@ export function hubspotFormCreate(
 					noninteraction: false,
 				})
 				posthog.capture(eventType)
-				const email = $form.querySelector(
-					'[name="email"]',
-				) as HTMLInputElement
+				const email = $form.querySelector('[name="email"]') as HTMLInputElement
 				if (email?.value) {
 					identify(email?.value)
 				}

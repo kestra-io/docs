@@ -7,10 +7,7 @@
 					{{ content.description }}
 				</p>
 				<div class="d-flex flex-wrap gap-2">
-					<template
-						v-if="content.cta.length"
-						v-for="action in content.cta"
-					>
+					<template v-if="content.cta.length" v-for="action in content.cta">
 						<a :href="action.href" :target="action.target">
 							<button class="btn" :class="action.style">
 								{{ action.text }}
@@ -19,11 +16,7 @@
 					</template>
 				</div>
 			</div>
-			<div
-				class="col-lg-6 image"
-				:class="content.image.style"
-				data-usal="zoomin"
-			>
+			<div class="col-lg-6 image" :class="content.image.style" data-usal="zoomin">
 				<NuxtImg
 					:width="content.image.width"
 					:height="content.image.height"

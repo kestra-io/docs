@@ -19,11 +19,7 @@
 			</div>
 
 			<div class="bottom">
-				<div
-					v-for="(kpi, index) in kpis"
-					:key="index"
-					class="kpi-section"
-				>
+				<div v-for="(kpi, index) in kpis" :key="index" class="kpi-section">
 					<MDCParserAndRenderer :content="kpi" />
 				</div>
 			</div>

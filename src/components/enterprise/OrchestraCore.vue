@@ -5,8 +5,8 @@
 				<div class="header">
 					<p>Unified Enterprise-Grade Orchestration Platform</p>
 					<span
-						>Achieve in Days What Once Took Weeks, with Complete
-						Control at Every Step</span
+						>Achieve in Days What Once Took Weeks, with Complete Control at Every
+						Step</span
 					>
 				</div>
 				<div class="percents">
@@ -31,10 +31,7 @@
 						<span>Deployment Speed</span>
 					</div>
 				</div>
-				<a
-					href="/demo"
-					class="demo-btn btn btn-animated btn-purple-animated"
-				>
+				<a href="/demo" class="demo-btn btn btn-animated btn-purple-animated">
 					<span>Talk to sales</span>
 				</a>
 			</div>
@@ -69,8 +66,7 @@
 			logo: AcxiomLogo,
 		},
 		{
-			message:
-				"Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain.",
+			message: "Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain.",
 			name: "Amy King",
 			designation: "Cybersecurity & Technology Controls",
 			alt: "Cybersecurity & Technology Controls",
@@ -181,11 +177,7 @@
 						padding: $rem-2;
 						border-radius: 8px;
 						width: 100%;
-						background: linear-gradient(
-							180deg,
-							#21242e 0%,
-							#1a1c24 100%
-						);
+						background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 
 						@media only screen and (max-width: 1120px) {
 							max-width: 329px;

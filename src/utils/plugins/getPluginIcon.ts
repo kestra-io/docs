@@ -8,13 +8,12 @@ function colorFixedB64Icon(b64Icon: string) {
 	).toString("base64")
 }
 
-export function getPluginIconsAsString(
-	icons: Record<string, { icon: string }>,
-) {
+export function getPluginIconsAsString(icons: Record<string, { icon: string }>) {
 	return Object.fromEntries(
-		(Object.entries(icons) as Array<[string, { icon: string }]>).map(
-			([key, value]) => [key, colorFixedB64Icon(value.icon)],
-		),
+		(Object.entries(icons) as Array<[string, { icon: string }]>).map(([key, value]) => [
+			key,
+			colorFixedB64Icon(value.icon),
+		]),
 	)
 }
 
@@ -24,9 +23,7 @@ export async function getIcon(
 	group?: string,
 	subGroup?: string,
 ) {
-	const originalIcons = await $fetchApi(
-		`/plugins/${pluginName}/icons/subgroups`,
-	)
+	const originalIcons = await $fetchApi(`/plugins/${pluginName}/icons/subgroups`)
 	const elementIcons = await $fetchApi(`/plugins/${pluginName}/icons`)
 
 	const originalIconsAsString = getPluginIconsAsString(originalIcons)
@@ -41,12 +38,8 @@ export async function getIcon(
 	if (pluginType !== undefined) {
 		icon = icons[pluginType]
 		if (icon === undefined) {
-			const filteredIcons = Object.entries(icons).filter(([key]) =>
-				pluginType?.includes(key),
-			)
-			icon = filteredIcons.sort(
-				([key1], [key2]) => key2.length - key1.length,
-			)?.[0]?.[1]
+			const filteredIcons = Object.entries(icons).filter(([key]) => pluginType?.includes(key))
+			icon = filteredIcons.sort(([key1], [key2]) => key2.length - key1.length)?.[0]?.[1]
 		}
 	} else if (subGroup) {
 		icon = icons[subGroup]
@@ -55,9 +48,7 @@ export async function getIcon(
 	}
 
 	return {
-		currentPageIcon: icon
-			? `data:image/svg+xml;base64,${colorFixedB64Icon(icon)}`
-			: undefined,
+		currentPageIcon: icon ? `data:image/svg+xml;base64,${colorFixedB64Icon(icon)}` : undefined,
 		subGroupsIcons: icons,
 	}
 }

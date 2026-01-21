@@ -1,11 +1,7 @@
 <template>
 	<div class="content position-relative">
 		<div class="container base-container">
-			<h1
-				data-usal="fade-l"
-				class="title-sm title fw-light"
-				v-html="content.tag"
-			></h1>
+			<h1 data-usal="fade-l" class="title-sm title fw-light" v-html="content.tag"></h1>
 			<p class="my-4">
 				{{ content.description }}
 			</p>

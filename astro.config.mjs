@@ -18,19 +18,14 @@ import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
-const __dirname = path.dirname(
-	new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
-)
+const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"))
 
 // https://astro.build/config
 export default defineConfig({
 	site: "https://kestra.io",
 	adapter: cloudflare({
 		// only use cloudflare images in production
-		imageService:
-			process.env.NO_IMAGE_OPTIM === "true"
-				? "passthrough"
-				: "cloudflare",
+		imageService: process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare",
 	}),
 	trailingSlash: "ignore",
 	integrations: [
@@ -172,13 +167,7 @@ export default defineConfig({
 		},
 		ssr: {
 			noExternal: ["vue3-count-to"],
-			external: [
-				"node:fs/promises",
-				"node:fs",
-				"node:url",
-				"node:path",
-				"node:crypto",
-			],
+			external: ["node:fs/promises", "node:fs", "node:url", "node:path", "node:crypto"],
 		},
 	},
 })

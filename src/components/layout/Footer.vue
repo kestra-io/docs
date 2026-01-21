@@ -4,11 +4,7 @@
 			<div class="row">
 				<div class="col-lg-3 mb-3">
 					<a href="/">
-						<img
-							src="/logo-white.svg"
-							height="60"
-							alt="Kestra's logo"
-						/>
+						<img src="/logo-white.svg" height="60" alt="Kestra's logo" />
 					</a>
 					<p class="mt-2">Open Source Declarative Orchestration</p>
 					<Socials class="mt-4 socials" />
@@ -19,11 +15,7 @@
 						<div class="col-6 col-lg-2 offset-lg-1 mb-3">
 							<h5>Product</h5>
 							<ul class="list-unstyled">
-								<li
-									v-for="link in PRODUCT_LINKS"
-									:key="link.href"
-									class="mb-2"
-								>
+								<li v-for="link in PRODUCT_LINKS" :key="link.href" class="mb-2">
 									<a :href="link.href">{{ link.text }}</a>
 								</li>
 							</ul>
@@ -31,11 +23,7 @@
 						<div class="col-6 col-lg-2 mb-3">
 							<h5>Solutions</h5>
 							<ul class="list-unstyled">
-								<li
-									v-for="link in SOLUTIONS_LINKS"
-									:key="link.href"
-									class="mb-2"
-								>
+								<li v-for="link in SOLUTIONS_LINKS" :key="link.href" class="mb-2">
 									<a :href="link.href">{{ link.text }}</a>
 								</li>
 							</ul>
@@ -43,33 +31,16 @@
 						<div class="col-6 col-lg-2 mb-3">
 							<h5>Community</h5>
 							<ul class="list-unstyled">
-								<li
-									v-for="link in COMMUNITY_LINKS"
-									:key="link.href"
-									class="mb-2"
-								>
-									<a
-										v-if="!link.external"
-										:href="link.href"
-										>{{ link.text }}</a
-									>
-									<a
-										v-else
-										:href="link.href"
-										target="_blank"
-										>{{ link.text }}</a
-									>
+								<li v-for="link in COMMUNITY_LINKS" :key="link.href" class="mb-2">
+									<a v-if="!link.external" :href="link.href">{{ link.text }}</a>
+									<a v-else :href="link.href" target="_blank">{{ link.text }}</a>
 								</li>
 							</ul>
 						</div>
 						<div class="col-6 col-lg-2 mb-3">
 							<h5>Docs</h5>
 							<ul class="list-unstyled">
-								<li
-									v-for="link in DOCS_LINKS"
-									:key="link.href"
-									class="mb-2"
-								>
+								<li v-for="link in DOCS_LINKS" :key="link.href" class="mb-2">
 									<a :href="link.href">{{ link.text }}</a>
 								</li>
 							</ul>
@@ -77,18 +48,12 @@
 						<div class="col-6 col-lg-2 mb-3">
 							<h5>Company</h5>
 							<ul class="list-unstyled">
-								<li
-									v-for="link in COMPANY_LINKS"
-									:key="link.href"
-									class="mb-2"
-								>
+								<li v-for="link in COMPANY_LINKS" :key="link.href" class="mb-2">
 									<a :href="link.href">
 										{{ link.text }}
-										<span
-											v-if="link.badge"
-											class="badge text-bg-danger"
-											>{{ link.badge }}</span
-										>
+										<span v-if="link.badge" class="badge text-bg-danger">{{
+											link.badge
+										}}</span>
 									</a>
 								</li>
 							</ul>
@@ -105,9 +70,8 @@
 			<div class="d-flex d-100">
 				<div class="flex-grow-1">
 					<p class="mb-0 d-none d-md-inline">
-						© {{ new Date().getFullYear() }}
-						<a href="/">Kestra Technologies</a>. Developed with
-						<Heart class="text-danger" /> on 🌎.
+						© {{ new Date().getFullYear() }} <a href="/">Kestra Technologies</a>.
+						Developed with <Heart class="text-danger" /> on 🌎.
 					</p>
 				</div>
 				<div class="text-end">

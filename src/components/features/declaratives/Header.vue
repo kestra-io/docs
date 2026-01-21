@@ -2,16 +2,13 @@
 	<div class="container-fluid">
 		<div class="hero container">
 			<div class="row">
-				<div
-					class="col-md-6 align-items-center d-flex order-1 order-md-0"
-				>
+				<div class="col-md-6 align-items-center d-flex order-1 order-md-0">
 					<div>
 						<h1 data-usal="fade-r">
 							<span>Declarative</span> Orchestration with Kestra
 						</h1>
 						<p class="baseline" data-usal="fade-l">
-							Bring Infrastructure as Code Best Practices to All
-							Workflows
+							Bring Infrastructure as Code Best Practices to All Workflows
 						</p>
 						<div class="cta d-flex gap-3">
 							<a
@@ -69,11 +66,7 @@
 				margin-bottom: 16px;
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 2.16%,
-						#5c47f5 65.09%
-					);
+					background: linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

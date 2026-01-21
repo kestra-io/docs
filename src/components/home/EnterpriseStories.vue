@@ -79,12 +79,7 @@
 	}
 
 	const startAutoScroll = (delay: number = AUTO_SCROLL) => {
-		if (
-			isScrolling.value ||
-			!props.stories?.length ||
-			isHovering.value ||
-			isManualChange.value
-		)
+		if (isScrolling.value || !props.stories?.length || isHovering.value || isManualChange.value)
 			return
 		clearTimers()
 
@@ -106,8 +101,7 @@
 	}
 
 	const scrollHandler = (e: Event) => {
-		if (isScrolling.value || !props.stories?.length || isManualChange.value)
-			return
+		if (isScrolling.value || !props.stories?.length || isManualChange.value) return
 		clearTimers()
 
 		const target = e.target as HTMLElement
@@ -116,10 +110,7 @@
 		const storyWidth = target.scrollWidth / props.stories.length
 		const newActiveStory = Math.max(
 			0,
-			Math.min(
-				Math.round(target.scrollLeft / storyWidth),
-				props.stories.length - 1,
-			),
+			Math.min(Math.round(target.scrollLeft / storyWidth), props.stories.length - 1),
 		)
 
 		if (newActiveStory !== activeStory.value) {
@@ -213,8 +204,7 @@
 				text-wrap: balance;
 				width: 90%;
 				span {
-					background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-						no-repeat center;
+					background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 					background-size: cover;
 					background-clip: text;
 					-webkit-background-clip: text;

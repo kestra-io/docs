@@ -10,20 +10,12 @@
 					:breakpoints="breakpoints"
 					:settings="settings"
 				>
-					<Slide
-						v-for="(slide, index) in content"
-						:key="slide"
-						v-bind:key="slide?.id"
-					>
+					<Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
 						<p class="d-flex" @click="slideTo(index)">
-							<span class="d-inline-block text-truncate">{{
-								slide.text
-							}}</span>
-							<a
-								class="d-inline-block text-nowrap"
-								:href="slide.href"
-								>{{ slide.linkText }}</a
-							>
+							<span class="d-inline-block text-truncate">{{ slide.text }}</span>
+							<a class="d-inline-block text-nowrap" :href="slide.href">{{
+								slide.linkText
+							}}</a>
 						</p>
 					</Slide>
 				</Carousel>
@@ -127,11 +119,7 @@
 				bottom: 32%;
 				left: -25%;
 				z-index: -1;
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0) 0%,
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 				filter: blur(80px);
 			}
 

@@ -3,14 +3,11 @@
 		<div class="ai-copilot container">
 			<div class="first-line">
 				<div data-usal="fade-r" class="content">
-					<div class="what-is-new">
-						What is new in <strong>1.0</strong>
-					</div>
+					<div class="what-is-new">What is new in <strong>1.0</strong></div>
 					<h2>AI Copilot</h2>
 					<p>
-						Describe what you want to orchestrate in natural
-						language, and Copilot generates declarative YAML code
-						you can refine, version, and deploy.
+						Describe what you want to orchestrate in natural language, and Copilot
+						generates declarative YAML code you can refine, version, and deploy.
 					</p>
 				</div>
 				<div class="copilot-overview-illustration" data-usal="fade-l">
@@ -25,11 +22,7 @@
 				</div>
 			</div>
 
-			<div
-				v-for="block in aiBlocksone"
-				:key="block.title"
-				class="ai-block"
-			>
+			<div v-for="block in aiBlocksone" :key="block.title" class="ai-block">
 				<h3>{{ block.title }}</h3>
 				<p>{{ block.description }}</p>
 				<NuxtImg
@@ -59,11 +52,7 @@
 				/>
 			</div>
 
-			<div
-				v-for="block in aiBlockstwo"
-				:key="block.title"
-				class="ai-block"
-			>
+			<div v-for="block in aiBlockstwo" :key="block.title" class="ai-block">
 				<h3>{{ block.title }}</h3>
 				<p>{{ block.description }}</p>
 				<NuxtImg
@@ -82,11 +71,7 @@
 		<div class="velocity container">
 			<h2><span>Velocity</span> Features</h2>
 			<div class="feature-list">
-				<div
-					v-for="feature in velocityFeatures"
-					:key="feature.title"
-					class="feature-item"
-				>
+				<div v-for="feature in velocityFeatures" :key="feature.title" class="feature-item">
 					<div class="feature-icon">
 						<component :is="feature.icon" />
 						<h3>{{ feature.title }}</h3>
@@ -94,23 +79,13 @@
 					<p>{{ feature.description }}</p>
 				</div>
 			</div>
-			<a
-				href="/blogs/release-1-0"
-				target="_blank"
-				class="btn btn-lg btn-primary"
-			>
+			<a href="/blogs/release-1-0" target="_blank" class="btn btn-lg btn-primary">
 				Explore the 1.0 Highlights
 			</a>
 		</div>
 		<svg width="0" height="0">
 			<defs>
-				<linearGradient
-					id="icon-gradient"
-					x1="0%"
-					y1="0%"
-					x2="100%"
-					y2="0%"
-				>
+				<linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
 					<stop offset="0.22%" stop-color="#9F79F3" />
 					<stop offset="99.78%" stop-color="#658AF9" />
 				</linearGradient>
@@ -357,8 +332,7 @@
 
 	.second-line {
 		overflow: hidden;
-		background: url("/landing/onezero/ellipse.svg") no-repeat center
-			bottom / 100% auto;
+		background: url("/landing/onezero/ellipse.svg") no-repeat center bottom / 100% auto;
 
 		@include media-breakpoint-down(lg) {
 			background-size: 100% 100%;

@@ -1,9 +1,6 @@
 <template>
 	<div class="mb-3">
-		<p
-			class="fw-bold d-flex gap-2 flex-wrap"
-			v-if="page?.editions?.length || page?.version"
-		>
+		<p class="fw-bold d-flex gap-2 flex-wrap" v-if="page?.editions?.length || page?.version">
 			Available on:
 			<component
 				:is="editionInfo(edition).link ? 'a' : 'span'"
@@ -17,11 +14,9 @@
 			>
 				{{ editionInfo(edition).label }}
 			</component>
-			<span
-				v-if="page?.version"
-				class="badge d-flex align-items-center bg-body-tertiary"
-				>{{ page.version }}</span
-			>
+			<span v-if="page?.version" class="badge d-flex align-items-center bg-body-tertiary">{{
+				page.version
+			}}</span>
 		</p>
 	</div>
 	<div class="mb-3" v-if="page?.deprecated">

@@ -39,12 +39,7 @@
 							data-bs-toggle="modal"
 							data-bs-target="#search-ai-modal"
 						>
-							<img
-								:src="KSAIImg.src"
-								alt="Kestra AI"
-								width="28"
-								height="28"
-							/>
+							<img :src="KSAIImg.src" alt="Kestra AI" width="28" height="28" />
 							Ask AI
 						</button>
 					</div>
@@ -87,10 +82,7 @@
 
 	const searchQuery = defineModel<string>("searchQuery")
 
-	const augmentedCategories = computed(() => [
-		"All Categories",
-		...props.categories,
-	])
+	const augmentedCategories = computed(() => ["All Categories", ...props.categories])
 
 	const setActiveCategory = (category: string) => {
 		emit("update:activeCategory", category)
@@ -101,8 +93,7 @@
 	@import "~/assets/styles/variable";
 
 	.header-container {
-		background: url("/landing/plugins/hero-plugin.webp") no-repeat center
-			center / cover;
+		background: url("/landing/plugins/hero-plugin.webp") no-repeat center center / cover;
 		min-height: 451px;
 		display: flex;
 		justify-content: center;
@@ -336,8 +327,7 @@
 
 	@include media-breakpoint-down(lg) {
 		.header-container {
-			background: url("/landing/plugins/header-sm.webp") no-repeat center
-				center / cover;
+			background: url("/landing/plugins/header-sm.webp") no-repeat center center / cover;
 		}
 	}
 </style>

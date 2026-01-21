@@ -38,9 +38,7 @@
 				<p class="text">
 					For Media Inquiries and Exclusive Insights,<br />
 					Reach Out to Our Press Team at
-					<a href="mailto:press@kestra.io" class="link" external
-						>press@kestra.io</a
-					>
+					<a href="mailto:press@kestra.io" class="link" external>press@kestra.io</a>
 				</p>
 				<a
 					to="/kestra-logo-kit.zip"
@@ -121,8 +119,7 @@
 	.container {
 		position: relative;
 		min-height: 1473px;
-		background: url("/landing/company/teams/gridbg.svg") no-repeat top
-			center;
+		background: url("/landing/company/teams/gridbg.svg") no-repeat top center;
 		background-size: auto;
 		max-width: 100%;
 		padding: $rem-5 $rem-1;
@@ -291,11 +288,7 @@
 			padding: $rem-4;
 			border-radius: $border-radius-lg;
 			border: 1px solid;
-			border-image-source: linear-gradient(
-				180deg,
-				#2b313e 0%,
-				#131725 100%
-			);
+			border-image-source: linear-gradient(180deg, #2b313e 0%, #131725 100%);
 			background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
 			overflow: hidden;
 
@@ -306,8 +299,8 @@
 				right: 0;
 				bottom: 0;
 				left: 40%;
-				background: url("/landing/company/teams/gradients.svg")
-					no-repeat right center / cover;
+				background: url("/landing/company/teams/gradients.svg") no-repeat right center /
+					cover;
 				pointer-events: none;
 			}
 
@@ -469,11 +462,7 @@
 
 	@each $variant, $props in $card-backgrounds {
 		.#{$variant} {
-			background: linear-gradient(
-				180deg,
-				nth($props, 1) 0%,
-				nth($props, 2) 100%
-			);
+			background: linear-gradient(180deg, nth($props, 1) 0%, nth($props, 2) 100%);
 			backdrop-filter: blur(nth($props, 3));
 		}
 	}

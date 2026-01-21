@@ -26,11 +26,7 @@ body {
 }
 
 .nuxt-loading-indicator {
-	background: linear-gradient(
-		90deg,
-		#e151f7 65.38%,
-		#5c47f5 82.43%
-	) !important;
+	background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%) !important;
 }
 :root {
 	--spacer: #{$spacer};
@@ -229,13 +225,7 @@ blockquote.blockquote {
 	position: relative;
 	background:
 		linear-gradient(180deg, #694eff 0%, #5233ff 104.54%) padding-box,
-		linear-gradient(
-				262.72deg,
-				#ffffff 15.19%,
-				#e8c8c8 37.92%,
-				#838383 76.01%
-			)
-			border-box;
+		linear-gradient(262.72deg, #ffffff 15.19%, #e8c8c8 37.92%, #838383 76.01%) border-box;
 	border-radius: $border-radius-lg;
 	border: 1px solid transparent;
 	box-shadow:
@@ -300,13 +290,7 @@ blockquote.blockquote {
 
 .btn-dark-animated {
 	&::before {
-		background: conic-gradient(
-			#b010fb,
-			#de97ff 10%,
-			#a227db,
-			transparent 50%,
-			#a610ec
-		);
+		background: conic-gradient(#b010fb, #de97ff 10%, #a227db, transparent 50%, #a610ec);
 	}
 
 	&::after {
@@ -327,13 +311,7 @@ blockquote.blockquote {
 
 .btn-purple-animated {
 	&::before {
-		background: conic-gradient(
-			#b010fb,
-			#de97ff 10%,
-			#a227db,
-			transparent 50%,
-			#a610ec
-		);
+		background: conic-gradient(#b010fb, #de97ff 10%, #a227db, transparent 50%, #a610ec);
 	}
 
 	&::after {

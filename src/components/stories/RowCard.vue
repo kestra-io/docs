@@ -1,9 +1,7 @@
 <template>
 	<a :href="`/use-cases/stories/${story.id}-${slugify(story.title ?? '--')}`">
 		<div class="card" data-usal="fade-r">
-			<div
-				class="card-body p-0 d-flex flex-column justify-content-between"
-			>
+			<div class="card-body p-0 d-flex flex-column justify-content-between">
 				<div class="d-flex align-items-center card-body-container">
 					<div>
 						<img height="56" :src="story.logo" :alt="story.logo" />
@@ -12,42 +10,21 @@
 						<p class="card-meta-quote">{{ story.quotePerson }}</p>
 						<div class="card-stories-info">
 							<div class="info-item" v-if="story.kpi1">
-								<img
-									src="/stories/icons/multiple-checkbox.svg"
-									alt="right icons"
-								/>
-								<MDCParserAndRenderer
-									:content="story.kpi1"
-									class="item-content"
-								/>
+								<img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
+								<MDCParserAndRenderer :content="story.kpi1" class="item-content" />
 							</div>
 							<div class="info-item" v-if="story.kpi2">
-								<img
-									src="/stories/icons/multiple-checkbox.svg"
-									alt="right icons"
-								/>
-								<MDCParserAndRenderer
-									:content="story.kpi2"
-									class="item-content"
-								/>
+								<img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
+								<MDCParserAndRenderer :content="story.kpi2" class="item-content" />
 							</div>
 							<div class="info-item" v-if="story.kpi3">
-								<img
-									src="/stories/icons/multiple-checkbox.svg"
-									alt="right icons"
-								/>
-								<MDCParserAndRenderer
-									:content="story.kpi3"
-									class="item-content"
-								/>
+								<img src="/stories/icons/multiple-checkbox.svg" alt="right icons" />
+								<MDCParserAndRenderer :content="story.kpi3" class="item-content" />
 							</div>
 						</div>
 						<span class="author">
 							Read the story
-							<img
-								src="/stories/icons/arrow_right_alt.svg"
-								alt="right icons"
-							/>
+							<img src="/stories/icons/arrow_right_alt.svg" alt="right icons" />
 						</span>
 					</div>
 					<img

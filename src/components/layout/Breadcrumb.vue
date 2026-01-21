@@ -9,17 +9,13 @@
 			>
 				<a
 					v-if="index !== breadcrumb.length - 1"
-					:href="
-						breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''
-					"
+					:href="breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''"
 					class="link"
 				>
 					{{ getDisplayName(item, index) }}
 				</a>
 
-				<span v-else aria-current="page">{{
-					getDisplayName(item, index)
-				}}</span>
+				<span v-else aria-current="page">{{ getDisplayName(item, index) }}</span>
 			</li>
 		</ol>
 	</nav>
@@ -40,11 +36,9 @@
 		return crumbs.length > 0 ? crumbs : ["docs"]
 	})
 
-	const breadcrumbLink = (index: number) =>
-		"/" + breadcrumb.value.slice(0, index + 1).join("/")
+	const breadcrumbLink = (index: number) => "/" + breadcrumb.value.slice(0, index + 1).join("/")
 
-	const breadcrumbLinkExist = (index: number) =>
-		props.pageList?.includes(breadcrumbLink(index))
+	const breadcrumbLinkExist = (index: number) => props.pageList?.includes(breadcrumbLink(index))
 
 	const formatDirectoryName = (item: string) => {
 		const specialCases: Record<string, string> = {

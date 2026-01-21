@@ -107,9 +107,7 @@ export class ISRCache {
 				},
 			})
 
-			console.log(
-				`[ISR Cache] Cached: ${url} (revalidate: ${data.revalidate}s)`,
-			)
+			console.log(`[ISR Cache] Cached: ${url} (revalidate: ${data.revalidate}s)`)
 		} catch (error) {
 			console.error("[ISR Cache] Error setting cache:", error)
 		}
@@ -156,9 +154,7 @@ export class ISRCache {
 				: `${this.options.prefix}:`
 			const list = await this.kv.list({ prefix: listPrefix })
 
-			return list.keys.map((key) =>
-				key.name.replace(`${this.options.prefix}:`, ""),
-			)
+			return list.keys.map((key) => key.name.replace(`${this.options.prefix}:`, ""))
 		} catch (error) {
 			console.error("[ISR Cache] Error listing cache:", error)
 			return []
@@ -183,10 +179,7 @@ export class ISRCache {
 /**
  * Helper function to create an ISR cache instance
  */
-export function createISRCache(
-	locals: App.Locals,
-	options?: ISRCacheOptions,
-): ISRCache {
+export function createISRCache(locals: App.Locals, options?: ISRCacheOptions): ISRCache {
 	const kv = locals.runtime.env.ISR_CACHE as KVNamespace
 	if (!kv) {
 		throw new Error(

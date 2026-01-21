@@ -9,15 +9,10 @@
 							<span>Orchestration</span>
 						</h1>
 						<p class="description">
-							Connect with our product specialists to explore
-							Kestra Enterprise
+							Connect with our product specialists to explore Kestra Enterprise
 						</p>
 						<div class="cards d-none d-md-block">
-							<div
-								v-for="card in cards"
-								:key="card.title"
-								class="card-item"
-							>
+							<div v-for="card in cards" :key="card.title" class="card-item">
 								<div class="title-block">
 									<img :src="card.img" :alt="card.alt" />
 									<p class="title">
@@ -32,9 +27,7 @@
 					</div>
 				</div>
 
-				<div
-					class="col-12 col-lg-6 align-items-center d-flex meeting-container"
-				>
+				<div class="col-12 col-lg-6 align-items-center d-flex meeting-container">
 					<div v-if="valid === false" class="meeting-form">
 						<img
 							class="background d-none d-md-block"
@@ -49,18 +42,12 @@
 							data-usal="fade-l"
 							@submit="onSubmit"
 						>
-							<div
-								v-if="message"
-								class="alert alert-danger mt-3 mb-0"
-							>
+							<div v-if="message" class="alert alert-danger mt-3 mb-0">
 								{{ message }}
 							</div>
 
 							<div class="col-md-6 col-12">
-								<label
-									for="demo-first-name"
-									class="form-label mb-0"
-								>
+								<label for="demo-first-name" class="form-label mb-0">
 									First name
 								</label>
 								<input
@@ -74,10 +61,7 @@
 							</div>
 
 							<div class="col-md-6 col-12">
-								<label
-									for="demo-last-name"
-									class="form-label mb-0"
-								>
+								<label for="demo-last-name" class="form-label mb-0">
 									Last name
 								</label>
 								<input
@@ -107,29 +91,19 @@
 							<div class="col-12 mt-3">
 								<small class="agree">
 									By submitting this form, you agree to our
-									<a target="_blank" href="/privacy-policy">
-										Privacy Policy.
-									</a>
+									<a target="_blank" href="/privacy-policy"> Privacy Policy. </a>
 								</small>
 							</div>
 
-							<div
-								class="col-12 mt-4 d-flex justify-content-center"
-							>
-								<button
-									type="submit"
-									class="btn btn-primary w-100"
-								>
+							<div class="col-12 mt-4 d-flex justify-content-center">
+								<button type="submit" class="btn btn-primary w-100">
 									Let's Talk
 								</button>
 							</div>
 						</form>
 					</div>
 
-					<div
-						v-else
-						class="custom-meetings-iframe-container embed-responsive"
-					>
+					<div v-else class="custom-meetings-iframe-container embed-responsive">
 						<div class="iframe-wrapper">
 							<iframe
 								v-if="meetingUrl"
@@ -152,12 +126,7 @@
 			<div class="cards-below d-md-none mt-4">
 				<div v-for="card in cards" :key="card.title" class="item">
 					<div class="title-block">
-						<img
-							:src="card.img"
-							:alt="card.alt"
-							width="24"
-							height="24"
-						/>
+						<img :src="card.img" :alt="card.alt" width="24" height="24" />
 						<p class="title">
 							{{ card.title }}
 						</p>
@@ -235,10 +204,8 @@
 	) {
 		try {
 			const url = new URL(base, window.location.origin)
-			if (firstname)
-				url.searchParams.set("firstname", String(firstname).trim())
-			if (lastname)
-				url.searchParams.set("lastname", String(lastname).trim())
+			if (firstname) url.searchParams.set("firstname", String(firstname).trim())
+			if (lastname) url.searchParams.set("lastname", String(lastname).trim())
 			if (email) url.searchParams.set("email", String(email).trim())
 			return url.toString()
 		} catch {
@@ -288,8 +255,7 @@
 		e.stopPropagation()
 
 		const script = document.createElement("script")
-		script.src =
-			"https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
+		script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
 		script.defer = true
 		document.body.appendChild(script)
 
@@ -301,8 +267,7 @@
 
 				if (!form?.checkValidity()) {
 					valid.value = false
-					message.value =
-						"Please check the form fields and try again."
+					message.value = "Please check the form fields and try again."
 					return
 				}
 
@@ -341,10 +306,7 @@
 				}
 
 				posthog.capture("bookdemo_form")
-				hsq.push([
-					"trackCustomBehavioralEvent",
-					{ name: "bookdemo_form" },
-				])
+				hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }])
 				gtm?.trackEvent({
 					event: "bookdemo_form",
 					noninteraction: false,
@@ -373,8 +335,7 @@
 								(e: any) => e.errorType === "BLOCKED_EMAIL",
 							)
 						) {
-							message.value =
-								"Please use a professional email address"
+							message.value = "Please use a professional email address"
 						} else {
 							message.value =
 								error?.response?.data?.message ||
@@ -438,11 +399,7 @@
 					span {
 						background: var(
 							--Text_gradient,
-							linear-gradient(
-								90deg,
-								#e151f7 2.16%,
-								#5c47f5 65.09%
-							)
+							linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
 						);
 						background-clip: text;
 						-webkit-background-clip: text;
@@ -592,11 +549,7 @@
 						z-index: -2;
 						width: 30.6rem;
 						height: 15.6rem;
-						background: linear-gradient(
-							180deg,
-							#6218ff 0%,
-							#6117ff 100%
-						);
+						background: linear-gradient(180deg, #6218ff 0%, #6117ff 100%);
 						filter: blur(95px);
 					}
 
@@ -660,11 +613,7 @@
 						z-index: -2;
 						width: 15.6rem;
 						height: 24.6rem;
-						background: linear-gradient(
-							180deg,
-							#7021ff 0%,
-							#6305bf 100%
-						);
+						background: linear-gradient(180deg, #7021ff 0%, #6305bf 100%);
 						filter: blur(50px);
 					}
 

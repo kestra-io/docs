@@ -7,8 +7,8 @@
 					<span class="highlight">Let's talk to get access</span>
 				</h2>
 				<h5 class="mt-3">
-					Be among the first to experience Kestra Cloud <br />with
-					exclusive access before general availability
+					Be among the first to experience Kestra Cloud <br />with exclusive access before
+					general availability
 				</h5>
 
 				<div class="row mt-5">
@@ -18,8 +18,8 @@
 							Get Exclusive 30-Day Access
 						</h6>
 						<p>
-							Explore Kestra Cloud with full, exclusive access for
-							30 days prior to general availability.
+							Explore Kestra Cloud with full, exclusive access for 30 days prior to
+							general availability.
 						</p>
 					</div>
 
@@ -29,9 +29,8 @@
 							Fully Managed Infrastructure
 						</h6>
 						<p>
-							No infrastructure setup, deployment worries, or
-							ongoing maintenance. We handle the heavy lifting
-							while you focus on your workflows.
+							No infrastructure setup, deployment worries, or ongoing maintenance. We
+							handle the heavy lifting while you focus on your workflows.
 						</p>
 					</div>
 
@@ -41,8 +40,8 @@
 							Dedicated Experts Exchange
 						</h6>
 						<p>
-							Receive personalized support and expert guidance
-							throughout your access period.
+							Receive personalized support and expert guidance throughout your access
+							period.
 						</p>
 					</div>
 
@@ -52,22 +51,21 @@
 							Enterprise Feature Set
 						</h6>
 						<p>
-							Access enterprise features including enhanced
-							security, RBAC, observability, and governance during
-							your exclusive access.
+							Access enterprise features including enhanced security, RBAC,
+							observability, and governance during your exclusive access.
 						</p>
 					</div>
 
 					<div class="col-12 mt-5 testimonial">
 						<p class="mb-2">
-							“Kestra Cloud has been a pivotal part of giving us
-							flexibility and scalability we need to pull off
-							complex processes we do at Foundation Direct.”
+							“Kestra Cloud has been a pivotal part of giving us flexibility and
+							scalability we need to pull off complex processes we do at Foundation
+							Direct.”
 						</p>
 						<p class="mb-0">
 							<strong>
-								Michael Heidner - SVP of Analytics and Business
-								Intelligence & Kestra Cloud Adopter
+								Michael Heidner - SVP of Analytics and Business Intelligence &
+								Kestra Cloud Adopter
 							</strong>
 						</p>
 						<img :src="foundationImage.src" />
@@ -92,19 +90,14 @@
 						novalidate
 						data-usal="fade-l"
 					>
-						<div
-							v-if="message"
-							class="alert alert-danger mt-3 mb-0"
-						>
+						<div v-if="message" class="alert alert-danger mt-3 mb-0">
 							{{ message }}
 						</div>
 
 						<h4 class="mb-4">Request Access to Kestra Cloud</h4>
 
 						<div class="col-md-6 col-12">
-							<label for="firstname" class="form-label">
-								First Name
-							</label>
+							<label for="firstname" class="form-label"> First Name </label>
 							<input
 								name="firstname"
 								type="text"
@@ -116,9 +109,7 @@
 						</div>
 
 						<div class="col-md-6 col-12">
-							<label for="lastname" class="form-label">
-								Last Name
-							</label>
+							<label for="lastname" class="form-label"> Last Name </label>
 							<input
 								name="lastname"
 								type="text"
@@ -130,9 +121,7 @@
 						</div>
 
 						<div class="col-12">
-							<label for="email" class="form-label">
-								Company Email
-							</label>
+							<label for="email" class="form-label"> Company Email </label>
 							<input
 								name="email"
 								type="email"
@@ -145,8 +134,7 @@
 
 						<div class="col-12">
 							<label for="use_case_context" class="form-label">
-								Tell us more about your Orchestration strategy
-								and how we can help.
+								Tell us more about your Orchestration strategy and how we can help.
 							</label>
 							<textarea
 								name="use_case_context"
@@ -159,25 +147,18 @@
 						<div class="col-12 mb-4">
 							<small class="agree">
 								By submitting this form, you agree to our
-								<a target="_blank" href="/privacy-policy"
-									>Privacy Policy.</a
-								>
+								<a target="_blank" href="/privacy-policy">Privacy Policy.</a>
 							</small>
 						</div>
 
 						<div class="col-12 d-flex justify-content-center">
-							<button type="submit" class="btn btn-primary w-100">
-								Talk to us
-							</button>
+							<button type="submit" class="btn btn-primary w-100">Talk to us</button>
 						</div>
 					</form>
 				</div>
 
 				<!-- AGENDA STATE -->
-				<div
-					v-else
-					class="custom-meetings-iframe-container embed-responsive"
-				>
+				<div v-else class="custom-meetings-iframe-container embed-responsive">
 					<div class="iframe-wrapper">
 						<iframe
 							v-if="meetingUrl"
@@ -198,10 +179,7 @@
 	import axios from "axios"
 	import { getHubspotTracking } from "~/utils/hubspot.js"
 	import posthog from "posthog-js"
-	import {
-		getMeetingUrl,
-		ensureMeetingsScriptLoaded,
-	} from "~/composables/useMeeting.js"
+	import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeeting.js"
 	import { ref, useTemplateRef } from "vue"
 	import identify from "~/utils/identify"
 	import { useGtm } from "@gtm-support/vue-gtm"
@@ -310,9 +288,8 @@
 		} catch (error: any) {
 			valid.value = false
 			if (
-				error?.response?.data?.errors?.filter(
-					(e: any) => e.errorType === "BLOCKED_EMAIL",
-				).length > 0
+				error?.response?.data?.errors?.filter((e: any) => e.errorType === "BLOCKED_EMAIL")
+					.length > 0
 			) {
 				message.value = "Please use a professional email address"
 			} else {

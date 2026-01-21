@@ -15,10 +15,7 @@
 				:key="blueprint.id"
 				class="col-md-4 col-lg-6 col-xl-6 col-xxl-4"
 			>
-				<LayoutBlueprintCard
-					:blueprint="blueprint"
-					:href="`/blueprints/${blueprint.id}`"
-				/>
+				<LayoutBlueprintCard :blueprint="blueprint" :href="`/blueprints/${blueprint.id}`" />
 			</div>
 		</div>
 	</div>
@@ -55,9 +52,7 @@
 	const headerText = computed(() => createWithBlueprints.value.text)
 	const headerID = computed(() => createWithBlueprints.value.id)
 
-	const isTwoPerRowScreen = useMediaQuery(
-		"(min-width: 992px) and (max-width: 1399px)",
-	)
+	const isTwoPerRowScreen = useMediaQuery("(min-width: 992px) and (max-width: 1399px)")
 
 	const currentPageSize = computed(() => (isTwoPerRowScreen.value ? 4 : 3))
 

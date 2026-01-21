@@ -1,10 +1,6 @@
 <template>
 	<section>
-		<div
-			class="subtitle"
-			:data-usal="animationType('fade-r')"
-			v-if="subtitle"
-		>
+		<div class="subtitle" :data-usal="animationType('fade-r')" v-if="subtitle">
 			<p>
 				<span v-if="subtitleBefore">{{ subtitleBefore }}</span>
 				{{ subtitle }}
@@ -12,11 +8,7 @@
 			</p>
 		</div>
 		<h2 :data-usal="animationType('fade-l')">{{ title }}</h2>
-		<p
-			v-if="baseline"
-			class="baseline"
-			:data-usal="animationType('fade-r')"
-		>
+		<p v-if="baseline" class="baseline" :data-usal="animationType('fade-r')">
 			{{ baseline }}
 		</p>
 		<div class="main">
@@ -99,11 +91,7 @@
 				}
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 65.38%,
-						#5c47f5 82.43%
-					);
+					background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

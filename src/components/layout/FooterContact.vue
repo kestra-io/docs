@@ -2,18 +2,10 @@
 	<div class="container rounded-3 mb-5">
 		<Section :animation="animation">
 			<div class="text-center cta px-5">
-				<p
-					class="title"
-					v-if="title"
-					:data-usal="animationType('fade-left')"
-				>
+				<p class="title" v-if="title" :data-usal="animationType('fade-left')">
 					{{ title }}
 				</p>
-				<p
-					class="subtitle"
-					v-if="subtitle"
-					:data-usal="animationType('fade-left')"
-				>
+				<p class="subtitle" v-if="subtitle" :data-usal="animationType('fade-left')">
 					{{ subtitle }}
 				</p>
 				<a

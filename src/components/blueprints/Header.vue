@@ -9,9 +9,7 @@
 							<h2>{{ page.title }}</h2>
 						</div>
 						<div class="col-12 col-md-3">
-							<div
-								class="justify-content-start d-flex justify-content-md-end"
-							>
+							<div class="justify-content-start d-flex justify-content-md-end">
 								<BlueprintsCopy :code="page.flow" />
 							</div>
 						</div>
@@ -101,11 +99,7 @@
 				position: absolute;
 				width: 234px;
 				height: 307px;
-				background: linear-gradient(
-					140deg,
-					rgba(70, 24, 255, 0) -41.95%,
-					#7e1cfa 77.28%
-				);
+				background: linear-gradient(140deg, rgba(70, 24, 255, 0) -41.95%, #7e1cfa 77.28%);
 				filter: blur(100px);
 				right: 2rem;
 				top: 2rem;

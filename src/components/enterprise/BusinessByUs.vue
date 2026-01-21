@@ -4,8 +4,7 @@
 			<div class="business-by-us">
 				<div class="title-block">
 					<p>
-						Worldwide Companies Orchestrate their Business-Critical
-						Application with
+						Worldwide Companies Orchestrate their Business-Critical Application with
 						<a href="#">Kestra</a>
 					</p>
 				</div>

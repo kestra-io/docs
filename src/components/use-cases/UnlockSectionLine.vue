@@ -15,72 +15,19 @@
 			/>
 		</g>
 		<path d="M50.5 121V212" :stroke="strokeColor" stroke-dasharray="2 2" />
-		<line
-			x1="50.5"
-			y1="212"
-			x2="50.5"
-			y2="286"
-			:stroke="strokeColor"
-			stroke-dasharray="2 2"
-		/>
+		<line x1="50.5" y1="212" x2="50.5" y2="286" :stroke="strokeColor" stroke-dasharray="2 2" />
 		<g filter="url(#filter1_d_116_24)">
-			<circle
-				cx="50"
-				cy="301"
-				r="5"
-				fill="white"
-				class="connection-circle-2"
-			/>
+			<circle cx="50" cy="301" r="5" fill="white" class="connection-circle-2" />
 		</g>
-		<line
-			x1="50.5"
-			y1="316"
-			x2="50.5"
-			y2="390"
-			:stroke="strokeColor"
-			stroke-dasharray="2 2"
-		/>
-		<line
-			x1="50.5"
-			y1="390"
-			x2="50.5"
-			y2="481"
-			:stroke="strokeColor"
-			stroke-dasharray="2 2"
-		/>
+		<line x1="50.5" y1="316" x2="50.5" y2="390" :stroke="strokeColor" stroke-dasharray="2 2" />
+		<line x1="50.5" y1="390" x2="50.5" y2="481" :stroke="strokeColor" stroke-dasharray="2 2" />
 		<g filter="url(#filter2_d_116_24)">
-			<circle
-				cx="50"
-				cy="496"
-				r="5"
-				fill="white"
-				class="connection-circle-3"
-			/>
+			<circle cx="50" cy="496" r="5" fill="white" class="connection-circle-3" />
 		</g>
-		<line
-			x1="50.5"
-			y1="511"
-			x2="50.5"
-			y2="602"
-			:stroke="strokeColor"
-			stroke-dasharray="2 2"
-		/>
-		<line
-			x1="50.5"
-			y1="602"
-			x2="50.5"
-			y2="707"
-			:stroke="strokeColor"
-			stroke-dasharray="2 2"
-		/>
+		<line x1="50.5" y1="511" x2="50.5" y2="602" :stroke="strokeColor" stroke-dasharray="2 2" />
+		<line x1="50.5" y1="602" x2="50.5" y2="707" :stroke="strokeColor" stroke-dasharray="2 2" />
 		<g filter="url(#filter3_d_116_24)">
-			<circle
-				cx="50"
-				cy="722"
-				r="5"
-				fill="white"
-				class="connection-circle-4"
-			/>
+			<circle cx="50" cy="722" r="5" fill="white" class="connection-circle-4" />
 		</g>
 		<defs>
 			<filter
@@ -248,16 +195,11 @@
 		},
 		methods: {
 			getConnectionCircleOffset(circleN) {
-				const connectionCircle = document.querySelector(
-					`.connection-circle-${circleN}`,
-				)
+				const connectionCircle = document.querySelector(`.connection-circle-${circleN}`)
 				const bodyRect = document.body.getBoundingClientRect()
 				const connectionCircleOffsetTop =
-					connectionCircle.getBoundingClientRect().top -
-					bodyRect.top -
-					380
-				const connectionCircleOffsetBottom =
-					connectionCircleOffsetTop + 150
+					connectionCircle.getBoundingClientRect().top - bodyRect.top - 380
+				const connectionCircleOffsetBottom = connectionCircleOffsetTop + 150
 				return {
 					top: connectionCircleOffsetTop,
 					bottom: connectionCircleOffsetBottom,

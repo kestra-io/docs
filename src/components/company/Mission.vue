@@ -4,12 +4,10 @@
 			<header data-usal="fade-r">
 				<h1>Staying <span>True</span> to our Mission</h1>
 				<p>
-					Our values are at the core of everything we do. We are
-					building a platform that not only meets the needs of our
-					users but also exceeds their expectations. We are driven by
-					a passion for continuous improvement. We strive to develop
-					new ideas and solutions that redefine the orchestration
-					landscape.
+					Our values are at the core of everything we do. We are building a platform that
+					not only meets the needs of our users but also exceeds their expectations. We
+					are driven by a passion for continuous improvement. We strive to develop new
+					ideas and solutions that redefine the orchestration landscape.
 				</p>
 			</header>
 
@@ -29,15 +27,9 @@
 			</div>
 
 			<blockquote class="testimonial" data-usal="fade-r delay-700">
-				<p>
-					"Kestra is like the Wizard of Oz Wizard, doing its magic
-					behind the curtain"
-				</p>
+				<p>"Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain"</p>
 				<footer>
-					<NuxtImg
-						src="/landing/company/teams/acxiom.svg"
-						alt="Acxiom"
-					/>
+					<NuxtImg src="/landing/company/teams/acxiom.svg" alt="Acxiom" />
 				</footer>
 			</blockquote>
 		</div>
@@ -63,8 +55,7 @@
 		{
 			icon: Verified,
 			title: "Quality",
-			description:
-				"We are committed to deliver a platform that meets the highest standards.",
+			description: "We are committed to deliver a platform that meets the highest standards.",
 		},
 		{
 			icon: Hub,
@@ -81,8 +72,7 @@
 		{
 			icon: Opacity,
 			title: "Transparency",
-			description:
-				"We value openness and honesty in all aspects of our work at every step.",
+			description: "We value openness and honesty in all aspects of our work at every step.",
 		},
 	]
 </script>
@@ -130,11 +120,7 @@
 				margin-bottom: 24px;
 
 				span {
-					background: linear-gradient(
-						90.25deg,
-						#7c2eea 2%,
-						#658af9 100%
-					);
+					background: linear-gradient(90.25deg, #7c2eea 2%, #658af9 100%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

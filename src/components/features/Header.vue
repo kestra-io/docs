@@ -4,9 +4,7 @@
 			<div class="text-block">
 				<h6 class="highlight">Core Features</h6>
 				<h1 data-usal="zoomin">
-					<span class="d-none d-lg-inline"
-						>Fast, Scalable, Declarative Orchestrator</span
-					>
+					<span class="d-none d-lg-inline">Fast, Scalable, Declarative Orchestrator</span>
 					<span class="d-lg-none">
 						Fast, Scalable,<br />
 						Declarative<br />
@@ -14,17 +12,10 @@
 					</span>
 				</h1>
 				<div class="buttons">
-					<a
-						href="/demo"
-						class="btn btn-lg btn-secondary me-3"
-						target="_blank"
-					>
+					<a href="/demo" class="btn btn-lg btn-secondary me-3" target="_blank">
 						Talk to us
 					</a>
-					<a
-						href="/docs/quickstart#start-kestra"
-						class="btn btn-lg btn-primary"
-					>
+					<a href="/docs/quickstart#start-kestra" class="btn btn-lg btn-primary">
 						Get Started!
 					</a>
 				</div>
@@ -66,8 +57,7 @@
 		@include media-breakpoint-up(lg) {
 			background:
 				url("/landing/features/feature_gradients.svg") top/cover,
-				url("/landing/features/cpt.png") right 0% bottom 45% / contain
-					no-repeat;
+				url("/landing/features/cpt.png") right 0% bottom 45% / contain no-repeat;
 		}
 
 		@media screen and (max-width: 991px) {
@@ -78,8 +68,7 @@
 				width: 100%;
 				height: 100%;
 				background:
-					url("/landing/features/sm-gradient.png") right/cover
-						no-repeat,
+					url("/landing/features/sm-gradient.png") right/cover no-repeat,
 					url("/landing/features/cpt.png") center/contain no-repeat;
 				z-index: -1;
 			}
@@ -186,8 +175,8 @@
 					left: 0;
 					right: 0;
 					height: 100%;
-					background: url("/landing/features/overlay_ellipse.png")
-						bottom center/cover no-repeat;
+					background: url("/landing/features/overlay_ellipse.png") bottom center/cover
+						no-repeat;
 					opacity: 0.85;
 					pointer-events: none;
 				}

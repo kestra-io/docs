@@ -5,9 +5,7 @@
 				<div
 					class="row justify-content-center align-items-center flex-column w-100 header-content"
 				>
-					<p class="text-center header-desc">
-						Built For Critical Use Cases
-					</p>
+					<p class="text-center header-desc">Built For Critical Use Cases</p>
 					<h1 data-usal="fade-r">
 						Scale With Kestra <br />
 						Enterprise Edition
@@ -46,10 +44,10 @@
 
 <script setup lang="ts">
 	import EnterpriseMeetKestra from "~/components/enterprise/MeetKestra.vue"
-	const imageTeam = import.meta.glob<{ src: string }>(
-		"./assets/teams/*.svg",
-		{ eager: true, import: "default" },
-	)
+	const imageTeam = import.meta.glob<{ src: string }>("./assets/teams/*.svg", {
+		eager: true,
+		import: "default",
+	})
 
 	const logos: { img: { src: string }; alt: string }[] = [
 		{
@@ -206,11 +204,7 @@
 			}
 
 			span {
-				background: linear-gradient(
-					90deg,
-					#e151f7 0.45%,
-					#5c47f5 43.61%
-				);
+				background: linear-gradient(90deg, #e151f7 0.45%, #5c47f5 43.61%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

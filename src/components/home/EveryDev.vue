@@ -10,20 +10,12 @@
 		</div>
 		<div class="container">
 			<HomeCard class="left-card card-block">
-				<NuxtImg
-					v-bind="everySoftware"
-					alt="developers"
-					class="img-natural"
-				/>
-				<NuxtImg
-					v-bind="everySoftwareHover"
-					alt="developers"
-					class="img-hover"
-				/>
+				<NuxtImg v-bind="everySoftware" alt="developers" class="img-natural" />
+				<NuxtImg v-bind="everySoftwareHover" alt="developers" class="img-hover" />
 				<h3>Software Engineers</h3>
 				<p class="description">
-					Version control all your resources, from workflows to users
-					and permissions with CI/CD and Terraform Provider.
+					Version control all your resources, from workflows to users and permissions with
+					CI/CD and Terraform Provider.
 				</p>
 				<a href="/use-cases/software-engineers" class="main-link"
 					>Ship Workflows Like Your Code <ArrowRightIcon
@@ -31,20 +23,12 @@
 			</HomeCard>
 
 			<HomeCard class="right-card card-block">
-				<NuxtImg
-					v-bind="everyPlatform"
-					alt="developers"
-					class="img-natural"
-				/>
-				<NuxtImg
-					v-bind="everyPlatformHover"
-					alt="developers"
-					class="img-hover"
-				/>
+				<NuxtImg v-bind="everyPlatform" alt="developers" class="img-natural" />
+				<NuxtImg v-bind="everyPlatformHover" alt="developers" class="img-hover" />
 				<h3>Platform Engineers</h3>
 				<p class="description">
-					Automate infrastructure tasks, manage dependencies, and
-					ensure operational consistency.
+					Automate infrastructure tasks, manage dependencies, and ensure operational
+					consistency.
 				</p>
 				<a href="/use-cases/platform-engineers" class="main-link"
 					>Take Control of Your Platform Ops <ArrowRightIcon
@@ -52,20 +36,12 @@
 			</HomeCard>
 
 			<HomeCard class="bottom-card card-block">
-				<NuxtImg
-					v-bind="everyData"
-					alt="developers"
-					class="img-natural"
-				/>
-				<NuxtImg
-					v-bind="everyDataHover"
-					alt="developers"
-					class="img-hover"
-				/>
+				<NuxtImg v-bind="everyData" alt="developers" class="img-natural" />
+				<NuxtImg v-bind="everyDataHover" alt="developers" class="img-hover" />
 				<h3>Data Engineers</h3>
 				<p class="description">
-					Build reliable data pipelines with on-demand infrastructure
-					that scales on-demand whether in Cloud or on-prem.
+					Build reliable data pipelines with on-demand infrastructure that scales
+					on-demand whether in Cloud or on-prem.
 				</p>
 				<a href="/use-cases/data-engineers" class="main-link"
 					>Pipelines You Can Count On <ArrowRightIcon
@@ -107,19 +83,9 @@
 		@include media-breakpoint-up(md) {
 			padding: 2rem;
 			background-image:
-				linear-gradient(
-					0deg,
-					#0d0e13ff 0%,
-					#0d0e1388 10%,
-					#0d0e1300 30%,
-					#0d0e1300 100%
-				),
+				linear-gradient(0deg, #0d0e13ff 0%, #0d0e1388 10%, #0d0e1300 30%, #0d0e1300 100%),
 				url(./assets/every-bg-dots.svg),
-				radial-gradient(
-					ellipse at center,
-					#000 0%,
-					rgba(70, 69, 100, 0) 100%
-				);
+				radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
 			background-blend-mode: normal, luminosity, normal;
 			background-repeat: no-repeat, no-repeat, no-repeat;
 			background-position:
@@ -161,8 +127,7 @@
 				margin-right: auto;
 			}
 			span {
-				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-					no-repeat center;
+				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 				background-size: cover;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

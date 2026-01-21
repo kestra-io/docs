@@ -2,10 +2,7 @@
 	<div class="container">
 		<Section subtitle="Our contributors">
 			<div ref="topOfSection" />
-			<div
-				v-if="contributors"
-				class="contributors d-flex flex-wrap justify-content-center"
-			>
+			<div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
 				<template
 					v-for="(contributor, index) in displayedContributors"
 					:key="contributor.name"
@@ -81,17 +78,13 @@
 				)
 				if (hasContribField) {
 					return [...this.contributors].sort(
-						(a, b) =>
-							(b.contributions || 0) - (a.contributions || 0),
+						(a, b) => (b.contributions || 0) - (a.contributions || 0),
 					)
 				}
 				return this.contributorsRand || []
 			},
 			regularContributors() {
-				return (this.sortedByContributions || []).slice(
-					0,
-					this.regularCount,
-				)
+				return (this.sortedByContributions || []).slice(0, this.regularCount)
 			},
 			displayedContributors() {
 				if (this.isExpanded) {
@@ -101,22 +94,16 @@
 			},
 			moreCount() {
 				const total = this.contributors ? this.contributors.length : 0
-				const shown = this.regularContributors
-					? this.regularContributors.length
-					: 0
+				const shown = this.regularContributors ? this.regularContributors.length : 0
 				const remaining = total - shown
 				return remaining > 0 ? remaining : 0
 			},
 		},
 		async created() {
 			try {
-				const { data } = await this.useApi().get(
-					"/communities/github/contributors",
-				)
+				const { data } = await this.useApi().get("/communities/github/contributors")
 				this.contributors = data
-				this.contributorsRand = this.contributors.toSorted(
-					() => 0.5 - Math.random(),
-				)
+				this.contributorsRand = this.contributors.toSorted(() => 0.5 - Math.random())
 			} catch (e) {
 				this.contributors = []
 			}

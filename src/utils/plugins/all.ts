@@ -25,9 +25,7 @@ export function hasMultipleSubPackages(plugin: Plugin): boolean {
 		.flatMap(([_, value]) => value as PluginElement[])
 
 	const subPackages = new Set(
-		elements
-			.map((el) => getSubpackage(el.cls, plugin.group))
-			.filter(Boolean),
+		elements.map((el) => getSubpackage(el.cls, plugin.group)).filter(Boolean),
 	)
 
 	return subPackages.size > 1
@@ -41,10 +39,7 @@ export function hasMultipleSubPackages(plugin: Plugin): boolean {
  * @example
  * Groups GitHub plugin tasks into subgroups like "actions", "code", "commits", "issues", etc.
  */
-export function groupBySubpackage(
-	plugin: Plugin,
-	allMetadata: PluginMetadata[],
-): Plugin[] {
+export function groupBySubpackage(plugin: Plugin, allMetadata: PluginMetadata[]): Plugin[] {
 	const groups = new Map<string, Record<string, PluginElement[]>>()
 
 	Object.entries(plugin)

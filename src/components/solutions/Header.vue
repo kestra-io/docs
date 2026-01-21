@@ -8,9 +8,8 @@
 					<div class="text-center d-flex flex-column gap-3">
 						<p data-usal="fade-l" class="title">Use Cases</p>
 						<p data-usal="fade-l" class="baseline">
-							Harness the value of your data, unlock new insights,
-							and drive informed decision-making using Kestra's
-							automation platform
+							Harness the value of your data, unlock new insights, and drive informed
+							decision-making using Kestra's automation platform
 						</p>
 					</div>
 				</div>

@@ -11,22 +11,17 @@ function modifyCommitLink(body: string, repo = "kestra-io/kestra") {
 	const before = body.slice(0, splitIndex)
 	const after = body.slice(splitIndex)
 
-	const transformedBefore = before.replace(
-		/^-\s([a-f0-9]{7})/gm,
-		(match, commitId) => {
-			const url = `https://github.com/${repo}/commit/${commitId}`
-			return `- [\`${commitId}\`](${url})`
-		},
-	)
+	const transformedBefore = before.replace(/^-\s([a-f0-9]{7})/gm, (match, commitId) => {
+		const url = `https://github.com/${repo}/commit/${commitId}`
+		return `- [\`${commitId}\`](${url})`
+	})
 	const transformedAfter = after.replace(/^-\s([a-f0-9]{7})/gm, "- ")
 
 	return transformedBefore + transformedAfter
 }
 
 export async function fetchMajorReleases(limit = 20) {
-	const res = await fetch(
-		`https://api.github.com/repos/kestra-io/kestra/releases?per_page=100`,
-	)
+	const res = await fetch(`https://api.github.com/repos/kestra-io/kestra/releases?per_page=100`)
 	if (!res.ok) return []
 
 	let data = await res.json()
@@ -39,9 +34,7 @@ export async function fetchMajorReleases(limit = 20) {
 }
 
 export async function fetchReleaseByTag(tag: string) {
-	const res = await fetch(
-		`https://api.github.com/repos/kestra-io/kestra/releases/tags/${tag}`,
-	)
+	const res = await fetch(`https://api.github.com/repos/kestra-io/kestra/releases/tags/${tag}`)
 	if (!res.ok) return null
 
 	const data = await res.json()

@@ -43,9 +43,7 @@
 		currentPage = route.path
 	}
 
-	currentPage = currentPage.endsWith("/")
-		? currentPage.slice(0, -1)
-		: currentPage
+	currentPage = currentPage.endsWith("/") ? currentPage.slice(0, -1) : currentPage
 
 	const { data: navigation } = await useAsyncData(
 		`ChildReleases-${hash(currentPage)}`,

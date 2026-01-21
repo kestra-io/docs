@@ -2,13 +2,9 @@
 	<div class="container-fluid">
 		<div class="hero container">
 			<div class="row">
-				<div
-					class="col-md-6 order-1 order-md-0 align-items-center d-flex"
-				>
+				<div class="col-md-6 order-1 order-md-0 align-items-center d-flex">
 					<div>
-						<h1 data-usal="fade-r">
-							The differences between Kestra and Airflow
-						</h1>
+						<h1 data-usal="fade-r">The differences between Kestra and Airflow</h1>
 						<p class="baseline" data-usal="fade-l">
 							How to Choose the Right Orchestration Platform
 						</p>

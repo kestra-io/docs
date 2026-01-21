@@ -2,18 +2,13 @@
 	<section>
 		<div class="container">
 			<h2><span>250+ Blueprints,</span> Ready to Build.</h2>
-			<p>
-				Jump start your workflows with a growing library of workflow
-				templates
-			</p>
+			<p>Jump start your workflows with a growing library of workflow templates</p>
 		</div>
 		<Suspense>
 			<HomeBlueprintsCarousel :blueprints="blueprints" />
 		</Suspense>
 		<div class="button-container">
-			<a href="/blueprints" class="btn btn-lg btn-primary"
-				>Explore Blueprints</a
-			>
+			<a href="/blueprints" class="btn btn-lg btn-primary">Explore Blueprints</a>
 		</div>
 	</section>
 </template>
@@ -37,8 +32,7 @@
 		font-weight: 600;
 		span {
 			color: $primary;
-			background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-				no-repeat center;
+			background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 			font-weight: 600;
 			background-size: cover;
 			background-clip: text;

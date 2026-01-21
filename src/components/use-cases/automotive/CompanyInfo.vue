@@ -2,9 +2,7 @@
 	<div class="container-fluid bg-dark-4">
 		<div class="container">
 			<div class="row align-items-center">
-				<div
-					class="col-lg-6 align-items-center d-flex order-1 order-lg-0"
-				>
+				<div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
 					<div class="company-info">
 						<NuxtImg
 							:width="logoWidth"
@@ -16,20 +14,12 @@
 							:alt="logoAlt"
 						/>
 						<p>Customer Success</p>
-						<h1
-							data-usal="fade-r"
-							v-if="titleHtml"
-							v-html="titleHtml"
-						/>
+						<h1 data-usal="fade-r" v-if="titleHtml" v-html="titleHtml" />
 						<p data-usal="fade-l" class="baseline">
 							{{ description }}
 						</p>
 						<div class="cta">
-							<a
-								:href="storeLink"
-								class="btn btn-dark me-3"
-								data-usal="zoomin"
-							>
+							<a :href="storeLink" class="btn btn-dark me-3" data-usal="zoomin">
 								Read the Story
 							</a>
 						</div>
@@ -108,11 +98,7 @@
 			left: 30%;
 			z-index: 1;
 			filter: blur(100px);
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 		}
 
 		.container {
@@ -137,11 +123,7 @@
 			}
 
 			:deep(span) {
-				background: linear-gradient(
-					90deg,
-					#e151f7 65.38%,
-					#5c47f5 82.43%
-				);
+				background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -170,11 +152,7 @@
 
 	.red.container-fluid {
 		&::after {
-			background: linear-gradient(
-				180deg,
-				rgba(253, 114, 120, 0) 11.24%,
-				#e3262f 72.98%
-			);
+			background: linear-gradient(180deg, rgba(253, 114, 120, 0) 11.24%, #e3262f 72.98%);
 		}
 	}
 </style>

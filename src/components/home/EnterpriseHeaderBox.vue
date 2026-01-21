@@ -12,14 +12,10 @@
 			</ul>
 			<div class="cta">
 				<a href="/demo" class="btn btn-lg btn-primary">Talk to Sales</a>
-				<a href="/enterprise" class="learn-more"
-					>Learn More <ArrowRightIcon
-				/></a>
+				<a href="/enterprise" class="learn-more">Learn More <ArrowRightIcon /></a>
 			</div>
 		</div>
-		<a href="/enterprise" class="learn-more"
-			>Learn More <ArrowRightIcon
-		/></a>
+		<a href="/enterprise" class="learn-more">Learn More <ArrowRightIcon /></a>
 	</section>
 </template>
 
@@ -111,8 +107,7 @@
 				@include media-breakpoint-up(lg) {
 					display: inline;
 				}
-				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-					no-repeat center;
+				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 				background-size: cover;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

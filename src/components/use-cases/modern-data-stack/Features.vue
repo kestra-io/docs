@@ -1,9 +1,5 @@
 <template>
-	<SolutionsDetailFeatures
-		subtitle="Key"
-		subtitleAfter="Features"
-		:items="features"
-	/>
+	<SolutionsDetailFeatures subtitle="Key" subtitleAfter="Features" :items="features" />
 </template>
 
 <script setup>

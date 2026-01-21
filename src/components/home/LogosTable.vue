@@ -41,12 +41,7 @@
 			width: 1146px;
 		}
 		gap: 1px;
-		background: radial-gradient(
-				#e1e1e1 0%,
-				#e1e1e1 30%,
-				#e1e1e101 80%,
-				#e1e1e100 100%
-			)
+		background: radial-gradient(#e1e1e1 0%, #e1e1e1 30%, #e1e1e101 80%, #e1e1e100 100%)
 			no-repeat center;
 		margin: 0 auto;
 	}

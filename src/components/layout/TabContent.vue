@@ -1,11 +1,7 @@
 <template>
 	<div class="business-details-container">
 		<ul class="nav nav-tabs w-100 d-md-flex d-none">
-			<li
-				class="nav-item"
-				v-for="(navLink, index) in navLinks"
-				:key="navLink.id"
-			>
+			<li class="nav-item" v-for="(navLink, index) in navLinks" :key="navLink.id">
 				<button
 					:class="`nav-link ${activeTabIndex === index ? 'active' : ''}`"
 					@click="setTab(index)"
@@ -24,11 +20,7 @@
 				{{ navLinks[activeTabIndex].tabText }}
 			</button>
 			<ul class="dropdown-menu dropdown-menu-bar">
-				<li
-					class="nav-item"
-					v-for="(navLink, index) in navLinks"
-					:key="navLink.id"
-				>
+				<li class="nav-item" v-for="(navLink, index) in navLinks" :key="navLink.id">
 					<button
 						:class="`nav-link ${activeTabIndex === index ? 'active' : ''}`"
 						@click="setTab(index)"
@@ -161,11 +153,7 @@
 				position: absolute;
 				width: calc($spacer * 10);
 				height: calc($spacer * 11);
-				background: linear-gradient(
-					180deg,
-					rgba(98, 24, 255, 0) 0%,
-					#6117ff 100%
-				);
+				background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 				filter: blur(100px);
 				z-index: -5;
 			}

@@ -17,9 +17,8 @@
 							<h6 class="card-heading">Code in any language</h6>
 						</div>
 						<p class="card-para">
-							Orchestrate custom business logic in Python, R,
-							Java, Julia, Ruby, and any kind of language, thanks
-							to Docker.
+							Orchestrate custom business logic in Python, R, Java, Julia, Ruby, and
+							any kind of language, thanks to Docker.
 						</p>
 					</div>
 				</div>
@@ -42,8 +41,8 @@
 							</h6>
 						</div>
 						<p class="card-para">
-							Our built-in code editor simplifies script editing
-							and management directly within Kestra.
+							Our built-in code editor simplifies script editing and management
+							directly within Kestra.
 						</p>
 					</div>
 				</div>
@@ -64,9 +63,8 @@
 							<h6 class="card-heading">Separation of Concerns</h6>
 						</div>
 						<p class="card-para">
-							Kestra's design ensures a clear distinction between
-							orchestration and business logic, keeping your code
-							portable and platform-independent.
+							Kestra's design ensures a clear distinction between orchestration and
+							business logic, keeping your code portable and platform-independent.
 						</p>
 					</div>
 				</div>
@@ -84,14 +82,11 @@
 								alt="API-Based svg"
 								class="mb-2"
 							/>
-							<h6 class="card-heading">
-								Built-in Version Control with Git
-							</h6>
+							<h6 class="card-heading">Built-in Version Control with Git</h6>
 						</div>
 						<p class="card-para">
-							Synchronize your code changes between Git and Kestra
-							in both directions — sync code from Git or push your
-							code built in Kestra’s IDE to Git.
+							Synchronize your code changes between Git and Kestra in both directions
+							— sync code from Git or push your code built in Kestra’s IDE to Git.
 						</p>
 					</div>
 				</div>
@@ -109,14 +104,11 @@
 								alt="Subflow svg"
 								class="mb-2"
 							/>
-							<h6 class="card-heading">
-								Docker enabled by default
-							</h6>
+							<h6 class="card-heading">Docker enabled by default</h6>
 						</div>
 						<p class="card-para">
-							No need to worry about building Docker images and
-							managing the container lifecycle — we’ll do that
-							automatically for you.
+							No need to worry about building Docker images and managing the container
+							lifecycle — we’ll do that automatically for you.
 						</p>
 					</div>
 				</div>
@@ -144,11 +136,7 @@
 			right: 19%;
 			bottom: calc($spacer * 10);
 			z-index: 10;
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0),
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0), #6117ff 100%);
 			filter: blur(100px);
 		}
 
@@ -161,11 +149,7 @@
 			font-size: $font-size-3xl;
 
 			&-animated {
-				background: linear-gradient(
-					90deg,
-					#e151f7 57.52%,
-					#5c47f5 92.48%
-				);
+				background: linear-gradient(90deg, #e151f7 57.52%, #5c47f5 92.48%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

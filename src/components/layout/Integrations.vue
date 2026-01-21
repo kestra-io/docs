@@ -3,8 +3,8 @@
 		<div class="container">
 			<div class="mb-5">
 				<h2 class="title">
-					Integrate with {{ totalPlugins }} plugins you already
-					<span>know</span> and <span>love</span>
+					Integrate with {{ totalPlugins }} plugins you already <span>know</span> and
+					<span>love</span>
 				</h2>
 				<LayoutPlugins />
 			</div>
@@ -52,11 +52,7 @@
 			}
 
 			span {
-				background: linear-gradient(
-					91deg,
-					#e151f7 43.87%,
-					#5c47f5 55.51%
-				);
+				background: linear-gradient(91deg, #e151f7 43.87%, #5c47f5 55.51%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -71,11 +67,7 @@
 
 				h2 {
 					margin-bottom: calc($spacer * 2);
-					background: linear-gradient(
-						90.03deg,
-						#e151f7 2.16%,
-						#5c47f5 65.09%
-					);
+					background: linear-gradient(90.03deg, #e151f7 2.16%, #5c47f5 65.09%);
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;
 					background-clip: text;

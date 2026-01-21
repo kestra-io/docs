@@ -24,11 +24,7 @@
 							<p class="card-title">Kestra</p>
 						</div>
 					</div>
-					<div
-						class="card task"
-						v-for="task in story.tasks"
-						:key="task"
-					>
+					<div class="card task" v-for="task in story.tasks" :key="task">
 						<div class="body">
 							<TaskIcon :cls="task" />
 							<p class="card-title">
@@ -39,18 +35,11 @@
 				</div>
 			</div>
 			<div class="block pt-2 w-100 d-flex justify-content-center">
-				<a href="/demo" class="btn btn-gradient mx-auto">
-					Book a demo
-				</a>
+				<a href="/demo" class="btn btn-gradient mx-auto"> Book a demo </a>
 			</div>
 		</div>
 		<div class="socials">
-			<a
-				v-for="link in SOCIALS"
-				:key="link.href"
-				:href="link.href"
-				target="_blank"
-			>
+			<a v-for="link in SOCIALS" :key="link.href" :href="link.href" target="_blank">
 				<component :is="link.icon" />
 			</a>
 		</div>
@@ -204,14 +193,8 @@
 					position: relative;
 					color: $white;
 					background:
-						linear-gradient(180deg, #694eff 0%, #5233ff 104.54%)
-							padding-box,
-						linear-gradient(
-								262.72deg,
-								#ffffff 15.19%,
-								#e8c8c8 37.92%,
-								#838383 76.01%
-							)
+						linear-gradient(180deg, #694eff 0%, #5233ff 104.54%) padding-box,
+						linear-gradient(262.72deg, #ffffff 15.19%, #e8c8c8 37.92%, #838383 76.01%)
 							border-box;
 					border-radius: $border-radius-lg;
 					border: 1px solid transparent;

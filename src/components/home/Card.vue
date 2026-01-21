@@ -15,8 +15,7 @@
 
 	watch([absX, absY], ([xv, yv]) => {
 		if (box.value) {
-			const { left, top, width, height } =
-				box.value.getBoundingClientRect()
+			const { left, top, width, height } = box.value.getBoundingClientRect()
 			const x = xv - left - window.scrollX
 			const y = yv - top - window.scrollY
 			if (

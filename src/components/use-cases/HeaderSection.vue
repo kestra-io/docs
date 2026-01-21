@@ -2,15 +2,9 @@
 	<div class="container-fluid bg-dark-4">
 		<div class="hero hero-sm container">
 			<div class="row">
-				<div
-					class="col-lg-6 align-items-center d-flex order-1 order-lg-0"
-				>
+				<div class="col-lg-6 align-items-center d-flex order-1 order-lg-0">
 					<div>
-						<h1
-							data-usal="fade-r"
-							v-if="titleHtml"
-							v-html="titleHtml"
-						/>
+						<h1 data-usal="fade-r" v-if="titleHtml" v-html="titleHtml" />
 						<p data-usal="fade-l" class="baseline">
 							{{ description }}
 						</p>
@@ -83,11 +77,7 @@
 			left: 30%;
 			z-index: 0;
 			filter: blur(100px);
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 		}
 
 		h1,
@@ -108,11 +98,7 @@
 			}
 
 			:deep(span) {
-				background: linear-gradient(
-					90deg,
-					#e151f7 65.38%,
-					#5c47f5 82.43%
-				);
+				background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -140,20 +126,12 @@
 
 	.red.container-fluid {
 		&::after {
-			background: linear-gradient(
-				180deg,
-				#fd727800 11.24%,
-				#e3262f 72.98%
-			) !important;
+			background: linear-gradient(180deg, #fd727800 11.24%, #e3262f 72.98%) !important;
 		}
 
 		h1 {
 			:deep(span) {
-				background: linear-gradient(
-					90.03deg,
-					#e3262f 57.94%,
-					#ab0009 87.71%
-				);
+				background: linear-gradient(90.03deg, #e3262f 57.94%, #ab0009 87.71%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

@@ -4,9 +4,7 @@
 			<div data-usal="fade-u">
 				<p class="title">
 					Replace Fragmented Tools<br />
-					<span class="gradient">
-						With A Single Unified Platform
-					</span>
+					<span class="gradient"> With A Single Unified Platform </span>
 				</p>
 			</div>
 
@@ -14,18 +12,16 @@
 				<div class="section" data-usal="fade-r delay-100">
 					<h4 class="without">Without Kestra 😵‍💫</h4>
 					<p>
-						Job schedulers, complex workflow frameworks, custom
-						scripts, and manual glue code spread across multiple
-						systems.
+						Job schedulers, complex workflow frameworks, custom scripts, and manual glue
+						code spread across multiple systems.
 					</p>
 				</div>
 
 				<div class="section" data-usal="fade-l delay-150">
 					<h4 class="with">With Kestra 😎</h4>
 					<p>
-						One platform to define, run, and observe workflows,
-						react to event triggers, manage human-in-the-loop
-						approvals, secrets, audit trails, and SLAs.
+						One platform to define, run, and observe workflows, react to event triggers,
+						manage human-in-the-loop approvals, secrets, audit trails, and SLAs.
 					</p>
 				</div>
 			</div>
@@ -65,8 +61,7 @@
 		{
 			id: "lower-infrastructure-costs",
 			title: "Lower infrastructure costs",
-			description:
-				"Consolidate systems and cut redundant infrastructure.",
+			description: "Consolidate systems and cut redundant infrastructure.",
 			icon: CashMinus,
 		},
 		{
@@ -78,8 +73,7 @@
 		{
 			id: "consistent-governance",
 			title: "Consistent governance",
-			description:
-				"Enforce versioning, auditing, and compliance by default.",
+			description: "Enforce versioning, auditing, and compliance by default.",
 			icon: LaptopAccount,
 		},
 	]
@@ -110,11 +104,7 @@
 				}
 
 				.gradient {
-					background: linear-gradient(
-						90deg,
-						#8c4bff 0%,
-						#658af9 100%
-					);
+					background: linear-gradient(90deg, #8c4bff 0%, #658af9 100%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

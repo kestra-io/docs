@@ -4,8 +4,8 @@
 			<div class="get-in-touch">
 				<h1 data-usal="fade-r">Contact <span>Us</span></h1>
 				<p class="baseline" data-usal="fade-l">
-					If you have questions, inquiries, or feedback about Kestra,
-					we're looking to hearing from you.
+					If you have questions, inquiries, or feedback about Kestra, we're looking to
+					hearing from you.
 				</p>
 			</div>
 			<div class="row justify-content-center">
@@ -43,11 +43,7 @@
 				font-weight: 400;
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 56.37%,
-						#5c47f5 64.15%
-					);
+					background: linear-gradient(90deg, #e151f7 56.37%, #5c47f5 64.15%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;
@@ -81,11 +77,7 @@
 			position: absolute;
 			width: calc($spacer * 12.5);
 			height: calc($spacer * 12.5);
-			background: linear-gradient(
-				140deg,
-				rgba(70, 24, 255, 0) -41.95%,
-				#7e1cfa 77.28%
-			);
+			background: linear-gradient(140deg, rgba(70, 24, 255, 0) -41.95%, #7e1cfa 77.28%);
 			filter: blur(100px);
 			z-index: -5;
 		}

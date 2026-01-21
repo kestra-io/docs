@@ -1,16 +1,10 @@
 <template>
 	<section class="tour-section">
 		<div class="container">
-			<div
-				class="left-div"
-				data-usal="slide-r delay-0 duration-600 ease-out"
-			>
-				<h2 data-usal="fade-u delay-50 duration-500 ease-out">
-					Want to Take a Tour?
-				</h2>
+			<div class="left-div" data-usal="slide-r delay-0 duration-600 ease-out">
+				<h2 data-usal="fade-u delay-50 duration-500 ease-out">Want to Take a Tour?</h2>
 				<p data-usal="fade-u delay-100 duration-500 ease-out">
-					Explore how Kestra gives you full control over complex
-					infrastructure workflows.
+					Explore how Kestra gives you full control over complex infrastructure workflows.
 				</p>
 				<a
 					to="/docs/quickstart"
@@ -20,10 +14,7 @@
 					Take the tour
 				</a>
 			</div>
-			<div
-				class="right-div"
-				data-usal="slide-l delay-25 duration-700 ease-out"
-			>
+			<div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
 				<NuxtImg
 					src="/landing/infrastructure/infra-ui.png"
 					alt="Infrastructure UI"
@@ -32,11 +23,7 @@
 					densities="x1 x2"
 					loading="lazy"
 				/>
-				<img
-					src="/landing/infrastructure/arrow.svg"
-					alt="Arrow"
-					class="arrow-overlay"
-				/>
+				<img src="/landing/infrastructure/arrow.svg" alt="Arrow" class="arrow-overlay" />
 			</div>
 		</div>
 	</section>

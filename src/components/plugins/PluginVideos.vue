@@ -50,9 +50,7 @@
 		return match?.[1] ?? null
 	}
 
-	const videoIds = computed(
-		() => props.videos.map(extractId).filter(Boolean) as string[],
-	)
+	const videoIds = computed(() => props.videos.map(extractId).filter(Boolean) as string[])
 </script>
 
 <style scoped lang="scss">

@@ -1,20 +1,10 @@
 <template>
 	<div v-if="show" class="nav-actions">
-		<button
-			class="btn-nav prev"
-			:disabled="isFirstPage"
-			@click="prev"
-			aria-label="Previous"
-		>
+		<button class="btn-nav prev" :disabled="isFirstPage" @click="prev" aria-label="Previous">
 			<ChevronLeft />
 		</button>
 
-		<button
-			class="btn-nav next"
-			:disabled="isLastPage"
-			@click="next"
-			aria-label="Next"
-		>
+		<button class="btn-nav next" :disabled="isLastPage" @click="next" aria-label="Next">
 			<ChevronRight />
 		</button>
 	</div>
@@ -70,10 +60,7 @@
 		{ immediate: true },
 	)
 
-	watch(
-		[() => props.items?.length, () => props.pageSize],
-		() => (currentPage.value = 1),
-	)
+	watch([() => props.items?.length, () => props.pageSize], () => (currentPage.value = 1))
 </script>
 
 <style scoped lang="scss">

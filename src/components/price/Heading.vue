@@ -9,24 +9,16 @@
 		<!-- cards  -->
 		<Section class="pt-0">
 			<div class="row card-group mb-4">
-				<div
-					class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end pt-37"
-				>
+				<div class="col-12 col-md-6 z-3 d-md-flex justify-content-md-end pt-37">
 					<div class="card text-white col-lg-9 col-xl-8 max-w-328">
 						<div class="card-body">
 							<div class="pb-rem-2">
-								<h4 class="card-title" data-usal="fade-r">
-									Open-Source Edition
-								</h4>
-								<p class="pricing" data-usal="fade-l">
-									Best for Development
-								</p>
-								<p class="pricing-type" data-usal="fade-l">
-									Free
-								</p>
+								<h4 class="card-title" data-usal="fade-r">Open-Source Edition</h4>
+								<p class="pricing" data-usal="fade-l">Best for Development</p>
+								<p class="pricing-type" data-usal="fade-l">Free</p>
 								<div class="pricing-desc" data-usal="fade-l">
-									The core features of Kestra, maintained by
-									the Kestra team and community.
+									The core features of Kestra, maintained by the Kestra team and
+									community.
 								</div>
 							</div>
 							<a
@@ -47,10 +39,7 @@
 									<div class="check-icon">
 										<CheckBold />
 									</div>
-									<span
-										>Open Source Under Apache 2.0
-										Licence</span
-									>
+									<span>Open Source Under Apache 2.0 Licence</span>
 								</li>
 							</ul>
 						</div>
@@ -58,40 +47,23 @@
 				</div>
 				<div class="col-12 col-md-6 z-3">
 					<div class="bordered-block">
-						<div
-							class="card-Demo text-white col-lg-9 col-xl-8 mt-3 mt-md-0 max-w-328"
-						>
+						<div class="card-Demo text-white col-lg-9 col-xl-8 mt-3 mt-md-0 max-w-328">
 							<div class="top-block">
-								<span>
-									Recommended for Enterprises & SMBs
-								</span>
+								<span> Recommended for Enterprises & SMBs </span>
 							</div>
 							<div class="card-body">
 								<div class="pb-rem-2">
 									<h4 class="card-title" data-usal="fade-r">
 										Enterprise Edition
 									</h4>
-									<p class="pricing" data-usal="fade-l">
-										Built For Production
-									</p>
-									<p class="pricing-type" data-usal="fade-l">
-										On-Demand
-									</p>
-									<div
-										class="pricing-desc"
-										data-usal="fade-l"
-									>
-										Predictable instance based model with:
-										no limits on users, workflows, or tasks.
+									<p class="pricing" data-usal="fade-l">Built For Production</p>
+									<p class="pricing-type" data-usal="fade-l">On-Demand</p>
+									<div class="pricing-desc" data-usal="fade-l">
+										Predictable instance based model with: no limits on users,
+										workflows, or tasks.
 									</div>
 								</div>
-								<a
-									href="/demo"
-									class="demo-btn"
-									data-usal="zoomin"
-								>
-									Talk to us
-								</a>
+								<a href="/demo" class="demo-btn" data-usal="zoomin"> Talk to us </a>
 								<ul>
 									<li data-usal="fade-r delay-100">
 										<div class="check-icon">
@@ -267,10 +239,7 @@
 				width: 100%;
 				background-color: $white !important;
 				box-shadow: none;
-				background: var(
-					--Kestra-io-Token-color-background-secondary,
-					$black-2
-				);
+				background: var(--Kestra-io-Token-color-background-secondary, $black-2);
 				position: relative;
 				$border: 1px;
 				background: #000;

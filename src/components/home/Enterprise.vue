@@ -7,9 +7,7 @@
 
 <script setup lang="ts">
 	import HomeEnterpriseHeaderBox from "~/components/home/EnterpriseHeaderBox.vue"
-	import HomeEnterpriseStories, {
-		type Story,
-	} from "~/components/home/EnterpriseStories.vue"
+	import HomeEnterpriseStories, { type Story } from "~/components/home/EnterpriseStories.vue"
 
 	defineProps<{
 		stories: Story[]

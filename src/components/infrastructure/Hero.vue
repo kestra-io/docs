@@ -1,47 +1,32 @@
 <template>
 	<section class="main-header">
 		<div class="hero container">
-			<div
-				class="top-section"
-				data-usal="slide-d delay-0 duration-700 ease-out"
-			>
-				<div
-					class="left-section"
-					data-usal="slide-d delay-50 duration-700 ease-out"
-				>
+			<div class="top-section" data-usal="slide-d delay-0 duration-700 ease-out">
+				<div class="left-section" data-usal="slide-d delay-50 duration-700 ease-out">
 					<h2>
 						Modernize Infrastructure Automation
 						<br class="d-none d-lg-block" />
 						With One Unified Control Plane
 					</h2>
 					<p>
-						Standardize provisioning and Day 2 operations with less
-						risk and operational overhead.
+						Standardize provisioning and Day 2 operations with less risk and operational
+						overhead.
 						<br class="d-none d-lg-block" />
-						Get full visibility and control across all
-						infrastructure workflows.
+						Get full visibility and control across all infrastructure workflows.
 					</p>
 				</div>
 
-				<div
-					class="right-section"
-					data-usal="slide-d delay-100 duration-700 ease-out"
-				>
+				<div class="right-section" data-usal="slide-d delay-100 duration-700 ease-out">
 					<p>
 						Still relying on scripts and legacy tools
 						<br class="d-none d-xl-block" />
 						to run mission-critical infrastructure?
 					</p>
-					<a to="/demo" class="btn btn-primary btn-gradient">
-						Book a demo
-					</a>
+					<a to="/demo" class="btn btn-primary btn-gradient"> Book a demo </a>
 				</div>
 			</div>
 
-			<div
-				class="embed-wrapper"
-				:style="{ transform: `scale(${scale})` }"
-			>
+			<div class="embed-wrapper" :style="{ transform: `scale(${scale})` }">
 				<div class="gradient-border">
 					<iframe
 						class="arcade-embed"
@@ -59,10 +44,7 @@
 			>
 				<h5>Trusted by Leading Global Companies</h5>
 				<div class="companies-logos">
-					<template
-						v-for="(company, index) in companiesCarousel"
-						:key="index"
-					>
+					<template v-for="(company, index) in companiesCarousel" :key="index">
 						<NuxtImg
 							:src="`/landing/infrastructure/companies/${company.name}.svg`"
 							:width="company.width"
@@ -119,8 +101,7 @@
 		.background {
 			position: fixed;
 			inset: 0;
-			background: url("/landing/infrastructure/hero-bg.webp") top center /
-				cover no-repeat;
+			background: url("/landing/infrastructure/hero-bg.webp") top center / cover no-repeat;
 			z-index: -1;
 			pointer-events: none;
 

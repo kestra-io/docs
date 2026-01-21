@@ -1,9 +1,7 @@
 <template>
 	<div ref="securityBlock" class="content">
 		<div class="container">
-			<h3 class="title">
-				Customer Success Program & Support <br />With SLA
-			</h3>
+			<h3 class="title">Customer Success Program & Support <br />With SLA</h3>
 			<div class="blocks">
 				<div class="block">
 					<RocketLaunchOutline />
@@ -13,18 +11,12 @@
 				<div class="block">
 					<HandshakeOutline />
 					<h4>Partnership</h4>
-					<span
-						>Tailored business cases and clear quotations to drive
-						your growth.</span
-					>
+					<span>Tailored business cases and clear quotations to drive your growth.</span>
 				</div>
 				<div class="block">
 					<LaptopAccount />
 					<h4>Customer success</h4>
-					<span
-						>Support, office hours, and roadmap previews to keep you
-						ahead.</span
-					>
+					<span>Support, office hours, and roadmap previews to keep you ahead.</span>
 				</div>
 			</div>
 		</div>

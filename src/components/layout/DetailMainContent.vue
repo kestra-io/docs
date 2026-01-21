@@ -7,10 +7,7 @@
 			:baseline="baseline"
 		>
 			<template v-for="(item, index) in items">
-				<div
-					v-if="index % 2 !== 0"
-					class="row feature-img-right position-relative py-4"
-				>
+				<div v-if="index % 2 !== 0" class="row feature-img-right position-relative py-4">
 					<div
 						class="col-md-6 ps-2 ps-sm-5 pe-2 ps-sm-5 order-1 order-md-0 d-flex flex-column justify-content-center"
 						data-usal="fade-l"
@@ -154,8 +151,7 @@
 		}
 
 		&-left::before {
-			background: url("/landing/usecases/cdc/feature-grow.svg") no-repeat
-				left;
+			background: url("/landing/usecases/cdc/feature-grow.svg") no-repeat left;
 			background-size: 35% 100%;
 
 			@include media-breakpoint-down(lg) {
@@ -172,8 +168,7 @@
 		}
 
 		&-right::before {
-			background: url("/landing/usecases/cdc/feature-grow.svg") no-repeat
-				right;
+			background: url("/landing/usecases/cdc/feature-grow.svg") no-repeat right;
 			background-size: 32% 100%;
 			right: 17%;
 

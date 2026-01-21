@@ -12,12 +12,7 @@
 					class="team-card"
 					:data-usal="`zoomin delay-${index * 50}`"
 				>
-					<NuxtImg
-						:src="member.image"
-						:alt="member.name"
-						width="110px"
-						height="110px"
-					/>
+					<NuxtImg :src="member.image" :alt="member.name" width="110px" height="110px" />
 					<div class="team-info">
 						<div
 							class="team-name"

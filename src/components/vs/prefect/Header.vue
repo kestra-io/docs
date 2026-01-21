@@ -4,9 +4,7 @@
 			<div class="row">
 				<div class="col-md-6 align-items-center d-flex">
 					<div>
-						<h1 data-usal="fade-r">
-							The differences between Kestra and Prefect
-						</h1>
+						<h1 data-usal="fade-r">The differences between Kestra and Prefect</h1>
 						<p class="baseline" data-usal="fade-l">
 							How to Choose the Right Orchestration Platform
 						</p>
@@ -21,10 +19,7 @@
 						</div>
 					</div>
 				</div>
-				<div
-					class="col-md-6 d-flex justify-content-center"
-					data-usal="zoomin"
-				>
+				<div class="col-md-6 d-flex justify-content-center" data-usal="zoomin">
 					<img
 						class="zoom img-fluid"
 						src="/landing/vs/prefect/header.svg"

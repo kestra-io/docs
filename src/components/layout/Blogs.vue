@@ -22,8 +22,7 @@
 									<h4 class="card-title">{{ blog.title }}</h4>
 									<BlogsBlogCardDetails
 										:authors="
-											blog.authors ||
-											(blog.author ? [blog.author] : [])
+											blog.authors || (blog.author ? [blog.author] : [])
 										"
 										:date="blog.date"
 									/>
@@ -34,10 +33,7 @@
 				</template>
 			</div>
 			<div class="text-center">
-				<a
-					class="btn btn-animated btn-purple-animated"
-					href="/blogs"
-					data-usal="zoomin"
+				<a class="btn btn-animated btn-purple-animated" href="/blogs" data-usal="zoomin"
 					>See all news</a
 				>
 			</div>

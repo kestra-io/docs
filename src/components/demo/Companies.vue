@@ -18,10 +18,10 @@
 
 <script lang="ts" setup>
 	import { computed } from "vue"
-	const companiesLogos = import.meta.glob<{ src: string }>(
-		"~/assets/companies/*.svg",
-		{ eager: true, import: "default" },
-	)
+	const companiesLogos = import.meta.glob<{ src: string }>("~/assets/companies/*.svg", {
+		eager: true,
+		import: "default",
+	})
 
 	defineProps<{
 		inverted?: boolean

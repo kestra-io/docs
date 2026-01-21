@@ -1,10 +1,7 @@
 <template>
 	<section class="arc">
 		<div class="container">
-			<div
-				class="arc-embed"
-				data-usal="zoomin delay-0 duration-400 ease-out"
-			>
+			<div class="arc-embed" data-usal="zoomin delay-0 duration-400 ease-out">
 				<iframe
 					class="arc-iframe"
 					src="https://demo.arcade.software/4ggZ33yP4fKHcs7yk6lz?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true&autoplay=true"
@@ -25,16 +22,10 @@
 			</h3>
 
 			<div class="blueprints">
-				<button
-					class="navigation navigation-left d-md-none"
-					@click="scrollLeft"
-				>
+				<button class="navigation navigation-left d-md-none" @click="scrollLeft">
 					<ArrowLeft />
 				</button>
-				<button
-					class="navigation navigation-right d-md-none"
-					@click="scrollRight"
-				>
+				<button class="navigation navigation-right d-md-none" @click="scrollRight">
 					<ArrowRight />
 				</button>
 				<div class="row carousel-md" ref="wrapper">
@@ -54,10 +45,7 @@
 				</div>
 			</div>
 
-			<div
-				class="align-self-end"
-				data-usal="fade-in delay-0 duration-400 ease-out"
-			>
+			<div class="align-self-end" data-usal="fade-in delay-0 duration-400 ease-out">
 				<Link
 					href="/blueprints?tags=infrastructure"
 					text="View more Infrastructure blueprints"
@@ -103,9 +91,7 @@
 	const { width } = useWindowSize()
 	const size = computed(() => (width.value >= 768 ? 6 : 20))
 
-	const blueprints = computed(
-		() => props.blueprints?.slice(0, size.value) ?? [],
-	)
+	const blueprints = computed(() => props.blueprints?.slice(0, size.value) ?? [])
 </script>
 
 <style lang="scss" scoped>

@@ -7,24 +7,15 @@
 				</div>
 
 				<div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
-					<Card
-						:icon="PlaylistStar"
-						title="Partner Directory Listing"
-					/>
+					<Card :icon="PlaylistStar" title="Partner Directory Listing" />
 				</div>
 
 				<div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
-					<Card
-						:icon="Looks"
-						title="Marketing & Co-branding Materials"
-					/>
+					<Card :icon="Looks" title="Marketing & Co-branding Materials" />
 				</div>
 
 				<div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
-					<Card
-						:icon="ToggleSwitchOutline"
-						title="Partner Enablement"
-					/>
+					<Card :icon="ToggleSwitchOutline" title="Partner Enablement" />
 				</div>
 
 				<div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
@@ -32,10 +23,7 @@
 				</div>
 
 				<div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">
-					<Card
-						:icon="GamepadOutline"
-						title="Sandbox Enterprise Edition"
-					/>
+					<Card :icon="GamepadOutline" title="Sandbox Enterprise Edition" />
 				</div>
 
 				<div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4">

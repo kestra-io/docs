@@ -67,12 +67,7 @@
 		}
 		&:hover {
 			background:
-				linear-gradient(
-					180deg,
-					rgba(#21242e, 0.9) 0%,
-					rgba(#1a1c24, 0.9) 100%
-				),
-				#fff;
+				linear-gradient(180deg, rgba(#21242e, 0.9) 0%, rgba(#1a1c24, 0.9) 100%), #fff;
 		}
 	}
 </style>

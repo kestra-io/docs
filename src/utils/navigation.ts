@@ -18,9 +18,7 @@ export function prevNext(
 
 	const recursiveFetch = (current: NavItem) => {
 		if (current.children) {
-			for (const item of current.children.filter(
-				(item) => item.path !== current.path,
-			)) {
+			for (const item of current.children.filter((item) => item.path !== current.path)) {
 				if (next && prev) {
 					break
 				}

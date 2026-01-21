@@ -88,11 +88,7 @@
 
 					:deep(span),
 					span {
-						background: linear-gradient(
-							90deg,
-							#e151f7 65.38%,
-							#5c47f5 82.43%
-						);
+						background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 						background-clip: text;
 						-webkit-background-clip: text;
 						-webkit-text-fill-color: transparent;
@@ -132,11 +128,7 @@
 					left: 40%;
 					z-index: 1;
 					filter: blur(100px);
-					background: linear-gradient(
-						180deg,
-						rgba(98, 24, 255, 0) 0%,
-						#6117ff 100%
-					);
+					background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 				}
 
 				:deep(.card-title) {

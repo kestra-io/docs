@@ -2,17 +2,12 @@
 	<div class="container-fluid">
 		<div class="hero container">
 			<div class="justify-content-between row">
-				<div
-					class="col-md-4 align-items-center d-flex order-1 order-md-0"
-				>
+				<div class="col-md-4 align-items-center d-flex order-1 order-md-0">
 					<div>
-						<h1 data-usal="fade-r">
-							Beyond <span> Language</span> Boundaries
-						</h1>
+						<h1 data-usal="fade-r">Beyond <span> Language</span> Boundaries</h1>
 						<p class="baseline" data-usal="fade-l">
-							Separate your business logic from your orchestration
-							logic with a versatile set of language-agnostic
-							developer tools
+							Separate your business logic from your orchestration logic with a
+							versatile set of language-agnostic developer tools
 						</p>
 						<div class="cta d-flex gap-3">
 							<a
@@ -68,11 +63,7 @@
 				margin-bottom: 16px;
 
 				span {
-					background: linear-gradient(
-						90deg,
-						#e151f7 2.16%,
-						#5c47f5 65.09%
-					);
+					background: linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%);
 					background-clip: text;
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: transparent;

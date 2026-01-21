@@ -28,8 +28,7 @@
 		// if the link is not local but should be (like in plugins) we remove the kestra.io part
 		link = link.slice(17)
 	}
-	let target =
-		props.target || (link.startsWith("http") ? "_blank" : undefined)
+	let target = props.target || (link.startsWith("http") ? "_blank" : undefined)
 
 	// if path is relative
 	if (link.match(/^\.+\//)) {
@@ -38,17 +37,12 @@
 		let absolutePath = config.public.siteUrl + routePath
 		let page
 		// We only fetch the page if it's resolved through Nuxt Content
-		if (
-			!NON_NUXT_CONTENT_RESOLVED_PATHS.some((p) => route.path.includes(p))
-		) {
+		if (!NON_NUXT_CONTENT_RESOLVED_PATHS.some((p) => route.path.includes(p))) {
 			page = (
 				await useAsyncData(
 					`ProseA-${hash(route.path)}`,
 					() =>
-						queryCollection(CollectionNames.docs)
-							.path(routePath)
-							.select("id")
-							.first(),
+						queryCollection(CollectionNames.docs).path(routePath).select("id").first(),
 					{
 						dedupe: "defer",
 					},

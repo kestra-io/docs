@@ -125,12 +125,8 @@
 							width="118"
 						/>
 						<div class="card-body">
-							<h5 class="card-title mb-3">
-								Want to join our Partner Program?
-							</h5>
-							<a
-								href="#form"
-								class="btn btn-animated btn-purple-animated"
+							<h5 class="card-title mb-3">Want to join our Partner Program?</h5>
+							<a href="#form" class="btn btn-animated btn-purple-animated"
 								>Become a Partner</a
 							>
 						</div>
@@ -166,9 +162,7 @@
 						<div class="card-body">
 							<p class="card-text">Consulting Partner</p>
 							<h5 class="card-title">Hanalytics</h5>
-							<a
-								href="https://www.data-hanalytics.io/"
-								target="_blank"
+							<a href="https://www.data-hanalytics.io/" target="_blank"
 								>Visit Hanalytics website <OpenInNew
 							/></a>
 						</div>
@@ -184,9 +178,7 @@
 						<div class="card-body">
 							<p class="card-text">Consulting Partner</p>
 							<h5 class="card-title">Davidson</h5>
-							<a
-								href="https://www.davidson.group/"
-								target="_blank"
+							<a href="https://www.davidson.group/" target="_blank"
 								>Visit Davidson website <OpenInNew
 							/></a>
 						</div>
@@ -202,9 +194,7 @@
 						<div class="card-body">
 							<p class="card-text">Data Consulting Partner</p>
 							<h5 class="card-title">Ntico</h5>
-							<a href="/partners/ntico" target="_blank"
-								>learn more <OpenInNew
-							/></a>
+							<a href="/partners/ntico" target="_blank">learn more <OpenInNew /></a>
 						</div>
 					</div>
 				</div>
@@ -218,9 +208,7 @@
 						<div class="card-body">
 							<p class="card-text">Data Consulting Partner</p>
 							<h5 class="card-title">Pandata Group</h5>
-							<a
-								href="https://www.pandatagroup.com/"
-								target="_blank"
+							<a href="https://www.pandatagroup.com/" target="_blank"
 								>Visit Pandata Group's website <OpenInNew
 							/></a>
 						</div>
@@ -234,13 +222,9 @@
 							alt="Conapi logo"
 						/>
 						<div class="card-body">
-							<p class="card-text">
-								Integration Consulting Partner
-							</p>
+							<p class="card-text">Integration Consulting Partner</p>
 							<h5 class="card-title">Conapi</h5>
-							<a href="/partners/conapi" target="_blank"
-								>learn more <OpenInNew
-							/></a>
+							<a href="/partners/conapi" target="_blank">learn more <OpenInNew /></a>
 						</div>
 					</div>
 				</div>
@@ -254,12 +238,8 @@
 							width="118"
 						/>
 						<div class="card-body">
-							<h5 class="card-title mb-3">
-								Want to join our Partner Program?
-							</h5>
-							<a
-								href="#form"
-								class="btn btn-animated btn-purple-animated"
+							<h5 class="card-title mb-3">Want to join our Partner Program?</h5>
+							<a href="#form" class="btn btn-animated btn-purple-animated"
 								>Become a Partner</a
 							>
 						</div>

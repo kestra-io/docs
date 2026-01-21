@@ -40,8 +40,7 @@ export const mapJob = (job: DoverJob): Job => {
 				})
 			: undefined,
 		remote: job.locations
-			? job.locations.filter((l) => l.location_type === "REMOTE").length >
-				0
+			? job.locations.filter((l) => l.location_type === "REMOTE").length > 0
 			: null,
 		link: `https://app.dover.com/apply/Kestra%20Technologies/${job.id}`,
 	}

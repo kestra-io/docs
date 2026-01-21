@@ -62,47 +62,33 @@
 							</span>
 						</td>
 						<td class="tick t-border-data">
-							<div
-								class="bg-gray"
-								:class="!item.textBold ? '' : 'heading-bg'"
-							>
+							<div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
 								<CheckBold
 									v-if="!item.isFullLine && item.isOpenSource"
 									class="check-svg-purple"
 								/>
 								<Close
 									class="close-svg-red"
-									v-else-if="
-										!item.isFullLine && !item.openSourceText
-									"
+									v-else-if="!item.isFullLine && !item.openSourceText"
 								/>
-								<span
-									class="enterprise-text"
-									v-else-if="!item.isFullLine"
-									>{{ item.openSourceText }}</span
-								>
+								<span class="enterprise-text" v-else-if="!item.isFullLine">{{
+									item.openSourceText
+								}}</span>
 							</div>
 						</td>
 						<td class="tick t-border-data">
-							<div
-								class="bg-gray"
-								:class="!item.textBold ? '' : 'heading-bg'"
-							>
+							<div class="bg-gray" :class="!item.textBold ? '' : 'heading-bg'">
 								<CheckBold
 									v-if="!item.isFullLine && item.isEnterprise"
 									class="check-svg-purple"
 								/>
 								<Close
 									class="close-svg-red"
-									v-else-if="
-										!item.isFullLine && !item.enterpriseText
-									"
+									v-else-if="!item.isFullLine && !item.enterpriseText"
 								/>
-								<span
-									class="enterprise-text"
-									v-else-if="!item.isFullLine"
-									>{{ item.enterpriseText }}</span
-								>
+								<span class="enterprise-text" v-else-if="!item.isFullLine">{{
+									item.enterpriseText
+								}}</span>
 							</div>
 						</td>
 					</tr>
@@ -114,22 +100,14 @@
 		<div class="container">
 			<div class="buttons">
 				<div
-					:class="
-						selectedType === 'enterprise'
-							? 'enterprs-btn'
-							: 'ops-btn'
-					"
+					:class="selectedType === 'enterprise' ? 'enterprs-btn' : 'ops-btn'"
 					@click="changeSelectedType('enterprise')"
 				>
 					<p>Enterprise</p>
 					<span>Per Instance</span>
 				</div>
 				<div
-					:class="
-						selectedType === 'opensource'
-							? 'enterprs-btn'
-							: 'ops-btn'
-					"
+					:class="selectedType === 'opensource' ? 'enterprs-btn' : 'ops-btn'"
 					@click="changeSelectedType('opensource')"
 				>
 					<p>Open-Source</p>
@@ -151,16 +129,12 @@
 						<div
 							class="feature-row-title"
 							:class="{
-								'border-bottom-none':
-									childIndex === item.children.length - 1,
+								'border-bottom-none': childIndex === item.children.length - 1,
 							}"
 						>
 							<span>
 								{{ child.title }}
-								<div
-									v-if="child.description"
-									class="tooltip-container ms-auto"
-								>
+								<div v-if="child.description" class="tooltip-container ms-auto">
 									<Information class="info ps-4" />
 									<div class="tooltip-content">
 										{{ child.description.text }}
@@ -176,49 +150,25 @@
 						<div
 							class="feature-row-access"
 							:class="{
-								'border-bottom-none':
-									childIndex === item.children.length - 1,
+								'border-bottom-none': childIndex === item.children.length - 1,
 							}"
 						>
+							<span v-if="selectedType === 'enterprise' && child.enterpriseText">{{
+								child.enterpriseText
+							}}</span>
 							<span
-								v-if="
-									selectedType === 'enterprise' &&
-									child.enterpriseText
-								"
-								>{{ child.enterpriseText }}</span
-							>
-							<span
-								v-else-if="
-									selectedType !== 'enterprise' &&
-									child.openSourceText
-								"
+								v-else-if="selectedType !== 'enterprise' && child.openSourceText"
 								>{{ child.openSourceText }}</span
 							>
-							<div
-								v-if="
-									selectedType === 'enterprise' &&
-									!child.enterpriseText
-								"
-							>
-								<Close
-									class="close-svg-red"
-									v-if="!child.isEnterprise"
-								/>
+							<div v-if="selectedType === 'enterprise' && !child.enterpriseText">
+								<Close class="close-svg-red" v-if="!child.isEnterprise" />
 								<CheckBold
 									v-else-if="child.isEnterprise"
 									class="check-svg-purple"
 								/>
 							</div>
-							<div
-								v-else-if="
-									selectedType === 'opensource' &&
-									!child.openSourceText
-								"
-							>
-								<Close
-									class="close-svg-red"
-									v-if="!child.isOpenSource"
-								/>
+							<div v-else-if="selectedType === 'opensource' && !child.openSourceText">
+								<Close class="close-svg-red" v-if="!child.isOpenSource" />
 								<CheckBold
 									v-else-if="child.isOpenSource"
 									class="check-svg-purple"
@@ -228,20 +178,10 @@
 					</div>
 				</CollapsedFeatures>
 				<a
-					:href="
-						selectedType === 'enterprise' ? '/enterprise' : '/demo'
-					"
-					:class="
-						selectedType === 'enterprise'
-							? 'enterprise-btn'
-							: 'edition-btn'
-					"
+					:href="selectedType === 'enterprise' ? '/enterprise' : '/demo'"
+					:class="selectedType === 'enterprise' ? 'enterprise-btn' : 'edition-btn'"
 				>
-					{{
-						selectedType === "enterprise"
-							? "Talk to Sales"
-							: "Get Started"
-					}}
+					{{ selectedType === "enterprise" ? "Talk to Sales" : "Get Started" }}
 				</a>
 			</div>
 		</div>
@@ -260,9 +200,7 @@
 
 	const selectedType = ref<string>("enterprise")
 	const tableHead = computed(() => tableHeadData)
-	const tableSortedData = computed(() =>
-		getTableSortedData(totalPlugins.value),
-	)
+	const tableSortedData = computed(() => getTableSortedData(totalPlugins.value))
 
 	const tableData = computed(() => {
 		const flattened: any[] = []

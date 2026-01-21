@@ -6,8 +6,8 @@
 					<div class="title-bar">
 						<h2 class="title">GitOps with Kestra</h2>
 						<p class="desc">
-							Kestra's Git capabilities ensure your projects are
-							always synchronized and up-to-date.
+							Kestra's Git capabilities ensure your projects are always synchronized
+							and up-to-date.
 						</p>
 					</div>
 					<div class="img-bar">
@@ -25,33 +25,28 @@
 					<div class="card-item">
 						<h6 class="title">Git Sync for Continuous GitOps</h6>
 						<p class="desc">
-							Synchronize your code changes between Git and Kestra
-							in both directions — sync code from Git or push your
-							code built in Kestra’s IDE to Git. Keeps your code
-							up-to-date and enables seamless collaboration via
-							Pull Requests.
+							Synchronize your code changes between Git and Kestra in both directions
+							— sync code from Git or push your code built in Kestra’s IDE to Git.
+							Keeps your code up-to-date and enables seamless collaboration via Pull
+							Requests.
 						</p>
 					</div>
 					<div class="card-item">
-						<h6 class="title">
-							Flexibility Across Development Environments
-						</h6>
+						<h6 class="title">Flexibility Across Development Environments</h6>
 						<p class="desc">
-							From the Kestra UI to VS Code extensions and
-							Terraform providers, choose the tools that fit your
-							deployment pattern. Our platform's API-first
-							approach ensures you can easily interface with Git,
-							no matter your preferred environment.
+							From the Kestra UI to VS Code extensions and Terraform providers, choose
+							the tools that fit your deployment pattern. Our platform's API-first
+							approach ensures you can easily interface with Git, no matter your
+							preferred environment.
 						</p>
 					</div>
 				</div>
 				<div class="options-footer">
 					<h2 class="title">Single Source of Truth</h2>
 					<p class="desc">
-						Whether you're developing directly in the Kestra UI or
-						prefer coding in your favorite IDE, our Git integration
-						ensures your workflows are version-controlled,
-						reviewable, and easy to deploy.
+						Whether you're developing directly in the Kestra UI or prefer coding in your
+						favorite IDE, our Git integration ensures your workflows are
+						version-controlled, reviewable, and easy to deploy.
 					</p>
 					<a
 						class="btn btn-animated btn-purple-animated"
@@ -78,8 +73,7 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			background: url("/landing/features/language/git-with-kestra-bg.svg")
-				no-repeat;
+			background: url("/landing/features/language/git-with-kestra-bg.svg") no-repeat;
 			z-index: -1;
 			background-size: 92% 136%;
 			top: -12%;

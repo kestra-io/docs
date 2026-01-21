@@ -19,12 +19,7 @@
 					data-bs-toggle="modal"
 					data-bs-target="#search-ai-modal"
 				>
-					<img
-						v-bind="KSAIImg"
-						alt="Kestra AI"
-						width="30"
-						height="30"
-					/>
+					<img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
 					Ask Kestra AI
 				</button>
 			</div>
@@ -48,11 +43,7 @@
 				</div>
 			</div>
 			<div class="collapse bd-menu-collapse" id="docs-menu">
-				<nav
-					class="bd-links w-100"
-					id="bd-docs-nav"
-					aria-label="Docs navigation"
-				>
+				<nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
 					<ul class="list-unstyled mb-0">
 						<RecursiveNavSidebar
 							v-for="item in items"

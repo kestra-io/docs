@@ -12,11 +12,7 @@
 			</button>
 		</h2>
 		<transition name="v-expand">
-			<div
-				v-if="isOpen"
-				class="accordion-collapse collapse"
-				:class="{ show: isOpen }"
-			>
+			<div v-if="isOpen" class="accordion-collapse collapse" :class="{ show: isOpen }">
 				<div class="accordion-body">
 					<slot />
 				</div>

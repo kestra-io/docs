@@ -1,22 +1,13 @@
 <template>
 	<div class="story-card d-flex flex-column">
 		<div class="card-inner">
-			<NuxtImg
-				:src="story.heroImage"
-				:alt="story.title"
-				class="card-image img-fluid"
-			/>
+			<NuxtImg :src="story.heroImage" :alt="story.title" class="card-image img-fluid" />
 		</div>
 		<p class="card-text">
-			<strong v-if="story.companyName">{{ story.companyName }}: </strong
-			>{{ story.title }}
+			<strong v-if="story.companyName">{{ story.companyName }}: </strong>{{ story.title }}
 		</p>
 		<div class="card-footer">
-			<div
-				class="icon-box"
-				v-for="task in story.tasks.slice(0, 4)"
-				:key="task"
-			>
+			<div class="icon-box" v-for="task in story.tasks.slice(0, 4)" :key="task">
 				<TaskIcon :cls="task" />
 			</div>
 		</div>

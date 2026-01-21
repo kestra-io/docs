@@ -1,9 +1,7 @@
 <template>
 	<div v-if="pluginsInfo && pluginsInfo.length > 0" class="more">
 		<div class="header">
-			<h4 id="more-plugins-in-this-category">
-				More Plugins in this Category
-			</h4>
+			<h4 id="more-plugins-in-this-category">More Plugins in this Category</h4>
 			<NavActions
 				:items="pluginsInfo"
 				:page-size="pageSize"
@@ -40,8 +38,7 @@
 	)
 
 	const pluginsInformation = (plugin: Plugin): PluginInformation => {
-		const pluginInfo =
-			props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
+		const pluginInfo = props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
 		return {
 			name: plugin.name,
 			subGroupTitle: plugin?.title,
@@ -56,22 +53,15 @@
 		}
 	}
 
-	const isTwoPerRowScreen = useMediaQuery(
-		"(min-width: 992px) and (max-width: 1399px)",
-	)
+	const isTwoPerRowScreen = useMediaQuery("(min-width: 992px) and (max-width: 1399px)")
 
 	const pageSize = computed(() => (isTwoPerRowScreen.value ? 4 : 3))
 
 	const startIndex = ref(0)
 
-	const pluginsInfo = computed(
-		() => props.similarPlugins?.map(pluginsInformation) ?? [],
-	)
+	const pluginsInfo = computed(() => props.similarPlugins?.map(pluginsInformation) ?? [])
 	const visiblePlugins = computed(() =>
-		pluginsInfo.value.slice(
-			startIndex.value,
-			startIndex.value + pageSize.value,
-		),
+		pluginsInfo.value.slice(startIndex.value, startIndex.value + pageSize.value),
 	)
 </script>
 <style scoped lang="scss">

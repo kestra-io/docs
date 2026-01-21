@@ -3,9 +3,7 @@
 		<div class="container">
 			<div class="enterprise">
 				<div class="text-center pb-3">
-					<img
-						src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg"
-					/>
+					<img src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg" />
 				</div>
 				<div class="heading mx-auto">
 					<h2 class="title text-center">
@@ -46,11 +44,7 @@
 			position: absolute;
 			width: 18rem;
 			height: 18rem;
-			background: linear-gradient(
-				180deg,
-				rgba(98, 24, 255, 0) 0%,
-				#6117ff 100%
-			);
+			background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
 			filter: blur(60px);
 			z-index: 0;
 		}

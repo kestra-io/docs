@@ -6,13 +6,7 @@ import { formatElementName } from "~/utils/pluginUtils.ts"
 
 export const prerender = false
 
-export async function GET({
-	request,
-	params,
-}: {
-	request: any
-	params: { slug: string }
-}) {
+export async function GET({ request, params }: { request: any; params: { slug: string } }) {
 	const cls = params.slug
 
 	const metadata = await $fetch<{ markdown: string; schema: JSONSchema }>(
@@ -24,13 +18,7 @@ export async function GET({
 	const description = metadata.schema.properties?.title
 	const image = "/icons/" + cls + ".svg"
 
-	const svgString = generate(
-		request,
-		category as string,
-		title as string,
-		image,
-		description,
-	)
+	const svgString = generate(request, category as string, title as string, image, description)
 
 	return new Response(svgString, {
 		headers: {

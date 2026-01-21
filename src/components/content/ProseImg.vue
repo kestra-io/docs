@@ -54,10 +54,7 @@
 		// we need to change the color to #CAC5DA if not they will be black on black
 		if (props.src.startsWith("data:image/svg+xml;base64,")) {
 			const iconB64 = props.src.substring(26)
-			const coloredIcon = atob(iconB64).replace(
-				/currentColor/g,
-				"#CAC5DA",
-			)
+			const coloredIcon = atob(iconB64).replace(/currentColor/g, "#CAC5DA")
 			return `data:image/svg+xml;base64,${btoa(coloredIcon)}`
 		}
 

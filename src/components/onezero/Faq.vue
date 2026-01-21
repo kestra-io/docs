@@ -26,12 +26,8 @@
 
 			<div class="session-card" data-usal="zoomin">
 				<h1>Book a Strategy Session</h1>
-				<p>
-					What could Declarative Agentic Orchestration can do for you?
-				</p>
-				<a href="/demo" class="btn btn-lg btn-primary">
-					Book Your Strategy Session
-				</a>
+				<p>What could Declarative Agentic Orchestration can do for you?</p>
+				<a href="/demo" class="btn btn-lg btn-primary"> Book Your Strategy Session </a>
 			</div>
 
 			<PriceFaq :items="faqItems" />
@@ -39,13 +35,7 @@
 
 		<svg width="0" height="0">
 			<defs>
-				<linearGradient
-					id="icon-gradient"
-					x1="0%"
-					y1="0%"
-					x2="100%"
-					y2="0%"
-				>
+				<linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
 					<stop offset="0.22%" stop-color="#9F79F3" />
 					<stop offset="99.78%" stop-color="#658AF9" />
 				</linearGradient>
@@ -71,8 +61,7 @@
 		{
 			icon: Cloud,
 			title: "Deploy anywhere",
-			description:
-				"Deploy to any cloud, on-prem or air-gapped environments.",
+			description: "Deploy to any cloud, on-prem or air-gapped environments.",
 		},
 		{
 			icon: CodeTags,
@@ -83,8 +72,7 @@
 		{
 			icon: Security,
 			title: "Enterprise-ready",
-			description:
-				"RBAC, tenant isolation, encrypted secrets, audit logs.",
+			description: "RBAC, tenant isolation, encrypted secrets, audit logs.",
 		},
 		{
 			icon: ImageSizeSelectSmall,
@@ -95,8 +83,7 @@
 		{
 			icon: CardSearchOutline,
 			title: "Observability built-in",
-			description:
-				"Real-time executions, logs, metrics, dependency maps, flow-level SLAs.",
+			description: "Real-time executions, logs, metrics, dependency maps, flow-level SLAs.",
 		},
 	]
 

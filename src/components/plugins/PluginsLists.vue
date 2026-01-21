@@ -89,9 +89,7 @@
 	const categories = computed(() =>
 		[
 			...new Set(
-				Object.values(props.pluginsData).flatMap(
-					(plugin) => plugin.categories ?? [],
-				),
+				Object.values(props.pluginsData).flatMap((plugin) => plugin.categories ?? []),
 			),
 		].sort(),
 	)
@@ -105,15 +103,11 @@
 			if (aCore && !bCore) return -1
 			if (!aCore && bCore) return 1
 
-			const comparison = a.title
-				.toLowerCase()
-				.localeCompare(b.title.toLowerCase())
+			const comparison = a.title.toLowerCase().localeCompare(b.title.toLowerCase())
 			return ascending ? comparison : -comparison
 		})
 
-	const activePlugins = computed(() =>
-		filterPluginsWithoutDeprecated(props.plugins ?? []),
-	)
+	const activePlugins = computed(() => filterPluginsWithoutDeprecated(props.plugins ?? []))
 
 	const searchFilteredPlugins = computed(() =>
 		setSearchPlugins(searchQuery.value, activePlugins.value),
@@ -128,18 +122,14 @@
 	)
 
 	const pluginsSlice = computed(() =>
-		sortPlugins(
-			categoryFilteredPlugins.value,
-			sortBy.value === "A-Z",
-		).slice(
+		sortPlugins(categoryFilteredPlugins.value, sortBy.value === "A-Z").slice(
 			(currentPage.value - 1) * itemsPerPage.value,
 			currentPage.value * itemsPerPage.value,
 		),
 	)
 
 	const pluginsInformation = (plugin: Plugin): PluginInformation => {
-		const pluginInfo =
-			props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
+		const pluginInfo = props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
 		return {
 			name: plugin.name,
 			subGroupTitle: plugin.title,
@@ -172,15 +162,11 @@
 		window.history.replaceState(null, "", url)
 	})
 
-	const setSearchPlugins = <T extends Plugin>(
-		search: string | undefined,
-		allPlugins: T[],
-	) => {
+	const setSearchPlugins = <T extends Plugin>(search: string | undefined, allPlugins: T[]) => {
 		if (!search) return allPlugins
 		const tokens = search.trim().toLowerCase().split(/\s+/).filter(Boolean)
 		return allPlugins.filter((item) => {
-			if (tokens.every((t) => item?.title.toLowerCase().includes(t)))
-				return true
+			if (tokens.every((t) => item?.title.toLowerCase().includes(t))) return true
 			return Object.entries(item)
 				.filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
 				.flatMap(([_, elements]) => elements as PluginElement[])

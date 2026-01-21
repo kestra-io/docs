@@ -1,18 +1,10 @@
 <template>
 	<div class="container">
-		<Section
-			:title="title"
-			:subtitle="subtitle"
-			:subtitle-after="subtitleAfter"
-		>
+		<Section :title="title" :subtitle="subtitle" :subtitle-after="subtitleAfter">
 			<div class="row no-shadow mb-2">
 				<template v-for="item in items">
 					<div class="col-12 col-md-6 col-lg-3 mb-4">
-						<Card
-							:icon="item.icon"
-							:title="item.title"
-							:description="item.text"
-						/>
+						<Card :icon="item.icon" :title="item.title" :description="item.text" />
 					</div>
 				</template>
 			</div>

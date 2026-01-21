@@ -1,8 +1,6 @@
 <template>
 	<div class="header-container mt-5">
-		<div
-			class="header container d-flex flex-column align-items-center gap-3"
-		>
+		<div class="header container d-flex flex-column align-items-center gap-3">
 			<h1 data-usal="fade-l">Customers Stories</h1>
 			<h4 data-usal="fade-l">
 				Learn how we helped companies manage their critical operations.
@@ -80,8 +78,7 @@
 <style scoped lang="scss">
 	@import "~/assets/styles/variable";
 	.list-container {
-		background: url("/landing/usecases/stories/content-bg.svg") no-repeat
-			top;
+		background: url("/landing/usecases/stories/content-bg.svg") no-repeat top;
 
 		.row {
 			gap: 2rem;

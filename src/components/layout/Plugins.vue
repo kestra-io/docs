@@ -68,9 +68,7 @@
 		/>
 	</div>
 	<div class="d-flex justify-content-center" data-usal="zoomin">
-		<a class="btn btn-animated btn-dark-animated" href="/plugins"
-			>See all plugins</a
-		>
+		<a class="btn btn-animated btn-dark-animated" href="/plugins">See all plugins</a>
 	</div>
 </template>
 

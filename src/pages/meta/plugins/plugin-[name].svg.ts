@@ -5,13 +5,7 @@ import { API_URL } from "astro:env/client"
 
 export const prerender = false
 
-export async function GET({
-	request,
-	params,
-}: {
-	request: any
-	params: { name: string }
-}) {
+export async function GET({ request, params }: { request: any; params: { name: string } }) {
 	const name = params.name
 	const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
 	const metadata = await $fetch(`${API_URL}/plugins/plugin-${name}`)
@@ -22,13 +16,7 @@ export async function GET({
 	const description = plugin.description
 	const image = metadata.icon
 
-	const svgString = generate(
-		request,
-		category as string,
-		title as string,
-		image,
-		description,
-	)
+	const svgString = generate(request, category as string, title as string, image, description)
 
 	return new Response(svgString, {
 		headers: {

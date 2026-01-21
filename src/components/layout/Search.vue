@@ -15,13 +15,10 @@
 			<div class="modal-content">
 				<div class="modal-body row bg-dark-4">
 					<div class="search">
-						<label class="visually-hidden" for="search-input"
-							>Search</label
-						>
+						<label class="visually-hidden" for="search-input">Search</label>
 						<div class="input-group">
 							<span class="input-group-text"
-								><Magnify v-if="!loading" /><MagnifyExpand
-									v-if="loading"
+								><Magnify v-if="!loading" /><MagnifyExpand v-if="loading"
 							/></span>
 							<input
 								type="text"
@@ -31,9 +28,7 @@
 								autocomplete="off"
 								placeholder="Search Kestra.io"
 							/>
-							<div
-								class="align-items-center d-flex input-group-append"
-							>
+							<div class="align-items-center d-flex input-group-append">
 								<div class="ai-button-wrapper me-2">
 									<button
 										class="ai-button"
@@ -47,12 +42,8 @@
 											width="30"
 											height="30"
 										/>
-										<span class="title d-none d-md-inline"
-											>Ask Kestra AI</span
-										>
-										<span class="title d-md-none"
-											>Ask AI</span
-										>
+										<span class="title d-none d-md-inline">Ask Kestra AI</span>
+										<span class="title d-md-none">Ask AI</span>
 									</button>
 								</div>
 								<span class="esc">ESC</span>
@@ -78,17 +69,13 @@
 							:key="index"
 						>
 							<span>{{
-								key.charAt(0).toUpperCase() +
-								key.slice(1).toLowerCase()
+								key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()
 							}}</span>
 							<span>({{ result }})</span>
 						</div>
 					</div>
 					<div :class="{ loading: loading }">
-						<div
-							class="row"
-							v-if="searchResults && searchResults.length === 0"
-						>
+						<div class="row" v-if="searchResults && searchResults.length === 0">
 							<div
 								class="col-12 not-found-content d-flex flex-column justify-content-center bg-dark-2"
 							>
@@ -106,9 +93,7 @@
 							<div class="search-result col-12 col-md-6">
 								<div
 									v-for="(result, index) in searchResults"
-									@mouseover="
-										() => onItemMouseOver(result, index)
-									"
+									@mouseover="() => onItemMouseOver(result, index)"
 								>
 									<a
 										:href="'/' + result.url"
@@ -120,18 +105,12 @@
 										<div class="result">
 											<div class="w-100">
 												<span class="type">{{
-													result.type
-														.charAt(0)
-														.toUpperCase() +
-													result.type
-														.slice(1)
-														.toLowerCase()
+													result.type.charAt(0).toUpperCase() +
+													result.type.slice(1).toLowerCase()
 												}}</span>
 												<h5
 													v-if="result.highlightTitle"
-													v-html="
-														result.highlightTitle
-													"
+													v-html="result.highlightTitle"
 												></h5>
 												<h5 v-else>
 													{{ result.title }}
@@ -141,9 +120,7 @@
 														:class="{
 															first: index === 0,
 														}"
-														v-for="(
-															item, index
-														) in breadcrumb(
+														v-for="(item, index) in breadcrumb(
 															result.url,
 														)"
 														:key="item"
@@ -156,21 +133,12 @@
 									</a>
 								</div>
 							</div>
-							<div
-								class="search-detail p-3 col-6 d-none d-md-flex"
-							>
-								<div
-									class="rounded-3 w-100"
-									v-if="selectedItem"
-								>
+							<div class="search-detail p-3 col-6 d-none d-md-flex">
+								<div class="rounded-3 w-100" v-if="selectedItem">
 									<div>
 										<span class="type">{{
-											selectedItem.type
-												.charAt(0)
-												.toUpperCase() +
-											selectedItem.type
-												.slice(1)
-												.toLowerCase()
+											selectedItem.type.charAt(0).toUpperCase() +
+											selectedItem.type.slice(1).toLowerCase()
 										}}</span>
 										<h5>
 											{{ selectedItem.title }}
@@ -178,9 +146,7 @@
 										<div class="slug">
 											<span
 												:class="{ first: index === 0 }"
-												v-for="(
-													item, index
-												) in breadcrumb(
+												v-for="(item, index) in breadcrumb(
 													selectedItem.url,
 												)"
 												:key="item"
@@ -189,9 +155,7 @@
 											</span>
 										</div>
 										<p
-											v-for="(
-												highlight, index
-											) in selectedItem.highlights"
+											v-for="(highlight, index) in selectedItem.highlights"
 											:key="index"
 											v-html="highlight"
 											class="extract"
@@ -222,10 +186,7 @@
 			<div class="modal-content">
 				<div class="modal-body row bg-dark-4">
 					<Suspense>
-						<AiChatDialog
-							@close="closeAiDialog"
-							@backToSearch="backToSearch"
-						/>
+						<AiChatDialog @close="closeAiDialog" @backToSearch="backToSearch" />
 					</Suspense>
 				</div>
 			</div>
@@ -273,12 +234,9 @@
 		},
 		computed: {
 			allSum() {
-				return Object.values(this.searchFacets).reduce(
-					(accumulator, currentValue) => {
-						return accumulator + currentValue
-					},
-					0,
-				)
+				return Object.values(this.searchFacets).reduce((accumulator, currentValue) => {
+					return accumulator + currentValue
+				}, 0)
 			},
 		},
 		methods: {
@@ -319,22 +277,16 @@
 					})
 					.then((response) => {
 						if (response?.data?.results?.length) {
-							this.searchResults = response.data.results.map(
-								(result) => {
-									const searchTerm = value
-										?.trim()
-										?.toLowerCase()
-									if (searchTerm) {
-										const index = result.title
-											.toLowerCase()
-											.indexOf(searchTerm)
-										if (index !== -1) {
-											result.highlightTitle = `${result.title.slice(0, index)}<mark>${result.title.slice(index, index + searchTerm.length)}</mark>${result.title.slice(index + searchTerm.length)}`
-										}
+							this.searchResults = response.data.results.map((result) => {
+								const searchTerm = value?.trim()?.toLowerCase()
+								if (searchTerm) {
+									const index = result.title.toLowerCase().indexOf(searchTerm)
+									if (index !== -1) {
+										result.highlightTitle = `${result.title.slice(0, index)}<mark>${result.title.slice(index, index + searchTerm.length)}</mark>${result.title.slice(index + searchTerm.length)}`
 									}
-									return result
-								},
-							)
+								}
+								return result
+							})
 
 							this.selectedIndex = 0
 							this.selectedItem = this.searchResults[0]
@@ -344,9 +296,7 @@
 						}
 
 						if (response?.data.facets) {
-							this.searchFacets = this.sortFacet(
-								response.data.facets,
-							)
+							this.searchFacets = this.sortFacet(response.data.facets)
 						}
 
 						posthog.capture("search", {
@@ -364,23 +314,14 @@
 			sortFacet(facets) {
 				const result = new Map(
 					Object.entries(facets).sort((a, b) => {
-						return (
-							this.sortFacetIndex(a[0]) -
-							this.sortFacetIndex(b[0])
-						)
+						return this.sortFacetIndex(a[0]) - this.sortFacetIndex(b[0])
 					}),
 				)
 
 				return Object.fromEntries(result.entries())
 			},
 			sortFacetIndex(value) {
-				const index = [
-					"PLUGINS",
-					"DOCS",
-					"BLUEPRINTS",
-					"BLOGS",
-					"JOBS",
-				].indexOf(value)
+				const index = ["PLUGINS", "DOCS", "BLUEPRINTS", "BLOGS", "JOBS"].indexOf(value)
 
 				return index === -1 ? Number.MAX_SAFE_INTEGER : index
 			},
@@ -411,8 +352,7 @@
 				}
 
 				if (e.key === "ArrowUp") {
-					this.selectedIndex =
-						this.selectedIndex <= 1 ? 0 : this.selectedIndex - 1
+					this.selectedIndex = this.selectedIndex <= 1 ? 0 : this.selectedIndex - 1
 					this.selectedItem = this.searchResults[this.selectedIndex]
 					this.handleSearchScroll()
 				}
@@ -447,10 +387,7 @@
 				let container = document.querySelector(".search-result")
 
 				if (active) {
-					if (
-						active.offsetTop + active.offsetHeight >=
-						container.offsetHeight
-					) {
+					if (active.offsetTop + active.offsetHeight >= container.offsetHeight) {
 						container.scrollTop = active.offsetTop
 					} else if (active.offsetTop < container.offsetHeight) {
 						container.scrollTop = 0
@@ -498,9 +435,7 @@
 			},
 			close() {
 				if (this.$refs.modal) {
-					const modal = window.$bootstrap.Modal.getInstance(
-						this.$refs.modal,
-					)
+					const modal = window.$bootstrap.Modal.getInstance(this.$refs.modal)
 					if (modal) {
 						modal.hide()
 					}
@@ -517,9 +452,7 @@
 				this.showAiDialog = false
 
 				if (this.$refs.modal) {
-					const searchModal = new window.$bootstrap.Modal(
-						this.$refs.modal,
-					)
+					const searchModal = new window.$bootstrap.Modal(this.$refs.modal)
 					searchModal.show()
 				}
 			},

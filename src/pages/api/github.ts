@@ -54,22 +54,16 @@ export async function getValues() {
 	}
 
 	const contribStr =
-		contribCountRes.headers
-			?.get("Link")
-			?.match(/page=(\d+)>; rel="last"/)?.[1] || "0"
+		contribCountRes.headers?.get("Link")?.match(/page=(\d+)>; rel="last"/)?.[1] || "0"
 
 	const contributors = parseInt(contribStr, 10)
 	if (isNaN(contributors)) {
-		throw Error(
-			"Failed to parse contributors count" +
-				contribCountRes.headers.get("Link"),
-		)
+		throw Error("Failed to parse contributors count" + contribCountRes.headers.get("Link"))
 	}
 
-	const result = await $fetch(
-		"https://api.github.com/repos/kestra-io/kestra",
-		{ headers: { "User-Agent": "request" } },
-	).then((value) => {
+	const result = await $fetch("https://api.github.com/repos/kestra-io/kestra", {
+		headers: { "User-Agent": "request" },
+	}).then((value) => {
 		return {
 			stargazers: value.stargazers_count,
 			watchers: value.watchers_count,

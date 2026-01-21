@@ -3,21 +3,12 @@
 		<div class="plugin">
 			<div class="top-row">
 				<div class="icon-content">
-					<img
-						:src="iconSrc"
-						:alt="props.plugin.title"
-						loading="lazy"
-					/>
+					<img :src="iconSrc" :alt="props.plugin.title" loading="lazy" />
 				</div>
 				<div class="content">
 					<div class="title-row">
 						<h6>
-							{{
-								props.plugin.title?.replace(
-									/\s*\(EE\)\s*$/i,
-									"",
-								)
-							}}
+							{{ props.plugin.title?.replace(/\s*\(EE\)\s*$/i, "") }}
 						</h6>
 						<span
 							v-if="props.plugin.className?.includes('.ee.')"
@@ -78,10 +69,7 @@
 
 	const href = computed(() => {
 		const base = `/plugins/${props.plugin.name}`
-		if (
-			props.plugin.subGroup === undefined ||
-			!props.plugin.subGroupTitle
-		) {
+		if (props.plugin.subGroup === undefined || !props.plugin.subGroupTitle) {
 			return base
 		}
 		return `${base}/${slugify(props.plugin.subGroupTitle)}`

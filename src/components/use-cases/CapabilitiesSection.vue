@@ -51,8 +51,7 @@
 		},
 		{
 			title: "Modern Data Stack Integration",
-			description:
-				"Integrate leading data tools from the Modern Data Stack with Kestra",
+			description: "Integrate leading data tools from the Modern Data Stack with Kestra",
 			imageSource: "/landing/usecases/data-engineers/data-stack.svg",
 			imageAlt: "Data Stack",
 			pageHref: "/use-cases/modern-data-stack",
@@ -69,8 +68,7 @@
 			title: "Microservice Management",
 			description:
 				"Simplify the orchestration of microservices, ensuring efficient communication and coordination.",
-			imageSource:
-				"/landing/usecases/databases/microservice-management.svg",
+			imageSource: "/landing/usecases/databases/microservice-management.svg",
 			imageAlt: "Microservice Management",
 			pageHref: "/use-cases/microservices-orchestration",
 		},
@@ -78,8 +76,7 @@
 			title: "API Orchestration",
 			description:
 				"Manage and automate API deployments, scaling, and monitoring to ensure high availability and performance.",
-			imageSource:
-				"/landing/usecases/microservices-orchestration/api-orchestration.svg",
+			imageSource: "/landing/usecases/microservices-orchestration/api-orchestration.svg",
 			imageAlt: "API Orchestration",
 			pageHref: "/use-cases/provisioning-and-deployment",
 		},
@@ -87,8 +84,7 @@
 			title: "Continuous Integration/Continuous Deployment (CI/CD)",
 			description:
 				"Streamline your CI/CD pipelines by integrating with tools like GitHub Actions and Jenkins.",
-			imageSource:
-				"/landing/usecases/platform-engineers/continuous-integration.svg",
+			imageSource: "/landing/usecases/platform-engineers/continuous-integration.svg",
 			imageAlt: "Integration/Continuous",
 			pageHref: "/use-cases/ci-cd",
 		},
@@ -96,8 +92,7 @@
 			title: "Provisioning and Deployment",
 			description:
 				"Automate the setup and deployment of infrastructure components, reducing manual effort and errors.",
-			imageSource:
-				"/landing/usecases/monitoring/provisioning-deployment.svg",
+			imageSource: "/landing/usecases/monitoring/provisioning-deployment.svg",
 			imageAlt: "Provisioning",
 			pageHref: "/use-cases/provisioning-and-deployment",
 		},
@@ -114,8 +109,7 @@
 			title: "Database Management",
 			description:
 				"Orchestrate database migrations, backups, and restorations seamlessly within your development pipeline.",
-			imageSource:
-				"/landing/usecases/microservices-orchestration/database-management.svg",
+			imageSource: "/landing/usecases/microservices-orchestration/database-management.svg",
 			imageAlt: "Database Management",
 			pageHref: "/use-cases/databases-managament",
 		},
@@ -164,11 +158,7 @@
 			}
 
 			span {
-				background: linear-gradient(
-					91deg,
-					#e151f7 43.87%,
-					#5c47f5 55.51%
-				);
+				background: linear-gradient(91deg, #e151f7 43.87%, #5c47f5 55.51%);
 				background-clip: text;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;

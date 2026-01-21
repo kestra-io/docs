@@ -6,11 +6,7 @@
 	>
 		<div class="selected-items">
 			<span v-if="selectedValue?.length === 0">Filter by {{ name }}</span>
-			<div
-				v-for="(item, index) in selectedValue"
-				:key="index"
-				class="selected-item"
-			>
+			<div v-for="(item, index) in selectedValue" :key="index" class="selected-item">
 				<p>{{ item }}</p>
 				<Close @click.stop="removeItem(index)" />
 			</div>
@@ -20,11 +16,7 @@
 
 	<div class="custom-select" ref="dropdownRef">
 		<ul v-if="showDropdown" class="dropdown-options">
-			<li
-				v-for="option in options"
-				:key="option"
-				@click="selectItem(option)"
-			>
+			<li v-for="option in options" :key="option" @click="selectItem(option)">
 				{{ option }}
 			</li>
 		</ul>

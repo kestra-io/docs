@@ -8,8 +8,7 @@
 				</h1>
 				<p>
 					Unify orchestration for all engineers. Build and govern
-					<br />all your workflows — Everything-as-Code, from the UI
-					and with AI
+					<br />all your workflows — Everything-as-Code, from the UI and with AI
 				</p>
 				<div class="buttons">
 					<a
@@ -19,11 +18,7 @@
 						Get Started!
 					</a>
 
-					<a
-						href="/demo"
-						class="btn btn-lg btn-secondary mb-2"
-						target="_blank"
-					>
+					<a href="/demo" class="btn btn-lg btn-secondary mb-2" target="_blank">
 						Talk to us
 					</a>
 				</div>

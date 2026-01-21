@@ -29,10 +29,7 @@
 						</template>
 					</div>
 				</div>
-				<div
-					class="col-12 d-none d-lg-block col-lg-2 mb-4 z-2"
-					data-usal="zoomin"
-				>
+				<div class="col-12 d-none d-lg-block col-lg-2 mb-4 z-2" data-usal="zoomin">
 					<UnlockSectionLine :strokeColor="strokeColor" />
 				</div>
 				<div class="col-12 col-lg-5 mb-4 z-2" data-usal="zoomin">
@@ -90,11 +87,7 @@
 					line-height: 3.438rem;
 
 					span {
-						background: linear-gradient(
-							90deg,
-							#e151f7 65.38%,
-							#5c47f5 82.43%
-						);
+						background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
 						background-clip: text;
 						-webkit-background-clip: text;
 						-webkit-text-fill-color: transparent;

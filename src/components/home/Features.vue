@@ -6,9 +6,7 @@
 			with a no-code interface that anyone can learn in minutes
 		</p>
 		<div class="cta-buttons">
-			<a class="btn btn-primary btn-lg" href="/features"
-				>See All Features</a
-			>
+			<a class="btn btn-primary btn-lg" href="/features">See All Features</a>
 			<a
 				href="https://www.youtube.com/embed/xnGYiWFM2uk?autoplay=1"
 				class="btn btn-secondary btn-lg"
@@ -106,8 +104,7 @@
 					display: inline;
 				}
 				color: $primary;
-				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
-					no-repeat center;
+				background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
 				background-size: cover;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
