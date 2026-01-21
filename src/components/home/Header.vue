@@ -34,7 +34,7 @@
 						<PlayCircleOutlineIcon class="play-icon" />
 						Kestra in 60 seconds
 					</div>
-					<NuxtImg v-bind="video60Gif" alt="video" />
+					<img v-bind="video60Gif" width="160" height="90" alt="video" />
 				</a>
 				<NuxtImg
 					v-if="isMobile"
@@ -285,6 +285,9 @@
 		}
 
 		.img-block {
+            a:after{
+                display: none;
+            }
 			.homepage-video {
 				position: absolute;
 				top: 30px;
