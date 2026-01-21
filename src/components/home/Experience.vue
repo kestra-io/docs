@@ -80,6 +80,9 @@ function setTab(index: number) {
         margin-top: 1rem;
         transform: translateX(0);
         width: -webkit-fill-available;
+        width: 100%;
+        width: -moz-available;          /* WebKit-based browsers will ignore this. */
+        width: stretch;
     }
 
     .tabs {
