@@ -191,7 +191,9 @@
         if (typeof currEl?.top === "number" && currEl.top <= 160) {
             const prevTop = prevEl?.top ?? -1;
             if (prevTop === -1 || prevTop <= 0) {
-                updateActiveLink(item.id);
+                if(linkArray.length < index + 1) {
+                    updateActiveLink(item.id);
+                }
             }
         }
     };
