@@ -157,7 +157,7 @@ tasks:
 
 triggers:
   - id: gmail_inbox_trigger
-    type: io.kestra.plugin.notifications.mail.RealTimeTrigger
+    type: io.kestra.plugin.email.RealTimeTrigger
     protocol: IMAP
     host: imap.gmail.com
     port: 993
@@ -299,7 +299,7 @@ Kestra 1.1 includes dozens of new plugins contributed by our growing community, 
 ### Communication & Notifications
 - **Resend** – Send transactional emails with support for templates, dynamic variables, attachments, and multiple recipients.
 - **Microsoft365 Outlook** – Email and calendar automation for Outlook.
-- **Messenger** – Facebook Messenger notifications (plugin-notifications).
+- **Messenger** – Facebook Messenger notifications (plugin-meta).
 - **LINE** – LINE messaging platform integration.
 - **X** – Send X (formerly Twitter) posts with execution information.
 - **JMS** – Java Message Service integration for enterprise messaging systems.

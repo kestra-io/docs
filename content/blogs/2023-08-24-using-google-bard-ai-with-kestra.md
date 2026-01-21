@@ -72,7 +72,7 @@ To send the joke via email, we will add a MailSend task that will use the output
 
 ```yaml
 id: send-by-email
-type: io.kestra.plugin.notifications.mail.MailSend
+type: io.kestra.plugin.email.MailSend
 host: localhost
 port: 3025
 transportStrategy: SMTP
@@ -103,7 +103,7 @@ Here I use the If task to only send a mail if the safety score is less than 0.5.
   condition: "{{outputs['ask-for-jokes'].predictions[0].safetyAttributes[0].scores[0] < 5}}"
   then:
   - id: send-by-email
-    type: io.kestra.plugin.notifications.mail.MailSend
+    type: io.kestra.plugin.email.MailSend
     [...]
 ```
 
@@ -145,7 +145,7 @@ tasks:
     condition: "{{outputs['ask-for-jokes'].predictions[0].safetyAttributes[0].scores[0] < 5}}"
     then:
     - id: send-by-email
-      type: io.kestra.plugin.notifications.mail.MailSend
+      type: io.kestra.plugin.email.MailSend
       host: localhost
       port: 3025
       transportStrategy: SMTP
