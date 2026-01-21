@@ -3,16 +3,16 @@
 title: Provider configurations
 editLink: false
 description: |-
-  
+
 ---
 
 ## Provider configurations
 
 ## Kestra 1.0.x compatibility
 
-::alert{type="danger"}
+:::alert{type="danger"}
 **Warning:** Kestra Terraform provider 1.0.x is only compatible with Kestra 1.0.x and above.
-::
+:::
 
 Additionally, if you want to terraform Kestra 1.0.x you need to use Kestra Terraform provider 1.0.x
 
