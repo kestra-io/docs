@@ -33,14 +33,14 @@
 <script setup lang="ts">
 	import { ref } from "vue"
 
-	// import newsletterSubmit from "~/utils/newsletterSubmit.js";
+	import newsletterSubmit from "~/utils/newsletterSubmit.js";
 
 	const valid = ref(false)
 	const message = ref(null)
 	const newsletter = ref(null)
 
-	function checkForm(_e: any) {
-		// newsletterSubmit({ newsletter, valid, message }, e);
+	function checkForm(e: any) {
+		newsletterSubmit({ newsletter, valid, message }, e);
 	}
 </script>
 
