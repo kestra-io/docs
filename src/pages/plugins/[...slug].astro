@@ -10,11 +10,7 @@ import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.vue"
 import { $fetchApi } from "~/utils/fetch"
-import {
-    generatePageNames,
-    recursivePages,
-    type NavItem,
-} from "~/utils/navigation"
+import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
     filterPluginsWithoutDeprecated,
     isEntryAPluginElementPredicate,
@@ -153,6 +149,7 @@ const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
         ? (sidebarPluginData?.body?.plugins ?? [])
         : (page.body?.plugins ?? []),
 )
+
 const subGroupWrapper = pluginsWithoutDeprecated.find(
     (p) => slugify(subGroupName(p)) === subGroup,
 )
@@ -253,14 +250,6 @@ const headingTitle = pluginType
     : ((rootPlugin
           ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
           : undefined) ?? pluginName)
-
-const combinedTitle =
-    rootPlugin?.title.charAt(0).toUpperCase() ??
-    "" +
-        rootPlugin?.title.slice(1) +
-        (subGroup === undefined
-            ? ""
-            : ` - ${subGroupName({ title: subGroup } as Plugin)}`)
 
 let combinedDescription = currentPageMetadata?.description
 const body = (currentPageMetadata as any)?.body
@@ -454,6 +443,19 @@ const pageWithToc: PluginPageWithToc = {
     },
 }
 
+// if no content to show, redirect to parent until /plugins
+if (
+    !pluginsWithoutDeprecated.some(
+        (p) => subGroup === undefined || slugify(subGroupName(p)) === subGroup,
+    ) &&
+    pathname !== "/plugins"
+) {
+    const pathParts = pathname.split("/")
+    if (pathParts.length > 2) {
+        return Astro.redirect(pathParts.slice(0, -1).join("/"), 301)
+    }
+}
+
 const subgroupBlueprintCounts = (() => {
     const result: Record<string, number> = {}
 
@@ -496,17 +498,9 @@ if (!pluginType && !subGroup) {
     const filterElement = subgroups.filter(
         (r) => slugify(r.title) === subGroup,
     )[0]
-    ogImage = `/meta/plugins/group-${filterElement.subGroup}.svg`
+    ogImage = `/meta/plugins/group-${filterElement?.subGroup}.svg`
 } else {
     ogImage = `/meta/plugins/${pluginType}.svg`
-}
-
-// if no content to show, redirect to parent until /plugins
-if (pageWithToc && pluginsWithoutDeprecated.length === 0) {
-    const pathParts = pathname.split("/")
-    if (pathParts.length > 1) {
-        Astro.redirect(pathParts.slice(0, -1).join("/"), 301)
-    }
 }
 ---
 
@@ -547,8 +541,8 @@ if (pageWithToc && pluginsWithoutDeprecated.length === 0) {
                 pageWithToc && (
                     <PluginsMDCRender
                         page={pageWithToc}
-                        plugin-type={pluginType}
                         icons={subGroupsIcons}
+                        plugin-type={pluginType}
                         plugins={pluginsWithoutDeprecated}
                         pluginName={pluginName}
                         subGroup={subGroup}

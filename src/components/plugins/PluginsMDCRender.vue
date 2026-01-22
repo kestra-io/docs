@@ -7,7 +7,7 @@
         <PluginIndex
             v-if="pluginType === undefined"
             :icons
-            :plugins="pluginsWithoutDeprecated"
+            :plugins
             :plugin-name
             :sub-group
             :route-path
@@ -37,9 +37,8 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed } from "vue"
-    import { PluginIndex, SchemaToHtmlV2, type PluginMetadata } from "@kestra-io/ui-libs"
-    import { getPluginsWithoutDeprecated } from "~/utils/plugins/getListOfPlugins"
+    import { SchemaToHtmlV2, type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
+    import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
     import FeatureScopeMarker from "~/components/docs/FeatureScopeMarker.vue"
     import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 
@@ -49,7 +48,7 @@
             routePath: string
             pluginType?: string
             icons?: Record<string, string>
-            plugins?: any[]
+            plugins?: Plugin[]
             pluginName: string
             subGroup?: string
             subgroupBlueprintCounts?: Record<string, number>
@@ -62,10 +61,6 @@
             pluginName: undefined,
             subGroup: undefined,
         },
-    )
-
-    const pluginsWithoutDeprecated = computed(
-        () => getPluginsWithoutDeprecated(props.plugins || []) as any[],
     )
 
     function navigateTo(url: string) {
