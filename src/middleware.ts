@@ -162,11 +162,15 @@ const securityHeaders = defineMiddleware(async (context, next) => {
 const notFoundRedirect = defineMiddleware(async (context, next) => {
     const response = await next()
 
+    if (response.status !== 404) {
+        return response
+    }
+
     const originalUrl = new URL(context.url)
 
     try {
         const result = await $fetchApi<{ to: string | null }>(
-            `${API_URL}/redirects?${new URLSearchParams({
+            `/redirects?${new URLSearchParams({
                 from: originalUrl.pathname,
             }).toString()}`,
         )
