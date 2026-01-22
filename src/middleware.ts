@@ -4,6 +4,7 @@ import { API_URL } from "astro:env/client"
 import contentSecurityPolicyConfig from "../content-security-policy.config"
 // import {middlewareISRCache} from "./utils/middlewareISRCache";
 import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
+import { $fetchApi } from "./utils/fetch.ts"
 
 const sendRedirect = (redirectUrl: string) => {
     return new Response("", {
@@ -71,7 +72,8 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     const originalUrl = context.url.toString()
 
     // we don't want trailing slashes (but allow the root path '/')
-    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare manage with "html_handling": "drop-trailing-slash"
+    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare
+    // manage with "html_handling": "drop-trailing-slash"
     // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
     //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     // }
@@ -93,7 +95,7 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
         )
     }
 
-    // Check if the request is coming from the kestra-io.pages.dev to redirect to main
+    // Check if the request is coming from the docs.kestra-io.workers.dev to redirect to main
     if (context.url.host === "docs.kestra-io.workers.dev") {
         const replace = new URL(context.url)
         replace.host = "kestra.io"
@@ -160,21 +162,14 @@ const securityHeaders = defineMiddleware(async (context, next) => {
 const notFoundRedirect = defineMiddleware(async (context, next) => {
     const response = await next()
 
-    if (response.status !== 404) {
-        return response
-    }
-
     const originalUrl = new URL(context.url)
 
     try {
-        const result = await (
-            await fetch(
-                `${API_URL}/redirects?${new URLSearchParams({
-                    from: originalUrl.pathname,
-                }).toString()}`,
-            )
-        ).json()
-
+        const result = await $fetchApi<{ to: string | null }>(
+            `${API_URL}/redirects?${new URLSearchParams({
+                from: originalUrl.pathname,
+            }).toString()}`,
+        )
         if (result && result.to && result.to !== originalUrl.pathname) {
             return sendRedirect(result.to)
         }
