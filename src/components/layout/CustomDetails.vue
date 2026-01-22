@@ -5,24 +5,29 @@
                 class="accordion-button"
                 :class="{ collapsed: !isOpen }"
                 type="button"
-                :aria-expanded="isOpen ? 'true' : 'false'"
+                :aria-expanded="isOpen"
                 @click="isOpen = !isOpen"
             >
                 {{ title }}
             </button>
         </h2>
-        <transition name="v-expand">
-            <div v-if="isOpen" class="accordion-collapse collapse" :class="{ show: isOpen }">
+        <Transition
+            name="expand"
+            @enter="enter"
+            @after-enter="afterEnter"
+            @leave="leave"
+        >
+            <div v-show="isOpen" class="accordion-collapse">
                 <div class="accordion-body">
                     <slot />
                 </div>
             </div>
-        </transition>
+        </Transition>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, useId } from "vue"
+    import { ref } from "vue"
 
     const props = defineProps<{
         title: string
@@ -30,6 +35,22 @@
     }>()
 
     const isOpen = ref(props.defaultOpen)
+
+    const enter = (el: any) => {
+        el.style.height = "0";
+        el.offsetHeight;
+        el.style.height = `${el.scrollHeight}px`;
+    };
+
+    const afterEnter = (el: any) => {
+        el.style.height = "auto";
+    };
+
+    const leave = (el: any) => {
+        el.style.height = `${el.scrollHeight}px`;
+        el.offsetHeight;
+        el.style.height = "0";
+    };
 </script>
 
 <style scoped lang="scss">
@@ -77,11 +98,6 @@
             @include media-breakpoint-down(lg) {
                 font-size: 18px !important;
                 font-weight: 400;
-
-                @include media-breakpoint-down(lg) {
-                    font-size: 18px !important;
-                    font-weight: 400;
-                }
             }
 
             .icon {
@@ -112,19 +128,14 @@
         color: var(--bs-black);
     }
 
-    .v-expand-enter-active,
-    .v-expand-leave-active {
-        transition: all 0.5s ease;
+    .expand-enter-active,
+    .expand-leave-active {
+        transition: height 0.3s ease-in-out;
         overflow: hidden;
     }
-    .v-expand-enter-from,
-    .v-expand-leave-to {
-        max-height: 0;
-        overflow: hidden;
-    }
-    .v-expand-enter-to,
-    .v-expand-leave-from {
-        max-height: 1000px;
-        overflow: hidden;
+
+    .expand-enter-from,
+    .expand-leave-to {
+        height: 0;
     }
 </style>
