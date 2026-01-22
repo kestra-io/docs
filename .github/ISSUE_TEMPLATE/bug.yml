@@ -12,6 +12,7 @@ body:
       placeholder: Describe the issue, add any screenshots or screen-capture videos
     validations:
       required: true
+type: Bug
 labels:
   - area/frontend
   - bug
