@@ -90,6 +90,7 @@
 				font-weight: 600;
 				margin: 0;
 				color: var(--ks-content-primary);
+                line-height: normal;
 			}
 		}
 	}

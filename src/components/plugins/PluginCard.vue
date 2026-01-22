@@ -103,7 +103,6 @@
 			display: flex;
 			flex-direction: row;
 			gap: $rem-1;
-			align-items: flex-start;
 			margin-bottom: 1rem;
 		}
 

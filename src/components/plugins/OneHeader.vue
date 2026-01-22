@@ -82,6 +82,10 @@
 		transform: translateX(-20px);
 	}
 
+    span {
+        line-height: normal;
+    }
+
 	.title {
 		font-size: 2rem;
 		font-weight: 600;
@@ -131,16 +135,11 @@
 				margin-right: 0;
 			}
 
-			.title-content {
-				grid-area: content;
-			}
-
 			.title-actions {
 				grid-area: actions;
 				justify-self: start;
 				padding-left: 0 !important;
 				display: flex;
-				flex-direction: row !important;
 				gap: 1rem !important;
 				margin-top: 0.25rem;
 

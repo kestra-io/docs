@@ -89,6 +89,14 @@
 			border: none !important;
 		}
 
+        :deep(h4) {
+            margin-bottom: 1.5rem;
+        }
+
+        :deep(h3) {
+            padding: 0;
+        }
+
 		:deep(.long) {
 			a {
 				color: var(--ks-content-link);
