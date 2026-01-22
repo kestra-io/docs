@@ -18,7 +18,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  index-doc:
+  deploy-workers:
     name: Publish to Cloudflare Workers
     runs-on: ubuntu-latest
     env:
