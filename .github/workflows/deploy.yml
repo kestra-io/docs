@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - main
-      - astro-poc
   workflow_dispatch: {}
 
 concurrency:
@@ -57,7 +56,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --tag "commit:${{ github.sha }}" --tag "run_id:${{ github.run_id }}"
+          command: deploy
 
       - name: Deploy Preview Worker
         id: preview-deploy

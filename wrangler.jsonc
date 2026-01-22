@@ -10,13 +10,13 @@
     "routes": [
         {
             "pattern": "docs.cf.kestra.io",
-            "custom_domain": true,
-        },
+            "custom_domain": true
+        }
     ],
     "assets": {
         "binding": "ASSETS",
         "directory": "./dist",
-        "html_handling": "drop-trailing-slash",
+        "html_handling": "drop-trailing-slash"
     },
     "keep_vars": true,
     "preview_urls": true,
@@ -25,12 +25,12 @@
     "observability": {
         "enabled": true,
         "traces": {
-            "enabled": true,
+            "enabled": true
         },
         "logs": {
             "invocation_logs": true,
-            "enabled": true,
-        },
+            "enabled": true
+        }
     },
     "upload_source_maps": true,
     "logpush": false,
@@ -49,8 +49,8 @@
     "kv_namespaces": [
         {
             "binding": "ISR_CACHE",
-            "id": "c7003b3ecfc2485bb2efb713d75da274",
-        },
+            "id": "c7003b3ecfc2485bb2efb713d75da274"
+        }
     ],
 
     /**
@@ -60,10 +60,10 @@
     "env": {
         "preview": {
             "vars": {
-                "NO_IMAGE_OPTIM": "true",
-            },
-        },
-    },
+                "NO_IMAGE_OPTIM": "true"
+            }
+        }
+    }
     /**
      * Note: Use secrets to store sensitive data.
      * https://developers.cloudflare.com/workers/configuration/secrets/
