@@ -365,6 +365,8 @@ nav {
         @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
             & {
                 background-color: $menu-bg;
+                backdrop-filter: $menu-backdrop-filter;
+                -webkit-backdrop-filter: $menu-backdrop-filter;
                 transition: background-color 250ms ease-in-out;
             }
         }
