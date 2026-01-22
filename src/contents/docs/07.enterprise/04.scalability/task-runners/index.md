@@ -1,6 +1,6 @@
 ---
 title: Task Runners in Kestra Enterprise – Offload and Isolate Compute
-sidebarTitle: Task Runners
+sidebarTitle: Task Runners (Enterprise)
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
