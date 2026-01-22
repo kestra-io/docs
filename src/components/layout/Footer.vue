@@ -33,7 +33,10 @@
 							<ul class="list-unstyled">
 								<li v-for="link in COMMUNITY_LINKS" :key="link.href" class="mb-2">
 									<a v-if="!link.external" :href="link.href">{{ link.text }}</a>
-									<a v-else :href="link.href" target="_blank">{{ link.text }}</a>
+									<template v-else>
+										<a v-if="link.text !== 'Slack' || mounted" :href="link.href" target="_blank">{{
+											link.text }}</a>
+									</template>
 								</li>
 							</ul>
 						</div>
@@ -71,7 +74,8 @@
 				<div class="flex-grow-1">
 					<p class="mb-0 d-none d-md-inline">
 						© {{ new Date().getFullYear() }} <a href="/">Kestra Technologies</a>.
-						Developed with <Heart class="text-danger" /> on 🌎.
+						Developed with
+						<Heart class="text-danger" /> on 🌎.
 					</p>
 				</div>
 				<div class="text-end">
@@ -87,118 +91,125 @@
 </template>
 
 <script setup lang="ts">
-	import Socials from "~/components/layout/Socials.vue"
-	import Certifications from "~/components/layout/Certifications.vue"
-	import Heart from "vue-material-design-icons/Heart.vue"
-	import LayoutNewsletter from "~/components/layout/Newsletter.vue"
+    import Socials from "~/components/layout/Socials.vue"
+    import Certifications from "~/components/layout/Certifications.vue"
+    import Heart from "vue-material-design-icons/Heart.vue"
+    import LayoutNewsletter from "~/components/layout/Newsletter.vue"
+    import { ref, onMounted } from "vue"
 
-	const PRODUCT_LINKS = [
-		{ text: "Platform Overview", href: "/overview" },
-		{ text: "Open Source", href: "/features" },
-		{ text: "Enterprise Edition", href: "/enterprise" },
-		{ text: "Kestra Cloud", href: "/cloud" },
-		{ text: "Pricing", href: "/pricing" },
-	]
+    const mounted = ref(false)
 
-	const SOLUTIONS_LINKS = [
-		{ text: "Use Cases", href: "/use-cases" },
-		{
-			text: "Declarative Orchestration",
-			href: "/features/declarative-data-orchestration",
-		},
-		{
-			text: "Automation Platform",
-			href: "/features/scheduling-and-automation",
-		},
-		{ text: "API First", href: "/features/api-first" },
-		{
-			text: "Code in Any Language",
-			href: "/features/code-in-any-language",
-		},
-		{ text: "Terraform Provider", href: "/use-cases/terraform-provider" },
-		{ text: "Airflow vs Kestra", href: "/vs/airflow" },
-		{ text: "Prefect vs Kestra", href: "/vs/prefect" },
-		{ text: "Dagster vs Kestra", href: "/vs/dagster" },
-		{
-			text: "AWS Step Functions vs Kestra",
-			href: "/vs/aws-step-functions",
-		},
-	]
+    onMounted(() => {
+        mounted.value = true
+    })
 
-	const COMMUNITY_LINKS = [
-		{ text: "Community Overview", href: "/community" },
-		{ text: "Blog", href: "/blogs" },
-		{ text: "Write for Us", href: "/write-for-us" },
-		{ text: "Slack", href: "https://kestra.io/slack", external: true },
-		{
-			text: "GitHub",
-			href: "https://github.com/kestra-io",
-			external: true,
-		},
-	]
+    const PRODUCT_LINKS = [
+        { text: "Platform Overview", href: "/overview" },
+        { text: "Open Source", href: "/features" },
+        { text: "Enterprise Edition", href: "/enterprise" },
+        { text: "Kestra Cloud", href: "/cloud" },
+        { text: "Pricing", href: "/pricing" },
+    ]
 
-	const DOCS_LINKS = [
-		{ text: "Documentation", href: "/docs" },
-		{ text: "Plugins", href: "/plugins" },
-		{ text: "Blueprints", href: "/blueprints" },
-		{ text: "Getting Started", href: "/docs/quickstart#start-kestra" },
-		{ text: "Administrator Guide", href: "/docs/administrator-guide" },
-		{ text: "FAQ", href: "/faq" },
-	]
+    const SOLUTIONS_LINKS = [
+        { text: "Use Cases", href: "/use-cases" },
+        {
+            text: "Declarative Orchestration",
+            href: "/features/declarative-data-orchestration",
+        },
+        {
+            text: "Automation Platform",
+            href: "/features/scheduling-and-automation",
+        },
+        { text: "API First", href: "/features/api-first" },
+        {
+            text: "Code in Any Language",
+            href: "/features/code-in-any-language",
+        },
+        { text: "Terraform Provider", href: "/use-cases/terraform-provider" },
+        { text: "Airflow vs Kestra", href: "/vs/airflow" },
+        { text: "Prefect vs Kestra", href: "/vs/prefect" },
+        { text: "Dagster vs Kestra", href: "/vs/dagster" },
+        {
+            text: "AWS Step Functions vs Kestra",
+            href: "/vs/aws-step-functions",
+        },
+    ]
 
-	const COMPANY_LINKS = [
-		{ text: "About Us", href: "/about-us" },
-		{ text: "Careers", href: "/careers", badge: "Hiring!" },
-		{ text: "Contact Us", href: "/contact-us" },
-		{ text: "Customer Stories", href: "/use-cases/stories" },
-		{ text: "Partners Ecosystem", href: "/partners" },
-	]
+    const COMMUNITY_LINKS = [
+        { text: "Community Overview", href: "/community" },
+        { text: "Blog", href: "/blogs" },
+        { text: "Write for Us", href: "/write-for-us" },
+        { text: "Slack", href: "https://kestra.io/slack", external: true },
+        {
+            text: "GitHub",
+            href: "https://github.com/kestra-io",
+            external: true,
+        },
+    ]
+
+    const DOCS_LINKS = [
+        { text: "Documentation", href: "/docs" },
+        { text: "Plugins", href: "/plugins" },
+        { text: "Blueprints", href: "/blueprints" },
+        { text: "Getting Started", href: "/docs/quickstart#start-kestra" },
+        { text: "Administrator Guide", href: "/docs/administrator-guide" },
+        { text: "FAQ", href: "/faq" },
+    ]
+
+    const COMPANY_LINKS = [
+        { text: "About Us", href: "/about-us" },
+        { text: "Careers", href: "/careers", badge: "Hiring!" },
+        { text: "Contact Us", href: "/contact-us" },
+        { text: "Customer Stories", href: "/use-cases/stories" },
+        { text: "Partners Ecosystem", href: "/partners" },
+    ]
 </script>
 
 <style lang="scss" scoped>
-	@import "~/assets/styles/variable";
+    @import "~/assets/styles/variable";
 
-	footer {
-		position: relative;
-		z-index: 20;
-		font-size: var(--bs-font-size-sm);
-		background-color: #0a0b0d;
-		border-top: 1px solid var(--kestra-io-token-color-border-secondary);
+    footer {
+        position: relative;
+        z-index: 20;
+        font-size: var(--bs-font-size-sm);
+        background-color: #0a0b0d;
+        border-top: 1px solid var(--kestra-io-token-color-border-secondary);
 
-		h5,
-		a,
-		p {
-			color: var(--bs-white);
-			font-size: var(--bs-badge-font-size);
-		}
+        h5,
+        a,
+        p {
+            color: var(--bs-white);
+            font-size: var(--bs-badge-font-size);
+        }
 
-		h5 {
-			text-transform: uppercase;
-			font-weight: bold;
-			font-family: var(--bs-font-monospace);
-		}
+        h5 {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: var(--bs-font-monospace);
+        }
 
-		.container {
-			position: relative;
-			z-index: 2;
-		}
+        .container {
+            position: relative;
+            z-index: 2;
+        }
 
-		.bottom {
-			border-top: 1px solid rgba(#fff, 0.1);
-		}
+        .bottom {
+            border-top: 1px solid rgba(#fff, 0.1);
+        }
 
-		.socials {
-			font-size: calc($font-size-base * 1.4);
-		}
+        .socials {
+            font-size: calc($font-size-base * 1.4);
+        }
 
-		:deep(.socials) a {
-			color: var(--bs-white);
-		}
+        :deep(.socials) a {
+            color: var(--bs-white);
+        }
 
-		li:hover {
-			a {
-				color: var(--ks-content-link-hover);
-			}
-		}
-	}
+        li:hover {
+            a {
+                color: var(--ks-content-link-hover);
+            }
+        }
+    }
 </style>

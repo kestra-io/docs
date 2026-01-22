@@ -26,7 +26,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="https://kestra.io/slack" title="Slack" target="_blank">
+			<a v-if="mounted" href="https://kestra.io/slack" title="Slack" target="_blank">
 				<Slack title="" />
 			</a>
 		</li>
@@ -34,23 +34,31 @@
 </template>
 
 <script setup>
-	import LinkedIn from "vue-material-design-icons/Linkedin.vue"
-	import Slack from "vue-material-design-icons/Slack.vue"
-	import Github from "vue-material-design-icons/Github.vue"
-	import Youtube from "vue-material-design-icons/Youtube.vue"
-	import Twitter from "~/components/icons/TwitterXIcon.vue"
-	import BlueSky from "~/components/icons/BlueSkyIcon.vue"
+    import { ref, onMounted } from "vue"
+    import LinkedIn from "vue-material-design-icons/Linkedin.vue"
+    import Slack from "vue-material-design-icons/Slack.vue"
+    import Github from "vue-material-design-icons/Github.vue"
+    import Youtube from "vue-material-design-icons/Youtube.vue"
+    import Twitter from "~/components/icons/TwitterXIcon.vue"
+    import BlueSky from "~/components/icons/BlueSkyIcon.vue"
+
+    const mounted = ref(false)
+
+    onMounted(() => {
+        mounted.value = true
+    });
 </script>
 
 <style lang="scss" scoped>
-	.socials-wrapper {
-		display: flex;
-		align-items: center;
-		justify-content: start;
-		gap: 1rem;
-		list-style: none;
-		a {
-			font-size: 1.4rem;
-		}
-	}
+    .socials-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 1rem;
+        list-style: none;
+
+        a {
+            font-size: 1.4rem;
+        }
+    }
 </style>
