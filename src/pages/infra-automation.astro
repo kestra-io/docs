@@ -26,7 +26,7 @@ const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
 )
 
 const plugins = Object.entries(
-    (await import.meta.glob("/public/docs/icons/plugins/*.svg", {
+    (await import.meta.glob("/src/contents/docs/icons/plugins/*.svg", {
         eager: true,
     })) as Record<string, { default: { src: string } }>,
 ).map(([key, mod]) => ({
