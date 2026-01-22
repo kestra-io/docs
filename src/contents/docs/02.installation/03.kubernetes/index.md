@@ -462,7 +462,7 @@ dind:
 
 ### Disable Docker in Docker and use Kubernetes task runner
 
-To avoid using `root` to spin up containers via DinD, disable DinD by setting the following [Helm chart values](https://github.com/kestra-io/helm-charts/blob/master/chart_kestra/charts/kestra/README.md#kestra-dind):
+To avoid using `root` to spin up containers via DinD, disable DinD by setting the following [Helm chart values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/README.md#kestra-dind):
 
 ```yaml
 dind:

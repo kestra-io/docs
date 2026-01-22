@@ -1,7 +1,10 @@
-import type { APIRoute } from "astro"
+export const prerender = false
 
-export const GET: APIRoute = async (context) => {
-    const disabled = import.meta.env.DEV || context.url.hostname === "kestra.io"
+import type { APIRoute } from "astro"
+import * as envField from "astro:env/server"
+
+export const GET: APIRoute = async () => {
+    const disabled = import.meta.env.DEV || envField.PREVIEW
 
     const result = `# indexing ${disabled ? "disabled" : "enabled"}
 

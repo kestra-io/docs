@@ -25,7 +25,10 @@ export default defineConfig({
     site: "https://kestra.io",
     adapter: cloudflare({
         // only use cloudflare images in production
-        imageService: process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare",
+        imageService:
+            process.env.NO_IMAGE_OPTIM === "true"
+                ? "passthrough"
+                : "cloudflare",
     }),
     trailingSlash: "ignore",
     integrations: [
@@ -112,6 +115,12 @@ export default defineConfig({
     },
     env: {
         schema: {
+            PREVIEW: envField.boolean({
+                context: "server",
+                access: "secret",
+                optional: true,
+                default: false,
+            }),
             API_URL: envField.string({
                 context: "client",
                 access: "public",
@@ -135,6 +144,9 @@ export default defineConfig({
                 optional: true,
             }),
         },
+    },
+    redirects: {
+        "/slack": "https://api.kestra.io/v1/communities/slack/redirect"
     },
     vite: {
         resolve: {
@@ -168,7 +180,13 @@ export default defineConfig({
         },
         ssr: {
             noExternal: ["vue3-count-to"],
-            external: ["node:fs/promises", "node:fs", "node:url", "node:path", "node:crypto"],
+            external: [
+                "node:fs/promises",
+                "node:fs",
+                "node:url",
+                "node:path",
+                "node:crypto",
+            ],
         },
     },
 })

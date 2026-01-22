@@ -9,7 +9,7 @@
     "main": "./dist/_worker.js/index.js",
     "routes": [
         {
-            "pattern": "docs.cf.kestra.io",
+            "pattern": "kestra.io",
             "custom_domain": true
         }
     ],

@@ -17,6 +17,7 @@ const sendRedirect = (redirectUrl: string) => {
 const logger = defineMiddleware(async (context, next) => {
     if (
         context.url.pathname === "/api/healthcheck" ||
+        context.url.pathname.startsWith("/t/") ||
         import.meta.env.DEV ||
         context.isPrerendered
     ) {
@@ -55,6 +56,11 @@ const logger = defineMiddleware(async (context, next) => {
 })
 
 const noIndex = defineMiddleware(async (context, next) => {
+    // disable for tracking
+    if (context.url.pathname.startsWith("/t/")) {
+        return next()
+    }
+
     // Check if the request is coming from the .workers.dev domain or others
     if (context.url.host !== "kestra.io") {
         const response = (await next()).clone()
@@ -68,6 +74,11 @@ const noIndex = defineMiddleware(async (context, next) => {
 })
 
 const incomingRedirect = defineMiddleware(async (context, next) => {
+    // disable for tracking
+    if (context.url.pathname.startsWith("/t/")) {
+        return next()
+    }
+
     const originalUrl = context.url.toString()
 
     // we don't want trailing slashes (but allow the root path '/')
@@ -79,7 +90,11 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
-        return sendRedirect(originalUrl.substring(0, originalUrl.length - 5).toLocaleLowerCase())
+        return sendRedirect(
+            originalUrl
+                .substring(0, originalUrl.length - 5)
+                .toLocaleLowerCase(),
+        )
     }
 
     // all urls should be lowercase
@@ -90,7 +105,10 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
         !context.url.pathname.startsWith("/meta/")
     ) {
         return sendRedirect(
-            originalUrl.replace(context.url.pathname, context.url.pathname.toLocaleLowerCase()),
+            originalUrl.replace(
+                context.url.pathname,
+                context.url.pathname.toLocaleLowerCase(),
+            ),
         )
     }
 
@@ -108,6 +126,11 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 })
 
 const securityHeaders = defineMiddleware(async (context, next) => {
+    // disable for tracking
+    if (context.url.pathname.startsWith("/t/")) {
+        return next()
+    }
+
     const localhost: string[] = []
     if (import.meta.env.DEV) {
         localhost.push(context.url.protocol + "//" + context.url.host)
@@ -159,6 +182,11 @@ const securityHeaders = defineMiddleware(async (context, next) => {
 })
 
 const notFoundRedirect = defineMiddleware(async (context, next) => {
+    // disable for tracking
+    if (context.url.pathname.startsWith("/t/")) {
+        return next()
+    }
+
     const response = await next()
 
     if (response.status !== 404) {
