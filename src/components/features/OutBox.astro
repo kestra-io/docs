@@ -41,7 +41,9 @@ const features: Feature[] = [
                         features.map((feature) => (
                             <div class="feature-item">
                                 <h5>{feature.title}</h5>
-                                <p class="feature-text">{feature.description}</p>
+                                <p class="feature-text">
+                                    {feature.description}
+                                </p>
                             </div>
                         ))
                     }
@@ -128,7 +130,11 @@ const features: Feature[] = [
                         margin-bottom: -0.5rem;
                     }
                     &.highlight {
-                        background: linear-gradient(90.21deg, #8c4bff 36.32%, #658af9 63.11%);
+                        background: linear-gradient(
+                            90.21deg,
+                            #8c4bff 36.32%,
+                            #658af9 63.11%
+                        );
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
                         background-clip: text;
