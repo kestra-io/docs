@@ -1,5 +1,5 @@
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="842" viewBox="0 0 100 842" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="842" viewBox="0 0 100 842" fill="none" class="connection-line-svg">
         <path d="M50.5 0V91" :stroke="strokeColor" stroke-dasharray="2 2"/>
         <g filter="url(#filter0_d_116_24)">
             <path d="M50 111C52.7614 111 55 108.761 55 106C55 103.239 52.7614 101 50 101C47.2386 101 45 103.239 45 106C45 108.761 47.2386 111 50 111Z" fill="white" class="connection-circle-1"/>
@@ -110,3 +110,24 @@
   }
 </script>
 
+<style lang="scss" scoped>
+  .connection-line-svg {
+    width: 100%;
+    height: auto;
+    max-height: 842px;
+    display: block;
+    flex-shrink: 0;
+    
+    @media (max-width: 991.98px) {
+      max-height: 500px;
+    }
+    
+    @media (max-width: 767.98px) {
+      max-height: 400px;
+    }
+    
+    @media (max-width: 575.98px) {
+      max-height: 320px;
+    }
+  }
+</style>
