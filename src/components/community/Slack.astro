@@ -1,0 +1,69 @@
+---
+import Section from "~/components/layout/Section.astro"
+import Card from "~/components/card/Card.astro"
+
+// SVG icons inline
+const tooltipQuestionIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,2H14V4H4V14H2V4C2,2.89 2.89,2 4,2M8,6H18V8H8V18H6V8C6,6.89 6.89,6 8,6M20,12V20H12C10.89,20 10,19.11 10,18V12C10,10.89 10.89,10 12,10H18C19.11,10 20,10.89 20,12M18,17V15H14V17H18Z" /></svg>`
+
+const handWaveIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23 17C23 20.31 20.31 23 17 23V21.5C19.5 21.5 21.5 19.5 21.5 17H23M1 7C1 3.69 3.69 1 7 1V2.5C4.5 2.5 2.5 4.5 2.5 7H1M8.36 3.23L6.05 5.54C5.27 6.32 5.27 7.55 6.05 8.34L8.71 11L7.29 12.41L4.64 9.76C3.08 8.2 3.08 5.68 4.64 4.12L6.95 1.82C7.72 1.05 8.95 1.05 9.73 1.82L12.91 5L11.5 6.41L8.36 3.23M19.36 14.23L17.05 16.54C16.27 17.32 16.27 18.55 17.05 19.34L19.71 22L18.29 23.41L15.64 20.76C14.08 19.2 14.08 16.68 15.64 15.12L17.95 12.82C18.72 12.05 19.95 12.05 20.73 12.82L23.91 16L22.5 17.41L19.36 14.23M8.36 14.23L6.05 16.54C5.27 17.32 5.27 18.55 6.05 19.34L8.71 22L7.29 23.41L4.64 20.76C3.08 19.2 3.08 16.68 4.64 15.12L6.95 12.82C7.72 12.05 8.95 12.05 9.73 12.82L12.91 16L11.5 17.41L8.36 14.23M15.14 12L14.13 10.31C13.55 9.35 13.67 8.09 14.42 7.26L14.55 7.11C15.03 6.58 15.72 6.27 16.44 6.27C18.23 6.27 19.23 8.32 18.14 9.76L15.14 12Z" /></svg>`
+
+const messageAlertIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 10H11V6H13M13 14H11V12H13M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" /></svg>`
+---
+
+<div class="container">
+    <Section
+        subtitle="Orchestrate Success"
+        subtitleAfter="Together"
+        baseline="Join our Slack Community to share ideas and best practices, get help with technical questions, and discuss with other developers."
+    >
+        <div class="row card-group no-shadow mb-2">
+            <div class="col-md-4 mb-4">
+                <Card
+                    icon={tooltipQuestionIcon}
+                    title="Ask a question"
+                    description="Stuck? The #help channel is here to support you."
+                />
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <Card
+                    icon={handWaveIcon}
+                    title="Say Hi"
+                    description="New to the community? Tell us about yourself and how you're using Kestra in the #introductions channel."
+                />
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <Card
+                    icon={messageAlertIcon}
+                    title="Share Feedback"
+                    description="Something you'd like to see improved? The #feedback-and-requests channel is a great place to share your thoughts."
+                />
+            </div>
+        </div>
+        <div class="text-center">
+            <a
+                href="https://kestra.io/slack"
+                class="btn btn-animated btn-purple-animated me-2"
+                target="_blank"
+                data-usal="zoomin"
+            >
+                Join our Slack
+            </a>
+        </div>
+    </Section>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    :global(section) {
+        .baseline {
+            font-size: $h6-font-size !important;
+        }
+    }
+
+    .container {
+        border-bottom: $block-border;
+    }
+</style>
