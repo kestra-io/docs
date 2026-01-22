@@ -548,6 +548,7 @@ $bd-gutter-x: 3rem;
 
 				p {
 					color: var(--ks-content-#{$color});
+                    font-size: 1rem !important;
 				}
 
 				&::before {
