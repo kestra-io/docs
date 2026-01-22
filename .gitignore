@@ -36,6 +36,7 @@ dist
 
 ## Astro
 .astro
+.env
 
 ## mkcert
 localhost.pem

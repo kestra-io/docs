@@ -1,0 +1,24 @@
+---
+import Layout from "~/components/layout.astro"
+import OverviewHero from "~/components/overview/Hero.vue"
+import OverviewAgnostic from "~/components/overview/Agnostic.vue"
+import OverviewWorkflows from "~/components/overview/Workflows.vue"
+import OverviewMessage from "~/components/overview/Message.vue"
+import OverviewEnterpriseHeaderBox from "~/components/overview/EnterpriseHeaderBox.vue"
+import OverviewCTA from "~/components/overview/CTA.vue"
+
+const title = "Kestra Platform Overview"
+const description =
+    "Orchestrate your business-critical applications. Take full advantage of the speed, and performance of Kestra's orchestration platform"
+---
+
+<Layout title={title} description={description}>
+    <div class="main">
+        <OverviewHero client:load />
+        <OverviewAgnostic client:load />
+        <OverviewWorkflows client:visible />
+        <OverviewMessage client:visible />
+        <OverviewEnterpriseHeaderBox client:visible />
+        <OverviewCTA client:visible />
+    </div>
+</Layout>

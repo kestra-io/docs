@@ -1,0 +1,126 @@
+---
+import Layout from "~/components/layout.astro"
+import CloudHeader from "~/components/cloud/Header.astro"
+import CloudFeatures from "~/components/cloud/Features.vue"
+
+const title = "Kestra Cloud Early Adopter Program"
+const description =
+    "Be among the first to experience Kestra Cloud with exclusive access before general availability"
+---
+
+<Layout title={title} description={description}>
+    <div class="cloud">
+        <CloudHeader />
+        <CloudFeatures client:idle />
+    </div>
+</Layout>
+
+<style scoped lang="scss">
+    @import "~/assets/styles/variable";
+
+    .cloud {
+        overflow: hidden;
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("~/components/cloud/images/gradient_top.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top right;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        @media (max-width: 575.98px) {
+            &::after {
+                right: auto;
+                left: 0;
+                transform: scaleX(-1);
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            &::after {
+                right: auto;
+                left: 0;
+                transform: scaleX(-1);
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            &::after {
+                right: auto;
+                left: 0;
+                transform: scaleX(-1);
+            }
+        }
+
+        & :global(.highlight) {
+            background: linear-gradient(90deg, #51cff7 57.35%, #4782f5 95.94%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        & :global(h1),
+        & :global(h2),
+        & :global(h3),
+        & :global(h4),
+        & :global(h5),
+        & :global(h6) {
+            color: $white;
+            font-weight: 600;
+        }
+
+        & :global(h1) {
+            font-size: $font-size-3xl;
+        }
+
+        & :global(h2) {
+            font-size: $font-size-2xl;
+        }
+
+        & :global(h3) {
+            font-size: $font-size-2xl;
+        }
+
+        & :global(h4) {
+            font-size: $font-size-xl;
+        }
+
+        & :global(h5) {
+            font-size: $font-size-lg;
+        }
+
+        & :global(h6) {
+            font-size: $font-size-md;
+            font-weight: 600;
+        }
+
+        & :global(p) {
+            font-size: 14px;
+            color: $white-1;
+        }
+
+        & :global(.form) {
+            & h4,
+            & p,
+            & div {
+                color: black;
+            }
+
+            & div {
+                &.success {
+                    padding-top: 100px;
+                }
+
+                font-size: $font-size-sm;
+            }
+        }
+    }
+</style>

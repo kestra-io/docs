@@ -1,0 +1,14 @@
+---
+import Layout from "~/components/layout.astro"
+import Header from "~/components/vs/broadcom-dollar-u/Header.vue"
+import Main from "~/components/vs/broadcom-dollar-u/Main.vue"
+
+const title = "Kestra Alternative to Dollar Universe Workload Automation"
+const description =
+    "What are the differences between Kestra and Dollar Universe Workload Automation"
+---
+
+<Layout title={title} description={description}>
+    <Header client:load />
+    <Main client:visible />
+</Layout>

@@ -1,0 +1,84 @@
+---
+import Layout from "~/components/layout.astro"
+import HeaderSection from "~/components/use-cases/HeaderSection.vue"
+import CardSection from "~/components/use-cases/healthcare/CardSection.vue"
+import MetricSection from "~/components/use-cases/MetricSection.vue"
+import UnlockSection from "~/components/use-cases/UnlockSection.vue"
+import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
+import SophiaGenetics from "~/assets/companies/sophia-genetics.svg"
+
+const title = "Kestra for Healthcare"
+const description =
+    "Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
+
+const companyInfo = {
+    personName: "Yohann Nédélec",
+    personRole: "Tech Lead",
+    logo: SophiaGenetics.src,
+    logoAlt: "Sophia Genetics",
+}
+
+const unlockContent = {
+    leftContent: [
+        {
+            title: "Accelerate Data Processing",
+            description:
+                "Kestra facilitates seamless data sharing and workflow coordination among bioinformaticians, data scientists, and IT teams.",
+        },
+        {
+            title: "Improve Data Accuracy and Reliability",
+            description:
+                "Kestra prioritizes data security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations.",
+        },
+    ],
+    rightContent: [
+        {
+            title: "Enhance Collaboration",
+            description:
+                "Whether dealing with genomic sequences, patient records, or research data, Kestra ensures that your data is processed swiftly and accurately.",
+        },
+        {
+            title: "Secure and Compliant Data Handling",
+            description:
+                "Manual data processing is prone to errors and inconsistencies. Kestra’s automation capabilities minimize these risks by ensuring that data is handled consistently and accurately.",
+        },
+    ],
+}
+---
+
+<Layout title={title} description={description}>
+    <HeaderSection
+        client:load
+        titleHtml="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
+        description={description}
+        imageSrc="/landing/usecases/healthcare/header-hero.svg"
+        imageAlt="Healthcare Workflows"
+    />
+
+    <CardSection client:visible />
+
+    <MetricSection
+        client:visible
+        percent="200"
+        percentText="Increased productivity"
+        mainInfoHtml=" “Kestra strong observability, ease of development,<br> and flexibility make it a versatile solution for<br> managing data pipelines in the field of genomics.”"
+        companyInfo={companyInfo}
+    />
+
+    <UnlockSection
+        client:visible
+        title="Automotive Ecosystem"
+        description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
+        logoPath="/landing/usecases/healthcare/heart-pulse.svg"
+        logoAlt="heart pulse"
+        strokeColor="#3991FF"
+        unlockContent={unlockContent}
+    />
+
+    <div class="enterprise-edition">
+        <FeaturesFeatureEnterprise
+            client:visible
+            logoPath="/landing/usecases/healthcare/enterprise-edition.svg"
+        />
+    </div>
+</Layout>

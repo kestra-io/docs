@@ -1,0 +1,29 @@
+---
+import Layout from "~/components/layout.astro"
+import EnterpriseHeader from "~/components/enterprise/Header.vue"
+import EnterpriseSecurity from "~/components/enterprise/Security.vue"
+import EnterpriseSuccessProgram from "~/components/enterprise/SuccessProgram.vue"
+import EnterpriseProjectDetails from "~/components/enterprise/ProjectDetails.vue"
+import EnterpriseOrchestraCore from "~/components/enterprise/OrchestraCore.vue"
+
+const title = "Get More Out of Your Data With the Enterprise Edition"
+const description =
+    "Get full access of all the Open source features and unlock the full potential with Enterprise only features"
+---
+
+<Layout title={title} description={description}>
+    <EnterpriseHeader />
+    <div class="enterprise">
+        <EnterpriseSecurity client:idle />
+        <EnterpriseSuccessProgram />
+        <EnterpriseProjectDetails client:visible />
+    </div>
+
+    <EnterpriseOrchestraCore client:visible />
+</Layout>
+
+<style scoped lang="scss">
+    .enterprise {
+        overflow: clip;
+    }
+</style>

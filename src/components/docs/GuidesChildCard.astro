@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content"
+import type { CollectionEntry } from "astro:content"
+import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
+
+const currentPage = Astro.url.pathname.endsWith("/")
+    ? Astro.url.pathname.slice(0, -1)
+    : Astro.url.pathname
+
+const contentPath = currentPage.replace("/docs/", "")
+
+function getFirstContentLine(content?: string): string | undefined {
+    return content
+        ?.split("\n")
+        .find((line) => line.trim().length > 0 && !line.startsWith("#"))
+}
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/contents/docs/icons/*.svg",
+)
+
+const guides = await Promise.all(
+    (await getCollection("docs"))
+        .filter((doc: CollectionEntry<"docs">) => {
+            return (
+                doc.id.startsWith(`${contentPath}/`) &&
+                !doc.id.slice(contentPath.length + 1).includes("/")
+            )
+        })
+        .sort((a, b) => {
+            if (a.filePath && b.filePath) {
+                return a.filePath.localeCompare(b.filePath)
+            }
+            return a.id.localeCompare(b.id)
+        })
+        .map(async (doc: CollectionEntry<"docs">) => ({
+            title: doc.data.title,
+            description: getFirstContentLine(doc.body),
+            path: `/docs/${doc.id}`,
+            icon: doc.data.icon
+                ? (await images[doc.data.icon]()).default.src
+                : undefined,
+            stage: doc.data.stage,
+            topics: doc.data.topics,
+        })),
+)
+---
+
+<GuidesChildCardRender navigation={guides} client:load />

@@ -1,0 +1,48 @@
+---
+import FeaturesHeader from "~/components/features/Header.vue"
+import FeaturesDeclarative from "~/components/features/Declarative.vue"
+import FeaturesOutBox from "~/components/features/OutBox.vue"
+import FeaturesExperience from "~/components/features/Experience.vue"
+import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
+import FeaturesCTA from "~/components/features/CTA.vue"
+import Layout from "~/components/layout.astro"
+import PluginsBox from "~/components/PluginsBox.astro"
+
+const title = "Powerful Features for Reliable Data Workflows"
+const description =
+    "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra | Your All-in-One Solution for Orchestrating Workflows"
+---
+
+<Layout title={title} description={description}>
+    <div class="features">
+        <FeaturesHeader client:load />
+        <FeaturesDeclarative client:visible />
+        <FeaturesOutBox client:visible />
+        <section class="features-plugins">
+            <div class="container">
+                <PluginsBox />
+            </div>
+        </section>
+        <FeaturesExperience client:visible />
+        <FeaturesFeatureEnterprise client:visible />
+        <FeaturesCTA client:visible />
+    </div>
+</Layout>
+
+<style lang="scss" scoped>
+    @import "~/assets/styles/variable";
+    .features-plugins {
+        background: linear-gradient(180deg, #e8eaf2 74.52%, #ffffff 74.52%);
+        padding: 2rem 1rem;
+        margin-top: -2rem;
+
+        @include media-breakpoint-up(lg) {
+            padding: 6rem;
+        }
+        text-align: center;
+
+        .container {
+            margin-bottom: 3rem;
+        }
+    }
+</style>

@@ -1,0 +1,30 @@
+---
+import Layout from "~/components/layout.astro"
+import FeaturesApifirstHeader from "~/components/features/apifirst/Header.vue"
+import FeaturesApifirstFeatures from "~/components/features/apifirst/Features.vue"
+import FeaturesApifirstGitOptions from "~/components/features/apifirst/GitOptions.vue"
+import FeaturesApifirstIntegrationsInfo from "~/components/features/apifirst/IntegrationsInfo.vue"
+import FeaturesApifirstPlugins from "~/components/features/apifirst/Plugins.vue"
+import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+
+const title = "Kestra API First Design"
+const description = "interact with every aspect of Kestra programmatically."
+---
+
+<Layout title={title} description={description}>
+    <div>
+        <FeaturesApifirstHeader client:load />
+        <FeaturesApifirstFeatures client:visible />
+        <FeaturesApifirstGitOptions client:visible />
+        <FeaturesApifirstIntegrationsInfo client:visible />
+        <FeaturesApifirstPlugins client:visible />
+        <LayoutFooterContact
+            client:visible
+            title="Getting Started with Declarative Orchestration"
+            darkButtonText="Get started"
+            darkButtonHref="/docs/quickstart#start-kestra"
+            purpleButtonText="Talk to us"
+            purpleButtonHref="/demo"
+        />
+    </div>
+</Layout>

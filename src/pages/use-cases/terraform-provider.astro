@@ -1,0 +1,36 @@
+---
+import Layout from "~/components/layout.astro"
+import TerraformHeader from "~/components/use-cases/terraform-provider/Header.vue"
+import TerraformOverview from "~/components/use-cases/terraform-provider/Overview.vue"
+import TerraformUseCases from "~/components/use-cases/terraform-provider/UseCases.vue"
+import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+
+const title =
+    "Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process"
+const description =
+    "Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations."
+---
+
+<Layout title={title} description={description}>
+    <div class="main bg-dark-4">
+        <TerraformHeader client:load />
+        <TerraformOverview client:visible />
+        <TerraformUseCases client:visible />
+        <LayoutFooterContact
+            client:visible
+            subtitle="Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started."
+            darkButtonText="YouTube playlist"
+            darkButtonHref="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra"
+            purpleButtonText="Documentation"
+            purpleButtonHref="/docs/terraform"
+        />
+    </div>
+</Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .main {
+        color: $white;
+    }
+</style>

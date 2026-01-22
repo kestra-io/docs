@@ -1,0 +1,77 @@
+---
+export const prerender = false
+import { $fetchApi } from "~/utils/fetch"
+import Layout from "~/components/layout.astro"
+import BlueprintsHeader from "~/components/blueprints/Header.vue"
+import BlueprintsDetail from "~/components/blueprints/Detail.vue"
+import BlueprintsRelated from "~/components/blueprints/Related.vue"
+import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+
+const { id } = Astro.params
+
+// Fetch blueprint data
+let pageData
+let relatedBlueprints = []
+
+try {
+    pageData = await $fetchApi(`/blueprints/${id}/versions/latest`)
+} catch (e) {
+    return Astro.redirect("/404")
+}
+
+// Fetch related blueprints
+if (pageData.tags && pageData.tags.length > 0) {
+    const data = await $fetchApi<{ results: Blueprint[] }>(
+        `/blueprints/versions/latest?tags=${pageData.tags}`,
+    )
+    if (data) {
+        relatedBlueprints = data.results
+            .filter((b) => b.id !== pageData.id) // Exclude current blueprint
+            .sort(() => Math.random() - 0.5) // Shuffle the results
+            .slice(0, 3) // Limit to 3 related blueprints
+    }
+}
+
+// Parse markdown
+const flowMd = "```yaml\n" + pageData.flow + "\n```"
+
+// Fetch graph data
+const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
+
+// Fetch tags
+const tags = await $fetchApi(`/blueprints/versions/latest/tags`)
+
+const title = pageData.title
+const description = pageData.metaDescription
+---
+
+<Layout title={title} description={description}>
+    <div>
+        <BlueprintsHeader client:only page={pageData} graph={graph} slug={id} />
+        <div class="container">
+            <BlueprintsDetail
+                client:visible
+                page={pageData}
+                description={pageData.description}
+                flow={flowMd}
+                tags={tags}
+            />
+            {
+                relatedBlueprints.length > 0 && (
+                    <BlueprintsRelated
+                        client:visible
+                        relatedBlueprints={relatedBlueprints}
+                        tags={tags}
+                    />
+                )
+            }
+            <LayoutFooterContact
+                client:visible
+                title="New to Kestra?"
+                subtitle="Use blueprints to kickstart your first workflows."
+                purpleButtonText="Get started with Kestra"
+                purpleButtonHref="/docs/quickstart#start-kestra"
+            />
+        </div>
+    </div>
+</Layout>

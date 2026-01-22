@@ -1,0 +1,46 @@
+---
+export const prerender = false
+import { $fetchApi } from "~/utils/fetch"
+import StoryDetail from "~/components/stories/StoryDetail.vue"
+import Layout from "~/components/layout.astro"
+
+const { id, slug } = Astro.params
+const slugFull = Array.isArray(slug) ? slug.join("/") : slug || ""
+
+const story: Story = await $fetchApi(`/customer-stories-v2/${id}`)
+
+if (!story) {
+    throw new Error(`Unable to find id '${id}'`)
+}
+
+const content = story.content
+
+const allStories = await $fetchApi("/customer-stories-v2?size=20")
+const related = {
+    ...allStories,
+    results: allStories.results.sort(() => Math.random() - 0.5).slice(0, 3),
+}
+---
+
+<Layout title={story.title} description={story.description} isStories={true}>
+    <div class="main">
+        <StoryDetail
+            client:load
+            slug={slugFull}
+            story={story}
+            content={content}
+            related={related}
+        />
+    </div>
+</Layout>
+
+<style scoped lang="scss">
+    @import "~/assets/styles/variable";
+
+    .main {
+        overflow: clip;
+        color: $black-2;
+        background-color: $white;
+        font-family: var(--font-family-mona-sans), sans-serif !important;
+    }
+</style>

@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from "astro:content"
+import Layout from "~/components/layout.astro"
+
+export async function getStaticPaths() {
+    const legalEntries = await getCollection("legal")
+    return legalEntries.map((entry) => ({
+        params: { legal: entry.id },
+        props: { entry },
+    }))
+}
+
+const { entry } = Astro.props
+const { Content } = await render(entry)
+---
+
+<Layout title={entry.data.title} description={entry.data.description}>
+    <div style="height:120px"></div>
+    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
+        <article class="bd-main order-1">
+            <div class="bd-markdown">
+                <Content />
+            </div>
+        </article>
+    </div>
+</Layout>
