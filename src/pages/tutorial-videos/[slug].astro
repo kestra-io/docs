@@ -38,10 +38,9 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
     <VideosTutorialsList
         client:visible
         {...{ tutorialVideo, page, itemsPerPage, currentCategory }}
-        client:idle
     >
         <CommonPagination
-            client:load
+            client:visible
             currentUrl={Astro.request.url}
             slot="pagination"
             currentPage={page}

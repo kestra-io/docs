@@ -1,8 +1,13 @@
 <script lang="ts" setup>
-    import { useTemplateRef, watch } from "vue"
+    import { useTemplateRef, watch, ref, onMounted } from "vue"
 
     const show = defineModel<boolean>("show")
     const modalRef = useTemplateRef<HTMLDialogElement>("modalRef")
+    const isMounted = ref(false)
+
+    onMounted(() => {
+        isMounted.value = true
+    })
 
     function popModal() {
         if (!modalRef.value) return
@@ -28,11 +33,11 @@
 </script>
 
 <template>
-    <teleport to="body">
+    <Teleport to="body" v-if="isMounted">
         <dialog ref="modalRef" v-bind="$attrs">
             <slot />
         </dialog>
-    </teleport>
+    </Teleport>
 </template>
 
 <style scoped>
