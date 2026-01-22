@@ -1,3 +1,5 @@
+export const prerender = false
+
 import type { APIRoute } from "astro"
 import * as envField from "astro:env/server"
 
