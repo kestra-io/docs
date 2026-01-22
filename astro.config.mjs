@@ -42,7 +42,7 @@ export default defineConfig({
             defaultProps: {
                 wrap: true,
                 overridesByLang: {
-                    "bash,sh,zsh,shell,twig": {
+                    "bash,sh,zsh,shell,twig,powershell": {
                         frame: "none",
                     },
                 },
