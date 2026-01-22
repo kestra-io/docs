@@ -1,20 +1,20 @@
 const baseUrl = (request: Request): string => {
-	const url = new URL(request.url)
-	const protocol = request.headers.get("x-forwarded-proto") || url.protocol
-	const host = request.headers.get("x-forwarded-host") || url.host
-	return `${protocol}//${host}`
+    const url = new URL(request.url)
+    const protocol = request.headers.get("x-forwarded-proto") || url.protocol
+    const host = request.headers.get("x-forwarded-host") || url.host
+    return `${protocol}//${host}`
 }
 
 export const generate = (
-	request: Request,
-	category: string,
-	title: string,
-	image?: string | null,
-	description?: string | null,
+    request: Request,
+    category: string,
+    title: string,
+    image?: string | null,
+    description?: string | null,
 ): string => {
-	const base = baseUrl(request)
+    const base = baseUrl(request)
 
-	return `<svg xmlns="http://www.w3.org/2000/svg" style="-webkit-user-select: none;"  width="1200" height="625">
+    return `<svg xmlns="http://www.w3.org/2000/svg" style="-webkit-user-select: none;"  width="1200" height="625">
             <rect  width="1200" height="625" fill="#0e0e0e" />
             <foreignObject x="0" y="0" width="1200" height="625">
                 <div xmlns="http://www.w3.org/1999/xhtml" style="width: 1200px; height: 625px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-image: url('${base}/og-bg.svg'); background-size: cover; background-position: center; color: #ffffff; padding: 20px;">

@@ -8,22 +8,22 @@ import EnterpriseOrchestraCore from "~/components/enterprise/OrchestraCore.vue"
 
 const title = "Get More Out of Your Data With the Enterprise Edition"
 const description =
-	"Get full access of all the Open source features and unlock the full potential with Enterprise only features"
+    "Get full access of all the Open source features and unlock the full potential with Enterprise only features"
 ---
 
 <Layout title={title} description={description}>
-	<EnterpriseHeader />
-	<div class="enterprise">
-		<EnterpriseSecurity client:idle />
-		<EnterpriseSuccessProgram />
-		<EnterpriseProjectDetails client:visible />
-	</div>
+    <EnterpriseHeader />
+    <div class="enterprise">
+        <EnterpriseSecurity client:idle />
+        <EnterpriseSuccessProgram />
+        <EnterpriseProjectDetails client:visible />
+    </div>
 
-	<EnterpriseOrchestraCore client:visible />
+    <EnterpriseOrchestraCore client:visible />
 </Layout>
 
 <style scoped lang="scss">
-	.enterprise {
-		overflow: clip;
-	}
+    .enterprise {
+        overflow: clip;
+    }
 </style>

@@ -34,22 +34,22 @@ $black-9: #1d1d1e;
 $black-10: #646465;
 // Define dark color classes
 @each $number in 1, 2, 3, 4, 5, 6, 7, 8 {
-	$color: map-get(
-		(
-			1: $black-1,
-			2: $black-2,
-			3: $black-3,
-			4: $black-4,
-			5: $black-5,
-			6: $black-6,
-			7: $black-7,
-			8: $black-8,
-		),
-		$number
-	);
-	.bg-dark-#{$number} {
-		background-color: $color;
-	}
+    $color: map-get(
+        (
+            1: $black-1,
+            2: $black-2,
+            3: $black-3,
+            4: $black-4,
+            5: $black-5,
+            6: $black-6,
+            7: $black-7,
+            8: $black-8,
+        ),
+        $number
+    );
+    .bg-dark-#{$number} {
+        background-color: $color;
+    }
 }
 $green: #03daba;
 $green-1: #bfe1b0;
@@ -80,7 +80,7 @@ $purple-1: #382369;
 $purple-2: #fbc7f4;
 $purple-3: #9580ee;
 $purple-4:
-	linear-gradient(160.34deg, rgba(130, 0, 255, 0.12) 5.3%, rgba(130, 0, 255, 0) 75.43%), #201838;
+    linear-gradient(160.34deg, rgba(130, 0, 255, 0.12) 5.3%, rgba(130, 0, 255, 0) 75.43%), #201838;
 $purple-5: #362762;
 $purple-6: #6113bc;
 $purple-7: #1a1223;
@@ -123,19 +123,19 @@ $purple-42: #909af6;
 $purple-43: #7733ff;
 
 $theme-colors: (
-	"primary": $primary,
-	"secondary": $secondary,
-	"success": $success,
-	"info": $info,
-	"warning": $warning,
-	"danger": $danger,
-	"light": $light,
-	"dark": $dark,
-	"indigo": $indigo,
-	"purple": $purple,
-	"pink": $pink,
-	"orange": $orange,
-	"teal": $teal,
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+    "indigo": $indigo,
+    "purple": $purple,
+    "pink": $pink,
+    "orange": $orange,
+    "teal": $teal,
 );
 
 $font-family-sans-serif: var(--font-family-public-sans);
@@ -221,24 +221,24 @@ $rem-10: 10rem;
 @import "bootstrap/scss/variables-dark";
 
 $spacers: map-merge(
-	$spacers,
-	(
-		6: (
-			$spacer * 2,
-		),
-		7: (
-			$spacer * 0.625,
-		),
-	)
+    $spacers,
+    (
+        6: (
+            $spacer * 2,
+        ),
+        7: (
+            $spacer * 0.625,
+        ),
+    )
 );
 
 $font-sizes: map-merge(
-	$font-sizes,
-	(
-		7: (
-			$font-size-base * 0.75,
-		),
-	)
+    $font-sizes,
+    (
+        7: (
+            $font-size-base * 0.75,
+        ),
+    )
 );
 
 @import "bootstrap/scss/maps";

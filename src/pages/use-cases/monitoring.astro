@@ -9,24 +9,24 @@ import LayoutFooterContact from "~/components/layout/FooterContact.vue"
 
 const title = "Simplify Infrastructure Monitoring"
 const description =
-	"Automate infrastructure monitoring, implement alerting, and ensure optimal performance and reliability."
+    "Automate infrastructure monitoring, implement alerting, and ensure optimal performance and reliability."
 
 const capabilities = [
-	"Continuous Integration/Continuous Deployment (CI/CD)",
-	"Provisioning and Deployment",
-	"Disaster Recovery",
+    "Continuous Integration/Continuous Deployment (CI/CD)",
+    "Provisioning and Deployment",
+    "Disaster Recovery",
 ]
 
 const mainContent = [
-	{
-		title: "Quick Alerting",
-		img: "/landing/usecases/monitoring/quick-alerting.svg",
-		imgAlt: "Quick Alerting",
-		imgWidth: "568px",
-		imgHeight: "420px",
-		description:
-			"Kestra enables  alerting to help you maintain optimal performance and quickly address any issues that arise. ",
-		content: `
+    {
+        title: "Quick Alerting",
+        img: "/landing/usecases/monitoring/quick-alerting.svg",
+        imgAlt: "Quick Alerting",
+        imgWidth: "568px",
+        imgHeight: "420px",
+        description:
+            "Kestra enables  alerting to help you maintain optimal performance and quickly address any issues that arise. ",
+        content: `
             <ul>
                 <li>
                     Alerts:
@@ -34,16 +34,16 @@ const mainContent = [
                 </li>
             </ul>
         `,
-	},
-	{
-		title: "Orchestrate your Monitoring Data",
-		img: "/landing/usecases/monitoring/monitoring-data.svg",
-		imgAlt: "Docker and Kubernetes",
-		imgWidth: "568px",
-		imgHeight: "420px",
-		description:
-			"Orchestrate your monitoring data efficiently to maintain optimal performance and quickly address any issues that arise. ",
-		content: `
+    },
+    {
+        title: "Orchestrate your Monitoring Data",
+        img: "/landing/usecases/monitoring/monitoring-data.svg",
+        imgAlt: "Docker and Kubernetes",
+        imgWidth: "568px",
+        imgHeight: "420px",
+        description:
+            "Orchestrate your monitoring data efficiently to maintain optimal performance and quickly address any issues that arise. ",
+        content: `
             <ul>
                 <li>
                     Centralized Collection:
@@ -65,16 +65,16 @@ const mainContent = [
                 </li>
             </ul>
         `,
-	},
-	{
-		title: "Automate Incident Response ",
-		img: "/landing/usecases/monitoring/incident-response.svg",
-		imgAlt: "Configuration Management and Compliance",
-		imgWidth: "604px",
-		imgHeight: "477px",
-		description:
-			"Kestra's automation capabilities enable you to set up workflows that automatically respond to and remediate infrastructure issues, reducing the time to resolution and minimizing manual intervention. ",
-		content: `
+    },
+    {
+        title: "Automate Incident Response ",
+        img: "/landing/usecases/monitoring/incident-response.svg",
+        imgAlt: "Configuration Management and Compliance",
+        imgWidth: "604px",
+        imgHeight: "477px",
+        description:
+            "Kestra's automation capabilities enable you to set up workflows that automatically respond to and remediate infrastructure issues, reducing the time to resolution and minimizing manual intervention. ",
+        content: `
             <ul>
                 <li>
                     Incident Response:
@@ -90,38 +90,38 @@ const mainContent = [
                 </li>
             </ul>
         `,
-	},
+    },
 ]
 ---
 
 <Layout title={title} description={description}>
-	<HeaderSection
-		client:load
-		titleHtml="Infrastructure <br> Monitoring"
-		description="Automate infrastructure monitoring, implement  alerting, and ensure optimal performance and reliability."
-		imageSrc="/landing/usecases/monitoring/header-hero.svg"
-		imageAlt="Infrastructure Monitoring"
-	/>
-	<MainSection
-		client:visible
-		subtitle="Infrastructure Monitoring"
-		subtitleBefore="Simplify"
-		baseline="Kestra's  monitoring capabilities and integrations empower platform engineers to maintain and optimize infrastructure performance efficiently."
-		mainContent={mainContent}
-	/>
-	<EnterpriseEditionSection client:visible />
-	<CardSection client:visible />
-	<CapabilitiesSection
-		client:visible
-		title="for Platform Orchestration"
-		sections={capabilities}
-	/>
-	<LayoutFooterContact
-		client:visible
-		title="Ready to take your Infrastructure to the next level ?"
-		purpleButtonText="Get Started"
-		purpleButtonHref="/docs/getting-started/quickstart"
-		darkButtonText="Talk to us"
-		darkButtonHref="/demo"
-	/>
+    <HeaderSection
+        client:load
+        titleHtml="Infrastructure <br> Monitoring"
+        description="Automate infrastructure monitoring, implement  alerting, and ensure optimal performance and reliability."
+        imageSrc="/landing/usecases/monitoring/header-hero.svg"
+        imageAlt="Infrastructure Monitoring"
+    />
+    <MainSection
+        client:visible
+        subtitle="Infrastructure Monitoring"
+        subtitleBefore="Simplify"
+        baseline="Kestra's  monitoring capabilities and integrations empower platform engineers to maintain and optimize infrastructure performance efficiently."
+        mainContent={mainContent}
+    />
+    <EnterpriseEditionSection client:visible />
+    <CardSection client:visible />
+    <CapabilitiesSection
+        client:visible
+        title="for Platform Orchestration"
+        sections={capabilities}
+    />
+    <LayoutFooterContact
+        client:visible
+        title="Ready to take your Infrastructure to the next level ?"
+        purpleButtonText="Get Started"
+        purpleButtonHref="/docs/getting-started/quickstart"
+        darkButtonText="Talk to us"
+        darkButtonHref="/demo"
+    />
 </Layout>

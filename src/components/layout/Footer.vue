@@ -1,93 +1,96 @@
 <template>
-	<footer>
-		<div class="container py-4 py-md-5 px-4 px-md-3">
-			<div class="row">
-				<div class="col-lg-3 mb-3">
-					<a href="/">
-						<img src="/logo-white.svg" height="60" alt="Kestra's logo" />
-					</a>
-					<p class="mt-2">Open Source Declarative Orchestration</p>
-					<Socials class="mt-4 socials" />
-					<LayoutNewsletter />
-				</div>
-				<div class="col-lg-9 mb-3">
-					<div class="row">
-						<div class="col-6 col-lg-2 offset-lg-1 mb-3">
-							<h5>Product</h5>
-							<ul class="list-unstyled">
-								<li v-for="link in PRODUCT_LINKS" :key="link.href" class="mb-2">
-									<a :href="link.href">{{ link.text }}</a>
-								</li>
-							</ul>
-						</div>
-						<div class="col-6 col-lg-2 mb-3">
-							<h5>Solutions</h5>
-							<ul class="list-unstyled">
-								<li v-for="link in SOLUTIONS_LINKS" :key="link.href" class="mb-2">
-									<a :href="link.href">{{ link.text }}</a>
-								</li>
-							</ul>
-						</div>
-						<div class="col-6 col-lg-2 mb-3">
-							<h5>Community</h5>
-							<ul class="list-unstyled">
-								<li v-for="link in COMMUNITY_LINKS" :key="link.href" class="mb-2">
-									<a v-if="!link.external" :href="link.href">{{ link.text }}</a>
-									<template v-else>
-										<a v-if="link.text !== 'Slack' || mounted" :href="link.href" target="_blank">{{
-											link.text }}</a>
-									</template>
-								</li>
-							</ul>
-						</div>
-						<div class="col-6 col-lg-2 mb-3">
-							<h5>Docs</h5>
-							<ul class="list-unstyled">
-								<li v-for="link in DOCS_LINKS" :key="link.href" class="mb-2">
-									<a :href="link.href">{{ link.text }}</a>
-								</li>
-							</ul>
-						</div>
-						<div class="col-6 col-lg-2 mb-3">
-							<h5>Company</h5>
-							<ul class="list-unstyled">
-								<li v-for="link in COMPANY_LINKS" :key="link.href" class="mb-2">
-									<a :href="link.href">
-										{{ link.text }}
-										<span v-if="link.badge" class="badge text-bg-danger">{{
-											link.badge
-										}}</span>
-									</a>
-								</li>
-							</ul>
+    <footer>
+        <div class="container py-4 py-md-5 px-4 px-md-3">
+            <div class="row">
+                <div class="col-lg-3 mb-3">
+                    <a href="/">
+                        <img src="/logo-white.svg" height="60" alt="Kestra's logo" />
+                    </a>
+                    <p class="mt-2">Open Source Declarative Orchestration</p>
+                    <Socials class="mt-4 socials" />
+                    <LayoutNewsletter />
+                </div>
+                <div class="col-lg-9 mb-3">
+                    <div class="row">
+                        <div class="col-6 col-lg-2 offset-lg-1 mb-3">
+                            <h5>Product</h5>
+                            <ul class="list-unstyled">
+                                <li v-for="link in PRODUCT_LINKS" :key="link.href" class="mb-2">
+                                    <a :href="link.href">{{ link.text }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-lg-2 mb-3">
+                            <h5>Solutions</h5>
+                            <ul class="list-unstyled">
+                                <li v-for="link in SOLUTIONS_LINKS" :key="link.href" class="mb-2">
+                                    <a :href="link.href">{{ link.text }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-lg-2 mb-3">
+                            <h5>Community</h5>
+                            <ul class="list-unstyled">
+                                <li v-for="link in COMMUNITY_LINKS" :key="link.href" class="mb-2">
+                                    <a v-if="!link.external" :href="link.href">{{ link.text }}</a>
+                                    <template v-else>
+                                        <a
+                                            v-if="link.text !== 'Slack' || mounted"
+                                            :href="link.href"
+                                            target="_blank"
+                                            >{{ link.text }}</a
+                                        >
+                                    </template>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-lg-2 mb-3">
+                            <h5>Docs</h5>
+                            <ul class="list-unstyled">
+                                <li v-for="link in DOCS_LINKS" :key="link.href" class="mb-2">
+                                    <a :href="link.href">{{ link.text }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-lg-2 mb-3">
+                            <h5>Company</h5>
+                            <ul class="list-unstyled">
+                                <li v-for="link in COMPANY_LINKS" :key="link.href" class="mb-2">
+                                    <a :href="link.href">
+                                        {{ link.text }}
+                                        <span v-if="link.badge" class="badge text-bg-danger">{{
+                                            link.badge
+                                        }}</span>
+                                    </a>
+                                </li>
+                            </ul>
 
-							<div>
-								<Certifications class="mt-4 mb-4" />
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="container bottom py-3">
-			<div class="d-flex d-100">
-				<div class="flex-grow-1">
-					<p class="mb-0 d-none d-md-inline">
-						© {{ new Date().getFullYear() }} <a href="/">Kestra Technologies</a>.
-						Developed with
-						<Heart class="text-danger" /> on 🌎.
-					</p>
-				</div>
-				<div class="text-end">
-					<p class="mb-0">
-						<a href="/privacy-policy">Privacy Policy</a>
-						/
-						<a href="/cookie-policy">Cookie Policy</a>
-					</p>
-				</div>
-			</div>
-		</div>
-	</footer>
+                            <div>
+                                <Certifications class="mt-4 mb-4" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container bottom py-3">
+            <div class="d-flex d-100">
+                <div class="flex-grow-1">
+                    <p class="mb-0 d-none d-md-inline">
+                        © {{ new Date().getFullYear() }} <a href="/">Kestra Technologies</a>.
+                        Developed with <Heart class="text-danger" /> on 🌎.
+                    </p>
+                </div>
+                <div class="text-end">
+                    <p class="mb-0">
+                        <a href="/privacy-policy">Privacy Policy</a>
+                        /
+                        <a href="/cookie-policy">Cookie Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </template>
 
 <script setup lang="ts">

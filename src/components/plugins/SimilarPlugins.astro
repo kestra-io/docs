@@ -3,8 +3,8 @@ import { filterPluginsWithoutDeprecated, type Plugin } from "@kestra-io/ui-libs"
 import SimilarPluginsVue from "~/components/plugins/SimilarPlugins.vue"
 
 interface Props {
-	allPlugins: Plugin[]
-	pluginsData: Record<string, PluginInformation>
+    allPlugins: Plugin[]
+    pluginsData: Record<string, PluginInformation>
 }
 
 const props = Astro.props
@@ -12,7 +12,7 @@ const { allPlugins } = props
 ---
 
 <SimilarPluginsVue
-	similarPlugins={filterPluginsWithoutDeprecated(allPlugins ?? [])}
-	pluginsData={props.pluginsData}
-	client:visible
+    similarPlugins={filterPluginsWithoutDeprecated(allPlugins ?? [])}
+    pluginsData={props.pluginsData}
+    client:visible
 />

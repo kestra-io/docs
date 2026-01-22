@@ -1,7 +1,7 @@
 {
-	"$schema": "./node_modules/oxfmt/configuration_schema.json",
-	"semi": false,
-	"useTabs": true,
-	"vueIndentScriptAndStyle": true,
-	"ignorePatterns": ["**/*.md"]
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": false,
+  "useTabs": false,
+  "vueIndentScriptAndStyle": true,
+  "ignorePatterns": ["**/*.md"]
 }

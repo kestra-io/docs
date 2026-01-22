@@ -9,22 +9,22 @@ import LayoutFooterContact from "~/components/layout/FooterContact.vue"
 
 const title = "Join a Thrilling Community of Data Enthusiasts"
 const description =
-	"Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
+    "Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
 ---
 
 <Layout title={title} description={description}>
-	<div>
-		<CommunityHeader client:load />
-		<CommunitySlack client:visible />
-		<CommunityVue client:visible />
-		<CommunityGuidelines client:visible />
-		<CommunityContributors client:visible />
-		<LayoutFooterContact
-			client:visible
-			title="Getting started"
-			subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-			darkButtonText="Read the docs"
-			purpleButtonText="Get started!"
-		/>
-	</div>
+    <div>
+        <CommunityHeader client:load />
+        <CommunitySlack client:visible />
+        <CommunityVue client:visible />
+        <CommunityGuidelines client:visible />
+        <CommunityContributors client:visible />
+        <LayoutFooterContact
+            client:visible
+            title="Getting started"
+            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+            darkButtonText="Read the docs"
+            purpleButtonText="Get started!"
+        />
+    </div>
 </Layout>

@@ -9,16 +9,16 @@ import OverviewCTA from "~/components/overview/CTA.vue"
 
 const title = "Kestra Platform Overview"
 const description =
-	"Orchestrate your business-critical applications. Take full advantage of the speed, and performance of Kestra's orchestration platform"
+    "Orchestrate your business-critical applications. Take full advantage of the speed, and performance of Kestra's orchestration platform"
 ---
 
 <Layout title={title} description={description}>
-	<div class="main">
-		<OverviewHero client:load />
-		<OverviewAgnostic client:load />
-		<OverviewWorkflows client:visible />
-		<OverviewMessage client:visible />
-		<OverviewEnterpriseHeaderBox client:visible />
-		<OverviewCTA client:visible />
-	</div>
+    <div class="main">
+        <OverviewHero client:load />
+        <OverviewAgnostic client:load />
+        <OverviewWorkflows client:visible />
+        <OverviewMessage client:visible />
+        <OverviewEnterpriseHeaderBox client:visible />
+        <OverviewCTA client:visible />
+    </div>
 </Layout>

@@ -14,68 +14,68 @@ import Built from "~/components/infrastructure/Built.vue"
 import Ready from "~/components/infrastructure/Ready.vue"
 
 const title =
-	"Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
+    "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
 const description =
-	"Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
+    "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
 
 const { results: blueprints } = await fetch(
-	`${API_URL}/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
+    `${API_URL}/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
 ).then((res) => res.json())
 const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
-	(res) => res.json(),
+    (res) => res.json(),
 )
 
 const plugins = Object.entries(
-	(await import.meta.glob("/public/docs/icons/plugins/*.svg", {
-		eager: true,
-	})) as Record<string, { default: { src: string } }>,
+    (await import.meta.glob("/public/docs/icons/plugins/*.svg", {
+        eager: true,
+    })) as Record<string, { default: { src: string } }>,
 ).map(([key, mod]) => ({
-	name: key.split("/").pop()?.replace(".svg", "") ?? "",
-	logo: mod.default.src,
+    name: key.split("/").pop()?.replace(".svg", "") ?? "",
+    logo: mod.default.src,
 }))
 ---
 
 <Layout {title} {description}>
-	<div class="infra">
-		<Hero client:visible />
-		<Deserver client:visible />
-		<Fortune client:visible />
-		<Govern client:visible />
-		<Tour client:visible />
-		<Operation client:visible />
-		<Automations {blueprints} {tags} client:visible />
-		<Lifecycle client:visible />
-		<Connect {plugins} client:visible />
-		<Built client:visible />
-		<Ready client:visible />
-	</div>
+    <div class="infra">
+        <Hero client:visible />
+        <Deserver client:visible />
+        <Fortune client:visible />
+        <Govern client:visible />
+        <Tour client:visible />
+        <Operation client:visible />
+        <Automations {blueprints} {tags} client:visible />
+        <Lifecycle client:visible />
+        <Connect {plugins} client:visible />
+        <Built client:visible />
+        <Ready client:visible />
+    </div>
 </Layout>
 
 <style scoped lang="scss">
-	@import "~/assets/styles/_variable";
-	.infra {
-		// TODO: Only page level. Plan is to use "Mona Sans" throughout the website gradually.
-		font-family: var(--font-family-mona-sans), sans-serif !important;
-		overflow: clip;
-		position: relative;
+    @import "~/assets/styles/_variable";
+    .infra {
+        // TODO: Only page level. Plan is to use "Mona Sans" throughout the website gradually.
+        font-family: var(--font-family-mona-sans), sans-serif !important;
+        overflow: clip;
+        position: relative;
 
-		&::after {
-			content: "";
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			width: 100vw;
-			height: 80px;
-			background: rgba($white, 0.06);
-			backdrop-filter: blur(2px);
-			z-index: 10;
-			pointer-events: none;
-			-webkit-mask-image: linear-gradient(
-				180deg,
-				transparent 0%,
-				$black 100%
-			);
-			mask-image: linear-gradient(180deg, transparent 0%, $black 100%);
-		}
-	}
+        &::after {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 80px;
+            background: rgba($white, 0.06);
+            backdrop-filter: blur(2px);
+            z-index: 10;
+            pointer-events: none;
+            -webkit-mask-image: linear-gradient(
+                180deg,
+                transparent 0%,
+                $black 100%
+            );
+            mask-image: linear-gradient(180deg, transparent 0%, $black 100%);
+        }
+    }
 </style>

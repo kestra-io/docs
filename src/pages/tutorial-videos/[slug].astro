@@ -6,10 +6,10 @@ import CommonPagination from "~/components/common/Pagination.vue"
 import { $fetchApi } from "~/utils/fetch"
 
 const tags = new Map([
-	["all", "All videos"],
-	["deep-dive", "Deep Dive Tutorials"],
-	["quick-start", "Quick Start Tutorials"],
-	["feature-highlight", "Feature Highlight"],
+    ["all", "All videos"],
+    ["deep-dive", "Deep Dive Tutorials"],
+    ["quick-start", "Quick Start Tutorials"],
+    ["feature-highlight", "Feature Highlight"],
 ])
 
 const { slug } = Astro.params
@@ -35,17 +35,17 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
 ---
 
 <Layout title={title} description={description}>
-	<VideosTutorialsList
-		client:visible
-		{...{ tutorialVideo, page, itemsPerPage, currentCategory }}
-		client:idle
-	>
-		<CommonPagination
-			client:load
-			currentUrl={Astro.request.url}
-			slot="pagination"
-			currentPage={page}
-			totalPages={Math.ceil(tutorialVideo.total / itemsPerPage)}
-		/>
-	</VideosTutorialsList>
+    <VideosTutorialsList
+        client:visible
+        {...{ tutorialVideo, page, itemsPerPage, currentCategory }}
+        client:idle
+    >
+        <CommonPagination
+            client:load
+            currentUrl={Astro.request.url}
+            slot="pagination"
+            currentPage={page}
+            totalPages={Math.ceil(tutorialVideo.total / itemsPerPage)}
+        />
+    </VideosTutorialsList>
 </Layout>

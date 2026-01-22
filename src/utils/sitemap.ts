@@ -1,5 +1,5 @@
 export const sitemapResponse = (urls: string[]): Response => {
-	const xml = `<?xml version="1.0" encoding="UTF-8"?>
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
@@ -11,10 +11,10 @@ export const sitemapResponse = (urls: string[]): Response => {
     ${urls.map((r) => `<url><loc>${r}</loc></url>`).join("\n    ")}
 </urlset>`
 
-	return new Response(xml, {
-		headers: {
-			"Content-Type": "application/xml",
-			"Cache-Control": "public, max-age=3600",
-		},
-	})
+    return new Response(xml, {
+        headers: {
+            "Content-Type": "application/xml",
+            "Cache-Control": "public, max-age=3600",
+        },
+    })
 }

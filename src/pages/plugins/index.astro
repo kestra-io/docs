@@ -12,10 +12,10 @@ const description = "Connect Kestra with tools you already know and love"
 ---
 
 <Layout title={title} description={description}>
-	<PluginsLists
-		client:load
-		pluginsData={pluginsData.byPlugin}
-		{plugins}
-		fullPath={Astro.request.url}
-	/>
+    <PluginsLists
+        client:load
+        pluginsData={pluginsData.byPlugin}
+        {plugins}
+        fullPath={Astro.request.url}
+    />
 </Layout>
