@@ -50,7 +50,7 @@
 			margin-bottom: 0;
 			font-size: $font-size-3xl;
 			@include media-breakpoint-down(md) {
-				line-height: 1.625rem;
+				line-height: 2.625rem;
 			}
 
 			&-animate {
