@@ -501,9 +501,12 @@ if (!pluginType && !subGroup) {
     ogImage = `/meta/plugins/${pluginType}.svg`
 }
 
-// if no content to show, redirect to /plugins
+// if no content to show, redirect to parent until /plugins
 if (pageWithToc && pluginsWithoutDeprecated.length === 0) {
-    Astro.redirect("/plugins")
+    const pathParts = pathname.split("/")
+    if (pathParts.length > 1) {
+        Astro.redirect(pathParts.slice(0, -1).join("/"), 301)
+    }
 }
 ---
 
