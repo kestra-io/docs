@@ -4,21 +4,43 @@
  */
 {
     "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "kestra-io",
+    "name": "docs",
     "compatibility_date": "2025-02-04",
-    "compatibility_flags": [
-        "nodejs_compat"
+    // Astro: "main": "./dist/_worker.js/index.js",
+    "main": "./.output/server/index.mjs",
+    "routes": [
+        {
+            "pattern": "docs.cf.kestra.io",
+            "custom_domain": true,
+        },
     ],
-    "pages_build_output_dir": "./dist",
-    "observability": {
-        "enabled": true
+    "assets": {
+        "binding": "ASSETS",
+        // Astro: "directory": "./dist",
+        "directory": "./.output/public/",
+        "html_handling": "drop-trailing-slash",
     },
+    "keep_vars": true,
+    "preview_urls": true,
+    "minify": true,
+    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+    "observability": {
+        "enabled": true,
+        "traces": {
+            "enabled": true,
+        },
+        "logs": {
+            "invocation_logs": true,
+            "enabled": true,
+        },
+    },
+    "upload_source_maps": true,
+    "logpush": false,
     /**
      * Smart Placement
      * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
      */
     // "placement": { "mode": "smart" },
-
 
     /**
      * Bindings
@@ -28,10 +50,17 @@
      */
     "kv_namespaces": [
         {
+            "binding": "ISR_CACHE",
+            "id": "c7003b3ecfc2485bb2efb713d75da274",
+        },
+        ///*** FIXME: to remove
+        {
             "binding": "CLOUDFLARE_KVSTORAGE",
             "id": "e1cec38e2fe84984ac38f33d46b0147c"
         }
+        ///*** FIXME: /to remove
     ],
+    ///*** FIXME: to remove
     "d1_databases": [
         {
             "binding": "DB",
@@ -39,8 +68,10 @@
             "database_id": "7cdb11eb-f50a-4e0f-9985-bf6d58883ae9"
         }
     ],
+    ///*** FIXME: /to remove
     "env": {
         "preview": {
+            ///*** FIXME: to remove
             "kv_namespaces": [
                 {
                     "binding": "CLOUDFLARE_KVSTORAGE",
@@ -54,32 +85,30 @@
                     "database_id": "d65b1553-56e9-444e-9f3b-811e87a22f32"
                 }
             ],
+            ///*** FIXME: /to remove
             "vars": {
                 "NITRO_PRESET": "cloudflare-pages",
                 "NUXT_SITE_ENV": "staging"
             }
         }
     },
-
+    ///*** FIXME: to remove
     /**
      * Environment Variables
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
      */
     "vars": { "NITRO_PRESET": "cloudflare-pages" }
+    ///*** FIXME: /to remove
+
     /**
      * Note: Use secrets to store sensitive data.
      * https://developers.cloudflare.com/workers/configuration/secrets/
      */
-
-    /**
-     * Static Assets
-     * https://developers.cloudflare.com/workers/static-assets/binding/
-     */
-    // "assets": { "directory": "./public/", "binding": "ASSETS" },
+    // "vars": {  "MY_VARIABLE": "production_value" }
 
     /**
      * Service Bindings (communicate between multiple Workers)
      * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
      */
-    // "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+    // "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
 }
