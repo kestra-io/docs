@@ -1,0 +1,118 @@
+---
+import { Image } from "astro:assets"
+import logoCTA from "~/components/home/assets/logo-cta.svg"
+---
+
+<section class="wrapper">
+    <div class="container">
+        <div class="home-card side-box">
+            <p class="pre-title">Ready to see it in action?</p>
+            <h2>Jump in</h2>
+            <p class="description">
+                Install Kestra Open-Source and get your first workflow ready in less than 5 minutes.
+            </p>
+            <a href="/docs/quickstart#start-kestra" class="btn btn-md btn-secondary">Get Started</a>
+        </div>
+        <div class="home-card side-box side-box-purple">
+            <Image src={logoCTA} alt="CTA" class="logo-cta" />
+            <p class="pre-title">Schedule a meeting</p>
+            <h2>Let's meet</h2>
+            <p class="description">
+                Connect with our product specialists and discuss your project requirements.
+            </p>
+            <a href="/demo" class="btn btn-md btn-primary">Talk to us</a>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .wrapper {
+        background: linear-gradient(360deg, #15171e -3.16%, #1a1d26 93.17%);
+        padding: 60px 0 16px;
+
+        .container {
+            @include media-breakpoint-up(lg) {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            margin: 2rem auto;
+            color: white;
+
+            .pre-title {
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                font-weight: 300;
+            }
+
+            .side-box {
+                position: relative;
+                z-index: 1;
+                padding: 4rem 2rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                margin: 1.5rem 0;
+
+                h2 {
+                    font-size: 1.5rem;
+                    font-weight: 500;
+                    margin: 0.5rem 0;
+                }
+
+                .description {
+                    font-size: 1rem;
+                    margin-bottom: 2rem;
+                }
+
+                .pre-title {
+                    font-family: "Source Code Pro", monospace;
+                    margin-bottom: 0.5rem;
+                }
+            }
+
+            .side-box-purple {
+                border-color: #a950ff;
+
+                .pre-title {
+                    color: #cd88ff;
+                }
+            }
+
+            .logo-cta {
+                position: absolute;
+                top: -20px;
+                right: -70px;
+                width: 250px;
+
+                @include media-breakpoint-up(lg) {
+                    top: -40px;
+                    right: -80px;
+                    width: 220px;
+                }
+            }
+        }
+    }
+
+    .home-card {
+        background-image: radial-gradient(
+            500px at -250px -250px,
+            oklch(0.3 0.0193 271.93) 0,
+            oklch(0.26 0.0193 271.93) 100%
+        );
+        border-radius: 1rem;
+        box-shadow: 0px 12px 24px 8px #00000017;
+        border: 1px solid #2c2e4b;
+        overflow: hidden;
+    }
+
+    .home-card :global(a) {
+        color: #9c8fff;
+        text-decoration: none;
+        font-size: 0.8rem;
+    }
+</style>
