@@ -2,7 +2,7 @@
 	<div class="container my-5 pt-5 text-center discover-cloud">
 		<div class="row">
 			<div class="col-md-12 col-lg-5 center">
-				<img src="./images/discover_cloud.png" alt="Discover Cloud Logo" />
+				<img :src="discoverCloudImage.src" alt="Discover Cloud Logo" />
 			</div>
 			<div class="col-md-12 col-lg-7">
 				<h2 class="highlight">Discover Kestra Cloud</h2>
@@ -18,7 +18,9 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import discoverCloudImage from './images/discover_cloud.png';
+</script>
 
 <style lang="scss">
 	@import "~/assets/styles/variable";

@@ -13,7 +13,7 @@
 				<div class="row mt-4">
 					<div class="col-6">
 						<h6>
-							<img src="./images/calendar_month.png" />
+							<img :src="calendarMonthImage.src" />
 							Access to Kestra interface
 						</h6>
 						<p>
@@ -23,7 +23,7 @@
 					</div>
 					<div class="col-6">
 						<h6>
-							<img src="./images/small_cloud.png" />
+							<img :src="smallCloudImage.src" />
 							Explore Kestra Firsthand
 						</h6>
 						<p>
@@ -32,7 +32,7 @@
 					</div>
 					<div class="col-6 mt-3">
 						<h6>
-							<img src="./images/hammer_wrench.png" />
+							<img :src="hammerWrenchImage.src" />
 							Discover Kestra Features
 						</h6>
 						<p>
@@ -42,7 +42,7 @@
 					</div>
 					<div class="col-6 mt-3">
 						<h6>
-							<img src="./images/check_circle.png" />
+							<img :src="checkCircleImage.src" />
 							Interested in Full Access?
 						</h6>
 						<p>
@@ -115,6 +115,10 @@
 	import { ref, useTemplateRef } from "vue"
 	import identify from "~/utils/identify"
 	import { useGtm } from "@gtm-support/vue-gtm"
+    import calendarMonthImage from "./images/calendar_month.png"
+    import smallCloudImage from "./images/small_cloud.png"
+    import hammerWrenchImage from "./images/hammer_wrench.png"
+    import checkCircleImage from "./images/check_circle.png"
 
 	const gtm = useGtm()
 	const props = defineProps<{

@@ -3,7 +3,6 @@ import Layout from "~/components/layout.astro"
 import PreviewAccessHeader from "~/components/preview-access/Header.vue"
 import PreviewAccessFeatures from "~/components/preview-access/Features.vue"
 import PreviewAccessDiscoverCloud from "~/components/preview-access/DiscoverCloud.vue"
-import OverviewWorkflows from "~/components/overview/Workflows.vue"
 
 const title = "Kestra Preview Mode"
 const description =
@@ -105,6 +104,7 @@ const description =
 
 		& :global(h4) {
 			font-size: $font-size-xl;
+            color: $black;
 		}
 
 		& :global(h5) {
@@ -119,26 +119,6 @@ const description =
 		& :global(p) {
 			font-size: 14px;
 			color: $white-1;
-		}
-
-		& :global(div) {
-			color: $white;
-		}
-
-		& :global(.form) {
-			& h4,
-			& p,
-			& div {
-				color: #000;
-			}
-
-			& div {
-				&.success {
-					padding-top: 100px;
-				}
-
-				font-size: $font-size-sm;
-			}
 		}
 	}
 </style>
