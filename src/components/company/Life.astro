@@ -1,125 +1,135 @@
-<template>
-    <div class="container">
-        <header class="header" data-usal="fade-u">
-            <h2 class="title">Life at <span class="gradient">Kestra</span></h2>
-        </header>
+---
+import { Image } from "astro:assets"
 
-        <div class="grid" data-usal="fade-u">
-            <article
-                v-for="(card, index) in lifeCards"
-                :key="card.id"
-                :class="['card', card.type, card.variant]"
-                :data-usal="`zoomin delay-${index * 100} ease-in-out`"
-            >
-                <NuxtImg
-                    v-if="card.type === 'image-card'"
-                    :src="card.image"
-                    :alt="card.alt"
-                    class="img"
-                />
-                <div v-else class="content">
-                    <h3 class="heading">{{ card.title }}</h3>
-                    <p class="desc">{{ card.description }}</p>
-                    <a
-                        v-if="card.button"
-                        :href="card.button.href"
-                        :class="['btn', 'btn-sm', card.button.variant, 'cta']"
-                    >
-                        {{ card.button.text }}
-                    </a>
-                </div>
-            </article>
-        </div>
+const lifeCards = [
+    {
+        id: 1,
+        type: "image-card",
+        image: "/landing/company/teams/team-group.png",
+        alt: "Team Meeting",
+    },
+    {
+        id: 2,
+        type: "text-card",
+        variant: "work-your-way-card",
+        title: "Work Your Way",
+        description:
+            "From flexible hours to fully remote work, we give you the freedom to shape your days and work where you feel your best. Your life, your balance.",
+    },
+    {
+        id: 3,
+        type: "image-card",
+        image: "/landing/company/teams/team-img-1.png",
+        alt: "Remote Work",
+    },
+    {
+        id: 4,
+        type: "text-card",
+        variant: "all-in-support-card",
+        title: "All-in Support",
+        description:
+            "We've got you covered — from health benefits to home office costs and the latest tools, so you can focus on what matters most: doing great work and growing with us.",
+    },
+    {
+        id: 5,
+        type: "image-card",
+        image: "/landing/company/teams/team-img-2.png",
+        alt: "Team Collaboration",
+    },
+    {
+        id: 6,
+        type: "text-card",
+        variant: "hiring-card",
+        title: "We're Hiring",
+        description:
+            "We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love.",
+        button: {
+            text: "Open Roles",
+            href: "/careers",
+            variant: "btn-secondary",
+        },
+    },
+]
+---
 
-        <section class="brand-card" data-usal="fade-u delay-100 ease-in-out">
-            <div class="info">
-                <span class="label">MEDIA</span>
-                <h3 class="title">Brand Assets</h3>
-                <p class="text">
-                    For Media Inquiries and Exclusive Insights,<br />
-                    Reach Out to Our Press Team at
-                    <a href="mailto:press@kestra.io" class="link" external>press@kestra.io</a>
-                </p>
-                <a
-                    to="/kestra-logo-kit.zip"
-                    class="btn btn-md btn-primary btn-download"
-                    external
-                    target="_blank"
-                    download="kestra-logo-kit.zip"
+<div class="container">
+    <header class="header" data-usal="fade-u">
+        <h2 class="title">Life at <span class="gradient">Kestra</span></h2>
+    </header>
+
+    <div class="grid" data-usal="fade-u">
+        {
+            lifeCards.map((card, index) => (
+                <article
+                    class={`card ${card.type} ${card.variant || ""}`}
+                    data-usal={`zoomin delay-${index * 100} ease-in-out`}
                 >
-                    Download Logo Pack
-                </a>
-            </div>
-            <div class="media d-none d-md-flex">
-                <NuxtImg
-                    src="/landing/company/teams/assets-download.svg"
-                    alt="Brand Assets"
-                    class="img"
-                />
-            </div>
-        </section>
+                    {card.type === "image-card" ? (
+                        <Image
+                            src={card.image!}
+                            alt={card.alt!}
+                            class="img"
+                            width={358}
+                            height={422}
+                        />
+                    ) : (
+                        <div class="content">
+                            <h3 class="heading">{card.title}</h3>
+                            <p class="desc">{card.description}</p>
+                            {card.button && (
+                                <a
+                                    href={card.button.href}
+                                    class={`btn btn-sm ${card.button.variant} cta`}
+                                >
+                                    {card.button.text}
+                                </a>
+                            )}
+                        </div>
+                    )}
+                </article>
+            ))
+        }
     </div>
-</template>
 
-<script setup lang="ts">
-    const lifeCards = [
-        {
-            id: 1,
-            type: "image-card",
-            image: "/landing/company/teams/team-group.png",
-            alt: "Team Meeting",
-        },
-        {
-            id: 2,
-            type: "text-card",
-            variant: "work-your-way-card",
-            title: "Work Your Way",
-            description:
-                "From flexible hours to fully remote work, we give you the freedom to shape your days and work where you feel your best. Your life, your balance.",
-        },
-        {
-            id: 3,
-            type: "image-card",
-            image: "/landing/company/teams/team-img-1.png",
-            alt: "Remote Work",
-        },
-        {
-            id: 4,
-            type: "text-card",
-            variant: "all-in-support-card",
-            title: "All-in Support",
-            description:
-                "We've got you covered — from health benefits to home office costs and the latest tools, so you can focus on what matters most: doing great work and growing with us.",
-        },
-        {
-            id: 5,
-            type: "image-card",
-            image: "/landing/company/teams/team-img-2.png",
-            alt: "Team Collaboration",
-        },
-        {
-            id: 6,
-            type: "text-card",
-            variant: "hiring-card",
-            title: "We're Hiring",
-            description:
-                "We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love.",
-            button: {
-                text: "Open Roles",
-                href: "/careers",
-                variant: "btn-secondary",
-            },
-        },
-    ]
-</script>
+    <section class="brand-card" data-usal="fade-u delay-100 ease-in-out">
+        <div class="info">
+            <span class="label">MEDIA</span>
+            <h3 class="title">Brand Assets</h3>
+            <p class="text">
+                For Media Inquiries and Exclusive Insights,<br />
+                Reach Out to Our Press Team at
+                <a href="mailto:press@kestra.io" class="link">press@kestra.io</a
+                >
+            </p>
+            <a
+                href="/kestra-logo-kit.zip"
+                class="btn btn-md btn-primary btn-download"
+                target="_blank"
+                download="kestra-logo-kit.zip"
+            >
+                Download Logo Pack
+            </a>
+        </div>
+        <div class="media d-none d-md-flex">
+            <Image
+                src="/landing/company/teams/assets-download.svg"
+                alt="Brand Assets"
+                class="img"
+                width={375}
+                height={303}
+            />
+        </div>
+    </section>
+</div>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .container {
         position: relative;
         min-height: 1473px;
-        background: url("/landing/company/teams/gridbg.svg") no-repeat top center;
+        background: url("/landing/company/teams/gridbg.svg") no-repeat top
+            center;
         background-size: auto;
         max-width: 100%;
         padding: $rem-5 $rem-1;
@@ -288,7 +298,11 @@
             padding: $rem-4;
             border-radius: $border-radius-lg;
             border: 1px solid;
-            border-image-source: linear-gradient(180deg, #2b313e 0%, #131725 100%);
+            border-image-source: linear-gradient(
+                180deg,
+                #2b313e 0%,
+                #131725 100%
+            );
             background: linear-gradient(180deg, #21242e 0%, #1a1c24 100%);
             overflow: hidden;
 
@@ -299,8 +313,8 @@
                 right: 0;
                 bottom: 0;
                 left: 40%;
-                background: url("/landing/company/teams/gradients.svg") no-repeat right center /
-                    cover;
+                background: url("/landing/company/teams/gradients.svg")
+                    no-repeat right center / cover;
                 pointer-events: none;
             }
 
@@ -412,6 +426,16 @@
                 align-items: center;
                 justify-content: center;
 
+                &.d-none {
+                    display: none;
+                }
+
+                &.d-md-flex {
+                    @include media-breakpoint-up(md) {
+                        display: flex;
+                    }
+                }
+
                 .img {
                     width: 375px;
                     height: 303px;
@@ -462,7 +486,11 @@
 
     @each $variant, $props in $card-backgrounds {
         .#{$variant} {
-            background: linear-gradient(180deg, nth($props, 1) 0%, nth($props, 2) 100%);
+            background: linear-gradient(
+                180deg,
+                nth($props, 1) 0%,
+                nth($props, 2) 100%
+            );
             backdrop-filter: blur(nth($props, 3));
         }
     }
