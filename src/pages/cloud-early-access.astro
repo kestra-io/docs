@@ -1,0 +1,16 @@
+---
+import Layout from "~/components/layout.astro"
+import CloudEarlyAccessForm from "~/components/cloud-early-access/Form.vue"
+
+const title = "Kestra Cloud Early Access"
+const description = "Fill the form to get access to Kestra cloud early access."
+---
+
+<Layout title={title} description={description}>
+    <div class="cloud">
+        <CloudEarlyAccessForm
+            routePath={new URL(Astro.request.url).pathname}
+            client:idle
+        />
+    </div>
+</Layout>

@@ -1,0 +1,30 @@
+---
+import Layout from "~/components/layout.astro"
+import Header from "~/components/features/language/Header.vue"
+import Features from "~/components/features/language/Features.vue"
+import GitOptions from "~/components/features/language/GitOptions.vue"
+import IntegrationsInfo from "~/components/features/language/IntegrationsInfo.vue"
+import Plugins from "~/components/features/language/Plugins.vue"
+import AgnosticOrchestration from "~/components/features/language/AgnosticOrchestration.vue"
+import FooterContact from "~/components/layout/FooterContact.vue"
+---
+
+<Layout
+    title="Language Agnostic Orchestration"
+    description="Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools"
+>
+    <Header client:load />
+    <Features client:visible />
+    <GitOptions client:visible />
+    <IntegrationsInfo client:visible />
+    <Plugins client:visible />
+    <AgnosticOrchestration client:visible />
+    <FooterContact
+        client:visible
+        title="Getting Started with  Declarative Orchestration"
+        darkButtonText="Get started"
+        darkButtonHref="/docs/quickstart#start-kestra"
+        purpleButtonText="Talk to us"
+        purpleButtonHref="/demo"
+    />
+</Layout>

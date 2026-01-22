@@ -1,0 +1,16 @@
+---
+export const prerender = false
+import Layout from "~/components/layout.astro"
+import Error from "~/components/error/error.vue"
+
+const { error } = Astro.props
+---
+
+<Layout title="Server Error">
+    <Error
+        error={error}
+        title="We broke that page..."
+        description="Sorry, an error occurred."
+        client:idle
+    />
+</Layout>

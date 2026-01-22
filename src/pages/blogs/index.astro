@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content"
+import BlogsList from "~/components/blogs/BlogsList.vue"
+import LayoutBlogs from "~/components/layout-blogs.astro"
+import { $fetchApi } from "~/utils/fetch"
+import { getImage } from "astro:assets"
+
+const blogs = await getCollection("blogs")
+
+const sortedBlogs = await Promise.all(
+    blogs
+        .sort((a, b) => {
+            return a.data.date > b.data.date ? 1 : -1
+        })
+        .map(async (blog) => {
+            const image = await getImage({
+                src: blog.data.image,
+                format: "webp",
+                width: 800,
+            })
+            return {
+                ...blog,
+                data: {
+                    ...blog.data,
+                    image: image.src,
+                },
+            }
+        }),
+)
+
+const externalNewsData = await $fetchApi<{
+    results: {
+        id: string
+        link: string
+        image: string
+        media: string
+        author: string
+        title: string
+        publicationDate: string
+    }[]
+}>(`/external-blogs?size=4`)
+
+const externalNews = externalNewsData.results.map((data) => {
+    return {
+        id: data.id,
+        path: data.link,
+        image: data.image,
+        category: data.media,
+        author: { name: data.author },
+        title: data.title,
+        date: data.publicationDate,
+    }
+})
+---
+
+<LayoutBlogs activeStem="/blogs">
+    <BlogsList
+        client:idle
+        currentUrl={Astro.request.url}
+        blogs={sortedBlogs.map((blog) => ({
+            ...blog.data,
+            slug: blog.id,
+            path: `/blogs/${blog.id}`,
+        }))}
+        externalNews={externalNews}
+    />
+</LayoutBlogs>

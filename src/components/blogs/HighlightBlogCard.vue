@@ -1,0 +1,68 @@
+<template>
+    <div role="button">
+        <a class="d-inline-block text-dark w-100" :href="blog.path">
+            <NuxtImg
+                width="840"
+                loading="lazy"
+                class="w-100 col-md-12 rounded-3 img-fluid blog-image"
+                :alt="blog.image"
+                :src="blog.image"
+            />
+            <div class="description mt-4">
+                <span class="small-text category">{{ blog.category }}</span>
+                <h3>
+                    {{ blog.title }}
+                </h3>
+                <p class="text">{{ blog.description }}</p>
+                <BlogCardDetails
+                    :authors="blog.authors || (blog.author ? [blog.author] : [])"
+                    :date="blog.date.toString()"
+                />
+            </div>
+        </a>
+    </div>
+</template>
+
+<script>
+    import BlogCardDetails from "~/components/blogs/BlogCardDetails.vue"
+
+    export default {
+        name: "HighlightBlogCard",
+        components: { BlogCardDetails },
+        props: {
+            blog: {
+                type: Object,
+                required: true,
+            },
+        },
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import "~/assets/styles/variable";
+
+    .blog-image {
+        border: $block-border;
+    }
+
+    .description {
+        span {
+            color: $purple-36;
+            font-size: $font-size-sm;
+            font-weight: 400;
+        }
+        h3 {
+            color: $white;
+            font-size: $h3-font-size;
+            font-weight: 400;
+            line-height: 2.375rem;
+        }
+        .text {
+            color: $white-1;
+            font-size: $h6-font-size;
+            font-weight: 300;
+            line-height: 1.625rem;
+            margin-bottom: 0.75rem;
+        }
+    }
+</style>

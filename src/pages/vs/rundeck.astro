@@ -1,0 +1,13 @@
+---
+import Layout from "~/components/layout.astro"
+import Header from "~/components/vs/rundeck/Header.vue"
+import Main from "~/components/vs/rundeck/Main.vue"
+
+const title = "Rundeck vs Kestra"
+const description = "What are the differences between Kestra and Rundeck"
+---
+
+<Layout title={title} description={description}>
+    <Header client:load />
+    <Main client:visible />
+</Layout>
