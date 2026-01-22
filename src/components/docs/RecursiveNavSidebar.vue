@@ -105,7 +105,6 @@
 	const title = computed(() => props.item.sidebarTitle ?? props.item.title)
 
 	watch(activeSlug, (v) => {
-		toggled.value = isActive.value || (props.item.isSection ?? false)
 		if (isActive.value && (props.item.hideSubMenus || !props.item.isPage)) {
 			nextTick(() => {
 				rootLink.value?.scrollIntoView({ block: "center"})
