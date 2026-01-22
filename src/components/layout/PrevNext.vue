@@ -33,10 +33,10 @@
 
     const props = defineProps<{
         navigation: NavItem[]
-        currentPath?: string
+        currentPath: string
     }>()
 
-    const { prev, next } = prevNext(props.navigation, props.currentPath ?? "")
+    const { prev, next } = prevNext(props.navigation, props.currentPath)
 
     function directory(link?: string) {
         if (!link) return ""
@@ -50,6 +50,7 @@
     }
 
     function navigateTo(path?: string) {
+        if (!path) return
         activeSlug.value = path
     }
 </script>
