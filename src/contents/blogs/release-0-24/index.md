@@ -566,7 +566,7 @@ In this release, we introduced a [mandatory login screen](../../docs/10.administ
 
 This change is designed to prevent unauthorized access to your Kestra instance and ensure that only authenticated users can view and manage flows. The login screen requires a username and password.
 
-If you haven't set up authentication yet, you will be prompted to do so when you first access the Kestra UI after upgrading to this version. For more details, check out the [migration guide](../../docs/11.migration-guide/0.24.0/index.mdx).
+If you haven't set up authentication yet, you will be prompted to do so when you first access the Kestra UI after upgrading to this version. For more details, check out the [migration guide](../../docs/11.migration-guide/v0.24.0/index.mdx).
 
 
 ## Plugin Enhancements
