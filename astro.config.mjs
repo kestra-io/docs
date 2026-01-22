@@ -115,6 +115,12 @@ export default defineConfig({
     },
     env: {
         schema: {
+            PREVIEW: envField.boolean({
+                context: "server",
+                access: "secret",
+                optional: true,
+                default: false,
+            }),
             API_URL: envField.string({
                 context: "client",
                 access: "public",
