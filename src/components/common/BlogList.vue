@@ -5,7 +5,7 @@
             <template v-for="(post, index) of posts" :key="post.path">
                 <hr v-if="index > 0" />
                 <a :href="post.path" class="post-card">
-                    <img :src="post.image" class="card-img-left" :alt="post.title" />
+                    <img v-bind="post.image" class="card-img-left" :alt="post.title" />
                     <div class="card-body">
                         <div class="card-details">
                             <span class="card-category">{{ post.category }}</span>
@@ -24,7 +24,9 @@
 <script setup lang="ts">
     export interface BlogPost {
         path: string
-        image?: string
+        image?: {
+            src: string
+        }
         title: string
         date: string
         category?: string
