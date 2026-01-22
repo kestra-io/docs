@@ -107,7 +107,7 @@
 	watch(activeSlug, (v) => {
 		if (isActive.value && (props.item.hideSubMenus || !props.item.isPage)) {
 			nextTick(() => {
-				rootLink.value?.scrollIntoView({ block: "center"})
+				rootLink.value?.scrollIntoView({ block: "nearest" })
 			})
 		}
 	})
@@ -243,6 +243,7 @@
 			font-size: $font-size-sm;
 			padding: calc($spacer / 2);
 			display: flex;
+            scroll-margin: 80px;
 
 			&.active {
 				font-weight: 500;
