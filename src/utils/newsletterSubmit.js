@@ -12,7 +12,8 @@ export default function ({ newsletter, valid, message }, e) {
     e.stopPropagation()
 
     const form = newsletter.value
-    const route = useRoute()
+
+    if(typeof window === "undefined") return
 
     if (!form.checkValidity()) {
         valid.value = false
@@ -30,7 +31,7 @@ export default function ({ newsletter, valid, message }, e) {
                 },
             ],
             context: {
-                pageUri: route.path,
+                pageUri: window.location.pathname,
                 pageName: document.title,
             },
         }
