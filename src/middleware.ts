@@ -1,6 +1,5 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
-import { API_URL } from "astro:env/client"
 import contentSecurityPolicyConfig from "../content-security-policy.config"
 // import {middlewareISRCache} from "./utils/middlewareISRCache";
 import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
