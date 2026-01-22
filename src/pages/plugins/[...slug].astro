@@ -37,6 +37,7 @@ import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
 import OneHeader from "~/components/plugins/OneHeader.vue"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
+import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 const pathname = new URL(Astro.request.url).pathname
@@ -99,6 +100,7 @@ const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/rel
 
 const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
 const navigation = generateNavigationFromSubgroups(pluginsData)
+const aliasMapping = getAliasMapping(pluginsData)
 
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
@@ -112,6 +114,12 @@ const pluginType = (() => {
         pageNames?.[pathname] ?? parts[parts.length - 1]
     }`
 })()
+
+const mappedUrl = redirectAlias(aliasMapping, pathname, pageList, pluginType)
+
+if (mappedUrl && mappedUrl !== pathname) {
+    Astro.redirect(mappedUrl, 301)
+}
 
 const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
 const pluginsInformation = await $fetchApi(`/plugins/pluginsInformation`)
@@ -491,6 +499,11 @@ if (!pluginType && !subGroup) {
     ogImage = `/meta/plugins/group-${filterElement.subGroup}.svg`
 } else {
     ogImage = `/meta/plugins/${pluginType}.svg`
+}
+
+// if no content to show, redirect to /plugins
+if (pageWithToc && pluginsWithoutDeprecated.length === 0) {
+    Astro.redirect("/plugins")
 }
 ---
 
