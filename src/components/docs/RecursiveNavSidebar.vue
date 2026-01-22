@@ -55,25 +55,31 @@
 </template>
 <script lang="ts">
     import type { InjectionKey, ComputedRef } from "vue"
-import { activeSlug } from "~/utils/store"
+    function scrollIntoViewIfNotVisible(target?: HTMLElement | null) {
+        const bounds = target?.getBoundingClientRect();
+        if (bounds && target && (bounds.bottom > window.innerHeight || bounds.top < 0)) {
+            target.scrollIntoView({ block: "nearest" });
+        }
+    }
 	export const activeSlugInjectionKey = Symbol("activeSlug") as InjectionKey<ComputedRef<string>>
-	export const closeSidebarInjectionKey = Symbol("closeSidebar") as InjectionKey<() => void>
-	const normalizePath = (path: string) => `${path}${path.endsWith("/") ? "" : "/"}`
+        export const closeSidebarInjectionKey = Symbol("closeSidebar") as InjectionKey<() => void>
+        const normalizePath = (path: string) => `${path}${path.endsWith("/") ? "" : "/"}`
 
-    export interface NavigationItem {
-		isSection?: boolean
-		isPage?: boolean
-		path: string
-		title: string
-		sidebarTitle?: string
-		hideSubMenus?: boolean
-		hideSidebar?: boolean
-		emoji?: string
-		children?: NavigationItem[]
-	}
+        export interface NavigationItem {
+            isSection?: boolean
+            isPage?: boolean
+            path: string
+            title: string
+            sidebarTitle?: string
+            hideSubMenus?: boolean
+            hideSidebar?: boolean
+            emoji?: string
+            children?: NavigationItem[]
+        }
 </script>
 
 <script setup lang="ts">
+    import { activeSlug } from "~/utils/store"
 	import {
 		ref,
 		nextTick,
@@ -106,9 +112,9 @@ import { activeSlug } from "~/utils/store"
 
 	watch(activeSlug, (v) => {
 		if (isActive.value && (props.item.hideSubMenus || !props.item.isPage)) {
-			nextTick(() => {
-				rootLink.value?.scrollIntoView({ block: "nearest" })
-			})
+			setTimeout(() => {
+				scrollIntoViewIfNotVisible(rootLink.value)
+			}, 200)
 		}
 	})
 
