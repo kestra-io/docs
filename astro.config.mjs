@@ -25,7 +25,10 @@ export default defineConfig({
 	site: "https://kestra.io",
 	adapter: cloudflare({
 		// only use cloudflare images in production
-		imageService: process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare",
+		imageService:
+			process.env.NO_IMAGE_OPTIM === "true"
+				? "passthrough"
+				: "cloudflare",
 	}),
 	trailingSlash: "ignore",
 	integrations: [
@@ -151,6 +154,7 @@ export default defineConfig({
 			},
 		},
 		css: {
+			devSourcemap: true,
 			preprocessorOptions: {
 				scss: {
 					// silence invasive bootstrap warnings
@@ -163,12 +167,21 @@ export default defineConfig({
 				},
 			},
 		},
+		build: {
+			sourcemap: true,
+		},
 		optimizeDeps: {
 			include: ["vue3-count-to"],
 		},
 		ssr: {
 			noExternal: ["vue3-count-to"],
-			external: ["node:fs/promises", "node:fs", "node:url", "node:path", "node:crypto"],
+			external: [
+				"node:fs/promises",
+				"node:fs",
+				"node:url",
+				"node:path",
+				"node:crypto",
+			],
 		},
 	},
 })
