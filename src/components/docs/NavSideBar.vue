@@ -62,17 +62,16 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, provide, ref, type PropType } from "vue"
+	import { computed, onMounted, provide, ref, type PropType } from "vue"
 	import Magnify from "vue-material-design-icons/Magnify.vue"
 	import Keyboard from "vue-material-design-icons/Keyboard.vue"
 	import Menu from "vue-material-design-icons/Menu.vue"
 	import RecursiveNavSidebar, {
-		activeSlugInjectionKey,
 		closeSidebarInjectionKey,
 		type NavigationItem,
 	} from "~/components/docs/RecursiveNavSidebar.vue"
 	import KSAIImg from "./assets/ks-ai.svg"
-    import { useBrowserLocation } from "@vueuse/core"
+import { activeSlug } from "~/utils/store"
 
 	const props = defineProps({
 		type: {
@@ -87,22 +86,15 @@
 		},
 	})
 
-
+    onMounted(() => {
+        activeSlug.value = props.slug || ""
+    })
 
 	const disabledPages = [
 		"/docs/terraform/data-sources",
 		"/docs/terraform/guides",
 		"/docs/terraform/resources",
 	]
-
-    const location = useBrowserLocation()
-
-    const cleanPathName = computed(() => {
-        return props.slug ??location.value.pathname?.replace(/^\/(docs|blogs)/, "") ?? ""
-    })
-
-	// provide activeSlug to all children
-	provide(activeSlugInjectionKey, cleanPathName)
 
 	const menuToggleBtn = ref<HTMLButtonElement | null>(null)
 

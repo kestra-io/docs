@@ -1,6 +1,6 @@
 <template>
 	<div v-if="prev || next" class="docs-prev-next mt-5">
-		<a v-if="prev" :href="prev.path" class="prev">
+		<a v-if="prev" :href="prev.path" class="prev" @click="navigateTo(prev.path)">
 			<ArrowLeft />
 			<div class="wrapper">
 				<span v-if="directory(prev.path)" class="directory">
@@ -12,7 +12,7 @@
 
 		<span v-else />
 
-		<a v-if="next" :href="next.path" class="next">
+		<a v-if="next" :href="next.path" class="next" @click="navigateTo(next.path)">
 			<div class="wrapper">
 				<span v-if="directory(next.path)" class="directory">
 					{{ directory(next.path) }}
@@ -29,6 +29,7 @@
 	import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 	import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 	import { prevNext, type NavItem } from "~/utils/navigation"
+    import { activeSlug } from "~/utils/store";
 
     const props = defineProps<{
         navigation: NavItem[],
@@ -46,6 +47,10 @@
 
         const specialCases: Record<string, string> = { ui: "UI", "ai-tools": "AI Tools" }
         return specialCases[directory] || directory.split("-").map(upperFirst).join(" ")
+    }
+
+    function navigateTo(path?: string) {
+        activeSlug.value = path
     }
 </script>
 

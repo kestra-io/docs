@@ -55,6 +55,7 @@
 </template>
 <script lang="ts">
     import type { InjectionKey, ComputedRef } from "vue"
+import { activeSlug } from "~/utils/store"
 	export const activeSlugInjectionKey = Symbol("activeSlug") as InjectionKey<ComputedRef<string>>
 	export const closeSidebarInjectionKey = Symbol("closeSidebar") as InjectionKey<() => void>
 	const normalizePath = (path: string) => `${path}${path.endsWith("/") ? "" : "/"}`
@@ -96,10 +97,9 @@
 		type?: string
 	}>()
 
-	const activeSlug = inject(activeSlugInjectionKey, ref(""))
 	const closeSidebar = inject(closeSidebarInjectionKey, () => {})
 	const isActive = computed(() =>
-		normalizePath(activeSlug.value).startsWith(normalizePath(props.item.path)),
+		activeSlug.value ? normalizePath(activeSlug.value).startsWith(normalizePath(props.item.path)) : false,
 	)
 	const toggled = ref<boolean>(isActive.value || props.item.isSection === true)
 	const title = computed(() => props.item.sidebarTitle ?? props.item.title)
@@ -127,6 +127,7 @@
 	function handleNavClick(_event: Event, path: string) {
 		closeSidebar()
 		toggled.value = true
+        activeSlug.value = path
 		const { preserveScrollPosition } = useSidebarScroll()
 		preserveScrollPosition()
 	}
@@ -182,16 +183,12 @@
 		return item.isPage ?? true
 	})
 
-	const getClass = (item: any, depthLevel: number) => {
+	const classes = computed(() => {
 		return {
-			bold: depthLevel === 1,
-			section: item.isSection,
+			bold: props.depthLevel === 1,
+			section: props.item.isSection,
 			active: isActive.value,
 		}
-	}
-
-	const classes = computed(() => {
-		return getClass(props.item, props.depthLevel)
 	})
 </script>
 
