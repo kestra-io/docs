@@ -143,7 +143,7 @@
         {text: "Documentation", href: "/docs"},
         {text: "Plugins", href: "/plugins"},
         {text: "Blueprints", href: "/blueprints"},
-        {text: "Getting Started", href: "/docs/getting-started/quickstart#start-kestra"},
+        {text: "Getting Started", href: "/docs/quickstart#start-kestra"},
         {text: "Administrator Guide", href: "/docs/administrator-guide"},
         {text: "FAQ", href: "/faq"}
     ]

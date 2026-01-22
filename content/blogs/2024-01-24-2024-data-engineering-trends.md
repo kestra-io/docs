@@ -75,7 +75,7 @@ Real-time data processing has been rising for the past couple of years. AI progr
 
 ## More Data Teams Will Adopt GitOps
 
-As data, software, and platform engineering are converging, GitOps is becoming more popular in data engineering in 2024. Data teams are expected to ship faster and with fewer resources. The improved Git integrations (such as [Kestra’s Git sync](https://kestra.io/docs/developer-guide/git)) make it easier to track changes in data pipelines and their underlying cloud infrastructure, and to collaborate more effectively through pull requests and code reviews.
+As data, software, and platform engineering are converging, GitOps is becoming more popular in data engineering in 2024. Data teams are expected to ship faster and with fewer resources. The improved Git integrations (such as [Kestra’s Git sync](https://kestra.io/docs/architecture/server-components")) make it easier to track changes in data pipelines and their underlying cloud infrastructure, and to collaborate more effectively through pull requests and code reviews.
 
 ## What’s Next
 

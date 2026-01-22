@@ -61,7 +61,7 @@
                 if (data && !data[0].children.find((item) => (item?.title === "Videos Tutorials"))) {
                     data[0].children.splice(data[0].children.length - 3, 0, {
                         title: "Videos Tutorials",
-                        path: "/tutorial-videos",
+                        path: "/tutorial-videos/all",
                     });
                 }
 

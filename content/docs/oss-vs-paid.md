@@ -28,7 +28,7 @@ Enterprise Edition provides [audit logs](07.enterprise/02.governance/06.audit-lo
 
 [Multi-tenancy](07.enterprise/02.governance/tenants.md) allows you to create fully isolated environments, e.g. separate tenants for specific [teams or business units](14.best-practices/8.business-unit-separation.md). Each tenant can use separate secrets managers or dedicated internal storage backends (e.g., AWS S3 for Tenant A, GCS for Tenant B).
 
-[Worker isolation](07.enterprise/04.scalability/worker-isolation.md) ensures tasks from different tenants run on separate infrastructure, reducing the risk of resource contention or cross-tenant breaches. Encryption safeguards data at rest and in transit, meeting regulatory standards.
+[Worker isolation](/docs/enterprise/instance/maintenance-mode) ensures tasks from different tenants run on separate infrastructure, reducing the risk of resource contention or cross-tenant breaches. Encryption safeguards data at rest and in transit, meeting regulatory standards.
 
 ---
 

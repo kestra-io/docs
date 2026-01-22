@@ -8,7 +8,7 @@ export const tableHeadData = [
         period: "Free",
         button: {
             text: "Get Started",
-            href: "/docs/getting-started/quickstart#start-kestra",
+            href: "/docs/quickstart#start-kestra",
         },
     },
     {
@@ -114,7 +114,7 @@ export const getTableSortedData = (totalPlugins: string) => [
                 isEnterprise: true,
                 description: {
                     text: "The Scheduler is a server component responsible for processing all triggers",
-                    link: "/docs/architecture/scheduler"
+                    link: "/docs/architecture/server-components"
                 }
             },
             {
@@ -294,7 +294,7 @@ export const getTableSortedData = (totalPlugins: string) => [
                 enterpriseText: 'Unlimited',
                 description: {
                     text: "Manage users inside Kestra UI",
-                    link: "/docs/ui/administration/users"
+                    link: "/docs/enterprise/auth/rbac"
                 }
             },
             {
@@ -330,7 +330,7 @@ export const getTableSortedData = (totalPlugins: string) => [
                 isEnterprise: true,
                 description: {
                     text: "Record all activities made by all users on the resources created inside Kestra",
-                    link: "/docs/ui/administration/audit-logs"
+                    link: "/docs/enterprise/governance/audit-logs"
                 }
             },
             {
@@ -436,7 +436,7 @@ export const getTableSortedData = (totalPlugins: string) => [
                 isEnterprise: true,
                 description: {
                     text: "Manage Task Runs in one place",
-                    link: "/docs/ui/task-runs"
+                    link: "/docs/workflow-components/tasks/taskruns"
                 }
             },
             {
@@ -623,7 +623,7 @@ export const getTableSortedData = (totalPlugins: string) => [
                 isEnterprise: true,
                 description: {
                     text: "Graceful maintenance mode for system updates and maintenance",
-                    link: "/docs/enterprise/maintenance-mode"
+                    link: "/docs/enterprise/instance/maintenance-mode"
                 }
             },
             {

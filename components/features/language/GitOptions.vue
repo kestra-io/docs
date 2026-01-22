@@ -49,7 +49,7 @@
                         Whether you're developing directly in the Kestra UI or prefer coding in your favorite IDE, our
                         Git integration ensures your workflows are version-controlled, reviewable, and easy to deploy.
                     </p>
-                    <NuxtLink class="btn btn-animated btn-purple-animated " href="https://kestra.io/docs/developer-guide/git" data-aos="zoom-in">
+                    <NuxtLink class="btn btn-animated btn-purple-animated " href="https://kestra.io/docs/architecture/server-components" data-aos="zoom-in">
                         Learn more
                     </NuxtLink>
                 </div>
