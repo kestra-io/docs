@@ -54,7 +54,8 @@
 	</ul>
 </template>
 <script lang="ts">
-	export const activeSlugInjectionKey = Symbol("activeSlug") as InjectionKey<Ref<string>>
+    import type { InjectionKey, ComputedRef } from "vue"
+	export const activeSlugInjectionKey = Symbol("activeSlug") as InjectionKey<ComputedRef<string>>
 	export const closeSidebarInjectionKey = Symbol("closeSidebar") as InjectionKey<() => void>
 	const normalizePath = (path: string) => `${path}${path.endsWith("/") ? "" : "/"}`
 
@@ -77,8 +78,6 @@
 		nextTick,
 		onMounted,
 		inject,
-		type InjectionKey,
-		type Ref,
 		computed,
 		watch,
 		useTemplateRef,
@@ -88,8 +87,6 @@
 	import { useSidebarScroll } from "~/composables/useSidebarScroll"
 
 	const rootLink = useTemplateRef<HTMLAnchorElement | null>("root-link")
-
-
 
 	const props = defineProps<{
 		item: NavigationItem
@@ -108,11 +105,10 @@
 	const title = computed(() => props.item.sidebarTitle ?? props.item.title)
 
 	watch(activeSlug, (v) => {
-		if (props.item.isSection === true) return
-		toggled.value = isActive.value
+		toggled.value = isActive.value || (props.item.isSection ?? false)
 		if (isActive.value && (props.item.hideSubMenus || !props.item.isPage)) {
 			nextTick(() => {
-				rootLink.value?.scrollIntoView()
+				rootLink.value?.scrollIntoView({ block: "center"})
 			})
 		}
 	})
@@ -131,7 +127,6 @@
 
 	function handleNavClick(_event: Event, path: string) {
 		closeSidebar()
-		activeSlug.value = path
 		toggled.value = true
 		const { preserveScrollPosition } = useSidebarScroll()
 		preserveScrollPosition()

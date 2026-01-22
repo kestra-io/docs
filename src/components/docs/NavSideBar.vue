@@ -72,6 +72,7 @@
 		type NavigationItem,
 	} from "~/components/docs/RecursiveNavSidebar.vue"
 	import KSAIImg from "./assets/ks-ai.svg"
+    import { useBrowserLocation } from "@vueuse/core"
 
 	const props = defineProps({
 		type: {
@@ -86,15 +87,22 @@
 		},
 	})
 
+
+
 	const disabledPages = [
 		"/docs/terraform/data-sources",
 		"/docs/terraform/guides",
 		"/docs/terraform/resources",
 	]
 
+    const location = useBrowserLocation()
+
+    const cleanPathName = computed(() => {
+        return props.slug ??location.value.pathname?.replace(/^\/(docs|blogs)/, "") ?? ""
+    })
+
 	// provide activeSlug to all children
-	const activeSlug = ref<string>(props.slug ?? "")
-	provide(activeSlugInjectionKey, activeSlug)
+	provide(activeSlugInjectionKey, cleanPathName)
 
 	const menuToggleBtn = ref<HTMLButtonElement | null>(null)
 
