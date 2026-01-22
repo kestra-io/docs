@@ -24,45 +24,29 @@
 	</div>
 </template>
 
-<script>
-	import { defineComponent } from "vue"
+<script lang="ts" setup>
 	import { upperFirst } from "scule"
 	import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 	import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-	import { prevNext } from "~/utils/navigation"
+	import { prevNext, type NavItem } from "~/utils/navigation"
 
-	// const {navDirFromPath} = useContentHelpers()
-	const navDirFromPath = () => []
+    const props = defineProps<{
+        navigation: NavItem[],
+        currentPath?: string,
+    }>()
 
-	export default defineComponent({
-		components: { ArrowLeft, ArrowRight },
-		async setup(props) {
-			const { prev, next } = prevNext(props.navigation, props.currentPath)
-			return {
-				prev: prev?.path ? prev : null,
-				next: next?.path ? next : null,
-			}
-		},
-		props: {
-			navigation: { type: Object, required: true },
-			currentPath: { type: String, required: false },
-		},
-		methods: {
-			directory(link) {
-				if (!link) return ""
+    const { prev, next } = prevNext(props.navigation, props.currentPath ?? "")
 
-				const [nav] = navDirFromPath(link, this.navigation ?? [])
-				if (nav) return nav.path
+    function directory(link?: string) {
+        if (!link) return ""
 
-				const dirs = link.split("/")
-				const directory = dirs[Math.max(1, dirs.length - 2)]
-				if (!directory) return ""
+        const dirs = link.split("/")
+        const directory = dirs[Math.max(1, dirs.length - 2)]
+        if (!directory) return ""
 
-				const specialCases = { ui: "UI", "ai-tools": "AI Tools" }
-				return specialCases[directory] || directory.split("-").map(upperFirst).join(" ")
-			},
-		},
-	})
+        const specialCases: Record<string, string> = { ui: "UI", "ai-tools": "AI Tools" }
+        return specialCases[directory] || directory.split("-").map(upperFirst).join(" ")
+    }
 </script>
 
 <style lang="scss">
