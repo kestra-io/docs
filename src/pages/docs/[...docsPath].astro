@@ -6,7 +6,6 @@ import LayoutDocs from "../../components/layout-docs.astro"
 import NavToc from "~/components/docs/NavToc.vue"
 import PrevNext from "~/components/layout/PrevNext.vue"
 import HelpfulVote from "~/components/docs/HelpfulVote.vue"
-import Image from "astro/components/Image.astro"
 
 export async function getStaticPaths() {
     const docsPages = await getCollection("docs")
