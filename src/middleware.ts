@@ -108,6 +108,11 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 })
 
 const securityHeaders = defineMiddleware(async (context, next) => {
+    // disable for tracking
+    if (context.url.pathname.startsWith("/t/")) {
+        return next()
+    }
+
     const localhost: string[] = []
     if (import.meta.env.DEV) {
         localhost.push(context.url.protocol + "//" + context.url.host)

@@ -8,5 +8,7 @@ export const ALL: APIRoute = async ({ request }) => {
     const proxyUrl = new URL(requestUrl.pathname, proxyDomain)
 
     const response = await fetch(proxyUrl.href, request)
-    return new Response(response.body)
+    return new Response(response.body, {
+        headers: response.headers
+    })
 }
