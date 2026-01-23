@@ -81,8 +81,6 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/0.24.0/endpoint-changes/index.md#rbac-updates)
 :::
 
-:::
-
 ### Actions
 
 An Action is a specific operation that can be performed on a Permission. Supported Actions:

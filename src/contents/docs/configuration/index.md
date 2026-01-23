@@ -234,7 +234,6 @@ datasources:
 :::alert{type="warning"}
 MySQL `8.0.31` is not supported. Choose another version or ask for help on [Slack](/slack).
 :::
-:::
 
 :::collapse{title="H2"}
 Minimal configuration:
