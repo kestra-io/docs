@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets"
+import TeamImages from "~/utils/teamsImages"
 
 const values = [
     {
@@ -66,7 +67,7 @@ const values = [
             </p>
             <footer>
                 <Image
-                    src="~/assets/teams/acxiom.svg"
+                    src={TeamImages["acxiom.svg"]}
                     alt="Acxiom"
                     width={105}
                     height={21}
@@ -77,7 +78,7 @@ const values = [
 
     <div class="mission-visual">
         <Image
-            src="~/assets/teams/executions.png"
+            src={TeamImages["executions.png"]}
             alt="Kestra Dashboard"
             class="dashboard-image"
             data-usal="fade-l delay-400"

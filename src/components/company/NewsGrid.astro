@@ -1,9 +1,6 @@
 ---
 import { Image } from "astro:assets"
-const TeamsImages = import.meta.glob<any>("~/assets/teams/*.svg", {
-    eager: true,
-    import: "default",
-})
+import TeamsImages from "~/utils/teamsImages"
 
 const newsItems = [
     {
@@ -12,7 +9,7 @@ const newsItems = [
         source: "TechCrunch",
         url: "https://techcrunch.com/2024/09/23/kestra-raises-another-8-million-for-its-open-source-orchestration-platform/",
         external: true,
-        logo: TeamsImages["~/assets/teams/techcrunch.svg"],
+        logo: TeamsImages["techcrunch.svg"],
         width: 56,
         height: 51,
     },
@@ -22,7 +19,7 @@ const newsItems = [
         source: "Medium",
         url: "https://medium.com/@edarras/how-kestra-raised-8m-our-seed-deck-now-public-b3493f5a9fbb",
         external: true,
-        logo: TeamsImages["~/assets/teams/medium.svg"],
+        logo: TeamsImages["medium.svg"],
         width: 52,
         height: 52,
     },
@@ -32,7 +29,7 @@ const newsItems = [
         source: "TechCrunch",
         url: "https://techcrunch.com/2023/10/04/kestra-is-an-open-source-data-orchestration-platform-for-complex-workflows/",
         external: true,
-        logo: TeamsImages["~/assets/teams/techcrunch.svg"],
+        logo: TeamsImages["techcrunch.svg"],
         width: 56,
         height: 51,
     },
@@ -42,7 +39,7 @@ const newsItems = [
         source: "InfoQ",
         url: "https://www.infoq.com/news/2022/03/kestra-orchestration-platform/",
         external: true,
-        logo: TeamsImages["~/assets/teams/infoq.svg"],
+        logo: TeamsImages["infoq.svg"],
         width: 65,
         height: 19,
     },
@@ -52,7 +49,7 @@ const newsItems = [
         source: "Medium",
         url: "https://medium.com/@edarras/kestra-secures-8-million-to-simplify-and-unify-orchestration-for-all-engineers-28e7d61e3511",
         external: true,
-        logo: TeamsImages["~/assets/teams/medium.svg"],
+        logo: TeamsImages["medium.svg"],
         width: 52,
         height: 52,
     },

@@ -1,15 +1,12 @@
 ---
 import { Image } from "astro:assets"
-const TeamsImages = import.meta.glob<any>("~/assets/teams/*.png", {
-    eager: true,
-    import: "default",
-})
+import TeamsImages from "~/utils/teamsImages"
 
 const lifeCards = [
     {
         id: 1,
         type: "image-card",
-        image: TeamsImages["~/assets/teams/team-group.png"],
+        image: TeamsImages["team-group.png"],
         alt: "Team Meeting",
     },
     {
@@ -23,7 +20,7 @@ const lifeCards = [
     {
         id: 3,
         type: "image-card",
-        image: TeamsImages["~/assets/teams/team-img-1.png"],
+        image: TeamsImages["team-img-1.png"],
         alt: "Remote Work",
     },
     {
@@ -37,7 +34,7 @@ const lifeCards = [
     {
         id: 5,
         type: "image-card",
-        image: TeamsImages["~/assets/teams/team-img-2.png"],
+        image: TeamsImages["team-img-2.png"],
         alt: "Team Collaboration",
     },
     {
@@ -116,7 +113,7 @@ const lifeCards = [
         </div>
         <div class="media d-none d-md-flex">
             <Image
-                src="~/assets/teams/assets-download.svg"
+                src={TeamsImages["assets-download.svg"]}
                 alt="Brand Assets"
                 class="img"
                 width={375}

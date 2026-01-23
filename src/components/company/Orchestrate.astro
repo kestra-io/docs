@@ -2,35 +2,31 @@
 import { Image } from "astro:assets"
 import FilaLogo from "~/assets/companies/fila.svg"
 import TeamImage from "~/assets/teams/team.png"
-
-const TeamsImages = import.meta.glob<any>("~/assets/teams/*.{svg,png}", {
-    eager: true,
-    import: "default",
-})
+import TeamsImages from "~/utils/teamsImages"
 
 const companyLogos = [
     {
         alt: "Apple",
-        src: TeamsImages["~/assets/teams/apple.svg"],
+        src: TeamsImages["apple.svg"],
         width: 38,
         height: 45,
     },
     { alt: "Fila", src: FilaLogo, width: 60, height: 22 },
     {
         alt: "Axiom",
-        src: TeamsImages["~/assets/teams/acxiom.svg"],
+        src: TeamsImages["acxiom.svg"],
         width: 102,
         height: 23,
     },
     {
         alt: "Battelle",
-        src: TeamsImages["~/assets/teams/Battelle.svg"],
+        src: TeamsImages["Battelle.svg"],
         width: 101,
         height: 17,
     },
     {
         alt: "L'Oreal",
-        src: TeamsImages["~/assets/teams/loreal.svg"],
+        src: TeamsImages["loreal.svg"],
         width: 115,
         height: 20,
     },
@@ -66,21 +62,21 @@ const companyLogos = [
                 </p>
             </div>
             <Image
-                src={TeamsImages["~/assets/teams/line.svg"]}
+                src={TeamsImages["line.svg"]}
                 alt="Connecting Line"
                 class="line"
                 width={224}
                 height={268}
             />
             <Image
-                src={TeamsImages["~/assets/teams/flare.svg"]}
+                src={TeamsImages["flare.svg"]}
                 alt="Flare Effect"
                 class="flare"
                 width={50}
                 height={50}
             />
             <Image
-                src={TeamsImages["~/assets/teams/flare.svg"]}
+                src={TeamsImages["flare.svg"]}
                 alt="Flare Effect 2"
                 class="flare-2"
                 width={50}
@@ -92,14 +88,14 @@ const companyLogos = [
     <section class="trust">
         <div class="divider">
             <Image
-                src={TeamsImages["~/assets/teams/Logo_EE.png"]}
+                src={TeamsImages["Logo_EE.png"]}
                 alt="Kestra Logo"
                 class="logo"
                 width={119}
                 height={109}
             />
             <Image
-                src={TeamsImages["~/assets/teams/black-ellipse.svg"]}
+                src={TeamsImages["black-ellipse.svg"]}
                 alt="Section Divider"
                 width={228}
                 height={135}
