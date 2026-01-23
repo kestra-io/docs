@@ -65,12 +65,12 @@ public class GettingStarted {
 }
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes**
 - Set `.url(...)` to your Kestra API base URL (for example, `http://localhost:8080`).
 - Configure either **basic** or **bearer** authentication to match your environment.
 - Construct the client **once** (singleton/DI) and reuse it for all API calls.
-::
+:::
 
 ---
 
@@ -111,12 +111,12 @@ public class FlowsExamples {
 }
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Important**
 - `flowBody` must be **valid YAML** for a Kestra flow. Invalid YAML or missing required fields will return a `4xx`.
 - Set the correct `tenant` for multi-tenant environments.
 - On success, the API returns the created flow (including metadata and source); you may log/inspect it as needed.
-::
+:::
 
 ---
 
@@ -160,12 +160,12 @@ public class FlowsUpdates {
 }
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Tips**
 - Send the **full** YAML for updates (id/namespace must match the target).
 - Keep your flow YAML in source control for diffing/auditing alongside code.
 - If you frequently change only a few fields, consider templating your YAML in code.
-::
+:::
 
 ---
 
@@ -207,13 +207,13 @@ public class ExecutionsExamples {
 }
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes**
 - `wait=true` blocks until the execution finishes (useful for [synchronous flows/test runners](../../../15.how-to-guides/synchronous-executions-api/index.md#synchronous-executions-api)).
 - Use [`labels`](../../../05.workflow-components/08.labels/index.md) (e.g., `team:platform`) for search, routing, or reporting.
 - `scheduleDate` allows delayed start.
 - `breakpoints` pause at specific task IDs to debug step-by-step.
-::
+:::
 
 ---
 
@@ -250,13 +250,13 @@ public class ExecutionStreaming {
 }
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Tips**
 - Use `followExecution` in interactive tools or long-running services to surface progress in real time.
 - The first event is an empty keepalive payload — skip it before processing subsequent updates.
 - If you only need the final result, poll the execution by ID instead of streaming.
 - Consider backoff/retry logic when streaming over unstable networks.
-::
+:::
 
 ---
 
@@ -292,10 +292,10 @@ public class MyFlows {
 }
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Best practices**
 - Prefer **one** `KestraClient` per application (share via DI or a static holder).
 - Externalize **URL** and **auth** via environment variables or your config system.
 - Keep flow YAML as code (templates/strings) under version control for traceability.
 - Use **labels** and consistent naming for easier search, dashboards, and governance.
-::
+:::
