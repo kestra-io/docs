@@ -20,7 +20,12 @@ interface Props {
 }
 
 const props = Astro.props
-const currentOrigin = Astro.url.origin ?? "https://kestra.io"
+
+const currentUrl = Astro.url
+currentUrl.pathname = currentUrl.pathname.endsWith("/") ? currentUrl.pathname.slice(0, -1) : currentUrl.pathname;
+
+
+const currentOrigin = currentUrl.origin ?? "https://kestra.io"
 const slug = Astro.routePattern
 
 const title = props.title
@@ -33,7 +38,7 @@ const image = `${props.image && props.image.startsWith("http") ? "" : currentOri
 const slackMembers = await fetchSlackMembers()
 
 
-const query = new URLSearchParams(Astro.url.searchParams.entries()
+const query = new URLSearchParams(currentUrl.searchParams.entries()
     .filter(([key, _]) => ["category", "sort", "page"].includes(key))
     .reduce((acc, [key, value]) => {
         acc[key] = value
@@ -41,8 +46,7 @@ const query = new URLSearchParams(Astro.url.searchParams.entries()
     }, {} as Record<string, string>))
 
 const canonicalUrl = new URL(
-    (Astro.url.pathname.endsWith("/") ? Astro.url.pathname.substring(0, Astro.url.pathname.length - 1) : Astro.url.pathname) +
-        (query.size > 0 ? "?" + query.toString() : ""),
+    currentUrl + (query.size > 0 ? "?" + query.toString() : ""),
     Astro.site
 )
 
@@ -149,7 +153,6 @@ const canonicalUrl = new URL(
         <script src="../scripts/analytics.js"></script>
         <script src="../scripts/bootstrap.js"></script>
         <script src="../scripts/cookieconsent.ts"></script>
-        <script src="../scripts/usal.js"></script>
         <script src="../scripts/zoom.js"></script>
     </head>
     <body>
