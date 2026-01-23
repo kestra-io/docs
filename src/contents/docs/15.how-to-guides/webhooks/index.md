@@ -12,6 +12,8 @@ Execute flows using the Webhooks Trigger.
 
 Webhooks are HTTP requests that are triggered by an event. These are useful for being able to tell another application to do something, such as starting the execution of a Flow inside of Kestra.
 
+If your provider can send an idempotency key (e.g., `Idempotency-Key` header), set it as `system.correlationId` and add a duplicate guard as shown in [Idempotency with correlation IDs](../idempotency/index.md) to prevent double-processing.
+
 ## Using Webhooks in Kestra
 
 You can use webhooks to trigger an execution of your flow in Kestra. To do this, we can make a [trigger](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) with the type `io.kestra.plugin.core.trigger.Webhook`.
