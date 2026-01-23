@@ -40,7 +40,12 @@ const query = new URLSearchParams(Astro.url.searchParams.entries()
         return acc
     }, {} as Record<string, string>))
 
-const canonicalUrl = new URL(Astro.url.pathname + (query.size > 0 ? "?" + query.toString() : ""), Astro.site)
+const canonicalUrl = new URL(
+    (Astro.url.pathname.endsWith("/") ? Astro.url.pathname.substring(0, Astro.url.pathname.length - 1) : Astro.url.pathname) +
+        (query.size > 0 ? "?" + query.toString() : ""),
+    Astro.site
+)
+
 ---
 
 <html lang="en" class="dark">
@@ -144,6 +149,7 @@ const canonicalUrl = new URL(Astro.url.pathname + (query.size > 0 ? "?" + query.
         <script src="../scripts/analytics.js"></script>
         <script src="../scripts/bootstrap.js"></script>
         <script src="../scripts/cookieconsent.ts"></script>
+        <script src="../scripts/usal.js"></script>
         <script src="../scripts/zoom.js"></script>
     </head>
     <body>
