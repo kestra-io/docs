@@ -248,7 +248,7 @@ services:
         condition: service_started
 ```
 
-::
+:::
 
 ## Google App Passwords
 
