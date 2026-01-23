@@ -62,7 +62,7 @@ Go to the UI on `http://localhost:8080`, you are up and running. This one is sui
 
 Please [go here](../../docs/02.installation/12.standalone-server/index.md) for the full getting started for local server.
 
-For this implementation, just note that you will need to have a docker daemon running to be able to use [Bash](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) or [Python](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.python) with `runner: DOCKER`. A special warning for Windows users, since Kestra was thought to be deployed on a Linux server, but our primer test seems to be nice and functional.
+For this implementation, just note that you will need to have a docker daemon running to be able to use [Bash](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) or [Python](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) with `runner: DOCKER`. A special warning for Windows users, since Kestra was thought to be deployed on a Linux server, but our primer test seems to be nice and functional.
 
 
 ## Conclusion

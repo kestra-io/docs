@@ -327,12 +327,8 @@ tasks:
     format: "{{ task.id }} > {{ outputs.second['value 1'].value }}"
 ```
 
-When there are multiple levels of [EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) tasks, you can use the `parents` variable to access the `taskrun.value` of the parent of the current EachSequential. For example, for two levels of EachSequential you can use `outputs.sibling[parents[0].taskrun.value][taskrun.value].value`.
-
-The latter can become very complex when parents exist (multiple imbricated EachSequential). For this, you can use the `currentEachOutput()` function. No matter the number of parents, the following example will retrieve the correct output attribute: `currentEachOutput(outputs.sibling).value` thanks to this function.
-
 :::alert{type="warning"}
-Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) or [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel) as they run tasks in parallel.
+Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) as it runs tasks in parallel.
 :::
 
 ## Outputs preview
