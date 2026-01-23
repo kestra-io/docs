@@ -12,9 +12,9 @@
             >
                 <NuxtImg
                     loading="lazy"
-                    width="48"
+                    v-bind="Avatars[`~/assets/teams/${author.image}-sm.png`]"
                     class="rounded-circle"
-                    :src="'/landing/company/teams/' + author.image + '-sm.png'"
+                    width="48"
                     :alt="author.name"
                 />
                 <div>
@@ -30,6 +30,10 @@
     import dayjs from "dayjs"
     import customParseFormat from "dayjs/plugin/customParseFormat"
     import { useBlogAuthors } from "~/composables/useBlogAuthors"
+    const Avatars = import.meta.glob("~/assets/teams/*-sm.png", {
+        eager: true,
+        import: "default",
+    })
 
     export default {
         name: "BlogDetails",

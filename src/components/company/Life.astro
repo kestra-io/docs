@@ -1,11 +1,15 @@
 ---
 import { Image } from "astro:assets"
+const TeamsImages = import.meta.glob<any>("~/assets/teams/*.png", {
+    eager: true,
+    import: "default",
+})
 
 const lifeCards = [
     {
         id: 1,
         type: "image-card",
-        image: "/landing/company/teams/team-group.png",
+        image: TeamsImages["~/assets/teams/team-group.png"],
         alt: "Team Meeting",
     },
     {
@@ -19,7 +23,7 @@ const lifeCards = [
     {
         id: 3,
         type: "image-card",
-        image: "/landing/company/teams/team-img-1.png",
+        image: TeamsImages["~/assets/teams/team-img-1.png"],
         alt: "Remote Work",
     },
     {
@@ -33,7 +37,7 @@ const lifeCards = [
     {
         id: 5,
         type: "image-card",
-        image: "/landing/company/teams/team-img-2.png",
+        image: TeamsImages["~/assets/teams/team-img-2.png"],
         alt: "Team Collaboration",
     },
     {
@@ -64,9 +68,9 @@ const lifeCards = [
                     class={`card ${card.type} ${card.variant || ""}`}
                     data-usal={`zoomin delay-${index * 100} ease-in-out`}
                 >
-                    {card.type === "image-card" ? (
+                    {card.type === "image-card" && card.image ? (
                         <Image
-                            src={card.image!}
+                            src={card.image}
                             alt={card.alt!}
                             class="img"
                             width={358}
@@ -112,7 +116,7 @@ const lifeCards = [
         </div>
         <div class="media d-none d-md-flex">
             <Image
-                src="/landing/company/teams/assets-download.svg"
+                src="~/assets/teams/assets-download.svg"
                 alt="Brand Assets"
                 class="img"
                 width={375}
@@ -128,8 +132,7 @@ const lifeCards = [
     .container {
         position: relative;
         min-height: 1473px;
-        background: url("/landing/company/teams/gridbg.svg") no-repeat top
-            center;
+        background: url("~/assets/teams/gridbg.svg") no-repeat top center;
         background-size: auto;
         max-width: 100%;
         padding: $rem-5 $rem-1;
@@ -313,8 +316,8 @@ const lifeCards = [
                 right: 0;
                 bottom: 0;
                 left: 40%;
-                background: url("/landing/company/teams/gradients.svg")
-                    no-repeat right center / cover;
+                background: url("~/assets/teams/gradients.svg") no-repeat right
+                    center / cover;
                 pointer-events: none;
             }
 

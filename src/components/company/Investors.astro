@@ -1,20 +1,27 @@
 ---
 import { Image } from "astro:assets"
+const TeamsImages = import.meta.glob<any>(
+    "~/assets/teams/*.{png,jpg,jpeg,svg}",
+    {
+        eager: true,
+        import: "default",
+    },
+)
 
 const investorsLogos = [
     {
         name: "Alven",
-        src: "/landing/company/teams/alven-sm.svg",
+        src: TeamsImages["~/assets/teams/alven-sm.svg"],
         link: "https://www.alven.co",
     },
     {
         name: "Isai",
-        src: "/landing/company/teams/isai-sm.svg",
+        src: TeamsImages["~/assets/teams/isai-sm.svg"],
         link: "https://isai.vc",
     },
     {
         name: "Axeleo Capital",
-        src: "/landing/company/teams/axeleo-sm.svg",
+        src: TeamsImages["~/assets/teams/axeleo-sm.svg"],
         link: "https://www.axc.vc/",
     },
 ]
@@ -23,47 +30,47 @@ const investorsProfiles = [
     {
         name: "Nicolas Dessaigne",
         title: "Founder at Algolia & partner Y Combinator",
-        image: "/landing/company/teams/nico-algolia.svg",
+        image: TeamsImages["~/assets/teams/nico-algolia.svg"],
     },
     {
         name: "Olivier Pomel",
         title: "Founder & CEO at Datadog",
-        image: "/landing/company/teams/olivier-datadog.svg",
+        image: TeamsImages["~/assets/teams/olivier-datadog.svg"],
     },
     {
         name: "Tristan Handy",
         title: "Founder & CEO at dbt Labs",
-        image: "/landing/company/teams/tristian-dbt.svg",
+        image: TeamsImages["~/assets/teams/tristian-dbt.svg"],
     },
     {
         name: "Michel Tricot",
         title: "Founder & CEO at Airbyte",
-        image: "/landing/company/teams/michel-airbyte.svg",
+        image: TeamsImages["~/assets/teams/michel-airbyte.svg"],
     },
     {
         name: "Frédéric Plais",
         title: "Founder & CEO at Platform.sh",
-        image: "/landing/company/teams/fred-invest.svg",
+        image: TeamsImages["~/assets/teams/fred-invest.svg"],
     },
     {
         name: "Clément Delangue",
         title: "Founder & CEO at Hugging Face",
-        image: "/landing/company/teams/clement-hugface.svg",
+        image: TeamsImages["~/assets/teams/clement-hugface.svg"],
     },
     {
         name: "Bertrand Diard",
         title: "Co-Founder & former CEO at Talend",
-        image: "/landing/company/teams/bert-syroco.svg",
+        image: TeamsImages["~/assets/teams/bert-syroco.svg"],
     },
     {
         name: "Pierre Burgy",
         title: "Founder & CEO at Strapi",
-        image: "/landing/company/teams/pierre-strapi.svg",
+        image: TeamsImages["~/assets/teams/pierre-strapi.svg"],
     },
     {
         name: "Stijn Christiaens",
         title: "Co-founder & Chief Data Citizen at Collibra",
-        image: "/landing/company/teams/schristiaens.png",
+        image: TeamsImages["~/assets/teams/schristiaens.png"],
     },
 ]
 ---
