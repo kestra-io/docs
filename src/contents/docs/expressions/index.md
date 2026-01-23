@@ -1528,6 +1528,7 @@ tasks:
         type: io.kestra.plugin.core.output.OutputValues
         values:
           data: "{{ taskrun.value }}"
+
       - id: log_current
         type: io.kestra.plugin.core.log.Log
         message: "{{ currentEachOutput(outputs.make_data).values.data }}"
