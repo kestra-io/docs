@@ -4,6 +4,7 @@ import { getImage, Image } from "astro:assets"
 import LayoutBlogs from "~/components/layout-blogs.astro"
 import BlogDetails from "~/components/blogs/BlogDetails.vue"
 import NavToc from "~/components/docs/NavToc.vue"
+import { default as Avatars } from "~/utils/teamsImages"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
@@ -90,6 +91,7 @@ const jsonLinkedData = {
                             <BlogDetails
                                 client:visible
                                 blog={post}
+                                authorsAvatars={Avatars}
                                 class="mt-3"
                             />
                             <div

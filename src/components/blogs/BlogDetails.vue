@@ -12,9 +12,10 @@
             >
                 <NuxtImg
                     loading="lazy"
-                    v-bind="Avatars[`${author.image}-sm.png`]"
+                    v-bind="authorsAvatars[`${author.image}-sm.png`]"
                     class="rounded-circle"
                     width="48"
+                    height="48"
                     :alt="author.name"
                 />
                 <div>
@@ -26,31 +27,27 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+    import type { CollectionEntry } from "astro:content";
+    import { computed } from "vue";
     import dayjs from "dayjs"
     import customParseFormat from "dayjs/plugin/customParseFormat"
     import { useBlogAuthors } from "~/composables/useBlogAuthors"
-    import { default as Avatars } from "~/utils/teamsImages"
 
-    export default {
-        name: "BlogDetails",
-        props: {
-            blog: {
-                type: Object,
-                required: true,
-            },
-        },
-        computed: {
-            date() {
-                dayjs.extend(customParseFormat)
-                return dayjs(this.blog.data.date).format("MMMM D YYYY")
-            },
-            authorsList() {
-                const { getAuthors } = useBlogAuthors(this.blog)
-                return getAuthors()
-            },
-        },
-    }
+    const props = defineProps<{
+        blog: CollectionEntry<"blogs">
+        authorsAvatars: Record<string, any>
+    }>()
+
+    const date = computed(() => {
+        dayjs.extend(customParseFormat)
+        return dayjs(props.blog.data.date).format("MMMM D YYYY")
+    })
+
+    const authorsList = computed(() => {
+        const { getAuthors } = useBlogAuthors(props.blog)
+        return getAuthors()
+    })
 </script>
 
 <style lang="scss" scoped>
