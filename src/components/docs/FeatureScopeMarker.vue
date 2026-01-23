@@ -12,7 +12,7 @@
             >
                 {{ editionInfo(edition).label }}
             </component>
-            <span v-if="hasVersion" class="badge d-flex align-items-center bg-body-tertiary">{{ page.version }}</span>
+            <span v-if="hasVersion" class="badge d-flex align-items-center bg-body-tertiary">{{ page?.version }}</span>
         </p>
     </div>
     <div class="mb-3" v-if="page?.deprecated">
@@ -30,50 +30,63 @@
     </div>
 </template>
 
-<script>
-    import Section from '../layout/Section.vue';
+<script lang="ts" setup>
+    import { computed } from "vue";
 
-    export default {
-        components: {Section},
-        data() {
-            return {
-                editionLabelAndColorByPrefix: {
-                    OSS: {label: "Open Source Edition", color: "primary", link: "https://kestra.io/features"},
-                    EE: {label: "Enterprise Edition", color: "secondary", link: "https://kestra.io/enterprise"},
-                    Cloud: {label: "Cloud", color: "dark-3", link: "https://kestra.io/cloud"},
-                    CLOUD_TEAM: {label: "Cloud Team plan", color: "success"},
-                    CLOUD_PRO: {label: "Cloud Pro plan", color: "info"},
-                }
-            }
+    const props = defineProps<{
+        page?: {
+            editions?: string[];
+            version?: string;
+            deprecated?: {
+                since?: string;
+                migrationGuide?: string;
+            };
+            release?: string;
+        };
+    }>();
+
+    const editionLabelAndColorByPrefix: Record<string, { label: string; color: string; link?: string }> = {
+        OSS: {
+            label: "Open Source Edition",
+            color: "primary",
+            link: "https://kestra.io/features"
         },
-        props: {
-            page: {
-              type: Object,
-              default: undefined
-            },
+        EE: {
+            label: "Enterprise Edition",
+            color: "secondary",
+            link: "https://kestra.io/enterprise"
         },
-        computed: {
-            hasEdition() {
-                return Array.isArray(this.page?.editions) && this.page.editions.length > 0;
-            },
-            hasVersion() {
-                const v = this.page?.version;
-                return typeof v === 'string' ? v.trim().length > 0 : !!v;
-            },
-            filteredEditions() {
-                return Array.isArray(this.page?.editions)
-                    ? this.page.editions.filter(Boolean)
-                    : [];
-            }
+        Cloud: {
+            label: "Cloud",
+            color: "dark-3",
+            link: "https://kestra.io/cloud"
         },
-        methods: {
-            editionInfo(edition) {
-                return this.editionLabelAndColorByPrefix?.[edition] ?? {
-                    label: edition,
-                    color: "dark-3",
-                    link: undefined
-                }
-            }
-        }
-    }
+        CLOUD_TEAM: {
+            label: "Cloud Team plan",
+            color: "success"
+        },
+        CLOUD_PRO: {
+            label: "Cloud Pro plan",
+            color: "info"
+        },
+    };
+
+    const hasVersion = computed(() => {
+        const v = props.page?.version;
+        return typeof v === "string" ? v.trim().length > 0 : !!v;
+    });
+
+    const filteredEditions = computed(() => {
+        return Array.isArray(props.page?.editions)
+            ? props.page.editions.filter(Boolean)
+            : [];
+    });
+
+    const editionInfo = (edition: string) => {
+        return editionLabelAndColorByPrefix?.[edition] ?? {
+            label: edition,
+            color: "dark-3",
+            link: undefined
+        };
+    };
 </script>
