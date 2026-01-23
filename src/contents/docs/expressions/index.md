@@ -1524,17 +1524,17 @@ tasks:
     type: io.kestra.plugin.core.flow.ForEach
     values: ["value 1", "value 2", "value 3"]
     tasks:
-      - id: data
+      - id: make_data
         type: io.kestra.plugin.core.output.OutputValues
         values:
           data: "{{ taskrun.value }}"
       - id: log_current
         type: io.kestra.plugin.core.log.Log
-        message: "{{ currentEachOutput(outputs.data).values.data }}"
+        message: "{{ currentEachOutput(outputs.make_data).values.data }}"
 
       - id: log_taskrun
         type: io.kestra.core.tasks.log.Log
-        message: "{{ outputs.data[taskrun.value].values.data }}"
+        message: "{{ outputs.make_data[taskrun.value].values.data }}"
 ```
 
 This eliminates the need for manual handling of `taskrun.value` or `parents`.
