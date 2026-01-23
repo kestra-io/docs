@@ -111,10 +111,15 @@ const pluginType = (() => {
     }`
 })()
 
-const mappedUrl = redirectAlias(aliasMapping, pathname, pageList, pluginType)
+// try to redirect if alias found, if not redirect to /plugins
+try {
+    const mappedUrl = redirectAlias(aliasMapping, pathname, pageList, pluginType)
 
-if (mappedUrl && mappedUrl !== pathname) {
-    Astro.redirect(mappedUrl, 301)
+    if (mappedUrl && mappedUrl !== pathname) {
+        return Astro.redirect(mappedUrl, 301)
+    }
+} catch (e) {
+    return Astro.redirect("/plugins", 301);
 }
 
 const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)

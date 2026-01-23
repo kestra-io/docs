@@ -361,7 +361,7 @@ After the migration completes, revert to the standard startup command to run the
 For **Kubernetes** deployments, create a one-time pod to run the same migration commands before restarting your regular Kestra server pods.
 
 :::alert{type="info"}
-Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](../../docs/11.migration-guide/1.1.0/index.mdx) for complete upgrade instructions.
+Running the migration after the upgrade is safe and will restore the missing UI data immediately. Check the [migration guide](../../docs/11.migration-guide/v1.1.0/index.mdx) for complete upgrade instructions.
 :::
 
 ## Next Steps

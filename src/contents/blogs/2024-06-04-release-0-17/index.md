@@ -333,12 +333,12 @@ We've refactored several core abstractions to ensure consistent and intuitive na
 
 All of these are **non-breaking changes** as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
 
-![renamed-core-plugins](../../docs/11.migration-guide/0.17.0/renamed-plugins/renamed-core-plugins.png)
+![renamed-core-plugins](../../docs/11.migration-guide/v0.17.0/renamed-plugins/renamed-core-plugins.png)
 
 It's worth taking a couple of minutes to rename those in your flows to future-proof your code.
 
 :::alert{type="info"}
-Check the [Renamed Plugins](../../docs/11.migration-guide/0.17.0/renamed-plugins/index.md) Migration Guide for a full list of renamed tasks, triggers and conditions.
+Check the [Renamed Plugins](../../docs/11.migration-guide/v0.17.0/renamed-plugins/index.md) Migration Guide for a full list of renamed tasks, triggers and conditions.
 :::
 
 ### Improved serialization of JSON objects

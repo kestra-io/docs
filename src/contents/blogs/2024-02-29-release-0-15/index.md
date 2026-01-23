@@ -79,7 +79,7 @@ Note that as a result of this change, the `scheduleConditions` property is marke
 
 This change is implemented in a **non-breaking** way, so you don't need to immediately change your existing flows in order to successfully migrate to 0.15.0. However, the `scheduleConditions` property will be removed in the future.
 
-For more details and examples, check out the [Schedule Conditions](../../docs/11.migration-guide/0.15.0/schedule-conditions/index.md) migration guide.
+For more details and examples, check out the [Schedule Conditions](../../docs/11.migration-guide/v0.15.0/schedule-conditions/index.md) migration guide.
 
 ---
 
@@ -229,7 +229,7 @@ tasks:
 🚨 Keep in mind that you need to **set the `wait` property to `true` in the `Subflow` task** to enable passing data between flows because parent flow needs to wait for the subflow to finish before it can use its outputs.
 
 :::alert{type="warning"}
-As a result of the new flow `outputs` feature, the `outputs` property of a `Subflow` task is deprecated. To pass data between flows, use flow `outputs` as shown in the example above. If you have many subflows passing data between each other and you need more time for the migration, you can add a configuration flag to keep the old behavior. Check the [migration documentation](../../docs/11.migration-guide/0.15.0/subflow-outputs/index.md) for more details.
+As a result of the new flow `outputs` feature, the `outputs` property of a `Subflow` task is deprecated. To pass data between flows, use flow `outputs` as shown in the example above. If you have many subflows passing data between each other and you need more time for the migration, you can add a configuration flag to keep the old behavior. Check the [migration documentation](../../docs/11.migration-guide/v0.15.0/subflow-outputs/index.md) for more details.
 :::
 
 ### Subflow Termination from the Parent Flow
@@ -303,7 +303,7 @@ The new **Service Accounts UI page** allows you to create and manage [service ac
 
 ### New `id` Property for Inputs
 
-The `inputs` property now uses `id` instead of `name` for consistency with the rest of the Kestra flow configuration. This change is implemented in a non-breaking way, so you don't need to immediately change your existing flows in order to successfully [migrate to 0.15.0](../../docs/11.migration-guide/0.15.0/inputs-name/index.md). The `name` property will be removed in the future.
+The `inputs` property now uses `id` instead of `name` for consistency with the rest of the Kestra flow configuration. This change is implemented in a non-breaking way, so you don't need to immediately change your existing flows in order to successfully [migrate to 0.15.0](../../docs/11.migration-guide/v0.15.0/inputs-name/index.md). The `name` property will be removed in the future.
 
 ### New `ENUM` Input Type
 
@@ -315,7 +315,7 @@ We've renamed Organization blueprints to Custom blueprints to better reflect the
 
 ### Micronaut 4 Migration
 
-Kestra 0.15.0 migrates to Micronaut 4.3. Check the [migration guide](../../docs/11.migration-guide/0.15.0/micronaut4/index.md) for more details on how you can migrate your custom plugins.
+Kestra 0.15.0 migrates to Micronaut 4.3. Check the [migration guide](../../docs/11.migration-guide/v0.15.0/micronaut4/index.md) for more details on how you can migrate your custom plugins.
 
 ### Change in Concurrency Control with the Kafka Runner
 
