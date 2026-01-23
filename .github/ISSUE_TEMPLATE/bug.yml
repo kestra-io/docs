@@ -12,6 +12,5 @@ body:
       placeholder: Describe the issue, add any screenshots or screen-capture videos
     validations:
       required: true
-labels:
-  - area/frontend
-  - bug
+type: Bug
+projects: ["kestra-io/15"]

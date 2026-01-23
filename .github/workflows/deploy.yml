@@ -11,7 +11,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   pull-requests: write
@@ -45,6 +45,7 @@ jobs:
         run: npm run build
         env:
           NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
+          PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
 
       - name: Generate slug variables
         uses: rlespinasse/github-slug-action@v4

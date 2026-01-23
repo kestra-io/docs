@@ -479,7 +479,7 @@ tasks:
 ### Templates
 
 :::alert{type="warning"}
-Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](../../docs/11.migration-guide/0.11.0/templates/index.md) explains why templates are being phased out and how to transition from templates to subflows.
+Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](../../docs/11.migration-guide/v0.11.0/templates/index.md) explains why templates are being phased out and how to transition from templates to subflows.
 :::
 
 If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../../docs/configuration/index.md) option to still be able to use them:
