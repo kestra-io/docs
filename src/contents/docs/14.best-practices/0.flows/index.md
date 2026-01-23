@@ -54,6 +54,10 @@ This feature is best suited for small datasets, such as querying a few rows to f
 For large data volumes, use the `stores` property instead. Stored outputs are written to Kestra’s internal storage, and only the file URL is referenced in the execution context.
 :::
 
+Some plugins have outputs that include both a `value` and a `uri`. The `store` property for these plugins is set to `false` by default and should typically only be used with small data volumes. This property should be adjusted for larger data volumes to make file URIs available. 
+
+When `store` is set to `false` or the default value, the output will include a `value`, which is accessible through a Pebble expression like `"{{ outputs.task.value }}"`. When `store` is set to `true`, `value` is not accessible but instead the file URI is accessible through a Pebble expression like `"{{ outputs.task.uri }}"`. `value` and `uri` are not available outputs at the same time. Trying to access `value` when `store: true` will cause an execution error.
+
 ## Parallel tasks
 
 The [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) task helps reduce overall flow duration by running multiple branches simultaneously.
