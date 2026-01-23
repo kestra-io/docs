@@ -299,9 +299,34 @@ It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` i
 
 Sometimes it is useful to access outputs from other tasks in the same task tree, known as sibling tasks.
 
-If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential) task, you can use the `{{ outputs.sibling.value }}` notation where `sibling`is the identifier of the sibling task.
+If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id`is the identifier of the sibling task, as you would outside of the task tree.
 
-If the task tree is dynamic, for example when using the [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) task, you need to use `{{ sibling[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the ForEach task.
+For example:
+
+```yaml
+id: sibling_tasks
+namespace: company.team
+
+tasks:
+  - id: sequential
+    type: io.kestra.core.tasks.flows.Sequential
+    tasks:
+      - id: first
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          data: "hello from task 1"
+
+      - id: second
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          data: "{{ outputs.first.values.data }}"
+
+  - id: log_siblings
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ outputs.second.values.data }}"
+```
+
+If the task tree is dynamic, for example when using the [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) task, you need to use `{{ outputs.task_id[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the ForEach task.
 
 For example:
 
@@ -310,22 +335,26 @@ id: loop_with_sibling_tasks
 namespace: company.team
 
 tasks:
-  - id: each
+  - id: foreach
     type: io.kestra.plugin.core.flow.ForEach
     values: ["value 1", "value 2", "value 3"]
     tasks:
       - id: first
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ taskrun.value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          data: "First value: {{ taskrun.value }}"
 
       - id: second
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ outputs.first[taskrun.value].value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          data: "{{ outputs.first[taskrun.value].values.data }}"
 
-  - id: end
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ outputs.second['value 1'].value }}"
+  - id: log_output_from_foreach
+    type: io.kestra.core.tasks.log.Log
+    message: "{{ outputs.second['value 1'].values.data }}"
 ```
+
+You can also use the `currentEachOutput` function to access the current tree task. See [Expressions](../../expressions/index.md#currenteachoutput) for more details.
 
 :::alert{type="warning"}
 Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) as it runs tasks in parallel.
