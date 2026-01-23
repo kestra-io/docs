@@ -498,4 +498,3 @@ The example below shows how you can convert a list of numbers to a JSON string `
 :::alert{type="info"}
 You typically would never used the `| json` filter in combination with the `read()` function. Anytime you need to read a file's content and then convert it to a JSON object, use a combination of the `read()` function and the `json()` function instead.
 :::
-:::
