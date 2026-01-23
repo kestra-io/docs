@@ -1,5 +1,6 @@
 ---
 title: Contribute to Kestra Documentation – Writer’s Guide
+description: Help improve Kestra's documentation. This writer's guide covers local build setup, front matter conventions, and best practices for contributing to docs.
 sidebarTitle: Kestra Documentation
 icon: /src/contents/docs/icons/contributing.svg
 ---

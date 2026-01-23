@@ -1,5 +1,6 @@
 ---
 title: Contribute to the Kestra Codebase – Issues and PRs
+description: Guide to contributing to the Kestra codebase. Learn how to report bugs, request features, build plugins, and submit pull requests to help improve the platform.
 sidebarTitle: Kestra Codebase
 icon: /src/contents/docs/icons/contributing.svg
 ---

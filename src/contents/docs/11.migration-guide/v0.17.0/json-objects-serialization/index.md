@@ -1,5 +1,6 @@
 ---
 title: JSON Object Serialization
+description: Learn how to adapt Kestra flows to the `NON_NULL` JSON serialization strategy introduced in version 0.17. Understand the changes from `NON_DEFAULT` and how to adjust Pebble expressions for improved flow behavior.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
 ---

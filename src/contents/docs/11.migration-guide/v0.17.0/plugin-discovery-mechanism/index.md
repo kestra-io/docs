@@ -2,6 +2,7 @@
 title: Plugin Discovery Mechanism
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
+description: Changes to the plugin discovery mechanism in Kestra 0.17.0 using Java Service Loader.
 ---
 
 

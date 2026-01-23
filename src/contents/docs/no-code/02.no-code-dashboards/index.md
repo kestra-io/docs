@@ -2,6 +2,7 @@
 title: No Code Dashboards in Kestra – Design Without YAML
 sidebarTitle: No Code Dashboards
 icon: /src/contents/docs/icons/ui.svg
+description: Build interactive dashboards in Kestra using the No Code editor to visualize your data without writing YAML.
 ---
 
 Build Dashboards without writing YAML.

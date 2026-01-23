@@ -2,6 +2,7 @@
 title: Security Hardening for Kestra – Isolation and Network Controls
 sidebarTitle: Security Hardening
 icon: /src/contents/docs/icons/admin.svg
+description: Best practices for hardening Kestra security, including network isolation, host-level controls, and plugin validation.
 ---
 
 Security hardening options for Kestra.

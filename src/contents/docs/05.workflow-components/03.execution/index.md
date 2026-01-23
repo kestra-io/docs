@@ -1,5 +1,6 @@
 ---
 title: Executions in Kestra – Run and Monitor Flows
+description: Manage Flow Executions in Kestra. Learn how to trigger, monitor, and troubleshoot workflow runs, understand states, and access execution metrics.
 sidebarTitle: Execution
 icon: /src/contents/docs/icons/flow.svg
 docId: executions

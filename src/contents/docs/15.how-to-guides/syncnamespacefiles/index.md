@@ -6,6 +6,7 @@ topics:
   - Version Control
   - DevOps
 version: ">= 0.17.0"
+description: Sync your namespace files, such as scripts and configuration, from a Git repository to Kestra using the SyncNamespaceFiles task.
 ---
 
 Sync files from a Git Repository to Kestra with SyncNamespaceFiles Task.

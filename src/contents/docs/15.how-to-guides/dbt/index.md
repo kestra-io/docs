@@ -5,6 +5,7 @@ stage: Getting Started
 topics:
   - Integrations
 version: ">= 0.18.0"
+description: Clone dbt projects from Git, edit models in Kestra's Code Editor, run tests, and push changes back to Git for seamless dbt project management.
 ---
 
 Edit dbt code from Kestra's Code Editor

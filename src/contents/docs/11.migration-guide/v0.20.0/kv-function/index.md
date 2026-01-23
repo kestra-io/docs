@@ -1,5 +1,6 @@
 ---
 title: Retrieving KV pairs from other namespaces
+description: KV Function security update in Kestra 0.20.0. Ensure proper namespace access permissions when retrieving Key-Value pairs from different namespaces.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0
 editions: ["EE"]

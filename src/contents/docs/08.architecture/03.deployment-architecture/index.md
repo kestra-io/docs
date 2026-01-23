@@ -1,5 +1,6 @@
 ---
 title: Kestra Deployment Architectures – JDBC and Kafka
+description: Choose your Kestra deployment architecture. Compare Standalone (JDBC), Medium (Database), and High-Availability (Kafka & Elasticsearch) models.
 sidebarTitle: Deployment architecture
 icon: /src/contents/docs/icons/architecture.svg
 ---

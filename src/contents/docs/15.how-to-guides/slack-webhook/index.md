@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/slack.svg
 stage: Getting Started
 topics:
   - Integrations
+description: Trigger Kestra flows based on Slack events using the Slack Events API and Webhook triggers to automate responses and interactions.
 ---
 
 Trigger Kestra flows based on Slack events.

@@ -1,5 +1,6 @@
 ---
 title: Set Up Keycloak SSO for Kestra
+description: Integrate Keycloak SSO with Kestra. Configure OpenID Connect authentication to manage user access via your Keycloak identity provider.
 sidebarTitle: Keycloak SSO
 icon: /src/contents/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]

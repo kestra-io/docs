@@ -1,5 +1,6 @@
 ---
 title: Input and Output Files in Script Tasks
+description: Learn how to manage input and output files within Kestra script tasks. Pass additional files to scripts using `inputFiles` (including Namespace Files or trigger data) and generate files for downstream tasks with the `outputFiles` property, supporting glob patterns.
 sidebarTitle: Input and Output Files
 icon: /src/contents/docs/icons/dev.svg
 ---

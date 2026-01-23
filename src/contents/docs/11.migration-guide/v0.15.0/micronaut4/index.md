@@ -2,6 +2,7 @@
 title: Migration to Micronaut 4.3
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
+description: Guide for migrating custom plugins to be compatible with Micronaut 4.3 in Kestra 0.15.0.
 ---
 
 

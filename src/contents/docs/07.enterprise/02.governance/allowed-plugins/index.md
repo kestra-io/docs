@@ -1,5 +1,6 @@
 ---
 title: Allowed & Restricted Plugins in Kestra Enterprise
+description: Control plugin usage in Kestra Enterprise. Configure allowed and restricted plugins to enforce security policies and compliance standards.
 sidebarTitle: Allowed & Restricted Plugins
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

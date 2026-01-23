@@ -3,6 +3,7 @@ title: maxAttempt renamed maxAttempts
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS", "EE"]
+description: Announcement of the renaming of the maxAttempt retry property to maxAttempts for grammatical correctness.
 ---
 
 

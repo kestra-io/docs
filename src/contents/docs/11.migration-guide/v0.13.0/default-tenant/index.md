@@ -3,6 +3,7 @@ title: Sync Users Access to a Default Tenant
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.13.0
 editions: ["EE", "Cloud"]
+description: Instructions for syncing user access to the default tenant following the introduction of multitenancy in Kestra 0.13.0.
 ---
 
 

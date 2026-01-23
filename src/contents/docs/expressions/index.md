@@ -1,5 +1,6 @@
 ---
 title: Kestra Expressions Guide – Pebble and Context Variables
+description: Master Kestra's powerful expression language. Learn to use Pebble templating and context variables for dynamic flow control and data manipulation.
 sidebarTitle: Expressions
 icon: /src/contents/docs/icons/expression.svg
 ---

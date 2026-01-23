@@ -1,5 +1,6 @@
 ---
 title: Kestra Requirements – Software and Hardware Checklist
+description: Check Kestra system requirements. Verify software prerequisites (Java, DB) and hardware recommendations for running Kestra effectively.
 sidebarTitle: Software and Hardware Requirements
 icon: /src/contents/docs/icons/admin.svg
 ---

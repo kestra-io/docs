@@ -1,6 +1,7 @@
 ---
 title: Build and Publish a Plugin
 icon: /src/contents/docs/icons/dev.svg
+description: Learn how to build and publish your Kestra plugins to Maven Central using Gradle and GitHub Actions.
 ---
 
 Use the included Gradle task to build the plugin. Then, you can publish it to [Maven Central](https://central.sonatype.com).

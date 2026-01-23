@@ -1,5 +1,6 @@
 ---
 title: Task Cache in Kestra – Reuse Expensive Results
+description: Optimize performance with Task Caching in Kestra. Cache outputs of expensive tasks to skip re-execution and speed up workflows when inputs haven't changed.
 sidebarTitle: Task Cache
 icon: /src/contents/docs/icons/flow.svg
 version: "0.24.0"

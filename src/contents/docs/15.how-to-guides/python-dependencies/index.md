@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
   - Scripting
+description: Learn various ways to manage Python dependencies in Kestra, including using pip, virtual environments, caching, and custom Docker images.
 ---
 
 Manage your Python dependencies inside of Kestra.

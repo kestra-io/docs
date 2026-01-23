@@ -2,6 +2,7 @@
 title: Backup and Restore Kestra – Metadata and Data
 sidebarTitle: Backup & Restore
 icon: /src/contents/docs/icons/admin.svg
+description: Learn how to perform full or metadata-only backups and restores of your Kestra instance for disaster recovery and migration.
 ---
 
 Back up and restore your Kestra instance.

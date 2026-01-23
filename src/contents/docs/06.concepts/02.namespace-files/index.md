@@ -1,5 +1,6 @@
 ---
 title: Namespace Files in Kestra – Manage Project Assets
+description: Manage Namespace Files and how to use them in your flows.
 sidebarTitle: Namespace Files
 icon: /src/contents/docs/icons/concepts.svg
 ---

@@ -2,6 +2,7 @@
 title: Renamed Plugins
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
+description: List of renamed plugins and task runners in Kestra 0.17.0 and how to update your flows.
 ---
 
 
