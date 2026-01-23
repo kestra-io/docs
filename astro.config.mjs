@@ -146,7 +146,8 @@ export default defineConfig({
         },
     },
     redirects: {
-        "/slack": "https://api.kestra.io/v1/communities/slack/redirect"
+        "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
+        "/trust": "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
     },
     vite: {
         resolve: {
