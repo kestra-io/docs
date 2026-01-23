@@ -59,16 +59,17 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
         <HelpfulVote client:visible />
         <PrevNext {navigation} currentPath={`/docs/${doc.id}`} client:idle />
     </div>
-    <NavToc
-        links={headings.map((heading) => ({
-            id: heading.slug,
-            text: heading.text,
-            depth: heading.depth,
-        }))}
-        client:visible
-        slot="headings"
-        {editUrl}
-    />
+    <Fragment slot="headings">
+        <NavToc
+            links={headings.map((heading) => ({
+                id: heading.slug,
+                text: heading.text,
+                depth: heading.depth,
+            }))}
+            client:visible
+            {editUrl}
+        />
+    </Fragment>
 </LayoutDocs>
 
 <style lang="scss">

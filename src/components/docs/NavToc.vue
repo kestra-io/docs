@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from "vue"
+    import { onMounted, ref } from "vue"
     import type { PluginMetadata } from "@kestra-io/ui-libs"
     import { useEventListener, useScroll } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
@@ -125,13 +125,13 @@
 
     const tableOfContentsExpanded = ref(false)
 
-    const removeActiveClasses = (): void => {
+    function removeActiveClasses() {
         document.querySelectorAll("#nav-toc a").forEach((item) => {
             item.classList.remove("active")
         })
     }
 
-    const getFixedHeaderOffset = (): number => {
+    function getFixedHeaderOffset(): number {
         const selectors = [
             "header",
             ".site-header",
@@ -154,7 +154,7 @@
         return 160
     }
 
-    const scrollToElement = (id: string): void => {
+    function scrollToElement(id: string){
         const element = document.getElementById(id)
         if (!element) return
 
@@ -166,7 +166,7 @@
 
     let timeOut: ReturnType<typeof setTimeout> | undefined
 
-    const updateActiveLink = (id: string): void => {
+    function updateActiveLink(id: string) {
         removeActiveClasses()
         const link = document.querySelector(`#nav-toc a[href="#${id}"]`) as HTMLElement
         link?.classList.add("active")
@@ -183,7 +183,7 @@
         }, delay)
     }
 
-    const menuNavigate = (e: Event): void => {
+    function menuNavigate(e: Event) {
         const anchor = (e.target as HTMLElement)?.closest("a") as HTMLAnchorElement | null
         const href = anchor?.getAttribute("href")
         const id = href?.startsWith("#") ? href.substring(1) : anchor?.name || ""
@@ -205,12 +205,12 @@
         updateActiveLinkDelayed(id, 600)
     }
 
-    const closeToc = (): void => {
+    function closeToc() {
         tableOfContentsExpanded.value = false
         document.getElementById("tocContents")?.classList.remove("show")
     }
 
-    const activateMenuItem = (item: TocLink, index: number, linkArray: TocLink[]): void => {
+    function activateMenuItem (item: TocLink, index: number, linkArray: TocLink[]) {
         if (!item?.id) return
 
         const currEl = document.querySelector(`#${item.id}`)?.getBoundingClientRect()
@@ -222,14 +222,14 @@
         if (typeof currEl?.top === "number" && currEl.top <= 160) {
             const prevTop = prevEl?.top ?? -1
             if (prevTop === -1 || prevTop <= 0) {
-                if (linkArray.length < index + 1) {
+                if (linkArray.length > index + 1) {
                     updateActiveLink(item.id)
                 }
             }
         }
     }
 
-    const handleScroll = (): void => {
+    function handleScroll() {
         if (scrollY.value === 0) {
             removeActiveClasses()
             return
@@ -244,6 +244,9 @@
     }
 
     useEventListener("scroll", handleScroll)
+    onMounted(() => {
+        handleScroll()
+    })
 </script>
 
 <style lang="scss" scoped>
