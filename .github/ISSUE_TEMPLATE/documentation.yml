@@ -9,3 +9,5 @@ body:
       required: true
 labels:
   - area/docs
+type: Bug
+projects: ["kestra-io/15"]

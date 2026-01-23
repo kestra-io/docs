@@ -13,6 +13,4 @@ body:
     validations:
       required: true
 type: Bug
-labels:
-  - area/frontend
-  - bug
+projects: ["kestra-io/15"]

@@ -87,6 +87,10 @@ const githubReleaseRepo = (() => {
     if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") {
         return "plugin-jdbc"
     }
+
+    if (name.startsWith("plugin-script-") || name === "plugin-script") {
+        return "plugin-scripts"
+    }
     return name
 })()
 
@@ -111,10 +115,20 @@ const pluginType = (() => {
     }`
 })()
 
-const mappedUrl = redirectAlias(aliasMapping, pathname, pageList, pluginType)
+// try to redirect if alias found, if not redirect to /plugins
+try {
+    const mappedUrl = redirectAlias(
+        aliasMapping,
+        pathname,
+        pageList,
+        pluginType,
+    )
 
-if (mappedUrl && mappedUrl !== pathname) {
-    Astro.redirect(mappedUrl, 301)
+    if (mappedUrl && mappedUrl !== pathname) {
+        return Astro.redirect(mappedUrl, 301)
+    }
+} catch {
+    // do nothing if plugin not found
 }
 
 const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
@@ -127,27 +141,33 @@ const sidebarPluginData = generateSidebarPluginData(
 )
 
 async function makePagePluginDefinition() {
-    const pageData = await $fetchApi<{ markdown: string; schema: JSONSchema }>(
-        `/plugins/definitions/${pluginType}`,
-    )
-    const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
-    const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
+    try {
+        const pageData = await $fetchApi<{
+            markdown: string
+            schema: JSONSchema
+        }>(`/plugins/definitions/${pluginType}`)
+        const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
+        const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
 
-    return {
-        name,
-        type: definitionType,
-        ...nuxtBlocksFromJsonSchema(pageData.schema),
+        return {
+            name,
+            type: definitionType,
+            ...nuxtBlocksFromJsonSchema(pageData.schema),
+        }
+    } catch {
+        return null
     }
 }
 
-const page: PluginPage =
+const page: PluginPage | null =
     pluginType === undefined
         ? sidebarPluginData
         : await makePagePluginDefinition()
+
 const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
     pluginType
         ? (sidebarPluginData?.body?.plugins ?? [])
-        : (page.body?.plugins ?? []),
+        : (page?.body?.plugins ?? []),
 )
 
 const subGroupWrapper = pluginsWithoutDeprecated.find(
@@ -156,7 +176,7 @@ const subGroupWrapper = pluginsWithoutDeprecated.find(
 const { currentPageIcon, subGroupsIcons } = await getIcon(
     pluginName,
     pluginType,
-    page.body.group,
+    page?.body.group,
     subGroupWrapper?.subGroup,
 )
 
@@ -258,7 +278,7 @@ if (body && body !== combinedDescription) {
 }
 
 const headingDescription = pluginType
-    ? page.title
+    ? page?.title
     : (combinedDescription ??
       (subGroup === undefined
           ? (rootPlugin?.longDescription ?? combinedDescription)
@@ -375,9 +395,9 @@ function makeTOC() {
     })()
 
     const baseTocLinks = pluginType
-        ? (page.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
+        ? (page?.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
           [])
-        : page.body?.toc
+        : page?.body?.toc
           ? []
           : pluginToc
 
@@ -433,27 +453,37 @@ function makeTOC() {
     return tocLinks
 }
 
-const pageWithToc: PluginPageWithToc = {
-    ...page,
-    body: {
-        ...page.body,
-        toc: {
-            links: makeTOC(),
-        },
-    },
-}
+const pageWithToc: PluginPageWithToc = page
+    ? {
+          ...page,
+          body: {
+              ...page.body,
+              toc: {
+                  links: makeTOC(),
+              },
+          },
+      }
+    : {
+          body: {
+              toc: {
+                  links: [],
+              },
+          },
+      }
 
 // if no content to show, redirect to parent until /plugins
 if (
+    page === null ||
     !pluginsWithoutDeprecated.some(
         (p) => subGroup === undefined || slugify(subGroupName(p)) === subGroup,
-    ) &&
-    pathname !== "/plugins"
+    )
 ) {
-    const pathParts = pathname.split("/")
-    if (pathParts.length > 2) {
-        return Astro.redirect(pathParts.slice(0, -1).join("/"), 301)
-    }
+    console.log("Redirecting due to no content")
+
+    return Astro.redirect(
+        `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
+        301,
+    )
 }
 
 const subgroupBlueprintCounts = (() => {
@@ -537,23 +567,19 @@ if (!pluginType && !subGroup) {
                 }
             </div>
 
-            {
-                pageWithToc && (
-                    <PluginsMDCRender
-                        page={pageWithToc}
-                        icons={subGroupsIcons}
-                        plugin-type={pluginType}
-                        plugins={pluginsWithoutDeprecated}
-                        pluginName={pluginName}
-                        subGroup={subGroup}
-                        routePath={pathname}
-                        subgroupBlueprintCounts={subgroupBlueprintCounts}
-                        metadataMap={metadataMap}
-                        schemas={elementTitle}
-                        client:idle
-                    />
-                )
-            }
+            <PluginsMDCRender
+                page={pageWithToc}
+                icons={subGroupsIcons}
+                plugin-type={pluginType}
+                plugins={pluginsWithoutDeprecated}
+                pluginName={pluginName}
+                subGroup={subGroup}
+                routePath={pathname}
+                subgroupBlueprintCounts={subgroupBlueprintCounts}
+                metadataMap={metadataMap}
+                schemas={elementTitle}
+                client:idle
+            />
 
             {
                 pluginType === undefined && currentPluginVideos?.length > 0 && (

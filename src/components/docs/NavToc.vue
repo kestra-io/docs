@@ -292,6 +292,12 @@
             }
         }
 
+        &.plugin > div {
+            @include media-breakpoint-up(lg) {
+                top: 0;
+            }
+        }
+
         nav {
             @include font-size(0.875rem);
             padding-bottom: 1.5rem;

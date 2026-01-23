@@ -23,7 +23,7 @@
         width: 100%;
 
         &::part(section-endpoint) {
-            white-space: nowrap;
+            white-space: normal;
         }
     }
 </style>
