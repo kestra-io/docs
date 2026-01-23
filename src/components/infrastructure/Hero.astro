@@ -1,98 +1,104 @@
-<template>
-    <section class="main-header">
-        <div class="hero container">
-            <div class="top-section" data-usal="slide-d delay-0 duration-700 ease-out">
-                <div class="left-section" data-usal="slide-d delay-50 duration-700 ease-out">
-                    <h2>
-                        Modernize Infrastructure Automation
-                        <br class="d-none d-lg-block" />
-                        With One Unified Control Plane
-                    </h2>
-                    <p>
-                        Standardize provisioning and Day 2 operations with less risk and operational
-                        overhead.
-                        <br class="d-none d-lg-block" />
-                        Get full visibility and control across all infrastructure workflows.
-                    </p>
-                </div>
+---
+import { Image } from "astro:assets"
 
-                <div class="right-section" data-usal="slide-d delay-100 duration-700 ease-out">
-                    <p>
-                        Still relying on scripts and legacy tools
-                        <br class="d-none d-xl-block" />
-                        to run mission-critical infrastructure?
-                    </p>
-                    <a to="/demo" class="btn btn-primary btn-gradient"> Book a demo </a>
-                </div>
+const companies = [
+    { name: "brainlab", width: 130, height: 35 },
+    { name: "bloomberg", width: 169, height: 25 },
+    { name: "fila", width: 75, height: 21 },
+    { name: "apple", width: 75, height: 35 },
+    { name: "toyota", width: 134, height: 20 },
+    { name: "sabre", width: 120, height: 21 },
+    { name: "apoteket", width: 140, height: 18 },
+]
+
+const companiesCarousel = [...companies, ...companies, ...companies]
+
+const logos = import.meta.glob<{ default: ImageMetadata }>("/src/assets/landing/infrastructure/companies/*.svg", { eager: true })
+---
+
+<section class="main-header">
+    <div class="hero container">
+        <div class="top-section" data-usal="slide-d delay-0 duration-700 ease-out">
+            <div class="left-section" data-usal="slide-d delay-50 duration-700 ease-out">
+                <h2>
+                    Modernize Infrastructure Automation
+                    <br class="d-none d-lg-block" />
+                    With One Unified Control Plane
+                </h2>
+                <p>
+                    Standardize provisioning and Day 2 operations with less risk and operational
+                    overhead.
+                    <br class="d-none d-lg-block" />
+                    Get full visibility and control across all infrastructure workflows.
+                </p>
             </div>
 
-            <div class="embed-wrapper" :style="{ transform: `scale(${scale})` }">
-                <div class="gradient-border">
-                    <iframe
-                        class="arcade-embed"
-                        src="https://demo.arcade.software/cuDf2qq3l9LX1WgP52Fp?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true"
-                        title="Hero Infra"
-                        frameborder="0"
-                        allowfullscreen
-                        allow="clipboard-write"
-                    ></iframe>
-                </div>
-            </div>
-
-            <div
-                class="d-flex align-self-start align-self-sm-center align-items-sm-center flex-column top"
-            >
-                <h5>Trusted by Leading Global Companies</h5>
-                <div class="companies-logos">
-                    <template v-for="(company, index) in companiesCarousel" :key="index">
-                        <NuxtImg
-                            :src="`/landing/infrastructure/companies/${company.name}.svg`"
-                            :width="company.width"
-                            :height="company.height"
-                            loading="lazy"
-                            format="webp"
-                            :alt="company.name"
-                        />
-                    </template>
-                </div>
+            <div class="right-section" data-usal="slide-d delay-100 duration-700 ease-out">
+                <p>
+                    Still relying on scripts and legacy tools
+                    <br class="d-none d-xl-block" />
+                    to run mission-critical infrastructure?
+                </p>
+                <a href="/demo" class="btn btn-primary btn-gradient"> Book a demo </a>
             </div>
         </div>
 
-        <div class="background" />
-    </section>
-</template>
+        <div class="embed-wrapper">
+            <div class="gradient-border">
+                <iframe
+                    class="arcade-embed"
+                    src={"https://demo.arcade.software/cuDf2qq3l9LX1WgP52Fp?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true"}
+                    title="Hero Infra"
+                    allowfullscreen
+                    allow="clipboard-write"
+                />
+            </div>
+        </div>
 
-<script setup lang="ts">
-    import { ref, computed } from "vue"
-    import { useWindowScroll, useWindowSize } from "@vueuse/core"
+        <div
+            class="d-flex align-self-start align-self-sm-center align-items-sm-center flex-column top"
+        >
+            <h5>Trusted by Leading Global Companies</h5>
+            <div class="companies-logos">
+                {
+                    companiesCarousel.map((company) => (
+                        <img
+                            src={logos[`/src/assets/landing/infrastructure/companies/${company.name}.svg`].default.src}
+                            width={company.width}
+                            height={company.height}
+                            alt={company.name}
+                        />
+                    ))
+                }
+            </div>
+        </div>
+    </div>
 
-    const companies = ref([
-        { name: "brainlab", width: "130", height: "35" },
-        { name: "bloomberg", width: "169", height: "25" },
-        { name: "fila", width: "75", height: "21" },
-        { name: "apple", width: "75", height: "35" },
-        { name: "toyota", width: "134", height: "20" },
-        { name: "sabre", width: "120", height: "21" },
-        { name: "apoteket", width: "140", height: "18" },
-    ])
+    <div class="background"></div>
+</section>
 
-    const { y } = useWindowScroll()
-    const { width } = useWindowSize()
+<script>
+    const wrapper = document.querySelector(".embed-wrapper") as HTMLElement
 
-    const scale = computed(() => {
-        if (width.value < 768) return 1
-        const ratio = Math.min(y.value / 500, 1)
-        return 1 + ratio * 0.1
-    })
+    function updateScale() {
+        if (!wrapper) return
+        if (window.innerWidth < 768) {
+            wrapper.style.transform = "scale(1)"
+            return
+        }
+        const ratio = Math.min(window.scrollY / 500, 1)
+        const scale = 1 + ratio * 0.1
+        wrapper.style.transform = `scale(${scale})`
+    }
 
-    const companiesCarousel = computed(() => [
-        ...companies.value,
-        ...companies.value,
-        ...companies.value,
-    ])
+    if (wrapper) {
+        window.addEventListener("scroll", () => requestAnimationFrame(updateScale))
+        window.addEventListener("resize", updateScale)
+        updateScale()
+    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .main-header {
@@ -101,14 +107,14 @@
         .background {
             position: fixed;
             inset: 0;
-            background: url("/landing/infrastructure/hero-bg.webp") top center / cover no-repeat;
+            background: url("~/assets/landing/infrastructure/hero-bg.webp") top center / cover no-repeat;
             z-index: -1;
             pointer-events: none;
 
             @include media-breakpoint-up(lg) {
                 background-image:
-                    url("/landing/infrastructure/bg-ks.png"),
-                    url("/landing/infrastructure/hero-bg.webp");
+                    url("~/assets/landing/infrastructure/bg-ks.png"),
+                    url("~/assets/landing/infrastructure/hero-bg.webp");
                 background-position:
                     0% 0%,
                     top center;

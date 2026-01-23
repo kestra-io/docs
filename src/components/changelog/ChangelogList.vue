@@ -31,7 +31,7 @@
             <div v-for="r in releasesPaginated" :key="r.tag_name" class="col">
                 <a
                     class="card h-100 text-decoration-none text-reset release-card"
-                    :href="`/docs/changelog/${encodeURIComponent(r.tag_name)}`"
+                    :href="`/docs/changelog/${r.tag_name}`"
                 >
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-2">
@@ -46,7 +46,7 @@
 
                         <small class="text-muted mb-2 d-flex align-items-center gap-1">
                             <b><CalendarRange /> Published on</b>
-                            {{ new Date(r.published_at).toLocaleDateString() }}
+                            {{ new Date(r.published_at).toLocaleDateString("en-US") }}
                         </small>
                     </div>
                 </a>

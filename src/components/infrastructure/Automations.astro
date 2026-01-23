@@ -1,100 +1,93 @@
-<template>
-    <section class="arc">
-        <div class="container">
-            <div class="arc-embed" data-usal="zoomin delay-0 duration-400 ease-out">
-                <iframe
-                    class="arc-iframe"
-                    src="https://demo.arcade.software/4ggZ33yP4fKHcs7yk6lz?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true&autoplay=true"
-                    title="Infra"
-                    frameborder="0"
-                    loading="lazy"
-                    allow="clipboard-write"
-                    allowfullscreen
-                />
+---
+import BlueprintCard from "~/components/layout/BlueprintCard.vue"
+import Link from "~/components/common/Link.astro"
+import { Icon } from "astro-icon/components"
+
+const { blueprints, tags } = Astro.props as { blueprints: any[], tags: any[] }
+
+const displayBlueprints = blueprints?.slice(0, 20) ?? []
+---
+
+<section class="arc">
+    <div class="container">
+        <div class="arc-embed" data-usal="zoomin delay-0 duration-400 ease-out">
+            <iframe
+                class="arc-iframe"
+                src="https://demo.arcade.software/4ggZ33yP4fKHcs7yk6lz?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true&autoplay=true"
+                title="Infra"
+                loading="lazy"
+                allow="clipboard-write"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+</section>
+
+<section class="automations">
+    <div class="container">
+        <h3 data-usal="fade-u delay-0 duration-400 ease-out">
+            Ready-to-Use <span class="highlight">Automation</span> Patterns
+        </h3>
+
+        <div class="blueprints">
+            <button class="navigation navigation-left d-md-none" id="scroll-left">
+                <Icon name="mdi:chevron-left" />
+            </button>
+            <button class="navigation navigation-right d-md-none" id="scroll-right">
+                <Icon name="mdi:chevron-right" />
+            </button>
+            <div class="row carousel-md" id="carousel-wrapper">
+                {
+                    displayBlueprints.map((blueprint, index) => (
+                        <div
+                            class={`col-lg-4 col-md-6 mb-3 card-wrapper ${index >= 6 ? "d-md-none" : ""}`}
+                            data-usal="zoomin-u delay-0 duration-400 ease-out"
+                        >
+                            <BlueprintCard
+                                blueprint={blueprint}
+                                tags={tags}
+                                href={`/blueprints/${blueprint.id}`}
+                                scheme="light"
+                            />
+                        </div>
+                    ))
+                }
             </div>
         </div>
-    </section>
 
-    <section class="automations">
-        <div class="container">
-            <h3 data-usal="fade-u delay-0 duration-400 ease-out">
-                Ready-to-Use <span class="highlight">Automation</span> Patterns
-            </h3>
-
-            <div class="blueprints">
-                <button class="navigation navigation-left d-md-none" @click="scrollLeft">
-                    <ArrowLeft />
-                </button>
-                <button class="navigation navigation-right d-md-none" @click="scrollRight">
-                    <ArrowRight />
-                </button>
-                <div class="row carousel-md" ref="wrapper">
-                    <div
-                        v-for="blueprint in blueprints"
-                        :key="blueprint.id"
-                        class="col-lg-4 col-md-6 mb-3 card-wrapper"
-                        data-usal="zoomin-u delay-0 duration-400 ease-out"
-                    >
-                        <BlueprintCard
-                            :blueprint="blueprint"
-                            :tags
-                            :href="`/blueprints/${blueprint.id}`"
-                            scheme="light"
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <div class="align-self-end" data-usal="fade-in delay-0 duration-400 ease-out">
-                <Link
-                    href="/blueprints?tags=infrastructure"
-                    text="View more Infrastructure blueprints"
-                />
-            </div>
+        <div class="align-self-end" data-usal="fade-in delay-0 duration-400 ease-out">
+            <Link
+                href="/blueprints?tags=infrastructure"
+                text="View more Infrastructure blueprints"
+            />
         </div>
-    </section>
-</template>
+    </div>
+</section>
 
-<script setup lang="ts">
-    import { ref, computed } from "vue"
-    import { useWindowSize } from "@vueuse/core"
-    import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
-    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-    import BlueprintCard from "~/components/layout/BlueprintCard.vue"
-    import Link from "~/components/common/Link.vue"
+<script>
+    const leftBtn = document.getElementById("scroll-left")
+    const rightBtn = document.getElementById("scroll-right")
+    const wrapper = document.getElementById("carousel-wrapper")
 
-    const props = defineProps<{
-        blueprints: Blueprint[]
-        tags: BlueprintTag[]
-    }>()
-
-    const wrapper = ref<HTMLElement | null>(null)
-
-    const scrollLeft = () => {
-        if (wrapper.value) {
-            wrapper.value.scrollTo({
-                left: wrapper.value.scrollLeft - 300,
+    if (leftBtn && wrapper) {
+        leftBtn.addEventListener("click", () => {
+            wrapper.scrollBy({
+                left: -300,
                 behavior: "smooth",
             })
-        }
+        })
     }
 
-    const scrollRight = () => {
-        if (wrapper.value) {
-            wrapper.value.scrollTo({
-                left: wrapper.value.scrollLeft + 300,
+    if (rightBtn && wrapper) {
+        rightBtn.addEventListener("click", () => {
+            wrapper.scrollBy({
+                left: 300,
                 behavior: "smooth",
             })
-        }
+        })
     }
-
-    const { width } = useWindowSize()
-    const size = computed(() => (width.value >= 768 ? 6 : 20))
-
-    const blueprints = computed(() => props.blueprints?.slice(0, size.value) ?? [])
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .arc {
@@ -130,7 +123,7 @@
     }
 
     .automations {
-        background-image: url("/landing/infrastructure/grid.svg");
+        background-image: url("~/assets/landing/infrastructure/grid.svg");
         background-color: #f4f4f4;
         width: 100%;
         padding: 3rem 0;
@@ -197,11 +190,6 @@
 
                     &-right {
                         right: -0.5rem;
-                    }
-
-                    :deep(svg) {
-                        position: absolute;
-                        bottom: 0;
                     }
                 }
 
