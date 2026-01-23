@@ -87,6 +87,10 @@ const githubReleaseRepo = (() => {
     if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") {
         return "plugin-jdbc"
     }
+
+    if (name.startsWith("plugin-script-") || name === "plugin-script") {
+        return "plugin-scripts"
+    }
     return name
 })()
 
