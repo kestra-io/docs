@@ -25,9 +25,10 @@ Versioned plugins support several properties that can be modified in your Kestra
 
 - `remoteStorageEnabled`: Specifies whether remote storage is enabled (i.e., plugins are stored on the internal storage).
 - `localRepositoryPath`: The local path where managed plugins will be synced.
-- `autoReloadEnabled`: The interval at which the Kestra server checks for new or removed plugins.
-- `autoReloadInterval`: The default version to be used when no version is specified for a plugin.
-- `defaultVersion`: Accepted are: 'latest', 'current', 'oldest', 'none', or a specific version (e.g., 0.20.0)
+- `autoReloadEnabled`: Whether the server should periodically rescan repositories for new or removed plugins.
+- `autoReloadInterval`: How often to rescan (duration, e.g., `60s`).
+- `defaultVersion`: The version to use when none is specified in a flow. Accepted values: `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or an explicit version (e.g., `0.20.0`).
+- `allowListed`: List of repository base URLs from which plugins may be downloaded (Maven-style). Downloads are blocked if the URL is not on this list.
 
 An example configuration looks as follows:
 
@@ -42,7 +43,16 @@ kestra:
         autoReloadEnabled: true
         autoReloadInterval: 60s
         defaultVersion: LATEST
+        allowListed:
+          - https://repo.maven.apache.org/maven2/
+          - https://registry.kestra.io/maven/
+          - https://api.kestra.io/
 ```
+
+### Allow-list repositories
+- Keep the default three entries to reach Kestra’s official registry and Maven Central.
+- Add your private repository (Artifactory/Nexus/S3-backed) as another URL; only allow-listed URLs are permitted for downloads.
+- If plugin downloads fail with `403` or `blocked repository`, confirm the repository base URL (including trailing `/`) is present in `allowListed`.
 
 With remote storage enabled, installed plugins are stored in a plugins repository in the `_plugins/repository` path. For example, the below paths show the storage for 0.19.0 and 0.20.0 versions of the Shell script plugin:
 
