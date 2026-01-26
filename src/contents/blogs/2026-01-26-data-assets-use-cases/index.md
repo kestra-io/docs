@@ -3,11 +3,11 @@ title: "How Kestra's Assets Give You Complete Pipeline Lineage"
 description: "Kestra 1.2 introduces Assets, a unified way to track both data artifacts and infrastructure resources across your workflows, giving you lineage that reflects what your pipelines actually touch."
 date: 2026-01-26T13:00:00
 category: Solutions
-author:
-  name: 
-  image: 
-  role: 
-image: 
+author: 
+  name: "Parham Parvizi"
+  image: pparvizi
+  role: Solutions Engineer
+image: ./main.jpg
 ---
 
 [Kestra 1.2](https://kestra.io/blogs/release-1-2) introduces Assets, a way to track both data artifacts (tables, datasets, files) and infrastructure resources (buckets, VMs, compute) in a single inventory. Every workflow declares what it consumes and produces, and Kestra builds the dependency graph automatically.
