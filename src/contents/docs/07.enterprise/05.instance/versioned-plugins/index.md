@@ -28,7 +28,6 @@ Versioned plugins support several properties that can be modified in your Kestra
 - `autoReloadEnabled`: Whether the server should periodically rescan repositories for new or removed plugins.
 - `autoReloadInterval`: How often to rescan (duration, e.g., `60s`).
 - `defaultVersion`: The version to use when none is specified in a flow. Accepted values: `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or an explicit version (e.g., `0.20.0`).
-- `allowListed`: List of repository base URLs from which plugins may be downloaded (Maven-style). Downloads are blocked if the URL is not on this list.
 
 An example configuration looks as follows:
 
@@ -43,16 +42,29 @@ kestra:
         autoReloadEnabled: true
         autoReloadInterval: 60s
         defaultVersion: LATEST
-        allowListed:
-          - https://repo.maven.apache.org/maven2/
-          - https://registry.kestra.io/maven/
-          - https://api.kestra.io/
 ```
 
-### Allow-list repositories
-- Keep the default three entries to reach Kestra’s official registry and Maven Central.
-- Add your private repository (Artifactory/Nexus/S3-backed) as another URL; only allow-listed URLs are permitted for downloads.
-- If plugin downloads fail with `403` or `blocked repository`, confirm the repository base URL (including trailing `/`) is present in `allowListed`.
+### Allow-list URLs
+
+In order to properly use Versioned Plugins, the following 3 URLs need to be allowed through your configuration:
+
+- https://repo.maven.apache.org/maven2/
+- https://registry.kestra.io/maven/
+- https://api.kestra.io/
+
+A default configuration looks like:
+
+```yaml
+kestra:
+  plugins:
+    repositories:
+      central:
+        url: https://repo.maven.apache.org/maven2/
+      kestra:
+        url: https://registry.kestra.io/maven
+```
+
+Refer to the [Plugins section](../../../configuration/index.md#plugins) in the Configuration guide for custom Maven repositories.
 
 With remote storage enabled, installed plugins are stored in a plugins repository in the `_plugins/repository` path. For example, the below paths show the storage for 0.19.0 and 0.20.0 versions of the Shell script plugin:
 
