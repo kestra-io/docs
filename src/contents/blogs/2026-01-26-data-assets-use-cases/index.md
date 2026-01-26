@@ -7,7 +7,7 @@ author:
   name: "Parham Parvizi"
   image: pparvizi
   role: Solutions Engineer
-image: ./main.jpg
+image: ./main.png
 ---
 
 [Kestra 1.2](https://kestra.io/blogs/release-1-2) introduces Assets, a way to track both data artifacts (tables, datasets, files) and infrastructure resources (buckets, VMs, compute) in a single inventory. Every workflow declares what it consumes and produces, and Kestra builds the dependency graph automatically.
