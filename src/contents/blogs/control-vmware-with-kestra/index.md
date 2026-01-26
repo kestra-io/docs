@@ -7,7 +7,7 @@ author:
   name: François Delbrayelle
   image: fdelbrayelle
   role: 
-image: /blogs/control-vmware-with-kestra.png
+image: ./control-vmware-with-kestra.jpg
 ---
 
 If you’re virtualizing your infrastructure, chances are **VMware** plays a key role in your stack. For many enterprise-grade environments, VMware is the trusted foundation—powering development, test, production, and hybrid-cloud workloads with performance, scalability, and rock-solid reliability. It’s a go-to solution platform for IT teams managing complex, mission-critical operations.
