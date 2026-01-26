@@ -164,7 +164,7 @@ Now your lineage graph connects infrastructure provisioning to data workflows. Y
 
 ### 3. Infrastructure operations with asset-based targeting
 
-You can see your asserts globally across Kestra on the Assets page:
+You can see your assets globally across Kestra on the Assets page:
 
 ![Assets globally across Kestra](assets-metadata.png)
 
@@ -207,7 +207,7 @@ This lets you maintain a single source of truth in Kestra while pushing lineage 
 
 ## Blueprints to get started
 
-Kestra's [Templated Blueprints](https://kestra.io/docs/enterprise/governance/custom-blueprints) let you create reusable workflow templates that users can instantiate by filling out a form, no YAML editing required. Platform teams define the template once (including asset declarations), and other teams generate production-ready workflows by selecting options from dropdowns.
+Kestra's [Templated Blueprints](https://kestra.io/docs/enterprise/governance/custom-blueprints) lets you create reusable workflow templates that users can instantiate by filling out a form, no YAML editing required. Platform teams define the template once (including asset declarations), and other teams generate production-ready workflows by selecting options from dropdowns.
 
 ![Kestra's Blueprints for data use cases](./blueprints.png)
 
