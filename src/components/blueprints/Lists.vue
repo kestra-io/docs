@@ -9,7 +9,7 @@
                 </h4>
                 <div class="col-12 search-input position-relative">
                     <input
-                        type="text"
+                        type="search"
                         class="form-control form-control-lg"
                         placeholder="Search across 250+ blueprints"
                         v-model="searchQueryModel"
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, nextTick, ref, watch } from "vue"
+    import { computed, ref, watch } from "vue"
     import { navigate } from "astro:transitions/client"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import BlueprintsListCard from "~/components/blueprints/ListCard.vue"
@@ -82,11 +82,11 @@
         total: number
         currentUrl: string
         blueprints: Blueprint[]
-        searchQuery?: string
+        q?: string
     }>()
 
-    const searchQueryModel = ref(props.searchQuery ?? "")
-    watch(() => props.searchQuery, (newVal) => {
+    const searchQueryModel = ref(props.q ?? "")
+    watch(() => props.q, (newVal) => {
         searchQueryModel.value = newVal ?? ""
     })
 
@@ -146,22 +146,20 @@
         tags?:string[],
         q?: string
     }) => {
-
-
         if (typeof window !== "undefined") {
             const detail = {
                 page: props.currentPage,
                 size: props.itemsPerPage,
                 tags: filteredTags.value,
-                q: props.searchQuery,
+                q: props.q,
                 ...detailPayload,
             }
 
-            if (detail.page === props.currentPage &&
-                detail.size === props.itemsPerPage
+            if (
+                detail.page === props.currentPage
+                && detail.size === props.itemsPerPage
                 && JSON.stringify(detail.tags) === JSON.stringify(filteredTags.value)
-                && ((detail.q === undefined && props.searchQuery === undefined) ||
-                    detail.q === props.searchQuery)
+                && ((detail.q === undefined && props.q === undefined) || detail.q === props.q)
             ) {
                 return
             }
@@ -184,6 +182,17 @@
     const generateCardHref = (blueprint: Blueprint) => {
         return `/blueprints/${blueprint.id}`
     }
+
+    let queryTimeout: ReturnType<typeof setTimeout>
+
+    watch(searchQueryModel,
+        (newQuery) => {
+            if(queryTimeout) clearTimeout(queryTimeout)
+            queryTimeout = setTimeout(() => {
+                changePage({q: newQuery, page: 1})
+            }, 500)
+        },
+    )
 </script>
 
 <style lang="scss" scoped>
