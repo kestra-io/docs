@@ -6,6 +6,7 @@ topics:
   - Version Control
   - DevOps
 version: ">= 0.17.0"
+description: Automatically sync your flows from a Git repository to Kestra using the SyncFlows task, enabling GitOps and version control for your workflows.
 ---
 
 Sync flows from a Git Repository to Kestra with the SyncFlows Task.

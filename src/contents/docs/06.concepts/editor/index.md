@@ -1,5 +1,6 @@
 ---
 title: Flow Editor in Kestra – Write and Test Flows
+description: Kestra provides a built-in code editor to write and test your flows.
 sidebarTitle: Editor
 icon: /src/contents/docs/icons/concepts.svg
 docId: flowEditor

@@ -1,5 +1,6 @@
 ---
 title: Kestra JavaScript SDK
+description: Integrate Kestra with your JavaScript applications using the Kestra JavaScript SDK. Learn to install the SDK, configure the client, and programmatically create and execute workflows.
 icon: /src/contents/docs/icons/api.svg
 release: 1.2.0
 ---
@@ -25,12 +26,12 @@ npm install @kestra-io/kestra-sdk
 npm install dotenv --save-dev
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes**
 - Prefer environment variables over hardcoding credentials.
 - Use **either** username/password (basic auth) or an access token (bearer).
 - Reuse a single `KestraClient` instance throughout your application.
-::
+:::
 
 ### Configure the client
 
@@ -76,12 +77,12 @@ tasks:
 createFlow().catch(console.error);
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Important**
 - `body` must be valid flow YAML. Invalid YAML or missing fields returns a `4xx`.
 - Ensure the correct `tenant` for multi-tenant setups.
 - The response contains the created flow (including metadata and source).
-::
+:::
 
 ---
 
@@ -113,12 +114,12 @@ tasks:
 updateFlow().catch(console.error);
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Tips**
 - Provide the **full** YAML on update; partial payloads are not merged.
 - Keep flow YAML in source control for versioning and code review.
 - Reuse the same `tenant`/`namespace`/`id` to target the correct flow.
-::
+:::
 
 ---
 
@@ -142,11 +143,11 @@ async function deleteFlow() {
 deleteFlow().catch(console.error);
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes**
 - Deleting a flow removes its definition; executions remain in history unless separately deleted.
 - Ensure you target the correct `tenant` before deleting.
-::
+:::
 
 ---
 
@@ -170,12 +171,12 @@ async function executeFlow() {
 executeFlow().catch(console.error);
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes**
 - `wait=true` blocks until the execution finishes (handy for tests/CLI).
 - You can also pass labels, schedule dates, breakpoints, variables, and inputs — see the method signature for optional parameters.
 - For multi-tenant setups, set the correct `tenant` value.
-::
+:::
 
 ---
 
@@ -202,11 +203,11 @@ async function deleteExecution() {
 deleteExecution().catch(console.error);
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes**
 - Use the flags to remove associated logs/metrics/storage when needed.
 - Ensure you target the correct `tenant` and execution ID before deleting.
-::
+:::
 
 ---
 
@@ -238,12 +239,12 @@ async function followExecution() {
 followExecution().catch(console.error);
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Tips**
 - The first SSE payload is an empty keepalive — skip it before processing updates.
 - If you only need the final result, poll the execution by ID instead of streaming.
 - Add retry/backoff when streaming over unstable networks.
-::
+:::
 
 ---
 

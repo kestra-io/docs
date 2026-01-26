@@ -2,6 +2,7 @@
 title: Performance Tuning Kestra – Tune Workers, JDBC, Kafka
 sidebarTitle: Performance Tuning
 icon: /src/contents/docs/icons/admin.svg
+description: Tips and best practices for tuning Kestra performance, covering Worker configuration, JDBC backend, and Kafka settings.
 ---
 
 Not all workloads are the same, so Kestra is configured to balance throughput (the ability to process a lot of executions in parallel) and latency (the ability to process executions quickly) without using too many resources.

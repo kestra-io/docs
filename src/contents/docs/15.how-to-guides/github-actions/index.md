@@ -7,6 +7,7 @@ topics:
   - DevOps
   - Version Control
 version: ">= 0.6.1"
+description: Automate the validation and deployment of your Kestra flows using GitHub Actions for a robust CI/CD pipeline.
 ---
 
 How to use GitHub Actions to automatically validate and deploy your flows to Kestra.

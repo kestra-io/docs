@@ -2,6 +2,7 @@
 title: Run Kestra from Standalone JAR – No Docker Deployment
 sidebarTitle: Standalone Server
 icon: /src/contents/docs/icons/java.svg
+description: Run Kestra directly from a standalone executable JAR file, suitable for environments where Docker is not available.
 ---
 
 Install Kestra on a standalone server with a simple executable file.

@@ -1,5 +1,6 @@
 ---
 title: Flow Trigger in Kestra – Chain Flow Executions
+description: Chain workflows in Kestra using the Flow Trigger. Automate dependencies by triggering flows upon the completion, success, or failure of other flows.
 sidebarTitle: Flow Trigger
 icon: /src/contents/docs/icons/flow.svg
 ---
@@ -52,13 +53,11 @@ triggers:
           states: [SUCCESS]
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 It is [best practice](../../../14.best-practices/0.flows/index.md#flow-trigger-on-state-change) when using a flow trigger to use `preconditions.flows.states` rather than the `states` task property when defining state conditions for one specific flow.
-::
+:::
 
-- `where`
-
-You can filter executions based on fields like `FLOW_ID`, `NAMESPACE`, `STATE`, and `EXPRESSION`.
+- `where`: filter executions based on fields like `FLOW_ID`, `NAMESPACE`, `STATE`, and `EXPRESSION`.
 
 For example, the following Flow Trigger triggers on execution from flows in FAILED or WARNING states in namespaces starting with "company":
 

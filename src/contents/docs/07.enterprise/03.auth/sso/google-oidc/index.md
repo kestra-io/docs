@@ -1,5 +1,6 @@
 ---
 title: Set Up Google OIDC SSO for Kestra
+description: Set up Google OIDC SSO for Kestra. Authenticate users with their Google accounts using OpenID Connect for secure and easy access.
 sidebarTitle: Google OIDC SSO
 icon: /src/contents/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]

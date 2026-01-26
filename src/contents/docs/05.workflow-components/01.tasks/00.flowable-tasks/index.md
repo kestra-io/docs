@@ -1,5 +1,6 @@
 ---
 title: Flowable Tasks in Kestra – Control Orchestration Logic
+description: Deep dive into Kestra Flowable Tasks. Learn to control execution flow with sequential, parallel, switch, if/else, loops, and error handling constructs.
 sidebarTitle: Flowable Tasks
 icon: /src/contents/docs/icons/flow.svg
 ---

@@ -1,5 +1,6 @@
 ---
 title: Webhook Trigger in Kestra – Start Flows via HTTP
+description: Trigger Kestra flows via HTTP with the Webhook Trigger. Learn to start executions from external applications using secure webhook URLs and payloads.
 sidebarTitle: Webhook Trigger
 icon: /src/contents/docs/icons/flow.svg
 ---

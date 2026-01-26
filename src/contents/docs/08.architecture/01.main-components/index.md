@@ -1,5 +1,6 @@
 ---
 title: Kestra Architecture – Main Components
+description: Understand Kestra's core architecture. Dive into main components like the Repository, Queue, Internal Storage, and Plugin system.
 sidebarTitle: Main components
 icon: /src/contents/docs/icons/architecture.svg
 ---

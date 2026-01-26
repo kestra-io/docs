@@ -20,7 +20,12 @@ interface Props {
 }
 
 const props = Astro.props
-const currentOrigin = Astro.url.origin ?? "https://kestra.io"
+
+const currentUrl = Astro.url
+currentUrl.pathname = currentUrl.pathname.endsWith("/") ? currentUrl.pathname.slice(0, -1) : currentUrl.pathname;
+
+
+const currentOrigin = currentUrl.origin ?? "https://kestra.io"
 const slug = Astro.routePattern
 
 const title = props.title
@@ -31,6 +36,20 @@ const description =
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
 const slackMembers = await fetchSlackMembers()
+
+
+const query = new URLSearchParams(currentUrl.searchParams.entries()
+    .filter(([key, _]) => ["category", "sort", "page"].includes(key))
+    .reduce((acc, [key, value]) => {
+        acc[key] = value
+        return acc
+    }, {} as Record<string, string>))
+
+const canonicalUrl = new URL(
+    currentUrl + (query.size > 0 ? "?" + query.toString() : ""),
+    Astro.site
+)
+
 ---
 
 <html lang="en" class="dark">
@@ -88,7 +107,7 @@ const slackMembers = await fetchSlackMembers()
             name="robots"
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
-        <link rel="canonical" href={`${currentOrigin}`} />
+        <link rel="canonical" href={canonicalUrl.toString()} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />

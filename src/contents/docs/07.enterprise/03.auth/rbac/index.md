@@ -1,5 +1,6 @@
 ---
 title: RBAC in Kestra Enterprise – Manage Roles and Permissions
+description: Implement Role-Based Access Control (RBAC) in Kestra. Define granular permissions for users, groups, and service accounts to secure your platform.
 sidebarTitle: Role-Based Access Control (RBAC)
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -79,8 +80,6 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 
 :::alert{type="warning"}
 The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/0.24.0/endpoint-changes/index.md#rbac-updates)
-:::
-
 :::
 
 ### Actions

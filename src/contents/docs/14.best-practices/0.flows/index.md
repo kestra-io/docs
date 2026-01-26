@@ -2,6 +2,7 @@
 title: Flow Best Practices
 sidebarTitle: Flow Best Practices
 icon: /src/contents/docs/icons/best-practices.svg
+description: Design Kestra flows for optimal performance and reliability by managing task count, data volume, and parallelism.
 ---
 
 How to design your workflows for optimal performance.

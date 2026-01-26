@@ -1,5 +1,6 @@
 ---
 title: Set Up Kestra Enterprise – License and First Tenant
+description: How to set up Kestra Enterprise Edition.
 sidebarTitle: Enterprise Edition Setup Guide
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

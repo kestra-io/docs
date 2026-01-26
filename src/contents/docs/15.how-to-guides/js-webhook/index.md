@@ -5,6 +5,7 @@ stage: Getting Started
 topics:
   - Scripting
   - Integrations
+description: Integrate your web applications with Kestra using Webhook triggers to start workflows from your frontend or backend code.
 ---
 
 Integrate Kestra into your JavaScript App using Webhooks.

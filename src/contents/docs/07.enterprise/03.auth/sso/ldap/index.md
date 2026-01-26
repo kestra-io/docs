@@ -1,5 +1,6 @@
 ---
 title: Configure LDAP Authentication for Kestra
+description: Enable LDAP authentication in Kestra. Connect your existing LDAP directory to manage user login and group synchronization securely.
 sidebarTitle: LDAP
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]

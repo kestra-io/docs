@@ -1,5 +1,6 @@
 ---
 title: API Tokens in Kestra Enterprise – Manage Programmatic Access
+description: Manage programmatic access with API Tokens in Kestra. Create and control tokens for users and service accounts to securely interact with the Kestra API.
 sidebarTitle: API Tokens
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

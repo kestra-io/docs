@@ -3,6 +3,7 @@ title: Version property renamed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]
+description: Renaming of the version property in several plugins to reserve the keyword for Kestra's internal plugin management.
 ---
 
 

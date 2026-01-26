@@ -1,5 +1,6 @@
 ---
 title: Service Accounts in Kestra Enterprise – Non-Human Access
+description: Create and manage Service Accounts in Kestra. Securely authenticate external applications and CI/CD pipelines with programmatic access tokens.
 sidebarTitle: Service Accounts
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

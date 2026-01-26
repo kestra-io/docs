@@ -6,6 +6,7 @@ topics:
   - Version Control
   - DevOps
 version: ">= 0.17.0"
+description: Push your namespace files, such as scripts and configuration, from Kestra to a Git repository to maintain version control.
 ---
 
 Push files in your namespace to a Git Repository with the PushNamespaceFiles Task.

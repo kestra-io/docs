@@ -1,5 +1,6 @@
 ---
 title: Worker Isolation in Kestra Enterprise – Enforce Separation
+description: Enforce security with Worker Isolation in Kestra. Isolate execution environments, file systems, and processes for secure multi-tenant operations.
 sidebarTitle: Worker Isolation
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
@@ -70,7 +71,7 @@ kestra:
         level: ERROR
 ```
 
-For [Bash tasks](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster `pluginDefaults`:
+For [Bash tasks](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster `pluginDefaults`:
 
 ```yaml
 kestra:
