@@ -45,6 +45,7 @@ const description = "Get started with our library of workflows ready to use"
             blueprints={blueprints}
             total={total}
             currentUrl={Astro.request.url}
+            transition:persist
             client:idle
         />
         <LayoutFooterContact
