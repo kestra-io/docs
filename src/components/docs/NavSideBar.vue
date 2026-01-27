@@ -174,7 +174,8 @@
 
         .search,
         .ai-button-wrapper {
-            width: 209px;
+            min-width: 209px;
+            width: 98%;
             height: 32px;
 
             @include media-breakpoint-down(lg) {
