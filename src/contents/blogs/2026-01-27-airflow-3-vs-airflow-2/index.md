@@ -88,7 +88,9 @@ If any of these limitations are causing real pain for your team, you're going to
 
 If you're already facing the task of refactoring for Airflow 3, it's a good moment to evaluate a different orchestration model, like Kestra.
 
-Kestra is an open-source, event-driven orchestration platform for data, infrastructure, and AI workflows, with workflows defined as code.
+Kestra is an open-source, event-driven orchestration platform for data, infrastructure, and AI workflows, with workflows defined as code - accessible through a unified interface:
+
+![Data engineering pipeline example in Kestra](./kestra-data-eng-pipeline-ui.png)
 
 **How Kestra is different:**
 - **Declarative workflows** — YAML definitions instead of Python DAGs, readable by anyone on the team
@@ -143,9 +145,13 @@ The difference isn't just syntax. Kestra's architecture addresses the persistent
 
 **Gentler migration path.** You can run Kestra alongside Airflow, migrate incrementally, and even trigger Kestra flows from Airflow DAGs during the transition. No big-bang cutover required. Teams like Crédit Agricole used this approach to move from Jenkins and Ansible to Kestra, orchestrating infrastructure across 100+ clusters without downtime.
 
-**Complete lineage with [Assets](https://kestra.io/docs/enterprise/governance/assets).** Airflow 3 introduces Assets (rebranded from Datasets) for data-aware scheduling, but they only track data dependencies between tables. Kestra's Assets track both data artifacts (tables, files, datasets) and infrastructure resources (buckets, VMs, compute) in a unified inventory. When your DevOps team moves an S3 bucket or provisions new infrastructure, you can trace which workflows depend on it. When a table schema changes, you see the full impact across data and infrastructure layers. This matters for teams that do more than just SQL transformations.
+**Complete lineage with [Assets](https://kestra.io/docs/enterprise/governance/assets).** Airflow 3 introduces Assets (rebranded from Datasets) for data-aware scheduling, but they only track data dependencies between tables. Kestra's Assets track both data artifacts (tables, files, datasets) and infrastructure resources (buckets, VMs, compute) in a unified inventory. When your DevOps team moves an S3 bucket or provisions new infrastructure, you can trace which workflows depend on it.
 
-You can [try Kestra in the browser](https://demo.kestra.io) or [run it locally with Docker](https://kestra.io/docs/installation/docker).
+And Kestra builds the lineage graph automatically to show you the dependencies between Asset. Here, the blue represents Asset objects, grey represents the Flows.
+
+![Assets DAG view in Kestra](assets-dag.png)
+
+Kestra is open-source and can be [run locally with Docker](https://kestra.io/docs/installation/docker) in just 5 minutes with our [Quickstart Guide](https://kestra.io/docs/quickstart). 
 
 ## Making the decision
 
