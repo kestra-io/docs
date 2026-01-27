@@ -258,14 +258,6 @@
             display: flex;
             scroll-margin: 80px;
 
-            .title {
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                line-clamp: 1;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
             &.active {
                 font-weight: 500;
             }
