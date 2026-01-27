@@ -111,7 +111,7 @@ tasks:
 
 ```
 
-Kestra builds the lineage graph automatically: `sample_data.nyc.taxi` -> `trips` -> `avg_trip_distance`. 
+Kestra builds the lineage graph automatically: `sample_data.nyc.taxi` -> `trips` -> `avg_trip_distance`. In the image below, Kestra's graph shows you the dependencies between the `trips` asset and the `avg_trip_distance` asset. Blue represents Asset objects, grey represents the Flows.
 
 ![Assets DAG view in Kestra](assets-dag.png)
 
