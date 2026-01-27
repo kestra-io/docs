@@ -98,7 +98,7 @@ Each task run can be in one of the following states:
 5. **FAILED**: The task run has failed.
 6. **RETRYING**: The task run is currently being retried.
 7. **RETRIED**: The task run has been retried.
-8. **RESTARTED**: The task run has been restarted from a failed state.
+8. **RESTARTED**: This transient state indicates that the task run has been restarted as part of an execution restart, replay, or resume operation. The task run will transition to `RUNNING` once the restart is processed.
 9. **KILLING**: The task run is in the process of being killed.
 10. **KILLED**: The task run has been killed upon request by the user.
 
@@ -125,12 +125,14 @@ graph LR;
     F -->| Retry succeeded | C[SUCCESS]
     F -->| Retry exhausted | E[FAILED]
     E -->| Retry by creating new task run | G[RETRIED]
-    B -->| Requested to be killed | H[KILLING]
-    H -->| Task run terminated | I[KILLED]
+    E -->| Restart/replay/resume | H[RESTARTED]
+    H -->| Restart processed | B[RUNNING]
+    B -->| Requested to be killed | I[KILLING]
+    I -->| Task run terminated | J[KILLED]
 
-    class A,B,F,H transient;
-    class C,D,E,G,I terminal;
+    class A,B,F,H,I transient;
+    class C,D,E,G,J terminal;
 
-    linkStyle 0,1,2,3,4,5,6,7,8,9 stroke:#2a9d8f, stroke-width:3px;
+    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11 stroke:#2a9d8f, stroke-width:3px;
 ```
 :::
