@@ -160,7 +160,6 @@ tasks:
           type: io.kestra.plugin.ee.assets.File
           metadata:
             owner: data
-
 ```
 
 Now your lineage graph connects infrastructure provisioning to data workflows. You can answer questions like: "Which teams are using which buckets?" and "What files have been uploaded to each bucket?"
