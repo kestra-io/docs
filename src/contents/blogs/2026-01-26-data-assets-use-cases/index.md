@@ -60,6 +60,12 @@ tasks:
             type: io.kestra.plugin.ee.assets.Table
             metadata:
               model_layer: staging
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.duckdb
+    values:
+      url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+      fetchType: STORE
 ```
 
 The task declares `sample_data.nyc.taxi` as an input (an external source managed outside this workflow) and `trips` as an output. Kestra registers both in its inventory and draws the dependency line between them.
@@ -142,24 +148,39 @@ tasks:
                 team: "{{ taskrun.value }}"
 
 ```
+The full code example, including credentials, [can be found here.](https://kestra.io/docs/enterprise/governance/assets#infrastructure-use-case-team-bucket-provisioning) 
 
 Later, when the data team uploads files to their bucket, they reference it as an input asset:
 
 ```yaml
+id: upload_file
+namespace: kestra.company.data
+
 tasks:
-  - id: upload_to_bucket
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://raw.githubusercontent.com/kestra-io/datasets/refs/heads/main/jaffle-data/raw_customers.csv
+
+  - id: aws_upload
     type: io.kestra.plugin.aws.s3.Upload
     bucket: kestra-data-bucket
     from: '{{ outputs.download.uri }}'
-    key: raw_customers.csv
+    key: raw_customer.csv
     assets:
       inputs:
         - id: kestra-data-bucket
       outputs:
-        - id: raw_customers
+        - id: raw_customer
           type: io.kestra.plugin.ee.assets.File
           metadata:
             owner: data
+
+pluginDefaults:
+  - type: io.kestra.plugin.aws
+    values:
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "{{ secret('AWS_REGION') }}"
 ```
 
 Now your lineage graph connects infrastructure provisioning to data workflows. You can answer questions like: "Which teams are using which buckets?" and "What files have been uploaded to each bucket?"
@@ -172,7 +193,7 @@ You can see your assets globally across Kestra on the Assets page:
 
 And you can reference them dynamically in other workflows with the `assets()` function, which queries your inventory and returns matching assets for when you need to target infrastructure operations at scale.
 
-```
+```yaml
 id: upgrade_python
 namespace: team.infra
 
