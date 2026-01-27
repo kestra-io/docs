@@ -2,6 +2,7 @@
 title: Script tasks moved to dedicated plugins
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.11.0
+description: Migration guide for moving from core script tasks to dedicated script plugins in Kestra 0.11.0.
 ---
 
 

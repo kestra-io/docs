@@ -1,5 +1,6 @@
 ---
 title: Set Up Microsoft OIDC SSO for Kestra
+description: Configure Microsoft OIDC SSO for Kestra. Enable users to sign in with their Microsoft Entra ID (Azure AD) credentials using OpenID Connect.
 sidebarTitle: Microsoft OIDC SSO
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

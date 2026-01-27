@@ -1,5 +1,6 @@
 ---
 title: Secrets in Kestra Enterprise – Manage Sensitive Data
+description: Manage sensitive data securely in Kestra Enterprise. Create, use, and govern secrets within your workflows ensuring secure credential handling.
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

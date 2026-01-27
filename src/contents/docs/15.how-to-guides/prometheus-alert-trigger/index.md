@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/prometheus.svg
 stage: Intermediate
 topics:
   - DevOps
+description: Connect Prometheus alerts to Kestra to automatically trigger flows via webhooks when specific metrics thresholds are breached.
 ---
 
 Connect Prometheus alerts to Kestra to trigger flows.

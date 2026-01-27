@@ -1,5 +1,6 @@
 ---
 title: Replay Executions in Kestra – Rerun from Any Task
+description: Replay allows you to re-run a workflow execution from any chosen task run.
 sidebarTitle: Replay
 icon: /src/contents/docs/icons/dev.svg
 ---

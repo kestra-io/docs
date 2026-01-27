@@ -1,5 +1,6 @@
 ---
 title: KV Store in Kestra – Persist Shared State
+description: Build stateful workflows with the KV Store.
 sidebarTitle: Key Value (KV) Store
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"

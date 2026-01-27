@@ -2,6 +2,7 @@
 title: Configure Kestra with MITM Proxy – Outbound HTTPS
 sidebarTitle: MITM Proxy for Kestra
 icon: /src/contents/docs/icons/padlock.svg
+description: Configure Kestra to route outbound HTTPS traffic through a Man-in-the-Middle (MITM) proxy for secure environments.
 ---
 
 Configure outbound HTTP/S traffic through an MITM proxy in Kestra.

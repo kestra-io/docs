@@ -3,6 +3,7 @@ title: Helm Chart Updates
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
+description: Major updates and restructuring of Kestra Helm charts for production-grade deployments in version 1.0.0.
 ---
 
 

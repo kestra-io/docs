@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/api.svg
 stage: Getting Started
 topics:
   - Integrations
+description: Learn how to interact with JSON data in Kestra workflows, including parsing, accessing nested fields, and using jq expressions.
 ---
 
 Interact with JSONs using expressions.

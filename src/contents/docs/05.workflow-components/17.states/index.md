@@ -1,5 +1,6 @@
 ---
 title: Execution States in Kestra – Lifecycle Reference
+description: Understand the Kestra Execution Lifecycle. Reference guide to all execution and task run states, including Created, Running, Success, Failed, and more.
 sidebarTitle: States
 icon: /src/contents/docs/icons/flow.svg
 ---

@@ -2,6 +2,7 @@
 title: Moving from Development to Production
 sidebarTitle: Dev to Prod
 icon: /src/contents/docs/icons/best-practices.svg
+description: Recommended patterns for promoting Kestra flows from development to production environments using Git and CI/CD.
 ---
 
 Common patterns for deploying flows from development to production environments.

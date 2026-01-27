@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/neon.svg
 stage: Intermediate
 topics:
   - Integrations
+description: Connect your serverless Neon PostgreSQL database to Kestra workflows to query, ingest, and manage data seamlessly.
 ---
 
 Connect your Neon serverless database to your workflows using the PostgreSQL plugin.

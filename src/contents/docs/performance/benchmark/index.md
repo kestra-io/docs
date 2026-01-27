@@ -2,6 +2,7 @@
 title: Kestra Benchmarks – Orchestration Throughput and Latency
 sidebarTitle: Benchmarks
 icon: /src/contents/docs/icons/admin.svg
+description: View performance benchmarks for Kestra's orchestration throughput and latency across Open Source and Enterprise editions.
 ---
 
 Kestra is an orchestration platform: you define a flow, and Kestra orchestrates it.

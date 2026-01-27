@@ -2,6 +2,7 @@
 title: Configure Kestra – Settings, Environments, and Defaults
 sidebarTitle: Configuration
 icon: /src/contents/docs/icons/admin.svg
+description: Explore Kestra's comprehensive configuration options for settings, environments, and defaults. Learn how to manage data sources, logging, security, and AI to customize your Kestra instance.
 ---
 
 Configuration reference for Kestra.

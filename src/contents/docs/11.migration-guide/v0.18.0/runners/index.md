@@ -2,6 +2,7 @@
 title: Deprecation of runner property in favor of taskRunner
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.18.0
+description: Guide to migrating from the deprecated runner property to the more flexible taskRunner property.
 ---
 
 

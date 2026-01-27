@@ -2,6 +2,7 @@
 title: Deprecation of LocalFiles and outputDir
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
+description: Guide to migrating from deprecated LocalFiles and outputDir to inputFiles and outputFiles in Kestra 0.17.0.
 ---
 
 

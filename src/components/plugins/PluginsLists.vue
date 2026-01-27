@@ -39,7 +39,7 @@
 
             <CommonPaginationContainer
                 :current-url="fullPath"
-                :total-items="activePlugins.length"
+                :total-items="categoryFilteredPlugins.length"
                 @update="
                     ({ page, size }) => {
                         currentPage = page
@@ -152,6 +152,7 @@
     })
 
     watch([searchQuery, activeCategory, sortBy], ([q, cat, sort]) => {
+        currentPage.value = 1
         const url = new URL(window.location.href)
         url.searchParams.set("category", cat)
         url.searchParams.set("sort", sort)

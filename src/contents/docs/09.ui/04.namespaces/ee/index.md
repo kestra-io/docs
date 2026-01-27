@@ -1,5 +1,6 @@
 ---
 title: Enterprise Namespace Pages – Governance in the UI
+description: Manage Enterprise Namespace features in the UI. Configure secrets, variables, and audit logs per namespace for enhanced governance.
 sidebarTitle: Enterprise Namespace Pages
 icon: /src/contents/docs/icons/ui.svg
 editions: ["EE", "Cloud"]

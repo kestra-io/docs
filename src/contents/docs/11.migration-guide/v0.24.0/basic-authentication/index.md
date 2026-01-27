@@ -3,6 +3,7 @@ title: Required Basic Authentication
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS"]
+description: Notice regarding mandatory Basic Authentication for all Kestra Open-Source instances starting in version 0.24.0.
 ---
 
 

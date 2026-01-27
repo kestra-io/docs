@@ -1,5 +1,6 @@
 ---
 title: Versioned Plugins in Kestra Enterprise – Manage Plugin Upgrades
+description: Manage plugin versions in Kestra Enterprise. Install multiple versions of the same plugin to support legacy flows while upgrading others safely.
 sidebarTitle: Versioned Plugins
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

@@ -20,7 +20,12 @@ interface Props {
 }
 
 const props = Astro.props
-const currentOrigin = Astro.url.origin ?? "https://kestra.io"
+
+const currentUrl = Astro.url
+currentUrl.pathname = currentUrl.pathname.endsWith("/") ? currentUrl.pathname.slice(0, -1) : currentUrl.pathname;
+
+
+const currentOrigin = currentUrl.origin ?? "https://kestra.io"
 const slug = Astro.routePattern
 
 const title = props.title
@@ -33,14 +38,18 @@ const image = `${props.image && props.image.startsWith("http") ? "" : currentOri
 const slackMembers = await fetchSlackMembers()
 
 
-const query = new URLSearchParams(Astro.url.searchParams.entries()
+const query = new URLSearchParams(currentUrl.searchParams.entries()
     .filter(([key, _]) => ["category", "sort", "page"].includes(key))
     .reduce((acc, [key, value]) => {
         acc[key] = value
         return acc
     }, {} as Record<string, string>))
 
-const canonicalUrl = new URL(Astro.url.pathname + (query.size > 0 ? "?" + query.toString() : ""), Astro.site)
+const canonicalUrl = new URL(
+    currentUrl + (query.size > 0 ? "?" + query.toString() : ""),
+    Astro.site
+)
+
 ---
 
 <html lang="en" class="dark">
