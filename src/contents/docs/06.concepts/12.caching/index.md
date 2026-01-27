@@ -1,5 +1,6 @@
 ---
 title: Caching in Kestra – Speed Up Repeated Tasks
+description: Manage file caching inside Kestra.
 sidebarTitle: Caching
 icon: /src/contents/docs/icons/concepts.svg
 ---

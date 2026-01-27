@@ -4,6 +4,7 @@ sidebarTitle: Google Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
+description: Execute Kestra tasks using Google Batch to provision and manage compute resources on Google Cloud efficiently.
 ---
 
 Run tasks as containers on Google Cloud VMs.

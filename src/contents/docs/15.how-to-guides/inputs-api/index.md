@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/api.svg
 stage: Getting Started
 topics:
   - Kestra Workflow Components
+description: Learn how to pass dynamic inputs to Kestra flow executions via API calls to parameterize your workflows at runtime.
 ---
 
 Passing Inputs via an API Call

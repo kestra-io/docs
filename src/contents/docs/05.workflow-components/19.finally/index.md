@@ -1,5 +1,6 @@
 ---
 title: Finally Tasks in Kestra – Always-Run Cleanup
+description: Ensure cleanup with Finally tasks in Kestra. Execute specific tasks at the end of a flow regardless of success or failure, perfect for resource teardown.
 sidebarTitle: Finally
 icon: /src/contents/docs/icons/flow.svg
 version: "0.21.0"

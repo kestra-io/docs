@@ -1,5 +1,6 @@
 ---
 title: RBAC in Kestra Enterprise – Manage Roles and Permissions
+description: Implement Role-Based Access Control (RBAC) in Kestra. Define granular permissions for users, groups, and service accounts to secure your platform.
 sidebarTitle: Role-Based Access Control (RBAC)
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

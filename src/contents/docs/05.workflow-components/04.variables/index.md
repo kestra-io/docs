@@ -1,5 +1,6 @@
 ---
 title: Variables in Kestra – Reuse Values Across Flows
+description: Master Variables in Kestra to reuse values across tasks and flows. Learn to configure, modify, and utilize dynamic variables with Pebble templating.
 sidebarTitle: Variables
 icon: /src/contents/docs/icons/flow.svg
 docId: variables

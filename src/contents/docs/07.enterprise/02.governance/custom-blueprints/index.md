@@ -1,5 +1,6 @@
 ---
 title: Custom & Template Blueprints in Kestra Enterprise – Private Templates
+description: Create Custom Blueprints in Kestra Enterprise. Standardize workflows with private templates, promoting reuse and best practices across your organization.
 sidebarTitle: Custom Blueprints
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

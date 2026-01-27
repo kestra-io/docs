@@ -2,6 +2,7 @@
 title: Git Clone Task – Fetch Repos for Script Workflows
 sidebarTitle: Git Clone task
 icon: /src/contents/docs/icons/dev.svg
+description: Use the Git Clone task to fetch repositories into Kestra's working directory and process files in your workflows.
 ---
 
 Clone a Git repository and use the files in your tasks.

@@ -1,5 +1,6 @@
 ---
 title: Apps in Kestra Enterprise – Build Frontends for Flows
+description: Build custom Apps with Kestra. Create user-facing interfaces for workflows, enabling forms, approvals, and interactive data applications.
 sidebarTitle: Apps
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

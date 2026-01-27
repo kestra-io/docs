@@ -1,5 +1,6 @@
 ---
 title: Assets in Kestra – Track Lineage and Metadata
+description: Use Assets in Kestra Enterprise to track workflow lineage and metadata. Manage resources like tables, files, and datasets across your data stack.
 sidebarTitle: Assets
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

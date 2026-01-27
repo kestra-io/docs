@@ -5,6 +5,7 @@ stage: Advanced
 topics:
   - Kestra Concepts
   - DevOps
+description: Learn how to build, package, and test a custom Kestra plugin in Java to extend Kestra's capabilities for your specific needs.
 ---
 
 Build your own Custom Plugin for Kestra.

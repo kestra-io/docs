@@ -1,5 +1,6 @@
 ---
 title: authentik SCIM Provisioning
+description: Configure SCIM provisioning with authentik. Learn how to automatically sync users and groups from authentik to your Kestra Enterprise instance.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.18.0"

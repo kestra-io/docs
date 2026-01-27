@@ -2,6 +2,7 @@
 title: Usage Reporting in Kestra – Configure Anonymous Metrics
 sidebarTitle: Usage
 icon: /src/contents/docs/icons/admin.svg
+description: Learn about anonymous usage reporting in Kestra and how to configure or disable data collection.
 ---
 
 Configuration options for the usage report.

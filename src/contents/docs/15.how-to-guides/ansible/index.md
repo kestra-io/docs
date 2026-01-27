@@ -2,6 +2,7 @@
 title: Check Machine Resources and Tool Versions with Ansible and Kestra
 icon: /src/contents/docs/icons/ansiblecli.svg
 stage: Intermediate
+description: Use Ansible playbooks orchestrated by Kestra to audit machine resources, check tool versions, and automate infrastructure updates.
 ---
 
 Run Ansible playbooks from Kestra and coordinate downstream infrastructure tasks.

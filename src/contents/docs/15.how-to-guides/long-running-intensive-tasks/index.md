@@ -5,6 +5,7 @@ stage: Advanced
 topics:
   - DevOps
   - Kestra Workflow Components
+description: Execute long-running and resource-intensive tasks on Kubernetes using Kestra's podCreate task or Kubernetes Task Runners.
 ---
 
 Schedule long running and intensive processes with Kestra on Kubernetes.

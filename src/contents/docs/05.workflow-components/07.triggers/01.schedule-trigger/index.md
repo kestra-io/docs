@@ -1,5 +1,6 @@
 ---
 title: Schedule Trigger in Kestra – Cron-Based Scheduling
+description: Schedule Kestra workflows with the Schedule Trigger. Learn to use cron expressions, backfills, and conditions to run flows at precise times.
 sidebarTitle: Schedule Trigger
 icon: /src/contents/docs/icons/flow.svg
 ---

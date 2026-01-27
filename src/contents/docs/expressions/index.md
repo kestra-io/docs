@@ -1,5 +1,6 @@
 ---
 title: Kestra Expressions Guide – Pebble and Context Variables
+description: Master Kestra's powerful expression language. Learn to use Pebble templating and context variables for dynamic flow control and data manipulation.
 sidebarTitle: Expressions
 icon: /src/contents/docs/icons/expression.svg
 ---
@@ -1511,22 +1512,31 @@ content
 
 ### currentEachOutput
 
-The `currentEachOutput` function simplifies retrieving outputs of sibling tasks within an `EachSequential` task.
+The `currentEachOutput` function simplifies [retrieving outputs of sibling tasks](../05.workflow-components/06.outputs/index.md#lookup-in-sibling-tasks) within an `ForEach` task.
 
 Example:
 
 ```yaml
+id: currenteachoutput_example
+namespace: company.team
+
 tasks:
-  - id: each
-    type: io.kestra.plugin.core.flow.EachSequential
+  - id: foreach
+    type: io.kestra.plugin.core.flow.ForEach
+    values: ["value 1", "value 2", "value 3"]
     tasks:
-      - id: first
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{task.id}}"
-      - id: second
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ currentEachOutput(outputs.first).value }}"
-    value: ["value 1", "value 2", "value 3"]
+      - id: make_data
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          data: "{{ taskrun.value }}"
+
+      - id: log_current
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ currentEachOutput(outputs.make_data).values.data }}"
+
+      - id: log_taskrun
+        type: io.kestra.core.tasks.log.Log
+        message: "{{ outputs.make_data[taskrun.value].values.data }}"
 ```
 
 This eliminates the need for manual handling of `taskrun.value` or `parents`.

@@ -1,5 +1,6 @@
 ---
 title: Workflow SLAs in Kestra – Assert Duration Targets
+description: Enforce Service Level Agreements (SLAs) in Kestra. Monitor workflow duration and assertions, triggering alerts or actions when performance targets are missed.
 sidebarTitle: SLA
 icon: /src/contents/docs/icons/flow.svg
 version: ">= 0.20.0"

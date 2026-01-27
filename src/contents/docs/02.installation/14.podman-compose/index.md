@@ -2,6 +2,7 @@
 title: Deploy Kestra with Podman Compose – Postgres Backend
 sidebarTitle: Podman Compose
 icon: /src/contents/docs/icons/podman.svg
+description: Deploy Kestra using Podman Compose with PostgreSQL, offering a rootless container alternative to Docker.
 ---
 
 Start Kestra with a PostgreSQL database backend using Podman Compose.

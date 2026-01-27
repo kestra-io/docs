@@ -1,5 +1,6 @@
 ---
 title: Subflow outputs behavior
+description: Learn about the deprecated subflow outputs behavior in Kestra 0.15.0 and the new approach for passing data between flows. Understand how flow-level outputs improve decoupling and maintainability of your Kestra workflows.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
 ---

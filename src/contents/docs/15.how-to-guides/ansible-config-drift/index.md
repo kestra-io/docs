@@ -2,6 +2,7 @@
 title: Detect Ansible Config Drift with Kestra
 icon: /src/contents/docs/icons/ansiblecli.svg
 stage: Intermediate
+description: Detect configuration drift across your infrastructure using Ansible and Kestra, and get alerted via Slack on changes.
 ---
 
 Keeps configs consistent and surfaces drift without manual checks with Ansible and Kestra.

@@ -2,6 +2,7 @@
 title: Commands vs Script Tasks in Kestra
 sidebarTitle: Commands and Script Tasks
 icon: /src/contents/docs/icons/dev.svg
+description: Understand the differences between Script and Commands tasks in Kestra and when to use each for your workflows.
 ---
 
 Types of tasks for executing programming languages.
