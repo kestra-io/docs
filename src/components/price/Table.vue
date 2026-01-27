@@ -295,7 +295,7 @@
                     isEnterprise: true,
                     description: {
                         text: "Built-in code editor to write and run your workflows",
-                        link: "/docs/concepts/editor",
+                        link: "/docs/ui/flows",
                     },
                 },
                 {

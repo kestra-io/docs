@@ -1,12 +1,23 @@
 ---
-export const prerender = false
+import type { GetStaticPaths } from 'astro'
 import Layout from "~/components/layout.astro"
 import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
-import { fetchReleaseByTag } from "~/utils/fetchChangelogVersions"
+import { fetchMajorReleases, type GitHubRelease } from "~/utils/fetchChangelogVersions"
 import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 
-const tag = Astro.params.tag
-const release = tag ? await fetchReleaseByTag(tag) : null
+export const getStaticPaths = (async () => {
+  const releases = await fetchMajorReleases(150)
+  return releases.map((release: GitHubRelease) => ({
+    params: { tag: release.tag_name },
+    props: { release }
+  }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  release: GitHubRelease
+}
+
+const { release } = Astro.props as Props
 
 if (!release) {
     return Astro.redirect("/docs/changelog")

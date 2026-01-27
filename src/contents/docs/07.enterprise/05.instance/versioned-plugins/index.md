@@ -25,9 +25,9 @@ Versioned plugins support several properties that can be modified in your Kestra
 
 - `remoteStorageEnabled`: Specifies whether remote storage is enabled (i.e., plugins are stored on the internal storage).
 - `localRepositoryPath`: The local path where managed plugins will be synced.
-- `autoReloadEnabled`: The interval at which the Kestra server checks for new or removed plugins.
-- `autoReloadInterval`: The default version to be used when no version is specified for a plugin.
-- `defaultVersion`: Accepted are: 'latest', 'current', 'oldest', 'none', or a specific version (e.g., 0.20.0)
+- `autoReloadEnabled`: Whether the server should periodically rescan repositories for new or removed plugins.
+- `autoReloadInterval`: How often to rescan (duration, e.g., `60s`).
+- `defaultVersion`: The version to use when none is specified in a flow. Accepted values: `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or an explicit version (e.g., `0.20.0`).
 
 An example configuration looks as follows:
 
@@ -43,6 +43,28 @@ kestra:
         autoReloadInterval: 60s
         defaultVersion: LATEST
 ```
+
+### Allow-list URLs
+
+In order to properly use Versioned Plugins, the following 3 URLs need to be allowed through your configuration:
+
+- https://repo.maven.apache.org/maven2/
+- https://registry.kestra.io/maven/
+- https://api.kestra.io/
+
+A default configuration looks like:
+
+```yaml
+kestra:
+  plugins:
+    repositories:
+      central:
+        url: https://repo.maven.apache.org/maven2/
+      kestra:
+        url: https://registry.kestra.io/maven
+```
+
+Refer to the [Plugins section](../../../configuration/index.md#plugins) in the Configuration guide for custom Maven repositories.
 
 With remote storage enabled, installed plugins are stored in a plugins repository in the `_plugins/repository` path. For example, the below paths show the storage for 0.19.0 and 0.20.0 versions of the Shell script plugin:
 

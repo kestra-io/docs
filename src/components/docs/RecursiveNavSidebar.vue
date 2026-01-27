@@ -11,7 +11,7 @@
             ref="root-link"
         >
             {{ item.emoji }}
-            {{ title }}
+            <span class="title">{{ title }}</span>
         </a>
         <a
             v-else-if="!item.hideSidebar"
@@ -20,7 +20,7 @@
             @click="toggleWithChildrenHandling(item.path)"
         >
             {{ item.emoji }}
-            {{ title }}
+            <span class="title">{{ title }}</span>
         </a>
         <template v-if="filteredChildren.length > 0 && !item.hideSubMenus">
             <ChevronDown
@@ -41,7 +41,9 @@
         v-if="!item.hideSubMenus && filteredChildren.length > 0"
         class="list-unstyled mb-0 accordion-collapse"
         :class="['ks-collapse', { 'ks-open': toggled }]"
+        :style="{ '--depth': depthLevel }"
     >
+        <div v-if="depthLevel > 0" class="vertical-line"></div>
         <RecursiveNavSidebar
             v-for="item in filteredChildren"
             :ref="`childSideBar-${pathToId(item.path)}`"
@@ -54,7 +56,7 @@
     </ul>
 </template>
 <script lang="ts">
-    import type { InjectionKey, ComputedRef } from "vue"
+    import type { ComputedRef, InjectionKey } from "vue"
     function scrollIntoViewIfNotVisible(target?: HTMLElement | null) {
         const bounds = target?.getBoundingClientRect()
         if (bounds && target && (bounds.bottom > window.innerHeight || bounds.top < 0)) {
@@ -79,11 +81,11 @@
 </script>
 
 <script setup lang="ts">
-    import { activeSlug } from "~/utils/store"
-    import { ref, nextTick, onMounted, inject, computed, watch, useTemplateRef } from "vue"
+    import { computed, inject, nextTick, onMounted, ref, useTemplateRef, watch } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import { useSidebarScroll } from "~/composables/useSidebarScroll"
+    import { activeSlug } from "~/utils/store"
 
     const rootLink = useTemplateRef<HTMLAnchorElement | null>("root-link")
 
@@ -200,6 +202,7 @@
         transition-behavior: allow-discrete;
         overflow: hidden;
         height: 0;
+        position: relative;
 
         @starting-style {
             height: 0;
@@ -212,6 +215,16 @@
                 height: calc-size(auto, size);
             }
         }
+
+        .vertical-line {
+            position: absolute;
+            left: calc(1.15rem * (var(--depth, 0)) + 7px);
+            top: 6px;
+            bottom: 0;
+            width: 1px;
+            height: calc(100% - 10px);
+            background: var(--kestra-io-token-color-background-hover-primary);
+        }
     }
 
     li {
@@ -223,22 +236,25 @@
 
             :deep(.material-design-icon__svg) {
                 bottom: 0;
-                color: $black-10;
+                color: $white-5;
+                position: absolute;
+                bottom: -0.20rem;
+                font-size: 20px;
             }
         }
 
         @for $i from 0 through 6 {
             &.depth-#{$i} {
-                a {
-                    padding-left: calc(0.5rem * ($i));
-                }
+                padding-left: calc(1.25rem * ($i));
             }
         }
 
         a {
             color: $white-1;
-            font-size: $font-size-sm;
-            padding: calc($spacer / 2);
+            font-size: 0.875rem;
+            padding: calc($spacer / 4) 0.25rem;
+            padding-left: 0;
+
             display: flex;
             scroll-margin: 80px;
 
@@ -256,16 +272,10 @@
             }
         }
 
-        &.depth-1 {
-            a {
-                padding-left: 0.25rem;
-                border-left: 0;
-                color: $white-1;
-            }
-        }
+
 
         &:not(.depth-1) a {
-            font-size: $font-size-sm;
+            font-size: 0.875rem;
         }
     }
 
@@ -274,11 +284,11 @@
     }
 
     .section {
-        font-size: $font-size-xs;
-        font-weight: 500;
-        color: $white-3;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: $white;
         text-transform: uppercase;
-        margin-top: 2rem;
+        margin-top: 1.5rem;
         margin-bottom: 0.75rem;
         padding-left: 0.25rem;
     }

@@ -12,8 +12,8 @@ const navigationTree = {
         // "Video Tutorials"
     ],
     "Build with Kestra": [
-        "Concepts",
         "Workflow Components",
+        "Concepts",
         "Multi-Language Script Tasks",
         "AI Tools",
         "No-Code",
