@@ -73,6 +73,9 @@ The `metadata` field is flexible. You can tag assets by model layer (staging, ma
 The classic analytics pattern: staging layer reads from external sources, mart layer aggregates for reporting. With Assets, you track the complete chain.
 
 ```yaml
+id: data_pipeline_assets
+namespace: kestra.company.data
+
 tasks:
   - id: staging
     type: io.kestra.plugin.jdbc.duckdb.Query
