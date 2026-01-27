@@ -98,7 +98,7 @@ Each task run can be in one of the following states:
 5. **FAILED**: The task run has failed.
 6. **RETRYING**: The task run is currently being retried.
 7. **RETRIED**: The task run has been retried.
-8. **RESTARTED**: This transient state indicates that the task run has been restarted as part of an execution restart, replay, or resume operation. The task run will transition to `RUNNING` once the restart is processed.
+8. **RESTARTED**: The task run is currently being restarted.
 9. **KILLING**: The task run is in the process of being killed.
 10. **KILLED**: The task run has been killed upon request by the user.
 
