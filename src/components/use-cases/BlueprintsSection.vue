@@ -21,7 +21,8 @@
     @import "~/assets/styles/variable";
     .container {
         border-top: $block-border;
-        padding: 3rem 0;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
         position: relative;
 
         &::after {
@@ -48,6 +49,11 @@
                 margin: 0;
             }
         }
+        :deep(.blueprints-carousel) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
         :deep(.card) {
             text-align: left;
             min-width: calc($spacer * 17.7);
@@ -102,6 +108,10 @@
             .carousel__prev--disabled {
                 display: none;
             }
+        }
+        :deep(.blueprints-carousel) {
+            margin-left: 0;
+            margin-right: 0;
         }
     }
 </style>
