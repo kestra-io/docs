@@ -125,13 +125,13 @@ graph LR;
     F -->| Retry succeeded | C[SUCCESS]
     F -->| Retry exhausted | E[FAILED]
     E -->| Retry by creating new task run | G[RETRIED]
-    E -->| Restart/replay/resume | H[RESTARTED]
-    H -->| Restart processed | B[RUNNING]
-    B -->| Requested to be killed | I[KILLING]
-    I -->| Task run terminated | J[KILLED]
+    B -->| Requested to be killed | H[KILLING]
+    H -->| Task run terminated | I[KILLED]
+    E -->| Restart/replay | J[RESTARTED]
+    J -->| Restart processed | B[RUNNING]
 
-    class A,B,F,H,I transient;
-    class C,D,E,G,J terminal;
+    class A,B,F,H,J transient;
+    class C,D,E,G,I terminal;
 
     linkStyle 0,1,2,3,4,5,6,7,8,9,10,11 stroke:#2a9d8f, stroke-width:3px;
 ```
