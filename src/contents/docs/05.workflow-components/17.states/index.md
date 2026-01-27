@@ -98,10 +98,11 @@ Each task run can be in one of the following states:
 5. **FAILED**: The task run has failed.
 6. **RETRYING**: The task run is currently being retried.
 7. **RETRIED**: The task run has been retried.
-8. **KILLING**: The task run is in the process of being killed.
-9. **KILLED**: The task run has been killed upon request by the user.
+8. **RESTARTED**: The task run has been restarted from a failed state.
+9. **KILLING**: The task run is in the process of being killed.
+10. **KILLED**: The task run has been killed upon request by the user.
 
-Note how there is no `QUEUED`, `CANCELLED`, `PAUSED`, or `RESTARTED` states for task runs.
+Note how there is no `QUEUED`, `CANCELLED`, or `PAUSED` states for task runs.
 
 :::collapse{title="Mermaid source code for the Task Run States diagram"}
 
