@@ -194,6 +194,9 @@ This workflow queries the asset inventory for all machines tagged with `"nodes":
 If you're already using OpenLineage-compatible tools (Marquez, DataHub, Atlan), Assets integrates with them. The [**AssetShipper**](https://kestra.io/plugins/core/asset-ee/io.kestra.plugin.ee.assets.assetshipper) task exports your asset metadata to external lineage providers in either `ION` or `JSON` formats:
 
 ```yaml
+id: ship_asset_to_file
+namespace: kestra.company.data
+
 tasks:
   - id: export_assets
     type: io.kestra.plugin.ee.assets.AssetShipper
