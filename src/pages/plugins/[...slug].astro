@@ -99,14 +99,21 @@ const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
 if (!githubReleaseRepo.includes("plugin-ee")) {
     try {
         const { artifacts = {} } = await $fetchApi("/plugins/artifacts")
-        const repoUrl = `https://github.com/kestra-io/${githubReleaseRepo}`
+        const normalizeRepoUrl = (url?: string) => {
+            if (!url) return undefined
+            return url
+                .replace(/^git@github\.com:/, "https://github.com/")
+                .replace(/\.git$/, "")
+        }
+
+        const repoUrl = normalizeRepoUrl(`https://github.com/kestra-io/${githubReleaseRepo}`)
         githubVersions.versions?.forEach((v: any) => {
             v.minCoreCompatibilityVersion = (
                 Object.values(artifacts).flat() as any[]
             ).find(
                 (a) =>
                     a.version === v.version &&
-                    a.repository?.replace(/\.git$/, "") === repoUrl,
+                    normalizeRepoUrl(a.repository) === repoUrl,
             )?.minCoreCompatibilityVersion
         })
     } catch (e) {
