@@ -84,15 +84,27 @@
         fullPath: string
     }>()
 
-    const { totalPlugins } = usePluginsCount(ref(props.plugins))
+    const allPlugins = ref<Plugin[]>(props.plugins)
+    const allPluginsData = ref<Record<string, PluginInformation>>(props.pluginsData)
+
+    const { totalPlugins } = usePluginsCount(allPlugins)
 
     const categories = computed(() =>
         [
             ...new Set(
-                Object.values(props.pluginsData).flatMap((plugin) => plugin.categories ?? []),
+                Object.values(allPluginsData.value).flatMap((plugin) => plugin.categories ?? []),
             ),
         ].sort(),
     )
+
+    const fetchFullIndex = async () => {
+        const response = await fetch("/api/plugins")
+        if (response.ok) {
+            const data = await response.json()
+            allPlugins.value = data.plugins
+            allPluginsData.value = data.pluginsData
+        }
+    }
 
     const sortPlugins = (plugins: Plugin[], ascending: boolean) =>
         [...plugins].sort((a, b) => {
@@ -107,7 +119,7 @@
             return ascending ? comparison : -comparison
         })
 
-    const activePlugins = computed(() => filterPluginsWithoutDeprecated(props.plugins ?? []))
+    const activePlugins = computed(() => filterPluginsWithoutDeprecated(allPlugins.value ?? []))
 
     const searchFilteredPlugins = computed(() =>
         setSearchPlugins(searchQuery.value, activePlugins.value),
@@ -129,7 +141,7 @@
     )
 
     const pluginsInformation = (plugin: Plugin): PluginInformation => {
-        const pluginInfo = props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
+        const pluginInfo = allPluginsData.value?.[plugin.subGroup ?? plugin.group ?? plugin.name]
         return {
             name: plugin.name,
             subGroupTitle: plugin.title,
@@ -149,6 +161,8 @@
         searchQuery.value = params.get("q") ?? ""
         activeCategory.value = params.get("category") ?? "All Categories"
         sortBy.value = params.get("sort") ?? "A-Z"
+
+        fetchFullIndex()
     })
 
     watch([searchQuery, activeCategory, sortBy], ([q, cat, sort]) => {
