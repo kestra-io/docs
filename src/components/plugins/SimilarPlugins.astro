@@ -1,18 +1,33 @@
 ---
-import { filterPluginsWithoutDeprecated, type Plugin } from "@kestra-io/ui-libs"
+import { filterPluginsWithoutDeprecated } from "@kestra-io/ui-libs"
+import type { Plugin } from "@kestra-io/ui-libs"
 import SimilarPluginsVue from "~/components/plugins/SimilarPlugins.vue"
 
 interface Props {
     allPlugins: Plugin[]
-    pluginsData: Record<string, PluginInformation>
+    pluginsData: Record<string, any>
+    categories: string[]
+    pluginName: string
 }
 
 const props = Astro.props
-const { allPlugins } = props
+const { allPlugins, pluginsData, categories, pluginName } = props
+
+const similarPlugins = filterPluginsWithoutDeprecated(allPlugins ?? []).filter((p: Plugin) => {
+    if (p.name === pluginName) return false;
+    return (p.categories ?? []).some((cat: string) => categories.includes(cat));
+}).slice(0, 12); // Only keep top 12 for html output size reason
+
+const prunedPluginsData = Object.fromEntries(
+    similarPlugins.map((p: Plugin) => {
+        const key = p.subGroup ?? p.group ?? p.name;
+        return [key, pluginsData[key]];
+    }).filter(([_, v]) => v !== undefined)
+);
 ---
 
 <SimilarPluginsVue
-    similarPlugins={filterPluginsWithoutDeprecated(allPlugins ?? [])}
-    pluginsData={props.pluginsData}
+    similarPlugins={similarPlugins}
+    pluginsData={prunedPluginsData}
     client:visible
 />
