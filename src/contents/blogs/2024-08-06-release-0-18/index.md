@@ -62,7 +62,7 @@ If you are on Enterprise Edition, make sure to add a `KVSTORE` permission to any
 
 Overall, the KV store is a powerful addition to Kestra's orchestration capabilities, allowing you to persist state and share data across flows and executions.
 
-Read more about the KV Store in our [documentation]([](../../docs/06.concepts/05.kv-store/index.md).
+Read more about the KV Store in our [documentation](../../docs/06.concepts/05.kv-store/index.md).
 
 ---
 
@@ -106,7 +106,7 @@ Our SCIM integration allows you to automate the provisioning and de-provisioning
 
 ![scim](./scim.jpeg)
 
-At the time of this release, we have tested and [documented]([](../../docs/07.enterprise/03.auth/scim/index.mdx) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo/).
+At the time of this release, we have tested and [documented](../../docs/07.enterprise/03.auth/scim/index.mdx) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo/).
 
 ---
 
