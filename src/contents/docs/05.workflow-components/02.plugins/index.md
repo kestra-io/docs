@@ -2,7 +2,7 @@
 title: Plugins in Kestra – Tasks, Triggers, and Integrations
 description: Understand how Kestra plugins work, how to choose versions, and where to find or build the right integration.
 sidebarTitle: Plugins
-icon: /src/contents/docs/icons/plugin.svg
+icon: /src/contents/docs/icons/flow.svg
 ---
 
 ## Workflow Components · Plugins
