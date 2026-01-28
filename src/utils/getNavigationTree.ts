@@ -1,3 +1,4 @@
+import type { CollectionEntry } from "astro:content";
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 export type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 
@@ -39,7 +40,7 @@ const navigationTree = {
 }
 
 export function getNavigationTree(
-    docsPages: { id: string; data: { title: string; sidebarTitle?: string } }[],
+    docsPages: CollectionEntry<"docs">[],
 ) {
     // build the initial tree structure by finding each title in the navigationTree
     // then build the navigation tree
@@ -64,6 +65,7 @@ export function getNavigationTree(
                               sidebarTitle: page.data.sidebarTitle,
                               path: `/docs/${page.id}`,
                               children: recursivelyBuildChildren(page.id, docsPages),
+                              hideSubMenus: Boolean(page.data.hideSubMenus),
                           }
                         : undefined
                 })
@@ -77,7 +79,7 @@ export function getNavigationTree(
 
 function recursivelyBuildChildren(
     parentId: string,
-    docsPages: { id: string; data: { title: string; sidebarTitle?: string } }[],
+    docsPages: CollectionEntry<"docs">[],
 ): NavigationItem[] | undefined {
     const children = docsPages.filter((page) => {
         const parentPath = parentId.endsWith("/") ? parentId : parentId + "/"
