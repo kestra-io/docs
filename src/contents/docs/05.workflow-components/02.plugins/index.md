@@ -43,14 +43,15 @@ tasks:
 
 ## Common configuration patterns
 
-Plugins often share the same knobs; use them wisely to keep executions fast and safe:
+Plugins often share the same properties; use them wisely to keep executions fast and safe:
 
 - **Result handling (`fetchType` / `storeType`)** chooses how outputs are returned: `FETCH_ONE`, `FETCH`, `NONE`, or `STORE`. `STORE` writes results to internal storage and returns a URI instead of inlining the payload.
 - **Pagination limits** (`fetchSize`, `limit`, `maxResults`) prevent oversized responses when you expect big result sets.
 - **Secrets**: keep connection strings, tokens, and usernames in secrets (`{{ secret('KEY') }}`) so they don’t leak into flow revisions or logs.
 
 ### Handling outputs: fetch vs. store
-A quick rule set to avoid bloated execution state:
+
+A quick rule set to avoid bloated execution context:
 - Use fetch-style outputs (`fetch`, `fetchType`, `store=false`) only for small payloads you need inline for control flow (e.g., a few rows feeding `Switch` or `ForEach`).
 - For large datasets, switch to store-style (`store=true`, `storeType: STORE`): the data is written to internal storage, and only a URI is kept in the execution context, preventing repeated serialization on every task state change.
 - `value` and `uri` are mutually exclusive: `store=false` exposes `value`; `store=true` exposes `uri`. Accessing the wrong one raises an execution error.
