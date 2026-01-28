@@ -116,13 +116,15 @@ In Kestra, the same workflow is declarative:
 
 ```yaml
 id: daily_etl
-namespace: data.production
+namespace: company.team
 
 tasks:
   - id: extract
-    type: io.kestra.plugin.scripts.python.Script
-    script: |
-      # Your existing extraction logic
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - python main.py
 
   - id: transform
     type: io.kestra.plugin.dbt.cli.DbtCLI
