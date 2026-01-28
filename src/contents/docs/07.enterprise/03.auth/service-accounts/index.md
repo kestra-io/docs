@@ -33,7 +33,7 @@ Once you have created a service account, you can add a Role that will grant it p
 
 ![Assign Service Account Role](./service_account_role.png)
 
-Finally, you can generate an API token for the service account by clicking the **Create** button. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g., in Terraform provider configuration or GitHub Actions secrets).
+Finally, you can generate an API token for the service account by clicking the **Create API Token** button in the service account's details. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g., in Terraform provider configuration or GitHub Actions secrets).
 
 :::alert{type="info"}
 **Note:** You can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
