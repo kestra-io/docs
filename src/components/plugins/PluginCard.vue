@@ -60,8 +60,8 @@
     }>()
 
     const iconSrc = computed(() => {
-        if (props.plugin.className) {
-            return `/icons/${props.plugin.className}.svg`
+        if (props.plugin.icon) {
+            return `data:image/svg+xml;base64,${props.plugin.icon}`
         }
 
         return "/icon.svg"
