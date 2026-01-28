@@ -1,17 +1,16 @@
 ---
 export const prerender = false
 import Layout from "~/components/layout.astro"
-import PluginSidebar from "~/components/plugins/PluginSidebar.astro"
+import PluginSidebar from "~/components/plugins/PluginSidebar.vue"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import NavToc from "~/components/docs/NavToc.vue"
 import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
 import RelatedBlogs from "~/components/plugins/RelatedBlogs.vue"
-import SimilarPlugins from "~/components/plugins/SimilarPlugins.vue"
+import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.vue"
 import { $fetchApi } from "~/utils/fetch"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
-import { prunePlugins, pruneAllPluginsData } from "~/utils/plugins/pruning"
 import {
     filterPluginsWithoutDeprecated,
     isEntryAPluginElementPredicate,
@@ -113,9 +112,9 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
 
 const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 
-const allPlugins = prunePlugins(await $fetchApi<Plugin[]>(`/plugins/subgroups`))
-const navigation = generateNavigationFromSubgroups(allPlugins)
-const aliasMapping = getAliasMapping(allPlugins)
+const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+const navigation = generateNavigationFromSubgroups(pluginsData)
+const aliasMapping = getAliasMapping(pluginsData)
 
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
@@ -146,41 +145,12 @@ try {
     // do nothing if plugin not found
 }
 
-const pluginsInformation = pruneAllPluginsData(await $fetchApi(`/plugins/pluginsInformation`))
+const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
+const pluginsInformation = await $fetchApi(`/plugins/pluginsInformation`)
 
-const subgroupsResponse = await $fetchApi<any[]>(`/plugins/${pluginName}/subgroups`)
-const actualGroup = subgroupsResponse[0]?.group;
-
-const allPluginMetadata = (await $fetchApi<PluginMetadata[]>(`/plugins/metadata`))
-    .filter(m => m.group && actualGroup && (m.group === actualGroup || m.group.startsWith(actualGroup + ".")));
-
-const subgroups = subgroupsResponse.map(p => {
-    const pruneElements = (elements: any) => {
-        if (!Array.isArray(elements)) return undefined;
-        return elements.map(el => {
-            if (typeof el === 'string') return { cls: el };
-            return { 
-                cls: el.cls, 
-                title: el.title, 
-                description: el.description,
-                deprecated: el.deprecated 
-            };
-        });
-    };
-
-    return {
-        ...p,
-        tasks: pruneElements(p.tasks),
-        triggers: pruneElements(p.triggers),
-        conditions: pruneElements(p.conditions),
-        controllers: pruneElements(p.controllers),
-        storages: pruneElements(p.storages),
-        guides: pruneElements(p.guides),
-    };
-});
-
+const subgroups = await $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`)
 const sidebarPluginData = generateSidebarPluginData(
-    subgroups as Plugin[],
+    subgroups,
     allPluginMetadata,
 )
 
@@ -224,6 +194,7 @@ const { currentPageIcon, subGroupsIcons } = await getIcon(
     subGroupWrapper?.subGroup,
 )
 
+const allPlugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
 
 const { countByPlugins: blueprintCounts } = await $fetchApi<{
     countByPlugins: Record<string, number>
@@ -254,14 +225,13 @@ const currentSubgroupPlugin =
               return possibleSubgroupMatches.includes(subGroup)
           })
 
-const metadataMap = allPluginMetadata
-    ?.reduce<Record<string, PluginMetadata>>(
-        (acc, meta) => {
-            acc[meta.group] = meta
-            return acc
-        },
-        {},
-    )
+const metadataMap = allPluginMetadata?.reduce<Record<string, PluginMetadata>>(
+    (acc, meta) => {
+        acc[meta.group] = meta
+        return acc
+    },
+    {},
+)
 
 /**
  * currentPluginMetadata provides the raw array of metadata,
@@ -270,7 +240,7 @@ const metadataMap = allPluginMetadata
 const currentPluginMetadata = (() => {
     const subgroupId =
         currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
-    const rootGroupId = rootPlugin?.group ?? actualGroup
+    const rootGroupId = rootPlugin?.group ?? pluginName
 
     if (subgroupId) {
         const found = allPluginMetadata?.find((m) => m.group === subgroupId)
@@ -449,9 +419,9 @@ function makeTOC() {
         ? blueprintCounts?.[pluginType] > 0
         : subGroup
           ? subgroupBlueprintCounts?.[
-                `${rootPlugin?.group ?? actualGroup}-${subGroup}`
+                `${rootPlugin?.group ?? pluginName}-${subGroup}`
             ] > 0
-          : blueprintCounts?.[rootPlugin?.group ?? actualGroup] > 0
+          : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
 
     const tocLinks = [
         ...baseTocLinks,
@@ -660,32 +630,9 @@ if (!pluginType && !subGroup) {
             {
                 currentPluginCategories?.length > 0 && (
                     <SimilarPlugins
-                        client:visible
-                        similarPlugins={allPlugins
-                            .filter((p) => filterPluginsWithoutDeprecated([p]).length > 0)
-                            .filter((p) =>
-                                p.categories?.some((c: any) =>
-                                    currentPluginCategories.includes(c),
-                                ),
-                            )
-                            .map((p) => {
-                                const info =
-                                    pluginsInformation[
-                                        p.subGroup ?? p.group ?? p.name
-                                    ]
-                                return {
-                                    name: p.name,
-                                    title: info?.title ?? p.title,
-                                    description: info?.description ?? p.description,
-                                    categories: info?.categories ?? p.categories,
-                                    elementCounts: info?.elementCounts,
-                                    blueprints: info?.blueprints,
-                                    className: info?.className,
-                                    subGroup: p.subGroup,
-                                    subGroupTitle: p.title,
-                                }
-                            })}
-                    />  
+                        {allPlugins}
+                        pluginsData={pluginsInformation.byPlugin}
+                    />
                 )
             }
         </article>
