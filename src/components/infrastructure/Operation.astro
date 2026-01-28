@@ -1,76 +1,82 @@
-<template>
-    <section class="operation">
-        <div class="layout">
-            <aside class="left">
-                <h2>
-                    Day-2 Operations
-                    <br class="d-none d-xxl-block" />
-                    Orchestration
-                    <br class="d-none d-xxl-block" />
-                    With Kestra
-                </h2>
-                <a to="/demo" class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block">
-                    Talk to us
-                </a>
-            </aside>
-            <div class="d-flex flex-column gap-6 cards">
-                <div
-                    v-for="(op, index) in OPERATIONS"
-                    :key="index"
-                    class="right"
-                    :data-usal="`fade duration-400 delay-${50 + index * 50} ease-out`"
-                >
-                    <div
-                        class="inner-card"
-                        :data-usal="`fade-u duration-350 delay-${100 + index * 50} ease-out`"
-                    >
-                        <div class="left-section">
-                            <h2 v-if="op.title">{{ op.title }}</h2>
-                            <p v-if="op.desc">{{ op.desc }}</p>
-                        </div>
-                        <div class="right-section">
-                            <img
-                                :src="op.svg"
-                                alt="Icon"
-                                :data-usal="`zoomin duration-400 delay-${150 + index * 50} ease-out`"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a to="/demo" class="btn btn-primary btn-gradient mt-2 d-xxl-none d-block mx-auto">
+---
+import { Image } from "astro:assets"
+import fleet from "~/assets/landing/infrastructure/fleet.svg"
+import security from "~/assets/landing/infrastructure/security.svg"
+import automation from "~/assets/landing/infrastructure/automation.svg"
+import governed from "~/assets/landing/infrastructure/governed.svg"
+
+const OPERATIONS = [
+    {
+        svg: fleet,
+        title: "Fleet Management & Patching",
+        desc: "Orchestrate maintenance. Execute Ansible playbooks or PowerShell scripts across thousands of nodes with built-in safety controls.",
+    },
+    {
+        svg: security,
+        title: "Security & Compliance Automation",
+        desc: "Enforce policies and rotate credentials. Turn manual security tasks into auditable, automated workflows.",
+    },
+    {
+        svg: automation,
+        title: "Auto-Remediation & Incident Response",
+        desc: "Reduce MTTR with event-driven logic. Connect your observability stack directly to remediation workflows.",
+    },
+    {
+        svg: governed,
+        title: "Governed Self-Service Apps",
+        desc: "Wrap complex automation into interactive apps. Allow users to request resources or patching via simple forms, routing requests for human approval before execution.",
+    },
+]
+---
+
+<section class="operation">
+    <div class="layout">
+        <aside class="left">
+            <h2>
+                Day-2 Operations
+                <br class="d-none d-xxl-block" />
+                Orchestration
+                <br class="d-none d-xxl-block" />
+                With Kestra
+            </h2>
+            <a href="/demo" class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block">
                 Talk to us
             </a>
+        </aside>
+        <div class="d-flex flex-column gap-6 cards">
+            {
+                OPERATIONS.map((op, index) => (
+                    <div
+                        class="right"
+                        data-usal={`fade duration-400 delay-${50 + index * 50} ease-out`}
+                    >
+                        <div
+                            class="inner-card"
+                            data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                        >
+                            <div class="left-section">
+                                {op.title && <h2>{op.title}</h2>}
+                                {op.desc && <p>{op.desc}</p>}
+                            </div>
+                            <div class="right-section">
+                                <Image
+                                    src={op.svg}
+                                    alt="Icon"
+                                    data-usal={`zoomin duration-400 delay-${150 + index * 50} ease-out`}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
         </div>
-    </section>
-</template>
+        <a href="/demo" class="btn btn-primary btn-gradient mt-2 d-xxl-none d-block mx-auto">
+            Talk to us
+        </a>
+    </div>
+</section>
 
-<script setup lang="ts">
-    const OPERATIONS = [
-        {
-            svg: "/landing/infrastructure/fleet.svg",
-            title: "Fleet Management & Patching",
-            desc: "Orchestrate maintenance. Execute Ansible playbooks or PowerShell scripts across thousands of nodes with built-in safety controls.",
-        },
-        {
-            svg: "/landing/infrastructure/security.svg",
-            title: "Security & Compliance Automation",
-            desc: "Enforce policies and rotate credentials. Turn manual security tasks into auditable, automated workflows.",
-        },
-        {
-            svg: "/landing/infrastructure/automation.svg",
-            title: "Auto-Remediation & Incident Response",
-            desc: "Reduce MTTR with event-driven logic. Connect your observability stack directly to remediation workflows.",
-        },
-        {
-            svg: "/landing/infrastructure/governed.svg",
-            title: "Governed Self-Service Apps",
-            desc: "Wrap complex automation into interactive apps. Allow users to request resources or patching via simple forms, routing requests for human approval before execution.",
-        },
-    ]
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .operation {
