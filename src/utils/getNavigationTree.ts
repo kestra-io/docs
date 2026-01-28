@@ -66,6 +66,7 @@ export function getNavigationTree(
                               path: `/docs/${page.id}`,
                               children: recursivelyBuildChildren(page.id, docsPages),
                               hideSubMenus: Boolean(page.data.hideSubMenus),
+                              hideSidebar: Boolean(page.data.hideSidebar),
                           }
                         : undefined
                 })
