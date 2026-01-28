@@ -10,7 +10,7 @@ author:
 image: ./main.png
 ---
 
-[Kestra 1.2](https://kestra.io/blogs/release-1-2) introduces Assets, a way to track both data artifacts (tables, datasets, files) and infrastructure resources (buckets, VMs, compute) in a single inventory. Every workflow declares what it consumes and produces, and Kestra builds the dependency graph automatically.
+[Kestra 1.2](../release-1-2/index.md) introduces Assets, a way to track both data artifacts (tables, datasets, files) and infrastructure resources (buckets, VMs, compute) in a single inventory. Every workflow declares what it consumes and produces, and Kestra builds the dependency graph automatically.
 
 ![Kestra's data pipeline assets in the UI](kestra-ui.png)
 
@@ -22,11 +22,11 @@ Assets solve this by letting you declare what each task reads and writes, whethe
 
 ## Why data-only orchestration falls short
 
-Modern [orchestration tools](https://kestra.io/blogs/2024-09-18-what-is-an-orchestrator), even forward-thinking ones, assume that "asset" means "data asset," like tables, views, and datasets. 
+Modern [orchestration tools](../2024-09-18-what-is-an-orchestrator/index.md), even forward-thinking ones, assume that "asset" means "data asset," like tables, views, and datasets. 
 
 **This is a fundamental architectural limitation.** These tools were designed around the assumption that orchestration means scheduling SQL transformations, so they track what happens between databases, not what happens between systems.
 
-This works well enough for transformation-heavy workflows where every step reads a table and writes another table. But production [data pipelines](https://kestra.io/docs/use-cases/data-pipelines) rarely stay that clean. A typical analytics workflow might:
+This works well enough for transformation-heavy workflows where every step reads a table and writes another table. But production [data pipelines](../../docs/use-cases/01.data-pipelines/index.md) rarely stay that clean. A typical analytics workflow might:
 
 1. Pull raw data from an external API
 2. Land it in a cloud storage bucket
@@ -45,6 +45,9 @@ You declare assets directly on workflow tasks using the `assets` property. Each 
 Here's a simple example that creates a staging table:
 
 ```yaml
+id: data_pipeline_assets
+namespace: kestra.company.data
+
 tasks:
   - id: create_staging_layer_asset
     type: io.kestra.plugin.jdbc.duckdb.Query
@@ -119,7 +122,7 @@ If the external source schema changes, you can trace the impact downstream. If a
 
 ### 2. Infrastructure provisioning with resource tracking
 
-Many data teams do more than transform data; they also [provision the infrastructure](https://kestra.io/docs/use-cases/infrastructure) that holds it. When your platform team creates S3 buckets for different domains, those buckets become dependencies for downstream workflows.
+Many data teams do more than transform data; they also [provision the infrastructure](../../docs/use-cases/04.infrastructure/index.md) that holds it. When your platform team creates S3 buckets for different domains, those buckets become dependencies for downstream workflows.
 
 ```yaml
 id: provision_team_buckets
@@ -148,7 +151,7 @@ tasks:
                 team: "{{ taskrun.value }}"
 
 ```
-The full code example, including credentials, [can be found here.](https://kestra.io/docs/enterprise/governance/assets#infrastructure-use-case-team-bucket-provisioning) 
+The full code example, including credentials, [can be found here.](../../docs/07.enterprise/02.governance/01.assets/index.md#infrastructure-use-case-team-bucket-provisioning) 
 
 Later, when the data team uploads files to their bucket, they reference it as an input asset:
 
@@ -159,7 +162,7 @@ namespace: kestra.company.data
 tasks:
   - id: download
     type: io.kestra.plugin.core.http.Download
-    uri: https://raw.githubusercontent.com/kestra-io/datasets/refs/heads/main/jaffle-data/raw_customers.csv
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/jaffle-csv/raw_customers.csv
 
   - id: aws_upload
     type: io.kestra.plugin.aws.s3.Upload
@@ -214,7 +217,7 @@ This workflow queries the asset inventory for all machines tagged with `"nodes":
 
 ## Shipping lineage to external systems
 
-If you're already using OpenLineage-compatible tools (Marquez, DataHub, Atlan), Assets integrates with them. The [**AssetShipper**](https://kestra.io/plugins/core/asset-ee/io.kestra.plugin.ee.assets.assetshipper) task exports your asset metadata to external lineage providers in either `ION` or `JSON` formats:
+If you're already using OpenLineage-compatible tools (Marquez, DataHub, Atlan), Assets integrates with them. The [**AssetShipper**](/plugins/core/asset-ee/io.kestra.plugin.ee.assets.assetshipper) task exports your asset metadata to external lineage providers in either `ION` or `JSON` formats:
 
 ```yaml
 id: ship_asset_to_file
@@ -229,11 +232,11 @@ tasks:
         format: JSON
 ```
 
-This lets you maintain a single source of truth in Kestra while pushing lineage data to specialized catalogs for discovery and [governance](https://kestra.io/docs/enterprise/governance).
+This lets you maintain a single source of truth in Kestra while pushing lineage data to specialized catalogs for discovery and [governance](../../docs/07.enterprise/02.governance/index.mdx).
 
 ## Blueprints to get started
 
-Kestra's [Templated Blueprints](https://kestra.io/docs/enterprise/governance/custom-blueprints) lets you create reusable workflow templates that users can instantiate by filling out a form, no YAML editing required. Platform teams define the template once (including asset declarations), and other teams generate production-ready workflows by selecting options from dropdowns.
+Kestra's [Templated Blueprints](../../docs/07.enterprise/02.governance/custom-blueprints/index.md) lets you create reusable workflow templates that users can instantiate by filling out a form, no YAML editing required. Platform teams define the template once (including asset declarations), and other teams generate production-ready workflows by selecting options from dropdowns.
 
 ![Kestra's Blueprints for data use cases](./blueprints.png)
 
@@ -245,4 +248,4 @@ Most lineage tools only track data assets. Kestra's Assets track everything your
 
 The result is lineage that reflects what you work on each day, not just the data transformation layer. When something breaks, you can trace the full chain. When you're planning changes, you can see the impact across data and infrastructure.
 
-Assets are available in Kestra Enterprise Edition 1.2+. Check out our [docs](https://kestra.io/docs/enterprise/governance/assets) or get in touch [for a demo.](https://kestra.io/demo)
+Assets are available in Kestra Enterprise Edition 1.2+. Check out our [docs](../../docs/07.enterprise/02.governance/01.assets/index.md) or get in touch [for a demo.](/demo)
