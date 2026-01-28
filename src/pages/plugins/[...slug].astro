@@ -96,6 +96,20 @@ const githubReleaseRepo = (() => {
 
 const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
 
+if (!githubReleaseRepo.includes("plugin-ee")) {
+    try {
+        const { artifacts = {} } = await $fetchApi("/plugins/artifacts");
+        const repoUrl = `https://github.com/kestra-io/${githubReleaseRepo}`;
+        githubVersions.versions?.forEach((v: any) => {
+            v.minCoreCompatibilityVersion = (Object.values(artifacts).flat() as any[])
+                .find(a => a.version === v.version && a.repository?.replace(/\.git$/, "") === repoUrl)
+                ?.minCoreCompatibilityVersion;
+        });
+    } catch (e) {
+        console.error("Artifacts fetch failed", e);
+    }
+}
+
 const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 
 const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
