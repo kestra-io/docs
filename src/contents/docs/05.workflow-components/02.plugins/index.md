@@ -5,7 +5,7 @@ sidebarTitle: Plugins
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-## Workflow Components · Plugins
+## Plugins - tasks, triggers, and integrations
 
 Plugins power every task and trigger in Kestra. They wrap external systems, expose orchestration primitives, and let you extend the platform with custom code. Think of them as the "integrations" or “drivers” that let flows talk to databases, queues, SaaS APIs, file systems, and runtime environments.
 
