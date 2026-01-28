@@ -1,39 +1,39 @@
-<template>
-    <section class="tour-section">
-        <div class="container">
-            <div class="left-div" data-usal="slide-r delay-0 duration-600 ease-out">
-                <h2 data-usal="fade-u delay-50 duration-500 ease-out">Want to Take a Tour?</h2>
-                <p data-usal="fade-u delay-100 duration-500 ease-out">
-                    Explore how Kestra gives you full control over complex infrastructure workflows.
-                </p>
-                <a
-                    to="/docs/quickstart"
-                    class="btn btn-primary btn-gradient tour-btn"
-                    data-usal="zoomin duration-500 delay-150 ease-out"
-                >
-                    Take the tour
-                </a>
-            </div>
-            <div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
-                <NuxtImg
-                    src="/landing/infrastructure/infra-ui.png"
-                    alt="Infrastructure UI"
-                    class="img-fluid"
-                    format="webp"
-                    densities="x1 x2"
-                    loading="lazy"
-                />
-                <img src="/landing/infrastructure/arrow.svg" alt="Arrow" class="arrow-overlay" />
-            </div>
+---
+import { Image } from "astro:assets"
+import infraUi from "~/assets/landing/infrastructure/infra-ui.png"
+import arrow from "~/assets/landing/infrastructure/arrow.svg"
+---
+
+<section class="tour-section">
+    <div class="container">
+        <div class="left-div" data-usal="slide-r delay-0 duration-600 ease-out">
+            <h2 data-usal="fade-u delay-50 duration-500 ease-out">Want to Take a Tour?</h2>
+            <p data-usal="fade-u delay-100 duration-500 ease-out">
+                Explore how Kestra gives you full control over complex infrastructure workflows.
+            </p>
+            <a
+                href="/docs/quickstart"
+                class="btn btn-primary btn-gradient tour-btn"
+                data-usal="zoomin duration-500 delay-150 ease-out"
+            >
+                Take the tour
+            </a>
         </div>
-    </section>
-</template>
+        <div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
+            <Image
+                src={infraUi}
+                alt="Infrastructure UI"
+                class="img-fluid"
+                width={656}
+                height={350}
+                densities={[1, 2]}
+            />
+            <img src={arrow.src} alt="Arrow" class="arrow-overlay" />
+        </div>
+    </div>
+</section>
 
-<script setup lang="ts">
-    //  NOOP
-</script>
-
-<style scoped lang="scss">
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .tour-section {
@@ -93,7 +93,7 @@
                 border: 1px solid #bfbfbf;
                 position: relative;
 
-                img {
+                :global(img) {
                     width: 100%;
                     height: auto;
                     object-fit: cover;

@@ -1,54 +1,50 @@
-<template>
-    <div class="connect">
-        <div class="connect__row">
-            <div class="connect__panel connect__panel--left">
-                <div ref="lottieContainer" class="connect__lottie"></div>
+---
+import Link from "~/components/common/Link.astro"
+import { Image } from "astro:assets"
+
+const { plugins = [] } = Astro.props
+const PLUGINS_CAROUSEL = [...plugins, ...plugins]
+---
+
+<div class="connect">
+    <div class="connect__row">
+        <div class="connect__panel connect__panel--left">
+            <div id="lottie-container" class="connect__lottie"></div>
+        </div>
+
+        <div class="connect__panel connect__panel--right">
+            <h1>Connect With Any Infrastructure Tools</h1>
+
+            <div class="icon-scroll">
+                <div class="carousel">
+                    {
+                        PLUGINS_CAROUSEL.map((plugin) => (
+                            <div>
+                                <Image src={plugin.logo} alt={plugin.name} width={plugin.logo.width} height={plugin.logo.height} />
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
 
-            <div class="connect__panel connect__panel--right">
-                <h1>Connect With Any Infrastructure Tools</h1>
-
-                <div class="icon-scroll">
-                    <div class="carousel">
-                        <template v-for="plugin in pluginCarousel" :key="plugin.name">
-                            <div>
-                                <img :src="plugin.logo" :alt="plugin.name" />
-                            </div>
-                        </template>
-                    </div>
-                </div>
-
-                <div class="align-self-lg-start">
-                    <Link href="/plugins" text="See all plugins" class="text-white" />
-                </div>
+            <div class="align-self-lg-start">
+                <Link href="/plugins" text="See all plugins" class="text-white" />
             </div>
         </div>
     </div>
-</template>
+</div>
 
-<script setup lang="ts">
+<script>
     import lottie from "lottie-web"
-    import { ref, onMounted, computed } from "vue"
     import animationData from "~/assets/lottie/plugins-lottie.json"
-    import Link from "~/components/common/Link.vue"
 
-    const props = defineProps<{
-        plugins?: {
-            name: string
-            logo: string
-        }[]
-    }>()
+    document.addEventListener("astro:page-load", () => {
+        const container = document.getElementById("lottie-container")
 
-    const lottieContainer = ref<HTMLElement | null>(null)
-
-    const pluginLogos = computed(() => props.plugins ?? [])
-
-    const pluginCarousel = computed(() => [...pluginLogos.value, ...pluginLogos.value])
-
-    onMounted(() => {
-        if (lottieContainer.value) {
+        if (container) {
+            container.innerHTML = ""
             lottie.loadAnimation({
-                container: lottieContainer.value,
+                container: container,
                 renderer: "svg",
                 loop: true,
                 autoplay: true,
@@ -58,7 +54,7 @@
     })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .connect {
@@ -77,7 +73,7 @@
             left: 0;
             width: 100%;
             height: auto;
-            background-image: url("/landing/infrastructure/connect.svg");
+            background-image: url("~/assets/landing/infrastructure/connect.svg");
             background-repeat: no-repeat;
             background-size: auto;
         }
