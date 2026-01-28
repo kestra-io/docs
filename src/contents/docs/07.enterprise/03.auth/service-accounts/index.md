@@ -91,11 +91,3 @@ Some examples to make that clear:
 - ❌ `my-service-account-` is not a valid name because it ends with a hyphen.
 
 **Why do we follow such a restrictive convention?** We follow the standard DNS-style pattern to be ready for potential future use cases where we could, for example, forward the service account name to a Kubernetes pod's labels. This way, we ensure that the service account name can be used in a variety of contexts without any issues.
-
-## Impersonate service account (admin)
-
-As an Admin of your Kestra environment, you can test the access of Service Accounts with the **Impersonate** feature.
-
-**Impersonate** is available through the IAM -> Service Accounts tab. Select any Service Account to impersonate, ensuring permissions and access are correctly implemented across accounts.
-
-![impersonate-service-account](./impersonate-service-account.png)
