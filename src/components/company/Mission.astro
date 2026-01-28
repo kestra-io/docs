@@ -1,83 +1,94 @@
-<template>
-    <section class="mission">
-        <div class="mission-content">
-            <header data-usal="fade-r">
-                <h1>Staying <span>True</span> to our Mission</h1>
-                <p>
-                    Our values are at the core of everything we do. We are building a platform that
-                    not only meets the needs of our users but also exceeds their expectations. We
-                    are driven by a passion for continuous improvement. We strive to develop new
-                    ideas and solutions that redefine the orchestration landscape.
-                </p>
-            </header>
+---
+import { Image } from "astro:assets"
+import TeamImages from "~/utils/teamsImages"
 
-            <div class="values" data-usal="fade-u delay-200">
-                <article
-                    v-for="(value, index) in values"
-                    :key="value.title"
-                    class="value"
-                    :data-usal="`fade-u delay-${300 + index * 100}`"
-                >
-                    <div class="value-header">
-                        <component :is="value.icon" />
-                        <h3>{{ value.title }}</h3>
-                    </div>
-                    <p>{{ value.description }}</p>
-                </article>
-            </div>
+const values = [
+    {
+        icon: "check-decagram-outline",
+        title: "Quality",
+        description:
+            "We are committed to deliver a platform that meets the highest standards.",
+    },
+    {
+        icon: "hub",
+        title: "Collaboration",
+        description:
+            "We are creating a strong relationships with our users, customers, and team members.",
+    },
+    {
+        icon: "account-supervisor-circle-outline",
+        title: "User-Centric",
+        description:
+            "We incorporate users feedbacks and address their challenges as we continue to build Kestra.",
+    },
+    {
+        icon: "opacity",
+        title: "Transparency",
+        description:
+            "We value openness and honesty in all aspects of our work at every step.",
+    },
+]
+---
 
-            <blockquote class="testimonial" data-usal="fade-r delay-700">
-                <p>"Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain"</p>
-                <footer>
-                    <NuxtImg src="/landing/company/teams/acxiom.svg" alt="Acxiom" />
-                </footer>
-            </blockquote>
+<section class="mission">
+    <div class="mission-content">
+        <header data-usal="fade-r">
+            <h1>Staying <span>True</span> to our Mission</h1>
+            <p>
+                Our values are at the core of everything we do. We are building
+                a platform that not only meets the needs of our users but also
+                exceeds their expectations. We are driven by a passion for
+                continuous improvement. We strive to develop new ideas and
+                solutions that redefine the orchestration landscape.
+            </p>
+        </header>
+
+        <div class="values" data-usal="fade-u delay-200">
+            {
+                values.map((value, index) => (
+                    <article
+                        class="value"
+                        data-usal={`fade-u delay-${300 + index * 100}`}
+                    >
+                        <div class="value-header">
+                            <span class={`mdi mdi-${value.icon}`} />
+                            <h3>{value.title}</h3>
+                        </div>
+                        <p>{value.description}</p>
+                    </article>
+                ))
+            }
         </div>
 
-        <div class="mission-visual">
-            <NuxtImg
-                src="/landing/company/teams/executions.png"
-                alt="Kestra Dashboard"
-                class="dashboard-image"
-                data-usal="fade-l delay-400"
-            />
-        </div>
-    </section>
-</template>
+        <blockquote class="testimonial" data-usal="fade-r delay-700">
+            <p>
+                "Kestra is like the Wizard of Oz Wizard, doing its magic behind
+                the curtain"
+            </p>
+            <footer>
+                <Image
+                    src={TeamImages["acxiom.svg"]}
+                    alt="Acxiom"
+                    width={105}
+                    height={21}
+                />
+            </footer>
+        </blockquote>
+    </div>
 
-<script setup lang="ts">
-    import Verified from "vue-material-design-icons/CheckDecagramOutline.vue"
-    import Hub from "vue-material-design-icons/Hub.vue"
-    import SupervisedUserCircle from "vue-material-design-icons/AccountSupervisorCircleOutline.vue"
-    import Opacity from "vue-material-design-icons/Opacity.vue"
+    <div class="mission-visual">
+        <Image
+            src={TeamImages["executions.png"]}
+            alt="Kestra Dashboard"
+            class="dashboard-image"
+            data-usal="fade-l delay-400"
+            width={800}
+            height={600}
+        />
+    </div>
+</section>
 
-    const values = [
-        {
-            icon: Verified,
-            title: "Quality",
-            description: "We are committed to deliver a platform that meets the highest standards.",
-        },
-        {
-            icon: Hub,
-            title: "Collaboration",
-            description:
-                "We are creating a strong relationships with our users, customers, and team members.",
-        },
-        {
-            icon: SupervisedUserCircle,
-            title: "User-Centric",
-            description:
-                "We incorporate users feedbacks and address their challenges as we continue to build Kestra.",
-        },
-        {
-            icon: Opacity,
-            title: "Transparency",
-            description: "We value openness and honesty in all aspects of our work at every step.",
-        },
-    ]
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .mission {
@@ -120,7 +131,11 @@
                 margin-bottom: 24px;
 
                 span {
-                    background: linear-gradient(90.25deg, #7c2eea 2%, #658af9 100%);
+                    background: linear-gradient(
+                        90.25deg,
+                        #7c2eea 2%,
+                        #658af9 100%
+                    );
                     background-clip: text;
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
@@ -155,7 +170,7 @@
             gap: 0.75rem;
             margin-bottom: 0.5rem;
 
-            :deep(svg) {
+            .mdi {
                 font-size: $font-size-lg;
             }
 
@@ -213,7 +228,7 @@
     }
 
     .mission-visual {
-        background-image: url("/landing/company/teams/dashboard-gradient.svg");
+        background-image: url("~/assets/teams/dashboard-gradient.svg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;

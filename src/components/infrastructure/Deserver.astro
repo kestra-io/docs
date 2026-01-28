@@ -1,96 +1,104 @@
-<template>
-    <section class="deserver">
-        <div class="container">
-            <h2 class="deserver-heading" data-usal="fade-u delay-0 duration-500 ease-out">
-                Infrastructure Teams Deserve a Better Way to Operate
-            </h2>
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import extrudeSm from "~/assets/landing/infrastructure/extrude-sm.png"
+import extrude from "~/assets/landing/infrastructure/extrude.svg"
 
-            <div class="deserver-row">
-                <div class="deserver-inner" data-usal="slide-r delay-25 duration-500 ease-out">
-                    <h3>Why Infrastructure Automation Fails Today</h3>
-                    <ul class="list-unstyled">
-                        <li v-for="(item, index) in WHY_FAILS" :key="index">
-                            <div class="icon-wrap">
-                                <CircleMedium />
-                            </div>
-                            <div>{{ item }}</div>
-                        </li>
-                    </ul>
-                </div>
+const WHY_FAILS = [
+    "Fragmented scripts, pipelines, & legacy tools",
+    "Zero governance with no standards, or visibility",
+    "Fragile Day 2 Ops with slow, manual maintenance",
+    "Automation breaks in air-gapped/hybrid setups",
+    "Rising costs with no added value",
+]
 
-                <div class="deserver-ellipse" data-usal="zoomin delay-50 duration-600 ease-out">
-                    <NuxtImg
-                        src="/landing/infrastructure/extrude-sm.png"
-                        alt="extrude"
-                        format="webp"
-                        densities="x1 x2"
-                        class="deserver-sm-img"
-                    />
-                </div>
+const KESTRA_BENEFITS = [
+    "One declarative platform for all workflows",
+    "Full visibility from day one",
+    "Automate everything from provisioning to remediation",
+    "Runs anywhere cloud, on-prem, edge, or air-gapped",
+    "Cut operational costs and deliver instant value",
+]
+---
 
-                <div class="deserver-extrude" aria-hidden="true" />
+<section class="deserver">
+    <div class="container">
+        <h2 class="deserver-heading" data-usal="fade-u delay-0 duration-500 ease-out">
+            Infrastructure Teams Deserve a Better Way to Operate
+        </h2>
 
-                <img
-                    src="/landing/infrastructure/extrude.svg"
-                    alt="logo"
-                    width="280"
-                    height="285"
-                    class="deserver-img"
-                />
-
-                <div
-                    class="deserver-inner second"
-                    data-usal="slide-l delay-50 duration-500 ease-out"
-                >
-                    <h3>The Kestra Unified Control Plane</h3>
-                    <ul class="list-unstyled">
-                        <li v-for="(item, index) in KESTRA_BENEFITS" :key="index">
-                            <div class="icon-wrap">
-                                <Check />
-                            </div>
-                            <div>{{ item }}</div>
-                        </li>
-                    </ul>
-                </div>
+        <div class="deserver-row">
+            <div class="deserver-inner" data-usal="slide-r delay-25 duration-500 ease-out">
+                <h3>Why Infrastructure Automation Fails Today</h3>
+                <ul class="list-unstyled">
+                    {
+                        WHY_FAILS.map((item) => (
+                            <li>
+                                <div class="icon-wrap">
+                                    <Icon name="mdi:circle-medium" />
+                                </div>
+                                <div>{item}</div>
+                            </li>
+                        ))
+                    }
+                </ul>
             </div>
+
+            <div class="deserver-ellipse" data-usal="zoomin delay-50 duration-600 ease-out">
+                <Image
+                    src={extrudeSm}
+                    alt="extrude"
+                    width={140}
+                    height={146}
+                    class="deserver-sm-img"
+                />
+            </div>
+
+            <div class="deserver-extrude" aria-hidden="true"></div>
+
+            <Image
+                src={extrude}
+                alt="logo"
+                width={280}
+                height={285}
+                class="deserver-img"
+            />
 
             <div
-                class="d-flex flex-column deserver-content"
-                data-usal="fade-u delay-100 duration-500 ease-out"
+                class="deserver-inner second"
+                data-usal="slide-l delay-50 duration-500 ease-out"
             >
-                <h6 class="deserver-subheading">
-                    Ready to replace vRA, Rundeck, Jenkins, Control-M, and fragmented scripts?
-                </h6>
-                <a href="/demo" class="btn btn-primary btn-gradient deserver-btn">
-                    Discuss Your Automation Landscape
-                </a>
+                <h3>The Kestra Unified Control Plane</h3>
+                <ul class="list-unstyled">
+                    {
+                        KESTRA_BENEFITS.map((item) => (
+                            <li>
+                                <div class="icon-wrap">
+                                    <Icon name="mdi:check-bold" />
+                                </div>
+                                <div>{item}</div>
+                            </li>
+                        ))
+                    }
+                </ul>
             </div>
         </div>
-    </section>
-</template>
 
-<script setup lang="ts">
-    import Check from "vue-material-design-icons/CheckBold.vue"
-    import CircleMedium from "vue-material-design-icons/CircleMedium.vue"
+        <div
+            class="d-flex flex-column deserver-content"
+            data-usal="fade-u delay-100 duration-500 ease-out"
+        >
+            <h6 class="deserver-subheading">
+                Ready to replace vRA, Rundeck, Jenkins, Control-M, and fragmented scripts?
+            </h6>
+            <a href="/demo" class="btn btn-primary btn-gradient deserver-btn">
+                Discuss Your Automation Landscape
+            </a>
+        </div>
+    </div>
+</section>
 
-    const WHY_FAILS: string[] = [
-        "Fragmented scripts, pipelines, & legacy tools",
-        "Zero governance with no standards, or visibility",
-        "Fragile Day 2 Ops with slow, manual maintenance",
-        "Automation breaks in air-gapped/hybrid setups",
-        "Rising costs with no added value",
-    ]
-
-    const KESTRA_BENEFITS: string[] = [
-        "One declarative platform for all workflows",
-        "Full visibility from day one",
-        "Automate everything from provisioning to remediation",
-        "Runs anywhere cloud, on-prem, edge, or air-gapped",
-        "Cut operational costs and deliver instant value",
-    ]
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .deserver {
@@ -248,9 +256,15 @@
                     display: flex;
                     align-items: flex-start;
                     margin-top: 1px;
+                    
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                        fill: currentColor;
+                    }
                 }
 
-                :deep(svg) {
+                :global(svg) {
                     color: #f65656;
                 }
             }
@@ -260,7 +274,7 @@
                     margin-left: 2rem;
                 }
 
-                :deep(svg) {
+                svg {
                     color: #02be8a;
                 }
             }

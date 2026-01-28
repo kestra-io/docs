@@ -11,7 +11,7 @@ interface GitHubRelease {
 export interface ReleaseInfo {
     version: string
     publishedAt: string | null
-    kestraVersion?: string | null
+    minCoreCompatibilityVersion?: string | null
 }
 
 const cache: { [key: string]: { data: any; expiry: number } } = {}
@@ -58,28 +58,16 @@ export async function retrieveRepoReleases(repo: string) {
     const releases = (await response.json()) as GitHubRelease[]
 
     try {
-        const versions: ReleaseInfo[] = await Promise.all(
-            releases
-                .filter((release) => !release.draft)
-                .map(async (release) => {
-                    const version = release.tag_name.replace(/^v/, "")
-                    let kestraVersion: string | null = null
-                    const response = await fetch(
-                        `https://raw.githubusercontent.com/kestra-io/${repo}/${release.tag_name}/gradle.properties`,
-                        { headers },
-                    )
-                    if (response.ok) {
-                        const content = await response.text()
-                        kestraVersion =
-                            content.match(/kestraVersion\s*=\s*(.+)/)?.[1]?.trim() ?? null
-                    }
-                    return {
-                        version,
-                        publishedAt: release.published_at,
-                        kestraVersion,
-                    }
-                }),
-        )
+        const versions: ReleaseInfo[] = releases
+            .filter((release) => !release.draft)
+            .map((release) => ({
+                version: release.tag_name.replace(/^v/, ""),
+                publishedAt: release.published_at,
+            }))
+            .filter((v) => {
+                const major = parseInt(v.version.split(".")[0]);
+                return !isNaN(major) && major >= 1;
+            });
 
         const result = { versions }
         await addToCache(result, [repo], 3600)

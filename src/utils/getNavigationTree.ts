@@ -12,8 +12,8 @@ const navigationTree = {
         // "Video Tutorials"
     ],
     "Build with Kestra": [
-        "Concepts",
         "Workflow Components",
+        "Concepts",
         "Multi-Language Script Tasks",
         "AI Tools",
         "No-Code",
@@ -23,7 +23,7 @@ const navigationTree = {
     ],
     "Scale with Kestra": [
         "Cloud & Enterprise Edition",
-        "Task Runners",
+        "Kestra Task Runners – Offload and Isolate Compute",
         // "Worker Groups",
         "Best Practices",
     ],

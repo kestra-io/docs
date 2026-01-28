@@ -251,20 +251,12 @@
 
         a {
             color: $white-1;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             padding: calc($spacer / 4) 0.25rem;
             padding-left: 0;
 
             display: flex;
             scroll-margin: 80px;
-
-            .title {
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                line-clamp: 1;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
 
             &.active {
                 font-weight: 500;
@@ -283,7 +275,7 @@
 
 
         &:not(.depth-1) a {
-            font-size: 0.75rem;
+            font-size: 0.875rem;
         }
     }
 
