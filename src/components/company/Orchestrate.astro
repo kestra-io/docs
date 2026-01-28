@@ -1,134 +1,149 @@
-<template>
-    <main class="orchestrate">
-        <section class="hero">
-            <div class="grid">
-                <div class="media">
-                    <NuxtImg
-                        src="/landing/company/teams/team.png"
-                        alt="Team Image"
-                        class="image"
-                        width="686"
-                        height="456"
+---
+import { Image } from "astro:assets"
+import FilaLogo from "~/assets/companies/fila.svg"
+import TeamImage from "~/assets/teams/team.png"
+import TeamsImages from "~/utils/teamsImages"
+
+const companyLogos = [
+    {
+        alt: "Apple",
+        src: TeamsImages["apple.svg"],
+        width: 38,
+        height: 45,
+    },
+    { alt: "Fila", src: FilaLogo, width: 60, height: 22 },
+    {
+        alt: "Axiom",
+        src: TeamsImages["acxiom.svg"],
+        width: 102,
+        height: 23,
+    },
+    {
+        alt: "Battelle",
+        src: TeamsImages["Battelle.svg"],
+        width: 101,
+        height: 17,
+    },
+    {
+        alt: "L'Oreal",
+        src: TeamsImages["loreal.svg"],
+        width: 115,
+        height: 20,
+    },
+]
+---
+
+<main class="orchestrate">
+    <section class="hero">
+        <div class="grid">
+            <div class="media">
+                <Image
+                    src={TeamImage}
+                    alt="Team Image"
+                    class="image"
+                    width={686}
+                    height={456}
+                />
+            </div>
+            <div class="content">
+                <h1 class="title">
+                    Orchestration for<br />
+                    Every Developer,<br />
+                    <span class="gradient">Everywhere.</span>
+                </h1>
+                <p class="text">
+                    We're redefining orchestration for developers everywhere —
+                    challenging the status quo and traditional limitations.
+                    Kestra empowers engineers to orchestrate any workflow, in
+                    any language, on any infrastructure, delivering unparalleled
+                    freedom and flexibility. By simplifying complexity and
+                    eliminating constraints, we enable developers to build
+                    faster, and collaborate freely without compromise.
+                </p>
+            </div>
+            <Image
+                src={TeamsImages["line.svg"]}
+                alt="Connecting Line"
+                class="line"
+                width={224}
+                height={268}
+            />
+            <Image
+                src={TeamsImages["flare.svg"]}
+                alt="Flare Effect"
+                class="flare"
+                width={50}
+                height={50}
+            />
+            <Image
+                src={TeamsImages["flare.svg"]}
+                alt="Flare Effect 2"
+                class="flare-2"
+                width={50}
+                height={50}
+            />
+        </div>
+    </section>
+
+    <section class="trust">
+        <div class="divider">
+            <Image
+                src={TeamsImages["Logo_EE.png"]}
+                alt="Kestra Logo"
+                class="logo"
+                width={119}
+                height={109}
+            />
+            <Image
+                src={TeamsImages["black-ellipse.svg"]}
+                alt="Section Divider"
+                width={228}
+                height={135}
+            />
+        </div>
+
+        <div class="container" data-usal="fade-u">
+            <div class="content">
+                <h2 class="title" data-usal="fade-u delay-200">
+                    Trusted by
+                    <span class="gradient">Enterprises</span> Worldwide
+                </h2>
+
+                <p class="text-white" data-usal="fade-u delay-300">
+                    <strong>We are excited</strong> to see how <strong
+                        >Kestra</strong
+                    > transform the way<br />
+                    organizations approach orchestration.
+                </p>
+                <p class="text-white" data-usal="fade-u delay-400">
+                    We believe that
+                    <strong>Kestra's potential is limitless</strong>, and we<br
                     />
-                </div>
-                <div class="content">
-                    <h1 class="title">
-                        Orchestration for<br />
-                        Every Developer,<br />
-                        <span class="gradient">Everywhere.</span>
-                    </h1>
-                    <p class="text">
-                        We're redefining orchestration for developers everywhere — challenging the
-                        status quo and traditional limitations. Kestra empowers engineers to
-                        orchestrate any workflow, in any language, on any infrastructure, delivering
-                        unparalleled freedom and flexibility. By simplifying complexity and
-                        eliminating constraints, we enable developers to build faster, and
-                        collaborate freely without compromise.
-                    </p>
-                </div>
-                <NuxtImg
-                    src="/landing/company/teams/line.svg"
-                    alt="Connecting Line"
-                    class="line"
-                    width="224"
-                    height="268"
-                />
-                <NuxtImg src="/landing/company/teams/flare.svg" alt="Flare Effect" class="flare" />
-                <NuxtImg
-                    src="/landing/company/teams/flare.svg"
-                    alt="Flare Effect 2"
-                    class="flare-2"
-                />
-            </div>
-        </section>
+                    are eager to explore new
+                    <strong>opportunities</strong> and<br />
+                    <strong>partnerships</strong> as we move forward.
+                </p>
 
-        <section class="trust">
-            <div class="divider">
-                <NuxtImg
-                    src="/landing/company/teams/Logo_EE.png"
-                    alt="Kestra Logo"
-                    class="logo"
-                    width="119"
-                    height="109"
-                />
-                <NuxtImg
-                    src="/landing/company/teams/black-ellipse.svg"
-                    alt="Section Divider"
-                    width="228"
-                    height="135"
-                />
-            </div>
-
-            <div class="container" data-usal="fade-u">
-                <div class="content">
-                    <h2 class="title" data-usal="fade-u delay-200">
-                        Trusted by
-                        <span class="gradient">Enterprises</span> Worldwide
-                    </h2>
-
-                    <p class="text-white" data-usal="fade-u delay-300">
-                        <strong>We are excited</strong> to see how <strong>Kestra</strong> transform
-                        the way<br />
-                        organizations approach orchestration.
-                    </p>
-                    <p class="text-white" data-usal="fade-u delay-400">
-                        We believe that
-                        <strong>Kestra's potential is limitless</strong>, and we<br />
-                        are eager to explore new
-                        <strong>opportunities</strong> and<br />
-                        <strong>partnerships</strong> as we move forward.
-                    </p>
-
-                    <div class="logos" data-usal="fade-u delay-400">
-                        <div class="grid">
-                            <NuxtImg
-                                v-for="(logo, index) in companyLogos"
-                                :key="logo.alt"
-                                :src="logo.src"
-                                :alt="logo.alt"
-                                :width="logo.width"
-                                :height="logo.height"
-                            />
-                        </div>
+                <div class="logos" data-usal="fade-u delay-400">
+                    <div class="grid">
+                        {
+                            companyLogos.map((logo) => (
+                                <Image
+                                    src={logo.src}
+                                    alt={logo.alt}
+                                    width={logo.width}
+                                    height={logo.height}
+                                />
+                            ))
+                        }
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
-</template>
+        </div>
+    </section>
+</main>
 
-<script setup lang="ts">
-    import FilaLogo from "~/assets/companies/fila.svg"
-    const companyLogos = [
-        {
-            alt: "Apple",
-            src: "/landing/company/teams/apple.svg",
-            width: 38,
-            height: 45,
-        },
-        { alt: "Fila", src: FilaLogo.src, width: 60, height: 22 },
-        {
-            alt: "Axiom",
-            src: "/landing/company/teams/acxiom.svg",
-            width: 102,
-            height: 23,
-        },
-        {
-            alt: "Battelle",
-            src: "/landing/company/teams/Battelle.svg",
-            width: 101,
-            height: 17,
-        },
-        {
-            alt: "L'Oreal",
-            src: "/landing/company/teams/loreal.svg",
-            width: 115,
-            height: 20,
-        },
-    ]
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .orchestrate {
@@ -215,7 +230,6 @@
                     }
 
                     .title {
-                        font-family: "Public Sans";
                         font-weight: 600;
                         font-size: 48px;
                         line-height: 1;
@@ -329,7 +343,7 @@
                         rgba(24, 25, 31, 0.3) 49.42%,
                         rgba(102, 108, 133, 0) 98.04%
                     ),
-                    url("/landing/company/teams/globe.svg") center/contain no-repeat;
+                    url("~/assets/teams/globe.svg") center/contain no-repeat;
                 z-index: 1;
                 opacity: 0.8;
             }
@@ -397,7 +411,11 @@
                     line-height: 1.2;
 
                     .gradient {
-                        background: linear-gradient(89.75deg, #9f79f3 0.22%, #658af9 99.78%);
+                        background: linear-gradient(
+                            89.75deg,
+                            #9f79f3 0.22%,
+                            #658af9 99.78%
+                        );
                         background-clip: text;
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
@@ -458,7 +476,11 @@
         }
 
         .gradient {
-            background: linear-gradient(90.25deg, #7c2eea 6.26%, #658af9 53.85%);
+            background: linear-gradient(
+                90.25deg,
+                #7c2eea 6.26%,
+                #658af9 53.85%
+            );
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
