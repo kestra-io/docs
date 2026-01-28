@@ -13,7 +13,7 @@ Plugins power every task and trigger in Kestra. They wrap external systems, expo
 
 Most flows mix several categories:
 - **Tasks** perform work (HTTP, JDBC, Python, Spark, Script, etc.).
-- **Triggers** start executions (Schedule, Webhook, Kafka, Pub/Sub).
+- **Triggers** start executions ([Schedule](../07.triggers/01.schedule-trigger/index.md), [Webhook](../07.triggers/03.webhook-trigger/index.md), [Kafka](../07.triggers/05.realtime-trigger/index.md), Pub/Sub).
 - **Conditions** gate paths (`If`, `Switch`, expressions).
 - **Core** covers orchestration, I/O, logging, metrics, secrets.
 
@@ -82,4 +82,4 @@ Installation paths vary by role:
 
 If you can’t find the integration you need, you can build or request it:
 - Build: follow the [Plugin Developer Guide](../../plugin-developer-guide/index.md) to scaffold, test, and publish.
-- Request: ask in the [Kestra Slack community](https://kestra.io/slack) or open an issue in the plugins repository.
+- Request: ask in the [Kestra Slack community](https://kestra.io/slack) or open an issue in the [Kestra repository](https://github.com/kestra-io/kestra).
