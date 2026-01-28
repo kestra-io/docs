@@ -5,6 +5,7 @@ import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
+import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
 import remarkDirective from "remark-directive"
@@ -54,6 +55,7 @@ export default defineConfig({
             useDarkModeMediaQuery: false,
         }),
         mdx(),
+        icon(),
     ],
     markdown: {
         remarkPlugins: [
@@ -202,11 +204,7 @@ export default defineConfig({
                 },
             },
         },
-        optimizeDeps: {
-            include: ["vue3-count-to"],
-        },
         ssr: {
-            noExternal: ["vue3-count-to"],
             external: [
                 "node:fs/promises",
                 "node:fs",

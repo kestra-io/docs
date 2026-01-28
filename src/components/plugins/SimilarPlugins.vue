@@ -1,11 +1,11 @@
 <template>
-    <div v-if="pluginsInfo && pluginsInfo.length > 0" class="more">
+    <div v-if="similarPlugins && similarPlugins.length > 0" class="more">
         <div class="header">
             <h4 id="more-plugins-in-this-category">More Plugins in this Category</h4>
             <NavActions
-                :items="pluginsInfo"
+                :items="similarPlugins"
                 :page-size="pageSize"
-                :show="pluginsInfo.length > pageSize"
+                :show="similarPlugins.length > pageSize"
                 @page-changed="startIndex = $event"
             ></NavActions>
         </div>
@@ -25,33 +25,18 @@
 <script setup lang="ts">
     import { computed, ref } from "vue"
     import { useMediaQuery } from "@vueuse/core"
-    import { slugify, type Plugin } from "@kestra-io/ui-libs"
+    import { slugify } from "@kestra-io/ui-libs"
     import PluginCard from "~/components/plugins/PluginCard.vue"
     import NavActions from "~/components/common/NavActions.vue"
 
     const props = withDefaults(
         defineProps<{
-            similarPlugins?: Plugin[]
-            pluginsData: Record<string, PluginInformation>
+            similarPlugins?: (PluginInformation & { subGroupTitle?: string })[]
         }>(),
-        {},
+        {
+            similarPlugins: () => [],
+        },
     )
-
-    const pluginsInformation = (plugin: Plugin): PluginInformation => {
-        const pluginInfo = props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
-        return {
-            name: plugin.name,
-            subGroupTitle: plugin?.title,
-            title: pluginInfo?.title,
-            description: pluginInfo?.description ?? plugin.description,
-            categories: pluginInfo?.categories,
-            icon: pluginInfo?.icon,
-            elementCounts: pluginInfo?.elementCounts,
-            blueprints: pluginInfo?.blueprints,
-            className: pluginInfo?.className,
-            subGroup: plugin.subGroup,
-        }
-    }
 
     const isTwoPerRowScreen = useMediaQuery("(min-width: 992px) and (max-width: 1399px)")
 
@@ -59,9 +44,8 @@
 
     const startIndex = ref(0)
 
-    const pluginsInfo = computed(() => props.similarPlugins?.map(pluginsInformation) ?? [])
     const visiblePlugins = computed(() =>
-        pluginsInfo.value.slice(startIndex.value, startIndex.value + pageSize.value),
+        props.similarPlugins.slice(startIndex.value, startIndex.value + pageSize.value),
     )
 </script>
 <style scoped lang="scss">

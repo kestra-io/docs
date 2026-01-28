@@ -1,74 +1,75 @@
-<template>
-    <section class="govern">
-        <div class="container">
-            <h1 data-usal="fade-u delay-0 duration-400 ease-out">
-                <span class="highlight">Orchestrate</span> And
-                <br class="d-none d-xl-block" />
-                <span class="indent"
-                    ><span class="highlight">Govern</span> The Entire Infrastructure Lifecycle</span
-                >
-            </h1>
+---
+import { Image } from "astro:assets"
+import iac from "~/assets/landing/infrastructure/iac.png"
+import deploy from "~/assets/landing/infrastructure/deploy.png"
+import loop from "~/assets/landing/infrastructure/loop.png"
 
-            <div class="cards-wrapper mt-4">
-                <div
-                    v-for="(card, index) in CARDS"
-                    :key="card.title"
-                    class="cards"
-                    :data-usal="`fade duration-400 delay-${50 + index * 50} ease-out`"
-                >
-                    <div class="inner-card" :class="{ reverse: card.reverse }">
-                        <div
-                            class="content-card"
-                            :data-usal="`fade-u duration-350 delay-${100 + index * 50} ease-out`"
-                        >
-                            <h2>
-                                {{ card.title }}
-                            </h2>
-                            <p>
-                                {{ card.description }}
-                            </p>
-                        </div>
+const CARDS = [
+    {
+        title: "Standardize IaC Pipeline",
+        description:
+            "Run IaC the same way every time. kestra orchestrates the full lifecycle with shared parameters, secrets, retries, and evidence-\ngrade logs across all environments.",
+        image: iac,
+    },
+    {
+        title: "Deploy to Any Target, On-Prem or Cloud",
+        description:
+            "Provision and evolve workloads anywhere. Kestra workflows drive K8s, vSphere, cloud, and network APIs with consistent sequencing, execution, and traceability.",
+        image: deploy,
+        reverse: true,
+    },
+    {
+        title: "Integrated\nHuman-in-the-Loop",
+        description:
+            "Pause workflows for critical checks. Kestra offers relying Business Decisions with audit trail and controlled executions.",
+        image: loop,
+    },
+]
+---
 
-                        <div class="img-card">
-                            <img
-                                :src="card.image"
-                                :alt="card.title"
-                                class="img-fluid"
-                                :data-usal="`zoomin delay-${400 + index * 50} duration-400 ease-out`"
-                            />
+<section class="govern">
+    <div class="container">
+        <h1 data-usal="fade-u delay-0 duration-400 ease-out">
+            <span class="highlight">Orchestrate</span> And
+            <br class="d-none d-xl-block" />
+            <span class="indent"
+                ><span class="highlight">Govern</span> The Entire Infrastructure Lifecycle</span
+            >
+        </h1>
+
+        <div class="cards-wrapper mt-4">
+            {
+                CARDS.map((card, index) => (
+                    <div
+                        class="cards"
+                        data-usal={`fade duration-400 delay-${50 + index * 50} ease-out`}
+                    >
+                        <div class:list={["inner-card", { reverse: card.reverse }]}>
+                            <div
+                                class="content-card"
+                                data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                            >
+                                <h2>{card.title}</h2>
+                                <p>{card.description}</p>
+                            </div>
+
+                            <div class="img-card">
+                                <Image
+                                    src={card.image}
+                                    alt={card.title}
+                                    class="img-fluid"
+                                    data-usal={`zoomin delay-${400 + index * 50} duration-400 ease-out`}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                ))
+            }
         </div>
-    </section>
-</template>
+    </div>
+</section>
 
-<script setup lang="ts">
-    const CARDS = [
-        {
-            title: "Standardize IaC Pipeline",
-            description:
-                "Run IaC the same way every time. kestra orchestrates the full lifecycle with shared parameters, secrets, retries, and evidence-\ngrade logs across all environments.",
-            image: "/landing/infrastructure/iac.png",
-        },
-        {
-            title: "Deploy to Any Target, On-Prem or Cloud",
-            description:
-                "Provision and evolve workloads anywhere. Kestra workflows drive K8s, vSphere, cloud, and network APIs with consistent sequencing, execution, and traceability.",
-            image: "/landing/infrastructure/deploy.png",
-            reverse: true,
-        },
-        {
-            title: "Integrated\nHuman-in-the-Loop",
-            description:
-                "Pause workflows for critical checks. Kestra offers relying Business Decisions with audit trail and controlled executions.",
-            image: "/landing/infrastructure/loop.png",
-        },
-    ]
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .govern {
@@ -92,7 +93,7 @@
 
                 @include media-breakpoint-up(md) {
                     text-align: left;
-                    font-size: 2.625rem;
+                    font-size: 2.5rem;
                     line-height: 3rem;
                     margin-bottom: 3.5rem;
                 }
@@ -132,14 +133,14 @@
                         display: flex;
                         flex-direction: column-reverse;
                         align-items: center;
-
+                        
                         @include media-breakpoint-up(md) {
                             flex-direction: row;
-                            padding-left: 4rem;
+                            padding-left: 2rem;
 
                             &.reverse {
                                 flex-direction: row-reverse;
-                                padding: 0 4rem 0 0;
+                                padding: 0 2rem 0 0;
                             }
                         }
 
@@ -184,12 +185,13 @@
 
                         .img-card {
                             width: 100%;
+                            height: 100%;
                             margin-bottom: 1rem;
 
                             img {
                                 width: 100%;
-                                height: auto;
-                                object-fit: contain;
+                                height: 100%;
+                                object-fit: cover;
                                 display: block;
                             }
 
@@ -198,8 +200,19 @@
                                 margin-bottom: 0;
 
                                 img {
-                                    width: 100%;
-                                    height: 100%;
+                                    min-width: 479px;
+                                    height: 261px;
+                                    object-fit: cover;
+                                }
+                            }
+
+                            @include media-breakpoint-up(lg) {
+                                width: auto;
+                                margin-bottom: 0;
+
+                                img {
+                                    min-width: 640px;
+                                    height: 351px;
                                     object-fit: cover;
                                 }
                             }

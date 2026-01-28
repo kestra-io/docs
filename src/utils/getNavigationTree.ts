@@ -23,7 +23,7 @@ const navigationTree = {
     ],
     "Scale with Kestra": [
         "Cloud & Enterprise Edition",
-        "Task Runners",
+        "Kestra Task Runners – Offload and Isolate Compute",
         // "Worker Groups",
         "Best Practices",
     ],
