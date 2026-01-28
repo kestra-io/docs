@@ -23,7 +23,7 @@ const navigationTree = {
     ],
     "Scale with Kestra": [
         "Cloud & Enterprise Edition",
-        "Task Runners",
+        "Task Runners (Enterprise)",
         // "Worker Groups",
         "Best Practices",
     ],
