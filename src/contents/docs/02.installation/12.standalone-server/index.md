@@ -104,5 +104,7 @@ Below are the steps to launch a Standalone Kestra server on Windows:
 2. Go to the [Releases](https://github.com/kestra-io/kestra/releases) page on the main Kestra repository.
 3. Select the desired version and download the binary from the `Assets` section.
 4. Rename the downloaded file to `kestra.bat`.
-5. Install the plugins you need from the [following list](https://github.com/kestra-io/kestra/blob/620f0b1e9c45cd400db582df69320e518d3f98a0/.github/workflows/main.yml#L163-L234) using the command `kestra.bat plugins install io.kestra.plugin:plugin-script-powershell:LATEST io.kestra.plugin:plugin-script-python:LATEST` or copy the plugins from a Docker container to your local machine, as described in the section above.
+5. Install the plugins you need from the [following list](https://github.com/kestra-io/kestra/blob/develop/.plugins) using the command `kestra.bat plugins install io.kestra.plugin:plugin-script-powershell:LATEST io.kestra.plugin:plugin-script-python:LATEST` or copy the plugins from a Docker container to your local machine, as described in the section above.
 6. Start the server using the command `kestra.bat server local`.
+
+You can also use [Docker Compose](../03.docker-compose/index.md) through WSL 2.
