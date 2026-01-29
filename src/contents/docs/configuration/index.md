@@ -1671,7 +1671,7 @@ kestra:
     termination-grace-period: 5m
 ```
 
-### Server service instance retention period
+### Server service instance Purge retention period
 
 Kestra purges empty instances on a fixed schedule (30 days by default). To change how often the purge job runs:
 
@@ -1680,7 +1680,7 @@ kestra:
   server:
     service:
       purge:
-        fixed-delay: 7d   # run the purge every 7 days instead of 30
+        retention: 7d   # run the purge every 7 days instead of 30
 ```
 
 :::alert{type="warning"}
