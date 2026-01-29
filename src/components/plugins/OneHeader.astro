@@ -1,5 +1,6 @@
 ---
 import type { Plugin } from "@kestra-io/ui-libs"
+import { Image } from "astro:assets"
 import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 
 interface Props {
@@ -10,24 +11,24 @@ interface Props {
     headingDescription?: string
 }
 
-const { headingTitle, pluginType, rootPlugin, currentPageIcon, headingDescription } = Astro.props;
+const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.props;
 ---
 
 <h1 class="py-0 title">
     {currentPageIcon && (
         <div class="pageIcon">
-            <img
+            <Image
                 src={currentPageIcon}
                 alt={headingTitle}
-                loading="lazy"
+                width={80}
+                height={80}
                 class="blurred-bg"
             />
-            <img
+            <Image
                 src={currentPageIcon}
                 alt={headingTitle}
-                width="80"
-                height="80"
-                loading="lazy"
+                width={80}
+                height={80}
                 class="page-icon"
             />
         </div>
@@ -35,7 +36,13 @@ const { headingTitle, pluginType, rootPlugin, currentPageIcon, headingDescriptio
     <div class="title-content d-flex flex-column justify-space-between w-100">
         <div class="d-flex align-items-center flex-wrap gap-3">
             <span>{headingTitle}</span>
-            <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
+            <Image
+                src="/landing/plugins/certified.svg"
+                alt="Certified"
+                width={98}
+                height={20}
+                class="mt-1"
+            />
         </div>
         {headingDescription && (
             <div class="bd-markdown">
