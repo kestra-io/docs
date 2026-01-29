@@ -12,7 +12,7 @@ image: ./main.png
 
 If you're here, you've probably already discovered that Apache Airflow is excellent at orchestrating data pipelines and considerably less excellent at making your platform team's life easy. The gap between "works in development" and "runs reliably in production with proper access controls, audit logging, and disaster recovery" is where enterprise requirements live, and it's a gap that Airflow was never designed to close.
 
-This isn't a knock on Airflow. It emerged from Airbnb's data team in 2014 to solve their specific scheduling problems, and it solved them well. But enterprise orchestration in 2026 involves concerns that simply weren't on the roadmap at the time: [multi-tenant governance](https://kestra.io/docs/architecture/multi-tenancy), [real-time event processing](https://kestra.io/docs/how-to-guides/realtime-triggers), hybrid cloud deployment, and the kind of compliance requirements that make auditors happy.
+This isn't a knock on Airflow. It emerged from Airbnb's data team in 2014 to solve their specific scheduling problems, and it solved them well. But enterprise orchestration in 2026 involves concerns that simply weren't on the roadmap at the time: [multi-tenant governance](../../docs/08.architecture/10.multi-tenancy/index.md), [real-time event processing](../../docs/15.how-to-guides/realtime-triggers/index.md), hybrid cloud deployment, and the kind of compliance requirements that make auditors happy.
 
 So what are your actual options in 2026? 
 
@@ -32,9 +32,9 @@ Google "Airflow alternatives" and you'll find plenty of articles that compare to
 
 First, there's the governance problem. When you have 200 data engineers writing pipelines, you need guardrails that prevent well-meaning people from doing damage. Things like:
 
-- [Role-based access control](https://kestra.io/docs/enterprise/auth/rbac) that actually works
-- [Namespacing](https://kestra.io/docs/enterprise/governance/namespace-management) that isolates teams
-- [Audit trails](https://kestra.io/docs/enterprise/governance/audit-logs) that satisfy your compliance officer without requiring a dedicated forensics team to interpret
+- [Role-based access control](../../docs/07.enterprise/03.auth/rbac/index.md) that actually works
+- [Namespacing](../../docs/07.enterprise/02.governance/namespace-management/index.md) that isolates teams
+- [Audit trails](../../docs/07.enterprise/02.governance/06.audit-logs/index.md) that satisfy your compliance officer without requiring a dedicated forensics team to interpret
 
 Second, there's deployment flexibility. "Cloud-native" is a fine marketing term until your security team mandates on-premises deployment for certain workloads, or your company operates in a jurisdiction with data residency requirements. Companies want to have the ability to run the same orchestration platform in GCP, on-prem, and air-gapped environments.
 
@@ -104,19 +104,19 @@ Kestra takes a fundamentally different approach from Python-centric tools: it's 
 In practice, this means:
 
 - **Declarative:** Define *what* should happen and *when* in YAML; execute the actual work in whatever language or tool makes sense.
-- **True language flexibility:** The same orchestration layer coordinates [Python scripts](https://kestra.io/docs/how-to-guides/python), SQL queries, [shell commands](https://kestra.io/docs/how-to-guides/shell), Go binaries, and API calls without caring what language runs underneath.
-- **Accessible to non-developers:** A data analyst can read and modify a workflow without understanding Python packaging or virtual environments. Teams that prefer clicking to coding get a [real UI](https://kestra.io/docs/no-code/no-code-flow-building), not a bolted-on afterthought.
+- **True language flexibility:** The same orchestration layer coordinates [Python scripts](../../docs/15.how-to-guides/python/index.md), SQL queries, [shell commands](../../docs/15.how-to-guides/shell/index.md), Go binaries, and API calls without caring what language runs underneath.
+- **Accessible to non-developers:** A data analyst can read and modify a workflow without understanding Python packaging or virtual environments. Teams that prefer clicking to coding get a [real UI](../../docs/no-code/01.no-code-flow-building/index.md), not a bolted-on afterthought.
 - **Easy migrations:** Bring existing workloads as-is without refactoring. Just wrap what you have and orchestrate it.
 
 ### What this enables
 
-- **Multi-team orchestration:** [Leroy Merlin France](https://kestra.io/use-cases/stories/leroy-merlin), the global home improvement retailer, runs a single Kestra instance with 250+ active users and 5000+ workflows across teams. Their Data Mesh architecture lets different data domains manage their own pipelines independently while [RBAC](https://kestra.io/docs/enterprise/auth/rbac) and namespace isolation ensure teams only see their own workflows—enabling a 900% increase in data production.
-- **Legacy modernization:** [FILA](https://kestra.io/use-cases/stories/fila), the global sportswear brand, migrated their PLM and ERP integrations from manual batch scripts to 2000+ Kestra workflows. With 25+ engineers now managing 2.5 million monthly executions, they've replaced fragile legacy processes with event-driven orchestration that handles complex multi-system data flows across SQL Server, APIs, and file transfers.
-- **Declarative data stack orchestration:** [Gorgias](https://kestra.io/use-cases/stories/gorgias), the AI customer experience platform, uses Kestra to orchestrate their entire data stack—triggering Airbyte syncs, running dbt transformations, and coordinating Hightouch reverse-ETL jobs. Their IaC approach with YAML-based configuration eliminated manual interventions and enabled seamless CI/CD for data workflows.
+- **Multi-team orchestration:** [Leroy Merlin France](https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent), the global home improvement retailer, runs a single Kestra instance with 250+ active users and 5000+ workflows across teams. Their Data Mesh architecture lets different data domains manage their own pipelines independently while [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md) and namespace isolation ensure teams only see their own workflows—enabling a 900% increase in data production.
+- **Legacy modernization:** [FILA](https://kestra.io/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated), the global sportswear brand, migrated their PLM and ERP integrations from manual batch scripts to 2000+ Kestra workflows. With 25+ engineers now managing 2.5 million monthly executions, they've replaced fragile legacy processes with event-driven orchestration that handles complex multi-system data flows across SQL Server, APIs, and file transfers.
+- **Declarative data stack orchestration:** [Gorgias](https://kestra.io/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra), the AI customer experience platform, uses Kestra to orchestrate their entire data stack—triggering Airbyte syncs, running dbt transformations, and coordinating Hightouch reverse-ETL jobs. Their IaC approach with YAML-based configuration eliminated manual interventions and enabled seamless CI/CD for data workflows.
 
-For enterprise deployment, Kestra runs anywhere: any cloud, on-premises, or air-gapped. [Kestra Cloud](https://kestra.io/cloud) offers a fully managed option for teams that don't want to handle infrastructure, while the [self-hosted version](https://kestra.io/docs/installation) gives you complete control. For faster cloud deployment, Kestra is available on [AWS Marketplace](https://kestra.io/docs/installation/aws), [Azure Marketplace](https://kestra.io/docs/installation/azure), and [Google Cloud Marketplace](https://kestra.io/docs/installation/gcp). You can deploy a production-ready instance in minutes through your existing cloud billing.
+For enterprise deployment, Kestra runs anywhere: any cloud, on-premises, or air-gapped. [Kestra Cloud](https://kestra.io/cloud) offers a fully managed option for teams that don't want to handle infrastructure, while the [self-hosted version](../../docs/02.installation/index.mdx) gives you complete control. For faster cloud deployment, Kestra is available on [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg), [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official), and [Google Cloud Marketplace](https://kestra.io/docs/installation/gcp). You can deploy a production-ready instance in minutes through your existing cloud billing.
 
-The event-driven architecture handles [real-time triggers](https://kestra.io/blogs/2024-06-27-realtime-triggers) natively rather than bolting them onto a batch-oriented scheduler. [Governance features](https://kestra.io/docs/enterprise/governance) like [namespace isolation](https://kestra.io/docs/enterprise/governance/namespace-management), [RBAC](https://kestra.io/docs/enterprise/auth/rbac), and [audit logging](https://kestra.io/docs/enterprise/governance/audit-logs) are built into the core rather than reserved for a cloud tier.
+The event-driven architecture handles [real-time triggers](https://kestra.io/blogs/2024-06-27-realtime-triggers) natively rather than bolting them onto a batch-oriented scheduler. [Governance features](https://kestra.io/docs/enterprise/governance) like [namespace isolation](../../docs/07.enterprise/02.governance/07.namespace-management/index.md), [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md), and [audit logging](../../docs/07.enterprise/02.governance/06.audit-logs/index.md) are built into the core rather than reserved for a cloud tier.
 
 ### Honest tradeoffs to consider
 
@@ -134,9 +134,9 @@ If your team is Python-native and you want minimal disruption, Astronomer or Pre
 
 But here's the question most comparisons don't ask: what happens when your orchestration needs expand beyond data pipelines?
 
-The reality of 2026 is that workloads are converging. [AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) don't respect the boundaries between data engineering, ML ops, and application development. The same platform that orchestrates your [ETL pipelines](https://kestra.io/docs/how-to-guides/etl-pipelines) might need to coordinate model training, API calls, and business process automation. If you choose a Python-only orchestrator today, you're betting that Python will remain the center of gravity for every workflow your organization needs to run. That's a big bet.
+The reality of 2026 is that workloads are converging. [AI workflows](../../docs/ai-tools/ai-workflows/index.md) don't respect the boundaries between data engineering, ML ops, and application development. The same platform that orchestrates your [ETL pipelines](../../docs/15.how-to-guides/etl-pipelines/index.md) might need to coordinate model training, API calls, and business process automation. If you choose a Python-only orchestrator today, you're betting that Python will remain the center of gravity for every workflow your organization needs to run. That's a big bet.
 
-This is where Kestra's language-agnostic approach pays off. You can start with [data pipelines](https://kestra.io/docs/use-cases/data-pipelines), migrate off Airflow without rewriting everything, and then expand to orchestrate workloads across teams and languages as your needs evolve. No silos,  second orchestrator for non-Python work, or rearchitecting when requirements change.
+This is where Kestra's language-agnostic approach pays off. You can start with [data pipelines](../../docs/use-cases/01.data-pipelines/index.md), migrate off Airflow without rewriting everything, and then expand to orchestrate workloads across teams and languages as your needs evolve. No silos,  second orchestrator for non-Python work, or rearchitecting when requirements change.
 
 We're obviously biased, but we'd make this case: the right orchestration platform isn't just about solving today's problems. It's about having room to grow. Tools that are cutting-edge today may feel limiting in a few years as the landscape shifts. A platform that doesn't lock you into a single language or paradigm gives you options.
 
@@ -164,8 +164,8 @@ Kestra orchestrates workflows in any language. Your tasks can execute Python, R,
 
 ### How does Kestra handle RBAC and multi-tenancy?
 
-Kestra provides native [role-based access control](https://kestra.io/docs/enterprise/auth/rbac) and [multi-tenancy](https://kestra.io/docs/architecture/multi-tenancy) through namespace isolation. Teams can share a single Kestra instance while maintaining strict boundaries—each team sees only their workflows, secrets, and execution history.
+Kestra provides native [role-based access control](../../docs/07.enterprise/03.auth/rbac/index.md) and [multi-tenancy](../../docs/08.architecture/10.multi-tenancy/index.md) through namespace isolation. Teams can share a single Kestra instance while maintaining strict boundaries—each team sees only their workflows, secrets, and execution history.
 
 ### How do I get started with Kestra?
 
-You can [try Kestra locally](https://kestra.io/docs/quickstart) in minutes with Docker, deploy via [cloud marketplaces](https://kestra.io/docs/installation) (AWS, Azure, GCP), or start immediately with [Kestra Cloud](https://kestra.io/cloud).
+You can [try Kestra locally](../../docs/01.quickstart/index.md) in minutes with Docker, deploy via cloud marketplaces ([AWS](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg), [Azure](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official)), or start immediately with [Kestra Cloud](https://kestra.io/cloud).
