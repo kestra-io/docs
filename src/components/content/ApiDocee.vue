@@ -8,8 +8,6 @@
         allow-authentication="false"
         allow-server-selection="false"
         allow-try="false"
-        regular-font="Public Sans"
-        mono-font="Source Code Pro"
     />
 </template>
 
@@ -24,6 +22,8 @@
         --textarea-height: auto;
         --textarea-min-height: 100px;
         --code-block-max-height: 600px;
+        --font-mono: var(--font-family-source-code-pro);
+        --font-regular: var(--font-family-public-sans);
 
         &::part(section-endpoint) {
             white-space: nowrap;
