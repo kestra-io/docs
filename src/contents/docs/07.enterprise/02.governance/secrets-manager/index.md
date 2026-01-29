@@ -197,6 +197,27 @@ Additionally, you can configure the following properties:
 - **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
 
+Using the Token method with Root Engine has the following configuration:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      token:
+        token: YOUR_TOKEN
+      address: http://vault:8200
+      rootEngine: dev
+```
+
+In Vault, `rootEngine: dev` translates to your KV secret engine type with path set as "dev".
+
+![Vault Secret UI](./kv-secret-engine.png)
+
+And any secret that you create from Kestra would be placed under the following structure: `TENANT_ID/NAMESPACE_PARENT/NAMESPACE_CHILD/NAMESPACE_GRANDCHILD/SECRET_NAME`. Assuming a Tenant ID of `internal` and a `company.team` Namespace, Vault will show the following:
+
+![Vault Secret Structure](./secret-structure.png)
+
 ## CyberArk Configuration
 
 Kestra integrates with [CyberArk](https://www.cyberark.com/products/secrets-management/) as a secrets backend. CyberArk stores your secrets externally, and Kestra workers retrieve them at runtime and keep them only in memory.

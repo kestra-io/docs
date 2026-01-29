@@ -67,7 +67,7 @@ We worked a lot on our flow developer documentation lately to facilitate discove
 
 We wrote a new page about [data storage and processing](../../docs/08.architecture/data-components/index.md), we strongly advise everyone to read it as you can discover some previously hidden Kestra functionalities.
 
-We wrote a new page about flow [tasks](../../docs/05.workflow-components/01.tasks/index.mdx/).
+We wrote a new page about flow [tasks](../../docs/05.workflow-components/01.tasks/index.mdx).
 
 We created a [tutorial](../../docs/03.tutorial/index.mdx) to discover the most important features one needs to know to write efficient data pipelines with Kestra.
 

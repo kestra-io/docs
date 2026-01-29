@@ -1,0 +1,77 @@
+---
+import { Image } from "astro:assets"
+import headerImage from "./assets/header.svg"
+---
+
+<div class="container-fluid">
+    <div class="hero container">
+        <div class="row">
+            <div class="col-md-7 align-items-center d-flex order-1 order-md-0">
+                <div>
+                    <h1 data-usal="fade-r">Connect and Collaborate</h1>
+                    <p class="baseline" data-usal="fade-l">
+                        Connect with experts in the field, get support from the
+                        community, exchange ideas and contribute your code and
+                        feedback.
+                    </p>
+                    <a
+                        href="https://kestra.io/slack"
+                        class="btn btn-animated btn-purple-animated"
+                        data-usal="zoomin"
+                        target="_blank"
+                    >
+                        Join us on Slack
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5 order-0 order-md-1">
+                <Image
+                    src={headerImage}
+                    class="img-fluid"
+                    alt="Illustration of diverse people around Kestra's logo, symbolizing Kestra's thriving community"
+                    data-usal="zoomin"
+                />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .container-fluid {
+        background: url("./assets/header-bg.svg") no-repeat center;
+        background-size: 100% 100%;
+        color: $white;
+
+        .container {
+            border-bottom: $block-border;
+        }
+
+        .hero {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        h1,
+        p {
+            font-weight: 400;
+            padding-bottom: 0;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: $font-size-4xl;
+        }
+
+        p {
+            font-size: $font-size-xl;
+        }
+
+        .hero {
+            @include media-breakpoint-down(md) {
+                padding-top: 0;
+            }
+        }
+    }
+</style>

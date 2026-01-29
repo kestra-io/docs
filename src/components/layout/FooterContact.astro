@@ -1,0 +1,123 @@
+---
+import Section from "./Section.astro"
+
+interface Props {
+    title?: string
+    subtitle?: string
+    darkButtonText?: string
+    darkButtonHref?: string
+    purpleButtonText?: string
+    purpleButtonHref?: string
+    animation?: boolean
+}
+
+const {
+    title = "Getting Started",
+    subtitle,
+    darkButtonText,
+    darkButtonHref = "/docs/terraform",
+    purpleButtonText,
+    purpleButtonHref = "https://github.com/kestra-io/kestra",
+    animation = true,
+} = Astro.props
+
+const animationType = (type: string) => (animation ? type : "")
+---
+
+<div class="container rounded-3 mb-5">
+    <Section animation={animation}>
+        <div class="text-center cta px-5">
+            {
+                title && (
+                    <p class="title" data-usal={animationType("fade-left")}>
+                        {title}
+                    </p>
+                )
+            }
+            {
+                subtitle && (
+                    <p class="subtitle" data-usal={animationType("fade-left")}>
+                        {subtitle}
+                    </p>
+                )
+            }
+            {
+                darkButtonText && (
+                    <a
+                        href={darkButtonHref}
+                        class="btn btn-animated btn-dark-animated mt-2 me-sm-3 me-1"
+                        data-usal={animationType("zoom-in")}
+                    >
+                        {darkButtonText}
+                    </a>
+                )
+            }
+            {
+                purpleButtonText && (
+                    <a
+                        href={purpleButtonHref}
+                        class="btn btn-animated btn-purple-animated mt-2"
+                        data-usal={animationType("zoom-in")}
+                    >
+                        {purpleButtonText}
+                    </a>
+                )
+            }
+        </div>
+    </Section>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .container {
+        padding-left: calc($spacer * 1);
+        padding-right: calc($spacer * 1);
+        margin-top: calc($spacer * 5.625);
+        border-radius: calc($spacer * 0.5);
+        border: $block-border;
+        background: $black-2 url("./assets/bg.svg") no-repeat right;
+        background-size: 20% 100%;
+        color: $white;
+        @include media-breakpoint-down(lg) {
+            padding-left: calc($spacer * 0.3);
+            padding-right: calc($spacer * 0.3);
+        }
+        :global(section) {
+            padding: 2rem 0;
+
+            .main {
+                padding-top: 0;
+            }
+
+            .title,
+            .subtitle {
+                font-family: $font-family-sans-serif;
+            }
+
+            .title {
+                font-size: $h3-font-size;
+                line-height: calc($spacer * 2.5);
+                font-weight: 100;
+                margin: 0 auto calc($spacer * 0.5);
+                max-width: 37rem;
+            }
+
+            .subtitle {
+                margin: calc($spacer * 0.5) auto;
+                font-size: $h6-font-size;
+                line-height: calc($spacer * 1.625);
+                font-weight: 100;
+                max-width: 40rem;
+            }
+        }
+
+        .btn-dark {
+            border: $btn-dark-border;
+        }
+
+        a {
+            color: $white !important;
+        }
+    }
+</style>

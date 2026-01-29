@@ -16,11 +16,8 @@
                             <Star title="" />
                             <p>
                                 Stars <br />
-                                <span class="number">
-                                    <CountTo
-                                        :endVal="metrics ? metrics.stars : 0"
-                                        :duration="4000"
-                                    ></CountTo>
+                                <span class="number" :data-usal="`count-[${metrics ? metrics.stars : 0}] duration-4000`">
+                                    {{metrics ? metrics.stars : 0}}
                                 </span>
                             </p>
                         </div>
@@ -28,11 +25,8 @@
                             <DirectionsFork title="" />
                             <p>
                                 Forks <br />
-                                <span class="number">
-                                    <CountTo
-                                        :endVal="metrics ? metrics.forks : 0"
-                                        :duration="4000"
-                                    ></CountTo>
+                                <span class="number" :data-usal="`count-[${metrics ? metrics.forks : 0}] duration-4000`">
+                                    {{metrics ? metrics.forks : 0}}
                                 </span>
                             </p>
                         </div>
@@ -40,11 +34,8 @@
                             <BugOutline title="" />
                             <p>
                                 Issues <br />
-                                <span class="number">
-                                    <CountTo
-                                        :endVal="metrics ? metrics.issues : 0"
-                                        :duration="4000"
-                                    ></CountTo>
+                                <span class="number" :data-usal="`count-[${metrics ? metrics.issues : 0}] duration-4000`">
+                                    {{metrics ? metrics.issues : 0}}
                                 </span>
                             </p>
                         </div>
@@ -52,11 +43,8 @@
                             <BugOutline title="" />
                             <p>
                                 Pull requests <br />
-                                <span class="number">
-                                    <CountTo
-                                        :endVal="metrics ? metrics.pullRequests : 0"
-                                        :duration="4000"
-                                    ></CountTo>
+                                <span class="number" :data-usal="`count-[${metrics ? metrics.pullRequests : 0}] duration-4000`">
+                                    {{metrics ? metrics.pullRequests : 0}}
                                 </span>
                             </p>
                         </div>
@@ -64,11 +52,8 @@
                             <SourceCommitLocal title="" />
                             <p>
                                 Commits <br />
-                                <span class="number">
-                                    <CountTo
-                                        :endVal="metrics ? metrics.commits : 0"
-                                        :duration="4000"
-                                    ></CountTo>
+                                <span class="number" :data-usal="`count-[${metrics ? metrics.commits : 0}] duration-4000`">
+                                    {{metrics ? metrics.commits : 0}}
                                 </span>
                             </p>
                         </div>
@@ -76,12 +61,8 @@
                             <AccountGroupOutline title="" />
                             <p>
                                 Contributors <br />
-                                <span class="number">
-                                    <CountTo
-                                        :endVal="contributors ? contributors.length : 0"
-                                        :duration="4000"
-                                    >
-                                    </CountTo>
+                                <span class="number" :data-usal="`count-[${contributors ? contributors.length : 0}] duration-4000`">
+                                    {{contributors ? contributors.length : 0}}
                                 </span>
                             </p>
                         </div>
@@ -124,7 +105,6 @@
 </template>
 
 <script setup lang="ts">
-    import { CountTo } from "vue3-count-to"
     import SourceCommitLocal from "vue-material-design-icons/SourceCommitLocal.vue"
     import Star from "vue-material-design-icons/Star.vue"
     import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue"
