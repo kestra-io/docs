@@ -92,6 +92,12 @@ docker rm $id
 
 ## Installation on Windows
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/Pyr0AKLFfBc?si=sdgYcOftlDoq5_Cs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+---
+
 Below are the steps to launch a Standalone Kestra server on Windows:
 
 1. Install [Java JRE 21](https://adoptium.net/temurin/releases/?os=windows&version=21) -- use the `x64` version in the MSI format.
