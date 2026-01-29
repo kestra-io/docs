@@ -549,7 +549,7 @@ kestra:
 ## Multi-tenancy
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/ 0.23.0/tenant-migration-ee/index.md).
+Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
 :::
 
 Enable (pre-0.23):
@@ -564,7 +564,7 @@ kestra:
 ## Default tenant
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/ 0.23.0/tenant-migration-ee/index.md).
+Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
 :::
 
 Disable the default tenant when multi-tenancy is on:
@@ -1937,7 +1937,7 @@ kestra:
 
 ## Enabling templates
 
-Templates are [deprecated](../11.migration-guide/0.11.0/templates/index.md) and disabled by default since 0.11.0. Re-enable:
+Templates are [deprecated](../11.migration-guide/v0.11.0/templates/index.md) and disabled by default since 0.11.0. Re-enable:
 
 ```yaml
 kestra:
@@ -1997,7 +1997,7 @@ Camel case becomes hyphenated.
 
 ### Recursive rendering
 
-Restore [pre-0.14.0 behavior](../11.migration-guide/0.14.0/recursive-rendering/index.md) (defaults to `false`):
+Restore [pre-0.14.0 behavior](../11.migration-guide/v0.14.0/recursive-rendering/index.md) (defaults to `false`):
 
 ```yaml
 kestra:
