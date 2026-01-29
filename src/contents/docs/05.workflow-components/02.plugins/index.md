@@ -34,6 +34,7 @@ namespace: company.team
 tasks:
   - id: fetch
     type: io.kestra.plugin.jdbc.postgresql.Query
+    version: "1.0.0"
     url: jdbc:postgresql://127.0.0.1:56982/
     username: "{{ secret('POSTGRES_USERNAME') }}"
     password: "{{ secret('POSTGRES_PASSWORD') }}"
@@ -47,7 +48,7 @@ Plugins often share the same properties; use them wisely to keep executions fast
 
 - **Result handling (`fetchType` / `storeType`)** chooses how outputs are returned: `FETCH_ONE`, `FETCH`, `NONE`, or `STORE`. `STORE` writes results to internal storage and returns a URI instead of inlining the payload.
 - **Pagination limits** (`fetchSize`, `limit`, `maxResults`) prevent oversized responses when you expect big result sets.
-- **Secrets**: keep connection strings, tokens, and usernames in secrets (`{{ secret('KEY') }}`) so they don’t leak into flow revisions or logs.
+- [**Secrets**](../../06.concepts/04.secret/index.md): keep connection strings, tokens, and usernames in secrets (`{{ secret('KEY') }}`) so they don’t leak into flow revisions or logs.
 
 ### Handling outputs: fetch vs. store
 
