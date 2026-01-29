@@ -23,7 +23,17 @@ With Kestra, you can use an existing LDAP directory to authenticate users and sy
 
 ## Configuration
 
-LDAP is configured under the security context of your [Kestra configuration](../../../../configuration/index.md) file. Below is an example configuration with Kestra-specific properties on top of the Micronaut configuration.
+LDAP is configured under the security context of your [Kestra configuration](../../../../configuration/index.md) file. 
+
+[LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) supports `context`, `search`, and `groups` as core configuration properties supported out of the box. These properties define the connection context, user attribute mapping, and group filtering needed to synchronize users and their group memberships with Kestra.
+
+For Kestra-specific configuration, the `user-attributes` section maps specific LDAP attributes such as `cn`, `givenName`, `sn`, and `mail` to the corresponding Kestra user properties. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
+
+Below are example configurations with Kestra-specific properties on top of the Micronaut configuration.
+
+### Unix Configuration
+
+Below is an example Unix configuration:
 
 ```yaml
 micronaut:
@@ -53,9 +63,37 @@ micronaut:
           filter-attribute: uid
 ```
 
-[LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) supports `context`, `search`, and `groups` as core configuration properties supported out of the box. These properties define the connection context, user attribute mapping, and group filtering needed to synchronize users and their group memberships with Kestra.
+### Windows Configuration
 
-For Kestra-specific configuration, the `user-attributes` section maps specific LDAP attributes such as `cn`, `givenName`, `sn`, and `mail` to the corresponding Kestra user properties. In this configuration, user attributes like First Name, Last Name, and Email are mapped between the two.
+Below is an example configuration for Windows LDAP:
+
+```yaml
+micronaut:
+  security:
+    ldap:
+      default:
+        enabled: true
+        user-attributes:
+          firstName: givenName
+          lastName: sn
+          email: userPrincipalName
+        context:
+          server: "ldap://********" # Consider ldaps:// for production
+          manager-dn: "CN=********,CN=Users,DC=domain,DC=local"
+          manager-password: "********"
+        search:
+          base: "CN=Users,DC=domain,DC=local"
+          filter: "(userPrincipalName={0})" 
+          attributes:
+            - "sAMAccountName"
+            - "givenName"
+            - "sn"
+            - "userPrincipalName"
+        groups:
+          enabled: true
+          base: "CN=Users,DC=domain,DC=local"
+          filter: "(&(objectClass=group)(member={0}))"
+```
 
 ## LDAP users in Kestra
 
