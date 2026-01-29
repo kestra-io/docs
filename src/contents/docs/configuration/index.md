@@ -1671,6 +1671,18 @@ kestra:
     termination-grace-period: 5m
 ```
 
+### Server service instance Purge retention period
+
+Kestra purges empty instances on a fixed schedule (30 days by default). To change how often the purge job runs:
+
+```yaml
+kestra:
+  server:
+    service:
+      purge:
+        retention: 7d   # run the purge every 7 days instead of 30
+```
+
 :::alert{type="warning"}
 Ensure the supervising platform (Kubernetes, Docker Compose, systemd, etc.) uses a termination grace period longer than Kestra’s setting. For example, when Kestra uses `5m`, configure Kubernetes `terminationGracePeriodSeconds` to at least 6 minutes. If the external timeout is shorter, the process manager may send SIGKILL before Kestra finishes its graceful shutdown.
 :::
