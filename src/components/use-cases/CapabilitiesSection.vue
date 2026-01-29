@@ -135,7 +135,8 @@
         color: var(--bs-white);
 
         .container {
-            padding: 4rem 0;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
             border-top: 1px solid #252526;
         }
 
