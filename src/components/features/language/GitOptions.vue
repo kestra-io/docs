@@ -50,7 +50,7 @@
                     </p>
                     <a
                         class="btn btn-animated btn-purple-animated"
-                        href="https://kestra.io/docs/developer-guide/git"
+                        href="https://kestra.io/docs/version-control-cicd/git"
                         data-usal="zoomin"
                     >
                         Learn more
