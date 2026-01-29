@@ -33,7 +33,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-You can also leverage [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files) as follows:
+You can also leverage [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
 
 ```yaml
 id: ansible

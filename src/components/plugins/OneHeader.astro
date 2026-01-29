@@ -1,57 +1,64 @@
-<script lang="ts" setup>
-    import type { Plugin } from "@kestra-io/ui-libs"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+---
+import type { Plugin } from "@kestra-io/ui-libs"
+import { Image } from "astro:assets"
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 
-    defineProps<{
-        headingTitle: string
-        pluginType?: string
-        rootPlugin?: Plugin
-        currentPageIcon?: string
-        headingDescription?: string
-    }>()
-</script>
+interface Props {
+    headingTitle: string
+    pluginType?: string
+    rootPlugin?: Plugin
+    currentPageIcon?: string
+    headingDescription?: string
+}
 
-<template>
-    <h1 class="py-0 title">
-        <div v-if="currentPageIcon" class="pageIcon">
-            <NuxtImg
-                :src="currentPageIcon"
-                :alt="headingTitle"
-                loading="lazy"
-                format="webp"
-                quality="80"
-                densities="x1 x2"
+const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.props;
+---
+
+<h1 class="py-0 title">
+    {currentPageIcon && (
+        <div class="pageIcon">
+            <Image
+                src={currentPageIcon}
+                alt={headingTitle}
+                width={80}
+                height={80}
                 class="blurred-bg"
             />
-            <NuxtImg
-                :src="currentPageIcon"
-                :alt="headingTitle"
-                width="80"
-                height="80"
-                loading="lazy"
-                format="webp"
-                quality="80"
-                densities="x1 x2"
+            <Image
+                src={currentPageIcon}
+                alt={headingTitle}
+                width={80}
+                height={80}
                 class="page-icon"
             />
         </div>
-        <div class="title-content d-flex flex-column justify-space-between w-100">
-            <div class="d-flex align-items-center flex-wrap gap-3">
-                <span>{{ headingTitle }}</span>
-                <img src="/landing/plugins/certified.svg" alt="Certified" class="mt-1" />
-            </div>
-            <div v-if="headingDescription" class="bd-markdown">
-                <MDCParserAndRenderer :content="headingDescription" />
-            </div>
+    )}
+    <div class="title-content d-flex flex-column justify-space-between w-100">
+        <div class="d-flex align-items-center flex-wrap gap-3">
+            <span>{headingTitle}</span>
+            <Image
+                src="/landing/plugins/certified.svg"
+                alt="Certified"
+                width={98}
+                height={20}
+                class="mt-1"
+            />
         </div>
-        <div v-if="rootPlugin?.license" class="title-actions d-flex flex-column gap-2 ps-4">
+        {headingDescription && (
+            <div class="bd-markdown">
+                <MDCParserAndRenderer content={headingDescription} client:load />
+            </div>
+        )}
+    </div>
+    {rootPlugin?.license && (
+        <div class="title-actions d-flex flex-column gap-2 ps-4">
             <span class="btn enterprise-badge">Enterprise Edition</span>
             <a href="/demo" class="btn btn-primary" target="_blank"> Talk to us </a>
         </div>
-    </h1>
-</template>
+    )}
+</h1>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "~/assets/styles/variable";
 
@@ -89,7 +96,7 @@
     .title {
         font-size: 2rem;
         font-weight: 600;
-        margin: 0 auto;
+        margin: 0 !important;
         display: flex;
         align-items: start;
         gap: 1rem;
@@ -151,7 +158,7 @@
         }
     }
 
-    :deep(.bd-markdown) {
+    .bd-markdown {
         p {
             font-size: 1rem;
         }
