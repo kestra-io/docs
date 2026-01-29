@@ -1,0 +1,191 @@
+---
+import { Image } from "astro:assets"
+import fortune500 from "~/assets/landing/infrastructure/fortune_500.png"
+
+const METRICS = [
+    {
+        value: "-90%",
+        label: "In licensing cost",
+    },
+    {
+        value: "One",
+        label: "Control Plane",
+    },
+    {
+        value: "x10",
+        label: "Time to value",
+    },
+]
+---
+
+<section class="fortune">
+    <div
+        class="container d-flex flex-column align-items-stretch gap-3 flex-lg-row align-items-lg-center"
+    >
+        <div
+            class="left-div d-flex justify-content-center d-lg-block"
+            data-usal="slide-r delay-0 duration-500 ease-out"
+        >
+            <Image
+                src={fortune500}
+                width={347}
+                height={150}
+                alt="Fortune 500"
+                densities={[1, 2]}
+            />
+        </div>
+
+        <div class="right-div d-flex flex-column gap-5">
+            <div data-usal="fade-u delay-25 duration-500 ease-out">
+                <h2>
+                    “We eliminated the high cost and risk of VMware vRA. What used to take 6
+                    months now takes 6 days with Kestra”
+                </h2>
+                <small>Principal Hosting Lead</small>
+            </div>
+
+            <div
+                class="metrics-grid"
+                role="list"
+                data-usal="fade-u delay-50 duration-500 ease-out"
+            >
+                {
+                    METRICS.map((metric, index) => (
+                        <div
+                            class="metric d-flex flex-column align-items-start"
+                            data-usal={`zoomin delay-${75 + index * 25} duration-400 ease-out`}
+                        >
+                            <div class="val">{metric.value}</div>
+                            <div class="label">{metric.label}</div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-start gap-3 flex-lg-row align-items-lg-center justify-content-lg-between"
+                data-usal="fade-u delay-100 duration-500 ease-out"
+            >
+                <h6>How much risk and cost are you still accepting today?</h6>
+                <a
+                    href="/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
+                    class="btn btn-secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Read the story
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .fortune {
+        background: #0c0821;
+        padding: 4rem 2rem;
+
+        .container {
+            padding: 0;
+
+            .left-div {
+                width: 100%;
+
+                @include media-breakpoint-up(lg) {
+                    width: auto;
+                    margin-bottom: 0;
+                }
+            }
+
+            .right-div {
+                width: 100%;
+                padding-left: 0;
+                padding-top: 1.25rem;
+                border-top: 1px solid #313560;
+                color: $white;
+
+                @include media-breakpoint-up(lg) {
+                    width: 761px;
+                    padding-left: 3.75rem;
+                    padding-top: 0;
+                    border-left: 1px solid #313560;
+                    border-top: none;
+                }
+
+                small {
+                    color: #dbe5eb;
+                }
+
+                h2 {
+                    font-weight: 600;
+                    font-size: 1.875rem;
+                    line-height: 2rem;
+
+                    @include media-breakpoint-up(lg) {
+                        line-height: 3rem;
+                    }
+                }
+
+                h6 {
+                    font: 600 1.25rem sans-serif;
+                    margin: 0;
+                }
+
+                .metrics-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 1.5rem;
+                    align-items: center;
+
+                    @include media-breakpoint-down(lg) {
+                        gap: 0.75rem;
+                    }
+
+                    .metric {
+                        .val {
+                            font: 600 3rem / 1 sans-serif;
+                            margin: 0;
+
+                            @include media-breakpoint-down(lg) {
+                                font-size: 2rem;
+                            }
+                        }
+
+                        .label {
+                            font-size: 0.875rem;
+                            color: #eaeaea;
+                            margin-top: 0.5rem;
+
+                            @include media-breakpoint-down(lg) {
+                                font-size: 0.75rem;
+                            }
+                        }
+                    }
+                }
+
+                .btn-secondary {
+                    border: 1px solid $white;
+                    border-radius: 0.5rem;
+                    padding: 0.5rem 1.25rem;
+                    background: #0c0821;
+                    font-size: 1rem !important;
+                    color: $white !important;
+                    transition: all 0.3s ease;
+                    width: 100%;
+                    min-width: fit-content;
+
+                    @include media-breakpoint-up(lg) {
+                        width: auto;
+                    }
+
+                    &:hover {
+                        background: $white;
+                        color: $black !important;
+                    }
+                }
+            }
+        }
+    }
+</style>

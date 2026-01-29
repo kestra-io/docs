@@ -9,7 +9,7 @@ author:
   role: Kestra Team
 image: ./main.png
 ---
-[Gravitee.io] (https://www.gravitee.io/) started in 2015 with a simple idea: making APIs less complex. What began as a team of four developers has grown into a platform that powers API and event stream ecosystems for some of the world’s biggest companies. Recognized as a 2024 **Gartner Magic Quadrant™ Leader for API Management**, Gravitee helps enterprises like **Michelin, Roche,** and **Blue Yonder** take control of their APIs and event streams.
+[Gravitee.io](https://www.gravitee.io/) started in 2015 with a simple idea: making APIs less complex. What began as a team of four developers has grown into a platform that powers API and event stream ecosystems for some of the world’s biggest companies. Recognized as a 2024 **Gartner Magic Quadrant™ Leader for API Management**, Gravitee helps enterprises like **Michelin, Roche,** and **Blue Yonder** take control of their APIs and event streams.
 
 Their success has been driven by a focus on practical, reliable solutions and a clear understanding of what users need. Gravitee has become a trusted partner for teams looking for modern API management, delivering tools that simplify processes. The mission of Gravitee is straightforward: create effective solutions without overcomplicating things, because that's what makes a real difference for users.
 

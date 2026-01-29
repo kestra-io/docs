@@ -38,7 +38,7 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            background: url("/landing/company/teams/gridbg.svg") center/cover no-repeat fixed;
+            background: url("~/assets/teams/gridbg.svg") center/cover no-repeat fixed;
             z-index: -4;
             pointer-events: none;
         }

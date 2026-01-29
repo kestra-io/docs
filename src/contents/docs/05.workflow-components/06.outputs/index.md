@@ -81,7 +81,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-Since 0.14, Outputs are no longer rendered recursively. You can read more about this change and how to change this behavior in the [0.14 Migration guide](../../11.migration-guide/0.14.0/recursive-rendering/index.md).
+Since 0.14, Outputs are no longer rendered recursively. You can read more about this change and how to change this behavior in the [0.14 Migration guide](../../11.migration-guide/v0.14.0/recursive-rendering/index.md).
 :::
 
 ## Internal storage

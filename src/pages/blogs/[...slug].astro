@@ -4,6 +4,7 @@ import { getImage, Image } from "astro:assets"
 import LayoutBlogs from "~/components/layout-blogs.astro"
 import BlogDetails from "~/components/blogs/BlogDetails.vue"
 import NavToc from "~/components/docs/NavToc.vue"
+import { default as Avatars } from "~/utils/teamsImages"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
@@ -24,7 +25,7 @@ const links = headings.map((h) => ({
     depth: h.depth,
 }))
 
-const editUrl = `https://github.com/kestra-io/docs/edit/main/content/blogs/${post.id}.md`
+const editUrl = `https://github.com/kestra-io/docs/edit/main/src/contents/blogs/${post.id}/index.md`
 
 const { title, description, image, date, authors } = page
 
@@ -90,6 +91,7 @@ const jsonLinkedData = {
                             <BlogDetails
                                 client:visible
                                 blog={post}
+                                authorsAvatars={Avatars}
                                 class="mt-3"
                             />
                             <div
@@ -154,7 +156,7 @@ const jsonLinkedData = {
             margin-bottom: 2rem;
         }
 
-        :global(h2) {
+        :global(h2), :global(h3) {
             margin-top: 7.25rem;
             margin-bottom: 2rem;
             padding-left: 1rem;
@@ -190,15 +192,20 @@ const jsonLinkedData = {
             }
         }
 
+        :global(h3) {
+            padding-top: 0;
+            font-size: calc($font-size-base * 1.5);
+        }
+
         :global(ul) {
             list-style: disc;
             li::marker {
-                color: #736bcd;
+                color: $purple-35;
             }
         }
 
         :global(li::marker) {
-            color: #5a3abc;
+            color: $purple-35;
         }
     }
 
