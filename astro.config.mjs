@@ -76,6 +76,14 @@ export default defineConfig({
                      */
                     replacer(url, file) {
                         if (url.startsWith(".")) {
+                            // Extract hash fragment before processing relative URLs
+                            let hash = ""
+                            if (url.includes("#")) {
+                                const hashIndex = url.indexOf("#")
+                                hash = url.slice(hashIndex)
+                                url = url.slice(0, hashIndex)
+                            }
+
                             // if the file basename starts with index.
                             if(file.basename && file.basename.startsWith("index.")) {
                                 // if the url start with ./
@@ -91,7 +99,7 @@ export default defineConfig({
                                 }
                             }
 
-                            return generateId({entry: url})
+                            return generateId({entry: url}) + hash
                         }
                         return url
                     }
