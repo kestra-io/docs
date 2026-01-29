@@ -168,4 +168,4 @@ Kestra provides native [role-based access control](../../docs/07.enterprise/03.a
 
 ### How do I get started with Kestra?
 
-You can [try Kestra locally](../../docs/01.quickstart/index.md) in minutes with Docker, deploy via cloud marketplaces ([AWS](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg), [Azure](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official), GCP), or start immediately with [Kestra Cloud](https://kestra.io/cloud).
+You can [try Kestra locally](../../docs/01.quickstart/index.md) in minutes with Docker, deploy via cloud marketplaces ([AWS](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg), [Azure](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official)), or start immediately with [Kestra Cloud](https://kestra.io/cloud).
