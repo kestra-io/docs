@@ -285,6 +285,28 @@ kestra:
 * **token**: Your 1Password Connect API token.
 * **vaultId**: The ID of the vault containing your secrets.
 
+## BeyondTrust Configuration
+
+Kestra integrates with BeyondTrust Password Safe (Secrets Safe) as an external secrets backend. Secrets are stored securely in BeyondTrust using [Secret Safe API](https://docs.beyondtrust.com/bips/v24.3/docs/secrets-safe-api), and Kestra workers retrieve them at runtime and keep them only in memory.
+
+```yaml
+kestra:
+  secret:
+    type: beyondtrust
+    beyondtrust:
+      address: https://beyondtrust.example.com
+      apiKey: YOUR_API_KEY
+      runAs: domain\\service-account
+      folderId: YOUR_SECRETS_SAFE_FOLDER_ID
+```
+
+**Configuration properties:**
+
+* **address**: The base URL of the BeyondTrust Password Safe instance.
+* **apiKey**: API key used to authenticate with BeyondTrust.
+* **runAs**: User context to run API calls as (e.g. domain\\username).
+* **folderId**: Secrets Safe folder ID where Kestra secrets are stored.
+
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
 Kestra also supports internal secret backend. For the JDBC backend (H2, PostgreSQL, or MySQL), the following configuration allows you to set secret backend:
