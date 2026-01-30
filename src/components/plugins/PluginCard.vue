@@ -67,14 +67,12 @@
     })
 
     const href = computed(() => {
-        let base = `/plugins/${props.plugin.name}`
-        if (base.endsWith("/")) {
-            base = base.slice(0, -1);
+        const name = (props.plugin.name || "").trim()
+        let path = `/plugins/${name}`
+        if (props.plugin.subGroup !== undefined && props.plugin.subGroupTitle) {
+            path += `/${slugify(props.plugin.subGroupTitle)}`
         }
-        if (props.plugin.subGroup === undefined || !props.plugin.subGroupTitle) {
-            return base
-        }
-        return `${base}/${slugify(props.plugin.subGroupTitle)}`
+        return path.replace(/\/+/g, "/").replace(/\/+$/, "")
     })
 </script>
 
