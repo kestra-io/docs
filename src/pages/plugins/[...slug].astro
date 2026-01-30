@@ -298,7 +298,7 @@ if (body && body !== combinedDescription) {
 }
 
 const headingDescription = pluginType
-    ? page?.title
+    ? page?.description ?? page?.title
     : (combinedDescription ??
       (subGroup === undefined
           ? (rootPlugin?.longDescription ?? combinedDescription)
