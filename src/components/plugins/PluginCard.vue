@@ -67,7 +67,10 @@
     })
 
     const href = computed(() => {
-        const base = `/plugins/${props.plugin.name}`
+        let base = `/plugins/${props.plugin.name}`
+        if (base.endsWith("/")) {
+            base = base.slice(0, -1);
+        }
         if (props.plugin.subGroup === undefined || !props.plugin.subGroupTitle) {
             return base
         }
