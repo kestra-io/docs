@@ -15,7 +15,7 @@ Contributors MUST have their plugin repositories locally inside a single "hat" f
 
 Place this file in the hat folder (for example, `~/dev`) so it can be copied into each plugin repository.
 
-```
+````markdown
 # AGENTS.md — Kestra Plugin Development
 
 ⚠️ **IMPORTANT — READ FIRST**
@@ -282,7 +282,7 @@ When applicable:
 
 - Plugin Documentation  
   https://kestra.io/docs/plugin-developer-guide/document
-```
+````
 
 ## Install AGENTS.md in every plugin repository
 
