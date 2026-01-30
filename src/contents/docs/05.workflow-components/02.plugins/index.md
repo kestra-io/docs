@@ -15,7 +15,6 @@ Most flows mix several categories:
 - **Tasks** perform work (HTTP, JDBC, Python, Spark, Script, etc.).
 - **Triggers** start executions ([Schedule](../07.triggers/01.schedule-trigger/index.md), [Webhook](../07.triggers/03.webhook-trigger/index.md), [Kafka](../07.triggers/05.realtime-trigger/index.md), Pub/Sub).
 - **Conditions** gate paths (`If`, `Switch`, expressions).
-- **Core** covers orchestration, I/O, logging, metrics, secrets.
 
 Browse all available plugins at [kestra.io/plugins](/plugins).
 
