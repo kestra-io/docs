@@ -23,7 +23,7 @@ kestra:
 ```
 
 :::alert{type="info"}
-Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/ 0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
+Tenants are enabled by default. Please refer to the [Migration Guide](../../../../11.migration-guide/v0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
 :::
 
 ## Kestra SCIM setup: create a new provisioning integration
