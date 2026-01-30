@@ -36,7 +36,14 @@ import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
-const pathname = new URL(Astro.request.url).pathname
+let pathname = new URL(Astro.request.url).pathname
+
+if (pathname !== "/plugins/" && pathname.endsWith("/")) {
+    return Astro.redirect(pathname.slice(0, -1), 301)
+}
+if (pathname.endsWith("/")) {
+    pathname = pathname.slice(0, -1)
+}
 
 interface PluginPage {
     body: {
