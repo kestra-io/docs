@@ -4,7 +4,7 @@ info:
   license:
     name: Apache 2.0
     url: https://raw.githubusercontent.com/kestra-io/kestra/master/LICENSE
-  version: v1
+  version: 1.0.0
 tags:
 - name: Flows
   description: Flows API
@@ -1401,6 +1401,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkErrorResponse"
+  /api/v1/{tenant}/executions/export/by-query/csv:
+    get:
+      tags:
+      - Executions
+      summary: Export all executions as a streamed CSV file
+      operationId: exportExecutions
+      parameters:
+      - name: filters
+        in: query
+        description: A list of filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: exportExecutions 200 response
+          content:
+            text/csv:
+              schema:
+                type: array
+                items:
+                  type: object
   /api/v1/{tenant}/executions/flows/{namespace}/{flowId}:
     get:
       tags:
@@ -4623,6 +4653,36 @@ paths:
               schema:
                 type: string
                 format: byte
+  /api/v1/{tenant}/flows/export/by-query/csv:
+    get:
+      tags:
+      - Flows
+      summary: Export all flows as a streamed CSV file
+      operationId: exportFlows
+      parameters:
+      - name: filters
+        in: query
+        description: A list of filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: exportFlows 200 response
+          content:
+            text/csv:
+              schema:
+                type: array
+                items:
+                  type: object
   /api/v1/{tenant}/flows/graph:
     post:
       tags:
@@ -4873,7 +4933,7 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flows source code in a single string
+        description: A list of flow files
         content:
           application/x-yaml:
             schema:
@@ -4983,16 +5043,18 @@ paths:
       - Flows
       summary: Update a complete namespace from yaml source
       description: |-
-        All flow will be created / updated for this namespace.
-        Flow that already created but not in `flows` will be deleted if the query delete is `true`
+        All flows will be created / updated for this namespace.
+        Existing flows missing from `flows` will be deleted if the query delete is `true`
       operationId: updateFlowsInNamespace
       parameters:
-      - name: namespace
-        in: path
-        description: The flow namespace
+      - name: override
+        in: query
+        description: If namespace of all provided flows should be overridden
         required: true
+        explode: false
         schema:
-          type: string
+          type: boolean
+          default: false
       - name: delete
         in: query
         description: If missing flow should be deleted
@@ -5001,13 +5063,19 @@ paths:
         schema:
           type: boolean
           default: true
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
       - name: tenant
         in: path
         required: true
         schema:
           type: string
       requestBody:
-        description: A list of flows source code
+        description: A list of flow files
         content:
           application/x-yaml:
             schema:
@@ -5255,6 +5323,13 @@ paths:
         required: true
         schema:
           type: string
+      - name: allowDelete
+        in: query
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: tenant
         in: path
         required: true
@@ -5269,6 +5344,43 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FlowWithSource"
+    delete:
+      tags:
+      - Flows
+      summary: Delete revisions for a flow
+      operationId: deleteRevisions
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: revisions
+        in: query
+        required: true
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            minimum: 1
+            type: integer
+            format: int32
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteRevisions 200 response
   /api/v1/{tenant}/flows/{namespace}/{id}/tasks/{taskId}:
     get:
       tags:
@@ -6228,6 +6340,14 @@ paths:
         explode: false
         schema:
           type: string
+      - name: revision
+        in: query
+        description: "The revision, if not provided, the latest revision will be returned"
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          nullable: true
       - name: tenant
         in: path
         required: true
@@ -6433,6 +6553,40 @@ paths:
               schema:
                 type: string
                 format: byte
+  /api/v1/{tenant}/namespaces/{namespace}/files/revisions:
+    get:
+      tags:
+      - Files
+      summary: Get namespace file revisions
+      operationId: getFileRevisions
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: query
+        description: The internal storage uri
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getFileRevisions 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NamespaceFileRevision"
   /api/v1/{tenant}/namespaces/{namespace}/files/search:
     get:
       tags:
@@ -6645,7 +6799,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KVController.TypedValue"
+                $ref: "#/components/schemas/KVController.KvDetail"
     put:
       tags:
       - KV
@@ -7139,6 +7293,94 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/{tenant}/triggers/delete/by-query:
+    delete:
+      tags:
+      - Triggers
+      summary: Delete triggers by query parameters
+      operationId: deleteTriggersByQuery
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  description: Filters
+                  items:
+                    $ref: "#/components/schemas/QueryFilter"
+        required: true
+      responses:
+        "200":
+          description: deleteTriggersByQuery 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/{tenant}/triggers/delete/by-triggers:
+    delete:
+      tags:
+      - Triggers
+      summary: Delete given triggers
+      operationId: deleteTriggersByIds
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Trigger"
+        required: true
+      responses:
+        "200":
+          description: deleteTriggersByIds 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v1/{tenant}/triggers/export/by-query/csv:
+    get:
+      tags:
+      - Triggers
+      summary: Export all triggers as a streamed CSV file
+      operationId: exportTriggers
+      parameters:
+      - name: filters
+        in: query
+        description: A list of filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: exportTriggers 200 response
+          content:
+            text/csv:
+              schema:
+                type: array
+                items:
+                  type: object
   /api/v1/{tenant}/triggers/search:
     get:
       tags:
@@ -7443,6 +7685,43 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_Trigger_"
+  /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}:
+    delete:
+      tags:
+      - Triggers
+      summary: Delete a trigger
+      operationId: deleteTrigger
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: flowId
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: triggerId
+        in: path
+        description: The trigger id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteTrigger 200 response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}/restart:
     post:
       tags:
@@ -7681,6 +7960,12 @@ components:
           type: boolean
         failOnTriggerError:
           type: boolean
+        allowConcurrent:
+          title: Specifies whether a trigger is allowed to start a new execution even
+            if a previous run is still in progress.
+          type: boolean
+        assets:
+          $ref: "#/components/schemas/Property_AssetsDeclaration_"
     AbstractTriggerForExecution:
       required:
       - id
@@ -7743,6 +8028,59 @@ components:
       properties:
         key:
           type: string
+    Asset:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        namespace:
+          maxLength: 150
+          minLength: 1
+          pattern: "^[a-z0-9][a-z0-9._-]*"
+          type: string
+        id:
+          maxLength: 150
+          minLength: 1
+          pattern: "^[a-zA-Z0-9][a-zA-Z0-9._-]*"
+          type: string
+        type:
+          minLength: 1
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+    AssetIdentifier:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    AssetsDeclaration:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/AssetsInOut"
+      - type: object
+        properties:
+          enableAuto:
+            type: boolean
+    AssetsInOut:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetIdentifier"
+        outputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Asset"
     Backfill:
       title: A backfill configuration.
       required:
@@ -7906,6 +8244,35 @@ components:
           type: string
         chartOptions:
           type: object
+    Check:
+      required:
+      - condition
+      - message
+      type: object
+      properties:
+        condition:
+          minLength: 1
+          type: string
+        message:
+          minLength: 1
+          type: string
+        style:
+          $ref: "#/components/schemas/Check.Style"
+        behavior:
+          $ref: "#/components/schemas/Check.Behavior"
+    Check.Behavior:
+      type: string
+      enum:
+      - BLOCK_EXECUTION
+      - FAIL_EXECUTION
+      - CREATE_EXECUTION
+    Check.Style:
+      type: string
+      enum:
+      - ERROR
+      - SUCCESS
+      - WARNING
+      - INFO
     Concurrency:
       required:
       - behavior
@@ -8037,17 +8404,9 @@ components:
           format: int64
     Dashboard:
       required:
-      - deleted
-      - id
       - title
       type: object
       properties:
-        tenantId:
-          pattern: "^[a-z0-9][a-z0-9_-]*"
-          type: string
-        id:
-          minLength: 1
-          type: string
         title:
           minLength: 1
           type: string
@@ -8059,14 +8418,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Chart_ChartOption_"
-        deleted:
-          type: boolean
-        created:
-          type: string
-          format: date-time
-        updated:
-          type: string
-          format: date-time
         sourceCode:
           type: string
     DashboardController.PreviewRequest:
@@ -8235,6 +8586,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue"
+        checks:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiCheckFailure"
+    ExecutionController.ApiValidateExecutionInputsResponse.ApiCheckFailure:
+      type: object
+      properties:
+        message:
+          type: string
+        style:
+          $ref: "#/components/schemas/Check.Style"
+        behavior:
+          $ref: "#/components/schemas/Check.Behavior"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputAndValue:
       type: object
       properties:
@@ -8538,6 +8902,13 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/SLA"
+          checks:
+            title: Conditions evaluated before the flow is executed.
+            type: array
+            description: "A list of conditions that are evaluated before the flow\
+              \ is executed.  If no checks are defined, the flow executes normally."
+            items:
+              $ref: "#/components/schemas/Check"
     FlowController.TaskValidationType:
       type: string
       enum:
@@ -8920,13 +9291,19 @@ components:
           items:
             type: string
       description: API Response for the bulk-delete operation.
-    KVController.TypedValue:
+    KVController.KvDetail:
       type: object
       properties:
         type:
           $ref: "#/components/schemas/KVType"
         value:
           type: object
+        revision:
+          type: integer
+          format: int32
+        updated:
+          type: string
+          format: date-time
     KVEntry:
       type: object
       properties:
@@ -8968,7 +9345,11 @@ components:
       properties:
         key:
           minLength: 1
+          pattern: "^[\\p{Ll}][\\p{L}0-9._-]*$"
           type: string
+          x-pattern-message: Invalid label key. A valid key contains only lowercase
+            letters numbers hyphens (-) underscores (_) or periods (.) and must begin
+            with a lowercase letter.
         value:
           minLength: 1
           type: string
@@ -9206,6 +9587,12 @@ components:
           type: integer
           format: int32
         max:
+          type: integer
+          format: int32
+    NamespaceFileRevision:
+      type: object
+      properties:
+        revision:
           type: integer
           format: int32
     NamespaceLight:
@@ -9577,6 +9964,16 @@ components:
       - CORE
       - INGESTION
       - BI
+    Property_AssetsDeclaration_:
+      type: object
+      properties:
+        expression:
+          type: string
+        value:
+          $ref: "#/components/schemas/AssetsDeclaration"
+      oneOf:
+      - type: object
+      - type: string
     Property_Duration_:
       type: object
       properties:
@@ -9624,7 +10021,13 @@ components:
       - NAMESPACE
       - KIND
       - LABELS
+      - METADATA
       - FLOW_ID
+      - FLOW_REVISION
+      - ID
+      - ASSET_ID
+      - TYPE
+      - CREATED
       - UPDATED
       - START_DATE
       - END_DATE
@@ -9632,11 +10035,17 @@ components:
       - TIME_RANGE
       - TRIGGER_EXECUTION_ID
       - TRIGGER_ID
+      - TRIGGER_STATE
       - EXECUTION_ID
+      - TASK_ID
+      - TASK_RUN_ID
       - CHILD_FILTER
       - WORKER_ID
       - EXISTING_ONLY
       - MIN_LEVEL
+      - PATH
+      - PARENT_PATH
+      - VERSION
       x-type: String
     QueryFilter.Op:
       type: string
@@ -9857,6 +10266,7 @@ components:
       properties:
         duration:
           type: string
+          nullable: true
           readOnly: true
         startDate:
           type: string
@@ -9954,6 +10364,10 @@ components:
           type: boolean
         taskCache:
           $ref: "#/components/schemas/Cache"
+        assets:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/Property_AssetsDeclaration_"
     TaskFixture:
       required:
       - id
@@ -9969,6 +10383,10 @@ components:
           type: object
           additionalProperties:
             type: object
+        assets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Asset"
         description:
           $ref: "#/components/schemas/Property_String_"
     TaskForExecution:
@@ -10041,6 +10459,10 @@ components:
         outputs:
           type: object
           nullable: true
+        assets:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/AssetsInOut"
         state:
           $ref: "#/components/schemas/State"
         iteration:
@@ -10184,13 +10606,15 @@ components:
       - index
       type: object
       properties:
-        flow:
-          type: string
-        namespace:
-          type: string
         index:
           type: integer
           format: int32
+        filename:
+          type: string
+        namespace:
+          type: string
+        flow:
+          type: string
         constraints:
           type: string
         outdated:

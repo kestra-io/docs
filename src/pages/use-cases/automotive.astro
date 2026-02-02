@@ -1,0 +1,98 @@
+---
+import Layout from "~/components/layout.astro"
+import CardSection from "~/components/use-cases/automotive/CardSection.vue"
+import HeaderSection from "~/components/use-cases/HeaderSection.vue"
+import CompanyInfo from "~/components/use-cases/automotive/CompanyInfo.vue"
+import MetricSection from "~/components/use-cases/MetricSection.vue"
+import UnlockSection from "~/components/use-cases/UnlockSection.vue"
+import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
+import Quadis from "~/assets/companies/quadis.svg"
+
+const title = "Kestra for Automotive"
+const description =
+    "Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
+
+const companyInfo = {
+    personName: "Ruben Boniz Martinez",
+    personRole: "Team Lead",
+    logo: Quadis.src,
+    logoAlt: "Quadis",
+}
+
+const unlockContent = {
+    leftContent: [
+        {
+            title: "Plugin Ecosystem",
+            description:
+                "Capabilities for real-time data processing and decision-making, critical for time-sensitive automotive operations.",
+        },
+        {
+            title: "Monitoring and Alerting",
+            description:
+                "Kestra’s intuitive interface and comprehensive documentation make it easy for automotive engineers to quickly build and deploy powerful workflows.",
+        },
+    ],
+    rightContent: [
+        {
+            title: "Real-Time Processing",
+            description:
+                "Extensive plugin support for various data sources and destinations, allowing seamless integration with existing automotive systems.",
+        },
+        {
+            title: "Quick to Learn, Easy to Master",
+            description:
+                "Robust monitoring and alerting features that ensure proactive issue resolution, minimizing operational disruptions.",
+        },
+    ],
+}
+---
+
+<Layout title={title} description={description}>
+    <div class="automotive-use-case">
+        <HeaderSection
+            class="red"
+            client:load
+            titleHtml="Drive Orchestration<br> for <span>Automotive</span><br>Suppliers"
+            description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
+            imageSrc="/landing/usecases/automotive/header-hero.svg"
+            imageAlt="Kestra Automotive"
+        />
+        <CardSection client:visible class="red" />
+        <CompanyInfo
+            client:visible
+            class="red"
+            titleHtml="Quadis trust Kestra for Its<br> Business Critical<br> Operations"
+            description="Quadis, the largest car retailer in Spain, relies on Kestra to streamline its daily operations, from financial reporting to car delivery alerting. Kestra will support their new data lake architecture, enhancing data analytics, internal web scraping, and resource optimization using AWS services."
+            imageSrc="/landing/usecases/automotive/visual.svg"
+            logoPath={Quadis.src}
+            logoAlt="Quadis"
+            imageAlt="Quadis"
+            logoWidth="208px"
+            storeLink="/blogs/2024-06-13-quadis"
+        />
+        <MetricSection
+            client:visible
+            class="red"
+            percent="500"
+            percentText="In workflow delivery "
+            mainInfoHtml="“Kestra plugin and <br> it’s easy for anyone to understand”"
+            companyInfo={companyInfo}
+        />
+        <UnlockSection
+            client:visible
+            class="red"
+            title="Automotive Ecosystem"
+            description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
+            logoPath="/landing/usecases/automotive/car-hatchback.svg"
+            logoAlt="car hatchback"
+            strokeColor="#E3262F"
+            unlockContent={unlockContent}
+        />
+        <div class="enterprise-edition">
+            <FeaturesFeatureEnterprise
+                client:visible
+                logoPath="/landing/usecases/automotive/enterprise-edition.svg"
+            />
+        </div>
+    </div>
+</Layout>

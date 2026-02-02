@@ -1,0 +1,5 @@
+---
+export const prerender = false
+if (!Astro.params.item || Astro.params.item !== "404")
+    return Astro.rewrite("/404")
+---

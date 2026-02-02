@@ -1,0 +1,29 @@
+---
+import Layout from "~/components/layout.astro"
+import CommunityHeader from "~/components/community/Header.astro"
+import CommunitySlack from "~/components/community/Slack.vue"
+import CommunitySection from "~/components/community/Community.vue"
+import CommunityGuidelines from "~/components/community/Guidelines.astro"
+import CommunityContributors from "~/components/community/Contributors.vue"
+import LayoutFooterContact from "~/components/layout/FooterContact.astro"
+
+const title = "Join a Thrilling Community of Data Enthusiasts"
+const description =
+    "Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
+---
+
+<Layout title={title} description={description}>
+    <div>
+        <CommunityHeader />
+        <CommunitySlack />
+        <CommunitySection client:idle />
+        <CommunityGuidelines />
+        <CommunityContributors client:idle />
+        <LayoutFooterContact
+            title="Getting started"
+            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+            darkButtonText="Read the docs"
+            purpleButtonText="Get started!"
+        />
+    </div>
+</Layout>

@@ -1,0 +1,143 @@
+---
+import type { GetStaticPaths } from 'astro'
+import Layout from "~/components/layout.astro"
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import { fetchMajorReleases, type GitHubRelease } from "~/utils/fetchChangelogVersions"
+import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
+
+export const getStaticPaths = (async () => {
+  const releases = await fetchMajorReleases(150)
+  return releases.map((release: GitHubRelease) => ({
+    params: { tag: release.tag_name },
+    props: { release }
+  }))
+}) satisfies GetStaticPaths
+
+interface Props {
+  release: GitHubRelease
+}
+
+const { release } = Astro.props as Props
+
+if (!release) {
+    return Astro.redirect("/docs/changelog")
+}
+
+const title = release.name || release.tag_name
+const description = `Release notes for ${release.tag_name}`
+const version = release.tag_name.replace(/^v/, "")
+const isMajor = version.split(".").pop() === "0"
+---
+
+<Layout title={title} description={description}>
+    <div class="container">
+        <article class="bd-markdown bd-main order-1 full">
+            <div class="release-detail">
+                <div class="mb-4">
+                    <a href="/docs/changelog">
+                        <ArrowLeft /> Back to Changelog
+                    </a>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="p-0">{release.name || release.tag_name}</h1>
+                    <span
+                        class={`badge ${isMajor ? "badge-major" : "badge-minor"}`}
+                        >{isMajor ? "Major" : "Minor"}</span
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <small>
+                        Published on {
+                            new Date(release.published_at).toLocaleDateString(
+                                "en-US",
+                                {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                },
+                            )
+                        }
+                    </small>
+                </div>
+
+                <div class="release-content">
+                    <MDCParserAndRenderer content={release.body} />
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <style lang="scss">
+        @import "../../../assets/styles/variable";
+
+        .container {
+            border: 0;
+            border-width: 1px;
+            border-style: solid;
+            border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818)
+                1 100%;
+            padding: 0 2rem;
+            font-family: var(--font-family-mona-sans), sans-serif;
+
+            .release-detail {
+                padding: 2rem 0;
+            }
+
+            h1 {
+                color: var(--ks-content-primary);
+                font-weight: 700;
+            }
+
+            .release-content {
+                color: var(--ks-content-primary);
+                line-height: 1.6;
+            }
+
+            .badge {
+                &-major,
+                &-minor {
+                    border-radius: 40px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    padding: 8px 20px;
+                }
+
+                &-major {
+                    border: 1px solid var(--ks-border-running);
+                    background: var(--ks-background-running);
+                    color: var(--ks-content-running);
+                }
+
+                &-minor {
+                    border: 1px solid var(--ks-border-warning);
+                    background: var(--ks-background-warning);
+                    color: var(--ks-content-warning);
+                }
+            }
+
+            small {
+                color: $white-4;
+                font-size: 1rem;
+            }
+
+            a {
+                font-size: 1rem;
+                color: var(--ks-content-link);
+
+                &:hover {
+                    color: var(--ks-content-link-hover);
+                }
+            }
+        }
+
+        :global(.full h2) {
+            margin-top: 3rem;
+
+            &:before {
+                background-color: transparent !important;
+            }
+        }
+    </style>
+</Layout>

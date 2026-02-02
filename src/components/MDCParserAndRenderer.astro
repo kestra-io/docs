@@ -1,0 +1,13 @@
+---
+import { getMDCParser, MDCRenderer } from "@kestra-io/ui-libs"
+
+const props = Astro.props as {
+    content: string
+    class: string
+}
+
+const parse = await getMDCParser()
+const docAst = await parse(props.content)
+---
+
+<MDCRenderer body={docAst.body} data={docAst.data} key={props.content} />

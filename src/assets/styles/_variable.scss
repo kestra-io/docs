@@ -1,0 +1,248 @@
+$primary: #8405ff;
+$primary: #8405ff;
+$primary-1: #4b0aaa;
+$secondary: #c182ff;
+
+$white: #fff;
+$white-1: #e1e1e1;
+$white-2: #e5e4f7;
+$white-3: #b9b9ba;
+$white-4: #ccc6d2;
+$white-5: #7c7c7c;
+$white-6: #f0f0ff;
+
+$gray-100: #f8f8fc;
+$gray-200: #f1f5fa;
+$gray-300: #eaf0f9;
+$gray-400: #b6c2e4;
+$gray-500: #8997bd;
+$gray-600: #7081b9;
+$gray-700: #303e67;
+$gray-800: #2c3652;
+$gray-900: #1d2c48;
+
+$black: #26282d;
+$black-1: #070708;
+$black-2: #161617;
+$black-3: #252526;
+$black-4: #111113;
+$black-5: #333336;
+$black-6: #3d3d3f;
+$black-7: #0d0d0c;
+$black-8: #8b8b8d;
+$black-9: #1d1d1e;
+$black-10: #646465;
+// Define dark color classes
+@each $number in 1, 2, 3, 4, 5, 6, 7, 8 {
+    $color: map-get(
+        (
+            1: $black-1,
+            2: $black-2,
+            3: $black-3,
+            4: $black-4,
+            5: $black-5,
+            6: $black-6,
+            7: $black-7,
+            8: $black-8,
+        ),
+        $number
+    );
+    .bg-dark-#{$number} {
+        background-color: $color;
+    }
+}
+$green: #03daba;
+$green-1: #bfe1b0;
+
+$blue: #1761fd;
+$indigo: #8405ff;
+$indigo-1: #1b0229;
+$purple: #9f9dff;
+$pink: #fd3c97;
+$red: #e36065;
+$orange: #fcb37c;
+$yellow: #fce07c;
+$teal: #03d87f;
+$cyan: #60c5fe;
+$light-cyan: #e6f6f6;
+
+$primary: $primary;
+$secondary: $secondary;
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+$light: $gray-100;
+$dark: $gray-900;
+
+// purples
+$purple-1: #382369;
+$purple-2: #fbc7f4;
+$purple-3: #9580ee;
+$purple-4:
+    linear-gradient(160.34deg, rgba(130, 0, 255, 0.12) 5.3%, rgba(130, 0, 255, 0) 75.43%), #201838;
+$purple-5: #362762;
+$purple-6: #6113bc;
+$purple-7: #1a1223;
+$purple-8: #eeedff;
+$purple-9: 0px 12.972px 39.7269px rgba(90, 0, 176, 0.1);
+$purple-10: #150e1c;
+$purple-11: #332c3b;
+$purple-12: #432a71;
+$purple-13: #e5e4f7;
+$purple-14: #8e20f9;
+$purple-15: #9237fb;
+$purple-16: #281a35;
+$purple-17: #f5f5ff;
+$purple-18: #7e719f;
+$purple-19: conic-gradient(from 90deg at 50% 50%, #be79ff 0deg, #7136f6 360deg);
+$purple-20: #291e39;
+$purple-21: #a42dcd;
+$purple-22: #fcf7fe;
+$purple-23: #ede8f3;
+$purple-24: #15023f;
+$purple-26: #dccdeb;
+$purple-27: #8200ff;
+$purple-28: #2d313e;
+$purple-29: #f1f5ff;
+$purple-30: rgba(255, 255, 255, 0.1);
+$purple-31: #2a1940;
+$purple-32: #cfceff;
+$purple-33: #110221;
+$purple-34: #10051f;
+$purple-35: #9ca1de;
+$purple-36: #9ca1de;
+$purple-37: #a396ff;
+$purple-38: #7078ef;
+$purple-39: #817cff;
+
+// for primary button
+$purple-40: #5818d8;
+$purple-41: #7a38ff;
+$purple-42: #909af6;
+$purple-43: #7733ff;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+    "indigo": $indigo,
+    "purple": $purple,
+    "pink": $pink,
+    "orange": $orange,
+    "teal": $teal,
+);
+
+$font-family-sans-serif: var(--font-family-public-sans);
+$font-family-monospace: var(--font-family-source-code-pro);
+
+$font-size-base: 1rem;
+$font-size-xs: $font-size-base * 0.75;
+$font-size-sm: $font-size-base * 0.875;
+$font-size-md: $font-size-base * 1;
+$font-size-lg: $font-size-base * 1.25;
+$font-size-xl: $font-size-base * 1.375;
+$font-size-2xl: $font-size-base * 2.188;
+$font-size-3xl: $font-size-base * 3;
+$font-size-4xl: $font-size-base * 3.75;
+
+$h1-font-size: $font-size-base * 3.375;
+$h2-font-size: $font-size-base * 2.5;
+$h3-font-size: $font-size-base * 2;
+$h4-font-size: $font-size-base * 1.375;
+$h5-font-size: $font-size-base * 1.25;
+$h6-font-size: $font-size-base * 1.125;
+
+$body-color: $black;
+$body-tertiary-color: #ffffff;
+$body-tertiary-bg: #785eea;
+
+$link-color: $purple-35;
+$link-decoration: none;
+
+// button
+$btn-font-size-lg: 18px;
+
+// grid
+$grid-gutter-width: 1.75rem;
+
+// border
+$border-radius: 0.25rem;
+$border-radius-sm: 0.125rem;
+$border-radius-lg: 0.5rem;
+$container-border: 1px solid rgba(255, 255, 255, 0.1);
+$block-border: 1px solid $black-3;
+$btn-dark-border: 1px solid rgba(255, 255, 255, 0.12);
+
+//margin
+$popper-margin: 0.2rem;
+
+// shadow
+$box-shadow: 0 0.75rem 0.75rem rgba(#dce0f9, 0.5);
+$box-shadow-sm: 0 0.375rem 0.375rem rgba(#dce0f9, 0.5);
+$box-shadow-lg: 0 1.5rem 1.5rem rgba(#dce0f9, 0.5);
+
+// nav
+$nav-pills-border-radius: 50rem;
+$menu-dropdown-bg: rgba(45, 45, 46, 0.93);
+$menu-bg: #1818189E;
+$menu-backdrop-filter: blur(44px);
+
+// accordiion
+$accordion-icon-color: $white;
+$accordion-icon-active-color: $white;
+
+$enable-reduced-motion: false;
+$min-contrast-ratio: 2.5;
+
+$baseline-max-width: 730px;
+$container-max-width: 760px;
+$width-800: 800px;
+
+$rem-1: 1rem;
+$rem-2: 2rem;
+$rem-3: 3rem;
+$rem-4: 4rem;
+$rem-5: 5rem;
+$rem-6: 6rem;
+$rem-7: 7rem;
+$rem-8: 8rem;
+$rem-9: 9rem;
+$rem-10: 10rem;
+
+// bootstrap
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
+$spacers: map-merge(
+    $spacers,
+    (
+        6: (
+            $spacer * 2,
+        ),
+        7: (
+            $spacer * 0.625,
+        ),
+    )
+);
+
+$font-sizes: map-merge(
+    $font-sizes,
+    (
+        7: (
+            $font-size-base * 0.75,
+        ),
+    )
+);
+
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+$tooltip-max-width: 300px;

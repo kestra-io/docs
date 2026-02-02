@@ -1,0 +1,14 @@
+---
+import Layout from "~/components/layout.astro"
+import Header from "~/components/vs/aws-step-functions/Header.vue"
+import Main from "~/components/vs/aws-step-functions/Main.vue"
+
+const title = "Kestra Alternative to AWS Step Functions"
+const description =
+    "What are the differences between Kestra and AWS Step Functions"
+---
+
+<Layout title={title} description={description}>
+    <Header client:load />
+    <Main client:visible />
+</Layout>

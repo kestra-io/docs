@@ -1,0 +1,30 @@
+---
+import BlogList from "~/components/common/BlogList.astro"
+import type { BlogPost } from "~/components/common/BlogList.astro"
+
+interface Props {
+    posts?: BlogPost[]
+}
+
+const { posts = [] } = Astro.props;
+---
+
+{posts.length > 0 && (
+    <div class="related-blogs">
+        <BlogList posts={posts} title="Latest Blog Posts" headingId="latest-blog-posts" />
+    </div>
+)}
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .related-blogs {
+        padding: 2rem 0;
+        border-top: 1px solid var(--kestra-io-token-color-border-secondary);
+
+        @include media-breakpoint-up(lg) {
+            margin: 0 -3rem;
+            padding: 2rem 3rem;
+        }
+    }
+</style>

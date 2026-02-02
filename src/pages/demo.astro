@@ -1,0 +1,18 @@
+---
+import Layout from "~/components/layout.astro"
+import DemoHeaders from "~/components/demo/Headers.vue"
+import DemoCompanies from "~/components/demo/Companies.vue"
+import DemoBusinessByUs from "~/components/demo/BusinessByUs.vue"
+
+const title = "Ready to See Kestra in Action?"
+const description =
+    "Connect with one of our Product Specialist to get the best out of our product and its value proposition"
+---
+
+<Layout title={title} description={description}>
+    <div>
+        <DemoHeaders client:load routePath="/demo" />
+        <DemoCompanies client:load class="mt-5" />
+        <DemoBusinessByUs client:load />
+    </div>
+</Layout>

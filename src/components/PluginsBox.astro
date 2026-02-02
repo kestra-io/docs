@@ -1,0 +1,37 @@
+---
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+import PluginsRender from "~/components/home/PluginsRender.vue"
+import { $fetchApi } from "~/utils/fetch"
+import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
+
+const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const pluginMetadata = await $fetchApi<PluginMetadata[]>("/plugins/metadata")
+const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+
+const plugins = pluginMetadata
+    .map((plugin) => ({
+        title: plugin.title,
+        name: plugin.name,
+        artifactId: plugin.artifactId,
+        link:
+            `/plugins/${plugin.artifactId}` +
+            (`plugin-${plugin.name}` != plugin.artifactId
+                ? "/" + plugin.name
+                : ""),
+        icon: `/icons/${plugin.group}.svg`,
+    }))
+    .filter(
+        (r) =>
+            r.artifactId &&
+            r.artifactId !== "core" &&
+            r.artifactId !== "plugin-kestra" &&
+            r.artifactId !== "plugin-debezium" &&
+            !r.artifactId.startsWith("plugin-ee") &&
+            !r.artifactId.startsWith("secret-") &&
+            !r.artifactId.startsWith("storage-"),
+    )
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 20)
+---
+
+<PluginsRender {totalPlugins} {plugins} />

@@ -1,0 +1,47 @@
+---
+import Layout from "~/components/layout.astro"
+import { fetchMajorReleases } from "~/utils/fetchChangelogVersions"
+import ChangelogList from "~/components/changelog/ChangelogList.vue"
+
+const title = "Release Notes"
+const description = "Kestra Release Notes"
+
+const releases = await fetchMajorReleases(150)
+---
+
+<Layout {title} {description}>
+    <section>
+        <div class="container">
+            <h1>Changelog</h1>
+            <p class="lead">
+                Stay up to date with the latest releases and updates
+            </p>
+            <ChangelogList
+                client:load
+                {releases}
+                currentUrl={Astro.request.url}
+            />
+        </div>
+    </section>
+
+    <style lang="scss" scoped>
+        section {
+            color: #ffffff;
+            font-family: var(--font-family-mona-sans), sans-serif;
+
+            .container {
+                padding: 3rem 1.25rem;
+                border: 0;
+                border-width: 1px;
+                border-style: solid;
+                border-image: linear-gradient(
+                        to bottom,
+                        #181818,
+                        #5c5c5c,
+                        #181818
+                    )
+                    1 100%;
+            }
+        }
+    </style>
+</Layout>

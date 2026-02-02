@@ -1,0 +1,73 @@
+---
+import Layout from "~/components/layout.astro"
+import Heading from "~/components/price/Heading.vue"
+import Table from "~/components/price/Table.vue"
+// @ts-expect-error: FaqVue is a Vue component
+import FaqVue from "~/components/price/Faq.vue"
+import Slider from "~/components/price/Slider.vue"
+
+const title = "Pricing"
+const description =
+    "Choose the right plan for your needs. Start with the Open Source version and scale with the Enterprise Edition of Kestra."
+---
+
+<Layout title={title} description={description}>
+    <div class="cont">
+        <Heading client:load />
+        <div id="pricing-table-container">
+            <Table client:visible />
+        </div>
+        <div id="orchestra-core-container">
+            <Slider client:visible />
+        </div>
+        <FaqVue client:visible />
+    </div>
+</Layout>
+
+<script>
+    const handleScroll = () => {
+        const table = document.getElementById("pricing-table-container")
+        const orchestraCore = document.getElementById(
+            "orchestra-core-container",
+        )
+        const topBar = document.getElementById("top-bar")
+
+        if (!table || !orchestraCore || !topBar) return
+
+        const isInitialScroll = window.scrollY === 0
+        const rect = table.getBoundingClientRect()
+        const orchestraCoreElement = orchestraCore.getBoundingClientRect()
+
+        let isInView = false
+
+        if (rect.top <= 60 && orchestraCoreElement.top >= 60) {
+            isInView = true
+        }
+
+        topBar.classList.toggle("scrolled", isInView)
+        if (isInitialScroll && !isInView) {
+            topBar.style.backgroundColor = "#121217"
+        } else {
+            topBar.style.backgroundColor = ""
+        }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    // Initial check
+    handleScroll()
+</script>
+
+<style scoped lang="scss">
+    @import "~/assets/styles/variable";
+
+    .cont {
+        overflow: clip;
+        background: #121217;
+
+        @include media-breakpoint-down(md) {
+            background-image: url(/landing/pricing/visual-bg.png);
+            background-repeat: no-repeat;
+            background-position: top;
+        }
+    }
+</style>
