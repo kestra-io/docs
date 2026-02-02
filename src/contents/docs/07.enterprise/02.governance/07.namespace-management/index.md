@@ -1,0 +1,334 @@
+---
+title: Namespace Management in Kestra Enterprise – Secure Configuration
+description: Secure your Kestra instance with Namespace Management. Configure isolated environments, manage secrets, and set namespace-level plugin defaults.
+sidebarTitle: Namespace Management
+icon: /src/contents/docs/icons/admin.svg
+editions: ["EE", "Cloud"]
+docId: namespace.management
+---
+
+How to manage secrets, variables, and plugin defaults at the namespace level.
+
+<div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/As4y2oliD_8?si=d-2AsAuqlwaBFuEX" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+## Namespace management – secure configuration
+
+Kestra is a [multi-tenant](../../02.governance/tenants/index.md) platform. Each tenant can have multiple namespaces, and each namespace provides additional isolation and security.
+
+Namespaces provide:
+- Logical isolation of resources on top of instance- or tenant-level isolation
+- Fine-grained access control for secrets, variables, and task configurations
+
+Namespaces are particularly useful in environments with many users, teams, projects, and applications.
+
+## Namespace management benefits
+
+Even though `namespace` is a required property of each flow, namespaces are not created by default. To illustrate this, let's look at the following flow:
+
+```yaml
+id: hello_world
+namespace: company.marketing
+tasks:
+  - id: log_task
+    type: io.kestra.plugin.core.log.Log
+    message: hi from {{ flow.namespace }}
+```
+
+This flow is assigned to the `company.marketing` namespace. However, if you navigate to the **Namespaces** page in the UI, the namespace hasn't been created yet. It's shown as greyed out in the UI because it's just a placeholder until you manually create it:
+
+![namespace_mgmt_1](./namespace_mgmt_1.png)
+
+You can only filter for existing namespaces. Once you are ready to turn a placeholder namespace into a fully-fledged namespace, you create it in one click:
+
+![namespace_mgmt_2](./namespace_mgmt_2.png)
+
+### `requireExistingNamespace`
+
+By default, this is the behavior when creating flows with namespaces that do not yet exist, but you can configure Kestra to only allow flows to be created in existing namespaces. This can be done globally in your configuration file with the following specification:
+
+```yaml
+kestra:
+  ee:
+    requireExistingNamespace: true # Defaults to false
+```
+
+You can also control this setting at the tenant level from the tenant settings.
+
+![namespace_mgmt_3](./namespace_mgmt_3.png)
+
+=======
+
+## Namespace-level features
+
+The Namespace page allows you to configure secrets, plugin defaults, and variables that can be used within any flow in that namespace.
+
+It allows your organization to centrally manage your secrets, variables, and task configuration while providing fine-grained access-control to those resources.
+
+Since Kestra supports [everything as code and from the UI](https://youtu.be/dU3p6Jf5fMw?si=bqNWS1e3_if-mePS), you can manage namespaces from the UI or programmatically (e.g., via our [Terraform provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)).
+
+### Secrets
+
+On the Namespaces page, select the namespace where you want to define the secrets and go to the **Secrets** tab. Here, you will see all existing secrets associated with this namespace. Click on **Add a secret** button on the top right corner of the page.
+
+![add_secret.png](./add_secret.png)
+
+Define the secret by entering its key and value. Save the secret by clicking on the **Save** button at the bottom.
+
+![create_new_secret.png](./create_new_secret.png)
+
+The secret key should now start appearing on the **Secrets** tab. You can edit the secret's value or delete the secret by clicking on the appropriate button towards the right of the secret row. You can reference the secret in the flow by using the key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
+
+Here is how you can use it in a flow:
+
+```yaml
+id: query-mysql
+namespace: company.team
+
+tasks:
+  - id: query
+    type: "io.kestra.plugin.jdbc.mysql.Query"
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: "{{ secret('MYSQL_PASSWORD') }}"
+    sql: select * from employees
+    fetchOne: true
+```
+
+:::alert{type="info"}
+Make sure to only use the secret in flows defined in the same namespace (or child namespace) as your secret.
+:::
+
+When building new flows in a namespace, namespace secrets are accessible from the **Secrets** tab. Open the tab to view all available namespace secret key names.
+
+### Plugin defaults
+
+Plugin Defaults can also be defined at the namespace level. These plugin defaults are then applied for all tasks of the corresponding type defined in the flows under the same namespace.
+
+On the Namespaces page, select the namespace where you want to define the plugin defaults and navigate to the **Plugin defaults** tab. You can add the plugin defaults here and save the changes by clicking on the **Save** button at the bottom of the page.
+
+![define_task_defaults.png](./define_task_defaults.png)
+
+You can reference secrets and variables defined with the same namespace in the plugin defaults.
+
+In the example below, you no longer need to add the `password` property for the MySQL query task as it's defined in your namespace-level `pluginDefaults`:
+
+```yaml
+id: query-mysql
+namespace: company.team
+
+tasks:
+  - id: query
+    type: "io.kestra.plugin.jdbc.mysql.Query"
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    sql: select * from employees
+    fetchOne: true
+```
+
+
+### Variables
+
+Variables defined at the namespace level can be used in any flow defined under the same namespace using the syntax: `{{ namespace.variable_name }}`.
+
+On the Namespaces page, select the namespace where you want to define the variables. Go to the **Variables** tab. You can now define the variables on this page. Save the changes by clicking the **Save** button at the bottom of the page.
+
+![define_variables.png](./define_variables.png)
+
+Here is an example flow where the namespace variable is used:
+
+```yaml
+id: query-mysql
+namespace: company.team
+
+tasks:
+  - id: query
+    type: "io.kestra.plugin.jdbc.mysql.Query"
+    url: jdbc:mysql://localhost:3306/test
+    username: "{{ namespace.mysql_user }}"
+    sql: select * from employees
+    fetchOne: true
+```
+
+When building new flows in a namespace, namespace variables are accessible from the **Variables** tab. Open the tab to view all available namespace variables and their associated values.
+
+![Namespace Variables Tab](./namespace-variable-tab.png)
+
+## Creating Namespaces
+
+### From the UI
+
+The video below shows how you can create a namespace from the Kestra UI. After creating a namespace, we're adding:
+- several new secrets
+- a nested namespace variable that references one of these secrets
+- a list of plugin defaults helping to use those pre-configured secrets and variables in all the tasks from the AWS and Git plugins.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/rHMAAADQQN8?si=V-yUnGzWJfkB-ONt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+---
+
+
+### From Terraform
+
+The following example reproduces the UI steps using Terraform, so that you know how to perform the same steps both from the UI and programmatically.
+
+To create a namespace from Terraform, use the [kestra_namespace](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) resource.
+
+First, configure your Terraform backend and add Kestra as a required provider:
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket = "kestraio"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
+  required_providers {
+    kestra = {
+      source  = "kestra-io/kestra"
+      version = "~>0.14"
+    }
+  }
+}
+
+provider "kestra" {
+  url       = var.kestra_host
+  username  = var.kestra_user
+  password  = var.kestra_password
+  tenant_id = var.kestra_tenant_id # only if you are using multi-tenancy
+}
+```
+
+You can add a file `main.tf` to your Terraform project with the following content:
+
+```hcl
+resource "kestra_namespace" "marketing" {
+  namespace_id  = "marketing"
+  description   = "Namespace for the marketing team"
+}
+```
+
+The only required property is the `namespace_id`, which is the name of the namespace. The `description` and all other properties are optional.
+
+#### Adding variables and plugin defaults to a namespace Terraform resource
+
+You can add variables and plugin defaults directly to the namespace resource by pointing to the YAML configuration files.
+
+First, create the `variables_marketing.yml` file:
+
+```yaml
+github:
+  token: "{{ secret('GITHUB_TOKEN') }}"
+```
+
+Then, create another file for `task_defaults_marketing.yml`:
+
+```yaml
+- type: io.kestra.plugin.aws
+  values:
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    region: us-east-1
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+- type: io.kestra.plugin.git
+  values:
+    password: "{{ render(namespace.github.token) }}"
+    username: your-github-username
+```
+
+Finally, reference those files in your namespace resource definition:
+
+```hcl
+resource "kestra_namespace" "marketing" {
+  namespace_id  = "marketing"
+  description   = "Namespace for the marketing team"
+  variables     = file("variables_marketing.yml")
+  task_defaults = file("task_defaults_marketing.yml")
+}
+```
+
+#### Adding secrets to a namespace using Terraform
+
+To programmatically add secrets to your namespace via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs), you can use the [kestra_namespace_secret](../../../13.terraform/resources/namespace_secret/index.md) resource. Here is an example of adding multiple secrets to the `marketing` namespace:
+
+```hcl
+resource "kestra_namespace_secret" "github_token" {
+  namespace    = "marketing"
+  secret_key   = "GITHUB_TOKEN"
+  secret_value = var.github_token
+}
+
+resource "kestra_namespace_secret" "aws_access_key_id" {
+  namespace    = "marketing"
+  secret_key   = "AWS_ACCESS_KEY_ID"
+  secret_value = var.aws_access_key_id
+}
+
+resource "kestra_namespace_secret" "aws_secret_access_key" {
+  namespace    = "marketing"
+  secret_key   = "AWS_SECRET_ACCESS_KEY"
+  secret_value = var.aws_secret_access_key
+}
+```
+
+Before referencing variables in your Terraform configuration, make sure to define them in your `variables.tf` file:
+
+```hcl
+variable "github_token" {
+  type = string
+  sensitive = true
+}
+
+variable "aws_access_key_id" {
+  type = string
+  sensitive = true
+}
+
+variable "aws_secret_access_key" {
+  type = string
+  sensitive = true
+}
+
+variable "kestra_user" {
+  type      = string
+  sensitive = true
+}
+
+variable "kestra_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "kestra_host" {
+  type      = string
+  sensitive = false
+  default   = "http://your_kestra_host:8080" # Change this to your Kestra host URL
+}
+
+variable "kestra_tenant_id" {
+  type      = string
+  sensitive = false
+  default   = "kestra-tech"
+}
+```
+
+And add your secrets to the `terraform.tfvars` file:
+
+```hcl
+github_token = "your-github-token"
+aws_access_key_id = "your-aws-access-key-id"
+aws_secret_access_key = "your-aws-secret-access-key"
+kestra_user = "your-kestra-user"
+kestra_password = "your-kestra-password"
+```
+
+## Allowed namespaces
+
+When you navigate to any Namespace and go to the Edit tab, you can explicitly configure which namespaces are allowed to access flows and other resources related to that namespace. By default, all namespaces are allowed:
+
+![allowed-namespaces](./allowed-namespaces.png)
+
+However, you can restrict that access if you want only specific namespaces (or no namespace at all) to trigger its corresponding resources.
+
+![allowed-namespaces-2](./allowed-namespaces-2.png)

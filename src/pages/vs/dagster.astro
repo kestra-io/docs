@@ -1,0 +1,13 @@
+---
+import Layout from "~/components/layout.astro"
+import Header from "~/components/vs/dagster/Header.vue"
+import Main from "~/components/vs/dagster/Main.vue"
+
+const title = "Dagster vs Kestra"
+const description = "What are the differences between Kestra and Dagster"
+---
+
+<Layout title={title} description={description}>
+    <Header client:load />
+    <Main client:visible />
+</Layout>

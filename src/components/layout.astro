@@ -1,0 +1,175 @@
+---
+import { ClientRouter } from "astro:transitions"
+import LoadingIndicator from "astro-loading-indicator/component"
+import { Font } from "astro:assets"
+import "@kestra-io/ui-libs/style.css"
+import "~/assets/styles/vendor.scss"
+import "~/assets/styles/app.scss"
+import "~/assets/styles/theme.scss"
+import Header from "~/components/layout/Header.vue"
+import Search from "~/components/layout/Search.vue"
+import LayoutFooter from "~/components/layout/Footer.vue"
+import LayoutFixed from "~/components/layout/Fixed.vue"
+import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
+
+interface Props {
+    title?: string
+    description?: string
+    image?: string
+    isStories?: boolean
+}
+
+const props = Astro.props
+
+const currentUrl = Astro.url
+currentUrl.pathname = currentUrl.pathname.endsWith("/") ? currentUrl.pathname.slice(0, -1) : currentUrl.pathname;
+
+
+const currentOrigin = currentUrl.origin ?? "https://kestra.io"
+const slug = Astro.routePattern
+
+const title = props.title
+    ? props.title + " | Kestra"
+    : "Kestra, Open Source Declarative Data Orchestration"
+const description =
+    props.description ??
+    "Use declarative language to build simpler, faster, scalable and flexible workflows"
+const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
+const slackMembers = await fetchSlackMembers()
+
+
+const query = new URLSearchParams(currentUrl.searchParams.entries()
+    .filter(([key, _]) => ["category", "sort", "page"].includes(key))
+    .reduce((acc, [key, value]) => {
+        acc[key] = value
+        return acc
+    }, {} as Record<string, string>))
+
+const canonicalUrl = new URL(
+    currentUrl + (query.size > 0 ? "?" + query.toString() : ""),
+    Astro.site
+)
+
+---
+
+<html lang="en" class="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+
+        <Font cssVariable="--font-family-public-sans" preload />
+        <Font cssVariable="--font-family-source-code-pro" preload />
+        <Font cssVariable="--font-family-mona-sans" />
+
+        <meta name="msapplication-TileColor" content="#2c0059" />
+        <meta name="theme-color" content="#2c0059" />
+
+        <link rel="icon" href="/favicon.ico" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="192x192"
+            href="/favicon-192x192.png"
+        />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#2c0059" />
+
+        <meta name="generator" content={Astro.generator} />
+
+        <link rel="sitemap" href="/sitemap/index.xml" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            href="/rss.xml"
+            title="Blog Articles RSS"
+        />
+        <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+        <link rel="canonical" href={canonicalUrl.toString()} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@kestra_io" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
+        <meta name="twitter:image:alt" content={title} />
+
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        {
+            !props.image ? (
+                <meta property="og:image:type" content="image/svg+xml" />
+            ) : (
+                ""
+            )
+        }
+        <meta property="og:image:alt" content={title} />
+        <meta property="og:url" content={`${currentOrigin}`} />
+        <meta property="og:image" content={image} />
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://api.kestra.io" />
+        <link rel="dns-prefetch" href="https://eu.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google.com" />
+        <link rel="dns-prefetch" href="https://region1.analytics.google.com/" />
+        <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
+        <link rel="dns-prefetch" href="https://js-eu1.hubspot.com" />
+        <link rel="dns-prefetch" href="https://js-eu1.hs-analytics.net/" />
+        <link rel="dns-prefetch" href="https://api-eu1.hubapi.com" />
+        <link rel="dns-prefetch" href="https://track-eu1.hubspot.com" />
+        <link rel="dns-prefetch" href="https://perf-eu1.hsforms.com" />
+        <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
+        <link rel="dns-prefetch" href="https://api.cr-relay.com" />
+
+        <slot name="head" />
+
+        <ClientRouter />
+        <LoadingIndicator color="#8405FF" threshold={0} />
+
+        <script src="../scripts/analytics.js"></script>
+        <script src="../scripts/bootstrap.js"></script>
+        <script src="../scripts/cookieconsent.ts"></script>
+        <script src="../scripts/zoom.js"></script>
+    </head>
+    <body>
+        <Header
+            client:load
+            isStories={Boolean(props.isStories)}
+            transition:persist
+        />
+        <Search client:load />
+        <main>
+            <slot />
+        </main>
+
+        <LayoutFooter transition:persist client:visible />
+        <LayoutFixed client:load transition:persist online={slackMembers} />
+        <script define:vars={{ slug }}>
+            window.astroClientConfig = { slug: slug }
+        </script>
+    </body>
+</html>

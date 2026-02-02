@@ -1,0 +1,49 @@
+---
+import Updateletter from "~/components/layout/Updateletter.vue"
+import Layout from "./layout.astro"
+
+interface Props {
+    activeStem: string
+    title?: string
+    description?: string
+    image?: string
+}
+
+const props = Astro.props
+
+const title = props.title ?? "Insights & News on Data Orchestration"
+const description =
+    props.description ??
+    "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
+---
+
+<Layout title={title} description={description} image={props.image}>
+    <div class="layout-blogs-wrapper layout-docs-wrapper">
+        <div class="bd-content px-0">
+            <div class="container-fluid">
+                <div class="container">
+                    <slot />
+                </div>
+            </div>
+            <div class="bottom">
+                <Updateletter />
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .layout-blogs-wrapper {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+    }
+    .layout-docs-wrapper .bd-content {
+        flex: 1;
+        padding: 1rem;
+        max-width: 100%;
+    }
+</style>

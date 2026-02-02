@@ -1,0 +1,51 @@
+---
+import Layout from "~/components/layout.astro"
+import PluginsLists from "~/components/plugins/PluginsLists.vue"
+import { $fetchApi } from "~/utils/fetch"
+import type { Plugin } from "@kestra-io/ui-libs"
+import { filterPluginsWithoutDeprecated } from "@kestra-io/ui-libs"
+import { prunePluginsForCards, calculateTotalPluginCount } from "~/utils/plugins/pruneForClient"
+
+const rawPlugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+const rawPluginsData = await $fetchApi(`/plugins/pluginsInformation`)
+
+const nonDeprecatedPlugins = filterPluginsWithoutDeprecated(rawPlugins)
+const pluginsByName = nonDeprecatedPlugins
+    .reduce((acc, p) => ((acc[p.name] ??= [])
+    .push(p), acc), {} as Record<string, Plugin[]>)
+
+const filteredPlugins = Object.values(pluginsByName).flatMap(group => {
+    const subgroups = group.filter(p => p.subGroup)
+    const parent = group.find(p => !p.subGroup)
+    return subgroups.length === 1 && parent ? subgroups : group
+})
+
+const totalPluginCount = calculateTotalPluginCount(rawPlugins)
+const prunedPluginsData = Object.fromEntries(
+    Object.entries(rawPluginsData.byPlugin)
+    .map(([k, v]: [string, any]) => [k, {
+        className: v.className,
+        elementCounts: v.elementCounts,
+        blueprints: v.blueprints,
+        title: v.title,
+        description: v.description,
+        categories: v.categories,
+    }])
+)
+
+const cardPlugins = prunePluginsForCards(filteredPlugins, prunedPluginsData)
+const categories = [...new Set(cardPlugins.flatMap(p => p.categories ?? []))].sort()
+
+const title = "Hundreds of Plugins For All Your Orchestrations Needs"
+const description = "Connect Kestra with tools you already know and love"
+---
+
+<Layout {title} {description}>
+    <PluginsLists
+        client:load
+        plugins={cardPlugins}
+        {categories}
+        {totalPluginCount}
+        fullPath={Astro.request.url}
+    />
+</Layout>

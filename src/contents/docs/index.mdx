@@ -1,0 +1,45 @@
+---
+title: Welcome to Kestra
+isHomepage: true
+description: The official documentation for Kestra, an open-source orchestration platform to automate business-critical workflows.
+---
+
+import HomePageHeader from "~/components/content/HomePageHeader.vue"
+import HomePageButtons from "~/components/content/HomePageButtons.vue"
+import WhatsNew from "~/components/blogs/WhatsNew.astro"
+import SupportLinks from "~/components/content/SupportLinks.vue"
+import PluginCount from "~/components/content/PluginCount.vue"
+import BigChildCards from "~/components/docs/BigChildCards.astro"
+
+<HomePageHeader title="What is Kestra?" />
+Kestra is an open-source, infinitely-scalable **orchestration platform** that enables all engineers
+to manage **business-critical workflows** declaratively in code.
+
+Thanks to <PluginCount client:idle /> plugins and embedded Code editor with Git and Terraform integrations, Kestra makes scheduled and event-driven workflows easy.
+
+<HomePageButtons
+    buttons={[
+        { label: "Quickstart →", href: "/docs/quickstart#start-kestra" },
+        { label: "Why Kestra?", href: "/docs/why-kestra" },
+        { label: "Why Enterprise Edition?", href: "/docs/oss-vs-paid" },
+    ]}
+/>
+
+<BigChildCards directory="/docs/use-cases" title="What’s possible with Kestra" />
+
+<div style="height: 50px;"></div>
+<div class="video-container">
+    <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/xnGYiWFM2uk"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+    ></iframe>
+</div>
+
+<WhatsNew title="What's New in Kestra" />
+
+<SupportLinks title="Support" />

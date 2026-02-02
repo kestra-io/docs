@@ -1,1 +1,1 @@
-**/*
+**/*.{js,ts,json,md,mdx,yml,yaml,html,css,scss,vue,jsx,tsx}

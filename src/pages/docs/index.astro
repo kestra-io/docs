@@ -1,0 +1,35 @@
+---
+import NavToc from "~/components/docs/NavToc.vue"
+import LayoutDocs from "~/components/layout-docs.astro"
+import { getEntry, render } from "astro:content"
+const doc = await getEntry("docs", "<index>")
+if (!doc) {
+    throw new Error("Index document not found")
+}
+
+const { Content, headings } = await render(doc)
+
+const editUrl = doc.filePath
+    ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/content\//, "content/")}`
+    : undefined
+---
+
+<LayoutDocs activeStem="/docs" isHomePage>
+    <h1 slot="title" class="py-0 title">{doc.data?.title}</h1>
+
+    <NavToc
+        client:visible
+        links={headings.map((heading) => ({
+            id: heading.slug,
+            text: heading.text,
+            depth: heading.depth,
+        }))}
+        slot="headings"
+        class="right-menu"
+        {editUrl}
+    />
+
+    <div class="bd-markdown">
+        <Content />
+    </div>
+</LayoutDocs>

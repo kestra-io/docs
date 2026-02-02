@@ -1,0 +1,50 @@
+---
+export const prerender = false
+import Layout from "~/components/layout.astro"
+import VideosTutorialsList from "~/components/videos/TutorialsList.vue"
+import CommonPagination from "~/components/common/Pagination.vue"
+import { $fetchApi } from "~/utils/fetch"
+
+const tags = new Map([
+    ["all", "All videos"],
+    ["deep-dive", "Deep Dive Tutorials"],
+    ["quick-start", "Quick Start Tutorials"],
+    ["feature-highlight", "Feature Highlight"],
+])
+
+const { slug } = Astro.params
+
+const currentCategory = slug ? (tags.get(slug) ?? "") : ""
+
+const PageURL = new URL(Astro.request.url)
+
+const itemsPerPageStr = PageURL.searchParams.get("size")
+const itemsPerPage = itemsPerPageStr ? parseInt(itemsPerPageStr) : 24
+
+const pageStr = PageURL.searchParams.get("page")
+const page = pageStr ? parseInt(pageStr) : 1
+
+const currentCategoryFilter = slug === "all" ? "" : currentCategory
+
+const API_URL = `/tutorial-videos?page=${page}&size=${itemsPerPage}&category=${currentCategoryFilter}`
+
+const tutorialVideo = await $fetchApi(API_URL)
+
+const title = `Video Tutorials: ${currentCategory}`
+const description = `Get started with our Video Tutorials: ${currentCategory}`
+---
+
+<Layout title={title} description={description}>
+    <VideosTutorialsList
+        client:visible
+        {...{ tutorialVideo, page, itemsPerPage, currentCategory }}
+    >
+        <CommonPagination
+            client:visible
+            currentUrl={Astro.request.url}
+            slot="pagination"
+            currentPage={page}
+            totalPages={Math.ceil(tutorialVideo.total / itemsPerPage)}
+        />
+    </VideosTutorialsList>
+</Layout>

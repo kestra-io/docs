@@ -1,0 +1,41 @@
+---
+import RelatedBlueprintsVue from "~/components/plugins/RelatedBlueprints.vue"
+import { $fetchApi } from "~/utils/fetch"
+
+const props = Astro.props
+const {
+    pluginType,
+    pluginName,
+    rootPlugin,
+    currentSubgroupPlugin,
+    subGroupName,
+    blueprintsSectionHeading,
+} = props
+
+const pluginIdentifier = (() => {
+    if (props.pluginType) {
+        return props.pluginType
+    }
+
+    if (props.currentSubgroupPlugin?.subGroup) {
+        return props.currentSubgroupPlugin.subGroup
+    }
+
+    return props.pluginWrapper?.group ?? props.pluginName
+})()
+
+const relatedBlueprints = await $fetchApi(
+    `/blueprints/plugin/${pluginIdentifier}/version/latest`,
+)
+---
+
+<RelatedBlueprintsVue
+    pluginName={pluginName}
+    pluginWrapper={rootPlugin}
+    currentSubgroupPlugin={currentSubgroupPlugin}
+    subGroupName={subGroupName}
+    pluginType={pluginType}
+    customId={blueprintsSectionHeading?.id}
+    relatedBlueprints={relatedBlueprints}
+    client:visible
+/>

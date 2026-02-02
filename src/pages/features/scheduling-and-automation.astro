@@ -1,0 +1,21 @@
+---
+import Layout from "~/components/layout.astro"
+import Workflows from "~/components/features/scheduling/Workflows.vue"
+import Header from "~/components/features/scheduling/Header.vue"
+import Automation from "~/components/features/scheduling/Automation.vue"
+import Footer from "~/components/features/scheduling/Footer.vue"
+import Feature from "~/components/features/scheduling/Feature.vue"
+import Plugin from "~/components/features/scheduling/Plugin.vue"
+
+const title = "Schedule all your workflows with Kestra"
+const description = "Automate scheduled and event-driven workflows with Kestra."
+---
+
+<Layout title={title} description={description}>
+    <Header client:load />
+    <Feature client:visible />
+    <Workflows client:visible />
+    <Plugin client:visible />
+    <Automation client:visible />
+    <Footer client:visible />
+</Layout>

@@ -1,0 +1,83 @@
+---
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+export const prerender = false
+import Layout from "~/components/layout.astro"
+import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
+import { $fetch } from "~/utils/fetch"
+import CareersHeader from "~/components/careers/Header.vue"
+import { type Job, mapJob } from "~/utils/careers.ts"
+
+async function fetchJobApplication(slug?: string) {
+    if (!slug) {
+        return null
+    }
+
+    const jobsList = await $fetch(
+        `https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`,
+    )
+
+    const res = jobsList.results.find((job: Job) => job.id === slug)
+
+    if (!res) {
+        return null
+    }
+
+    const resJobDesc = await $fetch(
+        `https://app.dover.com/api/v1/jobs/${slug}/get_job_description`,
+    )
+
+    return { ...mapJob(res), description: resJobDesc.user_provided_description }
+}
+
+const { slug } = Astro.params
+const page = await fetchJobApplication(slug)
+
+if (!page) {
+    return new Response(null, {
+        status: 404,
+        statusText: "Not found",
+    })
+}
+
+const title = page.title
+---
+
+<Layout title={title}>
+    <CareersHeader fullPath="/careers" client:load>
+        <h1 data-usal="fade-l">{page.title}</h1>
+        <h4>
+            <MapMarkerOutline client:load /> Remote from:
+            {
+                page.locations?.map((loc: any) => (
+                    <span class="ms-1">
+                        {loc.emoji} {loc.name}
+                    </span>
+                ))
+            }
+        </h4>
+        <a
+            href={page.link}
+            class="btn btn-animated btn-purple-animated mt-4"
+            data-usal="zoomin"
+        >
+            Apply for this job
+        </a>
+    </CareersHeader>
+
+    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
+        <article class="bd-main order-1">
+            <MDCParserAndRenderer
+                content={page.description}
+                class="item-content bd-markdown"
+            />
+        </article>
+    </div>
+    <LayoutFooterContact
+        client:visible
+        title="Join our team"
+        subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
+        purpleButtonText="Apply for this job"
+        :purpleButtonHref="page.link"
+    />
+</Layout>

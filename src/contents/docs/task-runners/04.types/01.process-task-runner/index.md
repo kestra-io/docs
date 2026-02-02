@@ -1,0 +1,68 @@
+---
+title: Process Task Runner – Run Tasks as Local Processes
+sidebarTitle: Process Task Runner
+icon: /src/contents/docs/icons/concepts.svg
+version: ">= 0.18.0"
+editions: ["OSS", "EE"]
+description: Run Kestra tasks as local processes on the worker node for fast execution without container overhead.
+---
+
+Run tasks as local processes.
+
+## Run tasks locally with the Process runner
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/CC_CnH74qnk?si=_Pq-GBV2UadYlKxE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+The following example shows a Shell script configured with the Process task runner, which runs a Shell command as a child process on the Kestra host:
+
+```yaml
+id: process_task_runner
+namespace: company.team
+
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - echo "Hello World!"
+```
+
+The [Process task runner](/plugins/core/task-runners/runner/io.kestra.plugin.core.runner.process) does not require any additional configuration beyond the `type` property.
+
+:::alert{type="info"}
+By default, Python is the only programming language installed in the Kestra Docker image. To use other languages, ensure their dependencies are installed on your local machine if running Kestra manually, or inside your container if running via Docker.
+:::
+
+## Benefits
+
+The Process task runner is useful when you need to access local files or take advantage of locally configured software libraries and virtual environments.
+
+## Combining task runners with Worker Groups
+
+You can combine the Process task runner with [Worker Groups](../../../07.enterprise/04.scalability/worker-group/index.md) to run tasks on dedicated servers that have specific software libraries or configurations. This combination allows you to leverage the compute resources of your Worker Groups while running tasks as local processes, without the overhead of containerization.
+
+The following example demonstrates how to combine the Process task runner with Worker Groups to fully leverage the GPU resources of a dedicated server:
+
+```yaml
+id: python_on_gpu
+namespace: company.team
+
+tasks:
+  - id: gpu_intensive_ai_workload
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    commands:
+      - python main.py
+    workerGroup:
+      key: gpu
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+```
+
+:::alert{type="info"}
+Note that Worker Groups are an Enterprise Edition feature. To try them out, please [reach out](/demo).
+:::
