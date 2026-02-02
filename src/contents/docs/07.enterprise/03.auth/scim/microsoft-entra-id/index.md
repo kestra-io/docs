@@ -1,5 +1,6 @@
 ---
 title: Microsoft Entra ID SCIM Provisioning
+description: Set up SCIM provisioning with Microsoft Entra ID. Automatically sync users and groups from Entra ID to Kestra for streamlined user management.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.18.0"

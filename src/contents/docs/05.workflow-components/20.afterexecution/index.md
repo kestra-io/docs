@@ -1,5 +1,6 @@
 ---
 title: afterExecution Tasks in Kestra – Post-Run Actions
+description: Trigger actions after flow completion with afterExecution tasks. Run logic based on final execution status (Success/Failed) for notifications or reporting.
 sidebarTitle: afterExecution
 icon: /src/contents/docs/icons/flow.svg
 version: "0.22.0"

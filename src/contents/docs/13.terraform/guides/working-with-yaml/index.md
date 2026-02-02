@@ -1,5 +1,6 @@
 ---
 title: Working with Yaml
+description: Learn how to handle YAML content in Terraform for Kestra resources, including multiline strings and external files.
 ---
 
 

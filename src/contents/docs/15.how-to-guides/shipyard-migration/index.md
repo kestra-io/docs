@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Best Practices
+description: A comprehensive guide for migrating workflows from Shipyard to Kestra, mapping concepts like Fleets and Vessels to Flows and Tasks.
 ---
 
 Migrate from Shipyard to Kestra.

@@ -2,6 +2,7 @@
 title: Supported Programming Languages in Kestra
 sidebarTitle: Programming Languages
 icon: /src/contents/docs/icons/dev.svg
+description: Discover the programming languages supported by Kestra, including Python, R, Node.js, Shell, and how to run any language with Docker.
 ---
 
 Kestra is language agnostic — you can use any programming language inside your workflows.

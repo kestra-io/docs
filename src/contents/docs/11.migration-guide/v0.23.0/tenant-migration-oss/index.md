@@ -3,6 +3,7 @@ title: Open-Source Migration Guide to introduce defaultTenant
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS"]
+description: Migration guide for Open-Source Edition users to introduce the mandatory defaultTenant context in Kestra 0.23.0.
 ---
 
 

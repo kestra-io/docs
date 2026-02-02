@@ -3,6 +3,7 @@ title: LoopUntil task changed default values for checkFrequency
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
+description: Information on the changed default values for the LoopUntil task's checkFrequency property.
 ---
 
 

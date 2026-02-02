@@ -3,6 +3,7 @@ title: Default Tenant & Multi-Tenancy
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]
+description: Deprecation of the default tenant functionality and enablement of multi-tenancy by default in Enterprise Edition.
 ---
 
 

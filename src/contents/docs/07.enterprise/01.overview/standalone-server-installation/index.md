@@ -1,5 +1,6 @@
 ---
 title: Install Kestra Enterprise from Standalone JAR
+description: Install Kestra on a standalone server with a simple executable file.
 sidebarTitle: Standalone Server Installation Guide
 icon: /src/contents/docs/icons/installation.svg
 editions: ["EE"]

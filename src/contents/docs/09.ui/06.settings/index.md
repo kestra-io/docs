@@ -1,5 +1,6 @@
 ---
 title: Settings in the Kestra UI – Personalize Your Experience
+description: Customize the Kestra UI. Configure themes, editor preferences, time zones, and default settings to personalize your user experience.
 sidebarTitle: Settings
 icon: /src/contents/docs/icons/ui.svg
 docId: settings

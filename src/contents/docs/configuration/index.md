@@ -2,6 +2,7 @@
 title: Configure Kestra – Settings, Environments, and Defaults
 sidebarTitle: Configuration
 icon: /src/contents/docs/icons/admin.svg
+description: Explore Kestra's comprehensive configuration options for settings, environments, and defaults. Learn how to manage data sources, logging, security, and AI to customize your Kestra instance.
 ---
 
 Configuration reference for Kestra.
@@ -233,7 +234,6 @@ datasources:
 
 :::alert{type="warning"}
 MySQL `8.0.31` is not supported. Choose another version or ask for help on [Slack](/slack).
-:::
 :::
 
 :::collapse{title="H2"}
@@ -549,7 +549,7 @@ kestra:
 ## Multi-tenancy
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/ 0.23.0/tenant-migration-ee/index.md).
+Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
 :::
 
 Enable (pre-0.23):
@@ -564,7 +564,7 @@ kestra:
 ## Default tenant
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/ 0.23.0/tenant-migration-ee/index.md).
+Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
 :::
 
 Disable the default tenant when multi-tenancy is on:
@@ -1671,6 +1671,18 @@ kestra:
     termination-grace-period: 5m
 ```
 
+### Server service instance Purge retention period
+
+Kestra purges empty instances on a fixed schedule (30 days by default). To change how often the purge job runs:
+
+```yaml
+kestra:
+  server:
+    service:
+      purge:
+        retention: 7d   # run the purge every 7 days instead of 30
+```
+
 :::alert{type="warning"}
 Ensure the supervising platform (Kubernetes, Docker Compose, systemd, etc.) uses a termination grace period longer than Kestra’s setting. For example, when Kestra uses `5m`, configure Kubernetes `terminationGracePeriodSeconds` to at least 6 minutes. If the external timeout is shorter, the process manager may send SIGKILL before Kestra finishes its graceful shutdown.
 :::
@@ -1937,7 +1949,7 @@ kestra:
 
 ## Enabling templates
 
-Templates are [deprecated](../11.migration-guide/0.11.0/templates/index.md) and disabled by default since 0.11.0. Re-enable:
+Templates are [deprecated](../11.migration-guide/v0.11.0/templates/index.md) and disabled by default since 0.11.0. Re-enable:
 
 ```yaml
 kestra:
@@ -1997,7 +2009,7 @@ Camel case becomes hyphenated.
 
 ### Recursive rendering
 
-Restore [pre-0.14.0 behavior](../11.migration-guide/0.14.0/recursive-rendering/index.md) (defaults to `false`):
+Restore [pre-0.14.0 behavior](../11.migration-guide/v0.14.0/recursive-rendering/index.md) (defaults to `false`):
 
 ```yaml
 kestra:

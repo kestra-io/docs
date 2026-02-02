@@ -199,7 +199,7 @@ tasks:
 Kestra also allows you to create dynamic data pipelines that can be triggered based on external events. For example, your data pipeline might need to start when a new table is ingested into BigQuery, or when a file is uploaded into a Google Cloud Storage (GCS) bucket. Kestra supports such event-driven workflows via trigger plugins for BigQuery and GCS.
 
 ### BigQuery Trigger ###
-The BigQuery [**Trigger**](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.trigger) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) task). Here's how you could set up such a flow:
+The BigQuery [**Trigger**](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.trigger) will check for new data in a specified BigQuery table and, when found, invoke a flow for each new row with loop ([EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential) task) (This has since been replaced by [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach)). Here's how you could set up such a flow:
 
 ```yaml
 id: Trigger_flow

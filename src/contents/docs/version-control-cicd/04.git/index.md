@@ -2,6 +2,7 @@
 title: Version Control with Git – Manage Flows and Namespace Files
 sidebarTitle: Version Control with Git
 icon: /src/contents/docs/icons/dev.svg
+description: Learn patterns for versioning Kestra flows and namespace files with Git, including Sync, Push, and Clone strategies.
 ---
 
 Learn how to pair Kestra with Git so you can version flows, namespace files, and related artifacts alongside your application code.

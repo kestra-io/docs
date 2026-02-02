@@ -1,5 +1,6 @@
 ---
 title: Pebble Templating in Kestra – Render Inputs and Outputs
+description: Dynamically render variables, inputs and outputs.
 sidebarTitle: Pebble Templating Engine
 icon: /src/contents/docs/icons/concepts.svg
 ---

@@ -46,13 +46,13 @@
         <div class="plugin-links">
             <div class="link-section">
                 <h4>Request a plugin</h4>
-                <a to="https://kestra.io/slack" external target="_blank" class="link">
+                <a href="https://kestra.io/slack" external target="_blank" class="link">
                     Ask on slack
                 </a>
             </div>
             <div class="link-section">
                 <h4>Create a plugin</h4>
-                <a to="/docs/plugin-developer-guide" external target="_blank" class="link">
+                <a href="/docs/plugin-developer-guide" external target="_blank" class="link">
                     Go to the developer platform
                 </a>
             </div>

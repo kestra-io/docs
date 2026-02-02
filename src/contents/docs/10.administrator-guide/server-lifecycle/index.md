@@ -2,6 +2,7 @@
 title: Server Component Liveness in Kestra – Heartbeats and Recovery
 sidebarTitle: Server Components Liveness
 icon: /src/contents/docs/icons/admin.svg
+description: Understand Kestra's server liveness mechanism, heartbeats, and how it handles component failures and recovery.
 ---
 
 Kestra is separated into several components that can be deployed independently or inside a single process (a standalone deployment).

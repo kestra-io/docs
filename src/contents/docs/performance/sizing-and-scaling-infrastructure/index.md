@@ -2,6 +2,7 @@
 title: Size and Scale Kestra Infrastructure – Executors, Workers, Schedulers
 sidebarTitle: Sizing and Scaling Infrastructure
 icon: /src/contents/docs/icons/admin.svg
+description: Guidance on sizing and scaling your Kestra infrastructure, including Executors, Workers, and Schedulers, for optimal performance.
 ---
 
 Kestra is designed to scale from lightweight workflows to enterprise-scale orchestration with thousands of task runs per minute. Choosing the right infrastructure depends on your workload patterns, execution volume, and latency requirements. This page provides practical guidance on how to size your Kestra deployment, how many Executors and Workers you need, and how to scale and tune performance over time.

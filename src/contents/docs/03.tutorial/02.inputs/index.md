@@ -2,6 +2,7 @@
 title: Tutorial – Add Inputs to Kestra Workflows
 sidebarTitle: Inputs
 icon: /src/contents/docs/icons/tutorial.svg
+description: Discover how to add dynamic inputs to your Kestra workflows to make them flexible and reusable across different scenarios.
 ---
 
 Inputs make your flows more dynamic and reusable.

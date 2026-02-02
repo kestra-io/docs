@@ -1,5 +1,6 @@
 ---
 title: RBAC in Kestra Enterprise – Manage Roles and Permissions
+description: Implement Role-Based Access Control (RBAC) in Kestra. Define granular permissions for users, groups, and service accounts to secure your platform.
 sidebarTitle: Role-Based Access Control (RBAC)
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -78,19 +79,23 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 - `GROUP_MEMBERSHIP`
 
 :::alert{type="warning"}
-The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/0.24.0/endpoint-changes/index.md#rbac-updates)
-:::
-
+The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/v0.24.0/endpoint-changes/index.md#rbac-updates)
 :::
 
 ### Actions
 
-An Action is a specific operation that can be performed on a Permission. Supported Actions:
+An Action is the CRUD verb allowed on a given resource (Flow, Execution, Secret, KV, Namespace, etc.). Supported Actions map directly to HTTP operations:
 
-- `CREATE`
-- `READ`
-- `UPDATE`
-- `DELETE`
+- `CREATE` → typically `POST` the resource (e.g., create a flow, secret, KV entry).
+- `READ`   → `GET` to list or view the resource; no writes.
+- `UPDATE` → `PUT`/`PATCH` to modify an existing resource; cannot create new ones.
+- `DELETE` → `DELETE` to remove the resource.
+
+Example (Flows):
+- `CREATE` lets you `POST /api/v1/{tenant}/flows`
+- `READ` lets you `GET /api/v1/{tenant}/flows/*`
+- `UPDATE` lets you `PUT /api/v1/{tenant}/flows/{flowId}`
+- `DELETE` lets you `DELETE /api/v1/{tenant}/flows/delete/by-ids`
 
 ### Currently supported roles
 

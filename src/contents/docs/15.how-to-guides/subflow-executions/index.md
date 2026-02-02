@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts
+description: Best practices for configuring retries, restarts, and replays in subflow executions to ensure efficient error handling and resumption.
 ---
 
 How to configure your flows so that failed subflow executions resume correctly without rerunning successful tasks.

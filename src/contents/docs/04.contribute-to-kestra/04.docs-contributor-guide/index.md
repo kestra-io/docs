@@ -1,5 +1,6 @@
 ---
 title: Contribute to Kestra Documentation – Writer’s Guide
+description: Help improve Kestra's documentation. This writer's guide covers local build setup, front matter conventions, and best practices for contributing to docs.
 sidebarTitle: Kestra Documentation
 icon: /src/contents/docs/icons/contributing.svg
 ---
@@ -87,7 +88,9 @@ Each documentation page is expected to include several key front matter properti
 
 ```markdown
 ---
-title: Apps
+title: Apps in Kestra Enterprise – Build Frontends for Flows
+description: Build custom Apps with Kestra. Create user-facing interfaces for workflows, enabling forms, approvals, and interactive data applications.
+sidebarTitle: Apps
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
@@ -104,6 +107,8 @@ Let's discuss each property in more detail.
 #### title
 
 This is simply the title of the page, but it is important to make sure this is clear. Typically, this will be the name of the feature or the concept, but as a contributor, you may want to write your own ["How to guide"](../../15.how-to-guides/index.mdx) with your Kestra use case. In this scenario, be clear about the purpose of the guide and with what feature or Plugin (e.g., [Access Files on your Local Machine in Kestra ](../../15.how-to-guides/access-local-files/index.md)).
+
+`sidebarTitle` controls what is shown on the lefthand-side navigation bar of the documentation. This can simply be the name of the feature or topic.
 
 #### icon
 
@@ -333,13 +338,13 @@ The supported languages for code blocks are fully listed in the `useShiki.ts` fi
 
 ### How to use images
 
-Images are a key part of the documentation. We organize images by topic and section in the documentation to make them easy to find and add. Taking this guide as an example, an image we used earlier in the guide appears in the markdown as follows:
+Images are a key part of the documentation. We couple images used on a page within the page directory. The Apps documentation markdown page and its associated images are contained in the same folder to keep assets together and to make them easy to find and add. Taking this guide as an example, an image we used earlier in the guide appears in the markdown as follows:
 
 ```markdown
 ![Apps Front Matter](./apps-frontmatter.png)
 ```
 
-The image has a clear title and is located in an image folder called `docs-contributor-guide` in the `public/docs` directory of the repository. For this guide, all images are placed in this folder path so the organization is clear and easily worked with by another contributor. This same practice is used for our blog and other parts of the website that are kept in the repository.
+The image has a clear title and is located in the Apps folder. For this guide, all images are placed in this folder path so the organization is clear and easily worked with by another contributor. This same practice is used for our blog and other parts of the website that are kept in the repository.
 
 ## Contribute to Kestra Plugin Documentation
 

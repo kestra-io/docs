@@ -11,6 +11,10 @@
         {
             "pattern": "kestra.io",
             "custom_domain": true
+        },
+        {
+            "pattern": "mta-sts.kestra.io",
+            "custom_domain": true
         }
     ],
     "assets": {

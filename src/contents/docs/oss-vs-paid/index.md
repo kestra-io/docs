@@ -1,5 +1,6 @@
 ---
 title: Open-Source vs. Enterprise Edition
+description: Compare Kestra Open-Source and Enterprise editions to choose the right solution for your orchestration, security, and scalability needs.
 ---
 
 Understand the differences between Kestra's Open-Source and Enterprise Editions, and learn how the commercial offering supports teams running mission-critical workflows at scale.

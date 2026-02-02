@@ -1,5 +1,6 @@
 ---
 title: Retrieving non-existing secrets
+description: Secret function update in Kestra 0.21.0 (OSS). Fetching missing secrets now throws an exception instead of returning null, matching Enterprise behavior.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
 editions: ["OSS"]

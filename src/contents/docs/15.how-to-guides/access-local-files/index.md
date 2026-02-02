@@ -5,6 +5,7 @@ stage: Getting Started
 topics:
   - Scripting
   - Integrations
+description: Access and process files stored on your local machine within Kestra workflows using bind mounts and the Process task runner.
 ---
 
 Access locally stored files on your machine inside Kestra workflows.

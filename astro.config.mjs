@@ -5,13 +5,15 @@ import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
+import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
 import remarkDirective from "remark-directive"
+import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 // @ts-expect-error no types provided by package
 import remarkLinkRewrite from "remark-link-rewrite"
-import remarkCustomElements from "./src/utils/remark-custom-elements/index.mjs"
-import remarkClassname from "./src/utils/remark-classname/index.mjs"
+import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
+import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
@@ -53,6 +55,7 @@ export default defineConfig({
             useDarkModeMediaQuery: false,
         }),
         mdx(),
+        icon(),
     ],
     markdown: {
         remarkPlugins: [
@@ -61,16 +64,45 @@ export default defineConfig({
             remarkCustomElements,
             // when internal docs links we point to real files
             // while in the docs generated we want to point to urls with generated ids
+            // @ts-expect-error bad types in astro
             [
-                remarkLinkRewrite,
+                customRemarkLinkRewrite,
                 {
-                    /** @param {string} url */
-                    replacer(url) {
+                    /**
+                     *
+                     * @param {string} url
+                     * @param {{basename?: string, dirname?: string}} file
+                     * @returns
+                     */
+                    replacer(url, file) {
                         if (url.startsWith(".")) {
-                            return generateId({ entry: url })
+                            // Extract hash fragment before processing relative URLs
+                            let hash = ""
+                            if (url.includes("#")) {
+                                const hashIndex = url.indexOf("#")
+                                hash = url.slice(hashIndex)
+                                url = url.slice(0, hashIndex)
+                            }
+
+                            // if the file basename starts with index.
+                            if(file.basename && file.basename.startsWith("index.")) {
+                                // if the url start with ./
+                                if(url.startsWith("./") && file.dirname) {
+                                    // we preprend to the path the last part of the dirname
+                                    url = path.join(path.basename(file.dirname), url.slice(2))
+                                }
+
+                                // if the url starts with ../
+                                if(url.startsWith("../")) {
+                                    // we replace ../ by ./
+                                    url = "./" + url.slice(3)
+                                }
+                            }
+
+                            return generateId({entry: url}) + hash
                         }
                         return url
-                    },
+                    }
                 },
             ],
         ],
@@ -145,6 +177,10 @@ export default defineConfig({
             }),
         },
     },
+    // require for "/t" url
+    security: {
+        checkOrigin: false,
+    },
     redirects: {
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
         "/trust": "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
@@ -176,11 +212,7 @@ export default defineConfig({
                 },
             },
         },
-        optimizeDeps: {
-            include: ["vue3-count-to"],
-        },
         ssr: {
-            noExternal: ["vue3-count-to"],
             external: [
                 "node:fs/promises",
                 "node:fs",

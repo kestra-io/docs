@@ -1,5 +1,6 @@
 ---
 title: Namespace Management in Kestra Enterprise – Secure Configuration
+description: Secure your Kestra instance with Namespace Management. Configure isolated environments, manage secrets, and set namespace-level plugin defaults.
 sidebarTitle: Namespace Management
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

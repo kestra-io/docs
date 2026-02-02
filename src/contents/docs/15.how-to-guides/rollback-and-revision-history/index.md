@@ -5,6 +5,7 @@ stage: Getting Started
 topics:
   - Kestra Concepts
   - Version Control
+description: Use Kestra's revision history to track changes, compare flow versions, and easily rollback to previous configurations.
 ---
 
 Use revision history to rollback to an older version of a flow.

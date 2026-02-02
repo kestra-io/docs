@@ -2,6 +2,7 @@
 title: Recursive rendering of Pebble expressions
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.14.0
+description: Guide to the new non-recursive Pebble expression rendering and the usage of the render() function.
 ---
 
 

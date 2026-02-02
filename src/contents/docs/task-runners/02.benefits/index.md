@@ -4,6 +4,7 @@ sidebarTitle: Task Runner Benefits
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]
+description: Explore the benefits of using Task Runners in Kestra for isolated execution, resource control, and deployment flexibility.
 ---
 
 Discover how Task Runners simplify resource allocation, environment management, and deployment across environments.

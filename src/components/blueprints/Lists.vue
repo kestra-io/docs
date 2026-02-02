@@ -9,10 +9,10 @@
                 </h4>
                 <div class="col-12 search-input position-relative">
                     <input
-                        type="text"
+                        type="search"
                         class="form-control form-control-lg"
                         placeholder="Search across 250+ blueprints"
-                        v-model="searchQuery"
+                        v-model="searchQueryModel"
                     />
                     <Magnify class="search-icon" />
                 </div>
@@ -23,7 +23,7 @@
                 v-for="tag in orderedTags"
                 :key="tag.name"
                 :class="{
-                    active: activeTags.some((item) => item.name === tag.name),
+                    active: props.tagsSelected?.some((item) => item === tag.name),
                 }"
                 @click="setTagBlueprints(tag)"
                 class="m-1 rounded-button"
@@ -33,9 +33,9 @@
         </div>
         <div class="row my-5">
             <div
-                v-if="blueprintsPaginated && blueprintsPaginated.length > 0"
+                v-if="blueprints && blueprints.length > 0"
                 class="col-lg-4 col-md-6 mb-4"
-                v-for="blueprint in blueprintsPaginated"
+                v-for="blueprint in blueprints"
                 :key="blueprint.id"
                 data-usal="zoomin"
             >
@@ -56,12 +56,10 @@
 
             <CommonPaginationContainer
                 :current-url="currentUrl"
-                :total-items="filteredBlueprints?.length"
+                :total-items="total"
                 @update="
                     (payload) => {
-                        currentPage = payload.page
-                        itemsPerPage = payload.size
-                        changePage()
+                        changePage(payload)
                     }
                 "
             />
@@ -70,25 +68,31 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, onMounted, ref, watch } from "vue"
+    import { computed, ref, watch } from "vue"
+    import { navigate } from "astro:transitions/client"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import BlueprintsListCard from "~/components/blueprints/ListCard.vue"
     import CommonPaginationContainer from "~/components/common/PaginationContainer.vue"
 
-    const currentPage = ref<number>(1)
-    const itemsPerPage = ref<number>(24)
-    const blueprints = ref<Blueprint[]>([])
-    const activeTags = ref<BlueprintTag[]>([{ name: "All tags" }])
-    const tags = ref<BlueprintTag[]>([])
-    const totalPages = ref<number>(0)
-    const totalBlueprints = ref<number>(0)
-    const searchQuery = ref<string>("")
-
     const props = defineProps<{
-        tags: BlueprintTag[]
+        tags: BlueprintTag[],
+        tagsSelected?: string[],
+        currentPage: number,
+        itemsPerPage: number,
+        total: number
         currentUrl: string
-        allBlueprints: Blueprint[]
+        blueprints: Blueprint[]
+        q?: string
     }>()
+
+    const searchQueryModel = ref(props.q ?? "")
+    watch(() => props.q, (newVal) => {
+        searchQueryModel.value = newVal ?? ""
+    })
+
+    const filteredTags = computed(() => {
+        return props.tagsSelected?.filter((tag => tag !== "All tags") )
+    })
 
     const CUSTOM_ORDER = [
         "Getting Started",
@@ -99,6 +103,7 @@
         "Business",
         "Cloud",
     ]
+
     const orderedTags = computed(() => {
         const sortedTags = [...props.tags].sort((a, b) => {
             let indexA = CUSTOM_ORDER.indexOf(a.name)
@@ -110,76 +115,67 @@
         return [{ name: "All tags" }, ...sortedTags]
     })
 
-    const activeTagIds = computed(() => {
-        return activeTags.value
-            .filter((tag) => tag.name !== "All tags" && tag.id)
-            .map((tag) => tag.id)
-            .join(",")
-    })
-
-    const filteredBlueprints = computed(() => {
-        let filtered = props.allBlueprints
-
-        if (
-            activeTags.value.length &&
-            !(activeTags.value.length === 1 && activeTags.value[0].name === "All tags")
-        ) {
-            filtered = filtered.filter((blueprint) =>
-                activeTags.value.every((tag) => {
-                    return blueprint.tags?.some((blueprintTag) => blueprintTag === tag.id)
-                }),
-            )
-        }
-
-        if (searchQuery.value.length) {
-            const q = searchQuery.value.toLowerCase()
-            filtered = filtered.filter(
-                (blueprint) =>
-                    blueprint.title?.toLowerCase().includes(q) ||
-                    blueprint.description?.toLowerCase().includes(q),
-            )
-        }
-
-        return filtered
-    })
-
-    const blueprintsPaginated = computed(() => {
-        const start = (currentPage.value - 1) * itemsPerPage.value
-        const end = currentPage.value * itemsPerPage.value
-        return filteredBlueprints.value.slice(start, end) ?? []
-    })
-
     const setTagBlueprints = (tagVal: BlueprintTag) => {
         if (tagVal.name === "All tags") {
-            activeTags.value = [{ name: "All tags" }]
+            changePage({tags: ["All tags"]})
             return
         }
 
-        let currentTags = activeTags.value.filter((t) => t.name !== "All tags")
-
-        const index = currentTags.findIndex((t) => t.name === tagVal.name)
+        let currentTags = props.tagsSelected?.filter((t) => t !== "All tags") ?? []
+        const index = currentTags.findIndex((t) => t === tagVal.name)
         if (index === -1) {
-            currentTags.push(tagVal)
+            currentTags.push(tagVal.name)
         } else {
             currentTags.splice(index, 1)
         }
 
         if (currentTags.length === 0) {
-            activeTags.value = [{ name: "All tags" }]
+            changePage({tags: ["All tags"]})
         } else {
-            activeTags.value = currentTags
+            changePage({tags: currentTags})
         }
     }
 
     const resetFilters = () => {
-        activeTags.value = [{ name: "All tags" }]
-        searchQuery.value = ""
-        currentPage.value = 1
+        changePage({tags: ["All tags"], q: "", page: 1})
     }
 
-    const changePage = () => {
+    const changePage = (detailPayload: {
+        page?:number,
+        size?:number,
+        tags?:string[],
+        q?: string
+    }) => {
         if (typeof window !== "undefined") {
-            window.scrollTo({ top: 0 })
+            const detail = {
+                page: props.currentPage,
+                size: props.itemsPerPage,
+                tags: filteredTags.value,
+                q: props.q,
+                ...detailPayload,
+            }
+
+            if (
+                detail.page === props.currentPage
+                && detail.size === props.itemsPerPage
+                && JSON.stringify(detail.tags) === JSON.stringify(filteredTags.value)
+                && ((detail.q === undefined && props.q === undefined) || detail.q === props.q)
+            ) {
+                return
+            }
+
+            const detailsTags = detail.tags?.filter((tag) => tag !== "All tags")
+
+            const newUrl = new URL(window.location.href)
+            newUrl.searchParams.set("page", detail.page.toString())
+            newUrl.searchParams.set("size", detail.size.toString())
+            if(detailsTags?.length) newUrl.searchParams.set("tags", detailsTags?.join(","))
+            else newUrl.searchParams.delete("tags")
+            if(detail.q) newUrl.searchParams.set("q", detail.q)
+            else newUrl.searchParams.delete("q")
+
+            // navigate in astro world
+            navigate(newUrl.pathname + newUrl.search)
         }
     }
 
@@ -187,67 +183,15 @@
         return `/blueprints/${blueprint.id}`
     }
 
-    const setBlueprints = (allBlueprints: Blueprint[], total: number) => {
-        blueprints.value = allBlueprints || []
-        totalBlueprints.value = total || 0
-        totalPages.value = itemsPerPage.value ? Math.ceil(total / itemsPerPage.value) : 0
-    }
+    let queryTimeout: ReturnType<typeof setTimeout>
 
-    onMounted(() => {
-        const url = new URL(props.currentUrl)
-        if (url.searchParams.has("page"))
-            currentPage.value = parseInt(url.searchParams.get("page") as string)
-        if (url.searchParams.has("size"))
-            itemsPerPage.value = parseInt(url.searchParams.get("size") as string)
-        setTimeout(() => {
-            if (url.searchParams.has("q")) searchQuery.value = url.searchParams.get("q") as string
-        }, 200)
-        if (url.searchParams.has("tags")) {
-            const tagIds = (url.searchParams.get("tags") as string).split(",")
-            const foundTags = tags.value.filter((item) => item.id && tagIds.includes(item.id))
-            if (foundTags.length > 0) {
-                activeTags.value = foundTags
-            }
-        }
-    })
-
-    let timer: NodeJS.Timeout
-    watch(
-        [currentPage, itemsPerPage, searchQuery, activeTags],
-        (
-            [pageVal, itemVal, searchVal, activeTagsVal],
-            [oldPage, oldItemVal, oldSearch, oldTags],
-        ) => {
-            if (timer) clearTimeout(timer)
-
-            timer = setTimeout(async () => {
-                const isFilterChange =
-                    itemVal !== oldItemVal ||
-                    searchVal !== oldSearch ||
-                    JSON.stringify(activeTagsVal) !== JSON.stringify(oldTags)
-                const newPage = isFilterChange ? 1 : pageVal
-
-                if (isFilterChange && currentPage.value !== 1) {
-                    currentPage.value = 1
-                }
-
-                function getQuery() {
-                    let query: Record<string, any> = {
-                        page: newPage,
-                        size: itemVal,
-                    }
-                    if (activeTagIds.value) query["tags"] = activeTagIds.value
-                    if (searchVal?.length) query["q"] = searchVal
-                    return query
-                }
-
-                const url = new URL(window.location.href)
-                url.search = new URLSearchParams(getQuery()).toString()
-
-                history.pushState({}, "", url)
+    watch(searchQueryModel,
+        (newQuery) => {
+            if(queryTimeout) clearTimeout(queryTimeout)
+            queryTimeout = setTimeout(() => {
+                changePage({q: newQuery, page: 1})
             }, 500)
         },
-        { deep: true },
     )
 </script>
 

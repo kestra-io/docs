@@ -5,6 +5,7 @@ stage: Intermediate
 topics:
 - DevOps
 - Object Storage
+description: Configure MinIO as a local object storage backend for Kestra using Docker and the MinIO client for development and testing.
 ---
 
 Set up and verify a local [MinIO](https://min.io/) storage backend for Kestra using the `mc` CLI and Docker.

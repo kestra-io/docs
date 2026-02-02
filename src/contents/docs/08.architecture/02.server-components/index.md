@@ -1,5 +1,6 @@
 ---
 title: Kestra Architecture – Server Components Explained
+description: Explore Kestra server components. Learn about the Executor, Worker, Scheduler, Webserver, and Indexer roles in the orchestration engine.
 sidebarTitle: Server components
 icon: /src/contents/docs/icons/architecture.svg
 ---
@@ -67,7 +68,7 @@ Internally, the Scheduler checks every second to determine whether any trigger n
 
 ## Indexer
 
-The **Indexer** is responsible for reading content from Kafka topics — such as flows and executions — and indexing it into Elasticsearch. This component enables [low-latency querying](../../11.migration-guide/0.20.0/elasticsearch-indexer/index.md) when using Kafka and Elasticsearch together.
+The **Indexer** is responsible for reading content from Kafka topics — such as flows and executions — and indexing it into Elasticsearch. This component enables [low-latency querying](../../11.migration-guide/v0.20.0/elasticsearch-indexer/index.md) when using Kafka and Elasticsearch together.
 
 By default, the Indexer runs as part of the [Web Server](#webserver). However, you can choose to run the Web Server independently without the Indexer by using the `server webserver --no-indexer` CLI option.
 

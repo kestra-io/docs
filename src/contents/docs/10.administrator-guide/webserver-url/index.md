@@ -2,6 +2,7 @@
 title: Configure Kestra Webserver URL – Links and Proxies
 sidebarTitle: Webserver URL
 icon: /src/contents/docs/icons/admin.svg
+description: Configure the Kestra webserver URL and proxy settings to ensure correct link generation and access behind reverse proxies.
 ---
 
 Configure the URL of your Kestra webserver.

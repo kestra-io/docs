@@ -4,6 +4,7 @@ sidebarTitle: Task Runner vs. Worker Group
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
+description: Learn when to use Task Runners versus Worker Groups in Kestra for optimal compute resource management and isolation.
 ---
 
 Find out when to use Task Runners or Worker Groups.

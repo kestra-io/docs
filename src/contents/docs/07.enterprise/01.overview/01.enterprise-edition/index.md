@@ -1,5 +1,6 @@
 ---
 title: Kestra Enterprise Features – High-Availability Platform
+description: Learn about the Enterprise Edition and how it can help you run Kestra securely and reliably at scale.
 sidebarTitle: Features
 icon: /src/contents/docs/icons/kestra.svg
 editions: ["EE", "Cloud"]

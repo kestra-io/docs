@@ -1,5 +1,6 @@
 ---
 title: Restore Kafka queue
+description: Kafka Queue Restore for Kestra 0.20.0 (Enterprise). Instructions to run the `sys-ee restore-queue` command to sync flow source code for plugin defaults.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0
 editions: ["EE"]

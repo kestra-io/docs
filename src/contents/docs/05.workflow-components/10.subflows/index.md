@@ -1,5 +1,6 @@
 ---
 title: Subflows in Kestra – Modularize and Reuse Flows
+description: Modularize your Kestra workflows with Subflows. Learn to call flows from other flows, pass inputs and outputs, and build reusable orchestration components.
 sidebarTitle: Subflows
 icon: /src/contents/docs/icons/flow.svg
 ---
@@ -18,17 +19,21 @@ They work like function calls: executing a subflow creates a new flow run from w
 
 Subflows allow you to build modular and reusable components that you can use across multiple flows. For example, you might define a subflow that handles error alerts by posting to Slack and email. By using a Subflow, you can reuse these two tasks together for all flows that you want to send error notifications, instead of having to copy the individual tasks for every flow.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Recursive flows are not supported. Kestra doesn’t allow a flow to call itself (directly or indirectly). Any cycle **(flowA→flowA)** makes the flow invalid. Recursive execution can create infinite loops and unbounded fan-out.
 
 **Do instead:** Use **[ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach**)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
-::
+:::
 
 ## How to declare a subflow
 
 To call a flow from another flow, use the `io.kestra.plugin.core.flow.Subflow` task, and in that task, specify the `flowId` and `namespace` of the subflow that you want to execute. You can also specify custom `inputs`, similar to passing arguments to a function.
 
 The optional properties `wait` and `transmitFailed` control the execution behavior. By default, if `wait` is omitted or set to `false`, the parent flow continues without waiting for the subflow to finish. The `transmitFailed` property determines whether a failure in the subflow execution should cause the parent flow to fail.
+
+:::alert{type="info"}
+A Subflow task acts like a trigger to execute the child flow. While not managed like [Triggers](../07.triggers/index.mdx) in the UI, it is conceptually similar.
+:::
 
 ## Practical example
 
@@ -145,7 +150,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
-For more details, see the [sublow outputs documentation](../../11.migration-guide/0.15.0/subflow-outputs/index.md).
+For more details, see the [sublow outputs documentation](../../11.migration-guide/v0.15.0/subflow-outputs/index.md).
 
 ### Passing inputs to a subflow
 

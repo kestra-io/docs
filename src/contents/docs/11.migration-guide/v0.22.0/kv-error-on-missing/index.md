@@ -3,6 +3,7 @@ title: KV function errors on missing key
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]
+description: Change in default behavior of the kv() function to throw an error when a key is missing in Kestra 0.22.0.
 ---
 
 

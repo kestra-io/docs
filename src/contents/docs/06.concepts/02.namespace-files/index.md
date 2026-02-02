@@ -1,5 +1,6 @@
 ---
 title: Namespace Files in Kestra – Manage Project Assets
+description: Manage Namespace Files and how to use them in your flows.
 sidebarTitle: Namespace Files
 icon: /src/contents/docs/icons/concepts.svg
 ---
@@ -67,11 +68,9 @@ Namespace Files make it easy to:
 
 ### Embedded code editor
 
-The easiest way to get started with Namespace Files is to use the embedded Code Editor. This allows you to easily add custom scripts, queries, and configuration files along with your flow YAML configuration files.
+While creating or editing a Flow, you can access Namespace Files from the Files tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
 
-Get started by selecting a namespace from the dropdown menu. If you type a name of a namespace that doesn't exist yet, Kestra creates it for you.
-
-Next, add a new file, (e.g., a Python script). Add a folder named `scripts` and a file called `hello.py` with the following content:
+To start, add a new file, (e.g., a Python script). Add a folder named `scripts` and a file called `hello.py` with the following content:
 
 ```python
 print("Hello from the Editor!")
@@ -92,7 +91,7 @@ tasks:
       - python scripts/hello.py
 ```
 
-The **Execute** button allows you to run your flow directly from the Code Editor. Click on the **Execute** button to run your flow. You then see the Execution being created in a new browser tab, and once you navigate to the **Logs** tab, you should see a friendly message ``Hello from the Editor!`` in the logs.
+The **Execute** button allows you to run your flow directly from the Code Editor. Click on the **Execute** button to run your flow. You then see the Execution running, and once you navigate to the **Logs** tab, you should see a friendly message ``Hello from the Editor!`` in the logs.
 
 ### Namespace Files Revision History
 

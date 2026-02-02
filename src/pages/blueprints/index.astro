@@ -6,10 +6,29 @@ import BlueprintsLists from "~/components/blueprints/Lists.vue"
 import LayoutFooterContact from "~/components/layout/FooterContact.vue"
 import { $fetchApi } from "~/utils/fetch"
 
-const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+const allTags = await $fetchApi<BlueprintTag[]>(
+    `/blueprints/versions/latest/tags`,
+)
+const page = Astro.url.searchParams.get("page") ?? 1
+const size = Astro.url.searchParams.get("size") ?? 24
+const tagsSelected = Astro.url.searchParams.get("tags") ?? null
+const q = Astro.url.searchParams.get("q") ?? undefined
+
+const tagsForFilter = tagsSelected
+    ? tagsSelected
+          ?.split(",")
+          .map((t) => allTags.find((tag) => tag.name === t)?.id)
+          .filter(Boolean)
+    : null
+
 // fetch all the blueprints so we can filter client side
-const { results: allBlueprints } = await $fetchApi<{ results: Blueprint[] }>(
-    `/blueprints/versions/latest?size=10000`,
+const { results: blueprints, total } = await $fetchApi<{
+    results: Blueprint[]
+    total: number
+}>(
+    `/blueprints/versions/latest?size=${size}&page=${page}` +
+        (tagsForFilter ? `&tags=${tagsForFilter}` : "") +
+        (q ? `&q=${encodeURIComponent(q)}` : ""),
 )
 const title = "Blueprints"
 const description = "Get started with our library of workflows ready to use"
@@ -18,9 +37,15 @@ const description = "Get started with our library of workflows ready to use"
 <Layout title={title} description={description}>
     <div class="container">
         <BlueprintsLists
-            tags={tags}
-            allBlueprints={allBlueprints}
+            tags={allTags}
+            tagsSelected={tagsSelected ? tagsSelected.split(",") : ["All tags"]}
+            currentPage={Number(page)}
+            itemsPerPage={Number(size)}
+            q={q}
+            blueprints={blueprints}
+            total={total}
             currentUrl={Astro.request.url}
+            transition:persist
             client:idle
         />
         <LayoutFooterContact

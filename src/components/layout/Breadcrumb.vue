@@ -38,7 +38,7 @@
 
     const breadcrumbLink = (index: number) => "/" + breadcrumb.value.slice(0, index + 1).join("/")
 
-    const breadcrumbLinkExist = (index: number) => props.pageList?.includes(breadcrumbLink(index))
+    const breadcrumbLinkExist = (index: number) => index === 0 || props.pageList?.includes(breadcrumbLink(index))
 
     const formatDirectoryName = (item: string) => {
         const specialCases: Record<string, string> = {

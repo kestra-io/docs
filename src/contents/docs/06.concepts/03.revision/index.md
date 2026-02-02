@@ -1,5 +1,6 @@
 ---
 title: Flow Revisions in Kestra – Versioning and Rollbacks
+description: Manage versions of flows.
 sidebarTitle: Revision
 icon: /src/contents/docs/icons/concepts.svg
 ---

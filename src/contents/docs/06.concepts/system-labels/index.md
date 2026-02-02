@@ -1,5 +1,6 @@
 ---
 title: System and Hidden Labels in Kestra – Admin Metadata
+description: Special labels for system use only.
 sidebarTitle: System Labels & Hidden Labels
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]

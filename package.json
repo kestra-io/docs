@@ -29,7 +29,8 @@
     "@astrojs/vue": "^5.1.4",
     "@cloudflare/workers-types": "^4.20260122.0",
     "@gtm-support/vue-gtm": "^3.1.0",
-    "@kestra-io/ui-libs": "^0.0.271",
+    "@iconify-json/mdi": "^1.2.3",
+    "@kestra-io/ui-libs": "^0.0.273",
     "@popperjs/core": "^2.11.8",
     "@rive-app/canvas": "^2.34.1",
     "@types/aos": "^3.0.7",
@@ -43,6 +44,7 @@
     "@vueuse/core": "^14.1.0",
     "astro": "^5.16.13",
     "astro-expressive-code": "^0.41.6",
+    "astro-icon": "^1.1.5",
     "astro-loading-indicator": "^0.7.1",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
@@ -63,12 +65,11 @@
     "shiki": "^3.21.0",
     "slugify": "^1.6.6",
     "strip-indent": "^4.1.1",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^5.1.0",
     "vanilla-cookieconsent": "^3.1.0",
     "vue": "^3.5.27",
     "vue-material-design-icons": "^5.3.1",
-    "vue3-carousel-nuxt": "^1.1.6",
-    "vue3-count-to": "^1.1.2"
+    "vue3-carousel-nuxt": "^1.1.6"
   },
   "devDependencies": {
     "oxfmt": "^0.26.0",

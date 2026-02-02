@@ -1,5 +1,6 @@
 ---
 title: Blueprints in Kestra – Reusable Workflow Templates
+description: Ready-to-use examples designed to kickstart your workflow.
 sidebarTitle: Blueprints
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.10.0"

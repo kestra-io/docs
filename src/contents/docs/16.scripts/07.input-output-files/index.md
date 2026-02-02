@@ -1,5 +1,6 @@
 ---
 title: Input and Output Files in Script Tasks
+description: Learn how to manage input and output files within Kestra script tasks. Pass additional files to scripts using `inputFiles` (including Namespace Files or trigger data) and generate files for downstream tasks with the `outputFiles` property, supporting glob patterns.
 sidebarTitle: Input and Output Files
 icon: /src/contents/docs/icons/dev.svg
 ---
@@ -32,7 +33,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-You can also leverage [Namespace Files](https://kestra.io/docs/developer-guide/namespace-files) as follows:
+You can also leverage [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
 
 ```yaml
 id: ansible

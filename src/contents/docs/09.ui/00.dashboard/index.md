@@ -1,5 +1,6 @@
 ---
 title: Dashboards in Kestra UI – Monitor Executions and Metrics
+description: Monitor workflows with Kestra Dashboards. Visualize execution metrics, create custom charts, and track performance indicators in the UI.
 sidebarTitle: Dashboards
 icon: /src/contents/docs/icons/ui.svg
 ---

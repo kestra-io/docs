@@ -5,6 +5,7 @@ stage: Getting Started
 topics:
   - Kestra Workflow Components
 version: ">= 0.17.0"
+description: React to events instantly with Kestra's Realtime Triggers for Kafka, Pulsar, AWS SQS, GCP Pub/Sub, and Azure Event Hubs.
 ---
 
 How to React to events as they happen with millisecond latency.

@@ -1,5 +1,6 @@
 ---
 title: Service Accounts in Kestra Enterprise – Non-Human Access
+description: Create and manage Service Accounts in Kestra. Securely authenticate external applications and CI/CD pipelines with programmatic access tokens.
 sidebarTitle: Service Accounts
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -32,7 +33,7 @@ Once you have created a service account, you can add a Role that will grant it p
 
 ![Assign Service Account Role](./service_account_role.png)
 
-Finally, you can generate an API token for the service account by clicking the **Create** button. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g., in Terraform provider configuration or GitHub Actions secrets).
+Finally, you can generate an API token for the service account by clicking the **Create API Token** button in the service account's details. This will generate a token that you can use to authenticate the service account with Kestra from external applications such as CI/CD pipelines (e.g., in Terraform provider configuration or GitHub Actions secrets).
 
 :::alert{type="info"}
 **Note:** You can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
@@ -90,11 +91,3 @@ Some examples to make that clear:
 - ❌ `my-service-account-` is not a valid name because it ends with a hyphen.
 
 **Why do we follow such a restrictive convention?** We follow the standard DNS-style pattern to be ready for potential future use cases where we could, for example, forward the service account name to a Kubernetes pod's labels. This way, we ensure that the service account name can be used in a variety of contexts without any issues.
-
-## Impersonate service account (admin)
-
-As an Admin of your Kestra environment, you can test the access of Service Accounts with the **Impersonate** feature.
-
-**Impersonate** is available through the IAM -> Service Accounts tab. Select any Service Account to impersonate, ensuring permissions and access are correctly implemented across accounts.
-
-![impersonate-service-account](./impersonate-service-account.png)

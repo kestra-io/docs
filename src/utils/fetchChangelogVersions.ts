@@ -1,3 +1,12 @@
+export interface GitHubRelease {
+    tag_name: string
+    name: string | null
+    body: string
+    published_at: string
+    draft: boolean
+    prerelease: boolean
+}
+
 function modifyCommitLink(body: string, repo = "kestra-io/kestra") {
     const marker = "Kestra Enterprise Edition Changes"
     const splitIndex = body.indexOf(marker)
@@ -20,8 +29,8 @@ function modifyCommitLink(body: string, repo = "kestra-io/kestra") {
     return transformedBefore + transformedAfter
 }
 
-export async function fetchMajorReleases(limit = 20) {
-    const res = await fetch(`https://api.github.com/repos/kestra-io/kestra/releases?per_page=100`)
+export async function fetchMajorReleases(limit = 20): Promise<GitHubRelease[]> {
+    const res = await fetch(`https://api.github.com/repos/kestra-io/kestra/releases?per_page=150`)
     if (!res.ok) return []
 
     let data = await res.json()

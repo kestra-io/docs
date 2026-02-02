@@ -2,6 +2,7 @@
 title: Prometheus Metrics in Kestra – Endpoint and Signals
 sidebarTitle: Prometheus Metrics
 icon: /src/contents/docs/icons/admin.svg
+description: Explore the available Prometheus metrics in Kestra to monitor the performance and health of your orchestration cluster.
 ---
 
 This page provides an overview of all available [Prometheus](https://prometheus.io/) metrics in Kestra.

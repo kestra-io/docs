@@ -59,7 +59,7 @@ The open source license is not limited and allows you to install and run it as y
 
 
 ## Kestra Plugins are also Open Source!
-When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plugins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](/plugins/core/tasks/scripts/io.kestra.core.tasks.scripts.bash) deal solely with edge cases a plugin can't cover.
+When implementing the deep integration of the tools and databases you are using, the connectors (what we call “plugins”) can present the biggest challenge. Most orchestrators (even proprietary and licensed based) only talk bash or cmd. You have to manage all of your needs with simple commands, often requiring you to use another tool in order to have access to the underlying resource (such as Talend). With Kestra, we want to have a deep integration with your tools and let [bash](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) deal solely with edge cases a plugin can't cover.
 
 An example for a query to Google BigQuery:
 

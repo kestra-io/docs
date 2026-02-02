@@ -1,11 +1,11 @@
 ---
 import Layout from "~/components/layout.astro"
-import CommunityHeader from "~/components/community/Header.vue"
+import CommunityHeader from "~/components/community/Header.astro"
 import CommunitySlack from "~/components/community/Slack.vue"
-import CommunityVue from "~/components/community/Community.vue"
-import CommunityGuidelines from "~/components/community/Guidelines.vue"
+import CommunitySection from "~/components/community/Community.vue"
+import CommunityGuidelines from "~/components/community/Guidelines.astro"
 import CommunityContributors from "~/components/community/Contributors.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import LayoutFooterContact from "~/components/layout/FooterContact.astro"
 
 const title = "Join a Thrilling Community of Data Enthusiasts"
 const description =
@@ -14,13 +14,12 @@ const description =
 
 <Layout title={title} description={description}>
     <div>
-        <CommunityHeader client:load />
-        <CommunitySlack client:visible />
-        <CommunityVue client:visible />
-        <CommunityGuidelines client:visible />
-        <CommunityContributors client:visible />
+        <CommunityHeader />
+        <CommunitySlack />
+        <CommunitySection client:idle />
+        <CommunityGuidelines />
+        <CommunityContributors client:idle />
         <LayoutFooterContact
-            client:visible
             title="Getting started"
             subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
             darkButtonText="Read the docs"

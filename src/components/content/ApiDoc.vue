@@ -8,8 +8,6 @@
         allow-authentication="false"
         allow-server-selection="false"
         allow-try="false"
-        regular-font="Public Sans"
-        mono-font="Source Code Pro"
     />
 </template>
 
@@ -21,9 +19,11 @@
     rapi-doc {
         background: transparent;
         width: 100%;
+        --font-mono: var(--font-family-source-code-pro);
+        --font-regular: var(--font-family-public-sans);
 
         &::part(section-endpoint) {
-            white-space: nowrap;
+            white-space: normal;
         }
     }
 </style>

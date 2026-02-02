@@ -4,6 +4,7 @@ sidebarTitle: Task Runner Overview
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]
+description: Learn about Kestra Task Runners capabilities and supported plugins for executing tasks in diverse environments.
 ---
 
 Understand the capabilities of Task Runners and the plugins that support them.

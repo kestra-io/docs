@@ -1,5 +1,6 @@
 ---
 title: Namespaces in the Kestra UI – Manage Namespace Resources
+description: Overview of the Namespaces UI in Kestra. Manage flows, files, KV store, and dependencies specific to each namespace in a central view.
 sidebarTitle: Namespaces
 icon: /src/contents/docs/icons/ui.svg
 ---

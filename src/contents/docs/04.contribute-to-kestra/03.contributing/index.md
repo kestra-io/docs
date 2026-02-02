@@ -1,5 +1,6 @@
 ---
 title: Contribute to the Kestra Codebase – Issues and PRs
+description: Guide to contributing to the Kestra codebase. Learn how to report bugs, request features, build plugins, and submit pull requests to help improve the platform.
 sidebarTitle: Kestra Codebase
 icon: /src/contents/docs/icons/contributing.svg
 ---
@@ -164,7 +165,7 @@ This will start a local server on port 8080, accessible at `http://localhost:808
 
 If you want to work on the frontend without having to install Java and everything to run the Kestra Application, you can start a Kestra [Docker container](https://docs.docker.com/engine/install/) and connect the frontend to it.
 
-To do so, you can first use the following [docker compose file](https://gist.github.com/Skraye/9eee812cab84af778d222c64b3bf6748).
+To do so, you can first use the following [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml).
 
 Save it as `docker-compose.yml` in a separate directory from the Git repository and run the following command in this new directory:
 
@@ -172,7 +173,7 @@ Save it as `docker-compose.yml` in a separate directory from the Git repository 
 docker compose up
 ```
 
-This starts Kestra running with H2 as the database. In the above docker compose, we redirected the port 8080 to 8085 and 8081 to 8086. You can change it to any port you want by updating the `docker-compose.yml` file.
+This starts Kestra running with PostgreSQL as the database. You can change the port or other configurations by updating the `docker-compose.yml` file.
 
 Finally, install the dependencies with `npm install`, and serve the UI with hot reload at http://localhost:5173 using the command: `npm run dev`.
 

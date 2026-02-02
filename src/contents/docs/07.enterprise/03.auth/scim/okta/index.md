@@ -1,5 +1,6 @@
 ---
 title: Okta SCIM Provisioning
+description: Enable SCIM provisioning with Okta. Learn how to automatically synchronize Okta users and groups with your Kestra Enterprise instance.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
@@ -22,7 +23,7 @@ kestra:
 ```
 
 :::alert{type="info"}
-Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/ 0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
+Tenants are enabled by default. Please refer to the [Migration Guide](../../../../11.migration-guide/v0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
 :::
 
 ## Kestra SCIM setup: create a new provisioning integration

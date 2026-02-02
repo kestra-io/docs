@@ -135,7 +135,7 @@
                             description:
                                 "Create and run workflows from the all-in-one built-in YAML editor, syntax validation, autocompletion, and file I/O.",
                             cta: "Discover the editor",
-                            link: "http://kestra.io/docs/concepts/editor",
+                            link: "https://kestra.io/docs/ui/flows",
                             icon: Monitor,
                         },
                         {
@@ -172,7 +172,7 @@
                             description:
                                 "Get real-time feedback while typing and auto-completing validations.",
                             cta: "Editor features",
-                            link: "https://kestra.io/docs/concepts/editor",
+                            link: "https://kestra.io/docs/ui/flows",
                             icon: CheckCircleOutline,
                         },
                         {
@@ -193,7 +193,7 @@
                             description:
                                 "Write tasks in Python, Bash, NodeJS, SQL, R, all from your browser.",
                             cta: "Supported languages",
-                            link: "https://kestra.io/docs/tutorial/scripts",
+                            link: "https://kestra.io/docs/scripts",
                             icon: Console,
                         },
                         {

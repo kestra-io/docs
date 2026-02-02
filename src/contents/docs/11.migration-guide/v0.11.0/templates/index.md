@@ -2,6 +2,7 @@
 title: Deprecation of Templates
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.11.0
+description: Information on the deprecation of Templates in Kestra 0.11.0 and how to migrate to Subflows.
 ---
 
 
