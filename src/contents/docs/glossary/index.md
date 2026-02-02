@@ -61,27 +61,27 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 ## P
 
 - [Pebble Templating Engine](#pebble-templating-engine) - inspired by the Java templating engine, use `.` notation to access nested properties. [Pebble](../06.concepts/06.pebble/index.md) is used to dynamically render variables, inputs, and outputs withint the execution context.
-- [Plugin](#plugin) - the building blocks of tasks in Kestra that offer integerations to different systems and functionality. Plugins power every task and trigger in Kestra.
+- [Plugin](#plugin) - the building blocks of tasks in Kestra that offer integerations to different systems and functionality. [Plugins](../05.workflow-components/02.plugins/index.md) power every task and trigger in Kestra.
 
 ## R
 
-- [Replay](#replay) - rerun a workflow execution from any chosen task, useful for iterative developer and reprocessing data.
-- [Revision](#revision) - any changes to a flow create a new version of that flow, otherwise known as a revision.
-- [Runnable Tasks](#runnable-tasks) - Runnable tasks handle data processing, such as file system operations, API calls, and database queries. They can be compute-intensive and are executed by workers. Most tasks are runnable.
+- [Replay](#replay) - re-run a workflow execution from any chosen task, useful for iterative developer and reprocessing data. Learn more about [replay](../06.concepts/10.replay/index.md).
+- [Revision](#revision) - any changes to a flow create a new version of that flow, otherwise known as a [revision](../06.concepts/03.revision/index.md).
+- [Runnable Tasks](#runnable-tasks) - [Runnable tasks](../05.workflow-components/01.tasks/01.runnable-tasks/index.md) handle data processing, such as file system operations, API calls, and database queries. They can be compute-intensive and are executed by workers. Most tasks are runnable.
 
 ## S
 
-- [Secrets](#secrets) - sensitive information stored securely. Secrets can be retrieved and used within Kestra flows using the `secret()` function (e.g., `{{ secret('API_TOKEN') }}`).
-- [Subflow](#subflow) - Subflows let you build modular and reusable workflow components. They work like function calls: executing a subflow creates a new flow run from within another flow.
+- [Secrets](#secrets) - sensitive information stored securely. [Secrets](../06.concepts/04.secret/index.md) can be retrieved and used within Kestra flows using the `secret()` function (e.g., `{{ secret('API_TOKEN') }}`).
+- [Subflow](#subflow) - Subflows let you build modular and reusable workflow components. They work like function calls: executing a [subflow](../05.workflow-components/10.subflows/index.md) creates a new flow run from within another flow.
 
 ## T
 
-- [Task runner](#task-runner) - extensible, pluggable system within Kestra capable of executing your tasks in arbitrary remote environments, to offload computationally intensive tasks.
-- [Tasks](#tasks) - atomic actions in a flow. Tasks are a required element in a flow and can be [Flowable Tasks](#flowable-tasks) or [Runnable Tasks](#runnable-tasks).
+- [Task runner](#task-runner) - extensible, pluggable system within Kestra capable of executing your tasks in arbitrary remote environments, to offload computationally intensive tasks. Learn more about [task runners](../task-runners/01.overview/index.md).
+- [Tasks](#tasks) - atomic actions in a flow. [Tasks](../05.workflow-components/01.tasks/index.mdx) are a required element in a flow and can be [Flowable Tasks](#flowable-tasks) or [Runnable Tasks](#runnable-tasks).
 - [Time To Live (TTL)](#ttl) - the expiration or duration something like a token, secret, or key-value pair is available.
-- [Triggers](#triggers) - a mechanism that automatically starts the execution of a flow. There are five core trigger types: schedule, flow, webhook, polling, realtime. Triggers are scheduled or event-based.
+- [Triggers](#triggers) - a mechanism that automatically starts the execution of a flow. There are five core trigger types: schedule, flow, webhook, polling, realtime. [Triggers](../05.workflow-components/07.triggers/index.mdx) are scheduled or event-based.
 
 ## W
 
-- [Worker group](#worker-group) - offload computer-intensive tasks to dedicated workers, but at a broader scope than task runners.
+- [Worker group](#worker-group) - offload computer-intensive tasks to dedicated workers, but at a broader scope than task runners. Available in [Enterprise Edition](../07.enterprise/04.scalability/worker-group/index.md).
 - [Workers](#workers) - a Kestra server component responsible for executing all runnable tasks and polling triggers.
