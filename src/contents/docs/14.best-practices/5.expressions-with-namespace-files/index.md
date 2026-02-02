@@ -2,6 +2,7 @@
 title: Expressions with Namespace Files
 sidebarTitle: Expressions with Namespace Files
 icon: /src/contents/docs/icons/best-practices.svg
+description: Learn how to pass Kestra expressions to scripts stored in Namespace Files using environment variables or CLI arguments.
 ---
 
 Learn how to pass expressions to Namespace Files.
@@ -44,7 +45,7 @@ This approach is convenient for scripts specific to a flow, but it does not allo
 - Files can be written and tested locally, then synced to Kestra through Git.
 - The same files can be reused across multiple flows, avoiding code duplication.
 
-You cannot directly use [expressions](../../expressions/index.md) inside [Namespace Files](../../06.concepts/02.namespace-files/index.md), as they will not be rendered or executed outside of Kestra. With that being said, you can use the combination of the `render()` and `read()` functions in script tasks like in the following example (Check out the `render()` function [migration guide](../../11.migration-guide/0.14.0/recursive-rendering/index.md)):
+You cannot directly use [expressions](../../expressions/index.md) inside [Namespace Files](../../06.concepts/02.namespace-files/index.md), as they will not be rendered or executed outside of Kestra. With that being said, you can use the combination of the `render()` and `read()` functions in script tasks like in the following example (Check out the `render()` function [migration guide](../../11.migration-guide/v0.14.0/recursive-rendering/index.md)):
 
 ```yaml
 id: expression_render_example

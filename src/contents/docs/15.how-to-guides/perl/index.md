@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/perl.svg
 stage: Getting Started
 topics:
   - Scripting
+description: Execute Perl scripts directly within your Kestra flows using Docker to process data or run automation tasks.
 ---
 
 Run Perl code directly inside of your Flows and generate outputs.

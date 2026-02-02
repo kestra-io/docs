@@ -3,6 +3,7 @@ title: Enterprise Migration Guide from defaultTenant to Multitenancy
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE"]
+description: Comprehensive migration guide for Enterprise Edition users to transition from defaultTenant to mandatory multitenancy.
 ---
 
 

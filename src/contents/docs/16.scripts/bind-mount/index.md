@@ -2,6 +2,7 @@
 title: Bind Mount Scripts into Kestra – Run Local Code
 sidebarTitle: Bind Mount
 icon: /src/contents/docs/icons/dev.svg
+description: Bind-mount locally stored scripts into Kestra containers to execute code from your filesystem without importing it.
 ---
 
 Use bind-mount to execute locally stored scripts.

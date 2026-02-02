@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components
+description: Learn how to iterate over lists of values in Kestra workflows using the ForEach task to execute tasks for each item efficiently.
 ---
 
 How to iterate over a list of values in your flow.

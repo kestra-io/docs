@@ -1,5 +1,6 @@
 ---
 title: Read-Only Secret Manager in Kestra Enterprise
+description: Enhance security with Read-Only Secret Managers in Kestra. Integrate external secret stores like Vault or AWS Secrets Manager in immutable mode.
 sidebarTitle: Read-only Secret Manager
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

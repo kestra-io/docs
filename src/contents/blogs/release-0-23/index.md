@@ -686,7 +686,7 @@ With this release, we've taken the opportunity to introduce several important br
 :::alert{type="warning"}
 Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions. A migration is required to upgrade to 0.23:
 - [Open Source](../../docs/11.migration-guide/v0.23.0/tenant-migration-oss/index.md)
-- [Enteprise](../../docs/11.migration-guide/ 0.23.0/tenant-migration-ee/index.md)
+- [Enteprise](../../docs/11.migration-guide/v0.23.0/tenant-migration-ee/index.md)
 :::
 
 **Key changes include:**

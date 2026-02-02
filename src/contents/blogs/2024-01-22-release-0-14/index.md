@@ -25,7 +25,7 @@ You can use `git.Sync` in two ways:
 1. **Event-driven (webhook trigger)**: a system flow will automatically sync your code whenever a new commit is pushed to the Git repository
 2. **GitOps (schedule trigger)**: a system flow will automatically sync your code from Git to kestra on a regular schedule to ensure that your workflow code always matches the desired state defined in your Git repository. If you don't want some files from Git to be synced, you can add them to a `.kestraignore` file at the root of your `gitDirectory` folder — that file works the same way as `.gitignore`.
 
-Check the [Git Sync](../../docs/version-control-cicd/04.git/index.md-sync) documentation for more details.
+Check the [Git Sync](../../docs/version-control-cicd/04.git/index.md#git-syncflows-and-syncnamespacefiles) documentation for more details.
 
 ### Push to Git from Kestra with `git.Push`
 

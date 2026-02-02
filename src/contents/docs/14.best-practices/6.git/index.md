@@ -3,6 +3,7 @@ title: Version Control with Git
 sidebarTitle: Git Version Control
 icon: /src/contents/docs/icons/best-practices.svg
 version: ">= 0.17.0"
+description: Best practices for using Git with Kestra for version control, including SyncFlows, PushFlows, and CI/CD integration.
 ---
 
 Best practices for version control with Git in Kestra.

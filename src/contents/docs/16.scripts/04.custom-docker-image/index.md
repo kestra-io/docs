@@ -2,6 +2,7 @@
 title: Build a Custom Docker Image for Script Tasks
 sidebarTitle: Building a Custom Docker Image
 icon: /src/contents/docs/icons/dev.svg
+description: Build and use custom Docker images to package dependencies and environments for your Kestra script tasks.
 ---
 
 Build a custom Docker image for your script tasks.

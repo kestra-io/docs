@@ -1,5 +1,6 @@
 ---
 title: System Flows in Kestra – Automate Platform Maintenance
+description: Automate maintenance workflows with System Flows.
 sidebarTitle: System Flows
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]

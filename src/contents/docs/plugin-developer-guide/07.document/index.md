@@ -1,6 +1,7 @@
 ---
 title: Document Your Plugin
 icon: /src/contents/docs/icons/dev.svg
+description: Document your Kestra plugins using annotations and schemas to generate documentation for the UI and website.
 ---
 
 Here is how you can document your plugin.

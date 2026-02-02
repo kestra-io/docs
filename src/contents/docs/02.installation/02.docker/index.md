@@ -2,6 +2,7 @@
 title: Run Kestra with Docker – Single-Container Setup
 sidebarTitle: Docker
 icon: /src/contents/docs/icons/docker.svg
+description: Run Kestra in a single Docker container for quick testing and development, with options for custom configuration.
 ---
 
 Start Kestra using a single Docker container.

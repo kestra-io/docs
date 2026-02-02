@@ -5,6 +5,7 @@ stage: Getting Started
 topics:
   - DevOps
   - Kestra Concepts
+description: Configure alerts in Kestra to notify you of workflow failures via Slack, PagerDuty, or other platforms using subflows and flow triggers.
 ---
 
 Configure alerts that fire whenever a workflow fails.

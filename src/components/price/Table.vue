@@ -295,7 +295,7 @@
                     isEnterprise: true,
                     description: {
                         text: "Built-in code editor to write and run your workflows",
-                        link: "/docs/concepts/editor",
+                        link: "/docs/ui/flows",
                     },
                 },
                 {
@@ -358,7 +358,7 @@
                     isEnterprise: true,
                     description: {
                         text: "The Scheduler is a server component responsible for processing all triggers",
-                        link: "/docs/architecture/scheduler",
+                        link: "/docs/architecture/server-components#scheduler",
                     },
                 },
                 {
@@ -412,7 +412,7 @@
                     isEnterprise: true,
                     description: {
                         text: "Create Kestra flows from the form-based UI tabs without writing code",
-                        link: "/docs/ui/flows#no-code-view",
+                        link: "/docs/no-code/no-code-flow-building",
                     },
                 },
                 {
@@ -538,7 +538,7 @@
                     enterpriseText: "Unlimited",
                     description: {
                         text: "Manage users inside Kestra UI",
-                        link: "/docs/ui/administration/users",
+                        link: "/docs/enterprise/auth/rbac",
                     },
                 },
                 {
@@ -574,7 +574,7 @@
                     isEnterprise: true,
                     description: {
                         text: "Record all activities made by all users on the resources created inside Kestra",
-                        link: "/docs/ui/administration/audit-logs",
+                        link: "/docs/enterprise/governance/audit-logs",
                     },
                 },
                 {
@@ -680,7 +680,7 @@
                     isEnterprise: true,
                     description: {
                         text: "Manage Task Runs in one place",
-                        link: "/docs/ui/task-runs",
+                        link: "/docs/workflow-components/tasks/task-runs",
                     },
                 },
                 {
@@ -831,7 +831,7 @@
                     isEnterprise: true,
                     description: {
                         text: "Offload compute-intensive tasks to remote environments",
-                        link: "/docs/enterprise/scalability/task-runners",
+                        link: "/docs/task-runners",
                     },
                 },
                 {
@@ -867,7 +867,7 @@
                     isEnterprise: true,
                     description: {
                         text: "Graceful maintenance mode for system updates and maintenance",
-                        link: "/docs/enterprise/maintenance-mode",
+                        link: "/docs/enterprise/instance/maintenance-mode",
                     },
                 },
                 {

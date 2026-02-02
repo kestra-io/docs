@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:
   - Integrations
+description: Integrate ServiceNow with Kestra by triggering flows via webhooks from ServiceNow Service Catalog items for automated fulfillment.
 ---
 
 Execute Kestra flows with a ServiceNow webhook trigger.

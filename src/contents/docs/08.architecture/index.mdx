@@ -1,5 +1,6 @@
 ---
 title: Kestra Architecture – Components and Deployment Models
+description: Overview of Kestra's Architecture. Explore the scalable, event-driven design connecting server components, storage, and external systems.
 sidebarTitle: Architecture
 icon: /src/contents/docs/icons/architecture.svg
 ---
@@ -60,7 +61,7 @@ This architecture is designed to provide the enhanced scalability, high availabi
     - [**Scheduler**](./02.server-components/index.md#scheduler): schedules [workflows](../05.workflow-components/01.flow/index.md) and processes all [triggers](../05.workflow-components/07.triggers/index.mdx) except for the flow triggers
     - [**Executor**](./02.server-components/index.md#executor): handles the orchestration logic, including [flow triggers](../05.workflow-components/07.triggers/02.flow-trigger/index.md)
     - [**Indexer**](./02.server-components/index.md#indexer): indexes data from Kafka to Elasticsearch for quick retrieval and search
-      (optional component since [Kestra v0.20](../11.migration-guide/0.20.0/elasticsearch-indexer/index.md))
+      (optional component since [Kestra v0.20](../11.migration-guide/v0.20.0/elasticsearch-indexer/index.md))
     - [**Worker**](./02.server-components/index.md#worker): runs [runnable tasks](../05.workflow-components/01.tasks/01.runnable-tasks/index.md) and interacts with the user's infrastructure
 
 3. **User**: engages with the system through the Webserver's [UI](../09.ui/index.mdx) and [API](../api-reference/index.mdx)

@@ -1,5 +1,6 @@
 ---
 title: AI Copilot in Kestra – Generate and Edit Flows
+description: Discover Kestra's AI Copilot, enabling you to generate and iteratively edit declarative flow code using natural language prompts. Streamline workflow creation and refinement with AI-assisted suggestions for tasks, triggers, and more.
 sidebarTitle: AI Copilot
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"

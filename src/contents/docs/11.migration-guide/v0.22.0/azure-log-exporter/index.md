@@ -1,5 +1,6 @@
 ---
 title: Azure Log Exporter
+description: Azure Log Exporter split in Kestra 0.22.0 (Enterprise). Update configurations to use specific plugins for Azure Monitor or Azure Blob Storage.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]

@@ -2,6 +2,7 @@
 title: Outputs and Metrics from Scripts – Send Data Back to Kestra
 sidebarTitle: Outputs and Metrics
 icon: /src/contents/docs/icons/dev.svg
+description: Send outputs and metrics from your scripts back to Kestra to track metadata, pass data between tasks, and visualize performance.
 ---
 
 Send Outputs and Metrics back to Kestra.

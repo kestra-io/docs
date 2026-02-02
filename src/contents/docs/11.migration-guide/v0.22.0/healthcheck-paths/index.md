@@ -3,6 +3,7 @@ title: Helm Chart Health Check Paths
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]
+description: Update to the health check paths in Kestra's Helm Chart for improved Kubernetes probe reliability.
 ---
 
 

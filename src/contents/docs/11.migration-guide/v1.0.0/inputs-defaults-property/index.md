@@ -3,6 +3,7 @@ title: Input defaults are now dynamic
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
+description: Details on the change to dynamic rendering for input default values in Kestra 1.0.0.
 ---
 
 

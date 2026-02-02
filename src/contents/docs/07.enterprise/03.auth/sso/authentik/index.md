@@ -1,5 +1,6 @@
 ---
 title: Set Up authentik SSO for Kestra
+description: Configure authentik SSO for Kestra. Enable seamless user authentication using authentik as your OpenID Connect provider.
 sidebarTitle: authentik SSO
 icon: /src/contents/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]

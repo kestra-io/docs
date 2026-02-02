@@ -3,6 +3,7 @@ title: Key-value Store and Secrets Metadata Migration
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
+description: Required metadata migration for Key-Value Store and Secrets to enable efficient indexing and search.
 ---
 
 

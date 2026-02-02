@@ -2,6 +2,7 @@
 title: Inputs Name
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
+description: Notice regarding the change of the name property to id for flow inputs in Kestra 0.15.0.
 ---
 
 

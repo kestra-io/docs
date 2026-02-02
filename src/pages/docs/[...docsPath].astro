@@ -35,6 +35,8 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
 
 <LayoutDocs
     activeStem={`/docs/${doc.id}`}
+    title={doc.data?.title}
+    description={doc.data?.description}
     pageTitle={doc.data?.sidebarTitle ?? doc.data?.title}
     image={image.toString()}
 >

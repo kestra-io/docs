@@ -1,5 +1,6 @@
 ---
 title: Executions in the Kestra UI – Inspect and Manage Runs
+description: Inspect flow runs in the Kestra UI. Track execution status, view logs, analyze outputs, and manage tasks via Gantt and Topology views.
 sidebarTitle: Executions
 icon: /src/contents/docs/icons/ui.svg
 ---

@@ -5,6 +5,7 @@ stage: Intermediate
 topics:
   - DevOps
   - Best Practices
+description: Set up comprehensive monitoring for Kestra using Prometheus for metrics scraping and Grafana for visualization and dashboards.
 ---
 
 Set up Prometheus and Grafana for monitoring Kestra.

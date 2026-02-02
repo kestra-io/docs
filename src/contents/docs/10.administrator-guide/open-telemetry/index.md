@@ -4,6 +4,7 @@ sidebarTitle: OpenTelemetry
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.21.0"
 editions: ["OSS", "EE"]
+description: Implement observability in Kestra with OpenTelemetry to export traces, metrics, and logs to your preferred monitoring tools.
 ---
 
 **Observability** refers to understanding a system's internal state by analyzing its outputs. In software, this means examining telemetry data — such as traces, metrics, and logs — to gain insights into system behavior.

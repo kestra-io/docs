@@ -32,6 +32,10 @@ To limit context switching, we added a contextual panel in the flow editor displ
 
 [EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential.html) and [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel.html) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
 
+:::alert{type="info"}
+Now use [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) or [ForEachItem](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEachItem).
+:::
+
 ## Task metrics
 
 Tasks can emit metrics, those metrics are accessible as Micrometer metrics along with Kestra’s internal metrics and system metrics, and are also accessible from the UI … if you found them! It took me six weeks to figure out that task metrics can be accessible from the task attempt menu …
@@ -63,7 +67,7 @@ We worked a lot on our flow developer documentation lately to facilitate discove
 
 We wrote a new page about [data storage and processing](../../docs/08.architecture/data-components/index.md), we strongly advise everyone to read it as you can discover some previously hidden Kestra functionalities.
 
-We wrote a new page about flow [tasks](../../docs/05.workflow-components/01.tasks/index.mdx/).
+We wrote a new page about flow [tasks](../../docs/05.workflow-components/01.tasks/index.mdx).
 
 We created a [tutorial](../../docs/03.tutorial/index.mdx) to discover the most important features one needs to know to write efficient data pipelines with Kestra.
 

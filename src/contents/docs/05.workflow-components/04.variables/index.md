@@ -1,5 +1,6 @@
 ---
 title: Variables in Kestra – Reuse Values Across Flows
+description: Master Variables in Kestra to reuse values across tasks and flows. Learn to configure, modify, and utilize dynamic variables with Pebble templating.
 sidebarTitle: Variables
 icon: /src/contents/docs/icons/flow.svg
 docId: variables
@@ -42,7 +43,7 @@ You can use variables in any task property documented as **dynamic**.
 Dynamic variables are rendered by the Pebble templating engine, which processes expressions with filters and functions. More information on variable processing can be found under [Expressions](../../expressions/index.md).
 
 :::alert{type="info"}
-Variables are no longer rendered recursively. Learn more about this change — and how to adjust behavior — in the [migration guide](../../11.migration-guide/0.14.0/recursive-rendering/index.md).
+Variables are no longer rendered recursively. Learn more about this change — and how to adjust behavior — in the [migration guide](../../11.migration-guide/v0.14.0/recursive-rendering/index.md).
 :::
 
 ## Dynamic variables

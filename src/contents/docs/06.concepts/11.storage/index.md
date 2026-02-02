@@ -1,5 +1,6 @@
 ---
 title: Data Storage and Processing in Kestra – Where Data Lives
+description: Manage data processed by tasks.
 sidebarTitle: Data storage and processing
 icon: /src/contents/docs/icons/concepts.svg
 ---

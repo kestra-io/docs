@@ -4,6 +4,7 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts
+description: Create dynamic dropdown menus for flow inputs that populate from external sources like databases or APIs using the KV store or HTTP functions.
 ---
 
 Support dynamic dropdown for inputs based on data from external source.

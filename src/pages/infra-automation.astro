@@ -1,17 +1,17 @@
 ---
 import { API_URL } from "astro:env/client"
 import Layout from "~/components/layout.astro"
-import Hero from "~/components/infrastructure/Hero.vue"
-import Deserver from "~/components/infrastructure/Deserver.vue"
-import Fortune from "~/components/infrastructure/Fortune.vue"
-import Govern from "~/components/infrastructure/Govern.vue"
-import Tour from "~/components/infrastructure/Tour.vue"
-import Operation from "~/components/infrastructure/Operation.vue"
-import Automations from "~/components/infrastructure/Automations.vue"
-import Lifecycle from "~/components/infrastructure/Lifecycle.vue"
-import Connect from "~/components/infrastructure/Connect.vue"
-import Built from "~/components/infrastructure/Built.vue"
-import Ready from "~/components/infrastructure/Ready.vue"
+import Hero from "~/components/infrastructure/Hero.astro"
+import Deserver from "~/components/infrastructure/Deserver.astro"
+import Fortune from "~/components/infrastructure/Fortune.astro"
+import Govern from "~/components/infrastructure/Govern.astro"
+import Tour from "~/components/infrastructure/Tour.astro"
+import Operation from "~/components/infrastructure/Operation.astro"
+import Automations from "~/components/infrastructure/Automations.astro"
+import Lifecycle from "~/components/infrastructure/Lifecycle.astro"
+import Connect from "~/components/infrastructure/Connect.astro"
+import Built from "~/components/infrastructure/Built.astro"
+import Ready from "~/components/infrastructure/Ready.astro"
 
 const title =
     "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
@@ -31,23 +31,23 @@ const plugins = Object.entries(
     })) as Record<string, { default: { src: string } }>,
 ).map(([key, mod]) => ({
     name: key.split("/").pop()?.replace(".svg", "") ?? "",
-    logo: mod.default.src,
+    logo: mod.default,
 }))
 ---
 
 <Layout {title} {description}>
     <div class="infra">
-        <Hero client:visible />
-        <Deserver client:visible />
-        <Fortune client:visible />
-        <Govern client:visible />
-        <Tour client:visible />
-        <Operation client:visible />
-        <Automations {blueprints} {tags} client:visible />
-        <Lifecycle client:visible />
-        <Connect {plugins} client:visible />
-        <Built client:visible />
-        <Ready client:visible />
+        <Hero />
+        <Deserver />
+        <Fortune />
+        <Govern />
+        <Tour />
+        <Operation />
+        <Automations {blueprints} {tags} />
+        <Lifecycle />
+        <Connect {plugins} />
+        <Built />
+        <Ready />
     </div>
 </Layout>
 

@@ -2,6 +2,7 @@
 title: Deploy Kestra on Kubernetes with Helm
 sidebarTitle: Kubernetes
 icon: /src/contents/docs/icons/kubernetes.svg
+description: Deploy Kestra on Kubernetes using the official Helm chart, scalable for production with PostgreSQL and object storage.
 ---
 
 Install Kestra in a Kubernetes cluster using a Helm chart.

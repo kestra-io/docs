@@ -7,6 +7,7 @@ topics:
   - DevOps
   - Integrations
 editions: ["EE", "Cloud"]
+description: Configure Azure Workload Identity on Kestra Enterprise to securely access Azure resources like Key Vault without managing secrets.
 ---
 
 How to use Azure Workload identity to provide access to resources such as Azure Key Vault in Kestra

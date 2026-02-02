@@ -6,6 +6,7 @@ topics:
   - Kestra Concepts
   - DevOps
 editions: ["OSS"]
+description: Learn how to pass secrets to your Kestra deployment via Helm Chart using environment variables or Kubernetes Secrets.
 ---
 
 How to add Kestra Secrets to your Helm Chart deployment.

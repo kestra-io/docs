@@ -15,6 +15,7 @@
             :metadata-map
             :schemas
             @navigate="navigateTo($event)"
+            :active-id="activeId"
         >
             <template v-slot:markdown="{ content }">
                 <MDCParserAndRenderer :content class="long" />
@@ -37,6 +38,7 @@
 </template>
 
 <script lang="ts" setup>
+    import { ref, onMounted, onUnmounted } from "vue"
     import { SchemaToHtmlV2, type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
     import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
     import FeatureScopeMarker from "~/components/docs/FeatureScopeMarker.vue"
@@ -62,6 +64,23 @@
             subGroup: undefined,
         },
     )
+
+    const activeId = ref("")
+
+    const updateActiveId = () => {
+        activeId.value = window.location.hash.substring(1).toLowerCase()
+    }
+
+    const events = ['hashchange', 'popstate']
+
+    onMounted(() => {
+        updateActiveId()
+        events.forEach(event => window.addEventListener(event, updateActiveId))
+    })
+
+    onUnmounted(() => {
+        events.forEach(event => window.removeEventListener(event, updateActiveId))
+    })
 
     function navigateTo(url: string) {
         window.location.assign(url)

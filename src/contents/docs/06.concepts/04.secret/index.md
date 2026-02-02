@@ -1,5 +1,6 @@
 ---
 title: Secrets in Kestra – Secure Credentials for Flows
+description: Store sensitive information securely.
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/concepts.svg
 ---

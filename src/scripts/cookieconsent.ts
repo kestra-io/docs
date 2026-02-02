@@ -26,7 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
         })
 
         posthog.init(response.data.posthog.token, {
-            api_host: response.data.posthog.apiHost,
+            api_host: window.location.origin + "/t/",
             ui_host: "https://eu.posthog.com",
             capture_pageview: false,
             capture_pageleave: true,

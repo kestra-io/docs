@@ -3,6 +3,7 @@ title: Default environment variable prefix changed from KESTRA_ to ENV_ for secu
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
+description: Information on the change of default environment variable prefix from KESTRA_ to ENV_ for improved security.
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: Webhook Trigger in Kestra – Start Flows via HTTP
+description: Trigger Kestra flows via HTTP with the Webhook Trigger. Learn to start executions from external applications using secure webhook URLs and payloads.
 sidebarTitle: Webhook Trigger
 icon: /src/contents/docs/icons/flow.svg
 ---
@@ -22,7 +23,7 @@ When you create the trigger, you must provide a `key`. This `key` is embedded in
 For security, use a randomly generated string rather than something easy to guess. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL. Both the request body and headers are automatically available as variables inside your flow.
 
 :::alert{type="info"}
-Starting in Kestra 0.24, [Basic Authentication is required](../../../11.migration-guide/0.24.0/basic-authentication/index.md) for all instances. This change makes it so API requests require an `Authorization` header. Follow these [Basic Authentication Encoding Steps](../../../15.how-to-guides/synchronous-executions-api/index.md#basic-authentication) to configure requests correctly.
+Starting in Kestra 0.24, [Basic Authentication is required](../../../11.migration-guide/v0.24.0/basic-authentication/index.md) for all instances. This change makes it so API requests require an `Authorization` header. Follow these [Basic Authentication Encoding Steps](../../../15.how-to-guides/synchronous-executions-api/index.md#basic-authentication) to configure requests correctly.
 :::
 
 ## Example

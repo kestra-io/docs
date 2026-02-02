@@ -1,5 +1,6 @@
 ---
 title: Announcements in Kestra Enterprise – In-App Banners
+description: Broadcast messages with Kestra Announcements. Create in-app banners to notify users about maintenance, updates, or important system information.
 sidebarTitle: Announcements
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

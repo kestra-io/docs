@@ -5,6 +5,7 @@ import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
+import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
 import remarkDirective from "remark-directive"
@@ -54,6 +55,7 @@ export default defineConfig({
             useDarkModeMediaQuery: false,
         }),
         mdx(),
+        icon(),
     ],
     markdown: {
         remarkPlugins: [
@@ -74,6 +76,14 @@ export default defineConfig({
                      */
                     replacer(url, file) {
                         if (url.startsWith(".")) {
+                            // Extract hash fragment before processing relative URLs
+                            let hash = ""
+                            if (url.includes("#")) {
+                                const hashIndex = url.indexOf("#")
+                                hash = url.slice(hashIndex)
+                                url = url.slice(0, hashIndex)
+                            }
+
                             // if the file basename starts with index.
                             if(file.basename && file.basename.startsWith("index.")) {
                                 // if the url start with ./
@@ -89,7 +99,7 @@ export default defineConfig({
                                 }
                             }
 
-                            return generateId({entry: url})
+                            return generateId({entry: url}) + hash
                         }
                         return url
                     }
@@ -167,6 +177,10 @@ export default defineConfig({
             }),
         },
     },
+    // require for "/t" url
+    security: {
+        checkOrigin: false,
+    },
     redirects: {
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
         "/trust": "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
@@ -198,11 +212,7 @@ export default defineConfig({
                 },
             },
         },
-        optimizeDeps: {
-            include: ["vue3-count-to"],
-        },
         ssr: {
-            noExternal: ["vue3-count-to"],
             external: [
                 "node:fs/promises",
                 "node:fs",

@@ -114,8 +114,8 @@ We currently support [many types of serializers in Kafka](/plugins/plugin-kafka/
 This is just the beginning for this plugin but we plan to support JSON and the Protobuf schema with the schema registry. Also, as mentioned before, we want to support `Consume` tasks (with OU without of consumer groups). We may also want a [Trigger](../../docs/05.workflow-components/07.triggers/index.mdx) based on `Consume` that allows you to start executions based on an incoming topic, we are waiting for more feedback from the community for this part.
 
 
-## Singer plugins
-We have made an evolutionary improvement on our [Singer plugins](/plugins/plugin-singer). Singer operates based on 2 concepts: taps (data source) and targets (destination, where you load the data). This model is smart, since you can work with many different sources, and each can be loaded to as many destinations as you need thanks to [Singer specifications](https://github.com/singer-io/getting-started/blob/master/docs/SPEC.md).
+## Singer plugins (Deprecated)
+We have made an evolutionary improvement on our [Singer plugins](/plugins/plugin-singer) (deprecated). Singer operates based on 2 concepts: taps (data source) and targets (destination, where you load the data). This model is smart, since you can work with many different sources, and each can be loaded to as many destinations as you need thanks to [Singer specifications](https://github.com/singer-io/getting-started/blob/master/docs/SPEC.md).
 
 Previously, plugins had a single target task that incorporated a tap to load from one source to a single destination. Now we have 2 different tasks that allow you to download one time from a tap and send the same result to multiple destinations.
 

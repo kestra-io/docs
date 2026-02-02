@@ -1,5 +1,6 @@
 ---
 title: Kestra Python SDK – Client Setup and Examples
+description: Integrate Kestra with your Python applications. Learn to set up the Kestra Python SDK, configure the client, and programmatically create and execute workflows.
 sidebarTitle: Python SDK
 icon: /src/contents/docs/icons/api.svg
 release: 1.0.0
@@ -32,9 +33,9 @@ uv pip install kestrapy
 uv pip install python-dotenv  # Optional: for loading .env variables automatically
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Tip:** Using `python-dotenv` allows you to store credentials securely and load them automatically when your script runs.
-::
+:::
 
 ### Configure the client
 
@@ -52,12 +53,12 @@ configuration = Configuration(
 kestra_client = KestraClient(configuration)
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes:**
 - Use `.env` or environment variables for credentials (avoid hardcoding).
 - Configure either **basic** or **token-based** authentication.
 - Reuse a single `KestraClient` instance throughout your application.
-::
+:::
 
 ---
 
@@ -82,12 +83,12 @@ def create_flow():
     print(f"Flow created: {created.id}")
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes:**
 - `body` must be valid YAML for a Kestra flow.
 - If a flow with the same `id`, `namespace`, and `tenant` already exists, use `update_flow` instead.
 - The response contains metadata for the created flow.
-::
+:::
 
 ---
 
@@ -116,12 +117,12 @@ def update_flow():
     print(f"Flow updated: {updated.id}")
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes:**
 - You must provide the same `id`, `namespace`, and `tenant` as the target flow.
 - Updating requires sending the full YAML, including all inputs, tasks, and metadata.
 - Invalid YAML or missing fields will return a `4xx` error.
-::
+:::
 
 ---
 
@@ -142,12 +143,12 @@ def create_execution():
     print(f"Execution started: {execution.id}")
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes:**
 - `wait=True` blocks the call until the execution completes. Use `wait=False` for asynchronous runs.
 - `inputs` correspond to the flow’s defined input parameters.
 - The response includes execution details and the unique execution ID.
-::
+:::
 
 ---
 
@@ -172,13 +173,13 @@ def follow_execution():
         print(event.state.current)
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 **Notes:**
 - Use `follow_execution` to monitor running flows in real-time.
 - The stream yields execution state updates (e.g., RUNNING, SUCCESS, FAILED).
 - The first SSE payload is intentionally empty; it acts as a keepalive so you can ignore it before processing subsequent events.
 - Use this method in CI/CD, CLI tools, or real-time dashboards.
-::
+:::
 
 ---
 

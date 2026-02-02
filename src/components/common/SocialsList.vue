@@ -88,7 +88,7 @@
         if (!props.stem || !props.extension) {
             return false
         }
-        return `https://github.com/kestra-io/kestra.io/edit/main/content/${props.stem}.${props.extension}`
+        return `https://github.com/kestra-io/docs/edit/main/content/${props.stem}.${props.extension}`
     })
 </script>
 

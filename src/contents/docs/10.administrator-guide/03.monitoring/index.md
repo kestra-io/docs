@@ -1,5 +1,6 @@
 ---
 title: Alerting and Monitoring Kestra – Best Practices
+description: Monitor and alert on Kestra health. Best practices for setting up Prometheus metrics, health checks, and failure notifications for your instance.
 sidebarTitle: Alerting & Monitoring
 icon: /src/contents/docs/icons/admin.svg
 ---

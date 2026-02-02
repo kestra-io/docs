@@ -1,5 +1,6 @@
 ---
 title: Unit Tests in Kestra Enterprise – Validate Flows Safely
+description: Validate workflows with Unit Tests in Kestra Enterprise. Create test suites, mock tasks, and assert flow behavior to ensure reliability before production.
 sidebarTitle: Unit Tests
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

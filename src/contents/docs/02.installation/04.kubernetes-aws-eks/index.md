@@ -2,6 +2,7 @@
 title: Deploy Kestra on AWS EKS – RDS and S3 Setup
 sidebarTitle: Kubernetes on AWS EKS with Amazon RDS and S3
 icon: /src/contents/docs/icons/aws-eks.svg
+description: Deploy Kestra on Amazon EKS with RDS PostgreSQL and S3 for a scalable, cloud-native orchestration platform.
 ---
 
 Deploy Kestra to AWS EKS with a PostgreSQL RDS database and an S3 internal storage backend.

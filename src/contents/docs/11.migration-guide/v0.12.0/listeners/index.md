@@ -2,6 +2,7 @@
 title: Deprecation of Listeners
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.12.0
+description: Information on the deprecation of Listeners in Kestra 0.12.0 and the transition to Flow triggers.
 ---
 
 

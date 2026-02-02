@@ -1,5 +1,6 @@
 ---
 title: Conditions renamed
+description: Condition renaming in Kestra 0.20.0. Update your flows to use the new condition names (e.g., `ExecutionStatus` instead of `ExecutionStatusCondition`).
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0
 ---

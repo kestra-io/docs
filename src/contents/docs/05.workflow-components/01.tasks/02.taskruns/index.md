@@ -1,5 +1,6 @@
 ---
 title: Task Runs in Kestra – Track Task Execution
+description: Understand Task Runs in Kestra. Track the execution of individual tasks, monitor their states, attempts, and outputs within your workflow executions.
 sidebarTitle: Task Runs
 icon: /src/contents/docs/icons/flow.svg
 docId: taskruns

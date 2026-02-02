@@ -1,5 +1,6 @@
 ---
 title: Logs in the Kestra UI – Search and Filter Task Output
+description: Search and filter logs in the Kestra UI. access real-time task logs, debug issues, and filter by level, namespace, or execution ID.
 sidebarTitle: Logs
 icon: /src/contents/docs/icons/ui.svg
 docId: logs

@@ -1,5 +1,6 @@
 ---
 title: Multi-Tenancy in Kestra – Configure and Manage Tenants
+description: Enable Multi-Tenancy in Kestra Enterprise. Isolate resources, flows, and users across different teams or projects within a single Kestra instance.
 sidebarTitle: Tenants
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -145,15 +146,18 @@ Note that there is an exception to this rule if a tenant is created by a Superad
 
 By default, each tenant uses the same [internal storage](../../../configuration/index.md#internal-storage) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-To configure a dedicated storage and secrets backend per tenant, navigate to the respective tenant in the UI and click on the **Edit** button. Then, select the storage and secrets backend you want to use for that tenant:
+To configure a dedicated storage and secrets backend per tenant, navigate to the **Instance - Tenants** in the UI and click on the **Details** button of the tenant you'd like to configure. Then, select the storage and secrets backend you want to use for that tenant:
 
 ![tenants-dedicated-internal-storage](./tenants-dedicated-internal-storage.png)
 
+For storage configuration examples, refer to [Internal Storage](../../../configuration/index.md#internal-storage) in the configuration guide.
+
+![tenants-dedicated-secrets-manager](./tenants-dedicated-secrets-manager.png)
+
+For the different secret managers' configurations, refer to the [Secret Managers documentation](../secrets-manager/index.md).
 
 :::alert{type="warning"}
-Note that this feature has been introduced in Kestra 0.20.0. If you are using an older version, you need to upgrade to set up dedicated storage and secrets backend per tenant.
-
-Also, make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
+Make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
 :::
 
 ### Isolate Kestra services
