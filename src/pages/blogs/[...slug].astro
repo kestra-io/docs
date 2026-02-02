@@ -1,0 +1,247 @@
+---
+import { render, getCollection, type CollectionEntry } from "astro:content"
+import { getImage, Image } from "astro:assets"
+import LayoutBlogs from "~/components/layout-blogs.astro"
+import BlogDetails from "~/components/blogs/BlogDetails.vue"
+import NavToc from "~/components/docs/NavToc.vue"
+import { default as Avatars } from "~/utils/teamsImages"
+
+export async function getStaticPaths() {
+    const blogsPages = await getCollection("blogs")
+    return blogsPages.map((post) => ({
+        params: { slug: post.id },
+        props: post,
+    }))
+}
+
+type Props = CollectionEntry<"blogs">
+const post = Astro.props
+const { Content, headings } = await render(post)
+const page = post.data
+
+const links = headings.map((h) => ({
+    text: h.text,
+    id: h.slug,
+    depth: h.depth,
+}))
+
+const editUrl = `https://github.com/kestra-io/docs/edit/main/src/contents/blogs/${post.id}/index.md`
+
+const { title, description, image, date, authors } = page
+
+const staticImage = image
+    ? await getImage({ src: image, format: "webp" })
+    : null
+
+const jsonLinkedData = {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    mainEntityofPage: {
+        "@type": "Webpage",
+        "@id": `/blogs/${post.id}`,
+    },
+    headline: title,
+    image: [staticImage ? staticImage.src : null],
+    datePublished: date,
+    author: (authors ?? []).map((author) => ({
+        "@type": "Person",
+        name: author.name,
+    })),
+    publisher: {
+        "@type": "Organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description: description,
+}
+---
+
+<LayoutBlogs
+    activeStem={`/blogs/${post.id}`}
+    title={title}
+    description={description}
+    image={staticImage?.src}
+>
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        <meta
+            property="article:published_time"
+            content={new Date(date).toISOString()}
+        />
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+    </Fragment>
+    <div class="container px-0">
+        {
+            post && (
+                <article
+                    class="bd-main order-1"
+                    class:list={[{ full: page.rightBar === false }]}
+                >
+                    <div class="bd-content">
+                        <div class="bd-title">
+                            <p class="d-flex breadcrumb" data-usal="fade-r">
+                                <a href="/">Home</a>/<a href="/blogs">Blog</a>
+                            </p>
+                            <h2 data-usal="fade-l" class="pt-0">
+                                {page.title}
+                            </h2>
+                            <BlogDetails
+                                client:visible
+                                blog={post}
+                                authorsAvatars={Avatars}
+                                class="mt-3"
+                            />
+                            <div
+                                class="d-lg-none d-block"
+                                data-usal="fade-zoom"
+                            >
+                                <NavToc links={links} {editUrl} />
+                            </div>
+                        </div>
+                        {page.image && (
+                            <Image
+                                class="mb-2 rounded-3 img"
+                                data-usal="fade-r"
+                                src={page.image}
+                                alt={page.title}
+                            />
+                        )}
+                        <div class="subtitle">
+                            <p>{page.description}</p>
+                        </div>
+                        <Content />
+                    </div>
+                    <NavToc client:visible links={links} {editUrl} />
+                </article>
+            )
+        }
+    </div>
+</LayoutBlogs>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .bd-main {
+        margin-bottom: 4.5rem;
+        margin-top: 4.5rem;
+
+        &::after {
+            content: "";
+            position: absolute;
+            height: 12.5rem;
+            width: 20%;
+            top: 2%;
+            left: 20%;
+            z-index: -147;
+            filter: blur(110px);
+            background: linear-gradient(
+                180deg,
+                rgba(98, 24, 255, 0) 0%,
+                #6117ff 100%
+            );
+        }
+    }
+
+    .bd-content {
+        max-width: 100%;
+        padding-right: 1.5rem;
+
+        :global(img) {
+            border: $block-border;
+        }
+
+        :global(p) {
+            margin-bottom: 2rem;
+        }
+
+        :global(h2), :global(h3) {
+            margin-top: 7.25rem;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            position: relative;
+            font-size: calc($font-size-base * 2.25);
+            font-weight: 500;
+
+            &:before {
+                height: 1px;
+                display: block;
+                position: absolute;
+                top: -3.12rem;
+                left: 0;
+                content: "";
+                width: 100%;
+                background: $black-6;
+            }
+            &:after {
+                height: 100%;
+                width: 5px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: $purple-36;
+                display: block;
+                content: " ";
+            }
+
+            &:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 3.12rem;
+            }
+        }
+
+        :global(h3) {
+            padding-top: 0;
+            font-size: calc($font-size-base * 1.5);
+        }
+
+        :global(ul) {
+            list-style: disc;
+            li::marker {
+                color: $purple-35;
+            }
+        }
+
+        :global(li::marker) {
+            color: $purple-35;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .bd-content {
+            padding-right: 2.75rem;
+        }
+    }
+
+    .breadcrumb {
+        margin-bottom: 0 !important;
+        & a {
+            margin: 0 0.2rem;
+            color: #cdd5ef !important;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+    }
+
+    .subtitle {
+        border-bottom: 1px solid #3d3d3f;
+        padding: 2rem 0 1.75rem;
+
+        & p {
+            color: #cdd5ef;
+            font-size: 1.438rem;
+            font-weight: 400;
+            line-height: 1.75rem;
+            margin: 0;
+        }
+    }
+
+    .bd-title h2 {
+        color: #fff !important;
+        font-size: 2.5rem !important;
+        font-weight: 400;
+        line-height: 3.25rem !important;
+    }
+</style>

@@ -1,0 +1,36 @@
+---
+title: Kestra Scripts Guide – Multi-Language Tasks and Runners
+sidebarTitle: Multi-Language Script Tasks
+icon: /src/contents/docs/icons/dev.svg
+description: Comprehensive guide on running scripts in any language with Kestra, covering tasks, runners, and dependencies.
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Kestra is language agnostic. Write your business logic in any language.
+
+## Run scripts in any language with Kestra
+
+You can orchestrate custom business logic written in any language, and you can also build custom plugins in Java.
+
+<div class="video-container">
+    <iframe
+        src="https://www.youtube.com/embed/GBUJTjHE9ig?si=3MMIiyEqqjIGjOy_"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+    ></iframe>
+</div>
+
+---
+
+There are dedicated plugins for `Python`, `R`, `Julia`, `Ruby`, `Node.js`, `Powershell` and `Shell`. You can also run any language using the `Shell` plugin too.
+
+By default, these tasks run in individual Docker containers (taskRunner type: `io.kestra.plugin.scripts.runner.docker.Docker`). You can overwrite that default behavior if you prefer that your scripts run in a local process (taskRunner type: `io.kestra.plugin.core.runner.Process`) instead.
+
+If you use the [Enterprise Edition](../07.enterprise/index.mdx), you can also run your scripts on [dedicated remote workers](../07.enterprise/04.scalability/worker-group/index.md) by specifying a `workerGroup` property or using other [Task Runner types](../task-runners/04.types/index.mdx) for AWS, GCP, Azure, and Kubernetes.
+
+The following pages dive into details of each task runner, supported programming languages, and how to manage dependencies.
+
+<ChildCard />

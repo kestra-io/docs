@@ -1,0 +1,1002 @@
+---
+export const prerender = false
+import Layout from "~/components/layout.astro"
+import PluginSidebar from "~/components/plugins/PluginSidebar.vue"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
+import NavToc from "~/components/docs/NavToc.vue"
+import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
+import RelatedBlogs from "~/components/plugins/RelatedBlogs.astro"
+import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
+import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
+import PluginVideos from "~/components/plugins/PluginVideos.astro"
+import OneHeader from "~/components/plugins/OneHeader.astro"
+import { $fetchApi } from "~/utils/fetch"
+import { generatePageNames, recursivePages } from "~/utils/navigation"
+import {
+    filterPluginsWithoutDeprecated,
+    isEntryAPluginElementPredicate,
+    slugify,
+    subGroupName,
+    type JSONSchema,
+    type Plugin,
+    type PluginMetadata,
+} from "@kestra-io/ui-libs"
+import {
+    formatElementName,
+    formatElementType,
+    getBlueprintsHeading,
+    getPluginTitle,
+} from "~/utils/pluginUtils"
+import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
+import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
+import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
+import { getIcon } from "~/utils/plugins/getPluginIcon"
+import { retrieveRepoReleases } from "../api/github-releases"
+import { getCollection } from "astro:content"
+import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
+
+const splitRouteSlug = Astro.params.slug?.split("/") ?? []
+let pathname = new URL(Astro.request.url).pathname
+
+if (pathname !== "/plugins/" && pathname.endsWith("/")) {
+    return Astro.redirect(pathname.slice(0, -1), 301)
+}
+if (pathname.endsWith("/")) {
+    pathname = pathname.slice(0, -1)
+}
+
+interface PluginPage {
+    body: {
+        group?: string
+        plugins?: Plugin[]
+        toc?: {
+            links: Array<{
+                id: string
+                depth: number
+                text: string
+                children?: Array<{
+                    id: string
+                    depth: number
+                    text: string
+                }>
+            }>
+        }
+    }
+    rightBar?: boolean
+    title?: string
+    description?: string
+    longDescription?: string
+    error?: boolean
+    message?: string
+    editLink?: boolean
+    extension?: string
+    stem?: string
+}
+
+interface PluginPageWithToc extends PluginPage {
+    body: {
+        toc: Required<Required<PluginPage["body"]>["toc"]>
+    } & PluginPage["body"]
+}
+
+const pluginName = splitRouteSlug[0]
+
+const maybeSubGroup = splitRouteSlug[1]
+const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup
+
+const githubReleaseRepo = (() => {
+    const name = pluginName ?? ""
+    // because core plugin is part of kestra repo
+    if (name === "core") {
+        return "kestra"
+    }
+    // because plugin-jdbc is the parent for many subgroups in same repo.
+    if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") {
+        return "plugin-jdbc"
+    }
+
+    if (name.startsWith("plugin-script-") || name === "plugin-script") {
+        return "plugin-scripts"
+    }
+    return name
+})()
+
+const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
+
+if (!githubReleaseRepo.includes("plugin-ee")) {
+    try {
+        const { artifacts = {} } = await $fetchApi("/plugins/artifacts")
+        const normalizeRepoUrl = (url?: string) => {
+            if (!url) return undefined
+            return url
+                .replace(/^git@github\.com:/, "https://github.com/")
+                .replace(/\.git$/, "")
+        }
+
+        const repoUrl = normalizeRepoUrl(`https://github.com/kestra-io/${githubReleaseRepo}`)
+        githubVersions.versions?.forEach((v: any) => {
+            v.minCoreCompatibilityVersion = (
+                Object.values(artifacts).flat() as any[]
+            ).find(
+                (a) =>
+                    a.version === v.version &&
+                    normalizeRepoUrl(a.repository) === repoUrl,
+            )?.minCoreCompatibilityVersion
+        })
+    } catch (e) {
+        console.error("Artifacts fetch failed", e)
+    }
+}
+
+const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
+
+const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+const navigation = generateNavigationFromSubgroups(pluginsData)
+const aliasMapping = getAliasMapping(pluginsData)
+
+const pageList = recursivePages(navigation[0])
+const pageNames = generatePageNames(navigation[0])
+
+const pluginType = (() => {
+    const lastSegment = splitRouteSlug[splitRouteSlug.length - 1]
+    if (!lastSegment || !lastSegment.includes(".")) return undefined
+
+    const parts = lastSegment.replace(/.md$/, "").split(".")
+    return `${parts.slice(0, -1).join(".")}.${
+        pageNames?.[pathname] ?? parts[parts.length - 1]
+    }`
+})()
+
+// try to redirect if alias found, if not redirect to /plugins
+try {
+    const mappedUrl = redirectAlias(
+        aliasMapping,
+        pathname,
+        pageList,
+        pluginType,
+    )
+
+    if (mappedUrl && mappedUrl !== pathname) {
+        return Astro.redirect(mappedUrl, 301)
+    }
+} catch {
+    // do nothing if plugin not found
+}
+
+const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
+const pluginsInformation = await $fetchApi(`/plugins/pluginsInformation`)
+
+const subgroups = await $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`)
+const sidebarPluginData = generateSidebarPluginData(
+    subgroups,
+    allPluginMetadata,
+)
+
+async function makePagePluginDefinition() {
+    try {
+        const pageData = await $fetchApi<{
+            markdown: string
+            schema: JSONSchema
+        }>(`/plugins/definitions/${pluginType}`)
+        const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
+        const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
+
+        return {
+            name,
+            type: definitionType,
+            ...nuxtBlocksFromJsonSchema(pageData.schema),
+        }
+    } catch {
+        return null
+    }
+}
+
+const page: PluginPage | null =
+    pluginType === undefined
+        ? sidebarPluginData
+        : await makePagePluginDefinition()
+
+const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
+    pluginType
+        ? (sidebarPluginData?.body?.plugins ?? [])
+        : (page?.body?.plugins ?? []),
+)
+
+const subGroupWrapper = pluginsWithoutDeprecated.find(
+    (p) => slugify(subGroupName(p)) === subGroup,
+)
+const { currentPageIcon, subGroupsIcons } = await getIcon(
+    pluginName,
+    pluginType,
+    page?.body.group,
+    subGroupWrapper?.subGroup,
+)
+
+const allPlugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+
+const { countByPlugins: blueprintCounts } = await $fetchApi<{
+    countByPlugins: Record<string, number>
+}>(`/blueprints/countByPlugins`)
+
+const blogs = await getCollection("blogs")
+
+const relatedBlogs = blogs
+    .filter((b) => b.data.plugins?.includes(pluginName))
+    .sort((a, b) => {
+        return new Date(a.data.date) > new Date(b.data.date) ? 1 : -1
+    })
+
+const rootPlugin = pluginsWithoutDeprecated?.find(
+    (p: Plugin) => p.subGroup === undefined,
+)
+
+const currentSubgroupPlugin =
+    !subGroup || pluginType
+        ? undefined
+        : pluginsWithoutDeprecated?.find((p) => {
+              const subgroupLastSegment = p.subGroup?.split(".").pop()
+              const possibleSubgroupMatches = [
+                  slugify(subGroupName(p)),
+                  subgroupLastSegment,
+                  slugify(subgroupLastSegment ?? ""),
+              ]
+              return possibleSubgroupMatches.includes(subGroup)
+          })
+
+const currentPluginMetadata = (() => {
+    const subgroupId =
+        currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
+    const rootGroupId = rootPlugin?.group ?? pluginName
+
+    if (subgroupId) {
+        const found = allPluginMetadata?.find((m) => m.group === subgroupId)
+        return found ? [found] : []
+    }
+
+    if (rootGroupId) {
+        return (
+            allPluginMetadata?.filter(
+                (m) =>
+                    m.group &&
+                    (m.group === rootGroupId ||
+                        m.group.startsWith(rootGroupId + ".")),
+            ) ?? []
+        )
+    }
+
+    return []
+})()
+
+const metadataMap = currentPluginMetadata?.reduce<
+    Record<string, PluginMetadata>
+>((acc, meta) => {
+    acc[meta.group] = meta
+    return acc
+}, {})
+
+const currentPageMetadata = (() => {
+    const meta = currentPluginMetadata
+    if (!meta) return null
+
+    if (Array.isArray(meta)) {
+        const rootGroup = rootPlugin?.group
+        const subgroupGroup =
+            currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
+        return (
+            meta.find(
+                (m) => m.group === rootGroup || m.group === subgroupGroup,
+            ) ?? null
+        )
+    }
+
+    return meta
+})()
+
+const headingTitle = pluginType
+    ? formatElementName(pluginType)
+    : ((rootPlugin
+          ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
+          : undefined) ?? pluginName)
+
+let combinedDescription = currentPageMetadata?.description
+const body = (currentPageMetadata as any)?.body
+if (body && body !== combinedDescription) {
+    combinedDescription += (combinedDescription ? "\n\n" : "") + body
+}
+
+const headingDescription = pluginType
+    ? page?.title
+    : (combinedDescription ??
+      (subGroup === undefined
+          ? (rootPlugin?.longDescription ?? combinedDescription)
+          : (currentSubgroupPlugin?.longDescription ?? combinedDescription)))
+
+const pageNamesHeading = {
+    ...pageNames,
+    [pathname]: headingTitle,
+    [`/plugins/${pluginName}`]:
+        getPluginTitle(rootPlugin!, metadataMap) ?? pluginName,
+}
+
+const generateTocForPluginElements = (wrapper: Plugin) =>
+    Object.entries(wrapper)
+        .filter(([key]) =>
+            isEntryAPluginElementPredicate(key, wrapper[key as keyof Plugin]),
+        )
+        .map(([key]) => {
+            const formattedElementType = key.replace(
+                /[A-Z]/g,
+                (match) => ` ${match}`,
+            )
+            return {
+                id: `section-${slugify(formattedElementType)}`,
+                depth: 3,
+                text: formatElementType(key),
+            }
+        })
+
+const currentPluginVideos = (() => {
+    const meta = currentPluginMetadata
+    if (!meta) return []
+
+    const subgroupId =
+        currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
+    const rootGroup = rootPlugin?.group
+    const entries = Array.isArray(meta) ? meta : [meta]
+
+    return entries
+        .filter((m) => {
+            if (!m) return false
+
+            if (subgroupId) {
+                return (
+                    typeof m.group === "string" &&
+                    (m.group === subgroupId ||
+                        m.group.startsWith(subgroupId + "."))
+                )
+            } else if (m.name === pluginName) {
+                return true
+            }
+
+            return (
+                typeof m.group === "string" &&
+                (m.group === rootGroup || m.group?.startsWith(rootGroup ?? ""))
+            )
+        })
+        .flatMap((m) => m?.videos ?? [])
+        .filter(Boolean)
+})()
+
+const blueprintsSectionHeading = getBlueprintsHeading(
+    pluginName,
+    rootPlugin,
+    subGroup,
+    pluginType,
+)
+
+const currentPluginCategories = (() => {
+    const subgroupCats = currentSubgroupPlugin?.categories
+    const pluginCats = rootPlugin?.categories
+    return subGroup === undefined
+        ? (pluginCats ?? [])
+        : subgroupCats?.length
+          ? subgroupCats
+          : (pluginCats ?? [])
+})()
+
+function makeTOC() {
+    const pluginToc = (() => {
+        if (!rootPlugin) return []
+
+        if (subGroup && currentSubgroupPlugin) {
+            return generateTocForPluginElements(currentSubgroupPlugin)
+        }
+
+        if (!subGroup && !pluginType) {
+            const subGroups =
+                pluginsWithoutDeprecated?.filter((p) => p.subGroup) ?? []
+            return subGroups.length
+                ? subGroups.map((sub) => ({
+                      id: slugify(subGroupName(sub)),
+                      depth: 3,
+                      text: subGroupName(sub),
+                  }))
+                : generateTocForPluginElements(rootPlugin)
+        }
+
+        return []
+    })()
+
+    const subgroupBlueprintCounts = (() => {
+        const result: Record<string, number> = {}
+
+        pluginsWithoutDeprecated?.forEach((subgroupWrapper) => {
+            const subgroupKey = subgroupWrapper.subGroup
+            if (subgroupKey !== undefined) {
+                const formattedKey = `${subgroupWrapper.group ?? subgroupWrapper.name}-${slugify(subGroupName(subgroupWrapper))}`
+                result[formattedKey] = blueprintCounts?.[subgroupKey] ?? 0
+            }
+        })
+
+        return result
+    })()
+
+    const baseTocLinks = pluginType
+        ? (page?.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
+          [])
+        : page?.body?.toc
+          ? []
+          : pluginToc
+
+    const hasBlueprints = pluginType
+        ? blueprintCounts?.[pluginType] > 0
+        : subGroup
+          ? subgroupBlueprintCounts?.[
+                `${rootPlugin?.group ?? pluginName}-${subGroup}`
+            ] > 0
+          : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
+
+    const tocLinks = [
+        ...baseTocLinks,
+        ...(pluginType === undefined && rootPlugin?.longDescription
+            ? [
+                  {
+                      id: "how-to-use-this-plugin",
+                      depth: 2,
+                      text: "How to use this plugin",
+                  },
+              ]
+            : []),
+        ...(pluginType === undefined && currentPluginVideos?.length > 0
+            ? [{ id: "see-it-in-action", depth: 3, text: "See it in action" }]
+            : []),
+        ...(hasBlueprints &&
+        blueprintsSectionHeading?.id &&
+        blueprintsSectionHeading?.text
+            ? [
+                  {
+                      id: blueprintsSectionHeading.id,
+                      depth: 3,
+                      text: blueprintsSectionHeading.text,
+                  },
+              ]
+            : []),
+        ...(pluginType === undefined &&
+        subGroup === undefined &&
+        relatedBlogs?.length > 0
+            ? [{ id: "latest-blog-posts", depth: 3, text: "Latest Blog Posts" }]
+            : []),
+        ...(currentPluginCategories?.length > 0
+            ? [
+                  {
+                      id: "more-plugins-in-this-category",
+                      depth: 3,
+                      text: "More Plugins in this Category",
+                  },
+              ]
+            : []),
+    ]
+
+    return tocLinks
+}
+
+const pageWithToc: PluginPageWithToc = page
+    ? {
+          ...page,
+          body: {
+              ...page.body,
+              toc: {
+                  links: makeTOC(),
+              },
+          },
+      }
+    : {
+          body: {
+              toc: {
+                  links: [],
+              },
+          },
+      }
+
+// if no content to show, redirect to parent until /plugins
+if (
+    page === null ||
+    !pluginsWithoutDeprecated.some(
+        (p) => subGroup === undefined || slugify(subGroupName(p)) === subGroup,
+    )
+) {
+    console.log("Redirecting due to no content")
+
+    return Astro.redirect(
+        `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
+        301,
+    )
+}
+
+const subgroupBlueprintCounts = (() => {
+    const result: Record<string, number> = {}
+
+    pluginsWithoutDeprecated?.forEach((subgroupWrapper) => {
+        const subgroupKey = subgroupWrapper.subGroup
+        if (subgroupKey !== undefined) {
+            const formattedKey = `${subgroupWrapper.group ?? subgroupWrapper.name}-${slugify(subGroupName(subgroupWrapper))}`
+            result[formattedKey] = blueprintCounts?.[subgroupKey] ?? 0
+        }
+    })
+
+    return result
+})()
+
+const elementTitle = (() =>
+    Object.fromEntries(
+        (pluginsWithoutDeprecated ?? [])
+            .flatMap((p) =>
+                (
+                    Object.entries(p) as [
+                        string,
+                        { title?: string; cls: string }[],
+                    ][]
+                )
+                    .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+                    .flatMap(([_, els]) =>
+                        els
+                            .filter((el) => el?.title)
+                            .map((el) => [el.cls, { title: el.title }]),
+                    ),
+            )
+            .filter(([_, v]) => typeof v === "object" && Boolean(v?.title)),
+    ))()
+
+let ogImage: string | null = null
+
+if (!pluginType && !subGroup) {
+    ogImage = `/meta/plugins/${pluginName}.svg`
+} else if (subGroup) {
+    const filterElement = subgroups.filter(
+        (r) => slugify(r.title) === subGroup,
+    )[0]
+    ogImage = `/meta/plugins/group-${filterElement?.subGroup}.svg`
+} else {
+    ogImage = `/meta/plugins/${pluginType}.svg`
+}
+---
+
+<Layout title={headingTitle} description={headingDescription} image={ogImage}>
+    <div class="container-fluid bd-gutter bd-layout">
+        <PluginSidebar
+            pluginWrapper={rootPlugin}
+            pluginsWithoutDeprecated={pluginsWithoutDeprecated}
+            pluginName={pluginName}
+            title={headingTitle}
+            routeParts={splitRouteSlug}
+        />
+        <article
+            class="bd-main order-1"
+            class:list={[{ full: page?.rightBar === false }]}
+        >
+            <div class="bd-title">
+                <Breadcrumb
+                    slug={pathname}
+                    {pageList}
+                    pageNames={pageNamesHeading}
+                />
+                {
+                    page && (
+                        <OneHeader
+                            {headingTitle}
+                            {pluginType}
+                            {rootPlugin}
+                            {currentPageIcon}
+                            {headingDescription}
+                        />
+                    )
+                }
+            </div>
+
+            <PluginsMDCRender
+                page={pageWithToc}
+                icons={pluginType ? {} : subGroupsIcons}
+                plugin-type={pluginType}
+                plugins={pluginType ? [] : pluginsWithoutDeprecated}
+                pluginName={pluginName}
+                subGroup={subGroup}
+                routePath={pathname}
+                subgroupBlueprintCounts={pluginType
+                    ? {}
+                    : subgroupBlueprintCounts}
+                metadataMap={metadataMap}
+                schemas={pluginType ? {} : elementTitle}
+                client:idle
+            />
+
+            {
+                pluginType === undefined && currentPluginVideos?.length > 0 && (
+                    <PluginVideos videos={currentPluginVideos} />
+                )
+            }
+
+            <RelatedBlueprints
+                pluginName={pluginName}
+                pluginWrapper={rootPlugin}
+                currentSubgroupPlugin={currentSubgroupPlugin}
+                subGroupName={currentSubgroupPlugin
+                    ? slugify(subGroupName(currentSubgroupPlugin))
+                    : subGroup}
+                pluginType={pluginType}
+                customId={blueprintsSectionHeading?.id}
+            />
+
+            {
+                pluginType === undefined &&
+                    subGroup === undefined &&
+                    relatedBlogs &&
+                    relatedBlogs.length > 0 && (
+                        <RelatedBlogs
+                            posts={relatedBlogs.map((p) => ({
+                                ...p.data,
+                                path: `/blogs/${p.id}`,
+                                date: p.data.date.toISOString(),
+                            }))}
+                        />
+                    )
+            }
+
+            {
+                currentPluginCategories?.length > 0 && (
+                        <SimilarPlugins
+                            {allPlugins}
+                            pluginsData={pluginsInformation.byPlugin}
+                            categories={currentPluginCategories}
+                            {pluginName}
+                        />
+                    )
+            }
+        </article>
+        <NavToc
+            links={pageWithToc.body.toc?.links}
+            editLink={pageWithToc.editLink}
+            extension={pageWithToc.extension}
+            stem={pageWithToc.stem}
+            version={githubVersions}
+            releasesUrl={githubReleasesUrl}
+            categories={currentPluginCategories}
+            metadata={currentPluginMetadata}
+            capitalize
+            isPluginPage
+            class="right-sidebar"
+        />
+    </div>
+</Layout>
+
+<style scoped lang="scss">
+    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
+    @import "~/assets/styles/variable";
+
+    .plugin-title {
+        font-size: 1.5em;
+    }
+
+    .container-fluid {
+        gap: 0;
+        border-top: 1px solid $black-3;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+
+        @include media-breakpoint-up(lg) {
+            display: grid;
+            grid-template-columns: 250px 1fr 269px;
+            grid-template-rows: auto 1fr;
+            grid-template-areas:
+                "sidebar article toc"
+                "sidebar article toc";
+        }
+
+        > .plugin-sidebar {
+            @include media-breakpoint-up(lg) {
+                grid-area: sidebar;
+                position: sticky;
+                top: 4rem;
+                height: 100%;
+            }
+        }
+
+        > .bd-main {
+            @include media-breakpoint-up(lg) {
+                grid-area: article;
+            }
+        }
+
+        > .right-sidebar {
+            @include media-breakpoint-up(lg) {
+                grid-area: toc;
+                background-color: #0a0b0d;
+                position: sticky;
+                top: 0;
+                height: 100%;
+            }
+
+            @include media-breakpoint-down(lg) {
+                margin-top: 2rem;
+                padding: 0 20px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        .bd-title {
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid $black-3;
+            width: 100%;
+            box-sizing: border-box;
+
+            @include media-breakpoint-up(lg) {
+                margin-left: -2rem;
+                margin-right: -2rem;
+                padding-left: 2rem;
+                padding-right: 2rem;
+                width: calc(100% + 4rem);
+            }
+
+            @include media-breakpoint-down(lg) {
+                margin-top: calc($spacer * 1);
+            }
+
+            nav,
+            h1 {
+                @include media-breakpoint-up(lg) {
+                    max-width: 100%;
+                }
+            }
+        }
+
+        .bd-main {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            box-sizing: border-box;
+
+            @include media-breakpoint-up(lg) {
+                padding: 0 2rem;
+                padding-left: 2.7rem;
+            }
+
+            @include media-breakpoint-down(sm) {
+                gap: 0 calc($spacer * 7);
+            }
+
+            .bd-toc nav {
+                border: 0;
+                padding: 0;
+            }
+        }
+
+        .desc {
+            font-size: clamp(0.875rem, 0.8rem + 0.2vw, 1rem);
+            max-width: 650px;
+
+            @include media-breakpoint-up(md) {
+                font-size: 1rem;
+            }
+
+            color: color-palette.$base-gray-200;
+            margin-top: 0.25rem;
+            font-weight: normal;
+            line-height: 1.5;
+
+            @include media-breakpoint-down(lg) {
+                font-size: 12px;
+            }
+
+            @media screen and (max-width: 1100px) {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                line-clamp: 4;
+                -webkit-line-clamp: 4;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+            }
+        }
+
+        .title {
+            .btn {
+                min-width: 116px;
+                padding: 4px 10px;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .bd-main {
+        .bd-markdown > h2 {
+            border-top: 1px solid $black-6;
+            padding-top: calc($spacer * 3.125);
+            margin-bottom: 2rem;
+
+            a {
+                border-left: 5px solid $purple-36;
+                padding-left: calc($spacer * 0.6);
+                font-size: calc($font-size-base * 1.87);
+            }
+        }
+
+        p > a {
+            text-decoration: underline;
+        }
+
+        h2 > a {
+            font-weight: 600;
+            line-height: 2.375rem;
+            margin: 0;
+        }
+
+        h3 > a {
+            color: $gray-200 !important;
+            font-size: 18.4px;
+            font-weight: 600;
+            line-height: 2.375rem;
+        }
+
+        h4 > a {
+            color: $white !important;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        h5 {
+            color: $white !important;
+            font-weight: 600;
+        }
+    }
+
+    .bd-main p > a,
+    .bd-main ul a {
+        color: $purple-36;
+    }
+
+    .container,
+    h2 > a {
+        color: $white !important;
+    }
+
+    p > code,
+    li > code,
+    a > code,
+    table code {
+        color: $white-3;
+        text-decoration: none !important;
+        border-radius: 0.25rem;
+        padding: 0 calc($spacer / 4);
+    }
+
+    .code-block,
+    p > code,
+    li > code,
+    a > code,
+    table code {
+        border: $block-border;
+        background-color: $black-2 !important;
+    }
+
+    p > strong > code {
+        color: $white-3;
+        text-decoration: none !important;
+        border-radius: 0.25rem;
+        padding: 0 calc($spacer / 4);
+    }
+
+    li > mark {
+        background-color: $link-color;
+    }
+
+    .docs-prev-next a {
+        span {
+            color: $link-color;
+        }
+
+        .directory {
+            color: $white;
+        }
+    }
+
+    .btn {
+        span {
+            color: $white-1;
+        }
+    }
+
+    table {
+        td,
+        th {
+            background-color: $black-2;
+            border: $block-border;
+            color: $white;
+
+            a {
+                color: $link-color;
+            }
+        }
+    }
+
+    .bd-markdown > h2 > a > span {
+        display: inline !important;
+    }
+
+    // Base layout for alerts (all types)
+    .alert {
+        display: flex;
+        gap: 12px;
+        padding: 16px;
+        border: 1px solid;
+        border-left-width: 5px !important;
+        border-radius: 8px;
+
+        p,
+        .material-design-icon,
+        .material-design-icon * {
+            color: inherit !important;
+        }
+    }
+
+    $alert-types: (
+        danger: (
+            border: --ks-border-error,
+            content: --ks-content-error,
+            background: --ks-background-error,
+        ),
+        warning: (
+            border: --ks-border-warning,
+            content: --ks-content-warning,
+            background: --ks-background-warning,
+        ),
+        info: (
+            border: --ks-border-info,
+            content: --ks-content-info,
+            background: --ks-background-info,
+        ),
+        success: (
+            border: --ks-border-success,
+            content: --ks-content-success,
+            background: --ks-background-success,
+        ),
+    );
+
+    @mixin alert-variants($type, $vars) {
+        .alert-#{$type} {
+            border-color: var(map-get($vars, border)) !important;
+            color: var(map-get($vars, content)) !important;
+            background-color: var(map-get($vars, background)) !important;
+
+            p,
+            .material-design-icon,
+            .material-design-icon * {
+                color: var(map-get($vars, content)) !important;
+            }
+        }
+
+        .plugin-section
+            .alert.alert-#{$type}[role="alert"]
+            .material-design-icon,
+        .plugin-section
+            .alert.alert-#{$type}[role="alert"]
+            .material-design-icon
+            * {
+            color: var(map-get($vars, content)) !important;
+        }
+
+        .plugin-section
+            .alert.alert-#{$type}[role="alert"]
+            .material-design-icon
+            > .material-design-icon__svg {
+            fill: var(map-get($vars, content)) !important;
+            stroke: var(map-get($vars, content)) !important;
+        }
+    }
+
+    @each $type, $vars in $alert-types {
+        @include alert-variants($type, $vars);
+    }
+</style>

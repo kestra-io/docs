@@ -1,0 +1,30 @@
+.child-cards-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    .child-card-link {
+        background-color: #161617;
+        color: white;
+        display: grid;
+        grid-template-columns: 66px 1fr;
+        padding: 1rem;
+        border: 1px solid #252526;
+        .card-icon {
+            grid-column: 1;
+            grid-row: 1 / 3;
+            background-color: transparent;
+        }
+        .card-title {
+            grid-column: 2;
+            grid-row: 1;
+            font-size: 1.375rem !important;
+            line-height: 1.375rem !important;
+        }
+        .card-text {
+            grid-column: 2;
+            grid-row: 2;
+            font-size: 0.875rem !important;
+            line-height: 1rem !important;
+        }
+    }
+}

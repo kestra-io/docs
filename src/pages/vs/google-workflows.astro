@@ -1,0 +1,14 @@
+---
+import Layout from "~/components/layout.astro"
+import Header from "~/components/vs/google-workflows/Header.vue"
+import Main from "~/components/vs/google-workflows/Main.vue"
+
+const title = "Google Workflows vs Kestra"
+const description =
+    "What are the differences between Kestra and Google Workflows"
+---
+
+<Layout title={title} description={description}>
+    <Header client:load />
+    <Main client:visible />
+</Layout>

@@ -1,0 +1,79 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-deploy
+  cancel-in-progress: false
+
+permissions:
+  pull-requests: write
+
+jobs:
+  deploy-workers:
+    name: Publish to Cloudflare Workers
+    runs-on: ubuntu-latest
+    env:
+      CF_PAGES_BRANCH: ${{ github.ref_name }}
+      CF_PAGES_COMMIT_SHA: ${{ github.sha }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
+      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node via nvm
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+        env:
+          NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
+          PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
+
+      - name: Generate slug variables
+        uses: rlespinasse/github-slug-action@v4
+
+      - name: Deploy Worker
+        id: prod-deploy
+        if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref == 'refs/heads/main' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      - name: Deploy Preview Worker
+        id: preview-deploy
+        if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --preview-alias="${{ env.GITHUB_REF_NAME_SLUG_URL }}"
+
+      - name: Add comment to PR
+        if: ${{ startsWith(github.repository, 'kestra-io/')  && github.event_name == 'pull_request'}}
+        uses: kestra-io/actions/actions/comment-update@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          title: "☁️ Cloudflare Worker Preview Deployed!"
+          template: |
+            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }})
+            🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})

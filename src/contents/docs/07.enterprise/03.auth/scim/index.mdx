@@ -1,0 +1,43 @@
+---
+title: SCIM Directory Sync
+description: Automate user provisioning with SCIM Directory Sync. Synchronize users and groups from IdPs like Okta, Azure AD, and Keycloak to Kestra Enterprise.
+icon: /src/contents/docs/icons/admin.svg
+editions: ["EE", "Cloud"]
+version: ">= 0.18.0"
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Sync users and groups from your Identity Provider (IdP) to Kestra using SCIM.
+
+<div class="video-container">
+    <iframe
+        src="https://www.youtube.com/embed/WQBWxt7ruM4?si=wEYUyO5kJuWxQMft"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+    ></iframe>
+</div>
+
+## SCIM directory sync
+
+SCIM (System for Cross-domain Identity Management) is an open-standard protocol designed to facilitate user identity management across multiple systems.
+
+It simplifies user provisioning, de-provisioning, and group synchronization between IdPs, such as Microsoft Entra ID or Okta, and service providers (SPs) such as Kestra. In layman's terms, SCIM allows you to automatically keep your users and groups in sync between your IdP and Kestra.
+
+Kestra explicitly relies on the SCIM 2.0 protocol for directory synchronization.
+
+![System for Cross-domain Identity Management specification](./scim.png)
+
+## Benefits of a Directory Sync with SCIM
+
+1. **Automated provisioning and de-provisioning**: SCIM automates the provisioning and de-provisioning of users, creating a single source of truth (SSOT) for user identity data. Instead of manually creating and managing users in Kestra, you can synchronize them from your IdP.
+2. **Consistency and compliance**: With SCIM, you can ensure consistency of identity information across systems and stay compliant with security and regulatory requirements.
+3. **Governance at scale**: Managing users at scale across many applications can be difficult without a standardized method for identity synchronization. SCIM provides a scalable solution for managing user identities.
+
+## Supported identity providers
+
+For a detailed guide on how to set up SCIM provisioning with a specific IdP, refer to the documentation for the respective provider.
+
+<ChildCard />

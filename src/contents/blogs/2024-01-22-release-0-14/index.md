@@ -1,0 +1,296 @@
+---
+title: "Kestra 0.14.0 refines the VS Code Editor and adds Version Control with Git"
+description: "This release continues improving our embedded VS Code Editor and adds automated Git sync, new import and export functionality, built in docs, and more!"
+date: 2024-01-22T11:00:00
+category: News & Product Updates
+author:
+  name: Anna Geller
+  image: "ageller"
+image: ./main.png
+---
+
+We are thrilled to announce the release of Kestra 0.14.0, which continues building upon our embedded Code Editor by adding automated Git sync, new import and export functionality, and docs available right from the editor. We've also revamped the website search and added plugin's hopepage and blueprints to the website.
+
+Let's dive into the highlights of this release.
+
+## Version Control with Git
+
+We've heard from many of you that you'd like to use Git to [version control](../../docs/version-control-cicd/04.git/index.md) your workflows. This release adds two new tasks to the [Git plugin](/plugins/plugin-git) that allow you to sync your code from Git to Kestra and push your code from Kestra to Git.
+
+### GitOps with `git.Sync`
+
+The new `git.Sync` task makes it easy to [sync your code](/plugins/plugin-git/io.kestra.plugin.git.sync) from a Git repository to Kestra. This task facilitates GitOps in a simple and straightforward manner.
+
+You can use `git.Sync` in two ways:
+1. **Event-driven (webhook trigger)**: a system flow will automatically sync your code whenever a new commit is pushed to the Git repository
+2. **GitOps (schedule trigger)**: a system flow will automatically sync your code from Git to kestra on a regular schedule to ensure that your workflow code always matches the desired state defined in your Git repository. If you don't want some files from Git to be synced, you can add them to a `.kestraignore` file at the root of your `gitDirectory` folder — that file works the same way as `.gitignore`.
+
+Check the [Git Sync](../../docs/version-control-cicd/04.git/index.md#git-syncflows-and-syncnamespacefiles) documentation for more details.
+
+### Push to Git from Kestra with `git.Push`
+
+Apart from syncing your code from Git to Kestra, you can also [push your code](/plugins/plugin-git/io.kestra.plugin.git.push) from Kestra to Git using the new `git.Push` task. This pattern is particularly useful for business users who want to leverage Git without having to use the terminal and complex Git workflows.
+
+Check the [Version Control with Git](../../docs/version-control-cicd/04.git/index.md) documentation for a deep dive into multiple ways to version control your code with Git and when to use them.
+
+![git](./git.png)
+
+## VS Code Editor improvements
+
+We've made several improvements to our embedded VS Code Editor and the [VS Code extension](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra), including the following:
+- You can now [search by file name](https://github.com/kestra-io/kestra/pull/2602), making it easier to navigate complex projects
+- [Autocompletion for Python](https://github.com/kestra-io/kestra/issues/2514) is now natively available in the VS Code editor
+- When you open a flow and hover over a specific task or trigger, you'll be able to see a **built-in documentation** showing examples and properties of that task or trigger, as well as the core properties of flows and tasks
+- **Import** functionality to easily add new flows and namespace files – you can now import your existing code to Kestra directly from the UI
+- **Export** functionality to export all flows and scripts from a given namespace in a single click.
+
+## Recursive rendering of Pebble expressions
+
+So far, the templating engine has been rendering all [expressions](../../docs/expressions/index.md) **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions, or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
+
+Starting from this release, the default rendering behavior is **not recursive**. We've also introduced a new `render()` function that gives you more control over which expressions should be rendered and how.
+
+:::alert{type="warning"}
+Note that this is a **breaking change**. If you want to keep the old behavior, you can set the `kestra.variables.recursive-rendering` property to `true` in your `application.yml` file (the default is `false`). In most of the cases, migrating your workflows to that new behavior is as simple as adding a `render()` function before calling a variable, e.g. `{{ render(vars.trigger_var) }}` instead of `{{ vars.trigger_var }}`. Check the [Recursive rendering of Pebble expressions](../../docs/11.migration-guide/v0.14.0/recursive-rendering/index.md) migration page for more details on how to migrate.
+:::
+
+## Execution labels can now be set from a task
+
+This feature has been highly requested. You can now set [execution labels](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Labels) from a task. This allows you to dynamically set labels based on flow inputs or task outputs, which is particularly useful for observability, debugging and monitoring purposes.
+
+Here is how that works:
+
+```yaml
+id: labels
+namespace: company.team
+
+inputs:
+  - id: user
+    type: STRING
+    defaults: Rick Astley
+
+tasks:
+  - id: update-labels-with-map
+    type: io.kestra.core.tasks.executions.Labels
+    labels:
+      customerId: "{{inputs.user}}"
+
+  - id: get
+    type: io.kestra.core.tasks.debugs.Return
+    format: https://t.ly/Vemr0
+
+  - id: update-labels-with-list
+    type: io.kestra.core.tasks.executions.Labels
+    labels:
+      - key: url
+        value: "{{outputs.get.value}}"
+```
+
+Based on the above example, you can see that this task allows you to flexibly set labels in two ways:
+- Using a **map (key-value pairs)** — useful if the value is a dynamic property
+- Using a **list of key-value pairs** — useful if both the key and the value are dynamic properties.
+
+This simple task provides an easy way to organize your workflows and filter executions. For example, you can use it to track ML experiments by setting labels based on an output of a given computation, label executions based on runtime-specific input values, and many more.
+
+Thanks to this task, you can set default labels on a flow-level and override them if needed based on the outputs of your tasks. This example shows how you can set a default label for a `song` and override it based on the output of the `get` task:
+
+```yaml
+id: labels_override
+namespace: company.team
+
+labels:
+  song: never-gonna-give-you-up
+
+tasks:
+  - id: get
+    type: io.kestra.core.tasks.debugs.Return
+    format: never-gonna-stop
+
+  - id: update-list
+    type: io.kestra.core.tasks.executions.Labels
+    labels:
+      song: "{{outputs.get.value}}"
+```
+
+You should see that the default song label has been overridden by a [new song](https://www.youtube.com/watch?v=qWNQUvIk954) determined by the task output.
+
+## The Allow Failure pattern is now available as a core task property
+
+So far, the `AllowFailure` workflow pattern was only available as [a dedicated task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.AllowFailure). We've now added it as a [core task property](../../docs/05.workflow-components/01.tasks/index.mdx) called `allowFailure` allowing you to easily configure it on any task without complicated nesting. Here is how that works:
+
+```yaml
+id: allow_failure
+namespace: company.team
+
+tasks:
+  - id: fail
+    type: io.kestra.core.tasks.executions.Fail
+    allowFailure: true
+
+  - id: continue
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{ task.id }} the task run on {{ taskrun.startDate }}"
+```
+
+The ``continue`` task won't be blocked by the failure of the ``fail`` task.
+
+## Improved scheduling conditions
+
+Based on a community request, this release [introduces](https://github.com/kestra-io/kestra/issues/2629) a new scheduling condition to allow executing your flows:
+1. Only during public holidays in your country
+2. Only during working days in your country — excluding [weekends](/plugins/core/conditions/io.kestra.plugin.core.condition.weekend) and [public holidays](/plugins/core/conditions/io.kestra.plugin.core.condition.publicholiday).
+
+The example below shows the latter use case i.e. executing the workflow only during weekdays:
+
+```yaml
+id: schedule
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.date | date('EEEE') }}"
+
+triggers:
+  - id: weekdays_at_9am
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "0 9 * * *"
+    conditions:
+      - type: io.kestra.core.models.conditions.types.Not
+        conditions:
+          - type: io.kestra.core.models.conditions.types.PublicHoliday
+            country: FR
+          - type: io.kestra.core.models.conditions.types.Weekend
+```
+
+## Website improvements
+
+The website has now a **new improved search** across the docs, plugins and blog posts, as well as [blueprints](/blueprints) which are now available not only in the UI but also on the website. The plugins got their own (beautiful!) [homepage](/plugins) with a dedicated search to make it easier to find the plugin you need.
+
+We've also added new documentation pages for [Azure DevOps CI/CD](../../docs/version-control-cicd/cicd/05-azure-devops/index.md), and [Role-Based Access Control (RBAC)](../../docs/07.enterprise/03.auth/rbac/index.md).
+
+## Bug fixes and reliability improvements
+
+As usual, we've fixed plenty of bugs and improved the reliability of Kestra. Significant area of improvements was the Multi-tenancy and RBAC, which are now more robust and reliable.
+
+Tenants can now be assigned a default [worker group](../../docs/07.enterprise/04.scalability/worker-group/index.md), allowing you to match a specific server as a default execution layer for a tenant.
+
+## Flow task renamed to `Subflow`
+
+The `Flow` task got renamed to `Subflow` for clarity. We've also added [a dedicated page for Subflows](../../docs/05.workflow-components/10.subflows/index.md) in the docs.
+
+Also, the `FlowCondition` got [deprecated](https://github.com/kestra-io/kestra/issues/2327) in favor of [`ExecutionFlow`](/plugins/core/conditions/io.kestra.plugin.core.condition.executionflow) condition.
+
+
+## Plugins
+
+### Support for SMB protocol in the `fs` plugin
+
+The `fs` plugin now supports [SMB protocol](/plugins/plugin-fs#smb), allowing you to read and write files from SMB shares such as Samba.
+
+### New apache Druid plugin
+
+Shruti Mantri from the community has contributed a new [Apache Druid plugin](/plugins/plugin-jdbc-druid) that allows you to easily query Druid via a Query task and trigger. Big thanks to Shruti for this contribution!
+
+### OpenAI plugin now supports function calling
+
+So far, the `ChatCompletion` task in the [OpenAI plugin](/plugins/plugin-openai) only allowed simple prompts. This task now supports [function calling](https://platform.openai.com/docs/guides/function-calling), enabling more complex AI-powered workflows. Big thanks to [Ryan Peden](https://github.com/kestra-io/plugin-openai/pull/5) for contributing that feature!
+
+Here is an example of a workflow that uses the new function calling feature to prioritize customer reviews and respond to them accordingly:
+
+```yaml
+id: openAI
+namespace: company.team
+
+inputs:
+  - id: prompt
+    type: STRING
+    defaults: I love your product and would purchase it again!
+
+tasks:
+  - id: prioritize_response
+    type: io.kestra.plugin.openai.ChatCompletion
+    apiKey: "{{ secret('OPENAI_API_KEY') }}"
+    model: gpt-4
+    messages:
+      - role: user
+        content: "{{ inputs.prompt }}"
+    functions:
+      - name: respond_to_review
+        description: Given the customer product review provided as input, determines how urgently a reply is required and then provides suggested response text.
+        parameters:
+          - name: response_urgency
+            type: string
+            description: How urgently this customer review needs a reply. Bad reviews must be addressed immediately before anyone sees them. Good reviews can wait until later.
+            required: true
+            enumValues:
+              - reply_immediately
+              - reply_later
+          - name: response_text
+            description: The text to post online in response to this review.
+            type: string
+            required: true
+
+  - id: response_urgency
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{outputs.prioritize_response.choices[0].message.function_call.arguments.response_urgency}}"
+
+  - id: response_text
+    type: io.kestra.core.tasks.debugs.Return
+    format: "{{outputs.prioritize_response.choices[0].message.function_call.arguments.response_text}}"
+```
+
+Execute that flow first with the default input. Then, try with something negative such as:
+
+```
+I struggle to use your product. I feel like I'm banging my head against a brick wall.
+```
+
+You should see that OpenAI classifies all reviews astoundingly well and provides great automated responses. You can leverage function calling for a variety of automations.
+
+### Google Vertex AI plugin now supports multimodal completion with Gemini
+
+The [GCP plugin](/plugins/plugin-gcp) now supports [multimodal completion](/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.MultimodalCompletion), allowing you to process text, image, video and audio content based on a prompt passed to [Google Gemini LLM](https://deepmind.google/technologies/gemini). This feature is particularly useful for generating captions for images or transcripts for audio and video files.
+
+Here is an example of a workflow that uses multimodal completion to describe an image:
+
+```yaml
+id: gemini
+namespace: company.team
+
+inputs:
+  - id: image
+    type: FILE
+
+tasks:
+  - id: multimodal_completion
+    type: io.kestra.plugin.gcp.vertexai.MultimodalCompletion
+    serviceAccount: "{{ secret('GCP_CREDS') }}"
+    region: us-central1
+    projectId: your_gcp_project
+    contents:
+      - content: Can you describe this image?
+      - mimeType: image/jpeg
+        content: "{{ inputs.image }}"
+
+  - id: log_gemini_response
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.multimodal_completion.text }}"
+```
+
+You can do the same with audio or video files, and much more. Beofre using it, make sure to enable the recommended [Vertex AI APIs](https://console.cloud.google.com/vertex-ai).
+
+## Open-Source Community Contributions
+
+We are grateful to our community for their contributions to this release:
+- Edward Li contributed [a flatten function](https://github.com/kestra-io/kestra/pull/2537)
+- Shruti Mantri added a new [Apache Druid](https://github.com/kestra-io/plugin-jdbc/pull/182) plugin, a [Cassandra trigger](https://github.com/kestra-io/plugin-cassandra/pull/32) and a [fix to Apache Pinot](https://github.com/kestra-io/plugin-jdbc/pull/183)
+- Ryan Peden contributed [function calling](https://github.com/kestra-io/plugin-openai/pull/5) to the OpenAI plugin.
+
+## Next steps
+
+This post covered new features and enhancements added in Kestra 0.14.0. Which of them are your favorites? What should we add next? Your feedback is always appreciated.
+
+If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
+
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

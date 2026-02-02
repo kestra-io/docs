@@ -1,0 +1,37 @@
+---
+title: Kestra Task Runners – Offload and Isolate Compute
+sidebarTitle: Task Runners
+icon: /src/contents/docs/icons/concepts.svg
+version: ">= 0.18.0"
+editions: ["OSS", "EE"]
+description: Overview of Kestra Task Runners, enabling you to offload and isolate task execution across various environments.
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Task Runners is an extensible, pluggable system capable of executing your tasks in arbitrary remote environments.
+
+## Offload and isolate compute with task runners
+
+Many data processing tasks are **computationally intensive** and require a lot of resources (_such as CPU, GPU, and memory_). Instead of provisioning always-on servers, Task Runners can execute your code on **dynamically provisioned compute instances** in the cloud, such as AWS ECS Fargate, Azure Batch, Google Batch, auto-scaled Kubernetes clusters, and more.
+
+All you have to do to offload your task execution to a remote environment is to specify the `taskRunner` type in your task configuration. Each `type` of a task runner is a **plugin** with its own schema. The built-in code editor provides documentation, autocompletion, and syntax validation for all task runner plugin properties to ensure correctness, standardization, and consistency.
+
+:::alert{type="info"}
+Note that some task runner plugins are available only in the [Enterprise Edition](../07.enterprise/index.mdx). If you want to try them out, please [reach out](/demo).
+See [Open Source vs Enterprise](../oss-vs-paid/index.md) to compare editions.
+:::
+
+<div class="video-container">
+    <iframe
+        src="https://www.youtube.com/embed/edYa8WAMAdQ?si=2vu6XPUUeTQziWNq"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+    ></iframe>
+</div>
+
+---
+
+<ChildCard />

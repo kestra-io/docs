@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content"
+import BigChildCardsRender from "~/components/content/BigChildCardsRender.vue"
+interface Props {
+    title: string
+    directory: string
+}
+
+const { title, directory } = Astro.props
+
+const directoryNoDocs = directory.replace(/^\/docs\/?/, "").replace(/\/$/, "")
+
+function getFirstContentLine(content?: string): string | undefined {
+    return content
+        ?.split("\n")
+        .find((line) => line.trim().length > 0 && !line.startsWith("#"))
+}
+
+const links = await getCollection("docs").then((docs) => {
+    return docs
+        .filter(
+            (doc) =>
+                doc.id.startsWith(`${directoryNoDocs}/`) &&
+                doc.id !== directory,
+        )
+        .map((doc) => {
+            const description =
+                doc.data.description || getFirstContentLine(doc.body) || ""
+            return {
+                title: doc.data.title,
+                description,
+                path: `/docs/${doc.id}`,
+            }
+        })
+})
+---
+
+<BigChildCardsRender title={title} navigation={links} />

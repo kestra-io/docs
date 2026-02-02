@@ -1,22 +1,22 @@
 export default {
     // hardening
-    'base-uri': ["'self'", "https://kestra.io"],
-    'object-src': ["'none'"],
-    'script-src-attr': ["'unsafe-inline'"],
-    'default-src': [
+    "base-uri": ["'self'", "https://kestra.io"],
+    "object-src": ["'none'"],
+    "script-src-attr": ["'unsafe-inline'"],
+    "default-src": [
         "'self'",
         "https://*.cr-relay.com",
         "https://*.kestra-io.pages.dev",
-        "https://kestra.io"
+        "https://kestra.io",
     ],
     // scripts
-    'script-src': [
+    "script-src": [
         "'self'",
-        "'wasm-unsafe-eval'", 
+        "'wasm-unsafe-eval'",
         "'unsafe-inline'",
         "ajax.cloudflare.com",
         "static.cloudflareinsights.com",
-        "https://cdn.cr-relay.com",
+        "https://*.cr-relay.com",
         "https://*.kestra-io.pages.dev",
         "https://*.hs-analytics.net",
         "https://*.hs-banner.com",
@@ -29,39 +29,51 @@ export default {
         "https://*.googletagmanager.com",
         "https://*.redditstatic.com",
         "https://*.hs-scripts.com",
-        "https://*.hsforms.net"
+        "https://*.hsforms.net",
+        "https://*.hsappstatic.net",
+        "https://www.google.com/recaptcha/",
+        "https://www.gstatic.com/recaptcha/",
     ],
     // styles & fonts
-    'style-src': ["'self'", 'https:', "'unsafe-inline'"],
-    'font-src': ["'self'", 'https:', 'data:'],
+    "style-src": ["'self'", "https:", "'unsafe-inline'"],
+    "font-src": ["'self'", "https:", "data:"],
     // images
-    'img-src': [
+    "img-src": [
         "'self'",
-        'data:',
-        'blob:',
+        "data:",
+        "blob:",
         "https://*.google.fr",
         "https://*.google.com",
+        "https://*.linkedin.com",
         "https://*.ads.linkedin.com",
         "https://*.reddit.com",
         "https://*.hubspot.com",
         "https://*.hsforms.com",
         "https://*.googleapis.com",
-        "https://i.ytimg.com",
-        "https://*.googletagmanager.com"
+        "https://*.ytimg.com",
+        "https://*.googletagmanager.com",
+        "https://*.githubusercontent.com/",
     ],
+    // forms
+    "form-action": ["'self'", "https://*.hsforms.com"],
     // iframes
-    'frame-src': [
+    "frame-src": [
         "'self'",
+        "data:",
         "https://*.google.com",
         "https://*.youtube.com",
         "https://*.googletagmanager.com",
+        "https://*.kestra.io/",
+        "https://*.arcade.software",
+        "https://*.hubspot.com",
+        "https://*.hsforms.com",
     ],
-    'connect-src': [
+    "connect-src": [
         "'self'",
         "cloudflareinsights.com",
         "ws://localhost:4000",
-        "https://api.kestra.io",
         "https://kestra.io",
+        "https://*.kestra.io",
         "https://*.google.com",
         "https://*.reddit.com",
         "https://*.redditstatic.com",
@@ -71,16 +83,18 @@ export default {
         "https://*.ads.linkedin.com",
         "https://*.hsappstatic.net",
         "https://unpkg.com",
-        "https://cdn.jsdelivr.net",
+        "https://*.jsdelivr.net",
         "https://*.hs-scripts.com",
         "https://*.hsforms.net",
         "https://*.hsforms.com",
         "https://*.s3.amazonaws.com",
-        "https://stats.g.doubleclick.net",
-        "https://stats.g.doubleclick.com"
+        "https://*.g.doubleclick.net",
+        "https://*.g.doubleclick.com",
+        "https://*.ipify.org",
+        "https://*.github.com",
     ],
     // workers
-    'worker-src': ["'self'", 'blob:'],
+    "worker-src": ["'self'", "blob:"],
     // mixed content
-    'upgrade-insecure-requests': true,
-};
+    "upgrade-insecure-requests": true,
+}

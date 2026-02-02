@@ -1,0 +1,81 @@
+---
+import { API_URL } from "astro:env/client"
+import Layout from "~/components/layout.astro"
+import Hero from "~/components/infrastructure/Hero.astro"
+import Deserver from "~/components/infrastructure/Deserver.astro"
+import Fortune from "~/components/infrastructure/Fortune.astro"
+import Govern from "~/components/infrastructure/Govern.astro"
+import Tour from "~/components/infrastructure/Tour.astro"
+import Operation from "~/components/infrastructure/Operation.astro"
+import Automations from "~/components/infrastructure/Automations.astro"
+import Lifecycle from "~/components/infrastructure/Lifecycle.astro"
+import Connect from "~/components/infrastructure/Connect.astro"
+import Built from "~/components/infrastructure/Built.astro"
+import Ready from "~/components/infrastructure/Ready.astro"
+
+const title =
+    "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
+const description =
+    "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
+
+const { results: blueprints } = await fetch(
+    `${API_URL}/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
+).then((res) => res.json())
+const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
+    (res) => res.json(),
+)
+
+const plugins = Object.entries(
+    (await import.meta.glob("/src/contents/docs/icons/plugins/*.svg", {
+        eager: true,
+    })) as Record<string, { default: { src: string } }>,
+).map(([key, mod]) => ({
+    name: key.split("/").pop()?.replace(".svg", "") ?? "",
+    logo: mod.default,
+}))
+---
+
+<Layout {title} {description}>
+    <div class="infra">
+        <Hero />
+        <Deserver />
+        <Fortune />
+        <Govern />
+        <Tour />
+        <Operation />
+        <Automations {blueprints} {tags} />
+        <Lifecycle />
+        <Connect {plugins} />
+        <Built />
+        <Ready />
+    </div>
+</Layout>
+
+<style scoped lang="scss">
+    @import "~/assets/styles/_variable";
+    .infra {
+        // TODO: Only page level. Plan is to use "Mona Sans" throughout the website gradually.
+        font-family: var(--font-family-mona-sans), sans-serif !important;
+        overflow: clip;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 80px;
+            background: rgba($white, 0.06);
+            backdrop-filter: blur(2px);
+            z-index: 10;
+            pointer-events: none;
+            -webkit-mask-image: linear-gradient(
+                180deg,
+                transparent 0%,
+                $black 100%
+            );
+            mask-image: linear-gradient(180deg, transparent 0%, $black 100%);
+        }
+    }
+</style>

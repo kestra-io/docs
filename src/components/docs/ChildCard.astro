@@ -1,0 +1,80 @@
+---
+import { getCollection } from "astro:content"
+import ChildCardRender from "~/components/content/ChildCard.vue"
+import generateId from "~/utils/generateId"
+import { getImage } from "astro:assets"
+
+const currentPage = Astro.url.pathname.endsWith("/")
+    ? Astro.url.pathname.slice(0, -1)
+    : Astro.url.pathname
+
+const contentPath = currentPage.replace("/docs/", "")
+
+const docs = await getCollection("docs")
+const currentDoc = docs.find((doc) => doc.id === contentPath)
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/contents/docs/icons/*.svg",
+)
+
+const children = await Promise.all(
+    docs
+        .filter(
+            (doc) =>
+                doc.id.startsWith(`${contentPath}/`) &&
+                !doc.id.slice(contentPath.length + 1).includes("/"),
+        )
+        .sort((a, b) => {
+            if (a.filePath && b.filePath) {
+                return a.filePath.localeCompare(b.filePath)
+            }
+            return a.id.localeCompare(b.id)
+        })
+        .map(async (doc) => {
+            const firstLine = doc.body
+                ?.split("\n")
+                .find(
+                    (line) =>
+                        line.trim().length > 0 &&
+                        !line.startsWith("#") &&
+                        !line.trim().startsWith("import "),
+                )
+            const basePath = doc.id.replace(/\/[^/]+$/, "")
+            const description = firstLine
+                ? firstLine.replace(
+                      /\[([^\]]+)\]\(([^)]+)\)/g,
+                      (match, text, url) => {
+                          if (url.startsWith(".")) {
+                              const resolvedPath = basePath
+                                  ? `${basePath}/${url}`
+                                  : url
+                              const newUrl = `/docs/${generateId({ entry: resolvedPath })}`
+                              return `[${text}](${newUrl})`
+                          }
+                          return match
+                      },
+                  )
+                : ""
+
+            return {
+                title: doc.data.title,
+                description,
+                path: `/docs/${doc.id}`,
+                icon: doc.data.icon
+                    ? (await images[doc.data.icon]()).default.src
+                    : undefined,
+                release: doc.data.release,
+            }
+        }),
+)
+
+const currentPageIcon = currentDoc?.data?.icon
+    ? (await images[currentDoc.data.icon]()).default.src
+    : undefined
+---
+
+<ChildCardRender
+    navigation={children}
+    currentPageIcon={currentPageIcon}
+    client:load
+/>
