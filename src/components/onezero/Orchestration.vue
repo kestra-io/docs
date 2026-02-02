@@ -32,7 +32,7 @@
                 </h3>
                 <div class="profile" data-usal="fade-u delay-400">
                     <NuxtImg
-                        src="/landing/company/teams/edarras-sm.png"
+                        v-bind="EDarrasImg"
                         alt="Edarras"
                         class="profile-img"
                     />
@@ -47,6 +47,7 @@
 </template>
 
 <script lang="ts" setup>
+    import EDarrasImg from "~/assets/teams/edarras-sm.png"
     const features = [
         {
             title: "Define Goals, Not Tasks",

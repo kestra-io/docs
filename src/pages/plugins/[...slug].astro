@@ -5,10 +5,11 @@ import PluginSidebar from "~/components/plugins/PluginSidebar.vue"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import NavToc from "~/components/docs/NavToc.vue"
 import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
-import RelatedBlogs from "~/components/plugins/RelatedBlogs.vue"
+import RelatedBlogs from "~/components/plugins/RelatedBlogs.astro"
 import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
-import PluginVideos from "~/components/plugins/PluginVideos.vue"
+import PluginVideos from "~/components/plugins/PluginVideos.astro"
+import OneHeader from "~/components/plugins/OneHeader.astro"
 import { $fetchApi } from "~/utils/fetch"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
@@ -31,12 +32,18 @@ import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPlugin
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
 import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
-import OneHeader from "~/components/plugins/OneHeader.vue"
-import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
+import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
-const pathname = new URL(Astro.request.url).pathname
+let pathname = new URL(Astro.request.url).pathname
+
+if (pathname !== "/plugins/" && pathname.endsWith("/")) {
+    return Astro.redirect(pathname.slice(0, -1), 301)
+}
+if (pathname.endsWith("/")) {
+    pathname = pathname.slice(0, -1)
+}
 
 interface PluginPage {
     body: {
@@ -95,6 +102,31 @@ const githubReleaseRepo = (() => {
 })()
 
 const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
+
+if (!githubReleaseRepo.includes("plugin-ee")) {
+    try {
+        const { artifacts = {} } = await $fetchApi("/plugins/artifacts")
+        const normalizeRepoUrl = (url?: string) => {
+            if (!url) return undefined
+            return url
+                .replace(/^git@github\.com:/, "https://github.com/")
+                .replace(/\.git$/, "")
+        }
+
+        const repoUrl = normalizeRepoUrl(`https://github.com/kestra-io/${githubReleaseRepo}`)
+        githubVersions.versions?.forEach((v: any) => {
+            v.minCoreCompatibilityVersion = (
+                Object.values(artifacts).flat() as any[]
+            ).find(
+                (a) =>
+                    a.version === v.version &&
+                    normalizeRepoUrl(a.repository) === repoUrl,
+            )?.minCoreCompatibilityVersion
+        })
+    } catch (e) {
+        console.error("Artifacts fetch failed", e)
+    }
+}
 
 const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 
@@ -186,7 +218,7 @@ const { countByPlugins: blueprintCounts } = await $fetchApi<{
     countByPlugins: Record<string, number>
 }>(`/blueprints/countByPlugins`)
 
-const blogs = await loadBlogPostsMetadata()
+const blogs = await getCollection("blogs")
 
 const relatedBlogs = blogs
     .filter((b) => b.data.plugins?.includes(pluginName))
@@ -211,18 +243,6 @@ const currentSubgroupPlugin =
               return possibleSubgroupMatches.includes(subGroup)
           })
 
-const metadataMap = allPluginMetadata?.reduce<Record<string, PluginMetadata>>(
-    (acc, meta) => {
-        acc[meta.group] = meta
-        return acc
-    },
-    {},
-)
-
-/**
- * currentPluginMetadata provides the raw array of metadata,
- * while currentPageMetadata filters it down to the exact metadata for the page being viewed.
- */
 const currentPluginMetadata = (() => {
     const subgroupId =
         currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
@@ -246,6 +266,13 @@ const currentPluginMetadata = (() => {
 
     return []
 })()
+
+const metadataMap = currentPluginMetadata?.reduce<
+    Record<string, PluginMetadata>
+>((acc, meta) => {
+    acc[meta.group] = meta
+    return acc
+}, {})
 
 const currentPageMetadata = (() => {
     const meta = currentPluginMetadata
@@ -561,7 +588,6 @@ if (!pluginType && !subGroup) {
                             {rootPlugin}
                             {currentPageIcon}
                             {headingDescription}
-                            client:load
                         />
                     )
                 }
@@ -569,15 +595,17 @@ if (!pluginType && !subGroup) {
 
             <PluginsMDCRender
                 page={pageWithToc}
-                icons={subGroupsIcons}
+                icons={pluginType ? {} : subGroupsIcons}
                 plugin-type={pluginType}
-                plugins={pluginsWithoutDeprecated}
+                plugins={pluginType ? [] : pluginsWithoutDeprecated}
                 pluginName={pluginName}
                 subGroup={subGroup}
                 routePath={pathname}
-                subgroupBlueprintCounts={subgroupBlueprintCounts}
+                subgroupBlueprintCounts={pluginType
+                    ? {}
+                    : subgroupBlueprintCounts}
                 metadataMap={metadataMap}
-                schemas={elementTitle}
+                schemas={pluginType ? {} : elementTitle}
                 client:idle
             />
 
@@ -615,11 +643,13 @@ if (!pluginType && !subGroup) {
 
             {
                 currentPluginCategories?.length > 0 && (
-                    <SimilarPlugins
-                        {allPlugins}
-                        pluginsData={pluginsInformation.byPlugin}
-                    />
-                )
+                        <SimilarPlugins
+                            {allPlugins}
+                            pluginsData={pluginsInformation.byPlugin}
+                            categories={currentPluginCategories}
+                            {pluginName}
+                        />
+                    )
             }
         </article>
         <NavToc

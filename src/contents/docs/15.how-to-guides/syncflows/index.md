@@ -54,7 +54,7 @@ Given that the `dryRun` property is set to `true`, the task will only output cha
 
 ![git1](./git1.png)
 
-The files listed are the same ones we added in the [PushFlows guide](./pushflows.md).
+The files listed are the same ones we added in the [PushFlows guide](../pushflows/index.md).
 
 ## Sync all flows to a single namespace from Git
 

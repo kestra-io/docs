@@ -82,7 +82,7 @@
 
     const searchQuery = defineModel<string>("searchQuery")
 
-    const augmentedCategories = computed(() => ["All Categories", ...props.categories])
+    const augmentedCategories = computed(() => ["All Categories", ...(props.categories ?? [])])
 
     const setActiveCategory = (category: string) => {
         emit("update:activeCategory", category)

@@ -150,7 +150,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
-For more details, see the [sublow outputs documentation](../../11.migration-guide/0.15.0/subflow-outputs/index.md).
+For more details, see the [sublow outputs documentation](../../11.migration-guide/v0.15.0/subflow-outputs/index.md).
 
 ### Passing inputs to a subflow
 

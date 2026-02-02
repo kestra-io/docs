@@ -34,9 +34,9 @@
                         Release Notes
                         <OpenInNew class="ms-1" />
                     </a>
-                    <small v-if="!kestraCore" class="kestra-ver">
+                    <small v-if="!kestraCore && releaseVersions[0]?.minCoreCompatibilityVersion" class="kestra-ver">
                         Min. Compatible Kestra Version:
-                        <span class="core-ver">{{ releaseVersions[0]?.kestraVersion }}</span>
+                        <span class="core-ver">{{ releaseVersions[0]?.minCoreCompatibilityVersion }}</span>
                     </small>
                 </div>
                 <details v-if="releaseVersions.length > 1" @toggle="onToggle" class="old-versions">
@@ -63,9 +63,9 @@
                             >
                                 <OpenInNew />
                             </a>
-                            <small v-if="!kestraCore" class="kestra-ver">
+                            <small v-if="!kestraCore && v?.minCoreCompatibilityVersion" class="kestra-ver">
                                 Min. Compatible Kestra Version:
-                                <span class="core-ver">{{ v?.kestraVersion }}</span>
+                                <span class="core-ver">{{ v?.minCoreCompatibilityVersion }}</span>
                             </small>
                         </div>
                     </div>

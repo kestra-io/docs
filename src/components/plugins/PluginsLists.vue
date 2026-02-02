@@ -1,7 +1,7 @@
 <template>
     <section class="wrapper">
         <Header
-            :total-plugins="totalPlugins"
+            :total-plugins="props.totalPluginCount"
             v-model:search-query="searchQuery"
             :categories="categories"
             v-model:active-category="activeCategory"
@@ -40,6 +40,7 @@
             <CommonPaginationContainer
                 :current-url="fullPath"
                 :total-items="categoryFilteredPlugins.length"
+                :showTotal="false"
                 @update="
                     ({ page, size }) => {
                         currentPage = page
@@ -54,19 +55,13 @@
 </template>
 
 <script setup lang="ts">
-    import {
-        isEntryAPluginElementPredicate,
-        type Plugin,
-        type PluginElement,
-        filterPluginsWithoutDeprecated,
-    } from "@kestra-io/ui-libs"
     import Header from "~/components/plugins/Header.vue"
     import PluginCard from "~/components/plugins/PluginCard.vue"
     import CommonPaginationContainer from "~/components/common/PaginationContainer.vue"
     import PluginsFaq from "~/components/plugins/Faq.vue"
     import CustomSelect from "~/components/common/CustomSelect.vue"
     import { computed, ref, watch, onMounted } from "vue"
-    import { usePluginsCount } from "~/composables/usePluginsCount"
+    import type { CardPlugin } from "~/utils/plugins/pruneForClient"
 
     const currentPage = ref(1)
     const searchQuery = ref("")
@@ -79,22 +74,13 @@
     ]
 
     const props = defineProps<{
-        pluginsData: Record<string, PluginInformation>
-        plugins: Plugin[]
+        plugins: CardPlugin[]
+        categories: string[]
+        totalPluginCount: string
         fullPath: string
     }>()
 
-    const { totalPlugins } = usePluginsCount(ref(props.plugins))
-
-    const categories = computed(() =>
-        [
-            ...new Set(
-                Object.values(props.pluginsData).flatMap((plugin) => plugin.categories ?? []),
-            ),
-        ].sort(),
-    )
-
-    const sortPlugins = (plugins: Plugin[], ascending: boolean) =>
+    const sortPlugins = (plugins: CardPlugin[], ascending: boolean) =>
         [...plugins].sort((a, b) => {
             // Core plugin (io.kestra.plugin.core with no subGroup) should always appear first
             const aCore = a.group === "io.kestra.plugin.core" && !a.subGroup
@@ -107,7 +93,7 @@
             return ascending ? comparison : -comparison
         })
 
-    const activePlugins = computed(() => filterPluginsWithoutDeprecated(props.plugins ?? []))
+    const activePlugins = computed(() => props.plugins ?? [])
 
     const searchFilteredPlugins = computed(() =>
         setSearchPlugins(searchQuery.value, activePlugins.value),
@@ -117,8 +103,8 @@
         activeCategory.value === "All Categories"
             ? searchFilteredPlugins.value
             : searchFilteredPlugins.value.filter((item) =>
-                  item.categories?.includes(activeCategory.value),
-              ),
+                item.categories?.includes(activeCategory.value),
+            ),
     )
 
     const pluginsSlice = computed(() =>
@@ -128,21 +114,17 @@
         ),
     )
 
-    const pluginsInformation = (plugin: Plugin): PluginInformation => {
-        const pluginInfo = props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
-        return {
-            name: plugin.name,
-            subGroupTitle: plugin.title,
-            title: pluginInfo?.title,
-            description: pluginInfo?.description ?? plugin.description,
-            categories: pluginInfo?.categories,
-            icon: pluginInfo?.icon,
-            elementCounts: pluginInfo?.elementCounts,
-            blueprints: pluginInfo?.blueprints,
-            className: pluginInfo?.className,
-            subGroup: plugin.subGroup,
-        }
-    }
+    const pluginsInformation = (plugin: CardPlugin): PluginInformation => ({
+        name: plugin.name,
+        subGroupTitle: plugin.title,
+        title: plugin.title,
+        description: plugin.description,
+        categories: plugin.categories,
+        elementCounts: plugin.elementCounts ?? 0,
+        blueprints: plugin.blueprints ?? 0,
+        className: plugin.className,
+        subGroup: plugin.subGroup,
+    })
 
     onMounted(() => {
         const params = new URLSearchParams(window.location.search)
@@ -163,17 +145,14 @@
         window.history.replaceState(null, "", url)
     })
 
-    const setSearchPlugins = <T extends Plugin>(search: string | undefined, allPlugins: T[]) => {
+    const setSearchPlugins = (search: string | undefined, allPlugins: CardPlugin[]) => {
         if (!search) return allPlugins
         const tokens = search.trim().toLowerCase().split(/\s+/).filter(Boolean)
-        return allPlugins.filter((item) => {
-            if (tokens.every((t) => item?.title.toLowerCase().includes(t))) return true
-            return Object.entries(item)
-                .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
-                .flatMap(([_, elements]) => elements as PluginElement[])
-                .some(({ cls }: PluginElement) =>
-                    tokens.every((t) => cls.toLowerCase().includes(t)),
-                )
+        return allPlugins.filter((plugin) => {
+            if (tokens.every((t) => plugin.title?.toLowerCase().includes(t))) return true
+            if (tokens.every((t) => plugin.description?.toLowerCase().includes(t))) return true
+            if (tokens.every((t) => plugin.name?.toLowerCase().includes(t))) return true
+            return false
         })
     }
 </script>

@@ -21,6 +21,7 @@ export const collections = {
                 topics: z.array(z.string()).optional(),
                 stage: z.string().optional(),
                 hideSubMenus: z.boolean().optional(),
+                hideSidebar: z.boolean().optional(),
                 deprecated: z
                     .object({
                         since: z.string(),

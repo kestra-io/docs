@@ -5,6 +5,7 @@ import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
+import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
 import remarkDirective from "remark-directive"
@@ -54,6 +55,7 @@ export default defineConfig({
             useDarkModeMediaQuery: false,
         }),
         mdx(),
+        icon(),
     ],
     markdown: {
         remarkPlugins: [
@@ -74,6 +76,14 @@ export default defineConfig({
                      */
                     replacer(url, file) {
                         if (url.startsWith(".")) {
+                            // Extract hash fragment before processing relative URLs
+                            let hash = ""
+                            if (url.includes("#")) {
+                                const hashIndex = url.indexOf("#")
+                                hash = url.slice(hashIndex)
+                                url = url.slice(0, hashIndex)
+                            }
+
                             // if the file basename starts with index.
                             if(file.basename && file.basename.startsWith("index.")) {
                                 // if the url start with ./
@@ -89,7 +99,7 @@ export default defineConfig({
                                 }
                             }
 
-                            return generateId({entry: url})
+                            return generateId({entry: url}) + hash
                         }
                         return url
                     }
@@ -202,11 +212,7 @@ export default defineConfig({
                 },
             },
         },
-        optimizeDeps: {
-            include: ["vue3-count-to"],
-        },
         ssr: {
-            noExternal: ["vue3-count-to"],
             external: [
                 "node:fs/promises",
                 "node:fs",

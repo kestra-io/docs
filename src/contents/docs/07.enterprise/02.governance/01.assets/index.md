@@ -221,7 +221,7 @@ namespace: kestra.company.data
 tasks:
   - id: download
     type: io.kestra.plugin.core.http.Download
-    uri: https://raw.githubusercontent.com/kestra-io/datasets/refs/heads/main/jaffle-data/raw_customers.csv
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/jaffle-csv/raw_customers.csv
 
   - id: aws_upload
     type: io.kestra.plugin.aws.s3.Upload

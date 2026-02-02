@@ -8,7 +8,7 @@ editions: ["EE", "Cloud"]
 
 ## Set up Google OIDC SSO
 
-This guide provides step-by-step instructions to configure **OpenID Connect (OIDC) authentication using Google Identity Platform** and link it to [**Kestra Enterprise**](../../../01.overview/index.md) for [Single Sign-On (SSO)](../index.md).
+This guide provides step-by-step instructions to configure **OpenID Connect (OIDC) authentication using Google Identity Platform** and link it to [**Kestra Enterprise**](../../../index.mdx) for [Single Sign-On (SSO)](../index.md).
 
 ## Prerequisites
 
@@ -61,7 +61,7 @@ Refer to the [Google OIDC setup documentation](https://cloud.google.com/identity
 Now that Google is set up as an OIDC provider, we need to link it to Kestra.
 
 1. **Navigate to the Kestra Configuration File**:
-   - Locate the [Kestra configuration](../../../configuration/index.md) file.
+   - Locate the [Kestra configuration](../../../../configuration/index.md) file.
 
 2. **Add the OIDC Settings**:
    - Add the following configuration to enable Google as an OIDC provider for Kestra:
