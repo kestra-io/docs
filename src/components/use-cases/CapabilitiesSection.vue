@@ -111,7 +111,7 @@
                 "Orchestrate database migrations, backups, and restorations seamlessly within your development pipeline.",
             imageSource: "/landing/usecases/microservices-orchestration/database-management.svg",
             imageAlt: "Database Management",
-            pageHref: "/use-cases/databases-managament",
+            pageHref: "/use-cases/databases-management",
         },
         {
             title: "Disaster Recovery",

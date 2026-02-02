@@ -193,7 +193,7 @@
                             description:
                                 "Write tasks in Python, Bash, NodeJS, SQL, R, all from your browser.",
                             cta: "Supported languages",
-                            link: "https://kestra.io/docs/tutorial/scripts",
+                            link: "https://kestra.io/docs/scripts",
                             icon: Console,
                         },
                         {
