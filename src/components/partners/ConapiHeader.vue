@@ -53,7 +53,11 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+    import Section from "~/components/layout/Section.vue"
+
+    const logo = "/partners/conapi/logo.svg"
+</script>
 
 <style scoped lang="scss">
     @import "~/assets/styles/variable";
