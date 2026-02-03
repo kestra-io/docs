@@ -172,7 +172,7 @@ Many tasks can take input from multiple sources on the same property. They usual
     description = "Can be an internal storage URI, a list of Pub/Sub messages, or a single Pub/Sub message.",
     anyOf = {String.class, Message[].class, Message.class}
 )
-private Property<Object> from;
+private Object from;
 ```
 
 :::alert{type="info"}
