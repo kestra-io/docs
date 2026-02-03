@@ -33,7 +33,7 @@ Then rebuild and publish the plugin.
 ## Requirements
 
 Kestra plugins development requirements are:
-* [Java](https://java.com) 25 or later.
+* [Java](https://java.com) 21 or later.
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/) (or any other Java IDE, we provide only help for IntelliJ IDEA).
 * [Gradle](https://gradle.org/) (included most of the time with the IDE).
 
