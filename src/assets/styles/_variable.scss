@@ -138,25 +138,27 @@ $theme-colors: (
     "teal": $teal,
 );
 
+$font-family-mona-sans: var(--font-family-mona-sans);
 $font-family-sans-serif: var(--font-family-public-sans);
 $font-family-monospace: var(--font-family-source-code-pro);
+$font-family-jetbrains-mono: var(--font-family-jetbrains-mono);
 
 $font-size-base: 1rem;
 $font-size-xs: $font-size-base * 0.75;
 $font-size-sm: $font-size-base * 0.875;
 $font-size-md: $font-size-base * 1;
-$font-size-lg: $font-size-base * 1.25;
-$font-size-xl: $font-size-base * 1.375;
-$font-size-2xl: $font-size-base * 2.188;
-$font-size-3xl: $font-size-base * 3;
-$font-size-4xl: $font-size-base * 3.75;
+$font-size-lg: $font-size-base * 1.375;
+$font-size-xl: $font-size-base * 1.5;
+$font-size-2xl: $font-size-base * 1.75;
+$font-size-3xl: $font-size-base * 2.125;
+$font-size-4xl: $font-size-base * 2.5;
 
-$h1-font-size: $font-size-base * 3.375;
-$h2-font-size: $font-size-base * 2.5;
-$h3-font-size: $font-size-base * 2;
-$h4-font-size: $font-size-base * 1.375;
-$h5-font-size: $font-size-base * 1.25;
-$h6-font-size: $font-size-base * 1.125;
+$h1-font-size: $font-size-4xl;
+$h2-font-size: $font-size-3xl;
+$h3-font-size: $font-size-2xl;
+$h4-font-size: $font-size-xl;
+$h5-font-size: calc($font-size-lg - 0.25rem);
+$h6-font-size: $font-size-md;
 
 $body-color: $black;
 $body-tertiary-color: #ffffff;
@@ -220,6 +222,26 @@ $rem-10: 10rem;
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
 
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1520px
+);
+
+$container-padding-x: $grid-gutter-width * 0.5;
+$grid-row-columns: 6;
+
 $spacers: map-merge(
     $spacers,
     (
@@ -236,7 +258,7 @@ $font-sizes: map-merge(
     $font-sizes,
     (
         7: (
-            $font-size-base * 0.75,
+            $font-size-xs,
         ),
     )
 );
