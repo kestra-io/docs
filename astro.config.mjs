@@ -142,6 +142,12 @@ export default defineConfig({
                 weights: [400, 700],
                 cssVariable: "--font-family-mona-sans",
             },
+            {
+                provider: fontProviders.google(),
+                name: "JetBrains Mono",
+                weights: [400, 700],
+                cssVariable: "--font-family-jetbrains-mono",
+            },
         ],
         svgo: true,
     },
