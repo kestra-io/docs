@@ -9,6 +9,9 @@
                     <p class="mt-2">Open Source Declarative Orchestration</p>
                     <Socials class="mt-4 socials" />
                     <LayoutNewsletter />
+                    <div class="mt-3">
+                        <slot name="theme-switcher" />
+                    </div>
                 </div>
                 <div class="col-lg-9 mb-3">
                     <div class="row">

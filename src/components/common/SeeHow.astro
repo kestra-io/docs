@@ -1,0 +1,85 @@
+---
+import { Image } from "astro:assets"
+
+import Link from "~/components/common/Link.astro"
+import seeHow from "~/assets/landing/see_how.svg"
+---
+
+<section class="bg-white border-bottom py-5 px-3">
+    <div class="see_how mx-auto w-100 border rounded-3 p-1">
+        <div class="inner mx-auto w-100">
+            <div class="row g-0">
+                <div class="col-12 col-md-6 border rounded-3 overflow-hidden">
+                    <Image
+                        src={seeHow}
+                        alt="See How"
+                        class="w-100 h-100 object-fit-cover"
+                    />
+                </div>
+                <div
+                    class="col-12 col-md-6 bg-light border rounded-3 d-flex align-items-center px-4 py-3 py-md-5"
+                >
+                    <div class="content">
+                        <h3 class="mb-3">
+                            <slot name="title" />
+                        </h3>
+                        <Link href="/demo" class="btn btn-gradient mb-3">
+                            Book a demo
+                        </Link>
+                        <p>
+                            <slot />
+                        </p>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        .see_how {
+            max-width: 1160px;
+            border-color: #f1f1f1 !important;
+
+            .inner {
+                .col-12 {
+                    max-height: 400px;
+                    border-color: #f1f1f1 !important;
+
+                    @include media-breakpoint-up(md) {
+                        max-height: 600px;
+                    }
+
+                    &:first-child {
+                        border-radius: 9px 9px 0 0 !important;
+
+                        @include media-breakpoint-up(md) {
+                            border-radius: 9px 0 0 9px !important;
+                        }
+                    }
+
+                    &:last-child {
+                        background-color: #f7f7f7 !important;
+                        border-radius: 0 0 9px 9px !important;
+
+                        @include media-breakpoint-up(md) {
+                            border-radius: 0 9px 9px 0 !important;
+                            padding-left: $rem-4 !important;
+                        }
+
+                        .content {
+                            max-width: 338px;
+
+                            h3 {
+                                line-height: 38px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

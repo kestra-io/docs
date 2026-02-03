@@ -1,0 +1,260 @@
+---
+import { Image } from "astro:assets"
+import Link from "~/components/common/Link.astro"
+
+const logos = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/landing/infrastructure/companies/*.svg",
+    { eager: true },
+)
+
+const COMPANIES = [
+    { name: "brainlab" },
+    { name: "bloomberg" },
+    { name: "fila", width: 63, height: 26 },
+    { name: "apple", width: 65, height: 34 },
+    { name: "toyota", width: 136, height: 45 },
+    { name: "apoteket", width: 115, height: 48 },
+]
+---
+
+<section>
+    <div class="background"></div>
+    <div class="content">
+        <div class="left-box">
+            <div class="badge">The New Standard for InfraOps</div>
+            <h1>
+                Modernize Infrastructure Automation With One <br class="d-none d-xl-block"> Unified Control
+                Plane
+            </h1>
+            <p>
+                Standardize provisioning and Day 2 operations with less risk and
+                operational overhead. <br class="d-none d-xl-block">Get full
+                visibility and control across all infrastructure workflows.
+            </p>
+            <div class="d-flex gap-3 flex-column flex-lg-row">
+                <Link href="/demo" class="btn btn-gradient"
+                    >Try for free - 26k Github stars</Link
+                >
+                <Link href="/demo" class="btn btn-secondary">Book a demo</Link>
+            </div>
+            <hr />
+            <span>Trusted by Leading Global Companies</span>
+            <div class="companies">
+                {
+                    COMPANIES.map((company) => (
+                        <Image
+                            src={
+                                logos[
+                                    `/src/assets/landing/infrastructure/companies/${company.name}.svg`
+                                ].default
+                            }
+                            alt={company.name}
+                            width={company.width}
+                            height={company.height}
+                            style={
+                                company.width
+                                    ? {
+                                          width: `${company.width}px`,
+                                          height: `${company.height}px`,
+                                      }
+                                    : {}
+                            }
+                        />
+                    ))
+                }
+            </div>
+        </div>
+        <div class="w-100 h-100 gradient-border">
+            <iframe
+                class="arcade-embed"
+                src={"https://demo.arcade.software/cuDf2qq3l9LX1WgP52Fp?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true"}
+                title="Hero Infra"
+                allowfullscreen
+                allow="clipboard-write"></iframe>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        position: relative;
+        width: 100%;
+        padding: 110px 100px 110px;
+        overflow: hidden;
+
+        @include media-breakpoint-down(xl) {
+            padding: 80px 20px 40px;
+            min-height: auto;
+        }
+
+        .background {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: url("~/assets/landing/infrastructure/infra_hero.png")
+                top center / cover no-repeat;
+            pointer-events: none;
+
+
+            @include media-breakpoint-up(lg) {
+                background-image:
+                    url("~/assets/landing/infrastructure/bg-ks.png"),
+                    url("~/assets/landing/infrastructure/infra_hero.png");
+                background-position:
+                    0% 0%,
+                    top center;
+                background-size:
+                    50% auto,
+                    cover;
+            }
+        }
+
+        .content {
+            display: flex;
+            align-items: center;
+            gap: 64px;
+            max-width: 1520px;
+            margin: 0 auto;
+            color: $white;
+
+            @media (max-width: 1560px) {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .left-box {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+                @media (min-width: 1560px) {
+                    max-width: 690px;
+                }
+                height: 100%;
+
+                .badge {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 4px 16px;
+                    min-height: 28px;
+                    margin-bottom: 1.5rem;
+                    border: 1px solid $white;
+                    border-radius: 66px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    background: linear-gradient(
+                        90deg,
+                        #6ce4ff 0%,
+                        #e1ff95 37.98%,
+                        #d8f8ff 100%
+                    );
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                h1 {
+                    margin-top: 0;
+                    margin-bottom: 1.5rem;
+                }
+
+                p {
+                    font-size: $font-size-md;
+                    line-height: 28px;
+                    margin-bottom: 2rem;
+                }
+
+                hr {
+                    width: 100%;
+                    margin: 1.5rem 0;
+                    border: none;
+                    border-top: 1px solid $white;
+                }
+
+                span {
+                    font-family: $font-family-jetbrains-mono;
+                    font-size: $font-size-xs;
+                }
+
+                .companies {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-left: -14px;
+
+                    img {
+                        flex-shrink: 0;
+                        object-fit: contain;
+
+                        &:nth-child(2) {
+                            margin-left: -24px;
+                        }
+
+                        &:last-child {
+                            margin-left: 8px;
+                        }
+                    }
+                }
+            }
+
+            .gradient-border {
+                position: relative;
+                width: 100%;
+                overflow: hidden;
+                border-radius: 8px;
+
+                background: linear-gradient(
+                    135deg,
+                    rgba($white, 0.1) 0%,
+                    rgba($white, 0) 50%,
+                    rgba($white, 0.1) 100%
+                );
+                border-radius: 12.57px;
+                padding: 0.1rem;
+                backdrop-filter: blur(10px);
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(
+                        132.13deg,
+                        rgba($white, 0.8) 4.37%,
+                        rgba($gray-500, 0.4) 41.25%
+                    );
+                    border-radius: 12px;
+                    padding: 1.05px;
+                    pointer-events: none;
+                    -webkit-mask:
+                        linear-gradient($white 0 0) content-box,
+                        linear-gradient($white 0 0);
+                    mask:
+                        linear-gradient($white 0 0) content-box,
+                        linear-gradient($white 0 0);
+                    -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+                    z-index: -1;
+                }
+
+                .arcade-embed {
+                    display: block;
+                    width: 100%;
+                    aspect-ratio: 16 / 9;
+                    color-scheme: light;
+                    border-radius: 8.57px;
+                    border: none;
+
+                    @include media-breakpoint-down(sm) {
+                        aspect-ratio: 13 / 9;
+                    }
+                }
+            }
+        }
+    }
+</style>

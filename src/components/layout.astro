@@ -10,6 +10,7 @@ import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
 import LayoutFooter from "~/components/layout/Footer.vue"
 import LayoutFixed from "~/components/layout/Fixed.vue"
+import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
 
 interface Props {
@@ -52,7 +53,7 @@ const canonicalUrl = new URL(
 
 ---
 
-<html lang="en" class="dark">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -154,6 +155,7 @@ const canonicalUrl = new URL(
         <script src="../scripts/bootstrap.js"></script>
         <script src="../scripts/cookieconsent.ts"></script>
         <script src="../scripts/zoom.js"></script>
+        <script src="../scripts/theme"></script>
     </head>
     <body>
         <Header
@@ -166,7 +168,9 @@ const canonicalUrl = new URL(
             <slot />
         </main>
 
-        <LayoutFooter transition:persist client:visible />
+        <LayoutFooter transition:persist client:visible>
+            <ThemeSwitcher slot="theme-switcher" />
+        </LayoutFooter>
         <LayoutFixed client:load transition:persist online={slackMembers} />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
