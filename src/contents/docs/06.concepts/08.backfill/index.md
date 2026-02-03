@@ -79,12 +79,12 @@ Deleting a backfill only cancels the scheduled catch-up executions. For example,
 You can invoke the backfill executions using the `cURL` call as follows:
 
 ```sh
-curl -X PUT http://localhost:8080/api/v1/main/release/triggers \
+curl -X PUT http://localhost:8080/api/v1/main/triggers \
   -H "Authorization: Bearer $KESTRA_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "namespace": "dev",
-    "flowId":    "scheduled_flow",
+    "namespace": "company.team",
+    "flowId":    "myflow",
     "triggerId": "schedule",
     "backfill":  {
       "start": "2025-04-29T11:30:00Z",
@@ -103,6 +103,8 @@ In the `backfill` attribute, you need to provide the start time for the backfill
 
 Other attributes to this PUT call are `flowId`, `namespace`, and `triggerId` corresponding to the flow that is to backfilled.
 
+Check out the [API Reference](../../api-reference/02.open-source/index.mdx) for further backfill operations via the API.
+
 ### Using a service account
 
 :::badge{version=">=0.15" editions="EE,Cloud"}
@@ -111,13 +113,13 @@ Other attributes to this PUT call are `flowId`, `namespace`, and `triggerId` cor
 For Enterprise and Cloud users, the same process as above can be done with [Service Accounts](../../07.enterprise/03.auth/service-accounts/index.md), so no human user needed to be involved. In this case, you must specify the Tenant to use in the request header and definition: `X-KESTRA-TENANT` and `tenantId`. In the example we use a Tenant named `production`.
 
 ```sh
-curl -X PUT http://localhost:8080/api/v1/main/release/triggers \
+curl -X PUT http://localhost:8080/api/v1/main/triggers \
   -H "Authorization: Bearer $KESTRA_API_TOKEN" \
   -H "X-Kestra-Tenant: production" \
   -H "Content-Type: application/json" \
   -d '{
-    "namespace": "dev",
-    "flowId":    "scheduled_flow",
+    "namespace": "company.team",
+    "flowId":    "myflow",
     "triggerId": "schedule",
     "tenantId": "production",
     "backfill":  {
@@ -165,7 +167,7 @@ data = {
       }
     ]
   },
-  "flowId": "scheduled_flow",
+  "flowId": "myflow",
   "namespace": "company.team",
   "triggerId": "schedule"
 }
