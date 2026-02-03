@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.2.2
+  version: 1.2.3
 tags:
 - name: Flows
   description: Flows api
@@ -15936,7 +15936,7 @@ components:
             if a previous run is still in progress.
           type: boolean
         assets:
-          $ref: "#/components/schemas/Property_AssetsDeclaration_"
+          $ref: "#/components/schemas/AssetsDeclaration"
     AbstractTriggerForExecution:
       required:
       - id
@@ -16505,12 +16505,13 @@ components:
           format: date-time
     AssetsDeclaration:
       type: object
-      allOf:
-      - $ref: "#/components/schemas/AssetsInOut"
-      - type: object
-        properties:
-          enableAuto:
-            type: boolean
+      properties:
+        enableAuto:
+          $ref: "#/components/schemas/Property_Boolean_"
+        inputs:
+          $ref: "#/components/schemas/Property_List_AssetIdentifier__"
+        outputs:
+          $ref: "#/components/schemas/Property_List_Asset__"
     AssetsInOut:
       type: object
       properties:
@@ -17269,8 +17270,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Chart_ChartOption_"
-        sourceCode:
-          type: string
     DashboardController.PreviewRequest:
       required:
       - chart
@@ -20381,16 +20380,9 @@ components:
       - CORE
       - INGESTION
       - BI
-    Property_AssetsDeclaration_:
-      type: object
-      properties:
-        expression:
-          type: string
-        value:
-          $ref: "#/components/schemas/AssetsDeclaration"
-      oneOf:
-      - type: object
-      - type: string
+      - BUSINESS
+      - DATA
+      - INFRASTRUCTURE
     Property_Boolean_:
       type: object
       properties:
@@ -20419,6 +20411,30 @@ components:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
+    Property_List_AssetIdentifier__:
+      type: object
+      properties:
+        expression:
+          type: string
+        value:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetIdentifier"
+      oneOf:
+      - type: object
+      - type: string
+    Property_List_Asset__:
+      type: object
+      properties:
+        expression:
+          type: string
+        value:
+          type: array
+          items:
+            $ref: "#/components/schemas/Asset"
       oneOf:
       - type: object
       - type: string
@@ -21290,7 +21306,7 @@ components:
         assets:
           nullable: true
           allOf:
-          - $ref: "#/components/schemas/Property_AssetsDeclaration_"
+          - $ref: "#/components/schemas/AssetsDeclaration"
     TaskFixture:
       required:
       - id
