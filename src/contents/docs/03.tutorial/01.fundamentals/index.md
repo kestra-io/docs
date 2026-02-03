@@ -139,6 +139,10 @@ tasks:
       print("Hello World!")
 ```
 
+### Iterate quickly with Playground
+
+When you want to tweak a flow step by step without rerunning everything, use the **Playground** in the editor. It lets you play tasks one at a time, keep prior outputs, and iterate like a notebook. See the short guide in [UI → Playground](../../09.ui/10.playground/index.md) and try it with the `getting_started` example above before moving on.
+
 ### Autocompletion
 
 Kestra supports [hundreds of tasks](/plugins) integrating with various external systems. It's not necessary nor possible to memorize all potential tasks or properties (maybe one day) Use the shortcut `CTRL + SPACE` on Windows/Linux or `fn + control + SPACE` on macOS to trigger autocompletion to list available tasks or properties of a given task. Kestra also has built-in documentation accessible through the UI for Flow, Task, and Trigger properties, so you don't have to context switch between building a flow and learning the ins and outs of a component.
