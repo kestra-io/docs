@@ -19,6 +19,11 @@
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
+
+    .container-fluid {
+        overflow: hidden;
+    }
+
     .container {
         border-top: $block-border;
         padding-top: 3rem;
