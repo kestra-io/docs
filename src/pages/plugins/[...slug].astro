@@ -34,6 +34,7 @@ import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
+import type { StringifyOptions } from "querystring"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -70,7 +71,7 @@ interface PluginPage {
     message?: string
     editLink?: boolean
     extension?: string
-    stem?: string
+    stem?: StringifyOptions
 }
 
 interface PluginPageWithToc extends PluginPage {
@@ -113,7 +114,9 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
                 .replace(/\.git$/, "")
         }
 
-        const repoUrl = normalizeRepoUrl(`https://github.com/kestra-io/${githubReleaseRepo}`)
+        const repoUrl = normalizeRepoUrl(
+            `https://github.com/kestra-io/${githubReleaseRepo}`,
+        )
         githubVersions.versions?.forEach((v: any) => {
             v.minCoreCompatibilityVersion = (
                 Object.values(artifacts).flat() as any[]
@@ -147,7 +150,7 @@ const pluginType = (() => {
     }`
 })()
 
-// try to redirect if alias found, if not redirect to /plugins
+// try to redirect if alias found
 try {
     const mappedUrl = redirectAlias(
         aliasMapping,
@@ -176,10 +179,18 @@ async function makePagePluginDefinition() {
     try {
         const pageData = await $fetchApi<{
             markdown: string
-            schema: JSONSchema
+            schema: JSONSchema & {
+                properties: {
+                    $deprecated?: "true" | "false"
+                }
+            }
         }>(`/plugins/definitions/${pluginType}`)
         const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
         const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
+
+        if (pageData.schema.properties.$deprecated === "true") {
+            return null
+        }
 
         return {
             name,
@@ -643,13 +654,13 @@ if (!pluginType && !subGroup) {
 
             {
                 currentPluginCategories?.length > 0 && (
-                        <SimilarPlugins
-                            {allPlugins}
-                            pluginsData={pluginsInformation.byPlugin}
-                            categories={currentPluginCategories}
-                            {pluginName}
-                        />
-                    )
+                    <SimilarPlugins
+                        {allPlugins}
+                        pluginsData={pluginsInformation.byPlugin}
+                        categories={currentPluginCategories}
+                        {pluginName}
+                    />
+                )
             }
         </article>
         <NavToc
