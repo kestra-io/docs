@@ -50,8 +50,8 @@
 </template>
 <script setup>
 import dark from './assets/logo-dark-version.png'
-import light from './assets/logo-dark-version.png'
-import monogram from './assets/logo-dark-version.png'
+import light from './assets/logo-light-version.png'
+import monogram from './assets/logo-monogram-version.png'
 </script>
 
 <style lang="scss" scoped>
