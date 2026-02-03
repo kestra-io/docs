@@ -147,7 +147,7 @@ You can add multiple examples if needed.
 
 ### Document the plugin properties
 
-In a plugin, all properties must be annotated by `io.kestra.core.models.annotations.PluginProperty` and should provide documentation via the `io.swagger.v3.oas.annotations.media.Schema` annotation and validation rules via `javax.validation.constraints.*`.
+Declare inputs with the `Property<T>` carrier type whenever possible, and document them with the `io.swagger.v3.oas.annotations.media.Schema` annotation plus validation rules from `javax.validation.constraints.*`. When a field needs legacy dynamic rendering or cannot use `Property<T>`, annotate it with `io.kestra.core.models.annotations.PluginProperty` (set `dynamic = true` for dynamic rendering) so JSON Schema and documentation stay accurate.
 
 The `@PluginProperty` annotation contains two attributes:
 
@@ -160,7 +160,7 @@ The Swagger `@Schema` annotation contains a lot of attributes that can be used t
 - `description`: long description of a property.
 - `anyOf`: a list of allowed sub-types of a property. Use it when the property type is an interface, an abstract class, or a class inside a hierarchy of classes to denote possible sub-types. This should be set when the property type is `Object`.
 
-The `@Schema` and `@PluginProperty` annotations can be used on fields, methods, or classes.
+The `@Schema` and `@PluginProperty` annotations can be used on fields, methods, or classes. Combining `Property<T>` with `@PluginProperty(dynamic = true)` is supported when you need dynamic rendering on a property that still benefits from the `Property` carrier type.
 
 Many tasks can take input from multiple sources on the same property. They usually have a single `from` property, a string representing a file in the Kestra Storage, a single object, or a list of objects. To document such property, you can use `anyOf` this way:
 
@@ -172,7 +172,7 @@ Many tasks can take input from multiple sources on the same property. They usual
     description = "Can be an internal storage URI, a list of Pub/Sub messages, or a single Pub/Sub message.",
     anyOf = {String.class, Message[].class, Message.class}
 )
-private Object from;
+private Property<Object> from;
 ```
 
 :::alert{type="info"}

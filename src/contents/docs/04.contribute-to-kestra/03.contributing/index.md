@@ -47,7 +47,7 @@ You can contribute an article about how you use Kestra to our [blog](/blogs). Em
 ### Requirements
 
 The following dependencies are required to build Kestra locally:
-- Java 21+
+- Java 25+
 - Node 14+ and npm
 - Docker & Docker Compose
 - an IDE (Intellij IDEA, Eclipse or VS Code)
