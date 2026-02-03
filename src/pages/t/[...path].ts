@@ -7,7 +7,7 @@ const staticProxyDomain = new URL("https://eu-assets.i.posthog.com/static/")
 
 export const ALL: APIRoute = async ({ request, clientAddress }) => {
     const requestUrl = new URL(request.url)
-    const realUrl = requestUrl.pathname.substring(2, requestUrl.pathname.length)
+    const realUrl = requestUrl.pathname.substring(2, requestUrl.pathname.length) + (requestUrl.search ? "?" + requestUrl.searchParams.toString() : "")
 
     const proxyUrl = new URL(
         realUrl,
