@@ -48,7 +48,10 @@
                                 <a
                                     @click.prevent="menuNavigate"
                                     :href="`#${tableOfContent.id}`"
-                                    :class="`depth-${tableOfContent.depth}`"
+                                    :class="{
+                                        [`depth-${tableOfContent.depth}`]: true,
+                                        active: tableOfContent.id === activeLinkId
+                                    }"
                                     >{{ tableOfContent.text }}</a
                                 >
                             </li>
@@ -62,7 +65,10 @@
                                         <a
                                             @click.prevent="menuNavigate"
                                             :href="`#${item.id}`"
-                                            :class="`depth-${item.depth}`"
+                                            :class="{
+                                                [`depth-${item.depth}`]: true,
+                                                active: item.id === activeLinkId
+                                            }"
                                             >{{ item.text }}</a
                                         >
                                     </li>
@@ -81,14 +87,16 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from "vue"
+    import { nextTick, ref } from "vue"
     import type { PluginMetadata } from "@kestra-io/ui-libs"
-    import { useEventListener, useScroll } from "@vueuse/core"
+    import { useEventListener, useScroll, useMounted } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
     import OverviewPanel from "~/components/plugins/OverviewPanel.vue"
     import type { ReleaseInfo } from "../../pages/api/github-releases"
+
+    const TRUE = true
 
     export interface TocLink {
         id: string
@@ -125,12 +133,6 @@
 
     const tableOfContentsExpanded = ref(false)
 
-    const removeActiveClasses = (): void => {
-        document.querySelectorAll("#nav-toc a").forEach((item) => {
-            item.classList.remove("active")
-        })
-    }
-
     const getFixedHeaderOffset = (): number => {
         const selectors = [
             "header",
@@ -166,11 +168,14 @@
 
     let timeOut: ReturnType<typeof setTimeout> | undefined
 
+    const activeLinkId = ref<string>("")
+
     const updateActiveLink = (id: string): void => {
-        removeActiveClasses()
-        const link = document.querySelector(`#nav-toc a[href="#${id}"]`) as HTMLElement
-        link?.classList.add("active")
-        link?.scrollIntoView({ block: "nearest" })
+        activeLinkId.value = id
+        nextTick(() => {
+            const link = document.querySelector(`#nav-toc a.active`) as HTMLElement
+            link?.scrollIntoView({ block: "nearest" })
+        })
     }
 
     function updateActiveLinkDelayed(id: string, delay: number): void {
@@ -222,16 +227,14 @@
         if (typeof currEl?.top === "number" && currEl.top <= 160) {
             const prevTop = prevEl?.top ?? -1
             if (prevTop === -1 || prevTop <= 0) {
-                if (linkArray.length < index + 1) {
-                    updateActiveLink(item.id)
-                }
+                updateActiveLink(item.id)
             }
         }
     }
 
     const handleScroll = (): void => {
         if (scrollY.value === 0) {
-            removeActiveClasses()
+            activeLinkId.value = ""
             return
         }
 
