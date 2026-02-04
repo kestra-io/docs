@@ -2,7 +2,7 @@
 title: Glossary – Useful Kestra Terms and Definitions
 description: A list of terms useful for understanding Kestra and declarative orchestration. 
 sidebarTitle: Glossary
-#icon: 
+icon: /src/contents/docs/icons/concepts.svg
 ---
 
 A list of terms useful for understanding Kestra and declarative orchestration. 
