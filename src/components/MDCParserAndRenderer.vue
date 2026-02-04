@@ -57,10 +57,14 @@
             border-radius: $border-radius-lg;
             background-color: #161617;
 
-            & code .line {
-                display: block;
-                min-height: 1rem;
-                white-space: pre-wrap;
+            & code{
+                border: none;
+                background: transparent;
+                padding: 0;
+                .line {
+                    min-height: 1rem;
+                    white-space: pre-wrap;
+                }
             }
         }
 
