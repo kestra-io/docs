@@ -57,48 +57,9 @@ Each service displays:
 - **TERMINATED_GRACEFULLY / TERMINATED_FORCED** — shutdown completed (clean or forced), moves to `NOT_RUNNING`.
 - **NOT_RUNNING / INACTIVE** — post-shutdown, final states reported in the UI.
 
-States come from the service lifecycle. Typical transitions are:
-
-```mermaid
-stateDiagram-v2
-    [*] --> CREATED
-
-    CREATED --> RUNNING
-    CREATED --> ERROR
-    CREATED --> DISCONNECTED
-    CREATED --> TERMINATING
-    CREATED --> MAINTENANCE
-
-    RUNNING --> ERROR
-    RUNNING --> DISCONNECTED
-    RUNNING --> TERMINATING
-    RUNNING --> MAINTENANCE
-
-    ERROR --> TERMINATING
-
-    DISCONNECTED --> TERMINATING
-    DISCONNECTED --> NOT_RUNNING
-
-    TERMINATING --> TERMINATED_GRACEFULLY
-    TERMINATING --> TERMINATED_FORCED
-    TERMINATING --> NOT_RUNNING
-
-    TERMINATED_GRACEFULLY --> NOT_RUNNING
-    TERMINATED_FORCED --> NOT_RUNNING
-
-    NOT_RUNNING --> INACTIVE
-
-    MAINTENANCE --> RUNNING
-    MAINTENANCE --> ERROR
-    MAINTENANCE --> DISCONNECTED
-    MAINTENANCE --> TERMINATING
-
-    INACTIVE --> INACTIVE
-```
-
-Practical notes:
+States come from the service lifecycle. Typical flow:
 - **CREATED** → **RUNNING** after a clean start; **MAINTENANCE** can be set directly for planned work.
-- **DISCONNECTED** signals a lost dependency (DB/queue). It either recovers to **RUNNING** or proceeds to shutdown.
+- **DISCONNECTED** signals a lost dependency (DB/queue) and may recover to **RUNNING** or proceed to shutdown.
 - **TERMINATING** attempts graceful stop; it ends in **TERMINATED_GRACEFULLY** or **TERMINATED_FORCED**, then **NOT_RUNNING** → **INACTIVE**.
 
 ### Server information and liveness
