@@ -1,5 +1,6 @@
 ---
-import { Image } from "astro:assets"
+import ContentCard from "~/components/layout/ContentCard.astro"
+import SplitSection from "~/components/layout/SplitSection.astro"
 import fleet from "~/assets/landing/infrastructure/fleet.svg"
 import security from "~/assets/landing/infrastructure/security.svg"
 import automation from "~/assets/landing/infrastructure/automation.svg"
@@ -29,242 +30,28 @@ const OPERATIONS = [
 ]
 ---
 
-<section class="operation">
-    <div class="layout">
-        <aside class="left">
-            <h2>
-                Day-2 Operations
-                <br class="d-none d-xxl-block" />
-                Orchestration
-                <br class="d-none d-xxl-block" />
-                With Kestra
-            </h2>
-            <a href="/demo" class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block">
-                Talk to us
-            </a>
-        </aside>
-        <div class="d-flex flex-column gap-6 cards">
-            {
-                OPERATIONS.map((op, index) => (
-                    <div
-                        class="right"
-                        data-usal={`fade duration-400 delay-${50 + index * 50} ease-out`}
-                    >
-                        <div
-                            class="inner-card"
-                            data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
-                        >
-                            <div class="left-section">
-                                {op.title && <h2>{op.title}</h2>}
-                                {op.desc && <p>{op.desc}</p>}
-                            </div>
-                            <div class="right-section">
-                                <Image
-                                    src={op.svg}
-                                    alt="Icon"
-                                    data-usal={`zoomin duration-400 delay-${150 + index * 50} ease-out`}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                ))
-            }
-        </div>
-        <a href="/demo" class="btn btn-primary btn-gradient mt-2 d-xxl-none d-block mx-auto">
-            Talk to us
-        </a>
-    </div>
-</section>
-
-<style lang="scss">
-    @import "~/assets/styles/variable";
-
-    .operation {
-        padding: 3rem 1rem 5.625rem;
-        background: $white;
-        display: flex;
-        justify-content: center;
-
-        @include media-breakpoint-up(xl) {
-            padding: 4rem 6.25rem 5.625rem;
-        }
-
-        .layout {
-            display: flex;
-            flex-direction: column;
-            gap: $rem-1;
-            align-items: flex-start;
-            max-width: 1280px;
-
-            @include media-breakpoint-up(xxl) {
-                flex-direction: row;
-                gap: $rem-4;
-            }
-
-            .left {
-                z-index: 1;
-                flex: none;
-                height: auto;
-                position: static;
-                align-self: flex-start;
-                background: $white;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-
-                @include media-breakpoint-up(xxl) {
-                    position: sticky;
-                    top: 4.1875rem;
-                    padding: 18rem 0;
-                    text-align: left;
-                    align-items: flex-start;
-                    width: auto;
-                }
-
-                h2 {
-                    font-weight: 600;
-                    font-size: $rem-2;
-
-                    @include media-breakpoint-up(lg) {
-                        line-height: $rem-3;
-                    }
-
-                    @include media-breakpoint-down(md) {
-                        text-align: left;
-                    }
-                }
-
-                .btn-primary:before {
-                    display: none;
-                }
-            }
-
-            .cards {
-                display: flex;
-                flex-direction: column;
-                gap: $rem-4;
-
-                @include media-breakpoint-between(md, lg) {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: $rem-3;
-                    align-items: start;
-                    padding: 0 $rem-1;
-
-                    .right {
-                        .inner-card {
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            padding-left: $rem-2;
-
-                            .left-section {
-                                flex: 1 1 auto;
-                                min-width: 0;
-                                padding-right: 1rem;
-                            }
-
-                            .right-section {
-                                flex: 0 0 360px;
-                                width: 360px;
-                                display: flex;
-                                align-items: center;
-
-                                img {
-                                    max-width: 360px;
-                                    width: 100%;
-                                    height: auto;
-                                    margin-left: 0;
-                                    border-radius: 0 0.8125rem 0.8125rem 0;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            .right {
-                width: 100%;
-                gap: $rem-4;
-                border-radius: 0.8125rem;
-                padding: 0.375rem;
-                border: 1px solid #d4d4d4;
-
-                @include media-breakpoint-up(xxl) {
-                    width: 933px;
-                    height: 421px;
-                }
-
-                .inner-card {
-                    width: 100%;
-                    gap: $rem-2;
-                    border-radius: 0.8125rem;
-                    background: #f9f9f9;
-                    display: flex;
-                    flex-direction: column-reverse;
-                    align-items: center;
-
-                    @include media-breakpoint-up(lg) {
-                        flex-direction: row;
-                        padding-left: $rem-4;
-                        height: fit-content;
-                        gap: $rem-3;
-                    }
-
-                    .left-section {
-                        display: flex;
-                        align-items: center;
-                        flex-direction: column;
-                        align-items: flex-start;
-                        justify-content: center;
-                        gap: 0.5rem;
-                        padding: 0 0.5rem;
-
-                        @include media-breakpoint-up(lg) {
-                            width: 396.5px;
-                            height: 154px;
-                        }
-
-                        h2 {
-                            font-weight: 700;
-                            font-size: 1.875rem;
-                        }
-
-                        p {
-                            font-weight: 400;
-                            font-size: 0.875rem;
-
-                            @include media-breakpoint-up(lg) {
-                                font-size: $rem-1;
-                            }
-                        }
-                    }
-
-                    .right-section {
-                        width: 100%;
-
-                        img {
-                            width: 100%;
-                            height: auto;
-                            object-fit: contain;
-                            display: block;
-                            border-radius: 0.8125rem 0.8125rem 0 0;
-                        }
-
-                        @include media-breakpoint-up(lg) {
-                            width: 396.5px;
-                            height: fit-content;
-                            margin-left: auto;
-
-                            img {
-                                border-radius: 0 0.8125rem 0.8125rem 0;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+<SplitSection
+    cta={{
+        text: "Talk to us",
+        href: "/demo"
+    }}
+>
+    <Fragment slot="title">
+        Day-2 Operations
+        <br class="d-none d-xxl-block" />
+        Orchestration
+        <br class="d-none d-xxl-block" />
+        With Kestra
+    </Fragment>
+    {
+        OPERATIONS.map((op, index) => (
+            <ContentCard
+                title={op.title}
+                description={op.desc}
+                image={op.svg}
+                index={index}
+            />
+        ))
     }
-</style>
+</SplitSection>
+

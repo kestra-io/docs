@@ -1,0 +1,183 @@
+---
+import { Image } from "astro:assets"
+import Link from "~/components/common/Link.astro"
+
+interface Props {
+    image: {
+        src: ImageMetadata;
+        alt: string;
+        width?: number;
+        height?: number;
+    };
+    quote: {
+        text: string;
+        author: string;
+    };
+    metrics: {
+        value: string;
+        label: string;
+    }[];
+    cta: {
+        text?: string;
+        link: string;
+    },
+    backgroundColor?: string;
+    theme?: string;
+}
+
+const {
+    image,
+    quote,
+    metrics,
+    cta,
+    backgroundColor = "var(--ks-background-secondary, #F7F7F7)",
+    theme = "#FC7115",
+} = Astro.props as Props;
+---
+
+<section class="read-story">
+    <div
+        class="container d-flex flex-column align-items-stretch gap-3 flex-lg-row align-items-lg-center"
+    >
+        <div
+            class="left-div d-flex justify-content-center d-lg-block"
+            data-usal="slide-r delay-0 duration-500 ease-out"
+        >
+            <Image
+                src={image.src}
+                width={image.width}
+                height={image.height}
+                alt={image.alt}
+                densities={[1, 2]}
+                class="img-fluid"
+            />
+        </div>
+
+        <div class="right-div d-flex flex-column gap-5">
+            <div data-usal="fade-u delay-25 duration-500 ease-out">
+                <h3>
+                    <span class="quote-mark">“</span>{quote.text}<span class="quote-mark">”</span>
+                </h3>
+                <small>{quote.author}</small>
+            </div>
+
+            <hr class="my-0">
+
+            <div
+                class="metrics-grid"
+                role="list"
+                data-usal="fade-u delay-50 duration-500 ease-out"
+            >
+                {
+                    metrics.map((metric, index) => (
+                        <div
+                            class="metric d-flex flex-column align-items-start"
+                            data-usal={`zoomin delay-${75 + index * 25} duration-400 ease-out`}
+                        >
+                            <h1 class="val">{metric.value}</h1>
+                            <div class="label">{metric.label}</div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div
+                class="d-flex flex-column align-items-start gap-3 flex-lg-row align-items-lg-center justify-content-lg-between"
+                data-usal="fade-u delay-100 duration-500 ease-out"
+            >
+                <h6>{cta.text}</h6>
+                <Link href={cta.link}>Read the story</Link>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss" define:vars={{ backgroundColor, theme }}>
+    @import "~/assets/styles/variable";
+
+    .read-story {
+        background-color: var(--backgroundColor);
+        padding: 4rem 2rem;
+
+        .container {
+            padding: 0;
+            display: flex;
+            justify-content: center;
+
+            .left-div {
+                width: 100%;
+                
+                @include media-breakpoint-up(lg) {
+                    max-width: 333px;
+                    margin-bottom: 0;
+                }
+            }
+
+            .right-div {
+                width: 100%;
+                padding-left: 0;
+                padding-top: 1.25rem;
+                color: $white;
+                
+                @include media-breakpoint-up(lg) {
+                    max-width: 682px;
+                    padding-left: 3.75rem;
+                    padding-top: 0;
+                    border-top: none;
+                }
+
+                small {
+                    color: #131316;
+                    font-family: $font-family-jetbrains-mono;
+                }
+
+                h3 {
+                    font-weight: 600;
+                    color: #131316;
+                    .quote-mark {
+                        color: var(--theme);
+                    }
+                }
+
+                h6 {
+                    font-weight: normal;
+                    color: #131316;
+                    margin-bottom: 0;
+                }
+
+                hr {
+                    border-color: rgba($black-10, 0.5);
+                }
+
+                .metrics-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 1.5rem;
+                    align-items: center;
+
+                    @include media-breakpoint-down(lg) {
+                        gap: 0.75rem;
+                    }
+
+                    .metric {
+                        .val {
+                            font: 600 3rem / 1 sans-serif;
+                            margin: 0;
+                            color: var(--theme);
+
+                            @include media-breakpoint-down(lg) {
+                                font-size: 2rem;
+                            }
+                        }
+
+                        .label {
+                            font-size: $font-size-xs;
+                            color: #131316;
+                            margin-top: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
