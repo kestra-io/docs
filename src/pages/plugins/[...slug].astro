@@ -113,7 +113,9 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
                 .replace(/\.git$/, "")
         }
 
-        const repoUrl = normalizeRepoUrl(`https://github.com/kestra-io/${githubReleaseRepo}`)
+        const repoUrl = normalizeRepoUrl(
+            `https://github.com/kestra-io/${githubReleaseRepo}`,
+        )
         githubVersions.versions?.forEach((v: any) => {
             v.minCoreCompatibilityVersion = (
                 Object.values(artifacts).flat() as any[]
@@ -505,7 +507,7 @@ if (
         (p) => subGroup === undefined || slugify(subGroupName(p)) === subGroup,
     )
 ) {
-    console.log("Redirecting due to no content")
+    console.warn("Redirecting due to no content")
 
     return Astro.redirect(
         `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
@@ -643,13 +645,13 @@ if (!pluginType && !subGroup) {
 
             {
                 currentPluginCategories?.length > 0 && (
-                        <SimilarPlugins
-                            {allPlugins}
-                            pluginsData={pluginsInformation.byPlugin}
-                            categories={currentPluginCategories}
-                            {pluginName}
-                        />
-                    )
+                    <SimilarPlugins
+                        {allPlugins}
+                        pluginsData={pluginsInformation.byPlugin}
+                        categories={currentPluginCategories}
+                        {pluginName}
+                    />
+                )
             }
         </article>
         <NavToc

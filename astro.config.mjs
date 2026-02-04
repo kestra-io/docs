@@ -10,8 +10,6 @@ import expressiveCode from "astro-expressive-code"
 
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
-// @ts-expect-error no types provided by package
-import remarkLinkRewrite from "remark-link-rewrite"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"

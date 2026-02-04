@@ -38,6 +38,7 @@
 
     const enter = (el: any) => {
         el.style.height = "0";
+        // oxlint-disable-next-line no-unused-expressions this is to trigger a reflow calculation
         el.offsetHeight;
         el.style.height = `${el.scrollHeight}px`;
     };
@@ -48,6 +49,7 @@
 
     const leave = (el: any) => {
         el.style.height = `${el.scrollHeight}px`;
+        // oxlint-disable-next-line no-unused-expressions this is to trigger a reflow calculation
         el.offsetHeight;
         el.style.height = "0";
     };
