@@ -50,29 +50,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden p-0">
-                        <div
+                    <div class="facets overflow-x-auto overflow-y-hidden p-0" role="tablist">
+                        <button
                             class="facet"
                             :class="{
                                 'facet-active': selectedFacet === undefined,
                             }"
+                            role="tab"
                             @click="() => selectFacet(undefined)"
                         >
                             <span>All</span>
                             <span>({{ allSum }})</span>
-                        </div>
-                        <div
+                        </button>
+                        <button
                             class="facet"
                             v-for="(result, key, index) in searchFacets"
                             @click="() => selectFacet(key)"
                             :class="{ 'facet-active': selectedFacet === key }"
+                            role="tab"
                             :key="index"
                         >
                             <span>{{
                                 key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()
                             }}</span>
                             <span>({{ result }})</span>
-                        </div>
+                        </button>
                     </div>
                     <div :class="{ loading: loading }">
                         <div class="row" v-if="searchResults && searchResults.length === 0">
@@ -565,6 +567,9 @@
                     padding: 0.5rem 1rem;
                     gap: 5px;
                     cursor: pointer;
+                    background-color: transparent;
+                    appearance: none;
+                    border: none;
                     border-top: 1px solid transparent;
                     color: $white;
                     -ms-overflow-style: none;
@@ -573,6 +578,10 @@
                     &-active {
                         border-top: 1px solid $purple-36;
                         color: $purple-36;
+                    }
+                    &:focus-visible {
+                        outline: none;
+                        text-decoration: underline;
                     }
                 }
                 &::-webkit-scrollbar {
