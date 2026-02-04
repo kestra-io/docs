@@ -17,14 +17,9 @@
                 </div>
             </div>
             <div class="col-lg-6 image" :class="content.image.style" data-usal="zoomin">
-                <NuxtImg
-                    :width="content.image.width"
-                    :height="content.image.height"
-                    loading="lazy"
-                    format="webp"
+                <img
                     class="zoom img-fluid"
-                    :src="content.image.href"
-                    :alt="content.image.alt"
+                    v-bind="content.image"
                 />
             </div>
         </div>

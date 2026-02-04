@@ -1,4 +1,5 @@
 ---
+import { getImage } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Examples from "~/components/use-cases/Examples.vue"
 import Line from "~/components/use-cases/Line.vue"
@@ -6,6 +7,7 @@ import HeaderCard from "~/components/use-cases/Card.vue"
 import Faqs from "~/components/write-for-us/Faqs.vue"
 import Process from "~/components/write-for-us/Process.vue"
 import Write from "~/components/write-for-us/Write.vue"
+import HeroImage from "~/components/write-for-us/assets/hero.svg"
 import LayoutFooterContact from "~/components/layout/FooterContact.vue"
 
 const href = "https://share-eu1.hsforms.com/1HWgyBQh8RP6pEZVFW51rOAg7f8j"
@@ -26,11 +28,12 @@ const header = {
         },
     ],
     image: {
-        href: "/write-for-us/hero.svg",
-        alt: "Header",
-        style: "image-community",
-        width: "546px",
-        height: "554px",
+        ...(await getImage({
+            src: HeroImage,
+            width: 546,
+            height: 554,
+        })),
+        alt: "header",
     },
 }
 
@@ -189,17 +192,16 @@ const description = header.description
 
 <Layout title={title} description={description}>
     <div class="main">
-        <HeaderCard content={header} client:load />
-        <Line class="divider-md" client:visible />
-        <Examples content={drafts} client:visible />
-        <Line class="mb-0" client:visible />
-        <Write content={write} client:visible />
-        <Line class="mt-0 mb-0" client:visible />
-        <Process content={process} client:visible />
-        <Faqs content={faqs} client:visible />
-        <Line client:visible />
+        <HeaderCard content={header} client:visible />
+        <Line class="divider-md" />
+        <Examples content={drafts} />
+        <Line class="mb-0" />
+        <Write content={write} />
+        <Line class="mt-0 mb-0" />
+        <Process content={process} />
+        <Faqs content={faqs} />
+        <Line />
         <LayoutFooterContact
-            client:visible
             title={footer.title}
             darkButtonText={footer.cta[0].text}
             darkButtonHref={footer.cta[0].href}
