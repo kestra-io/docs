@@ -78,7 +78,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
     "sass": "^1.97.3",
-    "wrangler": "^4.59.3"
+    "wrangler": "^4.62.0"
   },
   "engines": {
     "node": ">= 14",
