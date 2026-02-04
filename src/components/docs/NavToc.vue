@@ -373,7 +373,8 @@
 
                     @for $i from 2 through 6 {
                         &.depth-#{$i} {
-                            padding-left: calc(0.5rem + 2rem);
+                            font-size: 4px + (6 - $i) * 2px;
+                            padding-left: $i * 0.5rem + 1.5rem;
                         }
                     }
 
