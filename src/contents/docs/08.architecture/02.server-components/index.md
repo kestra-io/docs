@@ -38,6 +38,10 @@ You can deploy multiple Worker instances across different servers to scale horiz
 
 Because Workers directly execute tasks and triggers, they are the **only** server components that require access to external systems — such as databases, REST APIs, message brokers, and any other services your flows interact with.
 
+:::alert{type="info"}
+Looking for runtime status? The **Instance – Services** view shows live health for each component. See [Instance – services](../../07.enterprise/05.instance/index.mdx#services).
+:::
+
 ## Worker Group (EE)
 
 In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md), [Worker Groups](../../07.enterprise/04.scalability/worker-group/index.md) allow tasks and [Polling Triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md) to be executed on specific worker sets. They can be beneficial in various scenarios, such as using compute instances with GPUs, executing tasks on a specific OS, restricting backend access, and region-specific execution. A default worker group is recommended per [tenant](../10.multi-tenancy/index.md) or namespace.
