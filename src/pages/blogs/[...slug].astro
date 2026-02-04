@@ -85,11 +85,10 @@ const jsonLinkedData = {
                             <p class="d-flex breadcrumb" data-usal="fade-r">
                                 <a href="/">Home</a>/<a href="/blogs">Blog</a>
                             </p>
-                            <h2 data-usal="fade-l" class="pt-0">
+                            <h1 data-usal="fade-l" class="pt-0">
                                 {page.title}
-                            </h2>
+                            </h1>
                             <BlogDetails
-                                client:visible
                                 blog={post}
                                 authorsAvatars={Avatars}
                                 class="mt-3"
@@ -98,7 +97,7 @@ const jsonLinkedData = {
                                 class="d-lg-none d-block"
                                 data-usal="fade-zoom"
                             >
-                                <NavToc links={links} {editUrl} />
+                                <NavToc client:idle links={links} {editUrl} />
                             </div>
                         </div>
                         {page.image && (
@@ -156,7 +155,8 @@ const jsonLinkedData = {
             margin-bottom: 2rem;
         }
 
-        :global(h2), :global(h3) {
+        :global(h2),
+        :global(h3) {
             margin-top: 7.25rem;
             margin-bottom: 2rem;
             padding-left: 1rem;
@@ -238,10 +238,18 @@ const jsonLinkedData = {
         }
     }
 
-    .bd-title h2 {
-        color: #fff !important;
-        font-size: 2.5rem !important;
+    .bd-title h1 {
+        margin: 0;
+        margin-top: 1rem;
         font-weight: 400;
-        line-height: 3.25rem !important;
+        font-size: 3.5rem;
+        line-height: 4rem;
+    }
+
+    // Adjust layout to make the first column limited in width
+    @include media-breakpoint-up(lg) {
+        .bd-main {
+            grid-template-columns: 820px 1fr;
+        }
     }
 </style>
