@@ -1,5 +1,5 @@
 ---
-title: Purge Old Data in Kestra – Executions, Logs, KV
+title: Purge Old Data in Kestra – Executions, Logs, KV, Files
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.18.0"
@@ -45,7 +45,9 @@ triggers:
     cron: "@daily"
 ```
 
-The example below purges expired Key-value pairs from the `company` Namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) namespace.
+## Purge Key-value pairs
+
+The example below purges expired Key-value pairs from the `company` Namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) Namespace.
 
 ```yaml
 id: purge_kv_store
@@ -63,6 +65,28 @@ tasks:
 :::alert{type="warning"}
 Purge tasks permanently delete data. Always test in non-production environments first.
 :::
+
+## Purge Namespace files
+
+The example below purges old versions of Namespace files for a Namespace tree (parents + children Namespaces). Use a `filePattern` and specify the `behavior` (e.g., keep the last N versions and/or delete versions older than a given date):
+
+```yaml
+id: purge_namespace_files
+namespace: system
+
+tasks:
+  - id: purge_files
+    type: io.kestra.plugin.core.namespace.PurgeFiles
+    namespaces:
+      - company
+    includeChildNamespaces: true
+    filePattern: "**/*.sql"
+    behavior:
+      type: version
+      before: "2025-01-01T00:00:00Z"
+```
+
+Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) for more details.
 
 ## Purge tasks vs. UI deletion
 

@@ -1,22 +1,17 @@
 ---
 import { Image } from "astro:assets"
 import Link from "~/components/common/Link.astro"
-import badge from "~/assets/landing/infrastructure/new.png"
-import badgeMobile from "~/assets/landing/infrastructure/new-sm.png"
+import LogoCarousel from "~/components/common/LogoCarousel.vue"
 
-const logos = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/landing/infrastructure/companies/*.svg",
-    { eager: true },
-)
+const badge = import.meta.glob<{ default: ImageMetadata }>(
+    "~/assets/landing/infrastructure/new.png",
+    { eager: true }
+)["/src/assets/landing/infrastructure/new.png"].default;
 
-const COMPANIES = [
-    { name: "brainlab" },
-    { name: "bloomberg" },
-    { name: "fila", width: 63, height: 26 },
-    { name: "apple", width: 65, height: 34 },
-    { name: "toyota", width: 136, height: 45 },
-    { name: "apoteket", width: 115, height: 48 },
-]
+const badgeMobile = import.meta.glob<{ default: ImageMetadata }>(
+    "~/assets/landing/infrastructure/new-sm.png",
+    { eager: true }
+)["/src/assets/landing/infrastructure/new-sm.png"].default;
 ---
 
 <section>
@@ -54,33 +49,7 @@ const COMPANIES = [
                 <Link href="/demo" class="btn btn-secondary">Book a demo</Link>
             </div>
             <hr />
-            <span>Trusted by Leading Global Companies</span>
-            <div class="companies-container w-100 overflow-hidden">
-                <div class="companies d-flex align-items-center">
-                    {
-                        [...COMPANIES, ...COMPANIES].map((company) => (
-                            <Image
-                                src={
-                                    logos[
-                                        `/src/assets/landing/infrastructure/companies/${company.name}.svg`
-                                    ].default
-                                }
-                                alt={company.name}
-                                width={company.width}
-                                height={company.height}
-                                style={
-                                    company.width
-                                        ? {
-                                              width: `${company.width}px`,
-                                              height: `${company.height}px`,
-                                          }
-                                        : {}
-                                }
-                            />
-                        ))
-                    }
-                </div>
-            </div>
+            <LogoCarousel client:visible title="Trusted by Leading Global Companies" />
         </div>
         <div class="w-100 overflow-hidden gradient-border">
             <iframe
@@ -165,63 +134,6 @@ const COMPANIES = [
                     border: none;
                     border-top: 1px solid $white;
                 }
-
-                span {
-                    font-family: $font-family-jetbrains-mono;
-                    font-size: $font-size-xs;
-                }
-
-                .companies-container {
-                    @include media-breakpoint-down(sm) {
-                        margin-top: 1rem;
-                        -webkit-mask-image: linear-gradient(
-                            to right,
-                            transparent,
-                            black 10%,
-                            black 90%,
-                            transparent
-                        );
-                        mask-image: linear-gradient(
-                            to right,
-                            transparent,
-                            black 10%,
-                            black 90%,
-                            transparent
-                        );
-                    }
-
-                    .companies {
-                        @include media-breakpoint-up(sm) {
-                            gap: 8px;
-                            margin-left: -14px;
-                        }
-
-                        @include media-breakpoint-down(sm) {
-                            gap: 2rem;
-                            width: max-content;
-                            animation: marquee 20s linear infinite;
-                        }
-
-                        img {
-                            flex-shrink: 0;
-                            object-fit: contain;
-
-                            @include media-breakpoint-up(sm) {
-                                &:nth-child(2) {
-                                    margin-left: -24px;
-                                }
-
-                                &:last-child {
-                                    margin-left: 8px;
-                                }
-
-                                &:nth-child(n + 7) {
-                                    display: none;
-                                }
-                            }
-                        }
-                    }
-                }
             }
 
             .gradient-border {
@@ -276,14 +188,5 @@ const COMPANIES = [
                 }
             }
         }
-
-        @keyframes marquee {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-    }
+    } 
 </style>
