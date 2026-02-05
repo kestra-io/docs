@@ -1,0 +1,289 @@
+---
+import { Image } from "astro:assets"
+import Link from "~/components/common/Link.astro"
+import badge from "~/assets/landing/infrastructure/new.png"
+import badgeMobile from "~/assets/landing/infrastructure/new-sm.png"
+
+const logos = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/landing/infrastructure/companies/*.svg",
+    { eager: true },
+)
+
+const COMPANIES = [
+    { name: "brainlab" },
+    { name: "bloomberg" },
+    { name: "fila", width: 63, height: 26 },
+    { name: "apple", width: 65, height: 34 },
+    { name: "toyota", width: 136, height: 45 },
+    { name: "apoteket", width: 115, height: 48 },
+]
+---
+
+<section>
+    <div class="background"></div>
+    <div class="content d-flex align-items-center mx-auto text-white">
+        <div class="left-box d-flex flex-column align-items-start">
+            <Image
+                src={badge}
+                alt="badge"
+                densities={[1, 2]}
+                width={241}
+                height={28}
+                class="mb-3 d-none d-md-block"
+            />
+            <Image
+                src={badgeMobile}
+                alt="badge"
+                densities={[1, 2]}
+                height={28}
+                class="mb-3 d-md-none"
+            />
+            <h1>
+                Modernize Infrastructure Automation With One <br
+                    class="d-none d-xl-block"
+                /> Unified Control Plane
+            </h1>
+            <p>
+                Standardize provisioning and Day 2 operations with less risk and
+                operational overhead. Get full visibility and control across all infrastructure workflows.
+            </p>
+            <div class="d-flex gap-3 flex-column flex-lg-row">
+                <Link href="https://github.com/kestra-io/kestra" class="btn btn-gradient"
+                    >Try for free - 26k Github stars</Link
+                >
+                <Link href="/demo" class="btn btn-secondary">Book a demo</Link>
+            </div>
+            <hr />
+            <span>Trusted by Leading Global Companies</span>
+            <div class="companies-container w-100 overflow-hidden">
+                <div class="companies d-flex align-items-center">
+                    {
+                        [...COMPANIES, ...COMPANIES].map((company) => (
+                            <Image
+                                src={
+                                    logos[
+                                        `/src/assets/landing/infrastructure/companies/${company.name}.svg`
+                                    ].default
+                                }
+                                alt={company.name}
+                                width={company.width}
+                                height={company.height}
+                                style={
+                                    company.width
+                                        ? {
+                                              width: `${company.width}px`,
+                                              height: `${company.height}px`,
+                                          }
+                                        : {}
+                                }
+                            />
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="w-100 overflow-hidden gradient-border">
+            <iframe
+                class="arcade-embed w-100"
+                src={"https://demo.arcade.software/cuDf2qq3l9LX1WgP52Fp?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true"}
+                title="Hero Infra"
+                allowfullscreen
+                allow="clipboard-write"></iframe>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        position: relative;
+        width: 100%;
+        padding: 110px 100px 110px;
+        overflow: hidden;
+
+        @include media-breakpoint-down(xl) {
+            padding: 80px 20px 40px;
+        }
+
+        .background {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: url("~/assets/landing/infrastructure/mobile.png") top
+                center / cover no-repeat;
+            pointer-events: none;
+
+            @include media-breakpoint-up(md) {
+                background-image: url("~/assets/landing/infrastructure/infra_hero.webp");
+            }
+
+            @include media-breakpoint-up(lg) {
+                background-image:
+                    url("~/assets/landing/infrastructure/bg-ks.png"),
+                    url("~/assets/landing/infrastructure/infra_hero.webp");
+                background-position:
+                    0% 0%,
+                    top center;
+                background-size:
+                    50% auto,
+                    cover;
+            }
+        }
+
+        .content {
+            gap: $rem-4;
+            max-width: 1520px;
+
+            @media (max-width: 1560px) {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .left-box {
+                width: 100%;
+                @media (min-width: 1560px) {
+                    max-width: 690px;
+                }
+
+                :global(.link) {
+                    color: $white;
+                }
+
+                h1 {
+                    margin-top: 0;
+                    margin-bottom: 1.5rem;
+                }
+
+                p {
+                    margin-bottom: 2rem;
+                    font-size: 18px;
+                }
+
+                hr {
+                    margin: 1.5rem 0;
+                    border: none;
+                    border-top: 1px solid $white;
+                }
+
+                span {
+                    font-family: $font-family-jetbrains-mono;
+                    font-size: $font-size-xs;
+                }
+
+                .companies-container {
+                    @include media-breakpoint-down(sm) {
+                        margin-top: 1rem;
+                        -webkit-mask-image: linear-gradient(
+                            to right,
+                            transparent,
+                            black 10%,
+                            black 90%,
+                            transparent
+                        );
+                        mask-image: linear-gradient(
+                            to right,
+                            transparent,
+                            black 10%,
+                            black 90%,
+                            transparent
+                        );
+                    }
+
+                    .companies {
+                        @include media-breakpoint-up(sm) {
+                            gap: 8px;
+                            margin-left: -14px;
+                        }
+
+                        @include media-breakpoint-down(sm) {
+                            gap: 2rem;
+                            width: max-content;
+                            animation: marquee 20s linear infinite;
+                        }
+
+                        img {
+                            flex-shrink: 0;
+                            object-fit: contain;
+
+                            @include media-breakpoint-up(sm) {
+                                &:nth-child(2) {
+                                    margin-left: -24px;
+                                }
+
+                                &:last-child {
+                                    margin-left: 8px;
+                                }
+
+                                &:nth-child(n + 7) {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .gradient-border {
+                position: relative;
+
+                background: linear-gradient(
+                    135deg,
+                    rgba($white, 0.1) 0%,
+                    rgba($white, 0) 50%,
+                    rgba($white, 0.1) 100%
+                );
+                border-radius: 12.57px;
+                padding: 0.1rem;
+                backdrop-filter: blur(10px);
+                box-shadow: 5px 18px 44px 0px #000000bf;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(
+                        132.13deg,
+                        rgba($white, 0.8) 4.37%,
+                        rgba($gray-500, 0.4) 41.25%
+                    );
+                    border-radius: 12px;
+                    padding: 1.05px;
+                    pointer-events: none;
+                    -webkit-mask:
+                        linear-gradient($white 0 0) content-box,
+                        linear-gradient($white 0 0);
+                    mask:
+                        linear-gradient($white 0 0) content-box,
+                        linear-gradient($white 0 0);
+                    -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+                    z-index: -1;
+                }
+
+                .arcade-embed {
+                    aspect-ratio: 16 / 9;
+                    color-scheme: light;
+                    border-radius: 8.57px;
+                    border: none;
+
+                    @include media-breakpoint-down(sm) {
+                        aspect-ratio: 13 / 9;
+                    }
+                }
+            }
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    }
+</style>

@@ -700,11 +700,6 @@ nav {
             .get-started {
                 padding: calc($spacer * 0.65) $spacer !important;
             }
-
-            :deep(.github .btn-outline-dark) {
-                background: transparent;
-                color: $black-1 !important;
-            }
         }
 
         @include media-breakpoint-down(md) {
@@ -724,25 +719,6 @@ nav {
         }
     }
 
-    &:not(.transparent):not(.dark) {
-        :deep(.github) {
-            &:hover {
-                .btn-dark {
-                    background: transparent !important;
-                }
-
-                .btn-outline-dark {
-                    background: transparent;
-                    color: $white-1 !important;
-                }
-            }
-        }
-
-        :deep(.github .btn-outline-dark) {
-            background: transparent;
-        }
-    }
-
     .btn:hover {
         color: $purple-36;
     }
@@ -754,10 +730,6 @@ nav {
         a,
         a.nav-link,
         &.btn.search {
-            color: var(--bs-white);
-        }
-
-        :deep(.github .btn-outline-dark) {
             color: var(--bs-white);
         }
 
@@ -842,22 +814,6 @@ nav {
             ul.navbar-nav li a.nav-link:hover {
                 color: $black-1 !important;
             }
-        }
-
-        :deep(.github .btn) {
-            border: 1px solid $white-1;
-            color: $black-1 !important;
-        }
-        :deep(.github .btn-dark) {
-            background: $black-5;
-            color: $white-1 !important;
-        }
-        :deep(.github .btn-outline-dark) {
-            color: $black-1;
-        }
-
-        :deep(.github .btn-outline-dark:hover) {
-            background: transparent !important;
         }
 
         &.open {
