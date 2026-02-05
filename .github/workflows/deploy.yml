@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: truncate Url
         id: truncate-url
-        run: echo "slug=ks-$(echo ${GITHUB_REF_NAME} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-35 | sed 's/-*$//')" >> "$GITHUB_OUTPUT"
+        run: echo "slug=ks-$(echo ${GITHUB_REF_NAME} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-50 | sed 's/-*$//')" >> "$GITHUB_OUTPUT"
 
   deploy-workers:
     name: Publish to Cloudflare Workers
@@ -51,6 +51,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Lint all files
+        run: npm run lint
 
       - name: Build
         run: npm run build
