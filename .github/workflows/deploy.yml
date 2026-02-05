@@ -23,6 +23,9 @@ jobs:
     outputs:
       slug: ${{ steps.truncate-url.outputs.slug }}
     steps:
+      - name: Display branch name
+        run: echo ${GITHUB_REF_NAME}
+
       - name: truncate Url
         id: truncate-url
         run: echo "slug=ks-$(echo ${GITHUB_REF_NAME} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-50 | sed 's/-*$//')" >> "$GITHUB_OUTPUT"
@@ -53,6 +56,7 @@ jobs:
         run: npm install
 
       - name: Lint all files
+        if: ${{ startsWith(github.repository, 'kestra-io/')  && github.event_name == 'pull_request'}}
         run: npm run lint
 
       - name: Build
@@ -60,9 +64,6 @@ jobs:
         env:
           NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
           PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
-
-      - name: Generate slug variables
-        uses: rlespinasse/github-slug-action@v4
 
       - name: Deploy Worker
         id: prod-deploy
