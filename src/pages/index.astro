@@ -1,17 +1,17 @@
 ---
 import Layout from "~/components/layout.astro"
 import Header from "~/components/home/Header.vue"
-import LogosTable from "~/components/home/LogosTable.vue"
-import OpenSource from "~/components/home/OpenSource.vue"
+import LogosTable from "~/components/home/LogosTable.astro"
+import OpenSource from "~/components/home/OpenSource.astro"
 import OpenSourceQuotes from "~/components/home/OpenSourceQuotes.vue"
 import { $fetchApi } from "~/utils/fetch"
-import Features from "~/components/home/Features.vue"
-import EveryDev from "~/components/home/EveryDev.vue"
+import Features from "~/components/home/Features.astro"
+import EveryDev from "~/components/home/EveryDev.astro"
 import Experience from "~/components/home/Experience.vue"
 import BlueprintsRender from "~/components/home/BlueprintsRender.vue"
 import Enterprise from "~/components/home/Enterprise.vue"
 import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue"
-import CTA from "~/components/home/CTA.vue"
+import CTA from "~/components/home/CTA.astro"
 import PluginsBox from "~/components/PluginsBox.astro"
 import { getValues } from "./api/github"
 import { getImage } from "astro:assets"
@@ -113,36 +113,3 @@ const tabs = [
     <EnterpriseQuotesRender quotesCompaniesLogos={quotesLogos} client:visible />
     <CTA />
 </Layout>
-
-<script>
-    const SIZE_OF_GRADIENT = 500
-
-    // when the page has finished rendering, all the home card need a little script to react to
-    // mouse movements smoothly.
-    function moveGradient(e: MouseEvent) {
-        const box = e.currentTarget
-        if (!(box instanceof HTMLElement)) {
-            return
-        }
-
-        const { left, top, width, height } = box.getBoundingClientRect()
-
-        const x = e.clientX - left
-        const y = e.clientY - top
-
-        if (
-            x < -SIZE_OF_GRADIENT ||
-            x > width + SIZE_OF_GRADIENT ||
-            y < -SIZE_OF_GRADIENT ||
-            y > height + SIZE_OF_GRADIENT
-        ) {
-            return
-        }
-        box.style.setProperty("--x", `${x}px`)
-        box.style.setProperty("--y", `${y}px`)
-    }
-    const cards = document.querySelectorAll(".home-card")
-    for (const card of cards) {
-        card.addEventListener("mousemove", moveGradient as any)
-    }
-</script>

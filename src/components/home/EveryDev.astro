@@ -1,69 +1,92 @@
-<template>
-    <section class="wrapper-every-dev">
-        <div class="center-block container">
-            <div class="line-top" />
-            <h2>For <span>Every</span> Developer</h2>
-            <div class="line-left" />
-            <div class="line-right" />
-            <div class="line-bottom" />
-            <p>Kestra unify all engineers, breaking down silos.</p>
-        </div>
-        <div class="container">
-            <HomeCard class="left-card card-block">
-                <NuxtImg v-bind="everySoftware" alt="developers" class="img-natural" />
-                <NuxtImg v-bind="everySoftwareHover" alt="developers" class="img-hover" />
-                <h3>Software Engineers</h3>
-                <p class="description">
-                    Version control all your resources, from workflows to users and permissions with
-                    CI/CD and Terraform Provider.
-                </p>
-                <a href="/use-cases/software-engineers" class="main-link"
-                    >Ship Workflows Like Your Code <ArrowRightIcon
-                /></a>
-            </HomeCard>
+---
+import { Image } from "astro:assets"
+import Card from "~/components/home/Card.astro"
 
-            <HomeCard class="right-card card-block">
-                <NuxtImg v-bind="everyPlatform" alt="developers" class="img-natural" />
-                <NuxtImg v-bind="everyPlatformHover" alt="developers" class="img-hover" />
-                <h3>Platform Engineers</h3>
-                <p class="description">
-                    Automate infrastructure tasks, manage dependencies, and ensure operational
-                    consistency.
-                </p>
-                <a href="/use-cases/platform-engineers" class="main-link"
-                    >Take Control of Your Platform Ops <ArrowRightIcon
-                /></a>
-            </HomeCard>
+import everySoftware from "./assets/every-software.png"
+import everySoftwareHover from "./assets/every-software-hover.png"
+import everyPlatform from "./assets/every-platform.png"
+import everyPlatformHover from "./assets/every-platform-hover.png"
+import everyData from "./assets/every-data.png"
+import everyDataHover from "./assets/every-data-hover.png"
 
-            <HomeCard class="bottom-card card-block">
-                <NuxtImg v-bind="everyData" alt="developers" class="img-natural" />
-                <NuxtImg v-bind="everyDataHover" alt="developers" class="img-hover" />
-                <h3>Data Engineers</h3>
-                <p class="description">
-                    Build reliable data pipelines with on-demand infrastructure that scales
-                    on-demand whether in Cloud or on-prem.
-                </p>
-                <a href="/use-cases/data-engineers" class="main-link"
-                    >Pipelines You Can Count On <ArrowRightIcon
-                /></a>
-            </HomeCard>
-        </div>
-    </section>
-</template>
+const cards = [
+    {
+        class: "left-card",
+        image: everySoftware,
+        imageHover: everySoftwareHover,
+        title: "Software Engineers",
+        description:
+            "Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.",
+        link: "/use-cases/software-engineers",
+        linkText: "Ship Workflows Like Your Code",
+    },
+    {
+        class: "right-card",
+        image: everyPlatform,
+        imageHover: everyPlatformHover,
+        title: "Platform Engineers",
+        description:
+            "Automate infrastructure tasks, manage dependencies, and ensure operational consistency.",
+        link: "/use-cases/platform-engineers",
+        linkText: "Take Control of Your Platform Ops",
+    },
+    {
+        class: "bottom-card",
+        image: everyData,
+        imageHover: everyDataHover,
+        title: "Data Engineers",
+        description:
+            "Build reliable data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.",
+        link: "/use-cases/data-engineers",
+        linkText: "Pipelines You Can Count On",
+    },
+]
+---
 
-<script setup>
-    import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
-    import HomeCard from "~/components/home/Card.vue"
+<section class="wrapper-every-dev">
+    <div class="center-block container">
+        <div class="line-top"></div>
+        <h2>For <span>Every</span> Developer</h2>
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+        <div class="line-bottom"></div>
+        <p>Kestra unify all engineers, breaking down silos.</p>
+    </div>
+    <div class="container">
+        {
+            cards.map((card) => (
+                <Card class:list={[`card-block`, card.class]}>
+                    <Image
+                        src={card.image}
+                        alt="developers"
+                        class="img-natural"
+                    />
+                    <Image
+                        src={card.imageHover}
+                        alt="developers"
+                        class="img-hover"
+                    />
+                    <h3>{card.title}</h3>
+                    <p class="description">{card.description}</p>
+                    <a href={card.link} class="main-link">
+                        {card.linkText}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+                        </svg>
+                    </a>
+                </Card>
+            ))
+        }
+    </div>
+</section>
 
-    import everySoftware from "./assets/every-software.png"
-    import everySoftwareHover from "./assets/every-software-hover.png"
-    import everyPlatform from "./assets/every-platform.png"
-    import everyPlatformHover from "./assets/every-platform-hover.png"
-    import everyData from "./assets/every-data.png"
-    import everyDataHover from "./assets/every-data-hover.png"
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
     .wrapper-every-dev {
         padding: 1rem;
@@ -83,9 +106,19 @@
         @include media-breakpoint-up(md) {
             padding: 2rem;
             background-image:
-                linear-gradient(0deg, #0d0e13ff 0%, #0d0e1388 10%, #0d0e1300 30%, #0d0e1300 100%),
+                linear-gradient(
+                    0deg,
+                    #0d0e13ff 0%,
+                    #0d0e1388 10%,
+                    #0d0e1300 30%,
+                    #0d0e1300 100%
+                ),
                 url(./assets/every-bg-dots.svg),
-                radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
+                radial-gradient(
+                    ellipse at center,
+                    #000 0%,
+                    rgba(70, 69, 100, 0) 100%
+                );
             background-blend-mode: normal, luminosity, normal;
             background-repeat: no-repeat, no-repeat, no-repeat;
             background-position:
@@ -127,7 +160,8 @@
                 margin-right: auto;
             }
             span {
-                background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
+                background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
+                    no-repeat center;
                 background-size: cover;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
@@ -315,6 +349,7 @@
             background-size: cover;
             background-position: center;
         }
+
         &:hover {
             &:before {
                 --ks-card-border-color-start: #6b66d500;
@@ -323,8 +358,8 @@
                 --ks-card-border-color-end-hover: #ac82d6;
             }
         }
-        .img-natural,
-        .img-hover {
+        :global(.img-natural),
+        :global(.img-hover) {
             width: 80px;
             height: auto;
             grid-row: 1 / span 2;
@@ -334,32 +369,32 @@
                 margin-bottom: 0.5rem;
             }
         }
-        .img-hover {
+        :global(.img-hover) {
             display: none;
         }
         &:hover {
-            .img-natural {
+            :global(.img-natural) {
                 display: none;
             }
-            .img-hover {
+            :global(.img-hover) {
                 display: block;
             }
         }
     }
     @include media-breakpoint-up(lg) {
-        .left-card {
+        :global(.left-card) {
             left: 1rem;
         }
-        .right-card {
+        :global(.right-card) {
             right: 1rem;
         }
-        .bottom-card {
+        :global(.bottom-card) {
             left: 34%;
             bottom: 75px;
         }
     }
     @include media-breakpoint-up(xl) {
-        .bottom-card {
+        :global(.bottom-card) {
             left: 37%;
         }
     }

@@ -1,35 +1,36 @@
-<template>
-    <section class="wrapper">
-        <div class="container">
-            <HomeCard class="side-box">
-                <p class="pre-title">Ready to see it in action?</p>
-                <h2>Jump in</h2>
-                <p class="description">
-                    Install Kestra Open-Source and get your first workflow ready in less than 5
-                    minutes.
-                </p>
-                <a href="/docs/quickstart#start-kestra" class="btn btn-md btn-secondary"
-                    >Get Started</a
-                >
-            </HomeCard>
-            <HomeCard class="side-box side-box-purple">
-                <NuxtImg v-bind="LogoCTA" alt="CTA" class="logo-cta" />
-                <p class="pre-title">Schedule a meeting</p>
-                <h2>Let's meet</h2>
-                <p class="description">
-                    Connect with our product specialists and discuss your project requirements.
-                </p>
-                <a href="/demo" class="btn btn-md btn-primary">Talk to us</a>
-            </HomeCard>
-        </div>
-    </section>
-</template>
-<script setup lang="ts">
-    import HomeCard from "~/components/home/Card.vue"
-    import LogoCTA from "./assets/logo-cta.svg"
-</script>
+---
+import Card from "~/components/home/Card.astro"
+import LogoCTA from "./assets/logo-cta.svg"
+---
 
-<style lang="scss" scoped>
+<section class="wrapper">
+    <div class="container">
+        <Card class="side-box">
+            <p class="pre-title">Ready to see it in action?</p>
+            <h2>Jump in</h2>
+            <p class="description">
+                Install Kestra Open-Source and get your first workflow ready in
+                less than 5 minutes.
+            </p>
+            <a
+                href="/docs/quickstart#start-kestra"
+                class="btn btn-md btn-secondary">Get Started</a
+            >
+        </Card>
+        <Card class="side-box side-box-purple">
+            <img src={LogoCTA.src} alt="CTA" class="logo-cta" />
+            <p class="pre-title">Schedule a meeting</p>
+            <h2>Let's meet</h2>
+            <p class="description">
+                Connect with our product specialists and discuss your project
+                requirements.
+            </p>
+            <a href="/demo" class="btn btn-md btn-primary">Talk to us</a>
+        </Card>
+    </div>
+</section>
+
+<style lang="scss">
     @import "~/assets/styles/variable";
 
     .wrapper {
@@ -52,7 +53,7 @@
                 font-weight: 300;
             }
 
-            .side-box {
+            :global(.side-box) {
                 position: relative;
                 z-index: 1;
                 padding: 4rem 2rem;
@@ -79,7 +80,7 @@
                 }
             }
 
-            .side-box-purple {
+            :global(.side-box-purple) {
                 border-color: #a950ff;
 
                 .pre-title {

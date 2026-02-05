@@ -1,87 +1,97 @@
-<template>
-    <section class="oss-bg">
-        <div class="container">
-            <h2 class="title-block">
-                <span class="gradient">Open Source</span>
-                Workflow Orchestration Platform
-            </h2>
+---
+import { Image } from "astro:assets"
+import declarativeOrchestration from "./assets/declarative-orchestration.png"
+import eventTriggers from "./assets/event-triggers.png"
+import lockIn from "./assets/lock-in.png"
 
-            <div class="features">
-                <div v-for="feature in features" :key="feature.title" class="feature">
-                    <NuxtImg v-bind="feature.image" :alt="feature.title" class="feature-image" />
-                    <h3>{{ feature.title }}</h3>
-                    <p>{{ feature.description }}</p>
-                </div>
-            </div>
+interface Props {
+    stargazers: number
+    contributors: number
+    error?: unknown
+}
 
-            <div class="lead-indicators">
-                <div v-for="{ title, value } of leadIndicators" :key="title" class="lead-indicator">
-                    <h3>{{ value }}</h3>
-                    <p>{{ title }}</p>
-                </div>
-            </div>
+const { stargazers, contributors, error } = Astro.props
+
+const features = [
+    {
+        title: "Declarative Orchestration",
+        description:
+            "Onboard new team members quickly, and maintain your workflows with minimal effort thanks to Kestra's declarative syntax.",
+        image: declarativeOrchestration,
+    },
+    {
+        title: "Event Based Triggers",
+        description:
+            "Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.",
+        image: eventTriggers,
+    },
+    {
+        title: "No vendor Lock-in",
+        description:
+            "Define your flow in YAML from the embedded Code Editor, run them directly from the UI, scale to any infrastructure.",
+        image: lockIn,
+    },
+]
+
+const numberOfStargazersFormatted = new Intl.NumberFormat("en", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+})
+    .format(stargazers ?? 0)
+    .toLowerCase()
+
+const leadIndicators = [
+    { title: "Contributors", value: "750+" },
+    ...(error
+        ? []
+        : [
+              {
+                  title: "GitHub Stars",
+                  value: numberOfStargazersFormatted,
+              },
+          ]),
+    { title: "Kestra Deployments", value: "120k" },
+    { title: "Workflows Executed", value: "1b+" },
+]
+---
+
+<section class="oss-bg">
+    <div class="container">
+        <h2 class="title-block">
+            <span class="gradient">Open Source</span>
+            Workflow Orchestration Platform
+        </h2>
+
+        <div class="features">
+            {
+                features.map((feature) => (
+                    <div class="feature">
+                        <Image
+                            src={feature.image}
+                            alt={feature.title}
+                            class="feature-image"
+                        />
+                        <h3>{feature.title}</h3>
+                        <p>{feature.description}</p>
+                    </div>
+                ))
+            }
         </div>
-    </section>
-</template>
 
-<script lang="ts" setup>
-    import { computed } from "vue"
-    import declarativeOrchestration from "./assets/declarative-orchestration.png"
-    import eventTriggers from "./assets/event-triggers.png"
-    import lockIn from "./assets/lock-in.png"
+        <div class="lead-indicators">
+            {
+                leadIndicators.map(({ title, value }) => (
+                    <div class="lead-indicator">
+                        <h3>{value}</h3>
+                        <p>{title}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
 
-    const props = defineProps<{
-        stargazers: number
-        contributors: number
-        error?: unknown
-    }>()
-
-    const features = [
-        {
-            title: "Declarative Orchestration",
-            description:
-                "Onboard new team members quickly, and maintain your workflows with minimal effort thanks to Kestra's declarative syntax.",
-            image: declarativeOrchestration,
-        },
-        {
-            title: "Event Based Triggers",
-            description:
-                "Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.",
-            image: eventTriggers,
-        },
-        {
-            title: "No vendor Lock-in",
-            description:
-                "Define your flow in YAML from the embedded Code Editor, run them directly from the UI, scale to any infrastructure.",
-            image: lockIn,
-        },
-    ]
-
-    const numberOfStargazersFormatted = computed(() =>
-        new Intl.NumberFormat("en", {
-            notation: "compact",
-            maximumFractionDigits: 1,
-        })
-            .format(props?.stargazers ?? 0)
-            .toLowerCase(),
-    )
-
-    const leadIndicators = computed(() => [
-        { title: "Contributors", value: "750+" },
-        ...(props.error
-            ? []
-            : [
-                  {
-                      title: "GitHub Stars",
-                      value: numberOfStargazersFormatted.value,
-                  },
-              ]),
-        { title: "Kestra Deployments", value: "120k" },
-        { title: "Workflows Executed", value: "1b+" },
-    ])
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
     .oss-bg {
         background-color: white;
@@ -103,7 +113,8 @@
         span.gradient {
             display: block;
             // font color gradient from #8C4BFF to #FF6A00
-            background: linear-gradient(90deg, #8c4bff 0%, #6fb0ff 100%) no-repeat center;
+            background: linear-gradient(90deg, #8c4bff 0%, #6fb0ff 100%)
+                no-repeat center;
             background-size: cover;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -134,7 +145,7 @@
         flex-direction: column;
         align-items: center;
         gap: 0.5rem;
-        .feature-image {
+        :global(.feature-image) {
             width: 90px;
             height: 90px;
             object-fit: contain;

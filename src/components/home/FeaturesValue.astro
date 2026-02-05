@@ -1,77 +1,108 @@
-<template>
-    <div class="value-wrapper">
-        <HomeCard class="card-block">
-            <h3>
-                <span>Accelerate</span><br />
-                Time to Value
-            </h3>
-            <p class="description">Deliver in days what once took weeks</p>
-            <div class="kpi-wrapper">
-                <div class="kpi" v-for="value in valueSet" :key="value.subject">
-                    <span class="subject">{{ value.subject }}</span>
-                    <span class="kpi-number">{{ value.kpi }}</span>
-                    <p class="kpi-description">{{ value.description }}</p>
-                </div>
+---
+import Card from "~/components/home/Card.astro"
+import anySpider from "./assets/any-spider.svg"
+
+const valueSet = [
+    {
+        subject: "Productivity",
+        description: "Faster Workflow Completion",
+        kpi: "10x",
+    },
+    {
+        subject: "Efficiency",
+        description: "Boost in Team Efficiency",
+        kpi: "80%",
+    },
+    {
+        subject: "Profitability",
+        description: "Reduction in Operational Cost",
+        kpi: "75%",
+    },
+    {
+        subject: "Time to Market",
+        description: "Deployment Speed",
+        kpi: "5x",
+    },
+]
+---
+
+<div class="value-wrapper">
+    <Card class="card-block-value">
+        <h3>
+            <span>Accelerate</span><br />
+            Time to Value
+        </h3>
+        <p class="description">Deliver in days what once took weeks</p>
+        <div class="kpi-wrapper">
+            {
+                valueSet.map((value) => (
+                    <div class="kpi">
+                        <span class="subject">{value.subject}</span>
+                        <span class="kpi-number">{value.kpi}</span>
+                        <p class="kpi-description">{value.description}</p>
+                    </div>
+                ))
+            }
+        </div>
+        <a class="learn-more" href="/use-cases/stories">
+            Discover our Customer Stories
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+            >
+                <path
+                    d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"
+                ></path>
+            </svg>
+        </a>
+    </Card>
+    <Card class="card-block-value">
+        <div class="any-spider">
+            <div class="spider-box" style="top: 13.5%; left: 38.4%">
+                Business Automation
             </div>
-            <a class="learn-more" href="/use-cases/stories">
-                Discover our Customer Stories<ArrowRightIcon />
-            </a>
-        </HomeCard>
-        <HomeCard class="card-block">
-            <div class="any-spider">
-                <div class="spider-box" style="top: 13.5%; left: 38.4%">Business Automation</div>
-                <div class="spider-box" style="top: 37%; left: 65%">ML/AI Orchestration</div>
-                <div class="spider-box" style="top: 69%; left: 55%">
-                    Infrastructure Orchestration
-                </div>
-                <div class="spider-box" style="top: 69%; left: 22%">Data & API Orchestration</div>
-                <div class="spider-box" style="top: 37%; left: 12%">
-                    Batch or<br />
-                    Real-Time ETL
-                </div>
-                <img v-bind="anySpider" alt="Any orchestration" class="spider" />
+            <div class="spider-box" style="top: 37%; left: 65%">
+                ML/AI Orchestration
             </div>
-            <h3>
-                <span>Any Orchestration</span><br />
-                Use Case
-            </h3>
-            <a class="learn-more" href="/use-cases"> Explore Use Cases<ArrowRightIcon /> </a>
-        </HomeCard>
-    </div>
-</template>
+            <div class="spider-box" style="top: 69%; left: 55%">
+                Infrastructure Orchestration
+            </div>
+            <div class="spider-box" style="top: 69%; left: 22%">
+                Data & API Orchestration
+            </div>
+            <div class="spider-box" style="top: 37%; left: 12%">
+                Batch or<br />
+                Real-Time ETL
+            </div>
+            <img src={anySpider.src} alt="Any orchestration" class="spider" />
+        </div>
+        <h3>
+            <span>Any Orchestration</span><br />
+            Use Case
+        </h3>
+        <a class="learn-more" href="/use-cases">
+            Explore Use Cases
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+            >
+                <path
+                    d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"
+                ></path>
+            </svg>
+        </a>
+    </Card>
+</div>
 
-<script setup lang="ts">
-    import HomeCard from "~/components/home/Card.vue"
-    import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
-    import anySpider from "./assets/any-spider.svg"
-
-    const valueSet = [
-        {
-            subject: "Productivity",
-            description: "Faster Workflow Completion",
-            kpi: "10x",
-        },
-        {
-            subject: "Efficiency",
-            description: "Boost in Team Efficiency",
-            kpi: "80%",
-        },
-        {
-            subject: "Profitability",
-            description: "Reduction in Operational Cost",
-            kpi: "75%",
-        },
-        {
-            subject: "Time to Market",
-            description: "Deployment Speed",
-            kpi: "5x",
-        },
-    ]
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
-    .card-block {
+    .card-block-value {
         position: relative;
         z-index: 1;
         padding: 2rem 0 6rem;
@@ -82,7 +113,8 @@
             margin-bottom: 0.5rem;
             span {
                 color: $primary;
-                background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
+                background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%)
+                    no-repeat center;
                 background-size: 350px;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
@@ -192,7 +224,11 @@
                 left: 0;
                 z-index: -1;
                 margin: -1px;
-                background-image: linear-gradient(to bottom, #9c90d350 0%, #ac82d6 100%);
+                background-image: linear-gradient(
+                    to bottom,
+                    #9c90d350 0%,
+                    #ac82d6 100%
+                );
             }
             .subject {
                 display: block;
