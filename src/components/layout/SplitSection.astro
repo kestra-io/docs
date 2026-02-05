@@ -1,0 +1,117 @@
+---
+interface Props {
+    title?: string
+    cta?: {
+        text: string
+        href: string
+    }
+}
+
+const { title, cta } = Astro.props
+---
+
+<section class="split-section">
+    <div class="layout">
+        <aside class="left">
+            <h2>
+                <slot name="title">{title}</slot>
+            </h2>
+            {cta && (
+                <a href={cta.href} class="btn btn-primary btn-gradient mt-2 d-none d-xxl-block">
+                    {cta.text}
+                </a>
+            )}
+        </aside>
+        <div class="d-flex flex-column gap-6 cards">
+            <slot />
+        </div>
+        {cta && (
+            <div class="d-xxl-none d-block mx-auto">
+                <a href={cta.href} class="btn btn-primary">
+                    {cta.text}
+                </a>
+            </div>
+        )}
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .split-section {
+        padding: 3rem 1rem 5.625rem;
+        background: $white;
+        display: flex;
+        justify-content: center;
+
+        @include media-breakpoint-up(xl) {
+            padding: 4rem 6.25rem 5.625rem;
+        }
+
+        .layout {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-1;
+            align-items: flex-start;
+            max-width: 1280px;
+
+            @include media-breakpoint-up(xxl) {
+                flex-direction: row;
+                gap: $rem-4;
+            }
+
+            .d-xxl-none {
+                border: 1.05px solid #E1E1E1;
+                padding: 2px;
+                border-radius: 0.5rem;
+                
+                .btn-primary {
+                    background-color: #8405FF;
+                    padding: 0.5rem 1.25rem;
+                    margin: 0;
+                }
+            }
+
+            .left {
+                z-index: 1;
+                flex: none;
+                height: auto;
+                position: static;
+                align-self: flex-start;
+                background: $white;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+
+                @include media-breakpoint-up(xxl) {
+                    position: sticky;
+                    top: 4.1875rem;
+                    padding: 18rem 0;
+                    text-align: left;
+                    align-items: flex-start;
+                    width: auto;
+                }
+
+                .btn-primary:before {
+                    display: none;
+                }
+            }
+
+            .cards {
+                display: flex;
+                flex-direction: column;
+                gap: $rem-4;
+
+                @include media-breakpoint-between(md, lg) {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: $rem-3;
+                    align-items: start;
+                    padding: 0 $rem-1;
+                }
+            }
+        }
+    }
+</style>

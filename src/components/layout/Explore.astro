@@ -1,0 +1,136 @@
+---
+import { imageConfig } from "astro:assets"
+import { Image } from "astro:assets"
+import arrow from "~/assets/landing/infrastructure/arrow.svg"
+
+interface Props {
+    title: string
+    description: string
+    cta: {
+        text: string
+        href: string
+    }
+    image: {
+        src: any
+    }
+    reversed?: boolean
+}
+
+const {
+    title,
+    description,
+    cta,
+    image,
+    reversed = false,
+} = Astro.props
+---
+
+<section class="section-prose-img">
+    <div class:list={["container", { reversed }]}>
+        <div class="left-div" data-usal="slide-r delay-0 duration-600 ease-out">
+            <h2 data-usal="fade-u delay-50 duration-500 ease-out" class="mb-0">{title}</h2>
+            <p data-usal="fade-u delay-100 duration-500 ease-out" class="mb-0">
+                {description}
+            </p>
+            <a
+                href={cta.href}
+                class="btn btn-primary btn-gradient tour-btn"
+                data-usal="zoomin duration-500 delay-150 ease-out"
+            >
+                {cta.text}
+            </a>
+        </div>
+        <div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
+            <Image
+                src={image.src}
+                alt="ui"
+                class="img-fluid"
+                width={656}
+                height={350}
+                densities={[1, 2]}
+            />
+            <img src={arrow.src} alt="Arrow" class="arrow-overlay" />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .section-prose-img {
+        padding: 3rem 1rem 3rem;
+        background: #f4f4f4;
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            gap: 1.625rem;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+
+            &.reversed {
+                flex-direction: row-reverse;
+            }
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                
+                &.reversed {
+                    flex-direction: column;
+                }
+            }
+
+            .left-div {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                @include media-breakpoint-up(lg) {
+                    max-width: 458px;
+                }
+
+                .tour-btn {
+                    width: fit-content;
+                }
+
+                .btn-primary:before {
+                    display: none;
+                }
+
+                @include media-breakpoint-down(md) {
+                    order: 2;
+                }
+            }
+
+            .right-div {
+                max-width: 656px;
+                border-radius: 0.5rem;
+                border: 1px solid #bfbfbf;
+                position: relative;
+
+                :global(img) {
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                    border-radius: 0.5rem;
+                }
+
+                .arrow-overlay {
+                    position: absolute;
+                    top: 60%;
+                    right: -18%;
+                    transform: translateY(-50%, -50%);
+                    width: 40%;
+                    height: 40%;
+                    z-index: 2;
+                    pointer-events: none;
+                }
+
+                @include media-breakpoint-down(md) {
+                    order: 1;
+                }
+            }
+        }
+    }
+</style>
