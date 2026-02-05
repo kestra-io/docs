@@ -15,6 +15,7 @@ import CTA from "~/components/home/CTA.astro"
 import PluginsBox from "~/components/PluginsBox.astro"
 import { getValues } from "./api/github"
 import { getImage } from "astro:assets"
+import type { GetImageResult, ImageMetadata } from "astro"
 
 const githubData = await getValues()
 
@@ -25,24 +26,27 @@ const stories = await $fetchApi<{ results: any[] }>(
     "/customer-stories-v2?featured=true",
 )
 
-const quotesCompaniesLogos = import.meta.glob(
+const quotesCompaniesLogos = import.meta.glob<ImageMetadata>(
     "~/assets/quotes-companies/*.{svg,png}",
+    {
+        import: "default",
+    },
 )
 const quotesLogos = (
     await Promise.all(
-        Object.entries(quotesCompaniesLogos).map(([filePath, mod]) => {
-            return mod().then((img: any) => {
-                return {
-                    name: filePath.split("/").pop(),
-                    url: img.default.src,
-                }
-            })
+        Object.entries(quotesCompaniesLogos).map(async ([filePath, mod]) => {
+            const img = await mod()
+            const optimizedImage = await getImage({ src: img, height: 36 })
+            return {
+                name: filePath.split("/").pop(),
+                img: optimizedImage,
+            }
         }),
     )
 ).reduce(
     (acc, curr) => {
         if (curr.name) {
-            acc[curr.name] = curr.url
+            acc[curr.name] = curr.img.src
         }
         return acc
     },
