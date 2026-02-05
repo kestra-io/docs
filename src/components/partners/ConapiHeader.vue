@@ -28,7 +28,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <Section subtitle="Join the community">
+            <Section subtitle="About Conapi">
                 <div class="metrics">
                     <div class="counter-box">
                         <img src="/partners/conapi/logo.svg" alt="" />
