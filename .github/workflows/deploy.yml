@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: truncate Url
         id: truncate-url
-        run: echo "slug=$(echo ${GITHUB_REF_NAME} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-20)" >> "$GITHUB_OUTPUT"
+        run: echo "slug=ks-$(echo ${GITHUB_REF_NAME} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-40)" >> "$GITHUB_OUTPUT"
 
   deploy-workers:
     name: Publish to Cloudflare Workers
