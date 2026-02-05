@@ -16,20 +16,6 @@ import PluginsBox from "~/components/PluginsBox.astro"
 import { getValues } from "./api/github"
 import { getImage } from "astro:assets"
 
-const logosNonRandomized = import.meta.glob(
-    "~/assets/trusted-companies/*.{svg,png}",
-)
-const logos = await Promise.all(
-    Object.entries(logosNonRandomized).map(([filePath, mod]) => {
-        return mod().then((img: any) => {
-            return {
-                name: filePath.split("/").pop()?.split(".").shift(),
-                url: img.default.src,
-            }
-        })
-    }),
-).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()))
-
 const githubData = await getValues()
 
 const blueprints = await $fetchApi<{ results: Blueprint[] }>(
@@ -101,7 +87,7 @@ const tabs = [
 
 <Layout>
     <Header client:load />
-    <LogosTable logos={logos} />
+    <LogosTable />
     <OpenSource {...githubData} />
     <OpenSourceQuotes client:visible />
     <Features />

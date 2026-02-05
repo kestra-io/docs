@@ -1,12 +1,21 @@
 ---
-interface Props {
-    logos: Array<{
-        name: string
-        url: string
-    }>
-}
-
-const { logos } = Astro.props
+import { Image } from "astro:assets"
+const logosNonRandomized = import.meta.glob<ImageMetadata>(
+    "~/assets/trusted-companies/*.{svg,png}",
+    {
+        import: "default",
+    },
+)
+const logos = await Promise.all(
+    (Object.keys(logosNonRandomized) as string[]).map((filePath) => {
+        return logosNonRandomized[filePath]().then((img) => {
+            return {
+                name: filePath.split("/").pop()?.split(".").shift() ?? null,
+                src: img,
+            }
+        })
+    }),
+).then((imgs) => imgs.toSorted(() => 0.5 - Math.random()))
 ---
 
 <section class="logos-bg">
@@ -15,7 +24,7 @@ const { logos } = Astro.props
         {
             logos?.slice(0, 20).map((img, index) => (
                 <div class:list={["logo-box", { "hide-small": index > 17 }]}>
-                    <img src={img.url} alt={img.name} />
+                    <Image src={img.src} alt={img.name} />
                 </div>
             ))
         }
