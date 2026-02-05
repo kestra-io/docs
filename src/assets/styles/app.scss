@@ -800,4 +800,12 @@ small.agree {
     initial-value: 0turn;
 }
 
+@media only screen and (max-width: 768px) {
+    [data-usal] {
+        opacity: 1 !important;
+        transform: translate(0) scale(1) !important;
+        pointer-events: auto !important;
+    }
+}
+
 @import "./docs";
