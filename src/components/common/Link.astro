@@ -5,7 +5,7 @@ interface Props {
      * @param text - The text content of the link
      */
     href: string
-    text: string
+    text?: string
     class?: string
 }
 
@@ -13,7 +13,7 @@ const { href, text, class: className } = Astro.props
 ---
 
 <a href={href} class:list={["link", className]}>
-    {text}
+    {text ? text : <slot />}
     <svg viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
         <g class="arrow-head">
             <path
@@ -33,7 +33,7 @@ const { href, text, class: className } = Astro.props
     $button-transition-timing: 100ms;
 
     .link {
-        color: $black;
+        color: $primary;
         font-weight: bold;
         text-decoration: none;
         transition: all $button-transition-timing ease-in-out;

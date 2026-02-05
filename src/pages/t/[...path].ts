@@ -56,6 +56,7 @@ export const ALL: APIRoute = async ({ request, clientAddress }) => {
     const response = await fetch(forwardedRequest)
 
     return new Response(response.body, {
+        status: response.status,
         headers: response.headers,
     })
 }

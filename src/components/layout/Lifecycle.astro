@@ -1,0 +1,132 @@
+---
+import Link from "~/components/common/Link.astro"
+
+interface Card {
+    title: string;
+    description: string;
+    link: {
+        href: string;
+        text: string;
+    };
+    background: string;
+    animation: string;
+}
+
+interface Props {
+    title: string;
+    cards: Card[];
+}
+
+const { title, cards } = Astro.props;
+---
+
+<section class="lifecycle">
+    <div class="container">
+        <div class="row align-items-center" data-usal="fade-u delay-0 duration-500 ease-out">
+            <div class="col-12">
+                <h2 set:html={title} />
+            </div>
+        </div>
+
+        <div class="new-section d-flex flex-column flex-xl-row">
+            {cards.map((card) => (
+                <div class="card-item" data-usal={card.animation} style={{ background: card.background }}>
+                    <h2 set:html={card.title} />
+                    <p set:html={card.description} />
+                    <Link
+                        href={card.link.href}
+                        text={card.link.text}
+                    />
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .lifecycle {
+        width: 100%;
+        padding: 4rem 1rem;
+        background-color: $white;
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0;
+
+            .row {
+                :global(.highlight) {
+                    color: #631bff;
+                }
+
+                @include media-breakpoint-up(xl) {
+                    .col-xl-6:first-child {
+                        border-right: 1px solid $white-3;
+                        font-weight: 700;
+                        padding: 0;
+                    }
+
+                    .col-xl-6 {
+                        padding-left: 4rem;
+                        font-size: 18px;
+                        line-height: normal;
+
+                        p {
+                            margin: 0;
+                        }
+                    }
+                }
+
+                @include media-breakpoint-up(xl) {
+                    .indent {
+                        margin-left: 4rem;
+                        text-align: left;
+                    }
+                }
+            }
+
+            .new-section {
+                gap: 1rem;
+            }
+
+            .card-item {
+                @include media-breakpoint-up(xl) {
+                    width: 562px;
+                    height: 351px;
+                    gap: 4rem;
+                }
+
+                border-radius: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                justify-content: space-between;
+                padding: 32px;
+                color: $white;
+
+                h2 {
+                    font-size: 2rem;
+                    font-weight: 600;
+                    margin: 0;
+                }
+
+                p {
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin: 0;
+                }
+
+                :global(.link) {
+                    color: $white;
+                    align-self: flex-end;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+</style>

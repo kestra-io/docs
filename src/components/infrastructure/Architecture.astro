@@ -1,0 +1,24 @@
+---
+import { Image } from "astro:assets"
+import archKestra from "~/assets/landing/infrastructure/arch-kestra.webp"
+---
+
+<section class="architecture bg-white">
+    <Image src={archKestra} alt="Kestra Architecture" class="img-fluid" densities={[1, 2]} />
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .architecture {
+        display: none;
+
+        @media (min-width: 1650px) {
+            display: block;
+        }
+
+        img {
+            width: 100%;
+            height: fit-content;
+        }
+    }
+</style>
