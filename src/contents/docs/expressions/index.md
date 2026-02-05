@@ -1579,7 +1579,8 @@ The `fileURI` function gets the URI of a Namespace File from its name.
 tasks:
   - id: get_desired_owners_data
     type: io.kestra.plugin.serdes.json.JsonToIon
-    from: "{{ fileURI('my_file.txt')) }}
+    from: "{{ fileURI('my_file.txt') }}
+    # Output: kestra:///company/team/my_flow/executions/6bxstVZXZlbrjKGC4HiP16/tasks/get-desired-owners-data/6GPqG5l7F6JKehDD8kanBp/6844707177508441383.ion
 ```
 
 ### yaml
