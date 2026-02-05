@@ -1571,6 +1571,17 @@ Example:
 
 ---
 
+### fileURI
+
+The `fileURI` function gets the URI of a Namespace File from its name.
+
+```yaml
+tasks:
+  - id: get_desired_owners_data
+    type: io.kestra.plugin.serdes.json.JsonToIon
+    from: "{{ fileURI('my_file.txt')) }}
+```
+
 ### yaml
 
 The `yaml` function parses a YAML string into an object.
