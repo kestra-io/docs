@@ -180,7 +180,7 @@
                             description:
                                 "Use the live variables client to debug your tasks and preview inputs and outputs quickly.",
                             cta: "Live monitoring",
-                            link: "https://kestra.io/docs/administrator-guide/monitoring#monitoring",
+                            link: "https://kestra.io/docs/workflow-components/outputs#using-debug-expression",
                             icon: Bug,
                         },
                     ],
