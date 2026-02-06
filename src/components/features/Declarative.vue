@@ -120,7 +120,7 @@
         {
             title: "Code in Any Language",
             description:
-                "Kestra can run code in any language without forcing you to rewrite your code to match a rigid framework DSL. Kestra executes your scripts directly, in a local subprocess or in a Docker container. handles inputs and outputs, and captures logs. You can import and edit your code from the integrated Namespace Files editor.",
+                "Kestra can run code in any language without forcing you to rewrite your code to match a rigid framework DSL. Kestra executes your scripts directly, in a local subprocess or in a Docker container, handles inputs and outputs, and captures logs. You can import and edit your code from the integrated Namespace Files editor.",
         },
     ]
 </script>
