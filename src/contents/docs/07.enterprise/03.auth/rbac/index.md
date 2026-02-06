@@ -62,6 +62,7 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 - `KVSTORE`
 - `DASHBOARD`
 - `SECRET`
+- `CREDENTIAL`
 - `GROUP`
 - `ROLE`
 - `BINDING`
@@ -70,11 +71,13 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 - `IMPERSONATE`
 - `SETTING`
 - `APP`
+- `AI_COPILOT`
 - `APPEXECUTION`
 - `TEST`
 - `ASSET`
 - `USER`
 - `SERVICE_ACCOUNT`
+- `TENANT_ACCESS`
 - `INVITATION`
 - `GROUP_MEMBERSHIP`
 
@@ -96,6 +99,10 @@ Example (Flows):
 - `READ` lets you `GET /api/v1/{tenant}/flows/*`
 - `UPDATE` lets you `PUT /api/v1/{tenant}/flows/{flowId}`
 - `DELETE` lets you `DELETE /api/v1/{tenant}/flows/delete/by-ids`
+
+:::alert{type="info"}
+For a complete CRUD-to-endpoint mapping for every permission, see the [Permissions Reference](./permissions-reference/index.md).
+:::
 
 ### Currently supported roles
 
