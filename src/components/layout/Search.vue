@@ -77,7 +77,13 @@
                         </button>
                     </div>
                     <div :class="{ loading: loading }">
-                        <div class="row" v-if="searchResults && searchResults.length === 0">
+                        <div class="d-flex justify-content-center mt-5 mb-5" v-if="initialLoad === false">
+                            <div class="spinner-border" role="status">
+
+                            </div>
+                        </div>
+
+                        <div class="row" v-else-if="searchResults && searchResults.length === 0">
                             <div
                                 class="col-12 not-found-content d-flex flex-column justify-content-center bg-dark-2"
                             >
@@ -225,6 +231,7 @@
                 cancelToken: undefined,
                 loading: true,
                 showAiDialog: false,
+                initialLoad: false,
             }
         },
         mounted() {
@@ -278,6 +285,7 @@
                         cancelToken: this.cancelToken.token,
                     })
                     .then((response) => {
+                        this.initialLoad = true;
                         if (response?.data?.results?.length) {
                             this.searchResults = response.data.results.map((result) => {
                                 const searchTerm = value?.trim()?.toLowerCase()
