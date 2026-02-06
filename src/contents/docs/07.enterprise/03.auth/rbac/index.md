@@ -77,6 +77,8 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 - `SERVICE_ACCOUNT`
 - `INVITATION`
 - `GROUP_MEMBERSHIP`
+- `CREDENTIALS`
+- `AI_COPILOT`
 
 :::alert{type="warning"}
 The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/v0.24.0/endpoint-changes/index.md#rbac-updates)
