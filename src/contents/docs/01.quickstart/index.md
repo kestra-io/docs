@@ -34,7 +34,7 @@ If you re-run the command and Docker reports `You have to remove (or rename) tha
 Open `http://localhost:8080` in your browser to launch the UI, create your user, and take the product tour to begin building your first flow.
 
 :::alert{type="info"}
-The above command starts Kestra with an embedded H2 database stored on the `kestra_data` Docker volume. For production-ready persistence with PostgreSQL and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
+The above command starts Kestra with an embedded H2 database that does not persist data. Storage files are stored on the `kestra_data` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
 :::
 
 ---
