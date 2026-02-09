@@ -31,7 +31,6 @@ Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if y
 :::
 
 
-- [Docker](https://docs.docker.com/engine/install/)
 
 ## Download the Docker Compose file
 
