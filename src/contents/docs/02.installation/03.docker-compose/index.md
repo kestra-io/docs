@@ -32,7 +32,6 @@ Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if y
 
 ## Before you begin
 
-Make sure you have Docker installed:
 
 - [Docker](https://docs.docker.com/engine/install/)
 
