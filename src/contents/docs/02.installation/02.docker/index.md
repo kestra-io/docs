@@ -29,7 +29,7 @@ docker run --pull=always -it -p 8080:8080 --user=root \
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
 
 :::alert{type="info"}
-The above command starts Kestra with an embedded H2 database stored on the `kestra_data` Docker volume. For production-ready persistence with PostgreSQL and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
+The above command starts Kestra with an embedded H2 database that does not persist data. Storage files are stored on the `kestra_data` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
 :::
 
 :::alert{type="info"}
