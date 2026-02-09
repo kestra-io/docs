@@ -30,8 +30,6 @@ Use `registry.kestra.io/docker/kestra-ee:latest` for the newest image, or pin a 
 Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
 :::
 
-## Before you begin
-
 
 - [Docker](https://docs.docker.com/engine/install/)
 
