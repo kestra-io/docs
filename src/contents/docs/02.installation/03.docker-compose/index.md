@@ -28,6 +28,12 @@ Use `registry.kestra.io/docker/kestra-ee:latest` for the newest image, or pin a 
 Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
 :::
 
+## Before you begin
+
+Make sure you have Docker installed:
+
+- [Docker](https://docs.docker.com/engine/install/)
+
 ## Download the Docker Compose file
 
 Download the Docker Compose file using the following command on Linux and macOS:
