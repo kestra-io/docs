@@ -68,7 +68,7 @@ tasks:
 You can optionally add a [description](../../05.workflow-components/15.descriptions/index.md) property to document your flow's purpose or other useful information. The `description` is a string that supports **markdown** syntax. This markdown description is rendered and displayed in the UI.
 
 :::alert{type="info"}
-Not only flows can have a description. You can also add a `description` property to `tasks` and `triggers` to document all the components of your workflow.
+You can also add a `description` property to `tasks` and `triggers` to document all the components of your workflow.
 :::
 
 Here is the same flow as before, but with labels and descriptions:
