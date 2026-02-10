@@ -229,7 +229,7 @@ tasks:
 
 ## Next steps
 
-Congrats! :tada: You've completed the tutorial.
+Congrats! 🎉 You've completed the tutorial.
 
 Next, you can dive into:
 
