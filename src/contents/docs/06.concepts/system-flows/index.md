@@ -25,7 +25,7 @@ System Flows periodically execute background operations that keep your platform 
 4. Syncing code from Git or pushing code to Git
 5. Automatically [releasing flows](/blueprints/copy-flows-to-new-tenant) from development to QA and staging environments
 
-We refer to these as **System Flows** because by default they are hidden from end users and are only visible within the `system` namespace. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](../../configuration/index.md#system-flows):
+We refer to these as **System Flows** because by default they are only visible within the `system` namespace and to users with appropriate access. If you prefer, you can use a different namespace name instead of `system` by overwriting the following [configuration](../../configuration/index.md#system-flows):
 
 ```yaml
 kestra:
@@ -37,7 +37,7 @@ To access System Flows, navigate to the **Namespaces** section in the UI. The `s
 
 ![system_namespace](./system-namespace.png)
 
-From this section, you’ll find the _System Blueprints_ tab, which provides fully customizable templates that you can modify to suit your organization’s needs.
+From this section, you’ll find the **System Blueprints** tab, which provides fully customizable templates that you can modify to suit your organization’s needs.
 
 ![system_blueprints](./system-blueprints.png)
 
@@ -45,7 +45,7 @@ From this section, you’ll find the _System Blueprints_ tab, which provides ful
 Keep in mind that System Flows are not restricted to System Blueprints — any valid Kestra flow can become a System Flow if it's added to the `system` namespace.
 :::
 
-System Flows are intentionally hidden from the main UI, appearing only in the `system` namespace. The Dashboard, Flows, and Executions pages offer a multi-select filter with options for `User` (default) and `System` (visible by default only within the `system` namespace). This makes it easy to toggle between user-facing workflows and background system flows and their executions or view both simultaneously.
+System flow executions appear across the Dashboard, Flows, and Executions pages, each with a multi-select **Scope** filter (`User`, `System`) so you can view user-facing and system executions separately or together.
 
 ![system_filter](./system-filters.png)
 
