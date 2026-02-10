@@ -54,24 +54,24 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: bold;
+    font-weight: 700;
 }
 
 @include media-breakpoint-down(lg) {
     h1 {
-        font-size: 1.625rem;
+        font-size: $h2-font-size;
     }
     h2 {
-        font-size: $h4-font-size;
+        font-size: $h3-font-size;
     }
     h3 {
-        font-size: $h5-font-size;
+        font-size: $h4-font-size;
     }
     h4 {
-        font-size: $h6-font-size;
+        font-size: $h5-font-size;
     }
     h5 {
-        font-size: $font-size-base;
+        font-size: $h6-font-size;
     }
     h6 {
         font-size: $font-size-sm;
@@ -280,10 +280,11 @@ blockquote.blockquote {
 
 .btn-dark {
     border: $btn-dark-border;
-    background-color: $black-4;
+    background: #333336;
+    border: 1px solid #333336;
 
     &:hover {
-        background-color: $black-2;
+        background: #333336;
         border-color: rgba(255, 255, 255, 0.12);
     }
 }
@@ -797,6 +798,14 @@ small.agree {
     syntax: "<angle>";
     inherits: true;
     initial-value: 0turn;
+}
+
+@media only screen and (max-width: 768px) {
+    [data-usal] {
+        opacity: 1 !important;
+        transform: translate(0) scale(1) !important;
+        pointer-events: auto !important;
+    }
 }
 
 @import "./docs";

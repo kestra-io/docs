@@ -1,0 +1,201 @@
+---
+import { Image } from "astro:assets"
+import Link from "./Link.astro"
+
+interface Props {
+    plugins: {
+        name: string
+        logo: ImageMetadata
+    }[]
+    title?: string
+    link?: {
+        href: string
+        text: string
+    }
+}
+
+const { plugins, title, link } = Astro.props
+
+const PLUGINS_CAROUSEL = [...plugins, ...plugins]
+---
+
+<div class="plugins-carousel">
+    {title && <h2>{title}</h2>}
+
+    <div class="icon-scroll">
+        <div class="carousel">
+            {
+                PLUGINS_CAROUSEL.map((plugin) => (
+                    <div class="plugin-wrapper">
+                        <div class="plugin-icon">
+                            <Image
+                                src={plugin.logo}
+                                alt={plugin.name}
+                                width={plugin.logo.width}
+                                height={plugin.logo.height}
+                            />
+                        </div>
+                        <p class="plugin-name">{plugin.name}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+
+    {
+        link && (
+            <div class="align-self-lg-start">
+                <Link href={link.href} text={link.text} class="text-white" />
+            </div>
+        )
+    }
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .plugins-carousel {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        @include media-breakpoint-up(lg) {
+            gap: 2rem;
+        }
+
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+            align-items: center;
+        }
+
+        h2 {
+            width: 395px;
+            font-weight: 600;
+            color: $white;
+            margin: 0;
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+            }
+        }
+    }
+
+    .icon-scroll {
+        height: 110px;
+        @include media-breakpoint-up(lg) {
+            width: 547px;
+            height: 144px;
+        }
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.875rem;
+
+        @include media-breakpoint-down(xl) {
+            width: 90%;
+        }
+
+        &::after,
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 8%;
+            z-index: 11;
+            pointer-events: none;
+        }
+
+        &::after {
+            left: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.06),
+                rgba(255, 255, 255, 0)
+            );
+            backdrop-filter: blur(3px);
+        }
+
+        &::before {
+            right: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0.06)
+            );
+            backdrop-filter: blur(3px);
+        }
+
+        .carousel {
+            position: absolute;
+            overflow: visible;
+            white-space: nowrap;
+            top: 0;
+            left: 0;
+            animation: infiscroll 12s linear infinite;
+            z-index: 10;
+            -webkit-mask-image: linear-gradient(
+                to right,
+                transparent 0%,
+                $black 15%,
+                $black 85%,
+                transparent 100%
+            );
+            mask-image: linear-gradient(
+                to right,
+                transparent 0%,
+                $black 15%,
+                $black 85%,
+                transparent 100%
+            );
+
+            .plugin-wrapper {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                vertical-align: top;
+                margin: 0 0.5rem;
+
+                .plugin-icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 70px;
+                    height: 70px;
+                    @include media-breakpoint-up(lg) {
+                        width: 99px;
+                        height: 99px;
+                    }
+                    border-radius: 0.875rem;
+                    box-shadow: 0 0.125rem 0.25rem var(--ks-card-shadow);
+                    overflow: hidden;
+                    background: $white;
+
+                    img {
+                        width: 95%;
+                        height: 95%;
+                        object-fit: contain;
+                    }
+                }
+
+                .plugin-name {
+                    margin-top: 0.5rem;
+                    color: $white;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    text-align: center;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    @keyframes infiscroll {
+        0% {
+            transform: translate(0, 0);
+        }
+
+        100% {
+            transform: translate(-50%, 0);
+        }
+    }
+</style>

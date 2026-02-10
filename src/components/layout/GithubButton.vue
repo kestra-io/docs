@@ -53,11 +53,12 @@
             color: $white-1 !important;
         }
         .btn-dark {
-            background: $black-5;
+            background: #333336;
         }
         .btn-outline-dark {
             border-left: 0;
             color: $black-5;
+            background: #18181B;
             .placeholder {
                 background: transparent;
             }

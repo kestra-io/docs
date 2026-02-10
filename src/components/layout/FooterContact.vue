@@ -51,7 +51,7 @@
             darkButtonHref: {
                 type: String,
                 required: false,
-                default: () => "/docs/terraform",
+                default: () => "/docs",
             },
             purpleButtonText: {
                 type: String,
@@ -60,7 +60,7 @@
             purpleButtonHref: {
                 type: String,
                 required: false,
-                default: () => "https://github.com/kestra-io/kestra",
+                default: () => "/docs/quickstart",
             },
             animation: {
                 type: Boolean,

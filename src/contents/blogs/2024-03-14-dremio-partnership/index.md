@@ -42,7 +42,6 @@ If you want to learn more about Kestra and Dremio capabilities, you can read thi
 
 You can also kickstart your Kestra & Dremio journey with our [Community Blueprints](/blueprints?page=1&size=24&q=dremio).
 
-
 If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).

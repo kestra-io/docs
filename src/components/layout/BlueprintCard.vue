@@ -165,10 +165,12 @@
         }
     }
 
+    //FIXME: after variables update
+
     .blueprint.light {
         background-color: $white;
         border-color: #e1e3e5;
-        box-shadow: none;
+        box-shadow: 2px 3px 16px 0px #2720560D;
 
         hr {
             border-color: #e1e3e5;
@@ -180,13 +182,13 @@
         }
 
         .icon {
-            border-color: #e1e3e5;
+            border-color: #F1F1F1;
+            background: $white;
         }
 
         .category-tag {
-            background: var(--base-color-palette-purple-purple-50, #e0e0ff);
-            border: 1px solid #bbbbff;
-            color: #8c4bff;
+            background: #F1EFFF;
+            color: #631BFF;
             padding: 0 0.5rem;
         }
     }
