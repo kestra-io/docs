@@ -15,11 +15,8 @@
                 href="/"
                 @click="logoClick"
                 @contextmenu.prevent="showDownloadLogosModal"
+                v-html="isOpen || isStories ? LogoBlack : LogoWhite"
             >
-                <img
-                    :src="isOpen || isStories ? '/logo-black.svg' : '/logo-white.svg'"
-                    alt="Kestra, Open source declarative data orchestration"
-                />
             </a>
 
             <div
@@ -578,11 +575,12 @@
     import Segment from "vue-material-design-icons/Segment.vue"
     import { menuSize } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
+    import LogoBlack from "~/assets/logo-black.svg?raw"
+    import LogoWhite from "~/assets/logo-white.svg?raw"
 
     const props = defineProps<{
         scrolled?: boolean
         transparentHeader?: boolean
-        nuxtApp?: any
         isStories?: boolean
     }>()
 
@@ -744,3 +742,11 @@
 </script>
 
 <style lang="scss" src="../../assets/styles/components/header.scss" scoped />
+<style lang="scss" scoped>
+.navbar-brand{
+    :deep(svg){
+        width: 120px;
+        height: auto;
+    }
+}
+</style>
