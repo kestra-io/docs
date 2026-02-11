@@ -745,7 +745,7 @@
 <style lang="scss" scoped>
 .navbar-brand{
     :deep(svg){
-        width: 120px;
+        width: 180px;
         height: auto;
     }
 }
