@@ -15,9 +15,6 @@ This reference maps each RBAC Permission and Action to the Enterprise API endpoi
 - Some endpoints require multiple permissions; notes call out additional checks.
 - Namespace bindings apply to the namespace and all child namespaces.
 
-:::alert{type="warning"}
-This mapping reflects current enforcement in the API. If an endpoint only uses `@HasAnyPermission`, any action granted for that permission will pass the RBAC gate.
-:::
 
 ## Permissions reference
 
