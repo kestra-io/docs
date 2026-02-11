@@ -73,7 +73,7 @@
   },
   "devDependencies": {
     "oxfmt": "^0.26.0",
-    "oxlint": "^1.41.0",
+    "oxlint": "^1.46.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
