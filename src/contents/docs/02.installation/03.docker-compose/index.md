@@ -1,5 +1,5 @@
 ---
-title: Deploy Kestra with Docker Compose – Postgres Backend
+title: Deploy Kestra with Docker Compose – PostgreSQL Backend
 sidebarTitle: Docker Compose
 icon: /src/contents/docs/icons/docker.svg
 description: Get started with Kestra quickly using Docker Compose with a PostgreSQL backend for a robust local or server deployment.
@@ -17,6 +17,8 @@ Start Kestra with a PostgreSQL database backend by using a Docker Compose file.
 
 The quickest way to a production-ready, lightweight Kestra installation is to leverage Docker and Docker Compose. This guide helps you get started with Kestra using Docker.
 
+Make sure you have [Docker](https://docs.docker.com/compose/install) installed before you begin.
+
 :::alert{type="info"}
 **Enterprise Edition images** — log in to the private registry with your license credentials before pulling images:
 
@@ -28,12 +30,7 @@ Use `registry.kestra.io/docker/kestra-ee:latest` for the newest image, or pin a 
 Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
 :::
 
-## Before you begin
 
-Make sure you have the following installed:
-
-- [Docker](https://docs.docker.com/engine/install/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Download the Docker Compose file
 
