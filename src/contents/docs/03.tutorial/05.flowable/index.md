@@ -19,7 +19,7 @@ Tasks from the [Core Flow plugin](/plugins/core/flow) control flow logic. Use th
 
 For example, you can use the [If task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.if) to specify your conditions and define what action to take based on whether those conditions are met.
 
-Let's take our previous example, and modify it to incorporate the If task for conditional logic. Below, we have redesigned the flow to be based on a product `SELET` input rather than a `STRING` URI, but it still calles back to [dummyjson](https://dummyjson.com), and an API request is made based on the product category input of either `beauty` or `notebook` (one does not exist).
+Let's take our previous example, and modify it to incorporate the If task for conditional logic. Below, we have redesigned the flow to be based on a product `SELECT` input rather than a `STRING` URI, but it still calls back to [dummyjson](https://dummyjson.com), and an API request is made based on the product category input of either `beauty` or `notebook` (one does not exist).
 
 The `check_products` If task has a `condition` of `"{{ json(outputs.api.body).products | length > 0 }}"` (i.e., checking whether the API body is not empty and contains at least one product). The log message then depends on whether the actual product category exists or not. The `then` property defines the action for a true condition, and the `else` property defines the action for a false result.
 

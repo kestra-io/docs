@@ -40,6 +40,10 @@ In the Log task, you'll notice `inputs.user`. To retrieve an input value, you ne
 
 In the example above, the input `id` is set to `user`, and it's referenced in the task message as `{{ inputs.user }}`. Leverage [autocompletion](../01.fundamentals/index.md#autocompletion) in the flow editor to use expressions; they can be tricky at first, let Kestra do the hard work.
 
+:::alert{type="info"}
+Hit the `Backspace` or `Delete` key while building your expression? Use the keyboard shortcut to get autocomplete back again - `CTRL + SPACE`. 
+:::
+
 Try running the above flow with different values for the `user` input. You can do this by clicking on the **Execute** button and then typing a new string value in the prompt for whatever name you'd like.
 
 ![Inputs](./inputs.png)
