@@ -40,6 +40,7 @@
             <CommonPaginationContainer
                 :current-url="fullPath"
                 :total-items="categoryFilteredPlugins.length"
+                :showTotal="false"
                 @update="
                     ({ page, size }) => {
                         currentPage = page

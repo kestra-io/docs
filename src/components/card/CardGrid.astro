@@ -1,0 +1,151 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Item {
+    icon?: string;
+    title: string;
+    description?: string;
+    link?: {
+        href: string;
+        text: string;
+    };
+    evenBg?: boolean;
+}
+
+interface Props {
+    title: string;
+    items: Item[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="card-grid-section">
+    <div class="container">
+        <h2 data-usal="fade-u delay-0 duration-400 ease-out" set:html={title} />
+
+        <div class="cards-grid">
+            {
+                items.map((item, index) => (
+                    <div
+                        class:list={["card", { "even-bg": item.evenBg }]}
+                        data-usal={`${index % 2 === 0 ? "fade" : "zoomin"} delay-0 duration-400 ease-out`}
+                    >
+                        {item.icon && (
+                            <Icon name={item.icon} class="icon" />
+                        )}
+                        <h6 class="title" set:html={item.title} />
+                        {item.link ? (
+                            <a href={item.link.href} class="btn btn-primary btn-gradient">
+                                {item.link.text}
+                            </a>
+                        ) : (
+                            item.description && <p class="description" set:html={item.description} />
+                        )}
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .card-grid-section {
+        background-color: $white;
+        width: 100%;
+        padding: 2rem 0.5rem;
+
+        @include media-breakpoint-up(md) {
+            padding: 4rem 8px;
+            padding-bottom: 90px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+
+            @include media-breakpoint-up(md) {
+                gap: 4rem;
+            }
+
+            h2 {
+                text-align: center;
+            }
+
+            .cards-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+                width: 100%;
+
+                .card {
+                    border-radius: 12px;
+                    background: transparent;
+                    padding: 2rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    gap: 8px;
+                    border: 1px solid #CCCBCE;
+                    box-shadow: 2px 3px 16px 0px #2720560D;
+
+                    @include media-breakpoint-up(lg) {
+                        flex: 0 0 calc(33.333% - 1rem);
+                        max-width: 360px;
+                    }
+
+                    @include media-breakpoint-down(lg) {
+                        flex: 0 0 calc(50% - 1rem);
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        flex: 0 0 100%;
+                    }
+
+                    .icon {
+                        font-size: 1.5rem;
+                        align-self: flex-start;
+                        color: #4b0aaa;
+                        width: 1.5rem;
+                        height: 1.5rem;
+                    }
+
+                    .title {
+                        font-weight: 700;
+                        line-height: 28px;
+                        margin: 0;
+                    }
+
+                    .description {
+                        font-weight: 400;
+                        font-size: $font-size-sm;
+                        line-height: 22px;
+                        margin: 0;
+                    }
+
+                    &.even-bg {
+                        background: #F7F7F7 !important;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        gap: 0.5rem;
+                    }
+
+                    .btn {
+                        padding: 0.5rem 1.5rem;
+                        font-size: 16px;
+                        font-weight: 700;
+                        border-radius: 8px;
+                    }
+                }
+            }
+        }
+    }
+</style>

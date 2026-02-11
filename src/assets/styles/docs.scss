@@ -29,6 +29,7 @@ $bd-gutter-x: 3rem;
 
 .bd-sidebar {
     grid-area: sidebar;
+    align-self: start;
 }
 
 .bd-content,

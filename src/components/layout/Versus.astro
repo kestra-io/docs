@@ -1,0 +1,130 @@
+---
+import { Image } from "astro:assets"
+import chevron from "~/assets/landing/infrastructure/chevron.svg"
+import { Icon } from "astro-icon/components"
+
+interface ComparisonCard {
+    title: string
+    icon: string
+    iconColor: string
+    items: string[]
+}
+
+interface Props {
+    title: string
+    firstCard: ComparisonCard
+    secondCard: ComparisonCard
+    cta: {
+        title: string
+        text: string
+        link: string
+    }
+}
+
+const { title, firstCard, secondCard, cta } = Astro.props
+---
+
+<section class="py-5 px-sm-0 px-2 border-bottom bg-white">
+    <div class="container d-flex flex-column gap-5">
+        <h2 class="text-center" set:html={title} />
+        <div
+            class="inner-box d-flex flex-column flex-xl-row align-items-center justify-content-center gap-4 mx-auto"
+        >
+            <div
+                class={`card comparison-card p-4 rounded-0 rounded-bottom-3 d-flex flex-column gap-4 card-1`}
+            >
+                <h5 class="d-flex align-items-center gap-2 mb-0">
+                    <Icon
+                        name={firstCard.icon}
+                        style={{ color: firstCard.iconColor }}
+                    />
+                    {firstCard.title}
+                </h5>
+                <ul class="list-unstyled mb-0 d-flex flex-column">
+                    {firstCard.items.map((item) => <li>{item}</li>)}
+                </ul>
+            </div>
+            <Image src={chevron} alt="chevron" class="chevron" />
+            <div
+                class={`card comparison-card p-4 rounded-0 rounded-bottom-3 d-flex flex-column gap-4 card-2`}
+            >
+                <h5 class="d-flex align-items-center gap-2 mb-0">
+                    <Icon
+                        name={secondCard.icon}
+                        style={{ color: secondCard.iconColor }}
+                    />
+                    {secondCard.title}
+                </h5>
+                <ul class="list-unstyled mb-0 d-flex flex-column">
+                    {secondCard.items.map((item) => <li>{item}</li>)}
+                </ul>
+            </div>
+        </div>
+        <div
+            class="cta d-flex align-items-center flex-column gap-2 bg-light rounded-3 p-4 mx-auto w-100"
+        >
+            <h5 class="text-center" set:html={cta.title} />
+            <a href={cta.link} class="btn btn-gradient text-white">{cta.text}</a
+            >
+        </div>
+    </div>
+</section>
+
+<style
+    lang="scss"
+    define:vars={{
+        card1Color: firstCard.iconColor,
+        card2Color: secondCard.iconColor,
+    }}
+>
+    @import "~/assets/styles/variable";
+
+    .inner-box {
+        @include media-breakpoint-up(xl) {
+            min-width: 1060px;
+        }
+
+        .chevron {
+            transform: rotate(90deg);
+            @include media-breakpoint-up(xl) {
+                transform: rotate(0deg);
+            }
+        }
+
+        .comparison-card {
+            width: 100%;
+            min-height: 238px;
+            border: 1px solid #f1f1f1;
+
+            h5 [data-icon] {
+                width: 24px;
+                height: 24px;
+                flex-shrink: 0;
+            }
+
+            ul li {
+                padding: 12px 0;
+                color: #434343;
+                font-weight: 700;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid #f1f1f1;
+                }
+            }
+
+            &.card-1 {
+                box-shadow: 0px 4px 0px 0px var(--card1Color) inset;
+            }
+
+            &.card-2 {
+                box-shadow: 0px 5px 0px 0px var(--card2Color) inset;
+            }
+        }
+    }
+
+    .cta {
+        max-width: 1060px;
+        min-height: 160px;
+        background-color: #f7f7f7 !important;
+    }
+</style>

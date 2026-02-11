@@ -93,8 +93,8 @@ Follow these baseline rules for every pull request.
 ## 4. Core Technical Rules (Non-Negotiable)
 
 ### 4.1 Properties & Rendering
-- All inputs must use `Property<T>`
-- **Never** use `@PluginProperty`
+- All inputs should use `Property<T>` when possible (for 99 % cases).
+- For the remaining cases `@PluginProperty` may be used for some of their attributes: `group` to group properties (for instance "connection" properties), `hidden` if the property needs to be hidden in the documentation, `internalStorageURI` if the property is an internal storage URI.
 - Mandatory properties must be annotated with `@NotNull` and checked during the rendering.
 - Rendered values must be prefixed with `r` (e.g. `rEndpoint`, not `renderedEndpoint`)
 - You can model a JSON thanks to a simple `Property<Map<String, Object>>`.
