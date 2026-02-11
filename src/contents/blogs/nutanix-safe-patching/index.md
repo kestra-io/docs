@@ -7,10 +7,10 @@ authors:
   - name: "Faizan Qazi"
     image: fqazi
     role: Solution Engineer
-image: ./main.jpg
+image: ./TODO.jpg
 ---
 
-Kestra’s **Assets** (Enterprise Edition) let you automate Nutanix VM lifecycle tasks while keeping a governed inventory of every resource and its lineage. This walkthrough shows how to provision a VM, patch it safely, validate health, and roll back automatically if anything fails—while registering the VM and snapshots as first-class assets.
+Kestra’s **Assets** (Enterprise Edition) let you automate Nutanix VM lifecycle tasks while keeping a governed inventory of every resource and its lineage. This walkthrough shows how to provision a VM, patch it safely, validate health, and roll back automatically if anything fails—while registering the VM and snapshots as first-class assets. You’ll see how the flow combines Nutanix’s AHV APIs with Kestra’s orchestration and observability to create a repeatable “safe-update” pattern for your fleet.
 
 ## The challenge
 
@@ -21,11 +21,11 @@ Operating at scale means you need to:
 3. **Validate** the app after patching.
 4. **Rollback automatically** on failure.
 
-Doing that manually across fleets is brittle. We’ll turn it into a repeatable, observable flow.
+Doing that manually across fleets is brittle. We’ll turn it into a repeatable, observable flow that can be reused across environments and teams.
 
 ## The “safe-update” flow at a glance
 
-The flow uses the Nutanix AHV plugin plus Kestra’s asset graph (see the [Nutanix plugin docs](/plugins/plugin-ee-nutanix) for task details). citeturn0search0
+The flow uses the Nutanix AHV plugin plus Kestra’s asset graph (see the [Nutanix plugin docs](/plugins/plugin-ee-nutanix) for task details).
 
 - Provision VM and register it as an Asset.
 - Take a pre-patch snapshot (linked to the VM asset).
@@ -126,12 +126,12 @@ Assets create traceability between the VM, snapshots, and the workflow that prod
           env: production
 ```
 
-**Why it matters:** The VM is now a tracked asset with metadata, so every downstream task can reference it and you keep lineage for audits. For task options, see the [CreateVm documentation](/plugins/plugin-ee-nutanix/ahv/io.kestra.plugin.ee.nutanix.ahv.createvm). citeturn0search1
+This step anchors the rest of the workflow: the VM becomes a tracked asset with searchable metadata, so downstream tasks and audits can reference a single source of truth. For task options, see the [CreateVm documentation](/plugins/plugin-ee-nutanix/ahv/io.kestra.plugin.ee.nutanix.ahv.createvm).
 
-**Key features:**
-- Nutanix `CreateVm` task talks directly to Prism Central to provision the VM you describe.
+Highlights:
+- Nutanix `CreateVm` talks directly to Prism Central to provision exactly the VM you describe.
 - The `assets.outputs` block registers the VM as an `io.kestra.plugin.ee.assets.VirtualMachine` with metadata (provider, env) for cataloging and lineage.
-- Metadata makes it easy to filter and search assets in the UI and see which flows touch them.
+- Once registered, the VM shows up in the Assets UI with history and dependencies.
 
 ### 2) Safe patching block (with snapshot)
 
@@ -196,13 +196,13 @@ Assets create traceability between the VM, snapshots, and the workflow that prod
             }
 ```
 
-**Why it matters:** Snapshots plus retries give you a safe guardrail; the error handler makes rollback automatic and visible.
+Snapshots plus retries give you a safety net, and the dedicated error branch makes rollback automatic and visible to the team.
 
-**Key features:**
+Highlights:
 - `CreateVmSnapshot` captures a pre-patch snapshot and links it back to the VM asset via `assets.inputs`, giving clear lineage.
-- Patching is pluggable: swap the SSH command for Ansible, PowerShell, Salt, etc., while still using the same flow shape.
+- Patching is pluggable: swap the SSH command for Ansible, PowerShell, or Salt while keeping the same flow shape.
 - `Pause` plus HTTP `Request` with retries lets you wait for reboot and verify health before marking success.
-- An `errors` block restores from the snapshot and notifies on-call automatically, limiting blast radius.
+- The `errors` block restores from the snapshot and notifies on-call automatically, limiting blast radius.
 
 ### 3) Clean up after success
 
@@ -212,9 +212,9 @@ Assets create traceability between the VM, snapshots, and the workflow that prod
   snapshotExtId: "{{ outputs.pre_patch_snapshot.snapshotExtId }}"
 ```
 
-**Why it matters:** Removing the temporary snapshot saves storage once the patch is validated.
+Clearing the snapshot after validation keeps storage lean and avoids cluttering your asset inventory.
 
-**Key features:**
+Highlights:
 - Deletes the temporary snapshot only after successful validation, keeping storage tidy.
 - Continues to reference the same asset IDs, so lineage stays intact even as temporary artifacts are removed.
 
@@ -313,10 +313,10 @@ pluginDefaults:
 
 That’s the entire workflow in one place if you want to copy, fork, or templatize it.
 
-## Why this matters
+## Takeaways
 
-- **Governed inventory:** Assets give you a live catalog of VMs and snapshots with lineage.
+- **Governed inventory:** Assets keep a live catalog of VMs and snapshots with lineage.
 - **Safer ops:** Snapshots, retries, and automatic rollback reduce blast radius.
 - **Operational clarity:** Notifications and asset graphs make it easy to see what happened and why.
 
-Ready to adapt it? Swap in your cluster IDs, secrets, and health-check endpoint, then ship it to your Nutanix fleet.
+Ready to adapt it? Swap in your cluster IDs, secrets, and health-check endpoint, then ship it to your Nutanix fleet. You can also templatize the flow (namespaces, inputs, notification channels) to standardize patching across teams.
