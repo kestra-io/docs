@@ -11,7 +11,7 @@ This reference maps each RBAC Permission and Action to the Enterprise API endpoi
 
 ## How to read this page
 - Endpoints are grouped by Permission and CRUD Action.
-- Notes labeled "any action" mean the endpoint only checks that the Permission exists on the role; the specific CRUD action is not enforced.
+- Notes labeled "any action" mean the endpoint only checks that the Permission exists on the role.
 - Some endpoints require multiple permissions; notes call out additional checks.
 - Namespace bindings apply to the namespace and all child namespaces.
 
@@ -28,6 +28,7 @@ This reference maps each RBAC Permission and Action to the Enterprise API endpoi
 - Delete: delete flows or namespace files.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/flows` (YAML)
 - POST `/api/v1/{tenant}/flows` (JSON, deprecated)
@@ -98,6 +99,7 @@ Notes
 - Delete: delete executions and logs.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/executions/trigger/{namespace}/{id}` (deprecated)
 - POST `/api/v1/{tenant}/executions/{namespace}/{id}`
@@ -185,6 +187,7 @@ Notes
 - Delete: delete templates, bulk delete by query or ids.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/templates`
 - POST `/api/v1/{tenant}/templates/{namespace}` (bulk update; also requires UPDATE and DELETE)
@@ -221,6 +224,7 @@ Notes
 - Delete: delete namespaces.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/namespaces`
 
@@ -250,6 +254,7 @@ Delete
 - Delete: delete KV entries.
 
 **Endpoints**
+
 Create
 - PUT `/api/v1/{tenant}/namespaces/{namespace}/kv/{key}` (creates if key does not exist)
 
@@ -281,6 +286,7 @@ Notes
 - Delete: delete dashboards.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/dashboards`
 
@@ -314,6 +320,7 @@ Notes
 - Delete: delete secrets.
 
 **Endpoints**
+
 Read
 - GET `/api/v1/{tenant}/secrets` (any action; no action check)
 - GET `/api/v1/{tenant}/namespaces/{namespace}/secrets`
@@ -340,6 +347,7 @@ Notes
 - Delete: delete credentials.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/credentials`
 - POST `/api/v1/{tenant}/namespaces/{namespace}/credentials`
@@ -372,6 +380,7 @@ Delete
 - Delete: delete custom blueprints.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/blueprints/flows`
 - POST `/api/v1/{tenant}/blueprints/custom` (deprecated)
@@ -407,6 +416,7 @@ Notes
 - Delete: delete apps.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/apps`
 - POST `/api/v1/{tenant}/apps/import`
@@ -441,6 +451,7 @@ Delete
 - Delete: not used.
 
 **Endpoints**
+
 Read
 - GET `/api/v1/{tenant}/apps/view/{uid}` (PRIVATE apps require APPEXECUTION READ)
 - GET `/api/v1/{tenant}/apps/view/{id}/file/preview`
@@ -466,6 +477,7 @@ Notes
 - Delete: delete assets.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/assets`
 
@@ -491,6 +503,7 @@ Delete
 - Delete: delete tests.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/tests`
 - POST `/api/v1/{tenant}/tests/{namespace}/{id}/run`
@@ -521,6 +534,7 @@ Delete
 - Read: search and export audit logs; read resource history and diffs.
 
 **Endpoints**
+
 Read
 - GET `/api/v1/{tenant}/auditlogs/search`
 - POST `/api/v1/{tenant}/auditlogs/find`
@@ -539,6 +553,7 @@ Notes
 - Create, Read, Update, Delete: manage users via SCIM provisioning endpoints.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/integrations/{integration}/scim/v2/Users`
 
@@ -567,6 +582,7 @@ Notes
 - Delete: delete service accounts or API tokens.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/service-accounts`
 
@@ -593,6 +609,7 @@ Notes
 - Create, Read, Update, Delete: manage groups.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/groups`
 
@@ -622,6 +639,7 @@ Notes
 - Delete: remove users from groups.
 
 **Endpoints**
+
 Create
 - PUT `/api/v1/{tenant}/groups/{id}/members/{userId}`
 
@@ -646,6 +664,7 @@ Notes
 - Create, Read, Update, Delete: manage roles.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/roles`
 
@@ -671,6 +690,7 @@ Delete
 - Create, Read, Delete: manage bindings between users, groups, and roles.
 
 **Endpoints**
+
 Create
 - POST `/api/v1/{tenant}/bindings`
 - POST `/api/v1/{tenant}/bindings/bulk`
@@ -713,6 +733,7 @@ Delete
 - Delete: revoke tenant access.
 
 **Endpoints**
+
 Create
 - PUT `/api/v1/{tenant}/tenant-access/{userId}`
 - POST `/api/v1/{tenant}/tenant-access`
@@ -736,6 +757,7 @@ Notes
 - Read: allow impersonation via the API header.
 
 **Endpoints**
+
 Read
 - Use `X-Kestra-Impersonate: user@example.com` on authenticated requests (requires IMPERSONATE READ).
 
@@ -760,6 +782,7 @@ Notes
 - Read: access AI flow generation.
 
 **Endpoints**
+
 Read
 - POST `/api/v1/{tenant}/ai/generate/flow` (any action; no action check)
 :::
