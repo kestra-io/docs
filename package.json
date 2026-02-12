@@ -62,7 +62,7 @@
     "remark-directive": "^4.0.0",
     "remark-link-rewrite": "^1.0.7",
     "sharp": "^0.34.5",
-    "shiki": "^3.21.0",
+    "shiki": "^3.22.0",
     "slugify": "^1.6.6",
     "strip-indent": "^4.1.1",
     "svgo": "^4.0.0",
