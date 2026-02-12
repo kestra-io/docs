@@ -68,7 +68,7 @@
     "svgo": "^4.0.0",
     "unist-util-visit": "^5.1.0",
     "vanilla-cookieconsent": "^3.1.0",
-    "vue": "^3.5.27",
+    "vue": "^3.5.28",
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel-nuxt": "^1.1.6"
   },
