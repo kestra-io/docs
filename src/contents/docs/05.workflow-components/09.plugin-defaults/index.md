@@ -107,15 +107,28 @@ kestra:
           region: "us-east-1"
 ```
 
+## Plugin Defaults Enterprise Edition
 
 :::alert{type="info"}
-In the [Enterprise Edition](../../07.enterprise/index.mdx) or [Kestra Cloud](/cloud), plugin defaults can be configured directly in the UI under the **Plugin Defaults** tab of a namespace. For example:
+In the [Enterprise Edition](../../07.enterprise/index.mdx) or [Kestra Cloud](/cloud), plugin defaults can be configured directly in the UI under the **Plugin Defaults** tab of a Namespace.
+:::
+
+You can create them via form or directly as YAML code for the Namespace:
+
+![Plugin Default Form Creation](./plugin-default-creation.png)
+
+Or click on **YAML** and paste the following for example:
 
 ```yaml
-- type: io.kestra.plugin.aws
+- type: io.kestra.plugin.aws.s3.Upload
   values:
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
     secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
     region: "us-east-1"
 ```
-:::
+
+### Inherited Plugin Defaults
+
+Plugin Defaults are inherited from the parent Namespace to children Namespaces. In the example above, the image shows the Plugin Default was created in the `kestra.company` Namespace. Navigating to the **Plugin Defaults** tab of a child Namespace, for example `kestra.company.data`, shows the parent Namespace's Plugin Defaults. This avoids having to recreate Plugin Defaults across children Namespaces, but it still allows for the children Namespaces to maintain their own isolated defaults if needed.
+
+![Plugin Default Inheritance](./inherited-plugin-defaults.png)
