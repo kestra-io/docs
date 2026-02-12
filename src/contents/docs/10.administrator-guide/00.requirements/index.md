@@ -15,9 +15,9 @@ The table below lists the software requirements for Kestra.
 
 ### Java Runtime
 
-| Kestra Edition | Required version | Note                             |
-|----------------|------------------|----------------------------------|
-| Open Source / Enterprise | >= 25 | Default: Java 25 (Eclipse Temurin) |
+| Kestra Edition | Required version | Note |
+|----------------|------------------|------|
+| Open Source / Enterprise | Runtime JDK 25; source/target 21 | Default: Java 25 (Eclipse Temurin); compiled with `--release 21` |
 
 ### Queue and Repository
 
