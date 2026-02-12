@@ -280,10 +280,11 @@ blockquote.blockquote {
 
 .btn-dark {
     border: $btn-dark-border;
-    background-color: $black-4;
+    background: #333336;
+    border: 1px solid #333336;
 
     &:hover {
-        background-color: $black-2;
+        background: #333336;
         border-color: rgba(255, 255, 255, 0.12);
     }
 }
@@ -797,6 +798,14 @@ small.agree {
     syntax: "<angle>";
     inherits: true;
     initial-value: 0turn;
+}
+
+@media only screen and (max-width: 768px) {
+    [data-usal] {
+        opacity: 1 !important;
+        transform: translate(0) scale(1) !important;
+        pointer-events: auto !important;
+    }
 }
 
 @import "./docs";

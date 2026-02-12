@@ -7,13 +7,16 @@ const staticProxyDomain = new URL("https://eu-assets.i.posthog.com/static/")
 
 export const ALL: APIRoute = async ({ request, clientAddress }) => {
     const requestUrl = new URL(request.url)
-    const realUrl = requestUrl.pathname.substring(2, requestUrl.pathname.length)
+    let realUrl = requestUrl.pathname.substring(2, requestUrl.pathname.length) + (requestUrl.search ? "?" + requestUrl.searchParams.toString() : "")
+
+    if (realUrl.startsWith("//")) {
+        realUrl = realUrl.substring(1, realUrl.length)
+    }
 
     const proxyUrl = new URL(
         realUrl,
         realUrl.startsWith("/static") ? staticProxyDomain : proxyDomain,
     )
-
 
     // Forward headers, excluding ones that shouldn't be proxied
     const headers = new Headers()
@@ -56,6 +59,7 @@ export const ALL: APIRoute = async ({ request, clientAddress }) => {
     const response = await fetch(forwardedRequest)
 
     return new Response(response.body, {
+        status: response.status,
         headers: response.headers,
     })
 }

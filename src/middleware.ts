@@ -1,3 +1,4 @@
+/* oxlint-disable no-console */
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import contentSecurityPolicyConfig from "../content-security-policy.config"
@@ -120,6 +121,12 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
         replace.port = "443"
 
         return sendRedirect(replace.toString())
+    }
+
+    // Double query string is invalid redirect without query string (historical reason, but can happen with some bots)
+    const doubleQuery = context.url.search.match(/\?/g)?.length;
+    if (doubleQuery !== undefined && doubleQuery > 1) {
+        return sendRedirect(context.url.pathname + "?" + context.url.search.split("?")[1])
     }
 
     return next()

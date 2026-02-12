@@ -61,12 +61,12 @@
         {
             title: "Declarative Workflow Definition",
             description:
-                "Strong typing with autocompletion, support through YAML and blueprints, and an intuitive UI with live topology views. Everything to build, validate, and visualize workflows.",
+                "Strong typing with autocompletion, support through YAML and Blueprints, and an intuitive UI with live topology views. Everything to build, validate, and visualize workflows.",
         },
         {
             title: "Code Faster Without Boilerplate",
             description:
-                "Spend less time babysitting orchestration code. Define task dependencies in a natural order, run steps sequentially, in parallel, or conditionally all without digging through complex logic.",
+                "Spend less time babysitting orchestration code. Define task dependencies in a natural order, run steps sequentially, in parallel, or conditionally; all without digging through complex logic.",
         },
         {
             title: "Event-Driven Workflow Execution",

@@ -43,6 +43,26 @@ Primary use cases:
 
 > Creating a brand-new plugin from the template is **not** the default scenario unless explicitly requested.
 
+### TDD (Strict Mode — Mandatory for Bug Fixes)
+
+When fixing a bug:
+
+1. The agent MUST first write or update a test that reproduces the issue.
+2. The test MUST fail for the correct reason.
+3. Only then may the agent implement the minimal code required to make the test pass.
+4. The agent must explicitly state:
+   - Why the test was failing
+   - Why the implementation fixes the root cause
+5. Refactoring is forbidden unless strictly required to fix the bug.
+
+When implementing a new feature:
+
+- The agent must define acceptance criteria before coding.
+- Tests must be written before or alongside the implementation.
+- Tests must validate observable behavior, not internal implementation details.
+
+Under no circumstances may production code be modified solely to make a test easier to write.
+
 ---
 
 ## 1. Agent Mindset & Responsibilities
@@ -64,6 +84,8 @@ The agent must **never**:
 - Introduce silent breaking changes
 - Bypass Kestra abstractions (HTTP client, serializers, RunContext)
 - Add unnecessary dependencies or complex test infra without justification
+- Expand the scope beyond what is explicitly described in the issue
+- Introduce opportunistic refactors unrelated to the issue
 
 ---
 
@@ -74,6 +96,38 @@ Unless explicitly stated otherwise:
 - The task/trigger/condition **is already registered**
 - The change is **incremental** (feature or fix)
 - The plugin must remain compatible with the **current Kestra plugin API**
+
+## Command Authorization Policy
+
+The agent is explicitly authorized to execute the following commands
+without requesting additional approval:
+
+### Build & Tests
+- ./gradlew test
+- ./gradlew build
+- ./gradlew check
+- mvn test
+- mvn verify
+
+### CI / Local Test Setup
+- chmod +x setup-unit.sh
+- chmod +x cleanup-unit.sh
+- .github/setup-unit.sh
+- .github/cleanup-unit.sh
+
+### Docker (integration tests only)
+- docker compose up -d
+- docker compose down
+- docker compose exec *
+
+Restrictions:
+- No docker run with --privileged
+- No mounting of host root filesystem
+- No destructive system commands (rm -rf, systemctl, usermod, etc.)
+- No network calls outside the scope of the plugin’s integration tests
+
+The agent must not invent new scripts.
+If a command is not listed above, it must request approval before execution.
 
 ---
 
@@ -93,8 +147,8 @@ Follow these baseline rules for every pull request.
 ## 4. Core Technical Rules (Non-Negotiable)
 
 ### 4.1 Properties & Rendering
-- All inputs must use `Property<T>`
-- **Never** use `@PluginProperty`
+- All inputs should use `Property<T>` when possible (for 99 % cases).
+- For the remaining cases `@PluginProperty` may be used for some of their attributes: `group` to group properties (for instance "connection" properties), `hidden` if the property needs to be hidden in the documentation, `internalStorageURI` if the property is an internal storage URI.
 - Mandatory properties must be annotated with `@NotNull` and checked during the rendering.
 - Rendered values must be prefixed with `r` (e.g. `rEndpoint`, not `renderedEndpoint`)
 - You can model a JSON thanks to a simple `Property<Map<String, Object>>`.
@@ -210,6 +264,11 @@ Keep new packages aligned with project conventions and metadata.
 ---
 
 ## 9. Tests & Quality Bar
+
+TDD Enforcement:
+- For bug fixes, a failing test demonstrating the issue is mandatory.
+- The agent must clearly reference which test reproduces the bug.
+- The implementation must not precede the failing test.
 
 Minimum expectations:
 - Unit tests added or updated to cover the change (using the `RunContext` to actually run tasks).

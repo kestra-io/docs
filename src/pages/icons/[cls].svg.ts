@@ -2,6 +2,7 @@
 export const prerender = false
 
 import { API_URL } from "astro:env/client"
+import { optimize } from "svgo"
 
 export async function GET({ params }: { params: { cls: string } }) {
     const cls = params.cls
@@ -11,8 +12,18 @@ export async function GET({ params }: { params: { cls: string } }) {
         throw new Error("Failed to fetch icon")
     }
 
-    const svg = await response.text()
-    const modifiedSvg = svg.replace(/currentColor/g, "#000000")
+    const svg = optimize(await response.text(), {
+        plugins: [
+            "preset-default",
+            {
+                name: "removeUnknownsAndDefaults",
+                params: {
+                    keepDataAttrs: false,
+                },
+            }
+        ]
+    }).data
+    const modifiedSvg = svg.replace(/currentColor/g, "white")
 
     return new Response(modifiedSvg, {
         headers: {
