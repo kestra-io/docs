@@ -1,34 +1,21 @@
 ---
 import Layout from "~/components/layout.astro"
 import Header from "~/components/home/Header.vue"
-import LogosTable from "~/components/home/LogosTable.vue"
-import OpenSource from "~/components/home/OpenSource.vue"
+import LogosTable from "~/components/home/LogosTable.astro"
+import OpenSource from "~/components/home/OpenSource.astro"
 import OpenSourceQuotes from "~/components/home/OpenSourceQuotes.vue"
 import { $fetchApi } from "~/utils/fetch"
-import Features from "~/components/home/Features.vue"
-import EveryDev from "~/components/home/EveryDev.vue"
+import Features from "~/components/home/Features.astro"
+import EveryDev from "~/components/home/EveryDev.astro"
 import Experience from "~/components/home/Experience.vue"
 import BlueprintsRender from "~/components/home/BlueprintsRender.vue"
 import Enterprise from "~/components/home/Enterprise.vue"
 import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue"
-import CTA from "~/components/home/CTA.vue"
+import CTA from "~/components/home/CTA.astro"
 import PluginsBox from "~/components/PluginsBox.astro"
 import { getValues } from "./api/github"
 import { getImage } from "astro:assets"
-
-const logosNonRandomized = import.meta.glob(
-    "~/assets/trusted-companies/*.{svg,png}",
-)
-const logos = await Promise.all(
-    Object.entries(logosNonRandomized).map(([filePath, mod]) => {
-        return mod().then((img: any) => {
-            return {
-                name: filePath.split("/").pop()?.split(".").shift(),
-                url: img.default.src,
-            }
-        })
-    }),
-).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()))
+import type { GetImageResult, ImageMetadata } from "astro"
 
 const githubData = await getValues()
 
@@ -39,24 +26,27 @@ const stories = await $fetchApi<{ results: any[] }>(
     "/customer-stories-v2?featured=true",
 )
 
-const quotesCompaniesLogos = import.meta.glob(
+const quotesCompaniesLogos = import.meta.glob<ImageMetadata>(
     "~/assets/quotes-companies/*.{svg,png}",
+    {
+        import: "default",
+    },
 )
 const quotesLogos = (
     await Promise.all(
-        Object.entries(quotesCompaniesLogos).map(([filePath, mod]) => {
-            return mod().then((img: any) => {
-                return {
-                    name: filePath.split("/").pop(),
-                    url: img.default.src,
-                }
-            })
+        Object.entries(quotesCompaniesLogos).map(async ([filePath, mod]) => {
+            const img = await mod()
+            const optimizedImage = await getImage({ src: img, height: 36 })
+            return {
+                name: filePath.split("/").pop(),
+                img: optimizedImage,
+            }
         }),
     )
 ).reduce(
     (acc, curr) => {
         if (curr.name) {
-            acc[curr.name] = curr.url
+            acc[curr.name] = curr.img.src
         }
         return acc
     },
@@ -101,7 +91,7 @@ const tabs = [
 
 <Layout>
     <Header client:load />
-    <LogosTable logos={logos} />
+    <LogosTable />
     <OpenSource {...githubData} />
     <OpenSourceQuotes client:visible />
     <Features />
@@ -111,5 +101,5 @@ const tabs = [
     <BlueprintsRender blueprints={blueprints.results} client:visible />
     <Enterprise stories={stories.results} client:visible />
     <EnterpriseQuotesRender quotesCompaniesLogos={quotesLogos} client:visible />
-    <CTA client:visible />
+    <CTA />
 </Layout>

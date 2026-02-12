@@ -1,30 +1,37 @@
-<template>
-    <section class="logos-bg">
-        <div class="logo-wrapper">
-            <h2 class="center-text">Trusted by Industry Leaders</h2>
-            <div
-                v-for="(img, index) in logos?.slice(0, 20)"
-                :key="img.name"
-                class="logo-box"
-                :class="{ 'hide-small': index > 17 }"
-            >
-                <img :src="img.url" :alt="img.name" />
-            </div>
-        </div>
-    </section>
-</template>
+---
+import { Image } from "astro:assets"
+const logosNonRandomized = import.meta.glob<ImageMetadata>(
+    "~/assets/trusted-companies/*.{svg,png}",
+    {
+        import: "default",
+    },
+)
+const logos = await Promise.all(
+    (Object.keys(logosNonRandomized) as string[]).map((filePath) => {
+        return logosNonRandomized[filePath]().then((img) => {
+            return {
+                name: filePath.split("/").pop()?.split(".").shift() ?? null,
+                src: img,
+            }
+        })
+    }),
+).then((imgs) => imgs.toSorted(() => 0.5 - Math.random()))
+---
 
-<script lang="ts" setup>
-    defineProps<{
-        // list of companies with name and logo url
-        logos: Array<{
-            name: string
-            url: string
-        }>
-    }>()
-</script>
+<section class="logos-bg">
+    <div class="logo-wrapper">
+        <h2 class="center-text">Trusted by Industry Leaders</h2>
+        {
+            logos?.slice(0, 20).map((img, index) => (
+                <div class:list={["logo-box", { "hide-small": index > 17 }]}>
+                    <Image src={img.src} alt={img.name} />
+                </div>
+            ))
+        }
+    </div>
+</section>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import "~/assets/styles/variable";
     .logos-bg {
         background-color: #fcfcfd;
@@ -41,7 +48,12 @@
             width: 1146px;
         }
         gap: 1px;
-        background: radial-gradient(#e1e1e1 0%, #e1e1e1 30%, #e1e1e101 80%, #e1e1e100 100%)
+        background: radial-gradient(
+                #e1e1e1 0%,
+                #e1e1e1 30%,
+                #e1e1e101 80%,
+                #e1e1e100 100%
+            )
             no-repeat center;
         margin: 0 auto;
     }

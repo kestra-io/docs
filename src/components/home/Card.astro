@@ -1,0 +1,74 @@
+---
+interface Props {
+    class?: string
+}
+
+const { class: className, ...rest } = Astro.props
+---
+
+<div class:list={["home-card", className]} {...rest}>
+    <slot />
+</div>
+
+<style lang="scss">
+    @property --x {
+        syntax: "<length>";
+        inherits: false;
+        initial-value: -250px;
+    }
+    @property --y {
+        syntax: "<length>";
+        inherits: false;
+        initial-value: -250px;
+    }
+
+    .home-card {
+        background-image: radial-gradient(
+            500px at var(--x) var(--y),
+            oklch(0.3 0.0193 271.93) 0,
+            oklch(0.26 0.0193 271.93) 100%
+        );
+        border-radius: 1rem;
+        box-shadow: 0px 12px 24px 8px #00000017;
+        border: 1px solid #2c2e4b;
+    }
+
+    div.home-card :global(a) {
+        color: #9c8fff;
+        text-decoration: none;
+        font-size: 0.8rem;
+    }
+</style>
+
+<script>
+    const SIZE_OF_GRADIENT = 500
+
+    // when the page has finished rendering, all the home card need a little script to react to
+    // mouse movements smoothly.
+    function moveGradient(e: MouseEvent) {
+        const box = e.currentTarget
+        if (!(box instanceof HTMLElement)) {
+            return
+        }
+
+        const { left, top, width, height } = box.getBoundingClientRect()
+
+        const x = e.clientX - left
+        const y = e.clientY - top
+
+        if (
+            x < -SIZE_OF_GRADIENT ||
+            x > width + SIZE_OF_GRADIENT ||
+            y < -SIZE_OF_GRADIENT ||
+            y > height + SIZE_OF_GRADIENT
+        ) {
+            return
+        }
+        box.style.setProperty("--x", `${x}px`)
+        box.style.setProperty("--y", `${y}px`)
+    }
+    const cards = document.querySelectorAll(".home-card")
+    for (const card of cards) {
+        card.addEventListener("mousemove", moveGradient as any)
+    }
+</script>

@@ -12,7 +12,7 @@ export async function GET({ params }: { params: { cls: string } }) {
     }
 
     const svg = await response.text()
-    const modifiedSvg = svg.replace(/currentColor/g, "#000000")
+    const modifiedSvg = svg.replace(/currentColor/g, "white")
 
     return new Response(modifiedSvg, {
         headers: {
