@@ -139,7 +139,7 @@ outputs:
 
 - `DAILY_TIME_DEADLINE`: This option enforces SLA conditions that must be met before a specific cutoff time each day. With the string property deadline, you can configure a daily cutoff for checking conditions. For example, deadline: "09:00:00.00Z" means that the defined SLA conditions should be met from midnight until 9 AM each day; otherwise, the flow will not be triggered.
 
-For the example, this trigger definition only triggers the flow if  `flow_a` is in SUCCESS state before 9:00 AM every day.
+For the example, this trigger definition only triggers the flow if  `flow_a` is in SUCCESS state before `9:00` AM every day.
 
 ```yaml
 triggers:
