@@ -8,6 +8,10 @@
 html {
     height: 100%;
     scroll-padding-top: var(--top-bar-height);
+    overscroll-behavior-y: none;
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
 }
 
 pre {
@@ -16,9 +20,12 @@ pre {
 
 body {
     min-width: 320px;
-    min-height: 100%;
+    height: 100vh;
     position: relative;
     background-color: #0a0b0d;
+    overscroll-behavior-y: none;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .headers-body-bg {
@@ -299,10 +306,7 @@ blockquote.blockquote {
     }
 
     &:hover {
-        filter: drop-shadow(16px 39px 17px rgba(149, 22, 208, 0.01))
-            drop-shadow(9px 22px 14px rgba(149, 22, 208, 0.05))
-            drop-shadow(4px 10px 11px rgba(149, 22, 208, 0.09))
-            drop-shadow(1px 2px 6px rgba(149, 22, 208, 0.1));
+        filter: drop-shadow(16px 39px 17px rgba(149, 22, 208, 0.01)) drop-shadow(9px 22px 14px rgba(149, 22, 208, 0.05)) drop-shadow(4px 10px 11px rgba(149, 22, 208, 0.09)) drop-shadow(1px 2px 6px rgba(149, 22, 208, 0.1));
 
         &::after {
             background: #230542;
@@ -734,24 +738,20 @@ small.agree {
 
 .ai-button-wrapper {
     --border-angle: 0turn;
-    --main-bg: conic-gradient(
-        from calc(var(--border-angle) + 50.37deg) at 50% 50%,
-        #3991ff 0deg,
-        #8c4bff 124.62deg,
-        #a396ff 205.96deg,
-        #3991ff 299.42deg,
-        #e0e0ff 342.69deg,
-        #3991ff 360deg
-    );
-    --gradient-border: conic-gradient(
-        from calc(var(--border-angle) + 50.37deg) at 50% 50%,
-        #3991ff 0deg,
-        #8c4bff 124.62deg,
-        #a396ff 205.96deg,
-        #3991ff 299.42deg,
-        #e0e0ff 342.69deg,
-        #3991ff 360deg
-    );
+    --main-bg: conic-gradient(from calc(var(--border-angle) + 50.37deg) at 50% 50%,
+            #3991ff 0deg,
+            #8c4bff 124.62deg,
+            #a396ff 205.96deg,
+            #3991ff 299.42deg,
+            #e0e0ff 342.69deg,
+            #3991ff 360deg);
+    --gradient-border: conic-gradient(from calc(var(--border-angle) + 50.37deg) at 50% 50%,
+            #3991ff 0deg,
+            #8c4bff 124.62deg,
+            #a396ff 205.96deg,
+            #3991ff 299.42deg,
+            #e0e0ff 342.69deg,
+            #3991ff 360deg);
 
     display: flex;
     flex-direction: column;
