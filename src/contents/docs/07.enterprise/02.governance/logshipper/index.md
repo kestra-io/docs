@@ -475,6 +475,32 @@ tasks:
         authorizationHeaderValue: "Bearer {{ secret('OTEL_TOKEN') }}"
 ```
 
+### Graylog
+
+This example exports logs to [Graylog](https://graylog.org/). The following example flow triggers a daily batch sends logs to Graylog using a GELF HTTP input. Refer to the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for more property details.
+
+```yaml
+ id: log_shipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: GraylogExporter
+        type: io.kestra.plugin.ee.graylog.LogExporter
+        endpoint: "http://localhost:12201/gelf"
+        graylogHost: "Kestra"
+        chunk: 1000
+```
+
 ## Audit log shipper
 
 To send [Audit Logs](../06.audit-logs/index.md) to an external system, there is the Audit Log Shipper task type. The Audit Log Shipper task extracts logs from the Kestra backend and loads them to desired destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, and Azure Monitor.

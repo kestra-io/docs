@@ -47,7 +47,7 @@ You can contribute an article about how you use Kestra to our [blog](/blogs). Em
 ### Requirements
 
 The following dependencies are required to build Kestra locally:
-- Java 21+
+- JDK 25 (runtime) with source/target set to Java 21
 - Node 14+ and npm
 - Docker & Docker Compose
 - an IDE (Intellij IDEA, Eclipse or VS Code)
@@ -69,6 +69,7 @@ Open the cloned repository in your favorite IDE. In many IDEs, Gradle build will
 
 You can also build it from a terminal using `./gradlew build`. The Gradle wrapper will automatically download the correct Gradle version to use.
 
+- Set your IDE language level to **Java 21** while using the **JDK 25** toolchain; builds are compiled with `--release 21`.
 - You may need to enable Java annotation processors since we use it a lot.
 - The main class is `io.kestra.cli.App` from module `kestra.cli.main`.
 - Pass as program arguments the server you want to develop, for example `server standalone` starts a standalone Kestra server.
