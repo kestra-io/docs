@@ -22,9 +22,8 @@ interface Props {
 const props = Astro.props
 
 const currentUrl = Astro.url
-currentUrl.pathname = currentUrl.pathname.endsWith("/")
-    ? currentUrl.pathname.slice(0, -1)
-    : currentUrl.pathname
+currentUrl.pathname = currentUrl.pathname.endsWith("/") ? currentUrl.pathname.slice(0, -1) : currentUrl.pathname;
+
 
 const currentOrigin = currentUrl.origin ?? "https://kestra.io"
 const slug = Astro.routePattern
@@ -38,23 +37,19 @@ const description =
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
 const slackMembers = await fetchSlackMembers()
 
-const query = new URLSearchParams(
-    currentUrl.searchParams
-        .entries()
-        .filter(([key, _]) => ["category", "sort", "page"].includes(key))
-        .reduce(
-            (acc, [key, value]) => {
-                acc[key] = value
-                return acc
-            },
-            {} as Record<string, string>,
-        ),
-)
+
+const query = new URLSearchParams(Array.from(currentUrl.searchParams.entries())
+    .filter(([key, _]) => ["category", "sort", "page"].includes(key))
+    .reduce((acc, [key, value]) => {
+        acc[key] = value
+        return acc
+    }, {} as Record<string, string>))
 
 const canonicalUrl = new URL(
     currentUrl + (query.size > 0 ? "?" + query.toString() : ""),
-    Astro.site,
+    Astro.site
 )
+
 ---
 
 <html lang="en" class="dark">
@@ -68,7 +63,6 @@ const canonicalUrl = new URL(
         <Font cssVariable="--font-family-public-sans" preload />
         <Font cssVariable="--font-family-source-code-pro" preload />
         <Font cssVariable="--font-family-mona-sans" />
-        <Font cssVariable="--font-family-jetbrains-mono" />
 
         <meta name="msapplication-TileColor" content="#2c0059" />
         <meta name="theme-color" content="#2c0059" />
