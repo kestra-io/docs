@@ -55,22 +55,22 @@ Below is a detailed list of the Theme Preferences you can configure:
   - SimSun
 - **Automatic Code Folding in the Editor**: a toggle, by default toggled off
 - **Environment Name**: e.g., dev, staging, prod
-- **Environment Color**: select a color from the color picker(../../../16.scripts/index.mdx)
+- **Environment Color**: select a color from the color picker
 
 ---
 
 ## Language and region
 
 - **Language**: English, German, Spanish, French, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, or Chinese
-- **Time Zone**: e.g., Europe/Berlin (UTC+02:00)
+- **Time Zone**: e.g., Europe/Berlin (`UTC+02:00`)
 - **Date Format**: choose one of the following formats:
-  - 2024-09-30T12:44:34+02:00
-  - 2024-09-30 12:44:34
-  - 30/09/2024 12:44:34
-  - Sep 30, 2024 12:44 PM
-  - Mon, Sep 30, 2024 12:44 PM
-  - September 30, 2024 12:44 PM
-  - Monday, September 30, 2024 12:44 PM
+  - `2024-09-30T12:44:34+02:00`
+  - `2024-09-30 12:44:34`
+  - `30/09/2024 12:44:34`
+  - `Sep 30, 2024 12:44 PM`
+  - `Mon, Sep 30, 2024 12:44 PM`
+  - `September 30, 2024 12:44 PM`
+  - `Monday, September 30, 2024 12:44 PM`
 
 :::alert{type="info"}
 You can change the date and time of your Kestra instance. However, note that this does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or the time that your Kestra flows will execute on. By default, those will run on UTC. This setting is only for the UI display.
