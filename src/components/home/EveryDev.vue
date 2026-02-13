@@ -82,17 +82,17 @@
         background-size: cover;
         @include media-breakpoint-up(md) {
             padding: 2rem;
+            background-color: transparent;
             background-image:
-                linear-gradient(0deg, #0d0e13ff 0%, #0d0e1388 10%, #0d0e1300 30%, #0d0e1300 100%),
-                url(./assets/every-bg-dots.svg),
-                radial-gradient(ellipse at center, #000 0%, rgba(70, 69, 100, 0) 100%);
-            background-blend-mode: normal, luminosity, normal;
-            background-repeat: no-repeat, no-repeat, no-repeat;
+                linear-gradient(0deg, #0a0b0dff 0%, #0a0b0d00 20%, #0a0b0d00 80%, #0a0b0dFF 100%),
+                radial-gradient(ellipse at center, #0d0e13AA 0%, #0d0e13DD 50%, #0d0e13FF 100%),
+                radial-gradient(circle at center, #767575 0%, #767575 5%, #76757500 5.5%, #0a0b0d00 100%);
+            background-repeat: no-repeat, no-repeat, repeat;
             background-position:
                 center bottom,
                 center bottom,
                 center bottom;
-            background-size: cover, cover, cover;
+            background-size: cover, 100% 130%, 25px 25px;
         }
         .container {
             position: relative;

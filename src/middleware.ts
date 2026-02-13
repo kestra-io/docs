@@ -123,6 +123,12 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
         return sendRedirect(replace.toString())
     }
 
+    // Double query string is invalid redirect without query string (historical reason, but can happen with some bots)
+    const doubleQuery = context.url.search.match(/\?/g)?.length;
+    if (doubleQuery !== undefined && doubleQuery > 1) {
+        return sendRedirect(context.url.pathname + "?" + context.url.search.split("?")[1])
+    }
+
     return next()
 })
 
