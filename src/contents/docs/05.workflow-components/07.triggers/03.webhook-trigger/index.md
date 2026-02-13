@@ -68,3 +68,34 @@ If your flow uses trigger variables (such as `{{ trigger.body }})`, you can test
 ---
 
 See the [Webhook trigger plugin documentation](/plugins/core/triggers/io.kestra.plugin.core.trigger.Webhook) for a full list of properties and outputs.
+
+### Return flow outputs in the webhook response
+
+To send task outputs back to the caller in the HTTP response, configure the Webhook trigger to wait for the execution and return outputs. The flow must expose at least one `outputs` entry.
+
+```yaml
+id: webhook_return_outputs
+namespace: company.team
+
+tasks:
+  - id: make_payload
+    type: io.kestra.plugin.core.debug.Return
+    format: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
+
+outputs:
+  - id: greeting
+    type: STRING
+    value: "{{ outputs.make_payload.value }}"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+    wait: true
+    returnOutputs: true
+    # optional: responseContentType: "text/plain"
+```
+
+- Call the webhook URL with a query parameter (for example `?name=Alice`). The execution runs synchronously because `wait: true` is set.
+- The HTTP response body contains the flow outputs (JSON by default). With the example above, the response includes `"greeting": "Hello Alice!"`.
+- Set `responseContentType: "text/plain"` when you want the response body to be plain text (ensure the flow returns a single string output, such as from the `Return` task).

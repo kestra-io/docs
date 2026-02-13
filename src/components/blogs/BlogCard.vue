@@ -1,6 +1,6 @@
 <template>
     <div class="mb-5 mt-1" role="button">
-        <a class="text-dark" :href="blog.path">
+        <a :href="blog.path">
             <img
                 v-if="typeof blog.image === 'string' && blog.image?.startsWith('https://')"
                 width="300"

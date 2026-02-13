@@ -7,18 +7,35 @@
 
     const faqItems = [
         {
-            question: "Is it easy to upgrade from Open Source edition to Kestra Enterprise?",
-            answer: "Yes. Kestra 1.0 is our first Long-Term Support (LTS) release, tested and hardened for production use. Many features that were previously in Beta are now generally available incl. Unit Tests, SLAs, Plugin Versioning, and new Helm charts for stable deployments.",
+            question: "What is a Kestra plugin?",
+            answer: "A Kestra plugin is a packaged extension that adds new tasks, triggers, or capabilities to the platform. Plugins allow workflows to interact with external systems, run specific types of logic, or expose higher-level platform features without custom code.",
         },
         {
-            question: "Does the Enterprise Edition comes with Enterprise Support and SLAs?",
-            answer: "No. Kestra is fully open-source under the Apache 2.0 license. You can always export and run your flows, plugins, and configurations independently. For enterprise deployments, we also offer Kestra Enterprise and Kestra Cloud.",
+            question: "How is a plugin different from a workflow?",
+            answer: "A workflow defines orchestration logic: when things run, in what order, and under which conditions. A plugin provides the execution capability itself. Workflows compose plugins; plugins do not replace workflows.",
         },
+        
         {
-            question: "Is Kestra Enterprise made for small teams?",
-            answer: "Yes, Kestra Enterprise is designed to scale with your team. Whether you're a small team or a large organization, Kestra provides the tools and features you need to manage your workflows effectively.",
+            question: "Are plugins language-specific?",
+            answer: "No. Kestra plugins are language-agnostic from a workflow perspective. A plugin may internally execute SQL, Python, Shell, PowerShell, Terraform, or API calls, but workflows interact with plugins in a uniform YAML syntax, regardless of the underlying runtime.",
+        },
+
+        {
+            question: "How are plugins configured?",
+            answer: "Plugins are configured directly in workflow definitions using YAML. Configuration is explicit, versioned, and can be managed like code (Git, CI/CD, reviews). No external SDKs or code instrumentation are required.",
+        },
+
+        {
+            question: "Are plugins open source?",
+            answer: "Most Kestra plugins are open source and available on GitHub. Some advanced plugins or capabilities are part of the Enterprise Edition, typically when they involve governance, security, or cross-tenant visibility.",
+        },
+
+        {
+            question: "Can I build my own plugin?",
+            answer: "Yes. Kestra provides a plugin SDK that allows teams to build and maintain custom plugins when needed. Custom plugins integrate the same way as native ones and can be shared internally or contributed back to the community.",
         },
     ]
+    
 </script>
 
 <style scoped lang="scss">

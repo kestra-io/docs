@@ -2,12 +2,12 @@
     <div class="d-flex justify-content-center container my-5">
         <div class="col-12 col-md-7 py-4 footer">
             <div class="text-center rounded">
-                <h3 data-usal="fade-r" class="mb-3">Getting Started</h3>
+                <h3 data-usal="fade-r" class="mb-3">Talk to us</h3>
                 <div class="d-flex gap-2 flex-wrap justify-content-center align-items-center">
-                    <a href="/docs">
+                    <a href="/demo">
                         <button class="btn btn-dark mx-2 mt-2">Get Started</button>
                     </a>
-                    <a href="https://github.com/kestra-io/kestra">
+                    <a href="/docs/quickstart">
                         <button class="btn btn-animated btn-purple-animated mx-2 mt-2">
                             Get Started
                         </button>

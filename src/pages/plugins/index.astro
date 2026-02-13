@@ -1,13 +1,13 @@
 ---
 import Layout from "~/components/layout.astro"
 import PluginsLists from "~/components/plugins/PluginsLists.vue"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "@kestra-io/ui-libs"
 import { filterPluginsWithoutDeprecated } from "@kestra-io/ui-libs"
 import { prunePluginsForCards, calculateTotalPluginCount } from "~/utils/plugins/pruneForClient"
 
-const rawPlugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
-const rawPluginsData = await $fetchApi(`/plugins/pluginsInformation`)
+const rawPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
+const rawPluginsData = await $fetchApiCached(`/plugins/pluginsInformation`)
 
 const nonDeprecatedPlugins = filterPluginsWithoutDeprecated(rawPlugins)
 const pluginsByName = nonDeprecatedPlugins

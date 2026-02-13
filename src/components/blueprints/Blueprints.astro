@@ -1,0 +1,196 @@
+---
+import BlueprintCard from "~/components/layout/BlueprintCard.vue"
+import Link from "~/components/common/Link.astro"
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    title: string;
+    blueprints: any[];
+    tags: any[];
+    link: {
+        href: string;
+        text: string;
+    };
+}
+
+const { title, blueprints, tags, link } = Astro.props;
+
+const displayBlueprints = blueprints?.slice(0, 20) ?? []
+---
+
+<section class="blueprints-carousel">
+    <div class="container">
+        <h2 data-usal="fade-u delay-0 duration-400 ease-out" set:html={title} />
+
+        <div class="blueprints-container">
+            <button class="navigation navigation-left d-md-none">
+                <Icon name="mdi:chevron-left" />
+            </button>
+            <button class="navigation navigation-right d-md-none">
+                <Icon name="mdi:chevron-right" />
+            </button>
+            <div class="row carousel-md">
+                {
+                    displayBlueprints.map((blueprint, index) => (
+                        <div
+                            class={`col-lg-4 col-md-6 mb-3 card-wrapper ${index >= 6 ? "d-md-none" : ""}`}
+                            data-usal="zoomin-u delay-0 duration-400 ease-out"
+                        >
+                            <BlueprintCard
+                                blueprint={blueprint}
+                                tags={tags}
+                                href={`/blueprints/${blueprint.id}`}
+                                scheme="light"
+                                client:visible
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="align-self-end mt-4" data-usal="fade-in delay-0 duration-400 ease-out">
+            <Link
+                href={link.href}
+                text={link.text}
+            />
+        </div>
+    </div>
+</section>
+
+<script>
+    const setupCarousels = () => {
+        const containers = document.querySelectorAll(".blueprints-container");
+        containers.forEach((container) => {
+            const leftBtn = container.querySelector(".navigation-left");
+            const rightBtn = container.querySelector(".navigation-right");
+            const wrapper = container.querySelector(".carousel-md");
+
+            if (leftBtn && wrapper) {
+                leftBtn.addEventListener("click", () => {
+                    wrapper.scrollBy({
+                        left: -300,
+                        behavior: "smooth",
+                    });
+                });
+            }
+
+            if (rightBtn && wrapper) {
+                rightBtn.addEventListener("click", () => {
+                    wrapper.scrollBy({
+                        left: 300,
+                        behavior: "smooth",
+                    });
+                });
+            }
+        });
+    };
+
+    setupCarousels();
+    // Re-run on view transitions if necessary
+    document.addEventListener("astro:page-load", setupCarousels);
+</script>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .blueprints-carousel {
+        width: 100%;
+        padding: 3rem 0;
+        background-image: url("~/assets/landing/infrastructure/grid.svg");
+        background-color: #f4f4f4;
+
+        @include media-breakpoint-up(lg) {
+            padding: 4rem 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: $rem-1;
+            @include media-breakpoint-up(md) {
+                gap: $rem-2;
+            }
+            padding: 0 1rem;
+
+            @media (min-width: 576px) and (max-width: 768px) {
+                max-width: 768px;
+            }
+
+            h2 {
+                text-align: center;
+                :global(.highlight) {
+                    color: #631BFF;
+                }
+            }
+
+            .blueprints-container {
+                position: relative;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .navigation {
+                    position: absolute;
+                    top: 46%;
+                    transform: translateY(-50%);
+                    background-color: $black-10;
+                    color: $white;
+                    border-radius: 50%;
+                    z-index: 10;
+                    height: 35px;
+                    width: 35px;
+                    border: none;
+                    font-size: 24px;
+                    padding: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+
+                    &-left {
+                        left: -0.5rem;
+                    }
+
+                    &-right {
+                        right: -0.5rem;
+                    }
+                }
+
+                .carousel-md {
+                    @include media-breakpoint-down(md) {
+                        display: flex;
+                        flex-wrap: nowrap;
+                        overflow-x: auto;
+                        gap: 1rem;
+                        margin: 0;
+                        scrollbar-width: none;
+
+                        &::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                        .card-wrapper {
+                            flex: 0 0 auto;
+                            width: 291px;
+                            max-width: 291px;
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+
+            .row {
+                width: 100%;
+
+                > * {
+                    padding-right: 8px;
+                    padding-left: 8px;
+                }
+            }
+        }
+    }
+</style>

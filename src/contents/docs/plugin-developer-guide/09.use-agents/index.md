@@ -15,7 +15,7 @@ Contributors MUST have their plugin repositories locally inside a single "hat" f
 
 Place this file in the hat folder (for example, `~/dev`) so it can be copied into each plugin repository.
 
-```
+````markdown
 # AGENTS.md — Kestra Plugin Development
 
 ⚠️ **IMPORTANT — READ FIRST**
@@ -26,7 +26,7 @@ Place this file in the hat folder (for example, `~/dev`) so it can be copied int
 - **Goal-driven execution**: define what success looks like *before* writing the first line of code.
 - **Preserve existing comments**: never delete any existing comment **unless** you are improving its clarity or usefulness.
 - **Build & test are mandatory**:
-  - You **must** run `./gradlew test` after **every** code implementation.
+  - You **must** (and you are allowed to) run `./gradlew test` after **every** code implementation.
   - The code **must compile**.
   - All tests **must pass**.
   - Do **not** wait for explicit user approval to run this command.
@@ -43,6 +43,26 @@ Primary use cases:
 
 > Creating a brand-new plugin from the template is **not** the default scenario unless explicitly requested.
 
+### TDD (Strict Mode — Mandatory for Bug Fixes)
+
+When fixing a bug:
+
+1. The agent MUST first write or update a test that reproduces the issue.
+2. The test MUST fail for the correct reason.
+3. Only then may the agent implement the minimal code required to make the test pass.
+4. The agent must explicitly state:
+   - Why the test was failing
+   - Why the implementation fixes the root cause
+5. Refactoring is forbidden unless strictly required to fix the bug.
+
+When implementing a new feature:
+
+- The agent must define acceptance criteria before coding.
+- Tests must be written before or alongside the implementation.
+- Tests must validate observable behavior, not internal implementation details.
+
+Under no circumstances may production code be modified solely to make a test easier to write.
+
 ---
 
 ## 1. Agent Mindset & Responsibilities
@@ -54,11 +74,18 @@ The agent must:
 - Optimize for **readability, debuggability, and documentation**
 - Follow Kestra conventions **strictly** to avoid breaking UI, schema generation, or docs
 - Refactor shared logic into an abstract class when introducing a new task that requires behavior already implemented in an existing one
+- Ensure contributions are:
+  - easy to review
+  - easy to QA
+  - consistent with Kestra conventions
+  - safe and maintainable over time
 
 The agent must **never**:
 - Introduce silent breaking changes
 - Bypass Kestra abstractions (HTTP client, serializers, RunContext)
 - Add unnecessary dependencies or complex test infra without justification
+- Expand the scope beyond what is explicitly described in the issue
+- Introduce opportunistic refactors unrelated to the issue
 
 ---
 
@@ -70,49 +97,98 @@ Unless explicitly stated otherwise:
 - The change is **incremental** (feature or fix)
 - The plugin must remain compatible with the **current Kestra plugin API**
 
+## Command Authorization Policy
+
+The agent is explicitly authorized to execute the following commands
+without requesting additional approval:
+
+### Build & Tests
+- ./gradlew test
+- ./gradlew build
+- ./gradlew check
+- mvn test
+- mvn verify
+
+### CI / Local Test Setup
+- chmod +x setup-unit.sh
+- chmod +x cleanup-unit.sh
+- .github/setup-unit.sh
+- .github/cleanup-unit.sh
+
+### Docker (integration tests only)
+- docker compose up -d
+- docker compose down
+- docker compose exec *
+
+Restrictions:
+- No docker run with --privileged
+- No mounting of host root filesystem
+- No destructive system commands (rm -rf, systemctl, usermod, etc.)
+- No network calls outside the scope of the plugin’s integration tests
+
+The agent must not invent new scripts.
+If a command is not listed above, it must request approval before execution.
+
 ---
 
-## 3. Core Technical Rules (Non-Negotiable)
+## 3. Pull Request & Contribution Guidelines
 
-### 3.1 Properties & Rendering
-- All inputs must use `Property<T>`
-- **Never** use `@PluginProperty`
-- Required properties:
-  - Annotated with `@NotNull`
-  - Explicitly validated **after rendering**
+Follow these baseline rules for every pull request.
+
+- PR title and commits follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
+- Add a `closes #ISSUE_ID` or `fixes #ISSUE_ID` in the description if the PR relates to an opened issue.
+- Documentation updated (plugin docs from `@Schema` for properties and outputs, `@Plugin` with examples, `README.md` file with basic knowledge and specifics).
+- Setup instructions included if needed (API keys, accounts, etc.).
+- Prefix all rendered properties by `r` not `rendered` (e.g., `rHost`).
+- Use `runContext.logger()` to log important information with the right level (DEBUG, INFO, WARN, or ERROR).
+
+---
+
+## 4. Core Technical Rules (Non-Negotiable)
+
+### 4.1 Properties & Rendering
+- All inputs should use `Property<T>` when possible (for 99 % cases).
+- For the remaining cases `@PluginProperty` may be used for some of their attributes: `group` to group properties (for instance "connection" properties), `hidden` if the property needs to be hidden in the documentation, `internalStorageURI` if the property is an internal storage URI.
+- Mandatory properties must be annotated with `@NotNull` and checked during the rendering.
 - Rendered values must be prefixed with `r` (e.g. `rEndpoint`, not `renderedEndpoint`)
+- You can model a JSON thanks to a simple `Property<Map<String, Object>>`.
 
-### 3.2 HTTP & External Calls
-- Use **only** Kestra’s internal HTTP client: `io.kestra.core.http.client`
+### 4.2 HTTP & External Calls
+- Must use Kestra’s internal HTTP client from `io.kestra.core.http.client`.
+- Use Kestra’s internal HTTP client **only if no more robust SDK is explicitly provided or required in the prompt**.
+- When an official or well-maintained SDK is specified in the prompt, prefer the SDK over raw HTTP calls.
 - Handle:
   - Timeouts
   - Non-2xx responses
   - Partial failures
 - Log meaningful context without leaking secrets
 
-### 3.3 JSON & Serialization
-- Use Kestra-provided Jackson mappers: `io.kestra.core.serializers`
-- For external APIs:
-  - Use `@JsonIgnoreProperties(ignoreUnknown = true)`
-  - Never assume response stability
+### 4.3 JSON & Serialization
+- Must use Jackson mappers provided by core (`io.kestra.core.serializers`).
+- If you are serializing response from an external API, you may have to add a `@JsonIgnoreProperties(ignoreUnknown = true)` at the mapped class level to prevent crashes when providers add new fields.
+- Never assume response stability
 
-### 3.4 Logging & Metrics
+### 4.4 Logging & Metrics
 - Use `runContext.logger()`
 - Correct log levels are mandatory
-- If emitting metrics via `runContext.metric(...)`:
-  - Annotate with `@Metric`
+- Every time you use `runContext.metric(...)` you have to add a `@Metric`
 
-### 3.5 Java Style & Local Variables
+### 4.5 Java Style & Local Variables
 - Use `var` for **all local variables** whenever it is legally possible
 - Avoid repeating obvious types on the left-hand side
 - Explicit types are allowed **only** when they improve readability or disambiguation
 - Always remove unused imports and keep imports consistently organized (no leftovers, no random ordering)
 - Prefer importing classes rather than using fully qualified class names in the code
 - Fully qualified names are allowed **only** to resolve explicit naming conflicts between classes
+- Use `getFirst()` instead of `get(0)` when accessing the first element of a list
+- Prefer immutability whenever possible to improve safety and concurrency handling
+- When using streams:
+  - Prefer `.toList()` over `collect(Collectors.toList())`
+- Avoid exposing or mutating collections after creation unless explicitly required
 
 ---
 
-## 4. Documentation Is Part of the Code
+## 5. Documentation Is Part of the Code
 
 Every change must consider **documentation impact**.
 
@@ -122,6 +198,8 @@ Every change must consider **documentation impact**.
 - Examples must:
   - Be realistic
   - Use `{{ secret('SECRET_NAME') }}` for sensitive values
+- Use `"{{ secret('YOUR_SECRET') }}"` in the examples for sensible infos such as an API KEY.
+- Align the `"""` to close examples blocks with the flow id.
 
 ### Documentation Formatting Rules
 - Use **Java multiline string blocks (`"""`)** for:
@@ -131,7 +209,6 @@ Every change must consider **documentation impact**.
 - Documentation must remain readable **without** manual line concatenation
 
 ### @Example Usage Rules (Non-Negotiable)
-
 - **Do not** specify `lang = "yaml"` in `@Example`
 - All `@Example` entries **must** provide a **full, runnable flow**
 - Each example must:
@@ -146,34 +223,55 @@ Optional but encouraged:
 
 ---
 
-## 5. Outputs Contract
+## 6. Outputs Contract
 
 - Outputs must be:
   - Minimal
   - Explicit
   - Non-redundant
-- If no output is required:
-  - Use `VoidOutput`
+- You can send back as outputs the same information you already have in your properties if they are important.
+- If you do not have any output use `VoidOutput`
+- Do not output twice the same information (e.g., a status code and an error code saying the same thing).
 - Never expose:
   - Secrets
   - Large raw payloads unless explicitly designed for it
 
 ---
 
-## 6. Fetch Semantics (Data-Heavy Tasks)
+## 7. Fetch Semantics (Data-Heavy Tasks)
 
 If the task retrieves data:
 - Introduce `Property<FetchType> fetchType`
 - Support:
-- `FETCH_ONE`
-- `FETCH`
-- `STORE` (mandatory for large datasets)
+  - `FETCH_ONE`
+  - `FETCH`
+  - `STORE` (mandatory for large datasets)
 
 ---
 
-## 7. Tests & Quality Bar
+## 8. New plugins / subplugins
+
+Keep new packages aligned with project conventions and metadata.
+
+- Make sure your new plugin is configured like mentioned here:
+  https://kestra.io/docs/plugin-developer-guide/gradle#mandatory-configuration
+- Add a `package-info.java` under each sub package respecting this format:
+  https://github.com/kestra-io/plugin-odoo/blob/main/src/main/java/io/kestra/plugin/odoo/package-info.java  
+  and choosing the right category.
+- Docs don't support to have both tasks/triggers in the root package (e.g. `io.kestra.plugin.kubernetes`) and in a sub package (e.g. `io.kestra.plugin.kubernetes.kubectl`), whether it's: all tasks/triggers in the root package OR only tasks/triggers in sub packages.
+- Update the existing `index.yaml` for the main plugin, and for each new subpackage add a metadata file named exactly after the subpackage (e.g. `s3.yaml` for `io.kestra.plugin.aws.s3`) under `src/main/resources/metadata/`, following the same schema.
+
+---
+
+## 9. Tests & Quality Bar
+
+TDD Enforcement:
+- For bug fixes, a failing test demonstrating the issue is mandatory.
+- The agent must clearly reference which test reproduces the bug.
+- The implementation must not precede the failing test.
 
 Minimum expectations:
+- Unit tests added or updated to cover the change (using the `RunContext` to actually run tasks).
 - Unit tests using `RunContext`
 - Tests **must** cover:
   - Every task **must** include at least one **functional test covering the happy path**
@@ -184,44 +282,46 @@ Minimum expectations:
     - Absence of unexpected side effects
   - Failure scenarios
   - Rendering edge cases
-- Prefer **Testcontainers**
+- Prefer **Testcontainers** when possible to avoid running extra Docker services that can consume a lot of GitHub Actions runner disk space (and reduce flakiness / CI setup complexity).
+- If Testcontainers is not suitable, avoid disabling tests for CI. Instead, configure a local environment with `.github/setup-unit.sh` (to be set executable with `chmod +x setup-unit.sh`) (which can be executed locally and in the CI) all along with a new `docker-compose-ci.yml` file (do **not** edit the existing `docker-compose.yml`). If needed, create an executable (`chmod +x cleanup-unit.sh`) `cleanup-unit.sh` to remove the potential costly resources (tables, datasets, etc).
+- If Testcontainers cannot be used (e.g. no available Docker image):
+  - Fall back to **Wiremock**
+  - Use the following dependency:
+    - `testImplementation "org.wiremock:wiremock-jetty12"`
 - CI must **never** rely on disabled tests
 - Unit tests for tasks **must** use `@KestraTest` to bootstrap the required Kestra components
 - Tests **must** inject a `RunContextFactory` using `@Inject` (Micronaut-style injection)
-- The agent may use an existing plugin as a reference for test patterns and structure (e.g. `kestra-io/plugin-scripts`)
+- The agent may use an existing plugin as a reference for test patterns and structure (e.g. `kestra-io/plugin-scripts`) or take inspiration from other existing tests in the current repository
 - Do **not** write production code specifically to satisfy tests
 - Tests **must adapt** to the production code, not the opposite
 - Any production change must be justified by functional or design requirements, never by test convenience
 
 When applicable:
-- Add YAML flow sanity checks under: `src/test/resources/flows`
+- Add sanity checks if possible with a YAML flow inside `src/test/resources/sanity-checks/[FLOW_NAME].yaml`. Use these sanity checks in a `RunnerTest` class annotated with `@KestraTest(startRunner = true)`. Test methods in this class will be annotated with `@Test` and `@ExecuteFlow("sanity-checks/[FLOW_NAME].yaml")`. The FLOW_NAME must match the flow id inside the file. Here is how such a test looks like:
+
+```java
+    @Test
+    @ExecuteFlow("sanity-checks/[FLOW_NAME].yaml")
+    void flow_name(Execution execution) {
+        assertThat(execution.getTaskRunList(), hasSize(42));
+        assertThat(execution.getState().getCurrent(), is(State.Type.SUCCESS));
+    }
+```
 
 ---
 
-## 8. Pull Request Standards
+## 10. Icons & Metadata
 
-### Commits & PR Title
-- **Conventional Commits required**
-- Reference issues when applicable: `closes #123` or `fixes #456`
-
-### PR Description Must Include
-- What changed
-- Why it changed
-- How it was tested
-- Screenshots or logs from local QA when relevant
-
----
-
-## 9. Icons & Metadata
-
-- SVG only
-- Location: `src/main/resources/icons`
-- One icon per package / subpackage
+- Icons added in `src/main/resources/icons` in SVG format and not in thumbnail (keep it big):
+  - `plugin-icon.svg`
+  - One icon per package / subpackage
 - Naming must follow Kestra conventions exactly (`plugin-icon.svg` for the main plugin icon and the package name or task name for other icons)
+- For subpackages, e.g. `io.kestra.plugin.aws.s3`, add `io.kestra.plugin.aws.s3.svg`  
+  See example here: https://github.com/kestra-io/plugin-elasticsearch/blob/master/src/main/java/io/kestra/plugin/elasticsearch/Search.java#L76
 
 ---
 
-## 10. What the Agent Must Actively Avoid
+## 11. What the Agent Must Actively Avoid
 
 - Mixing root packages and subpackages in docs
 - Introducing fragile JSON parsing
@@ -234,14 +334,14 @@ When applicable:
 ## References
 
 - Kestra Plugin Developer Guide  
-https://kestra.io/docs/plugin-developer-guide
+  https://kestra.io/docs/plugin-developer-guide
 
 - Contribution Guidelines  
-https://kestra.io/docs/plugin-developer-guide/contribution-guidelines
+  https://kestra.io/docs/plugin-developer-guide/contribution-guidelines
 
 - Plugin Documentation  
-https://kestra.io/docs/plugin-developer-guide/document
-```
+  https://kestra.io/docs/plugin-developer-guide/document
+````
 
 ## Install AGENTS.md in every plugin repository
 

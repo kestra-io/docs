@@ -14,7 +14,7 @@
                                 Read the docs
                             </button>
                         </a>
-                        <a href="/docs/terraform">
+                        <a href="/docs/quickstart">
                             <button class="btn btn-animated btn-purple-animated">
                                 Get Started
                             </button>
