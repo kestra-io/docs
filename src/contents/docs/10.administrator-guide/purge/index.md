@@ -64,6 +64,20 @@ tasks:
 Purge tasks permanently delete data. Always test in non-production environments first.
 :::
 
+## Auto-delete expired Key-value pairs
+
+Rather than create a system flow to regularly purge Key-value pairs, you can add a global configuration to your Kestra Configuration/Application file that auto deletes expired Key-value pairs:
+
+```yaml
+kestra:
+  kv:
+    purge-expired:
+      enabled: true # default true
+      initial-delay: PT5S # default PT6H 
+      fixed-delay: PT5S # default PT6H
+      batch-size: 10 # default 1000
+```
+
 ## Purge tasks vs. UI deletion
 
 Purge tasks perform **hard deletion**, permanently removing records and reclaiming storage. In contrast, deleting items in the UI is a **soft deletion**—the data is hidden but retained (e.g., revision history and past executions can reappear if a flow with the same ID is recreated).
