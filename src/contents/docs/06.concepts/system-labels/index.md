@@ -40,7 +40,7 @@ By default, System Labels (prefixed with `system.`) are hidden. To display them,
 
 ## System labels
 
-System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels.
+System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels. For a step-by-step guide on using `system.correlationId` specifically as an idempotency key, see [Idempotency with correlation IDs](../../15.how-to-guides/idempotency/index.md).
 
 ### `system.correlationId`
 
