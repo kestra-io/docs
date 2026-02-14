@@ -80,7 +80,7 @@
 <template>
     <div class="d-flex justify-content-between my-5 pagination-container">
         <div class="items-per-page">
-            <select v-if="totalPages > 1" class="form-select bg-dark-2" v-model="itemsPerPage">
+            <select v-if="totalPages > 1" class="form-select " v-model="itemsPerPage">
                 <option
                     v-for="option in sizeOptions"
                     :key="option"
@@ -109,38 +109,29 @@
     @import "~/assets/styles/variable";
     .pagination-container {
         margin-top: 39px;
-
         .form-select {
             border-radius: 4px;
             border: $block-border;
-            color: $white;
+            color: var(--ks-content-primary);
             text-align: center;
-            font-family: $font-family-sans-serif;
-            font-size: 14px;
-            font-style: normal;
+            font-size: $font-size-sm;
             font-weight: 700;
-            line-height: 22px;
         }
     }
 
     .items-per-page .form-select {
         border-radius: 4px;
         border: $block-border;
-        color: $white;
+        color: var(--ks-content-primary);
         text-align: center;
-        font-family: $font-family-sans-serif;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 22px;
+        font-size: $font-size-sm;
+        font-weight: 700;
     }
 
     .total-pages {
         font-size: $font-size-sm;
-        color: $white;
+        color: var(--ks-content-primary);
         text-align: center;
-        font-family: $font-family-sans-serif;
         font-weight: 400;
-        line-height: 22px;
     }
 </style>

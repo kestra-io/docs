@@ -1,27 +1,35 @@
 ---
 import Layout from "~/components/layout.astro"
-import HeaderSection from "~/components/use-cases/HeaderSection.vue"
-import MainSection from "~/components/use-cases/MainSection.vue"
-import EnterpriseEditionSection from "~/components/use-cases/EnterpriseEditionSection.vue"
-import CardSection from "~/components/use-cases/microservices-orchestration/CardSection.vue"
-import CapabilitiesSection from "~/components/use-cases/CapabilitiesSection.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import Section from "~/components/layout/Section.vue"
+import Enterprise from "~/components/use-cases/Enterprise.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import Capabilities from "~/components/use-cases/Capabilities.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import AlertCircle from "vue-material-design-icons/AlertCircle.vue"
+import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue"
+import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue"
+import Cogs from "vue-material-design-icons/Cogs.vue"
+import TimerCogOutline from "vue-material-design-icons/TimerCogOutline.vue"
 
-const title = "Streamline your Microservices Orchestration"
-const description =
+const TITLE = "Streamline your Microservices Orchestration"
+const DESCRIPTION =
     "Kestra empower software engineers to manage microservices efficiently, enhancing reliability and performance."
 
-const capabilities = ["Database Management", "API Orchestration"]
+const CAPABILITIES = ["Database Management", "API Orchestration"]
 
-const mainContent = [
+const MAIN_CONTENT = [
     {
         title: "Orchestrate Your Microservices",
-        img: "/landing/usecases/microservices-orchestration/orchestrate-microservices.svg",
-        imgAlt: "Orchestrate Your Microservices",
-        imgWidth: "568px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/microservices-orchestration/orchestrate-microservices.svg",
+            alt: "Orchestrate Your Microservices",
+            width: 568,
+            height: 420,
+        },
         description:
-            "Kestra enables you to orchestrate microservices effortlessly, ensuring smooth communication and coordination between services, which is crucial for maintaining a reliable and scalable architecture.   ",
+            "Kestra enables you to orchestrate microservices effortlessly, ensuring smooth communication and coordination between services, which is crucial for maintaining a reliable and scalable architecture.",
         content: `
             <ul>
                 <li>
@@ -41,18 +49,20 @@ const mainContent = [
     },
     {
         title: "CI/CD Integration and Automation",
-        img: "/landing/usecases/microservices-orchestration/ci-di-integration.svg",
-        imgAlt: "CI/CD Integration",
-        imgWidth: "568px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/microservices-orchestration/ci-di-integration.svg",
+            alt: "CI/CD Integration",
+            width: 568,
+            height: 420,
+        },
         description:
-            "Kestra helps you streamline and automate your continuous integration and continuous deployment (CI/CD) pipelines, ensuring smooth and reliable releases of microservices.  ",
+            "Kestra helps you streamline and automate your continuous integration and continuous deployment (CI/CD) pipelines, ensuring smooth and reliable releases of microservices.",
         content: `
             <ul>
                 <li>
                     Automated Build and Test:
                     <span>
-                       Use Kestra to automate the building, testing, and deployment of microservices, reducing manual intervention and errors.
+                        Use Kestra to automate the building, testing, and deployment of microservices, reducing manual intervention and errors.
                     </span>
                 </li>
                 <li>
@@ -78,12 +88,14 @@ const mainContent = [
     },
     {
         title: "Manage Microservices Regardless of Language",
-        img: "/landing/usecases/microservices-orchestration/manage-microservices.svg",
-        imgAlt: "Manage Microservices",
-        imgWidth: "604px",
-        imgHeight: "477px",
+        image: {
+            src: "/landing/usecases/microservices-orchestration/manage-microservices.svg",
+            alt: "Manage Microservices",
+            width: 604,
+            height: 477,
+        },
         description:
-            "Kestra's language-agnostic platform allows software engineers from any background to manage their scripts and orchestrate microservices efficiently.  ",
+            "Kestra's language-agnostic platform allows software engineers from any background to manage their scripts and orchestrate microservices efficiently.",
         content: `
             <ul>
                 <li>
@@ -108,36 +120,85 @@ const mainContent = [
         `,
     },
 ]
+
+const CHALLENGES_TITLE = `<span class="highlight">Key Benefits</span> of Using Kestra for<br/> Microservices Orchestration`
+
+const CARDS_DATA = [
+    {
+        icon: Cogs,
+        cardInfo: {
+            title: "Flexible Integration",
+            description:
+                "Integrate seamlessly with various tools and platforms, providing a unified orchestration solution.",
+        },
+    },
+    {
+        icon: AlertCircle,
+        cardInfo: {
+            title: "Minimize Errors",
+            description:
+                "Ensure reliable communication and coordination between microservices, reducing the risk of errors and downtime.",
+        },
+    },
+    {
+        icon: TimerCogOutline,
+        cardInfo: {
+            title: "Increase Efficiency",
+            description:
+                "Automate routine tasks and workflows, allowing your team to focus on strategic development",
+        },
+    },
+    {
+        icon: ChartAreaspline,
+        cardInfo: {
+            title: "CI/CD Pipelines",
+            description:
+                "Automate continuous integration and continuous deployment pipelines, ensuring smooth and reliable releases of microservices.",
+        },
+    },
+    {
+        icon: CloudRefreshVariant,
+        cardInfo: {
+            title: "Data Synchronization",
+            description:
+                "Ensure data consistency across microservices by orchestrating data synchronization workflows.",
+        },
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <HeaderSection
+<Layout title={TITLE} description={DESCRIPTION}>
+    <DetailsHero
         client:load
-        titleHtml="Microservices <br> Orchestration"
+        title="Microservices <br> Orchestration"
         description="Automate, orchestrate, and Optimize Your Microservices."
-        imageSrc="/landing/usecases/microservices-orchestration/header-hero.svg"
-        imageAlt="Kestra HTTP"
+        image={{
+            src: "/landing/usecases/microservices-orchestration/header-hero.svg",
+            alt: "Kestra HTTP",
+        }}
     />
-    <MainSection
-        client:visible
-        subtitle="your Microservices Orchestration"
-        subtitleBefore="Streamline"
-        baseline="Kestra empower software engineers to manage microservices efficiently, enhancing reliability and performance."
-        mainContent={mainContent}
-    />
-    <EnterpriseEditionSection client:visible />
-    <CardSection client:visible />
-    <CapabilitiesSection
+
+    <Alternation items={MAIN_CONTENT}>
+        <Section
+            subtitle="your Microservices Orchestration"
+            subtitleBefore="Streamline"
+            class="p-0 bg-transparent"
+            baseline="Kestra empower software engineers to manage microservices efficiently, enhancing reliability and performance."
+        />
+    </Alternation>
+
+    <Enterprise client:visible />
+
+    <Cards title={CHALLENGES_TITLE} cards={CARDS_DATA} />
+
+    <Capabilities
         client:visible
         title="for Platform Orchestration"
-        sections={capabilities}
+        capabilities={CAPABILITIES}
     />
-    <LayoutFooterContact
+
+    <FooterContact
         client:visible
         title="Ready to take your Infrastructure to the next level ?"
-        purpleButtonText="Get Started"
-        purpleButtonHref="/docs/getting-started/quickstart"
-        darkButtonText="Talk to us"
-        darkButtonHref="/demo"
     />
 </Layout>

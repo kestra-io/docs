@@ -1,0 +1,100 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+    title: string
+}
+
+const { title } = Astro.props
+
+const buttons = [
+    {
+        label: "Community Slack",
+        description: "Discuss topics with other users and kestra Team",
+        href: "https://kestra.io/slack",
+        icon: "mdi:slack",
+    },
+    {
+        label: "GitHub",
+        description: "Give our open-source project a star",
+        href: "https://github.com/kestra-io/kestra",
+        icon: "mdi:github",
+    },
+    {
+        label: "Help Center",
+        description: "Contact support for help with your Enterprise account",
+        href: "https://kestra.io/demo",
+        icon: "mdi:lifebuoy",
+    },
+]
+---
+
+<h2 class="support-title">{title}</h2>
+<div class="support-links-row">
+    {
+        buttons.map((button) => (
+            <a href={button.href} class="support-link">
+                <Icon name={button.icon} />
+                <h3>{button.label}</h3>
+                <p>{button.description}</p>
+            </a>
+        ))
+    }
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    h2.support-title {
+        border: none;
+        font-size: $font-size-xl;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        padding: 0;
+        font-weight: 600;
+    }
+    .support-links-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 3rem;
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+    .support-link {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--ks-border-secondary);
+        text-decoration: none;
+
+        text-decoration: none;
+        color: inherit;
+        
+        [data-icon] {
+            font-size: 24px;
+            color: var(--ks-content-primary);
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: $font-size-lg;
+            padding: 0;
+            margin: 0;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin-top: 0.5rem;
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            line-height: 1.6em;
+        }
+
+        &:hover {
+            border-color: var(--ks-border-active);
+        }
+
+    }
+</style>

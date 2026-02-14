@@ -1,9 +1,5 @@
 <template>
     <div class="bd-content">
-        <FeatureScopeMarker
-            v-if="page.editions || page.version || page.deprecated || page.release"
-            :page="page"
-        />
         <PluginIndex
             v-if="pluginType === undefined"
             :icons
@@ -41,7 +37,6 @@
     import { ref, onMounted, onUnmounted } from "vue"
     import { SchemaToHtmlV2, type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
     import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
-    import FeatureScopeMarker from "~/components/docs/FeatureScopeMarker.vue"
     import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 
     const props = withDefaults(
@@ -94,46 +89,40 @@
     .bd-content {
         margin: 0 auto;
         padding: 2rem 0;
-
         @include media-breakpoint-up(lg) {
             max-width: 100%;
         }
-
         :deep(code) {
             border: none !important;
+            background-color: transparent !important;
         }
-
-        :deep(h4) {
-            margin-bottom: 1.5rem;
+        :deep(.plugin) {
+            background-color: var(--ks-background-primary) !important;
+            box-shadow: none !important;
+            border-color: var(--ks-border-primary);
+            &:hover {
+                border-color: var(--ks-border-active) !important;
+            }
+            h6 {
+                color: var(--ks-content-primary);
+            }
         }
-
-        :deep(h3) {
-            padding: 0;
-        }
-
-        :deep(.long) {
-            a {
-                color: var(--ks-content-link);
-
-                &:hover {
-                    color: var(--ks-content-link-hover);
+        :deep(.element-card) {
+            background-color: var(--ks-background-primary) !important;
+            border-color: var(--ks-border-primary) !important;
+            box-shadow: none !important;
+            &:hover {
+                border-color: var(--ks-border-active) !important;
+            }
+            h6 {
+                color: var(--ks-content-primary);
+            }
+            .plugin-info {
+                background-color: transparent;
+                border: $block-border;
+                .plugin-class {
+                    color: var(--ks-content-link) !important;
                 }
-            }
-
-            h3 {
-                font-size: 18.4px;
-                font-weight: 600;
-            }
-
-            p,
-            h4,
-            li {
-                font-size: 16px;
-                line-height: 1.5rem;
-            }
-
-            h4 {
-                font-weight: 600;
             }
         }
     }
@@ -141,121 +130,106 @@
     .plugin-schema {
         :deep(hr) {
             opacity: 0.5;
-            border-top: calc(2 * var(--bs-border-width)) solid $black-3;
+            border-top: calc(2 * var(--bs-border-width)) solid var(--ks-background-primary);
             margin: 0 !important;
         }
-
         :deep(article) {
             display: flex;
             flex-direction: column;
             gap: var(--spacer);
         }
-
         :deep(.code-block) {
             background-color: var(--kestra-io-token-color-background-secondary);
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: $block-border;
         }
-
         :deep(.language),
         :deep(.copy) {
-            color: var(--kestra-io-neutral-gray700) !important;
+            color: var(--ks-content-secondary) !important;
         }
-
         :deep(#copied-tooltip) {
-            background: $gray-500;
-            color: $white;
+            background: var(--ks-content-secondary);
+            color: var(--ks-content-primary);
         }
-
         :deep(.markdown) {
             display: flex;
             flex-direction: column;
             min-width: 100%;
         }
-
+        :deep(.property .collapse-button) {
+            background-color: var(--ks-background-secondary);
+            border: $block-border;
+        }
         :deep(.plugin-section) {
+            border-color: var(--ks-border-primary);
             p {
                 &:not(.doc-alert p) {
                     margin-bottom: 0;
                 }
-
                 & > code {
-                    color: var(--kestra-io-neutral-gray900);
-                    background-color: transparent !important;
+                    background-color: var(--ks-background-secondary) !important;
                     border: none;
                 }
             }
-
             .border,
             .property:not(:first-child) {
                 border: none !important;
             }
-
             .collapse-button {
                 font-size: var(--font-size-lg);
                 line-height: 1.5rem;
-                color: var(--kestra-io-token-color-white);
+                color: var(--ks-content-primary);
             }
-
             > .collapse-button {
                 &:not(.collapsed) {
-                    color: var(--kestra-io-token-text-link-default);
+                    color: var(--ks-content-link);
                     margin-bottom: 1rem;
                 }
             }
-
-            .collapsible-body .border {
-                #{--collapsible-border-color}: var(--kestra-io-token-color-border-secondary);
-                border-color: var(--kestra-io-token-color-border-secondary) !important;
-
-                > .property {
-                    background: var(--kestra-io-token-color-background-secondary);
-
-                    &:not(:has(.collapse-button.collapsed)) {
-                        background: var(--kestra-io-neutral-gray300);
-
-                        > .collapsible-body {
-                            background: var(--kestra-io-token-color-background-primary);
-                        }
-                    }
-                }
-            }
-
             .property-detail {
-                color: var(--kestra-io-token-color-white);
-                background: $black-4;
-
+                color: var(--ks-content-primary);
+                background: var(--ks-background-body);
+                border: $block-border;
                 .property-description p {
-                    color: $white-3;
+                    margin-bottom: 0 !important;
                 }
-
                 > *:not(:first-child) {
-                    border-top: var(--bs-border-width) var(--bs-border-style) $black-6;
+                    border-top: var(--bs-border-width) var(--bs-border-style) var(--ks-border-primary);
                 }
-
                 .border:not(.type-box) {
-                    border-color: var(--kestra-io-neutral-gray500) !important;
+                    border-color: var(--ks-border-primary) !important;
+                    background-color: var(--ks-background-secondary) !important;
                 }
             }
-
-            .type-box {
-                color: var(--kestra-io-token-color-white);
-
-                .ref-type {
-                    border-right: 1px solid var(--kestra-io-token-color-border-primary);
-                }
-
-                &:has(.ref-type):hover {
-                    background: var(--kestra-io-token-color-background-hover-primary) !important;
-
-                    .ref-type {
-                        border-right: 1px solid var(--ks-border-secondary);
-                    }
-                }
+            .me-3 {
+                display: none !important;
             }
+        }
+    }
+
+    :deep(.def-collapsible) {
+        .def-content {
+            background-color: transparent !important;
+            border-color: var(--ks-border-primary) !important;
+        }
+        .def-property {
+            border-color: var(--ks-border-primary) !important;
+        }
+        .collapse-button span:not(.type-box) {
+            color: var(--ks-content-color-highlight) !important;
         }
     }
 
     :deep(.plugin .description) {
         text-transform: none !important;
+    }
+
+    :deep(div.description) {
+        border-color: var(--ks-border-primary) !important;
+        margin: 0 -2rem !important;
+        padding: 2rem !important;
+    }
+
+    :deep(.gradient-overlay), :deep(.more-btn) {
+        background: linear-gradient(transparent, var(--ks-background-body));
     }
 </style>

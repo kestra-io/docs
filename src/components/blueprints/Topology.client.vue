@@ -35,7 +35,7 @@
                 required: true,
             },
             id: {
-                type: String,
+                type: [String, Number],
                 required: true,
             },
         },
@@ -51,16 +51,15 @@
     }
 
     :deep(.node-wrapper) {
-        background-color: var(--bs-body-color);
-        border: $container-border !important;
-
+        border: $block-border !important;
+        box-shadow: var(--ks-shadows-light);
         .task-title {
-            color: $white !important;
+            color: var(--ks-content-primary) !important;
         }
     }
 
     :deep(.node-wrapper.disabled) {
-        background-color: var(--bs-body-color);
+        background-color: var(--ks-background-tertiary);
         opacity: 0.6;
     }
 
@@ -69,17 +68,17 @@
     }
 
     :deep(.vue-flow__controls-button) {
-        background-color: var(--bs-body-color);
+        background-color: var(--ks-background-tertiary);
         border-bottom: $container-border !important;
-        color: $white !important;
+        color: var(--ks-content-primary) !important;
     }
 
     :deep(.vue-flow__controls-button svg) {
-        fill: $white !important;
+        fill: var(--ks-content-primary) !important;
     }
 
     :deep(.dot) {
-        color: #9a8eb4 !important;
+        color: var(--ks-content-primary) !important;
     }
 
     :deep(.icon) {
@@ -87,6 +86,6 @@
     }
 
     :deep(.bg-white) {
-        background-color: $black !important;
+        background-color: var(--ks-background-body) !important;
     }
 </style>

@@ -38,25 +38,22 @@
     $button-transition-timing: 100ms;
 
     .link {
-        color: $black;
+        color: var(--ks-content-primary);
         font-weight: bold;
         text-decoration: none;
         transition: all $button-transition-timing ease-in-out;
         display: inline-flex;
         align-items: center;
-
         .arrow-icon {
             overflow: visible;
             width: 12px;
             height: 12px;
             margin-top: 0.15rem;
             margin-left: 0.3rem;
-
             .arrow-head {
                 transform: translateX(0);
                 transition: transform $button-transition-timing ease-in-out;
             }
-
             .arrow-body {
                 opacity: 0;
                 transform: scaleX(1);
@@ -65,13 +62,11 @@
                     opacity $button-transition-timing ease-in-out;
             }
         }
-
         &:hover {
             .arrow-icon {
                 .arrow-head {
                     transform: translateX(3px);
                 }
-
                 .arrow-body {
                     opacity: 1;
                     transform: scaleX(2);

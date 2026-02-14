@@ -1,5 +1,21 @@
-<script lang="ts" setup>
-    import { useTemplateRef, watch, ref, onMounted } from "vue"
+<template>
+    <Teleport to="body" v-if="isMounted">
+        <dialog
+            ref="modalRef"
+            class="custom-modal"
+            v-bind="$attrs"
+            @close="onClose"
+            @click="onClickOutside"
+        >
+            <div class="modal-content" @click.stop>
+                <slot />
+            </div>
+        </dialog>
+    </Teleport>
+</template>
+
+<script setup lang="ts">
+    import { ref, onMounted, watch, useTemplateRef } from "vue"
 
     const show = defineModel<boolean>("show")
     const modalRef = useTemplateRef<HTMLDialogElement>("modalRef")
@@ -9,14 +25,31 @@
         isMounted.value = true
     })
 
-    function popModal() {
+    const popModal = () => {
         if (!modalRef.value) return
-        modalRef.value.showModal()
+        if (!modalRef.value.open) {
+            modalRef.value.showModal()
+        }
+        document.body.style.overflow = "hidden"
     }
 
-    function closeModal() {
+    const closeModal = () => {
         if (!modalRef.value) return
-        modalRef.value.close()
+        if (modalRef.value.open) {
+            modalRef.value.close()
+        }
+        document.body.style.overflow = ""
+    }
+
+    const onClose = () => {
+        show.value = false
+        document.body.style.overflow = ""
+    }
+
+    const onClickOutside = (event: MouseEvent) => {
+        if (event.target === modalRef.value) {
+            closeModal()
+        }
     }
 
     watch(
@@ -28,83 +61,57 @@
                 closeModal()
             }
         },
-        { immediate: true },
+        { immediate: true }
     )
 </script>
 
-<template>
-    <Teleport to="body" v-if="isMounted">
-        <dialog ref="modalRef" v-bind="$attrs">
-            <slot />
-        </dialog>
-    </Teleport>
-</template>
+<style scoped lang="scss">
+    @import "~/assets/styles/variable";
 
-<style scoped>
-    dialog {
+    .custom-modal {
         border: none;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: $border-radius-lg;
         padding: 0;
-        overflow: auto;
-        animation: fadeOut 1s forwards;
-        display: inline-block;
-        width: 90%;
-        z-index: -1;
-
-        @media screen and (min-width: 820px) {
-            width: 800px;
-        }
-
+        overflow: visible;
+        width: 95vw;
+        max-width: 100vw;
+        max-height: 90vh;
+        background: transparent;
         &::backdrop {
-            background-color: #26282d;
-            backdrop-filter: blur(2px);
-            opacity: 0.5;
+            background-color: rgba(var(--ks-background-tertiary), 0.7);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        &::backdrop {
-            animation: fadeOutHalf 1s forwards;
-        }
-
         &[open] {
-            z-index: 1050;
-            animation: fadeIn 1s forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease forwards;
             &::backdrop {
-                animation: fadeInHalf 1s forwards;
+                opacity: 1;
+            }
+        }
+        .modal-content {
+            background: var(--ks-background-body);
+            border-radius: $border-radius-lg;
+            box-shadow: $box-shadow-lg;
+            width: 100%;
+            overflow: auto;
+            @include media-breakpoint-up(md) {
+                width: 800px;
             }
         }
     }
 
-    /* Keyframes for dialog and popover elements */
     @keyframes fadeIn {
         from {
             opacity: 0;
+            transform: scale(0.95);
         }
         to {
             opacity: 1;
-        }
-    }
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
-    }
-    @keyframes fadeInHalf {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 0.5;
-        }
-    }
-    @keyframes fadeOutHalf {
-        from {
-            opacity: 0.5;
-        }
-        to {
-            opacity: 0;
+            transform: scale(1);
         }
     }
 </style>

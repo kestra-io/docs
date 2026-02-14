@@ -1,0 +1,33 @@
+---
+import CardGrid from "~/components/features/shared/CardGrid.astro"
+import TooltipQuestion from "vue-material-design-icons/TooltipQuestion.vue"
+import HandWave from "vue-material-design-icons/HandWave.vue"
+import MessageAlert from "vue-material-design-icons/MessageAlert.vue"
+---
+
+<CardGrid
+    subtitle="Orchestrate Success"
+    subtitleAfter="Together"
+    description="Join our Slack Community to share ideas and best practices, get help with technical questions, and discuss with other developers."
+    items={[
+        {
+            title: "Ask a question",
+            icon: TooltipQuestion,
+            description: "Stuck? The #help channel is here to support you.",
+        },
+        {
+            title: "Say Hi",
+            icon: HandWave,
+            description: "New to the community? Tell us about yourself and how you're using Kestra in the #introductions channel.",
+        },
+        {
+            title: "Share Feedback",
+            icon: MessageAlert,
+            description: "Something you'd like to see improved? The #feedback-and-requests channel is a great place to share your thoughts.",
+        },
+    ]}
+    cta={{
+        text: "Join our Slack",
+        href: "https://kestra.io/slack",
+    }}
+/>

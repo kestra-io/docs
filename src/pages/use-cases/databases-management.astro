@@ -1,23 +1,31 @@
 ---
 import Layout from "~/components/layout.astro"
-import HeaderSection from "~/components/use-cases/HeaderSection.vue"
-import MainSection from "~/components/use-cases/MainSection.vue"
-import EnterpriseEditionSection from "~/components/use-cases/EnterpriseEditionSection.vue"
-import CardSection from "~/components/use-cases/databases-management/CardSection.vue"
-import CapabilitiesSection from "~/components/use-cases/CapabilitiesSection.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import Section from "~/components/layout/Section.astro"
+import Enterprise from "~/components/use-cases/Enterprise.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import Capabilities from "~/components/use-cases/Capabilities.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import ArchiveSync from "vue-material-design-icons/ArchiveSync.vue"
+import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue"
+import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue"
+import Cogs from "vue-material-design-icons/Cogs.vue"
+import TimerCogOutline from "vue-material-design-icons/TimerCogOutline.vue"
 
-const title = "Optimize your Databases Management"
-const description =
+const TITLE = "Optimize your Databases Management"
+const DESCRIPTION =
     "Kestra empower software engineers to automate database migrations, ensure reliable backups, and facilitate quick restorations."
 
-const mainContent = [
+const MAIN_CONTENT = [
     {
         title: "Automated Database Migrations",
-        img: "/landing/usecases/databases/database-migrations.svg",
-        imgAlt: "Automated Database Migrations",
-        imgWidth: "568px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/databases/database-migrations.svg",
+            alt: "Automated Database Migrations",
+            width: 568,
+            height: 420,
+        },
         description:
             "Kestra enables you to automate database migrations, ensuring that schema changes are applied consistently across all environments.",
         content: `
@@ -39,10 +47,12 @@ const mainContent = [
     },
     {
         title: "Ensure Data Protection",
-        img: "/landing/usecases/databases/ensure-protection.svg",
-        imgAlt: "Ensure Data Protection",
-        imgWidth: "568px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/databases/ensure-protection.svg",
+            alt: "Ensure Data Protection",
+            width: 568,
+            height: 420,
+        },
         description:
             "Automate regular database backups with Kestra to safeguard your data against loss and ensure its availability when needed.",
         content: `
@@ -70,10 +80,12 @@ const mainContent = [
     },
     {
         title: "Quick Recovery",
-        img: "/landing/usecases/databases/quick-recovery.svg",
-        imgAlt: "Quick Recovery",
-        imgWidth: "604px",
-        imgHeight: "477px",
+        image: {
+            src: "/landing/usecases/databases/quick-recovery.svg",
+            alt: "Quick Recovery",
+            width: 604,
+            height: 477,
+        },
         description:
             "Implement automated restoration processes with Kestra to recover data swiftly in the event of a failure, minimizing downtime and data loss.",
         content: `
@@ -101,42 +113,84 @@ const mainContent = [
     },
 ]
 
-const capabilities = ["Microservice Management", "API Orchestration"]
+const CAPABILITIES = ["Microservice Management", "API Orchestration"]
+
+const CARDS_DATA = [
+    {
+        icon: Cogs,
+        cardInfo: {
+            title: "Operational Reliability",
+            description:
+                "Ensure reliable database operations with automated backups and restoration workflows.",
+        },
+    },
+    {
+        icon: ArchiveSync,
+        cardInfo: {
+            title: "Data Archiving",
+            description:
+                "Automate the archiving of historical data to ensure secure storage and easy retrieval when needed.",
+        },
+    },
+    {
+        icon: TimerCogOutline,
+        cardInfo: {
+            title: "Increase Efficiency",
+            description:
+                "Automate repetitive tasks, allowing your team to concentrate on strategic initiatives.",
+        },
+    },
+    {
+        icon: ChartAreaspline,
+        cardInfo: {
+            title: "Scalability",
+            description:
+                "Easily scale database management processes as your infrastructure grows without compromising performance.",
+        },
+    },
+    {
+        icon: CloudRefreshVariant,
+        cardInfo: {
+            title: "Data Consitency",
+            description:
+                "Maintain integrity across all database environments through automated migrations and backups.",
+        },
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <HeaderSection
+<Layout title={TITLE} description={DESCRIPTION}>
+    <DetailsHero
         client:load
-        titleHtml="Databases <br> Management"
+        title="Databases <span>Management</span>"
         description="Automate  your database management tasks within the development pipeline using Kestra."
-        imageSrc="/landing/usecases/databases/header-hero.svg"
-        imageAlt="Databases"
+        image={{
+            src: "/landing/usecases/databases/header-hero.svg",
+            alt: "Databases",
+        }}
     />
 
-    <MainSection
-        client:visible
-        subtitle="your Databases Management"
-        subtitleBefore="Optimize"
-        baseline="Kestra empower software engineers to automate database migrations, ensure reliable backups, and facilitate quick restorations."
-        mainContent={mainContent}
-    />
+    <Alternation items={MAIN_CONTENT}>
+        <Section
+            subtitle="your Databases Management"
+            subtitleBefore="Optimize"
+            class="p-0 bg-transparent"
+            baseline="Kestra empower software engineers to automate database migrations, ensure reliable backups, and facilitate quick restorations."
+        />
+    </Alternation>
 
-    <EnterpriseEditionSection client:visible />
+    <Enterprise title="Orchestrate infrastructure components using Kestra" client:visible />
 
-    <CardSection client:visible />
+    <Cards title={"<span class='highlight'>Overcome Common</span> <br class='highlight'> Databases Management <span class='highlight'>Challenges</span>"} cards={CARDS_DATA} />
 
-    <CapabilitiesSection
+    <Capabilities
         client:visible
         title="for Databases Management"
-        sections={capabilities}
+        capabilities={CAPABILITIES}
     />
 
-    <LayoutFooterContact
+    <FooterContact
         client:visible
         title="Ready to take your Infrastructure to the next level?"
-        purpleButtonText="Get Started"
-        purpleButtonHref="/docs/quickstart#start-kestra"
-        darkButtonText="Talk to us"
-        darkButtonHref="/demo"
     />
 </Layout>

@@ -8,7 +8,7 @@ import { NextLink } from "./next-link.mjs"
 const componentMap = {
     alert,
     collapse,
-    ChildCard,
+    childcard: ChildCard,
     badge,
     "next-link": NextLink,
 }
@@ -21,11 +21,12 @@ export default function () {
                 node.type == "leafDirective" ||
                 node.type === "textDirective"
             ) {
-                if (!(node.name in componentMap)) return
+                const name = node.name.toLowerCase()
+                if (!(name in componentMap)) return
                 const data = node.data || (node.data = {})
                 const attributes = node.attributes || {}
 
-                componentMap[node.name](data, attributes, node, file)
+                componentMap[name](data, attributes, node, file)
             }
         })
     }

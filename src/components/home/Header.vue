@@ -206,15 +206,13 @@
             align-items: center;
             gap: $spacer;
         }
-
         .hero {
             padding-bottom: 2rem;
             padding-top: 0.5rem;
             position: relative;
         }
-
         h1 {
-            color: white;
+            color: #fff;
             text-align: center;
             max-width: 100%;
             font-weight: 600;
@@ -230,7 +228,6 @@
                 line-height: 1.2em;
             }
         }
-
         p {
             max-width: fit-content;
             text-align: center;
@@ -246,21 +243,22 @@
                 font-size: 1.2rem;
             }
         }
-
         .buttons {
             text-align: center;
             margin-top: 1.5rem;
             white-space: nowrap;
-        }
 
+            .btn-secondary:hover {
+                background-color: $white;
+                color: $black !important;
+            }
+        }
         .companies {
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 4rem !important;
         }
-
         .companies-title {
             position: relative;
-
             &:after {
                 content: "";
                 position: absolute;
@@ -273,7 +271,6 @@
                 background: var(--bs-pink);
             }
         }
-
         @include media-breakpoint-down(lg) {
             .hero {
                 padding-top: 6rem;
@@ -283,7 +280,6 @@
                 }
             }
         }
-
         .img-block {
             a:after {
                 display: none;
@@ -304,7 +300,7 @@
                 overflow: hidden;
                 border: 1px solid #5818d8;
                 border-radius: 1rem;
-                color: white;
+                color: var(--ks-content-primary);
                 height: 90px;
                 background-color: #5818d8;
                 > div {
@@ -348,7 +344,6 @@
                     margin-bottom: 100px;
                 }
             }
-
             canvas,
             .canvas-placeholder {
                 width: 2000px;
@@ -359,16 +354,13 @@
                 background-size: 1600px;
                 background-repeat: no-repeat;
             }
-
             .canvas-placeholder {
                 height: 1520px;
             }
-
             canvas.loading {
                 opacity: 0.5;
             }
         }
-
         :deep(.companies-container) {
             max-width: unset;
             .companies-list-container {
@@ -384,7 +376,6 @@
         &-xl {
             max-width: 90vw;
         }
-
         &-header {
             border: none;
             padding: 1rem 1rem 0;

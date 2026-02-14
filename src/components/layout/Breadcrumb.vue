@@ -1,17 +1,10 @@
 <template>
     <nav aria-label="breadcrumb" class="slug">
         <ol class="breadcrumb">
-            <li
-                v-for="(item, index) in breadcrumb"
-                :key="`${item}-${index}`"
-                class="breadcrumb-item"
-                :class="{ active: index === breadcrumb.length - 1 }"
-            >
-                <a
-                    v-if="index !== breadcrumb.length - 1"
-                    :href="breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''"
-                    class="link"
-                >
+            <li v-for="(item, index) in breadcrumb" :key="`${item}-${index}`" class="breadcrumb-item"
+                :class="{ active: index === breadcrumb.length - 1 }">
+                <a v-if="index !== breadcrumb.length - 1"
+                    :href="breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''" class="link">
                     {{ getDisplayName(item, index) }}
                 </a>
 
@@ -73,36 +66,29 @@
         width: 100%;
         max-width: 45.8rem;
         font-size: $font-size-sm;
-        font-family: $font-family-sans-serif;
         font-weight: 400;
-        margin: 0 auto;
-
-        @media only screen and (min-width: 1920px) {
+        margin-inline: auto;
+        @include media-breakpoint-up(xxl) {
             max-width: 71.25rem;
         }
-
         .breadcrumb {
             --bs-breadcrumb-divider: ">";
         }
-
         .breadcrumb-item {
             a,
             &.active,
             &::before {
-                color: $black-8;
+                color: var(--ks-content-tertiary);
                 cursor: pointer;
-
                 &:hover {
                     color: var(--ks-content-secondary) !important;
                 }
             }
-
             &.active {
                 font-weight: 700;
                 color: var(--ks-content-primary) !important;
             }
         }
-
         .link {
             text-transform: capitalize;
         }

@@ -19,9 +19,8 @@
     rapi-doc {
         background: transparent;
         width: 100%;
-        --font-mono: var(--font-family-source-code-pro);
+        --font-mono: var(--font-family-jetbrains-mono);
         --font-regular: var(--font-family-public-sans);
-
         &::part(section-endpoint) {
             white-space: normal;
         }

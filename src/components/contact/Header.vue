@@ -1,20 +1,20 @@
 <template>
-    <div class="container-fluid">
-        <div class="container img-container">
+    <section class="container-fluid">
+        <div class="container">
             <div class="get-in-touch">
-                <h1 data-usal="fade-r">Contact <span>Us</span></h1>
+                <h1 data-usal="fade-r">Contact <span class="highlight">Us</span></h1>
                 <p class="baseline" data-usal="fade-l">
                     If you have questions, inquiries, or feedback about Kestra, we're looking to
                     hearing from you.
                 </p>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-6 form-container bg-dark-2">
+                <div class="col-md-6 form-container ">
                     <div id="hubspotForm" data-usal="fade-l" />
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>
@@ -33,44 +33,25 @@
     @import "~/assets/styles/variable";
 
     .container-fluid {
-        padding-top: $rem-8;
-
+        padding: $rem-3 $rem-1;
         .get-in-touch {
             text-align: center;
-            color: $white;
-            h1 {
-                font-size: $font-size-4xl;
-                font-weight: 400;
-
-                span {
-                    background: linear-gradient(90deg, #e151f7 56.37%, #5c47f5 64.15%);
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-            }
-
-            p {
-                font-size: $font-size-xl;
-                font-weight: 300;
-                margin-bottom: 0;
-            }
+            color: #fff;
         }
-
         .form-container {
-            margin-top: 2.625rem;
-            border: $block-border;
-            padding: 2rem 4rem;
+            margin-top: $rem-2;
+            border: 1px solid #212529;
+            padding: $rem-2 $rem-4;
+            border-radius: $border-radius-lg;
             @include media-breakpoint-down(sm) {
-                padding: 1rem 2rem;
+                padding: $rem-1 $rem-2;
             }
         }
     }
 
-    .img-container {
+    .container {
         position: relative;
         z-index: 10;
-
         &::before,
         &::after {
             content: "";
@@ -81,12 +62,10 @@
             filter: blur(100px);
             z-index: -5;
         }
-
         &::before {
             left: 21rem;
             top: 10rem;
         }
-
         &::after {
             right: 21rem;
             bottom: 0;

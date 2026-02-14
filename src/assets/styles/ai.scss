@@ -8,16 +8,29 @@
     display: flex;
     justify-content: center;
     padding: 2rem;
+
+    @include media-breakpoint-down(md) {
+        padding: 2rem 0.5rem 0.5rem;
+        align-items: flex-start;
+    }
 }
 
 .dialog {
-    background: $black-4;
+    background: var(--ks-background-body);
     border-radius: 8px;
-    border: 1px solid $black-6;
+    border: 1px solid var(--ks-content-tertiary);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
+    @include media-breakpoint-down(md) {
+        width: 100%;
+        max-width: none;
+        max-height: calc(100vh - 4rem);
+        border-radius: 0.5rem;
+        margin: 0 0.25rem;
+    }
 }
 
 .avatar {
@@ -32,12 +45,37 @@
     width: 100%;
     margin: 0 auto 1rem;
 
+    @include media-breakpoint-down(md) {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .btn-dark {
+        background: var(--ks-background-secondary);
+        border: $block-border;
+        color: var(--ks-content-primary);
+
+        &:hover {
+            background: var(--ks-background-primary);
+        }
+    }
+
     .welcome {
         display: flex;
         align-items: center;
         gap: 16px;
         padding: 16px 0;
         margin-bottom: 2rem;
+
+        @include media-breakpoint-down(md) {
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+
+            p {
+                font-size: 0.875rem;
+                line-height: 1.4;
+            }
+        }
 
         .avatar {
             flex-shrink: 0;
@@ -53,8 +91,12 @@
     .examples {
         margin-bottom: 2rem;
 
+        @include media-breakpoint-down(md) {
+            margin-bottom: 1.5rem;
+        }
+
         h6 {
-            color: $white-5;
+            color: var(--ks-content-tertiary);
             font-size: 0.75rem;
             font-weight: 600;
             letter-spacing: 0.05em;
@@ -66,23 +108,33 @@
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
+
+            @include media-breakpoint-down(md) {
+                gap: 0.5rem;
+            }
         }
 
         .card {
             width: fit-content;
-            background: $black-4;
-            border: 1px solid $black-3;
+            background: var(--ks-background-body);
+            border: $block-border;
             border-radius: 0.5rem;
             padding: 1rem;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
-            color: $white-3;
+            color: var(--ks-content-secondary);
             font-size: 0.875rem;
             line-height: 1.4;
 
             &:hover {
-                border-color: $black-10;
-                color: $white;
+                border-color: var(--ks-border-secondary);
+                color: var(--ks-content-primary);
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 100%;
+                padding: 0.75rem;
+                font-size: 0.8rem;
             }
         }
     }
@@ -97,12 +149,16 @@
         margin-bottom: 1rem;
         gap: 0.75rem;
 
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+        }
+
         .avatar {
             flex-shrink: 0;
 
             .user {
                 font-size: 24px;
-                color: $purple;
+                color: var(--ks-content-link);
             }
 
             .ai {
@@ -114,11 +170,18 @@
         .bubble {
             padding: 1rem;
             border-radius: 1rem;
-            background: $black-4;
-            border: 1px solid $black-5;
-            color: $white;
+            background: var(--ks-background-body);
+            border: $block-border;
+            color: var(--ks-content-primary);
             white-space: pre-line;
             max-width: calc(100% - 48px);
+            position: relative;
+
+            @include media-breakpoint-down(md) {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+                max-width: calc(100% - 32px);
+            }
 
             p {
                 margin: 0 0 0.5rem;
@@ -130,17 +193,17 @@
 
             .timestamp {
                 font-size: 0.7rem;
-                color: $white-5;
+                color: var(--ks-content-tertiary);
                 display: block;
                 text-align: right;
                 margin-top: 0.5rem;
             }
 
             :deep(pre) {
-                background: $black-2;
-                border: 1px solid $black-5;
+                border: $block-border;
                 padding: 1rem;
                 border-radius: 0.5rem;
+                margin: 1rem 0;
             }
 
             :deep(.language),
@@ -157,9 +220,7 @@
             }
 
             :deep(table) {
-                background: $black-2;
-                border: 1px solid $black-5;
-                border-radius: 0.5rem;
+                border: $block-border;
                 padding: 0.25rem;
                 font-size: 90%;
                 width: 100%;
@@ -168,7 +229,7 @@
                     th,
                     td {
                         padding: 0.5rem;
-                        border-bottom: 1px solid $black-6 !important;
+                        border-bottom: $block-border !important;
                     }
                 }
             }
@@ -177,18 +238,26 @@
                 margin: 0.5rem 0 !important;
             }
 
-            :deep(a),
-            :deep(h1, h2, h3, h4, h5, h6) {
-                color: $purple;
+            :deep(a) {
+                color: var(--ks-content-link);
+            }
+
+            :deep(h1),
+            :deep(h2),
+            :deep(h3),
+            :deep(h4),
+            :deep(h5),
+            :deep(h6) {
+                color: var(--ks-content-primary);
             }
 
             .sources {
                 margin-top: 1rem;
                 padding-top: 1rem;
-                border-top: 1px solid $black-6;
+                border-top: $block-border;
 
                 h6 {
-                    color: $white-5;
+                    color: var(--ks-content-tertiary);
                     font-size: 0.75rem;
                     font-weight: 600;
                     letter-spacing: 0.05em;
@@ -207,22 +276,27 @@
                     align-items: center;
                     gap: 0.75rem;
                     padding: 0.75rem;
-                    background: $black-4;
-                    border: 1px solid $black-5;
+                    background: var(--ks-background-body);
+                    border: $block-border;
                     border-radius: 0.5rem;
                     text-decoration: none;
-                    color: $white-3;
+                    color: var(--ks-content-secondary);
                     font-size: 0.875rem;
                     transition: all 0.2s ease-in-out;
 
                     &:hover {
                         border-color: var(--ks-border-secondary);
-                        color: $white;
+                        color: var(--ks-background-body);
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        padding: 0.5rem;
+                        font-size: 0.8rem;
                     }
 
                     .icon {
                         flex-shrink: 0;
-                        color: $white-5;
+                        color: var(--ks-content-tertiary);
                         font-size: 22px;
                     }
 
@@ -234,15 +308,24 @@
                             font-weight: 500;
                             line-height: 1.4;
                             margin-bottom: 0.25rem;
+
+                            @include media-breakpoint-down(md) {
+                                font-size: 0.8rem;
+                                line-height: 1.3;
+                            }
                         }
 
                         .path {
                             font-size: 0.75rem;
-                            color: $white-5;
+                            color: var(--ks-content-tertiary);
                             line-height: 1.2;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
+
+                            @include media-breakpoint-down(md) {
+                                font-size: 0.7rem;
+                            }
                         }
                     }
                 }
@@ -259,7 +342,7 @@
             width: 10px;
             height: 10px;
             border-radius: 5px;
-            background: $purple;
+            background: var(--ks-content-link);
             animation: dotPulse 1.5s infinite ease-in-out;
             margin-left: 1rem;
 
@@ -271,7 +354,7 @@
                 width: 10px;
                 height: 10px;
                 border-radius: 5px;
-                background: $purple;
+                background: var(--ks-content-link);
             }
 
             &::before {
@@ -298,8 +381,8 @@
     }
 
     .container {
-        background: $black-3;
-        border: 1px solid transparent;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-primary);
         border-radius: 0.5rem;
         padding: 1rem;
         min-height: 56px;
@@ -307,15 +390,21 @@
         align-items: center;
         gap: 0.5rem;
         transition: border-color 0.2s ease-in-out;
+        
+
+        @include media-breakpoint-down(md) {
+            padding: 12px;
+            min-height: 56px;
+        }
 
         &:focus-within {
-            border-color: $purple;
+            border-color: var(--ks-border-active);
         }
 
         .send-icon {
             height: 28px;
             font-size: 24px;
-            color: #b9b9ba;
+            color: var(--ks-content-tertiary);
             cursor: pointer;
             transition: color 0.2s ease-in-out;
             align-self: flex-end !important;
@@ -323,23 +412,27 @@
                 top: 2.002px;
             }
             &:hover {
-                color: $purple;
+                color: var(--ks-content-color-highlight);
             }
         }
 
         textarea {
             flex: 1;
             background: transparent;
-            border: none;
-            color: $white;
+            color: var(--ks-content-primary);
             font-size: 1rem;
             resize: none;
             outline: none;
             overflow-y: hidden;
             max-height: 150px;
+            border: none;
+
+            @include media-breakpoint-down(md) {
+                font-size: 0.875rem;
+            }
 
             &::placeholder {
-                color: $white-1;
+                color: var(--ks-content-tertiary);
             }
         }
     }
@@ -382,85 +475,5 @@
 
     100% {
         transform: scale(1);
-    }
-}
-
-@include media-breakpoint-down(md) {
-    .overlay {
-        padding: 0.5rem;
-        align-items: flex-start;
-        padding-top: 2rem;
-    }
-
-    .dialog {
-        width: 100%;
-        max-width: none;
-        max-height: calc(100vh - 4rem);
-        border-radius: 0.5rem;
-        margin: 0 0.25rem;
-    }
-
-    .content {
-        padding: 1rem;
-        width: 100%;
-
-        .welcome {
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-
-            .text p {
-                font-size: 0.875rem;
-                line-height: 1.4;
-            }
-        }
-
-        .examples {
-            margin-bottom: 1.5rem;
-
-            .cards {
-                gap: 0.5rem;
-            }
-
-            .card {
-                width: 100%;
-                padding: 0.75rem;
-                font-size: 0.8rem;
-            }
-        }
-
-        .message {
-            gap: 0.5rem;
-
-            .bubble {
-                padding: 0.75rem;
-                font-size: 0.875rem;
-                max-width: calc(100% - 32px);
-
-                .sources .item {
-                    padding: 0.5rem;
-                    font-size: 0.8rem;
-
-                    .info {
-                        .title {
-                            font-size: 0.8rem;
-                            line-height: 1.3;
-                        }
-
-                        .path {
-                            font-size: 0.7rem;
-                        }
-                    }
-                }
-            }
-        }
-
-        .input .container {
-            padding: 12px;
-            min-height: 56px;
-
-            textarea {
-                font-size: 0.875rem;
-            }
-        }
     }
 }

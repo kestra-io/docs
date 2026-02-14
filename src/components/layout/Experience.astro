@@ -1,0 +1,221 @@
+---
+import { Icon } from "astro-icon/components"
+
+const { data } = Astro.props
+---
+
+<section class="experience">
+    <div class="container">
+        {data.sections.map((section: any, sectionIndex: number) => (
+            <div
+                class="section"
+                data-section-index={sectionIndex}
+            >
+                {section.title && (
+                    <div class="section-title" data-usal="fade-up">
+                        <h2 set:html={section.title.replace(/\*\*([^*]+)\*\*/g, '<span class="highlight">$1</span>')} />
+                    </div>
+                )}
+
+                {section.subsections.map((subsection: any, subsectionIndex: number) => (
+                    <div
+                        data-subsection-index={subsectionIndex}
+                    >
+                        {subsection.title && (
+                            <div class="section-subtitle" data-usal="fade-up">
+                                <h3>{subsection.title}</h3>
+                            </div>
+                        )}
+
+                        <div class="features-grid">
+                            {subsection.cards.map((card: any, cardIndex: number) => (
+                                <div
+                                    class="card"
+                                    data-usal="fade-up"
+                                >
+                                    <h5>
+                                        {card.icon && <Icon name={card.icon} class="icon" />}
+                                        <span class="text-truncate">{card.title}</span>
+                                    </h5>
+                                    <p>{card.description}</p>
+                                    <a href={card.link} class="cta">
+                                        <span>{card.cta}</span>
+                                        <Icon name="mdi:arrow-right" />
+                                    </a>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        ))}
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .experience {
+        padding: 4rem 0 6rem;
+        background: var(--ks-background-body);
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            height: 2582px;
+            background-image: radial-gradient(circle, var(--ks-border-primary) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.4;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            padding: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 2rem 1rem;
+        }
+    }
+
+    h2 {
+        font-size: 3rem;
+        font-weight: 600;
+        line-height: 1.2;
+        margin-top: 3rem;
+        margin-bottom: -1rem;
+
+        @media screen and (max-width: 767px) {
+            font-size: 2rem;
+        }
+    }
+
+    .purple {
+        color: var(--ks-content-link);
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+
+        @media (min-width: 1200px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .card {
+        padding: 32px;
+        background: var(--ks-background-input);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--ks-border-primary);
+        height: 100%;
+        min-height: 260px;
+        border-radius: 0;
+
+        @include media-breakpoint-up(xl) {
+            &:not(:nth-child(3n + 1)) { border-left: none; }
+            &:nth-child(n + 4) { border-top: none; }
+        }
+
+        @include media-breakpoint-between(md, xl) {
+            &:nth-child(even) { border-left: none; }
+            &:nth-child(n + 3) { border-top: none; }
+        }
+
+        @include media-breakpoint-down(md) {
+            &:not(:first-child) { border-top: none; }
+        }
+
+        h5 {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--ks-content-primary);
+
+        }
+
+        .icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+        }
+
+        p {
+            margin-bottom: auto;
+            color: var(--ks-content-secondary);
+        }
+
+        .cta {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0087ca;
+            text-decoration: none;
+            width: fit-content;
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                transform: scaleX(0);
+                border-radius: 5px;
+                height: 0.05em;
+                bottom: 0;
+                left: 0;
+                background: currentcolor;
+                transform-origin: bottom right;
+                transition: transform 0.25s ease-out;
+            }
+
+            &:hover::after {
+                transform: scaleX(1);
+                transform-origin: bottom left;
+            }
+            
+            [data-icon] {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+
+    .section-subtitle {
+        text-align: left;
+
+        h3 {
+            margin: 2rem 0;
+        }
+    }
+
+    div:not(:first-child) .section-subtitle h3 {
+        margin-top: 3rem;
+    }
+
+    // Section specific colors
+    .section {
+        --color: #1761fd;
+
+        &[data-section-index="0"] { --color: #8405ff; }
+        &[data-section-index="1"] {
+            --color: #029e73;
+            [data-subsection-index="1"], [data-subsection-index="2"] { --color: #1761fd; }
+        }
+        &[data-section-index="2"] { --color: #05a084; }
+
+        .icon, .cta { color: var(--color) !important; }
+    }
+</style>

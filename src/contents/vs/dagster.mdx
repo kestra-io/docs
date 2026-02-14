@@ -1,0 +1,123 @@
+---
+title: "Dagster vs Kestra"
+headerTitle: "Kestra Alternative to Dagster"
+description: "Discover the differences between Kestra and Dagster for Data Orchestration"
+competitorName: "Dagster"
+logo: "/landing/vs/dagster/header.svg"
+---
+import VSComparisonTable from "~/components/vs/VSComparisonTable.astro"
+
+export const comparisonData = [
+  {
+    "feature": "Core Focus",
+    "kestra": "Orchestrating workflows, tasks, operations, and data pipelines",
+    "competitor": "Orchestrating data assets"
+  },
+  {
+    "feature": "Language Support",
+    "kestra": "Language-agnostic (YAML for orchestration)",
+    "competitor": "Python-first"
+  },
+  {
+    "feature": "Declarative Interface",
+    "kestra": "Yes — API-first with YAML syntax exposed for simplicity",
+    "competitor": "Yes — client-side implementation with Python DSL"
+  },
+  {
+    "feature": "Ease of Setup",
+    "kestra": "Quick setup, scheduled workflow in minutes",
+    "competitor": "Steeper learning curve, requires an understanding of the framework"
+  },
+  {
+    "feature": "Developer Experience",
+    "kestra": "Built-in code editor, live-updating DAG view, documentation and blueprints",
+    "competitor": "Tailored for senior data engineers experienced in Python"
+  },
+  {
+    "feature": "Workflow Definitions",
+    "kestra": "YAML-based",
+    "competitor": "Python DSL"
+  },
+  {
+    "feature": "Integration/Extensibility",
+    "kestra": "Plugin ecosystem, REST API, webhooks and event triggers",
+    "competitor": "Integrations via Python libraries (may lead to dependency conflicts) and GraphQL API"
+  },
+  {
+    "feature": "Cross-role Collaboration",
+    "kestra": "Designed for all engineers and business users",
+    "competitor": "Designed for data engineers maintaining a data warehouse"
+  },
+  {
+    "feature": "Data Lineage & Debugging",
+    "kestra": "Task level metadata through metrics and outputs",
+    "competitor": "Fine-grained control via Software-Defined Assets"
+  },
+  {
+    "feature": "Business Logic Support",
+    "kestra": "SQL, Python, R, Rust, Bash, and more.",
+    "competitor": "Primarily Python"
+  }
+]
+
+# Kestra vs. Dagster
+
+Kestra is an open-source orchestrator designed to bring Infrastructure as Code (IaC) best practices to all workflows — from those orchestrating mission-critical operations, business processes, and data pipelines to simple Zapier-style automation. Built with an API-first philosophy, Kestra enables users to define and manage data pipelines through a simple YAML configuration file. This approach frees you from being tied to a specific client implementation, allowing for greater flexibility and easier integration with various tools and services.
+
+Dagster is an entirely different product — it's focused on orchestrating data assets, not on orchestrating tasks, processes, business operations, microservices, and applications as Kestra does. While Kestra can orchestrate data workflows in a generic way, Dagster is more specialized in that area.
+
+### Similarities
+
+    - Both provide a declarative interface.
+    - CI/CD integration is supported by both tools.
+    - Both tools aim to streamline the orchestration of workflows.
+
+    ### Differences
+
+    - Kestra is language-agnostic, while Dagster is designed primarily for Python.
+    - Kestra offers API-first design principles while Dagster is client-code first.
+    - Kestra leverages a simple YAML configuration for setting up tasks and pipelines, whereas Dagster relies on Python-based DSL and Software-Defined Assets.
+    - Kestra offers a quick setup, getting you to a scheduled workflow in minutes. Dagster has a steeper learning curve as you need to know the framework and their way of doing things which has both its own pros and cons.
+
+
+
+### Declarative Paradigms
+
+Dagster embraces a Python-first environment, with its Software-Defined Assets (SDAs). This approach naturally attracts those who are comfortable in a Pythonic ecosystem. SDAs serve not just as units of computation but as documented assets within the framework. By isolating the business logic from I/O operations, they grant engineers fine-grained control over data lineage, aiding debugging and understanding of asset states. This Python-centric philosophy extends into Dagster’s environmental abstraction, allowing users to swap out external services and runtimes without altering any user code. Dagster is designed for data engineers and analytics engineers who desire a platform that accommodates a complex Python-based asset lifecycle.
+
+On the other side, Kestra aims for an agnostic approach to programming languages and focuses on the YAML-based orchestration. Data pipeline orchestration can be language-neutral and still maintain robustness and scalability. YAML serves as the primary interface through which workflows are defined. This inclusivity manifests in its ability to incorporate business logic written in languages as diverse as SQL, R, Rust, and even Bash. Consequently, Kestra finds its audience among senior software engineers, especially those who work in diverse tech stacks.
+
+Both Kestra and Dagster offer unique answers to the question of what declarative orchestration can be. While Dagster may appeal to those who favor a Pythonic richness in their workflows, Kestra attracts those who seek language flexibility, scalability, and a more inclusive approach to defining orchestration logic. The choice between the two will, therefore, depend heavily on the specific technical needs, the programming languages your team is comfortable with, and your long-term vision for data pipeline or workflow management.
+
+### Approach to Workflow Definitions
+
+Kestra offers a YAML-based workflow definition interface that simplifies the
+creation and management of workflows. This contrasts with Dagster’s Python DSL,
+which, while offering several advantages, adds a layer of complexity and leads
+    to difficulties in maintaining custom Python wrappers over time.
+
+### Workflow Deployment
+
+    Kestra allows for workflow deployments directly from its integrated UI code
+    editor. Moreover, it supports Terraform and integrates with various CI/CD
+    systems like GitHub Actions.
+
+    In contrast, the deployment patterns in Dagster might be more challenging,
+    especially in the open-source version .
+
+### Developer Experience
+
+    Kestra offers a more comprehensive developer experience with built-in
+    documentation and a code editor, as well as a live-updating topology view.
+    Dagster focuses on data engineers who know Python. In contrast, Kestra supports
+    software engineers working on any technology stack.
+
+### Cross-role Collaboration and Accessibility
+
+    Kestra’s user-friendly interface aims to invite not just engineers but also
+    business stakeholders into the data pipeline process. Dagster comes with a
+    steeper learning curve; it introduces many concepts that can be overwhelming
+    when onboarding new colleagues and stakeholders to the platform.
+
+
+<VSComparisonTable comparisonData={comparisonData} competitorName={frontmatter.competitorName} />

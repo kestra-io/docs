@@ -5,8 +5,8 @@ import PluginSidebar from "~/components/plugins/PluginSidebar.vue"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import NavToc from "~/components/docs/NavToc.vue"
 import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
-import RelatedBlogs from "~/components/plugins/RelatedBlogs.astro"
 import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
+import BlogList from "~/components/common/BlogList.astro"
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
@@ -34,7 +34,7 @@ import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
-import type { StringifyOptions } from "querystring"
+
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -71,7 +71,7 @@ interface PluginPage {
     message?: string
     editLink?: boolean
     extension?: string
-    stem?: StringifyOptions
+    stem?: string
 }
 
 interface PluginPageWithToc extends PluginPage {
@@ -341,7 +341,7 @@ const generateTocForPluginElements = (wrapper: Plugin) =>
             )
             return {
                 id: `section-${slugify(formattedElementType)}`,
-                depth: 3,
+                depth: 2,
                 text: formatElementType(key),
             }
         })
@@ -409,7 +409,7 @@ function makeTOC() {
             return subGroups.length
                 ? subGroups.map((sub) => ({
                       id: slugify(subGroupName(sub)),
-                      depth: 3,
+                      depth: 2,
                       text: subGroupName(sub),
                   }))
                 : generateTocForPluginElements(rootPlugin)
@@ -459,7 +459,7 @@ function makeTOC() {
               ]
             : []),
         ...(pluginType === undefined && currentPluginVideos?.length > 0
-            ? [{ id: "see-it-in-action", depth: 3, text: "See it in action" }]
+            ? [{ id: "see-it-in-action", depth: 2, text: "See it in action" }]
             : []),
         ...(hasBlueprints &&
         blueprintsSectionHeading?.id &&
@@ -467,7 +467,7 @@ function makeTOC() {
             ? [
                   {
                       id: blueprintsSectionHeading.id,
-                      depth: 3,
+                      depth: 2,
                       text: blueprintsSectionHeading.text,
                   },
               ]
@@ -475,13 +475,13 @@ function makeTOC() {
         ...(pluginType === undefined &&
         subGroup === undefined &&
         relatedBlogs?.length > 0
-            ? [{ id: "latest-blog-posts", depth: 3, text: "Latest Blog Posts" }]
+            ? [{ id: "latest-blog-posts", depth: 2, text: "Latest Blog Posts" }]
             : []),
         ...(currentPluginCategories?.length > 0
             ? [
                   {
                       id: "more-plugins-in-this-category",
-                      depth: 3,
+                      depth: 2,
                       text: "More Plugins in this Category",
                   },
               ]
@@ -642,13 +642,17 @@ if (!pluginType && !subGroup) {
                     subGroup === undefined &&
                     relatedBlogs &&
                     relatedBlogs.length > 0 && (
-                        <RelatedBlogs
-                            posts={relatedBlogs.map((p) => ({
-                                ...p.data,
-                                path: `/blogs/${p.id}`,
-                                date: p.data.date.toISOString(),
-                            }))}
-                        />
+                        <div class="related-blogs">
+                            <BlogList
+                                posts={relatedBlogs.map((p) => ({
+                                    ...p.data,
+                                    path: `/blogs/${p.id}`,
+                                    date: p.data.date.toISOString(),
+                                }))}
+                                title="Latest Blog Posts"
+                                headingId="latest-blog-posts"
+                            />
+                        </div>
                     )
             }
 
@@ -679,17 +683,25 @@ if (!pluginType && !subGroup) {
     </div>
 </Layout>
 
-<style scoped lang="scss">
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
+<style lang="scss">
     @import "~/assets/styles/variable";
+
+    .related-blogs {
+        padding: 2rem 0;
+        border-top: $block-border;
+
+        @include media-breakpoint-up(lg) {
+            margin: 0 -3rem;
+            padding: 2rem 3rem;
+        }
+    }
 
     .plugin-title {
         font-size: 1.5em;
     }
 
     .container-fluid {
-        gap: 0;
-        border-top: 1px solid $black-3;
+        border-top: 1px solid var(--ks-border-primary);
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -697,10 +709,8 @@ if (!pluginType && !subGroup) {
         @include media-breakpoint-up(lg) {
             display: grid;
             grid-template-columns: 250px 1fr 269px;
-            grid-template-rows: auto 1fr;
-            grid-template-areas:
-                "sidebar article toc"
-                "sidebar article toc";
+            grid-template-areas: "sidebar article toc";
+            gap: 0;
         }
 
         > .plugin-sidebar {
@@ -713,65 +723,15 @@ if (!pluginType && !subGroup) {
         }
 
         > .bd-main {
-            @include media-breakpoint-up(lg) {
-                grid-area: article;
-            }
-        }
-
-        > .right-sidebar {
-            @include media-breakpoint-up(lg) {
-                grid-area: toc;
-                background-color: #0a0b0d;
-                position: sticky;
-                top: 0;
-                height: 100%;
-            }
-
-            @include media-breakpoint-down(lg) {
-                margin-top: 2rem;
-                padding: 0 20px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-        }
-
-        .bd-title {
-            margin-top: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid $black-3;
-            width: 100%;
-            box-sizing: border-box;
-
-            @include media-breakpoint-up(lg) {
-                margin-left: -2rem;
-                margin-right: -2rem;
-                padding-left: 2rem;
-                padding-right: 2rem;
-                width: calc(100% + 4rem);
-            }
-
-            @include media-breakpoint-down(lg) {
-                margin-top: calc($spacer * 1);
-            }
-
-            nav,
-            h1 {
-                @include media-breakpoint-up(lg) {
-                    max-width: 100%;
-                }
-            }
-        }
-
-        .bd-main {
-            padding: 0 20px;
+            padding: 0 1.25rem;
             display: flex;
             flex-direction: column;
             width: 100%;
             box-sizing: border-box;
 
             @include media-breakpoint-up(lg) {
-                padding: 0 2rem;
-                padding-left: 2.7rem;
+                grid-area: article;
+                padding: 0 2rem 0 2.7rem;
             }
 
             @include media-breakpoint-down(sm) {
@@ -784,21 +744,58 @@ if (!pluginType && !subGroup) {
             }
         }
 
+        > .right-sidebar {
+            @include media-breakpoint-up(lg) {
+                grid-area: toc;
+                position: sticky;
+                top: 0;
+                height: 100%;
+            }
+
+            @include media-breakpoint-down(lg) {
+                margin-top: 2rem;
+                padding: 0 1.25rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        .bd-title {
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--ks-border-primary);
+            width: 100%;
+            box-sizing: border-box;
+
+            @include media-breakpoint-up(lg) {
+                margin: 0 -2rem;
+                padding: 2rem;
+                width: calc(100% + 4rem);
+
+                nav,
+                h1 {
+                    max-width: 100%;
+                }
+            }
+
+            @include media-breakpoint-down(lg) {
+                margin-top: $spacer;
+            }
+        }
+
         .desc {
             font-size: clamp(0.875rem, 0.8rem + 0.2vw, 1rem);
             max-width: 650px;
-
-            @include media-breakpoint-up(md) {
-                font-size: 1rem;
-            }
-
-            color: color-palette.$base-gray-200;
+            color: var(--ks-content-secondary);
             margin-top: 0.25rem;
             font-weight: normal;
             line-height: 1.5;
 
+            @include media-breakpoint-up(md) {
+                font-size: 1rem;
+            }
             @include media-breakpoint-down(lg) {
-                font-size: 12px;
+                font-size: 0.75rem;
             }
 
             @media screen and (max-width: 1100px) {
@@ -812,202 +809,29 @@ if (!pluginType && !subGroup) {
             }
         }
 
-        .title {
-            .btn {
-                min-width: 116px;
-                padding: 4px 10px;
-                white-space: nowrap;
-            }
+        .title .btn {
+            min-width: 116px;
+            padding: 0.25rem 0.625rem;
+            white-space: nowrap;
         }
-    }
-
-    .bd-main {
-        .bd-markdown > h2 {
-            border-top: 1px solid $black-6;
-            padding-top: calc($spacer * 3.125);
-            margin-bottom: 2rem;
-
-            a {
-                border-left: 5px solid $purple-36;
-                padding-left: calc($spacer * 0.6);
-                font-size: calc($font-size-base * 1.87);
-            }
-        }
-
-        p > a {
-            text-decoration: underline;
-        }
-
-        h2 > a {
-            font-weight: 600;
-            line-height: 2.375rem;
-            margin: 0;
-        }
-
-        h3 > a {
-            color: $gray-200 !important;
-            font-size: 18.4px;
-            font-weight: 600;
-            line-height: 2.375rem;
-        }
-
-        h4 > a {
-            color: $white !important;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        h5 {
-            color: $white !important;
-            font-weight: 600;
-        }
-    }
-
-    .bd-main p > a,
-    .bd-main ul a {
-        color: $purple-36;
-    }
-
-    .container,
-    h2 > a {
-        color: $white !important;
-    }
-
-    p > code,
-    li > code,
-    a > code,
-    table code {
-        color: $white-3;
-        text-decoration: none !important;
-        border-radius: 0.25rem;
-        padding: 0 calc($spacer / 4);
-    }
-
-    .code-block,
-    p > code,
-    li > code,
-    a > code,
-    table code {
-        border: $block-border;
-        background-color: $black-2 !important;
-    }
-
-    p > strong > code {
-        color: $white-3;
-        text-decoration: none !important;
-        border-radius: 0.25rem;
-        padding: 0 calc($spacer / 4);
     }
 
     li > mark {
-        background-color: $link-color;
+        background-color: var(--ks-content-link);
     }
 
     .docs-prev-next a {
         span {
-            color: $link-color;
+            color: var(--ks-content-link);
         }
-
         .directory {
-            color: $white;
+            color: var(--ks-background-body);
         }
     }
 
-    .btn {
-        span {
-            color: $white-1;
-        }
+    .btn span {
+        color: var(--ks-background-secondary);
     }
 
-    table {
-        td,
-        th {
-            background-color: $black-2;
-            border: $block-border;
-            color: $white;
 
-            a {
-                color: $link-color;
-            }
-        }
-    }
-
-    .bd-markdown > h2 > a > span {
-        display: inline !important;
-    }
-
-    // Base layout for alerts (all types)
-    .alert {
-        display: flex;
-        gap: 12px;
-        padding: 16px;
-        border: 1px solid;
-        border-left-width: 5px !important;
-        border-radius: 8px;
-
-        p,
-        .material-design-icon,
-        .material-design-icon * {
-            color: inherit !important;
-        }
-    }
-
-    $alert-types: (
-        danger: (
-            border: --ks-border-error,
-            content: --ks-content-error,
-            background: --ks-background-error,
-        ),
-        warning: (
-            border: --ks-border-warning,
-            content: --ks-content-warning,
-            background: --ks-background-warning,
-        ),
-        info: (
-            border: --ks-border-info,
-            content: --ks-content-info,
-            background: --ks-background-info,
-        ),
-        success: (
-            border: --ks-border-success,
-            content: --ks-content-success,
-            background: --ks-background-success,
-        ),
-    );
-
-    @mixin alert-variants($type, $vars) {
-        .alert-#{$type} {
-            border-color: var(map-get($vars, border)) !important;
-            color: var(map-get($vars, content)) !important;
-            background-color: var(map-get($vars, background)) !important;
-
-            p,
-            .material-design-icon,
-            .material-design-icon * {
-                color: var(map-get($vars, content)) !important;
-            }
-        }
-
-        .plugin-section
-            .alert.alert-#{$type}[role="alert"]
-            .material-design-icon,
-        .plugin-section
-            .alert.alert-#{$type}[role="alert"]
-            .material-design-icon
-            * {
-            color: var(map-get($vars, content)) !important;
-        }
-
-        .plugin-section
-            .alert.alert-#{$type}[role="alert"]
-            .material-design-icon
-            > .material-design-icon__svg {
-            fill: var(map-get($vars, content)) !important;
-            stroke: var(map-get($vars, content)) !important;
-        }
-    }
-
-    @each $type, $vars in $alert-types {
-        @include alert-variants($type, $vars);
-    }
 </style>

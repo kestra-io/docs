@@ -1,18 +1,24 @@
 ---
 import Layout from "~/components/layout.astro"
-import HeaderSection from "~/components/use-cases/HeaderSection.vue"
-import BlueprintsSection from "~/components/use-cases/BlueprintsSection.vue"
-import CapabilitiesSection from "~/components/use-cases/CapabilitiesSection.vue"
-import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
-import CardSection from "~/components/use-cases/databases-management/CardSection.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import Blueprints from "~/components/common/BlueprintsRender.vue"
+import Capabilities from "~/components/use-cases/Capabilities.vue"
+import HeaderBox from "~/components/common/HeaderBox.vue"
+import { $fetchApi } from "~/utils/fetch"
 
-const title = "Orchestrate Your Software Development with Kestra"
-const description =
-    "Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment Slug: kestra.io/use-cases/software-engineers"
+const TITLE = "Orchestrate Your Software Development with Kestra"
+const DESCRIPTION =
+    "Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment"
 
-const challengesTitle = `Orchestrate <span>Your Software</span><br/>Development with Kestra`
+const CHALLENGES_TITLE = `Orchestrate <span class='highlight'>Your Software</span><br/>Development with <span class='highlight'>Kestra</span>`
 
-const cardsData = [
+const response = await $fetchApi<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?page=1&size=20",
+)
+const blueprints = response.results
+
+const CARDS_DATA = [
     {
         number: "01",
         title: "Automated Testing and QA",
@@ -69,32 +75,37 @@ const cardsData = [
     },
 ]
 
-const capabilities = [
+const CAPABILITIES = [
     "Microservice Management",
     "Database Management",
     "API Orchestration",
 ]
 ---
 
-<Layout title={title} description={description}>
-    <HeaderSection
+<Layout title={TITLE} description={DESCRIPTION}>
+    <DetailsHero
         client:visible
-        titleHtml="Kestra for<br><span>Software Engineers</span>"
-        description="Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment"
-        imageSrc="/landing/usecases/software-engineers/header-hero.svg"
-        imageAlt="Kestra Microservice"
+        title="Kestra for<br><span>Software Engineers</span>"
+        description={DESCRIPTION}
+        image={{
+            src: "/landing/usecases/software-engineers/header-hero.svg",
+            alt: "Kestra Microservice",
+        }}
     />
-    <CardSection
-        client:visible
-        :titleHtml={challengesTitle}
+
+    <Cards
+        title={CHALLENGES_TITLE}
         description="Kestra tackles the challenges software engineers face by automating development workflows, enhancing microservice orchestration, and ensuring seamless integrations."
-        cardsData={cardsData}
+        cards={CARDS_DATA}
     />
-    <BlueprintsSection client:visible />
-    <CapabilitiesSection
+
+    <Blueprints blueprints={blueprints} client:visible />
+
+    <Capabilities
         client:visible
         title="for Software Engineering"
-        sections={capabilities}
+        capabilities={CAPABILITIES}
     />
-    <FeaturesFeatureEnterprise client:visible />
+
+    <HeaderBox client:visible />
 </Layout>

@@ -1,17 +1,17 @@
 ---
 import Layout from "~/components/layout.astro"
-import CloudHeader from "~/components/cloud/Header.astro"
-import CloudFeatures from "~/components/cloud/Features.vue"
+import Header from "~/components/cloud/Header.astro"
+import Features from "~/components/cloud/Features.vue"
 
 const title = "Kestra Cloud Early Adopter Program"
 const description =
     "Be among the first to experience Kestra Cloud with exclusive access before general availability"
 ---
 
-<Layout title={title} description={description}>
+<Layout {title} {description}>
     <div class="cloud">
-        <CloudHeader />
-        <CloudFeatures client:idle />
+        <Header />
+        <Features client:idle />
     </div>
 </Layout>
 
@@ -59,21 +59,13 @@ const description =
             }
         }
 
-        & :global(.highlight) {
-            background: linear-gradient(90deg, #51cff7 57.35%, #4782f5 95.94%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-
         & :global(h1),
         & :global(h2),
         & :global(h3),
         & :global(h4),
         & :global(h5),
         & :global(h6) {
-            color: $white;
+            color: var(--ks-content-primary);
             font-weight: 600;
         }
 
@@ -104,14 +96,14 @@ const description =
 
         & :global(p) {
             font-size: 14px;
-            color: $white-1;
+            color: var(--ks-content-primary);
         }
 
         & :global(.form) {
             & h4,
             & p,
             & div {
-                color: black;
+                color: var(--ks-content-primary);
             }
 
             & div {

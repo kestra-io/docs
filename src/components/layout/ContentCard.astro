@@ -42,7 +42,7 @@ const { title, description, image, index } = Astro.props
         gap: $rem-4;
         border-radius: 0.8125rem;
         padding: 0.375rem;
-        border: 1px solid #d4d4d4;
+        border: $block-border;
 
         @include media-breakpoint-up(xxl) {
             max-width: 933px;
@@ -53,7 +53,7 @@ const { title, description, image, index } = Astro.props
             width: 100%;
             gap: $rem-2;
             border-radius: 0.8125rem;
-            background: #f9f9f9;
+            background: var(--ks-background-secondary);
             display: flex;
             flex-direction: column-reverse;
             align-items: center;
@@ -67,12 +67,11 @@ const { title, description, image, index } = Astro.props
 
             .left-section {
                 display: flex;
-                align-items: center;
                 flex-direction: column;
                 align-items: flex-start;
                 justify-content: center;
                 gap: 0.5rem;
-                padding: 0 0.5rem;
+                padding-inline: 0.5rem;
 
                 @include media-breakpoint-up(lg) {
                     width: 396.5px;

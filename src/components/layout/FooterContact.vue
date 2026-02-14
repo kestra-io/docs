@@ -1,131 +1,100 @@
 <template>
-    <div class="container rounded-3 mb-5">
-        <Section :animation="animation">
-            <div class="text-center cta px-5">
-                <p class="title" v-if="title" :data-usal="animationType('fade-left')">
+    <section>
+        <div class="footer-contact container">
+            <div class="cta-card" :data-usal="animationType('fade-up')">
+                <h2 v-if="title" class="title">
                     {{ title }}
-                </p>
-                <p class="subtitle" v-if="subtitle" :data-usal="animationType('fade-left')">
+                </h2>
+                <p v-if="subtitle" class="subtitle">
                     {{ subtitle }}
                 </p>
-                <a
-                    v-if="darkButtonText"
-                    :href="darkButtonHref"
-                    class="btn btn-animated btn-dark-animated mt-2 me-sm-3 me-1"
-                    :data-usal="animationType('zoom-in')"
-                >
-                    {{ darkButtonText }}
-                </a>
-                <a
-                    v-if="purpleButtonHref"
-                    :href="purpleButtonHref"
-                    class="btn btn-animated btn-purple-animated mt-2"
-                    :data-usal="animationType('zoom-in')"
-                >
-                    {{ purpleButtonText }}
-                </a>
+                <div class="buttons">
+                    <a
+                        v-if="dark?.text"
+                        :href="dark?.href"
+                        class="btn btn-secondary mb-2"
+                    >
+                        {{ dark?.text }}
+                    </a>
+                    <a
+                        v-if="purple?.text"
+                        :href="purple?.href"
+                        :class="['btn btn-primary mb-2', { 'ms-sm-3': dark?.text }]"
+                    >
+                        {{ purple?.text }}
+                    </a>
+                </div>
             </div>
-        </Section>
-    </div>
+        </div>
+    </section>
 </template>
 
-<script>
-    import Section from "~/components/layout/Section.vue"
-
-    export default {
-        components: { Section },
-        props: {
-            title: {
-                type: String,
-                required: false,
-                default: () => "Getting Started",
-            },
-            subtitle: {
-                type: String,
-                required: false,
-            },
-            darkButtonText: {
-                type: String,
-                required: false,
-            },
-            darkButtonHref: {
-                type: String,
-                required: false,
-                default: () => "/docs",
-            },
-            purpleButtonText: {
-                type: String,
-                required: false,
-            },
-            purpleButtonHref: {
-                type: String,
-                required: false,
-                default: () => "/docs/quickstart",
-            },
-            animation: {
-                type: Boolean,
-                default: true,
-            },
-        },
-        methods: {
-            animationType(type) {
-                return this.animation ? type : ""
-            },
-        },
+<script setup lang="ts">
+    interface Button {
+        text?: string;
+        href?: string;
     }
+
+    const {
+        title,
+        subtitle,
+        dark = {
+            text: 'Talk to us',
+            href: '/demo'
+        },
+        purple = {
+            text: 'Get started!',
+            href: '/docs/quickstart#start-kestra'
+        },
+        animation = true
+    } = defineProps<{
+        title?: string;
+        subtitle?: string;
+        dark?: Button | null;
+        purple?: Button | null;
+        animation?: boolean;
+    }>();
+
+    const animationType = (type: string) => (animation ? type : "");
 </script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    .container {
-        padding-left: calc($spacer * 1);
-        padding-right: calc($spacer * 1);
-        margin-top: calc($spacer * 5.625);
-        border-radius: calc($spacer * 0.5);
-        border: $block-border;
-        background: $black-2 url("./assets/bg.svg") no-repeat right;
-        background-size: 20% 100%;
-        color: $white;
-        @include media-breakpoint-down(lg) {
-            padding-left: calc($spacer * 0.3);
-            padding-right: calc($spacer * 0.3);
-        }
-        :deep(section) {
-            padding: 2rem 0;
-
-            .main {
-                padding-top: 0;
+    section {
+        background: var(--ks-background-body);
+        padding: 4rem 0;
+        .footer-contact {
+            .cta-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 3rem 2rem;
+                background: var(--ks-background-secondary);
+                border: 1px solid var(--ks-border-secondary);
+                color: var(--ks-content-primary);
+                border-radius: 1rem;
+                text-align: center;
+                .title {
+                    font-weight: 700;
+                    max-width: 50rem;
+                    margin: 0;
+                }
+                .subtitle {
+                    max-width: 45rem;
+                    margin: 0;
+                }
+                .buttons {
+                    display: flex;
+                    gap: 1rem;
+                    .btn {
+                        border-radius: 8px;
+                        padding: 0.625rem 1.5rem;
+                        font-weight: 600;
+                    }
+                }
             }
-
-            .title,
-            .subtitle {
-                font-family: $font-family-sans-serif;
-            }
-
-            .title {
-                font-size: $h3-font-size;
-                line-height: calc($spacer * 2.5);
-                font-weight: 100;
-                margin: 0 auto calc($spacer * 0.5);
-                max-width: 37rem;
-            }
-
-            .subtitle {
-                margin: calc($spacer * 0.5) auto;
-                font-size: $h6-font-size;
-                line-height: calc($spacer * 1.625);
-                font-weight: 100;
-                max-width: 40rem;
-            }
-        }
-
-        .btn-dark {
-            border: $btn-dark-border;
-        }
-
-        a {
-            color: $white !important;
         }
     }
 </style>

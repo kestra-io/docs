@@ -1,30 +1,23 @@
 ---
-import Layout from "~/components/layout.astro"
-import Header from "~/components/features/language/sub-pages/Header.vue"
-import FeaturesLanguageSubPagesFeatures from "~/components/features/language/sub-pages/Features.vue"
-import Power from "~/components/features/language/sub-pages/Power.vue"
-import Scripts from "~/components/features/language/sub-pages/Scripts.vue"
-import Orchestrator from "~/components/features/language/sub-pages/Orchestrator.vue"
-import Plugins from "~/components/features/language/Plugins.vue"
-import FooterContact from "~/components/layout/FooterContact.vue"
+import LanguageLayout from "~/components/features/shared/LanguageLayout.astro"
 
-const features = {
-    title: "Advanced Python Scripting with Kestra",
-    childList: [
+const FEATURES = {
+    title: "Advanced <span>Python</span> Scripting with Kestra",
+    items: [
         {
-            source: "/landing/features/language/sub-pages/icon-customize.svg",
+            image: "/landing/features/language/sub-pages/icon-customize.svg",
             title: "Customize at Runtime",
             description:
                 "Add any Python package to your environment as your workflows demand, maintaining flexibility without pre-configurations.",
         },
         {
-            source: "/landing/features/language/sub-pages/icon-sync.svg",
+            image: "/landing/features/language/sub-pages/icon-sync.svg",
             title: "Import or Sync your Entire Project",
             description:
                 "Sync your  Python project into Kestra. Enjoy comprehensive support for all your dependencies and modules.",
         },
         {
-            source: "/landing/features/language/sub-pages/icon-cloud.svg",
+            image: "/landing/features/language/sub-pages/icon-cloud.svg",
             title: "Cloud-Agnostic Execution",
             description:
                 "Deploy and execute your Python scripts on any cloud with Kestra’s Task Runners. Optimize for performance, cost, compliance.",
@@ -32,17 +25,17 @@ const features = {
     ],
 }
 
-const powerDesc = [
+const POWER_DESC = [
     "Python scripts are the backbone of many automations, data processing, and web applications. With Python, you can analyze massive datasets, or even build complex machine-learning models. Kestra, with its robust orchestration capabilities, unlocks Python’s potential by managing these scripts effectively.",
     "Whether you are automating data ingestion, running nightly builds, or orchestrating complex workflows in real time, Kestra streamlines these processes, making it easier and faster to deliver results.",
 ]
 
-const orchestratorDesc = [
+const ORCHESTRATOR_DESC = [
     "Integrate seamlessly with your existing Python scripts — no changes necessary. Unlike other platforms that require you to adjust your code to fit their environment, Kestra adapts to your code. Simply call your scripts as you have developed them, and Kestra handles the rest.",
     "Maintain your focus on writing great code, not on adapting it to fit the orchestration tool. Whether your scripts are set up for data processing, automation, or any other task, integrating them into Kestra is as simple as defining your workflow.",
 ]
 
-const scripts = [
+const SCRIPTS = [
     {
         title: "Embrace GitOps best practices for your Python scripts",
         description:
@@ -64,44 +57,45 @@ const scripts = [
         description:
             "For simpler tasks that require quick, straightforward solutions, Kestra’s Python task feature allows you to embed Python scripts directly into your workflows. This is ideal for small-scale data formatting, quick calculations, or script-based alerts within larger workflows. By embedding scripts directly, Kestra reduces complexity and enhances execution speed, providing a streamlined approach to handle simpler, yet frequent tasks.",
         source: "/landing/features/language/python/scripts/embedded-python.svg",
-        imgHeight: "420px",
+        imgWidth: "556px",
+        imgHeight: "318px",
         mask: "mask-1",
     },
 ]
+
+const FOOTER_LINKS = {
+    dark: { text: "Get started", href: "/docs/quickstart#start-kestra" },
+    purple: { text: "Talk to us", href: "/demo" },
+}
 ---
 
-<Layout
-    title="Python Orchestration"
-    description={features.childList[0].description}
->
-    <Header
-        client:load
-        title="Python Scripts"
-        description="Build declaratively your workflows and seamlessly run all your Python Scripts"
-        source="/landing/features/language/python/header.svg"
-    />
-
-    <FeaturesLanguageSubPagesFeatures client:visible features={features} />
-    <Power
-        client:visible
-        title="with Python"
-        description={powerDesc}
-        source="/landing/features/language/python/power.svg"
-    />
-
-    <Scripts client:visible title="Python" scripts={scripts} />
-    <Orchestrator
-        client:visible
-        description={orchestratorDesc}
-        source="/landing/features/language/python/scripts/python-puzzle.svg"
-    />
-    <Plugins client:visible />
-    <FooterContact
-        client:visible
-        title="Getting Started with  Declarative Orchestration"
-        darkButtonText="Get started"
-        darkButtonHref="/docs/quickstart#start-kestra"
-        purpleButtonText="Talk to us"
-        purpleButtonHref="/demo"
-    />
-</Layout>
+<LanguageLayout
+    meta={{
+        title: "Python Orchestration",
+        description: FEATURES.items[0].description,
+    }}
+    header={{
+        title: "Python Scripts",
+        description:
+            "Build declaratively your workflows and seamlessly run all your Python Scripts",
+        source: "/landing/features/language/python/header.svg",
+    }}
+    features={FEATURES}
+    power={{
+        title: "with Python",
+        description: POWER_DESC,
+        source: "/landing/features/language/python/power.svg",
+    }}
+    scripts={{
+        title: "Python",
+        data: SCRIPTS,
+    }}
+    orchestrator={{
+        description: ORCHESTRATOR_DESC,
+        source: "/landing/features/language/python/scripts/python-puzzle.svg",
+    }}
+    footer={{
+        title: "Getting Started with Declarative Orchestration",
+        links: FOOTER_LINKS,
+    }}
+/>

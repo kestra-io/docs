@@ -1,29 +1,39 @@
 ---
 import { API_URL } from "astro:env/client"
-import Layout from "~/components/layout.astro"
-import Intro from "~/components/infrastructure/Intro.astro"
-import Deserver from "~/components/infrastructure/Deserver.astro"
-import Fortune from "~/components/infrastructure/Fortune.astro"
-import Govern from "~/components/infrastructure/Govern.astro"
-import Tour from "~/components/infrastructure/Tour.astro"
-import Operation from "~/components/infrastructure/Operation.astro"
-import Automations from "~/components/infrastructure/Automations.astro"
-import Lifecycle from "~/components/infrastructure/Lifecycle.astro"
-import Connect from "~/components/infrastructure/Connect.astro"
-import Built from "~/components/infrastructure/Built.astro"
-import SeeHow from "~/components/common/SeeHow.astro"
-import Architecture from "~/components/infrastructure/Architecture.astro"
-import Arcade from "~/components/infrastructure/Arcade.astro"
 import { formatPluginName } from "~/utils/pluginUtils"
 
-const title =
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import SocialProof from "~/components/common/SocialProof.astro"
+
+import Blueprints from "~/components/blueprints/Blueprints.astro"
+import Explore from "~/components/layout/Explore.astro"
+import LifecycleLayout from "~/components/layout/Lifecycle.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
+import Versus from "~/components/layout/Versus.astro"
+
+import Arcade from "~/components/infrastructure/Arcade.astro"
+import Architecture from "~/components/infrastructure/Architecture.astro"
+import Built from "~/components/infrastructure/Built.astro"
+import Connect from "~/components/infrastructure/Connect.astro"
+import Intro from "~/components/infrastructure/Intro.astro"
+import Operation from "~/components/infrastructure/Operation.astro"
+
+import storyImg from "~/assets/landing/infrastructure/story.webp"
+import iac from "~/assets/landing/infrastructure/iac.png"
+import deploy from "~/assets/landing/infrastructure/deploy.png"
+import loop from "~/assets/landing/infrastructure/loop.png"
+import infraUi from "~/assets/landing/infrastructure/infra-ui.png"
+
+const TITLE =
     "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
-const description =
+const DESCRIPTION =
     "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
 
 const { results: blueprints } = await fetch(
     `${API_URL}/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
 ).then((res) => res.json())
+
 const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
     (res) => res.json(),
 )
@@ -36,36 +46,153 @@ const plugins = Object.entries(
     name: formatPluginName(key.split("/").pop()?.replace(".svg", "") ?? ""),
     logo: mod.default,
 }))
+
+const VERSUS_CONTENT = {
+    title: 'Infrastructure Teams Deserve <br class="d-none d-lg-block"> a Better Way to Operate',
+    firstCard: {
+        title: "Why Infrastructure Automation Fails Today",
+        icon: "mdi:close-octagon",
+        iconColor: "#FF3434",
+        items: [
+            "Fragmented scripts, pipelines, & legacy tools",
+            "Fragile Day 2 Ops with slow, manual maintenance",
+            "Rising costs with no added value",
+        ],
+    },
+    secondCard: {
+        title: "The Kestra Unified Control Plane",
+        icon: "mdi:checkbox-multiple-marked-circle-outline",
+        iconColor: "#631BFF",
+        items: [
+            "One declarative platform for all workflows",
+            "Full visibility from day one",
+            "Runs anywhere cloud, on-prem, edge, or air-gapped",
+        ],
+    },
+    cta: {
+        title: 'Replace vRA, Rundeck, HP Operation Orchestration, <br class="d-none d-lg-block">Control-M, and fragmented scripts.',
+        text: "Discuss Your Automation Landscape",
+        link: "/demo",
+    },
+}
+
+const FORTUNE_METRICS = [
+    { value: "-90%", label: "In licensing cost" },
+    { value: "One", label: "Control Plane" },
+    { value: "x10", label: "Time to value" },
+]
+
+const GOVERN_CARDS = [
+    {
+        title: "Standardize IaC Pipeline",
+        description:
+            "Run IaC the same way every time. kestra orchestrates the full lifecycle with shared parameters, secrets, retries, and evidence-grade logs across all environments.",
+        image: iac,
+    },
+    {
+        title: "Deploy to Any Target, On-Prem or Cloud",
+        description:
+            "Provision and evolve workloads anywhere. Kestra workflows drive K8s, vSphere, cloud, and network APIs with consistent sequencing, execution, and traceability.",
+        image: deploy,
+        reverse: true,
+    },
+    {
+        title: "Integrated Human-in-the-Loop",
+        description:
+            "Pause workflows for critical checks. Kestra offers relying Business Decisions with audit trail and controlled executions.",
+        image: loop,
+    },
+]
+
+const LIFECYCLE_CARDS = [
+    {
+        title: "Ansible Playbooks, Automated the Right Way",
+        description:
+            "Wrap your playbooks in a production-grade layer. Gain structured inputs, secret injection, parallel execution, and granular logging without changing a single line of code.",
+        link: {
+            href: "/docs/how-to-guides/ansible",
+            text: "Automate your Playbooks with Kestra",
+        },
+        background: "#0D0D0D",
+        animation: "slide-r delay-50 duration-600 ease-out",
+    },
+    {
+        title: "Automated Infrastructure Ticketing Lifecycle",
+        description:
+            "Enable true self-service infrastructure. Kestra turns catalog requests into provisioned resources, automatically updates the CMDB, and closes the ticket with audit proof, delivering assets in minutes, not days.",
+        link: {
+            href: "/docs/how-to-guides/servicenow-trigger",
+            text: "Manage your full ticket lifecycle",
+        },
+        background: "#631BFF",
+        animation: "slide-l delay-100 duration-600 ease-out",
+    },
+]
 ---
 
-<Layout {title} {description}>
+<Layout title={TITLE} description={DESCRIPTION} headerTheme="lightHero">
     <div class="infra">
         <Intro />
-        <Deserver />
-        <Fortune />
+        <Versus {...VERSUS_CONTENT} />
+        <SocialProof
+            image={{ src: storyImg, alt: "Fortune 500", width: 347 }}
+            quote={{
+                text: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra",
+                author: "PRINCIPAL HOSTING LEAD, Fortune 500",
+            }}
+            metrics={FORTUNE_METRICS}
+            cta={{
+                text: "How much risk and cost are you still accepting today?",
+                link: "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra",
+            }}
+        />
         <Architecture />
-        <Govern />
-        <Lifecycle />
+        <SectionCard cards={GOVERN_CARDS}>
+            <Fragment slot="title">
+                <span class="gradient">Orchestrate</span> And
+                <br class="d-none d-xl-block" />
+                <span class="indent">
+                    <span class="gradient">Govern</span> The Entire Infrastructure
+                    Lifecycle
+                </span>
+            </Fragment>
+        </SectionCard>
+        <LifecycleLayout
+            title='<span class="gradient">Governed</span> Configuration & <span class="gradient">ITSM</span> Orchestration'
+            cards={LIFECYCLE_CARDS}
+        />
         <Arcade />
-        <Tour />
+        <Explore
+            title="Want to Take a Tour?"
+            description="Explore how Kestra gives you full control over complex infrastructure workflows."
+            cta={{ text: "Take the tour", href: "/docs/quickstart" }}
+            image={{ src: infraUi }}
+        />
         <Operation />
-        <Automations {blueprints} {tags} />
+        <Blueprints
+            title='Ready-to-Use <span class="gradient">Automation</span> Patterns'
+            {blueprints}
+            {tags}
+            link={{
+                href: "/blueprints?tags=infrastructure",
+                text: "View more Infrastructure blueprints",
+            }}
+        />
         <Connect {plugins} />
         <Built />
         <SeeHow>
-            <Fragment slot="title">
-                Ready to modernize Your Infrastructure Lifecycle?
-            </Fragment>
-            Teams replace vRO, Rundeck, Cron, Jenkins, and manual scripts with
-            Kestra
+            <Fragment slot="title"
+                >Ready to modernize Your Infrastructure Lifecycle?</Fragment
+            >
+            Teams replace vRO, Rundeck, Cron, Jenkins, and manual scripts with Kestra
         </SeeHow>
-    </div>  
+    </div>
 </Layout>
 
 <style scoped lang="scss">
     @import "~/assets/styles/_variable";
+
     .infra {
-        font-family: var(--font-family-mona-sans), sans-serif !important;
         overflow: clip;
         position: relative;
 
@@ -76,16 +203,20 @@ const plugins = Object.entries(
             left: 0;
             width: 100vw;
             height: 80px;
-            background: rgba($white, 0.06);
+            background: rgba(var(--ks-background-body), 0.06);
             backdrop-filter: blur(2px);
             z-index: 10;
             pointer-events: none;
+            mask-image: linear-gradient(
+                180deg,
+                transparent 0%,
+                var(--ks-content-primary) 100%
+            );
             -webkit-mask-image: linear-gradient(
                 180deg,
                 transparent 0%,
-                $black 100%
+                var(--ks-content-primary) 100%
             );
-            mask-image: linear-gradient(180deg, transparent 0%, $black 100%);
         }
     }
 </style>

@@ -41,17 +41,7 @@ export default defineConfig({
             appEntrypoint: "./src/vue-setup.ts",
             devtools: { launchEditor: "idea" },
         }),
-        expressiveCode({
-            defaultProps: {
-                wrap: true,
-                overridesByLang: {
-                    "bash,sh,zsh,shell,twig,powershell": {
-                        frame: "none",
-                    },
-                },
-            },
-            useDarkModeMediaQuery: false,
-        }),
+        expressiveCode(),
         mdx(),
         icon(),
     ],
@@ -122,18 +112,6 @@ export default defineConfig({
     },
     experimental: {
         fonts: [
-            {
-                provider: fontProviders.google(),
-                name: "Public Sans",
-                weights: [100, 400, 600, 700, 800],
-                cssVariable: "--font-family-public-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "Source Code Pro",
-                weights: [400, 700],
-                cssVariable: "--font-family-source-code-pro",
-            },
             {
                 provider: fontProviders.google(),
                 name: "Mona Sans",

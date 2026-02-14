@@ -1,7 +1,7 @@
 <template>
     <div
         ref="multiSelectRef"
-        :class="`multi-select  bg-dark-2 ${showDropdown ? 'focused' : ''}`"
+        :class="`multi-select   ${showDropdown ? 'focused' : ''}`"
         @click="toggleDropdown"
     >
         <div class="selected-items">
@@ -99,42 +99,35 @@
         position: relative;
         border: $block-border;
         font-size: $font-size-sm !important;
-        color: $white;
+        color: var(--ks-content-primary);
         max-width: 221px;
         flex-wrap: wrap;
         cursor: pointer;
-
         @include media-breakpoint-down(sm) {
             max-width: 100%;
         }
-
         &.focused {
             box-shadow: 0 0 0 0.25rem rgba(132, 5, 255, 0.25);
         }
-
         .selected-items {
             display: flex;
             gap: 4px;
             flex-direction: column;
             align-items: start;
-
             @include media-breakpoint-down(sm) {
                 flex-direction: row;
                 flex-wrap: wrap;
             }
         }
-
         :deep(.material-design-icon) {
             position: absolute;
             right: 10px;
-
             .material-design-icon__svg {
-                fill: $white;
+                fill: var(--ks-background-body);
             }
         }
-
         .selected-item {
-            background-color: $black-6;
+            background-color: var(--ks-content-tertiary);
             border-radius: 4px;
             padding: 0 4px;
             display: flex;
@@ -142,22 +135,19 @@
             gap: 4px;
             max-height: 20px;
             cursor: pointer;
-
             p {
                 margin: 0;
                 font-size: 1rem;
                 font-weight: 500;
                 white-space: nowrap;
-                color: $white;
+                color: var(--ks-content-primary);
             }
-
             :deep(.material-design-icon) {
                 position: unset;
                 right: 0;
-
                 .material-design-icon__svg {
                     position: unset;
-                    fill: $white;
+                    fill: var(--ks-background-body);
                 }
             }
         }
@@ -167,7 +157,6 @@
         position: relative;
         width: 100%;
         top: 2px;
-
         .dropdown-options {
             list-style-type: none;
             padding: 0;
@@ -180,7 +169,6 @@
             z-index: 1;
             border-radius: 5px;
             overflow: hidden;
-
             li {
                 padding: 2px 4px;
                 color: white;

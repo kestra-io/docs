@@ -9,7 +9,7 @@
                             hand-rolled scripts, and black-box platforms that slow delivery and
                             break governance.
                         </p>
-                        <p class="highlight" data-usal="fade-u delay-100">
+                        <p class="normal" data-usal="fade-u delay-100">
                             <strong>Kestra 1.0 (LTS)</strong>
                             unifies data, AI, infrastructure, and business operations under one
                             declarative control plane. Tell the system what you want; Kestra figures
@@ -47,54 +47,45 @@
     </section>
 </template>
 
-<script setup lang="ts"></script>
+
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
     .orchestration {
         padding: 4rem 0;
-        background-color: $white;
-
         @include media-breakpoint-down(lg) {
             padding: 3rem 0;
         }
-
         @include media-breakpoint-down(md) {
             padding: 2rem 0.5rem;
         }
-
         .text-block {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
             text-align: center;
             margin-bottom: 2rem;
-
             @include media-breakpoint-up(lg) {
                 max-width: 400px;
                 text-align: left;
             }
-
             .description {
                 margin: 0;
                 font-size: 18px;
                 line-height: 1.6;
                 font-weight: 600;
             }
-
-            .highlight {
+            .normal {
                 margin: 0;
                 font-weight: 400;
                 font-size: 1rem;
                 line-height: 1.5rem;
-
                 strong {
                     font-weight: 700;
                 }
             }
         }
-
         .video-container {
             padding-bottom: 56.5%;
             @include media-breakpoint-down(sm) {
@@ -102,7 +93,6 @@
             }
             border-radius: 15px;
         }
-
         @media (max-width: 768px) {
             [data-usal] {
                 transform: none !important;

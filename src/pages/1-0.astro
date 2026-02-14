@@ -1,11 +1,11 @@
 ---
 import Layout from "~/components/layout.astro"
-import OnezeroHeader from "~/components/onezero/Header.vue"
-import OnezeroInfo from "~/components/onezero/Info.vue"
-import OnezeroAiCopilot from "~/components/onezero/AiCopilot.vue"
-import OnezeroOrchestration from "~/components/onezero/Orchestration.vue"
-import OnezeroUnified from "~/components/onezero/Unified.vue"
-import OnezeroFaq from "~/components/onezero/Faq.vue"
+import Header from "~/components/onezero/Header.vue"
+import Info from "~/components/onezero/Info.vue"
+import AiCopilot from "~/components/onezero/AiCopilot.vue"
+import Orchestration from "~/components/onezero/Orchestration.astro"
+import Unified from "~/components/onezero/Unified.vue"
+import Answers from "~/components/onezero/Answers.vue"
 
 const title =
     "Introducing Kestra 1.0: The Declarative Agentic Orchestration Platform."
@@ -13,22 +13,11 @@ const description =
     "Build workflows faster with AI-assisted code, autonomous agents, and production-ready features. Scale AI Agents in days instead of weeks with full governance and no vendor lock-in."
 ---
 
-<Layout title={title} description={description}>
-    <div class="features-1-0">
-        <OnezeroHeader client:load />
-        <OnezeroInfo client:visible />
-        <OnezeroAiCopilot client:visible />
-        <OnezeroOrchestration client:visible />
-        <OnezeroUnified client:visible />
-        <OnezeroFaq client:visible />
-    </div>
+<Layout {title} {description} headerTheme="darkHeader">
+    <Header client:load />
+    <Info client:visible />
+    <AiCopilot client:visible />
+    <Orchestration client:visible />
+    <Unified client:visible />
+    <Answers client:visible />
 </Layout>
-
-<style scoped lang="scss">
-    .features-1-0 {
-        :global(.btn-lg) {
-            font-size: 1rem !important;
-            border-radius: 0.5rem !important;
-        }
-    }
-</style>

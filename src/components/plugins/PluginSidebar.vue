@@ -119,70 +119,58 @@
             overflow-y: auto;
             overflow-x: hidden;
             min-width: 260px;
-            border-right: 1px solid var(--kestra-io-token-color-border-secondary);
+            border-right: $block-border;
             z-index: 10;
-            background: #0a0b0d;
         }
-
         @include media-breakpoint-down(lg) {
             display: none;
         }
-
         .sidebar-content {
             display: flex;
             flex-direction: column;
             gap: $spacer;
         }
-
         .plugin-title {
             margin: 0;
             padding: calc($spacer / 2) $spacer;
             font-size: $font-size-md;
             font-weight: 600;
-            color: $white;
+            color: var(--ks-content-primary);
             text-transform: uppercase;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-
             @include media-breakpoint-down(lg) {
                 font-size: $font-size-sm;
             }
         }
-
         .subgroups-list {
             display: flex;
             flex-direction: column;
             gap: calc($spacer / 2);
         }
-
         .subgroup-item {
             border: none;
             border-radius: 0;
             overflow: visible;
-
             .chevron-icon {
                 margin-left: 0.5rem;
                 transition: transform 0.1s ease;
             }
-
             &[open] .subgroup-title {
-                color: $purple-36;
-
+                color: var(--ks-content-color-highlight);
                 .chevron-icon {
                     transform-origin: 53% 60%;
                     transform: rotate(90deg);
                 }
-
                 .subgroup-link {
-                    color: $purple-36;
+                    color: var(--ks-content-link);
                 }
             }
         }
-
         .subgroup-title {
             background: transparent;
-            color: $white-1;
+            color: var(--ks-content-primary);
             font-weight: 500;
             font-size: $font-size-sm;
             cursor: pointer;
@@ -193,120 +181,102 @@
             margin: 0;
             border: none;
             transition: color 0.2s ease;
-
             .subgroup-link {
                 display: flex;
                 align-items: center;
                 gap: calc($spacer / 4);
                 text-decoration: none;
-                color: $white-1;
+                color: var(--ks-content-primary);
                 width: 100%;
-
                 &:hover {
-                    color: $purple-36;
+                    color: var(--ks-content-link);
                 }
             }
-
             .chevron-icon {
                 font-size: $font-size-lg;
-                color: $white;
+                color: var(--ks-content-primary);
                 flex-shrink: 0;
                 top: -0.18rem;
             }
         }
-
         .search {
             width: 100%;
             height: 32px;
             padding: calc($spacer * 0.3) calc($spacer * 0.8);
             border-radius: calc($spacer * 0.25);
-            background-color: $black-2;
-            border: 1px solid $black-3;
+            background-color: var(--ks-background-secondary);
+            border: 1px solid var(--ks-border-primary);
             margin: 0 auto $spacer;
             cursor: pointer;
-
             @include media-breakpoint-down(lg) {
                 width: 100%;
                 margin-top: $spacer;
             }
-
             &:hover {
-                background-color: $black-4;
-                border: 1px solid $black-6;
+                border: 1px solid var(--ks-content-tertiary);
             }
-
             :deep(.material-design-icon__svg) {
                 bottom: 0;
                 fill: #8b8b8d;
             }
-
             .input-group {
                 width: 100%;
                 height: 100%;
                 display: flex;
                 gap: calc($spacer * 0.5);
                 align-items: center;
-
                 .input-icon {
                     max-height: 100%;
                     display: flex;
                     gap: calc($spacer * 0.5);
                     align-items: center;
-
                     input {
                         background: transparent;
                         border: none;
                         outline: none;
-                        color: $white;
+                        color: var(--ks-content-primary);
                         font-weight: 400;
                         font-size: $font-size-sm;
                         width: 100%;
-
                         &::placeholder {
                             color: var(--ks-content-inactive);
                         }
                     }
                 }
-
                 .input-group-text {
                     max-height: 100%;
                     background-color: transparent;
                     border: none;
                     padding: 0;
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
             }
         }
-
         .plugin-links {
             display: flex;
             flex-direction: column;
             gap: $spacer;
             margin-top: $spacer;
-
             .link-section {
                 h4 {
                     font-size: 1rem;
                     font-weight: 700;
-                    color: $white;
+                    color: var(--ks-content-primary);
                     margin: 0;
                 }
-
                 .link {
-                    color: $purple-36;
+                    color: var(--ks-content-link);
                     text-decoration: none;
                     font-size: 14px;
                     font-weight: normal;
-
                     &:hover {
                         text-decoration: underline;
                     }
                 }
             }
         }
-
         hr {
-            border-color: var(--kestra-io-token-color-border-secondary);
+            border-color: var(--ks-border-secondary);
             opacity: 1;
         }
     }

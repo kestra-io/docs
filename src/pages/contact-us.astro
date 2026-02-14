@@ -1,8 +1,7 @@
 ---
 import Layout from "~/components/layout.astro"
-import ContactHeader from "~/components/contact/Header.vue"
-import CommunitySlack from "~/components/community/Slack.vue"
-import { $fetchApi } from "~/utils/fetch"
+import Header from "~/components/contact/Header.vue"
+import Slack from "~/components/common/Slack.astro"
 
 const title = "Get in Touch With the Team"
 const description =
@@ -11,7 +10,7 @@ const description =
 
 <Layout title={title} description={description}>
     <div>
-        <ContactHeader client:idle />
-        <CommunitySlack />
+        <Header client:idle />
+        <Slack />
     </div>
 </Layout>

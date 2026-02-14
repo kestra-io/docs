@@ -35,7 +35,7 @@ export function badge(data, attributes, node) {
                       data: {
                           hName: "span",
                           hProperties: {
-                              class: "badge d-flex align-items-center bg-body-tertiary",
+                              class: "badge badge-secondary d-flex align-items-center",
                           },
                       },
                       children: [

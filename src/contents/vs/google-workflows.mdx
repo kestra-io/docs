@@ -1,0 +1,88 @@
+---
+title: "Google Workflows vs Kestra"
+headerTitle: "The differences between Kestra and Google Workflows"
+description: "How to Choose the Right Orchestration Platform"
+competitorName: "Google Workflows"
+logo: "/landing/vs/google-workflows/header.svg"
+---
+import VSComparisonTable from "~/components/vs/VSComparisonTable.astro"
+
+export const comparisonData = [
+  {
+    "feature": "Scalability",
+    "kestra": "Runs on Kubernetes with dynamic scaling across cloud and on-prem environments",
+    "competitor": "Scales within GCP, but can become expensive and rigid for multi-cloud or hybrid workloads"
+  },
+  {
+    "feature": "Cloud Integrations",
+    "kestra": "Multi-cloud support (AWS, GCP, Azure, on-prem); integrates with event-driven and scheduled workflows",
+    "competitor": "Deeply integrated with GCP services but requires complex workarounds for multi-cloud or external system integrations"
+  },
+  {
+    "feature": "Vendor Lock-in",
+    "kestra": "Fully open-source, cloud-agnostic, and self-hostable",
+    "competitor": "Proprietary solution locked into GCP; integrating outside Google services requires additional development"
+  },
+  {
+    "feature": "Triggering System",
+    "kestra": "Built-in event triggers, webhooks, and scheduling",
+    "competitor": "No native triggering system; users must develop web services to enable triggers"
+  },
+  {
+    "feature": "Managing Dependencies Between Workflows",
+    "kestra": "Supports dependency management natively; allows workflows to trigger other workflows",
+    "competitor": "No native dependency management between DAGs; users must build custom logic to coordinate workflows"
+  },
+  {
+    "feature": "Custom Development & Extensibility",
+    "kestra": "Fully customizable with open-source plugins, integrations, and custom tasks",
+    "competitor": "No support for custom development beyond standard Airflow DAGs"
+  },
+  {
+    "feature": "Query Execution Complexity",
+    "kestra": "Simple queries are easily handled via inline SQL scripting or built-in integrations",
+    "competitor": "Even basic queries require defining operators, writing custom Python scripts, and managing task dependencies manually"
+  },
+  {
+    "feature": "Templating (Pebble)",
+    "kestra": "Customizable templating system for workflow parameters and task execution",
+    "competitor": "Limited templating flexibility, requiring workarounds to adapt logic"
+  }
+]
+
+# About Kestra & Google Workflows
+Kestra is an open-source orchestration platform that enables the automation of complex workflows across cloud, on-prem, and hybrid environments. It follows an everything-as-code approach, with YAML-based workflow definitions, an API-first architecture, and an extensible plugin ecosystem. Combining a no-code/low-code UI with direct YAML editing, Kestra provides flexibility for both technical and non-technical users.
+
+Google Workflows, a cloud-based orchestration service provided by Google Cloud, focuses on sequencing steps for Google Cloud services. While it offers a simple YAML or JSON definition for workflows, it lacks critical enterprise-grade orchestration features. With no built-in UI for workflow design, debugging, or real-time observability, and no native plugin ecosystem, Google Workflows is best suited for Google Cloud-centric tasks but struggles in multi-cloud or hybrid environments.
+
+### Installation and Setup
+Kestra provides a highly flexible deployment model, supporting Docker, Kubernetes, and Terraform. It can run on any cloud provider, on-premises, or in hybrid environments, ensuring full control over execution, security, and data residency.
+
+Google Workflows, on the other hand, is fully managed by Google Cloud, with no option for on-prem installation. Setting it up requires enabling the Workflows API within a Google Cloud project. However, using it outside of Google Cloud demands extensive development effort, including building web services to create bridges between external systems.
+
+### Workflow Definition
+Kestra workflows are defined in YAML, offering clarity and maintainability. With inline scripting in Python, JavaScript, SQL, and Bash, users can integrate custom logic directly. Its no-code editor allows workflows to be designed visually while automatically generating the corresponding YAML code for version control. Additionally, Kestra’s plugin ecosystem extends workflow capabilities beyond default functions.
+
+Google Workflows also uses YAML or JSON but lacks a UI-based workflow designer. Its built-in DSL (domain-specific language) offers limited flexibility, requiring users to implement custom logic through REST calls or external services. Unlike Kestra, it does not have a plugin system, making extending its functionality more cumbersome. Pebble templating support is also limited, restricting customization options.
+
+### Scalability and Performance
+Kestra dynamically scales across distributed environments, optimized for both event-driven and scheduled workflows. Its open architecture ensures seamless operation across multiple clouds or on-prem environments without vendor-imposed restrictions.
+
+Google Workflows leverages Google Cloud’s infrastructure for scaling but remains tied to the GCP ecosystem. While it can handle large-scale tasks within Google Cloud, orchestrating workflows outside of GCP introduces additional complexity, including costs and development overhead.
+
+### Integration Capabilities
+Kestra provides extensive integrations through its plugin ecosystem, supporting AWS, GCP, Azure, BigQuery, Snowflake, Kafka, dbt, Airbyte, and more. With an API-first approach, it facilitates seamless orchestration across different cloud providers, on-prem infrastructure, and SaaS applications.
+
+Google Workflows is deeply integrated into Google Cloud services such as Cloud Functions, Cloud Run, and Google APIs. However, it does not support native plugins for third-party services. To connect with external platforms, users must implement custom REST calls, adding complexity and maintenance overhead.
+
+### Monitoring and Observability
+Kestra offers built-in monitoring, real-time execution tracking, and logging. Users can visualize workflow performance through custom dashboards and access detailed task-level logs for easier debugging.
+
+Google Workflows relies on Google Cloud Logging and Monitoring for observability, requiring users to configure multiple services to track workflow execution. Without a dedicated UI for debugging, troubleshooting issues is more complex compared to Kestra’s out-of-the-box solutions.
+
+### Open-Source vs. Proprietary
+Kestra is a fully open-source platform with an active community and optional enterprise add-ons. Its open architecture allows organizations to deploy in any environment without vendor lock-in. The transparency of its codebase enables deeper customization and community-driven enhancements.
+
+Google Workflows is a proprietary service tied to Google Cloud. Organizations using it are locked into GCP’s infrastructure, APIs, and billing model, with limited extensibility beyond Google’s ecosystem.
+
+<VSComparisonTable comparisonData={comparisonData} competitorName={frontmatter.competitorName} />

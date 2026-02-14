@@ -2,7 +2,7 @@
     <div class="h-100 d-flex flex-column mh-100">
         <AiChatHeader @openSearch="$emit('backToSearch')" />
         <div class="content scroller" id="contentContainer" ref="contentContainer">
-            <div v-if="messages.length === 0" class="message welcome">
+            <div v-if="!messages.length" class="message welcome">
                 <div class="avatar">
                     <img src="/icon-simple.svg" alt="Kestra AI" />
                 </div>
@@ -11,20 +11,22 @@
                 </div>
             </div>
 
-            <div v-if="messages.length === 0 && randomQuestion" class="examples">
+            <div v-if="!messages.length && randomQuestions.length" class="examples">
                 <h6>EXAMPLE QUESTIONS</h6>
                 <div class="cards">
-                    <template v-for="(question, index) in randomQuestion" :key="index">
-                        <div class="card" @click="askQuestion(question)">
-                            {{ question }}
-                        </div>
-                    </template>
+                    <div
+                        v-for="question in randomQuestions"
+                        :key="question"
+                        class="card"
+                        @click="askQuestion(question)"
+                    >
+                        {{ question }}
+                    </div>
                 </div>
             </div>
 
-            <div v-if="messages.length > 0" class="messages">
-                <template v-for="(message, messageIndex) of messages" :key="messageIndex">
-                    <div :class="`message message-${message.role}`">
+            <div v-if="messages.length" class="messages">
+                <div v-for="(message, index) in messages" :key="index" :class="`message message-${message.role}`">
                         <div class="avatar">
                             <div v-if="message.role === 'user'" class="user">
                                 <AccountCircle />
@@ -48,11 +50,7 @@
                                 </div>
 
                                 <div
-                                    v-if="
-                                        isLoading &&
-                                        messageIndex === messages.length - 1 &&
-                                        !message.content
-                                    "
+                                    v-if="isLoading && index === messages.length - 1 && !message.content"
                                     class="loading"
                                 >
                                     <div class="dots"></div>
@@ -91,10 +89,10 @@
                             <span class="timestamp">{{ formatTimestamp(message.timestamp) }}</span>
                         </div>
                     </div>
-                </template>
+
                 <div
                     class="d-flex justify-content-end me-3 mb-1"
-                    v-if="!isLoading && messages.length > 0"
+                    v-if="!isLoading && messages.length"
                 >
                     <button type="submit" class="btn btn-sm btn-dark" @click="clearMessage">
                         <TrashCan />
@@ -123,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted, ref } from "vue"
+    import { onMounted, ref, nextTick } from "vue"
     import posthog from "posthog-js"
     import { EventSourceParserStream } from "eventsource-parser/stream"
     import AiChatHeader from "~/components/ai/AiChatHeader.vue"
@@ -165,31 +163,28 @@
         message?: string
     }
 
-    // random client must be client only
-    const randomQuestion = ref<Array<string>>()
-    onMounted(() => {
-        const questions = [
-            "How to add secrets?",
-            "How to configure my internal storage?",
-            "What are main differences between Open Source and Enterprise?",
-            "How to sync my flows with Git?",
-            "How to set up CI/CD for kestra flows?",
-            "What is a task runner?",
-            "How to handle errors & retry on flow?",
-            "How to run Python script?",
-            "How to schedule flow?",
-            "How to write expression for previous tasks outputs?",
-            "How to deploy Kestra inside Kubernetes?",
-            "How to prevent concurrent execution of the same flow?",
-            "How to trigger a flow after another one?",
-            "How to run a Ansible playbook?",
-            "How to run dbt?",
-            "How to receive an alert on flow failure?",
-        ]
+    const allQuestions = [
+        "How to add secrets?",
+        "How to configure my internal storage?",
+        "What are main differences between Open Source and Enterprise?",
+        "How to sync my flows with Git?",
+        "How to set up CI/CD for kestra flows?",
+        "What is a task runner?",
+        "How to handle errors & retry on flow?",
+        "How to run Python script?",
+        "How to schedule flow?",
+        "How to write expression for previous tasks outputs?",
+        "How to deploy Kestra inside Kubernetes?",
+        "How to prevent concurrent execution of the same flow?",
+        "How to trigger a flow after another one?",
+        "How to run a Ansible playbook?",
+        "How to run dbt?",
+        "How to receive an alert on flow failure?",
+    ]
 
-        // Shuffle and pick 3 questions once on mount
-        randomQuestion.value = [...questions].sort(() => Math.random() - 0.5).slice(0, 3)
-    })
+    const randomQuestions = ref(
+        [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 3),
+    )
 
     const emit = defineEmits<{
         close: []
@@ -203,7 +198,6 @@
     const userInput = ref<string>("")
     const messages = ref<Message[]>([])
     const isLoading = ref<boolean>(false)
-    const contentContainer = ref<HTMLElement | null>(null)
     const textareaRef = ref<HTMLTextAreaElement | null>(null)
     const conversationId = ref<string>(createUUID())
     const abortController = ref<AbortController>(new AbortController())
@@ -246,23 +240,22 @@
 
     const formatTimestamp = (timestamp: string): string => {
         const date = new Date(timestamp)
-        const today = new Date()
-        const isToday = date.toDateString() === today.toDateString()
-
-        const timeString = date.toLocaleTimeString([], {
+        const isToday = date.toDateString() === new Date().toDateString()
+        const time = new Intl.DateTimeFormat("default", {
             hour: "2-digit",
             minute: "2-digit",
-        })
+        }).format(date)
 
-        if (isToday) {
-            return `Today at ${timeString}`
-        } else {
-            const dateString = date.toLocaleDateString([], {
-                month: "short",
-                day: "numeric",
-            })
-            return `${dateString} at ${timeString}`
-        }
+        if (isToday) return `Today at ${time}`
+
+        const day = new Intl.DateTimeFormat("default", {
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        }).format(date)
+
+        return `${day}`
     }
 
     const createUserMessage = (content: string): Message => ({

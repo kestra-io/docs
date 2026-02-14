@@ -1,0 +1,22 @@
+---
+import BlogList from "../common/BlogList.astro"
+import { getCollection } from "astro:content"
+
+const blogs = await getCollection("blogs")
+
+const recentBlogs = await Promise.all(
+    blogs
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+        .slice(0, 4)
+        .map(async (blog) => ({
+            path: `/blogs/${blog.id}`,
+            image: blog.data.image ? { src: blog.data.image.src } : undefined,
+            title: blog.data.title,
+            date: blog.data.date.toISOString(),
+            category: blog.data.category,
+        })),
+)
+---
+
+<BlogList posts={recentBlogs} title="What's New in Kestra" />
+

@@ -68,22 +68,19 @@
     @import "~/assets/styles/variable";
 
     .more {
-        border-top: 1px solid var(--kestra-io-token-color-border-secondary);
+        border-top: $block-border;
         padding: 2rem 0;
-
         @include media-breakpoint-up(lg) {
             margin-left: -2rem;
             margin-right: -2rem;
             padding-left: 2rem;
             padding-right: 2rem;
         }
-
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-
             h4 {
                 font-size: 20px;
                 font-weight: 600;

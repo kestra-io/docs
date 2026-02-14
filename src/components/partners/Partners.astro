@@ -1,0 +1,176 @@
+---
+import Section from "~/components/layout/Section.vue"
+import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
+
+interface Props {
+    sections: {
+        subtitleBefore?: string
+        subtitle: string
+        showCta?: boolean
+        partners: {
+            logo: string
+            name: string
+            type: string
+            alt?: string
+            href?: string
+            linkText?: string
+            isInternal?: boolean
+        }[]
+    }[]
+}
+
+const { sections } = Astro.props
+---
+
+<section class="partners-list">
+    <div class="container">
+        {
+            sections.map((section) => (
+                <Section
+                    client:visible
+                    subtitle-before={section.subtitleBefore}
+                    subtitle={section.subtitle}
+                >
+                    <div class="row card-group mb-2">
+                        {section.partners.map((partner) => (
+                            <div class="col-12 col-md-4 col-lg-4 mb-4">
+                                <div class="card" data-usal="zoomin">
+                                    <img
+                                        src={partner.logo}
+                                        class="card-img-top"
+                                        alt={
+                                            partner.alt ??
+                                            `${partner.name} logo`
+                                        }
+                                        loading="lazy"
+                                    />
+                                    <div class="card-body">
+                                        <p class="card-text">{partner.type}</p>
+                                        <h5 class="card-title">
+                                            {partner.name}
+                                        </h5>
+                                        {partner.href && (
+                                            <a
+                                                href={partner.href}
+                                                target={
+                                                    partner.isInternal
+                                                        ? undefined
+                                                        : "_blank"
+                                                }
+                                                rel={
+                                                    partner.isInternal
+                                                        ? undefined
+                                                        : "noopener noreferrer"
+                                                }
+                                            >
+                                                {partner.linkText ||
+                                                    (partner.isInternal
+                                                        ? "learn more"
+                                                        : `Visit ${partner.name} website`)}
+                                                <OpenInNew client:visible />
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        {section.showCta && (
+                            <div class="col-12 col-md-4 col-lg-4 mb-4">
+                                <div
+                                    class="card text-center cta-card"
+                                    data-usal="zoomin"
+                                >
+                                    <img
+                                        src="/partners/partners-logos/badge-partner.svg"
+                                        class="card-img-top mx-auto"
+                                        alt="Badge Kestra Partner"
+                                        height="118"
+                                        width="118"
+                                        loading="lazy"
+                                    />
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">
+                                            Want to join our Partner Program?
+                                        </h5>
+                                        <a
+                                            href="#form"
+                                            class="btn btn-animated btn-purple-animated"
+                                        >
+                                            Become a Partner
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </Section>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .partners-list {
+        background: var(--ks-background-body);
+
+        .card-group {
+            justify-content: start;
+
+            .card {
+                padding: 1rem;
+                border: $block-border;
+                background-color: var(--ks-background-secondary);
+                height: 100%;
+
+                .card-body {
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+
+                .card-img-top {
+                    background-color: $black;
+                    border-radius: $border-radius-lg;
+                    padding: $rem-1 0;
+                    min-height: 143px;
+                }
+
+                .card-text {
+                    color: var(--ks-content-tertiary);
+                    font-family: $font-family-jetbrains-mono;
+                    font-size: $font-size-xs;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    margin-top: $rem-1;
+                    margin-bottom: 0;
+                }
+
+                .card-title {
+                    margin: 0.5rem 0;
+                    color: var(--ks-content-primary);
+                    font-size: $h6-font-size;
+                    font-weight: 700;
+                }
+
+                a {
+                    color: var(--ks-content-link);
+                    font-size: $font-size-sm;
+                    font-weight: 400;
+                    vertical-align: middle;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    &.btn {
+                        color: #fff;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+</style>
+

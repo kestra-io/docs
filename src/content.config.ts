@@ -77,4 +77,18 @@ export const collections = {
             icon: z.string().optional(),
         }),
     }),
+    vs: defineCollection({
+        loader: glob({
+            pattern: "./*.md{,x}",
+            base: "./src/contents/vs",
+            generateId,
+        }),
+        schema: z.object({
+            title: z.string(),
+            headerTitle: z.string().optional(),
+            description: z.string().optional(),
+            competitorName: z.string(),
+            logo: z.string(),
+        }),
+    }),
 }

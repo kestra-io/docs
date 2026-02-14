@@ -162,23 +162,22 @@
 
     .total-pages {
         font-size: $font-size-sm;
-        color: $white;
+        color: var(--ks-content-primary);
     }
 
     .pagination-container {
         margin-top: 39px;
-
         .form-select {
             border-radius: 4px;
             border: $block-border;
-            color: $white;
+            color: var(--ks-content-primary);
             font-size: 14px;
             font-weight: 700;
         }
     }
 
     .count {
-        color: $white;
+        color: var(--ks-content-primary);
         font-size: 14px;
     }
 

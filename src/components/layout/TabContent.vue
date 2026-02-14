@@ -82,26 +82,23 @@
         border: $block-border;
         margin-bottom: calc($spacer * 2.8);
         overflow: hidden;
-
         @include media-breakpoint-down(md) {
             border: none;
             overflow: unset;
         }
-
         ul {
-            background-color: $black-2;
+            background-color: var(--ks-background-secondary);
             overflow: hidden;
             flex-wrap: nowrap;
             justify-content: center;
             border: none;
             border-bottom: $block-border;
-
             li {
                 border-right: $block-border;
                 padding: 0;
                 flex: 1;
                 .active {
-                    color: $white;
+                    color: var(--ks-content-primary);
                     background: #4b0aaa;
                     border: none;
                     border-radius: 0;
@@ -109,35 +106,30 @@
                 button {
                     width: 100%;
                     height: 100%;
-                    color: $white;
+                    color: var(--ks-content-primary);
                     padding: 2rem;
                     border: none;
                     &:hover,
                     &:focus {
                         border: none;
                     }
-
                     @include media-breakpoint-down(lg) {
                         padding: 1rem;
                     }
-
                     @include media-breakpoint-down(md) {
                         padding: calc($spacer * 0.5);
                         font-size: calc($font-size-base * 0.8);
                     }
-
                     @include media-breakpoint-down(sm) {
                         padding: calc($spacer * 0.1);
                         font-size: calc($font-size-base * 0.8);
                     }
                 }
             }
-
             li:last-child {
                 border: none;
             }
         }
-
         .tab-content {
             width: 100%;
             display: flex;
@@ -146,7 +138,6 @@
             position: relative;
             z-index: 10;
             overflow: hidden;
-
             &::before,
             &::after {
                 content: "";
@@ -157,29 +148,24 @@
                 filter: blur(100px);
                 z-index: -5;
             }
-
             &::before {
                 left: 58rem;
                 top: 25rem;
             }
-
             &::after {
                 right: 57rem;
                 bottom: 30rem;
             }
-
             @include media-breakpoint-down(lg) {
                 &::before {
                     left: 32rem;
                     top: 22rem;
                 }
-
                 &::after {
                     right: 29rem;
                     bottom: 26rem;
                 }
             }
-
             @include media-breakpoint-down(md) {
                 padding: $spacer 0;
                 overflow: unset;
@@ -187,43 +173,36 @@
                     left: 0;
                     top: -25%;
                 }
-
                 &::after {
                     right: 0;
                     bottom: 25%;
                 }
             }
-
             .active-tab-content {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 gap: calc($spacer * 1.8);
-
                 p {
                     font-size: $h6-font-size;
                     font-weight: 300;
-                    color: $white;
+                    color: var(--ks-content-primary);
                     margin: 0;
                 }
-
                 img {
                     max-width: 100%;
                 }
             }
         }
-
         .dropdown {
             .dropdown-toggle {
                 position: relative;
-                background-color: $black-4;
                 z-index: 14;
-                color: $white;
+                color: var(--ks-content-primary);
                 font-style: $font-size-base;
                 line-height: calc($spacer * 1.6);
                 border-radius: calc($spacer * 0.5);
-                border: 1px solid $black-6;
-
+                border: 1px solid var(--ks-content-tertiary);
                 &::after {
                     width: calc($spacer * 12);
                     height: calc($spacer * 12);
@@ -236,13 +215,11 @@
                     background-repeat: no-repeat;
                 }
             }
-
             .dropdown-menu-bar {
                 width: 100%;
-                color: $white;
-                background-color: $black-4;
+                color: var(--ks-content-primary);
                 border-radius: calc($spacer * 0.5);
-                border: 1px solid $black-6;
+                border: 1px solid var(--ks-content-tertiary);
             }
         }
     }

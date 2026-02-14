@@ -79,58 +79,50 @@
         padding-left: 10px;
         display: flex;
         flex-direction: column;
-
         .vertical-line {
             position: absolute;
             left: 17px;
             top: 0;
             bottom: 0;
             width: 1px;
-            background: var(--kestra-io-token-color-border-secondary);
+            background: var(--ks-border-secondary);
             display: flex;
             flex-direction: column;
-
             .line-segment {
                 flex: 1;
-                background: $purple-36;
+                background: var(--ks-content-link);
                 opacity: 0;
                 transition: opacity 0.2s ease;
-
                 &.active,
                 &.hovered {
                     opacity: 1;
                 }
             }
         }
-
         .element-type {
             display: flex;
             flex-direction: column;
             gap: calc(var(--spacer, 1rem) / 3);
             padding-left: var(--spacer, 1rem);
-
             .element-list {
                 list-style: none;
                 margin: 0;
                 padding: 0;
                 display: flex;
                 flex-direction: column;
-
                 li {
                     a {
                         display: block;
                         padding: calc(var(--spacer, 1rem) / 4);
                         font-size: $font-size-sm;
-                        color: $white-1;
+                        color: var(--ks-content-primary);
                         text-decoration: none;
                         border-left: 2px solid transparent;
                         transition: color 0.2s ease;
-
                         &:hover,
                         &.active {
-                            color: $purple-36;
+                            color: var(--ks-content-link);
                         }
-
                         &.active {
                             font-weight: 500;
                         }

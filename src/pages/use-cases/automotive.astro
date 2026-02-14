@@ -1,25 +1,31 @@
 ---
 import Layout from "~/components/layout.astro"
-import CardSection from "~/components/use-cases/automotive/CardSection.vue"
-import HeaderSection from "~/components/use-cases/HeaderSection.vue"
-import CompanyInfo from "~/components/use-cases/automotive/CompanyInfo.vue"
-import MetricSection from "~/components/use-cases/MetricSection.vue"
-import UnlockSection from "~/components/use-cases/UnlockSection.vue"
-import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
-import Quadis from "~/assets/companies/quadis.svg"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import CustomerStory from "~/components/use-cases/CustomerStory.vue"
+import BusinessStats from "~/components/layout/BusinessStats.astro"
+import Unlock from "~/components/use-cases/Unlock.vue"
+import HeaderBox from "~/components/common/HeaderBox.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import Quadis from "~/assets/companies/quadis.svg?raw"
+import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
+import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
+import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
+import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
+import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
+import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
 
-const title = "Kestra for Automotive"
-const description =
+const TITLE = "Kestra for Automotive"
+const DESCRIPTION =
     "Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
 
-const companyInfo = {
+const COMPANY_INFO = {
     personName: "Ruben Boniz Martinez",
     personRole: "Team Lead",
-    logo: Quadis.src,
+    logo: Quadis,
     logoAlt: "Quadis",
 }
 
-const unlockContent = {
+const UNLOCK_CONTENT = {
     leftContent: [
         {
             title: "Plugin Ecosystem",
@@ -45,54 +51,124 @@ const unlockContent = {
         },
     ],
 }
+
+const CARDS_DATA = [
+    {
+        icon: RefreshAuto,
+        cardInfo: {
+            title: "Automotive Data Management",
+            description:
+                "Automates the integration and management of vehicle data from various sources, ensuring that records are always updated and accurate.",
+        },
+    },
+    {
+        icon: CommentQuoteOutline,
+        cardInfo: {
+            title: "Supply Chain Optimization",
+            description:
+                "Process large volumes of supply chain data quickly and accurately. Kestra automates logistics workflows and data analysis, significantly cutting down processing times and minimizing errors.",
+        },
+    },
+    {
+        icon: ChartBellCurve,
+        cardInfo: {
+            title: "Regulatory Compliance",
+            description:
+                "Automate the generation of compliance reports, access logs, and data usage reports. Ensure compliance with automotive standards reducing the risk of breaches and improving data governance.",
+        },
+    },
+    {
+        icon: FileChartOutline,
+        cardInfo: {
+            title: "Predictive Maintenance",
+            description:
+                "Integrates your workflows with machine learning models and analytics platforms to utilize vehicle data for predictive maintenance.",
+        },
+    },
+    {
+        icon: ImageFilterCenterFocus,
+        cardInfo: {
+            title: "Streamlined Data Management",
+            description:
+                "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.",
+        },
+    },
+]
 ---
 
-<Layout title={title} description={description}>
+<Layout title={TITLE} description={DESCRIPTION}>
     <div class="automotive-use-case">
-        <HeaderSection
+        <DetailsHero
             class="red"
             client:load
-            titleHtml="Drive Orchestration<br> for <span>Automotive</span><br>Suppliers"
+            title="Drive Orchestration<br> for <span>Automotive</span><br>Suppliers"
             description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
-            imageSrc="/landing/usecases/automotive/header-hero.svg"
-            imageAlt="Kestra Automotive"
+            image={{
+                src: "/landing/usecases/automotive/header-hero.svg",
+                alt: "Kestra Automotive",
+            }}
         />
-        <CardSection client:visible class="red" />
-        <CompanyInfo
+        <Cards
+            class="red"
+            title="Use Cases in <span>Automotive</span>"
+            cards={CARDS_DATA}
+        />
+        <CustomerStory
             client:visible
             class="red"
-            titleHtml="Quadis trust Kestra for Its<br> Business Critical<br> Operations"
+            title="Quadis trust Kestra for Its<br> Business Critical<br> Operations"
             description="Quadis, the largest car retailer in Spain, relies on Kestra to streamline its daily operations, from financial reporting to car delivery alerting. Kestra will support their new data lake architecture, enhancing data analytics, internal web scraping, and resource optimization using AWS services."
-            imageSrc="/landing/usecases/automotive/visual.svg"
-            logoPath={Quadis.src}
-            logoAlt="Quadis"
-            imageAlt="Quadis"
-            logoWidth="208px"
-            storeLink="/blogs/2024-06-13-quadis"
+            image={{
+                src: "/landing/usecases/automotive/visual.svg",
+                alt: "Quadis",
+            }}
+            logo={{
+                src: Quadis,
+                alt: "Quadis",
+                width: "208px",
+            }}
+            href="/blogs/2024-06-13-quadis"
         />
-        <MetricSection
-            client:visible
-            class="red"
-            percent="500"
-            percentText="In workflow delivery "
-            mainInfoHtml="“Kestra plugin and <br> it’s easy for anyone to understand”"
-            companyInfo={companyInfo}
-        />
-        <UnlockSection
+        <div class="red">
+            <BusinessStats
+                items={[
+                    {
+                        type: "stat",
+                        icon: { src: ArrowUp },
+                        value: "500%",
+                        label: "In workflow delivery",
+                    },
+                    {
+                        type: "quote",
+                        text: "“Kestra plugin and <br> it’s easy for anyone to understand”",
+                    },
+                    {
+                        type: "author",
+                        name: COMPANY_INFO.personName,
+                        role: COMPANY_INFO.personRole,
+                        logo: {
+                            src: COMPANY_INFO.logo,
+                            alt: COMPANY_INFO.logoAlt,
+                        },
+                        class: "align-items-start",
+                    },
+                ]}
+            />
+        </div>
+        <Unlock
             client:visible
             class="red"
             title="Automotive Ecosystem"
             description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
-            logoPath="/landing/usecases/automotive/car-hatchback.svg"
-            logoAlt="car hatchback"
+            logo={{
+                src: "/landing/usecases/automotive/car-hatchback.svg",
+                alt: "car hatchback",
+            }}
             strokeColor="#E3262F"
-            unlockContent={unlockContent}
+            content={UNLOCK_CONTENT}
         />
         <div class="enterprise-edition">
-            <FeaturesFeatureEnterprise
-                client:visible
-                logoPath="/landing/usecases/automotive/enterprise-edition.svg"
-            />
+            <HeaderBox client:visible />
         </div>
     </div>
 </Layout>

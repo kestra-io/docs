@@ -1,29 +1,335 @@
 ---
 import Layout from "~/components/layout.astro"
-import EnterpriseHeader from "~/components/enterprise/Header.vue"
-import EnterpriseSecurity from "~/components/enterprise/Security.vue"
-import EnterpriseSuccessProgram from "~/components/enterprise/SuccessProgram.vue"
-import EnterpriseProjectDetails from "~/components/enterprise/ProjectDetails.vue"
-import EnterpriseOrchestraCore from "~/components/enterprise/OrchestraCore.vue"
+import IntroHeader from "~/components/layout/IntroHeader.vue"
+import ComparisonGrid from "~/components/layout/ComparisonGrid.vue"
+import StickyScroll from "~/components/layout/StickyScroll.vue"
+import Grid from "~/components/layout/Grid.astro"
+import Capabilities from "~/components/layout/Capabilities.vue"
+import PluginsBox from "~/components/common/PluginsBox.astro"
+import Testimonials from "~/components/layout/Testimonials.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
 
-const title = "Get More Out of Your Data With the Enterprise Edition"
-const description =
+import CloudKeyOutline from "vue-material-design-icons/CloudKeyOutline.vue"
+import History from "vue-material-design-icons/History.vue"
+import DatabaseRefreshOutline from "vue-material-design-icons/DatabaseRefreshOutline.vue"
+import Lastpass from "vue-material-design-icons/Lastpass.vue"
+import FormTextboxPassword from "vue-material-design-icons/FormTextboxPassword.vue"
+import KeyWireless from "vue-material-design-icons/KeyWireless.vue"
+import ChartBarStacked from "vue-material-design-icons/ChartBarStacked.vue"
+import ServerNetwork from "vue-material-design-icons/ServerNetwork.vue"
+import DotsSquare from "vue-material-design-icons/DotsSquare.vue"
+import Connection from "vue-material-design-icons/Connection.vue"
+import BallotOutline from "vue-material-design-icons/BallotOutline.vue"
+import FormatListGroupPlus from "vue-material-design-icons/FormatListGroupPlus.vue"
+import WeatherCloudyArrowRight from "vue-material-design-icons/WeatherCloudyArrowRight.vue"
+import TimelineCheckOutline from "vue-material-design-icons/TimelineCheckOutline.vue"
+import LightningBoltCircle from "vue-material-design-icons/LightningBoltCircle.vue"
+import AlertOctagon from "vue-material-design-icons/AlertOctagon.vue"
+import MonitorDashboard from "vue-material-design-icons/MonitorDashboard.vue"
+import DatabaseLockOutline from "vue-material-design-icons/DatabaseLockOutline.vue"
+import CalculatorVariant from "vue-material-design-icons/CalculatorVariant.vue"
+import WebBox from "vue-material-design-icons/WebBox.vue"
+import ChartTree from "vue-material-design-icons/ChartTree.vue"
+import CalendarMultiselect from "vue-material-design-icons/CalendarMultiselect.vue"
+import RocketLaunchOutline from "vue-material-design-icons/RocketLaunchOutline.vue"
+import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
+import LaptopAccount from "vue-material-design-icons/LaptopAccount.vue"
+
+import AWSWhite from "~/assets/enterprise/AWS-white.svg?raw"
+import Vector from "~/assets/enterprise/Vector.svg?raw"
+import GoogleDrive from "~/assets/enterprise/google.svg?raw"
+import HomeRoof from "~/assets/enterprise/home-roof.svg?raw"
+import plusIcon from "~/assets/enterprise/plus.svg"
+
+import security11 from "~/assets/enterprise/security-1-1.svg"
+import security22 from "~/assets/enterprise/security-2-2.svg"
+import security33 from "~/assets/enterprise/security-3-3.svg"
+
+import anythingScale from "~/assets/enterprise/anything-scale.svg"
+import declarative from "~/assets/enterprise/declarative.svg"
+import realTime from "~/assets/enterprise/real-time.svg"
+
+import FilaLogo from "~/assets/enterprise/fila.svg"
+import AcxiomLogo from "~/assets/quotes-companies/Acxiom.svg"
+import JPLogo from "~/assets/enterprise/jp.svg"
+import VyomaSpaceLogo from "~/assets/enterprise/Vyoma-Space.svg"
+import CleverConnectLogo from "~/assets/enterprise/CleverConnect.svg"
+
+import bgLeft from "~/assets/enterprise/bg-left.png?url"
+import bgRight from "~/assets/enterprise/bg-right.png?url"
+import bgRightMobile from "~/assets/enterprise/bg-right-mobile.png?url"
+
+const TITLE = "Get More Out of Your Data With the Enterprise Edition"
+const DESCRIPTION =
     "Get full access of all the Open source features and unlock the full potential with Enterprise only features"
+
+const COMPARISON_CATEGORIES = [
+    {
+        title: "Security & Compliance",
+        items: [
+            { icon: CloudKeyOutline, label: "SSO" },
+            { icon: History, label: "Audit Log & Revision History" },
+            { icon: FormTextboxPassword, label: "Secret Manager Integration" },
+            { icon: KeyWireless, label: "Service Account & API Tokens" },
+            { icon: Lastpass, label: "Encryption" },
+            { icon: DatabaseRefreshOutline, label: "SCIM Directory Sync" },
+        ],
+    },
+    {
+        title: "Governance & Productivity",
+        items: [
+            { icon: ServerNetwork, label: "Multi Tenancy" },
+            {
+                icon: ChartBarStacked,
+                label: "Role based Access Control (RBAC)",
+            },
+            { icon: DotsSquare, label: "Namespaces Management" },
+            { icon: Connection, label: "Workers Isolation, Plugins Control" },
+            { icon: BallotOutline, label: "Apps" },
+            { icon: FormatListGroupPlus, label: "Custom Blueprints" },
+        ],
+    },
+    {
+        title: "Scalability & Infrastructure",
+        items: [
+            {
+                icon: WeatherCloudyArrowRight,
+                label: "Worker Groups, Distant Workers",
+            },
+            { icon: TimelineCheckOutline, label: "Task Runners" },
+            {
+                icon: LightningBoltCircle,
+                label: "High Availability & Throughput",
+            },
+            { icon: AlertOctagon, label: "Fault Tolerant" },
+            {
+                icon: MonitorDashboard,
+                label: "Cluster Monitoring & Log Shipper",
+            },
+            {
+                icon: DatabaseLockOutline,
+                label: "Dedicated storage & Tenant Isolation",
+            },
+        ],
+    },
+]
+
+const INFO_BLOCKS = [
+    {
+        label: "Run on Any Cloud or On-Premise",
+        logos: [
+            { img: AWSWhite.replace(/fill="white"/g, 'fill="currentColor"'), alt: "aws" },
+            { img: Vector, alt: "vector" },
+            { img: GoogleDrive, alt: "google drive" },
+            { img: HomeRoof, alt: "home" },
+        ],
+    },
+    {
+        label: "Customer Success Program & <br />Enterprise Support With SLA",
+    },
+]
+
+const BOTTOM_BLOCK = {
+    title: "Kestra CORE",
+    items: [
+        { icon: CalculatorVariant, label: "Business Logic In Any Language" },
+        { icon: WebBox, label: "Orchestration Logic Declarative" },
+        { icon: CalendarMultiselect, label: "Execution Engine & Scheduling" },
+        { icon: ChartTree, label: "Complete Dashboard Everything From the UI" },
+    ],
+}
+
+const SECURITY_CTA = { text: "Talk to us", href: "/demo" }
+const SECURITY_ITEMS = [
+    {
+        title: "More Security",
+        description:
+            "Ensures top-tier security with SSO, audit logs, and revision history for complete transparency. Integration with secrets managers and API tokens enhances secure automation, while end-to-end encryption protects your data at all times.",
+        img: security11,
+        cta: SECURITY_CTA,
+    },
+    {
+        title: "Better Governance",
+        description:
+            "Give your team secured, isolated environments and control over workflows. With tailored automation and precise access management, you can ensure compliance and efficiency at scale.",
+        img: security22,
+        cta: SECURITY_CTA,
+    },
+    {
+        title: "Scale with no limits",
+        description:
+            "Kestra Enterprise scales with no downtime. Its reliable architecture and task runners, support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.",
+        img: security33,
+        cta: SECURITY_CTA,
+    },
+]
+
+const SUCCESS_CARDS = [
+    {
+        icon: RocketLaunchOutline,
+        title: "Onboarding",
+        description: "Training, installation, and expert services.",
+    },
+    {
+        icon: HandshakeOutline,
+        title: "Partnership",
+        description:
+            "Tailored business cases and clear quotations to drive your growth.",
+    },
+    {
+        icon: LaptopAccount,
+        title: "Customer success",
+        description:
+            "Support, office hours, and roadmap previews to keep you ahead.",
+    },
+]
+
+const CAPABILITIES_BLOCKS = [
+    {
+        title: "Declarative",
+        description:
+            "Kestra’s declarative syntax in YAML offers a simple learning curve while enabling powerful orchestration. With both UI-based configuration and the ability to scale to complex use cases, Kestra ensures ease of use without sacrificing flexibility or control.",
+        img: declarative,
+        imgClass: "declarative-img",
+    },
+    {
+        title: "Real Time & Event Driven",
+        description:
+            "Handle scheduled, real-time event-driven, and API-based workflows effortlessly. Support business-critical operations with real-time automation, ensuring your workflows adapt and scale to your needs.",
+        img: realTime,
+        imageClass: "real-time",
+    },
+]
+
+const STATS = [
+    {
+        category: "PRODUCTIVITY",
+        value: "10x",
+        label: "Faster Workflow Completion",
+    },
+    {
+        category: "PROFITABILITY",
+        value: "75%",
+        label: "Reduction in Operational costs",
+    },
+    { category: "EFFICIENCY", value: "80%", label: "Boost in Team Efficiency" },
+    { category: "TIME TO MARKET", value: "5x", label: "Deployment Speed" },
+]
+
+const TESTIMONIALS = [
+    {
+        message:
+            "Kestra enables the entire team, even non-technical members, to understand the benefits and contribute. I’ve onboarded people, created blueprints, and set them up to build their own workflows.",
+        name: "John Kim",
+        designation: "IT Lead",
+        logo: FilaLogo,
+    },
+    {
+        message:
+            "The main advantage I see in Kestra is the use of YAML for creating flexible workflows. This allows us to chain pieces of metadata together dynamically, and the user-friendly UI helps our internal users create simple-to-understand inputs for the data pipelines we develop.",
+        name: "Kyle Hanson",
+        designation: "Lead Software Engineer",
+        logo: AcxiomLogo,
+    },
+    {
+        message:
+            "Kestra is like the Wizard of Oz Wizard, doing its magic behind the curtain.",
+        name: "Amy King",
+        designation: "Cybersecurity & Technology Controls",
+        logo: JPLogo,
+    },
+    {
+        message:
+            "Kestra’s UI and speed of development is brilliant. Very quick to prototype a new pipeline, continuously iterate, and test things out. Love the replay feature. It has very clear separation of pipeline and processing code.",
+        name: "Ollie Steiner",
+        designation: "Senior Data Engineer",
+        logo: VyomaSpaceLogo,
+    },
+    {
+        message:
+            "The exceptional pre-sales support and commitment to providing a high-performance product have laid the foundation for a great partnership.",
+        name: "Patrick Ferreira",
+        designation: "Product Manager",
+        logo: CleverConnectLogo,
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <EnterpriseHeader />
+<Layout title={TITLE} description={DESCRIPTION}>
+    <IntroHeader
+        badge="Built For Critical Use Cases"
+        title="Scale With Kestra <br /> Enterprise Edition"
+        button={{
+            text: "Talk to sales",
+            href: "/demo",
+        }}
+        backgrounds={{
+            left: bgLeft,
+            right: bgRight,
+            rightMobile: bgRightMobile
+        }}
+        client:load
+    >
+        <div slot="footer">
+            <ComparisonGrid
+                title="Meet Kestra Enterprise Edition"
+                categories={COMPARISON_CATEGORIES}
+                infoBlocks={INFO_BLOCKS}
+                bottomBlock={BOTTOM_BLOCK}
+                {plusIcon}
+                cta={{
+                    text: "Compare all offers",
+                    href: "/pricing",
+                }}
+                client:load
+            />
+        </div>
+    </IntroHeader>
+
     <div class="enterprise">
-        <EnterpriseSecurity client:idle />
-        <EnterpriseSuccessProgram />
-        <EnterpriseProjectDetails client:visible />
+        <StickyScroll items={SECURITY_ITEMS} client:idle />
+        <Grid
+            title="Customer Success Program & Support <br />With SLA"
+            cards={SUCCESS_CARDS}
+        />
+        <Capabilities
+            mainHero={{
+                title: "Run Anything at Scale",
+                description:
+                    "Kestra offers language-agnostic orchestration, eliminating the need for glue code and allowing you to execute tasks in any language. With built-in high-availability options and full observability, Kestra ensures resilient operations and clear insights, no matter how complex your workflows.",
+                img: anythingScale,
+            }}
+            featuredBlocks={CAPABILITIES_BLOCKS}
+            cta={{ text: "Talk to us", href: "/demo" }}
+            client:visible
+        >
+            <PluginsBox slot="plugins" />
+        </Capabilities>
     </div>
 
-    <EnterpriseOrchestraCore client:visible />
+    <Testimonials
+        header={{
+            title: "Unified Enterprise-Grade Orchestration Platform",
+            subtitle:
+                "Achieve in Days What Once Took Weeks, with Complete Control at Every Step",
+        }}
+        stats={STATS}
+        cta={{
+            text: "Talk to sales",
+            href: "/demo",
+        }}
+        testimonialData={TESTIMONIALS}
+    />
+
+    <FooterContact
+        title="Ready to Scale Your Workflows"
+        subtitle="Kestra Enterprise delivers the security, control, and flexibility you need to scale operations with confidence. Empower your team, streamline governance, and harness reliable infrastructure to drive growth without compromise."
+    />
 </Layout>
 
-<style scoped lang="scss">
+<style lang="scss">
     .enterprise {
         overflow: clip;
+        background-color: var(--ks-background-primary);
     }
 </style>

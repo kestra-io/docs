@@ -1,0 +1,108 @@
+---
+import Layout from "~/components/layout.astro"
+import Header from "~/components/features/shared/Header.vue"
+import CardGrid from "~/components/features/shared/CardGrid.astro"
+import SideBySide from "~/components/features/shared/SideBySide.vue"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import FeaturePlugins from "~/components/layout/FeaturePlugins.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
+
+const { meta, header, features, power, scripts, orchestrator, footer } =
+    Astro.props
+---
+
+<Layout title={meta.title} description={meta.description}>
+    <Header
+        client:load
+        title={`Orchestrate <br /> your <span>${header.title}</span>`}
+        description={header.description}
+        cta={[
+            {
+                text: "Get started",
+                href: "/docs/quickstart#start-kestra",
+                style: "purple",
+            },
+        ]}
+        image={{
+            src: header.source,
+            alt: header.title,
+            width: "925px",
+            height: "745px",
+            class: "headerimg"
+        }}
+    />
+
+    <CardGrid
+        title={features.title}
+        items={features.items.map((item: any) => ({
+            title: item.title,
+            description: item.description,
+            icon: { src: item.image, alt: item.title },
+        }))}
+    />
+
+    <SideBySide
+        client:visible
+        title={`<span>Power Your Projects</span><br />${power.title}`}
+        description={power.description}
+        image={{
+            src: power.source,
+            alt: "Power Your Projects",
+            width: "560",
+            height: "400",
+            class: "w-100"
+        }}
+    />
+
+    <Alternation
+        title={`Orchestrating ${scripts.title} Scripts with <span>Kestra</span>`}
+        items={scripts.data.map((item: any) => ({
+            title: item.title,
+            description: item.description,
+            image: {
+                src: item.source,
+                alt: item.title,
+                width: item.imgWidth,
+                height: item.imgHeight,
+                class: item.mask || "mask",
+            },
+        }))}
+    />
+
+    <SideBySide
+        client:visible
+        headerTitle="Let Your Orchestrator Adapt to <span>Your Code</span>, Not the Reverse"
+        title="Zero Modifications, Full Integration"
+        description={orchestrator.description}
+        image={{
+            src: orchestrator.source,
+            alt: "Zero Modifications",
+            width: "627",
+            height: "460",
+            class: "mask"
+        }}
+        reverse={true}
+    />
+
+    <FeaturePlugins
+        content={{
+            title: "Platform",
+            highlight: "Independent",
+            description:
+                "Select from {count} integrations and swap tools when needed",
+        }}
+    />
+    <FooterContact
+        client:visible
+        title={footer.title}
+        dark={footer.links.dark}
+        purple={footer.links.purple}
+    />
+</Layout>
+
+<style lang="scss">
+    :global(.headerimg) {
+        transform: scale(1.3);
+        z-index: 50;
+    }
+</style>

@@ -255,35 +255,32 @@
 
     .bd-toc {
         transition: all ease 0.2s;
-
         @include media-breakpoint-down(lg) {
             margin: $rem-1 0;
             width: 100%;
             box-sizing: border-box;
         }
-
         @include media-breakpoint-up(lg) {
             padding: 2rem 0;
             max-height: 100%;
             min-width: 250px;
             z-index: 10;
-
             &:not(.plugin) {
                 border: 0;
                 border-left-width: 1px;
                 border-style: solid;
                 border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
+                html.light & {
+                    border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
+                }
             }
-
             &.plugin {
-                border-left: 1px solid $black-3;
+                border-left: $block-border;
             }
         }
-
         &::-webkit-scrollbar {
             display: none;
         }
-
         > div {
             height: fit-content;
             @include media-breakpoint-up(lg) {
@@ -294,46 +291,37 @@
                 overflow-y: auto;
             }
         }
-
         &.plugin > div {
             @include media-breakpoint-up(lg) {
                 top: 0;
             }
         }
-
         nav {
             @include font-size(0.875rem);
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid $black-6;
+            border-bottom: 1px solid var(--ks-border-primary);
             position: relative;
-
             @include media-breakpoint-up(lg) {
                 overflow-y: auto;
                 max-height: 600px;
                 overflow-x: hidden;
             }
-
             @include media-breakpoint-down(lg) {
                 overflow: visible;
             }
-
             &::-webkit-scrollbar {
                 width: 4px;
                 height: 4px;
             }
-
             &::-webkit-scrollbar-track {
                 background: transparent;
             }
-
             &::-webkit-scrollbar-thumb {
-                background: $purple-39;
-
+                background: var(--ks-content-color-highlight);
                 &:hover {
                     background: color-palette.$base-purple-600;
                 }
             }
-
             a {
                 display: block;
                 padding: 0 0.75rem;
@@ -341,60 +329,51 @@
                 text-decoration: none;
                 font-size: 12px;
                 border-left: 1px solid transparent;
-
                 code {
                     font: inherit;
                 }
             }
-
             ul {
                 margin-bottom: 0;
                 list-style: none;
-
                 &:has(a.active) {
                     .table-content a {
-                        color: $purple;
+                        color: var(--ks-content-link);
                         font-weight: 500;
-                        border-left: 1px solid $purple !important;
+                        border-left: 1px solid var(--ks-content-link) !important;
                     }
                 }
-
                 li {
                     font-size: 0.875rem;
                     line-height: var(--bs-body-line-height) !important;
                 }
-
                 li a {
                     padding-left: 0.75rem;
                     color: var(--ks-content-secondary);
                     font-weight: 500;
                     cursor: pointer;
                     scroll-margin: 3rem;
-
                     @for $i from 2 through 6 {
                         &.depth-#{$i} {
-                            font-size: 4px + (6 - $i) * 2px;
+                            font-size: 6px + (6 - $i) * 2px;
                             padding-left: $i * 0.5rem + 1.5rem;
                         }
                     }
-
                     &:hover,
                     &.active {
-                        color: $purple;
-                        border-left: 1px solid $purple-36 !important;
+                        color: var(--ks-content-link);
+                        border-left: 1px solid var(--ks-content-link) !important;
                     }
                 }
             }
         }
-
         .h6 {
-            color: $white-1;
+            color: var(--ks-content-primary);
             font-size: $font-size-sm;
             line-height: 1.875rem;
             font-weight: 600;
             padding-top: 0;
         }
-
         hr {
             border-color: var(--bs-gray-600);
         }
@@ -404,25 +383,23 @@
         display: inline-block;
         width: 100%;
         padding: 0;
-        border: 1px solid var(--kestra-io-token-color-border-secondary);
+        border: 1px solid var(--ks-border-secondary);
         border-radius: 8px;
-        background: $black-4;
-        color: var(--bs-gray-500);
+        background: var(--ks-background-body);
+        color: var(--ks-content-secondary);
         font-size: $font-size-sm;
         text-align: center;
-
         &.collapsed {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
         &:hover,
         &:focus,
         &:active,
         &[aria-expanded="true"] {
-            background: $black-4;
-            color: $white;
+            background: var(--ks-background-body);
+            color: var(--ks-content-primary);
             font-size: 16px;
         }
     }
@@ -431,33 +408,28 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        color: $white;
+        color: var(--ks-content-primary);
         border-radius: 8px 8px 0 0;
     }
 
     .bd-toc-collapse {
         border-radius: var(--bs-border-radius, 8px);
         overflow: hidden;
-
         strong {
             margin-left: 1.5rem;
         }
-
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: 1px solid var(--ks-border-secondary);
             border-radius: 0 0 8px 8px;
-
             nav {
                 padding-bottom: $spacer;
                 border-radius: inherit;
             }
         }
-
         @include media-breakpoint-up(lg) {
             display: block !important;
         }
-
         &.show {
             border-radius: 0 0 8px 8px;
         }
@@ -466,22 +438,19 @@
     .bd-social-list {
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: 1px solid var(--ks-border-secondary);
             border-radius: 0 0 8px 8px;
         }
-
         button:hover {
-            color: $purple-36 !important;
+            color: var(--ks-content-color-highlight) !important;
         }
-
         ul,
         :deep(ul) {
             li a {
                 font-weight: 500;
-
                 &:hover {
-                    color: $purple-36 !important;
-                    border-left: 1px solid $purple-36 !important;
+                    color: var(--ks-content-color-highlight) !important;
+                    border-left: 1px solid var(--ks-content-color-highlight) !important;
                 }
             }
         }

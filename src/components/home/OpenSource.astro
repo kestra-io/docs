@@ -1,0 +1,192 @@
+---
+import { getImage } from "astro:assets"
+import FeaturesGrid from "~/components/layout/FeaturesGrid.astro"
+
+interface Props {
+    stargazers: number
+    contributors: number
+    error?: unknown
+}
+
+const { stargazers, error } = Astro.props
+
+const FEATURES = [
+    {
+        title: "Declarative Orchestration",
+        description:
+            "Onboard new team members quickly, and maintain your workflows with minimal effort thanks to Kestra's declarative syntax.",
+        image: (
+            await getImage({
+                src: import("./assets/declarative-orchestration.png"),
+                width: 90,
+                height: 90,
+            })
+        ).src,
+    },
+    {
+        title: "Event Based Triggers",
+        description:
+            "Configure your workflows to run on a schedule, via webhooks, APIs, event-based triggers, or in real-time with millisecond latency.",
+        image: (
+            await getImage({
+                src: import("./assets/event-triggers.png"),
+                width: 90,
+                height: 90,
+            })
+        ).src,
+    },
+    {
+        title: "No vendor Lock-in",
+        description:
+            "Define your flow in YAML from the embedded Code Editor, run them directly from the UI, scale to any infrastructure.",
+        image: (
+            await getImage({
+                src: import("./assets/lock-in.png"),
+                width: 90,
+                height: 90,
+            })
+        ).src,
+    },
+]
+
+const formatStars = (n: number) =>
+    new Intl.NumberFormat("en", {
+        notation: "compact",
+        maximumFractionDigits: 1,
+    })
+        .format(n)
+        .toLowerCase()
+
+const indicators = [
+    { title: "Contributors", value: "750+" },
+    ...(error
+        ? []
+        : [{ title: "GitHub Stars", value: formatStars(stargazers ?? 0) }]),
+    { title: "Kestra Deployments", value: "120k" },
+    { title: "Workflows Executed", value: "1b+" },
+]
+---
+
+<section class="oss-bg">
+    <div class="container">
+        <h2>
+            <span class="gradient">Open Source</span>
+            Workflow Orchestration Platform
+        </h2>
+
+        <FeaturesGrid features={FEATURES} />
+
+        <div class="lead-indicators">
+            {
+                indicators.map(({ title, value }) => (
+                    <div class="lead-indicator">
+                        <h3>{value}</h3>
+                        <p>{title}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "~/assets/styles/variable" as *;
+
+    .oss-bg {
+        background-color: var(--ks-background-body);
+        color: var(--ks-content-primary);
+        @include media-breakpoint-up(md) {
+            padding: 2rem;
+        }
+    }
+
+    .container {
+        padding: 2rem 0.5rem;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+
+        h2 {
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+
+            .gradient {
+                display: block;
+                background: linear-gradient(90deg, #8c4bff, #6fb0ff) no-repeat
+                    center;
+                background-size: cover;
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+    }
+
+    .lead-indicators {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 1rem;
+        margin-top: 2rem;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(4, 1fr);
+            row-gap: 2rem;
+
+            &:has(.lead-indicator:nth-child(3):last-child) {
+                grid-template-columns: repeat(3, minmax(200px, 300px));
+                justify-content: center;
+            }
+        }
+    }
+
+    .lead-indicator {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding: 0 1rem;
+
+        @include media-breakpoint-up(sm) {
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+        }
+
+        @include media-breakpoint-up(lg) {
+            border-right: 1px solid var(--ks-border-secondary);
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+                line-height: 3rem;
+            }
+        }
+
+        p {
+            line-height: 1rem;
+            white-space: nowrap;
+            color: var(--ks-content-secondary);
+        }
+
+        &:nth-child(odd)::after {
+            content: "";
+            position: absolute;
+            top: 15%;
+            right: 0;
+            width: 1px;
+            height: 50%;
+            background-color: var(--ks-border-secondary);
+            @include media-breakpoint-up(lg) {
+                display: none;
+            }
+        }
+    }
+</style>

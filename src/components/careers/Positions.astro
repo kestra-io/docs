@@ -1,0 +1,124 @@
+---
+import Section from "~/components/layout/Section.astro"
+import { Image } from "astro:assets"
+import arrowRight from "./assets/arrow_right.svg"
+import arrowRightBlack from "./assets/arrow_right_black.svg"
+import emojiPeople from "./assets/emoji_people.svg"
+
+interface Props {
+    positions: Array<{
+        id: string
+        title: string
+        locations: Array<{
+            emoji: string
+            name: string
+            code: string
+        }>
+    }>
+}
+
+const { positions } = Astro.props
+---
+
+<section>
+    <div class="container" id="positions">
+        <Section
+            subtitle="It's a"
+            subtitleAfter="Match"
+            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love."
+        >
+            <ul class="list-unstyled d-flex flex-column gap-3">
+                {
+                    positions.map((doc) => (
+                        <li data-usal="fade-l">
+                            <a
+                                class="d-flex align-items-center"
+                                href={`/careers/${doc.id}`}
+                            >
+                                <div class="d-flex align-items-center gap-3 info-block">
+                                    <Image
+                                        src={emojiPeople}
+                                        alt="emoji_people"
+                                    />
+                                    <span>{doc.title}</span>
+                                    <span class="loc">
+                                        (Remote /
+                                        {doc.locations.map((loc) => (
+                                            <span class="ms-1" title={loc.name}>
+                                                {loc.emoji}
+                                            </span>
+                                        ))}
+                                        )
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 arrow-block">
+                                    <Image
+                                        class="arrow-light"
+                                        src={arrowRight}
+                                        alt="arrow_right"
+                                    />
+                                    <Image
+                                        class="arrow-dark"
+                                        src={arrowRightBlack}
+                                        alt="arrow_right"
+                                    />
+                                </div>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </Section>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        
+
+        li {
+            a {
+                padding: 1.313rem 2rem;
+                border-radius: 0.5rem;
+                border: $block-border;
+                background-color: var(--ks-background-tertiary);
+                text-decoration: none;
+
+                span.loc {
+                    font-weight: normal !important;
+                    color: var(--ks-content-secondary);
+                }
+
+                .info-block {
+                    flex-grow: 1;
+
+                    span {
+                        color: var(--ks-content-primary);
+                        font-size: $h6-font-size;
+                        font-weight: 700;
+                    }
+                }
+
+                .arrow-block {
+                    .arrow-dark {
+                        display: none;
+
+                        :global(html.light) & {
+                            display: block;
+                        }
+                    }
+
+                    .arrow-light {
+                        display: block;
+
+                        :global(html.light) & {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

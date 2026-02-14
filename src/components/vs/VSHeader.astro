@@ -1,0 +1,63 @@
+---
+const { title, logo, description } = Astro.props
+---
+
+<div class="container-fluid">
+    <div class="hero container">
+        <div class="row">
+            <div class="col-md-6 order-1 order-md-0 align-items-center d-flex">
+                <div>
+                    <h1 data-usal="fade-r">
+                        {title}
+                    </h1>
+                    <p class="baseline" data-usal="fade-l">
+                        {description}
+                    </p>
+                    <div class="cta">
+                        <a
+                            href="/demo"
+                            class="btn btn-animated btn-purple-animated mx-2 mt-2"
+                            data-usal="zoomin"
+                        >
+                            Talk to us
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="col-md-6 order-0 order-md-1 d-flex justify-content-center"
+                data-usal="zoomin"
+            >
+                <img
+                    class="zoom img-fluid"
+                    src={logo}
+                    alt="A screenshot of the user interface of Kestra's application"
+                />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .container-fluid {
+        background: url("/landing/vs/header-bg.svg") no-repeat center;
+        background-size: cover;
+        color: $white;
+        padding-top: 80px;
+        margin-top: -80px;
+
+        .container {
+            h1,
+            .baseline {
+                color: var(--ks-content-primary);
+                padding: 0;
+            }
+
+            .baseline {
+                font-size: $font-size-lg;
+            }
+        }
+    }
+</style>

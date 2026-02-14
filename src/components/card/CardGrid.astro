@@ -53,7 +53,7 @@ const { title, items } = Astro.props;
     @import "~/assets/styles/variable";
 
     .card-grid-section {
-        background-color: $white;
+        background-color: var(--ks-background-body);
         width: 100%;
         padding: 2rem 0.5rem;
 
@@ -75,6 +75,7 @@ const { title, items } = Astro.props;
 
             h2 {
                 text-align: center;
+                color: var(--ks-content-primary);
             }
 
             .cards-grid {
@@ -93,8 +94,8 @@ const { title, items } = Astro.props;
                     justify-content: flex-start;
                     align-items: flex-start;
                     gap: 8px;
-                    border: 1px solid #CCCBCE;
-                    box-shadow: 2px 3px 16px 0px #2720560D;
+                    border: 1px solid var(--ks-border-secondary);
+                    box-shadow: var(--ks-shadows-light);
 
                     @include media-breakpoint-up(lg) {
                         flex: 0 0 calc(33.333% - 1rem);
@@ -112,7 +113,7 @@ const { title, items } = Astro.props;
                     .icon {
                         font-size: 1.5rem;
                         align-self: flex-start;
-                        color: #4b0aaa;
+                        color: var(--ks-content-color-highlight);
                         width: 1.5rem;
                         height: 1.5rem;
                     }
@@ -121,6 +122,7 @@ const { title, items } = Astro.props;
                         font-weight: 700;
                         line-height: 28px;
                         margin: 0;
+                        color: var(--ks-content-primary);
                     }
 
                     .description {
@@ -128,10 +130,11 @@ const { title, items } = Astro.props;
                         font-size: $font-size-sm;
                         line-height: 22px;
                         margin: 0;
+                        color: var(--ks-content-primary);
                     }
 
                     &.even-bg {
-                        background: #F7F7F7 !important;
+                        background: var(--ks-background-secondary) !important;
                         justify-content: center;
                         align-items: center;
                         text-align: center;
@@ -140,7 +143,7 @@ const { title, items } = Astro.props;
 
                     .btn {
                         padding: 0.5rem 1.5rem;
-                        font-size: 16px;
+                        font-size: $font-size-base;
                         font-weight: 700;
                         border-radius: 8px;
                     }

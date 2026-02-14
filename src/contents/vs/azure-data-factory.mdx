@@ -1,0 +1,143 @@
+---
+title: "Azure Data Factory vs Kestra"
+headerTitle: "The differences between Kestra and Azure Data Factory"
+description: "How to Choose the Right Orchestration Platform"
+competitorName: "Azure Data Factory"
+logo: "/landing/vs/azure-data-factory/header.svg"
+---
+import VSComparisonTable from "~/components/vs/VSComparisonTable.astro"
+
+export const comparisonData = [
+  {
+    "feature": "Core Focus",
+    "kestra": "Orchestrating workflows, tasks, operations, and data pipelines",
+    "competitor": "ETL and data pipeline orchestration within Azure"
+  },
+  {
+    "feature": "Language Support",
+    "kestra": "Language-agnostic (YAML for orchestration)",
+    "competitor": "No native scripting, limited to Azure-native transformations"
+  },
+  {
+    "feature": "Ease of Setup",
+    "kestra": "Quick setup, scheduled workflow in minutes",
+    "competitor": "Requires Azure account, complex permission setup"
+  },
+  {
+    "feature": "Developer Experience",
+    "kestra": "Built-in code editor, live-updating DAG view, documentation, and blueprints",
+    "competitor": "Drag-and-drop UI, limited flexibility for developers"
+  },
+  {
+    "feature": "Workflow Definitions",
+    "kestra": "YAML-based, with inline scripting support (Python, JavaScript, SQL, Bash)",
+    "competitor": "No-code visual editor, no built-in scripting support"
+  },
+  {
+    "feature": "Integration/Extensibility",
+    "kestra": "Plugin ecosystem, REST API, webhooks, and event triggers",
+    "competitor": "Primarily integrates with Azure services, limited external connectors"
+  },
+  {
+    "feature": "Cross-role Collaboration",
+    "kestra": "Designed for all engineers and business users",
+    "competitor": "Business-friendly but restrictive for engineers"
+  },
+  {
+    "feature": "Data Lineage & Debugging",
+    "kestra": "Task-level metadata through metrics and outputs",
+    "competitor": "Built-in monitoring via Azure services but lacks transparency"
+  },
+  {
+    "feature": "Business Logic Support",
+    "kestra": "Supports SQL, Python, R, Rust, Bash, and more",
+    "competitor": "No direct code support, relies on Azure functions for logic execution"
+  },
+  {
+    "feature": "No-Code / Low-code Interface",
+    "kestra": "Low-code UI that fully replicates workflows as YAML, ensuring version control and flexibility",
+    "competitor": "Drag-and-drop editor, but workflows are not automatically translated into code"
+  },
+  {
+    "feature": "Scalability",
+    "kestra": "Runs on any cloud, allowing unlimited scaling across cloud and on-prem",
+    "competitor": "Scales within Azure but can become expensive at higher workloads"
+  },
+  {
+    "feature": "Cloud Integrations",
+    "kestra": "Works with AWS, GCP, Azure, and on-prem tools, supports event-driven and scheduled workflows",
+    "competitor": "Limited to Microsoft technologies, with deep Azure integration but fewer external connectors"
+  },
+  {
+    "feature": "Vendor Lock-in",
+    "kestra": "Fully open-source and can run on any cloud or on-prem",
+    "competitor": "Proprietary solution restricted to the Azure ecosystem"
+  }
+]
+
+# About Kestra & Azure Data Factory
+
+Kestra is an open-source orchestration platform that enables teams to automate complex workflows across cloud, on-prem, and hybrid environments. It follows an everything-as-code approach, allowing users to define workflows in a straightforward YAML format. With its API-first architecture, Kestra ensures workflows are fully declarative, extensible, and free from proprietary limitations.
+
+Azure Data Factory (ADF) is a cloud-based ETL and data integration service developed by Microsoft. It provides a no-code interface for orchestrating data pipelines but is tightly integrated with the Azure ecosystem. While ADF simplifies development with a drag-and-drop UI, it lacks the flexibility of an open-source and multi-cloud orchestration platform.
+
+
+### Installation & Setup
+
+Azure Data Factory is a fully managed cloud service with no installation required. However, it is restricted to the Azure ecosystem, requiring users to configure security settings, data sources, and integration runtimes before running workflows.
+
+Kestra offers a more flexible deployment model, supporting Docker, Kubernetes, and Terraform. This allows organizations to retain full control over execution, security, and data residency, making it adaptable to different infrastructure needs.
+
+### Workflow Definition
+
+Kestra enables users to define workflows using YAML, ensuring clarity, maintainability, and version control. Inline scripting in Python, JavaScript, SQL, and Shell is supported for added flexibility.
+
+Kestra also features a no-code editor that visually constructs workflows while ensuring they are fully represented as code. This ensures workflows remain declarative, portable, and version-controlled.
+
+Azure Data Factory provides a no-code designer with a drag-and-drop UI for building pipelines. However, it does not automatically translate workflows into code, making version control and advanced automation more challenging.
+
+### Scalability and Performance
+
+Kestra dynamically scales to handle large workloads efficiently, optimizing for both event-driven and scheduled workflows.
+
+Azure Data Factory scales within the Azure infrastructure but follows a pricing model based on data movement, pipeline execution, and integration runtimes, which can lead to unpredictable costs.
+
+### Integration Capabilities
+
+Kestra is designed to work with any cloud provider, on-premises infrastructure, and SaaS applications. Its extensive plugin ecosystem supports integrations with BigQuery, Snowflake, Kafka, Airbyte, dbt, and more.
+
+Azure Data Factory is deeply integrated with Microsoft services like Azure Synapse, Data Lake, and Power BI but has limited out-of-the-box support for non-Microsoft technologies, which may be restrictive for multi-cloud strategies.
+
+### Monitoring and Observability
+
+Kestra provides built-in workflow monitoring, logs, and real-time execution tracking, additionally Kestra offers a custom dashboard feature to display the most important metrics.
+
+Azure Data Factory relies on Azure Monitor and Log Analytics for observability, requiring additional configuration and incurring extra costs.
+
+### Open-Source vs. Proprietary
+
+Kestra is fully open-source, supported by an active community, and offers enterprise options for advanced needs.
+
+Azure Data Factory is a proprietary Microsoft service, locking workflows within the Azure ecosystem and tying users to Azure infrastructure and pricing.
+
+### Advanced Features
+
+**Azure Data Factory:**
+
+- Data Compression: Compress data during copy activities to optimize bandwidth.
+- Extensive Connectivity: Connects to a wide range of data sources.
+- Custom Event Triggers: Automate processing based on custom events.
+- Data Preview & Validation: Ensure correctness during data transfers.
+- Customizable Data Flows: Add custom actions or processing steps.
+- Integrated Security: Entra ID integration and role-based access control.
+
+**Kestra:**
+
+- Hybrid orchestration: Supports cloud, on-prem, and multi-cloud workflows.
+- Full-code, low-code, and no-code capabilities in one platform.
+- Prebuilt plugin ecosystem with extensive integrations.
+- Version-controlled workflows with built-in governance.
+- Lightweight YAML-based configuration, easy to modify and maintain.
+
+
+<VSComparisonTable comparisonData={comparisonData} competitorName={frontmatter.competitorName} />

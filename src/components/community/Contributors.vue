@@ -1,60 +1,36 @@
 <template>
-    <div class="container">
-        <Section subtitle="Our contributors">
+    <section>
+        <div class="container">
+            <h2 class="text-center mb-4">Our contributors</h2>
             <div ref="topOfSection" />
             <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
-                <template
-                    v-for="(contributor, index) in displayedContributors"
-                    :key="contributor.name"
-                >
-                    <a
-                        :href="'https://github.com/' + contributor.name"
-                        target="_blank"
-                        class="d-flex flex-column gap-3 align-items-center"
-                        data-usal="zoomin"
-                    >
-                        <img
-                            width="90px"
-                            height="90px"
-                            loading="lazy"
-                            class="rounded-circle"
-                            :src="contributor.avatar"
-                            :alt="contributor.name"
-                        />
+                <template v-for="(contributor, index) in displayedContributors" :key="contributor.name">
+                    <a :href="'https://github.com/' + contributor.name" target="_blank"
+                        class="d-flex flex-column gap-3 align-items-center" data-usal="zoomin">
+                        <img width="90px" height="90px" loading="lazy" class="rounded-circle" :src="contributor.avatar"
+                            :alt="contributor.name" />
                         <p>{{ contributor.name }}</p>
                     </a>
                 </template>
             </div>
             <div v-if="contributors && moreCount > 0" class="text-center mt-4">
-                <button
-                    v-if="!isExpanded"
-                    type="button"
-                    class="btn btn-animated btn-dark-animated"
-                    @click="isExpanded = true"
-                    data-usal="zoomin"
-                >
+                <button v-if="!isExpanded" type="button" class="btn btn-animated btn-dark-animated"
+                    @click="isExpanded = true" data-usal="zoomin">
                     {{ moreCount }} more contributors
                 </button>
-                <button
-                    v-else
-                    type="button"
-                    class="btn btn-animated btn-purple-animated"
-                    @click="collapse"
-                    data-usal="zoomin"
-                >
+                <button v-else type="button" class="btn btn-animated btn-purple-animated" @click="collapse"
+                    data-usal="zoomin">
                     Show less
                 </button>
             </div>
-        </Section>
-    </div>
+        </div>
+    </section>
 </template>
 
 <script>
-    import Section from "~/components/layout/Section.vue"
     import { useApi } from "~/composables/useApi.ts"
 
     export default {
-        components: { Section },
         setup() {
             return { useApi }
         },
@@ -128,10 +104,10 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    :deep(section) {
-        padding-bottom: 0;
+    section {
+        padding: $rem-3 $rem-1;
     }
-
+    
     .contributors {
         height: 100%;
         max-height: 100%;
@@ -140,21 +116,11 @@
         padding: $spacer;
         column-gap: 2rem;
         row-gap: 4rem;
-
         a {
             width: fit-content;
+            color: var(--ks-content-link);
             img {
-                width: 90px;
-            }
-
-            p {
-                max-width: 90px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                color: $purple-35;
-                font-size: $font-size-md;
-                font-weight: 400;
+                width: 100px;
             }
         }
     }

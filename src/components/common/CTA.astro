@@ -1,0 +1,103 @@
+---
+import { Image } from "astro:assets"
+import LogoCTA from "./assets/logo-cta.svg"
+import GradientCard from "~/components/card/GradientCard.vue"
+---
+
+<section class="wrapper">
+    <div class="container">
+        <GradientCard client:visible class="side-box" data-usal="fade-up">
+            <p class="pre-title">Ready to see it in action?</p>
+            <h4>Jump in</h4>
+            <p class="description">
+                Install Kestra Open-Source and get your first workflow ready in
+                less than 5 minutes.
+            </p>
+            <a
+                href="/docs/quickstart#start-kestra"
+                class="btn btn-md btn-secondary">Get Started</a
+            >
+        </GradientCard>
+        <GradientCard client:visible class="side-box side-box-purple" data-usal="fade-up">
+            <Image src={LogoCTA} alt="CTA" class="logo-cta" />
+            <p class="pre-title">Schedule a meeting</p>
+            <h4>Let's meet</h4>
+            <p class="description">
+                Connect with our product specialists and discuss your project
+                requirements.
+            </p>
+            <a href="/demo" class="btn btn-md btn-primary">Talk to us</a>
+        </GradientCard>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .wrapper {
+        background: var(--ks-background-tertiary);
+        padding: 60px 0 16px;
+
+        .container {
+            margin: 2rem auto;
+            color: var(--ks-content-primary);
+            display: grid;
+            gap: 2rem;
+
+            @include media-breakpoint-up(lg) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            :global(.side-box) {
+                position: relative;
+                z-index: 1;
+                padding: 4rem 2rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                border: 1px solid var(--ks-border-secondary);
+
+                h4 {
+                    font-weight: 500;
+                    margin-top: 0;
+                }
+
+                .description {
+                    font-size: $font-size-base;
+                    margin-bottom: 2rem;
+                }
+
+                .pre-title {
+                    font-family: $font-family-jetbrains-mono;
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    font-weight: 300;
+                    margin-bottom: 0.5rem;
+                }
+
+                &.side-box-purple {
+                    border-color: #a950ff;
+
+                    .pre-title {
+                        color: #cd88ff;
+                    }
+                }
+            }
+
+            .logo-cta {
+                position: absolute;
+                top: -20px;
+                right: -70px;
+                width: 250px;
+                height: auto;
+
+                @include media-breakpoint-up(lg) {
+                    top: -40px;
+                    right: -80px;
+                    width: 220px;
+                }
+            }
+        }
+    }
+</style>
