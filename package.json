@@ -46,7 +46,7 @@
     "astro-expressive-code": "^0.41.6",
     "astro-icon": "^1.1.5",
     "astro-loading-indicator": "^0.7.1",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "bootstrap": "^5.3.8",
     "dayjs": "^1.11.19",
     "eventsource-parser": "^3.0.6",
