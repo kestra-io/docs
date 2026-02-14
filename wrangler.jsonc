@@ -65,6 +65,16 @@
         "preview": {
             "vars": {
                 "NO_IMAGE_OPTIM": "true"
+            },
+            "observability": {
+                "enabled": true,
+                "traces": {
+                    "enabled": true
+                },
+                "logs": {
+                    "invocation_logs": true,
+                    "enabled": true
+                }
             }
         }
     }

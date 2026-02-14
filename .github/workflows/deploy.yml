@@ -44,6 +44,8 @@ jobs:
       url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
 
     steps:
+      - name: Truncate long environment name to fit into Cloudflare limits
+        run: echo "GITHUB_REF_NAME_SLUG_URL=$(echo '${{ github.ref_name }}' | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | cut -c1-30)" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v6
 

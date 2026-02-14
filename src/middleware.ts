@@ -2,7 +2,7 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import contentSecurityPolicyConfig from "../content-security-policy.config"
-// import {middlewareISRCache} from "./utils/middlewareISRCache";
+import {middlewareISRCache} from "./utils/middlewareISRCache";
 import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
 import { $fetchApi } from "./utils/fetch.ts"
 
@@ -225,5 +225,5 @@ export const onRequest = sequence(
     incomingRedirect,
     securityHeaders,
     notFoundRedirect,
-    // middlewareISRCache,
+    middlewareISRCache,
 )
