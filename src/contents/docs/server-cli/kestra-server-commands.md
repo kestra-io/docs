@@ -1,6 +1,6 @@
 ---
 title: Kestra Server CLI – Commands and Options
-sidebarTitle: Kestra CLI
+sidebarTitle: Kestra Server Commmands
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS","EE"]
 description: Reference guide for Kestra CLI commands to manage servers, flows, plugins, and configurations.
