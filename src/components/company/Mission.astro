@@ -1,28 +1,33 @@
 ---
 import { Image } from "astro:assets"
 import TeamImages from "~/utils/teamsImages"
+import { Icon } from "astro-icon/components"
+import acxiomSvg from "~/assets/teams/acxiom.svg?raw"
+
+
+
 
 const values = [
     {
-        icon: "check-decagram-outline",
+        icon: "mdi:check-decagram-outline",
         title: "Quality",
         description:
             "We are committed to deliver a platform that meets the highest standards.",
     },
     {
-        icon: "hub",
+        icon: "mdi:hub",
         title: "Collaboration",
         description:
             "We are creating a strong relationships with our users, customers, and team members.",
     },
     {
-        icon: "account-supervisor-circle-outline",
+        icon: "mdi:account-supervisor-circle-outline",
         title: "User-Centric",
         description:
             "We incorporate users feedbacks and address their challenges as we continue to build Kestra.",
     },
     {
-        icon: "opacity",
+        icon: "mdi:opacity",
         title: "Transparency",
         description:
             "We value openness and honesty in all aspects of our work at every step.",
@@ -33,7 +38,7 @@ const values = [
 <section class="mission">
     <div class="mission-content">
         <header data-usal="fade-r">
-            <h1>Staying <span>True</span> to our Mission</h1>
+            <h1>Staying <span class="highlight">True</span> to our Mission</h1>
             <p>
                 Our values are at the core of everything we do. We are building
                 a platform that not only meets the needs of our users but also
@@ -51,7 +56,7 @@ const values = [
                         data-usal={`fade-u delay-${300 + index * 100}`}
                     >
                         <div class="value-header">
-                            <span class={`mdi mdi-${value.icon}`} />
+                            <Icon name={value.icon} class="icon" />
                             <h3>{value.title}</h3>
                         </div>
                         <p>{value.description}</p>
@@ -66,11 +71,11 @@ const values = [
                 the curtain"
             </p>
             <footer>
-                <Image
-                    src={TeamImages["acxiom.svg"]}
-                    alt="Acxiom"
-                    width={105}
-                    height={21}
+                <span
+                    class="company-logo"
+                    set:html={acxiomSvg}
+                    role="img"
+                    aria-label="Acxiom"
                 />
             </footer>
         </blockquote>
@@ -82,8 +87,6 @@ const values = [
             alt="Kestra Dashboard"
             class="dashboard-image"
             data-usal="fade-l delay-400"
-            width={800}
-            height={600}
         />
     </div>
 </section>
@@ -93,170 +96,142 @@ const values = [
 
     .mission {
         display: grid;
-        grid-template-columns: 60% 40%;
-        height: 786px;
+        grid-template-columns: 55% 45%;
+        background: var(--ks-background-primary-inverse);
 
         @media (max-width: 991px) {
             grid-template-columns: 1fr;
-            height: auto;
-        }
-    }
-
-    .mission-content {
-        background: #0a0a0f;
-        color: $white;
-        padding: 0 56px 0 290px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 42px;
-
-        @media (max-width: 1399px) {
-            padding: $rem-5 200px;
-            padding-right: $rem-2;
-        }
-        @media (max-width: 1199px) {
-            padding: $rem-5 150px;
-            padding-right: $rem-2;
-        }
-        @media (max-width: 991px) {
-            padding: $rem-5 40px;
+            min-height: auto;
         }
 
-        header {
-            h1 {
-                font-weight: 700;
-                font-size: $rem-2;
-                line-height: $rem-3;
-                margin-bottom: 24px;
-
-                span {
-                    background: linear-gradient(
-                        90.25deg,
-                        #7c2eea 2%,
-                        #658af9 100%
-                    );
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    color: transparent;
-                    display: inline-block;
-                }
-            }
-
-            p {
-                font-size: $font-size-md;
-                line-height: 1.6;
-                color: $white;
-                margin: 0;
-            }
-        }
-    }
-
-    .values {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 29px;
-
-        @media (max-width: 450px) {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .value {
-        &-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.5rem;
-
-            .mdi {
-                font-size: $font-size-lg;
-            }
-
-            h3 {
-                font-weight: 700;
-                font-size: $font-size-md;
-                line-height: 24px;
-                margin: 0;
-            }
-        }
-
-        p {
-            font-size: $font-size-sm;
-            line-height: 1.5;
-            color: $white-1;
-            margin: 0;
-        }
-    }
-
-    .testimonial {
-        border-left: 1px solid $black-5;
-        padding-left: $rem-1;
-        margin: 0;
-
-        p {
-            font-size: $font-size-sm;
-            line-height: 24px;
-            color: $white-1;
-            margin-bottom: 12px;
-
-            @media (max-width: 575px) {
-                font-size: 13px;
-                margin-bottom: 0.5rem;
-            }
-        }
-
-        footer {
+        .mission-content {
+            color: var(--ks-content-primary-inverse);
+            padding: $rem-5 56px $rem-5 290px;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            justify-content: center;
+            gap: 42px;
 
-            span {
-                font-size: $font-size-sm;
-
-                @media (max-width: 575px) {
-                    font-size: 12px;
-                }
+            @media (max-width: 1399px) {
+                padding: $rem-5 200px $rem-5 $rem-2;
+                padding-right: $rem-2;
             }
 
-            img {
-                width: 105px;
-                height: 21px;
-            }
-        }
-    }
-
-    .mission-visual {
-        background-image: url("~/assets/teams/dashboard-gradient.svg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: #0a0a0f;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: end;
-        overflow: hidden;
-
-        .dashboard-image {
-            width: 100%;
-            object-fit: contain;
-            border-radius: $border-radius-lg;
-
-            @media (min-width: 1700px) {
-                width: auto;
-                height: 100%;
-                padding: 60px 0;
+            @media (max-width: 1199px) {
+                padding-left: 150px;
             }
 
             @media (max-width: 991px) {
-                width: 100%;
-                padding: 60px 0;
+                padding: $rem-5 40px;
             }
 
-            @media (max-width: 575px) {
-                padding: $rem-3 0 $rem-4 $rem-1;
+            header {
+                h1 {
+                    margin-bottom: 24px;
+                }
+
+                p {
+                    margin: 0;
+                }
+            }
+
+            .values {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 29px;
+
+                @media (max-width: 450px) {
+                    grid-template-columns: 1fr;
+                }
+
+                .value {
+                    &-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        margin-bottom: 0.5rem;
+
+                        .icon {
+                            font-size: $font-size-lg;
+                            width: $rem-1;
+                            height: $rem-1;
+                            color: var(--ks-content-primary-inverse);
+                        }
+
+                        h3 {
+                            font-size: $font-size-md;
+                            line-height: 24px;
+                            margin: 0;
+                            font-weight: 700;
+                        }
+                    }
+
+                    p {
+                        font-size: $font-size-sm;
+                        line-height: 1.5;
+                        color: var(--ks-content-primary-inverse);
+                        margin: 0;
+                    }
+                }
+            }
+
+            .testimonial {
+                border-left: 1px solid var(--ks-border-secondary);
+                padding-left: $rem-1;
+                margin: 0;
+
+                p {
+                    font-size: $font-size-sm;
+                    line-height: 24px;
+                    color: var(--ks-content-primary-inverse);
+                    margin-bottom: 12px;
+
+                    @media (max-width: 575px) {
+                        font-size: 13px;
+                        margin-bottom: 0.5rem;
+                    }
+                }
+
+                footer {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    color: var(--ks-content-primary-inverse);
+
+                    .company-logo {
+                        display: inline-block;
+                        width: 105px;
+                        height: 21px;
+                    }
+                }
+            }
+        }
+
+        .mission-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+
+            .dashboard-image {
+                width: 100%;
+                object-fit: contain;
+                border-radius: $border-radius-lg;
+
+                @media (min-width: 1700px) {
+                    width: auto;
+                    height: 100%;
+                    padding: 60px 0;
+                }
+
+                @media (max-width: 991px) {
+                    padding: 60px 0;
+                }
+
+                @media (max-width: 575px) {
+                    padding: $rem-3 0 $rem-4 $rem-1;
+                }
             }
         }
     }

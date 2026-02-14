@@ -2,7 +2,7 @@
 // use astro content collection to fetch markdown files from /content/docs
 import { render, getCollection, type CollectionEntry } from "astro:content"
 import { buildDocsNavigation } from "../../utils/buildDocsNavigation"
-import LayoutDocs from "../../components/layout-docs.astro"
+import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import NavToc from "~/components/docs/NavToc.vue"
 import PrevNext from "~/components/layout/PrevNext.vue"
 import HelpfulVote from "~/components/docs/HelpfulVote.vue"
@@ -55,7 +55,6 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
     </h1>
     <div class="bd-markdown">
         <Content />
-
         <HelpfulVote client:visible />
         <PrevNext {navigation} currentPath={`/docs/${doc.id}`} client:idle />
     </div>
@@ -75,44 +74,9 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
     @import "~/assets/styles/variable";
 
     .title {
-        font-size: $h2-font-size;
-        font-weight: 400;
         line-height: 3.25rem;
         margin: 0 auto;
     }
 
-    .bd-markdown {
-        :global(table thead th) {
-            font-size: $font-size-md;
-            font-weight: 600;
-            line-height: 1.25rem;
-            padding: calc($spacer * 0.5) $spacer $spacer;
-            background-color: transparent;
-            border-bottom: 4px solid #8b8b8d !important;
-            border-top: none;
-            color: $white;
-        }
 
-        :global(table tbody tr td) {
-            font-size: $font-size-sm;
-            padding: calc($spacer * 1.5) $spacer $spacer !important;
-            font-weight: 400;
-            color: $white;
-        }
-
-        :global(table.table-dark) {
-            --bs-table-bg: $black-2 !important;
-            color: transparent !important;
-            outline: none !important;
-            margin: 2rem 0 5rem;
-        }
-
-        :global(.expressive-code) {
-            margin-bottom: 1rem;
-
-            figure {
-                #{--code-background}: $black-2;
-            }
-        }
-    }
 </style>

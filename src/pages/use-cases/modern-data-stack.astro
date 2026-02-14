@@ -1,89 +1,148 @@
 ---
 import Layout from "~/components/layout.astro"
-import SolutionsDetailHeader from "~/components/solutions/DetailHeader.vue"
-import SolutionsDetailContent from "~/components/solutions/DetailContent.vue"
-import LayoutDetailMainContent from "~/components/layout/DetailMainContent.vue"
-import SolutionsDetailEmpower from "~/components/solutions/DetailEmpower.vue"
-import Features from "~/components/use-cases/modern-data-stack/Features.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import WhatIs from "~/components/use-cases/WhatIs.vue"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import Section from "~/components/layout/Section.vue"
+import Enterprise from "~/components/use-cases/Enterprise.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue"
+import ArrowDecisionAutoOutline from "vue-material-design-icons/ArrowDecisionAutoOutline.vue"
+import ToyBrickOutline from "vue-material-design-icons/ToyBrickOutline.vue"
+import Connection from "vue-material-design-icons/Connection.vue"
+import OpenInApp from "vue-material-design-icons/OpenInApp.vue"
+import CloudCheckOutline from "vue-material-design-icons/CloudCheckOutline.vue"
 
-const title = "Integrate Kestra in the Modern Data Stack"
-const description =
+const TITLE = "Integrate Kestra in the Modern Data Stack"
+const DESCRIPTION =
     "Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools"
 
-const mainContent = [
+const FEATURES = [
+    {
+        title: "Declarative Language",
+        description:
+            "Easily define and manage data workflows using YAML, which simplifies the integration process with modern data stack tools.",
+        icon: FileCodeOutline,
+    },
+    {
+        title: "Workflow Orchestration",
+        description:
+            "Execute tasks sequentially, in parallel, or conditionally, providing better control and flexibility while working with various data stack components.",
+        icon: ArrowDecisionAutoOutline,
+    },
+    {
+        title: "Extensibility",
+        description:
+            "Use built-in plugins or create custom plugins to seamlessly integrate with popular data stack tools and services.",
+        icon: ToyBrickOutline,
+    },
+    {
+        title: "Connectivity",
+        description:
+            "Connect to popular data sources and cloud services such as AWS, GCP, Azure, Snowflake, and more.",
+        icon: Connection,
+    },
+    {
+        title: "Rich & real-time UI",
+        description:
+            "Create, execute, and manage data workflows using an intuitive user interface, making it easier to work with modern data stack tools.",
+        icon: OpenInApp,
+    },
+    {
+        title: "Cloud-Native",
+        description:
+            "Kestra's cloud-native architecture ensures seamless scaling and compatibility with modern data stack tools.",
+        icon: CloudCheckOutline,
+    },
+]
+
+const MAIN_CONTENT = [
     {
         title: "Data Ingestion and Extraction with Airbyte",
-        img: "/landing/usecases/mds/feature-1.svg",
-        imgWidth: "734px",
-        imgHeight: "596px",
-        imgAlt: "Diagram illustrating Kestra's integration with Airbyte for extract and load.",
+        image: {
+            src: "/landing/usecases/mds/feature-1.svg",
+            width: 734,
+            height: 596,
+            alt: "Diagram illustrating Kestra's integration with Airbyte for extract and load.",
+        },
         content:
             "Kestra and Airbyte can be combined for powerful data workflows. Thanks to Kestra's automation capabilities merged with Airbyte's data connectors, users can create automated ETL processes, streamline data ingestion, and reduce manual intervention. This tight integration ensures efficient, fully automated data workflows.",
     },
     {
         title: "Data Transformation with dbt",
-        img: "/landing/usecases/mds/feature-2.svg",
-        imgWidth: "569px",
-        imgHeight: "420px",
-        imgAlt: "Picture of dbt task in Kestra to transform the data",
+        image: {
+            src: "/landing/usecases/mds/feature-2.svg",
+            width: 569,
+            height: 420,
+            alt: "Picture of dbt task in Kestra to transform the data",
+        },
         content:
             "Once the data is extracted, it can be transformed using dbt (Data Build Tool), an open-source data transformation tool. Kestra can initiate dbt transformations by triggering dbt commands, and automating the process of cleaning, modeling, and validating the data.",
     },
     {
         title: "Data Loading and Storage with Snowflake",
-        img: "/landing/usecases/mds/feature-3.svg",
-        imgWidth: "569px",
-        imgHeight: "420px",
-        imgAlt: "Illustration of Snowflake loading data thanks to Kestra",
+        image: {
+            src: "/landing/usecases/mds/feature-3.svg",
+            width: 569,
+            height: 420,
+            alt: "Illustration of Snowflake loading data thanks to Kestra",
+        },
         content:
             "Kestra can integrate with Snowflake, a cloud-based data storage and analytics platform, to load the transformed data into the company's data storage system. Automated tasks can be created to manage the data loading process, reducing the risk of errors and improving efficiency.",
     },
     {
         title: "Data Quality with Soda",
-        img: "/landing/usecases/mds/feature-4.svg",
-        imgWidth: "569px",
-        imgHeight: "420px",
-        imgAlt: "Picture of SODA to test data quality",
+        image: {
+            src: "/landing/usecases/mds/feature-4.svg",
+            width: 569,
+            height: 420,
+            alt: "Picture of SODA to test data quality",
+        },
         content:
             "In addition to dbt or Snowflake integrations, incorporating a data quality tool, such as Soda, into your modern data stack is essential for maintaining high-quality data. Soda helps monitor, test, and validate data at different stages of the pipeline, ensuring it meets the required quality standards.",
     },
 ]
 ---
 
-<Layout title={title} description={description}>
-    <SolutionsDetailHeader
+<Layout title={TITLE} description={DESCRIPTION}>
+    <DetailsHero
         client:load
-        title="Integrate Kestra in the"
-        titleAfter="Modern Data Stack"
-        subtitle="Orchestrate Your Data and Analytics Stack by Integrating Kestra with Leading Data Tools"
-        image="/landing/usecases/mds/intro-bg.svg"
-        imageWidth="556px"
+        title="Integrate Kestra in the <span>Modern Data Stack</span>"
+        description={DESCRIPTION}
+        image={{
+            src: "/landing/usecases/mds/intro-bg.svg",
+            width: 556,
+            height: 400,
+            alt: "Modern Data Stack",
+        }}
     />
-    <SolutionsDetailContent
+
+    <WhatIs
         client:visible
         title="What is the Modern Data Stack?"
-        subtitle="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
+        description="The modern data stack combines powerful automation and integration capabilities. Organizations can establish scalable, reliable, and streamlined data workflows by leveraging robust automation capabilities and seamless integrations with tools like dbt, Snowflake, Airbyte, and others. This ecosystem empowers data-driven decision-making and facilitates the generation of actionable insights."
     />
-    <LayoutDetailMainContent
-        client:visible
-        subtitle="Leverage"
-        subtitleAfter="Modern Data Stack"
-        baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools from the modern data stack empower organizations to manage data pipelines with confidence."
-        items={mainContent}
-    />
-    <SolutionsDetailEmpower
+
+    <Alternation items={MAIN_CONTENT}>
+        <Section
+            subtitle="Modern Data Stack"
+            subtitleBefore="Leverage"
+            class="p-0 bg-transparent"
+            baseline="Discover how Kestra's automation capabilities and extensive integrations with popular data tools from the modern data stack empower organizations to manage data pipelines with confidence."
+        />
+    </Alternation>
+
+    <Enterprise
         client:visible
         title="Orchestrate the Modern Data Stack with Kestra"
         subtitle="Kestra's flexibility enables seamless integration with a variety of modern data stack tools like Apache Kafka, Apache Spark for scalable processing, Fivetran for data replication, as well as leading data tools such as dbt, Snowflake, and Airbyte. By leveraging these integrations, organizations can automate data pipeline management, customize their data pipelines to meet specific requirements, and enhance their analytics capabilities."
     />
-    <Features client:visible subtitle="Key" subtitleAfter="Features" />
-    <LayoutFooterContact
+
+    <Cards title="Key <span class='highlight'>Features</span>" cards={FEATURES} />
+
+    <FooterContact
         client:visible
         title="Ready to take your data platform to the next level?"
-        darkButtonText="Talk to us"
-        darkButtonHref="/demo"
-        purpleButtonText="Get Started"
-        purpleButtonHref="/docs/getting-started/quickstart"
     />
 </Layout>

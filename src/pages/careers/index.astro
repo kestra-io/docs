@@ -2,14 +2,21 @@
 export const prerender = false
 
 import Layout from "~/components/layout.astro"
-import CareersHeader from "~/components/careers/Header.vue"
-import CareersPositionsRenderer from "~/components/careers/PositionsRenderer.vue"
-import CareersPerks from "~/components/careers/Perks.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import Header from "~/components/careers/Header.astro"
+import Positions from "~/components/careers/Positions.astro"
+import CardGrid from "~/components/features/shared/CardGrid.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
 import { $fetch } from "~/utils/fetch"
-import { type Job, mapJob } from "~/utils/careers.ts"
+import { type DoverJob, mapJob } from "~/utils/careers.ts"
 
-const jobsList = await $fetch<{ results: Job[] }>(
+import Earth from "vue-material-design-icons/Earth.vue"
+import CalendarClock from "vue-material-design-icons/CalendarClock.vue"
+import ScaleBalance from "vue-material-design-icons/ScaleBalance.vue"
+import MedicalBag from "vue-material-design-icons/MedicalBag.vue"
+import ChairRolling from "vue-material-design-icons/ChairRolling.vue"
+import Laptop from "vue-material-design-icons/Laptop.vue"
+
+const jobsList = await $fetch<{ results: DoverJob[] }>(
     `https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`,
 )
 
@@ -17,21 +24,62 @@ const positions = jobsList.results.map((job) => {
     return mapJob(job)
 })
 
+const PERKS = [
+    {
+        icon: Earth,
+        title: "Work from anywhere",
+        description: "We're a remote-first and completely distributed team, so you can work wherever home is."
+    },
+    {
+        icon: CalendarClock,
+        title: "Flexible working hours",
+        description: "Flexibility in schedule to be there for life’s important moments."
+    },
+    {
+        icon: ScaleBalance,
+        title: "Work/life balance",
+        description: "Prioritize work-life balance in the way that works best for you and a generous vacation policy."
+    },
+    {
+        icon: MedicalBag,
+        title: "Expanded health benefits",
+        description: "Including premium medical, dental, and vision coverage for employees and their dependent loved ones."
+    },
+    {
+        icon: ChairRolling,
+        title: "Office costs covered",
+        description: "Work from home or any other coworking space - we’ll cover the costs."
+    },
+    {
+        icon: Laptop,
+        title: "Up-to-date always",
+        description: "We’ll cover all hardware and software needed so you’re always with the latest versions."
+    }
+]
+
 const title = "Join Us and Shape the Future of Data Orchestration"
 const description =
     "Discover exciting career opportunities at Kestra. Join our passionate team and help us shape the future of data orchestration"
 ---
 
 <Layout title={title} description={description}>
-    <CareersHeader client:load fullPath="/careers" />
-    <CareersPositionsRenderer client:visible positions={positions} />
-    <CareersPerks client:visible />
-    <LayoutFooterContact
-        client:visible
+    <Header fullPath="/careers" />
+    <Positions {positions} />
+    <CardGrid
+        subtitle="Committed to"
+        subtitleAfter="Excellence"
+        description="We take care of everything you need to help you grow and do the best work of your career."
+        items={PERKS}
+    />
+    <FooterContact
         title="Join our community"
-        darkButtonText="Join our Slack"
-        darkButtonHref="/slack"
-        purpleButtonText="Contribute"
-        purpleButtonHref="/docs/plugin-developer-guide"
+        dark={{
+            text: "Join our Slack",
+            href: "/slack"
+        }}
+        purple={{
+            text: "Contribute",
+            href: "/docs/plugin-developer-guide"
+        }}
     />
 </Layout>

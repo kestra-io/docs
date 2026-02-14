@@ -6,7 +6,6 @@
         :class="{
             open: isOpen,
             scrolled: isScrolled || props.scrolled,
-            dark: isStories,
         }"
     >
         <div class="container-xl">
@@ -16,10 +15,8 @@
                 @click="logoClick"
                 @contextmenu.prevent="showDownloadLogosModal"
             >
-                <img
-                    :src="isOpen || isStories ? '/logo-black.svg' : '/logo-white.svg'"
-                    alt="Kestra, Open source declarative data orchestration"
-                />
+                <div class="logo-dark" v-html="LogoWhite" />
+                <div class="logo-light" v-html="LogoBlack" />
             </a>
 
             <div
@@ -94,6 +91,7 @@
                     >
                         <a
                             class="nav-link dropdown-toggle"
+                            :class="{ show: showMenuId === 'product' && showMenu }"
                             href="#"
                             role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
@@ -101,11 +99,6 @@
                         >
                             Product
                             <ChevronDown
-                                v-if="showMenuId !== 'product' || !showMenu"
-                                class="d-inline-block dropdown-chevron"
-                            />
-                            <ChevronUp
-                                v-if="showMenuId === 'product' && showMenu"
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
@@ -136,6 +129,7 @@
                     >
                         <a
                             class="nav-link dropdown-toggle"
+                            :class="{ show: showMenuId === 'solutions' && showMenu }"
                             href="#"
                             role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
@@ -143,11 +137,6 @@
                         >
                             Solutions
                             <ChevronDown
-                                v-if="showMenuId !== 'solutions' || !showMenu"
-                                class="d-inline-block dropdown-chevron"
-                            />
-                            <ChevronUp
-                                v-if="showMenuId === 'solutions' && showMenu"
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
@@ -224,6 +213,7 @@
                     >
                         <a
                             class="nav-link dropdown-toggle"
+                            :class="{ show: showMenuId === 'resources' && showMenu }"
                             href="#"
                             role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
@@ -231,11 +221,6 @@
                         >
                             Learn
                             <ChevronDown
-                                v-if="showMenuId !== 'resources' || !showMenu"
-                                class="d-inline-block dropdown-chevron"
-                            />
-                            <ChevronUp
-                                v-if="showMenuId === 'resources' && showMenu"
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
@@ -299,7 +284,7 @@
                     <li class="nav-item">
                         <GithubButton
                             :small="true"
-                            class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-dark btn-sm"
+                            class="d-block d-sm-inline-block mb-1 mn-sm-0"
                         />
                         <a
                             @click="globalClick(true)"
@@ -310,7 +295,7 @@
                         </a>
                         <a
                             @click="globalClick(true)"
-                            class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm get-started"
+                            class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-gradient btn-sm get-started"
                             href="/docs/quickstart#start-kestra"
                         >
                             <span> Get Started! </span>
@@ -571,19 +556,18 @@
 <script setup lang="ts">
     import { ref, onMounted, watch, nextTick } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import GithubButton from "~/components/layout/GithubButton.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
     import { menuSize } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
+    import LogoBlack from "~/assets/logo-black.svg?raw"
+    import LogoWhite from "~/assets/logo-white.svg?raw"
 
     const props = defineProps<{
         scrolled?: boolean
         transparentHeader?: boolean
-        nuxtApp?: any
-        isStories?: boolean
     }>()
 
     const isOpen = ref(false)
@@ -601,6 +585,7 @@
     const navbar = ref<HTMLElement | null>(null)
     const isMobile = ref(false)
     const isScrolled = ref(false)
+    const closeMenuTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
     interface Collapse {
         hide: () => void
@@ -649,15 +634,21 @@
     )
 
     function mouseOverMenu() {
+        if (closeMenuTimeout.value) {
+            clearTimeout(closeMenuTimeout.value)
+            closeMenuTimeout.value = null
+        }
         mouseoverMenu.value = true
         headerMenuPointerEvents.value = "auto"
     }
 
     function mouseLeaveMenu() {
-        showMenu.value = false
-        mouseoverMenu.value = false
-        showMenuId.value = null
-        headerMenuPointerEvents.value = "none"
+        closeMenuTimeout.value = setTimeout(() => {
+            showMenu.value = false
+            mouseoverMenu.value = false
+            showMenuId.value = null
+            headerMenuPointerEvents.value = "none"
+        }, 100)
     }
 
     function mouseOver(id: string) {
@@ -668,6 +659,10 @@
             })
             let menu = document.getElementById(id)
             if (menu) {
+                if (closeMenuTimeout.value) {
+                    clearTimeout(closeMenuTimeout.value)
+                    closeMenuTimeout.value = null
+                }
                 mouseoverMenu.value = false
                 showMenu.value = true
                 showMenuId.value = id
@@ -685,8 +680,11 @@
         if (window.innerWidth > 991) {
             let menu = document.getElementById(id)
             if (menu) {
-                headerMenuPointerEvents.value = "none"
-                showMenu.value = false
+                closeMenuTimeout.value = setTimeout(() => {
+                    headerMenuPointerEvents.value = "none"
+                    showMenu.value = false
+                    showMenuId.value = null
+                }, 100)
             }
         }
     }
@@ -743,4 +741,13 @@
     }
 </script>
 
-<style lang="scss" src="../../assets/styles/components/header.scss" scoped />
+<style lang="scss" src="~/assets/styles/components/header.scss" scoped />
+
+<style lang="scss" scoped>
+    .navbar-brand {
+        :deep(svg) {
+            width: 180px;
+            height: auto;
+        }
+    }
+</style>

@@ -1,0 +1,22 @@
+---
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+
+const { description } = Astro.props
+---
+
+<section>
+    <div class="container bd-gutter bd-layout">
+        <article class="bd-main order-1">
+            <MDCParserAndRenderer content={description} class="bd-markdown" />
+        </article>
+    </div>
+</section>
+
+<style lang="scss" is:global>
+    @import "~/assets/styles/variable";
+
+    section {
+        background-color: var(--ks-background-primary);
+        padding-top: calc($spacer * 2);
+    }
+</style>

@@ -1,32 +1,40 @@
 ---
 import { Image } from "astro:assets"
-import FilaLogo from "~/assets/companies/fila.svg"
+import FilaLogo from "~/assets/companies/fila.svg?raw"
+import AppleLogo from "~/assets/teams/apple.svg?raw"
+import AcxiomLogo from "~/assets/teams/acxiom.svg?raw"
+import BattelleLogo from "~/assets/teams/Battelle.svg?raw"
+import LorealLogo from "~/assets/teams/loreal.svg?raw"
 import TeamImage from "~/assets/teams/team.png"
-import TeamsImages from "~/utils/teamsImages"
 
-const companyLogos = [
+const CompanyLogos = [
     {
         alt: "Apple",
-        src: TeamsImages["apple.svg"],
+        src: AppleLogo,
         width: 38,
         height: 45,
     },
-    { alt: "Fila", src: FilaLogo, width: 60, height: 22 },
+    {
+        alt: "Fila",
+        src: FilaLogo,
+        width: 60,
+        height: 22,
+    },
     {
         alt: "Axiom",
-        src: TeamsImages["acxiom.svg"],
+        src: AcxiomLogo,
         width: 102,
         height: 23,
     },
     {
         alt: "Battelle",
-        src: TeamsImages["Battelle.svg"],
+        src: BattelleLogo,
         width: 101,
         height: 17,
     },
     {
         alt: "L'Oreal",
-        src: TeamsImages["loreal.svg"],
+        src: LorealLogo,
         width: 115,
         height: 20,
     },
@@ -39,17 +47,24 @@ const companyLogos = [
             <div class="media">
                 <Image
                     src={TeamImage}
+                    alt=""
+                    class="image-shadow"
+                    width={554}
+                    height={414}
+                />
+                <Image
+                    src={TeamImage}
                     alt="Team Image"
                     class="image"
-                    width={686}
-                    height={456}
+                    width={554}
+                    height={414}
                 />
             </div>
             <div class="content">
                 <h1 class="title">
                     Orchestration for<br />
                     Every Developer,<br />
-                    <span class="gradient">Everywhere.</span>
+                    <span class="highlight">Everywhere.</span>
                 </h1>
                 <p class="text">
                     We're redefining orchestration for developers everywhere —
@@ -61,47 +76,10 @@ const companyLogos = [
                     faster, and collaborate freely without compromise.
                 </p>
             </div>
-            <Image
-                src={TeamsImages["line.svg"]}
-                alt="Connecting Line"
-                class="line"
-                width={224}
-                height={268}
-            />
-            <Image
-                src={TeamsImages["flare.svg"]}
-                alt="Flare Effect"
-                class="flare"
-                width={50}
-                height={50}
-            />
-            <Image
-                src={TeamsImages["flare.svg"]}
-                alt="Flare Effect 2"
-                class="flare-2"
-                width={50}
-                height={50}
-            />
         </div>
     </section>
 
     <section class="trust">
-        <div class="divider">
-            <Image
-                src={TeamsImages["Logo_EE.png"]}
-                alt="Kestra Logo"
-                class="logo"
-                width={119}
-                height={109}
-            />
-            <Image
-                src={TeamsImages["black-ellipse.svg"]}
-                alt="Section Divider"
-                width={228}
-                height={135}
-            />
-        </div>
-
         <div class="container" data-usal="fade-u">
             <div class="content">
                 <h2 class="title" data-usal="fade-u delay-200">
@@ -109,13 +87,13 @@ const companyLogos = [
                     <span class="gradient">Enterprises</span> Worldwide
                 </h2>
 
-                <p class="text-white" data-usal="fade-u delay-300">
+                <p data-usal="fade-u delay-300">
                     <strong>We are excited</strong> to see how <strong
                         >Kestra</strong
                     > transform the way<br />
                     organizations approach orchestration.
                 </p>
-                <p class="text-white" data-usal="fade-u delay-400">
+                <p data-usal="fade-u delay-400">
                     We believe that
                     <strong>Kestra's potential is limitless</strong>, and we<br
                     />
@@ -127,12 +105,13 @@ const companyLogos = [
                 <div class="logos" data-usal="fade-u delay-400">
                     <div class="grid">
                         {
-                            companyLogos.map((logo) => (
-                                <Image
-                                    src={logo.src}
-                                    alt={logo.alt}
-                                    width={logo.width}
-                                    height={logo.height}
+                            CompanyLogos.map((logo) => (
+                                <div
+                                    class="logo-item"
+                                    set:html={logo.src}
+                                    style={`width: ${logo.width}px; height: ${logo.height}px;`}
+                                    aria-label={logo.alt}
+                                    role="img"
                                 />
                             ))
                         }
@@ -156,7 +135,6 @@ const companyLogos = [
             align-items: start;
             justify-content: center;
             position: relative;
-            background-attachment: fixed;
 
             @include media-breakpoint-up(md) {
                 padding: 33px 64px 170px;
@@ -166,11 +144,31 @@ const companyLogos = [
                 padding: 133px 12rem 170px;
             }
 
+            &::before {
+                content: "";
+                position: fixed;
+                top: -470px;
+                right: 30%;
+                background: radial-gradient(circle, #581FD38F 0%, rgba(88, 31, 211, 0) 70%);
+                width: 659px;
+                height: 629px;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -250px;
+                left: -80px;
+                background: radial-gradient(circle, #581FD38F 0%, rgba(88, 31, 211, 0) 70%);
+                width: 659px;
+                height: 629px;
+            }
+
             .grid {
                 width: min(1140px, 100%);
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
-                gap: 102px;
+                gap: 44px;
                 position: relative;
 
                 @media (max-width: 1399px) {
@@ -183,14 +181,14 @@ const companyLogos = [
                     position: relative;
                     width: 100%;
                     max-width: 554px;
-                    aspect-ratio: 554/414;
+                    aspect-ratio: 554 / 414;
                     border: 1px solid;
-                    border-image-source: linear-gradient(
-                        91.19deg,
-                        #474450 1.02%,
-                        rgba(55, 53, 63, 0.37) 66.77%
-                    );
-                    border-image-slice: 1;
+                    border-image: linear-gradient(
+                            91.19deg,
+                            #474450 1.02%,
+                            rgba(55, 53, 63, 0.37) 66.77%
+                        )
+                        1;
                     z-index: 2;
                     display: flex;
                     align-items: center;
@@ -198,9 +196,6 @@ const companyLogos = [
 
                     @media (max-width: 1399px) {
                         order: 2;
-                    }
-
-                    @media (min-width: 768px) and (max-width: 1399px) {
                         margin: 0 auto;
                     }
 
@@ -210,7 +205,22 @@ const companyLogos = [
                         margin: 0 -20px;
                     }
 
+                    .image-shadow {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        bottom: -20px;
+                        left: -8%;
+                        filter: blur(30px);
+                        opacity: 0.8;
+                        z-index: -1;
+                        pointer-events: none;
+                        object-fit: cover;
+                    }
+
                     .image {
+                        position: relative;
+                        z-index: 1;
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
@@ -218,7 +228,7 @@ const companyLogos = [
                 }
 
                 .content {
-                    padding: 2rem 0;
+                    padding: $rem-2 $rem-1;
 
                     @media (max-width: 1399px) {
                         display: flex;
@@ -243,12 +253,12 @@ const companyLogos = [
 
                     .text {
                         font-size: $font-size-md;
-                        color: $white-1;
+                        color: $white;
                         line-height: 1.6;
+                        margin: $rem-1 auto;
 
                         @media (max-width: 1399px) {
                             max-width: 600px;
-                            margin: 0 auto;
                         }
 
                         @include media-breakpoint-down(md) {
@@ -257,67 +267,20 @@ const companyLogos = [
 
                         @include media-breakpoint-down(sm) {
                             font-size: $font-size-sm;
-                            padding: 0;
                         }
-                    }
-                }
-
-                .line {
-                    position: absolute;
-                    bottom: -25px;
-                    left: 47%;
-                    transform: translateX(-50%);
-                    z-index: 1;
-                    display: none;
-
-                    @media (min-width: 1400px) {
-                        display: block;
-                    }
-                }
-
-                .flare {
-                    position: absolute;
-                    bottom: -48px;
-                    left: 424px;
-                    transform: translateX(-50%);
-                    z-index: 2;
-                    display: none;
-                    width: 50px;
-                    height: 50px;
-                    mix-blend-mode: color-dodge;
-
-                    @media (min-width: 1400px) {
-                        display: block;
-                    }
-                }
-
-                .flare-2 {
-                    position: absolute;
-                    bottom: 218px;
-                    left: 55%;
-                    transform: translateX(-50%);
-                    z-index: 2;
-                    display: none;
-                    width: 50px;
-                    height: 50px;
-                    mix-blend-mode: color-dodge;
-
-                    @media (min-width: 1400px) {
-                        display: block;
                     }
                 }
             }
         }
 
         .trust {
-            min-height: 511px;
-            padding: 64px 0;
-            background: #0e0f14;
+            padding: $rem-4 0;
+            background: var(--ks-background-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            border-style: solid;
+            border: solid;
             border-width: 1px 0;
             border-image: linear-gradient(
                     90deg,
@@ -343,30 +306,12 @@ const companyLogos = [
                         rgba(24, 25, 31, 0.3) 49.42%,
                         rgba(102, 108, 133, 0) 98.04%
                     ),
-                    url("~/assets/teams/globe.svg") center/contain no-repeat;
+                    url("~/assets/teams/globe.svg") center / contain no-repeat;
                 z-index: 1;
                 opacity: 0.8;
-            }
 
-            .divider {
-                position: absolute;
-                top: -67px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 10;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                .logo {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 119.47px;
-                    height: 109.57px;
-                    object-fit: contain;
-                    z-index: 12;
+                html.light & {
+                    opacity: 0.3;
                 }
             }
 
@@ -380,79 +325,54 @@ const companyLogos = [
                 @include media-breakpoint-up(lg) {
                     padding: 0 40px;
                 }
-
                 @include media-breakpoint-up(xl) {
                     padding: 0 80px;
                 }
-
                 @include media-breakpoint-up(xxl) {
-                    padding: 0 150px;
+                    padding: 0;
                 }
             }
 
             .content {
                 text-align: center;
-                max-width: 800px;
                 margin: 0 auto;
                 display: flex;
                 flex-direction: column;
-                gap: 37px;
-
-                .text-white {
-                    color: $white;
-                    margin-bottom: 0;
-                }
+                gap: 1.5rem;
 
                 .title {
                     font-weight: 600;
-                    color: $white;
+                    color: var(--ks-content-primary);
                     padding-top: 2rem;
-                    margin-bottom: 0;
-                    line-height: 1.2;
-
-                    .gradient {
-                        background: linear-gradient(
-                            89.75deg,
-                            #9f79f3 0.22%,
-                            #658af9 99.78%
-                        );
-                        background-clip: text;
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                        color: transparent;
-                        display: inline-block;
-                    }
-                }
-
-                .text-primary {
-                    line-height: 1.6;
                     margin: 0;
-                    font-size: $font-size-md;
-                    font-weight: 400;
-                    color: $white;
-
-                    strong {
-                        font-weight: 600;
-                    }
+                    line-height: 1.2;
                 }
 
+                .text-primary,
                 .text-secondary {
                     line-height: 1.6;
                     margin: 0;
                     font-size: $font-size-md;
                     font-weight: 400;
-                    color: $white-1;
 
                     strong {
                         font-weight: 600;
                     }
+                }
+
+                .text-primary {
+                    color: $white;
+                }
+                .text-secondary {
+                    color: $white;
                 }
 
                 .logos {
                     .grid {
                         display: grid;
                         width: min(784px, 100%);
-                        gap: 9.35px;
+                        margin: 0 auto;
+                        gap: 9px;
                         place-items: center;
                         grid-template-columns: repeat(6, auto);
 
@@ -465,27 +385,9 @@ const companyLogos = [
                             grid-template-columns: repeat(2, auto);
                             gap: 2rem;
                         }
-
-                        img {
-                            filter: brightness(0) invert(1);
-                            object-fit: contain;
-                        }
                     }
                 }
             }
-        }
-
-        .gradient {
-            background: linear-gradient(
-                90.25deg,
-                #7c2eea 6.26%,
-                #658af9 53.85%
-            );
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            display: inline-block;
         }
     }
 </style>

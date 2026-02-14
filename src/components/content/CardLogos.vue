@@ -61,19 +61,16 @@ import monogram from './assets/logo-monogram-version.png'
         display: flex;
         flex-direction: column;
         gap: calc($spacer * 0.5);
-
         p {
             margin: 0;
         }
-
         p.title {
             font-size: $h6-font-size;
             font-weight: 600;
             line-height: 28px;
         }
-
         p.description {
-            color: $white-3;
+            color: var(--ks-content-secondary);
             font-size: $font-size-base;
             font-weight: 400;
             line-height: 20px;

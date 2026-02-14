@@ -1,25 +1,18 @@
 <template>
-    <div
-        v-if="!hasError"
-        class="btn-group mb-1 mn-sm-0 me-sm-2 github"
-        :class="{ 'btn-group-sm': small }"
-    >
+    <div v-if="!hasError" class="github-button-wrapper mb-1 me-sm-2">
         <a
-            class="btn btn-dark"
-            :class="{ 'btn-sm': small }"
+            class="github-button"
             href="https://github.com/kestra-io/kestra"
             target="_blank"
         >
-            <Github /> <span class="d-none d-xl-inline-block"> Star</span>
-        </a>
-        <a
-            class="btn btn-outline-dark"
-            :class="{ 'btn-sm': small }"
-            href="https://github.com/kestra-io/kestra"
-            target="_blank"
-        >
-            <LayoutGithubStargazer v-if="onClient" @api-error="!hasError" />
-            <span v-else class="placeholder" style="width: 39px"></span>
+            <div class="left-part">
+                <Github :size="16" />
+                <span class="star-text">Star</span>
+            </div>
+            <div class="right-part">
+                <LayoutGithubStargazer v-if="onClient" @api-error="hasError = true" />
+                <span v-else class="placeholder"></span>
+            </div>
         </a>
     </div>
 </template>
@@ -40,31 +33,56 @@
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
-    .btn-group {
-        background: transparent !important;
-        border: 0 !important;
-        &.btn-group-sm {
-            .btn-sm {
-                padding: 0.25rem 0.5rem;
-            }
-        }
-        .btn {
-            border: 1px solid $black-5;
-            color: $white-1 !important;
-        }
-        .btn-dark {
+
+    .github-button-wrapper {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .github-button {
+        display: flex;
+        width: 115px;
+        min-height: 28px;
+        border-radius: 4px;
+        overflow: hidden;
+        text-decoration: none;
+        color: #fff;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        .left-part {
             background: #333336;
-        }
-        .btn-outline-dark {
-            border-left: 0;
-            color: $black-5;
-            background: #18181B;
-            .placeholder {
-                background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex: 1;
+            color: #fff !important;
+            :deep(svg) {
+                position: absolute;
+                top: -0.05rem;
+                bottom: 0;
             }
         }
-        .btn-outline-dark:hover {
-            background: $black-5 !important;
+        .right-part {
+            background: #18181B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50%;
+            color: #fff;
+            .placeholder {
+                width: 28px;
+                height: 12px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 2px;
+                animation: pulse 1.5s infinite;
+            }
         }
+    }
+
+    @keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 0.3; }
+        100% { opacity: 0.6; }
     }
 </style>

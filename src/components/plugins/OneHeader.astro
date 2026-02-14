@@ -1,7 +1,7 @@
 ---
 import type { Plugin } from "@kestra-io/ui-libs"
 import { Image } from "astro:assets"
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
 
 interface Props {
     headingTitle: string
@@ -14,7 +14,7 @@ interface Props {
 const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.props;
 ---
 
-<h1 class="py-0 title">
+<h4 class="py-0 title">
     {currentPageIcon && (
         <div class="pageIcon">
             <Image
@@ -46,7 +46,7 @@ const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.
         </div>
         {headingDescription && (
             <div class="bd-markdown">
-                <MDCParserAndRenderer content={headingDescription} client:load />
+                <MDCParserAndRenderer content={headingDescription} />
             </div>
         )}
     </div>
@@ -56,7 +56,7 @@ const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.
             <a href="/demo" class="btn btn-primary" target="_blank"> Talk to us </a>
         </div>
     )}
-</h1>
+</h4>
 
 <style lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
@@ -160,15 +160,12 @@ const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.
     }
 
     .bd-markdown {
-        p {
-            font-size: 1rem;
-        }
-
         max-width: 650px;
-        color: color-palette.$base-gray-200;
+        color: var(--ks-content-secondary);
         margin-top: 0.25rem;
         line-height: 1.5;
-
+        font-size: $font-size-base;
+        font-weight: normal;
         @media screen and (max-width: 1100px) {
             display: -webkit-box;
             -webkit-box-orient: vertical;

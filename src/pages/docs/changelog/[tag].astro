@@ -1,20 +1,23 @@
 ---
-import type { GetStaticPaths } from 'astro'
+import type { GetStaticPaths } from "astro"
 import Layout from "~/components/layout.astro"
 import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
-import { fetchMajorReleases, type GitHubRelease } from "~/utils/fetchChangelogVersions"
+import {
+    fetchMajorReleases,
+    type GitHubRelease,
+} from "~/utils/fetchChangelogVersions"
 import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
 
 export const getStaticPaths = (async () => {
-  const releases = await fetchMajorReleases(150)
-  return releases.map((release: GitHubRelease) => ({
-    params: { tag: release.tag_name },
-    props: { release }
-  }))
+    const releases = await fetchMajorReleases(150)
+    return releases.map((release: GitHubRelease) => ({
+        params: { tag: release.tag_name },
+        props: { release },
+    }))
 }) satisfies GetStaticPaths
 
 interface Props {
-  release: GitHubRelease
+    release: GitHubRelease
 }
 
 const { release } = Astro.props as Props
@@ -30,47 +33,54 @@ const isMajor = version.split(".").pop() === "0"
 ---
 
 <Layout title={title} description={description}>
-    <div class="container">
-        <article class="bd-markdown bd-main order-1 full">
-            <div class="release-detail">
-                <div class="mb-4">
-                    <a href="/docs/changelog">
-                        <ArrowLeft /> Back to Changelog
-                    </a>
-                </div>
+    <section>
+        <div class="container">
+            <article class="bd-markdown bd-main order-1 full">
+                <div class="release-detail">
+                    <div class="mb-4">
+                        <a href="/docs/changelog">
+                            <ArrowLeft /> Back to Changelog
+                        </a>
+                    </div>
 
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="p-0">{release.name || release.tag_name}</h1>
-                    <span
-                        class={`badge ${isMajor ? "badge-major" : "badge-minor"}`}
-                        >{isMajor ? "Major" : "Minor"}</span
+                    <div
+                        class="d-flex justify-content-between align-items-center"
                     >
-                </div>
+                        <h1 class="p-0">{release.name || release.tag_name}</h1>
+                        <span
+                            class={`badge ${isMajor ? "badge-major" : "badge-minor"}`}
+                            >{isMajor ? "Major" : "Minor"}</span
+                        >
+                    </div>
 
-                <div class="mb-4">
-                    <small>
-                        Published on {
-                            new Date(release.published_at).toLocaleDateString(
-                                "en-US",
-                                {
+                    <div class="mb-4">
+                        <small>
+                            Published on {
+                                new Date(
+                                    release.published_at,
+                                ).toLocaleDateString("en-US", {
                                     year: "numeric",
                                     month: "long",
                                     day: "numeric",
-                                },
-                            )
-                        }
-                    </small>
-                </div>
+                                })
+                            }
+                        </small>
+                    </div>
 
-                <div class="release-content">
-                    <MDCParserAndRenderer content={release.body} />
+                    <div class="release-content">
+                        <MDCParserAndRenderer content={release.body} />
+                    </div>
                 </div>
-            </div>
-        </article>
-    </div>
+            </article>
+        </div>
+    </section>
 
     <style lang="scss">
-        @import "../../../assets/styles/variable";
+        @import "~/assets/styles/variable";
+
+        section {
+            background-color: var(--ks-background-primary);
+        }
 
         .container {
             border: 0;
@@ -79,7 +89,16 @@ const isMajor = version.split(".").pop() === "0"
             border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818)
                 1 100%;
             padding: 0 2rem;
-            font-family: var(--font-family-mona-sans), sans-serif;
+
+            :global(.light) & {
+                border-image: linear-gradient(
+                        to bottom,
+                        #e5e5e5,
+                        #5c5c5c,
+                        #e5e5e5
+                    )
+                    1 100%;
+            }
 
             .release-detail {
                 padding: 2rem 0;
@@ -118,7 +137,7 @@ const isMajor = version.split(".").pop() === "0"
             }
 
             small {
-                color: $white-4;
+                color: var(--ks-content-tertiary);
                 font-size: 1rem;
             }
 

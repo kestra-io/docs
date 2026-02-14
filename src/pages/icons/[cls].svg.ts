@@ -23,7 +23,7 @@ export async function GET({ params }: { params: { cls: string } }) {
             }
         ]
     }).data
-    const modifiedSvg = svg.replace(/currentColor/g, "white")
+    const modifiedSvg = svg.replace(/currentColor/g, "black")
 
     return new Response(modifiedSvg, {
         headers: {

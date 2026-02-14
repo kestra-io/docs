@@ -9,7 +9,7 @@ const description =
     "Instantly access a read-only version of Kestra to explore its interface and workflows, no setup required."
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} headerTheme="lightHero">
     <div class="livedemo">
         <PreviewAccessHeader client:load />
         <PreviewAccessFeatures
@@ -72,21 +72,13 @@ const description =
             }
         }
 
-        & :global(.highlight) {
-            background: linear-gradient(90deg, #7c2eea 57.35%, #658af9 95.94%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-
         & :global(h1),
         & :global(h2),
         & :global(h3),
         & :global(h4),
         & :global(h5),
         & :global(h6) {
-            color: $white;
+            color: #fff;
             font-weight: 600;
         }
 
@@ -104,7 +96,6 @@ const description =
 
         & :global(h4) {
             font-size: $font-size-xl;
-            color: $black;
         }
 
         & :global(h5) {
@@ -118,7 +109,7 @@ const description =
 
         & :global(p) {
             font-size: 14px;
-            color: $white-1;
+            color: #fff;
         }
     }
 </style>

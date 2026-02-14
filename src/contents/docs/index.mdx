@@ -4,10 +4,10 @@ isHomepage: true
 description: The official documentation for Kestra, an open-source orchestration platform to automate business-critical workflows.
 ---
 
-import HomePageHeader from "~/components/content/HomePageHeader.vue"
-import HomePageButtons from "~/components/content/HomePageButtons.vue"
-import WhatsNew from "~/components/blogs/WhatsNew.astro"
-import SupportLinks from "~/components/content/SupportLinks.vue"
+import HomePageHeader from "~/components/content/HomePageHeader.astro"
+import HomePageButtons from "~/components/content/HomePageButtons.astro"
+import WhatsNew from "~/components/layouts/WhatsNew.astro"
+import SupportLinks from "~/components/content/SupportLinks.astro"
 import PluginCount from "~/components/content/PluginCount.vue"
 import BigChildCards from "~/components/docs/BigChildCards.astro"
 
@@ -43,3 +43,4 @@ Thanks to <PluginCount client:idle /> plugins and embedded Code editor with Git 
 <WhatsNew title="What's New in Kestra" />
 
 <SupportLinks title="Support" />
+

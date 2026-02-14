@@ -82,29 +82,26 @@
     .plugin {
         height: 188px;
         border-radius: 12px;
-        border: 1px solid var(--kestra-io-token-color-border-secondary);
+        border: 1px solid var(--ks-border-secondary);
         padding: $rem-1;
         padding-bottom: 2px;
-        background: var(--kestra-io-token-color-background-secondary);
+        background: var(--ks-background-primary);
         display: flex;
         flex-direction: column;
         gap: 0;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
         transition: 0.4s ease-out;
-
         &:hover {
-            border-color: var(--kestra-io-token-color-border-active);
-            box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+            border-color: var(--ks-border-active);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
             transform: scale(1.025);
         }
-
         .top-row {
             display: flex;
             flex-direction: row;
             gap: $rem-1;
             margin-bottom: 1rem;
         }
-
         .icon-content {
             width: 60px;
             height: 60px;
@@ -115,13 +112,11 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-
             img {
                 width: 45px;
                 height: 45px;
             }
         }
-
         .content {
             flex: 1;
             display: flex;
@@ -129,9 +124,8 @@
             gap: 0.5rem;
             min-width: 0;
         }
-
         h6 {
-            color: $white;
+            color: var(--ks-content-primary);
             font-size: $font-size-md;
             font-weight: 700;
             margin: 0;
@@ -139,30 +133,26 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
         .categories {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             width: 100%;
             margin-bottom: 0.5rem;
-
             .category-tag {
                 display: inline-block;
                 margin-right: 0.25rem;
-                background: color-palette.$base-purple-800;
-                color: $white;
+                background: var(--ks-backgroung-tag-category);
+                color: var(--ks-content-tag-category);
                 padding: 0.125rem 0.5rem;
                 border-radius: 40px;
-                border: 1px solid color-palette.$base-purple-600;
-                font-size: 0.625rem;
-                font-weight: 500;
+                font-size: $font-size-xs;
+                font-weight: 600;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
         }
-
         .description {
             color: var(--ks-content-secondary);
             font-size: $font-size-xs !important;
@@ -174,47 +164,41 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
         }
-
         hr {
-            border: 1px solid $black-3;
+            border: 1px solid var(--ks-border-secondary);
             margin: 0;
         }
-
         .footer {
             margin-top: auto;
             display: flex;
             flex-direction: column;
             gap: 0;
         }
-
         .bottom-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: $gray-100;
+            color: var(--ks-background-secondary);
             height: 45px;
-
             .left {
                 display: flex;
                 gap: $rem-1;
                 align-items: center;
-
                 p {
                     margin: 0;
                     font-weight: 700;
                     font-size: $font-size-xs !important;
+                    color: var(--ks-content-primary);
                 }
-
                 span {
-                    color: color-palette.$base-gray-300;
-                    font-weight: normal;
+                    color: var(--ks-content-primary);
                     margin-left: 2px;
+                    font-weight: normal;
                 }
             }
-
             :deep(svg) {
                 font-size: $rem-1;
-                color: var(--kestra-io-token-text-link-default);
+                color: var(--ks-content-link);
             }
         }
     }
@@ -223,7 +207,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
         .enterprise-badge {
             background: #130025;
             border: 1px solid color-palette.$base-yellow-700;

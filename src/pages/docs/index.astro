@@ -1,6 +1,6 @@
 ---
 import NavToc from "~/components/docs/NavToc.vue"
-import LayoutDocs from "~/components/layout-docs.astro"
+import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import { getEntry, render } from "astro:content"
 const doc = await getEntry("docs", "<index>")
 if (!doc) {

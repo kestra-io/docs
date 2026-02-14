@@ -11,15 +11,25 @@
                     <ChevronUp />
                 </a>
             </Transition>
-            <Slack v-if="displaySlack" widget :online="online" />
+            <div v-if="displaySlack && mounted" class="widget-chat">
+                <a
+                    href="https://kestra.io/slack"
+                    target="_blank"
+                    class="btn btn-sm btn-primary rounded"
+                >
+                    <Slack title="" />
+                    Slack
+                    <span v-if="online" class="online">{{ onlineText }} members</span>
+                </a>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, onUnmounted } from "vue"
+    import { ref, computed, onMounted, onUnmounted } from "vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import Slack from "~/components/community/Slack.vue"
+    import Slack from "vue-material-design-icons/Slack.vue"
 
     const props = withDefaults(
         defineProps<{
@@ -33,6 +43,7 @@
     )
 
     const yScroll = ref(0)
+    const mounted = ref(false)
 
     const handleScroll = () => {
         yScroll.value = window.scrollY
@@ -46,6 +57,7 @@
     }
 
     onMounted(() => {
+        mounted.value = true
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", handleScroll)
         }
@@ -55,6 +67,10 @@
         if (typeof window !== "undefined") {
             window.removeEventListener("scroll", handleScroll)
         }
+    })
+
+    const onlineText = computed(() => {
+        return props.online === undefined ? "" : Intl.NumberFormat("en-US").format(props.online)
     })
 </script>
 
@@ -68,23 +84,29 @@
         right: 10px;
         transform: translateX(0);
         transition: all ease 0.2s;
-
         .text-end {
             a {
-                background-color: $primary-1;
-                border-color: $primary-1;
+                background-color: var(--ks-background-button-primary-hover);
+                border-color: var(--ks-background-button-primary-hover);
             }
         }
-
+        .widget-chat {
+            a {
+                background-color: var(--ks-background-button-primary-hover);
+                border-color: var(--ks-background-button-primary-hover);
+            }
+        }
+        span.online {
+            font-weight: normal;
+            font-size: $font-size-xs;
+        }
         @include media-breakpoint-down("md") {
             display: none;
         }
-
         .v-enter-active,
         .v-leave-active {
             transition: opacity 0.8s ease;
         }
-
         .v-enter-from,
         .v-leave-to {
             opacity: 0;

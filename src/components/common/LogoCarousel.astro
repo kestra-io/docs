@@ -1,0 +1,97 @@
+---
+import { Image } from "astro:assets"
+
+const { title } = Astro.props
+
+const COMPANIES = [
+    "brainlab",
+    "bloomberg",
+    "fila",
+    "apple",
+    "toyota",
+    "apoteket",
+]
+const logos = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/landing/infrastructure/companies/*.svg",
+    { eager: true },
+)
+---
+
+{title && <span>{title}</span>}
+<div class="companies-container w-100 overflow-hidden">
+    <div class="companies d-flex align-items-center">
+        {
+            [...COMPANIES, ...COMPANIES].map((company, index) => (
+                <Image
+                    src={
+                        logos[
+                            `/src/assets/landing/infrastructure/companies/${company}.svg`
+                        ].default
+                    }
+                    alt={company}
+                    class:list={[
+                        "company-logo",
+                        { "d-lg-none": index >= COMPANIES.length },
+                    ]}
+                />
+            ))
+        }
+    </div>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    span {
+        font-family: $font-family-jetbrains-mono;
+        font-size: $font-size-xs;
+        color: $white;
+    }
+
+    .companies-container {
+        @include media-breakpoint-down(sm) {
+            margin-top: 1rem;
+            -webkit-mask-image: linear-gradient(
+                to right,
+                transparent,
+                black 10%,
+                black 90%,
+                transparent
+            );
+            mask-image: linear-gradient(
+                to right,
+                transparent,
+                black 10%,
+                black 90%,
+                transparent
+            );
+        }
+
+        .companies {
+            @include media-breakpoint-up(sm) {
+                gap: 2px;
+                margin-left: -14px;
+            }
+
+            @include media-breakpoint-down(lg) {
+                gap: 2rem;
+                width: max-content;
+                animation: marquee 20s linear infinite;
+            }
+
+            .company-logo {
+                flex-shrink: 0;
+                object-fit: contain;
+            }
+        }
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+</style>

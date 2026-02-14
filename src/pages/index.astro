@@ -1,34 +1,20 @@
 ---
 import Layout from "~/components/layout.astro"
 import Header from "~/components/home/Header.vue"
-import LogosTable from "~/components/home/LogosTable.vue"
-import OpenSource from "~/components/home/OpenSource.vue"
-import OpenSourceQuotes from "~/components/home/OpenSourceQuotes.vue"
+import LogosTable from "~/components/common/LogosTable.astro"
+import OpenSource from "~/components/home/OpenSource.astro"
+import OpenSourceQuotes from "~/components/common/OpenSourceQuotes.vue"
 import { $fetchApi } from "~/utils/fetch"
 import Features from "~/components/home/Features.vue"
-import EveryDev from "~/components/home/EveryDev.vue"
-import Experience from "~/components/home/Experience.vue"
-import BlueprintsRender from "~/components/home/BlueprintsRender.vue"
-import Enterprise from "~/components/home/Enterprise.vue"
-import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue"
-import CTA from "~/components/home/CTA.vue"
-import PluginsBox from "~/components/PluginsBox.astro"
+import EveryDev from "~/components/home/EveryDev.astro"
+import TabsSection from "~/components/common/TabsSection.vue"
+import BlueprintsRender from "~/components/common/BlueprintsRender.vue"
+import EnterpriseSection from "~/components/home/EnterpriseSection.astro"
+import EnterpriseQuotesRender from "~/components/common/EnterpriseQuotesRender.vue"
+import CTA from "~/components/common/CTA.astro"
+import PluginsBox from "~/components/common/PluginsBox.astro"
 import { getValues } from "./api/github"
 import { getImage } from "astro:assets"
-
-const logosNonRandomized = import.meta.glob(
-    "~/assets/trusted-companies/*.{svg,png}",
-)
-const logos = await Promise.all(
-    Object.entries(logosNonRandomized).map(([filePath, mod]) => {
-        return mod().then((img: any) => {
-            return {
-                name: filePath.split("/").pop()?.split(".").shift(),
-                url: img.default.src,
-            }
-        })
-    }),
-).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()))
 
 const githubData = await getValues()
 
@@ -39,16 +25,20 @@ const stories = await $fetchApi<{ results: any[] }>(
     "/customer-stories-v2?featured=true",
 )
 
-const quotesCompaniesLogos = import.meta.glob(
+const quotesCompaniesLogos = import.meta.glob<ImageMetadata>(
     "~/assets/quotes-companies/*.{svg,png}",
+    {
+        import: "default",
+    },
 )
+
 const quotesLogos = (
     await Promise.all(
         Object.entries(quotesCompaniesLogos).map(([filePath, mod]) => {
-            return mod().then((img: any) => {
+            return mod().then(async (img) => {
                 return {
                     name: filePath.split("/").pop(),
-                    url: img.default.src,
+                    url: await getImage({ src: img, height: 36 }),
                 }
             })
         }),
@@ -56,7 +46,7 @@ const quotesLogos = (
 ).reduce(
     (acc, curr) => {
         if (curr.name) {
-            acc[curr.name] = curr.url
+            acc[curr.name] = curr.url.src
         }
         return acc
     },
@@ -99,19 +89,24 @@ const tabs = [
 ]
 ---
 
-<Layout>
-    <Header client:load />
-    <LogosTable logos={logos} />
-    <OpenSource {...githubData} />
-    <OpenSourceQuotes client:visible />
-    <Features />
-    <EveryDev />
-    <Experience tabs={tabs} client:visible />
-    <PluginsBox />
-    <BlueprintsRender blueprints={blueprints.results} client:visible />
-    <Enterprise stories={stories.results} client:visible />
-    <EnterpriseQuotesRender quotesCompaniesLogos={quotesLogos} client:visible />
-    <CTA client:visible />
+<Layout headerTheme="darkHeader">
+    <div class="home-page">
+        <Header client:load />
+        <LogosTable />
+        <OpenSource {...githubData} />
+        <OpenSourceQuotes client:visible />
+        <Features />
+        <EveryDev />
+        <TabsSection tabs={tabs} client:visible />
+        <PluginsBox />
+        <BlueprintsRender blueprints={blueprints.results} client:visible />
+        <EnterpriseSection stories={stories.results} />
+        <EnterpriseQuotesRender
+            quotesCompaniesLogos={quotesLogos}
+            client:visible
+        />
+        <CTA />
+    </div>
 </Layout>
 
 <script>
@@ -146,3 +141,9 @@ const tabs = [
         card.addEventListener("mousemove", moveGradient as any)
     }
 </script>
+<style lang="scss">
+    .home-page {
+        background-color: #0a0b0d;
+        margin-top: -2rem;
+    }
+</style>

@@ -1,0 +1,67 @@
+---
+import BlogCard from "~/components/blogs/BlogCard.vue"
+import Link from "~/components/common/Link.astro"
+import LatestVideos from "~/components/blogs/LatestVideos.vue"
+import BlogGrid from "~/components/blogs/BlogGrid.vue"
+
+const { blogs, externalNews, videos } = Astro.props
+---
+
+<section>
+    <div class="container">
+        <BlogGrid client:load blogs={blogs} />
+
+        <div class="community-section">
+            <h2>Latest Community News</h2>
+            <div class="grid community-grid">
+                {
+                    externalNews.slice(0, 3).map((blog: any) => (
+                        <BlogCard blog={blog} target="_blank" />
+                    ))
+                }
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <Link href="/blogs/community" text="More Community News" />
+            </div>
+        </div>
+
+        {videos && <LatestVideos client:visible videos={videos} />}
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        padding: $rem-4 $rem-1;
+        background: var(--ks-background-body);
+        .container {
+            max-width: 1180px;
+            padding: 0;
+
+            .grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+
+                @include media-breakpoint-up(md) {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                &.community-grid {
+                    @include media-breakpoint-up(xl) {
+                        grid-template-columns: repeat(3, 1fr);
+                    }
+                }
+            }
+
+            .community-section {
+                padding: $rem-4 0;
+                display: flex;
+                flex-direction: column;
+                gap: $rem-2;
+            }
+        }
+    }
+</style>

@@ -1,4 +1,7 @@
 @import "variable";
+@import "ks-theme-light";
+@import "ks-theme-dark";
+@import "layout";
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -11,25 +14,24 @@ html {
 }
 
 pre {
-    color: $white;
+    color: var(--ks-content-primary);
 }
 
 body {
     min-width: 320px;
     min-height: 100%;
     position: relative;
-    background-color: #0a0b0d;
+    background-color: var(--ks-background-body);
+    color: var(--ks-content-primary);
 }
 
 .headers-body-bg {
     background: #111113 !important;
 }
 
-.nuxt-loading-indicator {
-    background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%) !important;
-}
 :root {
     --spacer: #{$spacer};
+    --bs-link-color-rgb: var(--ks-content-link);
     --#{$prefix}font-size-lg: #{$font-size-lg};
     --#{$prefix}font-size-sm: #{$font-size-sm};
 }
@@ -54,7 +56,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: 700;
+    font-weight: 600;
 }
 
 @include media-breakpoint-down(lg) {
@@ -79,19 +81,15 @@ h6 {
 }
 
 h1 {
-    font-weight: 900;
+    font-weight: 700;
 }
 
 h2 {
-    font-weight: 800;
+    font-weight: 700;
 }
 
 main {
     padding-top: 67px;
-
-    @include media-breakpoint-down(lg) {
-        padding-top: 60px;
-    }
 
     > div {
         overflow-x: hidden;
@@ -117,7 +115,7 @@ main {
 // bootstrap
 table.table {
     thead {
-        border-bottom: 2px solid var(--bs-black);
+        border-bottom: 2px solid var(--ks-content-primary);
     }
 }
 
@@ -128,9 +126,9 @@ table.table {
 }
 
 blockquote.blockquote {
-    border-left: 4px solid var(--bs-gray-500);
+    border-left: 4px solid var(--ks-content-secondary);
     padding-left: $spacer;
-    color: var(--bs-gray-500);
+    color: var(--ks-content-secondary);
     font-size: 1rem;
 }
 
@@ -167,7 +165,7 @@ blockquote.blockquote {
 }
 
 .btn-primary {
-    background-color: $purple-40;
+    background-color: var(--ks-background-button-primary);
     color: $white !important;
     position: relative;
     background-clip: padding-box;
@@ -181,22 +179,25 @@ blockquote.blockquote {
         left: -1px;
         z-index: -1;
         border-radius: inherit;
-        background: linear-gradient(to bottom, $purple-42, $purple-43);
     }
 
     &:hover {
-        background-color: $purple-41;
+        background-color: var(--ks-background-button-primary-hover);
     }
 }
 
 .btn-secondary {
-    background-color: $white;
-    color: $black-6 !important;
-    border: 1px solid #3c3c3c;
+    background-color: var(--ks-background-button-secondary);
+    color: var(--ks-content-primary) !important;
+    border: 1px solid var(--ks-border-button-secondary);
 
     &:hover {
-        background-color: $white-1;
-        color: $black-6;
+        background-color: rgba(var(--ks-background-button-secondary), 0.2);
+        color: $white !important;
+
+        .light & {
+            color: $black !important;
+        }
     }
 }
 
@@ -225,13 +226,21 @@ blockquote.blockquote {
     position: relative;
     background:
         linear-gradient(180deg, #694eff 0%, #5233ff 104.54%) padding-box,
-        linear-gradient(262.72deg, #ffffff 15.19%, #e8c8c8 37.92%, #838383 76.01%) border-box;
+        linear-gradient(262.72deg, #fff 15.19%, #e8c8c8 37.92%, #838383 76.01%) border-box;
     border-radius: $border-radius-lg;
     border: 1px solid transparent;
     box-shadow:
         0 0 10px #dce0f980,
         0 0 14px #be62ff inset,
         2px 2px 11px #0000001a;
+
+    span {
+        color: $white;
+
+        &:hover {
+            color: #f1f1f1d4;
+        }
+    }
 }
 
 .btn-animated {
@@ -240,7 +249,7 @@ blockquote.blockquote {
     z-index: 0;
     overflow: hidden;
     border: 0;
-    color: var(--bs-white);
+    color: #fff;
 
     &::before {
         content: "";
@@ -254,11 +263,12 @@ blockquote.blockquote {
     }
 
     &:active {
-        color: var(--bs-white) !important;
+        color: #fff;
     }
 
     &:hover {
-        color: var(--bs-white) !important;
+        color: #fff;
+
         &::before {
             animation-duration: 1.5s;
         }
@@ -280,11 +290,11 @@ blockquote.blockquote {
 
 .btn-dark {
     border: $btn-dark-border;
-    background: #333336;
-    border: 1px solid #333336;
+    background: var(--ks-background-tertiary);
+    border: 1px solid var(--ks-background-tertiary);
 
     &:hover {
-        background: #333336;
+        background: var(--ks-background-tertiary);
         border-color: rgba(255, 255, 255, 0.12);
     }
 }
@@ -316,7 +326,7 @@ blockquote.blockquote {
     }
 
     &::after {
-        background: #4b0aaa;
+        background: #631bff;
     }
 
     &:hover {
@@ -328,7 +338,7 @@ blockquote.blockquote {
             20px 40px 12px 0px rgba(101, 24, 216, 0.01);
 
         &::after {
-            background: #650de4;
+            background: #631bff;
         }
     }
 }
@@ -358,12 +368,11 @@ blockquote.blockquote {
     }
 
     h1 {
-        font-size: 3.25rem;
-        padding-bottom: 1.5rem;
+        font-size: $h1-font-size;
     }
 
     p.baseline {
-        font-size: $font-size-xl;
+        font-size: $font-size-base;
         padding-bottom: 1.5rem;
     }
 
@@ -376,7 +385,7 @@ blockquote.blockquote {
     }
 
     .dot {
-        color: $pink;
+        color: var(--ks-content-color-highlight);
         font-family: var(--bs-font-monospace);
         font-size: 52px;
     }
@@ -434,7 +443,7 @@ blockquote.blockquote {
 }
 
 .card {
-    border-color: transparent;
+    border-color: var(--ks-border-primary);
 
     .cart-title-container {
         display: flex;
@@ -444,9 +453,10 @@ blockquote.blockquote {
     .card-icon {
         width: 50px;
         height: 50px;
-        background-color: $primary;
+        background-color: var(--ks-background-button-primary);
         border-radius: $border-radius-lg;
-        color: var(--bs-white);
+        color: var(--ks-content-primary);
+
         text-align: center;
         display: flex;
         font-size: 2rem;
@@ -474,7 +484,8 @@ blockquote.blockquote {
     }
 
     h5.card-title {
-        color: $purple-1;
+        color: var(--ks-content-link);
+
         font-size: $h4-font-size;
     }
 
@@ -498,14 +509,15 @@ blockquote.blockquote {
 
     &::-webkit-scrollbar-thumb {
         -webkit-border-radius: 10px;
-        background: $black-5;
+        background: var(--ks-content-secondary);
     }
 }
 
 .type-mark {
     background-color: var(--bs-secondary);
     border-radius: var(--bs-border-radius);
-    color: var(--bs-white);
+    color: var(--ks-content-primary);
+
     font-size: $font-size-sm;
     margin-right: 5px;
 }
@@ -519,8 +531,9 @@ small.agree {
     opacity: 0.6;
     color: var(--bs-body-color);
     a {
-        color: var(--bs-body-color);
+        color: var(--ks-content-link);
     }
+
 }
 
 @keyframes slide-in {
@@ -566,18 +579,20 @@ small.agree {
     --spacer: #{$spacer};
     // avoids issues when pagination css file is loaded too late or not at all
     .pagination {
-        --bs-pagination-disabled-bg: $black-2;
-        --bs-pagination-bg: $black-2;
+        --bs-pagination-disabled-bg: var(--ks-background-secondary);
+        --bs-pagination-bg: var(--ks-background-secondary);
     }
 }
 
 #cc-main {
     --cc-font-family: var(--bs-body-font-family);
-    --cc-btn-primary-color: #fff;
-    --cc-btn-primary-bg: var(--bs-primary);
-    --cc-btn-primary-hover-bg: #8d45ff;
-    --cc-btn-primary-hover-color: $white;
-    --cc-btn-primary-border-color: var(--bs-primary);
+    --cc-btn-primary-color: var(--ks-content-primary);
+
+    --cc-btn-primary-bg: var(--ks-background-button-primary);
+    --cc-btn-primary-hover-bg: var(--ks-background-button-primary-hover);
+    --cc-btn-primary-hover-color: var(--ks-content-primary);
+    --cc-btn-primary-border-color: var(--ks-background-button-primary);
+
 }
 
 .medium-zoom-overlay {
@@ -605,9 +620,10 @@ small.agree {
 
 .top-breadcrumb {
     font-size: $font-size-sm;
-    color: var(--bs-primary);
+    color: var(--ks-content-link);
+
     font-family: var(--bs-font-monospace);
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     max-width: 700px;
     .bd-gutter & {
@@ -631,7 +647,13 @@ small.agree {
 }
 
 .form-select {
-    --bs-form-select-bg-img: url("/landing/plugins/select-arrow.svg") !important;
+    --bs-body-bg: var(--ks-background-body);
+    --bs-border-color: var(--ks-border-primary);
+    --bs-body-color: var(--ks-background-secondary);
+    
+    html.dark & {
+        --bs-form-select-bg-img: url("/landing/plugins/select-arrow.svg") !important;
+    }
 }
 
 @include media-breakpoint-down(lg) {
@@ -645,6 +667,7 @@ small.agree {
         display: none;
     }
 }
+
 .plugin-tooltip {
     .tooltip-inner {
         text-align: left !important;
@@ -653,7 +676,8 @@ small.agree {
         background-color: rgb(0, 0, 0, 0.6);
         -webkit-backdrop-filter: blur(4px);
         backdrop-filter: blur(4px);
-        color: var(--kestra-io-token-color-white);
+        color: var(--ks-content-primary);
+
         border: 1px solid var(--kestra-io-token-color-border-primary);
         border-radius: 1em;
         max-width: 80ch;
@@ -666,7 +690,7 @@ small.agree {
 
         li::marker,
         a {
-            color: var(--kestra-io-token-text-link-default);
+            color: var(--ks-content-link);
         }
 
         li {
@@ -692,18 +716,6 @@ small.agree {
     }
 }
 
-.bd-content .bd-markdown .code-block {
-    code {
-        white-space: pre-wrap;
-    }
-    pre.shiki {
-        margin-top: 0;
-        code {
-            display: block;
-        }
-    }
-}
-
 #search-modal,
 #search-ai-modal {
     .modal-dialog {
@@ -719,9 +731,12 @@ small.agree {
     }
 
     .modal-body {
-        border: 1px solid $black-6;
+        border: 1px solid var(--ks-border-primary);
         border-radius: $border-radius-lg;
         padding: 0;
+        overflow: clip;
+        background: var(--ks-background-body);
+        color: var(--ks-content-primary);
     }
 }
 
@@ -778,13 +793,13 @@ small.agree {
         align-items: center;
         width: 100%;
         gap: 6px;
-        background-color: var(--ks-button-background-secondary);
+        background-color: var(--ks-background-button-secondary-active);
         color: var(--ks-content-primary);
-        box-shadow: 0px 4px 4px 0px #00000040;
-        font-size: 12px;
+        box-shadow: 0px 4px 4px 0px var(--ks-shadow-light);
+        font-size: $font-size-xs;
         font-weight: 700;
         border: none;
-        border-radius: 4px;
+        border-radius: 0.25rem;
     }
 }
 
@@ -808,4 +823,7 @@ small.agree {
     }
 }
 
-@import "./docs";
+.highlight {
+    color: var(--ks-content-color-highlight);
+}
+

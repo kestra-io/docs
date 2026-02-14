@@ -1,5 +1,5 @@
 <template>
-    <article class="video-responsive">
+    <article class="video-responsive" @click="emit('click')">
         <div class="thumbnail">
             <NuxtImg
                 class="thumbnail-img"
@@ -22,8 +22,12 @@
         <div class="video-content">
             <p class="category">{{ video.category }}</p>
             <h3 class="title">{{ video.title }}</h3>
-            <time v-if="video.publicationDate" class="video-info" :datetime="video.publicationDate">
-                {{ getYMD(video.publicationDate) }}
+            <time
+                v-if="video.publicationDate"
+                class="video-info"
+                :datetime="video.publicationDate"
+            >
+                {{ formattedDate }}
             </time>
             <p class="author">{{ video.author }}</p>
         </div>
@@ -44,12 +48,13 @@
         videoId?: string
     }
 
-    interface Props {
+    const props = defineProps<{
         video: VideoData
-        getYMD: (date: string) => string
-    }
+    }>()
 
-    const props = defineProps<Props>()
+    const emit = defineEmits<{
+        (e: "click"): void
+    }>()
 
     const { getThumbnailUrl, extractVideoId, isValidVideoId } = useYoutube()
 
@@ -59,7 +64,6 @@
     const videoId = computed(() => {
         const urlOrId = props.video.youtubeUrl || props.video.videoId
         if (!urlOrId) return null
-
         return isValidVideoId(urlOrId) ? urlOrId : extractVideoId(urlOrId)
     })
 
@@ -68,6 +72,19 @@
             ? DEFAULT_THUMBNAIL
             : getThumbnailUrl(videoId.value) || DEFAULT_THUMBNAIL,
     )
+
+    const formattedDate = computed(() => {
+        if (!props.video.publicationDate) return ""
+        try {
+            return new Intl.DateTimeFormat("de-DE", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            }).format(new Date(props.video.publicationDate))
+        } catch (e) {
+            return props.video.publicationDate
+        }
+    })
 
     const handleImageError = () => (hasImageFailed.value = true)
 </script>
@@ -80,24 +97,21 @@
         flex-direction: column;
         gap: calc($spacer * 0.25);
         cursor: pointer;
-
         .thumbnail {
-            border: 1px solid $black-6;
-            border-radius: calc($spacer * 0.5);
             position: relative;
-            overflow: hidden;
-            aspect-ratio: 16/9;
             width: 100%;
-            background-color: $black-2;
-
-            .thumbnail-img {
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            border: 1px solid var(--ks-content-tertiary);
+            border-radius: calc($spacer * 0.5);
+            background-color: var(--ks-background-secondary);
+            &-img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 object-position: center;
                 transition: scale 0.3s ease;
             }
-
             .youtube-icon {
                 position: absolute;
                 top: 50%;
@@ -107,51 +121,47 @@
                 height: auto;
                 pointer-events: none;
             }
-
-            &:hover .thumbnail-img {
-                scale: 1.05;
+            &:hover {
+                .thumbnail-img {
+                    scale: 1.05;
+                }
             }
         }
-
         .video-content {
             display: flex;
             flex-direction: column;
             gap: calc($spacer * 0.125);
-        }
-
-        .category {
-            margin: 0;
-            font-size: $font-size-sm;
-            line-height: calc($spacer * 1.375);
-            font-weight: 500;
-            color: $purple-36;
-            letter-spacing: 0.5px;
-        }
-
-        .title {
-            font-size: $font-size-base;
-            font-weight: 600;
-            line-height: calc($spacer * 1.5);
-            color: $white;
-            margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .video-info {
-            margin: 0;
-            font-size: $font-size-sm;
-            color: $white-3;
-            font-weight: 400;
-        }
-
-        .author {
-            margin: 0;
-            font-size: $font-size-sm;
-            color: $black-8;
-            font-weight: 400;
+            .category {
+                margin: 0;
+                font-size: $font-size-sm;
+                line-height: calc($spacer * 1.375);
+                font-weight: 500;
+                color: var(--ks-content-link);
+                letter-spacing: 0.5px;
+            }
+            .title {
+                margin: 0;
+                font-size: $font-size-base;
+                font-weight: 600;
+                line-height: calc($spacer * 1.5);
+                color: var(--ks-content-primary);
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .video-info {
+                margin: 0;
+                font-size: $font-size-sm;
+                color: var(--ks-content-secondary);
+                font-weight: 400;
+            }
+            .author {
+                margin: 0;
+                font-size: $font-size-sm;
+                color: var(--ks-content-tertiary);
+                font-weight: 400;
+            }
         }
     }
 </style>

@@ -73,44 +73,33 @@
     }
 
     .announce {
-        width: 100%;
-        opacity: 1;
-
         &.hidden {
             opacity: 0;
             display: none;
             top: -100px;
         }
-
         .alert {
             border-radius: 0;
             border: 0;
             text-align: center;
             backdrop-filter: blur(0.625rem);
-            background-color: transparent;
-            color: var(--bs-white);
-            padding-left: calc($spacer * 0.938) 0.5rem;
-            padding-right: calc($spacer * 0.938) 0.5rem;
+            background: transparent;
+            color: $white;
+            padding-inline: calc($spacer * 0.938);
             border-bottom: 1px solid #e5e4f721;
             margin-bottom: 0;
             position: relative;
             z-index: 1;
             overflow: hidden;
-            transition:
-                max-height 0.5s linear,
-                color 0.5s linear;
+            transition: max-height 0.5s linear, color 0.5s linear;
             height: 3rem;
-
             &.scrolled {
-                background-color: rgba(17, 17, 19, 0.65);
+                background: rgba(17, 17, 19, 0.65);
                 transition: background-color 250ms ease-in-out;
             }
-
             @include media-breakpoint-down(sm) {
-                padding-right: calc($spacer / 2);
-                padding-left: calc($spacer / 2);
+                padding-inline: calc($spacer / 2);
             }
-
             &::after {
                 content: "";
                 position: absolute;
@@ -119,25 +108,21 @@
                 bottom: 32%;
                 left: -25%;
                 z-index: -1;
-                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
+                background: linear-gradient(180deg, transparent, #6117ff);
                 filter: blur(80px);
             }
-
             a {
                 text-decoration: underline;
-                color: $purple-36;
+                color: var(--ks-content-color-highlight);
                 font-weight: 400 !important;
                 margin-left: $spacer;
             }
-
             p {
                 margin-bottom: 0;
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
-                max-width: 100%;
             }
-
             button {
                 position: absolute;
                 right: 3px;
@@ -145,7 +130,7 @@
                 background: none;
                 border: 0;
                 font-size: 24px;
-                color: var(--bs-white);
+                color: $white;
             }
         }
     }
@@ -153,10 +138,9 @@
     :deep(.carousel > .carousel__viewport > .carousel__track) {
         .carousel__slide {
             opacity: 0.5;
-        }
-
-        .carousel__slide--active {
-            opacity: 1;
+            &--active {
+                opacity: 1;
+            }
         }
     }
 </style>

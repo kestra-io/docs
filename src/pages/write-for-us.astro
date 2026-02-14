@@ -1,16 +1,16 @@
 ---
 import Layout from "~/components/layout.astro"
-import Examples from "~/components/use-cases/Examples.vue"
-import Line from "~/components/use-cases/Line.vue"
-import HeaderCard from "~/components/use-cases/Card.vue"
-import Faqs from "~/components/write-for-us/Faqs.vue"
-import Process from "~/components/write-for-us/Process.vue"
-import Write from "~/components/write-for-us/Write.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import VerticalProcess from "~/components/layout/VerticalProcess.vue"
+import Write from "~/components/layout/Write.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import Faq from "~/components/common/Faq.vue"
 
-const href = "https://share-eu1.hsforms.com/1HWgyBQh8RP6pEZVFW51rOAg7f8j"
 
-const header = {
+const FORM_URL = "https://share-eu1.hsforms.com/1HWgyBQh8RP6pEZVFW51rOAg7f8j"
+
+const HEADER = {
     tag: '<span class="text-gradient">Write</span> for the Kestra <br /> Community',
     title: "Write for the Kestra Community",
     description:
@@ -20,7 +20,7 @@ const header = {
     cta: [
         {
             text: "Submit a Draft",
-            href,
+            href: FORM_URL,
             style: "btn-animated btn-purple-animated btn",
             target: "_blank",
         },
@@ -34,36 +34,40 @@ const header = {
     },
 }
 
-const drafts = {
-    tag: "Why Submit a <span class='text-gradient'>Draft</span> ?",
-    title: "Why Submit a Draft",
-    cardGroup: "text-start",
-    items: [
-        {
-            title: "Showcase your expertise",
-            text:
-                "Writing sharpens your ability to convey complex technical ideas clearly and effectively. If " +
-                "your draft shows potential, our team will assist you to refine it, making your message more impactful.",
-            icon: "/shared/head-dots-horizontal-outline.svg",
+const DRAFTS = [
+    {
+        title: "Showcase your expertise",
+        description:
+            "Writing sharpens your ability to convey complex technical ideas clearly and effectively. If " +
+            "your draft shows potential, our team will assist you to refine it, making your message more impactful.",
+        image: {
+            src: "/shared/head-dots-horizontal-outline.svg",
+            alt: "Showcase your expertise"
         },
-        {
-            title: "Gain Recognition",
-            text:
-                "We value our contributors and promote their articles across our social media channels and " +
-                "newsletter, offering you a platform to reach a broad audience in the tech community.",
-            icon: "/shared/face-recognition.svg",
+    },
+    {
+        title: "Gain Recognition",
+        description:
+            "We value our contributors and promote their articles across our social media channels and " +
+            "newsletter, offering you a platform to reach a broad audience in the tech community.",
+        image: {
+            src: "/shared/face-recognition.svg",
+            alt: "Gain Recognition"
         },
-        {
-            title: "Get Compensated",
-            text:
-                "Your expertise is precious, and we believe in rewarding our contributors. We offer competitive " +
-                "compensation for original articles, videos and tutorials.",
-            icon: "/shared/currency-usd.svg",
+    },
+    {
+        title: "Get Compensated",
+        description:
+            "Your expertise is precious, and we believe in rewarding our contributors. We offer competitive " +
+            "compensation for original articles, videos and tutorials.",
+        image: {
+            src: "/shared/currency-usd.svg",
+            alt: "Get Compensated"
         },
-    ],
-}
+    },
+]
 
-const write = {
+const WRITE_PROGRAM = {
     tag: "What is the <span class='text-gradient'>Write for Kestra</span> Program ?",
     title: "What is the Write for the Kestra Program ?",
     titleClass: "title-sm",
@@ -106,14 +110,13 @@ const write = {
             "plus.",
         action: {
             text: "Apply",
-            href,
-            style: "btn-animated btn-purple-animated btn",
+            href: FORM_URL,
             target: "_blank",
         },
     },
 }
 
-const process = {
+const PROCESS = {
     icon: "/shared/arrow-down.svg",
     title: "The Process: ",
     items: [
@@ -147,25 +150,25 @@ const process = {
     ],
 }
 
-const faqs = {
+const FAQS = {
     title: "FAQs",
     items: [
         {
-            title: "Compensation",
-            description:
+            question: "Compensation",
+            answer:
                 "Original articles are compensated at a competitive rate (exact amount to be specified), " +
                 "payable upon publication.",
         },
         {
-            title: "Cross-Posting",
-            description:
+            question: "Cross-Posting",
+            answer:
                 "You can cross-post your article on other platforms, provided a canonical link to the " +
                 "Kestra site is included.",
         },
     ],
 }
 
-const footer = {
+const FOOTER = {
     title: "Start Writing For Kestra",
     cta: [
         {
@@ -176,46 +179,50 @@ const footer = {
         },
         {
             text: "Submit a draft",
-            href,
+            href: FORM_URL,
             style: "btn-animated btn-purple-animated",
             target: "_blank",
         },
     ],
 }
-
-const title = header.title
-const description = header.description
 ---
 
-<Layout title={title} description={description}>
+<Layout title={HEADER.title} description={HEADER.description}>
     <div class="main">
-        <HeaderCard content={header} client:load />
-        <Line class="divider-md" client:visible />
-        <Examples content={drafts} client:visible />
-        <Line class="mb-0" client:visible />
-        <Write content={write} client:visible />
-        <Line class="mt-0 mb-0" client:visible />
-        <Process content={process} client:visible />
-        <Faqs content={faqs} client:visible />
-        <Line client:visible />
-        <LayoutFooterContact
+        <DetailsHero
+            client:load
+            title={HEADER.tag}
+            description={HEADER.description}
+            image={{
+                src: HEADER.image.href,
+                alt: HEADER.image.alt,
+                width: HEADER.image.width,
+                height: HEADER.image.height,
+                class: HEADER.image.style
+            }}
+            actions={{
+                purple: HEADER.cta[0],
+                dark: {}
+            }}
+        />
+        <Cards
+            title="Why Submit a <span class='highlight'>Draft</span> ?"
+            cards={DRAFTS}
+        />
+        <Write content={WRITE_PROGRAM} client:visible />
+        <VerticalProcess content={PROCESS} client:visible />
+        <Faq items={FAQS.items} title={FAQS.title} layout="full-width" client:visible />
+        <FooterContact
             client:visible
-            title={footer.title}
-            darkButtonText={footer.cta[0].text}
-            darkButtonHref={footer.cta[0].href}
-            purpleButtonText={footer.cta[1].text}
-            purpleButtonHref={footer.cta[1].href}
+            title={FOOTER.title}
+            dark={{
+                text: FOOTER.cta[0].text,
+                href: FOOTER.cta[0].href,
+            }}
+            purple={{
+                text: FOOTER.cta[1].text,
+                href: FOOTER.cta[1].href,
+            }}
         />
     </div>
 </Layout>
-
-<style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
-    .main {
-        background-color: $black-4;
-        color: $white;
-        font-weight: 300;
-        padding-bottom: 3rem;
-    }
-</style>

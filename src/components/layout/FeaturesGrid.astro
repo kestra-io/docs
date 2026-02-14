@@ -1,0 +1,73 @@
+---
+interface Feature {
+    title: string
+    description: string
+    image: string
+}
+
+interface Props {
+    features: Feature[]
+}
+
+const { features } = Astro.props
+---
+
+<div class="features-grid">
+    {
+        features.map((f) => (
+            <div class="feature">
+                <img src={f.image} alt={f.title} class="feature-image" />
+                <h3>{f.title}</h3>
+                <p>{f.description}</p>
+            </div>
+        ))
+    }
+</div>
+
+<style lang="scss">
+    @use "~/assets/styles/variable" as *;
+
+    .features-grid {
+        display: grid;
+        margin-top: 2rem;
+        background-color: var(--ks-background-tertiary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 10px;
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(3, minmax(350px, 1fr));
+            padding: 2rem 0;
+        }
+    }
+
+    .feature {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 2rem;
+        border-bottom: 1px solid var(--ks-border-secondary);
+
+        @include media-breakpoint-up(xl) {
+            padding: 1rem 2rem 0;
+            border: none;
+            border-right: 1px solid var(--ks-border-secondary);
+        }
+
+        &:last-child {
+            border: none;
+        }
+
+        .feature-image {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 1.2rem;
+        }
+
+        h3 {
+            white-space: nowrap;
+            font-size: $h4-font-size;
+        }
+    }
+</style>

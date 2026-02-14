@@ -1,0 +1,19 @@
+---
+import Layout from "~/components/layout.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
+
+const {
+    meta,
+    footer
+} = Astro.props;
+---
+
+<Layout title={meta.title} description={meta.description}>
+    <slot />
+    <FooterContact
+        client:visible
+        title={footer?.title}
+        dark={footer?.links?.dark}
+        purple={footer?.links?.purple}
+    />
+</Layout>

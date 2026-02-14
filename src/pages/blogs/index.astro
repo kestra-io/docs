@@ -1,20 +1,26 @@
 ---
 import { getCollection } from "astro:content"
-import BlogsList from "~/components/blogs/BlogsList.vue"
-import LayoutBlogs from "~/components/layout-blogs.astro"
+import BlogList from "~/components/blogs/BlogList.astro"
 import { $fetchApi } from "~/utils/fetch"
 import { getImage } from "astro:assets"
+import Squared from "~/components/blogs/Squared.astro"
+import Layout from "~/components/layout.astro"
+import Subscribe from "~/components/layout/Subscribe.vue"
+import UpdateLetter from "~/components/layout/Updateletter.vue"
 
 const blogs = await getCollection("blogs")
 
 const sortedBlogs = await Promise.all(
     blogs
         .sort((a, b) => {
-            return a.data.date > b.data.date ? 1 : -1
+            return (
+                new Date(b.data.date).getTime() -
+                new Date(a.data.date).getTime()
+            )
         })
         .map(async (blog) => {
             const image = await getImage({
-                src: blog.data.image,
+                src: blog.data.image ?? "",
                 format: "webp",
                 width: 800,
             })
@@ -51,17 +57,36 @@ const externalNews = externalNewsData.results.map((data) => {
         date: data.publicationDate,
     }
 })
+
+const internalBlogs = sortedBlogs.map((blog) => ({
+    ...blog.data,
+    slug: blog.id,
+    path: `/blogs/${blog.id}`,
+}))
+
+const tutorialVideo = await $fetchApi(`/tutorial-videos?page=1&size=3`)
 ---
 
-<LayoutBlogs activeStem="/blogs">
-    <BlogsList
-        client:idle
-        currentUrl={Astro.request.url}
-        blogs={sortedBlogs.map((blog) => ({
-            ...blog.data,
-            slug: blog.id,
-            path: `/blogs/${blog.id}`,
-        }))}
+<Layout>
+    <Squared>
+        <div>
+            <h1>All things Kestra.</h1>
+            <p>The latest updates, guides and stories</p>
+        </div>
+        <Subscribe client:visible class="margin" />
+    </Squared>
+    <BlogList
+        blogs={internalBlogs}
         externalNews={externalNews}
+        videos={tutorialVideo.results}
     />
-</LayoutBlogs>
+    <UpdateLetter client:visible />
+</Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .margin {
+        margin-top: 44px;
+    }
+</style>

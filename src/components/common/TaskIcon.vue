@@ -1,54 +1,21 @@
 <template>
-    <div
-        ref="root"
-        class="icon-wrapper"
-        data-bs-toggle="tooltip"
-        data-bs-placement="top"
-        :title="generateTagName()"
-    >
+    <div ref="root" class="icon-wrapper" data-bs-toggle="tooltip" data-bs-placement="top" :title="generateTagName()">
         <div class="icon" :style="styles" />
     </div>
 </template>
 
 <script lang="ts" setup>
-    import { computed, ref } from "vue"
-    // const {$bootstrap} = useNuxtApp()
+    import { computed } from "vue"
 
     const props = defineProps({
-        cls: {
-            type: String,
-            default: "",
-        },
+        cls: { type: String, default: "" }
     })
 
-    const styles = computed(() => {
-        return {
-            background: `url("/icons/${props.cls}.svg")`,
-        }
-    })
+    const styles = computed(() => ({
+        background: `url("/icons/${props.cls}.svg")`
+    }))
 
-    const root = ref(null)
-
-    // onMounted(() => {
-    //     if (process.client) {
-    //         new $bootstrap.Tooltip(root.value);
-    //     }
-    // });
-
-    // onBeforeUnmount(() => {
-    //     if (process.client) {
-    //         const tooltip = $bootstrap.Tooltip.getInstance(root.value);
-    //         if (tooltip) {
-    //             tooltip.dispose();
-    //         }
-    //     }
-    // });
-
-    const generateTagName = () => {
-        const splittedName = props.cls.split(".")
-
-        return splittedName[splittedName.length - 1]
-    }
+    const generateTagName = () => props.cls.split(".").pop()
 </script>
 
 <style lang="scss" scoped>
@@ -57,7 +24,6 @@
         width: 100%;
         height: 100%;
         position: relative;
-
         .icon {
             width: 100%;
             height: 100%;

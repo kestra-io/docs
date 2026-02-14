@@ -1,0 +1,163 @@
+---
+import Card from "~/components/card/Card.vue"
+
+interface Props {
+    title?: string
+    description?: string
+    subtitle?: string
+    subtitleAfter?: string
+    items: any[]
+    cta?: {
+        text: string
+        href: string
+        target?: string
+    }
+}
+
+const { title, description, subtitle, subtitleAfter, items, cta } = Astro.props
+---
+
+<section>
+    <div class="container">
+        {
+            title && (
+                <div class="heading mx-auto pb-4 text-center">
+                    <h1 class="title" set:html={title} />
+                    {description && (
+                        <p class="description mt-3" set:html={description} />
+                    )}
+                </div>
+            )
+        }
+
+        {
+            (subtitle || subtitleAfter) && (
+                <div class="text-center mt-3">
+                    <h2 class="subtitle">
+                        {subtitle}{" "}
+                        <span class="highlight">{subtitleAfter}</span>
+                    </h2>
+                    {description && (
+                        <p class="description mt-3" set:html={description} />
+                    )}
+                </div>
+            )
+        }
+
+        <div class="row card-group no-shadow mb-2 justify-content-center mt-5">
+            {
+                items.map((item) => {
+                    const isIconComponent =
+                        item.icon &&
+                        typeof item.icon !== "string" &&
+                        !item.icon.src
+
+                    const iconSrc = !isIconComponent
+                        ? typeof item.icon === "string"
+                            ? item.icon
+                            : item.icon?.src
+                        : undefined
+
+                    const iconAlt = !isIconComponent
+                        ? item.icon?.alt
+                        : undefined
+
+                    const IconComponent = isIconComponent
+                        ? item.icon
+                        : undefined
+
+                    const cardProps = {
+                        img: iconSrc,
+                        imgAlt: iconAlt,
+                        title: item.title,
+                        description: item.description,
+                        descriptionHtml: item.descriptionHtml,
+                        href: item.href,
+                        number: item.number,
+                    }
+
+                    return (
+                        <div class="col-12 col-md-6 col-lg-4 mb-4">
+                            {IconComponent ? (
+                                <Card client:visible {...cardProps}>
+                                    <IconComponent slot="icon" />
+                                </Card>
+                            ) : (
+                                <Card client:visible {...cardProps} />
+                            )}
+                        </div>
+                    )
+                })
+            }
+        </div>
+
+        {
+            cta && (
+                <div class="text-center mt-4">
+                    <a
+                        href={cta.href}
+                        target={cta.target ?? "_blank"}
+                        class="btn btn-animated btn-purple-animated"
+                        data-usal="zoomin"
+                    >
+                        {cta.text}
+                    </a>
+                </div>
+            )
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        background-color: var(--ks-background-body);
+        padding: calc($spacer * 4) 0;
+
+        .container {
+            background-image: url("/landing/features/scheduling/masking.svg");
+            position: relative;
+            z-index: 10;
+
+            &::before {
+                content: "";
+                position: absolute;
+                width: 214px;
+                height: 227px;
+                background: linear-gradient(
+                    140deg,
+                    rgba(70, 24, 255, 0) -42%,
+                    #7e1cfa 77%
+                );
+                filter: blur(82px);
+                left: 50%;
+                transform: translateX(-50%);
+                top: 5rem;
+                z-index: -1;
+            }
+
+            .heading {
+                max-width: 800px;
+            }
+
+            .title {
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            .description {
+                color: var(--ks-content-primary);
+                font-weight: normal;
+                font-size: $font-size-lg;
+                max-width: $container-max-width;
+                margin: 0 auto;
+            }
+
+            .subtitle {
+                margin-bottom: 0;
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+</style>

@@ -1,0 +1,380 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface FeatureCard {
+    title: string;
+    description: string;
+}
+
+interface ListSection {
+    title: string;
+    items: string[];
+}
+
+interface Props {
+    data: {
+        title: string;
+        highlightTitle: string;
+        featureCardsFirst: FeatureCard[];
+        featureCardsSecond: FeatureCard[];
+        coil: {
+            label: string;
+            list1: ListSection;
+            list2: ListSection;
+            list3: {
+                title: string;
+                items: string[];
+            };
+        };
+    };
+}
+
+const { data } = Astro.props;
+---
+
+<section class="main">
+    <div class="container">
+        <div class="text-block" data-usal="fade-up">
+            <h1>{data.title}</h1>
+            <h1 class="highlight">{data.highlightTitle}</h1>
+        </div>
+        <div class="feature-cards">
+            {
+                data.featureCardsFirst.map((card) => (
+                    <div class="card" data-usal="fade-up">
+                        <h4>{card.title}</h4>
+                        <p>{card.description}</p>
+                    </div>
+                ))
+            }
+        </div>
+        <div class="coil d-none d-xl-block" data-usal="fade-up">
+            <div class="inside">
+                <img src="/landing/features/kestra.png" alt="Kestra" />
+                <span class="label">{data.coil.label}</span>
+            </div>
+            <img
+                src="/landing/features/skyblue.png"
+                class="coil-border-1"
+                height="38.26"
+                alt="Skyblue Border"
+            />
+            <div class="list list-1">
+                <h5>{data.coil.list1.title}</h5>
+                <ul class="list-unstyled">
+                    {
+                        data.coil.list1.items.map((item) => (
+                            <li>
+                                <Icon
+                                    name="mdi:arrow-right-thick"
+                                    class="arrow-right-thick-icon"
+                                />
+                                {item}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+            <img
+                src="/landing/features/pinkish.png"
+                class="coil-border-2"
+                width="156"
+                height="39"
+                alt="Pinkish Border"
+            />
+            <div class="list list-3">
+                <h5>{data.coil.list3.title}</h5>
+                <ul class="list-unstyled mt-1">
+                    <div
+                        class="d-flex flex-column align-items-center justify-center"
+                    >
+                        <div
+                            class="d-flex flex-row align-items-center justify-center gap-3"
+                        >
+                            {
+                                data.coil.list3.items
+                                    .slice(0, 3)
+                                    .map((item) => (
+                                        <li>
+                                            <Icon
+                                                name="mdi:arrow-right-thick"
+                                                class="arrow-right-thick-icon"
+                                            />
+                                            {item}
+                                        </li>
+                                    ))
+                            }
+                        </div>
+                        <div
+                            class="d-flex flex-row align-items-center justify-center ps-5 gap-4"
+                        >
+                            {
+                                data.coil.list3.items
+                                    .slice(3, 5)
+                                    .map((item) => (
+                                        <li>
+                                            <Icon
+                                                name="mdi:arrow-right-thick"
+                                                class="arrow-right-thick-icon"
+                                            />
+                                            {item}
+                                        </li>
+                                    ))
+                            }
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <img
+                src="/landing/features/yellowish.png"
+                class="coil-border-3"
+                width="123"
+                height="39"
+                alt="Yellowish Border"
+            />
+            <div class="list list-2">
+                <h5>{data.coil.list2.title}</h5>
+                <ul class="list-unstyled">
+                    {
+                        data.coil.list2.items.map((item) => (
+                            <li>
+                                <Icon
+                                    name="mdi:arrow-right-thick"
+                                    class="arrow-right-thick-icon"
+                                />
+                                {item}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="feature-cards">
+            {
+                data.featureCardsSecond.map((card) => (
+                    <div class="card" data-usal="fade-up">
+                        <h4>{card.title}</h4>
+                        <p>{card.description}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .main {
+        background: var(--ks-background-primary);
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            padding: 60px 1rem;
+
+            @include media-breakpoint-up(md) {
+                padding: 90px 0;
+            }
+
+            .text-block {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                padding-bottom: 2rem;
+                align-items: center;
+
+                h1 {
+                    color: var(--ks-content-primary);
+                    text-align: center;
+                    max-width: 100%;
+                    padding: 0;
+                }
+            }
+
+            .feature-cards {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 32px;
+                justify-content: center;
+                width: 100%;
+
+                @include media-breakpoint-up(lg) {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                @include media-breakpoint-down(lg) {
+                    place-items: center;
+                }
+
+                .card {
+                    width: 100%;
+                    max-width: 554px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+                    padding: 30px 32px;
+                    border-radius: 8px;
+                    background: var(--ks-background-secondary);
+                    position: relative;
+                    border: 1px solid var(--ks-border-primary);
+
+                    h4 {
+                        margin: 0;
+                        color: var(--ks-content-primary);
+                    }
+
+                    p {
+                        font-size: $font-size-sm;
+                        margin: 0;
+                        color: var(--ks-content-primary);
+                    }
+                }
+            }
+
+            .coil {
+                width: 100%;
+                min-height: 450px;
+                border: 1px solid transparent;
+                border-radius: 0.5rem 0.5rem 0 0;
+                background:
+                    url("/landing/features/coil.png") center/contain no-repeat,
+                    #070d1f;
+                padding-bottom: 2rem;
+                position: relative;
+                grid-column: 1 / -1;
+                margin-bottom: 2rem;
+
+                &::after,
+                &::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    border-radius: 0.5rem;
+                }
+
+                &::after {
+                    bottom: -2rem;
+                    height: 2rem;
+                    background: #070d1f;
+                    border-radius: 0 0 0.5rem 0.5rem;
+                    z-index: 1;
+                }
+
+                &::before {
+                    top: 0;
+                    bottom: -2rem;
+                    padding: 1px;
+                    background: linear-gradient(
+                        180deg,
+                        #7830ec 0%,
+                        #a5cff1 51.92%,
+                        #15d1f6 100%
+                    );
+                    mask:
+                        linear-gradient(var(--ks-background-body) 0 0)
+                            content-box,
+                        linear-gradient(var(--ks-background-body) 0 0);
+                    mask-composite: exclude;
+                    z-index: 10;
+                }
+
+                .inside {
+                    position: absolute;
+                    top: 30%;
+                    left: 49%;
+                    transform: translate(-50%, -50%);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    img {
+                        width: 70px;
+                        height: 70px;
+                    }
+
+                    .label {
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: 19px;
+                        color: #fff;
+                        text-align: center;
+                    }
+                }
+
+                .coil-border-1 {
+                    position: absolute;
+                    bottom: 85px;
+                    left: 560px;
+                }
+
+                .coil-border-2 {
+                    position: absolute;
+                    top: 110px;
+                    left: 270px;
+                }
+
+                .coil-border-3 {
+                    position: absolute;
+                    top: 160.32px;
+                    left: 700px;
+                }
+
+                .list-1 {
+                    top: 135px;
+                    left: 85px;
+                }
+
+                .list-2 {
+                    top: 145px;
+                    right: 95px;
+                }
+
+                .list-3 {
+                    bottom: -10px;
+                    left: 320px;
+                    text-align: center;
+
+                    ul {
+                        display: grid;
+                        grid-template-columns: repeat(3, auto);
+                    }
+                }
+
+                .list {
+                    position: absolute;
+                    color: #fff;
+                    font-size: 12px;
+                    line-height: 20px;
+                    font-weight: 400;
+
+                    h5 {
+                        font-weight: 700;
+                        font-size: 16px;
+                        line-height: 24px;
+                        background: linear-gradient(
+                            90deg,
+                            #fff 0%,
+                            #bababa 100%
+                        );
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        color: transparent;
+                        margin-bottom: 2px;
+                    }
+
+                    li {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                    }
+                }
+            }
+        }
+    }
+</style>

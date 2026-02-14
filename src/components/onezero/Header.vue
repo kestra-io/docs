@@ -1,5 +1,5 @@
 <template>
-    <section class="main">
+    <section>
         <div class="container">
             <div class="d-flex flex-column align-items-center justify-content-center">
                 <NuxtImg
@@ -28,9 +28,9 @@
                 </div>
                 <div class="highlights" data-usal="fade-u delay-300">
                     <div
-                        v-for="({ title }, index) of releaseHighlights"
+                        v-for="({ title }, index) of HIGHLIGHTS"
                         :key="title"
-                        class="highlight"
+                        class="high"
                         :data-usal="`zoomin delay-${500 + index * 100}`"
                     >
                         <p>{{ title }}</p>
@@ -40,7 +40,7 @@
                     <p>Trusted by global Enterprises to run mission-critical workflows</p>
                     <div class="logos">
                         <img
-                            v-for="(logo, index) in companyLogos"
+                            v-for="(logo, index) in COMPANY_LOGOS"
                             :key="logo.name"
                             :src="logo.src"
                             :alt="logo.name"
@@ -62,14 +62,14 @@
 
     const { totalPlugins } = usePluginsCount()
 
-    const releaseHighlights = computed(() => [
+    const HIGHLIGHTS = computed(() => [
         { title: "LTS Release" },
         { title: "Apache 2.0 License" },
         { title: `${totalPlugins.value} Plugins` },
         { title: "Deploy anywhere" },
     ])
 
-    const companyLogos = [
+    const COMPANY_LOGOS = [
         {
             name: "Apple",
             src: "/landing/onezero/apple.svg",
@@ -118,84 +118,64 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    @mixin center-flex {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .main {
+    section {
         position: relative;
         width: 100%;
-        background: #07070a url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
+        background: var(--ks-background-artwork) url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
+        margin-top: -2rem;
         @include media-breakpoint-up(lg) {
             background-position: center top 30rem;
         }
-
         .container {
             position: relative;
-            width: 100%;
-            height: 100%;
-            padding: 4rem 1.25rem;
-
+            padding: $rem-4 0.5rem;
             @include media-breakpoint-up(lg) {
-                padding: 6rem 0 4rem;
+                padding: $rem-6 0 $rem-4;
             }
-
             .text-block {
-                @include center-flex;
-                position: relative;
-                z-index: 10;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 flex-direction: column;
-                width: 100%;
                 gap: 20px;
                 text-align: center;
-                color: $white;
-
+                color: #fff;
+                position: relative;
+                z-index: 10;
                 h1 {
                     font-size: 60px;
                     font-weight: 600;
                     margin: 0;
-
                     @media screen and (max-width: 500px) {
                         font-size: 48px;
                     }
                 }
-
                 h3 {
                     font-size: 29px;
                     line-height: 100%;
                     font-weight: 600;
-
                     @include media-breakpoint-up(lg) {
                         margin-top: -1rem;
                     }
                 }
-
                 p {
                     max-width: 869px;
-                    text-align: center;
                     margin: 0 auto;
-                    font-weight: 400;
-                    font-size: $font-size-base;
                     line-height: 28px;
-
                     @media screen and (max-width: 500px) {
-                        font-size: $font-size-base;
                         line-height: 24px;
                     }
                 }
             }
-
             .highlights {
-                @include center-flex;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 flex-wrap: wrap;
-                margin-top: 2rem;
+                margin-top: $rem-2;
                 border: 1px solid #7777ffb2;
-                background: #14181f33;
                 border-radius: 50px;
                 gap: 24px;
-
                 @include media-breakpoint-down(lg) {
                     display: grid;
                     grid-template-columns: repeat(2, 1fr);
@@ -205,45 +185,37 @@
                     border-radius: 0;
                     justify-items: center;
                 }
-
                 @media screen and (max-width: 380px) {
                     grid-template-columns: 1fr;
                 }
-
-                .highlight {
-                    @include center-flex;
+                .high {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     padding: 16px 32px;
-                    backdrop-filter: blur(10px);
                     width: fit-content;
                     position: relative;
-                    background-color: transparent;
-
+                    color: #fff;
                     @include media-breakpoint-down(lg) {
                         border: 1px solid #7777ffb2;
-                        background: #14181f33;
+                        background: transparent;
                         border-radius: 50px;
                     }
-
                     &:first-child {
                         @include media-breakpoint-up(lg) {
                             border-radius: 50px 0 0 50px;
                         }
                     }
-
                     &:last-child {
                         @include media-breakpoint-up(lg) {
                             border-radius: 0 50px 50px 0;
                         }
                     }
-
                     p {
                         margin: 0;
-                        color: $white;
-                        font-size: $font-size-base;
                         font-weight: 500;
                         white-space: nowrap;
                     }
-
                     &:not(:last-child)::after {
                         content: "";
                         position: absolute;
@@ -251,41 +223,37 @@
                         top: 50%;
                         transform: translateY(-50%);
                         width: 1px;
-                        height: 26.12px;
+                        height: 26px;
                         background: #ffffff33;
-
                         @include media-breakpoint-down(lg) {
                             display: none;
                         }
                     }
                 }
             }
-
             .trusted-by {
                 text-align: center;
-                margin-top: 2rem;
-
+                margin-top: $rem-2;
+                color: #fff;
                 p {
                     margin: 0;
-                    color: $white;
-                    font-size: 20px;
+                    font-size: $font-size-lg;
                     font-weight: 600;
                     line-height: 30px;
                 }
-
                 .logos {
-                    @include center-flex;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     flex-wrap: wrap;
                     gap: 1.5rem;
-                    margin-top: 2rem;
-
+                    margin-top: $rem-2;
                     img {
                         max-height: 40px;
                         object-fit: cover;
                     }
                 }
             }
-
             @media (max-width: 768px) {
                 [data-usal] {
                     transform: none !important;

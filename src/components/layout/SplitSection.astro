@@ -40,7 +40,7 @@ const { title, cta } = Astro.props
 
     .split-section {
         padding: 3rem 1rem 5.625rem;
-        background: $white;
+        background: var(--ks-background-body);
         display: flex;
         justify-content: center;
 
@@ -61,12 +61,12 @@ const { title, cta } = Astro.props
             }
 
             .d-xxl-none {
-                border: 1.05px solid #E1E1E1;
+                border: 1.05px solid var(--ks-border-secondary);
                 padding: 2px;
                 border-radius: 0.5rem;
                 
                 .btn-primary {
-                    background-color: #8405FF;
+                    background-color: var(--ks-background-button-primary);
                     padding: 0.5rem 1.25rem;
                     margin: 0;
                 }
@@ -78,7 +78,7 @@ const { title, cta } = Astro.props
                 height: auto;
                 position: static;
                 align-self: flex-start;
-                background: $white;
+                background: var(--ks-background-primary);
                 width: 100%;
                 display: flex;
                 flex-direction: column;
