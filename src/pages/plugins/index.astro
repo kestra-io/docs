@@ -10,7 +10,22 @@ const rawPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
 const rawPluginsData = await $fetchApiCached(`/plugins/pluginsInformation`)
 
 const nonDeprecatedPlugins = filterPluginsWithoutDeprecated(rawPlugins)
-const pluginsByName = nonDeprecatedPlugins
+const compareVersions = (a?: string, b?: string): number =>
+    (a ?? "").localeCompare(b ?? "", undefined, { numeric: true, sensitivity: "base" })
+
+const latestVersionByName = nonDeprecatedPlugins.reduce((acc, p) => {
+    const current = acc.get(p.name)
+    if (!current || compareVersions(p.version, current) > 0) {
+        acc.set(p.name, p.version ?? "")
+    }
+    return acc
+}, new Map<string, string>())
+
+const latestPlugins = nonDeprecatedPlugins.filter(
+    (p) => (p.version ?? "") === latestVersionByName.get(p.name),
+)
+
+const pluginsByName = latestPlugins
     .reduce((acc, p) => ((acc[p.name] ??= [])
     .push(p), acc), {} as Record<string, Plugin[]>)
 
@@ -29,7 +44,6 @@ const prunedPluginsData = Object.fromEntries(
         blueprints: v.blueprints,
         title: v.title,
         description: v.description,
-        categories: v.categories,
     }])
 )
 
