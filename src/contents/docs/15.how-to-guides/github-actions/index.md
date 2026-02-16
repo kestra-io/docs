@@ -61,8 +61,6 @@ jobs:
 
 ## Deploy Your Flows
 
-## Deploy Your Flows
-
 Using the Deploy Flows Action, we can set up our workflow to deploy when new commits are pushed to our `main` branch. We need to specify a `directory` containing your flows and optionally a `namespace` to deploy them to. For the full list of inputs, check out the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#deploy-flows-action-inputs).
 
 If you want to deploy flows to multiple namespaces, you can add multiple steps using the Deploy Flows Action, each with a different `namespace` and `directory`.
