@@ -41,10 +41,16 @@ The following diagram illustrates the structure of flows and unit tests together
 
 ## Configuration
 
-Unit tests are written in YAML like flows, and they are comprised of `testCases` which are then made up of `fixtures` and `assertions`.
+Unit tests are written in YAML like flows, and they are comprised of `testCases` which are then made up of `fixtures` and `assertions`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override.
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
+
+Common fixture types:
+- **files**: provide inline files or namespace file URIs the flow can read.
+- **inputs**: set flow input values without changing the flow definition.
+- **tasks**: skip or mock task execution, override outputs, or force a state.
+- **triggers**: simulate an incoming event (e.g., webhook payload) that starts the flow.
 
 :::alert{type="warning"}
 If you don't specify any fixtures, the test will run the entire flow as in production, executing all tasks and producing outputs as usual.
@@ -307,6 +313,51 @@ testCases:
             # this file is a namespace file in the same namespace, the fileURI() function will return its URI.
             uri: "{{files['products.json']}}"
 ```
+
+## Trigger fixture example
+
+When your flow is kicked off by a trigger, you can mock the trigger payload directly in the test so you don't have to hit the real endpoint. The example below stubs a webhook trigger carrying an order event and asserts the flow formats the message correctly.
+
+Example flow:
+
+```yaml
+id: return-flow-webhook
+namespace: io.kestra.tests
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: webhook
+
+tasks:
+  - id: return_summary
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      body: "{{ trigger.body }}"
+```
+
+Example unit test:
+
+```yaml
+id: simple-webhook-test-suite-1-id
+namespace: io.kestra.tests
+description: assert flow is returning the input value as output
+flowId: return-flow-webhook
+testCases:
+  - id: test_case_1
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      trigger:
+        id: webhook
+        type: io.kestra.plugin.core.trigger.Webhook
+        variables:
+          body: webhook
+    assertions:
+      - value: "{{ trigger.body }}"
+        equalTo: "webhook"
+```
+
+What this test does: it mocks the webhook trigger payload (`body: webhook`), skips any real HTTP call, runs the flow once, and asserts that the flow receives the mocked payload via `trigger.body`. Because fixtures create a transient execution, the test is fast, isolated, and leaves no execution history clutter.
 
 ## Mock task output files
 
