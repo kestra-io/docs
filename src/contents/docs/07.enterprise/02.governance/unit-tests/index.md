@@ -7,21 +7,21 @@ editions: ["EE", "Cloud"]
 version: ">= 0.23.0"
 ---
 
-Build Tests to ensure proper Flow behavior.
+Build tests to ensure proper flow behavior.
 
 ## Unit tests – validate Flows safely
 
-Tests let you verify that your flow behaves as expected, without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task, rather than the executing the entire flow.
+Tests let you verify that your flow behaves as expected, without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task, rather than executing the entire flow.
 
 <div class="video-container">
-  <iframe src="https://www.youtube/embed/jMZ9Cs3xxpo?si=CieI3nUrE1rY-Oew" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/jMZ9Cs3xxpo?si=CieI3nUrE1rY-Oew" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Flow unit tests
 
 Each test runs a single flow and checks its outcomes against your **assertions**, helping you avoid regressions when you change the flow later. Each **test case** creates a new transient execution, making it easy to run multiple tests in parallel, and each test case will not affect the others. Use **fixtures** to mock specific tasks or inputs by returning predefined outputs and states without executing the tasks.
 
-Unit tests are configured for and connected to their respective flows. To create a new Unit Test, access them either through the **Tests** tab on the lefthand side panel of the Kestra UI or via the **Tests** tab of a flow. When creating tests, you can open the YAML for both the test and its flow side by side.
+Unit tests are configured for and connected to their respective flows. To create a new Unit Test, access them either through the **Tests** tab on the left-hand side panel of the Kestra UI or via the **Tests** tab of a flow. When creating tests, you can open the YAML for both the test and its flow side by side.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -50,7 +50,7 @@ Unit tests are written in YAML like flows, and they are comprised of `testCases`
 If you don't specify any fixtures, the test will run the entire flow as in production, executing all tasks and producing outputs as usual.
 :::
 
-For example, take the following flow that does the these listed tasks:
+For example, take the following flow that does these listed tasks:
 1. Sends a message to Slack to alert a channel that it is running
 2. Extracts data from an API
 3. Transforms the returned data to match a certain format
@@ -100,9 +100,9 @@ testCases:
     fixtures:
       tasks:
         - id: send_slack_message_started
-          description: "dont send Slack message"
+          description: "don't send Slack message"
         - id: load
-          description: "dont load data into BigQuery"
+          description: "don't load data into BigQuery"
     assertions:
       - value: "{{outputs.transform_to_uppercase.value}}"
         isNotNull: true
@@ -111,11 +111,11 @@ testCases:
     fixtures:
       tasks:
         - id: send_slack_message_started
-          description: "dont send Slack message"
+          description: "don't send Slack message"
         - id: load
-          description: "dont load data into BigQuery"
+          description: "don't load data into BigQuery"
         - id: extract
-          description: "dont fetch data from API"
+          description: "don't fetch data from API"
         - id: transform_to_products_name
           outputs:
             value: |
@@ -143,7 +143,7 @@ After running, we can see that the assertion was successful and the actual resul
 
 ![Test case 2 results](./test-case-2.png)
 
-Execution details are not stored in the Executions page like normally run flows to protect cluttering that space with unneccesary execution details. To view an execution made from a test, you can open the test case and click on the link for the ExecutionId.
+Execution details are not stored in the Executions page like normally run flows to avoid cluttering that space with unnecessary execution details. To view an execution made from a test, you can open the test case and click on the link for the ExecutionId.
 
 ![Test Execution Details](./test-execution.png)
 
@@ -169,7 +169,7 @@ tasks:
 
   - id: transform_to_uppercase
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper}}"
+    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper }}"
 
   - id: load_result_to_outgoing_api
     type: io.kestra.plugin.core.log.Log
@@ -238,7 +238,7 @@ testCases:
           outputs:
             uri: "{{ fileURI('my-namespace-file-with-products.json') }}" # this file is a namespace file in the same namespace
         - id: load_result_to_outgoing_api
-          description: "dont send end output"
+          description: "don't send end output"
     assertions:
       - value: "{{outputs.transform_to_uppercase.value}}"
         equalsTo: "[BOWLER HAT, TRILBY HAT]"
@@ -307,6 +307,71 @@ testCases:
             # this file is a namespace file in the same namespace, the fileURI() function will return its URI.
             uri: "{{files['products.json']}}"
 ```
+
+## Mock task output files
+
+When testing flows that include script tasks (such as Shell, Python, or other scripts) that generate output files, you can mock these output files in your test fixtures. This is particularly useful when:
+
+- You want to test downstream tasks that parse or process output files without running the actual script
+- The script is expensive or time-consuming to execute
+- You want to test specific edge cases by providing controlled output file content
+
+For example, consider a flow where a shell script generates an output file that is later processed by another task:
+
+```yaml
+id: shell_output
+namespace: company.team
+
+tasks:
+  - id: generate_output_file
+    type: io.kestra.plugin.scripts.shell.Script
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    outputFiles:
+      - out.txt
+    script: |
+      echo "Processing data..." > out.txt
+      echo "Result: SUCCESS" >> out.txt
+
+  - id: parse_output
+    type: io.kestra.plugin.core.log.Log
+    message: "Output file content: {{ read(outputs.generate_output_file.outputFiles['out.txt']) }}"
+```
+
+You can create a unit test that mocks the output file content without executing the shell script:
+
+```yaml
+id: test_shell_output
+flowId: shell_output
+namespace: company.team
+testCases:
+  - id: mock_shell_output
+    type: io.kestra.core.tests.flow.UnitTest
+    description: Mock shell script output file to test downstream processing
+    fixtures:
+      files:
+        mocked_output.txt: |
+          Processing data...
+          Result: SUCCESS
+      tasks:
+        - id: generate_output_file
+          state: SUCCESS
+          description: "don't run the shell script, mock its output"
+          outputs:
+            outputFiles:
+              out.txt: "{{files['mocked_output.txt']}}"
+    assertions:
+      - value: "{{ outputs.generate_output_file.outputFiles['out.txt'] }}"
+        isNotNull: true
+```
+
+In this example:
+1. The `files` property defines inline file content (`mocked_output.txt`) that will be used as the mocked output
+2. The task fixture for `generate_output_file` specifies `state: SUCCESS` to mark the task as successful without execution
+3. The `outputs.outputFiles` property maps the expected output file name (`out.txt`) to the mocked file content using the `files` reference
+4. Downstream tasks can read the mocked output file as if the script had actually run
+
+This approach allows you to test the complete flow logic while avoiding the overhead and complexity of executing actual scripts during testing.
 
 ## Available assertions operators
 
