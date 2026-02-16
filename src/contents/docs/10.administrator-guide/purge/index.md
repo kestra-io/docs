@@ -1,18 +1,18 @@
 ---
-title: Purge Old Data in Kestra – Executions, Logs, KV
+title: Purge Old Data in Kestra – Executions, Logs, Key-Value Store
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.18.0"
 ---
 
-Use purge tasks to remove old executions, logs, and Key-value pairs, helping reduce storage usage.
+Use purge tasks to remove old executions, logs, and key-value pairs, helping reduce storage usage.
 
 ## Purge old execution data safely
 
-The recommended to keep optimized storage is to use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
+To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
 - `PurgeExecutions`: deletes execution records
 - `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk
-- `PurgeKV`: deletes expired keys globally for a specific namespace.
+- `PurgeKV`: deletes expired keys globally for a specific namespace
 
 Together, these replace the legacy `io.kestra.plugin.core.storage.Purge` task with a **faster and more reliable process (~10x faster)**.
 
@@ -45,7 +45,7 @@ triggers:
     cron: "@daily"
 ```
 
-The example below purges expired Key-value pairs from the `company` Namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) namespace.
+The example below purges expired key-value pairs from the `company` namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) namespace.
 
 ```yaml
 id: purge_kv_store
@@ -64,9 +64,9 @@ tasks:
 Purge tasks permanently delete data. Always test in non-production environments first.
 :::
 
-## Auto-delete expired Key-value pairs
+## Auto-delete expired key-value pairs
 
-Rather than create a system flow to regularly purge Key-value pairs, you can add a global configuration to your Kestra Configuration/Application file that auto deletes expired Key-value pairs:
+Rather than creating a system flow to regularly purge key-value pairs, you can add a global configuration to your Kestra Configuration/Application file that auto-deletes expired key-value pairs:
 
 ```yaml
 kestra:
@@ -93,6 +93,6 @@ We've [improved](https://github.com/kestra-io/kestra/pull/4298) the mechanism of
 
 Here are the main `Purge` plugin changes in Kestra 0.18.0:
 
-- `io.kestra.plugin.core.storage.Purge` has been renamed to `io.kestra.plugin.core.execution.PurgeExecutions` to reflect that it only purges data related to executions (_e.g. not including trigger logs — to purge those you should use the `PurgeLogs` task_) — we've added an alias so that using the old task type will still work but it will emit a warning. We recommend using the new task type.
+- `io.kestra.plugin.core.storage.Purge` has been renamed to `io.kestra.plugin.core.execution.PurgeExecutions` to reflect that it only purges data related to executions (e.g., it doesn't include trigger logs; use the `PurgeLogs` task for those). We've added an alias so that using the old task type will still work but it will emit a warning. We recommend using the new task type.
 - `io.kestra.plugin.core.storage.PurgeExecution` has been renamed to `io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles` to reflect that it purges all data from the current execution, including inputs and outputs. We've also added an alias for backward compatibility, but we recommend updating your flows to use the new task type.
 :::
