@@ -1,6 +1,6 @@
 ---
-title: "Kestra 1.3 introduces the Kestra CLI, Kill Switch, Credentials, and New Plugins"
-description: "Kestra 1.3 delivers a Go-based CLI, enterprise-grade Kill Switch and Credentials for secure auth, improved UI/UX for plugin defaults, and new infrastructure plugins."
+title: "Kestra 1.3 introduces Kestra CTL, Kill Switch, Credentials, and New Plugins"
+description: "Kestra 1.3 delivers Kestra CTL for API-driven operations, enterprise-grade Kill Switch and Credentials for secure auth, improved UI/UX for plugin defaults, and new infrastructure plugins."
 date: 2026-03-03T17:00:00
 category: News & Product Updates
 authors:
@@ -8,9 +8,9 @@ authors:
     image: bpimpaud
 image: /blogs/release-1-3.jpg
 ---
-Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces the new Kestra CLI for managing flows and executions from the terminal, along with enterprise-grade Kill Switch controls and reusable Credentials for OAuth-based APIs.
+Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces Kestra CTL for managing flows and executions from the terminal, along with enterprise-grade Kill Switch controls and reusable Credentials for OAuth-based APIs.
 
-We've also improved namespace configuration workflows with a dedicated Plugin Defaults UI, shipped a refreshed GitHub Action based on the Kestra CLI, and added new infrastructure and policy plugins.
+We've also improved AI Copilot controls and customization, namespace configuration workflows with a dedicated Plugin Defaults UI, shipped a refreshed GitHub Action based on Kestra CTL, and added new infrastructure and policy plugins.
 
 The table below highlights the key features of this release.
 
@@ -18,7 +18,8 @@ The table below highlights the key features of this release.
 |---|---|---|
 | Kill Switch | UI-based control to stop or contain problematic executions | Enterprise Edition |
 | Credentials | Centralized server-to-server OAuth2 credentials with token minting and refresh | Enterprise Edition |
-| Kestra CLI | Go-based CLI to manage flows, executions, namespaces, and namespace files | All Editions |
+| AI Copilot Enhancements | RBAC permission controls, expanded UI coverage, speech-to-text, model selection, and improved custom model settings | Enterprise Edition |
+| Kestra CTL | Command-line tool to interact with the Kestra host API for flows, executions, namespaces, and namespace files | All Editions |
 | Plugin Defaults UI | Manage plugin defaults directly from the namespace page | Enterprise Edition |
 | New GitHub Action | CLI-based action to deploy, validate, and trigger flows | All Editions |
 | New Plugins | Infrastructure and policy integrations, including MAAS, NetBox, Nutanix, and OPA | All Editions |
@@ -79,6 +80,18 @@ tasks:
 
 Supported credential types include OAuth2 `client_credentials`, OAuth2 JWT Bearer (`jwt_bearer`), OAuth2 `private_key_jwt`, and GitHub App. Tokens are retrieved during task execution, never persisted, and can be cached in memory based on the credential configuration.
 
+## AI Copilot Enhancements
+
+AI assistants are most useful when teams can control where and how they are used. In many organizations, administrators need permission boundaries, predictable model behavior, and simple input options before enabling copilots broadly.
+
+Kestra 1.3 expands AI Copilot capabilities for enterprise teams with better governance and day-to-day usability:
+
+- **RBAC control** - A new permission lets enterprise administrators allow or disallow AI Copilot usage by role.
+- **Wider product coverage** - AI Copilot is now available in apps, unit tests, and dashboards.
+- **Speech-to-text input** - A new button lets users dictate prompts directly in the UI.
+- **Model selection in UI** - You can configure multiple models and let users choose the right one from a dropdown.
+- **Custom model configuration improvements** - Custom model setup now supports request headers and timeout configuration.
+
 ## Plugin Defaults UI (Namespace)
 
 Plugin defaults are essential for consistent configurations, but managing them only in YAML makes them harder to discover, edit, and share across teams. This often slows down onboarding and pushes configuration drift into production.
@@ -87,51 +100,54 @@ Kestra 1.3 adds a dedicated Plugin Defaults UI on the namespace page so you can 
 
 You can also import plugin defaults from YAML to bootstrap or migrate from OSS, and export all defaults to YAML for Git, Terraform, or other IaC workflows.
 
-## Kestra CLI
+## kestractl
 
 Teams often need to automate flow deployment and operations across multiple environments, but relying only on the UI or custom API scripts is error-prone and inconsistent. A dedicated CLI makes those workflows repeatable in local and CI environments.
 
-Kestra 1.3 introduces a new Go-based CLI to manage flows, executions, namespaces, and namespace files directly from the terminal. It complements the UI and API, making automation, CI/CD, and multi-environment operations much easier.
+Kestra 1.3 introduces **`kestractl`**, a command-line interface focused on API-driven workflow operations.
 
-Get started by building the binary and configuring your first context:
+Use `kestractl` to interact with the Kestra host API for flows, executions, namespaces, and namespace files.
 
-```bash
-go build -o kestractl
-kestractl config add default http://localhost:8080 main --token YOUR_TOKEN --default
-```
+For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](/docs/server-cli).
 
-Key capabilities include:
-- **Flows**: deploy and validate flows from files or folders
-- **Executions**: run, wait, and terminate executions from the CLI
-- **Namespaces**: list and filter namespaces across tenants
-- **Namespace Files**: upload, list, and delete files with recursive support
-
-Configuration follows a predictable precedence model: **flags** override **env vars**, which override the **config file**, then **defaults**. This makes it easy to use `kestractl` locally and in CI pipelines.
+The **Kestra Server CLI** is the original CLI many teams already know and trust, and it remains the right choice for server administration. **Kestractl** is the new companion focused on direct host operation.
 
 ## GitHub Action
 
 Teams often rely on custom scripts to deploy and validate flows in CI, which leads to inconsistent pipelines and hard-to-maintain automation. A dedicated action makes these workflows repeatable across repositories.
 
-Kestra 1.3 introduces a refreshed GitHub Action built on the Kestra CLI, so you can reuse the same commands in CI that you run locally. It supports:
+Kestra 1.3 introduces a refreshed GitHub Action built on Kestra CTL, so you can reuse the same commands in CI that you run locally. It supports:
 - **Deploy namespace files**
 - **Deploy flows to multiple namespaces**
 - **Validate flows**
 - **Trigger a deployed flow**
+
+## Additional Improvements
+
+- **SeaweedFS Internal Storage** - Added support for `storage-seaweedfs` as an internal storage backend, aligned with the recent MinIO evolution.
+- **BeyondTrust Secret Manager** - Added `secret-beyondtrust` as a new secret manager integration for secure credential retrieval.
 
 ## Plugins
 
 
 ### Infrastructure
 
-- **Canonical MAAS** – Automate bare-metal provisioning and lifecycle management at scale.
-- **NetBox** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows.
-- **Nutanix** – Manage VM lifecycle on hyper-converged infrastructure.
-- **Open Policy Agent (OPA)** – Add policy-as-code checks for governance and compliance.
+- **Canonical MAAS (plugin-ee-canonical)** – Automate bare-metal provisioning and lifecycle management at scale.
+- **KVM (plugin-kvm)** – Manage virtualization workloads and automate VM operations on KVM.
+- **NetBox (plugin-ee-netbox)** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows.
+- **Nutanix (plugin-ee-nutanix)** – Manage VM lifecycle on hyper-converged infrastructure.
 
-### Storage
+### Observability & Governance
 
-- [SeaweedFS Storage](https://github.com/kestra-io/storage-seaweedfs/releases/tag/v1.0.0) – Store namespace files and artifacts on SeaweedFS.
+- **Graylog (plugin-ee-graylog)** – Route and structure logs for centralized observability workflows.
+- **OpenLineage (plugin-ee-openlineage)** – Capture and propagate lineage metadata across data workflows.
+- **Open Policy Agent (plugin-ee-opa)** – Add policy-as-code checks for governance and compliance.
 
+### Data & Automation
+
+- **Beam (plugin-beam)** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines.
+- **COBOL (plugin-cobol)** – Run and orchestrate legacy COBOL-based workloads.
+- **Trello (plugin-trello)** – Automate board, card, and workflow actions from Kestra flows.
 
 ## Next Steps
 
