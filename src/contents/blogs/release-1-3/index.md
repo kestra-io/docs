@@ -132,22 +132,21 @@ Kestra 1.3 introduces a refreshed GitHub Action built on Kestra CTL, so you can 
 
 ### Infrastructure
 
-- **Canonical MAAS (plugin-ee-canonical)** – Automate bare-metal provisioning and lifecycle management at scale.
-- **KVM (plugin-kvm)** – Manage virtualization workloads and automate VM operations on KVM.
-- **NetBox (plugin-ee-netbox)** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows.
-- **Nutanix (plugin-ee-nutanix)** – Manage VM lifecycle on hyper-converged infrastructure.
+- **Canonical MAAS** – Automate bare-metal provisioning and lifecycle management at scale.
+- **KVM** – Manage virtualization workloads and automate VM operations on KVM.
+- **NetBox** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows.
+- **Nutanix** – Manage VM lifecycle on hyper-converged infrastructure.
 
 ### Observability & Governance
 
-- **Graylog (plugin-ee-graylog)** – Route and structure logs for centralized observability workflows.
-- **OpenLineage (plugin-ee-openlineage)** – Capture and propagate lineage metadata across data workflows.
-- **Open Policy Agent (plugin-ee-opa)** – Add policy-as-code checks for governance and compliance.
+- **Graylog** – Route and structure logs for centralized observability workflows.
+- **Open Policy Agent** – Add policy-as-code checks for governance and compliance.
 
 ### Data & Automation
 
-- **Beam (plugin-beam)** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines.
-- **COBOL (plugin-cobol)** – Run and orchestrate legacy COBOL-based workloads.
-- **Trello (plugin-trello)** – Automate board, card, and workflow actions from Kestra flows.
+- **Beam** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines.
+- **COBOL** – Run and orchestrate legacy COBOL-based workloads.
+- **Trello** – Automate board, card, and workflow actions from Kestra flows.
 
 ## Next Steps
 
