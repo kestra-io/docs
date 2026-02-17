@@ -124,7 +124,7 @@ Kestra 1.3 introduces a refreshed GitHub Action built on Kestra CTL, so you can 
 
 ## Additional Improvements
 
-- **SeaweedFS Internal Storage** - Added support for `storage-seaweedfs` as an internal storage backend, aligned with the recent MinIO evolution.
+- **SeaweedFS Internal Storage** - Added support for `storage-seaweedfs` as an internal storage backend, giving teams an OSS-friendly option as the OSS MinIO server repository ([minio/minio](https://github.com/minio/minio)) is archived and no longer maintained.
 - **BeyondTrust Secret Manager** - Added `secret-beyondtrust` as a new secret manager integration for secure credential retrieval.
 
 ## Plugins
