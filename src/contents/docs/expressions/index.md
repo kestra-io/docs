@@ -1753,7 +1753,7 @@ tasks:
 ```
 ### randomInt
 
-The `randomInt` function generates a random integer from a specified range.
+The `randomInt` function generates a random integer from a specified range, the upper bound being excluded.
 
 Example with a range between 1 and 10:
 
