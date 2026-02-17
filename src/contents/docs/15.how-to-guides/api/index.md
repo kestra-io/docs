@@ -162,6 +162,8 @@ The response includes execution metadata and a link to the UI:
 }
 ```
 
+For end-to-end idempotency using a stable business key, set `system.correlationId` when you create the execution and add a guard as shown in [Idempotency with correlation IDs](../idempotency/index.md).
+
 See the [Executions documentation](../../05.workflow-components/03.execution/index.md#execute-a-flow-via-an-api-call) for additional examples.
 
 ## Get Information from an Execution
