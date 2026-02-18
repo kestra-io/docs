@@ -46,7 +46,7 @@
     "astro-expressive-code": "^0.41.6",
     "astro-icon": "^1.1.5",
     "astro-loading-indicator": "^0.7.1",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "bootstrap": "^5.3.8",
     "dayjs": "^1.11.19",
     "eventsource-parser": "^3.0.6",
@@ -54,7 +54,7 @@
     "lodash": "^4.17.23",
     "lottie-web": "^5.13.0",
     "medium-zoom": "^1.1.0",
-    "mermaid": "^11.12.2",
+    "mermaid": "^11.12.3",
     "posthog-js": "^1.333.0",
     "rapidoc": "^9.3.8",
     "rehype-autolink-headings": "^7.1.0",
@@ -79,7 +79,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
     "sass": "^1.97.3",
-    "wrangler": "^4.59.3"
+    "wrangler": "^4.60.0"
   },
   "engines": {
     "node": ">= 14",
