@@ -3,67 +3,67 @@
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.fivetran.svg"
+            src="/icons/io.kestra.plugin.fivetran-white.svg"
             alt="Fivetran"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.jdbc.snowflake.svg"
+            src="/icons/io.kestra.plugin.jdbc.snowflake-white.svg"
             alt="Snowflake"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.aws.svg"
+            src="/icons/io.kestra.plugin.aws-white.svg"
             alt="AWS"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.databricks.svg"
+            src="/icons/io.kestra.plugin.databricks-white.svg"
             alt="Databricks"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.azure.svg"
+            src="/icons/io.kestra.plugin.azure-white.svg"
             alt="Azure"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.dbt.svg"
+            src="/icons/io.kestra.plugin.dbt-white.svg"
             alt="DBT"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.airbyte.svg"
+            src="/icons/io.kestra.plugin.airbyte-white.svg"
             alt="Airbyte"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.docker.svg"
+            src="/icons/io.kestra.plugin.docker-white.svg"
             alt="Docker"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.terraform.svg"
+            src="/icons/io.kestra.plugin.terraform-white.svg"
             alt="Terraform"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.gcp.svg"
+            src="/icons/io.kestra.plugin.gcp-white.svg"
             alt="Google Cloud"
         />
         <img
             loading="lazy"
             data-usal="fade-u delay-100"
-            src="/icons/io.kestra.plugin.github.svg"
+            src="/icons/io.kestra.plugin.github-white.svg"
             alt="GitHub"
         />
     </div>

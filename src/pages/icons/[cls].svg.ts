@@ -5,7 +5,8 @@ import { API_URL } from "astro:env/client"
 import { optimize } from "svgo"
 
 export async function GET({ params }: { params: { cls: string } }) {
-    const cls = params.cls
+    const clsComplete = params.cls
+    const [cls,modifier] = clsComplete.split("-")
     const response = await fetch(`${API_URL}/plugins/icons/${cls}`)
 
     if (!response.ok) {
@@ -20,10 +21,24 @@ export async function GET({ params }: { params: { cls: string } }) {
                 params: {
                     keepDataAttrs: false,
                 },
+            },
+            {
+                name: "removeDimensions",
+            },
+            {
+                name: "prefixIds",
+                params: {
+                    prefix: () => clsComplete,
+                }
             }
         ]
     }).data
-    const modifiedSvg = svg.replace(/currentColor/g, "white")
+
+    // replace self closing tags with explicit closing tags to ensure compatibility with all browsers
+    const svgWithExplicitClosingTags = svg.replace(/<(\w+)([^>]*)\/>/g, "<$1$2></$1>")
+
+    // replace all currentColor with the specified modifier if provided
+    const modifiedSvg = modifier ? svgWithExplicitClosingTags.replace(/currentColor/g, modifier) : svgWithExplicitClosingTags
 
     return new Response(modifiedSvg, {
         headers: {
