@@ -51,8 +51,9 @@ const query = new URLSearchParams(
         ),
 )
 
+const currentUrlNoQS = new URL(currentUrl.toString().replace(currentUrl.search, ""))
 const canonicalUrl = new URL(
-    currentUrl + (query.size > 0 ? "?" + query.toString() : ""),
+    currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
     Astro.site,
 )
 ---

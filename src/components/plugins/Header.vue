@@ -46,15 +46,21 @@
                 </div>
             </div>
             <div class="my-4 categories" data-usal="fade-u delay-200">
-                <button
-                    v-for="category in augmentedCategories"
-                    :key="category"
-                    class="rounded-button"
-                    :class="{ active: category === activeCategory }"
-                    @click="setActiveCategory(category)"
+                <div
+                    v-for="(row, rowIndex) in categoryRows"
+                    :key="`row-${rowIndex}`"
+                    class="categories-row"
                 >
-                    {{ formatCategoryName(category) }}
-                </button>
+                    <button
+                        v-for="category in row"
+                        :key="category"
+                        class="rounded-button"
+                        :class="{ active: category === activeCategory }"
+                        @click="setActiveCategory(category)"
+                    >
+                        {{ formatCategoryName(category) }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -69,6 +75,8 @@
     import KSAIImg from "../docs/assets/ks-ai.svg"
 
     const isMobile = useMediaQuery("(max-width: 991px)")
+    const isSmallScreen = useMediaQuery("(max-width: 575px)")
+    const isMediumScreen = useMediaQuery("(max-width: 767px)")
 
     const props = defineProps<{
         totalPlugins: string
@@ -83,6 +91,29 @@
     const searchQuery = defineModel<string>("searchQuery")
 
     const augmentedCategories = computed(() => ["All Categories", ...(props.categories ?? [])])
+    const categoriesPerRow = computed(() => {
+        if (isSmallScreen.value) {
+            return 2
+        }
+
+        if (isMediumScreen.value) {
+            return 3
+        }
+
+        return 4
+    })
+
+    const categoryRows = computed(() => {
+        const rows: string[][] = []
+        const categories = augmentedCategories.value
+        const rowSize = categoriesPerRow.value
+
+        for (let index = 0; index < categories.length; index += rowSize) {
+            rows.push(categories.slice(index, index + rowSize))
+        }
+
+        return rows
+    })
 
     const setActiveCategory = (category: string) => {
         emit("update:activeCategory", category)
@@ -303,6 +334,7 @@
         font-size: $font-size-sm;
         line-height: 1.375rem;
         transition: transform 0.2s ease;
+        white-space: nowrap;
 
         &:hover {
             transform: scale(1.05);
@@ -316,8 +348,14 @@
 
     .categories {
         display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .categories-row {
+        display: flex;
         justify-content: center;
-        flex-wrap: wrap;
         gap: 0.5rem;
 
         @include media-breakpoint-down(sm) {
