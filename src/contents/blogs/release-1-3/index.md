@@ -6,7 +6,7 @@ category: News & Product Updates
 authors:
   - name: "Benoit Pimpaud"
     image: bpimpaud
-image: /blogs/release-1-3.jpg
+image: ./main.jpg
 ---
 Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces Kestra CTL for managing flows and executions from the terminal, along with enterprise-grade Kill Switch controls and reusable Credentials for OAuth-based APIs.
 
