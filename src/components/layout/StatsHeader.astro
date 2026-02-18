@@ -1,0 +1,146 @@
+---
+interface Props {
+    header?: {
+        title?: string
+        subtitle?: string
+    }
+    stats?: Array<{
+        category?: string
+        value?: string
+        label?: string
+    }>
+    cta?: {
+        text: string
+        href: string
+    }
+}
+
+const { header, stats, cta } = Astro.props
+---
+
+<div class="stats-header">
+    {
+        header && (
+            <div class="header" data-usal="fade-up">
+                {header.title && <h1>{header.title}</h1>}
+                {header.subtitle && <span>{header.subtitle}</span>}
+            </div>
+        )
+    }
+
+    {
+        stats && stats.length > 0 && (
+            <div class="stats-grid">
+                {stats.map((stat) => (
+                    <div class="stat-block" data-usal="fade-up">
+                        {stat.category && <p>{stat.category}</p>}
+                        {stat.value && <div class="value">{stat.value}</div>}
+                        {stat.label && <span>{stat.label}</span>}
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
+    {
+        cta && (
+            <div class="cta-wrapper" data-usal="fade-up">
+                <a href={cta.href} class="btn btn-primary">
+                    <span>{cta.text}</span>
+                </a>
+            </div>
+        )
+    }
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .stats-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+
+        @include media-breakpoint-down(md) {
+            padding: $rem-2 $rem-1;
+        }
+    }
+
+    .header {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        h1,
+        span {
+            margin: 0;
+            text-align: left;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .stats-grid {
+        width: 100%;
+        display: flex;
+        gap: $rem-1;
+
+        @include media-breakpoint-down(xl) {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+
+    .stat-block {
+        padding: $rem-2;
+        border-radius: 8px;
+        width: 100%;
+        background: var(--ks-background-primary);
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--ks-border-secondary);
+
+        @include media-breakpoint-up(lg) {
+            max-width: 329px;
+            padding: $rem-1 $rem-2;
+        }
+        @include media-breakpoint-down(md) {
+            width: 45%;
+        }
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+        }
+
+        p {
+            margin: 0;
+            font-weight: 600;
+            color: var(--ks-content-secondary);
+        }
+
+        .value {
+            font-weight: 700;
+            font-size: $rem-5;
+            color: var(--ks-content-color-highlight);
+            line-height: 1.2;
+
+            @include media-breakpoint-down(md) {
+                font-size: $rem-4;
+                line-height: 78px;
+            }
+        }
+        span {
+            color: var(--ks-content-primary);
+            font-size: $rem-1;
+        }
+    }
+
+    .cta-wrapper {
+        width: 100%;
+
+        .btn {
+            cursor: pointer;
+            padding: 10px 16px;
+        }
+    }
+</style>

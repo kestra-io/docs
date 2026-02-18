@@ -1,379 +1,137 @@
 ---
 import Layout from "~/components/layout.astro"
-import PartnersNticoHeader from "~/components/partners/NticoHeader.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import PartnerHeader from "~/components/partners/PartnerHeader.astro"
+import PartnerMain from "~/components/partners/PartnerMain.astro"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
 
-const title =
+const TITLE =
     "Ntico & Kestra: Your Partner for Data Orchestration and ETL Solutions"
-const description =
+const DESCRIPTION =
     "The Ntico team is ready to support you in your data orchestration and ETL projects with Kestra."
+
+const HEADER_DATA = {
+    logo: "/partners/ntico/logo.svg",
+    name: "Ntico",
+    title: "Ntico & Kestra: Your Partner for Data Orchestration and ETL Solutions",
+    subtitle:
+        "The Ntico team is ready to support you in your data orchestration and ETL projects with Kestra.",
+    heroImage: "/partners/ntico/hero-img.svg",
+    cta: { href: "/demo", text: "Talk to us" },
+    about: { subtitle: "About Ntico" },
+    metrics: [
+        { type: "logo", logo: "/partners/ntico/logo.svg" },
+        {
+            type: "text",
+            title: "Kestra Expertise",
+            description: "Data Orchestration",
+        },
+        {
+            type: "text",
+            title: "Headquarters",
+            description: "Villeneuve d'Ascq, France",
+        },
+        {
+            type: "text",
+            title: "Solution",
+            description:
+                "Ntico is a Digital Services Company that supports you in digital transformation",
+        },
+    ],
+}
+
+const INTRO_DATA = {
+    title: "Ntico: Expertise in Data Orchestration and ETL with Kestra",
+    description:
+        "For businesses looking to enhance their data workflows, Ntico brings specialized expertise in implementing Kestra. They delivers tailored solutions that simplify data management, optimize ETL processes, and ensure seamless integration with your existing systems.",
+}
+
+const QUOTE_DATA = {
+    quote: "Kestra is an efficient solution for processing all types of data streams. Efficient in development with a clear UI, a comprehensive DevOps process, and an impressive number of plugins that allow it to adapt to all of our clients' technical contexts. Efficient in execution thanks to its scalability and real-time processing monitoring. Efficient in client support with a highly skilled and available team. We are happy to be able to support this wonderful project.",
+    author: { name: "Emmanuel Santerne", role: "Partner at Ntico" },
+}
+
+const ALTERNATION_ITEMS = [
+    {
+        title: "Assessment and Strategy",
+        content:
+            "<p>Ntico begins by thoroughly assessing your current data infrastructure. They analyze your existing workflows, tools, and integration points to develop a strategy that aligns with your business objectives. The goal is to ensure that your transition to Kestra enhances your data orchestration and ETL capabilities without disruption.</p>",
+        image: {
+            src: "/partners/ntico/artworks_features-1.svg",
+            alt: "Assessment and Strategy",
+            width: "560",
+            height: "420",
+        },
+    },
+    {
+        title: "Implementation and Migration",
+        content:
+            "<p>Ntico manages the entire implementation process, from configuring your Kestra environment to migrating existing ETL pipelines. Their experts ensure that the integration is smooth and that your data processes run efficiently. Ntico handles the complexities so you can focus on leveraging your data.</p>",
+        image: {
+            src: "/partners/ntico/artworks_features-2.svg",
+            alt: "Implementation and Migration",
+            width: "560",
+            height: "420",
+        },
+    },
+    {
+        title: "Ongoing Support and Optimization",
+        content:
+            "<p>After the initial setup, Ntico continues to provide support to optimize your Kestra workflows. Whether you need to scale your operations, integrate new data sources, or refine your ETL processes, Ntico is there to help. Their support ensures that your Kestra environment evolves with your business needs.</p>",
+        image: {
+            src: "/partners/ntico/artworks_features-3.svg",
+            alt: "Ongoing Support and Optimization",
+            width: "560",
+            height: "420",
+        },
+    },
+    {
+        title: "Modernization and Data Engineering",
+        content:
+            "<p>Ntico brings extensive experience in data engineering and modernization. They assist in redesigning and optimizing your data workflows, making the most of Kestra's capabilities. Ntico's services include everything from data pipeline creation to advanced data processing, ensuring that your data infrastructure is robust and future-proof.</p>",
+        image: {
+            src: "/partners/ntico/artworks_features-4.svg",
+            alt: "Modernization and Data Engineering",
+            width: "560",
+            height: "420",
+        },
+    },
+    {
+        title: "Tailored Solutions for Your Business",
+        content:
+            "<p>Ntico understands that every business is unique. They provide customized solutions that fit your specific technical context, budget, and business goals. Whether you're looking to modernize your data architecture, improve your ETL processes, or simply enhance your data orchestration, Ntico is your trusted partner.</p>",
+        image: {
+            src: "/partners/ntico/artworks_features-5.svg",
+            alt: "Tailored Solutions for Your Business",
+            width: "560",
+            height: "420",
+        },
+    },
+]
+
+const FOOTER_CONTACT = {
+    title: "Contact Ntico",
+    subtitle:
+        "Ready to enhance your data orchestration and ETL processes with Kestra? Ntico's experts are here to assist you.",
+    purple: {
+        text: "Contact Ntico",
+        href: "https://www.ntico.com/contactez-nous/",
+    },
+}
 ---
 
-<Layout title={title} description={description}>
+<Layout title={TITLE} description={DESCRIPTION}>
     <div class="main">
-        <PartnersNticoHeader />
-
-        <div class="container">
-            <div class="row justify-content-center ntico-info-content">
-                <div class="col-md-9">
-                    <h3 class="text-center">
-                        Ntico: Expertise in Data Orchestration and ETL with
-                        Kestra
-                    </h3>
-                    <p class="text-center">
-                        For businesses looking to enhance their data workflows,
-                        Ntico brings specialized expertise in implementing
-                        Kestra. They delivers tailored solutions that simplify
-                        data management, optimize ETL processes, and ensure
-                        seamless integration with your existing systems.
-                    </p>
-                </div>
-            </div>
-            <div class="business-container">
-                <div class="business-by-us">
-                    <div class="info-content">
-                        <div class="info-item w-75">
-                            <h3>
-                                "Kestra is an efficient solution for processing
-                                all types of data streams. Efficient in
-                                development with a clear UI, a comprehensive
-                                DevOps process, and an impressive number of
-                                plugins that allow it to adapt to all of our
-                                clients' technical contexts. Efficient in
-                                execution thanks to its scalability and
-                                real-time processing monitoring. Efficient in
-                                client support with a highly skilled and
-                                available team. We are happy to be able to
-                                support this wonderful project."
-                            </h3>
-                        </div>
-                        <div class="vertical-line"></div>
-                        <div class="info-item">
-                            <p>Emmanuel Santerne</p>
-                            <span>Partner at Ntico</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ntico-content">
-                <div class="row mb-5">
-                    <div class="col-md-6 image-container" data-usal="fade-r">
-                        <img
-                            width="560"
-                            height="420"
-                            loading="lazy"
-                            class="img-fluid"
-                            src="/partners/ntico/artworks_features-1.svg"
-                            alt="Assessment and Strategy"
-                        />
-                    </div>
-                    <div
-                        class="col-md-6 d-flex justify-content-center align-items-center"
-                    >
-                        <div>
-                            <h3>Assessment and Strategy</h3>
-                            <p class="mt-3">
-                                Ntico begins by thoroughly assessing your
-                                current data infrastructure. They analyze your
-                                existing workflows, tools, and integration
-                                points to develop a strategy that aligns with
-                                your business objectives. The goal is to ensure
-                                that your transition to Kestra enhances your
-                                data orchestration and ETL capabilities without
-                                disruption.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-5">
-                    <div
-                        class="col-md-6 order-1 order-md-0 d-flex justify-content-center align-items-center"
-                        data-usal="fade-r"
-                    >
-                        <div>
-                            <h3>Implementation and Migration</h3>
-                            <p class="mt-3">
-                                Ntico manages the entire implementation process,
-                                from configuring your Kestra environment to
-                                migrating existing ETL pipelines. Their experts
-                                ensure that the integration is smooth and that
-                                your data processes run efficiently. Ntico
-                                handles the complexities so you can focus on
-                                leveraging your data.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 order-0 order-md-1" data-usal="fade-l">
-                        <img
-                            width="560"
-                            height="420"
-                            loading="lazy"
-                            class="img-fluid"
-                            src="/partners/ntico/artworks_features-2.svg"
-                            alt="Implementation and Migration"
-                        />
-                    </div>
-                </div>
-                <div class="row mb-5">
-                    <div class="col-md-6 image-container" data-usal="fade-r">
-                        <img
-                            width="560"
-                            height="420"
-                            loading="lazy"
-                            class="img-fluid"
-                            src="/partners/ntico/artworks_features-3.svg"
-                            alt="Ongoing Support and Optimization"
-                        />
-                    </div>
-                    <div
-                        class="col-md-6 d-flex justify-content-center align-items-center"
-                    >
-                        <div>
-                            <h3>Ongoing Support and Optimization</h3>
-                            <p class="mt-3">
-                                After the initial setup, Ntico continues to
-                                provide support to optimize your Kestra
-                                workflows. Whether you need to scale your
-                                operations, integrate new data sources, or
-                                refine your ETL processes, Ntico is there to
-                                help. Their support ensures that your Kestra
-                                environment evolves with your business needs.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-5">
-                    <div
-                        class="col-md-6 order-1 order-md-0 d-flex flex-column justify-content-center align-items-center"
-                        data-usal="fade-r"
-                    >
-                        <div>
-                            <h3>Modernization and Data Engineering</h3>
-                            <p class="mt-3">
-                                Ntico brings extensive experience in data
-                                engineering and modernization. They assist in
-                                redesigning and optimizing your data workflows,
-                                making the most of Kestra's capabilities.
-                                Ntico’s services include everything from data
-                                pipeline creation to advanced data processing,
-                                ensuring that your data infrastructure is robust
-                                and future-proof.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 order-0 order-md-1" data-usal="fade-l">
-                        <img
-                            width="560"
-                            height="420"
-                            loading="lazy"
-                            class="img-fluid"
-                            src="/partners/ntico/artworks_features-4.svg"
-                            alt="Modernization and Data Engineering"
-                        />
-                    </div>
-                </div>
-                <div class="row mb-5">
-                    <div class="col-md-6 image-container" data-usal="fade-r">
-                        <img
-                            width="560"
-                            height="420"
-                            loading="lazy"
-                            class="img-fluid"
-                            src="/partners/ntico/artworks_features-5.svg"
-                            alt="Tailored Solutions for Your Business"
-                        />
-                    </div>
-                    <div
-                        class="col-md-6 d-flex justify-content-center align-items-center"
-                    >
-                        <div>
-                            <h3>Tailored Solutions for Your Business</h3>
-                            <p class="mt-3">
-                                Ntico understands that every business is unique.
-                                They provide customized solutions that fit your
-                                specific technical context, budget, and business
-                                goals. Whether you’re looking to modernize your
-                                data architecture, improve your ETL processes,
-                                or simply enhance your data orchestration, Ntico
-                                is your trusted partner.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <LayoutFooterContact
+        <PartnerHeader data={HEADER_DATA} />
+        <section>
+            <PartnerMain intro={INTRO_DATA} quote={QUOTE_DATA} />
+        </section>
+        <Alternation items={ALTERNATION_ITEMS} />
+        <FooterContact
             client:visible
-            title="Contact Ntico"
-            subtitle="Ready to enhance your data orchestration and ETL processes with Kestra? Ntico’s experts are here to assist you."
-            purpleButtonText="Contact Ntico"
-            purpleButtonHref="https://www.ntico.com/contactez-nous/"
+            title={FOOTER_CONTACT.title}
+            subtitle={FOOTER_CONTACT.subtitle}
+            purple={FOOTER_CONTACT.purple}
         />
     </div>
 </Layout>
-
-<style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
-    .ntico-info-content {
-        margin-top: 9rem;
-        color: $white;
-        @include media-breakpoint-down(lg) {
-            margin-top: 20rem;
-        }
-
-        h3 {
-            color: #ffffff;
-            font-weight: 600;
-        }
-    }
-
-    p,
-    ul > li {
-        line-height: 1.5rem;
-    }
-
-    .business-container {
-        margin-top: calc($spacer * 4);
-        margin-bottom: calc($spacer * 4);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: calc($spacer * 4);
-        background-color: $black-2;
-        border-radius: calc($spacer * 0.5);
-        border: 1px solid #252526;
-        overflow: hidden;
-        position: relative;
-        z-index: 10;
-
-        @include media-breakpoint-down(lg) {
-            margin-top: 3rem;
-            padding: calc($spacer * 1);
-        }
-
-        &::after,
-        &::before {
-            content: "";
-            position: absolute;
-            width: 18rem;
-            height: 18rem;
-            background: linear-gradient(
-                180deg,
-                rgba(98, 24, 255, 0) 0%,
-                #6117ff 100%
-            );
-            filter: blur(60px);
-            z-index: 0;
-        }
-
-        &::after {
-            left: 80%;
-            top: -43%;
-        }
-
-        &::before {
-            right: 77%;
-            bottom: -15%;
-        }
-
-        .business-by-us {
-            .info-content {
-                position: relative;
-                z-index: 10;
-                display: flex;
-                gap: 2rem;
-                justify-content: center;
-                align-items: center;
-
-                @include media-breakpoint-down(lg) {
-                    flex-direction: column;
-                }
-
-                .vertical-line {
-                    background-color: #ffffff30;
-                    min-height: calc($spacer * 6.875);
-                    width: 1px;
-                    @include media-breakpoint-down(lg) {
-                        height: 1px;
-                        min-height: 1px;
-                        width: 100%;
-                    }
-                }
-
-                .info-item {
-                    display: flex;
-                    flex-direction: column;
-
-                    h3,
-                    p {
-                        margin: 0;
-                        font-weight: 600;
-                        color: $white;
-                    }
-
-                    h3 {
-                        font-family: $font-family-sans-serif;
-                        font-size: $font-size-lg;
-                        margin-top: 0 !important;
-                    }
-
-                    p {
-                        font-size: $font-size-lg;
-                        line-height: 30px;
-                    }
-
-                    span {
-                        font-size: $font-size-sm;
-                        line-height: 30px;
-                        color: $purple;
-                        font-weight: 400;
-                    }
-                }
-            }
-        }
-    }
-
-    .ntico-content {
-        h3 {
-            color: $white;
-            font-size: $h2-font-size;
-            font-weight: 300;
-            margin: 0;
-        }
-
-        p {
-            color: $white;
-            font-size: $font-size-md;
-            font-weight: 300;
-            max-width: calc($spacer * 28);
-
-            b {
-                color: $white;
-                font-weight: 600;
-            }
-        }
-
-        .image-container {
-            position: relative;
-            z-index: 10;
-
-            @include media-breakpoint-down(lg) {
-                &::after {
-                    left: 13rem;
-                }
-
-                &::before {
-                    left: -3rem;
-                    top: 5rem;
-                }
-            }
-
-            @include media-breakpoint-down(md) {
-                &::after {
-                    left: 23rem;
-                }
-            }
-        }
-    }
-</style>

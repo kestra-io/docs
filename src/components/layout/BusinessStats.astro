@@ -1,0 +1,198 @@
+---
+interface Props {
+    items: Array<{
+        type: "stat" | "quote" | "author"
+        value?: string
+        label?: string
+        icon?: any
+        text?: string
+        name?: string
+        role?: string
+        logo?: any
+        class?: string
+    }>
+}
+
+const { items } = Astro.props
+---
+
+<section>
+    <div class="container mb-5">
+        <div class="business-stats">
+            {
+                items.map((item, index) => (
+                    <>
+                        <div class:list={["info-item", item.class]}>
+                            {item.type === "stat" && (
+                                <>
+                                    <div class="icon-block">
+                                        {item.icon && (
+                                            <img {...item.icon} alt="icon" />
+                                        )}
+                                        {item.value && (
+                                            <p class="value">{item.value}</p>
+                                        )}
+                                    </div>
+                                    {item.label && <p>{item.label}</p>}
+                                </>
+                            )}
+                            {item.type === "quote" && (
+                                <h3 set:html={item.text} />
+                            )}
+                            {item.type === "author" && (
+                                <>
+                                    {item.name && <h3>{item.name}</h3>}
+                                    {item.role && (
+                                        <p class="subtitle">{item.role}</p>
+                                    )}
+                                    {item.logo && (
+                                        <div
+                                            set:html={item.logo.src}
+                                            class="logo-raw"
+                                            role="img"
+                                            aria-label={item.logo.alt}
+                                        />
+                                    )}
+                                </>
+                            )}
+                        </div>
+                        {index < items.length - 1 && <hr class="divider" />}
+                    </>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        padding: calc($spacer * 2) $spacer;
+        background-color: var(--ks-background-secondary);
+    }
+
+    .business-stats {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 2rem;
+        padding: calc($spacer * 1.625);
+        border-radius: calc($spacer * 0.5);
+        border: $block-border;
+        overflow: hidden;
+        position: relative;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            width: 10rem;
+            height: 10rem;
+            background: linear-gradient(180deg, #7021ff, #6305bf);
+            filter: blur(100px);
+        }
+
+        &::before {
+            right: 0;
+            top: 6.625rem;
+        }
+        &::after {
+            left: 0;
+            bottom: 4.87rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            &::before,
+            &::after {
+                width: 8rem;
+                height: 8rem;
+            }
+            &::before {
+                top: -4.375rem;
+            }
+            &::after {
+                bottom: -4.87rem;
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: column;
+        }
+    }
+
+    .divider {
+        background-color: #ffffff30;
+        border: none;
+        min-height: calc($spacer * 6.875);
+        width: 1px;
+        margin: 0;
+
+        @include media-breakpoint-down(lg) {
+            min-height: 1px;
+            width: 100%;
+        }
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: calc($spacer * 0.5);
+        z-index: 1;
+
+        &.align-items-start {
+            align-items: flex-start;
+        }
+
+        h3,
+        p {
+            margin: 0;
+            color: var(--ks-content-primary);
+        }
+
+        h3 {
+            font-size: $font-size-lg;
+            font-weight: 600;
+        }
+        p {
+            font-size: $font-size-sm;
+        }
+        .subtitle {
+            color: var(--ks-content-secondary);
+        }
+
+        .icon-block {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+
+            .value {
+                font-weight: 700;
+                font-size: $h3-font-size;
+            }
+        }
+    }
+
+    :global(.red) .business-stats {
+        &::before,
+        &::after {
+            background: linear-gradient(
+                180deg,
+                rgba(253, 114, 120, 0) 11.24%,
+                #e3262f 72.98%
+            );
+        }
+
+        .subtitle {
+            color: #fd9297 !important;
+        }
+
+        .icon-block img {
+            filter: brightness(0) saturate(100%) invert(75%) sepia(55%)
+                saturate(5609%) hue-rotate(315deg) brightness(107%)
+                contrast(101%);
+        }
+    }
+</style>

@@ -52,11 +52,9 @@
 
     .mdc-renderer {
         & :deep(pre) {
-            border: 1px solid #252526;
-            padding: 0 1.5rem 1.25rem;
+            padding: 0.5rem 1.25rem 1.25rem;
             border-radius: $border-radius-lg;
-            background-color: #161617;
-
+            background-color: var(--ks-background-secondary);
             & code{
                 border: none;
                 background: transparent;
@@ -67,9 +65,12 @@
                 }
             }
         }
-
+        :deep(h3) {
+            padding: 0;
+        }
         :deep(p) {
-            font-size: 1rem;
+            margin-bottom: 0;
+            line-height: normal;
         }
     }
 
@@ -77,7 +78,6 @@
         0% {
             background-position: 0 0;
         }
-
         100% {
             background-position: 40px 40px;
         }
@@ -87,10 +87,9 @@
         display: inline-block;
         position: relative;
         overflow: hidden;
-        background-color: #0a0b0d;
+        background-color: var(--ks-background-secondary);
         height: calc($line-height-base * 1rem);
         border-radius: $border-radius-lg;
-
         &::after {
             position: absolute;
             top: 0;
@@ -100,15 +99,14 @@
             transform: translateX(-100%);
             background-image: linear-gradient(
                 90deg,
-                rgba($black-2, 0) 0,
-                rgba($black-2, 0.2) 20%,
-                rgba($black-2, 0.5) 60%,
-                rgba($black-2, 0)
+                rgba(var(--ks-background-secondary), 0) 0,
+                rgba(var(--ks-background-secondary), 0.2) 20%,
+                rgba(var(--ks-background-secondary), 0.5) 60%,
+                rgba(var(--ks-background-secondary), 0)
             );
             animation: shimmer 1.5s infinite;
             content: "";
         }
-
         @keyframes shimmer {
             100% {
                 transform: translateX(100%);

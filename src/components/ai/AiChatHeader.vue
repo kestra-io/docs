@@ -10,6 +10,7 @@
                 title="Search Documentation"
                 data-bs-toggle="modal"
                 data-bs-target="#search-modal"
+                @click="$emit('openSearch')"
             >
                 <Magnify />
                 <span>Search</span>
@@ -22,13 +23,9 @@
 <script setup lang="ts">
     import Magnify from "vue-material-design-icons/Magnify.vue"
 
-    const emit = defineEmits<{
+    defineEmits<{
         openSearch: []
     }>()
-
-    function openSearch(): void {
-        emit("openSearch")
-    }
 </script>
 
 <style lang="scss" scoped>
@@ -39,27 +36,30 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
+        @include media-breakpoint-down(md) {
+            padding: 0.875rem 1rem;
+        }
         .brand {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-
+            @include media-breakpoint-down(md) {
+                gap: 0.5rem;
+            }
             span {
-                color: $white;
+                color: var(--ks-content-primary);
                 font-weight: 700;
+                font-size: $font-size-xl;
             }
         }
-
         .actions {
             display: flex;
             align-items: center;
             gap: 1rem;
-
             .search-btn {
-                background: #252526;
-                border: none;
-                color: $white-3;
+                background: var(--ks-background-secondary);
+                border: $block-border;
+                color: var(--ks-content-primary);
                 padding: 0.5rem 1rem;
                 border-radius: 0.5rem;
                 font-size: 0.875rem;
@@ -68,40 +68,24 @@
                 align-items: center;
                 gap: 0.25rem;
                 cursor: pointer;
-
                 &:focus {
                     outline: none;
                     box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-                    outline: none;
                 }
                 .magnify-icon {
                     font-size: 20px;
-                    color: $white-3;
+                    color: var(--ks-content-secondary);
                     margin-top: -4px;
                 }
             }
-
             .esc {
-                color: $black-10;
+                color: var(--ks-content-tertiary);
                 font-size: 9px;
                 text-transform: uppercase;
+                @include media-breakpoint-down(sm) {
+                    display: none;
+                }
             }
-        }
-    }
-
-    @include media-breakpoint-down(md) {
-        .header {
-            padding: 0.875rem 1rem;
-
-            .brand {
-                gap: 0.5rem;
-            }
-        }
-    }
-
-    @include media-breakpoint-down(sm) {
-        .header .actions .esc {
-            display: none;
         }
     }
 </style>

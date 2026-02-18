@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content"
-import BigChildCardsRender from "~/components/content/BigChildCardsRender.vue"
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
 interface Props {
     title: string
     directory: string
@@ -35,4 +35,55 @@ const links = await getCollection("docs").then((docs) => {
 })
 ---
 
-<BigChildCardsRender title={title} navigation={links} />
+<h2 class="big-title">{title}</h2>
+<div class="big-card-grid">
+    {
+        links.map((item) => (
+            <a
+                href={item.path}
+                class="big-card"
+            >
+                <h4 class="card-title">{item.title}</h4>
+                <MDCParserAndRenderer content={item.description} class="card-text" />
+            </a>
+        ))
+    }
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .big-card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    h2.big-title {
+        padding: 0;
+        font-size: $font-size-xl;
+        border: none;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .big-card {
+        border-radius: 0.5rem;
+        text-decoration: none;
+        background: var(--ks-background-tertiary);
+        color: var(--ks-content-primary);
+        border: 1px solid var(--ks-border-primary);
+        border-image-source: linear-gradient(180deg, var(--ks-border-primary) 0%, var(--ks-border-primary) 100%);
+        transition: all 0.3s;
+        padding: 1rem;
+        @include media-breakpoint-up(md) {
+            padding: 2rem;
+        }
+        h4 {
+            margin-bottom: 0.25rem;
+        }
+        &:hover {
+            background: var(--ks-background-secondary);
+        }
+    }
+</style>

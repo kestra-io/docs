@@ -1,160 +1,110 @@
 <template>
-    <div class="container-fluid">
+    <section>
         <div class="container">
-            <div class="row content mt-5 mb-2">
+            <div class="row content mb-2">
                 <div class="col-12">
                     <h1 data-usal="fade-left title">Video Tutorials</h1>
                     <h4 data-usal="fade-r" class="fw-normal">
                         Get started with our video tutorials
                     </h4>
-                    <ul
-                        class="nav nav-tabs mt-3 flex-nowrap overflow-x-auto overflow-y-hidden"
-                        id="myTab"
-                        role="tablist"
-                    >
+                    <ul id="myTab" class="nav nav-tabs mt-3 flex-nowrap overflow-x-auto overflow-y-hidden"
+                        role="tablist">
                         <li
                             v-for="category in categories"
                             :key="category"
                             class="nav-item text-nowrap"
                             role="presentation"
                         >
-                            <a
-                                class="nav-link"
-                                :class="{
-                                    active: currentCategory === category,
-                                }"
-                                id="home-tab"
-                                type="button"
-                                :href="`/tutorial-videos/${findKeyByValue(tags, category)}`"
-                            >
+                            <a class="nav-link" :class="{ active: currentCategory === category }" type="button"
+                                :href="`/tutorial-videos/${categoryToSlug[category]}`">
                                 {{ category }}
                             </a>
                         </li>
                     </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div
-                            v-for="category in categories"
-                            :key="category"
-                            class="tab-pane fade"
-                            :class="{
-                                'show active': currentCategory === category,
-                            }"
-                            :id="category"
-                            role="tabpanel"
-                            :aria-labelledby="`${category}-tab`"
-                        >
-                            <div class="tutorials-container">
-                                <div class="row" v-if="featuredVideo">
-                                    <div class="col-12 col-lg-8">
-                                        <iframe
-                                            width="764"
-                                            height="424"
-                                            :src="featuredVideo.iframeUrl"
-                                            :title="featuredVideo.title"
-                                            frameborder="0"
-                                            allow="
-                                                accelerometer;
-                                                autoplay;
-                                                clipboard-write;
-                                                encrypted-media;
-                                                gyroscope;
-                                                picture-in-picture;
-                                                web-share;
-                                            "
-                                            referrerpolicy="strict-origin-when-cross-origin"
-                                            allowfullscreen
-                                        />
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <div class="info-block">
-                                            <div class="content">
-                                                <p class="category">
-                                                    {{ featuredVideo.category }}
-                                                </p>
-                                                <h3 class="title">
-                                                    {{ featuredVideo.title }}
-                                                </h3>
-                                                <p
-                                                    class="video-info"
-                                                    v-if="featuredVideo.publicationDate"
-                                                >
-                                                    {{ getYMD(featuredVideo.publicationDate) }}
-                                                </p>
-                                                <p class="canal-name">
-                                                    {{ featuredVideo.author }}
-                                                </p>
-                                            </div>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tutorials-container" role="tabpanel">
+                            <div v-if="featuredVideo" class="row">
+                                <div class="col-12 col-lg-8">
+                                    <iframe
+                                        width="764"
+                                        height="424"
+                                        :src="featuredVideo.iframeUrl"
+                                        :title="featuredVideo.title"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen
+                                    />
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <div class="info-block">
+                                        <div class="content">
+                                            <p class="category">{{ featuredVideo.category }}</p>
+                                            <h3 class="title">{{ featuredVideo.title }}</h3>
+                                            <p v-if="featuredVideo.publicationDate" class="video-info">
+                                                {{ formatDate(featuredVideo.publicationDate) }}
+                                            </p>
+                                            <p class="canal-name">{{ featuredVideo.author }}</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tutorials-list">
-                                    <div class="row">
-                                        <div
-                                            class="col-12 col-md-6 col-lg-4 mb-4"
-                                            v-for="video in videos"
-                                            :key="video.title"
-                                        >
-                                            <VideosTutorialVideo
-                                                :video="video"
-                                                :getYMD="getYMD"
-                                                @click="openVideoModal(video)"
-                                            />
-                                        </div>
+                            </div>
+                            <div class="tutorials-list">
+                                <div class="row">
+                                    <div
+                                        v-for="video in videos"
+                                        :key="video.title"
+                                        class="col-12 col-md-6 col-lg-4 mb-4"
+                                    >
+                                        <VideosTutorialVideo
+                                            :video="video"
+                                            @click="openVideoModal(video)"
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <slot name="pagination" />
+                <PaginationContainer
+                    :current-url="currentUrl"
+                    :total-items="totalItems"
+                    :show-total="false"
+                    @update="onPaginationUpdate"
+                />
             </div>
         </div>
-        <Modal v-model:show="videoVisible">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button
-                            type="button"
-                            @click="closeModal"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="video-container">
-                            <iframe
-                                v-if="videoVisible"
-                                :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
-                                :title="visibleVideoData.title"
-                                frameborder="0"
-                                allow="
-                                    accelerometer;
-                                    autoplay;
-                                    clipboard-write;
-                                    encrypted-media;
-                                    gyroscope;
-                                    picture-in-picture;
-                                    web-share;
-                                "
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                allowfullscreen
-                            />
-                        </div>
-                    </div>
+
+        <Modal v-model:show="videoVisible" class="video-modal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="video-container">
+                    <iframe
+                        v-if="videoVisible"
+                        :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
+                        :title="visibleVideoData.title"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                    />
                 </div>
             </div>
         </Modal>
-    </div>
+    </section>
 </template>
 
 <script setup lang="ts">
     import { ref, watch } from "vue"
+    import { navigate } from "astro:transitions/client"
     import { useYoutube } from "~/utils/useYoutube"
     import Modal from "~/components/common/Modal.vue"
     import VideosTutorialVideo from "~/components/videos/TutorialVideo.vue"
+    import PaginationContainer from "~/components/common/PaginationContainer.vue"
 
     interface VideoData {
         title: string
@@ -177,6 +127,7 @@
             page?: number
             itemsPerPage?: number
             currentCategory?: string
+            currentUrl: string
             tutorialVideo?: TutorialVideoResponse
         }>(),
         {
@@ -193,7 +144,7 @@
     const featuredVideo = ref<VideoData | null>(null)
     const videoVisible = ref(false)
     const visibleVideoData = ref<VideoData>({} as VideoData)
-    const totalPages = ref(0)
+    const totalItems = ref(0)
 
     const categories = [
         "All videos",
@@ -202,37 +153,28 @@
         "Feature Highlight",
     ] as const
 
-    export type CategoryName = (typeof categories)[number]
-
-    const tags = new Map([
-        ["all", "All videos"],
-        ["deep-dive", "Deep Dive Tutorials"],
-        ["quick-start", "Quick Start Tutorials"],
-        ["feature-highlight", "Feature Highlight"],
-    ])
-
-    function getYMD(dateString: string): string {
-        const date = new Date(dateString)
-        return new Intl.DateTimeFormat("de-DE", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        }).format(date)
+    const categoryToSlug: Record<string, string> = {
+        "All videos": "all",
+        "Deep Dive Tutorials": "deep-dive",
+        "Quick Start Tutorials": "quick-start",
+        "Feature Highlight": "feature-highlight",
     }
 
-    const emit = defineEmits<{
-        (e: "update:currentCategory", value: string): void
-    }>()
+    function formatDate(dateString: string): string {
+        try {
+            return new Intl.DateTimeFormat("de-DE", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            }).format(new Date(dateString))
+        } catch {
+            return dateString
+        }
+    }
 
     function embedUrl(url: string): string {
         const videoId = extractVideoId(url)
         return videoId ? `https://www.youtube.com/embed/${videoId}` : ""
-    }
-
-    function findKeyByValue(map: Map<string, string>, value: string): string | undefined {
-        for (const [key, val] of map.entries()) {
-            if (val === value) return key
-        }
     }
 
     function setVideos(data: VideoData[], total: number): void {
@@ -250,7 +192,7 @@
             videos.value = [...videoData]
         }
 
-        totalPages.value = Math.ceil(total / props.itemsPerPage)
+        totalItems.value = total
     }
 
     function closeModal(): void {
@@ -263,10 +205,24 @@
         visibleVideoData.value = video
     }
 
+    const onPaginationUpdate = (payload: { size: number; page: number }) => {
+        if (typeof window === "undefined") return
+
+        if (payload.size === props.itemsPerPage && payload.page === props.page) {
+            return
+        }
+
+        const newUrl = new URL(window.location.href)
+        newUrl.searchParams.set("size", payload.size.toString())
+        newUrl.searchParams.set("page", payload.page.toString())
+
+        navigate(newUrl.pathname + newUrl.search)
+    }
+
     watch(
         () => props.tutorialVideo,
         (newVal) => {
-            if (newVal?.total) {
+            if (newVal?.total !== undefined) {
                 setVideos(newVal.results, newVal.total)
                 if (typeof window !== "undefined") {
                     window.scrollTo(0, 0)
@@ -280,70 +236,64 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
+    section {
+        padding: $rem-4 $rem-1;
+        position: relative;
+        &::after {
+            content: "";
+            position: absolute;
+            height: 12.5rem;
+            width: 20%;
+            top: 3%;
+            left: 10%;
+            z-index: 1;
+            filter: blur(110px);
+            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
+            pointer-events: none;
+        }
+    }
+
+    :deep(.modal-content) {
+        background-color: var(--ks-background-secondary);
+    }
+
     .modal-header {
-        background-color: $black-2;
-        border-bottom-color: $black-2;
-        padding: 1rem;
-        padding-bottom: 0;
-        padding-top: 5px;
+        background-color: var(--ks-background-secondary);
+        border-bottom-color: var(--ks-border-secondary);
+        padding: 1rem 1rem 0;
         display: flex;
         justify-content: flex-end;
         button {
             background: transparent;
             border: none;
-            color: $white;
-            outline: $black-5 dotted 1px;
+            color: var(--ks-content-primary);
+            outline: var(--ks-border-secondary) dotted 1px;
         }
     }
 
     .modal-body {
-        background-color: $black-2;
+        background-color: var(--ks-background-secondary);
         padding: 1rem;
     }
 
-    .right-side-bar {
-        border: $block-border;
-        height: fit-content;
-        padding: 2.25rem 2rem;
-
-        .heading {
-            color: $white;
-            font-size: $font-size-lg;
-            line-height: 1.875rem;
-            font-weight: 100;
-        }
-    }
-
     .nav-tabs {
-        border-bottom: 1px solid $black-6;
+        border-bottom: 1px solid var(--ks-border-secondary);
     }
 
     .nav-item {
         .nav-link {
-            color: $white;
+            color: var(--ks-content-primary);
             font-size: $font-size-md;
             font-weight: 400;
-            border-width: 0;
-            &:hover,
-            &:focus {
-                border-color: transparent;
-            }
-
+            border: none;
             &:focus-visible {
                 box-shadow: none;
             }
-        }
-
-        .active {
-            color: $purple-36;
-            font-size: $font-size-md;
-            background-color: transparent;
-            font-weight: 700;
-
-            &,
-            &:hover,
-            &:focus {
-                border-bottom: 2px solid $purple-36;
+            &.active {
+                color: var(--ks-content-link);
+                font-weight: 700;
+                background-color: transparent;
+                border-bottom: 2px solid var(--ks-content-link);
             }
         }
     }
@@ -357,39 +307,17 @@
         scrollbar-width: none;
     }
 
-    h2 {
-        color: $white;
-    }
-
     .content {
         @include media-breakpoint-up(md) {
             margin-right: $rem-1;
         }
-
         h1 {
-            font-size: $font-size-4xl;
-            font-weight: 400;
-            color: $white;
-            margin-bottom: 2rem;
+            color: var(--ks-content-primary);
+            margin-bottom: $rem-1;
         }
-
         h4 {
-            color: $white-1;
-            font-size: $font-size-xl;
-            font-weight: 400;
+            color: var(--ks-content-secondary);
             margin-bottom: 2rem;
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            height: 12.5rem;
-            width: 20%;
-            top: 3%;
-            left: 10%;
-            z-index: -147;
-            filter: blur(110px);
-            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
         }
     }
 
@@ -398,84 +326,47 @@
         display: flex;
         flex-direction: column;
         gap: 2rem;
-
         iframe {
-            border: 1px solid $black-6;
+            border: 1px solid var(--ks-border-secondary);
             border-radius: calc($spacer * 0.5);
             width: 100%;
-
-            @include media-breakpoint-down(lg) {
-            }
         }
-
         .info-block {
             display: flex;
             align-items: center;
             height: 100%;
             max-width: calc($spacer * 23.25);
-
             .content {
                 display: flex;
                 flex-direction: column;
                 margin: 0 !important;
-
                 p {
                     margin: 0;
                     font-size: $font-size-sm;
                     line-height: calc($spacer * 1.375);
                     font-weight: 400;
+                    &.category {
+                        color: var(--ks-content-link);
+                    }
+                    &.video-info,
+                    &.canal-name {
+                        color: var(--ks-content-tertiary);
+                    }
                 }
-
-                p.category {
-                    color: $purple-36;
-                }
-
                 h3.title {
                     font-size: $h3-font-size;
                     font-weight: 400;
                     line-height: calc($spacer * 2.375);
-                    color: $white;
+                    color: var(--ks-content-primary);
                     margin: 0;
                 }
-
-                p.video-info {
-                    color: $white-3;
-                }
-
-                p.canal-name {
-                    color: $black-8;
-                }
             }
-
             @include media-breakpoint-down(lg) {
                 max-width: unset;
-                .content {
-                    h3.title {
-                        line-height: unset;
-                    }
+                .content h3.title {
+                    line-height: unset;
                 }
             }
         }
-    }
-
-    .items-per-page .form-select {
-        border-radius: 4px;
-        border: $block-border;
-        color: $white;
-        text-align: center;
-        font-family: $font-family-sans-serif;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 22px;
-    }
-
-    .total-pages {
-        font-size: $font-size-sm;
-        color: $white;
-        text-align: center;
-        font-family: $font-family-sans-serif;
-        font-weight: 400;
-        line-height: 22px;
     }
 </style>

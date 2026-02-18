@@ -1,0 +1,30 @@
+---
+import FooterContact from "~/components/layout/FooterContact.astro"
+---
+
+<section class="about">
+    <div class="container">
+        <slot />
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section.about {
+        padding: $rem-3 $rem-1;
+        background-color: var(--ks-background-body);
+
+        :global(h2),
+        :global(h3) {
+            color: var(--ks-content-primary);
+            margin-bottom: 16px;
+        }
+
+        :global(p),
+        :global(ul > li) {
+            color: var(--ks-content-primary);
+            font-size: $h6-font-size;
+        }
+    }
+</style>

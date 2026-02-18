@@ -1,6 +1,6 @@
 <template>
     <div class="accordion-item custom-details">
-        <h2 class="accordion-header">
+        <h2 class="accordion-header" :class="{ 'no-border': isOpen }">
             <button
                 class="accordion-button"
                 :class="{ collapsed: !isOpen }"
@@ -8,7 +8,8 @@
                 :aria-expanded="isOpen"
                 @click="isOpen = !isOpen"
             >
-                {{ title }}
+                <span>{{ title }}</span>
+                <ChevronDown class="icon" />
             </button>
         </h2>
         <Transition
@@ -28,6 +29,7 @@
 
 <script setup lang="ts">
     import { ref } from "vue"
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 
     const props = defineProps<{
         title: string
@@ -38,8 +40,7 @@
 
     const enter = (el: any) => {
         el.style.height = "0";
-        // oxlint-disable-next-line no-unused-expressions this is to trigger a reflow calculation
-        el.offsetHeight;
+        void el.offsetHeight;
         el.style.height = `${el.scrollHeight}px`;
     };
 
@@ -49,85 +50,63 @@
 
     const leave = (el: any) => {
         el.style.height = `${el.scrollHeight}px`;
-        // oxlint-disable-next-line no-unused-expressions this is to trigger a reflow calculation
-        el.offsetHeight;
+        void el.offsetHeight;
         el.style.height = "0";
     };
 </script>
 
 <style scoped lang="scss">
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
     @import "~/assets/styles/variable";
 
     .custom-details {
-        background: $black-4;
-        border: none !important;
-        border-bottom: 1px solid $black-3 !important;
-
+        background: var(--ks-background-body);
+        border: none;
+        h2 {
+            border-bottom: $block-border;
+            &.no-border {
+                border-bottom: none;
+            }
+        }
         .accordion-button {
-            color: var(--ks-content-primary) !important;
-            border: none !important;
-            padding: 1.5rem 1rem;
-            font-weight: 400;
-            box-shadow: none !important;
-            font-size: 18.4px;
-
+            color: var(--ks-content-primary);
+            border: none;
+            padding: $rem-1;
+            font-weight: 600;
+            box-shadow: none;
+            font-size: 1.15rem;
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            &::after {
+                display: none;
+            }
             &:hover {
                 opacity: 0.8;
             }
-
-            &:focus {
-                box-shadow: none !important;
-                border: none !important;
+            :deep(.icon) {
+                transition: transform 0.2s ease-in-out;
+                transform: rotate(360deg);
+                font-size: 1.75rem;
+                line-height: 1.5rem;
+                flex-shrink: 0;
             }
-
-            &:not(.collapsed) {
-                color: var(--ks-content-primary) !important;
-            }
-
-            &::after {
-                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-                transform: rotate(-180deg);
-                width: 1.25rem;
-                height: 1.25rem;
-                background-size: 1.25rem;
-            }
-
-            &.collapsed::after {
-                transform: rotate(0deg);
-            }
-
-            @include media-breakpoint-down(lg) {
-                font-size: 18px !important;
-                font-weight: 400;
-            }
-
-            .icon {
-                transition: transform 0.3s ease;
-
-                .chevron-up-icon,
-                .chevron-down-icon {
-                    font-size: 24px;
-                }
-
-                .chevron-up-icon {
-                    display: none;
-                }
+            &.collapsed :deep(.icon) {
+                transform: rotate(270deg);
             }
         }
-
         .accordion-body {
-            color: var(--ks-content-primary) !important;
+            color: var(--ks-content-primary);
             padding: 1rem;
-            border-left: 1px solid color-palette.$base-purple-300;
+            border-left: 1px solid var(--ks-content-color-highlight);
             margin-left: 1rem;
             margin-bottom: 1rem;
+            :deep(a) {
+                color: var(--ks-content-link);
+            }
         }
-    }
-
-    h6 {
-        font-weight: 700;
-        color: var(--bs-black);
     }
 
     .expand-enter-active,

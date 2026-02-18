@@ -1,30 +1,180 @@
 ---
-import Layout from "~/components/layout.astro"
-import FeaturesApifirstHeader from "~/components/features/apifirst/Header.vue"
-import FeaturesApifirstFeatures from "~/components/features/apifirst/Features.vue"
-import FeaturesApifirstGitOptions from "~/components/features/apifirst/GitOptions.vue"
-import FeaturesApifirstIntegrationsInfo from "~/components/features/apifirst/IntegrationsInfo.vue"
-import FeaturesApifirstPlugins from "~/components/features/apifirst/Plugins.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import FeatureLayout from "~/components/layouts/FeatureLayout.astro"
+import Header from "~/components/features/shared/Header.vue"
+import CardGrid from "~/components/features/shared/CardGrid.astro"
+import SideBySide from "~/components/features/shared/SideBySide.vue"
+import Section from "~/components/layout/Section.vue"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import FeaturePlugins from "~/components/layout/FeaturePlugins.astro"
 
-const title = "Kestra API First Design"
-const description = "interact with every aspect of Kestra programmatically."
+import Connection from "vue-material-design-icons/Connection.vue"
+import Terraform from "vue-material-design-icons/Terraform.vue"
+import ServerNetwork from "vue-material-design-icons/ServerNetwork.vue"
+import { title } from "node:process"
+
+const TITLE = "Kestra API First Design"
+const DESCRIPTION = "interact with every aspect of Kestra programmatically."
+
+const HEADER_DATA = {
+    title: "<span>API-First</span> Design",
+    description:
+        "Kestra is designed in an API-first way, enabling programmatic access to all actions from managing workflows to user administration",
+    cta: [
+        {
+            text: "Get Started",
+            href: "/docs/quickstart#start-kestra",
+            style: "dark",
+        },
+        { text: "Talk to us", href: "/demo", style: "purple" },
+    ],
+    image: {
+        src: "/landing/features/apifirst/header.svg",
+        alt: "A screenshot of the user interface of Kestra's application",
+        width: "865px",
+        height: "639px",
+    },
+}
+
+const FEATURES_DATA = {
+    title: "Building on an <span class='highlight'>API-First Platform</span>",
+    items: [
+        {
+            icon: ServerNetwork,
+            title: "API Coverage",
+            description:
+                "From workflow creation to user management, our API reference details how to interact with every aspect of the platform programmatically.",
+        },
+        {
+            icon: Connection,
+            title: "Extensibility for Custom Solutions",
+            description:
+                "Leverage the power of Kestra to create interfaces or enhance existing systems, thanks to the API's flexibility.",
+        },
+        {
+            icon: Terraform,
+            title: "Terraform Integration & Future SDKs",
+            description:
+                "We offer Terraform integration, and we're expanding our toolkit with SDKs in popular programming languages for even easier integration.",
+        },
+    ],
+    cta: {
+        text: "Learn more",
+        href: "https://kestra.io/docs/api-reference",
+    },
+}
+
+const GIT_OPTIONS_DATA = {
+    title: "Workflow <span class='highlight'>Integration</span> and <span class='highlight'>Automation</span>",
+    image: {
+        src: "/landing/features/apifirst/workflow-integration.svg",
+        alt: "GitOps with Kestra",
+        width: "453px",
+        height: "336px",
+    },
+    items: [
+        {
+            title: "In-Flow HTTP Requests",
+            description:
+                "Utilize the <span>HTTP Request</span> task within your workflows to connect to external APIs, fetch data or trigger actions within your Kestra flows.",
+        },
+        {
+            title: "Event-Driven Triggers",
+            description:
+                "The <span>HTTP Trigger</span> opens your workflows for integration with any external events.",
+        },
+    ],
+    cta: {
+        text: "Learn more",
+        href: "https://kestra.io/plugins/triggers/http/io.kestra.plugin.core.http.Trigger",
+    },
+}
+
+const INTEGRATION_ITEMS = [
+    {
+        title: "CI/CD and Code<br /> Management",
+        content: `
+            <p>
+                Being API-first means Kestra integrates seamlessly with CI/CD pipelines,
+                offering a streamlined path from code development in your local IDE to
+                deployment through tools like GitHub Actions. This integration ensures that
+                your workflows remain in sync with your codebase.
+            </p>
+        `,
+        image: {
+            src: "/landing/features/apifirst/manage-code.svg",
+            alt: "High availability Schema",
+            width: "568px",
+            height: "420px",
+            class: "mask",
+        },
+    },
+    {
+        title: "Development Flexibility",
+        content: `
+            <p>
+                Choose your development environment with confidence, knowing that whether
+                you prefer to code directly in the Kestra UI or in your favorite IDE, our
+                platform supports your workflow. Our API-first approach guarantees that your
+                integration with Git and other version control systems is straightforward,
+                maintaining a single source of truth for your projects.
+            </p>
+        `,
+        image: {
+            src: "/landing/features/apifirst/development-flexibility.svg",
+            alt: "Docker Integration for Script Execution",
+            width: "492px",
+            height: "314px",
+            class: "mask-1",
+        },
+    },
+]
 ---
 
-<Layout title={title} description={description}>
+<FeatureLayout
+    meta={{ title: TITLE, description: DESCRIPTION }}
+    footer={{
+        title: "Getting Started with Declarative Orchestration",
+        links: {
+            dark: {
+                text: "Get started",
+                href: "/docs/quickstart#start-kestra",
+            },
+            purple: { text: "Talk to us", href: "/demo" },
+        },
+    }}
+>
+    <Header
+        client:load
+        title={HEADER_DATA.title}
+        description={HEADER_DATA.description}
+        cta={HEADER_DATA.cta}
+        image={HEADER_DATA.image}
+    />
+
     <div>
-        <FeaturesApifirstHeader client:load />
-        <FeaturesApifirstFeatures client:visible />
-        <FeaturesApifirstGitOptions client:visible />
-        <FeaturesApifirstIntegrationsInfo client:visible />
-        <FeaturesApifirstPlugins client:visible />
-        <LayoutFooterContact
+        <CardGrid
+            title={FEATURES_DATA.title}
+            items={FEATURES_DATA.items}
+            cta={FEATURES_DATA.cta}
+        />
+        <SideBySide
             client:visible
-            title="Getting Started with Declarative Orchestration"
-            darkButtonText="Get started"
-            darkButtonHref="/docs/quickstart#start-kestra"
-            purpleButtonText="Talk to us"
-            purpleButtonHref="/demo"
+            title={GIT_OPTIONS_DATA.title}
+            image={GIT_OPTIONS_DATA.image}
+            items={GIT_OPTIONS_DATA.items}
+            cta={GIT_OPTIONS_DATA.cta}
+        />
+        <Alternation
+            title="<span class='highlight'>Productivity</span> and <span class='highlight'>Integration</span>"
+            items={INTEGRATION_ITEMS}
+        />
+        <FeaturePlugins
+            content={{
+                title: "Plugin-Powered",
+                highlight: "Flexibility",
+                description:
+                    "Choose from over {count} plugins that offer direct integration with third-party services, databases, messaging systems, and more.",
+            }}
         />
     </div>
-</Layout>
+</FeatureLayout>

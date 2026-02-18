@@ -1,6 +1,6 @@
 <template>
     <aside class="bd-sidebar scroller">
-        <div class="mb-4">
+        <div>
             <button
                 ref="menuToggleBtn"
                 class="btn d-lg-none mt-2"
@@ -119,9 +119,8 @@
     .bd-sidebar {
         &::-webkit-scrollbar-thumb {
             border-radius: 5px;
-            background: $black-9;
+            background: var(--ks-border-primary);
         }
-
         @include media-breakpoint-up(lg) {
             margin-top: 4rem;
             position: sticky;
@@ -136,54 +135,46 @@
             padding-right: calc($spacer / 4);
             min-width: 250px;
         }
-
         button.btn {
             border: 1px solid var(--bs-gray-300);
             font-weight: bold;
             width: 100%;
-            color: $white;
-
+            color: var(--ks-content-primary);
             @include media-breakpoint-down(lg) {
-                background-color: $black-3;
+                background-color: var(--ks-background-primary);
                 font-size: $font-size-sm;
                 border-radius: 0.5rem;
-                border: 1px solid $black-6;
-
+                border: $block-border;
                 :deep(.material-design-icon__svg) {
                     path {
-                        color: $white;
+                        color: var(--ks-content-primary);
                     }
                 }
             }
         }
-
         .bd-menu-collapse {
             @include media-breakpoint-down(lg) {
                 nav {
                     padding: calc($spacer / 2) $spacer;
-                    border: 1px solid var(--bs-border-color);
+                    border: $block-border;
                     box-shadow: $box-shadow-sm;
                     @include border-radius(var(--bs-border-radius));
                 }
             }
-
             @include media-breakpoint-up(lg) {
                 display: block !important; // stylelint-disable-line declaration-no-important
             }
         }
-
         .search,
         .ai-button-wrapper {
             min-width: 209px;
             width: 98%;
             height: 32px;
-
             @include media-breakpoint-down(lg) {
                 width: 100%;
                 margin-top: $spacer;
             }
         }
-
         .ai-button-wrapper {
             .ai-button {
                 white-space: nowrap;
@@ -194,26 +185,21 @@
                 min-width: 0;
             }
         }
-
         .search {
             padding: calc($spacer * 0.3) calc($spacer * 0.8);
             gap: 8px;
             border-radius: calc($spacer * 0.25);
-            background-color: $black-2;
-            border: 1px solid $black-3;
+            background-color: var(--ks-background-secondary);
+            border: $block-border;
             margin-bottom: $spacer;
             cursor: pointer;
-
             &:hover {
-                background-color: $black-4;
-                border: 1px solid $black-6;
+                border: $block-border;
             }
-
             :deep(.material-design-icon__svg) {
                 bottom: 0;
                 fill: #8b8b8d;
             }
-
             .input-group {
                 width: 100%;
                 height: 100%;
@@ -221,44 +207,37 @@
                 gap: calc($spacer * 0.5);
                 align-items: center;
                 justify-content: space-between;
-
                 .input-icon {
                     max-height: 100%;
                     display: flex;
                     gap: calc($spacer * 0.5);
                     align-items: center;
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
-
                 @include media-breakpoint-down(lg) {
                     justify-content: space-between;
                     gap: calc($spacer * 2);
                 }
-
                 p {
-                    color: $white;
+                    color: var(--ks-content-primary);
                     font-size: $font-size-sm;
                     font-weight: 400;
                     margin: 0;
                 }
-
                 .input-group-text {
                     max-height: 100%;
                     background-color: transparent;
                     border: none;
                     padding: 0;
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
             }
-
             .input-group-append {
                 display: flex;
                 align-items: center;
                 gap: calc($spacer * 0.25);
-
                 .command {
-                    color: $black-8;
-                    font-family: $font-family-sans-serif;
+                    color: var(--ks-content-tertiary);
                     font-size: calc($font-size-base * 0.62);
                 }
             }

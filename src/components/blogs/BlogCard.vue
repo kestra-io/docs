@@ -1,66 +1,96 @@
 <template>
-    <div class="mb-5 mt-1" role="button">
-        <a :href="blog.path">
-            <img
-                v-if="typeof blog.image === 'string' && blog.image?.startsWith('https://')"
-                width="300"
-                loading="lazy"
-                :alt="blog.title"
-                :src="blog.image"
-                class="card-image w-100 rounded-3"
-            />
-            <NuxtImg
-                v-else
-                width="300"
-                loading="lazy"
-                :alt="blog.title"
-                :src="blog.image"
-                class="card-image w-100 rounded-3"
-            />
-            <div class="mt-1">
-                <span class="small-text category">{{ blog.category }}</span>
-                <h6 class="my-1">{{ blog.title }}</h6>
-                <BlogCardDetails
-                    :authors="blog.authors || (blog.author ? [blog.author] : [])"
-                    :date="blog.date.toString()"
-                />
+    <div class="cards">
+        <a :href="blog.path" :target="target">
+            <div class="img-container">
+                <img :src="blog.image" :alt="blog.title" />
+            </div>
+            <div class="content">
+                <small class="meta">
+                    {{ blog.category }} • {{ formatDate(blog.date) }} • {{ authorName }}
+                </small>
+                <h6 class="title">{{ blog.title }}</h6>
             </div>
         </a>
     </div>
 </template>
 
-<script lang="ts" setup>
-    import BlogCardDetails from "~/components/blogs/BlogCardDetails.vue"
-    defineProps<{
-        blog: {
-            path: string
-            image?: string
-            category?: string
-            authors?: { name: string }[]
-            author?: { name: string }
-            title: string
-            date: Date | string
-        }
+<script setup lang="ts">
+    import { computed } from 'vue'
+
+    const props = defineProps<{
+        blog: any
+        target?: string
     }>()
+
+    const authorName = computed(() => {
+        const authors = props.blog.authors || (props.blog.author ? [props.blog.author] : [])
+        return authors.map((author: any) => author.name).join(", ")
+    })
+
+    const formatDate = (date: string) => {
+        return new Intl.DateTimeFormat("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        }).format(new Date(date)).replace(",", "")
+    }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    h6 {
-        color: $white;
-        font-size: $font-size-md;
-        font-weight: 400;
-    }
+    .cards {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        cursor: pointer;
+        border: none;
 
-    span {
-        color: #cdd5ef;
-        font-size: $font-size-sm;
-        font-weight: 400;
-    }
-    .card-image {
-        object-fit: cover;
-        aspect-ratio: 16/9;
-        border: 1.091px solid $black-3;
+        a {
+            text-decoration: none;
+            display: block;
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: $block-border;
+            border-radius: 8px;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.3s ease;
+            }
+        }
+
+        &:hover .img-container img {
+            transform: scale(1.05);
+        }
+
+        .content {
+            min-height: 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .meta {
+                color: var(--ks-content-tertiary);
+                font-size: $font-size-xs;
+                margin: 0.25rem 0;
+            }
+
+            .title {
+                color: var(--ks-content-primary);
+                margin: 0;
+                transition: color 0.3s ease;
+            }
+        }
+
+        &:hover .title {
+            color: var(--ks-content-link);
+        }
     }
 </style>

@@ -1,0 +1,132 @@
+---
+import FeaturesGrid from "~/components/layout/FeaturesGrid.astro"
+import { getImage } from "astro:assets"
+import EDarrasImg from "~/assets/teams/edarras-sm.png"
+
+const FEATURES = [
+    {
+        title: "Define Goals, Not Tasks",
+        description:
+            "Describe the desired outcome and constraints; let agents handle the execution details.",
+        image: "/landing/onezero/goals.png",
+    },
+    {
+        title: "Autonomous by Design",
+        description:
+            "Agents can choose the next best action dynamically, while the declarative model ensures repeatable version-controlled code.",
+        image: "/landing/onezero/autonomous.png",
+    },
+    {
+        title: "Governed And Auditable",
+        description:
+            "Every decision is logged and observable, so you keep oversight without limiting your iteration speed.",
+        image: "/landing/onezero/governed.png",
+    },
+]
+
+const profileImage = await getImage({ src: EDarrasImg, width: 50, height: 50 })
+---
+
+<section class="feature-bg">
+    <div class="container">
+        <p class="title-block">
+            Why Use
+            <span class="highlight"> Declarative Orchestration </span>
+            For AI Agents
+        </p>
+
+        <FeaturesGrid features={FEATURES} />
+
+        <div class="achievement">
+            <img src="/landing/onezero/quote.svg" alt="Pioneered" />
+            <h1>
+                We pioneered declarative orchestration. With 1.0, AI elevates
+                that paradigm; teams express intent in natural language while
+                maintaining full governance.
+            </h1>
+            <div class="profile">
+                <img
+                    src={profileImage.src}
+                    alt="Emmanuel Darras"
+                    class="profile-img"
+                />
+                <div class="profile-text">
+                    <h6 class="profile-name">Emmanuel Darras</h6>
+                    <p class="profile-title">CEO & Co-Founder</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "~/assets/styles/variable" as *;
+
+    .feature-bg {
+        background-color: var(--ks-background-body);
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-direction: column;
+        text-align: center;
+        position: relative;
+        padding: 4rem 1.25rem;
+    }
+
+    .title-block {
+        width: 100%;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.5rem;
+        }
+    }
+
+    .achievement {
+        max-width: 764px;
+        text-align: left;
+        padding: 2rem 0;
+
+        h1 {
+            color: var(--ks-content-primary);
+            margin-bottom: $rem-2;
+            line-height: 132%;
+            text-wrap: balance;
+            white-space: pre-line;
+        }
+    }
+
+    .profile {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+
+        &-img {
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+            border-radius: 5rem;
+        }
+
+        &-name {
+            font-weight: 700;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-md;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+        }
+
+        &-title {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-xs;
+            line-height: 20px;
+            margin: 0;
+        }
+    }
+</style>

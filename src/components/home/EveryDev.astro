@@ -1,0 +1,388 @@
+---
+import { Image } from "astro:assets"
+import GradientCard from "~/components/card/GradientCard.vue"
+import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
+
+import everySoftware from "./assets/every-software.png"
+import everySoftwareHover from "./assets/every-software-hover.png"
+import everyPlatform from "./assets/every-platform.png"
+import everyPlatformHover from "./assets/every-platform-hover.png"
+import everyData from "./assets/every-data.png"
+import everyDataHover from "./assets/every-data-hover.png"
+
+const CARDS = [
+    {
+        title: "Software Engineers",
+        description:
+            "Version control all your resources, from workflows to users and permissions with CI/CD and Terraform Provider.",
+        link: {
+            href: "/use-cases/software-engineers",
+            label: "Ship Workflows Like Your Code",
+        },
+        img: everySoftware,
+        imgHover: everySoftwareHover,
+        class: "left-card",
+    },
+    {
+        title: "Platform Engineers",
+        description:
+            "Automate infrastructure tasks, manage dependencies, and ensure operational consistency.",
+        link: {
+            href: "/use-cases/platform-engineers",
+            label: "Take Control of Your Platform Ops",
+        },
+        img: everyPlatform,
+        imgHover: everyPlatformHover,
+        class: "right-card",
+    },
+    {
+        title: "Data Engineers",
+        description:
+            "Build reliable data pipelines with on-demand infrastructure that scales on-demand whether in Cloud or on-prem.",
+        link: {
+            href: "/use-cases/data-engineers",
+            label: "Pipelines You Can Count On",
+        },
+        img: everyData,
+        imgHover: everyDataHover,
+        class: "bottom-card",
+    },
+]
+---
+
+<section class="wrapper-every-dev">
+    <div class="center-block container">
+        <div class="line-top"></div>
+        <h2>For <span>Every</span> Developer</h2>
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+        <div class="line-bottom"></div>
+        <p>Kestra unify all engineers, breaking down silos.</p>
+    </div>
+    <div class="container">
+        {
+            CARDS.map((card) => (
+                <GradientCard class:list={["card-blk", card.class]}>
+                    <Image
+                        src={card.img}
+                        alt={card.title}
+                        class="img-natural"
+                    />
+                    <Image
+                        src={card.imgHover}
+                        alt={card.title}
+                        class="img-hover"
+                    />
+                    <h5>{card.title}</h5>
+                    <p class="description">{card.description}</p>
+                    <a href={card.link.href} class="main-link">
+                        {card.link.label} <ArrowRightIcon />
+                    </a>
+                </GradientCard>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    @use "~/assets/styles/variable" as *;
+
+    .wrapper-every-dev {
+        padding: 1rem;
+        color: var(--ks-content-primary);
+        background: linear-gradient(
+                0deg,
+                #0d0e13 0%,
+                #0d0e1388 10%,
+                transparent 30%
+            )
+            no-repeat center bottom / cover;
+
+        @include media-breakpoint-up(md) {
+            padding: 2rem;
+            background-color: transparent;
+            background-image:
+                linear-gradient(0deg, #0a0b0dff 0%, #0a0b0d00 20%, #0a0b0d00 80%, #0a0b0dFF 100%),
+                radial-gradient(ellipse at center, #0d0e13AA 0%, #0d0e13DD 50%, #0d0e13FF 100%),
+                radial-gradient(circle at center, #767575 0%, #767575 5%, #76757500 5.5%, #0a0b0d00 100%);
+            background-repeat: no-repeat, no-repeat, repeat;
+            background-position:
+                center bottom,
+                center bottom,
+                center bottom;
+            background-size: cover, 100% 130%, 25px 25px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            @include media-breakpoint-up(lg) {
+                height: 400px;
+            }
+        }
+
+        .center-block {
+            height: auto;
+            padding-top: 4rem;
+            position: relative;
+
+            @include media-breakpoint-up(lg) {
+                text-align: center;
+                padding-top: 230px;
+                height: 540px;
+                width: 500px;
+                margin: 0 auto;
+            }
+        }
+    }
+
+    .center-block {
+        h2 {
+            font-size: 2rem;
+            line-height: 3rem;
+            color: white;
+            font-weight: 600;
+
+            @include media-breakpoint-up(lg) {
+                width: 300px;
+                margin: 0 auto;
+            }
+
+            span {
+                background: linear-gradient(90deg, #7c2eea, #658af9) no-repeat
+                    center;
+                background-size: cover;
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        p {
+            color: #b9b9ba;
+            @include media-breakpoint-up(lg) {
+                margin: auto;
+                max-width: 250px;
+            }
+        }
+
+        .line-top {
+            position: absolute;
+            z-index: -1;
+            top: 70px;
+            left: 14%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 700px;
+            background:
+                linear-gradient(to bottom, transparent 50%, #191e27 50%),
+                linear-gradient(to bottom, #190930, #658af9);
+            background-size:
+                4px 4px,
+                1px 100%;
+
+            @include media-breakpoint-up(lg) {
+                left: 50%;
+                height: 150px;
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            .line-left,
+            .line-right {
+                position: absolute;
+                top: 50%;
+                width: 95px;
+                height: 1px;
+                background:
+                    linear-gradient(to right, transparent 50%, #191e27 50%),
+                    linear-gradient(to left, #190930, #658af9);
+                background-size:
+                    4px 4px,
+                    cover;
+            }
+
+            .line-left {
+                right: 50%;
+                transform: translate(-130px, 45px);
+            }
+
+            .line-right {
+                left: 50%;
+                width: 100px;
+                transform: translate(128px, 45px);
+                background:
+                    linear-gradient(to right, transparent 50%, #191e27 50%),
+                    linear-gradient(to right, #190930, #658af9);
+                background-size:
+                    4px 4px,
+                    cover;
+            }
+
+            .line-bottom {
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 1px;
+                height: 130px;
+                background:
+                    linear-gradient(to bottom, transparent 50%, #191e27 50%),
+                    linear-gradient(to bottom, #190930, #658af9);
+                background-size:
+                    4px 4px,
+                    1px 100%;
+            }
+        }
+    }
+
+    @property --card-border-start {
+        syntax: "<color>";
+        initial-value: #6b66d5;
+        inherits: false;
+    }
+    @property --card-border-end {
+        syntax: "<color>";
+        initial-value: #2d344e;
+        inherits: false;
+    }
+    @property --card-border-hover-start {
+        syntax: "<color>";
+        initial-value: transparent;
+        inherits: false;
+    }
+    @property --card-border-hover-end {
+        syntax: "<color>";
+        initial-value: transparent;
+        inherits: false;
+    }
+
+    .card-blk {
+        position: relative;
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        border-radius: 2rem;
+        padding: 1rem;
+        margin: 2rem 0;
+        border: none;
+        background-color: #0a0b0d;
+
+        @include media-breakpoint-up(lg) {
+            display: block;
+            position: absolute;
+            bottom: 450px;
+            width: 320px;
+            text-align: center;
+            padding: 1rem 2rem;
+        }
+
+        h5 {
+            color: white;
+        }
+
+        .description {
+            color: #b9b9ba;
+            font-size: 0.8rem;
+            margin: 0.5em 0 0;
+            overflow: hidden;
+            grid-column: 2;
+        }
+
+        .main-link {
+            display: block;
+            grid-column: 2 / 3;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #9c8fff;
+            white-space: nowrap;
+            transition: all 0.3s;
+
+            @include media-breakpoint-up(lg) {
+                grid-column: 1 / 3;
+                text-align: center;
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+        }
+
+        &:hover .main-link {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            border-radius: inherit;
+            transition:
+                --card-border-start 0.3s,
+                --card-border-end 0.3s,
+                --card-border-hover-start 0.3s,
+                --card-border-hover-end 0.3s;
+            background:
+                linear-gradient(
+                    to left,
+                    var(--card-border-start) -2.35%,
+                    var(--card-border-end) 80.15%
+                ),
+                linear-gradient(
+                    to bottom,
+                    var(--card-border-hover-start),
+                    var(--card-border-hover-end)
+                );
+        }
+
+        &:hover::before {
+            --card-border-start: transparent;
+            --card-border-end: transparent;
+            --card-border-hover-start: #9c90d380;
+            --card-border-hover-end: #ac82d6;
+        }
+
+        .img-natural,
+        .img-hover {
+            width: 80px;
+            height: auto;
+            grid-row: 1 / span 2;
+
+            @include media-breakpoint-up(lg) {
+                width: 120px;
+                margin: 0 auto 0.5rem;
+            }
+        }
+
+        .img-hover {
+            display: none;
+        }
+
+        &:hover {
+            .img-natural {
+                display: none;
+            }
+            .img-hover {
+                display: block;
+            }
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+        .left-card {
+            left: 1rem;
+        }
+        .right-card {
+            right: 1rem;
+        }
+        .bottom-card {
+            left: 34%;
+            bottom: 75px;
+        }
+    }
+
+    @include media-breakpoint-up(xl) {
+        .bottom-card {
+            left: 37%;
+        }
+    }
+</style>

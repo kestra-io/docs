@@ -24,7 +24,7 @@ interface Props {
 const { title, firstCard, secondCard, cta } = Astro.props
 ---
 
-<section class="py-5 px-sm-0 px-2 border-bottom bg-white">
+<section class="py-5 px-sm-0 px-2">
     <div class="container d-flex flex-column gap-5">
         <h2 class="text-center" set:html={title} />
         <div
@@ -79,52 +79,60 @@ const { title, firstCard, secondCard, cta } = Astro.props
 >
     @import "~/assets/styles/variable";
 
-    .inner-box {
-        @include media-breakpoint-up(xl) {
-            min-width: 1060px;
-        }
+    section {
+        background-color: var(--ks-background-body);
 
-        .chevron {
-            transform: rotate(90deg);
+        .inner-box {
             @include media-breakpoint-up(xl) {
-                transform: rotate(0deg);
-            }
-        }
-
-        .comparison-card {
-            width: 100%;
-            min-height: 238px;
-            border: 1px solid #f1f1f1;
-
-            h5 [data-icon] {
-                width: 24px;
-                height: 24px;
-                flex-shrink: 0;
+                min-width: 1060px;
             }
 
-            ul li {
-                padding: 12px 0;
-                color: #434343;
-                font-weight: 700;
-
-                &:not(:last-child) {
-                    border-bottom: 1px solid #f1f1f1;
+            .chevron {
+                transform: rotate(90deg);
+                @include media-breakpoint-up(xl) {
+                    transform: rotate(0deg);
                 }
             }
 
-            &.card-1 {
-                box-shadow: 0px 4px 0px 0px var(--card1Color) inset;
-            }
+            .comparison-card {
+                width: 100%;
+                min-height: 238px;
+                border: $block-border;
+                background-color: var(--ks-background-primary);
+                color: var(--ks-content-primary);
 
-            &.card-2 {
-                box-shadow: 0px 5px 0px 0px var(--card2Color) inset;
+                h5 [data-icon] {
+                    width: 24px;
+                    height: 24px;
+                    flex-shrink: 0;
+                }
+
+                ul li {
+                    padding: 12px 0;
+                    font-weight: 700;
+                    color: var(--ks-content-primary);
+
+                    &:not(:last-child) {
+                        border-bottom: 1px solid var(--ks-border-secondary);
+                    }
+                }
+
+                &.card-1 {
+                    box-shadow: 0px 4px 0px 0px var(--card1Color) inset;
+                }
+
+                &.card-2 {
+                    box-shadow: 0px 5px 0px 0px var(--card2Color) inset;
+                }
             }
         }
-    }
 
-    .cta {
-        max-width: 1060px;
-        min-height: 160px;
-        background-color: #f7f7f7 !important;
+        .cta {
+            max-width: 1060px;
+            min-height: 160px;
+            background-color: var(--ks-background-secondary) !important;
+            color: var(--ks-content-primary);
+            border: $block-border;
+        }
     }
 </style>

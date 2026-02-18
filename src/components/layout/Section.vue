@@ -2,9 +2,9 @@
     <section>
         <div class="subtitle" :data-usal="animationType('fade-r')" v-if="subtitle">
             <p>
-                <span v-if="subtitleBefore">{{ subtitleBefore }}</span>
+                <span v-if="subtitleBefore" class="highlight">{{ subtitleBefore }}</span>
                 {{ subtitle }}
-                <span v-if="subtitleAfter">{{ subtitleAfter }}</span>
+                <span v-if="subtitleAfter" class="highlight">{{ subtitleAfter }}</span>
             </p>
         </div>
         <h2 :data-usal="animationType('fade-l')">{{ title }}</h2>
@@ -58,7 +58,8 @@
 
     section {
         padding: calc($spacer * 4) 0;
-
+        background: var(--ks-background-body);
+        width: 100%;
         &.with-shadow {
             text-align: center;
             background: url("/landing/shadow2.svg") no-repeat bottom center;
@@ -66,80 +67,58 @@
                 background-size: contain;
                 background-position: center center;
             }
-
             @include media-breakpoint-down(md) {
                 background: none;
             }
         }
-
         div.subtitle {
             text-align: center;
             margin: 0 auto calc($spacer / 2);
-
             p {
-                color: var(--Kestra-io-Token-color-white, #fff);
+                color: var(--ks-content-primary);
                 text-align: center;
-                font-family: $font-family-sans-serif;
-                font-size: calc($font-size-base * 3.125);
-                font-style: normal;
-                font-weight: 400;
-                line-height: calc($spacer * 3.125);
-
+                font-size: $h2-font-size;
+                font-weight: 600;
+                line-height: calc($spacer * 2);
                 @include media-breakpoint-down(sm) {
-                    font-size: 1.875rem !important;
-                    line-height: calc($spacer * 1.875);
-                }
-
-                span {
-                    background: linear-gradient(90deg, #e151f7 65.38%, #5c47f5 82.43%);
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
+                    font-size: $font-size-2xl;
                 }
             }
         }
-
         &.dark {
             div.subtitle {
                 p {
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
             }
         }
-
         h2 {
             text-align: center;
             font-weight: 400;
             margin-bottom: 0;
         }
-
         div.main {
             padding-top: calc($spacer * 3);
             @include media-breakpoint-down(sm) {
                 padding-top: calc($spacer * 1);
             }
         }
-
         p.baseline {
-            color: $white;
+            color: var(--ks-content-primary);
             text-align: center;
-            font-size: $font-size-xl;
+            font-size: 1.15rem;
             max-width: $baseline-max-width;
             margin: $spacer auto 0;
-            font-weight: 400;
-
             @include media-breakpoint-down(sm) {
-                font-size: $h6-font-size !important;
+                font-size: $font-size-md;
             }
         }
-
         :deep(p.overline) {
             font-size: $font-size-sm;
             text-transform: uppercase;
-            color: var(--bs-primary);
+            color: var(--ks-content-primary);
             font-family: var(--bs-font-monospace);
-            font-weight: 800;
-
+            font-weight: 700;
             &:after {
                 content: "";
                 position: absolute;

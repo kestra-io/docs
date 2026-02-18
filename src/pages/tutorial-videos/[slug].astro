@@ -1,8 +1,8 @@
 ---
 export const prerender = false
 import Layout from "~/components/layout.astro"
-import VideosTutorialsList from "~/components/videos/TutorialsList.vue"
-import CommonPagination from "~/components/common/Pagination.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import TutorialsList from "~/components/videos/TutorialsList.vue"
 import { $fetchApi } from "~/utils/fetch"
 
 const tags = new Map([
@@ -35,16 +35,15 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
 ---
 
 <Layout title={title} description={description}>
-    <VideosTutorialsList
+    <TutorialsList
         client:visible
-        {...{ tutorialVideo, page, itemsPerPage, currentCategory }}
-    >
-        <CommonPagination
-            client:visible
-            currentUrl={Astro.request.url}
-            slot="pagination"
-            currentPage={page}
-            totalPages={Math.ceil(tutorialVideo.total / itemsPerPage)}
-        />
-    </VideosTutorialsList>
+        currentUrl={Astro.request.url}
+        {...{
+            tutorialVideo,
+            page,
+            itemsPerPage,
+            currentCategory,
+        }}
+    />
+    <FooterContact title="Get Started" />
 </Layout>

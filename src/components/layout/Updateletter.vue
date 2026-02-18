@@ -1,46 +1,35 @@
 <template>
-    <div class="container text-center mb-5 p-0">
-        <div class="bg-dark-2">
-            <div>
-                <h3 data-usal="fade-r">Get Kestra updates to your inbox</h3>
-                <div
-                    v-if="valid === true && message"
-                    class="alert alert-success"
-                    v-html="message"
-                />
-                <div v-if="valid === false && message" class="alert alert-danger">
-                    {{ message }}
-                </div>
-                <form
-                    class="needs-validation d-flex flex-column align-items-center gap-3"
-                    ref="newsletter"
-                    id="newsletter"
-                    @submit="checkForm"
-                    novalidate
-                    data-usal="fade-l"
-                >
-                    <input
-                        name="email"
-                        type="email"
-                        class="form-control form-control-lg"
-                        id="email"
-                        placeholder="Email"
-                        required
-                    />
-                    <button type="submit" class="btn btn-animated btn-purple-animated">
-                        Subscribe
-                    </button>
-                </form>
+    <section>
+        <div class="container d-flex justify-content-center">
+            <div class="outer">
+                <div class="inner text-center">
+                    <div class="d-flex flex-column align-items-center gap-2">
+                        <img :src="logo" alt="Newsletter" />
+                        <h3 class="title">Get Kestra updates to your inbox</h3>
+                        <p class="description">Stay up to date with the latest features and changes to Kestra</p>
+                    </div>
 
-                <p class="mt-3" data-usal="zoomin">
-                    Stay up to date with the latest features and changes to Kestra
-                </p>
+                    <div v-if="valid === true && message" class="alert alert-success" v-html="message" />
+                    <div v-if="valid === false && message" class="alert alert-danger">
+                        {{ message }}
+                    </div>
+
+                    <form class="needs-validation d-flex flex-column align-items-center gap-1" ref="newsletter"
+                        id="newsletter" @submit="checkForm" novalidate>
+                        <input name="email" type="email" class="form-control" id="email"
+                            placeholder="Enter your email" required />
+                        <button type="submit" class="btn btn-gradient">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>
+    import logo from "~/assets/email-newsletter.svg?url"
     import { ref } from "vue"
     import newsletterSubmit from "~/utils/newsletterSubmit.js"
 
@@ -56,55 +45,70 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    .container {
-        > div {
-            position: relative;
-            padding: calc($spacer * 2.25);
-            border-radius: 0.5rem;
-            border: $block-border;
-            background: url("/landing/faq/newsletter-bg.svg") no-repeat top;
-            background-size: cover;
-
-            > div {
-                position: relative;
-                z-index: 2;
+    section {
+        padding: $rem-3 0;
+        
+        .outer {
+            @include media-breakpoint-up(md) {
+                max-width: 933px;
+                height: 417px;
             }
+            width: 100%;
+            border-radius: 13px;
+            border: 1px solid var(--ks-border-primary);
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        input {
-            border: 1px solid #242427;
-            background: $black-4;
-            color: $white-1;
-            font-size: 15px;
-            padding: 13px;
-            width: fit-content;
-            min-width: 290px;
+        .inner {
+            @include media-breakpoint-up(md) {
+                max-width: 921px;
+                height: 405px;
+            }
+            width: 100%;
+            padding: 50px 64px;
+            border-radius: 9px;
+            background: linear-gradient(0deg, var(--ks-background-secondary), var(--ks-background-secondary)),
+                        linear-gradient(180deg, rgba(39, 32, 86, 0.005) 0%, rgba(0, 0, 0, 0) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
 
-            @include media-breakpoint-down(sm) {
-                min-width: 100%;
+            .title {
+                color: var(--ks-content-primary);
+                margin: 0;
             }
 
-            &::placeholder {
-                color: $white-1;
+            .description {
+                color: var(--ks-content-primary);
+                margin: 0;
             }
-        }
 
-        button {
-            width: fit-content;
-        }
+            form {
+                width: 100%;
+                max-width: 328px;
 
-        h3 {
-            color: $white-1;
-            font-size: 1.563rem;
-            font-weight: 100;
-            margin-bottom: 1rem;
-        }
+                input {
+                    text-align: center;
+                    height: 3rem;
+                    border-radius: $border-radius;
+                    border: $block-border;
+                    background: var(--ks-background-input);
+                    color: var(--ks-content-primary);
+                    &::placeholder {
+                        color: var(--ks-content-tertary);
+                    }
+                }
 
-        p {
-            color: $white;
-            font-size: $font-size-xs;
-            font-weight: 300;
-            margin-bottom: 0;
+                .btn {
+                    width: 100%;
+                    color: $white;
+                }
+            }
         }
     }
 </style>

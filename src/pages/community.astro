@@ -1,29 +1,69 @@
 ---
 import Layout from "~/components/layout.astro"
-import CommunityHeader from "~/components/community/Header.astro"
-import CommunitySlack from "~/components/community/Slack.vue"
-import CommunitySection from "~/components/community/Community.vue"
-import CommunityGuidelines from "~/components/community/Guidelines.astro"
-import CommunityContributors from "~/components/community/Contributors.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.astro"
+import Header from "~/components/community/Header.astro"
+import Slack from "~/components/common/Slack.astro"
+import CommunityComponent from "~/components/community/Community.vue"
+import Contributors from "~/components/community/Contributors.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import CardGrid from "~/components/features/shared/CardGrid.astro"
+import AutoMode from "vue-material-design-icons/AutoMode.vue"
+import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
+import ChartBoxOutline from "vue-material-design-icons/ChartBoxOutline.vue"
 
 const title = "Join a Thrilling Community of Data Enthusiasts"
 const description =
     "Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
+
+const GUIDELINES = [
+    {
+        title: "Be respectful to the Kestra community",
+        descriptionHtml:
+            "Be respectful towards other members of this Slack Community. Do not harass others. <br/><br/> Assume positive intent.",
+        icon: AutoMode,
+    },
+    {
+        title: "Make it easy to help you",
+        descriptionHtml: `<ul>
+            <li>Please share relevant flows (YAML), logs and stack traces <a target='_blank' href='https://slack.com/intl/en-gb/help/articles/202288908-Format-your-messages'>formatted</a> in code blocks (no screenshots, please).</li><br/>
+            <li>Please share how you have deployed Kestra:
+            <ol type='a'>
+                <li>Deployment choices (Standalone, Docker, Kubernetes, etc.).</li>
+                <li>The version of Kestra.</li>
+                <li>Your OS and its version.</li>
+            </ol>
+        </ul>`,
+        icon: ChartBoxOutline,
+    },
+    {
+        title: "Use relevant channels",
+        description:
+            "Refrain from asking questions multiple times across different channels.",
+        icon: AccountGroupOutline,
+    },
+    {
+        title: "Don't spam",
+        descriptionHtml:
+            "While we'll do our best to help you, there is no guaranteed timeline to answer your question. <br /><br /> If you need support with SLA guarantees, <a href='https://kestra.io/demo' target='_blank'>reach out to us.</a>",
+        icon: AutoMode,
+    },
+]
 ---
 
 <Layout title={title} description={description}>
     <div>
-        <CommunityHeader />
-        <CommunitySlack />
-        <CommunitySection client:idle />
-        <CommunityGuidelines />
-        <CommunityContributors client:idle />
-        <LayoutFooterContact
+        <Header />
+        <Slack />
+        <CommunityComponent client:idle />
+        <CardGrid
+            subtitle="Community"
+            subtitleAfter="Guidelines"
+            description="The Kestra community is a friendly and welcoming place for everyone."
+            items={GUIDELINES}
+        />
+        <Contributors client:idle />
+        <FooterContact
             title="Getting started"
             subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Read the docs"
-            purpleButtonText="Get started!"
         />
     </div>
 </Layout>

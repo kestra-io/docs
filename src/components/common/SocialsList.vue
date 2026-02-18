@@ -4,14 +4,14 @@
         <nav class="social mt-1">
             <ul>
                 <li v-if="editLink !== false && editLink">
-                    <a class="text-white" :href="editLink" target="_blank">
+                    <a :href="editLink" target="_blank">
                         <Github />
                         Edit this page
                     </a>
                 </li>
                 <li v-for="link in socialLinks" :key="link.href">
-                    <a class="text-white" :href="link.href" target="_blank">
-                        <component :is="link.icon" />
+                    <a :href="link.href" target="_blank">
+                        <component :is="link.icon" class="icon" />
                         {{ link.text }}
                     </a>
                 </li>
@@ -103,23 +103,23 @@
     nav {
         @include font-size($font-size-xs);
         line-height: 1.188rem;
-
         ul {
             padding-left: 0;
             margin-bottom: 0;
             list-style: none;
-
             li {
+                .icon, .github-icon {
+                    color: var(--ks-content-tertiary);
+                }
                 a {
                     padding-left: 2.5rem;
-
+                    color: var(--ks-content-secondary) !important;
                     &:hover,
                     &.active {
-                        color: var(--bs-primary);
+                        color: var(--ks-content-link);
                         font-weight: 500;
-                        border-left: 1px solid $purple-35;
+                        border-left: 1px solid var(--ks-content-link);
                     }
-
                     &::after {
                         display: none !important;
                     }
@@ -129,7 +129,7 @@
     }
 
     .title-contribute {
-        color: color-palette.$base-gray-300 !important;
+        color: var(--ks-content-primary) !important;
         font-size: 14px;
         line-height: 1.875rem;
         font-weight: 600;
@@ -148,8 +148,7 @@
         padding: 0.125rem 0.75rem;
         color: inherit;
         text-decoration: none;
-        color: var(--bs-gray-700);
-
+        color: var(--ks-content-secondary) !important;
         :deep(svg) {
             font-size: 20px;
         }

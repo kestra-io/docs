@@ -18,7 +18,7 @@ export const mapJob = (job: DoverJob): Job => {
             ? job.locations.map((l) => {
                   if (l.location_option.display_name === "International") {
                       return {
-                          code: null,
+                          code: "INTL",
                           name: "World",
                           emoji: "🌍",
                       }
@@ -26,22 +26,22 @@ export const mapJob = (job: DoverJob): Job => {
 
                   if (l.location_option.display_name === "Europe") {
                       return {
-                          code: null,
+                          code: "EU",
                           name: "Europe",
                           emoji: "🇪🇺",
                       }
                   }
 
                   return {
-                      code: l.location_option.country,
+                      code: l.location_option.country ?? "UNKNOWN",
                       name: l.location_option.display_name,
-                      emoji: countryCodeToEmoji(l.location_option.country),
+                      emoji: countryCodeToEmoji(l.location_option.country) ?? "🌐",
                   }
               })
-            : undefined,
+            : [],
         remote: job.locations
             ? job.locations.filter((l) => l.location_type === "REMOTE").length > 0
-            : null,
+            : false,
         link: `https://app.dover.com/apply/Kestra%20Technologies/${job.id}`,
     }
 }
@@ -49,7 +49,7 @@ export const mapJob = (job: DoverJob): Job => {
 interface DoverJob {
     id: string
     title: string
-    locations: Array<{
+    locations?: Array<{
         location_type: string
         location_option: {
             country: string
@@ -61,13 +61,13 @@ interface DoverJob {
 interface Job {
     id: string
     title: string
-    locations?: Array<{
-        code: string | null
+    locations: Array<{
+        code: string
         name: string
-        emoji: string | null
+        emoji: string
     }>
-    remote: boolean | null
+    remote: boolean
     link: string
 }
 
-export type { Job }
+export type { Job, DoverJob }

@@ -10,13 +10,15 @@ import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
 import LayoutFooter from "~/components/layout/Footer.vue"
 import LayoutFixed from "~/components/layout/Fixed.vue"
+import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
 
 interface Props {
     title?: string
     description?: string
     image?: string
-    isStories?: boolean
+    headerTheme?: "lightHero" | "darkHeader"
+    headerBg?: string
 }
 
 const props = Astro.props
@@ -58,18 +60,24 @@ const canonicalUrl = new URL(
 )
 ---
 
-<html lang="en" class="dark">
+<html lang="en">
     <head>
+        <script is:inline>
+            (function() {
+                const theme = localStorage.getItem("theme") ?? "system";
+                const isDark = theme === "dark" || 
+                    (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+                document.documentElement.classList.add(isDark ? "dark" : "light");
+            })();
+        </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title}</title>
         <meta name="title" content={title} />
         <meta name="description" content={description} />
 
-        <Font cssVariable="--font-family-public-sans" preload />
-        <Font cssVariable="--font-family-source-code-pro" preload />
-        <Font cssVariable="--font-family-mona-sans" />
-        <Font cssVariable="--font-family-jetbrains-mono" />
+        <Font cssVariable="--font-family-mona-sans" preload />
+        <Font cssVariable="--font-family-jetbrains-mono" preload />
 
         <meta name="msapplication-TileColor" content="#2c0059" />
         <meta name="theme-color" content="#2c0059" />
@@ -133,7 +141,7 @@ const canonicalUrl = new URL(
             )
         }
         <meta property="og:image:alt" content={title} />
-        <meta property="og:url" content={`${currentOrigin}`} />
+        <meta property="og:url" content={canonicalUrl.toString()} />
         <meta property="og:image" content={image} />
 
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -161,11 +169,14 @@ const canonicalUrl = new URL(
         <script src="../scripts/bootstrap.js"></script>
         <script src="../scripts/cookieconsent.ts"></script>
         <script src="../scripts/zoom.js"></script>
+        <script src="../scripts/theme.ts"></script>
     </head>
-    <body>
+    <body
+        data-header-theme={props.headerTheme === "darkHeader" ? "darkBg" : props.headerTheme === "lightHero" ? "dark" : undefined}
+        style={props.headerBg ? `--header-dark-bg: ${props.headerBg}` : undefined}
+    >
         <Header
             client:load
-            isStories={Boolean(props.isStories)}
             transition:persist
         />
         <Search client:load />
@@ -173,7 +184,9 @@ const canonicalUrl = new URL(
             <slot />
         </main>
 
-        <LayoutFooter transition:persist client:visible />
+        <LayoutFooter transition:persist client:visible>
+            <ThemeSwitcher slot="theme-switcher" />
+        </LayoutFooter>
         <LayoutFixed client:load transition:persist online={slackMembers} />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }

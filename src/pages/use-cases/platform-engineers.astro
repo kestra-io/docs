@@ -1,18 +1,24 @@
 ---
 import Layout from "~/components/layout.astro"
-import HeaderSection from "~/components/use-cases/HeaderSection.vue"
-import BlueprintsSection from "~/components/use-cases/BlueprintsSection.vue"
-import CapabilitiesSection from "~/components/use-cases/CapabilitiesSection.vue"
-import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
-import CardSection from "~/components/use-cases/databases-management/CardSection.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import Blueprints from "~/components/common/BlueprintsRender.vue"
+import Capabilities from "~/components/use-cases/Capabilities.vue"
+import HeaderBox from "~/components/common/HeaderBox.vue"
+import { $fetchApi } from "~/utils/fetch"
 
-const title = "Orchestrate your Infrastructure with Kestra"
-const description =
-    "Automate, Scale, Provision and Optimize Your Infrastructure with Kestra Slug: kestra.io/use-cases/platform-engineers"
+const TITLE = "Orchestrate your Infrastructure with Kestra"
+const DESCRIPTION =
+    "Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
 
-const challengesTitle = `Orchestrate your <span>Infrastructure</span><br/>with Kestra`
+const CHALLENGES_TITLE = `Orchestrate your <span class="highlight">Infrastructure</span><br/>with Kestra`
 
-const cardsData = [
+const response = await $fetchApi<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?page=1&size=20",
+)
+const blueprints = response.results
+
+const CARDS_DATA = [
     {
         number: "01",
         title: "Comprehensive Integration",
@@ -63,7 +69,7 @@ const cardsData = [
     },
 ]
 
-const capabilities = [
+const CAPABILITIES = [
     "Continuous Integration/Continuous Deployment (CI/CD)",
     "Provisioning and Deployment",
     "Disaster Recovery",
@@ -71,25 +77,31 @@ const capabilities = [
 ]
 ---
 
-<Layout title={title} description={description}>
-    <HeaderSection
+<Layout title={TITLE} description={DESCRIPTION}>
+    <DetailsHero
         client:visible
-        titleHtml="Kestra for<br><span>Platform Engineers</span>"
-        description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
-        imageSrc="/landing/usecases/platform-engineers/header-hero.svg"
-        imageAlt="Kestra Infrastructure Workflows"
+        title="Kestra for<br><span>Platform Engineers</span>"
+        description={DESCRIPTION}
+        image={{
+            src: "/landing/usecases/platform-engineers/header-hero.svg",
+            alt: "Kestra Infrastructure Workflows",
+        }}
     />
-    <CardSection
+
+    <Cards
         client:load
-        titleHtml={challengesTitle}
+        title={CHALLENGES_TITLE}
         description="Kestra tackles the challenges platform engineers face by automating infrastructure orchestration, enhancing scalability, and ensuring seamless integrations."
-        cardsData={cardsData}
+        cards={CARDS_DATA}
     />
-    <BlueprintsSection client:load />
-    <CapabilitiesSection
+
+    <Blueprints blueprints={blueprints} client:load />
+
+    <Capabilities
         client:load
         title="for Platform Orchestration"
-        sections={capabilities}
+        capabilities={CAPABILITIES}
     />
-    <FeaturesFeatureEnterprise client:load />
+
+    <HeaderBox client:load />
 </Layout>

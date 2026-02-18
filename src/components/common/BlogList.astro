@@ -58,7 +58,7 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
         hr {
             width: 100%;
             border: none;
-            border-top: 1px solid var(--kestra-io-token-color-border-secondary);
+            border-top: $block-border;
             margin: 0;
         }
 
@@ -69,8 +69,9 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
             padding: 0.5rem 0;
 
             &:hover {
-                background-image: radial-gradient(circle, rgba($primary, 0.3) 0%, #13172500 30%);
+                background-image: radial-gradient(circle, color-mix(in srgb, var(--ks-content-link), transparent 70%) 0%, #13172500 30%);
                 background-position: -280px center;
+
                 background-repeat: no-repeat;
             }
 
@@ -79,8 +80,9 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                 height: 70px;
                 object-fit: cover;
                 border-radius: 0.25rem;
-                border: 1px solid $black-3;
+                border: 1px solid var(--ks-border-secondary);
             }
+
 
             .card-body {
                 display: flex;
@@ -90,13 +92,15 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                     font-size: $font-size-xs;
 
                     .card-category {
-                        color: $purple-36;
+                        color: var(--ks-content-link);
                         margin-right: 1rem;
                     }
 
+
                     .card-date {
-                        color: $white-3;
+                        color: var(--ks-content-tertiary);
                     }
+
                 }
 
                 .card-title {

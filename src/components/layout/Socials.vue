@@ -56,7 +56,6 @@
         justify-content: start;
         gap: 1rem;
         list-style: none;
-
         a {
             font-size: 1.4rem;
         }

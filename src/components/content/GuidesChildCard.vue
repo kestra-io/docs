@@ -26,7 +26,7 @@
             <Magnify class="magnify-icon" />
             <input
                 type="text"
-                class="form-control bg-dark-2"
+                class="form-control "
                 placeholder="Search guides"
                 v-model="search"
             />
@@ -205,7 +205,7 @@
 
     .card {
         padding: 1rem;
-        background: $black-4;
+        background: var(--ks-background-body);
     }
 
     .card-title {
@@ -214,12 +214,7 @@
         font-weight: 600;
     }
 
-    :deep(.bd-markdown) p {
-        font-size: $font-size-sm !important;
-        line-height: 1rem !important;
-        color: $white-3;
-        flex: 1;
-    }
+
 
     .card-stage {
         border-radius: 4px;
@@ -251,7 +246,7 @@
     .card-icon {
         padding: 0.5rem;
         border-radius: 0.5rem;
-        border: 1px solid $black-3;
+        border: $block-border;
         max-width: unset;
         width: 48px;
         height: 48px;
@@ -260,10 +255,10 @@
     .filters {
         margin-bottom: 2rem;
         .form-select {
-            border-color: $black-3;
+            border-color: var(--ks-border-primary);
             font-size: $font-size-sm !important;
             height: 2rem;
-            color: $white;
+            color: var(--ks-content-primary);
         }
         .form-group {
             position: relative;
@@ -272,23 +267,20 @@
                 top: 50%;
                 left: 18px;
                 transform: translateY(-55%);
-                color: $white-3;
+                color: var(--ks-content-secondary);
                 font-size: 1.25rem;
                 z-index: 1;
                 pointer-events: none;
             }
             .form-control {
-                border-color: $black-3;
+                border-color: var(--ks-border-primary);
                 height: 2rem;
                 padding-left: 2rem;
-                color: $white;
+                color: var(--ks-content-primary);
+                background-color: var(--ks-background-input);
                 &::placeholder {
-                    color: $white-3;
+                    color: var(--ks-content-secondary);
                     font-size: $font-size-sm !important;
-                }
-                &:focus {
-                    background-color: $black-2 !important;
-                    color: $white;
                 }
             }
         }
@@ -298,15 +290,13 @@
         display: flex;
         align-items: center;
         gap: 4px;
-
         span {
-            color: $white-3;
+            color: var(--ks-content-secondary);
         }
-
         :deep(.material-design-icon) {
             .material-design-icon__svg {
                 bottom: 0;
-                fill: $white-3;
+                fill: var(--ks-content-secondary);
             }
         }
     }

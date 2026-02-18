@@ -1,9 +1,6 @@
 <template>
-    <div class="blog-details">
-        <div class="meta mb-4">
-            <span class="date">{{ date }}</span>
-            <span class="category ms-3">{{ blog.data.category }}</span>
-        </div>
+    <div class="details">
+        <h6>Authors</h6>
         <div class="authors">
             <div
                 v-for="author in authorsList"
@@ -12,7 +9,7 @@
             >
                 <NuxtImg
                     loading="lazy"
-                    v-bind="authorsAvatars[`${author.image}-sm.png`]"
+                    v-bind="avatars[`${author.image}-sm.png`]"
                     class="rounded-circle"
                     width="48"
                     height="48"
@@ -25,6 +22,18 @@
             </div>
         </div>
     </div>
+    <div>
+        <h6>Category</h6>
+        <small class="metadata">
+            <span>{{ blog.data.category }}</span>
+        </small>
+    </div>
+    <div>
+        <h6>Last Updated</h6>
+        <small class="metadata">
+            {{ date }}
+        </small>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -36,7 +45,7 @@
 
     const props = defineProps<{
         blog: CollectionEntry<"blogs">
-        authorsAvatars: Record<string, any>
+        avatars: Record<string, any>
     }>()
 
     const date = computed(() => {
@@ -53,21 +62,11 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    .blog-details {
+    .details {
         margin: 0 !important;
-        padding: 1rem 0;
-    }
 
-    .meta {
-        font-size: $font-size-sm;
-        .category,
-        .date {
-            color: $purple;
-            font-size: $font-size-sm;
-            font-weight: 100;
-        }
-        .date {
-            color: $white;
+        h6 {
+            margin-bottom: 0.5rem;
         }
     }
 
@@ -88,18 +87,34 @@
         }
 
         .name {
-            color: $white;
+            color: var(--ks-content-primary);
             line-height: 1.8em;
             font-size: $font-size-md;
             font-weight: 600;
-            margin: 0;
+            margin: 0 !important;
         }
 
         .role {
-            color: $white-3;
+            color: var(--ks-content-secondary);
             line-height: 1.8em;
             font-size: $font-size-xs;
-            margin-bottom: 0;
+            margin-bottom: 0 !important;
+        }
+    }
+
+    .metadata {
+        color: var(--ks-content-primary);
+        font-size: $font-size-xs;
+
+        span {
+            background: var(--ks-backgroung-tag-category);
+            color: var(--ks-content-tag-category);
+            padding: 0.125rem 0.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 </style>

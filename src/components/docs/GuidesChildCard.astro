@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content"
 import type { CollectionEntry } from "astro:content"
 import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
 
 const currentPage = Astro.url.pathname.endsWith("/")
     ? Astro.url.pathname.slice(0, -1)

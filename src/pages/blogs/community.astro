@@ -1,7 +1,7 @@
 ---
 export const prerender = false
-import BlogsList from "~/components/blogs/BlogsList.vue"
-import LayoutBlogs from "~/components/layout-blogs.astro"
+import CommunityContent from "~/components/blogs/CommunityContent.vue"
+import Layout from "~/components/layout.astro"
 import { $fetchApi } from "~/utils/fetch"
 
 const externalNewsData = await $fetchApi(`/external-blogs`)
@@ -17,14 +17,17 @@ const externalNews = externalNewsData.results.map((data: any) => {
         date: data.publicationDate,
     }
 })
+const title = "Insights & News on Data Orchestration"
+const description =
+    "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
 ---
 
-<LayoutBlogs activeStem={`/blogs`}>
-    <BlogsList
-        client:load
-        slug="/blogs/community"
-        blogs={[]}
-        currentUrl={Astro.request.url}
-        externalNews={externalNews}
-    />
-</LayoutBlogs>
+<Layout {title} {description}>
+    <section>
+        <CommunityContent
+            client:load
+            slug="/blogs/community"
+            externalNews={externalNews}
+        />
+    </section>
+</Layout>

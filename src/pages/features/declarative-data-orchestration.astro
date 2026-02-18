@@ -1,27 +1,199 @@
 ---
-import Layout from "~/components/layout.astro"
-import Header from "~/components/features/declaratives/Header.vue"
-import Main from "~/components/features/declaratives/Main.vue"
-import Features from "~/components/features/declaratives/Features.vue"
-import Empower from "~/components/features/declaratives/Empower.vue"
-import PluginsBox from "~/components/PluginsBox.astro"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import FeatureLayout from "~/components/layouts/FeatureLayout.astro"
+import Header from "~/components/features/shared/Header.vue"
+import CardGrid from "~/components/features/shared/CardGrid.astro"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import SideBySide from "~/components/features/shared/SideBySide.vue"
+import CodeBlock from "~/components/features/shared/CodeBlock.vue"
+import PluginsBox from "~/components/common/PluginsBox.astro"
 
-const title = "Declarative Orchestration with Kestra"
-const description =
+import Typewriter from "vue-material-design-icons/Typewriter.vue"
+import BugOutline from "vue-material-design-icons/BugOutline.vue"
+import Lan from "vue-material-design-icons/Lan.vue"
+import Read from "vue-material-design-icons/Read.vue"
+import Git from "vue-material-design-icons/Git.vue"
+import AlertCircleOutline from "vue-material-design-icons/AlertCircleOutline.vue"
+import GoogleCirclesExtended from "vue-material-design-icons/GoogleCirclesExtended.vue"
+import CalculatorVariantOutline from "vue-material-design-icons/CalculatorVariantOutline.vue"
+
+const TITLE = "Declarative Orchestration with Kestra"
+const DESCRIPTION =
     "Bring Infrastructure as Code Best Practices to All Workflows"
+
+const HEADER_DATA = {
+    title: "<span>Declarative</span> Orchestration with Kestra",
+    description: "Bring Infrastructure as Code Best Practices to All Workflows",
+    cta: [
+        {
+            text: "Get Started",
+            href: "/docs/quickstart#start-kestra",
+            style: "dark",
+        },
+        { text: "Talk to us", href: "/demo", style: "purple" },
+    ],
+    image: {
+        src: "/landing/features/declarative/header.svg",
+        alt: "A screenshot of the user interface of Kestra's application",
+        width: "806px",
+        height: "601px",
+    },
+}
+
+const MAIN_ITEMS = [
+    {
+        icon: Typewriter,
+        title: "Declarative Orchestration Logic",
+        description:
+            "YAML is easy to learn. The simple syntax allows more people in the organization to collaborate on building workflows together.",
+    },
+    {
+        icon: BugOutline,
+        title: "Fewer Bugs in Production",
+        description:
+            "Kestra's built-in syntax validation ensures that your YAML code is error-free before execution, reducing the risk of runtime errors in production.",
+    },
+    {
+        icon: Read,
+        title: "Easy to Read by Humans and Machines",
+        description:
+            "YAML is a superset of JSON, therefore it works extraordinaly well with REST APIs, while remaining human-readable and easy to understand.",
+    },
+    {
+        icon: Git,
+        title: "Simple Version Control",
+        description:
+            "Since you describe your workflow in a single YAML configuration, it's easy to track changes over time, collaborate on pull request reviews, and roll back when needed.",
+    },
+    {
+        icon: Lan,
+        title: "Platform Independence",
+        description:
+            "Due to separation of your orchestration logic from the business logic, you don't need any modifications to your existing code to orchestrate it with Kestra.",
+    },
+    {
+        icon: AlertCircleOutline,
+        title: "Reduced Maintenance Effort",
+        description:
+            "Need to adjust your workflow? Just edit the YAML file. No need for redeploying code and complex code packaging in CI/CD.",
+    },
+]
+
+const FEATURES_DATA = {
+    title: "Simple Yet <span>Powerful</span>",
+    description: `The declarative syntax in a YAML format significantly reduces the barrier to entry. You can onboard new team members quickly, and maintain your workflows with minimal effort.<br /><br />In just a few lines of YAML configuration, anyone in your team can build their first scheduled workflow. With that first success, your team members can start automating more advanced use cases with confidence.`,
+    code: `<div class="code-header"><img src="/landing/3dot.svg" alt="code" /></div><div class="code-content"><span>id:</span> hello_world<br /><span>namespace:</span> dev<br /><span>tasks:</span><br /><div style="margin-left: 20px"><span>- id:</span> greeting<br /><div style="margin-left: 20px"><span>type:</span> io.kestra.plugin.core.log.Log<br /><span>message:</span> Hello from a declarative workflow!<br /></div></div><span>triggers:</span><br /><div style="margin-left: 20px"><span>- id:</span> schedule<br /><div style="margin-left: 20px"><span>type:</span> io.kestra.plugin.core.trigger.Schedule<br /><span>cron:</span> "@hourly"</div></div></div>`,
+    items: [
+        {
+            icon: CalculatorVariantOutline,
+            title: "Faster Development Cycles",
+            description:
+                "Easily adapt workflows by updating your declarative configuration. No need for complex CI/CD pipelines.",
+        },
+        {
+            icon: Lan,
+            title: "Reduced Complexity",
+            description:
+                "Simplifies your codebase by eliminating boilerplate code. No need to write code to deploy code — each Kestra flow includes everything it needs to run.",
+        },
+        {
+            icon: GoogleCirclesExtended,
+            title: "Enhanced Collaboration",
+            description:
+                "Build workflows that are easy to read and understand for both technical and non-technical team members.",
+        },
+    ],
+    cta: {
+        text: "Talk to us",
+        href: "/demo",
+    },
+}
+
+const EMPOWER_ITEMS = [
+    {
+        title: "YAML for Declarative Orchestration",
+        image: {
+            src: "/landing/features/declarative/features_1.svg",
+            alt: "A YAML sample of code for declarative language and construction of Kestra's flows",
+            width: "508px",
+            height: "355px",
+        },
+        points: [
+            {
+                title: "Data structures",
+                description:
+                    "YAML supports various data structures, such as mappings, sequences, and scalars, allowing for the flexible representation of complex data workflows.",
+            },
+            {
+                title: "Comments",
+                description:
+                    "Inline comments in YAML files facilitate better communication and documentation within data teams, ensuring clarity and understanding of workflow logic.",
+            },
+            {
+                title: "Custom tags and types",
+                description:
+                    "YAML allows for the definition of custom tags and types, enabling the creation of domain-specific languages and abstractions tailored to your data orchestration needs.",
+            },
+        ],
+    },
+    {
+        title: "Empower Your Team with Declarative Orchestration",
+        image: {
+            src: "/landing/features/declarative/features_2.svg",
+            alt: "Image of execution of a task on Kestra with event or time based triggering",
+            width: "569px",
+            height: "421px",
+        },
+        points: [
+            {
+                title: "Accelerate time to value",
+                description:
+                    "Declarative orchestration modernized the creation and maintenance of data pipelines, enabling data teams to deliver results faster and more efficiently.",
+            },
+            {
+                title: "Speed up your development cycles",
+                description:
+                    "By using a declarative approach, data teams can quickly adapt to changing business requirements without the need to overhaul complex procedural code.",
+            },
+            {
+                title: "Reduce maintenance burden",
+                description:
+                    "Declarative workflows help minimize errors by allowing data teams to focus on defining the desired outcome, while Kestra's orchestrator takes care of the execution.",
+            },
+        ],
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <Header client:load />
-    <Main client:visible />
-    <Features client:visible />
-    <Empower client:visible />
-    <PluginsBox />
-    <LayoutFooterContact
-        client:visible
-        title="Getting Started with Declarative Orchestration"
-        darkButtonText="Read the docs"
-        purpleButtonText="Get started"
+<FeatureLayout
+    meta={{ title: TITLE, description: DESCRIPTION }}
+    footer={{
+        title: "Getting Started with Declarative Orchestration",
+        links: {
+            dark: { text: "Read the docs", href: "/docs" },
+            purple: { text: "Get started", href: "/docs/getting-started" },
+        },
+    }}
+>
+    <Header
+        client:load
+        title={HEADER_DATA.title}
+        description={HEADER_DATA.description}
+        cta={HEADER_DATA.cta}
+        image={HEADER_DATA.image}
     />
-</Layout>
+    <CardGrid
+        subtitle="Simple Workflow Definition in "
+        subtitleAfter="YAML"
+        items={MAIN_ITEMS}
+    />
+    <SideBySide
+        client:visible
+        title={FEATURES_DATA.title}
+        description={FEATURES_DATA.description}
+    >
+        <CodeBlock slot="image" code={FEATURES_DATA.code} />
+    </SideBySide>
+    <CardGrid items={FEATURES_DATA.items} cta={FEATURES_DATA.cta} />
+    <Alternation items={EMPOWER_ITEMS} />
+    <PluginsBox />
+</FeatureLayout>

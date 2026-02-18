@@ -11,7 +11,7 @@
     />
 </template>
 
-<script lang="ts" setup>
+<script setup>
     import "rapidoc"
 </script>
 
@@ -22,9 +22,8 @@
         --textarea-height: auto;
         --textarea-min-height: 100px;
         --code-block-max-height: 600px;
-        --font-mono: var(--font-family-source-code-pro);
-        --font-regular: var(--font-family-public-sans);
-
+        --font-mono: var(--font-family-jetbrains-mono);
+        --font-regular: var(--font-family-mona-sans);
         &::part(section-endpoint) {
             white-space: nowrap;
         }

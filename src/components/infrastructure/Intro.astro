@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets"
 import Link from "~/components/common/Link.astro"
-import LogoCarousel from "~/components/common/LogoCarousel.vue"
+import LogoCarousel from "~/components/common/LogoCarousel.astro"
 
 const badge = import.meta.glob<{ default: ImageMetadata }>(
     "~/assets/landing/infrastructure/new.png",
@@ -43,13 +43,13 @@ const badgeMobile = import.meta.glob<{ default: ImageMetadata }>(
                 operational overhead. Get full visibility and control across all infrastructure workflows.
             </p>
             <div class="d-flex gap-3 flex-column flex-lg-row">
-                <Link href="https://github.com/kestra-io/kestra" class="btn btn-gradient"
+                <Link href="https://github.com/kestra-io/kestra" class="btn btn-gradient text-white"
                     >Try for free - 26k Github stars</Link
                 >
                 <Link href="/demo" class="btn btn-secondary">Book a demo</Link>
             </div>
             <hr />
-            <LogoCarousel client:visible title="Trusted by Leading Global Companies" />
+            <LogoCarousel title="Trusted by Leading Global Companies" />
         </div>
         <div class="w-100 overflow-hidden gradient-border">
             <iframe
@@ -116,7 +116,7 @@ const badgeMobile = import.meta.glob<{ default: ImageMetadata }>(
                 }
 
                 :global(.link) {
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
 
                 h1 {
@@ -132,7 +132,7 @@ const badgeMobile = import.meta.glob<{ default: ImageMetadata }>(
                 hr {
                     margin: 1.5rem 0;
                     border: none;
-                    border-top: 1px solid $white;
+                    border-top: 1px solid var(--ks-content-primary-inverse);
                 }
             }
 
@@ -166,11 +166,11 @@ const badgeMobile = import.meta.glob<{ default: ImageMetadata }>(
                     padding: 1.05px;
                     pointer-events: none;
                     -webkit-mask:
-                        linear-gradient($white 0 0) content-box,
-                        linear-gradient($white 0 0);
+                        linear-gradient(#fff 0 0) content-box,
+                        linear-gradient(#fff 0 0);
                     mask:
-                        linear-gradient($white 0 0) content-box,
-                        linear-gradient($white 0 0);
+                        linear-gradient(#fff 0 0) content-box,
+                        linear-gradient(#fff 0 0);
                     -webkit-mask-composite: xor;
                     mask-composite: exclude;
                     z-index: -1;

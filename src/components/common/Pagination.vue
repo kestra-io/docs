@@ -3,7 +3,8 @@
         <ul class="pagination mb-0">
             <li class="page-item" role="button">
                 <a
-                    class="page-link fw-bold arrow-button bg-dark-2"
+                    class="page-link fw-bold arrow-button"
+
                     :href="getPageUrl(currentPage - 1)"
                     @click.prevent="changePage({ direction: 'previous' })"
                 >
@@ -22,12 +23,14 @@
             >
                 <span
                     v-if="n === morePagesPlaceholder"
-                    class="page-list-item bg-dark-2 page-link fw-bold"
+                    class="page-list-item page-link fw-bold"
+
                     >{{ n }}</span
                 >
                 <a
                     v-else
-                    class="page-list-item bg-dark-2 page-link fw-bold"
+                    class="page-list-item page-link fw-bold"
+
                     :href="getPageUrl(n)"
                     @click.prevent="changePage({ pageNo: n })"
                     >{{ n }}</a
@@ -35,7 +38,8 @@
             </li>
             <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
                 <a
-                    class="page-link fw-bold arrow-button bg-dark-2"
+                    class="page-link fw-bold arrow-button"
+
                     :href="getPageUrl(currentPage + 1)"
                     @click.prevent="changePage({ direction: 'next' })"
                 >
@@ -125,45 +129,41 @@
             z-index: 2;
         }
         .active span {
-            background-color: $primary-1 !important;
+            background-color: var(--ks-background-button-primary) !important;
         }
-
         .page-list-item {
             border-radius: 4px;
-            border: $block-border;
+            border: 1px solid var(--ks-border-secondary);
             padding: 8px 16px;
-            color: $white;
+            color: var(--ks-content-primary);
+            background-color: var(--ks-background-button-secondary);
             text-align: center;
-            font-family: $font-family-sans-serif;
-            font-size: 14px;
+            font-size: $font-size-sm;
             font-style: normal;
             font-weight: 700;
             line-height: 22px;
-
             &:hover {
-                border-color: $primary-1;
+                border-color: var(--ks-border-active);
             }
         }
-
         .active {
             .page-list-item {
-                border-color: $primary-1;
+                border-color: var(--ks-border-active);
             }
         }
-
         .arrow-button {
             padding: 1px 8px;
             font-size: 24px;
-            border-color: $black-3;
-            color: $white;
-
+            border-color: var(--ks-border-primary);
+            color: var(--ks-content-primary);
+            background-color: var(--ks-background-button-secondary);
+            font-weight: 700;
             &:hover {
-                border-color: $primary-1;
+                border-color: var(--ks-border-active);
             }
-
             &:focus {
                 box-shadow: none;
-                background-color: $primary-1;
+                background-color: var(--ks-background-button-primary);
             }
         }
     }

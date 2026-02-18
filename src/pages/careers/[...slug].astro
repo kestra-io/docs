@@ -1,11 +1,11 @@
 ---
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import Details from "~/components/careers/Details.astro"
 export const prerender = false
 import Layout from "~/components/layout.astro"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
 import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
 import { $fetch } from "~/utils/fetch"
-import CareersHeader from "~/components/careers/Header.vue"
+import Header from "~/components/careers/Header.astro"
 import { type Job, mapJob } from "~/utils/careers.ts"
 
 async function fetchJobApplication(slug?: string) {
@@ -44,10 +44,10 @@ const title = page.title
 ---
 
 <Layout title={title}>
-    <CareersHeader fullPath="/careers" client:load>
+    <Header fullPath="/careers">
         <h1 data-usal="fade-l">{page.title}</h1>
         <h4>
-            <MapMarkerOutline client:load /> Remote from:
+            <MapMarkerOutline /> Remote from:
             {
                 page.locations?.map((loc: any) => (
                     <span class="ms-1">
@@ -63,21 +63,16 @@ const title = page.title
         >
             Apply for this job
         </a>
-    </CareersHeader>
-
-    <div class="container bd-gutter mt-3 my-md-4 bd-layout">
-        <article class="bd-main order-1">
-            <MDCParserAndRenderer
-                content={page.description}
-                class="item-content bd-markdown"
-            />
-        </article>
-    </div>
-    <LayoutFooterContact
+    </Header>
+    <Details description={page.description} />
+    <FooterContact
         client:visible
         title="Join our team"
         subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
-        purpleButtonText="Send an Open Application"
-        purpleButtonHref="https://app.dover.com/apply/Kestra%20Technologies/3d00b113-fdaf-48e3-b442-24aa2daba076"
+        purple={{
+            text: "Send an Open Application",
+            href: "https://app.dover.com/apply/Kestra%20Technologies/3d00b113-fdaf-48e3-b442-24aa2daba076",
+        }}
+        dark={null}
     />
 </Layout>

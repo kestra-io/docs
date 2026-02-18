@@ -1,84 +1,74 @@
 <template>
-    <div class="mt-5">
-        <div class="header-container">
-            <div class="header container d-flex flex-column align-items-center gap-3">
-                <h1 data-usal="fade-l">Blueprints</h1>
-                <h4 data-usal="fade-r">
-                    The first step is always the hardest. Explore blueprints to kick-start your next
-                    flow
-                </h4>
-                <div class="col-12 search-input position-relative">
-                    <input
-                        type="search"
-                        class="form-control form-control-lg"
-                        placeholder="Search across 250+ blueprints"
-                        v-model="searchQueryModel"
-                    />
-                    <Magnify class="search-icon" />
+    <section>
+        <div class="container text-body">
+            <div class="header-container">
+                <div class="header container d-flex flex-column align-items-center gap-3">
+                    <h1 data-usal="fade-l">Blueprints</h1>
+                    <h4 data-usal="fade-r">
+                        The first step is always the hardest. <span class="highlight">Explore blueprints</span> to kick-start your next flow
+                    </h4>
+                    <div class="col-12 search-input position-relative">
+                        <input
+                            type="search"
+                            class="form-control form-control-lg"
+                            placeholder="Search across 250+ blueprints"
+                            v-model="searchQueryModel"
+                        />
+                        <Magnify class="search-icon" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-5" data-usal="fade-l">
-            <button
-                v-for="tag in orderedTags"
-                :key="tag.name"
-                :class="{
-                    active: props.tagsSelected?.some((item) => item === tag.name),
-                }"
-                @click="setTagBlueprints(tag)"
-                class="m-1 rounded-button"
-            >
-                {{ tag.name }}
-            </button>
-        </div>
-        <div class="row my-5">
-            <div
-                v-if="blueprints && blueprints.length > 0"
-                class="col-lg-4 col-md-6 mb-4"
-                v-for="blueprint in blueprints"
-                :key="blueprint.id"
-                data-usal="zoomin"
-            >
-                <BlueprintsListCard
-                    :blueprint="blueprint"
-                    :tags="tags"
-                    :href="generateCardHref(blueprint)"
+            <div class="mt-5" data-usal="fade-l">
+                <button
+                    v-for="tag in orderedTags"
+                    :key="tag.name"
+                    :class="{ active: props.tagsSelected?.includes(tag.name) }"
+                    @click="setTagBlueprints(tag)"
+                    class="m-1 rounded-button"
+                >
+                    {{ tag.name }}
+                </button>
+            </div>
+            <div class="row my-5">
+                <template v-if="blueprints?.length">
+                    <div
+                        v-for="blueprint in blueprints"
+                        :key="blueprint.id"
+                        class="col-lg-4 col-md-6 mb-4"
+                        data-usal="zoomin"
+                    >
+                        <ListCard :blueprint="blueprint" :tags="tags" :href="generateCardHref(blueprint)" />
+                    </div>
+                </template>
+
+                <div v-else class="col-12 d-flex flex-column align-items-center justify-content-center py-5">
+                    <h4 class="text-white mb-4">No blueprints for your selection</h4>
+                    <button class="rounded-button active" @click="resetFilters">Reset all tags</button>
+                </div>
+
+                <CommonPaginationContainer
+                    :current-url="currentUrl"
+                    :total-items="total"
+                    @update="changePage"
                 />
             </div>
-
-            <div
-                v-else
-                class="col-12 d-flex flex-column align-items-center justify-content-center py-5"
-            >
-                <h4 class="text-white mb-4">No blueprints for your selection</h4>
-                <button class="rounded-button active" @click="resetFilters">Reset all tags</button>
-            </div>
-
-            <CommonPaginationContainer
-                :current-url="currentUrl"
-                :total-items="total"
-                @update="
-                    (payload) => {
-                        changePage(payload)
-                    }
-                "
-            />
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup lang="ts">
     import { computed, ref, watch } from "vue"
     import { navigate } from "astro:transitions/client"
     import Magnify from "vue-material-design-icons/Magnify.vue"
-    import BlueprintsListCard from "~/components/blueprints/ListCard.vue"
+    import ListCard from "~/components/blueprints/ListCard.vue"
     import CommonPaginationContainer from "~/components/common/PaginationContainer.vue"
 
+
     const props = defineProps<{
-        tags: BlueprintTag[],
-        tagsSelected?: string[],
-        currentPage: number,
-        itemsPerPage: number,
+        tags: BlueprintTag[]
+        tagsSelected?: string[]
+        currentPage: number
+        itemsPerPage: number
         total: number
         currentUrl: string
         blueprints: Blueprint[]
@@ -90,196 +80,163 @@
         searchQueryModel.value = newVal ?? ""
     })
 
-    const filteredTags = computed(() => {
-        return props.tagsSelected?.filter((tag => tag !== "All tags") )
-    })
+    const filteredTags = computed(() => props.tagsSelected?.filter((tag) => tag !== "All tags") ?? [])
 
-    const CUSTOM_ORDER = [
-        "Getting Started",
-        "Core",
-        "Infrastructure",
-        "Data",
-        "AI",
-        "Business",
-        "Cloud",
-    ]
+    const CUSTOM_ORDER = ["Getting Started", "Core", "Infrastructure", "Data", "AI", "Business", "Cloud"]
 
     const orderedTags = computed(() => {
         const sortedTags = [...props.tags].sort((a, b) => {
-            let indexA = CUSTOM_ORDER.indexOf(a.name)
-            let indexB = CUSTOM_ORDER.indexOf(b.name)
-            if (indexA === -1) indexA = 999
-            if (indexB === -1) indexB = 999
-            return indexA - indexB
+            const indexA = CUSTOM_ORDER.indexOf(a.name)
+            const indexB = CUSTOM_ORDER.indexOf(b.name)
+            return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB)
         })
         return [{ name: "All tags" }, ...sortedTags]
     })
 
     const setTagBlueprints = (tagVal: BlueprintTag) => {
         if (tagVal.name === "All tags") {
-            changePage({tags: ["All tags"]})
+            changePage({ tags: ["All tags"] })
             return
         }
 
-        let currentTags = props.tagsSelected?.filter((t) => t !== "All tags") ?? []
-        const index = currentTags.findIndex((t) => t === tagVal.name)
+        const currentTags = [...filteredTags.value]
+        const index = currentTags.indexOf(tagVal.name)
+        
         if (index === -1) {
             currentTags.push(tagVal.name)
         } else {
             currentTags.splice(index, 1)
         }
 
-        if (currentTags.length === 0) {
-            changePage({tags: ["All tags"]})
-        } else {
-            changePage({tags: currentTags})
-        }
+        changePage({ tags: currentTags.length ? currentTags : ["All tags"] })
     }
 
     const resetFilters = () => {
-        changePage({tags: ["All tags"], q: "", page: 1})
+        changePage({ tags: ["All tags"], q: "", page: 1 })
     }
 
-    const changePage = (detailPayload: {
-        page?:number,
-        size?:number,
-        tags?:string[],
-        q?: string
-    }) => {
-        if (typeof window !== "undefined") {
-            const detail = {
-                page: props.currentPage,
-                size: props.itemsPerPage,
-                tags: filteredTags.value,
-                q: props.q,
-                ...detailPayload,
-            }
+    const changePage = (detailPayload: { page?: number; size?: number; tags?: string[]; q?: string }) => {
+        if (typeof window === "undefined") return
 
-            if (
-                detail.page === props.currentPage
-                && detail.size === props.itemsPerPage
-                && JSON.stringify(detail.tags) === JSON.stringify(filteredTags.value)
-                && ((detail.q === undefined && props.q === undefined) || detail.q === props.q)
-            ) {
-                return
-            }
-
-            const detailsTags = detail.tags?.filter((tag) => tag !== "All tags")
-
-            const newUrl = new URL(window.location.href)
-            newUrl.searchParams.set("page", detail.page.toString())
-            newUrl.searchParams.set("size", detail.size.toString())
-            if(detailsTags?.length) newUrl.searchParams.set("tags", detailsTags?.join(","))
-            else newUrl.searchParams.delete("tags")
-            if(detail.q) newUrl.searchParams.set("q", detail.q)
-            else newUrl.searchParams.delete("q")
-
-            // navigate in astro world
-            navigate(newUrl.pathname + newUrl.search)
+        const detail = {
+            page: props.currentPage,
+            size: props.itemsPerPage,
+            tags: filteredTags.value,
+            q: props.q,
+            ...detailPayload,
         }
+
+        const isSame =
+            detail.page === props.currentPage &&
+            detail.size === props.itemsPerPage &&
+            JSON.stringify(detail.tags) === JSON.stringify(filteredTags.value) &&
+            detail.q === props.q
+
+        if (isSame && !detailPayload.page && !detailPayload.tags && detailPayload.q === undefined) return
+
+        const tagsToStore = detail.tags?.filter((tag) => tag !== "All tags")
+        const newUrl = new URL(window.location.href)
+        
+        newUrl.searchParams.set("page", detail.page.toString())
+        newUrl.searchParams.set("size", detail.size.toString())
+        
+        if (tagsToStore?.length) newUrl.searchParams.set("tags", tagsToStore.join(","))
+        else newUrl.searchParams.delete("tags")
+        
+        if (detail.q) newUrl.searchParams.set("q", detail.q)
+        else newUrl.searchParams.delete("q")
+
+        navigate(newUrl.pathname + newUrl.search)
     }
 
-    const generateCardHref = (blueprint: Blueprint) => {
-        return `/blueprints/${blueprint.id}`
-    }
+    const generateCardHref = (blueprint: Blueprint) => `/blueprints/${blueprint.id}`
 
     let queryTimeout: ReturnType<typeof setTimeout>
-
-    watch(searchQueryModel,
-        (newQuery) => {
-            if(queryTimeout) clearTimeout(queryTimeout)
-            queryTimeout = setTimeout(() => {
-                changePage({q: newQuery, page: 1})
-            }, 500)
-        },
-    )
+    watch(searchQueryModel, (newQuery) => {
+        if (queryTimeout) clearTimeout(queryTimeout)
+        queryTimeout = setTimeout(() => {
+            changePage({ q: newQuery, page: 1 })
+        }, 500)
+    })
 </script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
+    section {
+        background: var(--ks-background-body);
+        padding: $spacer * 4 0;
+    }
+
     .header-container {
         background: url("/landing/plugins/bg.svg") no-repeat top;
         .header {
             padding-bottom: calc($spacer * 4.125);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-            h1,
-            h4 {
-                color: $white;
+            h1, h4 {
+                color: var(--ks-content-primary);
                 text-align: center;
-                font-weight: 300;
                 margin-bottom: 0;
             }
-
-            h1 {
-                font-size: $font-size-4xl;
-            }
-
-            h4 {
-                font-size: $font-size-xl;
-            }
-
             .search-input {
                 max-width: 21rem;
-
                 input {
-                    border-radius: 4px;
-                    border: 1px solid #404559;
-                    background-color: #1c1e27;
-
-                    &,
+                    border-radius: $border-radius;
+                    border: $block-border;
+                    background-color: var(--ks-background-input);
+                    color: var(--ks-content-primary);
+                    padding-left: 2.5rem;
+                    font-size: $font-size-md;
                     &::placeholder {
-                        color: $white;
+                        color: var(--ks-content-secondary);
                         font-size: $font-size-md;
-                        font-weight: 400;
+                    }
+                    &:focus {
+                        border-color: var(--ks-border-active);
+                        box-shadow: none;
                     }
                 }
-
                 .search-icon {
                     position: absolute;
-                    top: calc($spacer * 0.563);
+                    top: 50%;
+                    transform: translateY(-50%);
                     left: calc($spacer * 1.125);
                     font-size: calc($spacer * 1.125);
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
             }
-        }
-    }
-    .form-control {
-        padding-left: 2.5rem;
-
-        &:focus {
-            border-color: var(--bs-border-color);
-            box-shadow: none;
         }
     }
 
     .rounded-button {
-        border-radius: 0.25rem;
-        color: var(--bs-white);
-        padding: calc($spacer / 2) calc($spacer / 1);
+        border-radius: $border-radius;
+        color: var(--ks-content-primary);
+        padding: calc($spacer / 2) $spacer;
         margin-right: calc($spacer / 2);
-        background-color: $black-2;
-        border: 0.063rem solid $black-3;
+        background-color: var(--ks-background-tertiary);
+        border: 0.063rem solid var(--ks-border-primary);
         font-weight: bold;
         font-size: $font-size-sm;
         line-height: 1.375rem;
-
+        cursor: pointer;
+        transition: all 0.2s ease;
         &.active {
-            background-color: $primary-1;
-            border-color: $primary-1;
+            background-color: var(--ks-background-button-primary-hover);
+            border-color: var(--ks-background-button-primary-hover);
+            color: #fff;
+        }
+        &:hover:not(.active) {
+            background-color: var(--ks-background-secondary);
         }
     }
 
-    .pagination-container .form-select {
-        border-radius: 4px;
-        border: $block-border;
-        color: $white;
-        text-align: center;
-        font-family: $font-family-sans-serif;
-        font-size: $font-size-sm;
-        font-style: normal;
-        font-weight: 700;
+    :deep(.pagination-container) {
+        .form-select {
+            border-radius: 4px;
+            border: $block-border;
+            color: var(--ks-content-primary);
+            text-align: center;
+            font-size: $font-size-sm;
+            font-weight: 700;
+        }
     }
 </style>

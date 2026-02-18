@@ -1,28 +1,147 @@
 ---
 import Layout from "~/components/layout.astro"
-import TerraformHeader from "~/components/use-cases/terraform-provider/Header.vue"
-import TerraformOverview from "~/components/use-cases/terraform-provider/Overview.vue"
-import TerraformUseCases from "~/components/use-cases/terraform-provider/UseCases.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import Alternation from "~/components/features/shared/Alternation.astro"
 
-const title =
+import FooterContact from "~/components/layout/FooterContact.astro"
+
+const TITLE =
     "Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process"
-const description =
+const DESCRIPTION =
     "Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations."
+
+const CARDS_DATA = [
+    {
+        image: {
+            src: "/terraform/overview/deploy-pattern.svg",
+            alt: "deploy-pattern svg",
+        },
+        title: "Simplified Deployment",
+        description:
+            "You can manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations.",
+    },
+    {
+        image: {
+            src: "/terraform/overview/hub.svg",
+            alt: "hub svg",
+        },
+        title: "Centralized Management",
+        description:
+            "The Terraform Provider allows you to manage your Kestra resources in code, along with other infrastructure components, all from a single platform.",
+    },
+    {
+        image: {
+            src: "/terraform/overview/code-box-parentheses.svg",
+            alt: "code-box-parentheses svg",
+        },
+        title: "Infrastructure as Code",
+        description:
+            "By using Terraform, you benefit from the Infrastructure as Code (IaC) best practices, making it easier to version control, collaborate, and maintain your Kestra configurations.",
+    },
+    {
+        image: {
+            src: "/terraform/overview/api.svg",
+            alt: "api svg",
+        },
+        title: "API-First Approach",
+        description:
+            "The provider is built on top of Kestra's API, allowing you to programmatically manage all resources, from workflows, namespaces, and secrets, to user management.",
+    },
+]
+
+const MAIN_CONTENT = [
+    {
+        title: "Declarative Configuration",
+        content:
+            "Terraform uses its HashiCorp Configuration Language (HCL), while Kestra flows are defined in YAML. This alignment in declarative interfaces ensures not only a smooth transition but also makes it easy to use both technologies together.",
+        image: {
+            src: "/terraform/overview/declarative-configurations-code.svg",
+            alt: "declarative configurations code svg",
+            width: 562,
+            height: 426,
+        },
+    },
+    {
+        title: "Modularity in the Infrastructure Management",
+        content:
+            "Kestra's Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our <a href=\"/docs/terraform\" class=\"text-decoration-underline link-offset-2\">documentation.</a>",
+        image: {
+            src: "/terraform/overview/modular-resource-management-code.svg",
+            alt: "modular resource management code svg",
+            width: 562,
+            height: 354,
+        },
+    },
+]
+
+const BENEFITS = [
+    {
+        title: "Reliable Deployments with Infrastructure as Code",
+        content:
+            "Combine Kestra's orchestration capabilities with Terraform's infrastructure-as-code model. Provision resources in minutes for consistent, reproducible, and scalable workflows.<br /><a href=\"/use-cases/ci-cd\" class=\"text-decoration-underline link-offset-2\">Learn more</a>",
+        image: {
+            src: "/terraform/use-cases/reliable-deployments.svg",
+            alt: "reliable deployments",
+            width: 749,
+            height: 740,
+        },
+    },
+    {
+        title: "Version Control and Rollback",
+        content:
+            "Incorporating version control systems such as Git is a recommended standard. It enables rollbacks and comprehensive auditing. Terraform additionally helps you version control not only your code but also your infrastructure configuration.",
+        image: {
+            src: "/terraform/use-cases/version-control.svg",
+            alt: "version control",
+            width: 750,
+            height: 740,
+        },
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <div class="main bg-dark-4">
-        <TerraformHeader client:load />
-        <TerraformOverview client:visible />
-        <TerraformUseCases client:visible />
-        <LayoutFooterContact
+<Layout title={TITLE} description={DESCRIPTION}>
+    <div class="main">
+        <DetailsHero
+            client:load
+            title="Deploy All Your Workflows With our <span>Terraform Provider</span>"
+            description={DESCRIPTION}
+            image={{
+                src: "/terraform/header/background.svg",
+                alt: "terraform logo with a dark background",
+            }}
+            actions={{
+                dark: { text: "Read the docs", href: "/docs/terraform" },
+                purple: { text: "Get Started", href: "/docs/terraform" },
+            }}
+        />
+
+        <Cards title="Key <span class='highlight'>Features</span>" cards={CARDS_DATA} />
+
+        <Alternation items={MAIN_CONTENT} />
+        <section style="background-color: var(--ks-background-body); color: var(--ks-content-primary);">
+            <p class="text-center w-50 mx-auto mb-0 py-2">
+                The inherent modularity in both, Terraform and Kestra, allows
+                you to create reusable blocks of code. These can be shared
+                across multiple teams or projects, contributing to maintainable
+                operations.
+            </p>
+        </section>
+
+        <Alternation
+            title="<span class='highlight'>Benefits</span> of the Integration"
+            items={BENEFITS}
+        />
+
+        <FooterContact
             client:visible
             subtitle="Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started."
-            darkButtonText="YouTube playlist"
-            darkButtonHref="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra"
-            purpleButtonText="Documentation"
-            purpleButtonHref="/docs/terraform"
+            dark={{
+                text: "YouTube playlist",
+                href: "https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra",
+            }}
+            purple={{ text: "Documentation", href: "/docs/terraform" }}
         />
     </div>
 </Layout>
@@ -31,6 +150,6 @@ const description =
     @import "~/assets/styles/variable";
 
     .main {
-        color: $white;
+        color: var(--ks-background-body);
     }
 </style>
