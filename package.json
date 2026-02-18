@@ -27,7 +27,7 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/vue": "^5.1.4",
-    "@cloudflare/workers-types": "^4.20260122.0",
+    "@cloudflare/workers-types": "^4.20260218.0",
     "@gtm-support/vue-gtm": "^3.1.0",
     "@iconify-json/mdi": "^1.2.3",
     "@kestra-io/ui-libs": "^0.0.273",
