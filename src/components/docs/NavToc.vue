@@ -174,7 +174,10 @@
         activeLinkId.value = id
         nextTick(() => {
             const link = document.querySelector(`#nav-toc a.active`) as HTMLElement
-            link?.scrollIntoView({ block: "nearest" })
+            // if link is not visible, scroll to it
+            if(link.getBoundingClientRect().top < 0 || link.getBoundingClientRect().bottom > window.innerHeight) {
+                link.scrollIntoView({ block: "nearest" })
+            }
         })
     }
 
@@ -210,12 +213,12 @@
         updateActiveLinkDelayed(id, 600)
     }
 
-    const closeToc = (): void => {
+    function closeToc(): void {
         tableOfContentsExpanded.value = false
         document.getElementById("tocContents")?.classList.remove("show")
     }
 
-    const activateMenuItem = (item: TocLink, index: number, linkArray: TocLink[]): void => {
+    function activateMenuItem(item: TocLink, index: number, linkArray: TocLink[]): void {
         if (!item?.id) return
 
         const currEl = document.querySelector(`#${item.id}`)?.getBoundingClientRect()
@@ -232,7 +235,7 @@
         }
     }
 
-    const handleScroll = (): void => {
+    function handleScroll(): void {
         if (scrollY.value === 0) {
             activeLinkId.value = ""
             return
