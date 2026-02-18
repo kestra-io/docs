@@ -30,6 +30,9 @@ Exporting trace data in Kestra is currently a Beta feature.
 The first step is to enable distributed traces inside the [Kestra configuration](../../configuration/index.md) file:
 
 ```yaml
+micronaut:
+  otel:
+    enabled: true
 kestra:
   traces:
     root: DEFAULT  # Enable traces inside Kestra flow executions
