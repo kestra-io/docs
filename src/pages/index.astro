@@ -113,3 +113,36 @@ const tabs = [
     <EnterpriseQuotesRender quotesCompaniesLogos={quotesLogos} client:visible />
     <CTA client:visible />
 </Layout>
+
+<script>
+    const SIZE_OF_GRADIENT = 500
+
+    // when the page has finished rendering, all the home card need a little script to react to
+    // mouse movements smoothly.
+    function moveGradient(e: MouseEvent) {
+        const box = e.currentTarget
+        if (!(box instanceof HTMLElement)) {
+            return
+        }
+
+        const { left, top, width, height } = box.getBoundingClientRect()
+
+        const x = e.clientX - left
+        const y = e.clientY - top
+
+        if (
+            x < -SIZE_OF_GRADIENT ||
+            x > width + SIZE_OF_GRADIENT ||
+            y < -SIZE_OF_GRADIENT ||
+            y > height + SIZE_OF_GRADIENT
+        ) {
+            return
+        }
+        box.style.setProperty("--x", `${x}px`)
+        box.style.setProperty("--y", `${y}px`)
+    }
+    const cards = document.querySelectorAll(".home-card")
+    for (const card of cards) {
+        card.addEventListener("mousemove", moveGradient as any)
+    }
+</script>
