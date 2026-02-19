@@ -7,6 +7,7 @@ export function optimizeSvgIcon(svgInput: string, prefix: string) {
             plugins: [
                 "preset-default",
                 {
+                    // remove data attributes from Figma development
                     name: "removeUnknownsAndDefaults",
                     params: {
                         keepDataAttrs: false,
