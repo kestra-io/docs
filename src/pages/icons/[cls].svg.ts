@@ -2,7 +2,7 @@
 export const prerender = false
 
 import { API_URL } from "astro:env/client"
-import { optimize } from "svgo"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 export async function GET({ params }: { params: { cls: string } }) {
     const clsComplete = params.cls
@@ -13,26 +13,7 @@ export async function GET({ params }: { params: { cls: string } }) {
         throw new Error("Failed to fetch icon")
     }
 
-    const svg = optimize(await response.text(), {
-        plugins: [
-            "preset-default",
-            {
-                name: "removeUnknownsAndDefaults",
-                params: {
-                    keepDataAttrs: false,
-                },
-            },
-            {
-                name: "removeDimensions",
-            },
-            {
-                name: "prefixIds",
-                params: {
-                    prefix: () => clsComplete,
-                }
-            }
-        ]
-    }).data
+    const svg = optimizeSvgIcon(await response.text(), clsComplete)
 
     // replace self closing tags with explicit closing tags to ensure compatibility with all browsers
     const svgWithExplicitClosingTags = svg.replace(/<(\w+)([^>]*)\/>/g, "<$1$2></$1>")
