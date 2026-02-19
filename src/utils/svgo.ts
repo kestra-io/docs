@@ -1,6 +1,8 @@
 import { optimize } from "svgo"
 
 export function optimizeSvgIcon(svgInput: string, prefix: string) {
+
+
     return optimize(svgInput, {
             plugins: [
                 "preset-default",
@@ -20,5 +22,6 @@ export function optimizeSvgIcon(svgInput: string, prefix: string) {
                     }
                 }
             ]
-        }).data
+        // replace self closing tags with explicit closing tags to ensure compatibility with all browsers
+        }).data.replace(/<(\w+)([^>]*)\/>/g, "<$1$2></$1>")
     }

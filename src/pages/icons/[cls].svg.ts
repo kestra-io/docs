@@ -15,11 +15,8 @@ export async function GET({ params }: { params: { cls: string } }) {
 
     const svg = optimizeSvgIcon(await response.text(), clsComplete)
 
-    // replace self closing tags with explicit closing tags to ensure compatibility with all browsers
-    const svgWithExplicitClosingTags = svg.replace(/<(\w+)([^>]*)\/>/g, "<$1$2></$1>")
-
     // replace all currentColor with the specified modifier if provided
-    const modifiedSvg = modifier ? svgWithExplicitClosingTags.replace(/currentColor/g, modifier) : svgWithExplicitClosingTags
+    const modifiedSvg = modifier ? svg.replace(/currentColor/g, modifier) : svg
 
     return new Response(modifiedSvg, {
         headers: {
