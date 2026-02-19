@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.2.5
+  version: 1.2.6
 tags:
 - name: Flows
   description: Flows api
@@ -3464,7 +3464,8 @@ paths:
         content:
           application/x-yaml:
             schema:
-              $ref: "#/components/schemas/Asset"
+              type: string
+        required: true
       responses:
         "200":
           description: createAsset 200 response
@@ -9556,7 +9557,14 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flows source code in a single string
+        description: Flows as YAML string or multipart files
+        content:
+          application/x-yaml:
+            schema:
+              type: string
+          multipart/form-data:
+            schema:
+              type: object
         required: true
       responses:
         "200":

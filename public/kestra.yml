@@ -4933,11 +4933,14 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flow files
+        description: Flows as YAML string or multipart files
         content:
           application/x-yaml:
             schema:
               type: string
+          multipart/form-data:
+            schema:
+              type: object
         required: true
       responses:
         "200":
