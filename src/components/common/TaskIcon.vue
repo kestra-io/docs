@@ -5,13 +5,14 @@
         data-bs-toggle="tooltip"
         data-bs-placement="top"
         :title="generateTagName()"
-        v-html="icon"
     >
+        <div class="icon" :style="styles" />
     </div>
 </template>
 
 <script lang="ts" setup>
-    import { onMounted, ref } from "vue"
+    import { computed, ref } from "vue"
+    // const {$bootstrap} = useNuxtApp()
 
     const props = defineProps({
         cls: {
@@ -20,19 +21,34 @@
         },
     })
 
+    const styles = computed(() => {
+        return {
+            background: `url("/icons/${props.cls}.svg")`,
+        }
+    })
+
     const root = ref(null)
+
+    // onMounted(() => {
+    //     if (process.client) {
+    //         new $bootstrap.Tooltip(root.value);
+    //     }
+    // });
+
+    // onBeforeUnmount(() => {
+    //     if (process.client) {
+    //         const tooltip = $bootstrap.Tooltip.getInstance(root.value);
+    //         if (tooltip) {
+    //             tooltip.dispose();
+    //         }
+    //     }
+    // });
 
     const generateTagName = () => {
         const splittedName = props.cls.split(".")
 
         return splittedName[splittedName.length - 1]
     }
-    const icon = ref("")
-    onMounted(async () => {
-        // load svg icon from api
-        const response = await fetch(`/icons/${props.cls}.svg`)
-        icon.value = await response.text()
-    })
 </script>
 
 <style lang="scss" scoped>
@@ -42,7 +58,7 @@
         height: 100%;
         position: relative;
 
-        :deep(> svg) {
+        .icon {
             width: 100%;
             height: 100%;
             display: block;
