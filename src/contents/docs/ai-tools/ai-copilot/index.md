@@ -18,6 +18,8 @@ The AI Copilot can generate and iteratively edit declarative flow code with AI-a
 
 The AI Copilot is designed to help build and modify flows directly from natural language prompts. Describe what you are trying to build, and Copilot will generate the YAML flow code for you to accept or adjust. Once your initial flow is created, you can iteratively refine it with Copilot’s help, adding new tasks or adjusting triggers without touching unrelated parts of the flow. Everything stays as code and in Kestra's usual declarative syntax.
 
+Copilot grounds its suggestions in your Namespace metadata. It automatically reads Plugin Defaults, Variables, Secrets, and Key-Value pairs configured in the current Namespace, so prompts like "Create a task that integrates with MongoDB" can reuse your existing `pluginDefaults`, stored credentials, or variables without extra hints.
+
 ## Configuration
 
 To add Copilot to your flow editor, add the following to your [Kestra configuration](../../configuration/index.md). The `providers` array lets you register multiple LLMs and pick a default (`isDefault: true`):
