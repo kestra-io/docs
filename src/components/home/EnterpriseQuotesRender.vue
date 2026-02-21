@@ -268,6 +268,8 @@
         }
 
         .quote-author {
+            display: flex;
+            gap: 6px;
             font-size: 1rem;
             white-space: normal;
 
