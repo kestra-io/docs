@@ -11,7 +11,7 @@ const {
     lang="bash",
 } = Astro.props as Props;
 
-const lineCount = code ? code.trim().split("\n").length : 0;
+const lineCount = code.trim().split("\n").length;
 const isExpandable = lineCount > 12;
 ---
 
@@ -70,7 +70,7 @@ const isExpandable = lineCount > 12;
 
         .code-inner {
             position: relative;
-            
+
             .label {
                 position: absolute;
                 top: 0.75rem;
@@ -153,3 +153,4 @@ const isExpandable = lineCount > 12;
         }
     }
 </style>
+

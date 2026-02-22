@@ -390,7 +390,6 @@
         align-items: center;
         gap: 0.5rem;
         transition: border-color 0.2s ease-in-out;
-        
 
         @include media-breakpoint-down(md) {
             padding: 12px;
@@ -477,3 +476,4 @@
         transform: scale(1);
     }
 }
+

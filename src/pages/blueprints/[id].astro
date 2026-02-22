@@ -30,8 +30,6 @@ if (pageData.tags && pageData.tags.length > 0) {
     }
 }
 
-
-
 const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
 
 const tags = await $fetchApi(`/blueprints/versions/latest/tags`)
@@ -68,3 +66,4 @@ const description = pageData.metaDescription
         dark={null}
     />
 </Layout>
+
