@@ -67,6 +67,7 @@
         color: $white;
         font-family: $font-family-sans-serif;
         font-weight: 300;
+         overflow: hidden;
 
         .container {
             padding-top: calc($spacer * 5.625);
