@@ -1,4 +1,6 @@
 ---
+export const prerender = false
+
 import Layout from "~/components/layout.astro"
 import PluginsLists from "~/components/plugins/PluginsLists.vue"
 import { $fetchApiCached } from "~/utils/fetch"
@@ -57,3 +59,4 @@ const description = "Connect Kestra with tools you already know and love"
         fullPath={Astro.request.url}
     />
 </Layout>
+
