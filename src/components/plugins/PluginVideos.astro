@@ -59,7 +59,7 @@ const videoIds = videos.map(extractId).filter(Boolean) as string[];
 
         display: block;
         padding: 2rem 0;
-        border-top: 1px solid var(--kestra-io-token-color-border-secondary);
+        border-top: $block-border;
 
         @include media-breakpoint-up(lg) {
             margin: 0 -2rem;
@@ -70,10 +70,10 @@ const videoIds = videos.map(extractId).filter(Boolean) as string[];
             width: 100%;
             border-radius: 8px;
             overflow: hidden;
-            background: $black-1;
+            background: var(--ks-background-tertiary);
             aspect-ratio: 430 / 245;
             position: relative;
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: $block-border;
 
             &::before {
                 content: "";

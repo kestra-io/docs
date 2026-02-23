@@ -17,8 +17,8 @@
                         />
                     </span>
                     <div>
-                        <h4 class="card-title">{{ item.title }}</h4>
-                        <MDCParserAndRenderer :content="item.description" class="bd-markdown" />
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <MDCParserAndRenderer :content="item.description" class="bd-content" />
                     </div>
                 </div>
             </div>
@@ -47,19 +47,10 @@
     @import "~/assets/styles/variable";
 
     .card {
-        background: $black-2 !important;
-
-        :deep(.bd-markdown) {
-            h4 {
-                font-size: 22px !important;
-                line-height: 1.375rem !important;
-            }
-
-            p {
-                font-size: 14px !important;
-                line-height: 1rem !important;
-                margin-bottom: 0;
-            }
+        background: var(--ks-background-secondary) !important;
+        h5 {
+            font-size: 1.25rem;
+            color: var(--ks-content-primary) !important;
         }
 
         .card-icon {

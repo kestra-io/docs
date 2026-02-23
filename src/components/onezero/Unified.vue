@@ -27,7 +27,7 @@
             </div>
 
             <div class="benefits" data-usal="fade-u delay-200">
-                <div v-for="benefit in benefits" :key="benefit.id" class="card">
+                <div v-for="benefit in BENEFITS" :key="benefit.id" class="card">
                     <div class="icon">
                         <component :is="benefit.icon" />
                     </div>
@@ -51,7 +51,7 @@
     import LaptopAccount from "vue-material-design-icons/LaptopAccount.vue"
     import RocketLaunch from "vue-material-design-icons/RocketLaunch.vue"
 
-    const benefits = [
+    const BENEFITS = [
         {
             id: "fewer-moving-parts",
             title: "Fewer moving parts",
@@ -83,26 +83,21 @@
     @import "~/assets/styles/variable";
 
     .unified {
-        padding: 4rem 0.5rem 6.5rem;
+        padding: $rem-4 0.5rem $rem-6;
         text-align: center;
-        background-color: #f7f7f8;
-
+        background-color: var(--ks-background-body);
         .container {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 2rem;
-
+            gap: $rem-2;
             .title {
-                width: 100%;
                 font-size: 2rem;
                 font-weight: 600;
                 margin-bottom: 0;
-
                 @include media-breakpoint-down(md) {
                     font-size: 1.5rem;
                 }
-
                 .gradient {
                     background: linear-gradient(90deg, #8c4bff 0%, #658af9 100%);
                     background-clip: text;
@@ -110,101 +105,75 @@
                     -webkit-text-fill-color: transparent;
                 }
             }
-
             .compare {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
-                gap: 4rem;
-                margin-bottom: 4rem;
+                gap: $rem-4;
+                margin-bottom: $rem-4;
                 text-align: left;
-
                 @include media-breakpoint-down(sm) {
                     grid-template-columns: 1fr;
-                    gap: 2rem;
+                    gap: $rem-2;
                     text-align: center;
                 }
-
                 .section {
                     h4 {
                         font-size: $font-size-lg;
                         font-weight: 600;
                         margin-bottom: 1rem;
-
                         &.without {
-                            color: #666666;
+                            color: var(--ks-content-tertiary);
                         }
-
                         &.with {
-                            color: #029e73;
+                            color: var(--ks-special-green);
                         }
                     }
-
                     p {
                         margin: 0;
-                        color: $black-1;
-                        font-size: $font-size-base;
+                        color: var(--ks-content-primary);
                         line-height: 1.6;
                     }
                 }
             }
-
             .benefits {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 1rem;
-
                 @include media-breakpoint-down(xl) {
                     grid-template-columns: repeat(2, 1fr);
                 }
-
                 @include media-breakpoint-down(md) {
                     grid-template-columns: 1fr;
                 }
-
                 .card {
                     display: flex;
                     flex-direction: column;
                     gap: 8px;
-                    padding: 2rem;
+                    padding: $rem-2;
                     text-align: left;
-                    background: $white;
+                    background: var(--ks-background-body);
                     border-radius: 20px;
                     box-shadow: 0 2px 4px 0 #ecebef;
-
                     @include media-breakpoint-up(xl) {
                         width: 263px;
                     }
-
                     .title {
                         margin: 0;
-                        font-size: 20px;
-                        color: $black-9;
+                        font-size: $font-size-lg;
+                        color: var(--ks-content-primary);
                         font-weight: 700;
-                        line-height: 31.23px;
+                        line-height: 1.5;
                     }
-
                     p {
                         margin: 0;
-                        color: #505050;
-                        font-weight: 400;
-                        line-height: 25.2px;
-                        font-size: $font-size-base;
+                        color: var(--ks-content-secondary);
                     }
-
                     .icon {
                         :deep(.material-design-icon) {
-                            color: $purple-38;
+                            color: var(--ks-content-color-highlight);
                             font-size: $font-size-2xl;
                         }
                     }
-                }
-            }
-
-            @media (max-width: 768px) {
-                [data-usal] {
-                    opacity: 1 !important;
-                    transform: none !important;
-                    transition: none !important;
                 }
             }
         }

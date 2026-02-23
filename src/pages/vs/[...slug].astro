@@ -1,0 +1,47 @@
+---
+import { render, getCollection, type CollectionEntry } from "astro:content"
+import Layout from "~/components/layout.astro"
+import VSHeader from "~/components/vs/VSHeader.astro"
+import VSMain from "~/components/vs/VSMain.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
+
+export async function getStaticPaths() {
+    const vsPages = await getCollection("vs")
+    return vsPages.map((page) => ({
+        params: { slug: page.id },
+        props: page,
+    }))
+}
+
+type Props = CollectionEntry<"vs">
+const page = Astro.props
+const { Content, ...exports } = await render(page)
+const {
+    title,
+    headerTitle,
+    description,
+    competitorName,
+    logo
+} = page.data
+
+const comparisonData = (exports as any).comparisonData ?? []
+---
+
+<Layout title={title} description={description}>
+    <VSHeader
+        title={headerTitle}
+        {competitorName}
+        {logo}
+        {description}
+    />
+    <VSMain {competitorName}>
+        <Content {comparisonData} {competitorName} />
+    </VSMain>
+    <FooterContact
+        subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
+        dark={{
+            text: "Read the docs",
+            href: "/docs"
+        }}
+    />
+</Layout>

@@ -1,0 +1,131 @@
+$bd-gutter-x: 3rem;
+@import "variable";
+@import "markdown";
+
+.bd-content {
+    @include markdown-styles;
+}
+
+.bd-markdown {
+    @include markdown-styles;
+    h1 {
+        display: none;
+    }
+}
+
+.bd-gutter {
+    --bs-gutter-x: 1rem;
+}
+
+.bd-layout {
+    &.margin {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+        display: grid;
+        grid-template-areas: "sidebar main";
+        grid-template-columns: 1fr 5fr;
+        gap: $grid-gutter-width;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        &.margin {
+            margin-top: 4.5rem;
+            margin-bottom: 4.5rem;
+        }
+    }
+}
+
+.bd-sidebar {
+    grid-area: sidebar;
+    align-self: start;
+}
+
+.bd-content,
+.bd-main > div.bd-title > h1,
+.bd-main > div.bd-title .slug {
+    margin: 0 auto;
+    max-width: 48rem;
+    @media (min-width: 2000px) {
+        max-width: 55rem;
+    }
+    width: 100%;
+}
+
+.bd-main {
+    grid-area: main;
+
+    @include media-breakpoint-down(lg) {
+        max-width: 760px;
+        margin-inline: auto;
+    }
+
+    @include media-breakpoint-up(md) {
+        display: grid;
+        grid-template-areas:
+            "intro"
+            "toc"
+            "content";
+        grid-template-rows: auto auto 1fr;
+        gap: inherit;
+    }
+
+    @include media-breakpoint-up(lg) {
+        grid-template-areas:
+            "intro   toc"
+            "content toc";
+        grid-template-rows: auto 1fr;
+        grid-template-columns: 4fr 1fr;
+    }
+
+    &.full {
+        max-width: none;
+        .bd-toc {
+            display: none;
+        }
+
+        .bd-content {
+            min-width: 100%;
+        }
+
+        @include media-breakpoint-up(md) {
+            margin-top: 4rem;
+            display: block;
+        }
+
+        h1 {
+            margin: 0;
+        }
+    }
+
+    .card {
+        h4 {
+            padding-top: 0;
+        }
+
+        .card-icon {
+            background: none;
+        }
+    }
+}
+
+.bd-intro {
+    grid-area: intro;
+}
+
+.bd-toc {
+    grid-area: toc;
+}
+
+// For purposes of repositioning the plugin icons, resolves #981, #966.
+.bd-content > div > h2 > span:not(.badge) {
+    display: none !important;
+}
+
+.bd-content {
+    grid-area: content;
+    min-width: 1px; // Fix width when bd-content contains a `<pre>` https://github.com/twbs/bootstrap/issues/25410
+}

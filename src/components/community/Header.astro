@@ -4,11 +4,13 @@ import headerImage from "./assets/header.svg"
 ---
 
 <div class="container-fluid">
-    <div class="hero container">
+    <div class="container">
         <div class="row">
             <div class="col-md-7 align-items-center d-flex order-1 order-md-0">
                 <div>
-                    <h1 data-usal="fade-r">Connect and Collaborate</h1>
+                    <h1 data-usal="fade-r" class="highlight">
+                        Connect and Collaborate
+                    </h1>
                     <p class="baseline" data-usal="fade-l">
                         Connect with experts in the field, get support from the
                         community, exchange ideas and contribute your code and
@@ -42,36 +44,15 @@ import headerImage from "./assets/header.svg"
     .container-fluid {
         background: url("./assets/header-bg.svg") no-repeat center;
         background-size: 100% 100%;
-        color: $white;
-
-        .container {
-            border-bottom: $block-border;
-        }
-
-        .hero {
-            padding-top: 4rem;
-            padding-bottom: 4rem;
-        }
+        color: var(--ks-content-primary);
+        padding: 0 $rem-1;
 
         h1,
         p {
-            font-weight: 400;
-            padding-bottom: 0;
             margin-bottom: 1rem;
         }
-
-        h1 {
-            font-size: $font-size-4xl;
-        }
-
         p {
-            font-size: $font-size-xl;
-        }
-
-        .hero {
-            @include media-breakpoint-down(md) {
-                padding-top: 0;
-            }
+            font-size: $font-size-lg;
         }
     }
 </style>

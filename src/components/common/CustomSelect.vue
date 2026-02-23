@@ -60,16 +60,14 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-
         .label {
-            color: $white-3;
+            color: var(--ks-content-tertiary);
             font-size: 0.875rem;
         }
-
         .btn-custom {
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: $block-border;
             background-color: var(--ks-background-input);
-            color: $white;
+            color: var(--ks-content-primary);
             font-size: 0.875rem;
             font-weight: normal;
             transition: border-color 0.2s ease;
@@ -77,58 +75,47 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-
             span {
                 flex-shrink: 0;
                 font-size: 12px;
             }
-
             :deep(svg) {
                 font-size: 20px;
                 transition: transform 0.2s ease;
             }
-
             &:hover {
-                border-color: $primary;
+                border-color: var(--ks-border-active);
                 background-color: var(--ks-background-input);
-                color: $white;
+                color: var(--ks-content-primary);
             }
-
             &:focus {
-                border-color: $primary;
-                box-shadow: 0 0 0 0.25rem rgba($primary, 0.25);
+                border-color: var(--ks-border-active);
+                box-shadow: 0 0 0 0.25rem rgba(var(--ks-border-active), 0.25);
                 background-color: var(--ks-background-input);
-                color: $white;
+                color: var(--ks-content-primary);
             }
-
             &::after {
                 display: none;
             }
         }
-
         .show :deep(svg) {
             transform: rotate(180deg);
         }
-
         .dropdown-menu {
             background-color: var(--ks-background-input);
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
             border-radius: 0.25rem;
             padding: 0;
-
             .dropdown-item {
-                color: $white;
+                color: var(--ks-content-primary);
                 font-size: 12px;
                 padding: 0.25rem 0.75rem;
                 transition: background-color 0.2s ease;
-
                 &:hover {
                     background-color: rgba(255, 255, 255, 0.1);
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
-
                 &.active {
-                    background-color: $primary-1;
+                    background-color: var(--ks-background-button-primary);
                     color: $white;
                 }
             }
