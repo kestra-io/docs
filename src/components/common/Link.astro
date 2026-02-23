@@ -6,25 +6,41 @@ interface Props {
     href: string
     text?: string
     class?: string
+    reversed?: boolean
     [x: string]: any;
 }
 
-const { href, text, class: className, ...rest } = Astro.props
+const { href, text, class: className, reversed = false, ...rest } = Astro.props
 ---
 
-<a href={href} class:list={["link", className]} {...rest}>
+<a href={href} class:list={["link", className, { reversed }]} {...rest}>
+    {reversed && (
+        <svg viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+            <g class="arrow-head">
+                <path
+                    d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
+                    stroke="currentColor"
+                    stroke-width="2"></path>
+            </g>
+            <g class="arrow-body">
+                <path d="M3.5 4.5H0" stroke="currentColor" stroke-width="2"></path>
+            </g>
+        </svg>
+    )}
     {text ? text : <slot />}
-    <svg viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
-        <g class="arrow-head">
-            <path
-                d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
-                stroke="currentColor"
-                stroke-width="2"></path>
-        </g>
-        <g class="arrow-body">
-            <path d="M3.5 4.5H0" stroke="currentColor" stroke-width="2"></path>
-        </g>
-    </svg>
+    {!reversed && (
+        <svg viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+            <g class="arrow-head">
+                <path
+                    d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
+                    stroke="currentColor"
+                    stroke-width="2"></path>
+            </g>
+            <g class="arrow-body">
+                <path d="M3.5 4.5H0" stroke="currentColor" stroke-width="2"></path>
+            </g>
+        </svg>
+    )}
 </a>
 
 <style lang="scss">
@@ -71,6 +87,14 @@ const { href, text, class: className, ...rest } = Astro.props
                     opacity: 1;
                     transform: scaleX(2);
                 }
+            }
+        }
+
+        &.reversed {
+            .arrow-icon {
+                margin-left: 0;
+                margin-right: 0.5rem !important;
+                transform: rotate(180deg);
             }
         }
     }

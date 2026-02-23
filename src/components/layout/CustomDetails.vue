@@ -60,12 +60,11 @@
 
     .custom-details {
         background: var(--ks-background-body);
-        border: none;
 
         .accordion-header {
+            margin-bottom: 0;
             &.bg-head {
                 background: var(--ks-background-tertiary);
-                border: $block-border;
             }
         }
 
@@ -98,6 +97,10 @@
             &.collapsed :deep(.icon) {
                 transform: rotate(270deg);
             }
+        }
+
+        .accordion-collapse {
+            background-color: var(--ks-background-secondary);
         }
         .accordion-body {
             color: var(--ks-content-primary);

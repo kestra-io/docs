@@ -20,7 +20,7 @@ import { Icon } from 'astro-icon/components';
     .theme-switcher {
         display: inline-flex;
         gap: 0.25rem;
-        background: var(--ks-background-secondary);
+        background: var(--ks-background-input);
         padding: 0.25rem;
         border-radius: 2rem;
         border: 1px solid var(--ks-border-primary);
@@ -28,7 +28,7 @@ import { Icon } from 'astro-icon/components';
         button {
             background: transparent;
             border: none;
-            color: var(--ks-content-tertiary);
+            color: var(--ks-icon);
             padding: 0.35rem;
             border-radius: 50%;
             cursor: pointer;
@@ -46,7 +46,7 @@ import { Icon } from 'astro-icon/components';
 
             &.active {
                 background: var(--ks-background-primary);
-                color: var(--ks-content-primary);
+                color: var(--ks-icon-active);
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
 

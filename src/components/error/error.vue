@@ -1,55 +1,53 @@
 <template>
-    <div class="container-fluid">
-        <div class="container">
-            <div class="row g-0">
-                <div class="col-md-6 p-5 d-flex flex-column text-white justify-content-center">
-                    <h6>OHHHH... 😔</h6>
-                    <h1 @click="visible = !visible">
-                        {{ title }}
-                    </h1>
-                    <p class="text-error">
-                        {{ description }}
-                    </p>
-                    <div v-if="visible">
-                        <h3>{{ error.title }}</h3>
-                        <ul>
-                            <li v-if="error.name">
-                                name: <code>{{ error.name }}</code>
-                            </li>
-                            <li v-if="error.plugin">
-                                plugin: <code>{{ error.plugin }}</code>
-                            </li>
-                            <li v-if="error.id">
-                                id: <code>{{ error.id }}</code>
-                            </li>
-                        </ul>
-                        <pre>{{ JSON.stringify(error, null, 2) }}</pre>
-                    </div>
-                    <a href="/" class="btn btn-animated btn-purple-animated mb-2"> Back to home </a>
-                </div>
-                <div class="col-md-6 p-5">
-                    <img v-bind="errorImage" class="img-fluid" alt="error" />
-                </div>
-            </div>
-        </div>
-    </div>
+    <Squared>
+            <h1>404</h1>
 
-    <FooterContact
-        title="New to Kestra?"
-        subtitle="Use blueprints to kickstart your first workflows."
-        :purple="{
-            text: 'Get started with Kestra',
-            href: 'https://kestra.io/slack',
-        }"
-        :animation="false"
-        class="mb-5 text-white"
-    />
+            <h2 @click="visible = !visible">
+                {{ title }}
+            </h2>
+
+            <p class="text-error">
+                {{ description }}
+            </p>
+
+            <div v-if="visible" class="error-details">
+                <h3>{{ error.title }}</h3>
+
+                <ul>
+                    <li v-if="error.name">
+                        name: <code>{{ error.name }}</code>
+                    </li>
+                    <li v-if="error.plugin">
+                        plugin: <code>{{ error.plugin }}</code>
+                    </li>
+                    <li v-if="error.id">
+                        id: <code>{{ error.id }}</code>
+                    </li>
+                </ul>
+
+                <pre>{{ JSON.stringify(error, null, 2) }}</pre>
+            </div>
+
+            <Link
+                href="/"
+                text="Back to home"
+                class="btn btn-primary"
+                reversed
+            />
+            <img
+                :src="errorImage.src"
+                alt="Error"
+                class="img-fluid"
+            />
+    </Squared>
+
 </template>
 
 <script lang="ts" setup>
     import { ref } from "vue"
-    import FooterContact from "~/components/layout/FooterContact.vue"
-    import errorImage from "./assets/error.png"
+    import errorImage from "./assets/error.webp"
+    import Squared from "~/components/layout/Squared.vue"
+    import Link from "~/components/common/Link.vue"
 
     defineOptions({
         name: "error",
@@ -74,29 +72,68 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    .container-fluid {
-        background: url("./assets/background.svg") no-repeat center 100%;
-        .container {
-            padding-top: 5rem;
-            padding-bottom: 3rem;
-            border-bottom: $block-border;
-            h6,
-            h1,
-            .text-error {
-                margin-bottom: 1rem;
-                color: var(--ks-content-primary);
+    .squared {
+        padding-bottom: 0 !important;
+
+        :deep(.container) {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            @include media-breakpoint-up(xl) {
+                font-size: 128px;
             }
-            h6,
-            .text-error {
-                font-size: $font-size-xl;
-            }
-            a {
-                width: fit-content;
+
+            @include media-breakpoint-down(xl) {
+                font-size: $h1-font-size * 2;
             }
         }
-    }
 
-    .text-error {
-        font-size: $font-size-lg;
+        h2 {
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .text-error {
+            color: var(--ks-content-secondary);
+            @include media-breakpoint-up(lg) {
+                width: 306px;
+            }
+        }
+
+        .error-details {
+            text-align: left;
+            margin-bottom: 1rem;
+            border: $block-border;
+            border-radius: $border-radius-lg;
+
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            pre {
+                background: var(--ks-background-secondary);
+                padding: 1rem;
+                border-radius: 4px;
+            }
+        }
+
+        h6 {
+            font-size: $font-size-lg;
+        }
+
+        a {
+            width: fit-content;
+        }
+
+        .img-fluid {
+            @include media-breakpoint-up(xl) {
+                margin-top: -4rem;
+            }
+        }
     }
 </style>
