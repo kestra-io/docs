@@ -22,25 +22,20 @@ const related = {
 }
 ---
 
-<Layout title={story.title} description={story.description} isStories={true}>
+<Layout title={story.title} description={story.description}>
     <div class="main">
         <StoryDetail
             client:load
             slug={slugFull}
-            story={story}
-            content={content}
-            related={related}
+            {story}
+            {content}
+            {related}
         />
     </div>
 </Layout>
 
-<style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
+<style lang="scss">
     .main {
-        overflow: clip;
-        color: $black-2;
-        background-color: $white;
-        font-family: var(--font-family-mona-sans), sans-serif !important;
+        overflow: clip;        
     }
 </style>

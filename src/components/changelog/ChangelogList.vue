@@ -171,46 +171,43 @@
 
     .form-control {
         padding: 0.25rem 0.5rem 0.25rem 2rem;
-        border: 1px solid var(--ks-border-primary);
+        border: $block-border;
         background: var(--ks-background-input);
-        color: $white-1;
+        color: var(--ks-content-primary);
         font-size: 14px;
-
         &::placeholder {
-            color: $gray-500;
+            color: var(--ks-content-secondary);
             font-size: 12px;
         }
     }
 
     .search-input {
         position: relative;
-
         .magnify-icon {
             position: absolute;
             left: 0.5rem;
             top: 50%;
             bottom: 2px;
             transform: translateY(-50%);
-            color: $gray-500;
+            color: var(--ks-content-secondary);
             z-index: 1;
         }
     }
 
     .release-card {
-        border: 1px solid var(--ks-border-primary);
-        background: var(--ks-background-body);
+        border: $block-border;
+        background: var(--ks-background-tertiary);
         transition:
             transform 0.2s ease,
             border-color 0.2s ease;
-
         &:hover {
-            border-color: $purple-35;
+            border-color: var(--ks-content-link);
             transform: scale(1.01);
         }
     }
 
     .card-title {
-        color: $white !important;
+        color: var(--ks-content-primary) !important;
     }
 
     .badge {
@@ -221,13 +218,11 @@
             font-weight: 500;
             padding: 4px 12px;
         }
-
         &-major {
             border: 1px solid var(--ks-border-running);
             background: var(--ks-background-running);
             color: var(--ks-content-running);
         }
-
         &-minor {
             border: 1px solid var(--ks-border-warning);
             background: var(--ks-background-warning);
@@ -241,11 +236,9 @@
             opacity 0.2s,
             border-color 0.2s;
         display: inline-block;
-
         &:hover {
             opacity: 0.8;
         }
-
         &.active {
             opacity: 1;
             box-shadow: 0 0 8px currentColor;
@@ -253,7 +246,7 @@
     }
 
     small {
-        color: $white-4 !important;
+        color: var(--ks-content-tertiary) !important;
         font-size: 12px !important;
     }
 </style>

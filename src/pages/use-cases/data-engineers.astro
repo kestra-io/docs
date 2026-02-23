@@ -1,16 +1,22 @@
 ---
 import Layout from "~/components/layout.astro"
-import HeaderSection from "~/components/use-cases/HeaderSection.vue"
-import BlueprintsSection from "~/components/use-cases/BlueprintsSection.vue"
-import CapabilitiesSection from "~/components/use-cases/CapabilitiesSection.vue"
-import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
-import CardSection from "~/components/use-cases/databases-management/CardSection.vue"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import Blueprints from "~/components/common/BlueprintsRender.vue"
+import Capabilities from "~/components/use-cases/Capabilities.vue"
+import HeaderBox from "~/components/common/HeaderBox.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import { $fetchApi } from "~/utils/fetch"
 
-const title = "Simplify Your Data Engineering Challenges with Kestra"
-const description =
+const TITLE = "Simplify Your Data Engineering Challenges with Kestra"
+const DESCRIPTION =
     "Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
 
-const cardsData = [
+const response = await $fetchApi<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?page=1&size=20",
+)
+const blueprints = response.results
+
+const CARDS_DATA = [
     {
         number: "01",
         title: "Automate Your Data Pipelines",
@@ -61,32 +67,33 @@ const cardsData = [
     },
 ]
 
-const capabilities = [
+const CAPABILITIES = [
     "Change data capture",
     "Modern Data Stack Integration",
     "CI/CD for your Kestra Workflows",
 ]
 ---
 
-<Layout title={title} description={description}>
-    <HeaderSection
+<Layout title={TITLE} description={DESCRIPTION}>
+    <DetailsHero
         client:load
-        titleHtml="Kestra for<br><span>Data Engineers</span>"
+        title="Kestra for<br><span>Data Engineers</span>"
         description="Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
-        imageSrc="/landing/usecases/data-engineers/header-hero.svg"
-        imageAlt="Kestra for Data Engineers"
+        image={{
+            src: "/landing/usecases/data-engineers/header-hero.svg",
+            alt: "Kestra for Data Engineers",
+        }}
     />
-    <CardSection
-        client:visible
-        title="Data Engineering Challenges"
+    <Cards
+        title="Simplify your Data Engineering <span class='highlight'>Challenges</span>"
         description="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses."
-        cardsData={cardsData}
+        cards={CARDS_DATA}
     />
-    <BlueprintsSection client:visible />
-    <CapabilitiesSection
+    <Blueprints {blueprints} client:visible />
+    <Capabilities
         client:visible
         title="for Data Orchestration"
-        sections={capabilities}
+        capabilities={CAPABILITIES}
     />
-    <FeaturesFeatureEnterprise client:visible />
+    <HeaderBox client:visible />
 </Layout>

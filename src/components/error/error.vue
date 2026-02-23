@@ -34,11 +34,13 @@
         </div>
     </div>
 
-    <LayoutFooterContact
+    <FooterContact
         title="New to Kestra?"
         subtitle="Use blueprints to kickstart your first workflows."
-        purpleButtonText="Get started with Kestra"
-        purpleButtonHref="https://kestra.io/slack"
+        :purple="{
+            text: 'Get started with Kestra',
+            href: 'https://kestra.io/slack',
+        }"
         :animation="false"
         class="mb-5 text-white"
     />
@@ -46,7 +48,7 @@
 
 <script lang="ts" setup>
     import { ref } from "vue"
-    import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+    import FooterContact from "~/components/layout/FooterContact.vue"
     import errorImage from "./assets/error.png"
 
     defineOptions({
@@ -55,10 +57,12 @@
 
     defineProps<{
         error: {
-            name: string
-            title: string
-            plugin: string
-            id: string
+            name?: string
+            title?: string
+            plugin?: string
+            id?: string
+            statusCode?: number
+            message?: string
         }
         title: string
         description: string
@@ -72,33 +76,20 @@
 
     .container-fluid {
         background: url("./assets/background.svg") no-repeat center 100%;
-
         .container {
             padding-top: 5rem;
             padding-bottom: 3rem;
             border-bottom: $block-border;
-            color: $white;
-
             h6,
             h1,
             .text-error {
-                font-weight: 300;
                 margin-bottom: 1rem;
+                color: var(--ks-content-primary);
             }
-
             h6,
             .text-error {
                 font-size: $font-size-xl;
             }
-
-            h1 {
-                font-size: 3.125rem;
-                background: linear-gradient(90deg, #e151f7 46.62%, #5c47f5 55.05%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
             a {
                 width: fit-content;
             }
@@ -107,6 +98,5 @@
 
     .text-error {
         font-size: $font-size-lg;
-        font-weight: 300;
     }
 </style>

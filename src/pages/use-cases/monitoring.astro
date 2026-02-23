@@ -1,48 +1,58 @@
 ---
 import Layout from "~/components/layout.astro"
-import HeaderSection from "~/components/use-cases/HeaderSection.vue"
-import MainSection from "~/components/use-cases/MainSection.vue"
-import EnterpriseEditionSection from "~/components/use-cases/EnterpriseEditionSection.vue"
-import CardSection from "~/components/use-cases/monitoring/CardSection.vue"
-import CapabilitiesSection from "~/components/use-cases/CapabilitiesSection.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import Section from "~/components/layout/Section.vue"
+import Enterprise from "~/components/use-cases/Enterprise.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import Capabilities from "~/components/use-cases/Capabilities.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import AlertCircle from "vue-material-design-icons/AlertCircle.vue"
+import Cogs from "vue-material-design-icons/Cogs.vue"
+import MathLog from "vue-material-design-icons/MathLog.vue"
+import Speedometer from "vue-material-design-icons/Speedometer.vue"
+import ToyBrickPlus from "vue-material-design-icons/ToyBrickPlus.vue"
 
-const title = "Simplify Infrastructure Monitoring"
-const description =
+const TITLE = "Simplify Infrastructure Monitoring"
+const DESCRIPTION =
     "Automate infrastructure monitoring, implement alerting, and ensure optimal performance and reliability."
 
-const capabilities = [
+const CAPABILITIES = [
     "Continuous Integration/Continuous Deployment (CI/CD)",
     "Provisioning and Deployment",
     "Disaster Recovery",
 ]
 
-const mainContent = [
+const MAIN_CONTENT = [
     {
         title: "Quick Alerting",
-        img: "/landing/usecases/monitoring/quick-alerting.svg",
-        imgAlt: "Quick Alerting",
-        imgWidth: "568px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/monitoring/quick-alerting.svg",
+            alt: "Quick Alerting",
+            width: 568,
+            height: 420,
+        },
         description:
-            "Kestra enables  alerting to help you maintain optimal performance and quickly address any issues that arise. ",
+            "Kestra enables alerting to help you maintain optimal performance and quickly address any issues that arise.",
         content: `
             <ul>
                 <li>
                     Alerts:
-                    <span>Set up  alerts to notify your team of critical issues, ensuring rapid response and minimizing downtime.</span>
+                    <span>Set up alerts to notify your team of critical issues, ensuring rapid response and minimizing downtime.</span>
                 </li>
             </ul>
         `,
     },
     {
         title: "Orchestrate your Monitoring Data",
-        img: "/landing/usecases/monitoring/monitoring-data.svg",
-        imgAlt: "Docker and Kubernetes",
-        imgWidth: "568px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/monitoring/monitoring-data.svg",
+            alt: "Docker and Kubernetes",
+            width: 568,
+            height: 420,
+        },
         description:
-            "Orchestrate your monitoring data efficiently to maintain optimal performance and quickly address any issues that arise. ",
+            "Orchestrate your monitoring data efficiently to maintain optimal performance and quickly address any issues that arise.",
         content: `
             <ul>
                 <li>
@@ -54,26 +64,28 @@ const mainContent = [
                 <li>
                     Data Transformation:
                     <span>
-                        Use Kestra to automate the transformation of raw monitoring data into  standardized formats, and enriche it.
+                         Use Kestra to automate the transformation of raw monitoring data into standardized formats, and enriches it.
                     </span>
                 </li>
                 <li>
                     Unified Platform:
                     <span>
-                        Distribute transformed metrics to a centralized platform, such as a dashboard or monitoring system, enabling comprehensive visibility.
+                         Distribute transformed metrics to a centralized platform, such as a dashboard or monitoring system, enabling comprehensive visibility.
                     </span>
                 </li>
             </ul>
         `,
     },
     {
-        title: "Automate Incident Response ",
-        img: "/landing/usecases/monitoring/incident-response.svg",
-        imgAlt: "Configuration Management and Compliance",
-        imgWidth: "604px",
-        imgHeight: "477px",
+        title: "Automate Incident Response",
+        image: {
+            src: "/landing/usecases/monitoring/incident-response.svg",
+            alt: "Configuration Management and Compliance",
+            width: 604,
+            height: 477,
+        },
         description:
-            "Kestra's automation capabilities enable you to set up workflows that automatically respond to and remediate infrastructure issues, reducing the time to resolution and minimizing manual intervention. ",
+            "Kestra's automation capabilities enable you to set up workflows that automatically respond to and remediate infrastructure issues, reducing the time to resolution and minimizing manual intervention.",
         content: `
             <ul>
                 <li>
@@ -92,36 +104,85 @@ const mainContent = [
         `,
     },
 ]
+
+const CHALLENGES_TITLE = `<span class="highlight">Key Benefits</span> of Using Kestra for<br/> Alerting`
+
+const CARDS_DATA = [
+    {
+        icon: MathLog,
+        cardInfo: {
+            title: "Log Management",
+            description:
+                "Collect, analyze, and visualize log data to troubleshoot issues effectively.",
+        },
+    },
+    {
+        icon: AlertCircle,
+        cardInfo: {
+            title: "Minimize Errors",
+            description:
+                "Automation ensures consistency and accuracy, reducing the likelihood of human errors.",
+        },
+    },
+    {
+        icon: Speedometer,
+        cardInfo: {
+            title: "Rapid Response",
+            description:
+                "Alerts and automated incident response workflows ensure quick resolution of issues.",
+        },
+    },
+    {
+        icon: ToyBrickPlus,
+        cardInfo: {
+            title: "Extensibility",
+            description:
+                "Use built-in plugins or create custom plugins to seamlessly integrate with popular monitoring tools and services.",
+        },
+    },
+    {
+        icon: Cogs,
+        cardInfo: {
+            title: "Reduce Manual Effort",
+            description:
+                "Automate monitoring and alerting processes, allowing your team to focus on strategic initiatives.",
+        },
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <HeaderSection
+<Layout title={TITLE} description={DESCRIPTION}>
+    <DetailsHero
         client:load
-        titleHtml="Infrastructure <br> Monitoring"
-        description="Automate infrastructure monitoring, implement  alerting, and ensure optimal performance and reliability."
-        imageSrc="/landing/usecases/monitoring/header-hero.svg"
-        imageAlt="Infrastructure Monitoring"
+        title="Infrastructure <br> Monitoring"
+        description="Automate infrastructure monitoring, implement alerting, and ensure optimal performance and reliability."
+        image={{
+            src: "/landing/usecases/monitoring/header-hero.svg",
+            alt: "Infrastructure Monitoring",
+        }}
     />
-    <MainSection
-        client:visible
-        subtitle="Infrastructure Monitoring"
-        subtitleBefore="Simplify"
-        baseline="Kestra's  monitoring capabilities and integrations empower platform engineers to maintain and optimize infrastructure performance efficiently."
-        mainContent={mainContent}
-    />
-    <EnterpriseEditionSection client:visible />
-    <CardSection client:visible />
-    <CapabilitiesSection
+
+    <Alternation items={MAIN_CONTENT}>
+        <Section
+            subtitle="Infrastructure Monitoring"
+            subtitleBefore="Simplify"
+            class={"p-0 bg-transparent"}
+            baseline="Kestra's monitoring capabilities and integrations empower platform engineers to maintain and optimize infrastructure performance efficiently."
+        />
+    </Alternation>
+
+    <Enterprise title="Orchestrate infrastructure components using Kestra" client:visible />
+
+    <Cards title={CHALLENGES_TITLE} cards={CARDS_DATA} />
+
+    <Capabilities
         client:visible
         title="for Platform Orchestration"
-        sections={capabilities}
+        capabilities={CAPABILITIES}
     />
-    <LayoutFooterContact
+
+    <FooterContact
         client:visible
         title="Ready to take your Infrastructure to the next level ?"
-        purpleButtonText="Get Started"
-        purpleButtonHref="/docs/getting-started/quickstart"
-        darkButtonText="Talk to us"
-        darkButtonHref="/demo"
     />
 </Layout>

@@ -1,4 +1,5 @@
 ---
+export const prerender = false
 import Layout from "~/components/layout.astro"
 import PluginsLists from "~/components/plugins/PluginsLists.vue"
 import { $fetchApiCached } from "~/utils/fetch"
@@ -48,7 +49,7 @@ const title = "Hundreds of Plugins For All Your Orchestrations Needs"
 const description = "Connect Kestra with tools you already know and love"
 ---
 
-<Layout {title} {description}>
+<Layout {title} {description} headerTheme="lightHero">
     <PluginsLists
         client:idle
         plugins={cardPlugins}

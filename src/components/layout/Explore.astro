@@ -34,7 +34,7 @@ const {
             </p>
             <a
                 href={cta.href}
-                class="btn btn-primary btn-gradient tour-btn"
+                class="btn btn-primary tour-btn"
                 data-usal="zoomin duration-500 delay-150 ease-out"
             >
                 {cta.text}
@@ -59,7 +59,7 @@ const {
 
     .section-prose-img {
         padding: 3rem 1rem 3rem;
-        background: #f4f4f4;
+        background: var(--ks-background-secondary);
 
         .container {
             display: flex;
@@ -106,7 +106,7 @@ const {
             .right-div {
                 max-width: 656px;
                 border-radius: 0.5rem;
-                border: 1px solid #bfbfbf;
+                border: $block-border;
                 position: relative;
 
                 :global(img) {

@@ -1,0 +1,45 @@
+---
+interface Props {
+    fullPath: string;
+}
+
+const { fullPath } = Astro.props;
+---
+
+<div class="header-container">
+    <div class="header container d-flex flex-column align-items-center gap-3">
+        <slot>
+            <h1 data-usal="fade-l">Join our <span class="highlight">Team</span></h1>
+            <h4 data-usal="fade-r">
+                Drive innovation in a globally distributed, collaborative environment
+            </h4>
+            <a
+                href={(fullPath === "/careers" ? "" : "/careers") + "#positions"}
+                class="btn btn-animated btn-purple-animated mt-4"
+                data-usal="zoomin"
+            >
+                Open positions
+            </a>
+        </slot>
+    </div>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .header-container {
+        margin-top: $rem-5;
+        background: url("~/assets/dotted-bg.svg") no-repeat top;
+        .header {
+            padding-bottom: calc($spacer * 4);
+
+            :global(h1),
+            :global(h4) {
+                color: var(--ks-content-primary);
+                text-align: center;
+                margin-bottom: 0;
+                font-weight: 600;
+            }
+        }
+    }
+</style>

@@ -70,12 +70,11 @@
         display: flex;
         gap: 0.5rem;
         align-items: center;
-
         .btn-nav {
             width: 40px;
             height: 32px;
             border: 1px solid var(--ks-border-secondary);
-            background: var(--kestra-io-neutral-gray300);
+            background: var(--ks-background-secondary);
             padding: 8px 12px;
             border-radius: 4px;
             display: inline-flex;
@@ -84,12 +83,10 @@
             cursor: pointer;
             color: var(--ks-content-primary);
             transition: background-color 0.12s ease;
-
             &:disabled {
                 opacity: 0.35;
                 cursor: not-allowed;
             }
-
             :deep(svg) {
                 bottom: 0 !important;
             }
