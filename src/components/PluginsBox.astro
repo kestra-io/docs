@@ -3,8 +3,7 @@ import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 import HomeCard from "~/components/home/Card.vue"
 import { $fetchApi } from "~/utils/fetch"
 import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
-import { API_URL } from "astro:env/client"
-import { optimizeSvgIcon } from "~/utils/svgo"
+import { getPluginIcon } from "~/utils/pluginIcon"
 
 const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
 const pluginMetadata = await $fetchApi<PluginMetadata[]>("/plugins/metadata")
@@ -13,20 +12,6 @@ const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 const plugins = (
     await Promise.all(
         pluginMetadata.map(async (plugin) => {
-            const iconResponse = await fetch(
-                `${API_URL}/plugins/icons/${plugin.group}`,
-            )
-
-            if (!iconResponse.ok) {
-                throw new Error("Failed to fetch icon", {
-                    cause: iconResponse.statusText,
-                })
-            }
-
-            const icon = optimizeSvgIcon(
-                await iconResponse.text(),
-                plugin.group,
-            )
             return {
                 title: plugin.title,
                 name: plugin.name,
@@ -36,7 +21,7 @@ const plugins = (
                     (`plugin-${plugin.name}` != plugin.artifactId
                         ? "/" + plugin.name
                         : ""),
-                icon,
+                icon: await getPluginIcon(plugin.group),
             }
         }),
     )
@@ -119,7 +104,6 @@ const plugins = (
             }
             &:nth-child(2n) {
                 background-color: #1a1c24;
-                // shadow inset
                 box-shadow: inset 1px 1px 1px #0d0e1388;
             }
         }
