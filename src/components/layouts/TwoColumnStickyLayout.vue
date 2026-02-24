@@ -7,12 +7,7 @@
                 </div>
                 <div v-if="props.socials" class="socials">
                     <div class="social-links">
-                        <a
-                            v-for="link in SOCIALS"
-                            :key="link.href"
-                            :href="link.href"
-                            target="_blank"
-                        >
+                        <a v-for="link in SOCIALS" :key="link.href" :href="link.href" target="_blank">
                             <component :is="link.icon" />
                         </a>
                     </div>
@@ -146,3 +141,4 @@
         width: 100%;
     }
 </style>
+

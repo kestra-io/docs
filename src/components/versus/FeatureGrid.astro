@@ -1,0 +1,175 @@
+---
+import { Icon } from "astro-icon/components"
+import kestraLogo from "~/components/versus/assets/ks.svg?raw"
+
+interface Props {
+    featureGrid: {
+        title: string;
+        tableData: {
+            feature: string;
+            kestra: string;
+            competitor: string;
+        }[];
+        competitorLogo: string;
+    }
+}
+
+const { featureGrid } = Astro.props;
+---
+
+<section>
+    <div class="container">
+        <h2>{featureGrid.title}</h2>
+        <div class="table-wrapper">
+            <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        <div
+                            set:html={kestraLogo}
+                            role="img"
+                            aria-label="Kestra"
+                        />
+                    </th>
+                    <th>
+                        <div
+                            set:html={featureGrid.competitorLogo}
+                            role="img"
+                            aria-label="Competitor"
+                        />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {featureGrid.tableData.map((row) => (
+                    <tr>
+                        <td>{row.feature}</td>
+                        <td>
+                             {row.kestra.includes('✓') ? (
+                                <div class="check-item">
+                                    <Icon name="mdi:check" class="check-icon" />
+                                    <span>{row.kestra.replace('✓', '').trim()}</span>
+                                </div>
+                            ) : (
+                                row.kestra
+                            )}
+                        </td>
+                        <td>{row.competitor}</td>
+                    </tr>
+                ))}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        min-height: 834px;
+        padding: $rem-4 0;
+        background-image: url("./assets/grid-vs.svg");
+        background-color: var(--ks-background-tertiary);
+        border: $block-border;
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-2;
+
+            @include media-breakpoint-down(lg) {
+                max-width: 100%;
+            }
+
+            .table-wrapper {
+                background: var(--ks-background-primary);
+                border: 2px solid var(--ks-border-primary);
+                border-radius: 10px;
+                box-shadow: 0px 4px 14px 0px #0000000D;
+                overflow: hidden;
+
+                @include media-breakpoint-up(xl) {
+                    width: 1140px;
+                    margin: 0 auto;
+                }
+
+                @include media-breakpoint-down(xl) {
+                    max-width: 100%;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+            }
+        }
+
+        h2 {
+            margin-bottom: 0;
+            color: var(--ks-content-primary);
+        }
+
+        table {
+            width: 100%;
+            margin: 0;
+            box-sizing: border-box;
+            background: transparent;
+            table-layout: fixed;
+            border-collapse: separate; 
+            border-spacing: 0;
+
+            th, td {
+                text-align: left;
+                vertical-align: middle;
+                border-bottom: 1px solid var(--ks-border-primary);
+                font-size: $font-size-md;
+                color: var(--ks-content-primary);
+                height: 70px;
+                padding: 14px 20px 8px;
+            }
+
+            tr:last-child {
+                td {
+                    border-bottom: none;
+                }
+            }
+
+            th:nth-child(1), td:nth-child(1) {
+                width: 300px;
+                font-weight: 700;
+            }
+
+            th:nth-child(2), td:nth-child(2) {
+                width: 426px;
+                background: var(--ks-background-purple-light);
+                border-left: 1px solid var(--ks-border-active);
+                border-right: 1px solid var(--ks-border-active);
+                border-bottom: 1px solid var(--ks-border-active);
+
+                .check-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                .check-icon {
+                    color: var(--ks-content-primary);
+                    flex-shrink: 0;
+                }
+            }
+
+            th:nth-child(2) {
+                border-top: 1px solid #8465FF;
+                border-radius: 8px 8px 0 0;
+            }
+
+            tr:last-child td:nth-child(2) {
+                border-bottom: 1px solid #8465FF;
+                border-radius: 0 0 8px 8px;
+            }
+
+            th:nth-child(3), td:nth-child(3) {
+                width: 414px;
+            }
+        }
+
+    }
+</style>

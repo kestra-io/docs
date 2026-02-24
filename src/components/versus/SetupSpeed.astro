@@ -1,0 +1,112 @@
+---
+import kestraLogo from "./assets/ks.svg?raw"
+import Snippets from "~/components/common/Snippets.astro"
+import Card from "~/components/common/CardPair.astro"
+
+interface Props {
+    title?: string
+    subtitle?: string
+    kestra?: {
+        title?: string | {
+            one?: string
+            two?: string
+        }
+        description?: string
+        command?: string
+    }
+    competitor?: {
+        logo?: any
+        title?: string | {
+            one?: string
+            two?: string
+        }
+        description?: string
+        shadowColor?: string
+        command?: string
+        lang?: string
+    }
+}
+
+const {
+    title,
+    subtitle,
+    kestra,
+    competitor
+} = Astro.props as Props
+---
+
+<section>
+    <div class="container">
+        <h2 set:html={title} />
+        <p set:html={subtitle} />
+        <div class="comparison-box d-flex flex-column flex-lg-row">
+            <Card
+                isKestra={true}
+                logo={kestraLogo}
+                logoAlt="Kestra logo"
+            >
+                <div class="d-flex align-items-center gap-2">
+                    <h3 class="mb-0">
+                        {typeof kestra?.title === 'object'
+                            ? kestra?.title?.one
+                            : kestra?.title}
+                    </h3>
+                    {typeof kestra?.title === 'object' && <h5 class="mb-0">{kestra?.title?.two}</h5>}
+                </div>
+                <Snippets code={kestra?.command ?? ""} />
+                <p class="mb-0">{kestra?.description}</p>
+            </Card>
+
+            <Card
+                logo={competitor?.logo}
+                logoAlt="Competitor logo"
+                shadowColor={competitor?.shadowColor}
+            >
+                <div class="d-flex align-items-center gap-2">
+                    <h3 class="mb-0">
+                        {typeof competitor?.title === 'object'
+                            ? competitor?.title?.one
+                            : competitor?.title}
+                    </h3>
+                    {typeof competitor?.title === 'object' && <h5 class="mb-0">{competitor?.title?.two}</h5>}
+                </div>
+                <Snippets
+                    code={competitor?.command ?? ""}
+                    lang={competitor?.lang}
+                />
+                <p class="mb-0">{competitor?.description}</p>
+            </Card>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        padding: $spacer * 4 0;
+        background-color: var(--ks-background-body);
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-1;
+
+            @include media-breakpoint-up(lg) {
+                padding: 0;
+            }
+        }
+
+        h2 {
+            color: var(--ks-content-primary);
+            @include media-breakpoint-up(lg) {
+                font-size: $h2-font-size;
+            }
+        }
+
+        .comparison-box {
+            gap: $rem-2;
+            width: 100%;
+        }
+    }
+</style>

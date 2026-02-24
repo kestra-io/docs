@@ -1,0 +1,111 @@
+---
+import kestraLogo from "~/components/versus/assets/ks.svg?raw"
+import Snippets from "~/components/common/Snippets.astro"
+import Card from "~/components/common/CardPair.astro"
+
+interface Props {
+    title?: string
+    kestra?: {
+        title?: string
+        description?: string
+        code?: string
+        lang?: string
+    }
+    competitor?: {
+        logo?: any
+        title?: string
+        description?: string
+        shadowColor?: string
+        code?: string
+        lang?: string
+    }
+}
+
+const {
+    title,
+    kestra,
+    competitor
+} = Astro.props as Props
+---
+
+<section>
+    <div class="container">
+        <h2 set:html={title} />
+        <div class="comparison-box d-flex flex-column flex-xl-row">
+            <Card
+                isKestra={true}
+                logo={kestraLogo}
+                logoAlt="Kestra logo"
+            >
+                <div class="d-flex align-items-center gap-2">
+                    <h5>
+                        {kestra?.title}
+                    </h5>
+                </div>
+                <Snippets
+                    code={kestra?.code ?? ""}
+                    lang={kestra?.lang}
+                />
+                <p class="mb-0" set:html={kestra?.description}></p>
+            </Card>
+
+            <Card
+                logo={competitor?.logo}
+                logoAlt="Competitor logo"
+                shadowColor={competitor?.shadowColor}
+            >
+                <div class="d-flex align-items-center gap-2">
+                    <h5>
+                        {competitor?.title}
+                    </h5>
+                </div>
+                <Snippets
+                    code={competitor?.code ?? ""}
+                    lang={competitor?.lang}
+                />
+                <p class="mb-0" set:html={competitor?.description}></p>
+            </Card>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        padding: $spacer * 4 0;
+        background-color: var(--ks-background-body);
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-1;
+
+            @include media-breakpoint-up(lg) {
+                padding: 0;
+            }
+        }
+
+        h2 {
+            color: var(--ks-content-primary);
+            @include media-breakpoint-up(lg) {
+                font-size: $h2-font-size;
+            }
+        }
+
+        .comparison-box {
+            gap: $rem-2;
+            width: 100%;
+
+            :global(.comparison-item) {
+                :global(a) {
+                    color: var(--ks-content-link);
+
+                    &:hover {
+                        color: var(--ks-content-secondary);
+                    }
+                }
+            }
+        }
+    }
+</style>

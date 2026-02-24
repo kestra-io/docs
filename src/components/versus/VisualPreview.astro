@@ -1,0 +1,98 @@
+---
+import { Image } from "astro:assets"
+import kestraLogo from "./assets/ks.svg?raw"
+import Card from "~/components/common/CardPair.astro"
+
+interface Props {
+    mainTitle?: string
+    kestra?: {
+        linkImg?: any
+        description?: string
+    }
+    competitor?: {
+        logo?: any
+        linkImg?: any
+        description?: string
+        shadowColor?: string
+    }
+}
+
+const {
+    mainTitle,
+    kestra,
+    competitor
+} = Astro.props as Props
+---
+
+<section>
+    <div class="container">
+        <h2 set:html={mainTitle} />
+        <div class="comparison-box d-flex flex-column flex-lg-row">
+            <Card
+                isKestra={true}
+                logo={kestraLogo}
+                logoAlt="Kestra logo"
+                maxWidth="522px"
+            >
+                <Image
+                    src={kestra?.linkImg}
+                    alt="Kestra Image"
+                    width={458}
+                    height={260}
+                />
+                <p>{kestra?.description}</p>
+            </Card>
+
+            <Card
+                logo={competitor?.logo}
+                logoAlt="Competitor logo"
+                shadowColor={competitor?.shadowColor}
+                maxWidth="522px"
+            >
+                <Image
+                    src={competitor?.linkImg}
+                    alt="Competitor Image"
+                    width={458}
+                    height={260}
+                />
+                <p>{competitor?.description}</p>
+            </Card>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        padding: $spacer * 4 0;
+        background-color: var(--ks-background-body);
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-2;
+
+            @include media-breakpoint-up(lg) {
+                padding: 0;
+            }
+        }
+
+        .comparison-box {
+            gap: $rem-2;
+            width: 100%;
+            max-height: auto;
+
+            img {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+
+                @include media-breakpoint-up(lg) {
+                    width: initial;
+                    height: initial;
+                }
+            }
+        }
+    }
+</style>
