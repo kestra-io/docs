@@ -73,7 +73,7 @@
     "vue3-carousel-nuxt": "^1.1.6"
   },
   "devDependencies": {
-    "oxfmt": "^0.34.0",
+    "oxfmt": "^0.35.0",
     "oxlint": "^1.49.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
