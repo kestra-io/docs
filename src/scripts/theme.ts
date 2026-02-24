@@ -1,3 +1,9 @@
+const applyTheme = (doc = document) => {
+    doc.documentElement.classList.add("dark");
+    doc.documentElement.classList.remove("light");
+};
+
+/*
 const getTheme = () => localStorage.getItem("theme") ?? "system";
 
 const isDark = (t: string) =>
@@ -20,17 +26,14 @@ document.addEventListener("click", ({ target }) => {
         : localStorage.setItem("theme", theme);
     applyTheme(theme);
 });
+*/
 
 document.addEventListener("astro:before-swap", (e: any) => {
-    const dark = isDark(getTheme());
-    e.newDocument.documentElement.classList.replace(
-        dark ? "light" : "dark",
-        dark ? "dark" : "light"
-    ) || e.newDocument.documentElement.classList.add(dark ? "dark" : "light");
+    applyTheme(e.newDocument);
 });
 
 ["astro:page-load", "DOMContentLoaded"].forEach(e =>
-    document.addEventListener(e, () => applyTheme(getTheme()))
+    document.addEventListener(e, () => applyTheme())
 );
-applyTheme(getTheme());
+applyTheme();
 
