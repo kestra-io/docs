@@ -74,19 +74,7 @@ The plugin starts by identifying the starting timestamp and checking if the last
 
 The logs are then distributed to the exporters in chunks of 5000, 2000, and 1000 for AWS CloudWatch, Google Suite, and Azure Monitor, respectively. Once the logs are distributed, the offset key in the Key Value store is updated.
 
-```mermaid
-flowchart TD
-    B[Identify starting timestamp] --> C{Last processed log exists?}
-    C -- Yes --> D[Use offsetKey]
-    C -- No --> E["Use now() - lookbackPeriod"]
-    D --> F[Fetch logs from DB]
-    E --> F[Fetch logs from DB]
-    F --> H[Distribute logs to exporters]
-    H -->|Flush in chunks of 5000| I1[AWS CloudWatch]
-    H -->|Flush in chunks of 2000| I2[Google Suite]
-    H -->|Flush in chunks of 1000| I3[Azure Monitor]
-    I1 & I2 & I3 --> K[Update offsetKey in KV]
-```
+![Log Shipper Flow Chart](./logshipper-flow-chart.png)
 
 
 ## Log shipper examples
