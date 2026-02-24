@@ -11,7 +11,7 @@
                             {{ props.plugin.title?.replace(/\s*\(EE\)\s*$/i, "") }}
                         </h6>
                         <span
-                            v-if="props.plugin.className?.includes('.ee.')"
+                            v-if="props.plugin.isEnterprise"
                             class="enterprise-badge"
                             >Enterprise</span
                         >

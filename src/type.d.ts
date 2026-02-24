@@ -47,9 +47,7 @@ interface Story {
     content: string
     companyName: string
     featuredImage: string
-    whatNext?: string //TODO: in API
 }
-
 interface PluginInformation {
     name?: string
     subGroupTitle?: string
@@ -61,6 +59,7 @@ interface PluginInformation {
     categories?: string[]
     icon?: string
     subGroup?: string
+    isEnterprise?: boolean
 }
 
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace
