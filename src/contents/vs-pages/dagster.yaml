@@ -70,58 +70,51 @@ setupSpeed:
     lang: python
 
 easeOfUse:
-  title: Declarative Simplicity vs. Framework Complexity
+  title: Workflows your whole team can read
   kestra:
-    title: "Kestra: 4 lines of YAML + your script"
+    title: "Kestra: Readable by your whole team"
     description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference,  the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No special training required."
     code: |
-      id: api_to_database
-      namespace: company.data
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
 
       tasks:
-        - id: process_data
-          type: io.kestra.plugin.scripts.python.Script
-          script: |
-            import requests, pandas as pd
-            data = requests.get('http://api.example.com/users').json()
-            df = pd.DataFrame(data)
-            df['processed_at'] = pd.Timestamp.now()
-            df.to_sql('users', db_connection, if_exists='append')
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          payload: '{"text": "Daily report ready"}'
     lang: yaml
   competitor:
-    title: "Dagster: 30+ lines of framework code"
+    title: "Dagster: Requires the Python developer lens"
     description: "Requires Python environment setup, understanding of assets/definitions structure, and refactoring your code into Dagster's Assets."
     shadowColor: "#A5CCFE"
     code: |
-      from dagster import asset, Definitions, IOManager,
-      io_manager
-      import requests, pandas as pd
-
-      class DatabaseIOManager(IOManager):
-      def init(self, conn): self.conn = conn
-      def handle_output(self, ctx, obj):
-      obj.to_sql('users', con=self.conn, if_exists='append')
-      def load_input(self, ctx): pass
-
-      @io_manager
-      def db_io_manager(): return DatabaseIOManager("...")
+      from dagster import asset, define_asset_job, AssetSelection, ScheduleDefinition, Definitions
+      import subprocess, requests, os
 
       @asset
-      def extract_users():
-      return requests.get('api.example.com/users').json()
+      def dbt_report():
+          subprocess.run(["dbt", "run", "--select", "reporting"], check=True)
 
-      @asset
-      def transform_users(extract_users):
-      df = pd.DataFrame(extract_users)
-      df['processed_at'] = pd.Timestamp.now()
-      return df
+      @asset(deps=[dbt_report])
+      def slack_notification():
+          requests.post(os.environ["SLACK_WEBHOOK"], json={"text": "Daily report ready"})
 
-      @asset(io_manager_key="db_io")
-      def load_users(transform_users): return transform_users
-
+      report_job = define_asset_job("report_job", selection=AssetSelection.all())
+      daily_schedule = ScheduleDefinition(job=report_job, cron_schedule="0 8 * * *")
       defs = Definitions(
-          assets=[extract_users, transform_users, load_users],
-          resources={"db_io": db_io_manager()}
+          assets=[dbt_report, slack_notification],
+          schedules=[daily_schedule],
       )
     lang: python
 
