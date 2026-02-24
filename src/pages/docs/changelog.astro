@@ -24,11 +24,10 @@ const releases = await fetchMajorReleases(150)
         </div>
     </section>
 
-    <style lang="scss" scoped>
+    <style lang="scss">
         section {
-            color: #ffffff;
-            font-family: var(--font-family-mona-sans), sans-serif;
-
+            
+            color: var(--ks-content-primary);
             .container {
                 padding: 3rem 1.25rem;
                 border: 0;
@@ -41,6 +40,16 @@ const releases = await fetchMajorReleases(150)
                         #181818
                     )
                     1 100%;
+
+                :global(.light) & {
+                    border-image: linear-gradient(
+                            to bottom,
+                            #e5e5e5,
+                            #5c5c5c,
+                            #e5e5e5
+                        )
+                        1 100%;
+                }
             }
         }
     </style>

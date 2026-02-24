@@ -87,16 +87,14 @@
 </template>
 
 <script setup lang="ts">
-    import { nextTick, ref } from "vue"
-    import type { PluginMetadata } from "@kestra-io/ui-libs"
-    import { useEventListener, useScroll, useMounted } from "@vueuse/core"
+    import { nextTick, ref, onUnmounted } from "vue"
+    import { useEventListener, useScroll } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
     import OverviewPanel from "~/components/plugins/OverviewPanel.vue"
+    import type { PluginMetadata } from "@kestra-io/ui-libs"
     import type { ReleaseInfo } from "../../pages/api/github-releases"
-
-    const TRUE = true
 
     export interface TocLink {
         id: string
@@ -105,19 +103,29 @@
         children?: TocLink[]
     }
 
+    const throttle = (fn: Function, delay: number) => {
+        let lastCall = 0;
+        return (...args: any[]) => {
+            const now = Date.now();
+            if (now - lastCall < delay) return;
+            lastCall = now;
+            return fn(...args);
+        }
+    }
+
     const props = withDefaults(
         defineProps<{
-            links?: TocLink[]
-            editLink?: boolean
-            extension?: string
-            stem?: string
-            editUrl?: string
-            capitalize?: boolean
-            version?: { versions?: ReleaseInfo[] } | null
-            releasesUrl?: string | null
-            categories?: string[]
-            metadata?: PluginMetadata[]
-            isPluginPage?: boolean
+            links?: TocLink[],
+            editLink?: boolean,
+            extension?: string,
+            stem?: string,
+            editUrl?: string,
+            capitalize?: boolean,
+            version?: { versions?: ReleaseInfo[] } | null,
+            releasesUrl?: string | null,
+            categories?: string[],
+            metadata?: PluginMetadata[],
+            isPluginPage?: boolean,
             class?: string
         }>(),
         {
@@ -125,131 +133,112 @@
             version: null,
             releasesUrl: null,
             categories: () => [],
-            metadata: () => [],
-        },
+            metadata: () => []
+        }
     )
 
     const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined)
-
     const tableOfContentsExpanded = ref(false)
+    const activeLinkId = ref("")
+    const isManualScrolling = ref(false)
+    let manualScrollTimer: ReturnType<typeof setTimeout> | undefined
 
-    const getFixedHeaderOffset = (): number => {
+    const getFixedHeaderOffset = () => {
         const selectors = [
             "header",
             ".site-header",
             ".navbar",
             ".topbar",
             ".bd-title",
-            ".page-header",
+            ".page-header"
         ]
         for (const sel of selectors) {
             const el = document.querySelector(sel) as HTMLElement | null
             if (el) {
                 const style = window.getComputedStyle(el)
-                const isFixed =
-                    style.position === "fixed" ||
-                    style.position === "sticky" ||
-                    Math.round(el.getBoundingClientRect().top) === 0
+                const isFixed = ["fixed", "sticky"].includes(style.position) || 
+                               Math.round(el.getBoundingClientRect().top) === 0
                 if (isFixed) return el.getBoundingClientRect().height
             }
         }
         return 160
     }
 
-    const scrollToElement = (id: string): void => {
+    const scrollToElement = (id: string) => {
         const element = document.getElementById(id)
         if (!element) return
-
+        
         const offset = getFixedHeaderOffset()
         const rectTop = element.getBoundingClientRect().top + window.pageYOffset
         const top = Math.max(0, rectTop - offset - 8)
+        
         window.scrollTo({ top, behavior: "smooth" })
     }
 
-    let timeOut: ReturnType<typeof setTimeout> | undefined
-
-    const activeLinkId = ref<string>("")
-
-    const updateActiveLink = (id: string): void => {
+    const updateActiveLink = (id: string) => {
+        if (activeLinkId.value === id) return
         activeLinkId.value = id
+        
         nextTick(() => {
+            const container = document.querySelector("#nav-toc")
             const link = document.querySelector(`#nav-toc a.active`) as HTMLElement
-            // if link is not visible, scroll to it
-            if(link.getBoundingClientRect().top < 0 || link.getBoundingClientRect().bottom > window.innerHeight) {
-                link.scrollIntoView({ block: "nearest" })
+            
+            if (container && link) {
+                const cRect = container.getBoundingClientRect()
+                const lRect = link.getBoundingClientRect()
+                
+                if (lRect.top < cRect.top || lRect.bottom > cRect.bottom) {
+                    link.scrollIntoView({ block: "nearest" })
+                }
             }
         })
     }
 
-    function updateActiveLinkDelayed(id: string, delay: number): void {
-        if (timeOut) {
-            clearTimeout(timeOut)
-            timeOut = undefined
-        }
-        timeOut = setTimeout(() => {
-            updateActiveLink(id)
-        }, delay)
-    }
-
-    const menuNavigate = (e: Event): void => {
-        const anchor = (e.target as HTMLElement)?.closest("a") as HTMLAnchorElement | null
-        const href = anchor?.getAttribute("href")
-        const id = href?.startsWith("#") ? href.substring(1) : anchor?.name || ""
-
+    const menuNavigate = (e: Event) => {
+        const id = (e.currentTarget as HTMLAnchorElement).getAttribute("href")?.substring(1)
         if (!id) return
-
+        isManualScrolling.value = true
+        if (manualScrollTimer) clearTimeout(manualScrollTimer)
         scrollToElement(id)
-
+        updateActiveLink(id)
         try {
             history.pushState(null, "", `#${id}`)
             window.dispatchEvent(new Event("hashchange"))
         } catch {
-            if (window?.location) {
-                window.location.hash = id
-            }
+            if (window?.location) window.location.hash = id
         }
-
-        // wait until scroll is finished
-        updateActiveLinkDelayed(id, 600)
+        manualScrollTimer = setTimeout(() => isManualScrolling.value = false, 1000)
     }
 
-    function closeToc(): void {
+    const closeToc = () => {
         tableOfContentsExpanded.value = false
         document.getElementById("tocContents")?.classList.remove("show")
     }
 
-    function activateMenuItem(item: TocLink, index: number, linkArray: TocLink[]): void {
-        if (!item?.id) return
-
-        const currEl = document.querySelector(`#${item.id}`)?.getBoundingClientRect()
-        const prevEl =
-            index > 0 && linkArray[index - 1]?.id
-                ? document.querySelector(`#${linkArray[index - 1]!.id}`)?.getBoundingClientRect()
-                : null
-
-        if (typeof currEl?.top === "number" && currEl.top <= 160) {
-            const prevTop = prevEl?.top ?? -1
-            if (prevTop === -1 || prevTop <= 0) {
-                updateActiveLink(item.id)
-            }
-        }
-    }
-
-    function handleScroll(): void {
-        if (scrollY.value === 0) {
-            activeLinkId.value = ""
+    const handleScroll = throttle(() => {
+        if (isManualScrolling.value || scrollY.value === 0) {
+            if (scrollY.value === 0) activeLinkId.value = ""
             return
         }
-
-        props.links?.forEach((link, i) => {
-            activateMenuItem(link, i, props.links)
-            link.children?.forEach((child, idx) => {
-                activateMenuItem(child, idx, link.children || [])
-            })
-        })
-    }
+        
+        const offset = getFixedHeaderOffset() + 20
+        const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
+        
+        let currentActive = ""
+        for (const link of allLinks) {
+            const el = document.getElementById(link.id)
+            if (el && el.getBoundingClientRect().top <= offset) {
+                currentActive = link.id
+            } else if (el) {
+                break
+            }
+        }
+        
+        if (currentActive) updateActiveLink(currentActive)
+    }, 100)
 
     useEventListener("scroll", handleScroll)
+    onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))
 </script>
 
 <style lang="scss" scoped>
@@ -257,36 +246,32 @@
     @import "~/assets/styles/variable";
 
     .bd-toc {
-        transition: all ease 0.2s;
-
         @include media-breakpoint-down(lg) {
             margin: $rem-1 0;
             width: 100%;
             box-sizing: border-box;
         }
-
         @include media-breakpoint-up(lg) {
             padding: 2rem 0;
             max-height: 100%;
             min-width: 250px;
             z-index: 10;
-
             &:not(.plugin) {
                 border: 0;
                 border-left-width: 1px;
                 border-style: solid;
                 border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
+                html.light & {
+                    border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
+                }
             }
-
             &.plugin {
-                border-left: 1px solid $black-3;
+                border-left: $block-border;
             }
         }
-
         &::-webkit-scrollbar {
             display: none;
         }
-
         > div {
             height: fit-content;
             @include media-breakpoint-up(lg) {
@@ -297,46 +282,37 @@
                 overflow-y: auto;
             }
         }
-
         &.plugin > div {
             @include media-breakpoint-up(lg) {
                 top: 0;
             }
         }
-
         nav {
             @include font-size(0.875rem);
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid $black-6;
+            border-bottom: 1px solid var(--ks-border-primary);
             position: relative;
-
             @include media-breakpoint-up(lg) {
                 overflow-y: auto;
                 max-height: 600px;
                 overflow-x: hidden;
             }
-
             @include media-breakpoint-down(lg) {
                 overflow: visible;
             }
-
             &::-webkit-scrollbar {
                 width: 4px;
                 height: 4px;
             }
-
             &::-webkit-scrollbar-track {
                 background: transparent;
             }
-
             &::-webkit-scrollbar-thumb {
-                background: $purple-39;
-
+                background: var(--ks-content-color-highlight);
                 &:hover {
                     background: color-palette.$base-purple-600;
                 }
             }
-
             a {
                 display: block;
                 padding: 0 0.75rem;
@@ -344,60 +320,44 @@
                 text-decoration: none;
                 font-size: 12px;
                 border-left: 1px solid transparent;
-
                 code {
                     font: inherit;
                 }
             }
-
             ul {
                 margin-bottom: 0;
                 list-style: none;
-
-                &:has(a.active) {
-                    .table-content a {
-                        color: $purple;
-                        font-weight: 500;
-                        border-left: 1px solid $purple !important;
-                    }
-                }
-
                 li {
                     font-size: 0.875rem;
                     line-height: var(--bs-body-line-height) !important;
                 }
-
                 li a {
                     padding-left: 0.75rem;
                     color: var(--ks-content-secondary);
                     font-weight: 500;
                     cursor: pointer;
                     scroll-margin: 3rem;
-
                     @for $i from 2 through 6 {
                         &.depth-#{$i} {
-                            font-size: 4px + (6 - $i) * 2px;
-                            padding-left: $i * 0.5rem + 1.5rem;
+                            font-size: if($i == 2, 14px, if($i == 3, 13px, 12px));
+                            padding-left: ($i - 2) * 1rem + 1.5rem;
                         }
                     }
-
                     &:hover,
                     &.active {
-                        color: $purple;
-                        border-left: 1px solid $purple-36 !important;
+                        color: var(--ks-content-link);
+                        border-left: 1px solid var(--ks-content-link) !important;
                     }
                 }
             }
         }
-
         .h6 {
-            color: $white-1;
+            color: var(--ks-content-primary);
             font-size: $font-size-sm;
             line-height: 1.875rem;
             font-weight: 600;
             padding-top: 0;
         }
-
         hr {
             border-color: var(--bs-gray-600);
         }
@@ -407,25 +367,23 @@
         display: inline-block;
         width: 100%;
         padding: 0;
-        border: 1px solid var(--kestra-io-token-color-border-secondary);
+        border: 1px solid var(--ks-border-secondary);
         border-radius: 8px;
-        background: $black-4;
-        color: var(--bs-gray-500);
+        background: var(--ks-background-body);
+        color: var(--ks-content-secondary);
         font-size: $font-size-sm;
         text-align: center;
-
         &.collapsed {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
         &:hover,
         &:focus,
         &:active,
         &[aria-expanded="true"] {
-            background: $black-4;
-            color: $white;
+            background: var(--ks-background-body);
+            color: var(--ks-content-primary);
             font-size: 16px;
         }
     }
@@ -434,33 +392,28 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        color: $white;
+        color: var(--ks-content-primary);
         border-radius: 8px 8px 0 0;
     }
 
     .bd-toc-collapse {
         border-radius: var(--bs-border-radius, 8px);
         overflow: hidden;
-
         strong {
             margin-left: 1.5rem;
         }
-
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: 1px solid var(--ks-border-secondary);
             border-radius: 0 0 8px 8px;
-
             nav {
                 padding-bottom: $spacer;
                 border-radius: inherit;
             }
         }
-
         @include media-breakpoint-up(lg) {
             display: block !important;
         }
-
         &.show {
             border-radius: 0 0 8px 8px;
         }
@@ -469,22 +422,19 @@
     .bd-social-list {
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: 1px solid var(--ks-border-secondary);
             border-radius: 0 0 8px 8px;
         }
-
         button:hover {
-            color: $purple-36 !important;
+            color: var(--ks-content-color-highlight) !important;
         }
-
         ul,
         :deep(ul) {
             li a {
                 font-weight: 500;
-
                 &:hover {
-                    color: $purple-36 !important;
-                    border-left: 1px solid $purple-36 !important;
+                    color: var(--ks-content-color-highlight) !important;
+                    border-left: 1px solid var(--ks-content-color-highlight) !important;
                 }
             }
         }

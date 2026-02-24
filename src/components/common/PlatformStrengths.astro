@@ -1,0 +1,96 @@
+---
+import { Image } from "astro:assets"
+
+interface Props {
+  title: string
+  features: {
+    image: any;
+    title: string;
+    description: string;
+  }[]
+}
+
+const { features, title } = Astro.props as Props;
+---
+
+<section>
+    <div class="container">
+        <h2>
+            {title}
+        </h2>
+
+        <div class="features">
+            {features.map((feature) => (
+                <div class="feature">
+                    <Image
+                        {...feature.image}
+                        alt={feature.title}
+                        class="feature-image"
+                        width={162}
+                        height={130}
+                    />
+                    <h5 class="mb-0">{feature.title}</h5>
+                    <p set:html={feature.description} />
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        color: var(--ks-content-primary);
+        padding: $rem-4 0;
+        background-color: var(--ks-background-primary);
+        border-top: $block-border;
+        border-bottom: $block-border;
+
+        .container {
+            gap: $rem-2;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .features {
+            gap: $rem-2;
+            display: grid;
+            width: 100%;
+            grid-template-columns: 1fr;
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(3, 1fr);
+                gap: $rem-4;
+            }
+
+            .feature {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+                flex-direction: column;
+                text-align: center;
+
+                .feature-image {
+                    max-width: 100%;
+                    height: auto;
+                    margin-bottom: $rem-1;
+                }
+
+                p {
+                    margin-bottom: 0;
+                    font-size: $font-size-sm;
+
+                    :global(a) {
+                        color: var(--ks-content-link);
+
+                        &:hover {
+                            color: var(--ks-content-secondary);
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

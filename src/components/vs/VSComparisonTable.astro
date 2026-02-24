@@ -1,0 +1,67 @@
+---
+const { competitorName, comparisonData } = Astro.props
+---
+
+<div class="table-responsive mb-5">
+    <table class="table table-bordered mb-0">
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Kestra</th>
+                <th>{competitorName}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {
+                comparisonData.map(
+                    (item: {
+                        feature: string
+                        kestra: string
+                        competitor: string
+                    }) => (
+                        <tr>
+                            <td>{item.feature}</td>
+                            <td>{item.kestra}</td>
+                            <td>{item.competitor}</td>
+                        </tr>
+                    ),
+                )
+            }
+        </tbody>
+    </table>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    table {
+        border: $block-border;
+        border-radius: $border-radius-lg;
+        overflow: clip;
+        width: 100%;
+
+        thead {
+            border-bottom: $block-border;
+        }
+
+        th {
+            background: var(--ks-background-secondary);
+            text-align: center;
+        }
+
+        td {
+            background: var(--ks-background-secondary);
+            vertical-align: middle;
+
+            &:first-of-type {
+                text-align: center;
+            }
+        }
+        th,
+        td {
+            padding: 1.375rem 2.938rem;
+            color: var(--ks-content-primary);
+            font-size: $font-size-md;
+        }
+    }
+</style>

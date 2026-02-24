@@ -35,7 +35,6 @@ Check the video below for a quick overview of all enhancements:
   <iframe src="https://www.youtube.com/embed/FpKuP3Y8uuM?si=T2RUT5fsfdYZ1wQD" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-
 ---
 
 ## AI Copilot
@@ -46,14 +45,11 @@ How to get started? Click on the **AI Copilot** button in the top right corner o
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-
-
 Check the video below for a demo of how to use AI Copilot:
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=XUmI_BG4MulVamd2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
 
 ---
 
@@ -65,14 +61,11 @@ To start using this feature, you can add an **AI Agent** task to your flow. The 
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/KL8TVCdgVc4nS5OTS6VS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="AI Agent 3 | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-
-
 The video below shows how to use AI Agents in Kestra:
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/osrS9mi5-eg?si=POI9pQyGefA0RhjQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
 
 ---
 
@@ -116,7 +109,6 @@ With Kestra 1.0, we've also added AI-powered search on the Kestra website, bring
 As part of the same release, we're excited to introduce the [Kestra MCP Server](https://github.com/kestra-io/mcp-server-python), making it possible to connect Kestra directly to AI-powered IDEs and agent frameworks that support the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/). This allows various AI agents to interact with your Kestra environment through a rich set of tools, such as listing flows, running executions, or managing namespace files.
 
 The MCP Server can be run locally or in Docker, and works with both OSS and Enterprise editions. This integration opens the door for tighter collaboration between AI assistants and Kestra, enabling natural language control of your workflows and orchestration platform.
-
 
 :::collapse{title="Expand to see an example of how to use our MCP server as a tool in Kestra's AI Agents."}
 ```yaml
@@ -220,7 +212,6 @@ Since its Beta release, we've extended Plugin Versioning to work with **plugin d
 Any new or updated plugin version is instantly synchronized across your environment without downtime, ensuring you can upgrade safely and keep full control over your plugin ecosystem.
 
 ![playground](./plugin_versioning.png)
-
 
 ---
 
@@ -374,7 +365,6 @@ tasks:
     propagateKill: true
 ```
 
-
 ### Task to Purge Expired KV Objects
 
 The new `PurgeKV` core task addresses the issue of expired KV entries not being removed from object storage, such as S3 or GCS. Over time, expired keys can accumulate and occupy significant storage space, even though they are no longer accessible from Kestra.
@@ -403,7 +393,6 @@ triggers:
 By default, the task purges only expired keys from all namespaces, but you can narrow it down to specific patterns. This task can guarantee that your Kestra KV Store remains clean and doesn't incur unnecessary storage costs.
 
 ---
-
 
 ## Plugin Enhancements
 
@@ -467,7 +456,6 @@ tasks:
     protectedNamespaces:
       - system
 ```
-
 
 ### GitLab Plugin
 
@@ -554,3 +542,4 @@ This post highlighted the new features and enhancements introduced in Kestra 1.0
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 
 For questions or feedback, join [our Slack community](/slack) or open an issue on GitHub.
+

@@ -1,21 +1,24 @@
 ---
 import { Image } from "astro:assets"
+import alven from "~/assets/teams/alven-sm.svg?raw"
+import isai from "~/assets/teams/isai-sm.svg?raw"
+import axeleo from "~/assets/teams/axeleo-sm.svg?raw"
 import TeamsImages from "~/utils/teamsImages"
 
 const investorsLogos = [
     {
         name: "Alven",
-        src: TeamsImages["alven-sm.svg"],
+        src: alven,
         link: "https://www.alven.co",
     },
     {
         name: "Isai",
-        src: TeamsImages["isai-sm.svg"],
+        src: isai,
         link: "https://isai.vc",
     },
     {
         name: "Axeleo Capital",
-        src: TeamsImages["axeleo-sm.svg"],
+        src: axeleo,
         link: "https://www.axc.vc/",
     },
 ]
@@ -98,12 +101,11 @@ const investorsProfiles = [
                         rel="noopener noreferrer"
                         class="logo-link"
                     >
-                        <Image
-                            src={logo.src}
-                            alt={logo.name}
+                        <div
                             class="logo-image"
-                            width={120}
-                            height={60}
+                            set:html={logo.src}
+                            role="img"
+                            aria-label={logo.name}
                         />
                     </a>
                 </div>
@@ -140,9 +142,8 @@ const investorsProfiles = [
 
     .container {
         max-width: 100%;
-        background-color: $white;
-        padding-top: 5rem;
-        padding-bottom: 5rem;
+        background-color: var(--ks-background-secondary);
+        padding: $rem-3 $rem-1;
     }
 
     .title-section {
@@ -155,16 +156,15 @@ const investorsProfiles = [
             font-size: 2rem;
             line-height: 48px;
             font-weight: 600;
-            color: $black-2;
+            color: var(--ks-content-primary);
             margin-bottom: 1rem;
         }
 
         .subtitle {
             font-size: 18px;
             line-height: 26px;
-            color: $black-2;
+            color: var(--ks-content-primary);
             margin: 0;
-            font-weight: 400;
 
             .d-none {
                 display: none;
@@ -184,8 +184,9 @@ const investorsProfiles = [
         margin: 0 auto 4rem;
         display: grid;
         grid-template-columns: 1fr;
-        border: 1px solid #f0f0f0;
-        box-shadow: 0px 2px 4px 0px #ecebef;
+        border: $block-border;
+        background-color: var(--ks-background-card);
+        border-radius: $border-radius-lg;
 
         @include media-breakpoint-up(xl) {
             grid-template-columns: repeat(3, 1fr);
@@ -198,11 +199,11 @@ const investorsProfiles = [
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: $block-border;
 
             @include media-breakpoint-up(xl) {
                 border-bottom: none;
-                border-right: 1px solid #f0f0f0;
+                border-right: $block-border;
             }
 
             &:last-child {
@@ -211,8 +212,15 @@ const investorsProfiles = [
 
             .logo-image {
                 width: 120px;
-                height: 60px;
                 object-fit: contain;
+
+                :global(.dark) & {
+                    filter: invert(1);
+                }
+            }
+
+            :global(.dark) & {
+                color: $black;
             }
 
             .logo-link {
@@ -257,15 +265,17 @@ const investorsProfiles = [
             .profile-text {
                 .profile-name {
                     font-weight: 700;
-                    color: $black-2;
+                    color: var(--ks-content-primary);
                     font-size: $font-size-md;
                     line-height: 1.2;
+
                     margin-bottom: 0.25rem;
                 }
 
                 .profile-title {
-                    color: $black-10;
+                    color: var(--ks-content-tertiary);
                     font-size: $font-size-xs;
+
                     line-height: 20px;
                     margin: 0;
                 }

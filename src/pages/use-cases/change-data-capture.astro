@@ -1,113 +1,148 @@
 ---
 import Layout from "~/components/layout.astro"
-import SolutionsDetailHeader from "~/components/solutions/DetailHeader.vue"
-import SolutionsDetailContent from "~/components/solutions/DetailContent.vue"
-import LayoutDetailMainContent from "~/components/layout/DetailMainContent.vue"
-import SolutionsDetailEmpower from "~/components/solutions/DetailEmpower.vue"
-import ChangeDataCaptureFeatures from "~/components/use-cases/change-data-capture/Features.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import DetailsHero from "~/components/use-cases/DetailsHero.vue"
+import WhatIs from "~/components/use-cases/WhatIs.vue"
+import Alternation from "~/components/features/shared/Alternation.astro"
+import Section from "~/components/layout/Section.astro"
+import Enterprise from "~/components/use-cases/Enterprise.vue"
+import Cards from "~/components/use-cases/Cards.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import LightbulbOutline from "vue-material-design-icons/LightbulbOutline.vue"
+import FolderTextOutline from "vue-material-design-icons/FolderTextOutline.vue"
+import DeveloperBoard from "vue-material-design-icons/DeveloperBoard.vue"
+import LightningBolt from "vue-material-design-icons/LightningBolt.vue"
+import TimerOutline from "vue-material-design-icons/TimerOutline.vue"
+import ImageMultiple from "vue-material-design-icons/ImageMultiple.vue"
 
-const title = "Enhanced Data Insights with Change Data Capture"
-const description =
+const TITLE = "Enhanced Data Insights with Change Data Capture"
+const DESCRIPTION =
     "Boost Data Synchronization and Streamlined Processing with Kestra's CDC Capabilities"
 
-const mainContent = [
+const FEATURES = [
+    {
+        title: "Efficient Data Capture",
+        description:
+            "CDC allows you to track and capture data changes promptly, ensuring that your data pipelines remain current and provide you with accurate, actionable insights.",
+        icon: LightbulbOutline,
+    },
+    {
+        title: "Integration with Data Sources",
+        description:
+            "Integrates with various data sources, databases, and platforms, allowing you to track changes across your entire data ecosystem.",
+        icon: FolderTextOutline,
+    },
+    {
+        title: "Scalable Processing",
+        description:
+            "Kestra is designed to handle high data volumes and can scale to meet your growing data needs.",
+        icon: DeveloperBoard,
+    },
+    {
+        title: "Reduced Data Latency",
+        description:
+            "Reduce data latency, ensuring that your data pipelines and analytics are always based on the latest information.",
+        icon: LightningBolt,
+    },
+    {
+        title: "Data Versioning",
+        description:
+            "Allow you to track and manage historical versions of your data for auditing, analysis, and compliance purposes.",
+        icon: TimerOutline,
+    },
+    {
+        title: "Delayed Data Capture",
+        description:
+            "Configure time delays for capturing data changes for handling time-sensitive data or for mitigating the impact of temporary data inconsistencies.",
+        icon: ImageMultiple,
+    },
+]
+
+const MAIN_CONTENT = [
     {
         title: "Real Time Data Replication",
-        img: "/landing/usecases/cdc/feature-1.svg",
-        imgAlt: "Diagram illustrating Kestra's Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing",
-        imgWidth: "633px",
-        imgHeight: "488px",
+        image: {
+            src: "/landing/usecases/cdc/feature-1.svg",
+            alt: "Diagram illustrating Kestra's Change Data Capture process, with PostgreSQL for databases, Apache Kafka for streaming data, and Apache Spark for analytics processing",
+            width: 633,
+            height: 488,
+        },
         content:
-            "<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.<br />",
+            "<strong>Data Detection and Distribution:</strong> Listen for changes in your chosen databases, such as PostgreSQL, detect new entries and updates as they occur. Once identified, these changes are packaged and distributed to messaging systems like Apache Kafka, guaranteeing that downstream processes, including analytics processing performed by tools like Apache Spark, have access to the latest data without delay.",
     },
     {
         title: "Workflow Configuration and Management with Kestra",
-        img: "/landing/usecases/cdc/feature-2.svg",
-        imgAlt: "Picture of tasks possible with Kestra Change Data capture like data transformation, filtering, and aggregation",
-        imgWidth: "569px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/cdc/feature-2.svg",
+            alt: "Picture of tasks possible with Kestra Change Data capture like data transformation, filtering, and aggregation",
+            width: 569,
+            height: 420,
+        },
         content:
             "Kestra enables institutions to configure and manage CDC workflows with tasks such as data transformation, filtering, and aggregation, resulting in a consistent and up-to-date data view for accurate insights and decision-making.",
     },
     {
         title: "Event-Driven Triggers for Automatic Workflow Initiation",
-        img: "/landing/usecases/cdc/feature-3.svg",
-        imgAlt: "Illustration showing Kestra's event-driven triggers that initiate workflows automatically upon data changes, such as inserting a new customer record into the PostgreSQL database",
-        imgWidth: "569px",
-        imgHeight: "420px",
+        image: {
+            src: "/landing/usecases/cdc/feature-3.svg",
+            alt: "Illustration showing Kestra's event-driven triggers that initiate workflows automatically upon data changes, such as inserting a new customer record into the PostgreSQL database",
+            width: 569,
+            height: 420,
+        },
         content:
             "Kestra's event-driven triggers initiate workflows automatically as data changes occur, eliminating manual intervention and reducing data inconsistency risks.<br /><br />" +
             "<strong>Automated Workflows </strong>: Kestra CDC workflows are fully automated, with the capability to initiate and manage workflows that respond to file detection or scheduled events, API calls, or webhooks. This automation extends to data processing, enabling immediate ingestion, transformation, and delivery to data warehouses and analytical platforms, maintaining the integrity and relevance of your data landscape.",
     },
     {
         title: "Integration with Existing Infrastructure",
-        img: "/landing/usecases/cdc/feature-4.svg",
-        imgAlt: "Image depicting Kestra's extensive integration capabilities, with logos of AWS, Fivetran, and Airbyte",
-        imgWidth: "632px",
-        imgHeight: "466px",
+        image: {
+            src: "/landing/usecases/cdc/feature-4.svg",
+            alt: "Image depicting Kestra's extensive integration capabilities, with logos of AWS, Fivetran, and Airbyte",
+            width: 632,
+            height: 466,
+        },
         content:
-            "Kestra's advanced integration capabilities enable connectivity across your entire stack and third-party applications, ensuring streamlined data synchronization throughout your entire ecosystem.\"",
+            "Kestra's advanced integration capabilities enable connectivity across your entire stack and third-party applications, ensuring streamlined data synchronization throughout your entire ecosystem.",
     },
 ]
 ---
 
-<Layout title={title} description={description}>
+<Layout title={TITLE} description={DESCRIPTION}>
     <div>
-        <SolutionsDetailHeader
+        <DetailsHero
             client:load
-            title="Efficient"
-            titleAfter="Change Data Capture"
-            subtitle="Build CDC pipeline with Kestra for data synchronization, and ressources optimization to ensure your data analytics platforms reflect the most current information."
-            image="/landing/usecases/cdc/intro-bg.svg"
-            imageWidth="707px"
+            title="<span>Efficient</span> Change Data Capture"
+            description="Build CDC pipeline with Kestra for data synchronization, and ressources optimization to ensure your data analytics platforms reflect the most current information."
+            image={{
+                src: "/landing/usecases/cdc/intro-bg.svg",
+                width: 707,
+                height: 400,
+                alt: "Change Data Capture",
+            }}
         />
-        <SolutionsDetailContent
+
+        <WhatIs
             client:visible
-            title="What is Change Data Capture ?"
-            subtitle="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
+            title="What is Change Data Capture?"
+            description="Change Data Capture (CDC) tracks and captures data source alterations for efficient processing and analysis. Kestra's CDC features allow businesses to synchronize and manage data effectively, maintaining updated data warehouses and analytics platforms with minimized resource use."
         />
-        <LayoutDetailMainContent
-            client:visible
-            subtitle="Data Analysis for Financial Institutions"
-            subtitleBefore="Streamlined"
-            baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."
-            items={mainContent}
-        />
-        <SolutionsDetailEmpower
+
+        <Alternation items={MAIN_CONTENT}>
+            <Section
+                subtitle="Data Analysis for Financial Institutions"
+                subtitleBefore="Streamlined"
+                class="p-0 bg-transparent"
+                baseline="Kestra makes CDC implementation straightforward, enabling your team to monitor data changes across your systems with ease. Configure workflows to automatically transform and aggregate data, keeping your datasets accurate and analytics reliable without manual intervention."
+            />
+        </Alternation>
+        <Enterprise
             client:visible
             title="Kestra - Empowering Data-Driven Success"
             subtitle="Kestra's Change Data Capture capabilities enhance data management by enabling efficient data synchronization and processing. With Kestra's event-driven triggers, visual pipeline editor, and extensive integrations, businesses can maintain up-to-date data across their systems, leading to timely insights and better decision-making. Experience the benefits of Kestra's CDC solution and transform your data management processes today."
         />
-        <ChangeDataCaptureFeatures client:visible />
-        <LayoutFooterContact
+        <Cards title="Key <span class='highlight'>Features</span>" cards={FEATURES} />
+        <FooterContact
             client:visible
             title="Ready to take your data platform to the next level?"
-            darkButtonText="Talk to us"
-            darkButtonHref="/demo"
-            purpleButtonText="Get Started"
-            purpleButtonHref="/docs/getting-started/quickstart"
         />
     </div>
 </Layout>
-
-<style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
-    :global(section) {
-        .subtitle {
-            max-width: 68% !important;
-            margin: auto !important;
-
-            @include media-breakpoint-down(xxl) {
-                max-width: 100% !important;
-                margin: 0 !important;
-            }
-        }
-
-        .baseline {
-            font-size: $h6-font-size !important;
-            font-weight: 300 !important;
-        }
-    }
-</style>
