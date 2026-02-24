@@ -20,6 +20,7 @@ export function prunePluginsForCards(
     return plugins.map(p => {
         const key = p.subGroup ?? p.group ?? p.name
         const info = pluginsData[key] ?? {}
+        const groupInfo = pluginsData[p.group]
         return {
             name: p.name,
             title: info.title ?? p.title,
@@ -27,9 +28,9 @@ export function prunePluginsForCards(
             subGroup: p.subGroup,
             categories: info.categories ?? p.categories,
             description: info.description ?? p.description,
-            className: info.className,
-            elementCounts: info.elementCounts,
-            blueprints: info.blueprints,
+            className: groupInfo?.className ?? info.className,
+            elementCounts: groupInfo?.elementCounts ?? info.elementCounts,
+            blueprints: groupInfo?.blueprints ?? info.blueprints,
         }
     })
 }
