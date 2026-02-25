@@ -17,7 +17,7 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: var(--ks-background-secondary) url('~/assets/squared-grid.svg') no-repeat top center / 1400px auto;
+            background: var(--ks-background-body) url('~/assets/squared-grid.svg') no-repeat top center / 1400px auto;
             pointer-events: none;
         }
     }
