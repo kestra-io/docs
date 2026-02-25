@@ -50,7 +50,8 @@ setupSpeed:
       two: Minutes
     description: "Download the Docker Compose file, spin it up, and you're ready—database and config included. Open the UI, pick a Blueprint, run it. No Python environment to wrestle with."
     command: |
-      # Download and start
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
       docker compose up
 
       # Open localhost:8080
