@@ -1,16 +1,19 @@
 # See GitHub's docs for more information on this file:
 # https://docs.github.com/en/free-pro-team@latest/github/administering-a-repository/configuration-options-for-dependency-updates
+
 version: 2
+
 updates:
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every week
       interval: "weekly"
-    labels:
-      - "dependency-upgrade"
+      day: "wednesday"
+      timezone: "Europe/Paris"
+      time: "08:00"
     open-pull-requests-limit: 50
+    labels: ["dependency-upgrade", "area/devops"]
 
   # Maintain dependencies for NPM modules
   - package-ecosystem: "npm"
@@ -22,3 +25,75 @@ updates:
       timezone: "Europe/Paris"
     open-pull-requests-limit: 50
     labels: ["dependency-upgrade"]
+    groups:
+      types:
+        applies-to: version-updates
+        patterns: ["@types/*"]
+
+      flow:
+        applies-to: version-updates
+        patterns: ["@vue-flow/*"]
+
+      astro:
+        applies-to: version-updates
+        patterns: ["astro", "astro-*", "@astrojs/*"]
+
+      rehype:
+        applies-to: version-updates
+        patterns: ["rehype-*"]
+
+      remark:
+        applies-to: version-updates
+        patterns: ["remark-*"]
+
+      prettier:
+        applies-to: version-updates
+        patterns: ["prettier", "prettier-*"]
+
+      major:
+        update-types: ["major"]
+        applies-to: version-updates
+        exclude-patterns:
+          [
+            "@types/*",
+            "@vue-flow/*",
+            "astro",
+            "astro-*",
+            "@astrojs/*",
+            "rehype-*",
+            "remark-*",
+            "prettier",
+            "prettier-*",
+          ]
+
+      minor:
+        update-types: ["minor"]
+        applies-to: version-updates
+        exclude-patterns:
+          [
+            "@types/*",
+            "@vue-flow/*",
+            "astro",
+            "astro-*",
+            "@astrojs/*",
+            "rehype-*",
+            "remark-*",
+            "prettier",
+            "prettier-*",
+          ]
+
+      patch:
+        update-types: ["patch"]
+        applies-to: version-updates
+        exclude-patterns:
+          [
+            "@types/*",
+            "@vue-flow/*",
+            "astro",
+            "astro-*",
+            "@astrojs/*",
+            "rehype-*",
+            "remark-*",
+            "prettier",
+            "prettier-*",
+          ]

@@ -50,6 +50,7 @@
             blueprints: pluginInfo?.blueprints,
             className: pluginInfo?.className,
             subGroup: plugin.subGroup,
+            isEnterprise: plugin.group?.includes('.ee.') ?? false,
         }
     }
 
