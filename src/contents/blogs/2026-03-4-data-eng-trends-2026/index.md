@@ -24,7 +24,7 @@ This workflow pattern reveals a category error: "data orchestration" was always 
 
 ### The "data engineer" role is fragmenting
 
-![Diagram showing "Data Engineer (2022)" splitting into three roles: Platform Engineer, Workflow Engineer, and AI Engineer](./role-fragmentation.png)
+> Diagram showing "Data Engineer (2022)" splitting into three roles: Platform Engineer, Workflow Engineer, and AI Engineer
 
 Traditional data engineers are splitting into at least three distinct roles. Platform engineers build the orchestration systems that handle the full stack at scale. They work in Kubernetes, Terraform, and build internal platforms. Workflow engineers build pipelines and automations using SQL and YAML-based orchestration without needing deep Python or Java expertise. They live in dbt, Airbyte configurations, and orchestration UIs. AI engineers combine data engineering with machine learning operations. They coordinate between feature stores (Feast, Tecton), model training (PyTorch, TensorFlow), and inference infrastructure.
 
@@ -34,7 +34,7 @@ The modern data stack is the forcing function. When your stack includes Fivetran
 
 ### Orchestration becomes the universal language
 
-![Kestra workflow with tasks in multiple languages — SQL, Python, and shell — running in the same flow](./multi-language-flow.png)
+> Kestra workflow with tasks in multiple languages — SQL, Python, and shell — running in the same flow
 
 If everyone can write code, everyone can break production. The new bottleneck isn't writing the SQL query or the Python script. It's coordinating that work across different systems, languages, and teams. When does this run? What happens if the Fivetran sync fails? What downstream dbt models depend on this table? Who gets alerted when Snowflake queries time out? How do we retry the Hightouch sync without duplicating records in Salesforce?
 
@@ -78,7 +78,7 @@ Enterprise companies will resist. Startups will embrace it too early and burn th
 
 **For individuals:** Learn orchestration thinking, not just coding. Understand how systems talk to each other, how dependencies cascade, and how failures propagate across distributed systems. If you're a data analyst, knowing how your dbt model depends on upstream Fivetran syncs and downstream Hightouch activations matters more than mastering every SQL optimization technique. Your domain expertise is your moat. AI can help you write code, but it can't replicate your understanding of the business problem. Orchestration patterns work across data, infrastructure, and business processes. The skills transfer.
 
-![Kestra namespace view showing platform-owned namespaces with RBAC permissions for workflow engineer teams](./namespace-rbac.png)
+> Kestra namespace view showing platform-owned namespaces with RBAC permissions for workflow engineer teams
 
 **For companies:** Invest in orchestration platforms that handle the full scope: pipelines, deployments, and the business processes that tie them together. Declarative, structured tools will be easier for your teams to learn and maintain, especially when AI assistants are generating the configurations. Build governance guardrails before you need them. Don't mistake "everyone can code" for "everyone should code everything." Platform engineers should own the orchestration layer. Workflow engineers should own the domain logic. That separation matters.
 
