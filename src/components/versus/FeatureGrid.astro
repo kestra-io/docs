@@ -72,7 +72,12 @@ const { featureGrid } = Astro.props;
         padding: $rem-4 0;
         background-image: url("./assets/grid-vs.svg");
         background-color: var(--ks-background-tertiary);
-        border: $block-border;
+        border-top: $block-border;
+        border-bottom: $block-border;
+
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 0.75rem;
+        }
         
         .container {
             display: flex;
