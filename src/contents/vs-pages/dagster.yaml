@@ -9,7 +9,7 @@ intro:
 philosophy:
   mainTitle: Two Platforms, Two Philosophies
   kestra:
-    title: "Universal orchestration: Pipelines & workflows"
+    title: "Universal Orchestration: Pipelines & Workflows"
     description: "Universal orchestration platform built on declarative YAML and an API-first architecture. Orchestrate data pipelines, ETL jobs, and complex workflows in any language without forcing your team into a single framework."
     subCardText: '"How do I get pipelines running without learning a framework first?"'
   competitor:
