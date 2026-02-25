@@ -1,6 +1,6 @@
 ---
-title: Kestra CLI (kestractl)
-sidebarTitle: Kestra CLI
+title: kestractl
+sidebarTitle: kestractl
 icon: /src/contents/docs/icons/bash.svg
 editions: ["OSS","EE"]
 description: CLI for managing Kestra flows, executions, namespaces, and namespace files.
