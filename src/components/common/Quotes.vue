@@ -35,7 +35,8 @@ const activeQuote = ref(0)
             />
         </div>
         <div class="content">
-            <div class="text">
+            <img v-if="quotes[activeQuote].bigLogoSrc" :src="quotes[activeQuote].bigLogoSrc" class="big-logo" />
+            <div class="text" :class="{'text-center': !quotes[activeQuote].bigLogoSrc}">
                 <blockquote>{{ quotes[activeQuote].quote }}</blockquote>
                 <span v-html="quotes[activeQuote].author" />
                 <div class="small-logo" v-if="quotes.length === 1" v-html="quotes[activeQuote].smallLogoSvg" />
@@ -91,8 +92,16 @@ const activeQuote = ref(0)
     }
 
     .content{
-        text-align: center;
         padding: 4rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        .big-logo {
+            max-width: 35%;
+        }
+        .text-center {
+            text-align: center;
+        }
         blockquote{
             font-size: 28px;
             &::after, &::before {
