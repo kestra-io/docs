@@ -93,7 +93,7 @@ easeOfUse:
         - id: notify
           type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
           url: "{{ secret('SLACK_WEBHOOK') }}"
-          payload: '{"text": "Daily report ready"}'
+          messageText: "Daily report ready"
     lang: yaml
   competitor:
     title: "Dagster: Requires the Python developer lens"
