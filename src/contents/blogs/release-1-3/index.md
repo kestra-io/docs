@@ -269,6 +269,11 @@ For server components, plugins, and system maintenance commands, see the [Kestra
 
 The **Kestra Server CLI** is the original CLI many teams already know and trust, and it remains the right choice for server administration. **Kestractl** is the new companion focused on direct host operation.
 
+
+TODO: ADD MORE DETAILS + EXAMPLE + INSTALLATION
+TODO: More clarification on Kestra Server CLI vs kestractl
+TODO: Add agent-skill mention kestra-ops
+
 ## GitHub Action
 
 Teams often rely on custom scripts to deploy and validate flows in CI, which leads to inconsistent pipelines and hard-to-maintain automation. A dedicated action makes these workflows repeatable across repositories.
@@ -278,6 +283,8 @@ Kestra 1.3 introduces a refreshed GitHub Action built on kestractl, so you can r
 - **Deploy flows to multiple namespaces**
 - **Validate flows**
 - **Trigger a deployed flow**
+
+TODO: add example
 
 ## Plugin Defaults UI (Namespace)
 
@@ -290,9 +297,13 @@ You can also import plugin defaults from YAML to bootstrap or migrate from OSS, 
 
 ## Additional Improvements
 
+- **Default Dashboard**: TBD
+- **Auto-completion for Required Fields in Flow Editor**: TBD
+- **Add syntax highlighting support for code properties editor**: TBD
 - **SeaweedFS Internal Storage** - Added support for `storage-seaweedfs` as an internal storage backend, giving teams an OSS-friendly option as the OSS MinIO server repository ([minio/minio](https://github.com/minio/minio)) is archived and no longer maintained.
 - **BeyondTrust Secret Manager** - Added `secret-beyondtrust` as a new secret manager integration for secure credential retrieval.
 - **Kafka Plugin** - Added support for Kafka 4.2 queues and share groups to make event processing more reliable, reduce duplicate work, and distribute messages more smoothly across consumers (`Consume`, `Trigger`, `RealtimeTrigger`).
+
 
 ## Plugins
 
