@@ -25,15 +25,15 @@ export function prunePluginsForCards(
         const groupInfo = pluginsData[p.group]
         return {
             name: p.name,
-            title: info.title ?? p.title,
+            title: info.title ?? p.title ?? p.name,
             subGroupTitle: p.title,
             group: p.group,
             subGroup: p.subGroup,
             categories: info.categories ?? p.categories,
             description: (p.subGroup?.startsWith(p.group) ? info.description : groupInfo?.description) ?? p.description,
             className: info.className,
-            elementCounts: groupInfo?.elementCounts ?? info.elementCounts,
-            blueprints: groupInfo?.blueprints ?? info.blueprints,
+            elementCounts: info.elementCounts ?? groupInfo?.elementCounts,
+            blueprints: info.blueprints ?? groupInfo?.blueprints,
             isEnterprise: p.group?.includes('.ee.') ?? false,
         }
     })
