@@ -3,6 +3,7 @@ title: Kestra CLI Guide - kestractl vs Kestra Server CLI
 sidebarTitle: Server CLI
 icon: /src/contents/docs/icons/bash.svg
 editions: ["OSS", "EE"]
+hideSubMenus: true
 description: Understand when to use kestractl versus the Kestra Server CLI, and access both command references.
 ---
 
@@ -16,10 +17,10 @@ Kestra provides two command-line interfaces with different scopes:
 
 | CLI | Best for | Scope |
 | --- | --- | --- |
-| `kestractl` | Day-to-day platform operations through the API | Covers flows, executions, namespaces, and namespace files, with capabilities aligned with what the SDK exposes and ultimately what the Kestra API supports. |
+| `kestractl` | Day-to-day platform operations through the API | Covers flows, executions, namespaces, and namespace files, with capabilities aligned with what the Kestra API supports. |
 | `kestra` (Server CLI) | Runtime and infrastructure operations | Covers server startup and component processes (`server` commands), system/database operations, plugin lifecycle, and maintenance tasks that require direct access to the runtime environment and backend services. |
 
-In short, use `kestractl` for API-level resource management and automation, and use the Kestra Server CLI for server/process/database operations.
+In short, use `kestractl` for API-level resource management and automation, and use the Kestra Server CLI for server, process or database operations.
 
 ## Pages in this section
 

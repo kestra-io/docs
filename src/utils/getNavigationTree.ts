@@ -35,8 +35,7 @@ const navigationTree = {
         "Expressions",
         "API Reference",
         "Terraform Provider",
-        "Kestra Server Commmands",
-        "Kestra CLI",
+        "Server CLI",
         "Glossary",
     ],
 }
