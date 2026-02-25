@@ -29,7 +29,7 @@ Refer to their documentation if installation is required.
 Kestra maintains three Helm charts:
 
 1. **`kestra`** — production-ready chart. No dependencies included. Best suited for production deployments with customizable database and storage.
-2. **`kestra-starter`** — includes PostgreSQL and MinIO for evaluation only. Great for getting started quickly and experimenting with Kestra.
+2. **`kestra-starter`** — includes PostgreSQL and Versity (storage) for evaluation only. Great for getting started quickly and experimenting with Kestra.
 3. **`kestra-operator`** — installs the Enterprise Edition Kubernetes Operator.
 
 Chart sources:
@@ -51,7 +51,7 @@ To understand available configuration options and compare versions:
 
 The `kestra-starter` chart installs:
 
-- MinIO (object storage)
+- Versity (object storage)
 - PostgreSQL (database)
 
 These are not suitable for production.
@@ -95,7 +95,7 @@ Install the `kestra-starter` chart:
 helm install my-kestra kestra/kestra-starter
 ```
 
-This deploys pods for Kestra, PostgreSQL (database), and MinIO (storage).
+This deploys pods for Kestra, PostgreSQL (database), and Versity (storage).
 
 Alternatively, install the `kestra` production chart:
 
@@ -124,7 +124,7 @@ If you installed the `kestra-starter` chart, you will likely see something like:
 ```perl
 my-kestra-kestra-starter-xxxxxx-xxxxx        Running
 my-kestra-postgresql-0                       Running
-my-kestra-minio-0                            Running
+my-kestra-versity-0                          Running
 ```
 
 The pod you want to port-forward is the **Kestra standalone pod**, usually named:
