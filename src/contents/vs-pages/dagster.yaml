@@ -140,7 +140,7 @@ featureGrid:
       kestra: Run scripts directly
       competitor: Requires @asset decorators and IOManagers
     - feature: Languages supported
-      kestra: "Agnostic (Python, SQL, R, Bash, Node.js & more)"
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
       competitor: Python (others via subprocess)
     - feature: Users
       kestra: "Engineers, analysts, ops, business users"
