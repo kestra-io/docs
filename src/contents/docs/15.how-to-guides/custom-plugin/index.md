@@ -258,7 +258,7 @@ To build your plugin, execute the `./gradlew shadowJar` command from the plugin 
 
 The resulting JAR file will be generated in the `build/libs` directory.
 
-To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../server-cli/index.md#plugin-commands).
+To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../server-cli/index.mdx#plugin-commands).
 
 ## Writing unit tests
 
