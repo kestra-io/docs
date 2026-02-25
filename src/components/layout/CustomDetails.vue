@@ -105,7 +105,6 @@
         .accordion-body {
             color: var(--ks-content-primary);
             padding: 1rem;
-            margin-bottom: 1rem;
             :deep(a) {
                 color: var(--ks-content-link);
             }

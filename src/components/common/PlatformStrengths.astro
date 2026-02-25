@@ -47,15 +47,17 @@ const { features, title } = Astro.props as Props;
         border-top: $block-border;
         border-bottom: $block-border;
 
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 0.75rem;
+        }
+
         .container {
-            gap: $rem-2;
             display: flex;
             align-items: center;
             flex-direction: column;
         }
 
         .features {
-            gap: $rem-2;
             display: grid;
             width: 100%;
             grid-template-columns: 1fr;
@@ -66,20 +68,25 @@ const { features, title } = Astro.props as Props;
 
             .feature {
                 display: flex;
-                gap: 0.5rem;
+                gap: 0.875rem;
                 align-items: center;
                 flex-direction: column;
                 text-align: center;
 
+                @include media-breakpoint-up(xl) {
+                    max-width: 358px;
+                    padding: $rem-1;
+                    gap: 23px;
+                }
+
                 .feature-image {
                     max-width: 100%;
                     height: auto;
-                    margin-bottom: $rem-1;
                 }
 
-                p {
+                p, h5 {
                     margin-bottom: 0;
-                    font-size: $font-size-sm;
+                    font-size: $font-size-md;
 
                     :global(a) {
                         color: var(--ks-content-link);

@@ -76,6 +76,10 @@ const {
         padding: $spacer * 4 0;
         background-color: var(--ks-background-body);
 
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 0.75rem;
+        }
+
         .container {
             display: flex;
             flex-direction: column;

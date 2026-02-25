@@ -84,6 +84,10 @@ const {
         }
 
         .container {
+            @include media-breakpoint-down(lg) {
+                padding: 0 $rem-1;
+            }
+
             .content {
                 max-width: 550px;
 
@@ -96,9 +100,10 @@ const {
                 }
             }
 
-            .btn-secondary:hover {
-                background-color: rgba($white, 0.9) !important;
-                color: $black !important;
+            .btn-secondary {
+                background-color: transparent !important;
+                color: $white !important;
+                border-color: $white !important;
             }
         }
 
