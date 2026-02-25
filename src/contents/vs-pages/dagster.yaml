@@ -71,7 +71,7 @@ setupSpeed:
     lang: python
 
 easeOfUse:
-  title: Workflows your whole team can read
+  title: Workflows Your Whole Team Can Read
   kestra:
     title: "Kestra: Readable by your whole team"
     description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference,  the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No special training required."
