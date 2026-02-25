@@ -29,7 +29,7 @@ Refer to their documentation if installation is required.
 Kestra maintains three Helm charts:
 
 1. **`kestra`** — production-ready chart. No dependencies included. Best suited for production deployments with customizable database and storage.
-2. **`kestra-starter`** — includes PostgreSQL and Versity (storage) for evaluation only. Great for getting started quickly and experimenting with Kestra.
+2. **`kestra-starter`** — includes PostgreSQL and Versity (S3-like storage) for evaluation only. Great for getting started quickly and experimenting with Kestra.
 3. **`kestra-operator`** — installs the Enterprise Edition Kubernetes Operator.
 
 Chart sources:
