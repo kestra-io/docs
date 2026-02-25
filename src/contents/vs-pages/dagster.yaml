@@ -13,7 +13,7 @@ philosophy:
     description: "Universal orchestration platform built on declarative YAML and an API-first architecture. Orchestrate data pipelines, ETL jobs, and complex workflows in any language without forcing your team into a single framework."
     subCardText: '"How do I get pipelines running without learning a framework first?"'
   competitor:
-    title: Pipeline orchestration
+    title: Pipeline Orchestration
     description: "Data orchestration platform built around Software-Defined Assets. Model data pipelines as a graph of assets, emphasizes the asset abstraction and Python-native development."
     shadowColor: "#A5CCFE"
     subCardBg: "var(--ks-background-blue-light)"
