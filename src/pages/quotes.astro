@@ -1,6 +1,7 @@
 ---
 import Layout from "~/components/layout.astro"
 import QuotesVue from "~/components/common/Quotes.vue"
+import apple from "~/assets/companies/apple.png"
 
 const quotes = [
     {
@@ -31,7 +32,7 @@ const quotes = [
     },
     {
         quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. bis",
-        author: "John Doe, CEO @ <em>Fila</em>",
+        author: "Bill Doe, Director @ <strong>Bloomberg</strong>",
         smallLogoSvg: `<svg width="169" height="31" viewBox="0 0 169 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <mask id="mask0_23088_26309" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="169" height="31">
 <path d="M168.14 0.799805H0.430176V30.5598H168.14V0.799805Z" fill="white"/>
@@ -67,7 +68,7 @@ const quotes = [
     },
     {
         quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ter",
-        author: "John Doe, CEO @ <em>Fila</em>",
+        author: "John Smith, CEO @ <strong>Gravitee</strong>",
         smallLogoSvg: `<svg width="171" height="31" viewBox="0 0 171 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15.2898 0C6.8455 0.000128757 8.10135e-05 6.84557 0 15.2899C-7.82739e-07 23.7344 6.84534 30.5798 15.2898 30.5798H22.2678V23.0917H32.0086L24.6818 14.5389H14.8926L22.2124 23.0835H15.2898C10.9856 23.0835 7.49644 19.5943 7.49636 15.29C7.49636 10.9858 10.9856 7.4965 15.2898 7.49636C17.4287 7.49644 19.3652 8.35698 20.7743 9.7527L21.3921 10.3648L26.6261 4.99402L26.0142 4.39184C23.2554 1.67671 19.4674 6.49466e-05 15.2898 0Z" fill="currentColor"/>
 <path d="M15.2898 0C6.8455 0.000128757 8.10135e-05 6.84557 0 15.2899C-7.82739e-07 23.7344 6.84534 30.5798 15.2898 30.5798H22.2678V23.0917H32.0086L24.6818 14.5389H14.8926L22.2124 23.0835H15.2898C10.9856 23.0835 7.49644 19.5943 7.49636 15.29C7.49636 10.9858 10.9856 7.4965 15.2898 7.49636C17.4287 7.49644 19.3652 8.35698 20.7743 9.7527L21.3921 10.3648L26.6261 4.99402L26.0142 4.39184C23.2554 1.67671 19.4674 6.49466e-05 15.2898 0Z" fill="currentColor"/>
@@ -82,12 +83,13 @@ const quotes = [
 </svg>
 `,
         storyLink: "https://kestra.io/case-studies/airflow-to-kestra-apple-ml",
+        bigLogoSrc: apple.src,
     },
 ]
 ---
 
 <Layout>
     <div class="container" style="margin: 8rem auto;">
-        <QuotesVue quotes={quotes} client:load />
+        <QuotesVue quotes={quotes.slice(0, 1)} client:load />
     </div>
 </Layout>

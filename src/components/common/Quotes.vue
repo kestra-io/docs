@@ -20,8 +20,8 @@ const activeQuote = ref(0)
 </script>
 
 <template>
-    <div class="wrapper">
-        <div class="tabs" role="tablist">
+    <div v-if="quotes.length > 0" class="wrapper">
+        <div v-if="quotes.length > 1" class="tabs" role="tablist">
             <button
                 v-for="(quote, index) in quotes"
                 :key="quote.quote"
@@ -38,6 +38,7 @@ const activeQuote = ref(0)
             <div class="text">
                 <blockquote>{{ quotes[activeQuote].quote }}</blockquote>
                 <span v-html="quotes[activeQuote].author" />
+                <div class="small-logo" v-if="quotes.length === 1" v-html="quotes[activeQuote].smallLogoSvg" />
             </div>
         </div>
         <div v-if="quotes[activeQuote].kpis" class="kpis">
@@ -50,8 +51,8 @@ const activeQuote = ref(0)
             <a v-if="quotes[activeQuote].storyLink" :href="quotes[activeQuote].storyLink" target="_blank" rel="noopener noreferrer">
                 Read the Story
             </a>
-            <button @click="() => { if(activeQuote > 0) {activeQuote--} }">&lt;</button>
-            <button @click="() => { if(activeQuote < quotes.length - 1) {activeQuote++} }">&gt;</button>
+            <button v-if="quotes.length > 1" @click="() => { if(activeQuote > 0) {activeQuote--} }">&lt;</button>
+            <button v-if="quotes.length > 1" @click="() => { if(activeQuote < quotes.length - 1) {activeQuote++} }">&gt;</button>
         </div>
     </div>
 </template>
@@ -76,7 +77,7 @@ const activeQuote = ref(0)
             justify-content: center;
             color: var(--ks-content-primary);
             flex: 1;
-            :global(svg) {
+            :deep(svg) {
                 height: 1.5rem;
                 fill: var(--ks-content-primary);
                 transition: fill 0.3s ease;
@@ -112,6 +113,13 @@ const activeQuote = ref(0)
         > div > span{
             font-family: var(--font-family-jetbrains-mono);
             font-size: 1rem;
+        }
+        .small-logo{
+            margin-top: 2rem;
+            :deep(svg) {
+                height: 2rem;
+                fill: var(--ks-content-primary);
+            }
         }
     }
 
