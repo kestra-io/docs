@@ -16,6 +16,7 @@ The table below highlights the key features of this release.
 |---|---|---|
 | Kill Switch | UI-based control to stop or contain problematic executions | Enterprise Edition |
 | Credentials | Centralized server-to-server OAuth2 credentials with token minting and refresh | Enterprise Edition |
+| Assets | Second iteration of Assets (introduced in 1.2), with imperative lifecycle management plus event-driven and freshness-driven automation for SLA and governance workflows | Enterprise Edition |
 | AI Copilot Enhancements | RBAC permission controls, expanded UI coverage, speech-to-text, model selection, and improved custom model settings | Enterprise Edition |
 | kestractl | Command-line tool to interact with the Kestra host API for flows, executions, namespaces, and namespace files | All Editions |
 | New GitHub Action | CLI-based action to deploy, validate, and trigger flows | All Editions |
@@ -75,6 +76,173 @@ tasks:
 ```
 
 Supported credential types include OAuth2 `client_credentials`, OAuth2 JWT Bearer (`jwt_bearer`), OAuth2 `private_key_jwt`, and GitHub App.
+
+## Assets
+
+Kestra 1.3 brings the second iteration of **Assets**, building on the foundation introduced in [Kestra 1.2](../release-1-2/index.md).
+
+In 1.2, Assets introduced a stateful inventory and lineage model directly in workflows. In 1.3, Assets becomes more operational: teams can now manage assets imperatively, react to lifecycle events in real time, monitor freshness, and automate remediation and governance workflows with richer filters and trigger outputs.
+
+What this means in practice:
+
+- **Imperative lifecycle tasks** to create/update, list, and delete assets directly from flows (`Set`, `List`, `Delete`).
+- **Event-based trigger automation** with `EventTrigger` to react on asset lifecycle events (`CREATED`, `UPDATED`, `DELETED`, `USED`).
+- **Freshness monitoring trigger** to detect stale assets and launch workflows automatically (`FreshnessTrigger`).
+- **Flexible scoping** by asset ID, namespace, type, and metadata conditions.
+- **Actionable trigger context** with `event`, `eventTime`, `lastUpdated`, `staleDuration`, and `checkTime` to drive alerts, routing, and recovery actions.
+
+:::collapse{title="Example: React in real time to asset events"}
+
+```yaml
+id: asset_event_driven_pipeline
+namespace: company.data
+
+tasks:
+  - id: transform_to_mart
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.data
+    flowId: create_mart_tables
+    inputs:
+      source_asset_id: "{{ trigger.asset.id }}"
+      source_event: "{{ trigger.asset.event }}"
+      event_time: "{{ trigger.asset.eventTime }}"
+
+triggers:
+  - id: staging_table_event
+    type: io.kestra.plugin.ee.assets.EventTrigger
+    namespace: company.data
+    assetType: io.kestra.plugin.ee.assets.Table
+    events:
+      - CREATED
+      - UPDATED
+    metadataQuery:
+      - field: model_layer
+        type: EQUAL_TO
+        value: staging
+```
+
+:::
+
+:::collapse{title="Example: Audit asset deletions"}
+
+```yaml
+id: audit_asset_deletions
+namespace: company.security
+
+tasks:
+  - id: log_deletion
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: |
+      INSERT INTO audit_log (asset_id, asset_type, namespace, event, event_time)
+      VALUES (
+        '{{ trigger.asset.id }}',
+        '{{ trigger.asset.type }}',
+        '{{ trigger.asset.namespace }}',
+        '{{ trigger.asset.event }}',
+        '{{ trigger.asset.eventTime }}'
+      )
+
+triggers:
+  - id: asset_deletion_event
+    type: io.kestra.plugin.ee.assets.EventTrigger
+    events:
+      - DELETED
+```
+
+:::
+
+:::collapse{title="Example: Trigger a flow when assets are stale"}
+
+```yaml
+id: stale_assets_monitor
+namespace: company.monitoring
+
+tasks:
+  - id: log_stale
+    type: io.kestra.plugin.core.log.Log
+    message: >
+      Found {{ trigger.assets | length }} stale assets.
+      First asset: {{ trigger.assets[0].id ?? 'n/a' }}.
+      Stale for: {{ trigger.assets[0].staleDuration ?? 'n/a' }}.
+
+triggers:
+  - id: stale_assets
+    type: io.kestra.plugin.kestra.ee.assets.FreshnessTrigger
+    maxStaleness: PT24H
+    interval: PT1H
+```
+
+:::
+
+:::collapse{title="Example: Scope freshness checks to production mart assets"}
+
+```yaml
+id: prod_assets_freshness
+namespace: company.monitoring
+
+tasks:
+  - id: trigger_remediation
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.data
+    flowId: refresh_marts
+    inputs:
+      asset_id: "{{ trigger.assets[0].id }}"
+      last_updated: "{{ trigger.assets[0].lastUpdated }}"
+      stale_duration: "{{ trigger.assets[0].staleDuration }}"
+
+triggers:
+  - id: stale_prod_marts
+    type: io.kestra.plugin.kestra.ee.assets.FreshnessTrigger
+    namespace: company.data
+    assetType: TABLE
+    maxStaleness: PT6H
+    interval: PT30M
+    metadataQuery:
+      - field: environment
+        type: EQUAL_TO
+        value: prod
+      - field: model_layer
+        type: EQUAL_TO
+        value: mart
+```
+
+:::
+
+:::collapse{title="Example: Imperative asset lifecycle tasks"}
+
+```yaml
+id: asset_lifecycle_ops
+namespace: company.data
+
+tasks:
+  - id: upsert_asset
+    type: io.kestra.plugin.kestra.ee.assets.Set
+    namespace: assets.data
+    assetId: customers_by_country
+    assetType: TABLE
+    displayName: Customers by Country
+    assetDescription: Customer distribution by country
+    metadata:
+      owner: data-team
+      environment: prod
+
+  - id: list_assets
+    type: io.kestra.plugin.kestra.ee.assets.List
+    namespace: assets.data
+    types:
+      - TABLE
+    metadataQuery:
+      - field: owner
+        type: EQUAL_TO
+        value: data-team
+    fetchType: FETCH
+
+  - id: delete_asset
+    type: io.kestra.plugin.kestra.ee.assets.Delete
+    assetId: customers_by_country
+```
+
+:::
 
 ## AI Copilot Enhancements
 
@@ -147,6 +315,11 @@ You can also import plugin defaults from YAML to bootstrap or migrate from OSS, 
 - **Beam** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines, with YAML-based execution across Java and Python SDKs on Direct, Flink, Spark, and Dataflow runners (`RunPipeline`).
 - **COBOL** – Run and orchestrate legacy IBM i COBOL workloads by compiling programs from inline or stored source, executing jobs synchronously with parameters, and submitting batch jobs asynchronously (`CreateProgram`, `CallJob`, `SubmitJob`).
 - **Trello** – Automate Trello card workflows from Kestra by creating, updating, moving, and commenting on cards, and by polling boards or lists for new and updated card activity (`Create`, `Update`, `Move`, `Comment`, `Trigger`).
+
+## LTS and Enterprise Licensing
+
+- **LTS (Long-Term Support):** Kestra 1.3 is an LTS release, which means one year of support with security and bug-fix backports. LTS releases are promoted every ~6 months and are recommended for production. As described in our [Releases & LTS policy](/docs/releases), Kestra 1.0 support is planned to end in September 2026, and Kestra 1.3 will be supported for one year from its release date.
+- **Enterprise licensing:** Enterprise users need a new license for 1.3. To prevent mismatches, new 1.3 Enterprise instances will not start with older licenses. Our Customer Success team has already reached out to customers with upgrade guidance.
 
 ## Next Steps
 
