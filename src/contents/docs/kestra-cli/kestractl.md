@@ -12,10 +12,8 @@ For server components, plugins, and system maintenance commands, see the [Kestra
 
 ## Installation
 
-Build from source (requires Go 1.21+):
-
 ```bash
-TBD
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
 ```
 
 ## Quick Setup
@@ -23,7 +21,7 @@ TBD
 ### Open Source (basic auth)
 
 ```bash
-kestractl config add default http://localhost:8080 main --username admin --password admin --default
+kestractl config add default http://localhost:8080 main --username YOUR_USERNAME --password YOUR_PASSWORD --default
 ```
 
 ### Enterprise (API token)
