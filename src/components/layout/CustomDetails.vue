@@ -63,8 +63,11 @@
 
         .accordion-header {
             margin-bottom: 0;
+            border-bottom: 1px solid var(--ks-border-primary);
             &.bg-head {
                 background: var(--ks-background-tertiary);
+                border-bottom: none;
+                border-top: 1px solid var(--ks-border-primary);
             }
         }
 
@@ -105,7 +108,6 @@
         .accordion-body {
             color: var(--ks-content-primary);
             padding: 1rem;
-            margin-bottom: 1rem;
             :deep(a) {
                 color: var(--ks-content-link);
             }
