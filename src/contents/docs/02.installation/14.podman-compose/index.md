@@ -78,7 +78,7 @@ The [configuration](../../configuration/index.md) is done inside the `KESTRA_CON
 :::alert{type="info"}
 If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../10.administrator-guide/16.troubleshooting/index.md).
 
-For running Kestra with Docker Compose with each server component as a separate service, see the [multi-component Docker Compose example](../../server-cli/index.mdx).
+For running Kestra with Docker Compose with each server component as a separate service, see the [multi-component Docker Compose example](../../kestra-cli/index.mdx).
 :::
 
 ### Use a configuration file
