@@ -14,19 +14,21 @@ dbt Core handles transformation. It doesn't schedule itself, wait for upstream s
 
 There are several options, and I'll get into why Kestra is a natural fit for dbt Core teams specifically. Kestra's own analytics stack runs this way — our analytics engineer, Rok, uses Kestra to orchestrate PyAirbyte ingestion, dbt transformations in BigQuery, and Lightdash reporting for the entire company on a single platform. [That setup is documented here.](../2026-01-06-how-kestra-runs-on-kestra/index.md) I'll also walk through the key YAML patterns for running dbt in production with Kestra.
 
-## dbt Core or dbt Cloud?
+## Kestra works with dbt Core and dbt Cloud
 
-If you're evaluating how to run dbt in production, the first question is whether dbt Cloud solves the problem. It solves part of it. dbt Cloud includes a scheduler, a CI runner, and a managed execution environment — and for teams whose pipeline starts and ends with dbt, that's often enough. Think of an analytics engineer running a handful of daily models against a single Snowflake warehouse, no upstream ingestion to coordinate, no downstream activation to trigger. dbt Cloud's built-in scheduling covers that case cleanly.
+The two use cases are different, but Kestra adds value in both.
 
-Most pipelines are more complicated. They start with ingestion (Airbyte, Fivetran, custom extractors), run through dbt transformations, and feed into activation or analytics layers downstream. dbt Cloud orchestrates the dbt part. Everything around it is your problem — a second orchestrator for ingestion, bash scripts gluing steps together, or cron timers that fire regardless of whether upstream data is ready.
+**dbt Core** ships without a production runtime. No scheduler, no retry logic, no dependency management, no alerting. You need something around it that handles all of that. Kestra is that layer: it runs your dbt CLI commands in isolated containers, waits for upstream sources before triggering, retries on transient failures, and routes alerts when things break. The rest of this post is about this setup.
 
-dbt Core with Kestra is a different model. Instead of dbt's managed scheduler plus separate tooling for the rest, you get one orchestration layer for the whole pipeline. dbt becomes a task in a Kestra workflow, sitting between an Airbyte sync and a Slack notification, with retries and error handling declared alongside it in the same `YAML` file.
+**dbt Cloud** includes its own scheduler and CI runner, so teams whose pipeline starts and ends with dbt can get by without a separate orchestrator. But most pipelines don't start and end with dbt. They start with ingestion (Airbyte, Fivetran, custom extractors) and feed into activation or analytics layers downstream. dbt Cloud orchestrates its slice. Everything around it is your problem.
+
+Kestra handles that broader pipeline — ingestion, transformation, activation — as a single workflow. dbt Cloud can still run the transformation layer; Kestra coordinates what happens before and after. And for teams that care about cross-stack lineage, Kestra's [Assets](../../docs/07.enterprise/02.governance/01.assets/index.md) fill the gap dbt Cloud leaves: dbt tracks lineage within your models, but has no visibility into the S3 bucket feeding them or the reverse ETL sync consuming their output. Assets tracks inputs and outputs across every step in the pipeline, not just within dbt.
 
 ## Why Kestra is a natural fit for dbt Core
 
 ### dbt is YAML. So is Kestra.
 
-dbt teams already think in `YAML`. A Kestra workflow uses the same syntax and mental model, so there's no context switch between defining a dbt model and defining the orchestration around it.
+dbt teams already think in YAML. A Kestra workflow uses the same syntax and mental model, so there's no context switch between defining a dbt model and defining the orchestration around it.
 
 Here's a dbt schema definition:
 
@@ -55,7 +57,7 @@ tasks:
       - dbt build
 ```
 
-Python-based orchestrators require a different context entirely: DAG definitions, decorator patterns, framework-specific imports. For a team that lives in `YAML` and SQL, that's a real overhead cost.
+Python-based orchestrators require a different context entirely: DAG definitions, decorator patterns, framework-specific imports. For a team that lives in YAML and SQL, that's a real overhead cost.
 
 ### Your dbt project stays untouched
 
@@ -69,7 +71,7 @@ For teams that care about cross-pipeline lineage, Kestra's [Assets](../../docs/0
 
 ### Built-in production primitives
 
-[Retries](../../docs/05.workflow-components/12.retries/index.md) with exponential backoff, [error handling](../../docs/05.workflow-components/11.errors/index.md) blocks, [secrets management](../../docs/07.enterprise/02.governance/secrets-manager/index.md), [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md), [audit logs](../../docs/07.enterprise/02.governance/06.audit-logs/index.md) — Kestra treats these as first-class workflow components, declared in the same `YAML` file as your dbt tasks rather than bolted on through separate tooling.
+[Retries](../../docs/05.workflow-components/12.retries/index.md) with exponential backoff, [error handling](../../docs/05.workflow-components/11.errors/index.md) blocks, [secrets management](../../docs/07.enterprise/02.governance/secrets-manager/index.md), [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md), [audit logs](../../docs/07.enterprise/02.governance/06.audit-logs/index.md) — Kestra treats these as first-class workflow components, declared in the same YAML file as your dbt tasks rather than bolted on through separate tooling.
 
 ### Event-driven, not just scheduled
 
@@ -200,6 +202,6 @@ For CI workflows, run `dbt build --select state:modified+` against a feature bra
 
 ## Getting started
 
-The fastest path to getting started is a [dbt Blueprint](/blueprints?tags=dbt): a production-ready template you can deploy and customize. For a full walkthrough of profiles management, manifest caching, and multi-environment setups, see the [dbt orchestration docs](../../docs/use-cases/02.dbt/index.md).
+The fastest path is a [dbt Blueprint](/blueprints?tags=dbt): a production-ready template you can deploy and customize. For a full walkthrough of profiles management, manifest caching, and multi-environment setups, see the [dbt orchestration docs](../../docs/use-cases/02.dbt/index.md).
 
 Running dbt across multiple teams with [namespace isolation](../../docs/07.enterprise/02.governance/07.namespace-management/index.md), RBAC, and audit logging? [Book a demo](/demo) to see those features in action.
