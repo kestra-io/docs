@@ -124,12 +124,14 @@ You can also import plugin defaults from YAML to bootstrap or migrate from OSS, 
 
 - **SeaweedFS Internal Storage** - Added support for `storage-seaweedfs` as an internal storage backend, giving teams an OSS-friendly option as the OSS MinIO server repository ([minio/minio](https://github.com/minio/minio)) is archived and no longer maintained.
 - **BeyondTrust Secret Manager** - Added `secret-beyondtrust` as a new secret manager integration for secure credential retrieval.
+- **Kafka Plugin** - Added support for Kafka 4.2 queues and share groups to make event processing more reliable, reduce duplicate work, and distribute messages more smoothly across consumers (`Consume`, `Trigger`, `RealtimeTrigger`).
 
 ## Plugins
 
 
 ### Infrastructure
 
+- **ArgoCD** – Automate GitOps delivery by syncing applications and checking sync and health status from ArgoCD inside Kestra workflows (`Sync`, `Status`).
 - **Canonical MAAS** – List machines, enlist servers, commission hardware, deploy OS images, and control power states (on/off/cycle/query) for end-to-end bare-metal lifecycle automation (`ListMachines`, `EnlistMachine`, `CommissionMachine`, `DeployMachine`, `PowerControlMachine`).
 - **KVM** – Manage virtualization workloads and automate VM operations on KVM, including listing VMs, creating and updating VM definitions, starting and stopping instances, and deleting domains with optional storage cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `DeleteVm`).
 - **NetBox** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows, including listing sites and devices, creating and updating device records, and assigning IP addresses (`ListSites`, `ListDevices`, `CreateDevice`, `UpdateDevice`, `AssignIpAddress`).
