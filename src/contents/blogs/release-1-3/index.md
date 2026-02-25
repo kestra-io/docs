@@ -1,6 +1,6 @@
 ---
-title: "Kestra 1.3 introduces Kestra CTL, Kill Switch, Credentials, and New Plugins"
-description: "Kestra 1.3 delivers Kestra CTL for API-driven operations, enterprise-grade Kill Switch and Credentials for secure auth, improved UI/UX for plugin defaults, and new infrastructure plugins."
+title: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, new GitHub Action and New Infrastructure Plugins"
+description: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, a new GitHub Action, and new Infrastructure Plugins for safer production operations and developer automation."
 date: 2026-03-03T17:00:00
 category: News & Product Updates
 authors:
@@ -8,9 +8,7 @@ authors:
     image: bpimpaud
 image: ./main.jpg
 ---
-Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces Kestra CTL for managing flows and executions from the terminal, along with enterprise-grade Kill Switch controls and reusable Credentials for OAuth-based APIs.
-
-We've also improved AI Copilot controls and customization, namespace configuration workflows with a dedicated Plugin Defaults UI, shipped a refreshed GitHub Action based on Kestra CTL, and added new infrastructure and policy plugins.
+Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces enterprise-grade Kill Switch controls, reusable Credentials for OAuth-based APIs, kestractl and new GitHub Action for managing flows and executions from the terminal and the CI/CD.
 
 The table below highlights the key features of this release.
 
@@ -19,9 +17,9 @@ The table below highlights the key features of this release.
 | Kill Switch | UI-based control to stop or contain problematic executions | Enterprise Edition |
 | Credentials | Centralized server-to-server OAuth2 credentials with token minting and refresh | Enterprise Edition |
 | AI Copilot Enhancements | RBAC permission controls, expanded UI coverage, speech-to-text, model selection, and improved custom model settings | Enterprise Edition |
-| Kestra CTL | Command-line tool to interact with the Kestra host API for flows, executions, namespaces, and namespace files | All Editions |
-| Plugin Defaults UI | Manage plugin defaults directly from the namespace page | Enterprise Edition |
+| kestractl | Command-line tool to interact with the Kestra host API for flows, executions, namespaces, and namespace files | All Editions |
 | New GitHub Action | CLI-based action to deploy, validate, and trigger flows | All Editions |
+| Plugin Defaults UI | Manage plugin defaults directly from the namespace page | Enterprise Edition |
 | New Plugins | Infrastructure and policy integrations, including MAAS, NetBox, Nutanix, and OPA | All Editions |
 
 Check the video below for a quick overview of all enhancements.
@@ -58,9 +56,7 @@ The CLI remains available for power users and administrators who prefer terminal
 
 Teams struggle to connect workflows to modern APIs because credentials are scattered, brittle, and hard to rotate across environments. Managing authentication separately in each integration slows delivery and makes incidents harder to fix.
 
-Credentials provide reusable server-to-server authentication for flows. You configure authentication once and reference it in workflows with a simple expression, while Kestra handles token management behind the scenes.
-
-Credentials are available in the **Enterprise Edition** and can be created at the **tenant** or **namespace** scope. During setup, you can test token retrieval directly from the UI. Sensitive values (client secrets, private keys, certificates) are always stored as [Secrets](../04.secret/index.md).
+Credentials provide reusable server-to-server (machine-to-machine) authentication for flows. You configure authentication once and reference it in workflows with a simple expression, while Kestra handles token retrieval and refresh centrally.
 
 Use the `credential()` function to retrieve an access token at runtime:
 
@@ -78,7 +74,7 @@ tasks:
       token: "{{ credential('my_oauth') }}"
 ```
 
-Supported credential types include OAuth2 `client_credentials`, OAuth2 JWT Bearer (`jwt_bearer`), OAuth2 `private_key_jwt`, and GitHub App. Tokens are retrieved during task execution, never persisted, and can be cached in memory based on the credential configuration.
+Supported credential types include OAuth2 `client_credentials`, OAuth2 JWT Bearer (`jwt_bearer`), OAuth2 `private_key_jwt`, and GitHub App.
 
 ## AI Copilot Enhancements
 
@@ -92,13 +88,6 @@ Kestra 1.3 expands AI Copilot capabilities for enterprise teams with better gove
 - **Model selection in UI** - You can configure multiple models and let users choose the right one from a dropdown.
 - **Custom model configuration improvements** - Custom model setup now supports request headers and timeout configuration.
 
-## Plugin Defaults UI (Namespace)
-
-Plugin defaults are essential for consistent configurations, but managing them only in YAML makes them harder to discover, edit, and share across teams. This often slows down onboarding and pushes configuration drift into production.
-
-Kestra 1.3 adds a dedicated Plugin Defaults UI on the namespace page so you can fully manage these settings from the UI while keeping them versionable. Create new defaults with an **Add plugin default** button, select the plugin from a dropdown, and fill a form that clearly separates required and optional fields, with the option to switch to YAML at any time.
-
-You can also import plugin defaults from YAML to bootstrap or migrate from OSS, and export all defaults to YAML for Git, Terraform, or other IaC workflows.
 
 ## kestractl
 
@@ -116,11 +105,20 @@ The **Kestra Server CLI** is the original CLI many teams already know and trust,
 
 Teams often rely on custom scripts to deploy and validate flows in CI, which leads to inconsistent pipelines and hard-to-maintain automation. A dedicated action makes these workflows repeatable across repositories.
 
-Kestra 1.3 introduces a refreshed GitHub Action built on Kestra CTL, so you can reuse the same commands in CI that you run locally. It supports:
+Kestra 1.3 introduces a refreshed GitHub Action built on kestractl, so you can reuse the same commands in CI that you run locally. It supports:
 - **Deploy namespace files**
 - **Deploy flows to multiple namespaces**
 - **Validate flows**
 - **Trigger a deployed flow**
+
+## Plugin Defaults UI (Namespace)
+
+Plugin defaults are essential for consistent configurations, but managing them only in YAML makes them harder to discover, edit, and share across teams. This often slows down onboarding and pushes configuration drift into production.
+
+Kestra 1.3 adds a dedicated Plugin Defaults UI on the namespace page so you can fully manage these settings from the UI while keeping them versionable. Create new defaults with an **Add plugin default** button, select the plugin from a dropdown, and fill a form that clearly separates required and optional fields, with the option to switch to YAML at any time.
+
+You can also import plugin defaults from YAML to bootstrap or migrate from OSS, and export all defaults to YAML for Git, Terraform, or other IaC workflows.
+
 
 ## Additional Improvements
 
@@ -132,21 +130,21 @@ Kestra 1.3 introduces a refreshed GitHub Action built on Kestra CTL, so you can 
 
 ### Infrastructure
 
-- **Canonical MAAS** – Automate bare-metal provisioning and lifecycle management at scale.
-- **KVM** – Manage virtualization workloads and automate VM operations on KVM.
-- **NetBox** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows.
-- **Nutanix** – Manage VM lifecycle on hyper-converged infrastructure.
+- **Canonical MAAS** – List machines, enlist servers, commission hardware, deploy OS images, and control power states (on/off/cycle/query) for end-to-end bare-metal lifecycle automation (`ListMachines`, `EnlistMachine`, `CommissionMachine`, `DeployMachine`, `PowerControlMachine`).
+- **KVM** – Manage virtualization workloads and automate VM operations on KVM, including listing VMs, creating and updating VM definitions, starting and stopping instances, and deleting domains with optional storage cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `DeleteVm`).
+- **NetBox** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows, including listing sites and devices, creating and updating device records, and assigning IP addresses (`ListSites`, `ListDevices`, `CreateDevice`, `UpdateDevice`, `AssignIpAddress`).
+- **Nutanix** – Manage AHV VM lifecycle and recovery workflows on hyper-converged infrastructure, including VM listing, creation, updates, start/stop/reboot/reset operations, cloning and template conversions, plus snapshot creation, listing, restore, and cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `RebootVm`, `ResetVm`, `DeleteVm`, `CloneVm`, `CloneTemplate`, `ConvertVmToTemplate`, `ConvertTemplateToVm`, `CreateVmSnapshot`, `ListVmSnapshots`, `RestoreVmSnapshot`, `DeleteVmSnapshot`).
 
 ### Observability & Governance
 
-- **Graylog** – Route and structure logs for centralized observability workflows.
-- **Open Policy Agent** – Add policy-as-code checks for governance and compliance.
+- **Graylog** – Export Kestra execution logs to Graylog GELF HTTP inputs for centralized observability and SIEM workflows, with configurable host, batching, and HTTP client settings (`LogExporter`).
+- **Open Policy Agent** – Add policy-as-code checks for governance and compliance by uploading, listing, compiling, evaluating, and deleting OPA policies and decisions (`Upload`, `List`, `Compile`, `Evaluate`, `Delete`).
 
 ### Data & Automation
 
-- **Beam** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines.
-- **COBOL** – Run and orchestrate legacy COBOL-based workloads.
-- **Trello** – Automate board, card, and workflow actions from Kestra flows.
+- **Beam** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines, with YAML-based execution across Java and Python SDKs on Direct, Flink, Spark, and Dataflow runners (`RunPipeline`).
+- **COBOL** – Run and orchestrate legacy IBM i COBOL workloads by compiling programs from inline or stored source, executing jobs synchronously with parameters, and submitting batch jobs asynchronously (`CreateProgram`, `CallJob`, `SubmitJob`).
+- **Trello** – Automate Trello card workflows from Kestra by creating, updating, moving, and commenting on cards, and by polling boards or lists for new and updated card activity (`Create`, `Update`, `Move`, `Comment`, `Trigger`).
 
 ## Next Steps
 
