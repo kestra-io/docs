@@ -5,18 +5,17 @@ icon: /src/contents/docs/icons/dev.svg
 description: Automate Kestra flow validation and deployment directly from your GitHub repository using official Kestra GitHub Actions.
 ---
 
-Use GitHub Actions to automate the validation and deployment of your Kestra flows and namespace files with the latest official Kestra GitHub Actions.
+Use GitHub Actions to automate the validation and deployment of your Kestra flows and namespace files.
 
 ## Automate Kestra deployments with GitHub Actions
 
 Kestra provides three official [GitHub Actions](https://github.com/features/actions) enabling you to build robust CI/CD pipelines in your GitHub repository:
+
 - **Validate your flows**
 - **Deploy your flows**
 - **Deploy namespace files**
 
-To use these Actions, your Kestra instance must be reachable by the GitHub Actions runner—either publicly or via a self-hosted runner.
-
-For flows managed through CI/CD, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` to ensure production configurations are immutable:
+To use these Actions, your Kestra instance must be reachable by the GitHub Actions runner—either publicly or via a self-hosted runner. If you need to validate flows offline — without connecting to a running Kestra instance — use the legacy marketplace action instead: [kestra-validate-action](https://github.com/marketplace/actions/kestra-validate-action).
 
 :::alert{type="info"}
 For flows managed through CI/CD, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
@@ -40,9 +39,6 @@ Kestra provides these three Actions for CI/CD pipelines:
 - [`kestra-io/github-actions/validate-flows`](https://github.com/kestra-io/github-actions/tree/main/validate-flows): Validate a folder of flows before deployment.
 - [`kestra-io/github-actions/deploy-flows`](https://github.com/kestra-io/github-actions/tree/main/deploy-flows): Deploy a folder of flows to your Kestra server.
 - [`kestra-io/github-actions/deploy-namespace-files`](https://github.com/kestra-io/github-actions/tree/main/deploy-namespace-files): Deploy namespace files to your Kestra server.
-
-**Migration Note:**  
-The new actions have updated names and input parameters. Update any references from older actions to point to the new directory-based actions above.
 
 ---
 
