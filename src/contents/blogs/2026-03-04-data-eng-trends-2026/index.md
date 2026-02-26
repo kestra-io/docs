@@ -28,7 +28,7 @@ This workflow pattern reveals a category error: "data orchestration" was always 
 
 ### The "data engineer" role is fragmenting
 
-> Diagram showing "Data Engineer (2022)" splitting into three roles: Platform Engineer, Workflow Engineer, and AI Engineer
+> Diagram showing "Data Engineer (2026)" splitting into three roles: Platform Engineer, Workflow Engineer, and AI Engineer
 
 Traditional data engineers are splitting into at least three distinct roles:
 * Platform engineers build the orchestration systems that handle the full stack at scale. They work in [Kubernetes](/plugins/plugin-kubernetes), [Terraform](/plugins/plugin-terraform), and build internal platforms. 
