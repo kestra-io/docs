@@ -36,7 +36,7 @@ const { title, items } = Astro.props;
                         )}
                         <h6 class="title" set:html={item.title} />
                         {item.link ? (
-                            <a href={item.link.href} class="btn btn-primary btn-primary">
+                            <a href={item.link.href} class="btn btn-primary">
                                 {item.link.text}
                             </a>
                         ) : (
@@ -87,7 +87,7 @@ const { title, items } = Astro.props;
 
                 .card {
                     border-radius: 12px;
-                    background: transparent;
+                    background: var(--ks-background-primary);
                     padding: 2rem;
                     display: flex;
                     flex-direction: column;
@@ -95,7 +95,7 @@ const { title, items } = Astro.props;
                     align-items: flex-start;
                     gap: 8px;
                     border: 1px solid var(--ks-border-secondary);
-                    box-shadow: var(--ks-shadows-light);
+                    box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
 
                     @include media-breakpoint-up(lg) {
                         flex: 0 0 calc(33.333% - 1rem);
@@ -131,6 +131,10 @@ const { title, items } = Astro.props;
                         line-height: 22px;
                         margin: 0;
                         color: var(--ks-content-primary);
+
+                        :global(a) {
+                            color: var(--ks-content-link) !important;
+                        }
                     }
 
                     &.even-bg {
