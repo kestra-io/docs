@@ -1,6 +1,7 @@
 import { defineCollection, z } from "astro:content"
 import { glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
+import { vsPagesSchema } from "./schemas/vsPages"
 
 export const collections = {
     docs: defineCollection({
@@ -90,5 +91,12 @@ export const collections = {
             competitorName: z.string(),
             logo: z.string(),
         }),
+    }),
+    vsPages: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/vs-pages",
+        }),
+        schema: vsPagesSchema,
     }),
 }
