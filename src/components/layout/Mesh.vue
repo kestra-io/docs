@@ -1,21 +1,19 @@
----
----
+<template>
+    <section>
+        <div class="container">
+            <slot />
+        </div>
+    </section>
+</template>
 
-<section>
-    <div class="container">
-        <slot />
-    </div>
-</section>
-
-<style lang="scss">
+<style lang="scss" scoped>
     section {
         padding: 4rem 1rem;
         background: var(--ks-background-secondary) url('~/assets/header-grid.svg') no-repeat center / cover;
-        width: 100%;
-        height: 100%;
 
         .container {
             max-width: 1180px;
         }
     }
 </style>
+
