@@ -21,7 +21,9 @@ Most 2026 trend pieces stop here and run a tool comparison, but we're not going 
 This workflow pattern reveals a category error: "data orchestration" was always too narrow. Traditional orchestrators like Airflow only track data assets like tables and views. They can't track infrastructure assets like buckets, VMs, files, or API endpoints because those weren't part of the original design scope. When your lineage tool only tracks tables, you lose visibility into the infrastructure your workflows depend on. The dependency graph is incomplete.
 
 
+
 ## What this means for data engineering
+
 
 
 ### The "data engineer" role is fragmenting
@@ -34,6 +36,7 @@ Traditional data engineers are splitting into at least three distinct roles:
 * AI engineers combine data engineering with machine learning operations. They coordinate between feature stores (Feast, Tecton), model training (PyTorch, TensorFlow), and inference infrastructure.
 
 The modern data stack is the forcing function. When your stack includes [Fivetran](/plugins/plugin-fivetran) for extraction, dbt for transformation, [Snowflake](/plugins/plugin-jdbc-snowflake) for warehousing, and [Hightouch](/plugins/plugin-hightouch) for reverse ETL, plus infrastructure provisioning and API coordination, you need orchestration that handles all of it and not just the SQL parts.
+
 
 
 ### Orchestration becomes the universal language
