@@ -63,7 +63,6 @@ labels:
 inputs:
   - id: my-value
     type: STRING
-    required: false
     defaults: "default value"
     description: This input is optional.
 
