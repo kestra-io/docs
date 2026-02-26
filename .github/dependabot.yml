@@ -24,7 +24,7 @@ updates:
       time: "08:00"
       timezone: "Europe/Paris"
     open-pull-requests-limit: 50
-    labels: ["dependency-upgrade"]
+    labels: ["dependency-upgrade", "area/frontend"]
     groups:
       types:
         applies-to: version-updates
