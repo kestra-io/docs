@@ -25,6 +25,15 @@ This feature enables:
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
 - Monitoring assets and their state.
 
+### Operational automation
+
+Assets go beyond lineage: you can manage lifecycle, react to events, and automate remediation directly from flows:
+- Imperative lifecycle tasks to create/update, list, and delete assets (`Set`, `List`, `Delete`).
+- Event-based triggers with `EventTrigger` that react to asset lifecycle events (`CREATED`, `UPDATED`, `DELETED`, `USED`).
+- Freshness monitoring with `FreshnessTrigger` to detect stale assets and launch workflows automatically.
+- Flexible scoping by asset ID, namespace, type, and metadata filters.
+- Actionable trigger context (`event`, `eventTime`, `lastUpdated`, `staleDuration`, `checkTime`) to drive alerts, routing, and recovery.
+
 ## Asset definition
 
 Define assets directly on any task using the `assets` property. Each task can declare `inputs` assets (resources it reads) and `outputs` assets (resources it creates or modifies).
@@ -40,7 +49,162 @@ Every asset includes these fields:
 | `description` | markdown-supported documentation |
 | `metadata` | map of key-value for adding custom metadata to the given asset |
 
+### Operational controls and triggers
 
+Use asset tasks and triggers to automate lifecycle, governance, and freshness checks directly from flows.
+
+:::collapse{title="React in real time to asset events"}
+
+```yaml
+id: asset_event_driven_pipeline
+namespace: company.data
+
+tasks:
+  - id: transform_to_mart
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.data
+    flowId: create_mart_tables
+    inputs:
+      source_asset_id: "{{ trigger.asset.id }}"
+      source_event: "{{ trigger.asset.event }}"
+      event_time: "{{ trigger.asset.eventTime }}"
+
+triggers:
+  - id: staging_table_event
+    type: io.kestra.plugin.ee.assets.EventTrigger
+    namespace: company.data
+    assetType: io.kestra.plugin.ee.assets.Table
+    events:
+      - CREATED
+      - UPDATED
+    metadataQuery:
+      - field: model_layer
+        type: EQUAL_TO
+        value: staging
+```
+
+:::
+
+:::collapse{title="Audit asset deletions"}
+
+```yaml
+id: audit_asset_deletions
+namespace: company.security
+
+tasks:
+  - id: log_deletion
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: |
+      INSERT INTO audit_log (asset_id, asset_type, namespace, event, event_time)
+      VALUES (
+        '{{ trigger.asset.id }}',
+        '{{ trigger.asset.type }}',
+        '{{ trigger.asset.namespace }}',
+        '{{ trigger.asset.event }}',
+        '{{ trigger.asset.eventTime }}'
+      )
+
+triggers:
+  - id: asset_deletion_event
+    type: io.kestra.plugin.ee.assets.EventTrigger
+    events:
+      - DELETED
+```
+
+:::
+
+:::collapse{title="Trigger a flow when assets are stale"}
+
+```yaml
+id: stale_assets_monitor
+namespace: company.monitoring
+
+tasks:
+  - id: log_stale
+    type: io.kestra.plugin.core.log.Log
+    message: >
+      Found {{ trigger.assets | length }} stale assets.
+      First asset: {{ trigger.assets[0].id ?? 'n/a' }}.
+      Stale for: {{ trigger.assets[0].staleDuration ?? 'n/a' }}.
+
+triggers:
+  - id: stale_assets
+    type: io.kestra.plugin.ee.assets.FreshnessTrigger
+    maxStaleness: PT24H
+    interval: PT1H
+```
+
+:::
+
+:::collapse{title="Scope freshness checks to production mart assets"}
+
+```yaml
+id: prod_assets_freshness
+namespace: company.monitoring
+
+tasks:
+  - id: trigger_remediation
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.data
+    flowId: refresh_marts
+    inputs:
+      asset_id: "{{ trigger.assets[0].id }}"
+      last_updated: "{{ trigger.assets[0].lastUpdated }}"
+      stale_duration: "{{ trigger.assets[0].staleDuration }}"
+
+triggers:
+  - id: stale_prod_marts
+    type: io.kestra.plugin.ee.assets.FreshnessTrigger
+    namespace: company.data
+    assetType: TABLE
+    maxStaleness: PT6H
+    interval: PT30M
+    metadataQuery:
+      - field: environment
+        type: EQUAL_TO
+        value: prod
+      - field: model_layer
+        type: EQUAL_TO
+        value: mart
+```
+
+:::
+
+:::collapse{title="Imperative asset lifecycle tasks"}
+
+```yaml
+id: asset_lifecycle_ops
+namespace: company.data
+
+tasks:
+  - id: upsert_asset
+    type: io.kestra.plugin.ee.assets.Set
+    namespace: assets.data
+    assetId: customers_by_country
+    assetType: TABLE
+    displayName: Customers by Country
+    assetDescription: Customer distribution by country
+    metadata:
+      owner: data-team
+      environment: prod
+
+  - id: list_assets
+    type: io.kestra.plugin.ee.assets.List
+    namespace: assets.data
+    types:
+      - TABLE
+    metadataQuery:
+      - field: owner
+        type: EQUAL_TO
+        value: data-team
+    fetchType: FETCH
+
+  - id: delete_asset
+    type: io.kestra.plugin.ee.assets.Delete
+    assetId: customers_by_country
+```
+
+:::
 
 ### Data Pipeline Use Cases
 
