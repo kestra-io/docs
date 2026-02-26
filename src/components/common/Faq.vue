@@ -46,7 +46,7 @@
 @import "~/assets/styles/variable";
 
 section {
-    padding: $rem-4 $rem-1;
+    padding: $rem-6 $rem-1;
     background: var(--ks-background-primary);
 
     .content {
