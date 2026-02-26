@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-6 column left-column">
                 <div class="form-container">
-                    <h2 class="form-title">
+                    <h2 class="form-title mb-6">
                         Request Access for a Free Trial of Kestra Enterprise Team Edition
                     </h2>
 
@@ -69,7 +69,7 @@
                             <textarea id="orchestration_needs" class="form-control" name="orchestration_needs" rows="2" />
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
                     </form>
                 </div>
             </div>
