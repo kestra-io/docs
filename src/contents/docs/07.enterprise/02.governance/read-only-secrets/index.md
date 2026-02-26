@@ -18,6 +18,8 @@ Integrate external secrets managers in a read-only mode.
 When integrating an external [secrets manager](../secrets-manager/index.md) with Kestra, you may want to ensure that those secrets cannot be modified within Kestra, maintaining immutability.
 Currently, read-only secrets can be configured for [AWS Secret Manager](../secrets-manager/index.md#aws-secrets-manager-configuration), [Azure Key Vault](../secrets-manager/index.md#azure-key-vault-configuration), [Google Secret Manager](../secrets-manager/index.md#google-secret-manager-configuration), and [Vault](../secrets-manager/index.md#vault-configuration).
 
+Read-only mode still works with [Credentials](../../../06.concepts/13.credentials/index.md): the credential uses your external secrets to mint short-lived tokens, and flows consume the token via `credential()`, while the underlying secrets remain immutable in the manager.
+
 ## Configure read-only secrets
 
 Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](../tenants/index.md) and the [Namespace](../../../05.workflow-components/02.namespace/index.md) level.

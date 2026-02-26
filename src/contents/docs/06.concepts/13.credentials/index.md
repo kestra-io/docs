@@ -73,7 +73,7 @@ Credentials cover common server-to-server authentication patterns, including:
 - OAuth2 `private_key_jwt` (client authentication)
 - GitHub App
 
-Credentials can reference sensitive inputs via existing [Secrets](../04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or read-only secrets manager.
+Credentials can reference sensitive inputs via existing [Secrets](../04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../07.enterprise/02.governance/read-only-secrets/index.md).
 
 ---
 

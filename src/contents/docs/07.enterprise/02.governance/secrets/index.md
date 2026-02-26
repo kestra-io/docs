@@ -29,4 +29,4 @@ The Open Source Edition does not include built-in secrets management. However, y
 Since there is no real notion of Secrets Management in the Open Source Edition, you will need to manage the lifecycle of these environment variables manually. This means that you will need to restart your Kestra instance to update or delete a Secret. We recommend planning these operations carefully to avoid any downtime, or contact us about upgrading to the Enterprise Edition to gain access to full secrets management features, including integration with external [Secrets Managers](../secrets-manager/index.md).
 :::
 
-For more, check out our [secrets documentation](../../../06.concepts/04.secret/index.md) and [secrets best practices guide](../../../14.best-practices/9.secrets-management/index.md).
+For more, check out our [secrets documentation](../../../06.concepts/04.secret/index.md), the [credentials guide](../../../06.concepts/13.credentials/index.md) for short-lived OAuth-style access tokens, and our [secrets best practices guide](../../../14.best-practices/9.secrets-management/index.md).

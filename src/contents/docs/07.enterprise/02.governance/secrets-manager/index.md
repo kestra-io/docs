@@ -16,6 +16,8 @@ Kestra respects your privacy. Therefore, secrets are persisted externally in a b
 
 You can add, modify, or delete secrets from the **Secrets** tab of any given namespace in the Kestra UI or programmatically via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/namespace_secret).
 
+If you need Kestra to mint and refresh short-lived tokens (e.g., OAuth2 client credentials), define a [Credential](../../../06.concepts/13.credentials/index.md) that references your secrets. The `credential()` Pebble function will then inject the active access token at runtime while the underlying secrets stay in your external manager.
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/U0cNzNQ-bkw?si=20ltjCZBXJW8_QAe" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
