@@ -45,9 +45,10 @@ With Kestra Assets, analytics datasets are modeled explicitly as part of the orc
 
 A typical pattern looks like this:
 
+```yaml
 id: data-pipeline-assets
 namespace: kestra.company
-```yaml
+
 tasks:
   - id: create_staging_layer_asset
     type: io.kestra.plugin.jdbc.duckdb.Query

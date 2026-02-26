@@ -48,6 +48,20 @@ Each service displays:
 - **Start Date**
 - **Health Check Date**
 
+### Service states
+
+- **RUNNING** — service is active and healthy.
+- **MAINTENANCE** — intentionally paused; executions are blocked until resumed.
+- **DISCONNECTED** — lost a required dependency (e.g., DB/queue) and may recover or shut down.
+- **TERMINATING** — shutting down; tries to drain work before stopping.
+- **TERMINATED_GRACEFULLY / TERMINATED_FORCED** — shutdown completed (clean or forced), moves to `NOT_RUNNING`.
+- **NOT_RUNNING / INACTIVE** — post-shutdown, final states reported in the UI.
+
+States come from the service lifecycle. Typical flow:
+- **CREATED** → **RUNNING** after a clean start; **MAINTENANCE** can be set directly for planned work.
+- **DISCONNECTED** signals a lost dependency (DB/queue) and may recover to **RUNNING** or proceed to shutdown.
+- **TERMINATING** attempts graceful stop; it ends in **TERMINATED_GRACEFULLY** or **TERMINATED_FORCED**, then **NOT_RUNNING** → **INACTIVE**.
+
 ### Server information and liveness
 
 Each service instance provides technical details for debugging when clicked on:

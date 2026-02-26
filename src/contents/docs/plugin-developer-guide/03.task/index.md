@@ -299,14 +299,14 @@ data:
 
 #### Static properties or the old `@PluginProperty` annotation
 
-Alternatively to using the `Property` carrier type, if you don't want or can't use dynamic properties using the `Property` carrier type, you can define you task property like this:
+Prefer the `Property` carrier type for inputs. If you can't use it (for example you need legacy dynamic rendering support), you can still declare the task property this way:
 
 ```java
 @PluginProperty
 private String string;
 ```
 
-Always use the `@PluginProperty` if you don't use the `Property` carrier type for the task JSON Schema and documentation to be property generated. You can even use `@PluginProperty(dynamic = true)` and render the property __in other ways__ that I will not explain here, this was the old way to deal with dynamic properties, but it's now strongly dis-encouraged.
+Use the `@PluginProperty` annotation when you cannot rely on the `Property` carrier type so the task JSON Schema and documentation are generated correctly. When a field must be rendered dynamically, add `@PluginProperty(dynamic = true)`. Keep this fallback for those edge cases—`Property<T>` remains the recommended default.
 
 #### Kestra internal storage
 

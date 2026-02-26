@@ -1,0 +1,104 @@
+---
+import { Image } from "astro:assets"
+
+import Link from "~/components/common/Link.astro"
+import seeHow from "~/assets/landing/see_how.svg"
+
+interface Props {
+    cta?: {
+        text: string;
+        href: string;
+        download?: string | boolean;
+    };
+    imgSrc?: string | ImageMetadata;
+}
+
+const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } = Astro.props;
+---
+
+<section class="py-5 px-3">
+    <div class="see_how mx-auto w-100 rounded-3 p-1">
+        <div class="inner mx-auto w-100">
+            <div class="row g-0">
+                <div class="col-12 col-md-6 rounded-3 overflow-hidden">
+                    <Image
+                        src={imgSrc}
+                        alt="See How"
+                        class="w-100 h-100 object-fit-cover"
+                        {...(typeof imgSrc === 'string' ? { width: 600, height: 400 } : {} as any)}
+                    />
+                </div>
+                <div
+                    class="col-12 col-md-6 rounded-3 d-flex align-items-center px-4 py-3 py-md-5"
+                >
+                    <div class="content">
+                        <h3 class="mb-3">
+                            <slot name="title" />
+                        </h3>
+                        <p>
+                            <slot />
+                        </p>
+                        <Link href={cta.href} class="btn btn-primary text-white" download={cta.download}>
+                            {cta.text}
+                        </Link>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        background-color: var(--ks-background-body);
+        .see_how {
+            max-width: 1160px;
+            border: $block-border;
+            border-radius: $border-radius-lg;
+            background-color: var(--ks-background-secondary);
+            .inner {
+                border: $block-border;
+                border-radius: $border-radius-lg;
+                .col-12 {
+                    max-height: 400px;
+
+                    @include media-breakpoint-up(md) {
+                        max-height: 600px;
+                    }
+
+                    &:first-child {
+                        border-radius: 9px 9px 0 0 !important;
+
+                        @include media-breakpoint-up(md) {
+                            border-radius: 9px 0 0 9px !important;
+                        }
+                    }
+
+                    &:last-child {
+                        background-color: var(--ks-background-secondary);
+                        border-radius: 0 0 9px 9px !important;
+
+                        @include media-breakpoint-up(md) {
+                            border-radius: 0 9px 9px 0 !important;
+                            padding-left: $rem-4 !important;
+                        }
+
+                        .content {
+                            max-width: 338px;
+
+                            h3 {
+                                line-height: 38px;
+                            }
+
+                            :global(a):not(.btn) {
+                                color: var(--ks-content-link) !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

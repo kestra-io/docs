@@ -1,0 +1,180 @@
+---
+import Card from "~/components/card/Card.vue"
+
+interface Props {
+    title?: string
+    description?: string
+    cards: Array<{
+        icon?: any
+        image?: {
+            src?: string
+            alt?: string
+        }
+        cardInfo?: {
+            title?: string
+            description?: string
+            descriptionHtml?: string
+        }
+        title?: string
+        description?: string
+        number?: string
+        bottomMenuBar?: Array<{
+            text: string
+            active: boolean
+        }>
+    }>
+    class?: string
+}
+
+const { title, description, cards, class: className } = Astro.props
+---
+
+<div class:list={["container-fluid ", className]}>
+    <div class="container">
+        <div class="title-block mb-3">
+            {title && <h1 data-usal="fade-r" set:html={title} />}
+            {
+                description && (
+                    <p data-usal="fade-l" class="description">
+                        {description}
+                    </p>
+                )
+            }
+        </div>
+        <div class="row d-flex justify-content-center mt-5 cards-container">
+            {
+                cards.map((card) => (
+                    <div
+                        class="col-12 col-md-6 col-lg-4 mb-4 z-2"
+                        data-usal="zoomin"
+                    >
+                        <Card
+                            img={card.image?.src}
+                            imgAlt={card.image?.alt}
+                            cardInfo={card.cardInfo}
+                            number={card.number}
+                            title={card.title}
+                            description={card.description}
+                            bottomMenuBar={card.bottomMenuBar}
+                            icon={card.icon}
+                        />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .container-fluid {
+        text-align: center;
+        padding: calc($spacer * 3) $spacer;
+        background: var(--ks-background-body)
+            url("/retail/header-mask.svg") 100% 100%;
+
+        .container {
+            .title-block {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                z-index: 3;
+
+                h1 {
+                    font-weight: 600;
+                    font-size: calc($font-size-base * 2.25);
+                    color: var(--ks-content-primary);
+                }
+
+                .description {
+                    text-align: center;
+                    color: var(--ks-content-primary);
+                    max-width: 100%;
+
+                    @include media-breakpoint-up(lg) {
+                        max-width: 54%;
+                    }
+                }
+            }
+
+            .cards-container {
+                position: relative;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    height: 30rem;
+                    width: 30rem;
+                    bottom: 40%;
+                    left: 40%;
+                    z-index: 1;
+                    filter: blur(100px);
+                    background: linear-gradient(
+                        180deg,
+                        rgba(98, 24, 255, 0) 0%,
+                        #6117ff 100%
+                    );
+                }
+
+                :global(.card-title),
+                :global(.card-text) {
+                    text-align: left;
+                }
+            }
+        }
+
+        &.red {
+            .title-block {
+                h1 {
+                    :global(span) {
+                        background: linear-gradient(
+                            90.03deg,
+                            #e3262f 57.94%,
+                            #ab0009 87.71%
+                        ) !important;
+                        background-clip: text !important;
+                        -webkit-background-clip: text !important;
+                        -webkit-text-fill-color: transparent !important;
+                    }
+                }
+            }
+
+            .cards-container {
+                &::after {
+                    background: linear-gradient(
+                        180deg,
+                        rgba(253, 114, 120, 0) 11.24%,
+                        #e3262f 72.98%
+                    ) !important;
+                    bottom: 35% !important;
+                    width: 15rem !important;
+                    height: 15rem !important;
+                    left: 40% !important;
+                }
+            }
+
+            :global(.card-icon) {
+                &::before {
+                    background: linear-gradient(
+                        134.95deg,
+                        #e3262f 18.11%,
+                        #fcd8df 27.65%,
+                        #db2727 36.31%,
+                        rgba(219, 39, 39, 0) 58.84%,
+                        rgba(252, 108, 108, 0.84) 80.5%
+                    ) !important;
+                }
+
+                :global(.material-design-icon) {
+                    filter: drop-shadow(2px 4px 4px rgba(171, 29, 28, 0.25));
+
+                    :global(path) {
+                        fill: url(#featureiconsgradientRed) !important;
+                    }
+                }
+            }
+        }
+    }
+</style>

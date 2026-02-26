@@ -13,7 +13,7 @@
     >
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
-                <div class="modal-body row bg-dark-4">
+                <div class="modal-body row ">
                     <div class="search">
                         <label class="visually-hidden" for="search-input">Search</label>
                         <div class="input-group">
@@ -29,55 +29,61 @@
                                 placeholder="Search Kestra.io"
                             />
                             <div class="align-items-center d-flex input-group-append">
-                                <div class="ai-button-wrapper me-2">
-                                    <button
-                                        class="ai-button"
-                                        title="Ask Kestra AI"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#search-ai-modal"
-                                    >
-                                        <img
-                                            :src="KSAIImg.src"
-                                            alt="Kestra AI"
-                                            width="30"
-                                            height="30"
-                                        />
-                                        <span class="title d-none d-md-inline">Ask Kestra AI</span>
-                                        <span class="title d-md-none">Ask AI</span>
-                                    </button>
-                                </div>
+                                <button
+                                    class="btn btn-sm btn-primary"
+                                    title="Ask Kestra AI"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#search-ai-modal"
+                                >
+                                    <img
+                                        :src="KSAIImg.src"
+                                        alt="Kestra AI"
+                                        width="30"
+                                        height="30"
+                                    />
+                                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                                    <span class="title d-md-none">Ask AI</span>
+                                </button>
                                 <span class="esc">ESC</span>
                             </div>
                         </div>
                     </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden p-0">
-                        <div
+                    <div class="facets overflow-x-auto overflow-y-hidden p-0" role="tablist">
+                        <button
                             class="facet"
                             :class="{
                                 'facet-active': selectedFacet === undefined,
                             }"
+                            role="tab"
                             @click="() => selectFacet(undefined)"
                         >
                             <span>All</span>
                             <span>({{ allSum }})</span>
-                        </div>
-                        <div
+                        </button>
+                        <button
                             class="facet"
                             v-for="(result, key, index) in searchFacets"
                             @click="() => selectFacet(key)"
                             :class="{ 'facet-active': selectedFacet === key }"
+                            role="tab"
                             :key="index"
                         >
                             <span>{{
                                 key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()
                             }}</span>
                             <span>({{ result }})</span>
-                        </div>
+                        </button>
                     </div>
                     <div :class="{ loading: loading }">
-                        <div class="row" v-if="searchResults && searchResults.length === 0">
+                        <div class="d-flex justify-content-center mt-5 mb-5" v-if="initialLoad === false">
+                            <div class="spinner-border" role="status">
+
+                            </div>
+                        </div>
+
+                        <div class="row" v-else-if="searchResults && searchResults.length === 0">
                             <div
-                                class="col-12 not-found-content d-flex flex-column justify-content-center bg-dark-2"
+                                class="col-12 not-found-content d-flex flex-column justify-content-center "
                             >
                                 <img
                                     src="/search/emoticon-dead-icon.svg"
@@ -184,7 +190,7 @@
     >
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
-                <div class="modal-body row bg-dark-4">
+                <div class="modal-body row ">
                     <Suspense>
                         <AiChatDialog @close="closeAiDialog" @backToSearch="backToSearch" />
                     </Suspense>
@@ -223,6 +229,7 @@
                 cancelToken: undefined,
                 loading: true,
                 showAiDialog: false,
+                initialLoad: false,
             }
         },
         mounted() {
@@ -276,6 +283,7 @@
                         cancelToken: this.cancelToken.token,
                     })
                     .then((response) => {
+                        this.initialLoad = true;
                         if (response?.data?.results?.length) {
                             this.searchResults = response.data.results.map((result) => {
                                 const searchTerm = value?.trim()?.toLowerCase()
@@ -465,114 +473,106 @@
 
     #search-modal {
         .not-found-content {
-            color: $white;
+            color: var(--ks-content-primary);
             padding: 3.125rem 0;
-            border-top: 1px solid $black-6;
+            border-top: 1px solid var(--ks-border-primary);
             img {
                 width: 1.5rem;
             }
         }
-
         .search {
             width: 100%;
-            border: 1px solid $black-6;
+            border: 1px solid var(--ks-border-primary);
             padding: 8px 16px;
             gap: 8px;
-            background: $black-4;
+            background: var(--ks-background-body);
             opacity: 1;
-
             .input-group-text {
                 background: transparent;
                 font-size: 1.25rem;
                 border-bottom-left-radius: 0;
                 border-top-left-radius: $border-radius-lg;
                 border: none;
-                color: $white-3;
+                color: var(--ks-content-secondary);
                 padding: 0;
             }
-
             .magnify-icon {
                 font-size: 20px;
                 color: var(--ks-content-secondary);
                 margin-top: -4px;
             }
-
             .ai-button {
                 padding: 4px 12px;
             }
-
             .esc {
-                color: $black-10;
+                color: var(--ks-content-tertiary);
                 font-size: 0.563rem;
+                margin-left: 0.5rem;
             }
         }
-
         .form-control {
             border-left: 0;
             background: transparent !important;
             border-bottom-right-radius: 0;
             border: none;
             padding-left: 8px;
-
             &,
             &::placeholder {
-                color: $white-3;
+                color: var(--ks-content-secondary);
                 font-size: $font-size-md;
                 font-weight: 400;
             }
         }
-
         .form-control:focus {
             box-shadow: none;
         }
-
         .badge {
             font-weight: normal;
-
             &.bg-light {
                 background: var(--bs-gray-400) !important;
             }
         }
-
         .icon-wrapper {
             width: 16px;
             height: 16px;
             margin-right: 0.375rem;
         }
-
         .modal-body {
             .search,
             .facets {
-                color: $white-3;
-                background: $black-4;
+                color: var(--ks-content-secondary);
+                background: var(--ks-background-body);
             }
-
             .facets {
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 padding: 0 1rem;
                 font-size: $font-size-sm;
-                border-top: 1px solid $black-6;
-
+                border-top: 1px solid var(--ks-border-primary);
                 @include media-breakpoint-down(md) {
                     width: 97%;
                 }
-
                 .facet {
                     display: flex;
                     align-items: center;
                     padding: 0.5rem 1rem;
                     gap: 5px;
                     cursor: pointer;
+                    background-color: transparent;
+                    appearance: none;
+                    border: none;
                     border-top: 1px solid transparent;
-                    color: $white;
+                    color: var(--ks-content-primary);
                     -ms-overflow-style: none;
                     scrollbar-width: none;
-
                     &-active {
-                        border-top: 1px solid $purple-36;
-                        color: $purple-36;
+                        border-top: 1px solid var(--ks-border-active);
+                        color: var(--ks-content-color-highlight);
+                    }
+                    &:focus-visible {
+                        outline: none;
+                        text-decoration: underline;
                     }
                 }
                 &::-webkit-scrollbar {
@@ -580,46 +580,38 @@
                 }
             }
         }
-
         .search-result,
         .search-detail {
             overflow-x: hidden;
             overflow-y: auto;
             height: calc(100vh - 175px);
-            background: $black-4;
-
+            background: var(--ks-background-body);
             &::-webkit-scrollbar {
                 width: 4px;
                 height: 4px;
             }
-
             &::-webkit-scrollbar-track {
                 background: transparent;
             }
-
             &::-webkit-scrollbar-thumb {
-                background: $primary-1;
+                background: var(--ks-background-button-primary-hover);
             }
-
             &::-webkit-scrollbar-thumb:hover {
                 background: #370883;
             }
-
             .type {
-                color: $white-3;
+                color: var(--ks-content-secondary);
                 font-size: $font-size-sm;
                 font-weight: 400;
                 line-height: 14px;
             }
-
             h5 {
-                color: $white;
+                color: var(--ks-content-primary);
                 font-size: $font-size-sm;
                 font-weight: 700;
                 line-height: 22px;
                 margin-bottom: 0;
             }
-
             .slug {
                 white-space: nowrap;
                 overflow: hidden;
@@ -628,88 +620,73 @@
                 font-size: $font-size-xs;
                 color: var(--bs-gray-600);
                 margin-bottom: calc($spacer / 3);
-
                 span {
-                    color: $black-8;
+                    color: var(--ks-content-tertiary);
                     font-size: 0.688rem;
                     font-weight: 400;
                     margin-right: 0.25rem;
                     line-height: 14px;
-
                     &:before {
                         content: "/";
                         margin-right: 0.25rem;
                     }
-
                     &:first-child {
                         &:before {
                             display: none;
                         }
                     }
                 }
-
                 .breadcrumb-item + .breadcrumb-item::before {
                     color: $pink;
                 }
             }
         }
-
         .search-result {
-            border-right: 1px solid $black-6;
+            border-right: 1px solid var(--ks-border-primary);
             padding: 0 !important;
-
             .result {
                 transition: background-color 0.2s ease;
                 padding: 1rem;
                 display: flex;
                 cursor: pointer;
-                border-bottom: 1px solid $black-6;
-
+                border-bottom: 1px solid var(--ks-border-primary);
                 > div {
                     flex-grow: 1;
                 }
-
                 span.material-design-icon.arrow {
                     font-size: 1rem;
                     opacity: 0;
                     transition: opacity 0.2s ease;
                 }
             }
-
             .active .result,
             .result:hover {
-                background: $black-3;
+                background: var(--ks-background-primary);
             }
         }
-
         .search-detail {
             .extract {
                 margin-top: 1rem;
                 font-family: var(--bs-font-monospace);
                 font-size: 80%;
                 max-width: 100%;
-                color: $white;
-
+                color: var(--ks-content-primary);
                 p {
                     white-space: pre;
                     word-break: break-all;
                 }
             }
         }
-
         .loading {
             opacity: 0.6;
         }
-
         .search-results {
-            border-top: 1px solid $black-6;
+            border-top: 1px solid var(--ks-border-primary);
         }
-
         mark {
             background-color: transparent;
-            color: $purple-36;
-            font-family: $font-family-sans-serif;
-            font-weight: 800;
+            color: var(--ks-content-color-highlight);
+            font-weight: 700;
             padding: 0;
             margin: 0;
         }

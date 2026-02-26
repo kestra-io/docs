@@ -1348,7 +1348,7 @@ To set task-level retries globally, use plugin defaults:
 
 ## Secret managers
 
-Configure a [secrets backend](../07.enterprise/02.governance/secrets-manager/index.md) via `kestra.secret`. To isolate from specific services, use `kestra.secret.isolation`.
+Configure a [secrets backend](../07.enterprise/02.governance/secrets-manager/index.md) via `kestra.secret`. To isolate from specific Kestra services from being able to access secrets, use `kestra.secret.isolation`. 
 
 ```yaml
 kestra:
@@ -1723,7 +1723,7 @@ Other storage backends are supported via plugins:
 - [Azure](#azure)
 - [MinIO](#minio)
 
-Isolate storage to specific services (>= 0.22):
+To prevent certain Kestra services from accessing internal storage items, isolate storage to specific services using `denied-services` (>= 0.22):
 
 ```yaml
 kestra:
@@ -1735,7 +1735,7 @@ kestra:
         - EXECUTOR
 ```
 
-Screenshot example:
+Also configurable in the UI:
 
 ![Internal Storage UI Configuration](./is-secrets-configuration.png)
 

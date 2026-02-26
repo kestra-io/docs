@@ -2,7 +2,7 @@
 export const prerender = false
 import StoriesList from "~/components/stories/StoriesList.vue"
 import Layout from "~/components/layout.astro"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
 import { $fetchApi } from "~/utils/fetch"
 
 const title = "Kestra's Customers Stories"
@@ -28,14 +28,12 @@ const totalStories = data.total
             stories={stories}
             totalStories={totalStories}
         />
-        <LayoutFooterContact
+        <FooterContact
             client:visible
             title="Getting started with Kestra"
             subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Get started"
-            darkButtonHref="/docs/quickstart#start-kestra"
-            purpleButtonText="Read the docs"
-            purpleButtonHref="/docs"
+            dark={{ text: "Get started", href: "/docs/quickstart#start-kestra" }}
+            purple={{ text: "Read the docs", href: "/docs" }}
         />
     </div>
 </Layout>

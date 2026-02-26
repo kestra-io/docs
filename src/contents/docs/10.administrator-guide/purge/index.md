@@ -1,5 +1,5 @@
 ---
-title: Purge Old Data in Kestra – Executions, Logs, Key-Value Store
+title: Purge Old Data in Kestra – Executions, Logs, Key-Value Store, Files
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.18.0"
@@ -45,7 +45,9 @@ triggers:
     cron: "@daily"
 ```
 
-The example below purges expired key-value pairs from the `company` namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) namespace.
+## Purge Key-value pairs
+
+The example below purges expired Key-value pairs from the `company` Namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) Namespace.
 
 ```yaml
 id: purge_kv_store
@@ -66,7 +68,7 @@ Purge tasks permanently delete data. Always test in non-production environments 
 
 ## Auto-delete expired key-value pairs
 
-Rather than creating a system flow to regularly purge key-value pairs, you can add a global configuration to your Kestra Configuration/Application file that auto-deletes expired key-value pairs:
+Rather than creating a system flow to regularly purge Key-value pairs, you can add a global configuration to your Kestra Configuration/Application file that auto-deletes expired key-value pairs:
 
 ```yaml
 kestra:

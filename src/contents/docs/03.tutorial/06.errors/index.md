@@ -13,7 +13,7 @@ Failure is inevitable. Kestra offers automatic retries and error handling to hel
   <iframe src="https://www.youtube.com/embed/fjq4z19PZ5w?si=ca80qvdamP6g1hWO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Handle errors with Retries and alerts
+## Handle errors with retries and alerts
 
 By default, if any task fails, the execution stops and is marked as failed. For more control over error handling, you can add `errors` tasks, `AllowFailure` tasks, or automatic retries.
 
@@ -229,7 +229,7 @@ tasks:
 
 ## Next steps
 
-Congrats! :tada: You've completed the tutorial.
+Congrats! 🎉 You've completed the tutorial.
 
 Next, you can dive into:
 

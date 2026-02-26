@@ -1,9 +1,8 @@
 ---
-import Link from "~/components/common/Link.astro"
 import { Image } from "astro:assets"
+import PluginsCarousel from "~/components/common/PluginsCarousel.astro"
 
 const { plugins = [] } = Astro.props
-const PLUGINS_CAROUSEL = [...plugins, ...plugins]
 ---
 
 <div class="connect">
@@ -13,23 +12,14 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
         </div>
 
         <div class="connect__panel connect__panel--right">
-            <h1>Connect With Any Infrastructure Tools</h1>
-
-            <div class="icon-scroll">
-                <div class="carousel">
-                    {
-                        PLUGINS_CAROUSEL.map((plugin) => (
-                            <div>
-                                <Image src={plugin.logo} alt={plugin.name} width={plugin.logo.width} height={plugin.logo.height} />
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
-
-            <div class="align-self-lg-start">
-                <Link href="/plugins" text="See all plugins" class="text-white" />
-            </div>
+            <PluginsCarousel
+                {plugins}
+                title="Connect With Any Infrastructure Tools"
+                link={{
+                    href: "/plugins",
+                    text: "See all plugins",
+                }}
+            />
         </div>
     </div>
 </div>
@@ -134,125 +124,7 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
             @include media-breakpoint-down(lg) {
                 width: 100%;
             }
-
-            .icon-scroll {
-                height: 60px;
-                @include media-breakpoint-up(lg) {
-                    width: 402px;
-                    height: 70px;
-                }
-                position: relative;
-                overflow: hidden;
-                border-radius: 0.875rem;
-
-                @include media-breakpoint-down(xl) {
-                    width: 90%;
-                }
-
-                &::after,
-                &::before {
-                    content: "";
-                    position: absolute;
-                    top: 0;
-                    height: 100%;
-                    width: 8%;
-                    z-index: 11;
-                    pointer-events: none;
-                }
-
-                &::after {
-                    left: 0;
-                    background: linear-gradient(
-                        90deg,
-                        rgba(255, 255, 255, 0.06),
-                        rgba(255, 255, 255, 0)
-                    );
-                    backdrop-filter: blur(3px);
-                }
-
-                &::before {
-                    right: 0;
-                    background: linear-gradient(
-                        90deg,
-                        rgba(255, 255, 255, 0),
-                        rgba(255, 255, 255, 0.06)
-                    );
-                    backdrop-filter: blur(3px);
-                }
-
-                .carousel {
-                    position: absolute;
-                    overflow: visible;
-                    white-space: nowrap;
-                    top: 0;
-                    left: 0;
-                    animation: infiscroll 12s linear infinite;
-                    z-index: 10;
-                    -webkit-mask-image: linear-gradient(
-                        to right,
-                        transparent 0%,
-                        $black 15%,
-                        $black 85%,
-                        transparent 100%
-                    );
-                    mask-image: linear-gradient(
-                        to right,
-                        transparent 0%,
-                        $black 15%,
-                        $black 85%,
-                        transparent 100%
-                    );
-
-                    div {
-                        display: inline-flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 60px;
-                        height: 60px;
-                        @include media-breakpoint-up(lg) {
-                            width: 70px;
-                            height: 70px;
-                        }
-                        margin: 0 0.5rem;
-                        border-radius: 0.875rem;
-                        box-shadow: 0 0.125rem 0.25rem var(--ks-card-shadow);
-                        overflow: hidden;
-                        background: $white;
-
-                        img {
-                            width: 95%;
-                            height: 95%;
-                            object-fit: contain;
-                        }
-                    }
-                }
-            }
-
-            h1 {
-                width: 395px;
-                font-weight: 600;
-                color: $white;
-                margin: 0;
-
-                @include media-breakpoint-up(lg) {
-                    font-size: 2.1875rem;
-                    line-height: 3rem;
-                }
-
-                @include media-breakpoint-down(lg) {
-                    width: 100%;
-                }
-            }
         }
     }
 
-    @keyframes infiscroll {
-        0% {
-            transform: translate(0, 0);
-        }
-
-        100% {
-            transform: translate(-50%, 0);
-        }
-    }
 </style>

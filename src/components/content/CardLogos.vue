@@ -7,7 +7,7 @@
                 height="auto"
                 loading="lazy"
                 format="webp"
-                src="/docs/tutorial/logos/logo-dark-version.png"
+                :src="dark.src"
             />
             <p class="title">Dark version</p>
             <p class="description">
@@ -23,7 +23,7 @@
                 height="auto"
                 loading="lazy"
                 format="webp"
-                src="/docs/tutorial/logos/logo-light-version.png"
+                :src="light.src"
             />
             <p class="title">Light version</p>
             <p class="description">
@@ -38,7 +38,7 @@
                 height="auto"
                 loading="lazy"
                 format="webp"
-                src="/docs/tutorial/logos/logo-monogram-version.png"
+                :src="monogram.src"
             />
             <p class="title">Monogram</p>
             <p class="description">
@@ -48,6 +48,11 @@
         </div>
     </div>
 </template>
+<script setup>
+import dark from './assets/logo-dark-version.png'
+import light from './assets/logo-light-version.png'
+import monogram from './assets/logo-monogram-version.png'
+</script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
@@ -56,19 +61,16 @@
         display: flex;
         flex-direction: column;
         gap: calc($spacer * 0.5);
-
         p {
             margin: 0;
         }
-
         p.title {
             font-size: $h6-font-size;
             font-weight: 600;
             line-height: 28px;
         }
-
         p.description {
-            color: $white-3;
+            color: var(--ks-content-secondary);
             font-size: $font-size-base;
             font-weight: 400;
             line-height: 20px;

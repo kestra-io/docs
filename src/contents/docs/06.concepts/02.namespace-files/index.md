@@ -109,7 +109,9 @@ From the history, view, compare, and restore prior versions.
 
 ![Restore namespace file revision placeholder](./namespace-file-restore.png)
 
-From the **Revisions** list, you can delete a given revision or all revisions older than the selected one. You will be prompted to confirm this choice, as there is no possible way to restore a revision once is has been deleted.
+From the **Revisions** list, you can delete a given revision or all revisions older than the selected one. You will be prompted to confirm this choice, as there is no possible way to restore a revision once is has been deleted. 
+
+The keep your version history clean, you can purge "N" number of Namespace File revisions or revisions older than a certain date. Refer to the [Purge documentation](../../10.administrator-guide/purge/index.md#purge-namespace-files).
 
 ### PushNamespaceFiles and SyncNamespaceFiles tasks
 

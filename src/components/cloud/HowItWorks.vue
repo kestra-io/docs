@@ -57,13 +57,11 @@
             transition: all 0.3s ease;
             z-index: -1;
         }
-
         @media (max-width: 991.98px) {
             & .how-it-works::after {
                 display: none;
             }
         }
-
         & .numbers {
             font-weight: 600;
             font-size: 12px;
@@ -76,7 +74,6 @@
             justify-content: center;
             flex-shrink: 0;
         }
-
         & .numbers-wrapper {
             display: flex;
             align-items: center;
@@ -84,11 +81,10 @@
             white-space: nowrap;
             position: relative;
         }
-
         & .numbers-wrapper::after {
             content: "";
             flex-grow: 1;
-            border-top: 1px dotted white;
+            border-top: 1px dotted var(--ks-border-secondary);
             margin-left: 10px;
             height: 0;
         }

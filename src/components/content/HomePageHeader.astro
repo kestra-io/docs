@@ -1,0 +1,46 @@
+---
+import kestraLogo from "../../assets/kestra-logo-big.png"
+
+interface Props {
+    title: string
+}
+
+const { title } = Astro.props
+---
+
+<div class="home-page-header">
+    <h2>{title}</h2>
+    <img src={kestraLogo.src} alt="Kestra Logo" class="kestra-logo" />
+    <slot />
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .home-page-header {
+        h2 {
+            padding-top: 0;
+            font-size: $font-size-lg !important;
+            font-weight: 600;
+            margin: 1rem 0;
+            @include media-breakpoint-up(md) {
+                margin: 0;
+            }
+
+            &::before {
+                display: none;
+            }
+        }
+
+        .kestra-logo {
+            display: none;
+            @include media-breakpoint-up(md) {
+                display: block;
+            }
+            float: right;
+            width: 132px;
+            margin: 3rem;
+            margin-top: 0;
+        }
+    }
+</style>

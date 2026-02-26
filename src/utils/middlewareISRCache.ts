@@ -1,5 +1,5 @@
 /** heavy inspired by https://www.launchfa.st/blog/astro-incremental-static-regeneration-cloudflare-kv */
-
+/* oxlint-disable no-console */
 import { defineMiddleware } from "astro:middleware"
 import { createISRCache } from "./isr-cache"
 

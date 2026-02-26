@@ -7,6 +7,10 @@ description: Install Kestra on AWS EC2 using Amazon RDS for the database and S3 
 
 Install Kestra on AWS EC2 with PostgreSQL RDS database and S3 internal storage backend.
 
+:::alert{type="info"}
+Prefer a one-click option? You can launch Kestra directly from the [AWS Marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg).
+:::
+
 ## Deploy Kestra on AWS EC2 with RDS and S3
 
 <div class="video-container">

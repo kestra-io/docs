@@ -10,8 +10,6 @@ import expressiveCode from "astro-expressive-code"
 
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
-// @ts-expect-error no types provided by package
-import remarkLinkRewrite from "remark-link-rewrite"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
@@ -43,17 +41,7 @@ export default defineConfig({
             appEntrypoint: "./src/vue-setup.ts",
             devtools: { launchEditor: "idea" },
         }),
-        expressiveCode({
-            defaultProps: {
-                wrap: true,
-                overridesByLang: {
-                    "bash,sh,zsh,shell,twig,powershell": {
-                        frame: "none",
-                    },
-                },
-            },
-            useDarkModeMediaQuery: false,
-        }),
+        expressiveCode(),
         mdx(),
         icon(),
     ],
@@ -126,21 +114,15 @@ export default defineConfig({
         fonts: [
             {
                 provider: fontProviders.google(),
-                name: "Public Sans",
-                weights: [100, 400, 600, 700, 800],
-                cssVariable: "--font-family-public-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "Source Code Pro",
-                weights: [400, 700],
-                cssVariable: "--font-family-source-code-pro",
-            },
-            {
-                provider: fontProviders.google(),
                 name: "Mona Sans",
-                weights: [400, 700],
+                weights: [400, 500, 600, 700],
                 cssVariable: "--font-family-mona-sans",
+            },
+            {
+                provider: fontProviders.google(),
+                name: "JetBrains Mono",
+                weights: [400, 500, 600, 700],
+                cssVariable: "--font-family-jetbrains-mono",
             },
         ],
         svgo: true,
@@ -223,3 +205,4 @@ export default defineConfig({
         },
     },
 })
+

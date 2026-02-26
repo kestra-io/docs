@@ -1,3 +1,4 @@
+/* oxlint-disable no-console */
 /** heavy inspired by https://www.launchfa.st/blog/astro-incremental-static-regeneration-cloudflare-kv */
 
 export interface ISRCacheOptions {

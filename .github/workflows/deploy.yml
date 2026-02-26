@@ -17,9 +17,23 @@ permissions:
   pull-requests: write
 
 jobs:
+  truncate-url-slug:
+    name: Truncate URL
+    runs-on: ubuntu-latest
+    outputs:
+      slug: ${{ steps.truncate-url.outputs.slug }}
+    steps:
+      - name: Display branch name
+        run: echo ${GITHUB_HEAD_REF}
+
+      - name: truncate Url
+        id: truncate-url
+        run: echo "slug=ks-$(echo ${GITHUB_HEAD_REF} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')" >> "$GITHUB_OUTPUT"
+
   deploy-workers:
     name: Publish to Cloudflare Workers
     runs-on: ubuntu-latest
+    needs: truncate-url-slug
     env:
       CF_PAGES_BRANCH: ${{ github.ref_name }}
       CF_PAGES_COMMIT_SHA: ${{ github.sha }}
@@ -27,7 +41,7 @@ jobs:
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
-      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }}
+      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
 
     steps:
       - name: Checkout
@@ -41,14 +55,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Lint all files
+        if: ${{ startsWith(github.repository, 'kestra-io/')  && github.event_name == 'pull_request'}}
+        run: npm run lint
+
       - name: Build
         run: npm run build
         env:
           NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
           PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
-
-      - name: Generate slug variables
-        uses: rlespinasse/github-slug-action@v4
 
       - name: Deploy Worker
         id: prod-deploy
@@ -66,7 +81,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --preview-alias="${{ env.GITHUB_REF_NAME_SLUG_URL }}"
+          command: versions upload --preview-alias="${{ needs.truncate-url-slug.outputs.slug }}"
 
       - name: Add comment to PR
         if: ${{ startsWith(github.repository, 'kestra-io/')  && github.event_name == 'pull_request'}}
@@ -75,5 +90,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: "☁️ Cloudflare Worker Preview Deployed!"
           template: |
-            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }})
+            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})

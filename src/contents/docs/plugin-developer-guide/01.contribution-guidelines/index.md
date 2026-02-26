@@ -32,7 +32,7 @@ Follow these baseline rules for every pull request.
 
 Ensure properties are declared and validated consistently.
 
-- Properties are declared with `Property<T>` carrier type, do **not** use `@PluginProperty`.
+- Prefer the `Property<T>` carrier type; use `@PluginProperty(dynamic = true)` only when dynamic rendering is required.
 - Mandatory properties must be annotated with `@NotNull` and checked during the rendering.
 - You can model a JSON thanks to a simple `Property<Map<String, Object>>`.
 

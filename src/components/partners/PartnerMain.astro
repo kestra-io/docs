@@ -1,0 +1,38 @@
+---
+import PartnerIntro from "~/components/partners/PartnerIntro.astro"
+import BusinessStats from "~/components/layout/BusinessStats.astro"
+
+interface Props {
+    intro: { title: string; description: string }
+    quote: { quote: string; author: { name: string; role: string } }
+}
+
+const { intro, quote } = Astro.props
+---
+
+<section>
+    <div class="container">
+        <PartnerIntro title={intro.title} description={intro.description} />
+        <BusinessStats
+            items={[
+                {
+                    type: "quote",
+                    text: `“${quote.quote}”`,
+                    class: "w-75",
+                },
+                {
+                    type: "author",
+                    name: quote.author.name,
+                    role: quote.author.role,
+                },
+            ]}
+        />
+    </div>
+</section>
+
+<style lang="scss">
+    section {
+        background-color: var(--ks-background-secondary);
+        padding-bottom: 3rem;
+    }
+</style>

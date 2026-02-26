@@ -1,11 +1,12 @@
 <template>
-    <section class="container">
-        <h2><span>Simplicity Scales,</span> Complexity Fails</h2>
-        <p>
-            Mix the flexibility of code-based orchestration<br />
-            with a no-code interface that anyone can learn in minutes
-        </p>
-        <div class="cta-buttons">
+    <section class="features-bg">
+        <div class="container">
+            <h2><span>Simplicity Scales,</span> Complexity Fails</h2>
+            <p>
+                Mix the flexibility of code-based orchestration<br />
+                with a no-code interface that anyone can learn in minutes
+            </p>
+            <div class="cta-buttons">
             <a class="btn btn-primary btn-lg" href="/features">See All Features</a>
             <a
                 href="https://www.youtube.com/embed/xnGYiWFM2uk?autoplay=1"
@@ -13,24 +14,13 @@
                 data-bs-toggle="modal"
                 data-bs-target="#full-video"
             >
-                <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path d="M9.5 7.5V16.5L16.5 12L9.5 7.5Z" fill="black" />
-                    <path
-                        d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18.01H4V5.99H20V18.01Z"
-                        fill="black"
-                    />
-                </svg>
+                <PlayBoxOutline />
                 Overview Video
             </a>
         </div>
-        <HomeFeaturesBlock />
-        <HomeFeaturesValue />
+        <FeaturesBlock :features="features" />
+        <FeaturesValue />
+        </div>
     </section>
     <div
         v-on="{
@@ -74,28 +64,74 @@
 
 <script lang="ts" setup>
     import { ref } from "vue"
-    import HomeFeaturesBlock from "~/components/home/FeaturesBlock.vue"
-    import HomeFeaturesValue from "~/components/home/FeaturesValue.vue"
+    import FeaturesBlock from "~/components/common/FeaturesBlock.vue"
+    import FeaturesValue from "~/components/home/FeaturesValue.vue"
+    import PlayBoxOutline from "vue-material-design-icons/PlayBoxOutline.vue"
+
+    import featuresCloud from "./assets/features-cloud.svg"
+    import featuresApi from "./assets/features-api.svg"
+    import featuresCog from "./assets/features-cog.svg"
+    import featuresLogos from "./assets/features-logos.svg"
+
     const videoVisible = ref(false)
+
+    const features = [
+        {
+            name: "Deploy Anywhere",
+            description:
+                "Run Kestra anywhere—on-prem, hybrid, or any cloud, no dependencies, no installation headaches.",
+            icon: featuresCloud,
+            color: "#3991FF",
+            width: 69,
+        },
+        {
+            name: "Connect to Any API or Service",
+            description:
+                "Automating everything from data pipelines, microservices, business processes to infrastructure provisioning.",
+            icon: featuresApi,
+            color: "#E58238",
+            width: 50,
+        },
+        {
+            name: "Build Everything As Code & From the UI",
+            description:
+                "Empower every team members to collaborate from a single tool—code for developers, UI for everyone else, all in sync.",
+            icon: featuresCog,
+            width: 60,
+            color: "#21CE9C",
+        },
+        {
+            name: "Write Business Logic in Any Language",
+            description:
+                "Orchestrate custom business logic in Python, R, Java, Julia, Ruby, and any kind of language.",
+            icon: featuresLogos,
+            color: "#FCE07C",
+            width: 123,
+        },
+    ]
 </script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
+
+    .features-bg {
+        background-color: var(--ks-background-body);
+        padding: $rem-3 0.25rem;
+    }
+
     .container {
         text-align: center;
-        color: white;
+        color: var(--ks-content-primary);
         padding-top: 2rem;
         @include media-breakpoint-up(lg) {
             padding-top: 4rem;
         }
-
         h2 {
             font-size: 3rem;
             line-height: 2.5rem;
             @include media-breakpoint-up(lg) {
                 line-height: 3rem;
             }
-            font-weight: 600;
             margin: 0 4rem;
             margin-bottom: 0.5rem;
             span {
@@ -103,9 +139,10 @@
                 @include media-breakpoint-up(lg) {
                     display: inline;
                 }
-                color: $primary;
+                color: var(--ks-content-link);
                 background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
                 background-size: cover;
+                background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
@@ -115,10 +152,7 @@
             margin: 0 auto;
             text-wrap: pretty;
             margin-bottom: 2rem;
-            color: #9797a6;
-            @include media-breakpoint-up(lg) {
-                font-size: 1.2rem;
-            }
+            color: var(--ks-content-tertiary);
         }
         .cta-buttons {
             display: flex;
@@ -126,16 +160,7 @@
             gap: 1rem;
             margin-bottom: 2rem;
             .btn {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
                 white-space: nowrap;
-                > svg {
-                    display: none;
-                    @include media-breakpoint-up(lg) {
-                        display: block;
-                    }
-                }
             }
         }
     }
