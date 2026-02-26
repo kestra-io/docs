@@ -20,6 +20,7 @@ Most 2026 trend pieces stop here and run a tool comparison, but we're not going 
 
 This workflow pattern reveals a category error: "data orchestration" was always too narrow. Traditional orchestrators like Airflow only track data assets like tables and views. They can't track infrastructure assets like buckets, VMs, files, or API endpoints because those weren't part of the original design scope. When your lineage tool only tracks tables, you lose visibility into the infrastructure your workflows depend on. The dependency graph is incomplete.
 
+
 ## What this means for data engineering
 
 ### The "data engineer" role is fragmenting
@@ -64,6 +65,7 @@ When AI assistants amplify developer experience, good patterns get better and ba
 
 Benoit, who runs product at Kestra, is already doing this at the frontier. He writes a large spec document, hands it to Opus via a CLI tool called Bids (a DAG for agents, backed by a database), which breaks it into epics and issues. He spins up five Claude Code sessions in parallel. The agents coordinate via MCP Agent Mail: when one claims an issue, it broadcasts to the others so they can reprioritize their queues. Kestra sits underneath as the scheduler and execution layer. The whole thing only works because the tooling is clean enough for AI to generate, read, and modify without losing coherence.
 
+
 ## The speculative future
 
 **Prediction 1: "Workflow engineer" becomes an official job title by 2027.** Not a data engineer, not a DevOps engineer, but someone who orchestrates work across systems, languages, and teams. The key skills: understanding dependencies, event-driven architecture, and debugging distributed systems. Deep expertise in any single programming language becomes optional. Domain expertise and orchestration thinking become mandatory. You don't need to be a Python expert. You need to understand how your business workflows map to technical dependencies, and how to coordinate those dependencies reliably. The title doesn't exist yet at most companies. The work does.
@@ -74,6 +76,7 @@ Benoit, who runs product at Kestra, is already doing this at the frontier. He wr
 
 Enterprise companies will resist. Startups will embrace it too early and burn themselves with workflow sprawl. The companies that get it right will be the ones that figure out the division of labor early: platform engineers own the orchestration layer, workflow engineers own the domain logic, and neither steps on the other.
 
+
 ## What to do about it
 
 **For individuals:** Learn orchestration thinking, not just coding. Understand how systems talk to each other, how dependencies cascade, and how failures propagate across distributed systems. If you're a data analyst, knowing how your dbt model depends on upstream Fivetran syncs and downstream Hightouch activations matters more than mastering every SQL optimization technique. Your domain expertise is your moat. AI can help you write code, but it can't replicate your understanding of the business problem. Orchestration patterns work across data, infrastructure, and business processes. The skills transfer.
@@ -83,6 +86,7 @@ Enterprise companies will resist. Startups will embrace it too early and burn th
 **For companies:** Invest in orchestration platforms that handle the full scope: pipelines, deployments, and the business processes that tie them together. Declarative, structured tools will be easier for your teams to learn and maintain, especially when AI assistants are generating the configurations. Build governance guardrails before you need them. Don't mistake "everyone can code" for "everyone should code everything." Platform engineers should own the orchestration layer. Workflow engineers should own the domain logic. That separation matters.
 
 **For tools:** Developer experience is the new feature. Documentation matters less when AI can explain your tool on demand. But your API design, error messages, and structural consistency matter more than ever because AI will amplify both good patterns and bad ones. If your tool is scoped narrowly to data pipelines or infrastructure, you'll lose to tools that handle the full dependency graph. Workflow engineers think in dependencies, not system categories. If your tool can only see one system at a time, it won't be their tool for long.
+
 
 ## Closing thoughts
 
