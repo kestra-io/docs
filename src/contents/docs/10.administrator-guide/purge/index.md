@@ -80,6 +80,28 @@ kestra:
       batch-size: 10 # default 1000
 ```
 
+## Purge Namespace files
+
+The example below purges old versions of Namespace files for a Namespace tree (parents + children Namespaces). Use a `filePattern` and specify the `behavior` (e.g., keep the last N versions and/or delete versions older than a given date):
+
+```yaml
+id: purge_namespace_files
+namespace: system
+
+tasks:
+  - id: purge_files
+    type: io.kestra.plugin.core.namespace.PurgeFiles
+    namespaces:
+      - company
+    includeChildNamespaces: true
+    filePattern: "**/*.sql"
+    behavior:
+      type: version
+      before: "2025-01-01T00:00:00Z"
+```
+
+Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) for more details.
+
 ## Purge tasks vs. UI deletion
 
 Purge tasks perform **hard deletion**, permanently removing records and reclaiming storage. In contrast, deleting items in the UI is a **soft deletion**—the data is hidden but retained (e.g., revision history and past executions can reappear if a flow with the same ID is recreated).
