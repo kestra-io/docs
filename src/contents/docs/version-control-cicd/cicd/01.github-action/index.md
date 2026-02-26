@@ -68,7 +68,7 @@ The new actions have updated names and input parameters. Update any references f
 | Input       | Required | Default  | Description |
 |-------------|----------|----------|-------------|
 | `directory` | ❌       | `'./'`   | Folder containing your flows (YAMLs). |
-| `namespace` | ❌       | —        | Namespace to deploy flows to (optional). |
+| `namespace` | ❌       | —        | Namespace to deploy flows to (optional). If omitted, each flow uses the namespace defined in its YAML. |
 | `override`  | ❌       | `'false'`| If `true`, override existing flows. |
 | `server`    | ✅       | —        | URL of your Kestra server. |
 | `apiToken`  | ❌       | —        | API Token for authentication (EE only). |
@@ -117,7 +117,7 @@ jobs:
         with:
           directory: ./kestra/flows
           server: ${{ secrets.KESTRA_HOSTNAME }}
-          # Optional: uncomment for EE
+          # Optional: uncomment for Enterprise Edition
           # apiToken: ${{ secrets.KESTRA_API_TOKEN }}
 
   deploy:
@@ -176,6 +176,151 @@ with:
 - When using Enterprise features, provide `apiToken` and/or set `tenant` as needed.
 
 :::
+
+### Deploy to multiple namespaces
+
+You can target multiple namespaces in one workflow either by:
+- Letting each flow keep its own `namespace` value (omit the `namespace` input).
+- Running the action multiple times with different `namespace` inputs.
+
+```yaml
+name: Kestra Deploy Across Namespaces
+on: [push, workflow_dispatch]
+
+jobs:
+  deploy-default-namespaces:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/deploy-flows@main
+        with:
+          server: https://kafka-ee.preview.dev.kestra.io
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          directory: ./flows          # Flows keep their own namespace values
+          override: true
+
+  deploy-to-other-namespace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/deploy-flows@main
+        with:
+          server: https://kafka-ee.preview.dev.kestra.io
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          directory: ./flows
+          namespace: company.team   # Force all flows to this namespace
+          override: true
+```
+
+The same pattern applies to namespace files: run `deploy-namespace-files` once per target namespace, or keep authorship paths by omitting overriding `namespacePath`.
+
+### Examples by use case
+
+**Validate flows (single file or folder)**
+
+```yaml
+jobs:
+  validate-single-flow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/validate-flows@main
+        with:
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          directory: ./flows/my-log-flow.yml   # Single file
+
+  validate-folder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/validate-flows@main
+        with:
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          directory: ./flows                    # Folder path of files
+```
+
+**Deploy flows (use authored namespaces vs override)**
+
+```yaml
+jobs:
+  deploy-authored-namespaces:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/deploy-flows@main
+        with:
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          directory: ./flows        # Each flow keeps its namespace
+          override: true
+
+  deploy-to-specific-namespace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/deploy-flows@main
+        with:
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          directory: ./flows
+          namespace: company.team # Force all flows to a specific namespace
+          override: true
+```
+
+**Deploy namespace files (single file, folder, folder to custom path)**
+
+```yaml
+jobs:
+  upload-single-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/deploy-namespace-files@main
+        with:
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          localPath: ./nsfiles/file1.txt
+          namespacePath: single/file1.txt
+          namespace: my-namespace
+          override: true
+
+  upload-folder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/deploy-namespace-files@main
+        with:
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          localPath: ./nsfiles           # Upload entire folder
+          namespacePath: ./nsfiles
+          namespace: my-namespace
+          override: true
+
+  upload-folder-to-custom-path:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: kestra-io/github-actions/deploy-namespace-files@main
+        with:
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          tenant: my-tenant
+          localPath: ./nsfiles
+          namespacePath: myFiles         # Remap destination path
+          namespace: my-namespace
+          override: true
+```
 
 ---
 
