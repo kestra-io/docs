@@ -8,11 +8,6 @@ editions: ["EE"]
 
 Authenticate to external systems securely.
 
-<!-- needs replacement -->
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
 ## Credentials – Server to Server authentication for Flows
 
 Credentials are a reusable way to configure server-to-server authentication credentials once and use it across tasks.
