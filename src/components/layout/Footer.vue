@@ -40,7 +40,7 @@
                                 <li v-for="link in section.links" :key="link.href" class="mb-2">
                                     <a :href="link.href" :target="link.external ? '_blank' : undefined">
                                         {{ link.text }}
-                                        <span v-if="link.badge" class="badge text-bg-danger">{{
+                                        <span v-if="link.badge" class="badge">{{
                                             link.badge
                                             }}</span>
                                     </a>
@@ -264,6 +264,15 @@ const FOOTER_SECTIONS: Section[] = [
         }
         :deep(.text-danger) {
             color: var(--ks-content-alert-danger);
+        }
+
+        .badge {
+            background-color: var(--ks-background-alert-danger);
+            color: var(--ks-content-alert-danger);
+            font-size: $font-size-xs;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 40px;
         }
     }
 </style>
