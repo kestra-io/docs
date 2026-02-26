@@ -84,7 +84,7 @@ const tagsList = computed(() => {
             display: grid;
             place-items: center;
             flex-shrink: 0;
-            background: var(--ks-background-body);
+            background: $white;
             :deep(.icon-wrapper) {
                 width: 24px;
                 height: 24px;
