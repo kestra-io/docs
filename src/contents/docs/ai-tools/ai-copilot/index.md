@@ -18,6 +18,10 @@ The AI Copilot can generate and iteratively edit declarative flow code with AI-a
 
 The AI Copilot is designed to help build and modify flows directly from natural language prompts. Describe what you are trying to build, and Copilot will generate the YAML flow code for you to accept or adjust. Once your initial flow is created, you can iteratively refine it with Copilot’s help, adding new tasks or adjusting triggers without touching unrelated parts of the flow. Everything stays as code and in Kestra's usual declarative syntax.
 
+Copilot is available anywhere you build in Kestra — Flows, Apps, Unit tests, and Dashboards — so you can keep iterating with the same AI assistant across the product surface.
+
+You can type prompts or click the microphone button in the Copilot panel to dictate them with speech-to-text directly from the UI.
+
 Copilot grounds its suggestions in your Namespace metadata. It automatically reads Plugin Defaults, Variables, Secrets, and Key-Value pairs configured in the current Namespace, so prompts like "Create a task that integrates with MongoDB" can reuse your existing `pluginDefaults`, stored credentials, or variables without extra hints.
 
 ## Configuration
@@ -47,6 +51,8 @@ kestra:
 Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
 :::
 
+When multiple providers are configured, users can switch models from a dropdown in the Copilot UI instead of relying only on the default.
+
 Replace `api-key` with your provider credentials. Copilot appears in the top right corner of the flow editor. Optionally, you can add the following properties inside each provider `configuration` block (availability varies by provider):
 
 - `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
@@ -59,7 +65,11 @@ Replace `api-key` with your provider credentials. Copilot appears in the top rig
 - `clientPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
 - `caPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
 - `customHeaders`: Specify custom HTTP headers for authentication and routing through internal AI gateways. Custom headers should be passed as a map inside the property.
-- `timeout`: Specifies the maximum duration to wait for an AI model API request to complete before timing out. ISO 8601 duration format (Java Duration): `PT30S` = 30 seconds.
+- `timeout`: Specifies the maximum duration to wait for an AI model API request to complete before timing out. ISO 8601 duration format (Java Duration): `PT30S` = 30 seconds. You can set it per provider to enforce strict SLAs.
+
+:::alert{type="info"}
+Enterprise Edition includes an [RBAC permission](../../07.enterprise/03.auth/rbac/index.md) that lets administrators allow or disallow Copilot usage per role at tenant or namespace scope.
+:::
 
 ![AI Copilot](./ai-copilot.png)
 
