@@ -1,51 +1,37 @@
 ---
 import Layout from "~/components/layout.astro"
-import Headers from "~/components/demo/Headers.vue"
-import Logos from "~/components/layout/Logos.vue"
-import BusinessStats from "~/components/layout/BusinessStats.astro"
+import Meeting from "~/components/demo/Meeting.vue"
+import headerBackground from "../components/demo/assets/header-background.png"
 
-import LM from "~/assets/enterprise/leroymerlin.svg?raw"
-import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
-
-const title = "Ready to See Kestra in Action?"
-const description =
-    "Connect with one of our Product Specialist to get the best out of our product and its value proposition"
-
-const BUSINESS_ITEMS: Array<{
-    type: "stat" | "quote" | "author"
-    value?: string
-    label?: string
-    icon?: any
-    text?: string
-    name?: string
-    role?: string
-    logo?: any
-    class?: string
-}> = [
-    {
-        type: "stat",
-        icon: { src: ArrowUp },
-        value: "900%",
-        label: "in data production",
-    },
-    {
-        type: "quote",
-        text: "“What was delivered in weeks is now completed <br /> in days with full control for a great partnership.”",
-    },
-    {
-        type: "author",
-        name: "Julien Henrion",
-        role: "Head of Data Engineering",
-        logo: { src: LM, alt: "Leroy Merlin" },
-        class: "align-items-start",
-    },
-]
+const title = "Book a Demo"
+const description = "Discuss your Orchestration Strategy"
 ---
 
 <Layout title={title} description={description}>
-    <div>
-        <Headers client:load routePath="/demo" />
-        <Logos client:load class="mt-5" />
-        <BusinessStats items={BUSINESS_ITEMS} />
+    <div class="demo">
+        <div class="demo-left">
+            <h1>Discuss your <span>Orchestration</span> Strategy</h1>
+            <p class="subtitle">Your Architecture is Unique.</p>
+            <p class="subtitle">Your Challenges are Specific.</p>
+            <ul class="list">
+                <li>
+                    <b>Your Pains:</b> Are you struggling with unreliable pipelines,
+                    legacy fatigue, or lack of visibility?
+                </li>
+                <li>
+                    <b>Your Needs:</b> We’ll discuss your requirements for security,
+                    scale, and language agnostic support.
+                </li>
+                <li>
+                    <b>The Resolution:</b> See exactly how Kestra’s architecture resolves
+                    these friction points in your stack.
+                </li>
+            </ul>
+            <p class="shadow-card">
+                Get a clear understanding of how Kestra fits your platform and a
+                roadmap to solve your current orchestration headaches.
+            </p>
+        </div>
+        <Meeting routePath="/demo" headerBackground={headerBackground} />
     </div>
 </Layout>
