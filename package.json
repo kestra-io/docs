@@ -48,6 +48,7 @@
     "astro-loading-indicator": "^0.7.1",
     "axios": "^1.13.5",
     "bootstrap": "^5.3.8",
+    "countries-list": "^3.2.2",
     "dayjs": "^1.11.19",
     "eventsource-parser": "^3.0.6",
     "jose": "^6.1.3",
