@@ -937,7 +937,7 @@
           },
           {
             "name": "ks/shadows-light",
-            "value": "#2720560d",
+            "value": "#3952F219",
             "var": "",
             "rootAlias": ""
           },
@@ -1840,4 +1840,3 @@
     ]
   }
 ]
-
