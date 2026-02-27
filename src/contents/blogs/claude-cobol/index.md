@@ -29,7 +29,7 @@ If you missed the latest drama around COBOL & Claude, Will put together a recap 
 
 Most enterprises don’t have “a COBOL system.” They have an estate.
 
-A core system on IBM i. Nightly jobs with strict execution order. Flat files that became contracts. DB2 tables that downstream teams query directly. A few newer services bolted on over time. A warehouse pipeline ingesting outputs because “that’s how it’s always been done.”
+A core system on IBM i: Nightly jobs with strict execution order. Flat files that became contracts. DB2 tables that downstream teams query directly. A few newer services bolted on over time. A warehouse pipeline ingesting outputs because “that’s how it’s always been done.”
 
 When people say “modernize,” they usually imagine replacing the code.
 
