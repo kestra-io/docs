@@ -97,17 +97,17 @@ const activeQuote = ref(0)
         flex-direction: column;
         align-items: center;
         gap: 2rem;
-        @include media-breakpoint-up(md) {
-            flex-direction: row;
-            .big-logo {
-                max-width: 35%;
-            }
-        }
         .big-logo {
             // guarantee square proportions
             aspect-ratio: 1 / 1;
             object-fit: contain;
             max-width: 80%;
+        }
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            .big-logo {
+                max-width: 35%;
+            }
         }
         .text-center {
             text-align: center;
