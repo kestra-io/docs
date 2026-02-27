@@ -1,0 +1,74 @@
+---
+const logos = [
+    {
+        name: "Fila",
+        Logo: await import("~/assets/landing/infrastructure/companies/fila.svg").then(
+            (module) => module.default,
+        ),
+    },
+    {
+        name: "Deutshe Telekom",
+        Logo: "-",
+    },
+    {
+        name: "BrainLab",
+        Logo: await import("~/assets/landing/infrastructure/companies/brainlab.svg").then(
+            (module) => module.default,
+        ),
+    },
+    {
+        name: "Bloomberg",
+        Logo: await import("~/assets/landing/infrastructure/companies/bloomberg.svg").then(
+            (module) => module.default,
+        ),
+    },
+    {
+        name: "Toyota",
+        Logo: await import("~/assets/landing/infrastructure/companies/toyota.svg").then(
+            (module) => module.default,
+        ),
+    },
+    {
+        name: "Apple",
+        Logo: await import("~/assets/landing/infrastructure/companies/apple.svg").then(
+            (module) => module.default,
+        ),
+    },
+    {
+        name: "Apotek",
+        Logo: await import("~/assets/landing/infrastructure/companies/apoteket.svg").then(
+            (module) => module.default,
+        ),
+    },
+]
+---
+
+<div class="logo-banner">
+    {
+        logos.map((logo) => (
+            <div title={logo.name}>
+                <logo.Logo />
+            </div>
+        ))
+    }
+</div>
+
+<style lang="scss">
+    .logo-banner {
+        display: flex;
+        border: 1px solid var(--ks-border-primary);
+        border-left: none;
+        border-right: none;
+        justify-content: space-around;
+        align-items: center;
+        padding: 2rem 0;
+        img {
+            max-height: 40px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease-in-out;
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+</style>
