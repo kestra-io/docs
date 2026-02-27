@@ -41,7 +41,7 @@ Orchestration makes legacy systems safe to evolve because it makes them observab
 
 ## What Kestra enables: operate legacy like modern, without pretending it’s going away
 
-We dont cosplay Kestra as a COBOL-to-Java converter.
+We don't cosplay Kestra as a COBOL-to-Java converter.
 
 Kestra is here to do something more useful: give you a control plane for hybrid reality, where legacy workloads and modern workloads coexist, and where modernization happens in small, validated steps.
 
