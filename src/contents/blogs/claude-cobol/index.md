@@ -127,16 +127,16 @@ namespace: company.team
 inputs:
   - id: prompt
     type: STRING
-    defaults:"Write me a hello world program in Cobol"
+    defaults: "Write me a hello world program in Cobol"
 
 tasks:
   - id: generate_cobol
     type: io.kestra.plugin.ai.agent.AIAgent
-    prompt:"{{ inputs.prompt }}"
-    systemMessage:"Write a Cobol program based on the prompt. Use dummy data as it's for a demo and not for production. Save the Cobol program as `main.cbl` in the `/tmp` directory by using the provided filesystem tool."
+    prompt: "{{ inputs.prompt }}"
+    systemMessage: "Write a Cobol program based on the prompt. Use dummy data as it's for a demo and not for production. Save the Cobol program as `main.cbl` in the `/tmp` directory by using the provided filesystem tool."
     provider:
       type: io.kestra.plugin.ai.provider.Anthropic
-      apiKey:"{{ secret('ANTHROPIC_API_KEY') }}"
+      apiKey: "{{ secret('ANTHROPIC_API_KEY') }}"
       modelName: claude-sonnet-4-6
     tools:
       - type: io.kestra.plugin.ai.tool.DockerMcpClient
@@ -148,14 +148,13 @@ tasks:
 
   - id: run_cobol
     type: io.kestra.plugin.scripts.shell.Commands
-    inputFiles:"{{ outputs.generate_cobol.outputFiles }}"
+    inputFiles: "{{ outputs.generate_cobol.outputFiles }}"
     beforeCommands:
       - apt update -y
       - apt install -y gnucobol
     commands:
       - cobc -x main.cbl
       - ./main
-```
 
 When AI is treated as an assistant inside an orchestrated workflow, it becomes useful. When AI is treated as a replacement for operational discipline, it becomes a liability.
 
