@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Martin-Pierre Roset
   image: mproset
-image:
+image: ./main.png
 ---
 
 Every time COBOL comes up, the conversation takes the same shortcuts.
@@ -45,7 +45,7 @@ We dont cosplay Kestra as a COBOL-to-Java converter.
 
 Kestra is here to do something more useful: give you a control plane for hybrid reality, where legacy workloads and modern workloads coexist, and where modernization happens in small, validated steps.
 
-That’s why we ran COBOL inside Kestra.
+That’s why we ran [COBOL](https://kestra.io/plugins/plugin-cobol) inside Kestra.
 
 Not because “Hello World” is impressive, but because it demonstrates the shift: COBOL can be treated like any other workload. Containerized. Executed on demand. Logged. Versioned. Auditable. Reproducible.
 
@@ -120,6 +120,8 @@ Trust comes from execution discipline: reproducibility, validation, observabilit
 
 Here’s a Kestra workflow that uses an AI agent to generate a COBOL program file, saves it, compiles it, and runs it. Again, the point isn’t that AI can write COBOL—the point is that the whole process is **controlled and auditable**.
 
+> To bring Claude into the workflow, Kestra provides an [Anthropic plugin](https://kestra.io/plugins/plugin-anthropic) that lets you call Claude models from tasks and agents.
+
 ``` yaml
 id: cobol_ai
 namespace: company.team
@@ -155,6 +157,7 @@ tasks:
     commands:
       - cobc -x main.cbl
       - ./main
+```
 
 When AI is treated as an assistant inside an orchestrated workflow, it becomes useful. When AI is treated as a replacement for operational discipline, it becomes a liability.
 
@@ -165,6 +168,8 @@ But orchestration is what turns prototypes into safe change.
 ---
 
 ## IBM i / AS/400: the same lesson, at bigger scale
+
+> If your stack includes IBM i / AS/400, Kestra can [already connect through JDBC](https://kestra.io/plugins/plugin-jdbc-as400/as400) (e.g., to DB2 for i) so those systems can participate in orchestrated workflows instead of living behind brittle schedules.
 
 COBOL gets the spotlight, but IBM i estates are often where the modernization tension is most visible.
 
