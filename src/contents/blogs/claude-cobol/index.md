@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Martin-Pierre Roset
   image: mproset
-image: ./main.png
+image: ./main.jpg
 ---
 
 Every time COBOL comes up, the conversation takes the same shortcuts.
