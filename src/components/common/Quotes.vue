@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-
 defineProps<{
     quotes: {
         quote: string
@@ -59,6 +58,7 @@ const activeQuote = ref(0)
 </template>
 
 <style lang="scss" scoped>
+@import "~/assets/styles/variable";
 .wrapper {
     background-color: var(--ks-background-purple-light);
     color: var(--ks-content-primary);
@@ -94,10 +94,20 @@ const activeQuote = ref(0)
     .content{
         padding: 4rem;
         display: flex;
+        flex-direction: column;
         align-items: center;
         gap: 2rem;
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+            .big-logo {
+                max-width: 35%;
+            }
+        }
         .big-logo {
-            max-width: 35%;
+            // guarantee square proportions
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            max-width: 80%;
         }
         .text-center {
             text-align: center;
