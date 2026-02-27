@@ -11,11 +11,11 @@
                 </div>
             </div>
 
-            <div v-if="!messages.length && randomQuestions.length" class="examples">
+            <div v-if="!messages.length && randomAiQuestions.length" class="examples">
                 <h6>EXAMPLE QUESTIONS</h6>
                 <div class="cards">
                     <div
-                        v-for="question in randomQuestions"
+                        v-for="question in randomAiQuestions"
                         :key="question"
                         class="card"
                         @click="askQuestion(question)"
@@ -162,29 +162,9 @@
         response?: string
         message?: string
     }
-
-    const allQuestions = [
-        "How to add secrets?",
-        "How to configure my internal storage?",
-        "What are main differences between Open Source and Enterprise?",
-        "How to sync my flows with Git?",
-        "How to set up CI/CD for kestra flows?",
-        "What is a task runner?",
-        "How to handle errors & retry on flow?",
-        "How to run Python script?",
-        "How to schedule flow?",
-        "How to write expression for previous tasks outputs?",
-        "How to deploy Kestra inside Kubernetes?",
-        "How to prevent concurrent execution of the same flow?",
-        "How to trigger a flow after another one?",
-        "How to run a Ansible playbook?",
-        "How to run dbt?",
-        "How to receive an alert on flow failure?",
-    ]
-
-    const randomQuestions = ref(
-        [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 3),
-    )
+    defineProps<{
+        randomAiQuestions: string[]
+    }>()
 
     const emit = defineEmits<{
         close: []

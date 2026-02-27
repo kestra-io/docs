@@ -12,6 +12,7 @@ import LayoutFooter from "~/components/layout/Footer.vue"
 import LayoutFixed from "~/components/layout/Fixed.vue"
 // import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
+import { getRandomAiQuestions } from "~/utils/aiQuestions"
 
 interface Props {
     title?: string
@@ -53,19 +54,23 @@ const query = new URLSearchParams(
         ),
 )
 
-const currentUrlNoQS = new URL(currentUrl.toString().replace(currentUrl.search, ""))
+const currentUrlNoQS = new URL(
+    currentUrl.toString().replace(currentUrl.search, ""),
+)
 const canonicalUrl = new URL(
     currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
     Astro.site,
 )
+
+const randomAiQuestions = getRandomAiQuestions()
 ---
 
 <html lang="en">
     <head>
         <script is:inline>
-            (function() {
-                document.documentElement.classList.add("dark");
-            })();
+            ;(function () {
+                document.documentElement.classList.add("dark")
+            })()
         </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -169,14 +174,17 @@ const canonicalUrl = new URL(
         <script src="../scripts/theme.ts"></script>
     </head>
     <body
-        data-header-theme={props.headerTheme === "darkHeader" ? "darkBg" : props.headerTheme === "lightHero" ? "dark" : undefined}
-        style={props.headerBg ? `--header-dark-bg: ${props.headerBg}` : undefined}
+        data-header-theme={props.headerTheme === "darkHeader"
+            ? "darkBg"
+            : props.headerTheme === "lightHero"
+              ? "dark"
+              : undefined}
+        style={props.headerBg
+            ? `--header-dark-bg: ${props.headerBg}`
+            : undefined}
     >
-        <Header
-            client:load
-            transition:persist
-        />
-        <Search client:load />
+        <Header client:load transition:persist />
+        <Search randomAiQuestions={randomAiQuestions} client:load />
         <main>
             <slot />
         </main>
