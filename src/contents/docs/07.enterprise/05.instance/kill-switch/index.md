@@ -36,7 +36,7 @@ To configure a Kill Switch, navigate to your **Instance → Kill Switch** sectio
 | **CANCEL** | Blocks new executions; lets current task runs finish before marking the execution `CANCELLED`. |
 | **IGNORE** | Ignores all messages for matching executions—use as a last resort when an execution cannot be killed or cancelled. |
 
-For KILL and CANCEL, executions receive a system label identifying which Kill Switch applied.
+For **KILL** and **CANCEL**, executions receive a [system label](../../../06.concepts/system-labels/index.md) identifying which Kill Switch applied.
 
 ### Scope
 
