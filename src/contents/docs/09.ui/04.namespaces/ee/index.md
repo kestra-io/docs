@@ -24,13 +24,13 @@ The Enterprise Edition introduces several additional namespace pages for enhance
 
 ## Edit
 
-The **Edit** page lets you manage namespace-level settings such as descriptions, [worker groups](../../../07.enterprise/04.scalability/worker-group/index.md), and permissions.
+The **Edit** page lets you manage Namespace-level settings such as descriptions, [worker groups](../../../07.enterprise/04.scalability/worker-group/index.md), and permissions.
 
 ![Edit](./edit.png)
 
 ## Variables
 
-Define variables at the namespace level for use in any flow under that namespace using the syntax `{{ namespace.variable_name }}`.
+Define variables at the Namespace-level for use in any flow under that Namespace using the syntax `{{ namespace.variable_name }}`.
 
 Read more about [variables](../../../07.enterprise/02.governance/07.namespace-management/index.md#variables).
 
@@ -38,7 +38,7 @@ Read more about [variables](../../../07.enterprise/02.governance/07.namespace-ma
 
 ## Plugin defaults
 
-Define **plugin defaults** at the namespace level. These defaults automatically apply to all tasks of the corresponding type within flows under that namespace.
+Define **plugin defaults** at the namespace level. These defaults automatically apply to all tasks of the corresponding type within flows under that Namespace.
 
 ![Plugin Defaults](./plugindefaults-namespaces.png)
 
@@ -46,7 +46,7 @@ Read more about [plugin defaults](../../../07.enterprise/02.governance/07.namesp
 
 ## Secrets
 
-Manage **secrets** directly in the UI. Namespace-level secrets are accessible to all flows within the same namespace.
+Manage **secrets** directly in the UI. Namespace-level secrets are accessible to all flows within the same Namespace.
 
 ![Secrets](./secrets-namespaces.png)
 
@@ -54,7 +54,7 @@ Read more about [secrets](../../../07.enterprise/02.governance/secrets/index.md)
 
 ## Audit logs
 
-**Audit logs** record every action performed in your Kestra instance by users or service accounts. This page displays all logs relevant to the selected namespace.
+**Audit logs** record every action performed in your Kestra instance by users or service accounts. This page displays all logs relevant to the selected Namespace resource (e.g., adding a description or a dedicated secret manager). 
 
 ![Audit Logs](./auditlogs-namespaces.png)
 
