@@ -68,7 +68,7 @@ html.dark{
 	#{--ks-background-blue-light}: #65a5ff33;
 	#{--ks-background-body}: $base-grey-700;
 	#{--ks-background-button-primary}: $base-primary-base;
-	#{--ks-background-button-primary-hover}: #7b47ec;
+	#{--ks-background-button-primary-hover}: $base-primary-400;
 	#{--ks-background-button-secondary}: $base-grey-700;
 	#{--ks-background-button-secondary-active}: $base-grey-600;
 	#{--ks-background-button-secondary-hover}: $base-grey-white;
@@ -81,12 +81,10 @@ html.dark{
 	#{--ks-background-purple-light}: rgba($base-primary-400, 0.2);
 	#{--ks-background-secondary}: $base-grey-800;
 	#{--ks-background-secondary-inverse}: $base-grey-50;
+	#{--ks-background-tag-category}: $base-primary-300;
+	#{--ks-background-tag-success}: #215d42;
 	#{--ks-background-tertiary}: $base-grey-Black;
 	#{--ks-background-tertiary-inverse}: $base-grey-100;
-
-	/* backgroung */
-	#{--ks-backgroung-tag-category}: $base-primary-300;
-	#{--ks-backgroung-tag-success}: #215d42;
 
 	/* blur */
 	#{--ks-blur-effect}: #581fd38f;
@@ -116,7 +114,7 @@ html.dark{
 	#{--ks-content-output}: #80fac5;
 	#{--ks-content-primary}: $base-grey-white;
 	#{--ks-content-primary-inverse}: $base-grey-Black;
-	#{--ks-content-propertie}: #a9b5fe;
+	#{--ks-content-property}: #a9b5fe;
 	#{--ks-content-secondary}: $base-grey-200;
 	#{--ks-content-secondary-inverse}: $base-grey-600;
 	#{--ks-content-tag-category}: $base-grey-Black;
@@ -138,6 +136,7 @@ html.dark{
 	#{--ks-shadows-hight}: #a8a8c7;
 	#{--ks-shadows-light}: #22222f;
 	#{--ks-shadows-light-inverse}: #2720560d;
+	#{--ks-shadows-xl-inverse}: #533ce647;
 
 	/* special */
 	#{--ks-special-green}: #15b983;
@@ -191,4 +190,3 @@ html.dark{
 	/* red/base */
 	#{--red-base}: #ab0009;
 }
-
