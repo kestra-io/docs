@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <CommonPaginationContainer
+            <PaginationContainer
                 :current-url="fullPath"
                 :total-items="categoryFilteredPlugins.length"
                 :showTotal="false"
@@ -57,7 +57,7 @@
 <script setup lang="ts">
     import Header from "~/components/plugins/Header.vue"
     import PluginCard from "~/components/plugins/PluginCard.vue"
-    import CommonPaginationContainer from "~/components/common/PaginationContainer.vue"
+    import PaginationContainer from "~/components/common/PaginationContainer.vue"
     import PluginsFaq from "~/components/plugins/Faq.vue"
     import CustomSelect from "~/components/common/CustomSelect.vue"
     import { computed, ref, watch, onMounted } from "vue"

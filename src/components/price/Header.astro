@@ -1,0 +1,503 @@
+---
+import Squared from "~/components/layout/Squared.vue"
+import LogoCarousel from "~/components/common/LogoCarousel.astro"
+
+import Plus from "vue-material-design-icons/Plus.vue"
+import CheckBold from "vue-material-design-icons/CheckBold.vue"
+import ArrowDown from "vue-material-design-icons/ArrowDown.vue"
+
+const PLANS = [
+    {
+        name: "Open Source",
+        subtitle: "Free",
+        description: "Apache 2.0 Licence",
+        features: [
+            { text: "Core Features", icon: CheckBold },
+            {
+                text: "AI Copilot With Gemini",
+                icon: CheckBold,
+            },
+        ],
+        footerNote: "Open, declarative orchestration you can run anywhere.",
+    },
+    {
+        name: "Team",
+        subtitle: "Annual Subscription",
+        description: "Per instance model, unlimited flows/tasks/executions",
+        features: [
+            {
+                text: "Everything in Open Source",
+                icon: CheckBold,
+            },
+            {
+                text: "Core Security And Access Control",
+                icon: Plus,
+            },
+            { text: "Enterprise Plugins", icon: Plus },
+            { text: "Public/Cloud SSO", icon: Plus },
+            {
+                text: "Internal Secret Manager",
+                icon: Plus,
+            },
+        ],
+        button: {
+            text: "Request Free Trial",
+            link: "/enterprise/free-trial",
+            class: "btn-secondary",
+        },
+        footerNote:
+            "Production orchestration with security and governance built in.",
+    },
+    {
+        name: "Pro",
+        subtitle: "Annual Subscription",
+        description: "Per instance model, unlimited flows/tasks/executions",
+        features: [
+            {
+                text: "Everything in Team",
+                icon: CheckBold,
+            },
+            { text: "Multiple Tenants", icon: Plus },
+            {
+                text: "Worker Groups & Task Runners",
+                icon: Plus,
+            },
+            {
+                text: "External Secret Manager",
+                icon: Plus,
+            },
+            { text: "Plugin Versioning", icon: Plus },
+            {
+                text: "Apps (custom UI on top of workflows)",
+                icon: Plus,
+            },
+            {
+                text: "Catalog & Lineage (Assets)",
+                icon: Plus,
+            },
+        ],
+        button: {
+            text: "Contact us",
+            link: "/demo",
+            class: "btn-secondary",
+        },
+        footerNote: "For growing platforms and higher throughput.",
+    },
+    {
+        name: "Enterprise",
+        subtitle: "Annual Subscription",
+        description: "Per instance model, unlimited flows/tasks/executions",
+        features: [
+            { text: "Everything in Pro", icon: CheckBold },
+            {
+                text: "LDAP, SCIM & Custom RBAC",
+                icon: Plus,
+            },
+            { text: "Audit Logs", icon: Plus },
+            { text: "Storage Isolation", icon: Plus },
+            {
+                text: "External Log Aggregators",
+                icon: Plus,
+            },
+            { text: "Custom Blueprints", icon: Plus },
+            {
+                text: "AI Copilot With Custom Models",
+                icon: Plus,
+            },
+            { text: "High Concurrency", icon: Plus },
+            {
+                text: "Custom Role Based Access Control",
+                icon: Plus,
+            },
+        ],
+        button: {
+            text: "Contact us",
+            link: "/demo",
+            class: "btn-primary",
+        },
+        footerNote: "Standardize across teams, environments, and systems.",
+    },
+]
+
+const CLOUD_PLAN = {
+    name: "Kestra Cloud",
+    subtitle: "Everything in Open Source",
+    features: [
+        {
+            text: "Everything in Open Source",
+            icon: CheckBold,
+        },
+        {
+            text: "Fully Managed Platform (Hosting, Upgrades, Monitoring)",
+            icon: Plus,
+        },
+        { text: "Automatic Scaling", icon: Plus },
+        {
+            text: "Built-in Security and Governance Features",
+            icon: Plus,
+        },
+        {
+            text: "Enterprise Plugins Included",
+            icon: Plus,
+        },
+        {
+            text: "Fast Onboarding and Guided Experience",
+            icon: Plus,
+        },
+        { text: "Zero Maintenance Overhead", icon: Plus },
+        { text: "SOC2 Compliant", icon: Plus },
+    ],
+    button: { text: "Request Access", link: "/cloud-early-access" },
+    footerNote: "Start small, scale instantly, pay only for what you use.",
+}
+---
+
+<Squared client:load>
+    <div class="content">
+        <h1 class="title" data-usal="fade-r">Kestra Editions & Plans</h1>
+        <p class="description" data-usal="fade-l">
+            Same orchestration engine. <br />
+            Different levels of governance and scale.
+        </p>
+    </div>
+</Squared>
+
+<section class="cards-section">
+    <div class="container">
+        <slot name="switcher" />
+
+        <div class="host-wrapper">
+            <div class="cards-wrapper self-hosted-view" data-host="self-hosted">
+                {
+                    PLANS.map((plan) => (
+                        <div
+                            class={`plan-card ${plan.name === "Enterprise" ? "enterprise" : ""} ${plan.name === "Open Source" ? "open-source" : ""}`}
+                        >
+                            <div class="card-header">
+                                <h2 class="plan-name" data-usal="fade-r">{plan.name}</h2>
+                                <div class="plan-subtitle" data-usal="fade-r delay-10">{plan.subtitle}</div>
+                                <div class="plan-description" data-usal="fade-r delay-20">
+                                    {plan.description}
+                                </div>
+                            </div>
+
+                            <div class="divider" />
+
+                            <ul class="features">
+                                {plan.features.map((feature) => {
+                                    const Icon = feature.icon
+                                    const isBold = Icon === CheckBold && plan.name !== "Open Source"
+                                    return (
+                                        <li class={isBold ? "bold" : ""} data-usal="fade-l delay-30">
+                                            <Icon class="icon" />
+                                            <span>{feature.text}</span>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+
+                            <div class="card-footer">
+                                {plan.button && (
+                                    <a
+                                        href={plan.button.link}
+                                        class={`btn ${plan.button.class}`}
+                                        data-usal="zoomin-d"
+                                    >
+                                        {plan.button.text}
+                                    </a>
+                                )}
+
+                                <div class="divider"></div>
+
+                                <p class="footer-note" data-usal="fade-l delay-30">{plan.footerNote}</p>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div class="cloud-hosted-view d-none" data-host="cloud-hosted">
+                <div class="cloud-card">
+                    <div class="card-header">
+                        <h2 class="plan-name" data-usal="fade-r">{CLOUD_PLAN.name}</h2>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <ul class="features">
+                        {
+                            CLOUD_PLAN.features.map((feature) => {
+                                const Icon = feature.icon
+                                const isBold = Icon === CheckBold
+                                return (
+                                    <li class={isBold ? "bold" : ""} data-usal="fade-l delay-30">
+                                        <Icon class="icon" />
+                                        <span>{feature.text}</span>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+
+                    <div class="card-footer">
+                        {
+                            CLOUD_PLAN.button && (
+                                <a
+                                    href={CLOUD_PLAN.button.link}
+                                    class="btn btn-primary"
+                                >
+                                    {CLOUD_PLAN.button.text}
+                                </a>
+                            )
+                        }
+
+                        <div class="divider"></div>
+
+                        <p class="footer-note">{CLOUD_PLAN.footerNote}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="compare-all" data-host="self-hosted" data-usal="fade-u delay-30">
+            <a href="#comparison-table">Compare All Plans <ArrowDown /></a>
+        </div>
+
+        <div data-usal="fade-u delay-40">
+            <LogoCarousel centered={true} />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    :global(section.squared) {
+        padding-bottom: 0 !important;
+    }
+
+    .cards-section {
+        padding: 1rem 1rem 5rem 1rem;
+        background: var(--ks-background-body);
+
+        .divider {
+            height: 1px;
+            background: var(--ks-border-secondary);
+            margin: 1.5rem 0;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.625rem;
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+
+                &.bold {
+                    font-weight: 700;
+                }
+
+                .icon {
+                    font-size: $font-size-md;
+                    flex-shrink: 0;
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+        }
+        .card-footer {
+            flex-shrink: 0;
+            .btn {
+                width: 100%;
+            }
+        }
+        .self-hosted-view {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-bottom: 2rem;
+
+            @include media-breakpoint-down(xl) {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: 1fr;
+            }
+
+            .plan-card {
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid var(--ks-border-secondary);
+                box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+                @include media-breakpoint-up(xl) {
+                    max-width: 285px;
+                    height: 690px;
+                }
+                background: var(--ks-background-primary);
+                overflow: clip;
+                @include media-breakpoint-down(xl) {
+                    border-radius: 0.75rem;
+                }
+
+                &:first-child {
+                    @include media-breakpoint-up(xl) {
+                        border-radius: 0.75rem 0 0 0.75rem;
+                        border-right: none;
+                    }
+                }
+
+                &:nth-child(2) {
+                    @include media-breakpoint-up(xl) {
+                        border-right: none;
+                    }
+                }
+
+                &:last-child {
+                    @include media-breakpoint-up(xl) {
+                        border-radius: 0 0.75rem 0.75rem 0;
+                        border-left: none;
+                    }
+                }
+
+                &.open-source {
+                    background: var(--ks-background-secondary);
+                    @include media-breakpoint-up(xl) {
+                        max-height: 559px;
+                        align-self: flex-start;
+                    }
+                }
+
+                &.enterprise {
+                    border: 1px solid var(--ks-border-active);
+                    background: var(--ks-background-purple-light);
+                    position: relative;
+                    z-index: 1;
+                    margin: -1px;
+
+                    .divider {
+                        background: var(--ks-border-secondary);
+                    }
+                }
+
+                .card-header {
+                    .plan-subtitle {
+                        font-size: $font-size-xs;
+                        color: var(--ks-content-alert-info);
+                        margin-top: 1rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .plan-description {
+                        font-size: $font-size-xs;
+                        color: var(--ks-content-primary);
+                        font-weight: 600;
+                    }
+                }
+
+                .features {
+                    margin: 0 0 1.5rem 0;
+                    flex: 1;
+                    overflow-y: auto;
+                    scrollbar-width: none;
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    li {
+                        margin-bottom: 0.375rem;
+                    }
+                }
+
+                .card-footer {
+                    .btn {
+                        width: 100%;
+                    }
+
+                    .footer-note {
+                        font-size: $font-size-xs;
+                        color: var(--ks-content-secondary);
+                        line-height: 1.4;
+                    }
+                }
+            }
+        }
+
+        .cloud-hosted-view {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+
+            .cloud-card {
+                max-width: 614px;
+                width: 100%;
+                border-radius: 0.5rem;
+                padding: 2rem;
+                background: var(--ks-background-primary);
+                box-shadow: 2px 0.1875rem 1rem 0px var(--ks-shadows-light);
+                border: 1px solid var(--ks-border-secondary);
+                display: flex;
+                flex-direction: column;
+
+                .divider {
+                    background: var(--ks-border-secondary);
+                }
+
+                .features {
+                    li {
+                        margin-bottom: 0.5rem;
+                    }
+                }
+
+                .card-footer {
+                    .btn {
+                        margin-top: 1rem;
+                    }
+
+                    .footer-note {
+                        text-align: left;
+                        font-size: $font-size-xs;
+                        color: var(--ks-content-secondary);
+                    }
+                }
+            }
+        }
+
+        .compare-all {
+            text-align: center;
+            margin-bottom: 4rem;
+            a {
+                color: var(--ks-content-link);
+                text-decoration: none;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.375rem;
+                transition: transform 0.2s ease-in-out;
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+
+                svg {
+                    margin-top: -2px;
+                }
+            }
+        }
+    }
+</style>

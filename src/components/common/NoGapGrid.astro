@@ -1,0 +1,80 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    items: Array<{
+        icon: string;
+        title: string;
+        description: string;
+    }>;
+}
+
+const { items } = Astro.props;
+---
+
+<div class="features-grid">
+    {items.map(({ icon, title, description }, index) => (
+        <div class="feature-card">
+            <Icon name={icon} class="feature-icon" data-usal="zoomin" />
+            <h6 class="feature-title" data-usal="fade-r">{title}</h6>
+            <small class="feature-desc" data-usal="fade-l delay-20">{description}</small>
+        </div>
+    ))}
+</div>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border: 1px solid var(--ks-border-secondary-inverse);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 2px 3px 16px 0 var(--ks-shadows-light-inverse);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: 1fr;
+        }
+
+        .feature-card {
+            width: 100%;
+            padding: 2rem 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 1px 1px 0 0 var(--ks-border-secondary-inverse);
+
+            @include media-breakpoint-down(lg) {
+                padding: 2rem;
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 100%;
+            }
+
+            .feature-icon {
+                font-size: 1.5rem;
+                color: var(--ks-content-color-highlight-inverse);
+                align-self: start;
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            .feature-title {
+                color: var(--ks-content-primary-inverse);
+                margin: 0;
+            }
+
+            .feature-desc {
+                color: var(--ks-content-secondary-inverse);
+                font-size: $font-size-sm;
+                margin: 0;
+            }
+        }
+    }
+</style>
