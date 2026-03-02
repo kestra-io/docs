@@ -99,6 +99,48 @@ tasks:
     message: "Asset recorded: {{ assets() | jq('.[] | {id: .id, type: .type, metadata: .metadata}') }}"
 ```
 
+:::alert{type="info"}
+Auto-emitted assets are supported for specific plugins when `assets.enableAuto: true`:
+- **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
+- **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.plugin.ee.assets.VM` (or host), marking the infrastructure targets the playbook runs against.
+- **JDBC Query**: detects `CREATE TABLE` statements and emits a single `Table` output; JDBC URL populates `system` and `database`.
+
+Example (dbt):
+```yaml
+tasks:
+  - id: dbt_run
+    type: io.kestra.plugin.dbt.cli.DbtCLI
+    commands: ["dbt run"]
+    assets:
+      enableAuto: true
+      # outputs: models as Table assets
+      # lineage: edges from depends_on
+
+# Pseudo example of what gets auto-generated from manifest.json:
+# assets:
+#   outputs:
+#     - id: analytics.staging.stg_orders
+#       type: io.kestra.plugin.ee.assets.Table
+#       metadata:
+#         system: postgres
+#         database: analytics
+#         schema: staging
+#         name: stg_orders
+#         dbt_model_layer: staging
+#       lineage:
+#         - raw_data.public.orders
+#     - id: analytics.marts.fct_orders
+#       type: io.kestra.plugin.ee.assets.Table
+#       metadata:
+#         system: postgres
+#         database: analytics
+#         schema: marts
+#         name: fct_orders
+#       lineage:
+#         - analytics.staging.stg_orders
+```
+:::
+
 ## Operational automation
 
 Assets go beyond lineage: you can manage lifecycle, react to events, and automate remediation directly from flows:
