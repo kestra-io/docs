@@ -68,11 +68,13 @@ const quotes = [
             radial-gradient(
                 farthest-corner at top center,
                 transparent 0.5%,
-                var(--ks-background-primary) 60%
+                var(--ks-background-primary) 50%
             ),
             linear-gradient(
                 to right,
-                var(--ks-shadows-light) 1px,
+                transparent 35px,
+                var(--ks-shadows-light) 35px,
+                var(--ks-shadows-light) 36px,
                 transparent 1px
             ),
             linear-gradient(
@@ -82,12 +84,12 @@ const quotes = [
             );
 
         background-size:
-            100% 100%,
+            100% 70%,
             72px 72px,
             72px 72px;
         background-repeat: no-repeat, repeat, repeat;
         background-position:
-            0 0,
+            center top,
             50% 0,
             100% 0;
         @include media-breakpoint-up(lg) {
