@@ -97,6 +97,8 @@ const activeQuote = ref(0)
         flex-direction: column;
         align-items: center;
         gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
         .big-logo {
             // guarantee square proportions
             aspect-ratio: 1 / 1;

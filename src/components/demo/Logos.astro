@@ -2,41 +2,43 @@
 const logos = [
     {
         name: "Fila",
-        Logo: await import("~/assets/landing/infrastructure/companies/fila.svg").then(
+        Logo: await import("./assets/logos/fila.svg").then(
             (module) => module.default,
         ),
     },
     {
-        name: "Deutshe Telekom",
-        Logo: "-",
+        name: "Deutsche Telekom",
+        Logo: await import("./assets/logos/deutsche-telekom.svg").then(
+            (module) => module.default,
+        ),
     },
     {
         name: "BrainLab",
-        Logo: await import("~/assets/landing/infrastructure/companies/brainlab.svg").then(
+        Logo: await import("./assets/logos/brainlab.svg").then(
             (module) => module.default,
         ),
     },
     {
         name: "Bloomberg",
-        Logo: await import("~/assets/landing/infrastructure/companies/bloomberg.svg").then(
+        Logo: await import("./assets/logos/bloomberg.svg").then(
             (module) => module.default,
         ),
     },
     {
         name: "Toyota",
-        Logo: await import("~/assets/landing/infrastructure/companies/toyota.svg").then(
+        Logo: await import("./assets/logos/toyota.svg").then(
             (module) => module.default,
         ),
     },
     {
         name: "Apple",
-        Logo: await import("~/assets/landing/infrastructure/companies/apple.svg").then(
+        Logo: await import("./assets/logos/apple.svg").then(
             (module) => module.default,
         ),
     },
     {
         name: "Apotek",
-        Logo: await import("~/assets/landing/infrastructure/companies/apoteket.svg").then(
+        Logo: await import("./assets/logos/apotek.svg").then(
             (module) => module.default,
         ),
     },
@@ -62,8 +64,13 @@ const logos = [
         justify-content: space-around;
         align-items: center;
         padding: 2rem 0;
-        img {
-            max-height: 40px;
+        > div {
+            flex: 1;
+            text-align: center;
+        }
+        svg {
+            height: 30px;
+            max-width: 70%;
             opacity: 0.7;
             transition: opacity 0.3s ease-in-out;
             &:hover {
