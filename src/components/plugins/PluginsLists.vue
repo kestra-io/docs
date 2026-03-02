@@ -116,7 +116,7 @@
 
     const pluginsInformation = (plugin: CardPlugin): PluginInformation => ({
         name: plugin.name,
-        subGroupTitle: plugin.title,
+        subGroupTitle: plugin.subGroupTitle,
         title: plugin.title,
         description: plugin.description,
         categories: plugin.categories,
@@ -124,6 +124,7 @@
         blueprints: plugin.blueprints ?? 0,
         className: plugin.className,
         subGroup: plugin.subGroup,
+        isEnterprise: plugin.isEnterprise,
     })
 
     onMounted(() => {

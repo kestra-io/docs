@@ -145,8 +145,7 @@ tasks:
   - id: send
     type: io.kestra.plugin.slack.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
-    channel: "#general"
-    executionId: "{{trigger.executionId}}"
+    executionId: "{{ trigger.executionId }}"
 
 triggers:
   - id: listen

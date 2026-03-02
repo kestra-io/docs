@@ -8,7 +8,7 @@ import BlogToc from "~/components/blogs/BlogToc.vue"
 import BlogSocials from "~/components/blogs/BlogSocials.vue"
 import { default as Avatars } from "~/utils/teamsImages"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
-import Mesh from "~/components/layout/Mesh.astro"
+import Mesh from "~/components/layout/Mesh.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
 export async function getStaticPaths() {
@@ -78,7 +78,7 @@ const jsonLinkedData = {
                 set:html={JSON.stringify(jsonLinkedData)}
             />
         </Fragment>
-        <Mesh>
+        <Mesh client:visible>
             <div
                 class="row d-flex justify-content-between align-items-center header-content"
             >
@@ -183,3 +183,4 @@ const jsonLinkedData = {
         display: block;
     }
 </style>
+

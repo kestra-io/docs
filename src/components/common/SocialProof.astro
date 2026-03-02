@@ -96,6 +96,11 @@ const {
     .read-story {
         background-color: var(--ks-background-primary-inverse);
         padding: $rem-4 $rem-2;
+
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 $spacer;
+        }
+
         .container {
             padding: 0;
             display: flex;
@@ -173,6 +178,10 @@ const {
                             margin-top: 0.5rem;
                         }
                     }
+                }
+
+                :global(.link) {
+                    color: var(--ks-content-link-inverse);
                 }
             }
         }

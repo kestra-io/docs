@@ -1,25 +1,26 @@
 <template>
-    <section class="container-fluid">
-        <div class="container">
+    <div class="square">
+        <Squared>
             <div class="get-in-touch">
-                <h1 data-usal="fade-r">Contact <span class="highlight">Us</span></h1>
+                <h1 data-usal="fade-r">Contact Us</h1>
                 <p class="baseline" data-usal="fade-l">
-                    If you have questions, inquiries, or feedback about Kestra, we're looking to
+                     If you have questions, inquiries, or feedback about Kestra, we're looking to
                     hearing from you.
                 </p>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-6 form-container ">
+                <div class="form-container">
                     <div id="hubspotForm" data-usal="fade-l" />
                 </div>
             </div>
-        </div>
-    </section>
+        </Squared>
+    </div>
 </template>
 <script lang="ts" setup>
     import { onMounted } from "vue"
     import { hubspotFormCreate } from "~/utils/hubspot"
     import { useHubspotTheme } from "~/composables/useHubspotTheme"
+    import Squared from "~/components/layout/Squared.vue"
 
     const { getStyles, styleId } = useHubspotTheme()
 
@@ -36,50 +37,28 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    .container-fluid {
-        padding: $rem-3 $rem-1;
-
-        .get-in-touch {
-            text-align: center;
-            color: var(--ks-content-primary);
-        }
-
-        .form-container {
-            margin-top: $rem-2;
-            border: 1px solid var(--ks-border-secondary);
-            padding: $rem-2;
-            border-radius: $border-radius-lg;
-            background: var(--ks-background-primary);
-
-            @include media-breakpoint-down(sm) {
-                padding: $rem-1
-            }
-        }
+    .square :deep(section.squared) {
+        padding-bottom: 90px !important;
     }
 
-    .container {
-        position: relative;
-        z-index: 10;
+    .get-in-touch {
+        text-align: center;
+        color: var(--ks-content-primary);
+    }
 
-        &::before,
-        &::after {
-            content: "";
-            position: absolute;
-            width: calc($spacer * 12.5);
-            height: calc($spacer * 12.5);
-            background: linear-gradient(140deg, rgba(70, 24, 255, 0) -41.95%, #7e1cfa 77.28%);
-            filter: blur(100px);
-            z-index: -5;
-        }
+    .form-container {
+        margin-top: $rem-2;
+        border: 1px solid var(--ks-border-secondary);
+        padding: $rem-2;
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-primary);
+        max-width: 633px;
+        max-height: fit-content;
 
-        &::before {
-            left: 21rem;
-            top: 10rem;
-        }
-
-        &::after {
-            right: 21rem;
-            bottom: 0;
+        @include media-breakpoint-down(sm) {
+            padding: $rem-1;
+            width: 100%;
         }
     }
 </style>
+

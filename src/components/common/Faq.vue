@@ -1,7 +1,8 @@
 <template>
     <section>
         <div class="container content">
-            <div class="header">
+            <h2 v-if="subtitle" class="subtitle">{{ subtitle }}</h2>
+            <div v-if="showHeader" class="header">
                 <h2>{{ title }}</h2>
                 <slot name="description">
                     <p>
@@ -30,10 +31,14 @@
 
     withDefaults(defineProps<{
         title?: string;
+        subtitle?: string;
         items?: FaqItem[];
+        showHeader?: boolean;
     }>(), {
         title: "Frequently asked questions",
+        subtitle: "",
         items: () => [],
+        showHeader: true,
     });
 </script>
 
@@ -41,13 +46,18 @@
 @import "~/assets/styles/variable";
 
 section {
-    padding: $rem-4 $rem-1;
-    background: var(--ks-background-body);
+    padding: $rem-6 $rem-1;
+    background: var(--ks-background-primary);
 
     .content {
         display: flex;
         flex-direction: column;
-        gap: $rem-3;
+        gap: $rem-2;
+    }
+
+    .subtitle {
+        text-align: left;
+        color: var(--ks-content-primary);
     }
 
     .header {

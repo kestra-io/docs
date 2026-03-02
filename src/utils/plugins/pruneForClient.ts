@@ -4,6 +4,7 @@ import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
 export type CardPlugin = {
     name: string
     title: string
+    subGroupTitle?: string
     group: string
     subGroup?: string
     categories?: string[]
@@ -11,6 +12,7 @@ export type CardPlugin = {
     className?: string
     elementCounts?: number
     blueprints?: number
+    isEnterprise?: boolean
 }
 
 export function prunePluginsForCards(
@@ -23,14 +25,16 @@ export function prunePluginsForCards(
         const groupInfo = pluginsData[p.group]
         return {
             name: p.name,
-            title: info.title ?? p.title,
+            title: info.title ?? p.title ?? p.name,
+            subGroupTitle: p.title,
             group: p.group,
             subGroup: p.subGroup,
             categories: info.categories ?? p.categories,
-            description: info.description ?? p.description,
-            className: groupInfo?.className ?? info.className,
-            elementCounts: groupInfo?.elementCounts ?? info.elementCounts,
-            blueprints: groupInfo?.blueprints ?? info.blueprints,
+            description: (p.subGroup?.startsWith(p.group) ? info.description : groupInfo?.description) ?? p.description,
+            className: info.className,
+            elementCounts: info.elementCounts ?? groupInfo?.elementCounts,
+            blueprints: info.blueprints ?? groupInfo?.blueprints,
+            isEnterprise: p.group?.includes('.ee.') ?? false,
         }
     })
 }
