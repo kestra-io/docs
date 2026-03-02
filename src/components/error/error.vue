@@ -10,23 +10,17 @@
             {{ description }}
         </p>
 
-        <div v-if="visible" class="error-details">
-            <h3>{{ error.title }}</h3>
+            <div v-if="visible" class="error-details">
+                <h3 v-if="error.title">{{ error.title }}</h3>
 
-            <ul>
-                <li v-if="error.name">
-                    name: <code>{{ error.name }}</code>
-                </li>
-                <li v-if="error.plugin">
-                    plugin: <code>{{ error.plugin }}</code>
-                </li>
-                <li v-if="error.id">
-                    id: <code>{{ error.id }}</code>
-                </li>
-            </ul>
-
-            <pre>{{ JSON.stringify(error, null, 2) }}</pre>
-        </div>
+                <div class="message-wrapper">
+                    <pre
+                        v-if="error.message"
+                        class="error-message"
+                    >{{ error.message }}</pre>
+                    <pre class="raw-json">{{ JSON.stringify(error, null, 2) }}</pre>
+                </div>
+            </div>
 
         <Link href="/" text="Back to home" class="btn btn-primary" reversed />
         <img :src="errorImage.src" alt="Error" class="img-fluid" />
@@ -96,21 +90,31 @@
 
         .error-details {
             text-align: left;
-            margin-bottom: 1rem;
-            border: $block-border;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 800px;
             border-radius: $border-radius-lg;
             padding: 1rem;
 
-            ul {
-                list-style: none;
-                padding: 0;
+            h3 {
+                font-size: $font-size-lg;
+                margin-bottom: 1.5rem;
+                color: var(--ks-content-primary);
+                font-weight: 600;
+                font-family: $font-family-monospace;
+                background-color: var(--ks-background-function);
+                width: fit-content;
+                padding: 0.5rem;
+                border-radius: $border-radius-lg;
             }
 
-            pre {
+            .message-wrapper {
                 background: var(--ks-background-secondary);
+                border-radius: $border-radius-lg;
                 padding: 1rem;
-                border-radius: 4px;
-                max-width: 90vw;
+                overflow: hidden;
+                border: $block-border;
             }
         }
 
