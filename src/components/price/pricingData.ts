@@ -212,8 +212,8 @@ export const getSections = (totalPlugins: number): Section[] => [
                 feature: "Enterprise Plugins",
                 values: ["cross", "check", "check", "check"],
                 description: {
-                    text: "Use multiple versions of a plugin depending on your instance requirements and upgrade path",
-                    link: "/docs/enterprise/instance/versioned-plugins",
+                    text: "Access enterprise-grade integrations and features designed for secure, compliant, and large-scale orchestration across your stack.",
+                    link: "/plugins",
                 },
             },
             {
