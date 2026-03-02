@@ -24,14 +24,14 @@ Sensitive material used by a credential (client secrets, private keys, certifica
 
 ## Availability and scope
 
-Credentials are available in the **Enterprise Edition** only.
+Credentials are available in the **Enterprise Edition** only and can be accessed from the **Tenant** menu.
 
 Credentials can be created at:
 
 - **Tenant level** (reusable across namespaces in that tenant)
 - **Namespace level** (scoped to a single namespace)
 
-During setup, Kestra lets you **test token retrieval** from the UI.
+During setup, Kestra lets you **test token retrieval** from the UI to ensure your configuration is correct.
 
 ---
 
