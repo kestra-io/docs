@@ -4,7 +4,7 @@ import { sequence } from "astro/middleware"
 import contentSecurityPolicyConfig from "../content-security-policy.config"
 // import {middlewareISRCache} from "./utils/middlewareISRCache";
 import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
-import { $fetchApi } from "./utils/fetch.ts"
+import { getCollection } from "astro:content"
 
 const sendRedirect = (redirectUrl: string) => {
     return new Response("", {
@@ -201,19 +201,26 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
     }
 
     const originalUrl = new URL(context.url)
+    const split = originalUrl.pathname.split("/");
 
-    try {
-        const result = await $fetchApi<{ to: string | null }>(
-            `/redirects?${new URLSearchParams({
-                from: originalUrl.pathname,
-            }).toString()}`,
-        )
-        if (result && result.to && result.to !== originalUrl.pathname) {
-            return sendRedirect(result.to)
-        }
-    } catch (e) {
-        console.error("Error fetching redirect:", e)
+    const allEntries = (await getCollection("redirects"))
+        .filter((item) => item.id === (split.length > 2 ? split[1] : "index"))
+        .flatMap((item) => item.data)
+        .map((item) => {
+            const regexp = new RegExp(item.regexp);
+            const match = originalUrl.pathname.match(regexp)
+            if (match) {
+                return originalUrl.pathname.replace(regexp, item.to)
+            }
+
+            return null;
+        })
+        .filter((item) => item !== null)
+
+    if (allEntries.length > 0) {
+        return sendRedirect(allEntries[0])
     }
+
 
     return response
 })

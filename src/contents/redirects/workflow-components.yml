@@ -1,0 +1,2 @@
+- regexp: "\/workflow-components\/.*"
+  to: "/docs"
