@@ -1,0 +1,48 @@
+---
+import Quotes from "~/components/common/Quotes.vue"
+import AppleLogo from "~/assets/teams/apple.svg?raw"
+import FoundationLogo from "~/assets/pricing/foundation-direct.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
+---
+
+<section class="quote-section">
+    <Quotes
+        data-host="self-hosted"
+        quotes={[
+            {
+                quote: `We switched from Airflow because we want engineers solving problems,
+                        not coding orchestration. Kestra delivers end-to-end automation with the
+                        robustness we need at our scale. Few companies operate at this level,
+                        especially in AI/ML.`,
+                author: "Senior Engineering Manager (ML Team)",
+                smallLogoSvg: optimizeSvgIcon(AppleLogo, "apple-logo"),
+            },
+        ]}
+    />
+    <Quotes
+        data-host="cloud-hosted"
+        class="d-none"
+        quotes={[
+            {
+                quote: "Kestra Cloud has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
+                author: "Michael Heidner - SVP of Analytics and Business Intelligence",
+                smallLogoSvg: optimizeSvgIcon(
+                    FoundationLogo,
+                    "foundation-logo",
+                ),
+            },
+        ]}
+    />
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .quote-section {
+        position: relative;
+        z-index: 10;
+        // make sure the fixed top grid doesn't show up in
+        // the quote section so force a background color
+        background-color: var(--ks-background-primary);
+    }
+</style>
