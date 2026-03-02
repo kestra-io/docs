@@ -221,7 +221,6 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         return sendRedirect(allEntries[0])
     }
 
-
     return response
 })
 

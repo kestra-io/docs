@@ -1,2 +1,2 @@
-- regexp: "\/__nuxt_content\/.*"
+- regexp: "/__nuxt_content/.*"
   to: "/"
