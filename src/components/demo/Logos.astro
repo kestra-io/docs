@@ -48,7 +48,7 @@ const logos = [
 <div class="logo-banner">
     {
         logos.map((logo) => (
-            <div title={logo.name}>
+            <div title={logo.name} role="img" aria-label={logo.name}>
                 <logo.Logo />
             </div>
         ))
