@@ -1,22 +1,16 @@
 <template>
-    <div v-if="prev || next" class="docs-prev-next mt-5">
-        <a v-if="prev" :href="prev.path" class="prev" @click="navigateTo(prev.path)">
+    <div v-if="prev || next" class="docs-prev-next">
+        <a v-if="prev" :href="prev.path" class="prev" @click="activeSlug = prev.path">
             <ArrowLeft />
             <div class="wrapper">
-                <span v-if="directory(prev.path)" class="directory">
-                    {{ directory(prev.path) }}
-                </span>
+                <span v-if="directory(prev.path)" class="directory">{{ directory(prev.path) }}</span>
                 <span class="title">{{ prev.title }}</span>
             </div>
         </a>
-
         <span v-else />
-
-        <a v-if="next" :href="next.path" class="next" @click="navigateTo(next.path)">
+        <a v-if="next" :href="next.path" class="next" @click="activeSlug = next.path">
             <div class="wrapper">
-                <span v-if="directory(next.path)" class="directory">
-                    {{ directory(next.path) }}
-                </span>
+                <span v-if="directory(next.path)" class="directory">{{ directory(next.path) }}</span>
                 <span class="title">{{ next.title }}</span>
             </div>
             <ArrowRight />
@@ -42,73 +36,56 @@
         if (!link) return ""
 
         const dirs = link.split("/")
-        const directory = dirs[Math.max(1, dirs.length - 2)]
-        if (!directory) return ""
+        const dir = dirs[Math.max(1, dirs.length - 2)]
+        if (!dir) return ""
 
         const specialCases: Record<string, string> = { ui: "UI", "ai-tools": "AI Tools" }
-        return specialCases[directory] || directory.split("-").map(upperFirst).join(" ")
-    }
-
-    function navigateTo(path?: string) {
-        if (!path) return
-        activeSlug.value = path
+        return specialCases[dir] || dir.split("-").map(upperFirst).join(" ")
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
     .docs-prev-next {
         display: flex;
         width: 100%;
-
+        margin-top: 3rem;
         .wrapper {
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
-        .title {
-            font-size: $font-size-sm;
-        }
-
         a {
             border: $block-border;
-            background-color: $black-2;
-            padding: calc($spacer/2) calc($spacer);
+            background-color: var(--ks-background-secondary);
+            padding: calc($spacer / 2) $spacer;
             display: flex;
             gap: $spacer;
             border-radius: var(--bs-border-radius);
             width: 50%;
-
+            align-items: center;
+            .material-design-icon {
+                color: var(--ks-content-color-highlight);
+            }
             &.prev {
                 margin-right: calc($spacer / 2);
-                .material-design-icon {
-                    color: $purple-36;
-                }
             }
-
             &.next {
                 margin-left: calc($spacer / 2);
-                .material-design-icon {
-                    color: $purple-36;
-                }
+                justify-content: flex-end;
+                text-align: right;
             }
-
-            div {
-                flex-grow: 2;
-                span {
-                    display: block;
-
-                    &.title {
-                        font-weight: bold;
-                        color: $purple-36;
-                    }
-
-                    &.directory {
-                        color: $white-1;
-                        font-size: $font-size-sm;
-                    }
-                }
+            .title {
+                display: block;
+                font-weight: bold;
+                color: var(--ks-content-primary);
+                font-size: $font-size-sm;
+            }
+            .directory {
+                display: block;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
             }
         }
     }

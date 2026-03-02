@@ -1,5 +1,6 @@
 <template>
-    <div class="container my-5 pt-5 text-center discover-cloud">
+    <section>
+            <div class="container pt-5 text-center discover-cloud">
         <div class="row">
             <div class="col-md-12 col-lg-5 center">
                 <img :src="discoverCloudImage.src" alt="Discover Cloud Logo" />
@@ -16,6 +17,7 @@
             </div>
         </div>
     </div>
+    </section>
 </template>
 
 <script setup lang="ts">
@@ -25,28 +27,28 @@
 <style lang="scss">
     @import "~/assets/styles/variable";
 
+    section {
+        background-color: var(--ks-background-secondary);
+        padding: $rem-3 0;
+    }
     .discover-cloud {
-        border: 1px solid #282d43;
+        border: 1px solid var(--ks-border-secondary);
         border-radius: 1rem;
-        background-color: #0f1115;
-        margin-top: 10rem !important;
         padding: 2rem;
-
         & > div,
         .center {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
         & h2 {
             font-size: $font-size-3xl;
         }
-
         & p {
-            font-size: $font-size-lg !important;
+            font-size: $font-size-base !important;
+            color: var(--ks-content-secondary) !important;
+            margin-top: $rem-1;
         }
-
         .highlight {
             background: linear-gradient(90deg, #51cff7 57.35%, #4782f5 95.94%) !important;
             background-clip: text !important;
@@ -54,7 +56,6 @@
             -webkit-text-fill-color: transparent !important;
             color: transparent !important;
         }
-
         .cta-btn {
             display: inline-block;
             padding: 12px 24px;
@@ -64,7 +65,6 @@
             z-index: 2;
             pointer-events: auto;
         }
-
         img {
             width: 350px;
             max-width: 80%;

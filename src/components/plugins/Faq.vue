@@ -1,11 +1,11 @@
 <template>
-    <Faq :items="faqItems" />
+    <Faq :items="ITEMS" />
 </template>
 
 <script setup lang="ts">
-    import Faq from "~/components/price/Faq.vue"
+    import Faq from "~/components/common/Faq.vue"
 
-    const faqItems = [
+    const ITEMS = [
         {
             question: "What is a Kestra plugin?",
             answer: "A Kestra plugin is a packaged extension that adds new tasks, triggers, or capabilities to the platform. Plugins allow workflows to interact with external systems, run specific types of logic, or expose higher-level platform features without custom code.",
@@ -37,47 +37,3 @@
     ]
     
 </script>
-
-<style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
-    :deep(.container) {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding: 0;
-    }
-
-    :deep(.question) {
-        margin: 6rem 0 0 0 !important;
-
-        span {
-            font-size: 2rem !important;
-            font-weight: 600;
-            color: $white;
-        }
-    }
-
-    :deep(.que) {
-        background-color: #0a0b0d !important;
-    }
-
-    :deep(.ans) {
-        background-color: #0a0b0d !important;
-    }
-
-    :deep(.accordion-button) {
-        padding: 1.5rem 0 !important;
-    }
-
-    :deep(.accordion-body) {
-        margin-left: 0 !important;
-        background-color: #0a0b0d !important;
-    }
-
-    :deep(.accordion-item),
-    :deep(.accordion-header),
-    :deep(.custom-details) {
-        background-color: #0a0b0d !important;
-    }
-</style>

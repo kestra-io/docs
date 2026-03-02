@@ -46,15 +46,21 @@
                 </div>
             </div>
             <div class="my-4 categories" data-usal="fade-u delay-200">
-                <button
-                    v-for="category in augmentedCategories"
-                    :key="category"
-                    class="rounded-button"
-                    :class="{ active: category === activeCategory }"
-                    @click="setActiveCategory(category)"
+                <div
+                    v-for="(row, rowIndex) in categoryRows"
+                    :key="`row-${rowIndex}`"
+                    class="categories-row"
                 >
-                    {{ formatCategoryName(category) }}
-                </button>
+                    <button
+                        v-for="category in row"
+                        :key="category"
+                        class="rounded-button"
+                        :class="{ active: category === activeCategory }"
+                        @click="setActiveCategory(category)"
+                    >
+                        {{ formatCategoryName(category) }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -69,6 +75,8 @@
     import KSAIImg from "../docs/assets/ks-ai.svg"
 
     const isMobile = useMediaQuery("(max-width: 991px)")
+    const isSmallScreen = useMediaQuery("(max-width: 575px)")
+    const isMediumScreen = useMediaQuery("(max-width: 767px)")
 
     const props = defineProps<{
         totalPlugins: string
@@ -83,6 +91,29 @@
     const searchQuery = defineModel<string>("searchQuery")
 
     const augmentedCategories = computed(() => ["All Categories", ...(props.categories ?? [])])
+    const categoriesPerRow = computed(() => {
+        if (isSmallScreen.value) {
+            return 2
+        }
+
+        if (isMediumScreen.value) {
+            return 3
+        }
+
+        return 4
+    })
+
+    const categoryRows = computed(() => {
+        const rows: string[][] = []
+        const categories = augmentedCategories.value
+        const rowSize = categoriesPerRow.value
+
+        for (let index = 0; index < categories.length; index += rowSize) {
+            rows.push(categories.slice(index, index + rowSize))
+        }
+
+        return rows
+    })
 
     const setActiveCategory = (category: string) => {
         emit("update:activeCategory", category)
@@ -94,10 +125,12 @@
 
     .header-container {
         background: url("/landing/plugins/hero-plugin.webp") no-repeat center center / cover;
-        min-height: 451px;
+        max-height: fit-content;
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-top: -70px;
+        padding-top: 70px;
     }
 
     .header {
@@ -106,11 +139,9 @@
         align-items: center;
         justify-content: center;
         max-width: 570px;
-
         @include media-breakpoint-down(lg) {
             padding: $spacer;
         }
-
         h1,
         h4 {
             color: $white;
@@ -118,32 +149,25 @@
             font-weight: 400;
             margin-bottom: 0;
         }
-
         h1 {
             font-size: 2rem;
             font-weight: 600;
-
             @include media-breakpoint-down(lg) {
                 max-width: 60%;
                 margin-top: 2rem;
                 margin-bottom: 1rem;
             }
-
             @include media-breakpoint-down(sm) {
                 font-size: 1.5rem;
             }
         }
-
         h4 {
             font-size: $font-size-base;
-            color: #e1e1e1;
             line-height: 28px;
             margin-top: 4px;
-
             @include media-breakpoint-down(lg) {
                 font-size: 1rem !important;
             }
-
             @include media-breakpoint-down(sm) {
                 max-width: 60%;
                 font-size: 0.875rem !important;
@@ -160,31 +184,25 @@
         position: relative;
         margin-top: 2rem;
         width: 100%;
-
         input {
             width: 100%;
-            height: 47px;
             padding: 3px 150px 3px 50px;
             border-radius: 23px;
             border: none;
-            background-color: #000;
+            background-color: $black;
             color: $white;
-
             &::placeholder {
-                color: var(--ks-content-tertiary);
+                color: var(--ks-content-secondary);
                 font-size: 1rem;
                 font-weight: 400;
-
                 @include media-breakpoint-down(sm) {
                     font-size: 0.875rem;
                 }
             }
-
             @include media-breakpoint-down(sm) {
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
-
                 &::placeholder {
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -196,10 +214,10 @@
 
     .search-icon {
         position: absolute;
-        top: 10px;
+        top: 13px;
         left: calc($spacer * 1.125);
         font-size: 25px;
-        color: var(--ks-content-primary);
+        color: $white;
     }
 
     .clear-icon {
@@ -212,9 +230,8 @@
         font-size: 1rem;
         cursor: pointer;
         padding: 0;
-
         &:hover {
-            color: var(--ks-content-tertiary);
+            color: var(--ks-content-secondary);
         }
     }
 
@@ -226,9 +243,8 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-
         .or-text {
-            color: var(--ks-content-tertiary);
+            color: var(--ks-content-secondary);
             font-size: 1rem;
             font-weight: normal;
         }
@@ -254,7 +270,6 @@
             #e0e0ff 342.69deg,
             #3991ff 360deg
         );
-
         display: flex;
         flex-direction: column;
         align-items: end;
@@ -267,28 +282,21 @@
             var(--main-bg) border-box;
         background-position: center center;
         animation: bg-spin 3s linear infinite;
-
         .ai-button {
             display: inline-flex;
             align-items: center;
             width: 100%;
             gap: 2px;
-            background: var(--ks-button-background-secondary);
+            background: #1c1c20;
             color: $white;
             font-size: 14px;
             line-height: 22px;
             padding: 6px 6px;
             border-radius: 90px;
-            border: 1px solid var(--ks-border-primary);
+            border: 1px solid #1c1c20;
             height: 32px;
             width: 90px;
-            box-shadow: 0px 4px 4px 0px #00000040;
             font-weight: 700;
-            transition: transform 0.2s ease;
-
-            &:hover {
-                background: var(--ks-button-background-secondary-hover);
-            }
         }
     }
 
@@ -296,18 +304,18 @@
         height: 32px;
         padding: 4px 21px;
         border-radius: 90px;
-        border: 1px solid #ffffff1a;
-        background: #ffffff0d;
+        border: 1px solid rgba($white, 0.1);
+        background: transparent;
         color: $white;
         font-weight: 400;
         font-size: $font-size-sm;
         line-height: 1.375rem;
         transition: transform 0.2s ease;
+        white-space: nowrap;
 
         &:hover {
             transform: scale(1.05);
         }
-
         &.active {
             background: #ffffff40;
             border-color: #ffffff1a;
@@ -316,10 +324,15 @@
 
     .categories {
         display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
         gap: 0.5rem;
+    }
 
+    .categories-row {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
         @include media-breakpoint-down(sm) {
             gap: 0.35rem;
         }

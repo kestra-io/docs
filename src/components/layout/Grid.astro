@@ -1,0 +1,79 @@
+---    
+    interface Props {
+        title?: string;
+        cards: {
+            icon?: any;
+            title?: string;
+            description?: string;
+        }[];
+    }
+
+    const { title, cards } = Astro.props;
+---
+
+<section class="content">
+    <div class="container">
+        {title && <h2 class="title" set:html={title} data-usal="fade-up"></h2>}
+        <div class="blocks">
+            {cards.map((card) => (
+                <div class="block" data-usal="fade-up">
+                    {card.icon && <card.icon class="icon" />}
+                    {card.title && <h4>{card.title}</h4>}
+                    {card.description && <span>{card.description}</span>}
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .content {
+        background: var(--ks-background-primary);
+        padding: calc($spacer * 3) $spacer;
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: $rem-2;
+            .title {
+                color: var(--ks-content-primary);
+                font-weight: 600;
+                text-align: center;
+                max-width: $container-max-width;
+            }
+
+            .blocks {
+                display: flex;
+                gap: 16px;
+                justify-content: space-between;
+
+                @media (max-width: 905px) {
+                    flex-wrap: wrap;
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .block {
+                    background: var(--ks-background-secondary);
+                    border: $block-border;
+                    max-width: 369px;
+                    padding: $rem-2 40px;
+                    border-radius: 20px;
+                    width: 100%;
+
+                    @include media-breakpoint-down(xl) {
+                        padding: 20px;
+                    }
+
+                    :global(svg) {
+                        font-size: 32px;
+                        color: #6862f6;
+                    }
+                }
+            }
+        }
+    }
+</style>

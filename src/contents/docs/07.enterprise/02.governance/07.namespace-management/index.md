@@ -23,43 +23,6 @@ Namespaces provide:
 
 Namespaces are particularly useful in environments with many users, teams, projects, and applications.
 
-## Namespace management benefits
-
-Even though `namespace` is a required property of each flow, namespaces are not created by default. To illustrate this, let's look at the following flow:
-
-```yaml
-id: hello_world
-namespace: company.marketing
-tasks:
-  - id: log_task
-    type: io.kestra.plugin.core.log.Log
-    message: hi from {{ flow.namespace }}
-```
-
-This flow is assigned to the `company.marketing` namespace. However, if you navigate to the **Namespaces** page in the UI, the namespace hasn't been created yet. It's shown as greyed out in the UI because it's just a placeholder until you manually create it:
-
-![namespace_mgmt_1](./namespace_mgmt_1.png)
-
-You can only filter for existing namespaces. Once you are ready to turn a placeholder namespace into a fully-fledged namespace, you create it in one click:
-
-![namespace_mgmt_2](./namespace_mgmt_2.png)
-
-### `requireExistingNamespace`
-
-By default, this is the behavior when creating flows with namespaces that do not yet exist, but you can configure Kestra to only allow flows to be created in existing namespaces. This can be done globally in your configuration file with the following specification:
-
-```yaml
-kestra:
-  ee:
-    requireExistingNamespace: true # Defaults to false
-```
-
-You can also control this setting at the tenant level from the tenant settings.
-
-![namespace_mgmt_3](./namespace_mgmt_3.png)
-
-=======
-
 ## Namespace-level features
 
 The Namespace page allows you to configure secrets, plugin defaults, and variables that can be used within any flow in that namespace.
@@ -75,8 +38,6 @@ On the Namespaces page, select the namespace where you want to define the secret
 ![add_secret.png](./add_secret.png)
 
 Define the secret by entering its key and value. Save the secret by clicking on the **Save** button at the bottom.
-
-![create_new_secret.png](./create_new_secret.png)
 
 The secret key should now start appearing on the **Secrets** tab. You can edit the secret's value or delete the secret by clicking on the appropriate button towards the right of the secret row. You can reference the secret in the flow by using the key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
 
