@@ -9,9 +9,18 @@ const IconStr = await fetchPluginIcon(cls)
     class="icon-wrapper"
     data-bs-toggle="tooltip"
     data-bs-placement="top"
-    :title="generateTagName()"
+    title={cls.split(".").pop()}
     set:html={IconStr}
 />
+
+<script>
+    import { Tooltip } from "bootstrap"
+
+    document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            .forEach(el => (el as any)._tooltip ||= new Tooltip(el))
+    })
+</script>
 
 <style lang="scss">
     .icon-wrapper {
