@@ -99,6 +99,22 @@ export const collections = {
         }),
         schema: vsPagesSchema,
     }),
+    externalBlogs: defineCollection({
+        loader: glob({
+            pattern: "./**/index.yml",
+            base: "./src/contents/external-blogs",
+            generateId,
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                link: z.string(),
+                image: image(),
+                media: z.string(),
+                author: z.string(),
+                publicationDate: z.coerce.date(),
+            }),
+    }),
     customerStories: defineCollection({
         loader: glob({
             pattern: "./**/index.md",
@@ -127,5 +143,21 @@ export const collections = {
                 solution: z.string(),
                 companyName: z.string(),
             }),
+    }),
+    tutorialVideos: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/tutorial-videos",
+        }),
+        schema: z.object({
+            title: z.string(),
+            description: z.string().optional(),
+            category: z.string(),
+            author: z.string(),
+            url: z.string(),
+            publicationDate: z.coerce.date(),
+            isFeatured: z.boolean().optional(),
+            contentType: z.string().optional(),
+        }),
     }),
 }
