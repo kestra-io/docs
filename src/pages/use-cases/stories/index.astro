@@ -12,7 +12,8 @@ const description =
 const currentPage = Number(Astro.url.searchParams.get("page") ?? 1)
 const itemsPerPage = Number(Astro.url.searchParams.get("size") ?? 25)
 
-const allEntries = await getCollection("customerStories")
+const allEntries = (await getCollection("customerStories"))
+    .sort((a, b) => parseInt(a.id) > parseInt(b.id) ? -1 : 1);
 
 const totalStories = allEntries.length
 const start = (currentPage - 1) * itemsPerPage
