@@ -23,6 +23,29 @@ body {
     position: relative;
     background-color: var(--ks-background-body);
     color: var(--ks-content-primary);
+
+    &::after {
+        content: "";
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100px;
+        background: rgba(var(--ks-background-body), 0.06);
+        backdrop-filter: blur(2px);
+        z-index: 10;
+        pointer-events: none;
+        mask-image: linear-gradient(
+            180deg,
+            transparent 0%,
+            var(--ks-content-primary) 100%
+        );
+        -webkit-mask-image: linear-gradient(
+            180deg,
+            transparent 0%,
+            var(--ks-content-primary) 100%
+        );
+    }
 }
 
 .headers-body-bg {
@@ -175,6 +198,10 @@ blockquote.blockquote {
             linear-gradient(var(--ks-background-button-primary-hover), var(--ks-background-button-primary-hover)) padding-box,
             linear-gradient(90deg, #EFF4FF 0%, #8F9299 100%) border-box;
         border: 1px solid transparent;
+
+        // html.light & {
+        //     color: $black !important;
+        // }
     }
 }
 

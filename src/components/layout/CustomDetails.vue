@@ -1,6 +1,6 @@
 <template>
     <div class="accordion-item custom-details">
-        <h2 class="accordion-header" :class="{ 'bg-head': isOpen }">
+        <h2 class="accordion-header" :class="{ 'bg-head': isOpen }" data-usal="fade-r delay-10">
             <button
                 class="accordion-button"
                 :class="{ collapsed: !isOpen }"
@@ -59,8 +59,6 @@
     @import "~/assets/styles/variable";
 
     .custom-details {
-        background: var(--ks-background-body);
-
         .accordion-header {
             margin-bottom: 0;
             border-bottom: 1px solid var(--ks-border-primary);
@@ -77,7 +75,10 @@
             padding: $rem-1;
             font-weight: 600;
             box-shadow: none;
-            font-size: 1.15rem;
+            font-size: 1rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 1.15rem;
+            }
             width: 100%;
             text-align: left;
             background: transparent;
