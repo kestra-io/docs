@@ -1,11 +1,11 @@
 <template>
-    <section>
+    <section class="faq">
         <div class="container content">
-            <h2 v-if="subtitle" class="subtitle">{{ subtitle }}</h2>
+            <h2 v-if="subtitle" class="subtitle" data-usal="fade-r">{{ subtitle }}</h2>
             <div v-if="showHeader" class="header">
-                <h2>{{ title }}</h2>
+                <h2 data-usal="fade-r">{{ title }}</h2>
                 <slot name="description">
-                    <p>
+                    <p data-usal="fade-l delay-10">
                         Find answers to your questions right here, and don't hesitate to
                         <a href="/demo">Contact us</a> if you couldn't find what you're looking for.
                     </p>

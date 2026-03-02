@@ -2,16 +2,8 @@
 import { Image } from "astro:assets"
 import Link from "~/components/common/Link.astro"
 import LogoCarousel from "~/components/common/LogoCarousel.astro"
-
-const badge = import.meta.glob<{ default: ImageMetadata }>(
-    "~/assets/landing/infrastructure/new.png",
-    { eager: true }
-)["/src/assets/landing/infrastructure/new.png"].default;
-
-const badgeMobile = import.meta.glob<{ default: ImageMetadata }>(
-    "~/assets/landing/infrastructure/new-sm.png",
-    { eager: true }
-)["/src/assets/landing/infrastructure/new-sm.png"].default;
+import badge from "~/assets/landing/infrastructure/new.png";
+import badgeMobile from "~/assets/landing/infrastructure/new-sm.png";
 ---
 
 <section>
@@ -49,7 +41,7 @@ const badgeMobile = import.meta.glob<{ default: ImageMetadata }>(
                 <Link href="/demo" class="btn btn-secondary">Book a demo</Link>
             </div>
             <hr />
-            <LogoCarousel title="Trusted by Leading Global Companies" />
+            <LogoCarousel title="Trusted by Leading Global Companies" inverted={false} />
         </div>
         <div class="w-100 overflow-hidden gradient-border">
             <iframe
