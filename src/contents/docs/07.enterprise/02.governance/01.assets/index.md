@@ -110,7 +110,8 @@ Example (dbt):
 tasks:
   - id: dbt_run
     type: io.kestra.plugin.dbt.cli.DbtCLI
-    commands: ["dbt run"]
+    commands: 
+      - dbt run
     assets:
       enableAuto: true
       # outputs: models as Table assets
