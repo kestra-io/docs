@@ -1,0 +1,71 @@
+---
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+
+const SELF_HOSTED_FAQ = [
+    {
+        question:
+            "Is it easy to upgrade from Open Source edition to Kestra Enterprise?",
+        answer: "As easy as it takes to add the license key to the configuration file and restart your server!",
+    },
+    {
+        question:
+            "Does the Enterprise Edition comes with Enterprise Support and SLAs?",
+        answer: "Yes! In addition to all the feature sets, we're providing access to an exclusive customer portal, end-to-end customer onboarding, and guaranteed response time on support requests! Everything operates in a full Customer Success Framework.",
+    },
+    {
+        question: "Is Kestra Enterprise made for small teams?",
+        answer: "Kestra Enterprise is addressing any organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.",
+    },
+]
+
+const CLOUD_HOSTED_FAQ = [
+    {
+        question: "What is Kestra Cloud?",
+        answer: "Kestra Cloud is the fully managed version of Kestra. We handle hosting, upgrades, security, and scalability, so your team can focus on building workflows and delivering automation faster.",
+    },
+    {
+        question: "How is Kestra Cloud different from self-hosted?",
+        answer: "With Kestra Cloud, you don’t need to manage infrastructure, upgrades, or backups. Everything is operated and maintained by Kestra, with enterprise-grade reliability.",
+    },
+    {
+        question: "Can we migrate from self-hosted to Cloud?",
+        answer: "Yes. Migrating to Kestra Cloud is straightforward, and our team can support you through onboarding and migration to ensure a smooth transition.",
+    },
+    {
+        question: "Is Kestra Cloud secure for enterprise use?",
+        answer: "Yes. Kestra Cloud is built for enterprise adoption with strong security foundations, access control, and governance features. Advanced requirements like SSO and compliance alignment can be supported depending on your plan.",
+    },
+]
+---
+
+<div data-host="self-hosted" data-usal="fade-u">
+    <SeeHow cta={{ text: "Contact us", href: "/demo" }}>
+        <Fragment slot="title">Need Help?</Fragment>
+        Our team can answer any questions you have about our plans, pricing, add-ons,
+        implementation, or anything else.
+    </SeeHow>
+</div>
+
+<div data-host="cloud-hosted" class="d-none" data-usal="fade-u">
+    <SeeHow cta={{ text: "Contact Sales", href: "/demo" }}>
+        <Fragment slot="title">Ready to Scale Your Workflows</Fragment>
+        Kestra Enterprise delivers the security, control, and flexibility you need
+        to scale operations with confidence. Empower your team, streamline governance,
+        and harness reliable infrastructure to drive growth without compromise.
+    </SeeHow>
+</div>
+
+<div class="price-faq" data-host="self-hosted" data-usal="fade-u delay-20">
+    <Faq items={SELF_HOSTED_FAQ} client:visible />
+</div>
+
+<div class="price-faq d-none" data-host="cloud-hosted" data-usal="fade-u delay-20">
+    <Faq items={CLOUD_HOSTED_FAQ} client:visible />
+</div>
+
+<style lang="scss">
+    .price-faq :global(section.faq) {
+        background: var(--ks-background-secondary);
+    }
+</style>

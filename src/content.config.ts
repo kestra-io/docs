@@ -99,4 +99,33 @@ export const collections = {
         }),
         schema: vsPagesSchema,
     }),
+    customerStories: defineCollection({
+        loader: glob({
+            pattern: "./**/index.md",
+            base: "./src/contents/customer-stories",
+            generateId,
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                description: z.string(),
+                metaTitle: z.string(),
+                metaDescription: z.string(),
+                heroImage: image(),
+                featuredImage: image(),
+                logo: image().optional(),
+                logoDark: image().optional(),
+                tasks: z.array(z.string()),
+                kpi1: z.string(),
+                kpi2: z.string(),
+                kpi3: z.string(),
+                quote: z.string(),
+                quotePerson: z.string(),
+                quotePersonTitle: z.string(),
+                industry: z.string(),
+                headquarter: z.string(),
+                solution: z.string(),
+                companyName: z.string(),
+            }),
+    }),
 }
