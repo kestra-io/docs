@@ -68,6 +68,7 @@ const quotes = [
         display: flex;
         flex-direction: column;
         font-size: 0.9rem;
+        overflow: visible;
         @include media-breakpoint-up(lg) {
             flex-direction: row;
             max-width: 1200px;
@@ -89,9 +90,11 @@ const quotes = [
     .demo-left {
         flex: 1;
         padding: 2rem;
+        box-shadow: 0 10px 10px -8px var(--ks-shadows-light);
+        border-right: 1px solid var(--ks-border-primary);
         // a grey square grid of 72ps with 1px lines and no spacing.
         background-image:
-        //only show the top right corner of the grid with a radial gradient
+            //only show the top right corner of the grid with a radial gradient
 
             radial-gradient(
                 farthest-corner at top right,
@@ -116,7 +119,7 @@ const quotes = [
         background-repeat: no-repeat, repeat, repeat;
         background-position:
             100% 0,
-            0 0,
+            100% 0,
             0 0;
     }
 
