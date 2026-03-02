@@ -1,0 +1,6 @@
+- regexp: "\/features\/enterprise"
+  to: "/enterprise"
+- regexp: "\/features\/features"
+  to: "/features"
+- regexp: "\/features\/usages.*"
+  to: "/use-cases"

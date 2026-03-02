@@ -1,0 +1,2 @@
+- regexp: "\/community-guidelines(\/.*)?$"
+  to: "/docs/contribute-to-kestra/community-guidelines"

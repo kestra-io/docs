@@ -169,4 +169,16 @@ export const collections = {
             linkText: z.string(),
         }),
     }),
+    redirects: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/redirects",
+        }),
+        schema: z.array(
+            z.object({
+                regexp: z.string(),
+                to: z.string()
+            })
+        ),
+    }),
 }
