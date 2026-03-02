@@ -1,15 +1,15 @@
 ---
 title: Namespaces in the Kestra UI – Manage Namespace Resources
-description: Overview of the Namespaces UI in Kestra. Manage flows, files, KV store, and dependencies specific to each namespace in a central view.
+description: Overview of the Namespaces UI in Kestra. Manage flows, files, KV store, and dependencies specific to each Namespace in a central view.
 sidebarTitle: Namespaces
 icon: /src/contents/docs/icons/ui.svg
 ---
 
-Manage all resources associated with a namespace in one place.
+Manage all resources associated with a Namespace in one place.
 
-## Manage namespace resources from the UI
+## Manage Namespace resources from the UI
 
-Starting in **v0.18.0**, Kestra introduces the **Namespaces** tab in the UI for Open Source users. This view displays all namespaces associated with different flows in your Kestra instance.
+Starting in **v0.18.0**, Kestra introduces the **Namespaces** tab in the UI for Open Source users. This view displays all Namespaces associated with different flows in your Kestra instance.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=9gVEROGc5hXcIJR2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -23,13 +23,13 @@ Explore the Namespace UI through this interactive demo (Kestra v0.23):
 
 ## Overview
 
-The **Overview** tab is the default landing page of a namespace. It displays dashboards and summaries of flow executions within that namespace.
+The **Overview** tab is the default landing page of a Namespace. It displays dashboards and summaries of flow executions within that Namespace.
 
 ![Overview](./overview-namespaces.png)
 
 ## Flows
 
-The **Flows** tab lists all flows within the namespace. It displays key information such as the flow ID, labels, last execution date and status, and execution statistics. Selecting the **details** button on a flow opens its detailed page.
+The **Flows** tab lists all flows within the Namespace. It displays key information such as the flow ID, labels, last execution date and status, and execution statistics. Selecting the **details** button on a flow opens its detailed page.
 
 ![Flows](./flows-namespaces.png)
 
@@ -37,13 +37,13 @@ The **Flows** tab lists all flows within the namespace. It displays key informat
 
 The **Dependencies** tab visualizes relationships between flows, showing which flows depend on one another (for example, through subflows or flow triggers).
 
-This view is similar to the **Dependencies** page in the Flow Editor but focuses on inter-flow relationships within a single namespace — even if some flows are independent.
+This view is similar to the **Dependencies** page in the Flow Editor but focuses on inter-flow relationships within a single Namespace — even if some flows are independent.
 
 ![Dependencies](./dependencies-namespaces.png)
 
 ## KV store
 
-The **KV Store** tab lets you manage key-value pairs associated with a namespace.
+The **KV Store** tab lets you manage key-value pairs associated with a Namespace.
 For more information, see the [KV Store concept guide](../../06.concepts/05.kv-store/index.md).
 
 ![KV Store](./kvstore-namespaces.png)
@@ -60,5 +60,4 @@ The **Files** tab lets you create, edit, and manage Namespace Files used in your
 
 ## Additional enterprise pages
 
-In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md), additional namespace pages provide deeper insights and management capabilities.
-Learn more on the [Enterprise namespace pages](./ee/index.md) page.
+In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md), additional Namespace pages provide deeper insights and management capabilities. Learn more on the [Enterprise Namespace Management page](../../07.enterprise/02.governance/07.namespace-management/index.md).
