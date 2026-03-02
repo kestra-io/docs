@@ -27,12 +27,6 @@ The **Overview** tab is the default landing page of a namespace. It displays das
 
 ![Overview](./overview-namespaces.png)
 
-## Editor
-
-The **Editor** tab allows you to add or edit namespace files directly. This provides convenient access to manage namespace files without navigating to a specific flow.
-
-![Editor](./editor-namespaces.png)
-
 ## Flows
 
 The **Flows** tab lists all flows within the namespace. It displays key information such as the flow ID, labels, last execution date and status, and execution statistics. Selecting the **details** button on a flow opens its detailed page.
