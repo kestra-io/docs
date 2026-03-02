@@ -4,6 +4,7 @@ import Meeting from "~/components/demo/Meeting.vue"
 import Quotes from "~/components/common/Quotes.vue"
 import headerBackground from "../components/demo/assets/header-background.png"
 import Logos from "~/components/demo/Logos.astro"
+import AppleLogo from "~/components/demo/assets/logos/apple.svg?raw"
 
 const title = "Book a Demo"
 const description = "Discuss your Orchestration Strategy"
@@ -12,23 +13,13 @@ const quotes = [
     {
         quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
         author: "Senior Engineering Manager @ <strong>Apple</strong> (ML team)",
-        smallLogoSvg: `<svg width="32" height="37" viewBox="0 0 32 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_23441_1660)">
-<path d="M31.3293 28.8342C30.7548 30.1269 30.0748 31.3168 29.2868 32.4108C28.2128 33.9022 27.3334 34.9345 26.6557 35.5077C25.6052 36.4487 24.4796 36.9306 23.2742 36.958C22.4089 36.958 21.3654 36.7182 20.1507 36.2317C18.932 35.7475 17.812 35.5077 16.7879 35.5077C15.7139 35.5077 14.562 35.7475 13.33 36.2317C12.096 36.7182 11.102 36.9717 10.342 36.9968C9.18611 37.0448 8.034 36.5492 6.88401 35.5077C6.15002 34.8842 5.23195 33.8154 4.13214 32.3012C2.95213 30.6842 1.982 28.8091 1.22198 26.6714C0.408032 24.3624 0 22.1265 0 19.9618C0 17.4822 0.550139 15.3436 1.65206 13.5514C2.51807 12.1119 3.67017 10.9763 5.11212 10.1427C6.55407 9.3091 8.11209 8.8843 9.78995 8.85712C10.708 8.85712 11.9119 9.1337 13.4081 9.67727C14.9 10.2227 15.8579 10.4992 16.2779 10.4992C16.5919 10.4992 17.656 10.1758 19.4601 9.5311C21.1661 8.93318 22.6059 8.6856 23.7854 8.78313C26.9817 9.03435 29.383 10.2615 30.9799 12.4723C28.1214 14.1592 26.7073 16.5218 26.7355 19.5528C26.7612 21.9136 27.6406 23.8782 29.3689 25.4381C30.1521 26.1621 31.0268 26.7216 32 27.119C31.789 27.7151 31.5662 28.2861 31.3293 28.8342ZM23.9988 0.740211C23.9988 2.59063 23.3047 4.31837 21.9212 5.91754C20.2515 7.81864 18.232 8.91719 16.042 8.74384C16.0141 8.52185 15.9979 8.28821 15.9979 8.04269C15.9979 6.26629 16.7919 4.36519 18.202 2.81078C18.9059 2.02375 19.8013 1.36935 20.887 0.847324C21.9704 0.333085 22.9952 0.0486998 23.959 0C23.9871 0.247373 23.9988 0.494785 23.9988 0.740211Z" fill="currentColor"/>
-</g>
-<defs>
-<clipPath id="clip0_23441_1660">
-<rect width="32" height="37" />
-</clipPath>
-</defs>
-</svg>
-`,
+        smallLogoSvg: AppleLogo,
     },
 ]
 ---
 
 <Layout title={title} description={description}>
-    <div class="demo">
+    <section class="demo">
         <div class="demo-left">
             <h1>Discuss your <span>Orchestration</span> Strategy</h1>
             <p class="subtitle">Your Architecture is Unique.</p>
@@ -57,7 +48,7 @@ const quotes = [
             headerBackground={headerBackground}
             client:idle
         />
-    </div>
+    </section>
     <Logos />
     <Quotes quotes={quotes} />
 </Layout>
@@ -67,17 +58,44 @@ const quotes = [
     .demo {
         display: flex;
         flex-direction: column;
+        align-items: stretch;
         font-size: 0.9rem;
         overflow: visible;
+        // a grey square grid of 72ps with 1px lines and no spacing.
+        background-image:
+            //only show the top right corner of the grid with a radial gradient
+
+            radial-gradient(
+                farthest-corner at top center,
+                transparent 0.5%,
+                var(--ks-background-primary) 60%
+            ),
+            linear-gradient(
+                to right,
+                var(--ks-shadows-light) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--ks-shadows-light) 1px,
+                transparent 1px
+            );
+
+        background-size:
+            100% 100%,
+            72px 72px,
+            72px 72px;
+        background-repeat: no-repeat, repeat, repeat;
+        background-position:
+            0 0,
+            50% 0,
+            100% 0;
         @include media-breakpoint-up(lg) {
             flex-direction: row;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        @include media-breakpoint-up(xl) {
-            max-width: 1720px;
+            justify-content: center;
         }
     }
+
     h1 {
         margin: 2rem 0;
         span {
@@ -94,38 +112,17 @@ const quotes = [
         flex: 1;
         padding: 2rem;
         box-shadow: 0 10px 10px -8px var(--ks-shadows-light);
-        border-right: 1px solid var(--ks-border-primary);
-        // a grey square grid of 72ps with 1px lines and no spacing.
-        background-image:
-            //only show the top right corner of the grid with a radial gradient
-
-            radial-gradient(
-                farthest-corner at top right,
-                transparent 0.5%,
-                var(--ks-background-primary) 60%
-            ),
-            linear-gradient(
-                to right,
-                var(--ks-shadows-light) 1px,
-                transparent 1px
-            ),
-            linear-gradient(
-                to bottom,
-                var(--ks-shadows-light) 1px,
-                transparent 1px
-            );
-
-        background-size:
-            200% 100%,
-            72px 72px,
-            72px 72px;
-        background-repeat: no-repeat, repeat, repeat;
-        background-position:
-            100% 0,
-            100% 0,
-            0 0;
-        @include media-breakpoint-up(xxl) {
-            padding: 5rem 8rem;
+        @include media-breakpoint-up(lg) {
+            padding: 5%;
+            border-right: 1px solid var(--ks-border-primary);
+        }
+        @include media-breakpoint-up(xl) {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            > * {
+                width: 620px;
+            }
         }
     }
 
