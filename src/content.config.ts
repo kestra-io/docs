@@ -1,5 +1,5 @@
 import { defineCollection, z } from "astro:content"
-import { glob } from "astro/loaders"
+import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
 import { vsPagesSchema } from "./schemas/vsPages"
 
@@ -158,6 +158,15 @@ export const collections = {
             publicationDate: z.coerce.date(),
             isFeatured: z.boolean().optional(),
             contentType: z.string().optional(),
+        }),
+    }),
+    annonces: defineCollection({
+        loader: file("src/contents/annonces/annonces.yml"),
+        schema: z.object({
+            id: z.number(),
+            text: z.string(),
+            href: z.string(),
+            linkText: z.string(),
         }),
     }),
 }
