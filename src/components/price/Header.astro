@@ -393,6 +393,9 @@ const CLOUD_PLAN = {
                 }
 
                 .card-header {
+                      @include media-breakpoint-up(xl) {
+    min-height: 120px; 
+  }
                     .plan-subtitle {
                         font-size: $font-size-xs;
                         color: var(--ks-content-alert-info);
