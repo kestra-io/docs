@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets"
 
-const { title } = Astro.props
+const { title = "Trusted by leading companies", centered, inverted = true } = Astro.props
 
 const COMPANIES = [
     "brainlab",
@@ -17,8 +17,9 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
 )
 ---
 
-{title && <span>{title}</span>}
-<div class="companies-container w-100 overflow-hidden">
+<div class:list={["logo-carousel", { centered }]}>
+    {title && <span class:list={[{ "no-invert": !inverted }]}>{title}</span>}
+    <div class="companies-container w-100 overflow-hidden">
     <div class="companies d-flex align-items-center">
         {
             [...COMPANIES, ...COMPANIES].map((company, index) => (
@@ -32,6 +33,7 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
                     class:list={[
                         "company-logo",
                         { "d-lg-none": index >= COMPANIES.length },
+                        { "no-invert": !inverted }
                     ]}
                 />
             ))
@@ -42,10 +44,35 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
 <style lang="scss">
     @import "~/assets/styles/variable";
 
+    .logo-carousel {
+        display: flex;
+        flex-direction: column;
+
+        &.centered {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            .companies-container .companies {
+                @include media-breakpoint-up(lg) {
+                    justify-content: center;
+                    margin-left: 0;
+                    width: auto;
+                    animation: none;
+                }
+            }
+        }
+    }
+
     span {
         font-family: $font-family-monospace;
         font-size: $font-size-xs;
-        color: $white;
+        color: var(--ks-content-primary);
+        margin-bottom: 1rem;
+
+        &.no-invert {
+            color: $white;
+        }
     }
 
     .companies-container {
@@ -82,6 +109,10 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
             .company-logo {
                 flex-shrink: 0;
                 object-fit: contain;
+
+                :global(html.light) &:not(.no-invert) {
+                    filter: invert(1);
+                }
             }
         }
     }
