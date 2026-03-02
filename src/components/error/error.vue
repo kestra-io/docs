@@ -1,46 +1,36 @@
 <template>
     <Squared>
-            <h1>404</h1>
+        <h1>{{ error.statusCode }}</h1>
 
-            <h2 @click="visible = !visible">
-                {{ title }}
-            </h2>
+        <h2 @click="visible = !visible">
+            {{ title }}
+        </h2>
 
-            <p class="text-error">
-                {{ description }}
-            </p>
+        <p class="text-error">
+            {{ description }}
+        </p>
 
-            <div v-if="visible" class="error-details">
-                <h3>{{ error.title }}</h3>
+        <div v-if="visible" class="error-details">
+            <h3>{{ error.title }}</h3>
 
-                <ul>
-                    <li v-if="error.name">
-                        name: <code>{{ error.name }}</code>
-                    </li>
-                    <li v-if="error.plugin">
-                        plugin: <code>{{ error.plugin }}</code>
-                    </li>
-                    <li v-if="error.id">
-                        id: <code>{{ error.id }}</code>
-                    </li>
-                </ul>
+            <ul>
+                <li v-if="error.name">
+                    name: <code>{{ error.name }}</code>
+                </li>
+                <li v-if="error.plugin">
+                    plugin: <code>{{ error.plugin }}</code>
+                </li>
+                <li v-if="error.id">
+                    id: <code>{{ error.id }}</code>
+                </li>
+            </ul>
 
-                <pre>{{ JSON.stringify(error, null, 2) }}</pre>
-            </div>
+            <pre>{{ JSON.stringify(error, null, 2) }}</pre>
+        </div>
 
-            <Link
-                href="/"
-                text="Back to home"
-                class="btn btn-primary"
-                reversed
-            />
-            <img
-                :src="errorImage.src"
-                alt="Error"
-                class="img-fluid"
-            />
+        <Link href="/" text="Back to home" class="btn btn-primary" reversed />
+        <img :src="errorImage.src" alt="Error" class="img-fluid" />
     </Squared>
-
 </template>
 
 <script lang="ts" setup>
@@ -109,6 +99,7 @@
             margin-bottom: 1rem;
             border: $block-border;
             border-radius: $border-radius-lg;
+            padding: 1rem;
 
             ul {
                 list-style: none;
@@ -119,6 +110,7 @@
                 background: var(--ks-background-secondary);
                 padding: 1rem;
                 border-radius: 4px;
+                max-width: 90vw;
             }
         }
 
