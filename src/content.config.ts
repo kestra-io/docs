@@ -181,4 +181,20 @@ export const collections = {
             })
         ),
     }),
+    feeds: defineCollection({
+        loader: glob({
+            pattern: "./**/index.md",
+            base: "./src/contents/feeds",
+            generateId,
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                link: z.string(),
+                href: z.string(),
+                image: image().optional(),
+                publicationDate: z.coerce.date(),
+                addedDate: z.coerce.date(),
+            }),
+    }),
 }
