@@ -1,0 +1,20 @@
+---
+import HeaderBox from "~/components/common/HeaderBox.vue"
+import StoriesCarousel from "~/components/common/StoriesCarousel.vue"
+
+const { stories } = Astro.props
+
+---
+<section class="home-enterprise">
+    <HeaderBox />
+    <StoriesCarousel stories={stories} client:visible />
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .home-enterprise {
+        background-color: var(--ks-background-body);
+        text-align: center;
+        padding-bottom: 4rem;
+    }
+</style>

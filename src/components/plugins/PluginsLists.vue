@@ -116,7 +116,7 @@
 
     const pluginsInformation = (plugin: CardPlugin): PluginInformation => ({
         name: plugin.name,
-        subGroupTitle: plugin.title,
+        subGroupTitle: plugin.subGroupTitle,
         title: plugin.title,
         description: plugin.description,
         categories: plugin.categories,
@@ -124,6 +124,7 @@
         blueprints: plugin.blueprints ?? 0,
         className: plugin.className,
         subGroup: plugin.subGroup,
+        isEnterprise: plugin.isEnterprise,
     })
 
     onMounted(() => {
@@ -162,23 +163,22 @@
 
     .total-pages {
         font-size: $font-size-sm;
-        color: $white;
+        color: var(--ks-content-primary);
     }
 
     .pagination-container {
         margin-top: 39px;
-
         .form-select {
             border-radius: 4px;
             border: $block-border;
-            color: $white;
+            color: var(--ks-content-primary);
             font-size: 14px;
             font-weight: 700;
         }
     }
 
     .count {
-        color: $white;
+        color: var(--ks-content-primary);
         font-size: 14px;
     }
 

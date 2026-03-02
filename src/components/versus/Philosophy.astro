@@ -1,0 +1,138 @@
+---
+import kestraLogo from "./assets/ks.svg?raw"
+import Card from "~/components/common/CardPair.astro"
+
+interface Props {
+    mainTitle?: string
+    kestra?: {
+        title?: string
+        description?: string
+        subCardText?: string
+    }
+    competitor?: {
+        logo?: any
+        title?: string
+        description?: string
+        shadowColor?: string
+        subCardBg?: string
+        subCardText?: string
+    }
+}
+
+const {
+    mainTitle,
+    kestra,
+    competitor
+} = Astro.props as Props
+---
+
+<section>
+    <div class="container">
+        <h2 set:html={mainTitle} data-usal="fade" />
+        <div class="comparison-box d-flex flex-column flex-lg-row">
+            <Card
+                isKestra={true}
+                logo={kestraLogo}
+                logoAlt="Kestra logo"
+                data-usal="fade"
+            >
+                <h5>{kestra?.title}</h5>
+                <p>{kestra?.description}</p>
+                <div class="sub-card">
+                    {kestra?.subCardText}
+                </div>
+            </Card>
+
+            <Card
+                logo={competitor?.logo}
+                logoAlt="Competitor logo"
+                shadowColor={competitor?.shadowColor}
+                data-usal="fade"
+            >
+                <h5>{competitor?.title}</h5>
+                <p>{competitor?.description}</p>
+                <div class="sub-card">
+                    {competitor?.subCardText}
+                </div>
+            </Card>
+        </div>
+    </div>
+</section>
+
+<style lang="scss" define:vars={{ competitorSubCardBg: competitor?.subCardBg }}>
+    @import "~/assets/styles/variable";
+
+    section {
+        padding: $spacer * 4 0;
+        background-color: var(--ks-background-body);
+
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 0.75rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-2;
+
+            @include media-breakpoint-up(lg) {
+                padding: 0;
+            }
+        }
+
+        h2 {
+            color: var(--ks-content-primary);
+            @include media-breakpoint-up(lg) {
+                font-size: $h2-font-size;
+            }
+        }
+
+        p, h5 {
+            color: var(--ks-content-primary);
+        }
+
+        .comparison-box {
+            gap: $rem-2;
+            width: 100%;
+            max-height: none;
+
+            @include media-breakpoint-up(lg) {
+                max-height: 380px;
+            }
+
+            :global(.comparison-item) {
+                &.kestra {
+                    .sub-card {
+                        background-color: var(--ks-background-purple-light);
+                        color: var(--ks-content-primary);
+                    }
+                }
+
+                &.competitor {
+                    .sub-card {
+                        background-color: var(--competitorSubCardBg);
+                        color: var(--ks-content-primary);
+                    }
+                }
+
+                p {
+                    font-size: $font-size-md;
+                    margin-bottom: $spacer * 1.5;
+                    color: var(--ks-content-primary);
+                }
+
+                .sub-card {
+                    margin-top: auto;
+                    height: 68px;
+                    padding: 10px 20px;
+                    border-radius: 6px;
+                    font-weight: 700;
+                    font-size: $font-size-md;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+    }
+</style>
+

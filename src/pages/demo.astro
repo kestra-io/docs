@@ -1,18 +1,51 @@
 ---
 import Layout from "~/components/layout.astro"
-import DemoHeaders from "~/components/demo/Headers.vue"
-import DemoCompanies from "~/components/demo/Companies.vue"
-import DemoBusinessByUs from "~/components/demo/BusinessByUs.vue"
+import Headers from "~/components/demo/Headers.vue"
+import Logos from "~/components/layout/Logos.vue"
+import BusinessStats from "~/components/layout/BusinessStats.astro"
+
+import LM from "~/assets/enterprise/leroymerlin.svg?raw"
+import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
 
 const title = "Ready to See Kestra in Action?"
 const description =
     "Connect with one of our Product Specialist to get the best out of our product and its value proposition"
+
+const BUSINESS_ITEMS: Array<{
+    type: "stat" | "quote" | "author"
+    value?: string
+    label?: string
+    icon?: any
+    text?: string
+    name?: string
+    role?: string
+    logo?: any
+    class?: string
+}> = [
+    {
+        type: "stat",
+        icon: { src: ArrowUp },
+        value: "900%",
+        label: "in data production",
+    },
+    {
+        type: "quote",
+        text: "“What was delivered in weeks is now completed <br /> in days with full control for a great partnership.”",
+    },
+    {
+        type: "author",
+        name: "Julien Henrion",
+        role: "Head of Data Engineering",
+        logo: { src: LM, alt: "Leroy Merlin" },
+        class: "align-items-start",
+    },
+]
 ---
 
 <Layout title={title} description={description}>
     <div>
-        <DemoHeaders client:load routePath="/demo" />
-        <DemoCompanies client:load class="mt-5" />
-        <DemoBusinessByUs client:load />
+        <Headers client:load routePath="/demo" />
+        <Logos client:load class="mt-5" />
+        <BusinessStats items={BUSINESS_ITEMS} />
     </div>
 </Layout>

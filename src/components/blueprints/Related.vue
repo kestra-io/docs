@@ -1,35 +1,39 @@
 <script setup lang="ts">
-    import LayoutSection from "~/components/layout/Section.vue"
-    import BlueprintsListCard from "~/components/blueprints/ListCard.vue"
+    import ListCard from "~/components/blueprints/ListCard.vue"
     defineProps<{
-        relatedBlueprints: Array<{
-            id: string
-            title: string
-            description: string
-            tags: { id: string; name: string }[]
-        }>
-        tags: { id: string; name: string }[]
+        relatedBlueprints: Blueprint[]
+        tags: BlueprintTag[]
     }>()
-    function generateCardHref(blueprint: { id: string }) {
+    function generateCardHref(blueprint: { id: number | string }) {
         return `/blueprints/${blueprint.id}`
     }
 </script>
 
 <template>
-    <LayoutSection subtitle="More Related" subtitle-after="Blueprints">
-        <div class="row">
-            <div
-                class="col-lg-4 col-md-6 mb-4"
-                v-for="blueprint in relatedBlueprints"
-                data-usal="zoomin"
+    <section>
+        <div class="container">
+            <h2 class="text-center mb-4">More related <span class="highlight">blueprints</span></h2>
+            <div class="row">
+                <div
+                    class="col-lg-4 col-md-6 mb-4"
+                    v-for="blueprint in relatedBlueprints"
+                    data-usal="zoomin"
                 :key="blueprint.id"
             >
-                <BlueprintsListCard
+                <ListCard
                     :blueprint="blueprint"
                     :tags="tags"
                     :href="generateCardHref(blueprint)"
                 />
             </div>
         </div>
-    </LayoutSection>
+        </div>
+    </section>
 </template>
+
+<style lang="scss" scoped>
+    @import "~/assets/styles/variable";
+    section {
+        padding: $rem-3 0;
+    }
+</style>

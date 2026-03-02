@@ -20,6 +20,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 ## C
 
 - [Concurrency](#concurrency) - a flow-level property that limits the number of executions of a specific flow that can run simultaneously. Learn when to use [concurrency](../05.workflow-components/14.concurrency/index.md).
+- [Connector sprawl](#connector-sprawl) - the uncontrolled proliferation of integrations, or connectors, in an organization. [Connector sprawl](https://kestra.io/docs/tutorial/outputs#pass-outputs-between-tasks) can create security, operational, and maintenance issues. Kestra's architecture around outputs and internal storage works to prevent these risks. 
 - [Context](#context) - typically referred to as "execution context" or a collection of variables and metadata that allows for dynamic rendering of flow properties during a workflow's execution.
 
 ## D

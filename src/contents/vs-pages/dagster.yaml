@@ -1,0 +1,220 @@
+title: "Kestra vs. Dagster: Orchestrate Your Business, Not Just Your Pipelines"
+description: "Compare Kestra vs Dagster: Universal workflow orchestration in any language with YAML vs Python-native data pipelines. See features, setup time, and use cases."
+competitorName: Dagster
+
+intro:
+  title: "Kestra vs. Dagster: Orchestrate Your Business, Not Just Your Pipelines"
+  description: "Dagster builds data pipelines for Python teams. Kestra automates business workflows. One optimizes your data team. The other transforms how your company operates."
+
+philosophy:
+  mainTitle: Two Platforms, Two Philosophies
+  kestra:
+    title: "Universal Orchestration: Pipelines & Workflows"
+    description: "Universal orchestration platform built on declarative YAML and an API-first architecture. Orchestrate data pipelines, ETL jobs, and complex workflows in any language without forcing your team into a single framework."
+    subCardText: '"How do I get pipelines running without learning a framework first?"'
+  competitor:
+    title: Pipeline Orchestration
+    description: "Data orchestration platform built around Software-Defined Assets. Model data pipelines as a graph of assets, emphasizes the asset abstraction and Python-native development."
+    shadowColor: "#A5CCFE"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I manage data pipelines in Python?"'
+
+businessValue:
+  mainTitle: "Pipelines Optimize Data Teams.<br />Workflows Transform a Business."
+  kestra:
+    title: Business-critical Workflows
+    list:
+      - Automate how your company operates
+      - "Cross-functional: data + ops + business"
+      - Revenue and competitive advantage
+      - Strategic business transformation
+      - Serves the entire organization
+  competitor:
+    title: Data Pipelines
+    list:
+      - "Move data from A → B → C"
+      - Data engineering scope
+      - Efficiency gains
+      - Cost center optimization
+      - Serves the data team
+    shadowColor: "#A5CCFE"
+    bulletColor: "#6BA4FF"
+  footerText: "Dagster is a great option if you're moving off Airflow to become more efficient, but you have to learn its framework before you ship. Kestra takes a different approach: define orchestration in simple YAML, bring your existing Python, SQL, and Shell scripts without refactoring, and get your pipelines running today. When you're ready to expand beyond data pipelines, Kestra scales with you."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Dagster requires restructuring your logic into Software-Defined Assets with @asset decorators, IOManagers, and repository definitions. Kestra takes a simpler approach: define orchestration in declarative YAML, write business logic in whatever language fits the task."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready—database and config included. Open the UI, pick a Blueprint, run it. No Python environment to wrestle with."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~30"
+      two: Minutes
+    description: "Requires Python environment setup, understanding of assets/definitions structure, and refactoring your code into Dagster's Assets."
+    shadowColor: "#A5CCFE"
+    command: |
+      pip install dagster dagster-webserver
+      dagster dev
+
+      # Now restructure your code...
+    lang: python
+
+easeOfUse:
+  title: Workflows Your Whole Team Can Read
+  kestra:
+    title: "Kestra: Readable by your whole team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference,  the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No special training required."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "Dagster: Requires the Python developer lens"
+    description: "Requires Python environment setup, understanding of assets/definitions structure, and refactoring your code into Dagster's Assets."
+    shadowColor: "#A5CCFE"
+    code: |
+      from dagster import asset, define_asset_job, AssetSelection, ScheduleDefinition, Definitions
+      import subprocess, requests, os
+
+      @asset
+      def dbt_report():
+          subprocess.run(["dbt", "run", "--select", "reporting"], check=True)
+
+      @asset(deps=[dbt_report])
+      def slack_notification():
+          requests.post(os.environ["SLACK_WEBHOOK"], json={"text": "Daily report ready"})
+
+      report_job = define_asset_job("report_job", selection=AssetSelection.all())
+      daily_schedule = ScheduleDefinition(job=report_job, cron_schedule="0 8 * * *")
+      defs = Definitions(
+          assets=[dbt_report, slack_notification],
+          schedules=[daily_schedule],
+      )
+    lang: python
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate across data pipelines, infrastructure operations, business processes, and customer workflows in one unified platform. Event-driven at its core."
+  competitor:
+    description: "Purpose-built for data engineering. Excellent at orchestrating tables, models, and reports. Not designed for infrastructure or business automation."
+    shadowColor: "#A5CCFE"
+
+featureGrid:
+  title: Kestra vs Dagster at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Data pipeline orchestration
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: Python code
+    - feature: Script execution
+      kestra: Run scripts directly
+      competitor: Requires @asset decorators and IOManagers
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: Python (others via subprocess)
+    - feature: Users
+      kestra: "Engineers, analysts, ops, business users"
+      competitor: Data engineers
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Not designed for this
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Business process automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+
+socialProof:
+  image:
+    alt: Success story
+    width: 333
+    height: 364
+  quote:
+    text: "Kestra made the data mesh possible. We produce far more data now, and deliver it nearly 10 times faster."
+    author: "Julien Henrion, CDO @ Leroy Merlin"
+  metrics:
+    - value: "-900%"
+      label: In Data Production
+    - value: "+250"
+      label: Active Users
+    - value: "+5000"
+      label: Workflows Created
+  cta:
+    text: "How much risk and cost are you still accepting today?"
+    link: https://kestra.io/blogs/2023-08-16-datamesh
+  theme: "var(--ks-special-green)"
+
+platformStrengths:
+  title: Kestra Is Built for How Data Teams Actually Work
+  features:
+    - title: Bring your own scripts
+      description: "Bring your existing Python, SQL, Shell, and R scripts. Define workflows in declarative YAML. No wrappers, no decorators, no refactoring required—just orchestrate."
+    - title: Minutes to first workflow
+      description: "Build your first scheduled workflow in under 5 minutes with our <a href='/docs/quickstart'>Quickstart Guide</a>. No Python environment, no asset restructuring, no IOManagers to configure. Write YAML and execute."
+    - title: Orchestrate anything
+      description: "From data pipelines to infrastructure provisioning, Kestra handles it all in one platform."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You're automating business workflows, not just data pipelines."
+      - "Your team works across languages—Python, SQL, Bash, R. You need orchestration that doesn't force everyone into Python."
+      - "You want a workflow running today. No framework to learn, no paradigm shift required."
+      - "Non-engineers need to participate. Business users trigger and monitor workflows without writing code."
+  competitor:
+    title: Choose Dagster When
+    list:
+      - "Your focus is data pipelines in Python and that's all you need."
+      - "Your team is Python-native and don't need other languages."
+      - "You're willing to invest in learning SDAs for lineage and data-aware scheduling."
+      - "Your users are data engineers. You don't need self-service for non-technical teams."
+    shadowColor: "#A5CCFE"
+    bulletColor: "#6BA4FF"
+
+commonQuestions:
+  - question: How do I migrate from Dagster to Kestra?
+    answer: "Migration is straightforward because Kestra doesn't require you to refactor your code. Extract your Python logic from Dagster's @asset decorators and run it directly as a Script task in Kestra. Your SQL queries, Shell scripts, and Python code work as-is. Define the orchestration flow in YAML—triggering, scheduling, dependencies—and you're done. Most teams migrate incrementally, running both platforms in parallel during transition."
+  - question: How does Kestra handle my scripts?
+    answer: "Kestra is language-agnostic. Run Python, SQL, Go, and more—either inline in your YAML or from external files. Scripts execute in isolated Docker containers by default, with full control over dependencies. No decorators, no wrappers, no framework-specific syntax. Your code stays portable."
+  - question: Does Kestra work with Python?
+    answer: "Yes. Python is a first-class citizen in Kestra with a dedicated plugin. Write inline Python in your YAML or reference external .py files. Install any pip packages. Use the optional Kestra Python library to pass outputs and metrics back to the orchestrator—but it's not required. Your existing Python scripts run without modification."
+  - question: How much time do I need to get started?
+    answer: "Five minutes. Download the Docker Compose file, run docker compose up, and open the UI at localhost:8080. Pick a Blueprint, customize it, and execute. No Python environment to configure, no virtual environments to manage, no framework concepts to learn first. If you know YAML (or can read it), you can build workflows immediately."
+  - question: Can Kestra handle the same data pipeline use cases as Dagster?
+    answer: "Yes. Kestra orchestrates ETL/ELT pipelines, dbt models, data quality checks, and warehouse operations. The difference: Kestra uses declarative YAML for orchestration while letting you write transformation logic in any language. You get the same data pipeline capabilities without being locked into Python or the asset abstraction."
+  - question: What about data lineage and observability?
+    answer: "Kestra provides built-in execution logs, metrics, and topology views for every workflow. Track inputs, outputs, and dependencies across tasks. For data-specific lineage, integrate with tools like OpenLineage or your existing data catalog. Kestra focuses on workflow observability; pair it with purpose-built lineage tools for deep data tracking."
+
