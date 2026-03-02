@@ -183,12 +183,6 @@ onMounted(() => {
             </div>
         </div>
         <div v-else class="meeting-form">
-            <!-- <img
-                class="background d-none d-md-block"
-                :src="headerBackground.src"
-                aria-hidden="true"
-                data-usal="fade-r"
-            /> -->
             <form
                 class="row needs-validation"
                 ref="demo-form"
@@ -370,10 +364,12 @@ onMounted(() => {
             }
         }
     }
+
     .meeting-form {
         display: flex;
         align-items: center;
         justify-content: center;
+        max-width: 800px;
         img.background {
             width: 644px;
             max-width: 100%;

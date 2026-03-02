@@ -128,7 +128,12 @@ const quotes = [
             flex-direction: column;
             align-items: end;
             > * {
-                width: 620px;
+                width: 95%;
+            }
+        }
+        @include media-breakpoint-up(xxl) {
+            > * {
+                max-width: 600px;
             }
         }
     }
