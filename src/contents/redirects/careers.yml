@@ -1,2 +1,2 @@
-- regexp: "\/careers\/.+"
+- regexp: "/careers/.+"
   to: "/careers/"
