@@ -10,8 +10,10 @@ import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
 import LayoutFooter from "~/components/layout/Footer.vue"
 import LayoutFixed from "~/components/layout/Fixed.vue"
+import Announce from "~/components/layout/Announce.vue"
 // import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
+import { getCollection } from "astro:content"
 
 interface Props {
     title?: string
@@ -58,6 +60,10 @@ const canonicalUrl = new URL(
     currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
     Astro.site,
 )
+
+const annonces = (await getCollection("annonces"))
+    .map((a) => a.data)
+    .filter(a => a.id !== 0)
 ---
 
 <html lang="en">
@@ -171,11 +177,10 @@ const canonicalUrl = new URL(
     <body
         data-header-theme={props.headerTheme === "darkHeader" ? "darkBg" : props.headerTheme === "lightHero" ? "dark" : undefined}
         style={props.headerBg ? `--header-dark-bg: ${props.headerBg}` : undefined}
+        class={annonces.length > 0 ? 'has-annonces' : '' }
     >
-        <Header
-            client:load
-            transition:persist
-        />
+        {annonces.length > 0 ? <Announce client:load transition:persist content={annonces} /> : '' }
+        <Header client:load transition:persist />
         <Search client:load />
         <main>
             <slot />

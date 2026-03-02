@@ -71,7 +71,7 @@
     "vanilla-cookieconsent": "^3.1.0",
     "vue": "^3.5.29",
     "vue-material-design-icons": "^5.3.1",
-    "vue3-carousel-nuxt": "^1.1.6"
+    "vue3-carousel": "^0.17.0"
   },
   "devDependencies": {
     "oxfmt": "^0.35.0",
