@@ -13,6 +13,10 @@ How to create and manage Secrets in the Enterprise Edition.
 
 Secrets are used to store confidential information such as passwords, API keys, and other sensitive data that must not be exposed as plain text. Secrets managed in Kestra are encrypted at rest and in transit to guarantee that your sensitive information is secure.
 
+:::alert{type="info"}
+Need short-lived OAuth-style tokens or app-to-app auth? Define a [Credential](../../../06.concepts/13.credentials/index.md) that mints/refreshes tokens from your secrets and injects them at runtime via `credential()`.
+:::
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
