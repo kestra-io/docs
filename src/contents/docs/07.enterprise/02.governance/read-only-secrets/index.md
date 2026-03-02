@@ -19,7 +19,7 @@ When integrating an external [secrets manager](../secrets-manager/index.md) with
 Currently, read-only secrets can be configured for [AWS Secret Manager](../secrets-manager/index.md#aws-secrets-manager-configuration), [Azure Key Vault](../secrets-manager/index.md#azure-key-vault-configuration), [Google Secret Manager](../secrets-manager/index.md#google-secret-manager-configuration), and [Vault](../secrets-manager/index.md#vault-configuration).
 
 :::alert{type="info"}
-Need short-lived tokens while keeping secrets immutable? Use a [Credential](../../../06.concepts/13.credentials/index.md); it mints tokens from your read-only secrets and surfaces them at runtime via `credential()`.
+Need short-lived tokens while keeping secrets immutable? Use a [Credential](../../03.auth/credentials/index.md); it mints tokens from your read-only secrets and surfaces them at runtime via `credential()`.
 :::
 
 ## Configure read-only secrets

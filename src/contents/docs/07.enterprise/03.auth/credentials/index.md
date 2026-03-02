@@ -16,17 +16,15 @@ Instead of embedding token minting/refresh logic in each plugin, Kestra can mint
 
 Many APIs are moving away from long-lived static API keys toward **short-lived tokens** (e.g. OAuth 2.0), which improves security and simplifies rotation and revocation.
 
-For simple static values (API keys, usernames/passwords), use [Secrets](../04.secret/index.md) directly.
+For simple static values (API keys, usernames/passwords), use [Secrets](../../../06.concepts/04.secret/index.md) directly.
 
-Sensitive material used by a credential (client secrets, private keys, certificates) is referenced via [Secrets](../04.secret/index.md) so it can be stored in external or read-only secret managers (e.g., [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) or [Read-only Secrets](../../07.enterprise/02.governance/read-only-secrets/index.md)) and never appears in plain text in the credential config.
+Sensitive material used by a credential (client secrets, private keys, certificates) is referenced via [Secrets](../../../06.concepts/04.secret/index.md) so it can be stored in external or read-only secret managers (e.g., [Secrets Manager](../../02.governance/secrets-manager/index.md) or [Read-only Secrets](../../02.governance/read-only-secrets/index.md)) and never appears in plain text in the credential config.
 
 ---
 
 ## Availability and scope
 
-Credentials are available in the **Enterprise Edition** only and can be accessed from the **Tenant** menu.
-
-Credentials can be created at:
+Credentials can be accessed and created at:
 
 - **Tenant level** (reusable across namespaces in that tenant)
 - **Namespace level** (scoped to a single namespace)
@@ -55,7 +53,7 @@ tasks:
 
 `credential()` returns the access token only.
 
-For non-sensitive configuration (e.g., hostnames, table names, feature flags), prefer [Variables](../../05.workflow-components/04.variables/index.md).
+For non-sensitive configuration (e.g., hostnames, table names, feature flags), prefer [Variables](../../../05.workflow-components/04.variables/index.md).
 
 ---
 
@@ -68,7 +66,7 @@ Credentials cover common server-to-server authentication patterns, including:
 - OAuth2 `private_key_jwt` (client authentication)
 - GitHub App
 
-Credentials can reference sensitive inputs via existing [Secrets](../04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../07.enterprise/02.governance/read-only-secrets/index.md).
+Credentials can reference sensitive inputs via existing [Secrets](../../../06.concepts/04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../02.governance/read-only-secrets/index.md).
 
 ---
 
@@ -89,4 +87,4 @@ Avoid storing long-lived secrets directly in flow YAML. Prefer credentials + sec
 
 - **Least privilege:** scope credentials to the smallest set of permissions required.
 - **Rotate regularly:** prefer short-lived tokens where possible; rotate long-lived keys.
-- **Avoid leaking values:** don’t print tokens or derived values (e.g., substrings) to logs; see [Best Practices for Secrets](../../14.best-practices/9.secrets-management/index.md).
+- **Avoid leaking values:** don’t print tokens or derived values (e.g., substrings) to logs; see [Best Practices for Secrets](../../../14.best-practices/9.secrets-management/index.md).

@@ -41,7 +41,7 @@ Define the secret by entering its key and value. Save the secret by clicking on 
 
 The secret key should now start appearing on the **Secrets** tab. You can edit the secret's value or delete the secret by clicking on the appropriate button towards the right of the secret row. You can reference the secret in the flow by using the key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
 
-For APIs that issue short-lived access tokens (e.g., OAuth2), create a [Credential](../../../06.concepts/13.credentials/index.md) that relies on these secrets and fetch the token in flows with `{{ credential('your_credential_key') }}`.
+For APIs that issue short-lived access tokens (e.g., OAuth2), create a [Credential](../../03.auth/credentials/index.md) that relies on these secrets and fetch the token in flows with `{{ credential('your_credential_key') }}`.
 
 Here is how you can use it in a flow:
 
