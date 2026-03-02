@@ -1,5 +1,5 @@
 ---
-title: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, new GitHub Action and New Infrastructure Plugins"
+title: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, New GitHub Action and Infrastructure Plugins"
 description: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, a new GitHub Action, and new Infrastructure Plugins for safer production operations and developer automation."
 date: 2026-03-03T17:00:00
 category: News & Product Updates
@@ -29,6 +29,8 @@ Check the video below for a quick overview of all enhancements.
 </div>
 
 ## Kill Switch
+
+![Kill Switch UI](./kill-switch.png)
 
 When production incidents happen, relying on CLI-only skip commands is slow, confusing, and limited to server admins.
 
@@ -81,14 +83,13 @@ Supported credential types include OAuth2 `client_credentials`, OAuth2 JWT Beare
 
 Kestra 1.3 brings the second iteration of **Assets**, building on the foundation introduced in [Kestra 1.2](../release-1-2/index.md).
 
-In 1.2, Assets introduced a stateful inventory and lineage model directly in workflows. In 1.3, Assets becomes more operational: teams can now manage assets imperatively, react to lifecycle events in real time, monitor freshness, and automate remediation and governance workflows with richer filters and trigger outputs.
+In Kestra 1.2, Assets introduced a stateful inventory and lineage model directly in workflows. In 1.3, Assets becomes more operational: teams can now manage assets imperatively, react to lifecycle events in real time, monitor freshness, and automate remediation and governance workflows with richer filters and trigger outputs.
 
 What this means in practice:
 
 - **Imperative lifecycle tasks** to create/update, list, and delete assets directly from flows (`Set`, `List`, `Delete`).
 - **Event-based trigger automation** with `EventTrigger` to react on asset lifecycle events (`CREATED`, `UPDATED`, `DELETED`, `USED`).
 - **Freshness monitoring trigger** to detect stale assets and launch workflows automatically (`FreshnessTrigger`).
-- **Flexible scoping** by asset ID, namespace, type, and metadata conditions.
 - **Actionable trigger context** with `event`, `eventTime`, `lastUpdated`, `staleDuration`, and `checkTime` to drive alerts, routing, and recovery actions.
 
 :::collapse{title="Example: React in real time to asset events"}
@@ -269,22 +270,113 @@ For server components, plugins, and system maintenance commands, see the [Kestra
 
 The **Kestra Server CLI** is the original CLI many teams already know and trust, and it remains the right choice for server administration. **Kestractl** is the new companion focused on direct host operation.
 
+### Installation
 
-TODO: ADD MORE DETAILS + EXAMPLE + INSTALLATION
-TODO: More clarification on Kestra Server CLI vs kestractl
-TODO: Add agent-skill mention kestra-ops
+```bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
+```
+
+### Quick Setup
+
+Configure your Kestra instance and credentials:
+
+```bash
+# Enterprise (API token)
+kestractl config add default https://kestra.example.com production --token YOUR_TOKEN --default
+
+# Open Source (basic auth)
+kestractl config add default http://localhost:8080 main --username YOUR_USERNAME --password YOUR_PASSWORD --default
+```
+
+You can manage multiple contexts (dev, staging, prod) and switch between them with `kestractl config use`.
+
+### Key capabilities
+
+- **`flows`** — list, get, deploy (single file or directory), and validate flows
+- **`executions`** — trigger executions and wait for completion
+- **`namespaces`** — list and filter namespaces
+- **`nsfiles`** — list, get, upload, and delete namespace files
+- **`config`** — manage multiple authentication contexts
+
+:::collapse{title="Example: Deploy flows and trigger an execution"}
+
+```bash
+# Deploy all flows in a directory to the prod namespace
+kestractl flows deploy ./flows --namespace prod --override --fail-fast
+
+# Trigger a flow and wait for completion, output as JSON
+kestractl executions run prod nightly-refresh --wait --output json
+
+# Sync namespace files
+kestractl nsfiles upload prod ./assets --path resources --override
+```
+
+:::
+
+### kestractl vs Kestra Server CLI
+
+| CLI | Best for | Scope |
+|---|---|---|
+| `kestractl` | Day-to-day platform operations through the API | Flows, executions, namespaces, namespace files — anything the Kestra API supports |
+| `kestra` (Server CLI) | Runtime and infrastructure operations | Server startup, system/database operations, plugin lifecycle, and maintenance tasks requiring direct runtime access |
+
+In short, use `kestractl` for API-level resource management and automation, and use the Kestra Server CLI for server, process, or database operations. See the full [kestractl reference](/docs/kestra-cli/kestractl) and [Kestra Server CLI reference](/docs/kestra-cli/kestra-server-commands) for details.
 
 ## GitHub Action
 
 Teams often rely on custom scripts to deploy and validate flows in CI, which leads to inconsistent pipelines and hard-to-maintain automation. A dedicated action makes these workflows repeatable across repositories.
 
-Kestra 1.3 introduces a refreshed GitHub Action built on kestractl, so you can reuse the same commands in CI that you run locally. It supports:
-- **Deploy namespace files**
-- **Deploy flows to multiple namespaces**
-- **Validate flows**
-- **Trigger a deployed flow**
+Kestra 1.3 introduces a refreshed GitHub Action built on kestractl, so you can reuse the same commands in CI that you run locally. Three composite actions are available:
 
-TODO: add example
+- **`validate-flows`** — validate flow definitions against the Kestra API before deploying
+- **`deploy-flows`** — deploy flows from a directory, with optional namespace override
+- **`deploy-namespace-files`** — upload namespace files or folders to a target path
+
+:::collapse{title="Example: Validate, deploy flows, and sync namespace files"}
+
+```yaml
+name: Kestra CI/CD
+on: [push]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kestra-io/github-actions/validate-flows@main
+        with:
+          directory: ./kestra/flows
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kestra-io/github-actions/deploy-flows@main
+        with:
+          directory: ./kestra/flows
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          override: true
+
+  upload-ns-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kestra-io/github-actions/deploy-namespace-files@main
+        with:
+          localPath: ./config
+          namespace: engineering
+          namespacePath: config
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+```
+
+:::
+
+Store credentials (`KESTRA_HOSTNAME`, `KESTRA_API_TOKEN`) as GitHub Secrets. For Enterprise Edition, supply `apiToken` and `tenant`; for Open Source, use `user` and `password` instead.
 
 ## Plugin Defaults UI (Namespace)
 
@@ -292,18 +384,12 @@ Plugin defaults are essential for consistent configurations, but managing them o
 
 Kestra 1.3 adds a dedicated Plugin Defaults UI on the namespace page so you can fully manage these settings from the UI while keeping them versionable. Create new defaults with an **Add plugin default** button, select the plugin from a dropdown, and fill a form that clearly separates required and optional fields, with the option to switch to YAML at any time.
 
-You can also import plugin defaults from YAML to bootstrap or migrate from OSS, and export all defaults to YAML for Git, Terraform, or other IaC workflows.
-
 
 ## Additional Improvements
 
-- **Default Dashboard**: TBD
-- **Auto-completion for Required Fields in Flow Editor**: TBD
-- **Add syntax highlighting support for code properties editor**: TBD
 - **SeaweedFS Internal Storage** - Added support for `storage-seaweedfs` as an internal storage backend, giving teams an OSS-friendly option as the OSS MinIO server repository ([minio/minio](https://github.com/minio/minio)) is archived and no longer maintained.
 - **BeyondTrust Secret Manager** - Added `secret-beyondtrust` as a new secret manager integration for secure credential retrieval.
 - **Kafka Plugin** - Added support for Kafka 4.2 queues and share groups to make event processing more reliable, reduce duplicate work, and distribute messages more smoothly across consumers (`Consume`, `Trigger`, `RealtimeTrigger`).
-
 
 ## Plugins
 
@@ -311,6 +397,7 @@ You can also import plugin defaults from YAML to bootstrap or migrate from OSS, 
 ### Infrastructure
 
 - **ArgoCD** – Automate GitOps delivery by syncing applications and checking sync and health status from ArgoCD inside Kestra workflows (`Sync`, `Status`).
+- **Cloudflare** – Manage Cloudflare resources including DNS records, cache purging, WAF IP access rules, Workers KV storage, zones, and namespaces (DNS: `Create`, `Update`, `Delete`, `Get`, `List`, `Upsert`, `Batch`; cache: `Purge`; WAF access rules: `Create`, `Delete`, `List`; Workers KV: `Get`, `Write`; compute namespaces: `Create`; zones: `Get`, `List`).
 - **Canonical MAAS** – List machines, enlist servers, commission hardware, deploy OS images, and control power states (on/off/cycle/query) for end-to-end bare-metal lifecycle automation (`ListMachines`, `EnlistMachine`, `CommissionMachine`, `DeployMachine`, `PowerControlMachine`).
 - **KVM** – Manage virtualization workloads and automate VM operations on KVM, including listing VMs, creating and updating VM definitions, starting and stopping instances, and deleting domains with optional storage cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `DeleteVm`).
 - **NetBox** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows, including listing sites and devices, creating and updating device records, and assigning IP addresses (`ListSites`, `ListDevices`, `CreateDevice`, `UpdateDevice`, `AssignIpAddress`).
@@ -325,7 +412,10 @@ You can also import plugin defaults from YAML to bootstrap or migrate from OSS, 
 
 - **Beam** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines, with YAML-based execution across Java and Python SDKs on Direct, Flink, Spark, and Dataflow runners (`RunPipeline`).
 - **COBOL** – Run and orchestrate legacy IBM i COBOL workloads by compiling programs from inline or stored source, executing jobs synchronously with parameters, and submitting batch jobs asynchronously (`CreateProgram`, `CallJob`, `SubmitJob`).
+- **Slack App** – Full Slack App integration to manage channels, messages, canvases, files, reactions, and users directly from workflows, with an event trigger for real-time Slack activity.
 - **Trello** – Automate Trello card workflows from Kestra by creating, updating, moving, and commenting on cards, and by polling boards or lists for new and updated card activity (`Create`, `Update`, `Move`, `Comment`, `Trigger`).
+- **AI Plugin** - Added Langfuse observability support to `AIAgent` via OpenTelemetry OTLP with opt-in export of traces, spans, and metadata (flow/task/execution context, provider/model attributes, prompt/output capture), enabling teams to monitor and debug AI agent behavior in production workflows.
+
 
 ## LTS and Enterprise Licensing
 
