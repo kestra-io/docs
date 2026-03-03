@@ -1,25 +1,41 @@
 ---
 title: Kestra Server CLI – Commands and Options
-sidebarTitle: Kestra CLI
+sidebarTitle: Kestra Server Commmands
 icon: /src/contents/docs/icons/admin.svg
-editions: ["OSS","EE"]
+editions: ["OSS", "EE"]
 description: Reference guide for Kestra CLI commands to manage servers, flows, plugins, and configurations.
 ---
 
-How to interact with Kestra using the CLI.
+Use `kestra` to interact with the Kestra server and database
 
 ## Use the Kestra server CLI effectively
 
 This page includes CLI commands and options for both Open Source and Enterprise editions. Enterprise-only operations are marked with (EE) where relevant.
 
-## Authentication
+## Installation
 
-The Kestra CLI uses the same authentication as the [Kestra API](../api-reference/01.enterprise/index.mdx). You can pass credentials via global/API options (see below) such as `--api-token`, `--user`, or `--server`.
+The Kestra Server CLI (`kestra`) is not a separate tool to install. It is the same executable used to run Kestra server components, so you get it through your Kestra installation method.
+
+- **Docker / Docker Compose / Kubernetes**: the CLI is already included in the `kestra/kestra` image.
+- **Standalone JAR**: the downloaded executable (`./kestra-VERSION`) is the CLI.
+- **Managed environments (e.g. Kestra Cloud)**: host-level server commands are typically not available. Use [`kestractl`](./kestractl.md) for API-level operations.
+
+To install Kestra first, follow one of these guides:
+
+- [Docker](../02.installation/02.docker/index.md)
+- [Docker Compose](../02.installation/03.docker-compose/index.md)
+- [Kubernetes](../02.installation/03.kubernetes/index.md)
+- [Standalone JAR](../02.installation/12.standalone-server/index.md)
+
+Examples of the same CLI in each mode:
 
 ```bash
-kestra --api-token <your-api-token> --help
-```
+# Docker container
+docker exec -it kestra /app/kestra plugins list
 
+# Standalone binary
+./kestra-VERSION plugins list
+```
 ---
 
 ## Global options
@@ -358,6 +374,7 @@ Server components can run independently from each other. Each of them communicat
 Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
 
 :::collapse{title="Docker Compose Example"}
+
 ```yaml
 volumes:
   postgres-data:
@@ -479,6 +496,7 @@ services:
       postgres:
         condition: service_started
 ```
+
 :::
 
 In production you might run a similar pattern either by:
@@ -616,9 +634,11 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 Restores the state-store for FlowListeners. Useful after restoring a flow queue.
 
 **Inputs**
+
 - `--timeout` (option): Timeout in seconds before quitting (default: 60).
 
 **Example Usage**
+
 ```bash
 kestra-ee sys-ee restore-flow-listeners --timeout 120
 ```
@@ -630,11 +650,13 @@ kestra-ee sys-ee restore-flow-listeners --timeout 120
 Sends all data from a repository to Kafka. Useful for restoring all resources after a backup.
 
 **Inputs**
+
 - `--no-recreate` (option): Don't drop and recreate the Kafka topic.
 - `--no-flows` (option): Don't send flows.
 - `--no-templates` (option): Don't send templates.
 
 **Example Usage**
+
 ```bash
 kestra-ee sys-ee restore-queue --no-flows
 ```
@@ -649,6 +671,7 @@ Resets the concurrency limit stored on the Kafka runner.
 None
 
 **Example Usage**
+
 ```bash
 kestra-ee sys-ee reset-concurrency-limit
 ```
