@@ -14,7 +14,7 @@ The change required will be to update the license ID, key, and fingerprint with 
 
 ## Breaking change in 1.3.0
 
-- **Startup enforcement:** Nodes running 1.3.0+ will refuse to start with legacy licenses. A valid cloud-console license is required at boot.
+- **Startup enforcement:** Nodes running 1.3.0+ will refuse to start with legacy licenses. A valid license is required at boot.
 - **Scope:** Applies to all new installs and upgrades to 1.3.0+.
 
 ## Action required for existing customers
