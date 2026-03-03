@@ -6,23 +6,23 @@ import StatsHeader from "~/components/layout/StatsHeader.astro"
 
 interface Props {
     header?: {
-        title?: string;
+        title?: string
         subtitle?: string
     }
     stats?: Array<{
-        category?: string;
-        value?: string;
+        category?: string
+        value?: string
         label?: string
     }>
     cta?: {
-        text: string;
+        text: string
         href: string
     }
     testimonialData?: Array<{
-        message: string;
-        name: string;
-        designation: string;
-        logo: any;
+        message: string
+        name: string
+        designation: string
+        logo: any
     }>
 }
 
@@ -31,11 +31,7 @@ const { header, stats, cta, testimonialData } = Astro.props
 
 <section class="slider-section">
     <div class="container" data-usal="fade-left">
-        <StatsHeader
-            {header}
-            {stats}
-            {cta}
-        />
+        <StatsHeader {header} {stats} {cta} />
 
         {
             testimonialData && (
@@ -170,14 +166,8 @@ const { header, stats, cta, testimonialData } = Astro.props
         .testimonials-block {
             display: flex;
             flex-direction: column;
-            padding: calc($spacer * 14) 0;
-            background: url(/landing/pricing/visual-bg.png) no-repeat center
-                top / 100% auto;
+            padding: 14rem 0;
             gap: 42px;
-
-            @include media-breakpoint-down(sm) {
-                background-size: auto;
-            }
         }
 
         .carousel-wrapper {
