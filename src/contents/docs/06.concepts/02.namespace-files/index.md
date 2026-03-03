@@ -68,7 +68,7 @@ Namespace Files make it easy to:
 
 ### Embedded code editor
 
-While creating or editing a Flow, you can access Namespace Files from the Files tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
+While creating or editing a Flow, you can access Namespace Files from the **Namespace Files** tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
 
 To start, add a new file, (e.g., a Python script). Add a folder named `scripts` and a file called `hello.py` with the following content:
 
