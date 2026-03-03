@@ -68,7 +68,7 @@
 	#{--ks-background-blue-light}: #eff4ff;
 	#{--ks-background-body}: $base-grey-white;
 	#{--ks-background-button-primary}: $base-primary-base;
-	#{--ks-background-button-primary-hover}: $base-primary-200;
+	#{--ks-background-button-primary-hover}: $base-primary-400;
 	#{--ks-background-button-secondary}: $base-grey-white;
 	#{--ks-background-button-secondary-active}: $base-grey-white;
 	#{--ks-background-button-secondary-hover}: $base-grey-Black;
@@ -81,12 +81,10 @@
 	#{--ks-background-purple-light}: $base-primary-100;
 	#{--ks-background-secondary}: $base-grey-50;
 	#{--ks-background-secondary-inverse}: $base-grey-800;
+	#{--ks-background-tag-category}: $base-primary-100;
+	#{--ks-background-tag-success}: #bffddd;
 	#{--ks-background-tertiary}: $base-grey-100;
 	#{--ks-background-tertiary-inverse}: $base-grey-Black;
-
-	/* backgroung */
-	#{--ks-backgroung-tag-category}: $base-primary-100;
-	#{--ks-backgroung-tag-success}: #bffddd;
 
 	/* blur */
 	#{--ks-blur-effect}: $base-primary-300;
@@ -116,7 +114,7 @@
 	#{--ks-content-output}: #1e875e;
 	#{--ks-content-primary}: $base-grey-Black;
 	#{--ks-content-primary-inverse}: $base-grey-white;
-	#{--ks-content-propertie}: #1761fd;
+	#{--ks-content-property}: #1761fd;
 	#{--ks-content-secondary}: $base-grey-600;
 	#{--ks-content-secondary-inverse}: $base-grey-200;
 	#{--ks-content-tag-category}: $base-primary-500;
@@ -136,8 +134,9 @@
 
 	/* shadows */
 	#{--ks-shadows-hight}: #27205633;
-	#{--ks-shadows-light}: #2720560d;
+	#{--ks-shadows-light}: #3952f21a;
 	#{--ks-shadows-light-inverse}: #22222f;
+	#{--ks-shadows-xl-inverse}: #9d6aeb;
 
 	/* special */
 	#{--ks-special-green}: #06f0b1;
@@ -191,4 +190,3 @@
 	/* red/base */
 	#{--red-base}: #ab0009;
 }
-
