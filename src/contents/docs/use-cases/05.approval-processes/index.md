@@ -350,7 +350,7 @@ Example:
     pauseDuration: PT5M
 ```
 
-* If the `pauseDuration` elapses, the task run ends in a `CANCELED` state, and the execution stops.
+* If the `pauseDuration` elapses, the task run ends in a `CANCELLED` state, and the execution stops.
 * If you **resume** manually before that time, the execution continues, ignoring the `behavior` property.
 * If you **kill** manually before that time, the execution moves to the `KILLING` state, ensuring all tasks are stopped.
 
