@@ -32,7 +32,7 @@ To configure a Kill Switch, navigate to your **Instance → Kill Switch** sectio
 
 | Type | Behavior |
 |------|----------|
-| **KILL** | Immediately kills all running executions and worker tasks. New executions move to `KILLED` right away. |
+| **KILL** | Kills running executions after the current task completes; any remaining tasks in the execution will not run. New executions are transitioned to `KILLED` state instantly. |
 | **CANCEL** | Blocks new executions; lets current task runs finish before marking the execution `CANCELLED`. |
 | **IGNORE** | Ignores all messages for matching executions—use as a last resort when an execution cannot be killed or cancelled. |
 
