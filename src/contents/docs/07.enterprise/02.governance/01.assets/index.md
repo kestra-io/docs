@@ -99,47 +99,102 @@ tasks:
     message: "Asset recorded: {{ assets() | jq('.[] | {id: .id, type: .type, metadata: .metadata}') }}"
 ```
 
-:::alert{type="info"}
-Auto-emitted assets are supported for specific plugins when `assets.enableAuto: true`:
-- **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
-- **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.core.models.assets.External` (or host), marking the infrastructure targets the playbook runs against.
-- **JDBC Query**: detects `CREATE TABLE` statements and emits a single `Table` output; JDBC URL populates `system` and `database`.
+## Auto-generated assets
 
-Example (dbt):
+Some plugins support automatic asset generation when `assets.enableAuto: true` is set on a task. This removes the need to manually declare `assets.inputs` and `assets.outputs` — the plugin inspects its execution context and emits assets automatically:
+
+- **JDBC Query**: detects `CREATE TABLE` statements and emits a single `io.kestra.plugin.ee.assets.Table` output; JDBC URL populates `system` and `database`.
+- **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.core.models.assets.External`, marking the infrastructure targets the playbook runs against.
+- **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
+
+:::collapse{title="JDBC Query auto-generated assets"}
+
 ```yaml
+id: jdbc_create_trips
+namespace: company.team
+
 tasks:
-  - id: dbt_run
-    type: io.kestra.plugin.dbt.cli.DbtCLI
-    commands: 
-      - dbt run
+  - id: create_trips_table
+    type: io.kestra.plugin.jdbc.sqlite.Query
+    url: jdbc:sqlite:myfile.db
+    outputDbFile: true
+    sql: |
+      CREATE TABLE IF NOT EXISTS trips (
+          VendorID INTEGER,
+          passenger_count INTEGER,
+          trip_distance REAL
+      );
     assets:
       enableAuto: true
-      # outputs: models as Table assets
-      # lineage: edges from depends_on
-
-# Pseudo example of what gets auto-generated from manifest.json:
-# assets:
-#   outputs:
-#     - id: analytics.staging.stg_orders
-#       type: io.kestra.plugin.ee.assets.Table
-#       metadata:
-#         system: postgres
-#         database: analytics
-#         schema: staging
-#         name: stg_orders
-#         dbt_model_layer: staging
-#       lineage:
-#         - raw_data.public.orders
-#     - id: analytics.marts.fct_orders
-#       type: io.kestra.plugin.ee.assets.Table
-#       metadata:
-#         system: postgres
-#         database: analytics
-#         schema: marts
-#         name: fct_orders
-#       lineage:
-#         - analytics.staging.stg_orders
 ```
+
+:::
+
+:::collapse{title="Ansible CLI auto-generated assets"}
+
+```yaml
+id: ansible_playbook
+namespace: company.team
+
+tasks:
+  - id: ansible_task
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    inputFiles:
+      inventory.ini: |
+        localhost ansible_connection=local
+      myplaybook.yml: |
+        ---
+        - hosts: localhost
+          tasks:
+            - name: Print Hello World
+              debug:
+                msg: "Hello, World!"
+    assets:
+      enableAuto: true
+    commands:
+      - ansible-playbook -i inventory.ini myplaybook.yml
+```
+
+:::
+
+:::collapse{title="dbt CLI auto-generated assets"}
+
+```yaml
+id: dbt_build_duckdb
+namespace: company.team
+
+tasks:
+  - id: dbt
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone_repository
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/kestra-io/dbt-example
+        branch: main
+
+      - id: dbt_build
+        type: io.kestra.plugin.dbt.cli.DbtCLI
+        taskRunner:
+          type: io.kestra.plugin.scripts.runner.docker.Docker
+        containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+        commands:
+          - dbt deps
+          - dbt build
+          - dbt run
+        profiles: |
+          my_dbt_project:
+            outputs:
+              dev:
+                type: duckdb
+                path: ":memory:"
+                fixed_retries: 1
+                threads: 16
+                timeout_seconds: 300
+            target: dev
+        assets:
+          enableAuto: true
+```
+
 :::
 
 ## Operational automation
