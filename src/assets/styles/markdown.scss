@@ -46,6 +46,7 @@
         color: var(--ks-content-primary);
         margin-bottom: 1rem;
         position: relative;
+        scroll-margin-top: var(--top-bar-height, 80px);
 
         &:hover [href] {
             position: absolute;

@@ -87,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-    import { nextTick, ref, onUnmounted } from "vue"
+    import { nextTick, ref, onUnmounted, onMounted } from "vue"
     import { useEventListener, useScroll } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
@@ -142,8 +142,29 @@
     const activeLinkId = ref("")
     const isManualScrolling = ref(false)
     let manualScrollTimer: ReturnType<typeof setTimeout> | undefined
+    let intersectionObserver: IntersectionObserver | null = null
+    let visibleHeadings = new Set<string>()
 
     const getFixedHeaderOffset = () => {
+        // Try to get --top-bar-height CSS variable
+        const topBarHeightStr = getComputedStyle(document.documentElement).getPropertyValue('--top-bar-height')
+        if (topBarHeightStr) {
+            const value = parseInt(topBarHeightStr.trim(), 10)
+            if (!isNaN(value) && value > 0) {
+                return value
+            }
+        }
+        
+        // Try computed style on document element
+        const scrollPaddingStr = window.getComputedStyle(document.documentElement).scrollPaddingTop
+        if (scrollPaddingStr && scrollPaddingStr !== 'auto' && scrollPaddingStr !== '0px') {
+            const value = parseInt(scrollPaddingStr, 10)
+            if (!isNaN(value) && value > 0) {
+                return value
+            }
+        }
+        
+        // Fallback: calculate from fixed header elements
         const selectors = [
             "header",
             ".site-header",
@@ -158,21 +179,22 @@
                 const style = window.getComputedStyle(el)
                 const isFixed = ["fixed", "sticky"].includes(style.position) || 
                                Math.round(el.getBoundingClientRect().top) === 0
-                if (isFixed) return el.getBoundingClientRect().height
+                if (isFixed) {
+                    const height = el.getBoundingClientRect().height
+                    if (height > 0) return height
+                }
             }
         }
-        return 160
+        
+        return 80 // Conservative default
     }
 
     const scrollToElement = (id: string) => {
         const element = document.getElementById(id)
         if (!element) return
         
-        const offset = getFixedHeaderOffset()
-        const rectTop = element.getBoundingClientRect().top + window.pageYOffset
-        const top = Math.max(0, rectTop - offset - 8)
-        
-        window.scrollTo({ top, behavior: "smooth" })
+        // Let the browser handle scroll-padding-top from CSS, just scroll into view
+        element.scrollIntoView({ behavior: "smooth", block: "start" })
     }
 
     const updateActiveLink = (id: string) => {
@@ -215,30 +237,76 @@
         document.getElementById("tocContents")?.classList.remove("show")
     }
 
-    const handleScroll = throttle(() => {
-        if (isManualScrolling.value || scrollY.value === 0) {
-            if (scrollY.value === 0) activeLinkId.value = ""
-            return
+    const initializeIntersectionObserver = () => {
+        // Clean up old observer
+        if (intersectionObserver) {
+            intersectionObserver.disconnect()
         }
         
-        const offset = getFixedHeaderOffset() + 20
-        const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
+        const headerOffset = getFixedHeaderOffset()
         
-        let currentActive = ""
-        for (const link of allLinks) {
-            const el = document.getElementById(link.id)
-            if (el && el.getBoundingClientRect().top <= offset) {
-                currentActive = link.id
-            } else if (el) {
-                break
+        // Simple Intersection Observer - just detect when headings enter viewport
+        const observerOptions: IntersectionObserverInit = {
+            rootMargin: `-${Math.max(headerOffset, 0)}px 0px -50% 0px`,
+            threshold: 0
+        }
+        
+        intersectionObserver = new IntersectionObserver((entries) => {
+            if (isManualScrolling.value) return
+            
+            // Find the heading that is closest to the top of the viewport (after header offset)
+            const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
+            let closestHeading = ""
+            let closestDistance = Infinity
+            
+            for (const link of allLinks) {
+                const el = document.getElementById(link.id)
+                if (!el) continue
+                
+                const rect = el.getBoundingClientRect()
+                const distanceFromTop = Math.abs(rect.top - headerOffset)
+                
+                // Only consider headings that are visible (not below viewport)
+                if (rect.top < window.innerHeight && distanceFromTop < closestDistance) {
+                    closestDistance = distanceFromTop
+                    closestHeading = link.id
+                }
             }
-        }
+            
+            if (closestHeading && activeLinkId.value !== closestHeading) {
+                updateActiveLink(closestHeading)
+            }
+        }, observerOptions)
         
-        if (currentActive) updateActiveLink(currentActive)
-    }, 100)
+        // Observe all headings
+        const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
+        allLinks.forEach(link => {
+            const el = document.getElementById(link.id)
+            if (el) {
+                intersectionObserver!.observe(el)
+            }
+        })
+    }
 
-    useEventListener("scroll", handleScroll)
-    onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))
+    useEventListener("hashchange", () => {
+        nextTick(() => {
+            initializeIntersectionObserver()
+        })
+    })
+    
+    onMounted(() => {
+        // Initialize observer on mount
+        nextTick(() => {
+            initializeIntersectionObserver()
+        })
+    })
+    
+    onUnmounted(() => {
+        if (intersectionObserver) {
+            intersectionObserver.disconnect()
+        }
+        if (manualScrollTimer) clearTimeout(manualScrollTimer)
+    })
 </script>
 
 <style lang="scss" scoped>
@@ -336,7 +404,6 @@
                     color: var(--ks-content-secondary);
                     font-weight: 500;
                     cursor: pointer;
-                    scroll-margin: 3rem;
                     @for $i from 2 through 6 {
                         &.depth-#{$i} {
                             font-size: if($i == 2, 14px, if($i == 3, 13px, 12px));
