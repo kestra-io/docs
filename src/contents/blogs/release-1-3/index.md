@@ -1,5 +1,5 @@
 ---
-title: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, New GitHub Action and Infrastructure Plugins"
+title: "Kestra 1.3: LTS Release with Kill Switch, Credentials, and Native Infrastructure Automation"
 description: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, a new GitHub Action, and new Infrastructure Plugins for safer production operations and developer automation."
 date: 2026-03-03T17:00:00
 category: News & Product Updates
