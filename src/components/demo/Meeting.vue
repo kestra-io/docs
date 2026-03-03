@@ -201,6 +201,7 @@ onMounted(() => {
                     <input
                         id="demo-first-name"
                         name="first-name"
+                        autocomplete="given-name"
                         type="text"
                         class="form-control"
                         placeholder="First name"
@@ -215,6 +216,7 @@ onMounted(() => {
                     <input
                         id="demo-last-name"
                         name="last-name"
+                        autocomplete="family-name"
                         type="text"
                         class="form-control"
                         placeholder="Last name"
