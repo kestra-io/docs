@@ -665,3 +665,41 @@ tasks:
 ```
 
 The `mappings` property defines how Kestra asset metadata fields map to OpenLineage dataset facets. Each asset type can have its own mapping configuration. For more information about OpenLineage dataset facets and available fields, see the [OpenLineage Dataset Facets documentation](https://openlineage.io/docs/spec/facets/dataset-facets/).
+
+## Purge assets and lineage (retention)
+
+Use these enterprise purge tasks to enforce asset retention without touching executions or logs:
+
+- **`io.kestra.plugin.ee.assets.PurgeAssets`** – deletes asset records that match filters (Namespace, type, metadata) and are older than `endDate` (uses the asset `updated` timestamp). Supports Namespace wildcards (e.g., `company.team.*`). Returns `purgedCount`.
+- **`io.kestra.plugin.ee.assets.PurgeAssetLineage`** – removes usage/lineage events while keeping the asset definitions. Supports the same filters plus `assetId`; also returns `purgedCount`.
+
+Example: purge staging tables and their lineage on a schedule.
+
+```yaml
+id: asset_retention
+namespace: company.data
+
+triggers:
+  - id: monthly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 1 * *"
+
+tasks:
+  - id: purge_lineage
+    type: io.kestra.plugin.ee.assets.PurgeAssetLineage
+    namespace: company.data
+    assetType:
+      - io.kestra.plugin.ee.assets.Table
+    metadata:
+      model_layer: staging
+    endDate: "{{ now() | dateAdd(-30, 'DAYS') }}"
+
+  - id: purge_assets
+    type: io.kestra.plugin.ee.assets.PurgeAssets
+    namespace: company.data
+    assetType:
+      - io.kestra.plugin.ee.assets.Table
+    metadata:
+      model_layer: staging
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+```

@@ -102,6 +102,44 @@ tasks:
 
 Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) for more details.
 
+## Assets retention (Enterprise)
+
+Enterprise includes two purge tasks for the asset catalog:
+
+- **`io.kestra.plugin.ee.assets.PurgeAssets`** — deletes asset records matching Namespace/type/metadata filters older than `endDate` (uses the asset `updated` timestamp). Supports Namespace wildcards (e.g., `company.team.*`). Returns `purgedCount`.
+- **`io.kestra.plugin.ee.assets.PurgeAssetLineage`** — removes usage/lineage events while keeping asset definitions. Supports the same filters plus `assetId`; returns `purgedCount`.
+
+Simple scheduled flow covering both:
+
+```yaml
+id: asset_retention
+namespace: company.data
+
+triggers:
+  - id: monthly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 1 * *"
+
+tasks:
+  - id: purge_lineage
+    type: io.kestra.plugin.ee.assets.PurgeAssetLineage
+    namespace: company.data
+    assetType:
+      - io.kestra.plugin.ee.assets.Table
+    metadata:
+      model_layer: staging
+    endDate: "{{ now() | dateAdd(-30, 'DAYS') }}"
+  
+  - id: purge_assets
+    type: io.kestra.plugin.ee.assets.PurgeAssets
+    namespace: company.data
+    assetType:
+      - io.kestra.plugin.ee.assets.Table
+    metadata:
+      model_layer: staging
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+```
+
 ## Purge tasks vs. UI deletion
 
 Purge tasks perform **hard deletion**, permanently removing records and reclaiming storage. In contrast, deleting items in the UI is a **soft deletion**—the data is hidden but retained (e.g., revision history and past executions can reappear if a flow with the same ID is recreated).
