@@ -102,42 +102,47 @@ tasks:
 
 Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) for more details.
 
-## Assets retention (Enterprise)
+## Purge assets and lineage (retention)
 
-Enterprise includes two purge tasks for the asset catalog:
+Use the `io.kestra.plugin.ee.assets.PurgeAssets` task to enforce asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
 
-- **`io.kestra.plugin.ee.assets.PurgeAssets`** — deletes asset records matching Namespace/type/metadata filters older than `endDate` (uses the asset `updated` timestamp). Supports Namespace wildcards (e.g., `company.team.*`). Returns `purgedCount`.
-- **`io.kestra.plugin.ee.assets.PurgeAssetLineage`** — removes usage/lineage events while keeping asset definitions. Supports the same filters plus `assetId`; returns `purgedCount`.
+**Filters:**
 
-Simple scheduled flow covering both:
+| Property | Description |
+| --- | --- |
+| `namespace` | Filter by namespace. Supports prefix matching (e.g., `company.data` matches `company.data.staging`). |
+| `assetId` | Filter by a specific asset ID. |
+| `assetType` | Filter by one or more asset types (e.g., `io.kestra.plugin.ee.assets.Table`). |
+| `metadataQuery` | Filter by metadata key-value pairs. |
+| `endDate` | **(required)** Purge records created or updated before this date (ISO 8601). |
+
+**Purge scope:**
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `purgeAssets` | `true` | Whether to purge the asset records themselves. |
+| `purgeAssetUsages` | `true` | Whether to purge asset usage events (execution view). |
+| `purgeAssetLineages` | `true` | Whether to purge asset lineage events. |
+
+**Outputs:** `purgedAssetsCount`, `purgedAssetUsagesCount`, `purgedAssetLineagesCount`.
+
+Example: purge old VM assets on a monthly schedule.
 
 ```yaml
-id: asset_retention
-namespace: company.data
+id: asset_retention_policy
+namespace: company.infra
 
 triggers:
-  - id: monthly
+  - id: monthly_cleanup
     type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 2 1 * *"
+    cron: "0 0 1 * *"
 
 tasks:
-  - id: purge_lineage
-    type: io.kestra.plugin.ee.assets.PurgeAssetLineage
-    namespace: company.data
-    assetType:
-      - io.kestra.plugin.ee.assets.Table
-    metadata:
-      model_layer: staging
-    endDate: "{{ now() | dateAdd(-30, 'DAYS') }}"
-  
-  - id: purge_assets
+  - id: purge_old_vms
     type: io.kestra.plugin.ee.assets.PurgeAssets
-    namespace: company.data
     assetType:
-      - io.kestra.plugin.ee.assets.Table
-    metadata:
-      model_layer: staging
-    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+      - io.kestra.plugin.ee.assets.VM
+    endDate: "{{ now() | dateAdd(-180, 'DAYS') }}"
 ```
 
 ## Purge tasks vs. UI deletion
