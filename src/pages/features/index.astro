@@ -1,48 +1,348 @@
 ---
-import FeaturesHeader from "~/components/features/Header.vue"
-import FeaturesDeclarative from "~/components/features/Declarative.vue"
-import FeaturesOutBox from "~/components/features/OutBox.vue"
-import FeaturesExperience from "~/components/features/Experience.vue"
-import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
-import FeaturesCTA from "~/components/features/CTA.vue"
+import Header from "~/components/features/core/Header.vue"
+import Declarative from "~/components/layout/Declarative.astro"
+import OutBox from "~/components/layout/OutBox.astro"
+import Experience from "~/components/layout/Experience.astro"
+import HeaderBox from "~/components/common/HeaderBox.vue"
+import CTA from "~/components/common/CTA.astro"
 import Layout from "~/components/layout.astro"
-import PluginsBox from "~/components/PluginsBox.astro"
+import PluginsBox from "~/components/common/PluginsBox.astro"
 
-const title = "Powerful Features for Reliable Data Workflows"
-const description =
+const TITLE = "Powerful Features for Reliable Data Workflows"
+const DESCRIPTION =
     "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra | Your All-in-One Solution for Orchestrating Workflows"
+
+const DECLARATIVE_DATA = {
+    title: "Kestra Core Features",
+    highlightTitle: "Declarative & Scalable by Design",
+    featureCardsFirst: [
+        {
+            title: "Orchestration & Business Logic Separation",
+            description: "Kestra lets you define workflow logic (conditions, loops, error handling) independently from business logic. This separation keeps orchestration lightweight, modular, and easy to scale. Business logic stays decoupled from the orchestrator.",
+        },
+        {
+            title: "Built-In Execution Controls",
+            description: "Every task in Kestra has a built-in orchestration powerhouse: conditional branching logic, retry policies, error handling, concurrency and timeout, worker group assignment, automatic log management and more. No custom code needed to benefit from those capabilities.",
+        },
+    ],
+    featureCardsSecond: [
+        {
+            title: "Static & Dynamic Properties",
+            description: "Kestra tasks support both static values and dynamic expressions. Use fixed values for simplicity, or inject runtime values using templating syntax to adapt based on data, inputs, or conditions. This lets you build reusable, context-aware workflows without sacrificing clarity or maintainability.",
+        },
+        {
+            title: "Code in Any Language",
+            description: "Kestra can run code in any language without forcing you to rewrite your code to match a rigid framework DSL. Kestra executes your scripts directly, in a local subprocess or in a Docker container. handles inputs and outputs, and captures logs. You can import and edit your code from the integrated Namespace Files editor.",
+        },
+    ],
+    coil: {
+        label: "Kestra Core",
+        list1: {
+            title: "Everything From The UI",
+            items: [
+                "Live Update dependency Graph",
+                "Integrated No-Code & Code Editor",
+                "Run Backfills in Few Clicks",
+                "Built-in Documentation & Blueprints",
+                "Custom Observability Dashboards"
+            ]
+        },
+        list2: {
+            title: "Run Anywhere, Anytime",
+            items: [
+                "UI or API execution",
+                "Event & Real-time Triggers",
+                "Dependency-based flow execution",
+                "No Infrastructure Setup"
+            ]
+        },
+        list3: {
+            title: "Everything As Code",
+            items: [
+                "Autocompletion & Syntax Validation",
+                "Git Sync",
+                "CI/CD Integrations",
+                "Multi-Language Script Tasks",
+                "Automatic Revision History & Rollback"
+            ]
+        }
+    }
+}
+
+const OUT_OF_THE_BOX_DATA = {
+    title: "Out of the Box Features",
+    highlightTitle: "Add New Workflows in Minutes",
+    features: [
+        {
+            title: "Declarative Workflow Definition",
+            description: "Strong typing with autocompletion, support through YAML and blueprints, and an intuitive UI with live topology views. Everything to build, validate, and visualize workflows.",
+        },
+        {
+            title: "Code Faster Without Boilerplate",
+            description: "Spend less time babysitting orchestration code. Define task dependencies in a natural order, run steps sequentially, in parallel, or conditionally all without digging through complex logic.",
+        },
+        {
+            title: "Event-Driven Workflow Execution",
+            description: "Run workflows on a schedule or trigger them automatically in response to real-time events like new data, files, messages, or completed workflows.",
+        },
+        {
+            title: "API First Design",
+            description: "Automate anything, execute and monitor workflows in real time, see executions start instantly, follow task progress live, and access logs and results as they happen.",
+        },
+    ]
+}
+
+const EXPERIENCE_DATA = {
+    sections: [
+        {
+            title: "**Developer-First** Workflow Experience",
+            subsections: [
+                {
+                    title: "Create and Run Workflows Without Deployment Headaches",
+                    cards: [
+                        {
+                            title: "Everything From the UI",
+                            description: "Create and run workflows from the all-in-one built-in YAML editor, syntax validation, autocompletion, and file I/O.",
+                            cta: "Discover the editor",
+                            link: "https://kestra.io/docs/ui/flows",
+                            icon: "mdi:monitor",
+                        },
+                        {
+                            title: "Everything as Code",
+                            description: "Manage versioned flows through Git or the YAML-based format that's easy to read, edit, and maintain.",
+                            cta: "Learn more",
+                            link: "https://kestra.io/docs/version-control-cicd",
+                            icon: "mdi:code-braces",
+                        },
+                        {
+                            title: "Declarative Configuration",
+                            description: "Define your workflows in a portable, YAML-based format that's easy to read, edit, and maintain.",
+                            cta: "Declarative Configuration",
+                            link: "https://kestra.io/docs/workflow-components/flow#flow-sample",
+                            icon: "mdi:tune-variant",
+                        },
+                    ],
+                },
+                {
+                    title: "Iterate and Debug Faster",
+                    cards: [
+                        {
+                            title: "Built-in Documentation",
+                            description: "Always up-to-date plugin documentation directly in the editor.",
+                            cta: "Editor documentation",
+                            link: "https://kestra.io/docs/ui",
+                            icon: "mdi:book-open-page-variant-outline",
+                        },
+                        {
+                            title: "Autocompletion & Syntax Validation",
+                            description: "Get real-time feedback while typing and auto-completing validations.",
+                            cta: "Editor features",
+                            link: "https://kestra.io/docs/ui/flows",
+                            icon: "mdi:check-circle-outline",
+                        },
+                        {
+                            title: "Live Debugging Tools",
+                            description: "Use the live variables client to debug your tasks and preview inputs and outputs quickly.",
+                            cta: "Live monitoring",
+                            link: "https://kestra.io/docs/administrator-guide/monitoring#monitoring",
+                            icon: "mdi:bug",
+                        },
+                    ],
+                },
+                {
+                    title: "Modular and Language-Agnostic",
+                    cards: [
+                        {
+                            title: "Scripting Support",
+                            description: "Write tasks in Python, Bash, NodeJS, SQL, R, all from your browser.",
+                            cta: "Supported languages",
+                            link: "https://kestra.io/docs/scripts",
+                            icon: "mdi:console",
+                        },
+                        {
+                            title: "Modular by Design",
+                            description: "Log outputs and observe configurations to manage better flows.",
+                            cta: "Writing modular workflows",
+                            link: "https://kestra.io/docs/workflow-components/subflows",
+                            icon: "mdi:connection",
+                        },
+                        {
+                            title: "Strong Typing and Validation",
+                            description: "Define and enforce validation for schema-driven workflows.",
+                            cta: "Schema validation",
+                            link: "https://kestra.io/docs/tutorial/inputs",
+                            icon: "mdi:shield-check",
+                        },
+                    ],
+                },
+                {
+                    title: "Versioning & Deployment",
+                    cards: [
+                        {
+                            title: "Built-in Versioning",
+                            description: "Every change is tracked. Preview diffs or roll back when things go wrong.",
+                            cta: "Version control all your workflows",
+                            link: "https://kestra.io/docs/best-practices/git",
+                            icon: "mdi:source-commit",
+                        },
+                        {
+                            title: "CI/CD Friendly",
+                            description: "Run any task from your CI/CD pipeline to automate deployments and builds.",
+                            cta: "CI/CD integration",
+                            link: "https://kestra.io/docs/version-control-cicd/cicd",
+                            icon: "mdi:sync-circle",
+                        },
+                        {
+                            title: "No Deploy Headaches",
+                            description: "Deploy directly from the UI or use CLI to automate everything.",
+                            cta: "Deploy workflows",
+                            link: "#",
+                            icon: "mdi:cloud-upload-outline",
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            title: "**Powerful** Execution Engine",
+            subsections: [
+                {
+                    title: "Event-Driven and Time-Based Triggers",
+                    cards: [
+                        {
+                            title: "Trigger System",
+                            description: "Start workflows based on file arrivals, webhooks, or scheduled times.",
+                            cta: "Types of triggers",
+                            link: "https://kestra.io/docs/tutorial/triggers",
+                            icon: "mdi:calendar-today-outline",
+                        },
+                        {
+                            title: "Real-time Events",
+                            description: "React to new data instantly - no polling, database changes, message queues.",
+                            cta: "Real-time processing",
+                            link: "https://kestra.io/docs/workflow-components/triggers/realtime-trigger",
+                            icon: "mdi:lightning-bolt",
+                        },
+                        {
+                            title: "API First",
+                            description: "Start flows programmatically via API, CLI, or Kestra UI.",
+                            cta: "Kestra API reference",
+                            link: "https://kestra.io/docs/api-reference",
+                            icon: "mdi:api",
+                        },
+                    ],
+                },
+                {
+                    title: "Scalable and Resilient",
+                    cards: [
+                        {
+                            title: "Process Data at Scale",
+                            description: "Use distributed mapping to handle large datasets efficiently.",
+                            cta: "Distributed executions",
+                            link: "https://kestra.io/docs/workflow-components/execution",
+                            icon: "mdi:sine-wave",
+                        },
+                        {
+                            title: "Micro-Batch CDC",
+                            description: "Capture and process change data in small, manageable batches.",
+                            cta: "Change data capture",
+                            link: "https://kestra.io/use-cases/change-data-capture",
+                            icon: "mdi:database-cog-outline",
+                        },
+                        {
+                            title: "Horizontal and Vertical Scaling",
+                            description: "Kestra's engine scales automatically with your workloads.",
+                            cta: "Scaling architecture",
+                            link: "https://kestra.io/docs/enterprise/scalability",
+                            icon: "mdi:unfold-less-vertical",
+                        },
+                    ],
+                },
+                {
+                    cards: [
+                        {
+                            title: "Built on the JVM",
+                            description: "Benefit from high performance and memory efficiency.",
+                            cta: "Kestra Architecture",
+                            link: "https://kestra.io/docs/architecture",
+                            icon: "mdi:coffee-outline",
+                        },
+                        {
+                            title: "No Single Point of Failure",
+                            description: "Designed for fault tolerant, reliable execution.",
+                            cta: "System reliability",
+                            link: "https://kestra.io/docs/architecture/deployment-architecture#high-availability-deployment",
+                            icon: "mdi:backup-restore",
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            title: "Built-In **Monitoring** and **Observability**",
+            subsections: [
+                {
+                    title: "Insights at a Glance",
+                    cards: [
+                        {
+                            title: "Dashboards and Metrics",
+                            description: "Monitor performance and usage directly in the UI.",
+                            cta: "Metrics and observability",
+                            link: "https://kestra.io/docs/ui/dashboard",
+                            icon: "mdi:view-dashboard-edit",
+                        },
+                        {
+                            title: "Execution Details",
+                            description: "Access full logs and task-level status in real time.",
+                            cta: "Inspecting logs",
+                            link: "https://kestra.io/docs/ui/logs",
+                            icon: "mdi:receipt-text-clock-outline",
+                        },
+                    ],
+                },
+                {
+                    title: "Error Handling and Notifications",
+                    cards: [
+                        {
+                            title: "Automatic Retries",
+                            description: "Recover from transient failures with built-in retry logic.",
+                            cta: "Retry logic",
+                            link: "https://kestra.io/docs/workflow-components/retries",
+                            icon: "mdi:refresh-auto",
+                        },
+                        {
+                            title: "Smart Alerts",
+                            description: "Get notified on completion, delay, or failure via Slack, email, or custom webhooks.",
+                            cta: "Alerting triggers",
+                            link: "https://kestra.io/docs/administrator-guide/monitoring",
+                            icon: "mdi:bell-ring",
+                        },
+                        {
+                            title: "Replay Executions",
+                            description: "Fix logic and rerun failed workflows without costly re-computation of tasks that have already been completed.",
+                            cta: "Rerun workflows",
+                            link: "https://kestra.io/docs/concepts/replay",
+                            icon: "mdi:replay",
+                        },
+                    ],
+                },
+            ],
+        },
+    ]
+}
 ---
 
-<Layout title={title} description={description}>
+<Layout title={TITLE} description={DESCRIPTION} headerTheme="lightHero">
     <div class="features">
-        <FeaturesHeader client:load />
-        <FeaturesDeclarative client:visible />
-        <FeaturesOutBox client:visible />
-        <section class="features-plugins">
-            <div class="container">
-                <PluginsBox />
-            </div>
-        </section>
-        <FeaturesExperience client:visible />
-        <FeaturesFeatureEnterprise client:visible />
-        <FeaturesCTA client:visible />
+        <Header client:load />
+        <Declarative data={DECLARATIVE_DATA} />
+        <OutBox data={OUT_OF_THE_BOX_DATA} />
+        <PluginsBox />
+        <Experience data={EXPERIENCE_DATA} />
+        <HeaderBox client:visible />
+        <CTA />
     </div>
 </Layout>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-    .features-plugins {
-        background: linear-gradient(180deg, #e8eaf2 74.52%, #ffffff 74.52%);
-        padding: 2rem 1rem;
-        margin-top: -2rem;
-
-        @include media-breakpoint-up(lg) {
-            padding: 6rem;
-        }
-        text-align: center;
-
-        .container {
-            margin-bottom: 3rem;
-        }
-    }
 </style>

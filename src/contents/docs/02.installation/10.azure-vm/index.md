@@ -9,6 +9,10 @@ Install Kestra on an Azure VM with Azure Database for PostgreSQL as the database
 
 This guide provides instructions for deploying Kestra on an Azure VM with Azure Database for PostgreSQL as the database backend and Azure Blob Storage as the internal storage backend.
 
+:::alert{type="info"}
+Prefer an Azure-native option? You can deploy Kestra directly from the [Azure Marketplace listing](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official).
+:::
+
 ## Deploy Kestra on an Azure VM with Azure Database
 
 Prerequisites:

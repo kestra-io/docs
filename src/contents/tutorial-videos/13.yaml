@@ -1,0 +1,7 @@
+title: "Kestra Tutorial: Outputs"
+description: "Join Will as he explores the powerful capabilities of outputs in Kestra. This tutorial demonstrates how to effectively capture and useoutputs from tasks like HTTP requests. Learn how to access and manipulate these outputs for subsequent tasks, improving the flow of data through various stages, from logging to rendering and even integrating with Python scripts for file generation."
+category: "Quick Start Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=QgP_atMXk-c"
+publicationDate: "2024-04-24T00:00:00.000"
+contentType: "Quick Start Tutorials"

@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets"
+---
+
+<section>
+    <div class="position-relative container-fluid d-flex justify-content-center">
+        <div class="position-relative">
+            <Image
+                width={774}
+                height={725}
+                loading="lazy"
+                format="webp"
+                src="/partners/background.svg"
+                alt="Frame 922"
+            />
+            <div class="logo position-absolute start-50 translate-middle">
+                <Image
+                    width={268}
+                    height={267}
+                    loading="lazy"
+                    format="webp"
+                    src="/partners/badge-partner.svg"
+                    alt="Become Kestra partner"
+                />
+            </div>
+        </div>
+        <div class="description position-absolute start-50 translate-middle text-center w-50">
+            <h1>Kestra Partner <br /><span class="highlight">Ecosystem</span></h1>
+            <p class="text">
+                Whether you are building something new, upgrading a legacy stack, or
+                re-platforming, you can trust Kestra and our partner ecosystem to make that journey
+                a success.
+            </p>
+            <br />
+            <a href="#form" class="btn btn-animated btn-purple-animated mt-4">Become a partner</a>
+        </div>
+    </div>
+</section>
+
+<style scoped lang="scss">
+    @import "~/assets/styles/variable";
+
+    .container-fluid {
+        padding-bottom: 8rem;
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 6rem;
+        }
+
+        .logo {
+            top: 21.438rem;
+        }
+
+        .description {
+            top: 78%;
+
+            h1 {
+                color: var(--ks-content-primary);
+                margin-bottom: $rem-1;
+            }
+
+            .text {
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+</style>

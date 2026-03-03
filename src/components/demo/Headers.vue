@@ -352,24 +352,19 @@
     @import "~/assets/styles/variable";
 
     .container-fluid {
-        color: var(--bs-white);
+        color: var(--ks-content-primary);
         overflow: hidden;
         background: url("/landing/features/declarative/header-bg.svg") no-repeat;
         background-size: cover;
         margin-top: -80px;
         padding-top: 80px;
-
         .hero {
             padding: 1.5rem 20px;
             padding-bottom: 0;
-
             @include media-breakpoint-up(md) {
                 padding-top: 4rem !important;
             }
-
             .schedule-demo {
-                color: $white;
-
                 @include media-breakpoint-down(md) {
                     display: flex;
                     flex-direction: column;
@@ -377,108 +372,76 @@
                     text-align: center;
                     gap: 12px;
                 }
-
                 @include media-breakpoint-up(lg) {
                     padding: 0 calc($spacer * 6.25) calc($spacer * 1.25) 0;
                 }
-
                 h1 {
                     margin-bottom: $spacer;
                     font-size: $font-size-4xl;
-                    font-weight: 300;
-
-                    @include media-breakpoint-down(md) {
-                        font-weight: 600;
-                        font-size: 2.25rem;
-                        line-height: 42px;
-                        text-align: center;
-                        padding-bottom: 0;
-                        margin: 0;
-                    }
-
-                    span {
-                        background: var(
-                            --Text_gradient,
-                            linear-gradient(90deg, #e151f7 2.16%, #5c47f5 65.09%)
-                        );
-                        background-clip: text;
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                    }
+                    color: var(--ks-content-primary);
                 }
-
                 p.description {
                     font-size: 18.4px;
                     font-weight: 600;
+                    color: var(--ks-content-secondary);
                 }
-
                 .cards {
                     margin-top: calc($spacer * 1.3);
                     display: flex;
                     flex-direction: column;
                     gap: calc($spacer * 2);
-
                     .card-item {
                         display: flex;
                         flex-direction: column;
                         gap: calc($spacer / 2);
                         margin-bottom: 2rem;
-
                         .title-block {
                             display: flex;
                             gap: calc($spacer / 2);
                             align-items: center;
-
                             img {
                                 width: 42px;
                                 height: 42px;
                             }
-
                             p.title {
                                 margin: 0;
                                 font-size: $font-size-xl;
                                 font-weight: 600;
                                 line-height: 2rem;
+                                color: var(--ks-content-primary);
                             }
                         }
-
                         p.description {
                             font-size: $font-size-sm;
                             font-weight: 400;
                             line-height: 1.375rem;
-                            color: $white-1;
+                            color: var(--ks-content-secondary);
                             margin: 0;
                         }
                     }
                 }
             }
-
             .cards-below {
                 display: flex;
                 flex-direction: column;
                 gap: 2rem;
-
                 .item {
                     display: flex;
                     flex-direction: column;
                     gap: $spacer;
-
                     span {
                         font-size: 14px;
                         line-height: 22px;
                         font-weight: 400;
-                        color: $white-1;
+                        color: var(--ks-background-secondary);
                     }
-
                     .title-block {
                         display: inline-flex;
                         align-items: start;
                         gap: 8px;
-
                         img {
                             margin-top: 3px;
                         }
-
                         p.title {
                             margin: 0;
                             font-size: 18.4px;
@@ -488,19 +451,16 @@
                     }
                 }
             }
-
             .meeting-form {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-
                 img.background {
                     width: 644px;
                     max-width: 100%;
                     z-index: 0;
                     opacity: 0.2;
                 }
-
                 form {
                     border-radius: 0.25rem;
                     padding: 0rem 1rem 2rem 1rem;
@@ -509,39 +469,31 @@
                     top: 25%;
                     width: 85%;
                     background: white;
-
                     @include media-breakpoint-up(lg) {
                         width: 75%;
                     }
-
                     @include media-breakpoint-down(md) {
                         position: relative;
                         top: auto;
                         width: 100%;
                         border-radius: 0.5rem;
                     }
-
                     .form-label {
                         opacity: 0;
                     }
                 }
-
                 @include media-breakpoint-down(md) {
                     margin: 2rem 0;
                     width: 100%;
-
                     .col-12 {
                         margin-bottom: -12px;
                     }
                 }
             }
-
             .meeting-container {
                 position: relative;
-
                 @include media-breakpoint-up(md) {
                     padding: 0;
-
                     &::after,
                     &::before {
                         position: absolute;
@@ -552,51 +504,42 @@
                         background: linear-gradient(180deg, #6218ff 0%, #6117ff 100%);
                         filter: blur(95px);
                     }
-
                     &::after {
                         right: 10rem;
                         bottom: 7.375rem;
                     }
-
                     &::before {
                         left: 16.3rem;
                         top: 4rem;
                     }
                 }
-
                 @include media-breakpoint-down(xxl) {
                     &::after,
                     &::before {
                         width: 10rem;
                         height: 10rem;
                     }
-
                     &::after {
                         right: 21rem;
                         bottom: 12.375rem;
                     }
-
                     &::before {
                         left: 21rem;
                     }
                 }
-
                 @include media-breakpoint-down(lg) {
                     &::after {
                         right: 12rem;
                     }
-
                     &::before {
                         left: 12rem;
                     }
                 }
-
                 @include media-breakpoint-down(md) {
                     display: flex;
                     justify-content: center;
                     align-items: center;
                 }
-
                 .custom-meetings-iframe-container {
                     width: 100%;
                     position: relative;
@@ -605,7 +548,6 @@
                         justify-content: center;
                         align-items: center;
                     }
-
                     &::after,
                     &::before {
                         position: absolute;
@@ -616,38 +558,31 @@
                         background: linear-gradient(180deg, #7021ff 0%, #6305bf 100%);
                         filter: blur(50px);
                     }
-
                     &::after {
                         left: 25.6rem;
                         bottom: 3.87rem;
                     }
-
                     &::before {
                         right: 22.875rem;
                         top: 1.625rem;
                     }
-
                     @include media-breakpoint-down(xxl) {
                         &::after {
                             left: 13.6rem;
                             bottom: 8.87rem;
                         }
-
                         &::before {
                             right: 12.875rem;
                         }
                     }
-
                     @include media-breakpoint-down(lg) {
                         &::after {
                             left: 7.6rem;
                         }
-
                         &::before {
                             right: 6.8rem;
                         }
                     }
-
                     @include media-breakpoint-down(md) {
                         .iframe-wrapper {
                             margin-bottom: -3.5rem;
@@ -655,7 +590,6 @@
                         &::after {
                             left: 6rem;
                         }
-
                         &::before {
                             right: 14rem;
                         }

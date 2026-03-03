@@ -55,6 +55,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MiscController.Configuration"
+  /api/v1/main/ai/generate/dashboard:
+    post:
+      tags:
+      - AI
+      summary: Generate or regenerate a dashboard based on a prompt
+      operationId: generateDashboard
+      requestBody:
+        description: Prompt and context required for dashboard generation
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardGenerationPrompt"
+        required: true
+      responses:
+        "200":
+          description: generateDashboard 200 response
+          content:
+            application/yaml:
+              schema:
+                type: string
   /api/v1/main/ai/generate/flow:
     post:
       tags:
@@ -75,6 +95,21 @@ paths:
             application/yaml:
               schema:
                 type: string
+  /api/v1/main/ai/providers:
+    get:
+      tags:
+      - AI
+      summary: List available AI providers
+      operationId: getProviders
+      responses:
+        "200":
+          description: getProviders 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AiController.AiProviderResponse"
   /api/v1/plugins:
     get:
       tags:
@@ -3139,7 +3174,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
     put:
       tags:
       - Executions
@@ -3175,7 +3210,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
     post:
       tags:
       - Executions
@@ -3211,7 +3246,137 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
+  /api/v1/{tenant}/executions/webhook/{namespace}/{id}/{key}/{path}:
+    get:
+      tags:
+      - Executions
+      summary: Trigger a new execution by GET webhook trigger
+      operationId: triggerExecutionByGetWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
+    put:
+      tags:
+      - Executions
+      summary: Trigger a new execution by PUT webhook trigger
+      operationId: triggerExecutionByPutWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
+    post:
+      tags:
+      - Executions
+      summary: Trigger a new execution by POST webhook trigger
+      operationId: triggerExecutionByPostWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
   /api/v1/{tenant}/executions/{executionId}:
     get:
       tags:
@@ -3477,7 +3642,7 @@ paths:
       parameters:
       - name: executionId
         in: path
-        description: The execution that you want flow informations
+        description: The execution that you want flow information
         required: true
         schema:
           type: string
@@ -4244,7 +4409,7 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flows source code splitted with "---"
+        description: A list of flows source code split with "---"
         content:
           application/x-yaml:
             schema:
@@ -4933,11 +5098,14 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flow files
+        description: Flows as YAML string or multipart files
         content:
           application/x-yaml:
             schema:
               type: string
+          multipart/form-data:
+            schema:
+              type: object
         required: true
       responses:
         "200":
@@ -5047,14 +5215,6 @@ paths:
         Existing flows missing from `flows` will be deleted if the query delete is `true`
       operationId: updateFlowsInNamespace
       parameters:
-      - name: override
-        in: query
-        description: If namespace of all provided flows should be overridden
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
       - name: delete
         in: query
         description: If missing flow should be deleted
@@ -5069,6 +5229,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: override
+        in: query
+        description: If namespace of all provided flows should be overridden
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: tenant
         in: path
         required: true
@@ -7839,6 +8007,10 @@ components:
           minimum: 1
           type: integer
           format: int32
+        updated:
+          type: string
+          description: The timestamp when this revision was created or last updated.
+          format: date-time
         description:
           type: string
         inputs:
@@ -7993,6 +8165,15 @@ components:
               - A MAJOR.MINOR version (e.g., `1.1`).
               - A MAJOR.MINOR.PATCH version, optionally with any qualifier
                 (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
+    AiController.AiProviderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        isDefault:
+          type: boolean
     ApiAutocomplete:
       type: object
       properties:
@@ -8405,9 +8586,13 @@ components:
           format: int64
     Dashboard:
       required:
+      - id
       - title
       type: object
       properties:
+        id:
+          minLength: 1
+          type: string
         title:
           minLength: 1
           type: string
@@ -8431,11 +8616,20 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ChartFiltersOverrides"
-    DeletedInterface:
+    DashboardGenerationPrompt:
+      required:
+      - conversationId
+      - userPrompt
       type: object
       properties:
-        deleted:
-          type: boolean
+        conversationId:
+          type: string
+        userPrompt:
+          type: string
+        yaml:
+          type: string
+        providerId:
+          type: string
     DependsOn:
       type: object
       properties:
@@ -8672,35 +8866,6 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionController.WebhookResponse:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        id:
-          type: string
-        namespace:
-          type: string
-        flowId:
-          type: string
-        flowRevision:
-          type: integer
-          format: int32
-        trigger:
-          $ref: "#/components/schemas/ExecutionTrigger"
-        outputs:
-          type: object
-          additionalProperties:
-            type: object
-        labels:
-          type: array
-          items:
-            $ref: "#/components/schemas/Label"
-        state:
-          $ref: "#/components/schemas/State"
-        url:
-          type: string
-          format: uri
     ExecutionKind:
       type: string
       enum:
@@ -8994,7 +9159,11 @@ components:
           type: string
         userPrompt:
           type: string
-        flowYaml:
+        yaml:
+          type: string
+        providerId:
+          type: string
+        namespace:
           type: string
     FlowGraph:
       type: object
@@ -9057,7 +9226,7 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/FlowId"
-      - $ref: "#/components/schemas/DeletedInterface"
+      - $ref: "#/components/schemas/SoftDeletable_FlowInterface_"
       - $ref: "#/components/schemas/TenantInterface"
       - type: object
         properties:
@@ -9380,7 +9549,6 @@ components:
             $ref: "#/components/schemas/Task"
     LogEntry:
       required:
-      - deleted
       - flowId
       - namespace
       type: object
@@ -9414,8 +9582,6 @@ components:
           type: string
         message:
           type: string
-        deleted:
-          type: boolean
         executionKind:
           nullable: true
           allOf:
@@ -9477,7 +9643,6 @@ components:
             $ref: "#/components/schemas/MetricAggregation"
     MetricEntry:
       required:
-      - deleted
       - flowId
       - name
       - namespace
@@ -9514,8 +9679,6 @@ components:
           additionalProperties:
             type: string
           nullable: true
-        deleted:
-          type: boolean
         executionKind:
           nullable: true
           allOf:
@@ -9596,15 +9759,12 @@ components:
           format: int32
     NamespaceLight:
       required:
-      - deleted
       - id
       type: object
       properties:
         id:
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
-        deleted:
-          type: boolean
     Output:
       required:
       - id
@@ -10057,6 +10217,7 @@ components:
       - UPDATED
       - START_DATE
       - END_DATE
+      - EXPIRATION_DATE
       - STATE
       - TIME_RANGE
       - TRIGGER_EXECUTION_ID
@@ -10072,6 +10233,7 @@ components:
       - PATH
       - PARENT_PATH
       - VERSION
+      - USERNAME
       x-type: String
     QueryFilter.Op:
       type: string
@@ -10194,6 +10356,13 @@ components:
           type: string
           default: 3s
     ServerInstance:
+      required:
+      - hostname
+      - id
+      - metrics
+      - props
+      - type
+      - version
       type: object
       properties:
         id:
@@ -10285,6 +10454,11 @@ components:
       - WEBSERVER
       - WORKER
       - INVALID
+    SoftDeletable_FlowInterface_:
+      type: object
+      properties:
+        deleted:
+          type: boolean
     State:
       required:
       - current
@@ -10657,6 +10831,35 @@ components:
           type: array
           items:
             type: string
+    WebhookResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        id:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        flowRevision:
+          type: integer
+          format: int32
+        trigger:
+          $ref: "#/components/schemas/ExecutionTrigger"
+        outputs:
+          type: object
+          additionalProperties:
+            type: object
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/Label"
+        state:
+          $ref: "#/components/schemas/State"
+        url:
+          type: string
+          format: uri
     WorkerGroup:
       type: object
       properties:

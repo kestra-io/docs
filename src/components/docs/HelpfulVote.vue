@@ -144,16 +144,19 @@
 
     .helpful {
         padding: calc($spacer / 2) $spacer;
-
         p {
             font-weight: bold;
         }
-
         .thumb {
             :deep(svg) {
-                color: $purple-3;
+                color: var(--ks-content-link);
                 position: absolute;
                 bottom: -0.15rem;
+            }
+            .btn {
+                background-color: var(--ks-background-secondary);
+                border-color: var(--ks-border-secondary);
+                color: var(--ks-content-primary);
             }
         }
     }
@@ -162,7 +165,6 @@
         background-color: var(--ks-background-box);
         border: 1px solid var(--ks-dialog-border);
         color: var(--ks-content-primary);
-
         .modal-header {
             padding: 10px 16px;
             border-bottom: 1px solid var(--ks-border-secondary);
@@ -170,56 +172,42 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .modal-footer {
             border-top: none;
         }
-    }
-
-    .feedback-text {
-        margin-bottom: 1rem;
-        color: var(--ks-content-primary);
-        font-size: 1rem;
-    }
-
-    .feedback-message {
-        text-align: center;
-
-        .feedback-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.5rem;
-
-            .icon {
+        .feedback-message {
+            text-align: center;
+            .feedback-icon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 font-size: 2.5rem;
+                .icon {
+                    font-size: 2.5rem;
+                }
+            }
+            .feedback-text {
+                font-size: 1.1rem;
+                font-weight: 500;
+                line-height: 1.4;
+                margin-bottom: 1rem;
             }
         }
-
-        .feedback-text {
-            font-size: 1.1rem;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-    }
-
-    .submitted-state h5 {
-        color: #21ce9c;
-        font-weight: 600;
-    }
-
-    .thank-you {
-        p {
+        .submitted-state h5 {
             color: #21ce9c;
             font-weight: 600;
         }
+    }
+
+    .thank-you p {
+        color: #21ce9c;
+        font-weight: 600;
     }
 
     .form-control {
         background-color: var(--ks-background-body);
         border: 1px solid var(--ks-border-primary);
         color: var(--ks-content-primary);
-
         &::placeholder {
             color: var(--ks-content-tertiary);
         }
@@ -234,7 +222,6 @@
     .close-icon {
         font-size: 1.5rem;
         color: var(--ks-dialog-headerbtn);
-
         &:hover {
             color: var(--ks-dialog-headerbtn-hover);
         }

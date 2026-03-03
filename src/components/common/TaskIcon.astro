@@ -1,0 +1,42 @@
+---
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+const { cls } = Astro.props
+
+const IconStr = await fetchPluginIcon(cls)
+---
+
+<div
+    class="icon-wrapper"
+    data-bs-toggle="tooltip"
+    data-bs-placement="top"
+    title={cls.split(".").pop()}
+    set:html={IconStr}
+/>
+
+<script>
+    import { Tooltip } from "bootstrap"
+
+    document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            .forEach(el => (el as any)._tooltip ||= new Tooltip(el))
+    })
+</script>
+
+<style lang="scss">
+    .icon-wrapper {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+        }
+    }
+</style>
+

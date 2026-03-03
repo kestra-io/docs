@@ -1,0 +1,7 @@
+title: "How to Deploy Kestra to Google Cloud's GCP VM with ​Cloud ​S​Q​L and ​G​C​S Backend"
+description: "This video will walk you through how to deploy Kestra to a Google Cloud VM with a CloudSQL Postgres database and GCS storage backend"
+category: "Deep Dive Tutorials"
+author: "Michael Shoemaker"
+url: "https://www.youtube.com/watch?v=hyTYC54tx0I"
+publicationDate: "2024-03-11T00:00:00.000"
+contentType: "Deep Dive Tutorials"

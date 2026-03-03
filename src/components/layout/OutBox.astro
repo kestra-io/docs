@@ -1,0 +1,237 @@
+---
+interface Feature {
+    title: string
+    description: string
+}
+
+interface Props {
+    data: {
+        title: string
+        highlightTitle: string
+        features: Feature[]
+    }
+}
+
+const { data } = Astro.props
+---
+
+<section class="main">
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="content">
+                <h1 class="title" data-usal="fade-right">
+                    {data.title}
+                    <span class="highlight">{data.highlightTitle}</span>
+                </h1>
+                <div class="features-grid">
+                    {data.features.map((feature) => (
+                        <div class="feature-item" data-usal="fade-up">
+                            <h5>{feature.title}</h5>
+                            <p class="feature-text">
+                                {feature.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="images-container">
+        <div class="fivetran-image" data-usal="fade-left">
+            <img
+                src="/landing/features/fivetran.png"
+                alt="Fivetran"
+                width="600"
+                height="231"
+                loading="lazy"
+                class="img-fluid"
+            />
+        </div>
+        <div class="code-image" data-usal="fade-left">
+            <img
+                src="/landing/features/code.png"
+                alt="Code"
+                width="550"
+                height="490"
+                loading="lazy"
+                class="img-fluid"
+            />
+        </div>
+    </div>
+    <div class="ellipse-container">
+        <img
+            src="/landing/features/ellipse_box.png"
+            alt="Ellipse Box"
+            loading="lazy"
+        />
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .main {
+        background-color: var(--ks-background-body);
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin-top: -1.5rem;
+
+        @include media-breakpoint-up(xl) {
+            height: 681px;
+            flex-direction: row;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+            padding: 0 1rem;
+            flex: 1;
+
+            .content-wrapper {
+                width: 100%;
+
+                @include media-breakpoint-up(xl) {
+                    width: 50%;
+                }
+            }
+
+            .content {
+                color: var(--ks-content-primary);
+                padding-top: 5rem;
+
+                .title {
+                    font-weight: 600;
+                    font-size: 2rem;
+                    line-height: 2.25rem;
+                    margin-bottom: 2.5rem;
+
+                    @include media-breakpoint-up(lg) {
+                        line-height: 3rem;
+                        margin-bottom: 3rem;
+                    }
+                }
+
+                .features-grid {
+                    display: grid;
+                    gap: 29px;
+                    grid-template-columns: 1fr;
+
+                    @include media-breakpoint-up(md) {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+
+                    @media (min-width: 1370px) {
+                        grid-template-columns: repeat(2, 308px);
+                    }
+
+                    .feature-item {
+                        h5 {
+                            font-weight: 700;
+                            font-size: $font-size-base;
+                            line-height: 1.5rem;
+                            margin-bottom: 0.5rem;
+                        }
+
+                        .feature-text {
+                            font-weight: 400;
+                            font-size: $font-size-sm;
+                            line-height: 1.5rem;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .images-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 0 2rem 2rem;
+
+            @include media-breakpoint-up(md) {
+                align-items: flex-end;
+                padding: 5rem 0 0 2rem;
+            }
+
+            @include media-breakpoint-up(xl) {
+                position: absolute;
+                inset: 0 0 0 auto;
+                z-index: 2;
+                width: 800px;
+                padding: 0;
+            }
+
+            .fivetran-image,
+            .code-image {
+                position: relative;
+                z-index: 2;
+
+                @include media-breakpoint-up(xl) {
+                    position: absolute;
+                    right: 0;
+                }
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                    object-fit: contain;
+
+                    @include media-breakpoint-up(xl) {
+                        max-width: 600px;
+                    }
+                }
+            }
+
+            .fivetran-image {
+                @include media-breakpoint-up(xl) {
+                    top: 120px;
+                    img { max-height: 230px; }
+                }
+            }
+
+            .code-image {
+                margin-top: -3rem;
+
+                @include media-breakpoint-up(md) {
+                    margin-top: -7rem;
+                }
+
+                @include media-breakpoint-up(xl) {
+                    top: 320px;
+                    margin-top: -4rem;
+
+                    img {
+                        max-height: 490px;
+                        max-width: 550px;
+                    }
+                }
+            }
+        }
+
+        .ellipse-container {
+            position: absolute;
+            right: 0;
+            top: 0;
+            @media screen and (max-width: 768px) {
+                top: 750px;
+            }
+            @media screen and (min-width: 769px) and (max-width: 1200px) {
+                top: 400px;
+            }
+            z-index: 0;
+
+            img {
+                max-width: none;
+                height: auto;
+            }
+        }
+    }
+</style>

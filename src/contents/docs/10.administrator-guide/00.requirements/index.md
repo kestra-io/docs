@@ -35,6 +35,10 @@ Kestra Enterprise Edition (EE) provides two options:
 | Enterprise        | **Elasticsearch**        | >=7                       |                |
 | Enterprise        | **Opensearch**           | >=2                       |                |
 
+:::alert{type="warning"}
+MySQL deployments must have the **time zone tables loaded**. If the time zone data is missing, the scheduler can misfire or skip runs. Follow the MySQL guide to install time zone information to avoid deployment issues: [Time Zone Support → Load the Time Zone Tables](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation).
+:::
+
 ### Internal Storage
 
 | Kestra Edition    | Storage Provider   | Required version          | Note                             |

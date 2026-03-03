@@ -1,23 +1,117 @@
 ---
 import Layout from "~/components/layout.astro"
-import SolutionsHeader from "~/components/solutions/Header.vue"
-import SolutionsPossibilities from "~/components/solutions/Possibilities.vue"
-import SolutionsUseCases from "~/components/solutions/UseCases.vue"
-import HomeEnterprise from "~/components/home/Enterprise.vue"
+import UseCasesHero from "~/components/use-cases/UseCasesHero.vue"
+import Capabilities from "~/components/use-cases/Capabilities.vue"
+import CardGrid from "~/components/features/shared/CardGrid.astro"
+import EnterpriseSection from "~/components/home/EnterpriseSection.astro"
 import { $fetchApi } from "~/utils/fetch"
+import Section from "~/components/layout/Section.astro"
 
-const title = "Use cases for Modern Data Orchestration"
-const description =
+const TITLE = "Use cases for Modern Data Orchestration"
+const DESCRIPTION =
     "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
 
-const { results: stories } = await $fetchApi<{ results: Story[] }>(
+const { results: STORIES } = await $fetchApi<{ results: Story[] }>(
     "/customer-stories-v2?featured=true",
 )
+
+const POSSIBILITIES_DATA = {
+    title: "Orchestration <span>Simplified</span>",
+    description:
+        "From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains.",
+    items: [
+        {
+            title: "Data Pipelines",
+            description:
+                "Say goodbye to delays in your pipeline as Kestra initiates workflows based on specific times or events, such as data arrivals or file uploads.",
+            number: "01",
+        },
+        {
+            title: "Machine Learning Model Deployment",
+            description:
+                "Efficiently manage and deploy your machine learning models at scale with Kestra's microservice orchestration capabilities.",
+            number: "02",
+        },
+        {
+            title: "ETL Processes",
+            description:
+                "Seamlessly move data between systems, prepare and clean it, and aggregate it into a consolidated data mart.",
+            number: "03",
+        },
+        {
+            title: "Event-Driven Automation at Scale",
+            description:
+                "React to events happening in your business and automate your critical microservices and operations.",
+            number: "04",
+        },
+        {
+            title: "Real-Time Data Processing with Change Data Capture",
+            description:
+                "Automatically detect changes in data sources and trigger workflows to process those changes.",
+            number: "05",
+        },
+        {
+            title: "Automated Reporting",
+            description:
+                "Configure Kestra to distribute reports via email or Slack, keeping your team informed.",
+            number: "06",
+        },
+        {
+            title: "Data Ingestion and Integration",
+            description:
+                "Easily collect data from various sources and integrate them into your workflows.",
+            number: "07",
+        },
+        {
+            title: "Infrastructure Orchestration",
+            description:
+                "Automate tasks such as provisioning, deployment, and monitoring of infrastructure resources.",
+            number: "08",
+        },
+        {
+            title: "End-to-End Data Orchestration",
+            description:
+                "Kestra empowers you to manage the entire data lifecycle from ingestion to reporting and automation.",
+            number: "09",
+        },
+    ],
+}
+
+const CAPABILITIES = [
+    "Change data capture",
+    "Modern Data Stack Integration",
+    "CI/CD for your Kestra Workflows",
+]
 ---
 
-<Layout title={title} description={description}>
-    <SolutionsHeader client:load />
-    <SolutionsPossibilities client:visible />
-    <SolutionsUseCases client:visible />
-    <HomeEnterprise client:visible {stories} />
+<Layout title={TITLE} description={DESCRIPTION}>
+    <Section
+        subtitle="Use Cases"
+        class="container"
+        baseline="Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform."
+    />
+    <CardGrid
+        title={POSSIBILITIES_DATA.title}
+        description={POSSIBILITIES_DATA.description}
+        items={POSSIBILITIES_DATA.items}
+    />
+    <Capabilities
+        title="for Modern Data Orchestration"
+        capabilities={CAPABILITIES}
+        client:visible
+    />
+    <EnterpriseSection stories={STORIES} />
 </Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .container {
+        background: url("/landing/usecases/header-bg.svg") no-repeat center;
+        background-size: 100% 100%;
+
+        :global(.subtitle p), :global(.baseline) {
+            color: $white !important;
+        }
+    }
+</style>
+

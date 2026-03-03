@@ -1,46 +1,63 @@
 ---
 export const prerender = false
-import { $fetchApi } from "~/utils/fetch"
+import { getCollection, getEntry } from "astro:content"
 import StoryDetail from "~/components/stories/StoryDetail.vue"
 import Layout from "~/components/layout.astro"
 
 const { id, slug } = Astro.params
 const slugFull = Array.isArray(slug) ? slug.join("/") : slug || ""
 
-const story: Story = await $fetchApi(`/customer-stories-v2/${id}`)
+const entry = await getEntry("customerStories", id!)
 
-if (!story) {
+if (!entry) {
     throw new Error(`Unable to find id '${id}'`)
+}
+
+const story = {
+    id: entry.id,
+    ...entry.data,
+    heroImage: entry.data.heroImage.src,
+    featuredImage: entry.data.featuredImage.src,
+    logo: entry.data.logo?.src,
+    logoDark: entry.data.logoDark?.src,
+    content: entry.body ?? "",
 }
 
 const content = story.content
 
-const allStories = await $fetchApi("/customer-stories-v2?size=20")
+const allEntries = await getCollection("customerStories")
 const related = {
-    ...allStories,
-    results: allStories.results.sort(() => Math.random() - 0.5).slice(0, 3),
+    results: allEntries
+        .filter((e) => e.id !== id)
+        .map((e) => ({
+            id: e.id,
+            ...e.data,
+            heroImage: e.data.heroImage.src,
+            featuredImage: e.data.featuredImage.src,
+            logo: e.data.logo?.src,
+            logoDark: e.data.logoDark?.src,
+            content: e.body ?? "",
+        }))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3),
+    total: allEntries.length,
 }
 ---
 
-<Layout title={story.title} description={story.description} isStories={true}>
+<Layout title={story.metaTitle} description={story.metaDescription}>
     <div class="main">
         <StoryDetail
             client:load
             slug={slugFull}
-            story={story}
-            content={content}
-            related={related}
+            {story}
+            {content}
+            {related}
         />
     </div>
 </Layout>
 
-<style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
+<style lang="scss">
     .main {
         overflow: clip;
-        color: $black-2;
-        background-color: $white;
-        font-family: var(--font-family-mona-sans), sans-serif !important;
     }
 </style>

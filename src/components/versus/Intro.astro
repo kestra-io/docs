@@ -1,0 +1,149 @@
+---
+import { Image } from "astro:assets"
+import ksMonogram from "./assets/ks-monograme.svg?raw"
+import Link from "~/components/common/Link.astro"
+
+interface Props {
+    title?: string | null
+    description?: string
+    competitor?: {
+        name?: string
+        monogram?: string
+    },
+    image?: {
+        src: any
+        alt: string
+    },
+    bgImg?: string
+}
+
+const {
+    title,
+    description,
+    competitor,
+    image,
+    bgImg
+} = Astro.props as Props
+---
+
+<section class="position-relative d-flex align-items-center flex-column flex-xxl-row overflow-hidden text-white">
+    <div class="container position-relative z-2 pt-xxl-0 pt-4">
+        <div class="content d-flex flex-column">
+            <div class="badge d-flex align-items-center gap-2 mb-3 p-0">
+                <div class="monogram" set:html={ksMonogram} />
+                <span>/</span>
+                {competitor?.monogram && <div class="monogram" set:html={competitor.monogram} />}
+            </div>
+            <h1 set:html={title} />
+            <p class="my-4">
+                {description}
+            </p>
+            <div class="d-flex gap-3 mb-lg-0 mb-4 flex-column flex-md-row">
+                <Link href="/docs/quickstart#start-kestra" class="btn btn-primary text-white">
+                    Try for free - 26k GitHub stars
+                </Link>
+                <Link href="/demo" class="btn btn-secondary">
+                    Book a demo
+                </Link>
+            </div>
+        </div>
+    </div>
+    <div class="ui-wrapper">
+        {image && <Image
+            src={image.src}
+            alt={image.alt}
+            class="hero-ui"
+            width={844}
+            height={593}
+            densities={[1, 2]}
+        />}
+    </div>
+
+    <div class="background"/>
+</section>
+
+<style lang="scss" define:vars={{ bgImg: `url("${bgImg}")` }}>
+    @import "~/assets/styles/variable";
+
+    section {
+        @include media-breakpoint-up(xxl) {
+            min-height: 650px;
+        }
+
+        @include media-breakpoint-down(xxl) {
+            min-height: auto;
+        }
+
+        .background {
+            position: fixed;
+            inset: 0;
+            background: var(--bgImg) top center / cover
+                no-repeat;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            @include media-breakpoint-down(lg) {
+                padding: 0 $rem-1;
+            }
+
+            .content {
+                max-width: 550px;
+
+                .badge {
+                    span {
+                        font-size: 1.5rem;
+                        font-weight: 300;
+                        color: rgba($white, 0.5);
+                    }
+                }
+            }
+
+            .btn-secondary {
+                background-color: transparent !important;
+                color: $white !important;
+                border-color: $white !important;
+            }
+        }
+
+        .ui-wrapper {
+            z-index: 10;
+
+            @include media-breakpoint-up(xxl) {
+                position: absolute;
+                top: var(--top-bar-height);
+                bottom: 0;
+                right: 0;
+                width: 50%;
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+                pointer-events: none;
+            }
+
+            @include media-breakpoint-down(xxl) {
+                position: relative;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .hero-ui {
+                height: auto;
+                width: 100%;
+                object-fit: contain;
+
+                @include media-breakpoint-up(xxl) {
+                    width: auto;
+                    max-height: 600px;
+                }
+
+                @include media-breakpoint-down(xxl) {
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+</style>
+

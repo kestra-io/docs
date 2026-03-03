@@ -156,12 +156,8 @@
         return path.replaceAll("/", "_").replaceAll(".", "-").replaceAll("#", "__")
     }
 
-    const filterChildren = (item: NavigationItem) => {
-        return (item.children || []).filter((r: any) => item.path !== r.path)
-    }
-
     const filteredChildren = computed(() => {
-        return filterChildren(props.item)
+        return (props.item.children ?? []).filter((r: any) => props.item.path !== r.path)
     })
 
     const isActiveOrExpanded = (item: NavigationItem) => {
@@ -203,19 +199,15 @@
         overflow: hidden;
         height: 0;
         position: relative;
-
         @starting-style {
             height: 0;
         }
-
         &.ks-open {
             height: auto;
-
             @supports (height: calc-size(auto, size)) {
                 height: calc-size(auto, size);
             }
         }
-
         .vertical-line {
             position: absolute;
             left: calc(1.15rem * (var(--depth, 0)) + 7px);
@@ -223,57 +215,44 @@
             bottom: 0;
             width: 1px;
             height: calc(100% - 10px);
-            background: var(--kestra-io-token-color-background-hover-primary);
+            background: var(--ks-border-secondary);
         }
     }
 
     li {
         display: flex;
         align-items: center;
-
         .accordion-button {
             width: 16px;
-
             :deep(.material-design-icon__svg) {
-                bottom: 0;
-                color: $white-5;
+                color: var(--ks-content-tertiary);
                 position: absolute;
                 bottom: -0.20rem;
                 font-size: 20px;
             }
         }
-
         @for $i from 0 through 6 {
             &.depth-#{$i} {
                 padding-left: calc(1.25rem * ($i));
             }
         }
-
         a {
-            color: $white-1;
+            color: var(--ks-content-secondary);
             font-size: 0.875rem;
-            padding: calc($spacer / 4) 0.25rem;
-            padding-left: 0;
-
+            padding: calc($spacer / 4) 0.25rem 0.25rem 0;
             display: flex;
             scroll-margin: 80px;
-
             &.active {
                 font-weight: 500;
+                color: var(--ks-content-link) !important;
             }
-
-            &:hover,
-            &.active {
-                color: $purple !important;
+            &:hover {
+                color: var(--ks-content-link) !important;
             }
-
             &.disabled {
                 cursor: pointer;
             }
         }
-
-
-
         &:not(.depth-1) a {
             font-size: 0.875rem;
         }
@@ -286,10 +265,8 @@
     .section {
         font-size: 0.875rem;
         font-weight: 700;
-        color: $white;
+        color: var(--ks-content-primary);
         text-transform: uppercase;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-        padding-left: 0.25rem;
+        margin: 1.5rem 0 0.75rem 0.25rem;
     }
 </style>

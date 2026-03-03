@@ -1,0 +1,7 @@
+title: "Moving from Development to Production"
+description: "One best practice with Kestra is to have one development instance where users can write their flow directly in UI. This instance can be seen as a \"sandbox\" where flows can be tested and executed without the fear to break critical business operations. Moving between them can be challenging. Will walks you through the best way to do this!"
+category: "Deep Dive Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=iM4mjIEsxMY"
+publicationDate: "2024-11-11T00:00:00.000"
+contentType: "Deep Dive Tutorials"

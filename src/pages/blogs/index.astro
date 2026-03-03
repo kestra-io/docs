@@ -1,20 +1,25 @@
 ---
 import { getCollection } from "astro:content"
-import BlogsList from "~/components/blogs/BlogsList.vue"
-import LayoutBlogs from "~/components/layout-blogs.astro"
-import { $fetchApi } from "~/utils/fetch"
+import BlogList from "~/components/blogs/BlogList.astro"
 import { getImage } from "astro:assets"
+import Mesh from "~/components/layout/Mesh.vue"
+import Layout from "~/components/layout.astro"
+import Subscribe from "~/components/layout/Subscribe.vue"
+import UpdateLetter from "~/components/layout/Updateletter.vue"
 
 const blogs = await getCollection("blogs")
 
 const sortedBlogs = await Promise.all(
     blogs
         .sort((a, b) => {
-            return a.data.date > b.data.date ? 1 : -1
+            return (
+                new Date(b.data.date).getTime() -
+                new Date(a.data.date).getTime()
+            )
         })
         .map(async (blog) => {
             const image = await getImage({
-                src: blog.data.image,
+                src: blog.data.image ?? "",
                 format: "webp",
                 width: 800,
             })
@@ -28,40 +33,60 @@ const sortedBlogs = await Promise.all(
         }),
 )
 
-const externalNewsData = await $fetchApi<{
-    results: {
-        id: string
-        link: string
-        image: string
-        media: string
-        author: string
-        title: string
-        publicationDate: string
-    }[]
-}>(`/external-blogs?size=4`)
+const allExternalBlogs = await getCollection("externalBlogs")
 
-const externalNews = externalNewsData.results.map((data) => {
-    return {
-        id: data.id,
-        path: data.link,
-        image: data.image,
-        category: data.media,
-        author: { name: data.author },
-        title: data.title,
-        date: data.publicationDate,
-    }
-})
+const externalNews = await Promise.all(
+    allExternalBlogs
+        .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
+        .slice(0, 4)
+        .map(async (entry) => {
+            const image = await getImage({ src: entry.data.image, format: "webp", width: 800 })
+            return {
+                id: entry.id,
+                path: entry.data.link,
+                image: image.src,
+                category: entry.data.media,
+                author: { name: entry.data.author },
+                title: entry.data.title,
+                date: entry.data.publicationDate,
+            }
+        }),
+)
+
+const internalBlogs = sortedBlogs.map((blog) => ({
+    ...blog.data,
+    slug: blog.id,
+    path: `/blogs/${blog.id}`,
+}))
+
+const allTutorialVideos = await getCollection("tutorialVideos")
+const tutorialVideoResults = allTutorialVideos
+    .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
+    .slice(0, 3)
+    .map((v) => ({ ...v.data, publicationDate: v.data.publicationDate.toISOString() }))
 ---
 
-<LayoutBlogs activeStem="/blogs">
-    <BlogsList
-        client:idle
-        currentUrl={Astro.request.url}
-        blogs={sortedBlogs.map((blog) => ({
-            ...blog.data,
-            slug: blog.id,
-            path: `/blogs/${blog.id}`,
-        }))}
+<Layout>
+    <Mesh client:visible>
+        <div>
+            <h1>All things Kestra.</h1>
+            <p>The latest updates, guides and stories</p>
+        </div>
+        <Subscribe client:visible class="margin" />
+    </Mesh>
+    <BlogList
+        blogs={internalBlogs}
         externalNews={externalNews}
+        videos={tutorialVideoResults}
     />
-</LayoutBlogs>
+    <UpdateLetter client:visible />
+</Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .margin {
+        margin-top: 44px;
+    }
+</style>
+
