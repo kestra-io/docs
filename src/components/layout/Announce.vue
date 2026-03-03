@@ -10,12 +10,20 @@
                     :breakpoints="breakpoints"
                     :settings="settings"
                 >
-                    <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
+                    <Slide
+                        v-for="(slide, index) in content"
+                        :key="slide"
+                        v-bind:key="slide?.id"
+                    >
                         <p class="d-flex" @click="slideTo(index)">
-                            <span class="d-inline-block text-truncate">{{ slide.text }}</span>
-                            <a class="d-inline-block text-nowrap" :href="slide.href">{{
-                                slide.linkText
-                            }}</a>
+                            <span class="d-inline-block text-truncate">{{
+                                slide.text
+                            }}</span>
+                            <a
+                                class="d-inline-block text-nowrap"
+                                :href="slide.href"
+                                >{{ slide.linkText }}</a
+                            >
                         </p>
                     </Slide>
                 </Carousel>
@@ -25,7 +33,13 @@
 </template>
 
 <script>
+    import { Carousel, Slide } from "vue3-carousel"
+
     export default {
+        components: {
+            Carousel,
+            Slide,
+        },
         props: {
             content: {
                 type: Object,
@@ -82,17 +96,18 @@
             border-radius: 0;
             border: 0;
             text-align: center;
-            backdrop-filter: blur(0.625rem);
             background: transparent;
             color: $white;
-            padding-inline: calc($spacer * 0.938);
             border-bottom: 1px solid #e5e4f721;
             margin-bottom: 0;
             position: relative;
             z-index: 1;
             overflow: hidden;
-            transition: max-height 0.5s linear, color 0.5s linear;
+            transition:
+                max-height 0.5s linear,
+                color 0.5s linear;
             height: 3rem;
+            padding-top: 0.85rem;
             &.scrolled {
                 background: rgba(17, 17, 19, 0.65);
                 transition: background-color 250ms ease-in-out;
@@ -104,12 +119,15 @@
                 content: "";
                 position: absolute;
                 height: 16rem;
-                width: 15rem;
-                bottom: 32%;
-                left: -25%;
+                width: 100%;
                 z-index: -1;
-                background: linear-gradient(180deg, transparent, #6117ff);
-                filter: blur(80px);
+                top: 0;
+                left: 0;
+                background: linear-gradient(
+                    180deg,
+                    var(--ks-background-body),
+                    #6117ff
+                );
             }
             a {
                 text-decoration: underline;

@@ -15,13 +15,13 @@ Failure is inevitable. Kestra offers automatic retries and error handling to hel
 
 ## Handle errors with retries and alerts
 
-By default, if any task fails, the execution stops and is marked as failed. For more control over error handling, you can add `errors` tasks, `AllowFailure` tasks, or automatic retries.
+By default, if any task fails, the execution stops and is marked as failed. For more control over error handling, you can add the `errors` property, `AllowFailure` tasks, or automatic retries.
 
 The `errors` property allows you to execute one or more actions before terminating the flow (e.g., sending an email or a Slack message to your team). The property is named `errors` because it is triggered when errors occur within a flow.
 
 You can implement error handling at the flow level or namespace level:
 
-1. **Flow-level**: Useful to implement custom alerting for a specific flow or task. This can be accomplished by adding `errors` tasks.
+1. **Flow-level**: Useful to implement custom alerting for a specific flow or task. This can be accomplished by adding the `errors` property.
 2. **Namespace-level**: Useful to send a notification for any failed Execution within a given namespace. This approach allows you to implement centralized error handling for all flows within a given namespace.
 
 ---
