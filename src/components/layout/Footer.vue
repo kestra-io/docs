@@ -26,7 +26,7 @@
                     <a href="/">
                         <img  height="60" alt="Kestra's logo" class="logo" />
                     </a>
-                    <p class="mt-2">Open Source Declarative <br> Data Orchestration</p>
+                    <p class="mt-2">Open Source Declarative <br> Orchestration Platform</p>
                     <Socials class="mt-4 socials" />
                     <div class="mt-3">
                         <slot name="theme-switcher" />
