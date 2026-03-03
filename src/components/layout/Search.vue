@@ -192,7 +192,7 @@
             <div class="modal-content">
                 <div class="modal-body row ">
                     <Suspense>
-                        <AiChatDialog @close="closeAiDialog" @backToSearch="backToSearch" />
+                        <AiChatDialog :randomAiQuestions @close="closeAiDialog" @backToSearch="backToSearch" />
                     </Suspense>
                 </div>
             </div>
@@ -218,6 +218,12 @@
     import { API_URL } from "astro:env/client"
 
     export default {
+        props: {
+            randomAiQuestions: {
+                type: Array,
+                required: true,
+            },
+        },
         data() {
             return {
                 searchResults: [],
