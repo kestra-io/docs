@@ -15,7 +15,7 @@ Here's what's in 1.3:
 | Feature | What & Why | Edition |
 |---|---|---|
 | Kill Switch | When something breaks in production, you need to act immediately. CLI-only commands are too slow and limited to server admins. Kill Switch lets administrators stop or contain problematic executions from the UI, scoped to tenant, namespace, flow, or execution, with a full audit trail. | Enterprise Edition |
-| Credentials | OAuth tokens scattered across flows are brittle, hard to rotate, and slow to fix during incidents. Credentials lets you configure server-to-server authentication once and reference it everywhere with credential(). | Enterprise Edition |
+| Credentials | OAuth tokens scattered across flows are brittle, hard to rotate, and slow to fix during incidents. Credentials lets you configure server-to-server authentication once and reference it everywhere with `credential()`. | Enterprise Edition |
 | Assets | Tracking assets isn't enough — teams need to manage them imperatively and react to lifecycle events in real time. Assets 1.3 adds Set, List, and Delete tasks plus event-driven and freshness triggers for SLA and governance automation. | Enterprise Edition |
 | AI Copilot Enhancements | AI tools need permission guardrails before enterprise teams can adopt them broadly. This release adds RBAC controls, wider UI coverage (apps, tests, dashboards), speech-to-text input, and model selection. | Enterprise Edition |
 | kestractl | Custom API scripts for flow deployment are error-prone and inconsistent across dev, staging, and prod. kestractl is a dedicated CLI for flows, executions, namespaces, and namespace files — the same commands locally and in CI. | All Editions |
@@ -36,7 +36,7 @@ When production incidents happen, relying on CLI-only skip commands is slow, con
 
 Kill Switch introduces a UI-based mechanism to stop or contain problematic executions, designed for administrators. It provides a comprehensive administration interface and ensures every action is visible and auditable. Any admin can respond immediately, and every action lands in the audit log.
 
-You can access it under **Instance Administration > Kill Switch**, where you can create new Kill Switches and review active or archived ones. Three types are available:
+You can access it under **Instance > Kill Switch**, where you can create new Kill Switches and review active or archived ones. Three types are available:
 
 | Type | Behavior |
 |---|---|
@@ -57,7 +57,7 @@ The CLI remains available for power users and administrators who prefer terminal
 
 ## Credentials
 
-Teams struggle to connect workflows to modern APIs because credentials are scattered, brittle, and hard to rotate across environments. Managing authentication separately in each integration slows delivery and makes incidents harder to fix. Fewer 2am incidents from expired tokens, and less time hunting down which flow broke when a credential rotated.
+Teams struggle to connect workflows to modern APIs because credentials are scattered, brittle, and hard to rotate across environments. Managing authentication separately in each integration slows delivery and makes incidents harder to fix. Fewer 2 AM incidents from expired tokens, and less time hunting down which flow broke when a credential rotated.
 
 Credentials provide reusable server-to-server (machine-to-machine) authentication for flows. You configure authentication once and reference it in workflows with a simple expression, while Kestra handles token retrieval and refresh centrally.
 
@@ -385,6 +385,7 @@ Plugin defaults are essential for consistent configurations, but managing them o
 
 Kestra 1.3 adds a dedicated Plugin Defaults UI on the namespace page so you can fully manage these settings from the UI while keeping them versionable. Create new defaults with an **Add plugin default** button, select the plugin from a dropdown, and fill a form that clearly separates required and optional fields, with the option to switch to YAML at any time.
 
+![Plugin Defaults UI](./plugin-default.png)
 
 ## Additional Improvements
 
