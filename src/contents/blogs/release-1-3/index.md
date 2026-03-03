@@ -246,6 +246,104 @@ tasks:
 
 :::
 
+### Auto-Generated Assets
+
+Some plugins now support **automatic asset generation** when you set `assets.enableAuto: true` on a task. This removes the need to manually declare `assets.inputs` and `assets.outputs` — the plugin inspects its execution context and emits assets automatically:
+
+- **JDBC Query** — detects `CREATE TABLE` statements and emits a `Table` output; the JDBC URL populates `system` and `database`.
+- **Ansible CLI** — parses inventory hosts as inputs of type `io.kestra.core.models.assets.External`, marking the infrastructure targets the playbook runs against.
+- **dbt CLI** — parses `manifest.json` to emit each model as a `Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
+
+:::collapse{title="JDBC Query auto-generated assets"}
+
+```yaml
+id: jdbc_create_trips
+namespace: company.team
+
+tasks:
+  - id: create_trips_table
+    type: io.kestra.plugin.jdbc.sqlite.Query
+    url: jdbc:sqlite:myfile.db
+    outputDbFile: true
+    sql: |
+      CREATE TABLE IF NOT EXISTS trips (
+          VendorID INTEGER,
+          passenger_count INTEGER,
+          trip_distance REAL
+      );
+    assets:
+      enableAuto: true
+```
+
+:::
+
+:::collapse{title="Ansible CLI auto-generated assets"}
+
+```yaml
+id: ansible_playbook
+namespace: company.team
+
+tasks:
+  - id: ansible_task
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    inputFiles:
+      inventory.ini: |
+        localhost ansible_connection=local
+      myplaybook.yml: |
+        ---
+        - hosts: localhost
+          tasks:
+            - name: Print Hello World
+              debug:
+                msg: "Hello, World!"
+    assets:
+      enableAuto: true
+    commands:
+      - ansible-playbook -i inventory.ini myplaybook.yml
+```
+
+:::
+
+:::collapse{title="dbt CLI auto-generated assets"}
+
+```yaml
+id: dbt_build_duckdb
+namespace: company.team
+
+tasks:
+  - id: dbt
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone_repository
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/kestra-io/dbt-example
+        branch: main
+
+      - id: dbt_build
+        type: io.kestra.plugin.dbt.cli.DbtCLI
+        taskRunner:
+          type: io.kestra.plugin.scripts.runner.docker.Docker
+        containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
+        commands:
+          - dbt deps
+          - dbt build
+          - dbt run
+        profiles: |
+          my_dbt_project:
+            outputs:
+              dev:
+                type: duckdb
+                path: ":memory:"
+                fixed_retries: 1
+                threads: 16
+                timeout_seconds: 300
+            target: dev
+        assets:
+          enableAuto: true
+```
+
+:::
+
 ## AI Copilot Enhancements
 
 AI assistants are most useful when teams can control where and how they are used. In many organizations, administrators need permission boundaries, predictable model behavior, and simple input options before enabling copilots broadly. Enterprise admins who previously blocked broad rollout for lack of governance controls now have what they need to enable it.
