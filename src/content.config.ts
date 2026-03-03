@@ -128,6 +128,7 @@ export const collections = {
                 metaTitle: z.string(),
                 metaDescription: z.string(),
                 heroImage: image(),
+                featured: z.boolean().optional().default(false),
                 featuredImage: image(),
                 logo: image().optional(),
                 logoDark: image().optional(),
@@ -177,8 +178,8 @@ export const collections = {
         schema: z.array(
             z.object({
                 regexp: z.string(),
-                to: z.string()
-            })
+                to: z.string(),
+            }),
         ),
     }),
     feeds: defineCollection({
