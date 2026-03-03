@@ -398,25 +398,25 @@ Seven new plugins extend Kestra to infrastructure teams managing hardware fleets
 
 ### Infrastructure
 
-- **ArgoCD** – Automate GitOps delivery by syncing applications and checking sync and health status from ArgoCD inside Kestra workflows (`Sync`, `Status`).
-- **Cloudflare** – Manage Cloudflare resources including DNS records, cache purging, WAF IP access rules, Workers KV storage, zones, and namespaces (DNS: `Create`, `Update`, `Delete`, `Get`, `List`, `Upsert`, `Batch`; cache: `Purge`; WAF access rules: `Create`, `Delete`, `List`; Workers KV: `Get`, `Write`; compute namespaces: `Create`; zones: `Get`, `List`).
-- **Canonical MAAS** – List machines, enlist servers, commission hardware, deploy OS images, and control power states (on/off/cycle/query) for end-to-end bare-metal lifecycle automation (`ListMachines`, `EnlistMachine`, `CommissionMachine`, `DeployMachine`, `PowerControlMachine`).
-- **KVM** – Manage virtualization workloads and automate VM operations on KVM, including listing VMs, creating and updating VM definitions, starting and stopping instances, and deleting domains with optional storage cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `DeleteVm`).
-- **NetBox** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows, including listing sites and devices, creating and updating device records, and assigning IP addresses (`ListSites`, `ListDevices`, `CreateDevice`, `UpdateDevice`, `AssignIpAddress`).
-- **Nutanix** – Manage AHV VM lifecycle and recovery workflows on hyper-converged infrastructure, including VM listing, creation, updates, start/stop/reboot/reset operations, cloning and template conversions, plus snapshot creation, listing, restore, and cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `RebootVm`, `ResetVm`, `DeleteVm`, `CloneVm`, `CloneTemplate`, `ConvertVmToTemplate`, `ConvertTemplateToVm`, `CreateVmSnapshot`, `ListVmSnapshots`, `RestoreVmSnapshot`, `DeleteVmSnapshot`).
+- **[ArgoCD](https://kestra.io/plugins/plugin-argocd)** – Automate GitOps delivery by syncing applications and checking sync and health status from ArgoCD inside Kestra workflows (`Sync`, `Status`).
+- **[Cloudflare](https://kestra.io/plugins/plugin-cloudflare)** – Manage Cloudflare resources including DNS records, cache purging, WAF IP access rules, Workers KV storage, zones, and namespaces (DNS: `Create`, `Update`, `Delete`, `Get`, `List`, `Upsert`, `Batch`; cache: `Purge`; WAF access rules: `Create`, `Delete`, `List`; Workers KV: `Get`, `Write`; compute namespaces: `Create`; zones: `Get`, `List`).
+- **[Canonical MAAS](https://kestra.io/plugins/plugin-ee-canonical)** – List machines, enlist servers, commission hardware, deploy OS images, and control power states (on/off/cycle/query) for end-to-end bare-metal lifecycle automation (`ListMachines`, `EnlistMachine`, `CommissionMachine`, `DeployMachine`, `PowerControlMachine`).
+- **[KVM](https://kestra.io/plugins/plugin-kvm)** – Manage virtualization workloads and automate VM operations on KVM, including listing VMs, creating and updating VM definitions, starting and stopping instances, and deleting domains with optional storage cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `DeleteVm`).
+- **[NetBox](https://kestra.io/plugins/plugin-ee-netbox)** – Integrate your infrastructure source of truth (DCIM/IPAM) into orchestration workflows, including listing sites and devices, creating and updating device records, and assigning IP addresses (`ListSites`, `ListDevices`, `CreateDevice`, `UpdateDevice`, `AssignIpAddress`).
+- **[Nutanix](https://kestra.io/plugins/plugin-ee-nutanix)** – Manage AHV VM lifecycle and recovery workflows on hyper-converged infrastructure, including VM listing, creation, updates, start/stop/reboot/reset operations, cloning and template conversions, plus snapshot creation, listing, restore, and cleanup (`ListVms`, `CreateVm`, `UpdateVm`, `StartVm`, `StopVm`, `RebootVm`, `ResetVm`, `DeleteVm`, `CloneVm`, `CloneTemplate`, `ConvertVmToTemplate`, `ConvertTemplateToVm`, `CreateVmSnapshot`, `ListVmSnapshots`, `RestoreVmSnapshot`, `DeleteVmSnapshot`).
 
 ### Observability & Governance
 
-- **Graylog** – Export Kestra execution logs to Graylog GELF HTTP inputs for centralized observability and SIEM workflows, with configurable host, batching, and HTTP client settings (`LogExporter`).
-- **Open Policy Agent** – Add policy-as-code checks for governance and compliance by uploading, listing, compiling, evaluating, and deleting OPA policies and decisions (`Upload`, `List`, `Compile`, `Evaluate`, `Delete`).
+- **[Graylog](https://kestra.io/plugins/plugin-ee-graylog)** – Export Kestra execution logs to Graylog GELF HTTP inputs for centralized observability and SIEM workflows, with configurable host, batching, and HTTP client settings (`LogExporter`).
+- **[Open Policy Agent](https://kestra.io/plugins/plugin-ee-opa)** – Add policy-as-code checks for governance and compliance by uploading, listing, compiling, evaluating, and deleting OPA policies and decisions (`Upload`, `List`, `Compile`, `Evaluate`, `Delete`).
 
 ### Data & Automation
 
-- **Beam** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines, with YAML-based execution across Java and Python SDKs on Direct, Flink, Spark, and Dataflow runners (`RunPipeline`).
-- **COBOL** – Run and orchestrate legacy IBM i COBOL workloads by compiling programs from inline or stored source, executing jobs synchronously with parameters, and submitting batch jobs asynchronously (`CreateProgram`, `CallJob`, `SubmitJob`).
+- **[Beam](https://kestra.io/plugins/plugin-beam)** – Orchestrate Apache Beam jobs for unified batch and streaming pipelines, with YAML-based execution across Java and Python SDKs on Direct, Flink, Spark, and Dataflow runners (`RunPipeline`).
+- **[COBOL](https://kestra.io/plugins/plugin-cobol)** – Run and orchestrate legacy IBM i COBOL workloads by compiling programs from inline or stored source, executing jobs synchronously with parameters, and submitting batch jobs asynchronously (`CreateProgram`, `CallJob`, `SubmitJob`).
 - **Slack App** – Full Slack App integration to manage channels, messages, canvases, files, reactions, and users directly from workflows, with an event trigger for real-time Slack activity.
-- **Trello** – Automate Trello card workflows from Kestra by creating, updating, moving, and commenting on cards, and by polling boards or lists for new and updated card activity (`Create`, `Update`, `Move`, `Comment`, `Trigger`).
-- **AI Plugin** - Added Langfuse observability support to `AIAgent` via OpenTelemetry OTLP with opt-in export of traces, spans, and metadata (flow/task/execution context, provider/model attributes, prompt/output capture), enabling teams to monitor and debug AI agent behavior in production workflows.
+- **[Trello](https://kestra.io/plugins/plugin-trello)** – Automate Trello card workflows from Kestra by creating, updating, moving, and commenting on cards, and by polling boards or lists for new and updated card activity (`Create`, `Update`, `Move`, `Comment`, `Trigger`).
+- **[AI Plugin](https://kestra.io/plugins/plugin-ai)** - Added Langfuse observability support to `AIAgent` via OpenTelemetry OTLP with opt-in export of traces, spans, and metadata (flow/task/execution context, provider/model attributes, prompt/output capture), enabling teams to monitor and debug AI agent behavior in production workflows.
 
 
 ## LTS and Enterprise Licensing
