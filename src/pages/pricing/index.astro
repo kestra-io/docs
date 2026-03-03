@@ -5,7 +5,7 @@ import HostSwitcher from "~/components/price/HostSwitcher.astro"
 import PriceGrid from "~/components/price/PriceGrid.astro"
 import PriceBottom from "~/components/price/PriceBottom.astro"
 import PlanTable from "~/components/price/PlanTable.astro"
-import Quote from "~/components/price/Quote.vue"
+import PriceQuote from "~/components/price/PriceQuote.vue"
 
 const title = "Pricing"
 const description =
@@ -19,7 +19,7 @@ const description =
         </Header>
         <PriceGrid />
         <PlanTable />
-        <Quote client:load />
+        <PriceQuote client:load />
         <PriceBottom />
     </div>
 </Layout>

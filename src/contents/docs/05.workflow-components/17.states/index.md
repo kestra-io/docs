@@ -54,14 +54,15 @@ Task run states represent the status of a single task run within an execution.
 
 Each task run can be in one of the following states:
 1. **CREATED**: The task run has been created but not yet started.
-2. **RUNNING**: The task run is currently in progress.
-3. **SUCCESS**: The task run has completed successfully.
-4. **WARNING**: The task run has completed successfully but with warnings.
-5. **FAILED**: The task run has failed.
-6. **RETRYING**: The task run is currently being retried.
-7. **RETRIED**: The task run has been retried.
-8. **RESTARTED**: The task run is currently being restarted.
-9. **KILLING**: The task run is in the process of being killed.
-10. **KILLED**: The task run has been killed upon request by the user.
+2. **SUBMITTED**: The task run has been submitted to a Worker but has not started running yet.
+3. **RUNNING**: The task run is currently in progress.
+4. **SUCCESS**: The task run has completed successfully.
+5. **WARNING**: The task run has completed successfully but with warnings.
+6. **FAILED**: The task run has failed.
+7. **RETRYING**: The task run is currently being retried.
+8. **RETRIED**: The task run has been retried.
+9. **RESTARTED**: The task run is currently being restarted.
+10. **KILLING**: The task run is in the process of being killed.
+11. **KILLED**: The task run has been killed upon request by the user.
 
 Note how there is no `QUEUED`, `CANCELLED`, or `PAUSED` states for task runs.
