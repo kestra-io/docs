@@ -72,9 +72,10 @@ tasks:
     type: io.kestra.plugin.core.http.Request
     uri: https://api.example.com/v1/ping
     method: GET
-    auth:
-      type: BEARER
-      token: "{{ credential('my_oauth') }}"
+    options:
+      auth:
+        type: BEARER
+        token: "{{ credential('my_oauth') }}"
 ```
 
 Supported credential types include OAuth2 `client_credentials`, OAuth2 JWT Bearer (`jwt_bearer`), OAuth2 `private_key_jwt`, and GitHub App.
