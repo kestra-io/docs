@@ -389,7 +389,7 @@ kestractl config add default http://localhost:8080 main --username YOUR_USERNAME
 
 You can manage multiple contexts (dev, staging, prod) and switch between them with `kestractl config use`.
 
-### Key capabilities
+### Key Capabilities
 
 - **`flows`** — list, get, deploy (single file or directory), and validate flows
 - **`executions`** — trigger executions and wait for completion
