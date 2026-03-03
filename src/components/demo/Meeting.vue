@@ -259,7 +259,15 @@ onMounted(() => {
 @import "~/assets/styles/variable";
 .meeting-container {
     position: relative;
-    background-color: var(--ks-background-secondary);
+    background-color: #151515;
+    --back-blue-color: #2DA4FF;
+    background-image:
+        // top left blue to transparent gradient spanning halfway
+        radial-gradient(circle at -100px -220px, var(--back-blue-color) 0%, transparent 650px),
+        // bottom right blue to transparent gradient spanning halfway
+        radial-gradient(circle at 850px 130%, var(--back-blue-color) 0%, transparent 750px);
+    background-repeat: no-repeat, no-repeat;
+    background-size: contain, contain;
     .alert.alert-danger{
         color: var(--ks-content-alert-danger)
     }
