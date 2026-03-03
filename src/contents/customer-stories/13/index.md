@@ -8,6 +8,7 @@ metaDescription: "This is the story of how Gorgias, a leading company in
   enhancing user experiences for online merchants and shoppers, integrated
   Kestra into their data infrastructure "
 heroImage: ./hero.png
+featured: true
 featuredImage: ./hero.png
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
@@ -70,6 +71,6 @@ To provide a modular development experience, the Gorgias team leverages Terrafor
 Gorgias also uses Kestra as a CI/CD engine. Applying configuration changes on a self-hosted instance is easier by running Terraform directly on their Kubernetes cluster. With the dedicated Kestra Terraform plugin, they can apply changes to a local Kubernetes service endpoint using kube-DNS resolution, managing their entire data infrastructure using Kestra.
 
 ## Conclusion
-By integrating Kestra into its IaC framework, Gorgias has streamlined its data management practice. Declarative interfaces are gaining popularity as data teams embrace Infrastructure as Code best practices. 
+By integrating Kestra into its IaC framework, Gorgias has streamlined its data management practice. Declarative interfaces are gaining popularity as data teams embrace Infrastructure as Code best practices.
 
 > "Declarative Data Engineering is rising as Data teams embrace software practices and Kestra got this point right allowing data practitioners to collaborate around a common tool."

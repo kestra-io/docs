@@ -7,6 +7,7 @@ metaTitle: "Leroy Merlin France & Kestra: DataMesh at Scale Increased its Data
 metaDescription: This is the story of how Leroy Merlin France leveraged Kestra
   to transform its data architecture and enhance its data operations.
 heroImage: ./hero.png
+featured: true
 featuredImage: ./hero.png
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
@@ -47,9 +48,9 @@ Before Kestra, Leroy Merlin's technology stack included Teradata for the databas
 
 ## Transition to Kestra
 
-The transition revealed critical challenges with Apache Airflow for data orchestration. 
+The transition revealed critical challenges with Apache Airflow for data orchestration.
 
->“After suffering with Airflow to schedule different treatments, Kestra's arrival was more than saving. The ecosystem of plugins is evolving rapidly and greatly facilitates integration with different bricks, especially on GCP (BQ, GCS, Cloud SQL, etc.). A tool that deserves to be known more.” 
+>“After suffering with Airflow to schedule different treatments, Kestra's arrival was more than saving. The ecosystem of plugins is evolving rapidly and greatly facilitates integration with different bricks, especially on GCP (BQ, GCS, Cloud SQL, etc.). A tool that deserves to be known more.”
 
 Kestra emerged as a robust alternative, addressing Airflow's shortcomings with its simplicity, reliability, and efficiency. Its declarative nature and event-driven architecture offered the agility and scalability needed for growing data operations.
 

@@ -21,9 +21,6 @@ const githubData = await getValues()
 const blueprints = await $fetchApi<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?page=1&size=20",
 )
-const stories = await $fetchApi<{ results: any[] }>(
-    "/customer-stories-v2?featured=true",
-)
 
 const quotesCompaniesLogos = import.meta.glob<ImageMetadata>(
     "~/assets/quotes-companies/*.{svg,png}",
@@ -100,7 +97,7 @@ const tabs = [
         <TabsSection tabs={tabs} client:visible />
         <PluginsBox />
         <BlueprintsRender blueprints={blueprints.results} client:visible />
-        <EnterpriseSection stories={stories.results} />
+        <EnterpriseSection />
         <EnterpriseQuotesRender
             quotesCompaniesLogos={quotesLogos}
             client:visible
