@@ -9,6 +9,7 @@ metaDescription: This is how Acxiom, a global leader in customer intelligence
   orchestration, unlocking scalability, flexibility, and robust multi-tenant
   automation across its entire data infrastructure.
 heroImage: ./hero.png
+featured: true
 featuredImage: ./featured.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
@@ -21,10 +22,10 @@ kpi1: |
   ##### Declarative
   Dynamic & Metadata-Driven Workflows
 kpi2: |-
-  ##### 120+ 
+  ##### 120+
   Engineers Empowered with Simplified Orchestration
 kpi3: |-
-  ##### 50+ 
+  ##### 50+
   Customers Isolated in Multi-tenants Environments
 quote: We needed orchestration built for flexibility and scale, without forcing
   us to rewrite our existing pipelines. Kestra fit naturally into our stack and
