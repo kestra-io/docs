@@ -102,7 +102,7 @@ tasks:
 :::alert{type="info"}
 Auto-emitted assets are supported for specific plugins when `assets.enableAuto: true`:
 - **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
-- **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.plugin.ee.assets.VM` (or host), marking the infrastructure targets the playbook runs against.
+- **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.core.models.assets.External` (or host), marking the infrastructure targets the playbook runs against.
 - **JDBC Query**: detects `CREATE TABLE` statements and emits a single `Table` output; JDBC URL populates `system` and `database`.
 
 Example (dbt):
