@@ -8,20 +8,20 @@ authors:
     image: bpimpaud
 image: ./main.jpg
 ---
-Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces enterprise-grade Kill Switch controls, reusable Credentials for OAuth-based APIs, kestractl and new GitHub Action for managing flows and executions from the terminal and the CI/CD.
+Kestra 1.3 brings production-grade controls to enterprise teams, native CI/CD tooling to developers, and new infrastructure plugins to teams managing bare-metal, VM, and cloud networking environments. 
 
-The table below highlights the key features of this release.
+Here's what's in 1.3:
 
-| Feature | Description | Edition |
+| Feature | What & Why | Edition |
 |---|---|---|
-| Kill Switch | UI-based control to stop or contain problematic executions | Enterprise Edition |
-| Credentials | Centralized server-to-server OAuth2 credentials with token minting and refresh | Enterprise Edition |
-| Assets | Second iteration of Assets (introduced in 1.2), with imperative lifecycle management plus event-driven and freshness-driven automation for SLA and governance workflows | Enterprise Edition |
-| AI Copilot Enhancements | RBAC permission controls, expanded UI coverage, speech-to-text, model selection, and improved custom model settings | Enterprise Edition |
-| kestractl | Command-line tool to interact with the Kestra host API for flows, executions, namespaces, and namespace files | All Editions |
-| New GitHub Action | CLI-based action to deploy, validate, and trigger flows | All Editions |
-| Plugin Defaults UI | Manage plugin defaults directly from the namespace page | Enterprise Edition |
-| New Plugins | Infrastructure and policy integrations, including MAAS, NetBox, Nutanix, and OPA | All Editions |
+| Kill Switch | When something breaks in production, you need to act immediately. CLI-only commands are too slow and limited to server admins. Kill Switch lets administrators stop or contain problematic executions from the UI, scoped to tenant, namespace, flow, or execution, with a full audit trail. | Enterprise Edition |
+| Credentials | OAuth tokens scattered across flows are brittle, hard to rotate, and slow to fix during incidents. Credentials lets you configure server-to-server authentication once and reference it everywhere with credential(). | Enterprise Edition |
+| Assets | Tracking assets isn't enough — teams need to manage them imperatively and react to lifecycle events in real time. Assets 1.3 adds Set, List, and Delete tasks plus event-driven and freshness triggers for SLA and governance automation. | Enterprise Edition |
+| AI Copilot Enhancements | AI tools need permission guardrails before enterprise teams can adopt them broadly. This release adds RBAC controls, wider UI coverage (apps, tests, dashboards), speech-to-text input, and model selection. | Enterprise Edition |
+| kestractl | Custom API scripts for flow deployment are error-prone and inconsistent across dev, staging, and prod. kestractl is a dedicated CLI for flows, executions, namespaces, and namespace files — the same commands locally and in CI. | All Editions |
+| New GitHub Action | Custom CI scripts for Kestra are fragile and hard to maintain across repositories. Three composite actions — validate-flows, deploy-flows, deploy-namespace-files — built on kestractl, keep pipelines consistent. | All Editions |
+| Plugin Defaults UI | YAML-only plugin defaults are hard to discover, share, and onboard new team members to. The new namespace page UI lets you manage defaults with a guided form while keeping them versionable. | Enterprise Edition |
+| New Plugins | Infrastructure and policy integrations, including MAAS, NetBox, Nutanix, OPA, and many more. | All Editions |
 
 Check the video below for a quick overview of all enhancements.
 <div class="video-container">
@@ -34,7 +34,7 @@ Check the video below for a quick overview of all enhancements.
 
 When production incidents happen, relying on CLI-only skip commands is slow, confusing, and limited to server admins.
 
-Kill Switch introduces a UI-based mechanism to stop or contain problematic executions, designed for administrators. It provides a comprehensive administration interface and ensures every action is visible and auditable.
+Kill Switch introduces a UI-based mechanism to stop or contain problematic executions, designed for administrators. It provides a comprehensive administration interface and ensures every action is visible and auditable. Any admin can respond immediately, and every action lands in the audit log.
 
 You can access it under **Instance Administration > Kill Switch**, where you can create new Kill Switches and review active or archived ones. Three types are available:
 
@@ -57,7 +57,7 @@ The CLI remains available for power users and administrators who prefer terminal
 
 ## Credentials
 
-Teams struggle to connect workflows to modern APIs because credentials are scattered, brittle, and hard to rotate across environments. Managing authentication separately in each integration slows delivery and makes incidents harder to fix.
+Teams struggle to connect workflows to modern APIs because credentials are scattered, brittle, and hard to rotate across environments. Managing authentication separately in each integration slows delivery and makes incidents harder to fix. Fewer 2am incidents from expired tokens, and less time hunting down which flow broke when a credential rotated.
 
 Credentials provide reusable server-to-server (machine-to-machine) authentication for flows. You configure authentication once and reference it in workflows with a simple expression, while Kestra handles token retrieval and refresh centrally.
 
@@ -83,7 +83,7 @@ Supported credential types include OAuth2 `client_credentials`, OAuth2 JWT Beare
 
 Kestra 1.3 brings the second iteration of **Assets**, building on the foundation introduced in [Kestra 1.2](../release-1-2/index.md).
 
-In Kestra 1.2, Assets introduced a stateful inventory and lineage model directly in workflows. In 1.3, Assets becomes more operational: teams can now manage assets imperatively, react to lifecycle events in real time, monitor freshness, and automate remediation and governance workflows with richer filters and trigger outputs.
+In Kestra 1.2, Assets introduced a stateful inventory and lineage model directly in workflows. In 1.3, Assets becomes more operational: teams can now manage assets imperatively, react to lifecycle events in real time, monitor freshness, and automate remediation and governance workflows with richer filters and trigger outputs. Stale assets trigger remediation automatically, without waiting for a broken report to surface the problem.
 
 What this means in practice:
 
@@ -247,7 +247,7 @@ tasks:
 
 ## AI Copilot Enhancements
 
-AI assistants are most useful when teams can control where and how they are used. In many organizations, administrators need permission boundaries, predictable model behavior, and simple input options before enabling copilots broadly.
+AI assistants are most useful when teams can control where and how they are used. In many organizations, administrators need permission boundaries, predictable model behavior, and simple input options before enabling copilots broadly. Enterprise admins who previously blocked broad rollout for lack of governance controls now have what they need to enable it.
 
 Kestra 1.3 expands AI Copilot capabilities for enterprise teams with better governance and day-to-day usability:
 
@@ -260,7 +260,7 @@ Kestra 1.3 expands AI Copilot capabilities for enterprise teams with better gove
 
 ## kestractl
 
-Teams often need to automate flow deployment and operations across multiple environments, but relying only on the UI or custom API scripts is error-prone and inconsistent. A dedicated CLI makes those workflows repeatable in local and CI environments.
+Teams often need to automate flow deployment and operations across multiple environments, but relying only on the UI or custom API scripts is error-prone and inconsistent. A dedicated CLI makes those workflows repeatable in local and CI environments. The same commands work locally and in CI, which closes the gap between how developers deploy locally and how CI deploys to production.
 
 Kestra 1.3 introduces **`kestractl`**, a command-line interface focused on API-driven workflow operations.
 
@@ -324,7 +324,7 @@ In short, use `kestractl` for API-level resource management and automation, and 
 
 ## GitHub Action
 
-Teams often rely on custom scripts to deploy and validate flows in CI, which leads to inconsistent pipelines and hard-to-maintain automation. A dedicated action makes these workflows repeatable across repositories.
+Teams often rely on custom scripts to deploy and validate flows in CI, which leads to inconsistent pipelines and hard-to-maintain automation. A dedicated action makes these workflows repeatable across repositories. Flow deployments go through the same review and automation as application code, rather than being a separate manual step.
 
 Kestra 1.3 introduces a refreshed GitHub Action built on kestractl, so you can reuse the same commands in CI that you run locally. Three composite actions are available:
 
@@ -380,7 +380,7 @@ Store credentials (`KESTRA_HOSTNAME`, `KESTRA_API_TOKEN`) as GitHub Secrets. For
 
 ## Plugin Defaults UI (Namespace)
 
-Plugin defaults are essential for consistent configurations, but managing them only in YAML makes them harder to discover, edit, and share across teams. This often slows down onboarding and pushes configuration drift into production.
+Plugin defaults are essential for consistent configurations, but managing them only in YAML makes them harder to discover, edit, and share across teams. This often slows down onboarding and pushes configuration drift into production. New team members can discover and edit defaults from the UI, and the YAML export keeps them versionable.
 
 Kestra 1.3 adds a dedicated Plugin Defaults UI on the namespace page so you can fully manage these settings from the UI while keeping them versionable. Create new defaults with an **Add plugin default** button, select the plugin from a dropdown, and fill a form that clearly separates required and optional fields, with the option to switch to YAML at any time.
 
@@ -393,6 +393,7 @@ Kestra 1.3 adds a dedicated Plugin Defaults UI on the namespace page so you can 
 
 ## Plugins
 
+Seven new plugins extend Kestra to infrastructure teams managing hardware fleets, VM environments, and cloud networking. These teams typically run that automation through Ansible playbooks, custom scripts, and cron jobs, separate from any data pipeline observability. Running both through Kestra gives infrastructure and data teams shared execution history, logs, and observability.
 
 ### Infrastructure
 
