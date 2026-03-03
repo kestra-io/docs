@@ -1,0 +1,7 @@
+title: "I Automated EVERYTHING in my HomeLab with Kestra"
+description: "In this video I will show you my ultimate solution for automating everything in my HomeLab, where I integrate all my favorite automation tools and workflows, including Ansible and Terraform, into a unified workflow using Kestra as the platform that enables me to orchestrate all these tools together seamlessly, creating a powerful automation ecosystem. If you're a fan of automation, you won't want to miss this!"
+category: "Deep Dive Tutorials"
+author: "Christian Lempa"
+url: "https://www.youtube.com/watch?v=PJG1-7hMHsE"
+publicationDate: "2024-04-22T00:00:00.000"
+contentType: "Deep Dive Tutorials"

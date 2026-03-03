@@ -309,7 +309,7 @@ kestra plugins search jdbc
 
 Start the executor.
 
-**Options**: `--skip-executions` (list)
+**Options**: `--ignore-executions` (list)
 
 ```bash
 kestra server executor

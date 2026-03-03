@@ -10,12 +10,20 @@
                     :breakpoints="breakpoints"
                     :settings="settings"
                 >
-                    <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
+                    <Slide
+                        v-for="(slide, index) in content"
+                        :key="slide"
+                        v-bind:key="slide?.id"
+                    >
                         <p class="d-flex" @click="slideTo(index)">
-                            <span class="d-inline-block text-truncate">{{ slide.text }}</span>
-                            <a class="d-inline-block text-nowrap" :href="slide.href">{{
-                                slide.linkText
-                            }}</a>
+                            <span class="d-inline-block text-truncate">{{
+                                slide.text
+                            }}</span>
+                            <a
+                                class="d-inline-block text-nowrap"
+                                :href="slide.href"
+                                >{{ slide.linkText }}</a
+                            >
                         </p>
                     </Slide>
                 </Carousel>
@@ -25,7 +33,13 @@
 </template>
 
 <script>
+    import { Carousel, Slide } from "vue3-carousel"
+
     export default {
+        components: {
+            Carousel,
+            Slide,
+        },
         props: {
             content: {
                 type: Object,
@@ -73,24 +87,17 @@
     }
 
     .announce {
-        width: 100%;
-        opacity: 1;
-
         &.hidden {
             opacity: 0;
             display: none;
             top: -100px;
         }
-
         .alert {
             border-radius: 0;
             border: 0;
             text-align: center;
-            backdrop-filter: blur(0.625rem);
-            background-color: transparent;
-            color: var(--bs-white);
-            padding-left: calc($spacer * 0.938) 0.5rem;
-            padding-right: calc($spacer * 0.938) 0.5rem;
+            background: transparent;
+            color: $white;
             border-bottom: 1px solid #e5e4f721;
             margin-bottom: 0;
             position: relative;
@@ -100,44 +107,40 @@
                 max-height 0.5s linear,
                 color 0.5s linear;
             height: 3rem;
-
+            padding-top: 0.85rem;
             &.scrolled {
-                background-color: rgba(17, 17, 19, 0.65);
+                background: rgba(17, 17, 19, 0.65);
                 transition: background-color 250ms ease-in-out;
             }
-
             @include media-breakpoint-down(sm) {
-                padding-right: calc($spacer / 2);
-                padding-left: calc($spacer / 2);
+                padding-inline: calc($spacer / 2);
             }
-
             &::after {
                 content: "";
                 position: absolute;
                 height: 16rem;
-                width: 15rem;
-                bottom: 32%;
-                left: -25%;
+                width: 100%;
                 z-index: -1;
-                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
-                filter: blur(80px);
+                top: 0;
+                left: 0;
+                background: linear-gradient(
+                    180deg,
+                    var(--ks-background-body),
+                    #6117ff
+                );
             }
-
             a {
                 text-decoration: underline;
-                color: $purple-36;
+                color: var(--ks-content-color-highlight);
                 font-weight: 400 !important;
                 margin-left: $spacer;
             }
-
             p {
                 margin-bottom: 0;
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
-                max-width: 100%;
             }
-
             button {
                 position: absolute;
                 right: 3px;
@@ -145,7 +148,7 @@
                 background: none;
                 border: 0;
                 font-size: 24px;
-                color: var(--bs-white);
+                color: $white;
             }
         }
     }
@@ -153,10 +156,9 @@
     :deep(.carousel > .carousel__viewport > .carousel__track) {
         .carousel__slide {
             opacity: 0.5;
-        }
-
-        .carousel__slide--active {
-            opacity: 1;
+            &--active {
+                opacity: 1;
+            }
         }
     }
 </style>

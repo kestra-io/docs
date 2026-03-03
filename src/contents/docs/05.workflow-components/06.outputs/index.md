@@ -130,6 +130,8 @@ outputs:
     value: "{{ outputs.mytask.value }}"
 ```
 
+An Output can have one of the following types: `ARRAY`, `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `EMAIL`, `ENUM`, `FILE`, `FLOAT`, `INT`, `JSON`, `MULTISELECT`, `SECRET`, `STRING`, `TIME`, `URI`, or `YAML`.
+
 Outputs are defined as a list of key-value pairs. The `id` is the name of the output attribute (must be unique within a flow), and the `value` is the value of the output. You can also add a `description` to the output.
 
 Flow outputs appear in the **Overview** tab of the **Executions** page.

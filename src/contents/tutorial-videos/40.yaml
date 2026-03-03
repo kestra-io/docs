@@ -1,0 +1,7 @@
+title: "Install Kestra with Docker Compose"
+description: "Looking to expand your Kestra setup with something more persistent? This guide will walk you through how you can add configuration and a persistent database effortlessly with Docker Compose."
+category: "Quick Start Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=SGL8ywf3OJQ"
+publicationDate: "2024-09-11T00:00:00.000"
+contentType: "Quick Start Tutorials"

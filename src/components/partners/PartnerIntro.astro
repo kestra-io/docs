@@ -1,0 +1,41 @@
+---
+interface Props {
+    title: string
+    description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<section class="partner-intro">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <h2 class="text-center">{title}</h2>
+            <p class="text-center">{description}</p>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .partner-intro {
+        background-color: var(--ks-background-secondary);
+        padding-top: 10rem;
+        padding-bottom: 2rem;
+
+        @include media-breakpoint-down(lg) {
+            padding-top: 26rem;
+        }
+
+        h2 {
+            color: var(--ks-content-primary);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--ks-content-secondary);
+            line-height: 1.6;
+        }
+    }
+</style>

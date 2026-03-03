@@ -63,9 +63,8 @@ labels:
 inputs:
   - id: my-value
     type: STRING
-    required: false
     defaults: "default value"
-    description: This input is optional.
+    description: This input is has a default value.
 
 variables:
   first: "1"

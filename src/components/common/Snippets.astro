@@ -1,0 +1,156 @@
+---
+import { Code } from 'astro-expressive-code/components';
+import { Icon } from "astro-icon/components";
+interface Props {
+    code: string;
+    lang?: any;
+}
+
+const {
+    code,
+    lang="bash",
+} = Astro.props as Props;
+
+const lineCount = code.trim().split("\n").length;
+const isExpandable = lineCount > 12;
+---
+
+{code && (
+    <div class:list={["code-card", { "is-expandable": isExpandable }]}>
+        <div class="code-inner">
+            <div class="code-container">
+                <Code
+                    code={code}
+                    lang={lang}
+                    frame="none"
+                />
+            </div>
+        </div>
+
+        {isExpandable && (
+            <button class="expand-trigger" data-lines={lineCount}>
+                <Icon name="mdi:dots-horizontal" class="icon" />
+                <span class="text">See all {lineCount} lines</span>
+            </button>
+        )}
+    </div>
+)}
+
+<script>
+    const initExpander = () => {
+        document.querySelectorAll(".code-card.is-expandable").forEach((card) => {
+            const btn = card.querySelector(".expand-trigger");
+            if (!btn) return;
+
+            btn.addEventListener("click", () => {
+                const text = btn.querySelector(".text");
+                const lines = btn.getAttribute("data-lines");
+                if (text) {
+                    text.textContent = card.classList.toggle("is-expanded")
+                        ? "See less"
+                        : `See all ${lines} lines`;
+                }
+            });
+        });
+    };
+
+    initExpander();
+    document.addEventListener("astro:after-swap", initExpander);
+</script>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .code-card {
+        position: relative;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-primary);
+        overflow: hidden;
+
+        .code-inner {
+            position: relative;
+
+            .label {
+                position: absolute;
+                top: 0.75rem;
+                right: 1.25rem;
+                font-size: $font-size-xs;
+                color: var(--ks-content-primary);
+                font-weight: 500;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            .code-container {
+                display: block;
+            }
+
+            :global(.expressive-code) {
+                --ec-brdCol: transparent !important;
+                margin-bottom: 0;
+            }
+
+            :global(pre) {
+                background: var(--ks-background-primary) !important;
+                margin: 0;
+                overflow: hidden !important;
+            }
+
+            :global(code) {
+                font-size: $font-size-sm;
+                line-height: 1.6;
+            }
+        }
+
+        &.is-expandable {
+            .code-inner {
+                max-height: 350px;
+                mask-image: linear-gradient(to bottom, var(--ks-background-primary) 70%, transparent 100%);
+            }
+        }
+
+        &.is-expanded {
+            .code-inner {
+                max-height: none;
+                mask-image: none;
+            }
+            .expand-trigger {
+                .icon {
+                    display: none;
+                }
+            }
+        }
+
+        .expand-trigger {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background: var(--ks-background-secondary);
+            border: none;
+            border-top: 1px solid var(--ks-border-primary);
+            color: var(--ks-content-primary);
+            font-size: $font-size-xs;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            gap: 0.5rem;
+            transition: all 0.2s;
+
+            &:hover {
+                background: var(--ks-background-tertiary);
+            }
+
+            .text {
+                color: var(--ks-content-secondary);
+            }
+
+            .icon {
+                color: var(--ks-content-tertiary);
+                font-size: 1.25rem;
+            }
+        }
+    }
+</style>
+

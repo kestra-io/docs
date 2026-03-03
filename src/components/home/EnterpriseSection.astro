@@ -1,0 +1,36 @@
+---
+import HeaderBox from "~/components/common/HeaderBox.vue"
+import StoriesCarousel from "~/components/common/StoriesCarousel.vue"
+import { getCollection } from "astro:content"
+import { getImage } from "astro:assets"
+
+const stories = await Promise.all((await getCollection("customerStories"))
+    .filter(customerStory => customerStory.data.featured)
+    .map(async entry => {
+        return {
+            id: entry.id,
+            title: entry.data.title,
+            companyName: entry.data.companyName,
+            quote: entry.data.quote,
+            quotePerson: entry.data.quotePerson,
+            quotePersonTitle: entry.data.quotePersonTitle,
+            heroImage: (await getImage({ src: entry.data.heroImage, format: "webp", width: 500 })).src,
+            logo: (await getImage({ src: entry.data.logo, format: "webp", height: 60 })).src,
+            logoDark: (await getImage({ src: entry.data.logoDark, format: "webp", height: 60 })).src,
+        }
+    })
+);
+---
+<section class="home-enterprise">
+    <HeaderBox />
+    <StoriesCarousel stories={stories} client:visible />
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .home-enterprise {
+        background-color: var(--ks-background-body);
+        text-align: center;
+        padding-bottom: 4rem;
+    }
+</style>

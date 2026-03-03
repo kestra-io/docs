@@ -1,23 +1,31 @@
 ---
 export const prerender = false
+import { getCollection } from "astro:content"
 import StoriesList from "~/components/stories/StoriesList.vue"
 import Layout from "~/components/layout.astro"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
-import { $fetchApi } from "~/utils/fetch"
+import FooterContact from "~/components/layout/FooterContact.astro"
 
 const title = "Kestra's Customers Stories"
 const description =
     "Learn how we helped companies manage their critical operations."
 
-const currentPage = Astro.url.searchParams.get("page") ?? 1
-const itemsPerPage = Astro.url.searchParams.get("page") ?? 25
+const currentPage = Number(Astro.url.searchParams.get("page") ?? 1)
+const itemsPerPage = Number(Astro.url.searchParams.get("size") ?? 25)
 
-const data = await $fetchApi<{
-    results: Array<Story>
-    total: number
-}>(`/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`)
-const stories = data.results
-const totalStories = data.total
+const allEntries = (await getCollection("customerStories"))
+    .sort((a, b) => parseInt(a.id) > parseInt(b.id) ? -1 : 1);
+
+const totalStories = allEntries.length
+const start = (currentPage - 1) * itemsPerPage
+const stories = allEntries.slice(start, start + itemsPerPage).map((e) => ({
+    id: e.id,
+    ...e.data,
+    heroImage: e.data.heroImage.src,
+    featuredImage: e.data.featuredImage.src,
+    logo: e.data.logo?.src,
+    logoDark: e.data.logoDark?.src,
+    content: e.body ?? "",
+}))
 ---
 
 <Layout title={title} description={description}>
@@ -28,14 +36,12 @@ const totalStories = data.total
             stories={stories}
             totalStories={totalStories}
         />
-        <LayoutFooterContact
+        <FooterContact
             client:visible
             title="Getting started with Kestra"
             subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Get started"
-            darkButtonHref="/docs/quickstart#start-kestra"
-            purpleButtonText="Read the docs"
-            purpleButtonHref="/docs"
+            dark={{ text: "Get started", href: "/docs/quickstart#start-kestra" }}
+            purple={{ text: "Read the docs", href: "/docs" }}
         />
     </div>
 </Layout>

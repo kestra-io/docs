@@ -10,4 +10,9 @@ const parse = await getMDCParser()
 const docAst = await parse(props.content)
 ---
 
-<MDCRenderer body={docAst.body} data={docAst.data} key={props.content} />
+<MDCRenderer
+    body={docAst.body}
+    data={docAst.data}
+    key={props.content}
+    class={props.class}
+/>

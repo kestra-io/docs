@@ -1348,7 +1348,7 @@ To set task-level retries globally, use plugin defaults:
 
 ## Secret managers
 
-Configure a [secrets backend](../07.enterprise/02.governance/secrets-manager/index.md) via `kestra.secret`. To isolate from specific services, use `kestra.secret.isolation`.
+Configure a [secrets backend](../07.enterprise/02.governance/secrets-manager/index.md) via `kestra.secret`. To isolate from specific Kestra services from being able to access secrets, use `kestra.secret.isolation`. 
 
 ```yaml
 kestra:
@@ -1723,7 +1723,7 @@ Other storage backends are supported via plugins:
 - [Azure](#azure)
 - [MinIO](#minio)
 
-Isolate storage to specific services (>= 0.22):
+To prevent certain Kestra services from accessing internal storage items, isolate storage to specific services using `denied-services` (>= 0.22):
 
 ```yaml
 kestra:
@@ -1735,7 +1735,7 @@ kestra:
         - EXECUTOR
 ```
 
-Screenshot example:
+Also configurable in the UI:
 
 ![Internal Storage UI Configuration](./is-secrets-configuration.png)
 
@@ -2153,21 +2153,33 @@ Disable local file preview (default `true`) with `kestra.local-files.enable-prev
 
 ## AI Copilot
 
-Enable Copilot in the flow editor:
+Enable Copilot in the flow editor with multiple provider selection:
 
 ```yaml
 kestra:
   ai:
-    type: gemini
-    gemini:
-      model-name: gemini-2.5-flash
-      api-key: YOUR_GEMINI_API_KEY
+    providers:
+      - id: gemini
+        display-name: Gemini - Private
+        type: gemini
+        configuration:
+          model-name: gemini-2.5-flash
+          api-key: YOUR_GEMINI_API_KEY
+      - id: gpt
+        display-name: OpenAI
+        type: openai
+        isDefault: true
+        configuration:
+          model-name: gpt-4
+          api-key: YOUR_OPENAI_API_KEY
 ```
 
 Optional parameters:
 - `temperature`, `top-p`, `top-k`, `max-output-tokens`
 - `log-requests`, `log-responses`
 - `base-url`
+
+Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
 
 **Enterprise Edition** supports multiple providers (Bedrock, Anthropic, Azure OpenAI, DeepSeek, Gemini, Vertex AI, Mistral, OpenAI, and Ollama). See [AI Copilot](../ai-tools/ai-copilot/index.md#enterprise-edition-copilot-configurations).
 
