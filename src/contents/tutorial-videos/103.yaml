@@ -1,0 +1,7 @@
+title: "Scheduling and Backfills: Data Engineering Zoomcamp - 2.3.3"
+description: "We can now schedule the same pipeline shown above to run daily at 9 AM UTC. We'll also demonstrate how to backfill the data ..."
+category: "Feature Highlight"
+author: "Kestra"
+url: "https://youtube.com/watch?v=1pu_C_oOAMA"
+publicationDate: "2026-01-07T00:00:00.000"
+contentType: "Feature Highlight"

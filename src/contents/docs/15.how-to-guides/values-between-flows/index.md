@@ -106,7 +106,7 @@ tasks:
 This is an [Enterprise Edition](../../07.enterprise/index.mdx) feature.
 :::
 
-Using [Namespace Variables](../../07.enterprise/02.governance/07.namespace-management/index.md), you can define values that can be accessed betweens flows inside of a namespace, similar to the KV Store. However, these can only be set in the [Namespace page](../../09.ui/04.namespaces/ee/index.md). This is good if you want to access values across flows, but you don't want to dynamically update them inside your flows at the same time.
+Using [Namespace Variables](../../07.enterprise/02.governance/07.namespace-management/index.md), you can define values that can be accessed betweens flows inside of a namespace, similar to the KV Store. However, these can only be set in the [Namespace page](../../07.enterprise/02.governance/07.namespace-management/index.md). This is good if you want to access values across flows, but you don't want to dynamically update them inside your flows at the same time.
 
 For example, we can define our variables as a key-value pair in our Namespace:
 

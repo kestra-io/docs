@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content"
 import BlogList from "~/components/blogs/BlogList.astro"
-import { $fetchApi } from "~/utils/fetch"
 import { getImage } from "astro:assets"
 import Mesh from "~/components/layout/Mesh.vue"
 import Layout from "~/components/layout.astro"
@@ -34,29 +33,25 @@ const sortedBlogs = await Promise.all(
         }),
 )
 
-const externalNewsData = await $fetchApi<{
-    results: {
-        id: string
-        link: string
-        image: string
-        media: string
-        author: string
-        title: string
-        publicationDate: string
-    }[]
-}>(`/external-blogs?size=4`)
+const allExternalBlogs = await getCollection("externalBlogs")
 
-const externalNews = externalNewsData.results.map((data) => {
-    return {
-        id: data.id,
-        path: data.link,
-        image: data.image,
-        category: data.media,
-        author: { name: data.author },
-        title: data.title,
-        date: data.publicationDate,
-    }
-})
+const externalNews = await Promise.all(
+    allExternalBlogs
+        .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
+        .slice(0, 4)
+        .map(async (entry) => {
+            const image = await getImage({ src: entry.data.image, format: "webp", width: 800 })
+            return {
+                id: entry.id,
+                path: entry.data.link,
+                image: image.src,
+                category: entry.data.media,
+                author: { name: entry.data.author },
+                title: entry.data.title,
+                date: entry.data.publicationDate,
+            }
+        }),
+)
 
 const internalBlogs = sortedBlogs.map((blog) => ({
     ...blog.data,
@@ -64,7 +59,11 @@ const internalBlogs = sortedBlogs.map((blog) => ({
     path: `/blogs/${blog.id}`,
 }))
 
-const tutorialVideo = await $fetchApi(`/tutorial-videos?page=1&size=3`)
+const allTutorialVideos = await getCollection("tutorialVideos")
+const tutorialVideoResults = allTutorialVideos
+    .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
+    .slice(0, 3)
+    .map((v) => ({ ...v.data, publicationDate: v.data.publicationDate.toISOString() }))
 ---
 
 <Layout>
@@ -78,7 +77,7 @@ const tutorialVideo = await $fetchApi(`/tutorial-videos?page=1&size=3`)
     <BlogList
         blogs={internalBlogs}
         externalNews={externalNews}
-        videos={tutorialVideo.results}
+        videos={tutorialVideoResults}
     />
     <UpdateLetter client:visible />
 </Layout>

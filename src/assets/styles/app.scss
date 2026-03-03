@@ -46,6 +46,14 @@ body {
             var(--ks-content-primary) 100%
         );
     }
+
+    &.has-annonces {
+        padding-top: 46px;
+
+        #top-bar {
+            top: 46px;
+        }
+    }
 }
 
 .headers-body-bg {
