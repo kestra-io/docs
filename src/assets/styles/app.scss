@@ -24,29 +24,6 @@ body {
     background-color: var(--ks-background-body);
     color: var(--ks-content-primary);
 
-    &::after {
-        content: "";
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100vw;
-        height: 100px;
-        background: rgba(var(--ks-background-body), 0.06);
-        backdrop-filter: blur(2px);
-        z-index: 10;
-        pointer-events: none;
-        mask-image: linear-gradient(
-            180deg,
-            transparent 0%,
-            var(--ks-content-primary) 100%
-        );
-        -webkit-mask-image: linear-gradient(
-            180deg,
-            transparent 0%,
-            var(--ks-content-primary) 100%
-        );
-    }
-
     &.has-annonces {
         padding-top: 46px;
 
