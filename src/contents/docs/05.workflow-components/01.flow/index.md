@@ -207,7 +207,7 @@ To pre-load flows from a directory when Kestra starts (so they’re available im
 
 Point this to a directory of YAML flow definitions; Kestra will load them at startup and place them in the namespaces declared in each file.
 
-For more information about the Kestra server CLI, check the [Server CLI Reference](../../server-cli/index.md) section.
+For more information about the Kestra server CLI, check the [Server CLI Reference](../../kestra-cli/index.mdx) section.
 
 ### Can I sync a local flows directory to be continuously loaded into Kestra?
 

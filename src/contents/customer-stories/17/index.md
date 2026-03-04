@@ -8,6 +8,7 @@ metaDescription: This is the story of how FILA, a global leader in sportswear,
   orchestrates complex ERP and supply chain workflows across continents using
   Kestra.
 heroImage: ./hero.png
+featured: true
 featuredImage: ./hero.png
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
@@ -22,7 +23,7 @@ kpi1: |-
   ##### 2.5 Million
   Monthly Executions
 kpi2: |-
-  ##### 2000+ 
+  ##### 2000+
   Workflows
 kpi3: |-
   ##### 25+
@@ -55,14 +56,14 @@ Manual batch scripts and traditional integrations were insufficient due to frequ
 
 After evaluating multiple orchestration tools, including Apache Airflow and Apache NiFi, FILA selected Kestra for its scalability, extensive plugin ecosystem, and API-first architecture. Kestra provided the flexibility and control required to build an efficient data pipeline orchestration layer without adding unnecessary operational overhead.
 
-"_We looked at Airflow and NiFi, but Kestra’s architecture made the most sense for us in terms of scalability. The wide range of plugins and the ability to integrate with our systems was a key factor in our decision._" 
+"_We looked at Airflow and NiFi, but Kestra’s architecture made the most sense for us in terms of scalability. The wide range of plugins and the ability to integrate with our systems was a key factor in our decision._"
 — **John Kim, IT Lead, FILA**
 
 ### Building Reliable Data Orchestration with Kestra
 
 FILA’s ERP migration requires **data synchronization across multiple systems** while ensuring stability. Kestra’s **event-driven architecture** plays a key role in maintaining the correct execution order for tasks. This ensures that data flows row-by-row in a transactional manner, preventing inconsistencies. Each execution is stored, allowing FILA to **replay failed** **executions and recover from errors** when needed easily.
 
-"_One of our workflows isn’t just about moving data from one database to another. It involves reading from a source database, downloading and uploading files across servers, calling multiple APIs, and inserting data into the final destination. Kestra's event-driven model ensures each step happens correctly and automatically retries when issues occur. This is critical for us because so many external systems are involved._" 
+"_One of our workflows isn’t just about moving data from one database to another. It involves reading from a source database, downloading and uploading files across servers, calling multiple APIs, and inserting data into the final destination. Kestra's event-driven model ensures each step happens correctly and automatically retries when issues occur. This is critical for us because so many external systems are involved._"
 — **John Kim, IT Lead, FILA**
 
 ### Leveraging Kestra’s API-First Approach for Automation
@@ -81,7 +82,7 @@ With **Kestra’s execution context**, FILA ensures that every step of their wor
 
 To improve incident response, FILA has also set up **automated monitoring**. If a task fails, Kestra triggers an alert on Microsoft Teams, providing a direct link to the failed execution. Additionally, workflows that run longer than expected due to database locks or other issues are automatically terminated and restarted.
 
-"_If a workflow gets stuck, I don’t have to manually intervene. Our system detects long-running jobs, kills them, and retries. This kind of automation significantly reduces downtime and improves operational efficiency._" 
+"_If a workflow gets stuck, I don’t have to manually intervene. Our system detects long-running jobs, kills them, and retries. This kind of automation significantly reduces downtime and improves operational efficiency._"
 — **John Kim**
 
 ### **Scaling Operations with Kestra**
