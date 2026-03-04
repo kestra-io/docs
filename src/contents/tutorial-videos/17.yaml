@@ -1,0 +1,7 @@
+title: "Kestra Tutorial: Docker"
+description: "Join Will as he guides you through the advanced integration of Docker within Kestra to manage task dependencies and enhance isolation. Learn how Docker containers prevent conflicts by encapsulating tasks like Python scripts, keeping your workflows smooth and efficient."
+category: "Quick Start Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=147apT4xGfE"
+publicationDate: "2024-04-24T00:00:00.000"
+contentType: "Quick Start Tutorials"

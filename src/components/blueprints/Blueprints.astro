@@ -40,7 +40,6 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
                                 blueprint={blueprint}
                                 tags={tags}
                                 href={`/blueprints/${blueprint.id}`}
-                                scheme="light"
                                 client:visible
                             />
                         </div>
@@ -98,7 +97,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
         width: 100%;
         padding: 3rem 0;
         background-image: url("~/assets/landing/infrastructure/grid.svg");
-        background-color: #f4f4f4;
+        background-color: var(--ks-background-tertiary);
 
         @include media-breakpoint-up(lg) {
             padding: 4rem 0;
@@ -121,8 +120,8 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
 
             h2 {
                 text-align: center;
-                :global(.highlight) {
-                    color: #631BFF;
+                :global(.gradient) {
+                    color: var(--ks-content-color-highlight);
                 }
             }
 
@@ -137,8 +136,8 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
                     position: absolute;
                     top: 46%;
                     transform: translateY(-50%);
-                    background-color: $black-10;
-                    color: $white;
+                    background-color: var(--ks-background-secondary);
+                    color: var(--ks-content-primary);
                     border-radius: 50%;
                     z-index: 10;
                     height: 35px;

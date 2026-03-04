@@ -1,9 +1,9 @@
 ---
 export const prerender = false
 import Layout from "~/components/layout.astro"
-import VideosTutorialsList from "~/components/videos/TutorialsList.vue"
-import CommonPagination from "~/components/common/Pagination.vue"
-import { $fetchApi } from "~/utils/fetch"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import TutorialsList from "~/components/videos/TutorialsList.vue"
+import { getCollection } from "astro:content"
 
 const tags = new Map([
     ["all", "All videos"],
@@ -26,25 +26,38 @@ const page = pageStr ? parseInt(pageStr) : 1
 
 const currentCategoryFilter = slug === "all" ? "" : currentCategory
 
-const API_URL = `/tutorial-videos?page=${page}&size=${itemsPerPage}&category=${currentCategoryFilter}`
+const allVideos = await getCollection("tutorialVideos")
 
-const tutorialVideo = await $fetchApi(API_URL)
+const sortedVideos = allVideos.sort(
+    (a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime(),
+)
+
+const filteredVideos = currentCategoryFilter
+    ? sortedVideos.filter((v) => v.data.category === currentCategoryFilter)
+    : sortedVideos
+
+const total = filteredVideos.length
+const start = (page - 1) * itemsPerPage
+const results = filteredVideos
+    .slice(start, start + itemsPerPage)
+    .map((v) => ({ ...v.data, publicationDate: v.data.publicationDate.toISOString() }))
+
+const tutorialVideo = { results, total }
 
 const title = `Video Tutorials: ${currentCategory}`
 const description = `Get started with our Video Tutorials: ${currentCategory}`
 ---
 
 <Layout title={title} description={description}>
-    <VideosTutorialsList
+    <TutorialsList
         client:visible
-        {...{ tutorialVideo, page, itemsPerPage, currentCategory }}
-    >
-        <CommonPagination
-            client:visible
-            currentUrl={Astro.request.url}
-            slot="pagination"
-            currentPage={page}
-            totalPages={Math.ceil(tutorialVideo.total / itemsPerPage)}
-        />
-    </VideosTutorialsList>
+        currentUrl={Astro.request.url}
+        {...{
+            tutorialVideo,
+            page,
+            itemsPerPage,
+            currentCategory,
+        }}
+    />
+    <FooterContact title="Get Started" />
 </Layout>

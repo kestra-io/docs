@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="d-none d-lg-flex align-items-center justify-content-between overview-header">
-            <strong class="text-white fw-bold fs-6 h6">OVERVIEW</strong>
+            <strong class="fw-bold fs-6 h6">OVERVIEW</strong>
             <span aria-describedby="overview-tooltip" class="info-icon-wrapper">
                 <InformationOutline class="info-icon" />
             </span>
@@ -192,20 +192,17 @@
     @import "~/assets/styles/variable";
 
     .versions {
-        border-bottom: 1px solid $black-3;
-
+        border-bottom: 1px solid var(--ks-border-primary);
         .latest-ver {
             padding: 0.875rem 1rem 1rem 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
-
             .latest-ver-header {
                 padding-right: 0.25rem;
             }
-
             h6 {
-                color: $white;
+                color: var(--ks-content-primary);
                 font-size: 18.4px;
                 font-weight: 700;
                 margin: 0;
@@ -214,7 +211,6 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-
             .latest-badge {
                 align-items: center;
                 border: 1px solid var(--ks-border-success);
@@ -230,93 +226,76 @@
                 margin-top: 2px;
                 padding: 0 8px;
             }
-
             small {
                 color: color-palette.$base-gray-300;
                 font-size: 12px;
             }
-
             a {
                 color: var(--ks-content-link);
                 font-size: 12px;
                 text-decoration: none;
-
                 &:hover {
                     color: var(--ks-content-link-hover);
                 }
             }
         }
-
         .kestra-ver {
             color: color-palette.$base-gray-300 !important;
             font-size: 10px !important;
         }
-
         .core-ver {
             color: color-palette.$base-white;
             font-weight: 600;
             font-size: 10px;
         }
-
         .old-versions {
             padding: 0 20px;
             padding-bottom: 5px;
-
             .older-summary {
                 align-items: center;
-                background-color: rgba($black-2, 0.44);
-                border-bottom: 1px solid $black-3;
-                border-top: 1px solid $black-3;
-                color: $white-3;
+                background-color: rgba(var(--ks-background-secondary), 0.44);
+                border-bottom: 1px solid var(--ks-border-primary);
+                border-top: 1px solid var(--ks-border-primary);
+                color: var(--ks-content-secondary);
                 cursor: pointer;
                 display: flex;
                 font-size: 12px;
                 justify-content: space-between;
                 list-style: none;
                 padding: 0.35rem 1.5rem 0.35rem 0.5rem;
-
                 &:hover {
-                    background-color: $black-9;
+                    background-color: var(--ks-border-primary);
                 }
-
                 &::-webkit-details-marker {
                     display: none;
                 }
-
                 :deep(svg) {
                     font-size: 20px;
                 }
             }
-
             .older-versions {
-                background-color: rgba($black-2, 0.44);
+                background-color: rgba(var(--ks-background-secondary), 0.44);
                 max-height: 138px;
                 overflow-y: auto;
-
                 &::-webkit-scrollbar {
                     width: 4px;
                 }
-
                 &::-webkit-scrollbar-thumb {
-                    background: $purple-36;
+                    background: var(--ks-content-color-highlight);
                     border-radius: 5px;
                 }
-
                 .older-version {
                     align-items: start;
-                    border-bottom: 1px solid $black-3;
+                    border-bottom: 1px solid var(--ks-border-primary);
                     display: grid;
                     grid-template-columns: 1fr auto;
                     padding: 0.25rem 0.875rem 0.25rem 0.5rem;
-
                     &:last-child {
                         border-bottom: none;
                     }
-
                     &:hover {
-                        background-color: $black-9;
+                        background-color: var(--ks-border-primary);
                     }
-
                     strong {
                         color: var(--ks-content-primary);
                         font-size: 12px;
@@ -324,24 +303,20 @@
                         grid-column: 1;
                         margin: 0;
                     }
-
                     small {
                         color: color-palette.$base-gray-300;
                         font-size: 10px;
                         font-weight: normal;
                         grid-column: 1;
                     }
-
                     a {
                         align-self: start;
                         grid-column: 2;
                         grid-row: 1 / 3;
                     }
-
                     :deep(svg) {
                         color: var(--ks-content-link);
                         font-size: 12px;
-
                         &:hover {
                             color: var(--ks-content-link-hover);
                         }
@@ -349,33 +324,27 @@
                 }
             }
         }
-
         .managed {
             display: flex;
             flex-direction: column;
-
             div {
-                border-bottom: 1px solid $black-3;
+                border-bottom: 1px solid var(--ks-border-primary);
                 padding: 1rem 1.5rem;
-
                 &:first-child {
-                    border-top: 1px solid $black-3;
+                    border-top: 1px solid var(--ks-border-primary);
                     margin-top: 1.5rem;
                     padding-top: 1rem;
                 }
-
                 &:last-child {
                     border-bottom: none;
                 }
-
                 p {
                     color: color-palette.$base-gray-300;
                     font-size: 14px;
                     margin: 0;
                 }
-
                 span {
-                    color: $white;
+                    color: var(--ks-content-primary);
                     font-size: 14px;
                     font-weight: 600;
                 }
@@ -386,13 +355,12 @@
     strong.h6 {
         font-size: 14px;
         margin-left: 1.5rem;
-        color: var(--ks-content-tertiary);
+        color: var(--ks-content-primary);
     }
 
     .overview-header {
         margin: 0;
         padding: 0;
-
         .info-icon {
             color: var(--ks-content-secondary);
             font-size: 22px;
@@ -400,7 +368,6 @@
             transition: color 0.2s ease;
             margin-right: 1.25rem;
             margin-top: -0.5rem;
-
             &:hover {
                 color: color-palette.$base-blue-50;
             }
@@ -409,7 +376,7 @@
 
     .categories-section,
     .links-section {
-        border-bottom: 1px solid $black-3;
+        border-bottom: 1px solid var(--ks-border-primary);
         margin: 1rem 0;
     }
 
@@ -419,19 +386,18 @@
         gap: 8px;
         margin: 10px 0 20px 0;
         padding: 0.25rem 1rem 0.25rem 1.5rem;
-
         .category-tag {
             display: inline-block;
-            margin-right: 0;
-            margin-bottom: 0;
-            background: color-palette.$base-purple-800;
-            color: $white;
+            margin-right: 0.25rem;
+            background: var(--ks-backgroung-tag-category);
+            color: var(--ks-content-tag-category);
             padding: 0.125rem 0.5rem;
             border-radius: 40px;
-            border: 1px solid color-palette.$base-purple-600;
-            font-size: 0.625rem;
-            font-weight: 500;
-            user-select: none;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
@@ -441,32 +407,28 @@
         gap: 8px;
         margin: 10px 0 20px 0;
         padding: 0.25rem 1rem 0.25rem 1.5rem;
-
         .resource-btn {
             align-items: center;
-            background: $black-2;
+            background: var(--ks-background-secondary);
             border: 1px solid var(--ks-border-primary);
             border-radius: 8px;
-            color: $white;
+            color: var(--ks-content-primary);
             display: inline-flex;
             font-weight: 600;
             gap: 0.25rem;
             padding: 4px 8px;
             text-decoration: none;
             width: fit-content;
-
             :deep(svg) {
                 font-size: 18px;
             }
-
             span {
                 font-size: 12px;
                 font-weight: 600;
             }
-
             &:hover {
-                background: $black-9;
-                color: $white;
+                background: var(--ks-border-primary);
+                color: var(--ks-content-primary);
             }
         }
     }
@@ -503,11 +465,9 @@
             font-size: 12px;
             line-height: 22px;
         }
-
         a {
             color: var(--ks-content-link);
             text-decoration: none;
-
             &:hover {
                 text-decoration: underline;
                 color: var(--ks-content-link-hover);

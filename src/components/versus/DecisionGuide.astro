@@ -1,0 +1,137 @@
+---
+import { Icon } from "astro-icon/components"
+import kestraLogo from "./assets/ks.svg?raw"
+import Card from "~/components/common/CardPair.astro"
+
+interface Props {
+    mainTitle?: string
+    kestra?: {
+        title?: string
+        list?: string[]
+    }
+    competitor?: {
+        logo?: any
+        title?: string
+        list?: string[]
+        shadowColor?: string
+        bulletColor?: string
+    }
+}
+
+const {
+    mainTitle,
+    kestra,
+    competitor,
+} = Astro.props as Props
+---
+
+<section>
+    <div class="container">
+        <h2 set:html={mainTitle} />
+        <div class="comparison-box d-flex flex-column flex-lg-row">
+            <Card
+                isKestra={true}
+                logo={kestraLogo}
+                logoAlt="Kestra logo"
+            >
+                <h5>{kestra?.title}</h5>
+                <ul>
+                    {kestra?.list?.map(item => (
+                        <li>
+                            <Icon name="mdi:check-bold" class="icon" />
+                            <span>{item}</span>
+                        </li>
+                    ))}
+                </ul>
+            </Card>
+
+            <Card
+                logo={competitor?.logo}
+                logoAlt="Competitor logo"
+                shadowColor={competitor?.shadowColor}
+            >
+                <h5>{competitor?.title}</h5>
+                <ul>
+                    {competitor?.list?.map((item: any) => (
+                        <li>
+                            <Icon name="mdi:check-bold" class="icon" />
+                            <span>{item}</span>
+                        </li>
+                    ))}
+                </ul>
+            </Card>
+        </div>
+    </div>
+</section>
+
+<style lang="scss" define:vars={{ competitorBulletColor: competitor?.bulletColor }}>
+    @import "~/assets/styles/variable";
+
+    section {
+        padding: $spacer * 4 0;
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 0.75rem;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: $rem-2;
+
+            @include media-breakpoint-up(lg) {
+                padding: 0;
+            }
+        }
+
+        h2 {
+            color: var(--ks-content-primary);
+            @include media-breakpoint-up(lg) {
+                font-size: $h2-font-size;
+            }
+        }
+
+        .comparison-box {
+            gap: $rem-2;
+            width: 100%;
+
+            :global(.comparison-item) {
+                &.kestra {
+                    .icon {
+                        color: #02BE8A;
+                    }
+                }
+
+                &.competitor {
+                    .icon {
+                        color: var(--competitorBulletColor);
+                    }
+                }
+
+                ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    @include media-breakpoint-up(lg) {
+                        max-width: 490px;
+                    }
+
+                    li {
+                        font-size: $font-size-md;
+                        line-height: 1.4;
+                        display: flex;
+                        gap: $spacer * 0.5;
+                        margin-bottom: 1rem;
+                        align-items: flex-start;
+
+                        .icon {
+                            margin-top: 4px;
+                            font-size: 1rem;
+                            flex-shrink: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

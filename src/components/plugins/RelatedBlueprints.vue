@@ -15,19 +15,19 @@
                 :key="blueprint.id"
                 class="col-md-4 col-lg-6 col-xl-6 col-xxl-4"
             >
-                <LayoutBlueprintCard :blueprint="blueprint" :href="`/blueprints/${blueprint.id}`" />
+                <BlueprintCard :blueprint="blueprint" :href="`/blueprints/${blueprint.id}`" />
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed, ref, watch } from "vue"
+    import { computed, ref } from "vue"
     import type { Plugin } from "@kestra-io/ui-libs"
     import { useMediaQuery } from "@vueuse/core"
     import { getBlueprintsHeading } from "~/utils/pluginUtils"
     import NavActions from "~/components/common/NavActions.vue"
-    import LayoutBlueprintCard from "~/components/layout/BlueprintCard.vue"
+    import BlueprintCard from "~/components/layout/BlueprintCard.vue"
 
     const props = defineProps<{
         pluginName: string
@@ -70,20 +70,17 @@
     @import "~/assets/styles/variable";
 
     .more {
-        border-top: 1px solid var(--kestra-io-token-color-border-secondary);
+        border-top: $block-border;
         padding: 2rem 0;
-
         @include media-breakpoint-up(lg) {
             margin: 0 -2rem;
             padding: 2rem;
         }
-
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-
             h4 {
                 padding: 0 !important;
                 font-size: 20px;

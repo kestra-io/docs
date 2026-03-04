@@ -1,16 +1,257 @@
 ---
-import cloudVisual from "./images/cloud_visual.png"
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+
+import cloudVisual from "~/components/cloud/assets/cloud.svg"
+import gradient1 from "~/components/cloud/assets/gradient-1.svg"
+import gradient2 from "~/components/cloud/assets/gradient-2.svg"
+
+import CloudForm from "~/components/cloud/Form.vue"
+
+const FEATURES = [
+    {
+        icon: "mdi:calendar-month",
+        title: "Start Fast",
+        desc: "We provision and operate your environment.",
+    },
+    {
+        icon: "mdi:cloud-outline",
+        title: "Operate Confidently",
+        desc: "Monitoring and observability built in.",
+    },
+    {
+        icon: "mdi:face-agent",
+        title: "Get Help When It Matters",
+        desc: "Expert onboarding and support.",
+    },
+    {
+        icon: "mdi:check-circle-outline",
+        title: "Stay Secure",
+        desc: "RBAC, SSO, audit logs, governance controls.",
+    },
+]
 ---
 
-<div class="container mt-5 pt-5 text-center">
-    <img src={cloudVisual.src} class="d-lg-none flip" alt="Kestra Cloud" />
-    <h5 class="highlight">Exclusive Access to Kestra Cloud</h5>
-    <h1>Fully Managed Orchestration<br />Simplified</h1>
-</div>
+<section class="header">
+    <div class="row m-0">
+        <div class="col-xl-6 col-12 left-column">
+            <div class="img-title" data-usal="fade-r">
+                <Image src={cloudVisual} alt="Cloud Visual" />
+                <h1>
+                    Kestra Cloud<br /><span class="highlight">Request Access</span>
+                </h1>
+            </div>
 
-<style scoped lang="scss">
-    .flip {
-        width: 200px;
-        transform: scaleX(-1);
+            <div class="description" data-usal="fade-r">
+                <h2>Fully Managed, Ready For Production.</h2>
+                <p>
+                    Get Kestra Cloud provisioned and operated for you: upgrades,
+                    scaling, reliability, and security handled by our team, so
+                    you can focus on building workflows.
+                </p>
+            </div>
+
+            <div class="feature-grid">
+                {
+                    FEATURES.map((f, index) => (
+                        <div class="feature-item" data-usal={`fade-u delay-${index * 50}`}>
+                            <div class="title-row">
+                                <Icon name={f.icon} class="icon" />
+                                <h5>{f.title}</h5>
+                            </div>
+                            <small>{f.desc}</small>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div class="bottom-tiles" data-usal="fade-u">
+                <a href="/trust" target="_blank" class="tile">
+                    <img src="/soc2.png" alt="SOC 2" />
+                    <small>SOC 1 / SOC 2</small>
+                </a>
+                <a href="/trust" target="_blank" class="tile">
+                    <img src="/gdpr.svg" alt="GDPR" />
+                    <small>RGPD</small>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-12 right-column">
+            <div class="form-container" data-usal="zoomin-d">
+                <CloudForm client:idle />
+            </div>
+            <img
+                src={gradient1.src}
+                class="gradient gradient-1"
+                alt="gradient"
+            />
+            <img
+                src={gradient2.src}
+                class="gradient gradient-2"
+                alt="gradient"
+            />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .header {
+        overflow: hidden;
+
+        .row {
+
+            .left-column {
+                background: url("~/components/cloud/assets/left-bg.png")
+                    no-repeat center / cover;
+                padding: $rem-2;
+                @include media-breakpoint-up(lg) {
+                    padding: 5rem 7.75rem;
+                }
+                display: flex;
+                flex-direction: column;
+                gap: $rem-2;
+
+                .img-title {
+                    display: flex;
+                    align-items: center;
+                    gap: $rem-1;
+
+                    @include media-breakpoint-down(md) {
+                        flex-direction: column;
+                        align-items: center;
+                    }
+                }
+
+                .description {
+                    h2 {
+                        margin-bottom: $rem-1;
+                    }
+                    @include media-breakpoint-up(lg) {
+                        max-width: 612px;
+                        h2 {
+                            font-size: 1.875rem;
+                        }
+                    }
+                }
+
+                .feature-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 1.8rem;
+
+                    .feature-item {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+
+                        .title-row {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+
+                            .icon {
+                                font-size: $font-size-lg;
+                                color: var(--ks-icon-color);
+                                flex-shrink: 0;
+                            }
+                            h5 {
+                                margin: 0;
+                            }
+                        }
+
+                        small {
+                            font-size: $font-size-sm;
+                            color: var(--ks-content-secondary);
+                        }
+                    }
+                }
+
+                .bottom-tiles {
+                    display: flex;
+                    max-width: 316px;
+                    border: 1px solid var(--ks-border-secondary);
+                    border-radius: $border-radius-lg;
+                    overflow: hidden;
+                    margin-top: $rem-2;
+                    background: var(--ks-background-secondary);
+
+                    .tile {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: $rem-1;
+                        padding: $rem-1 $rem-2;
+                        text-decoration: none;
+                        color: inherit;
+
+                        &:first-child {
+                            border-right: 1px solid var(--ks-border-secondary);
+                        }
+
+                        img {
+                            width: 45px;
+                            height: 45px;
+                            transition: transform 0.2s ease-in-out;
+                            &:hover {
+                                transform: scale(1.1);
+                            }
+                        }
+
+                        small {
+                            font-size: $font-size-xs;
+                            font-family: $font-family-monospace;
+                            color: var(--ks-content-secondary);
+                            line-height: 1;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+            }
+
+            .right-column {
+                background: #141414;
+                position: relative;
+                overflow: hidden;
+                padding: $rem-4 $rem-1;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: stretch;
+                min-height: 100%;
+
+                .form-container {
+                    position: relative;
+                    z-index: 10;
+                    width: 100%;
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .gradient {
+                    position: absolute;
+                    right: 0;
+                    width: 100%;
+                    height: 100%;
+                    
+                    @include media-breakpoint-down(lg) {
+                        object-fit: cover;
+                        pointer-events: none;
+                    }
+
+                    &-1 {
+                        top: 0;
+                    }
+                    &-2 {
+                        bottom: -10rem;
+                    }
+                }
+            }
+        }
     }
 </style>

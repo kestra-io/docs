@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.2.4
+  version: 1.3.0
 tags:
 - name: Flows
   description: Flows api
@@ -1042,6 +1042,99 @@ paths:
             application/json:
               schema:
                 type: object
+  /api/v1/kill-switches:
+    post:
+      tags:
+      - KillSwitches
+      summary: Create a kill switch
+      description: Superadmin-only. Creates a kill switch.
+      operationId: createKillSwitch
+      requestBody:
+        description: The kill switch to create
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KillSwitch"
+        required: true
+      responses:
+        "200":
+          description: createKillSwitch 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KillSwitch"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/kill-switches/search:
+    get:
+      tags:
+      - KillSwitches
+      summary: Retrieve all kill switches
+      description: Superadmin-only. Returns all kill switches.
+      operationId: searchKillSwitches
+      responses:
+        "200":
+          description: searchKillSwitches 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/KillSwitch"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/kill-switches/{id}:
+    put:
+      tags:
+      - KillSwitches
+      summary: Update a kill switch
+      description: Superadmin-only. Updates a kill switch by its ID.
+      operationId: updateKillSwitch
+      parameters:
+      - name: id
+        in: path
+        description: The kill switch id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The kill switch to update
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KillSwitch"
+        required: true
+      responses:
+        "200":
+          description: updateKillSwitch 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KillSwitch"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    delete:
+      tags:
+      - KillSwitches
+      summary: Delete a kill switch
+      description: Superadmin-only. Deletes a kill switch by its ID.
+      operationId: deleteKillSwitch
+      parameters:
+      - name: id
+        in: path
+        description: The kill switch id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteKillSwitch 200 response
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/license-info:
     get:
       tags:
@@ -1549,6 +1642,7 @@ paths:
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -1580,6 +1674,15 @@ paths:
           nullable: true
           items:
             type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       responses:
         "200":
           description: Service account successfully created
@@ -2118,6 +2221,7 @@ paths:
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -2149,6 +2253,15 @@ paths:
           nullable: true
           items:
             type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       responses:
         "200":
           description: listUsers 200 response
@@ -2601,6 +2714,58 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/{tenant}/ai/generate/app:
+    post:
+      tags:
+      - AI
+      summary: Generate or regenerate an app based on a prompt (EE only)
+      operationId: generateApp
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Prompt and context required for app generation
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppGenerationPrompt"
+        required: true
+      responses:
+        "200":
+          description: generateApp 200 response
+          content:
+            application/yaml:
+              schema:
+                type: string
+  /api/v1/{tenant}/ai/generate/dashboard:
+    post:
+      tags:
+      - AI
+      summary: Generate or regenerate a dashboard based on a prompt
+      operationId: generateDashboard
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Prompt and context required for dashboard generation
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardGenerationPrompt"
+        required: true
+      responses:
+        "200":
+          description: generateDashboard 200 response
+          content:
+            application/yaml:
+              schema:
+                type: string
   /api/v1/{tenant}/ai/generate/flow:
     post:
       tags:
@@ -2627,6 +2792,53 @@ paths:
             application/yaml:
               schema:
                 type: string
+  /api/v1/{tenant}/ai/generate/test:
+    post:
+      tags:
+      - AI
+      summary: Generate or regenerate a test suite based on a prompt (EE only)
+      operationId: generateTestSuite
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Prompt and context required for test suite generation
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestSuiteGenerationPrompt"
+        required: true
+      responses:
+        "200":
+          description: generateTestSuite 200 response
+          content:
+            application/yaml:
+              schema:
+                type: string
+  /api/v1/{tenant}/ai/providers:
+    get:
+      tags:
+      - AI
+      summary: List available AI providers
+      operationId: getProviders
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getProviders 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AiController.AiProviderResponse"
   /api/v1/{tenant}/apps:
     post:
       tags:
@@ -3464,7 +3676,8 @@ paths:
         content:
           application/x-yaml:
             schema:
-              $ref: "#/components/schemas/Asset"
+              type: string
+        required: true
       responses:
         "200":
           description: createAsset 200 response
@@ -3498,11 +3711,17 @@ paths:
         required: true
       responses:
         "200":
-          description: deleteAssetsByIds 200 response
+          description: Number of deleted assets
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/BulkResponse"
+        "400":
+          description: If any assetId didn't match an existing asset
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -3522,6 +3741,14 @@ paths:
           type: array
           items:
             $ref: "#/components/schemas/QueryFilter"
+      - name: purge
+        in: query
+        description: "If true, will purge instead of soft-delete"
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: tenant
         in: path
         required: true
@@ -3529,11 +3756,108 @@ paths:
           type: string
       responses:
         "200":
-          description: deleteAssetsByQuery 200 response
+          description: Number of deleted assets
           content:
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/BulkResponse"
+        "400":
+          description: If any assetId didn't match an existing asset
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkErrorResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/assets/lineage-events/by-query:
+    delete:
+      tags:
+      - Assets
+      summary: "Delete asset lineage events by query, hard-delete (purge) only"
+      operationId: deleteAssetLineageEventsByQuery
+      parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteAssetLineageEventsByQuery 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/assets/lineage-events/search:
+    get:
+      tags:
+      - Assets
+      summary: Search for asset lineage events
+      operationId: searchAssetLineageEvents
+      parameters:
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: searchAssetLineageEvents 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_AssetsController.ApiAssetLineageEvent_"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -3594,6 +3918,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PagedResults_AssetsController.ApiAsset_"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/assets/usages/by-query:
+    delete:
+      tags:
+      - Assets
+      summary: "Delete asset usages by query, hard-delete (purge) only"
+      operationId: deleteAssetUsagesByQuery
+      parameters:
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteAssetUsagesByQuery 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -3670,6 +4025,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: allowDeleted
+        in: query
+        description: Get asset even if soft deleted
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: tenant
         in: path
         required: true
@@ -4930,12 +5293,12 @@ paths:
       summary: Update a flow concurrency limit
       operationId: updateConcurrencyLimit
       parameters:
-      - name: flowId
+      - name: namespace
         in: path
         required: true
         schema:
           type: string
-      - name: namespace
+      - name: flowId
         in: path
         required: true
         schema:
@@ -4958,6 +5321,203 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ConcurrencyLimit"
+  /api/v1/{tenant}/credentials:
+    get:
+      tags:
+      - Credentials
+      summary: List all tenant-level credentials
+      operationId: listCredentials
+      parameters:
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listCredentials 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_ApiCredentialResponse_"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    post:
+      tags:
+      - Credentials
+      summary: Create a new tenant-level credential
+      operationId: createCredential
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiCreateCredentialRequest"
+        required: true
+      responses:
+        "200":
+          description: createCredential 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiCredentialResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/credentials/{id}:
+    get:
+      tags:
+      - Credentials
+      summary: Get a credential by ID
+      operationId: getCredential
+      parameters:
+      - name: id
+        in: path
+        description: The credential ID
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getCredential 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiCredentialResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    put:
+      tags:
+      - Credentials
+      summary: Update an existing credential
+      operationId: updateCredential
+      parameters:
+      - name: id
+        in: path
+        description: The credential ID
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiUpdateCredentialRequest"
+        required: true
+      responses:
+        "200":
+          description: updateCredential 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiCredentialResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    delete:
+      tags:
+      - Credentials
+      summary: Delete a credential
+      operationId: deleteCredential
+      parameters:
+      - name: id
+        in: path
+        description: The credential ID
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteCredential 200 response
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/credentials/{id}/test:
+    post:
+      tags:
+      - Credentials
+      summary: Test a credential connection by attempting to fetch a token
+      operationId: testConnection
+      parameters:
+      - name: id
+        in: path
+        description: The credential ID
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: testConnection 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiTestConnectionResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/{tenant}/dashboards:
     get:
       tags:
@@ -7602,7 +8162,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -7641,7 +8201,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -7680,7 +8240,146 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/executions/webhook/{namespace}/{id}/{key}/{path}:
+    get:
+      tags:
+      - Executions
+      summary: Trigger a new execution by GET webhook trigger
+      operationId: triggerExecutionByGetWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    put:
+      tags:
+      - Executions
+      summary: Trigger a new execution by PUT webhook trigger
+      operationId: triggerExecutionByPutWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    post:
+      tags:
+      - Executions
+      summary: Trigger a new execution by POST webhook trigger
+      operationId: triggerExecutionByPostWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -7972,7 +8671,7 @@ paths:
       parameters:
       - name: executionId
         in: path
-        description: The execution that you want flow informations
+        description: The execution that you want flow information
         required: true
         schema:
           type: string
@@ -8822,7 +9521,7 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flows source code splitted with "---"
+        description: A list of flows source code split with "---"
         content:
           application/x-yaml:
             schema:
@@ -9556,7 +10255,14 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flows source code in a single string
+        description: Flows as YAML string or multipart files
+        content:
+          application/x-yaml:
+            schema:
+              type: string
+          multipart/form-data:
+            schema:
+              type: object
         required: true
       responses:
         "200":
@@ -9678,14 +10384,6 @@ paths:
         Flow that already created but not in `flows` will be deleted if the query delete is `true`
       operationId: updateFlowsInNamespace
       parameters:
-      - name: override
-        in: query
-        description: If namespace of all provided flows should be overridden
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
       - name: delete
         in: query
         description: If missing flow should be deleted
@@ -9705,6 +10403,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: override
+        in: query
+        description: If namespace of all provided flows should be overridden
+        required: true
+        explode: false
+        schema:
+          type: boolean
+          default: false
       requestBody:
         description: A list of flows source code
         content:
@@ -10024,6 +10730,7 @@ paths:
           minItems: 1
           type: array
           items:
+            minimum: 1
             type: integer
             format: int32
       - name: tenant
@@ -10384,19 +11091,20 @@ paths:
       summary: Search for users in a group
       operationId: searchGroupMembers
       parameters:
+      - name: q
+        in: query
+        description: A string filter
+        deprecated: true
+        explode: false
+        schema:
+          type: string
+          nullable: true
       - name: id
         in: path
         description: The group id
         required: true
         schema:
           type: string
-      - name: q
-        in: query
-        description: A string filter
-        explode: false
-        schema:
-          type: string
-          nullable: true
       - name: page
         in: query
         description: The current page
@@ -10424,6 +11132,15 @@ paths:
           nullable: true
           items:
             type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: tenant
         in: path
         required: true
@@ -12553,7 +13270,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/PluginDefault"
+                  $ref: "#/components/schemas/NamespaceController.ApiInheritedPluginDefaultFromNamespace"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -12584,6 +13301,347 @@ paths:
                 type: object
                 additionalProperties:
                   type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/namespaces/{id}/plugindefaults/export:
+    post:
+      tags:
+      - Namespaces
+      summary: Export this namespace plugin defaults
+      operationId: exportPluginDefaults
+      parameters:
+      - name: id
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: exportPluginDefaults 200 response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: byte
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/namespaces/{id}/plugindefaults/import:
+    post:
+      tags:
+      - Namespaces
+      summary: Import plugin defaults in this namespace
+      operationId: importPluginDefaults
+      parameters:
+      - name: id
+        in: path
+        description: The namespace id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileUpload:
+                  type: string
+                  format: binary
+            encoding:
+              fileUpload:
+                contentType: application/octet-stream
+                explode: false
+        required: true
+      responses:
+        "200":
+          description: importPluginDefaults 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/namespaces/{namespace}/credentials:
+    get:
+      tags:
+      - Credentials
+      - Namespaces
+      summary: List credentials in a namespace
+      operationId: listNamespaceCredentials
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: The current page
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        description: The current page size
+        required: true
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sort
+        in: query
+        description: The sort of current page
+        explode: false
+        schema:
+          type: array
+          nullable: true
+          items:
+            type: string
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listNamespaceCredentials 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedResults_ApiCredentialResponse_"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    post:
+      tags:
+      - Credentials
+      - Namespaces
+      summary: Create a credential in a namespace
+      operationId: createNamespaceCredential
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiCreateCredentialRequest"
+        required: true
+      responses:
+        "200":
+          description: createNamespaceCredential 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiCredentialResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/namespaces/{namespace}/credentials/inherited:
+    get:
+      tags:
+      - Credentials
+      - Namespaces
+      summary: Get inherited credentials from parent namespaces
+      operationId: getInheritedCredentials
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getInheritedCredentials 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiInheritedCredentialsResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/namespaces/{namespace}/credentials/{name}:
+    get:
+      tags:
+      - Credentials
+      - Namespaces
+      summary: Get a credential by name in a namespace
+      operationId: getNamespaceCredential
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: path
+        description: The credential name
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getNamespaceCredential 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiCredentialResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    put:
+      tags:
+      - Credentials
+      - Namespaces
+      summary: Update a credential in a namespace
+      operationId: updateNamespaceCredential
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: path
+        description: The credential name
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiUpdateCredentialRequest"
+        required: true
+      responses:
+        "200":
+          description: updateNamespaceCredential 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiCredentialResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+    delete:
+      tags:
+      - Credentials
+      - Namespaces
+      summary: Delete a credential from a namespace
+      operationId: deleteNamespaceCredential
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: path
+        description: The credential name
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleteNamespaceCredential 200 response
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/namespaces/{namespace}/credentials/{name}/test:
+    post:
+      tags:
+      - Credentials
+      - Namespaces
+      summary: Test a credential connection
+      operationId: testNamespaceConnection
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace
+        required: true
+        schema:
+          type: string
+      - name: name
+        in: path
+        description: The credential name
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: testNamespaceConnection 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiTestConnectionResponse"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -14106,6 +15164,7 @@ paths:
       - name: q
         in: query
         description: A string filter
+        deprecated: true
         explode: false
         schema:
           type: string
@@ -14145,6 +15204,15 @@ paths:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/UserType"
+      - name: filters
+        in: query
+        description: Filters
+        required: true
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/QueryFilter"
       - name: tenant
         in: path
         required: true
@@ -15810,6 +16878,10 @@ components:
           minimum: 1
           type: integer
           format: int32
+        updated:
+          type: string
+          description: The timestamp when this revision was created or last updated.
+          format: date-time
         description:
           type: string
         inputs:
@@ -16018,6 +17090,15 @@ components:
       - CREATE
       - UPDATE
       - DELETE
+    AiController.AiProviderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        isDefault:
+          type: boolean
     ApiAuth:
       type: object
       properties:
@@ -16040,6 +17121,200 @@ components:
             type: string
         existingOnly:
           type: boolean
+    ApiCreateCredentialRequest:
+      title: Create Credential Request
+      type: object
+      description: Request to create a new credential. Use 'type' field to specify
+        credential type.
+      discriminator:
+        propertyName: type
+        mapping:
+          OAUTH2: "#/components/schemas/ApiCreateCredentialRequest.ApiCreateOAuth2CredentialRequest"
+          GITHUB_APP: "#/components/schemas/ApiCreateCredentialRequest.ApiCreateGitHubAppCredentialRequest"
+      oneOf:
+      - $ref: "#/components/schemas/ApiCreateCredentialRequest.ApiCreateOAuth2CredentialRequest"
+      - $ref: "#/components/schemas/ApiCreateCredentialRequest.ApiCreateGitHubAppCredentialRequest"
+    ApiCreateCredentialRequest.ApiCreateGitHubAppCredentialRequest:
+      title: Create GitHub App Credential Request
+      required:
+      - authConfig
+      - name
+      - type
+      type: object
+      properties:
+        type:
+          description: Credential type discriminator
+          example: github_app
+          allOf:
+          - $ref: "#/components/schemas/CredentialType"
+        name:
+          type: string
+          description: Credential name
+          example: github-app-prod
+        description:
+          type: string
+          description: Credential description
+        namespace:
+          type: string
+          description: Namespace (null for tenant-level)
+        tokenCaching:
+          description: Token caching configuration
+          allOf:
+          - $ref: "#/components/schemas/TokenCacheConfig"
+        authConfig:
+          description: GitHub App authentication configuration
+          allOf:
+          - $ref: "#/components/schemas/GithubAppConfig"
+      description: Request to create a new GitHub App credential.
+    ApiCreateCredentialRequest.ApiCreateOAuth2CredentialRequest:
+      title: Create OAuth2 Credential Request
+      required:
+      - authConfig
+      - name
+      - tokenEndpoint
+      - type
+      type: object
+      properties:
+        type:
+          description: Credential type discriminator
+          example: oauth2
+          allOf:
+          - $ref: "#/components/schemas/CredentialType"
+        name:
+          type: string
+          description: Credential name
+          example: salesforce-prod
+        description:
+          type: string
+          description: Credential description
+        namespace:
+          type: string
+          description: Namespace (null for tenant-level)
+        tokenEndpoint:
+          type: string
+          description: OAuth2 token endpoint URL
+          example: https://login.salesforce.com/services/oauth2/token
+        scopes:
+          type: array
+          description: OAuth2 scopes
+          items:
+            type: string
+        audience:
+          type: string
+          description: OAuth2 audience
+        tokenCaching:
+          description: Token caching configuration
+          allOf:
+          - $ref: "#/components/schemas/TokenCacheConfig"
+        authConfig:
+          description: OAuth2 authentication configuration
+          allOf:
+          - $ref: "#/components/schemas/OAuth2Config"
+      description: Request to create a new OAuth2 credential.
+    ApiCredentialResponse:
+      title: Credential Response
+      type: object
+      description: Response containing credential details. Use 'type' field to determine
+        credential type.
+      discriminator:
+        propertyName: type
+        mapping:
+          OAUTH2: "#/components/schemas/ApiCredentialResponse.ApiOAuth2CredentialResponse"
+          GITHUB_APP: "#/components/schemas/ApiCredentialResponse.ApiGitHubAppCredentialResponse"
+      oneOf:
+      - $ref: "#/components/schemas/ApiCredentialResponse.ApiOAuth2CredentialResponse"
+      - $ref: "#/components/schemas/ApiCredentialResponse.ApiGitHubAppCredentialResponse"
+    ApiCredentialResponse.ApiGitHubAppCredentialResponse:
+      title: GitHub App Credential Response
+      type: object
+      properties:
+        type:
+          description: Credential type
+          allOf:
+          - $ref: "#/components/schemas/CredentialType"
+        id:
+          type: string
+          description: Credential ID
+        name:
+          type: string
+          description: Credential name
+        description:
+          type: string
+          description: Credential description
+        namespace:
+          type: string
+          description: Namespace
+        tenantId:
+          type: string
+          description: Tenant ID
+        tokenCaching:
+          description: Token caching configuration
+          allOf:
+          - $ref: "#/components/schemas/TokenCacheConfig"
+        authConfig:
+          description: GitHub App authentication configuration (sensitive fields masked)
+          allOf:
+          - $ref: "#/components/schemas/GithubAppConfig"
+        createdAt:
+          type: string
+          description: Created timestamp
+          format: date-time
+        updatedAt:
+          type: string
+          description: Updated timestamp
+          format: date-time
+      description: Response containing GitHub App credential details.
+    ApiCredentialResponse.ApiOAuth2CredentialResponse:
+      title: OAuth2 Credential Response
+      type: object
+      properties:
+        type:
+          description: Credential type
+          allOf:
+          - $ref: "#/components/schemas/CredentialType"
+        id:
+          type: string
+          description: Credential ID
+        name:
+          type: string
+          description: Credential name
+        description:
+          type: string
+          description: Credential description
+        namespace:
+          type: string
+          description: Namespace
+        tenantId:
+          type: string
+          description: Tenant ID
+        tokenEndpoint:
+          type: string
+          description: OAuth2 token endpoint URL
+        scopes:
+          type: array
+          description: OAuth2 scopes
+          items:
+            type: string
+        audience:
+          type: string
+          description: OAuth2 audience
+        tokenCaching:
+          description: Token caching configuration
+          allOf:
+          - $ref: "#/components/schemas/TokenCacheConfig"
+        authConfig:
+          description: OAuth2 authentication configuration (sensitive fields masked)
+          allOf:
+          - $ref: "#/components/schemas/OAuth2Config"
+        createdAt:
+          type: string
+          description: Created timestamp
+          format: date-time
+        updatedAt:
+          type: string
+          description: Updated timestamp
+          format: date-time
+      description: Response containing OAuth2 credential details.
     ApiGroupSummary:
       type: object
       properties:
@@ -16054,6 +17329,45 @@ components:
           type: array
           items:
             type: string
+    ApiInheritedCredentialsResponse:
+      title: Inherited Credentials Response
+      type: object
+      properties:
+        levels:
+          type: array
+          description: Inherited credentials grouped by namespace level
+          items:
+            $ref: "#/components/schemas/ApiInheritedCredentialsResponse.InheritedCredentialLevel"
+    ApiInheritedCredentialsResponse.InheritedCredential:
+      title: Inherited Credential
+      type: object
+      properties:
+        id:
+          type: string
+          description: Credential ID
+        name:
+          type: string
+          description: Credential name
+        type:
+          description: Credential type
+          allOf:
+          - $ref: "#/components/schemas/CredentialType"
+        description:
+          type: string
+          description: Credential description
+    ApiInheritedCredentialsResponse.InheritedCredentialLevel:
+      title: Inherited Credential Level
+      type: object
+      properties:
+        namespace:
+          type: string
+          description: "The namespace from which credentials are inherited, or 'tenant'\
+            \ for tenant-level"
+        credentials:
+          type: array
+          description: Credentials available at this level
+          items:
+            $ref: "#/components/schemas/ApiInheritedCredentialsResponse.InheritedCredential"
     ApiPatchSuperAdminRequest:
       required:
       - superAdmin
@@ -16156,6 +17470,17 @@ components:
           type: string
         name:
           type: string
+    ApiTestConnectionResponse:
+      title: Test Connection Response
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the connection test succeeded
+        message:
+          type: string
+          description: Result message
+      description: Response from testing a credential connection.
     ApiToken:
       type: object
       properties:
@@ -16190,6 +17515,76 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ApiToken"
+    ApiUpdateCredentialRequest:
+      title: Update Credential Request
+      type: object
+      description: Request to update an existing credential. Use 'type' field to specify
+        credential type.
+      discriminator:
+        propertyName: type
+        mapping:
+          OAUTH2: "#/components/schemas/ApiUpdateCredentialRequest.ApiUpdateOAuth2CredentialRequest"
+          GITHUB_APP: "#/components/schemas/ApiUpdateCredentialRequest.ApiUpdateGitHubAppCredentialRequest"
+      oneOf:
+      - $ref: "#/components/schemas/ApiUpdateCredentialRequest.ApiUpdateOAuth2CredentialRequest"
+      - $ref: "#/components/schemas/ApiUpdateCredentialRequest.ApiUpdateGitHubAppCredentialRequest"
+    ApiUpdateCredentialRequest.ApiUpdateGitHubAppCredentialRequest:
+      title: Update GitHub App Credential Request
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          description: Credential type discriminator
+          example: github_app
+          allOf:
+          - $ref: "#/components/schemas/CredentialType"
+        description:
+          type: string
+          description: Credential description
+        tokenCaching:
+          description: Token caching configuration
+          allOf:
+          - $ref: "#/components/schemas/TokenCacheConfig"
+        authConfig:
+          description: GitHub App authentication configuration
+          allOf:
+          - $ref: "#/components/schemas/GithubAppConfig"
+      description: Request to update an existing GitHub App credential.
+    ApiUpdateCredentialRequest.ApiUpdateOAuth2CredentialRequest:
+      title: Update OAuth2 Credential Request
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          description: Credential type discriminator
+          example: oauth2
+          allOf:
+          - $ref: "#/components/schemas/CredentialType"
+        description:
+          type: string
+          description: Credential description
+        tokenEndpoint:
+          type: string
+          description: OAuth2 token endpoint URL
+        scopes:
+          type: array
+          description: OAuth2 scopes
+          items:
+            type: string
+        audience:
+          type: string
+          description: OAuth2 audience
+        tokenCaching:
+          description: Token caching configuration
+          allOf:
+          - $ref: "#/components/schemas/TokenCacheConfig"
+        authConfig:
+          description: OAuth2 authentication configuration
+          allOf:
+          - $ref: "#/components/schemas/OAuth2Config"
+      description: Request to update an existing OAuth2 credential.
     ApiUser:
       type: object
       allOf:
@@ -16200,6 +17595,17 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/ApiAuth"
+    AppGenerationPrompt:
+      type: object
+      properties:
+        conversationId:
+          type: string
+        userPrompt:
+          type: string
+        yaml:
+          type: string
+        providerId:
+          type: string
     AppResponse:
       type: object
       properties:
@@ -16482,6 +17888,45 @@ components:
         updated:
           type: string
           format: date-time
+        deleted:
+          type: boolean
+    AssetsController.ApiAssetLineageEvent:
+      type: object
+      properties:
+        uid:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        flowRevision:
+          type: integer
+          format: int32
+        executionId:
+          type: string
+        taskId:
+          type: string
+        taskRunId:
+          type: string
+        state:
+          type: string
+        inputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetIdentifier"
+        outputs:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetIdentifier"
+        created:
+          type: string
+          format: date-time
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
     AssetsController.ApiAssetUsage:
       type: object
       properties:
@@ -16544,8 +17989,6 @@ components:
       - $ref: "#/components/schemas/BaseAuditLog"
       - type: object
         properties:
-          deleted:
-            type: boolean
           appliedPatch:
             type: array
             items:
@@ -16637,6 +18080,8 @@ components:
           type: string
         password:
           type: string
+    AuthProperty_String_:
+      type: object
     Backfill:
       title: A backfill configuration.
       required:
@@ -16728,8 +18173,6 @@ components:
           type: string
         impersonatedBy:
           type: string
-        deleted:
-          type: boolean
     BaseResource_PatchRequest_:
       type: object
       properties:
@@ -17155,6 +18598,12 @@ components:
         type:
           $ref: "#/components/schemas/SecurityIntegration.Type"
       description: Create SecurityIntegration Request
+    CredentialType:
+      type: string
+      enum:
+      - OAUTH2
+      - GITHUB_APP
+      - UNKNOWN
     CrudEventType:
       type: string
       enum:
@@ -17256,9 +18705,13 @@ components:
           format: int64
     Dashboard:
       required:
+      - id
       - title
       type: object
       properties:
+        id:
+          minLength: 1
+          type: string
         title:
           minLength: 1
           type: string
@@ -17282,11 +18735,20 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ChartFiltersOverrides"
-    DeletedInterface:
+    DashboardGenerationPrompt:
+      required:
+      - conversationId
+      - userPrompt
       type: object
       properties:
-        deleted:
-          type: boolean
+        conversationId:
+          type: string
+        userPrompt:
+          type: string
+        yaml:
+          type: string
+        providerId:
+          type: string
     DependsOn:
       type: object
       properties:
@@ -17305,6 +18767,28 @@ components:
           type: string
         schema:
           $ref: "#/components/schemas/PluginSchema"
+    Duration:
+      title: Duration before expiry when the token should be refreshed.
+      type: object
+      properties:
+        units:
+          type: array
+          items:
+            $ref: "#/components/schemas/TemporalUnit"
+        zero:
+          type: boolean
+        negative:
+          type: boolean
+        seconds:
+          type: integer
+          format: int64
+        nano:
+          type: integer
+          format: int32
+        positive:
+          type: boolean
+      description: "The duration is a string in ISO 8601 Duration format, e.g. `PT1M`\
+        \ for 1 minute, `PT30S` for 30 seconds."
     EditionProvider.Edition:
       type: string
       enum:
@@ -17320,6 +18804,13 @@ components:
         primary:
           type: boolean
       description: Scim core schema.
+    EvaluationType:
+      type: string
+      enum:
+      - PASS
+      - KILL
+      - CANCEL
+      - IGNORE
     Event_AppResponse_:
       type: object
       properties:
@@ -17546,35 +19037,6 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionController.WebhookResponse:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        id:
-          type: string
-        namespace:
-          type: string
-        flowId:
-          type: string
-        flowRevision:
-          type: integer
-          format: int32
-        trigger:
-          $ref: "#/components/schemas/ExecutionTrigger"
-        outputs:
-          type: object
-          additionalProperties:
-            type: object
-        labels:
-          type: array
-          items:
-            $ref: "#/components/schemas/Label"
-        state:
-          $ref: "#/components/schemas/State"
-        url:
-          type: string
-          format: uri
     ExecutionKind:
       type: string
       enum:
@@ -17893,7 +19355,11 @@ components:
           type: string
         userPrompt:
           type: string
-        flowYaml:
+        yaml:
+          type: string
+        providerId:
+          type: string
+        namespace:
           type: string
     FlowGraph:
       type: object
@@ -17956,7 +19422,7 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/FlowId"
-      - $ref: "#/components/schemas/DeletedInterface"
+      - $ref: "#/components/schemas/SoftDeletable_FlowInterface_"
       - $ref: "#/components/schemas/TenantInterface"
       - type: object
         properties:
@@ -18119,6 +19585,20 @@ components:
               $ref: "#/components/schemas/SLA"
           source:
             type: string
+    GithubAppConfig:
+      required:
+      - appId
+      - installationId
+      - privateKey
+      type: object
+      properties:
+        appId:
+          $ref: "#/components/schemas/AuthProperty_String_"
+        privateKey:
+          $ref: "#/components/schemas/SecretAuthProperty"
+        installationId:
+          $ref: "#/components/schemas/AuthProperty_String_"
+      description: GitHub App authentication configuration (sensitive fields masked)
     GroupIdentifier:
       type: object
       properties:
@@ -18384,6 +19864,10 @@ components:
               type: array
             GROUP_MEMBERSHIP:
               type: array
+            CREDENTIAL:
+              type: array
+            AI_COPILOT:
+              type: array
             UNKNOWN:
               type: array
         name:
@@ -18449,6 +19933,10 @@ components:
             INVITATION:
               type: array
             GROUP_MEMBERSHIP:
+              type: array
+            CREDENTIAL:
+              type: array
+            AI_COPILOT:
               type: array
             UNKNOWN:
               type: array
@@ -19166,6 +20654,41 @@ components:
       - DATE
       - DURATION
       - JSON
+    KillSwitch:
+      required:
+      - evaluationType
+      - name
+      - startDate
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        tenantId:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        executionIds:
+          type: array
+          items:
+            type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        description:
+          type: string
+        evaluationType:
+          $ref: "#/components/schemas/EvaluationType"
+        enabled:
+          type: boolean
+        deleted:
+          type: boolean
     Label:
       required:
       - key
@@ -19217,7 +20740,6 @@ components:
             $ref: "#/components/schemas/Task"
     LogEntry:
       required:
-      - deleted
       - flowId
       - namespace
       type: object
@@ -19251,8 +20773,6 @@ components:
           type: string
         message:
           type: string
-        deleted:
-          type: boolean
         executionKind:
           nullable: true
           allOf:
@@ -19385,7 +20905,6 @@ components:
             $ref: "#/components/schemas/MetricAggregation"
     MetricEntry:
       required:
-      - deleted
       - flowId
       - name
       - namespace
@@ -19422,8 +20941,6 @@ components:
           additionalProperties:
             type: string
           nullable: true
-        deleted:
-          type: boolean
         executionKind:
           nullable: true
           allOf:
@@ -19526,6 +21043,10 @@ components:
             type: array
             items:
               type: string
+          killSwitches:
+            type: array
+            items:
+              $ref: "#/components/schemas/KillSwitch"
     MiscController.Environment:
       type: object
       properties:
@@ -19595,8 +21116,6 @@ components:
         id:
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
-        deleted:
-          type: boolean
         allowedTriggers:
           type: array
           deprecated: true
@@ -19606,6 +21125,8 @@ components:
           $ref: "#/components/schemas/Isolation"
         secretIsolation:
           $ref: "#/components/schemas/Isolation"
+        deleted:
+          type: boolean
         description:
           type: string
         variables:
@@ -19638,6 +21159,8 @@ components:
             type: object
         outputsInInternalStorage:
           type: boolean
+        sdkDefaultAuthentication:
+          $ref: "#/components/schemas/SDK.Auth"
       description: A namespace is a logical grouping of flows and tasks. It is used
         to organize and manage flows and tasks within Kestra.
       allOf:
@@ -19659,6 +21182,20 @@ components:
         flowId:
           type: string
       deprecated: true
+    NamespaceController.ApiInheritedPluginDefaultFromNamespace:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+        forced:
+          type: boolean
+        values:
+          type: object
+          additionalProperties: false
+        namespace:
+          type: string
     NamespaceFileRevision:
       type: object
       properties:
@@ -19667,15 +21204,15 @@ components:
           format: int32
     NamespaceLight:
       required:
-      - deleted
       - id
       type: object
       properties:
         id:
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
-        deleted:
-          type: boolean
+    OAuth2Config:
+      type: object
+      description: OAuth2 authentication configuration (sensitive fields masked)
     Output:
       required:
       - id
@@ -19708,6 +21245,19 @@ components:
         count:
           type: integer
           format: int32
+    PagedResults_ApiCredentialResponse_:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApiCredentialResponse"
+        total:
+          type: integer
+          format: int64
     PagedResults_ApiGroupSummary_:
       required:
       - results
@@ -19757,6 +21307,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AppsController.ApiApp"
+        total:
+          type: integer
+          format: int64
+    PagedResults_AssetsController.ApiAssetLineageEvent_:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetsController.ApiAssetLineageEvent"
         total:
           type: integer
           format: int64
@@ -20182,6 +21745,8 @@ components:
       - SERVICE_ACCOUNT
       - INVITATION
       - GROUP_MEMBERSHIP
+      - CREDENTIAL
+      - AI_COPILOT
       - UNKNOWN
     Plugin:
       type: object
@@ -20497,6 +22062,7 @@ components:
       - UPDATED
       - START_DATE
       - END_DATE
+      - EXPIRATION_DATE
       - STATE
       - TIME_RANGE
       - TRIGGER_EXECUTION_ID
@@ -20512,6 +22078,7 @@ components:
       - PATH
       - PARENT_PATH
       - VERSION
+      - USERNAME
       x-type: String
     QueryFilter.Op:
       type: string
@@ -20568,6 +22135,7 @@ components:
       - DASHBOARD
       - EXECUTION
       - FLOW
+      - KILL_SWITCH
       - KV_STORE
       - GROUP
       - INVITATION
@@ -20585,6 +22153,7 @@ components:
       - TESTSUITE_RUN
       - VERSIONED_PLUGIN
       - USER
+      - CREDENTIAL
       - WORKER_GROUP
       - INSTANCE
       - UNKNOWN
@@ -20693,6 +22262,10 @@ components:
               type: array
             GROUP_MEMBERSHIP:
               type: array
+            CREDENTIAL:
+              type: array
+            AI_COPILOT:
+              type: array
             UNKNOWN:
               type: array
         id:
@@ -20711,6 +22284,18 @@ components:
         count:
           type: integer
           format: int64
+    SDK.Auth:
+      type: object
+      properties:
+        apiToken:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
     SLA:
       required:
       - behavior
@@ -20951,6 +22536,15 @@ components:
           type: array
           items:
             type: string
+    SecretAuthProperty:
+      required:
+      - secretKey
+      type: object
+      properties:
+        secretKey:
+          type: string
+        namespace:
+          type: string
     SecurityIntegration.Type:
       type: string
       enum:
@@ -20994,6 +22588,13 @@ components:
           type: string
           default: 3s
     ServerInstance:
+      required:
+      - hostname
+      - id
+      - metrics
+      - props
+      - type
+      - version
       type: object
       properties:
         id:
@@ -21186,6 +22787,11 @@ components:
           type: string
         tenant:
           $ref: "#/components/schemas/Tenant"
+    SoftDeletable_FlowInterface_:
+      type: object
+      properties:
+        deleted:
+          type: boolean
     SortOrder:
       type: string
       enum:
@@ -21430,6 +23036,17 @@ components:
           type: string
           format: uri
           nullable: true
+    TemporalUnit:
+      type: object
+      properties:
+        duration:
+          type: string
+        durationEstimated:
+          type: boolean
+        dateBased:
+          type: boolean
+        timeBased:
+          type: boolean
     Tenant:
       required:
       - deleted
@@ -21470,6 +23087,8 @@ components:
           type: boolean
         appCatalogConfig:
           $ref: "#/components/schemas/Tenant.AppCatalogConfig"
+        sdkDefaultAuthentication:
+          $ref: "#/components/schemas/SDK.Auth"
     Tenant.AppCatalogConfig:
       type: object
       properties:
@@ -21595,6 +23214,20 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/TestSuiteRunResult"
+    TestSuiteGenerationPrompt:
+      required:
+      - conversationId
+      - userPrompt
+      type: object
+      properties:
+        conversationId:
+          type: string
+        userPrompt:
+          type: string
+        yaml:
+          type: string
+        providerId:
+          type: string
     TestSuiteRunResult:
       required:
       - endDate
@@ -21665,6 +23298,18 @@ components:
           type: string
         max:
           type: string
+    TokenCacheConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        refreshBeforeExpiry:
+          title: Duration before expiry when the token should be refreshed.
+          description: "The duration is a string in ISO 8601 Duration format, e.g.\
+            \ `PT1M` for 1 minute, `PT30S` for 30 seconds."
+          allOf:
+          - $ref: "#/components/schemas/Duration"
+      description: Token caching configuration
     Trigger:
       type: object
       allOf:
@@ -21891,9 +23536,11 @@ components:
         username:
           minLength: 1
           type: string
+          nullable: true
         password:
           minLength: 1
           type: string
+          nullable: true
         identity:
           type: string
           nullable: true
@@ -21937,6 +23584,35 @@ components:
           $ref: "#/components/schemas/AttributeReference"
         attributeExpression:
           $ref: "#/components/schemas/FilterExpression"
+    WebhookResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        id:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        flowRevision:
+          type: integer
+          format: int32
+        trigger:
+          $ref: "#/components/schemas/ExecutionTrigger"
+        outputs:
+          type: object
+          additionalProperties:
+            type: object
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/Label"
+        state:
+          $ref: "#/components/schemas/State"
+        url:
+          type: string
+          format: uri
     WorkerGroup:
       type: object
       properties:

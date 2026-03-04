@@ -28,11 +28,11 @@ To avoid unexpected differences, keep your Kestra server and database timezones 
 ## Cron extension
 
 Kestra supports the following cron extensions instead of writing a cron expression:
-- `@yearly` and `@annually` - runs yearly on 1st January at 00:00
-- `@monthly` - runs monthly on the 1st at 00:00
-- `@weekly` - runs weekly on Sunday at 00:00
-- `@daily` and `@midnight` - runs at 00:00 every day
-- `@midnight` - runs at 00:00 every day
+- `@yearly` and `@annually` - runs yearly on 1st January at `00:00`
+- `@monthly` - runs monthly on the 1st at `00:00`
+- `@weekly` - runs weekly on Sunday at `00:00`
+- `@daily` and `@midnight` - runs at `00:00` every day
+- `@midnight` - runs at `00:00` every day
 - `@hourly` - runs every hour, on the hour
 
 ## Examples

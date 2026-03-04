@@ -1,0 +1,7 @@
+title: "Integrate Your Code into Kestra"
+description: "Kestra is language agnostic. Use any programming language inside of your workflows. Will walks through how you can integrate your code into Kestra so you can pass values and files dynamically, as well as receive outputs that can be used later on."
+category: "Deep Dive Tutorials"
+author: "Kestra"
+url: "https://youtu.be/oZYtLimdKBo?si=f89_gsBEkO4iGX3B"
+publicationDate: "2024-10-30T00:00:00.000"
+contentType: "Deep Dive Tutorials"

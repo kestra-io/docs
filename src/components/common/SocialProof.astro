@@ -21,7 +21,6 @@ interface Props {
         text?: string;
         link: string;
     },
-    backgroundColor?: string;
     theme?: string;
 }
 
@@ -30,7 +29,6 @@ const {
     quote,
     metrics,
     cta,
-    backgroundColor = "var(--ks-background-secondary, #F7F7F7)",
     theme = "#FC7115",
 } = Astro.props as Props;
 ---
@@ -92,12 +90,16 @@ const {
     </div>
 </section>
 
-<style lang="scss" define:vars={{ backgroundColor, theme }}>
+<style lang="scss" define:vars={{ theme }}>
     @import "~/assets/styles/variable";
 
     .read-story {
-        background-color: var(--backgroundColor);
-        padding: 4rem 2rem;
+        background-color: var(--ks-background-primary-inverse);
+        padding: $rem-4 $rem-2;
+
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 $spacer;
+        }
 
         .container {
             padding: 0;
@@ -106,7 +108,7 @@ const {
 
             .left-div {
                 width: 100%;
-                
+
                 @include media-breakpoint-up(lg) {
                     max-width: 333px;
                     margin-bottom: 0;
@@ -118,7 +120,7 @@ const {
                 padding-left: 0;
                 padding-top: 1.25rem;
                 color: $white;
-                
+
                 @include media-breakpoint-up(lg) {
                     max-width: 682px;
                     padding-left: 3.75rem;
@@ -127,13 +129,13 @@ const {
                 }
 
                 small {
-                    color: #131316;
-                    font-family: $font-family-jetbrains-mono;
+                    color: var(--ks-content-primary-inverse);
+                    font-family: $font-family-monospace;
                 }
 
                 h3 {
                     font-weight: 600;
-                    color: #131316;
+                    color: var(--ks-content-primary-inverse);
                     .quote-mark {
                         color: var(--theme);
                     }
@@ -141,12 +143,12 @@ const {
 
                 h6 {
                     font-weight: normal;
-                    color: #131316;
+                    color: var(--ks-content-primary-inverse);
                     margin-bottom: 0;
                 }
 
                 hr {
-                    border-color: rgba($black-10, 0.5);
+                    border-color: var(--ks-border-primary);
                 }
 
                 .metrics-grid {
@@ -172,10 +174,14 @@ const {
 
                         .label {
                             font-size: $font-size-xs;
-                            color: #131316;
+                            color: var(--ks-content-primary-inverse);
                             margin-top: 0.5rem;
                         }
                     }
+                }
+
+                :global(.link) {
+                    color: var(--ks-content-link-inverse);
                 }
             }
         }

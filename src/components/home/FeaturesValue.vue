@@ -1,6 +1,6 @@
 <template>
     <div class="value-wrapper">
-        <HomeCard class="card-block">
+        <GradientCard class="card-block">
             <h3>
                 <span>Accelerate</span><br />
                 Time to Value
@@ -16,8 +16,8 @@
             <a class="learn-more" href="/use-cases/stories">
                 Discover our Customer Stories<ArrowRightIcon />
             </a>
-        </HomeCard>
-        <HomeCard class="card-block">
+        </GradientCard>
+        <GradientCard class="card-block">
             <div class="any-spider">
                 <div class="spider-box" style="top: 13.5%; left: 38.4%">Business Automation</div>
                 <div class="spider-box" style="top: 37%; left: 65%">ML/AI Orchestration</div>
@@ -36,12 +36,12 @@
                 Use Case
             </h3>
             <a class="learn-more" href="/use-cases"> Explore Use Cases<ArrowRightIcon /> </a>
-        </HomeCard>
+        </GradientCard>
     </div>
 </template>
 
 <script setup lang="ts">
-    import HomeCard from "~/components/home/Card.vue"
+    import GradientCard from "~/components/card/GradientCard.vue"
     import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
     import anySpider from "./assets/any-spider.svg"
 
@@ -75,15 +75,17 @@
         position: relative;
         z-index: 1;
         padding: 2rem 0 6rem;
+        background-color: var(--ks-background-secondary);
         h3 {
             margin: 2rem 0;
             font-size: 2.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             span {
-                color: $primary;
+                color: var(--ks-content-link);
                 background: linear-gradient(90deg, #7c2eea 0%, #658af9 100%) no-repeat center;
                 background-size: 350px;
+                background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
@@ -102,7 +104,6 @@
             }
             transition: all 0.2s;
         }
-
         &:hover {
             .learn-more {
                 opacity: 1;
@@ -137,9 +138,8 @@
             border-radius: 0.4rem;
             border: 1px solid transparent;
             background-clip: padding-box;
-            background-color: rgba(31, 32, 40, 1);
+            background-color: var(--ks-background-secondary);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-
             &:before {
                 content: "";
                 position: absolute;
@@ -180,7 +180,7 @@
             border: 1px solid transparent;
             text-align: left;
             position: relative;
-            background-color: rgb(26, 28, 35);
+            background-color: var(--ks-background-secondary);
             background-clip: padding-box;
             &:before {
                 content: "";
@@ -199,12 +199,12 @@
                 font-size: 0.7rem;
                 font-weight: 400;
                 text-transform: uppercase;
-                color: #8b8b8d;
+                color: var(--ks-content-tertiary);
             }
             .kpi-number {
-                color: #817cff;
+                color: var(--ks-content-link);
                 font-size: 2.5rem;
-                font-weight: 800;
+                font-weight: 700;
                 margin: 0.5rem 0;
             }
             .kpi-description {

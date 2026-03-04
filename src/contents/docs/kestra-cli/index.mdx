@@ -1,0 +1,25 @@
+---
+title: Kestra CLI Guide - kestractl vs Kestra Server CLI
+sidebarTitle: Kestra CLI
+icon: /src/contents/docs/icons/bash.svg
+editions: ["OSS", "EE"]
+hideSubMenus: true
+description: Understand when to use kestractl versus the Kestra Server CLI, and access both command references.
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Use this section to choose the right CLI for the task and jump to the full command references.
+
+## Choose the right CLI
+
+Kestra provides two command-line interfaces with different scopes:
+
+| CLI | Best for | Scope |
+| --- | --- | --- |
+| `kestractl` | Day-to-day platform operations through the API | Covers flows, executions, namespaces, and namespace files, with capabilities aligned with what the Kestra API supports. |
+| `kestra` (Server CLI) | Runtime and infrastructure operations | Covers server startup and component processes (`server` commands), system/database operations, plugin lifecycle, and maintenance tasks that require direct access to the runtime environment and backend services. |
+
+In short, use `kestractl` for API-level resource management and automation, and use the Kestra Server CLI for server, process or database operations.
+
+<ChildCard />

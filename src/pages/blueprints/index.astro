@@ -2,8 +2,8 @@
 export const prerender = false
 
 import Layout from "~/components/layout.astro"
-import BlueprintsLists from "~/components/blueprints/Lists.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import Lists from "~/components/blueprints/Lists.vue"
+import FooterContact from "~/components/layout/FooterContact.astro"
 import { $fetchApi } from "~/utils/fetch"
 
 const allTags = await $fetchApi<BlueprintTag[]>(
@@ -21,7 +21,6 @@ const tagsForFilter = tagsSelected
           .filter(Boolean)
     : null
 
-// fetch all the blueprints so we can filter client side
 const { results: blueprints, total } = await $fetchApi<{
     results: Blueprint[]
     total: number
@@ -35,25 +34,21 @@ const description = "Get started with our library of workflows ready to use"
 ---
 
 <Layout title={title} description={description}>
-    <div class="container">
-        <BlueprintsLists
-            tags={allTags}
-            tagsSelected={tagsSelected ? tagsSelected.split(",") : ["All tags"]}
-            currentPage={Number(page)}
-            itemsPerPage={Number(size)}
-            q={q}
-            blueprints={blueprints}
-            total={total}
-            currentUrl={Astro.request.url}
-            transition:persist
-            client:idle
-        />
-        <LayoutFooterContact
-            title="New to Kestra?"
-            subtitle="Use blueprints to kickstart your first workflows."
-            purpleButtonText="Get started with Kestra"
-            purpleButtonHref="/docs/quickstart#start-kestra"
-            client:visible
-        />
-    </div>
+    <Lists
+        tags={allTags}
+        tagsSelected={tagsSelected ? tagsSelected.split(",") : ["All tags"]}
+        currentPage={Number(page)}
+        itemsPerPage={Number(size)}
+        {q}
+        {blueprints}
+        {total}
+        currentUrl={Astro.request.url}
+        transition:persist
+        client:idle
+    />
+    <FooterContact
+        title="New to Kestra?"
+        subtitle="Use blueprints to kickstart your first workflows."
+        dark={null}
+    />
 </Layout>

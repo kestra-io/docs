@@ -1,36 +1,47 @@
 ---
 import Layout from "~/components/layout.astro"
-import CompanyOrchestrate from "~/components/company/Orchestrate.astro"
-import CompanyMission from "~/components/company/Mission.astro"
-import CompanyTeam from "~/components/company/Team.astro"
-import CompanyInvestors from "~/components/company/Investors.astro"
-import CompanyNewsGrid from "~/components/company/NewsGrid.astro"
-import CompanyLife from "~/components/company/Life.astro"
+import Orchestrate from "~/components/company/Orchestrate.astro"
+import Mission from "~/components/company/Mission.astro"
+import Team from "~/components/company/Team.astro"
+import Investors from "~/components/company/Investors.astro"
+import NewsGrid from "~/components/company/NewsGrid.astro"
+import Life from "~/components/company/Life.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import assets from "~/assets/landing/assets.webp"
 
 const title = "About Us"
 const description =
     "Discover the team and values behind our mission to empower data-driven organizations worldwide"
 ---
 
-<Layout title={title} description={description}>
+<Layout {title} {description} headerTheme="lightHero">
     <div class="about-us">
-        <CompanyOrchestrate />
-        <CompanyMission />
-        <CompanyTeam />
-        <CompanyInvestors />
-        <CompanyNewsGrid />
-        <CompanyLife />
+        <Orchestrate />
+        <Mission />
+        <Team />
+        <Investors />
+        <NewsGrid />
+        <Life />
+        <SeeHow 
+            cta={{ 
+                text: "Download Logo Pack", 
+                href: "/kestra-logo-kit.zip", 
+                download: "kestra-logo-kit.zip" 
+            }} 
+            imgSrc={assets}
+        >
+            <Fragment slot="title">Brand assets</Fragment>
+            For Media Inquiries and Exclusive Insights, Reach Out to Our Press Team
+            at <a href="mailto:press@kestra.io">press@kestra.io</a>
+        </SeeHow>
     </div>
 </Layout>
 
-<style scoped lang="scss">
-    .container {
-        overflow-y: hidden;
-    }
-
+<style lang="scss">
     .about-us {
         position: relative;
         min-height: 100vh;
+        overflow-y: hidden;
 
         &::after {
             content: "";
@@ -39,8 +50,7 @@ const description =
             right: 0;
             width: 100%;
             height: 100%;
-            background: url("~/assets/teams/gridbg.svg") center/cover no-repeat
-                fixed;
+            background: linear-gradient(106.32deg, #000000 28.36%, #0F1A2E 79.51%);
             z-index: -1;
         }
     }

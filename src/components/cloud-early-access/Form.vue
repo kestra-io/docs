@@ -387,54 +387,38 @@
     .column-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        min-height: 1234px;
-
         @media (max-width: 868px) {
             grid-template-columns: 1fr;
-            min-height: auto;
         }
-
         .left-column {
-            background-color: $white;
+            background-color: var(--ks-background-secondary);
             padding: 64px 0;
             display: flex;
             justify-content: center;
             align-items: start;
-            min-height: 100%;
-
             @media (max-width: 768px) {
                 padding: 64px 20px;
-                min-height: auto;
             }
-
             .form {
                 &-container {
-                    width: 400px;
-
-                    @media (max-width: 768px) {
-                        width: 100%;
-                    }
+                    width: 100%;
+                    max-width: 400px;
                 }
-
                 &-title {
                     font-size: 24px;
-                    font-weight: bold;
+                    font-weight: 700;
                     margin-bottom: 10px;
                 }
-
                 &-description {
                     font-size: $font-size-md;
                     margin-bottom: 20px;
                 }
-
                 &-group {
                     margin-bottom: 15px;
-
                     .required-field {
-                        color: #ab0009;
+                        color: $danger;
                     }
-
-                    > label {
+                    label {
                         font-weight: 700;
                         margin-bottom: 4px;
                         line-height: 22px;
@@ -442,29 +426,26 @@
                         display: block;
                     }
                 }
-
                 &-control {
                     width: 100%;
                     padding: 4px 12px 4px 16px;
                     margin-top: 5px;
-                    border: 1px solid #e3e3e3;
+                    border: 1px solid var(--ks-border-secondary);
                     border-radius: 4px;
-                    background-color: $white;
+                    background-color: var(--ks-background-secondary);
+                    color: var(--ks-content-primary);
                 }
             }
-
             .radio {
                 &-options {
                     display: flex;
                     flex-direction: column;
                     margin-top: 16px;
                 }
-
                 &-option {
                     display: flex;
                     align-items: center;
                     margin-bottom: 8px;
-
                     input[type="radio"] {
                         appearance: none;
                         width: 20px;
@@ -474,27 +455,21 @@
                         border-radius: 50%;
                         position: relative;
                         cursor: pointer;
-
                         &:checked {
-                            border-color: $purple-40;
-
+                            border-color: var(--ks-border-active);
                             &::after {
                                 content: "";
                                 position: absolute;
                                 inset: 3px;
-                                width: 10px;
-                                height: 10px;
                                 border-radius: 50%;
-                                background: $purple-40;
+                                background: var(--ks-border-active);
                             }
                         }
-
                         &:focus {
                             outline: 0;
-                            box-shadow: 0 0 0 2px rgba($purple-40, 0.25);
+                            box-shadow: 0 0 0 2px rgba(var(--ks-border-active), 0.25);
                         }
                     }
-
                     label {
                         cursor: pointer;
                         font-size: $font-size-sm;
@@ -502,7 +477,6 @@
                     }
                 }
             }
-
             .success {
                 margin: 20px 0;
                 padding: 20px;
@@ -515,129 +489,98 @@
                     successAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
                     glowEffect 2s ease-in-out infinite;
             }
-
+            .alert-danger {
+                margin: 20px 0;
+                padding: 10px 20px;
+                background: #fff2f3;
+                color: $danger;
+                border: 1px solid #fd7279;
+                border-radius: $border-radius;
+                font-weight: 600;
+            }
             @keyframes successAppear {
                 from {
                     opacity: 0;
                     transform: scale(0.8);
                 }
-
                 to {
                     opacity: 1;
                     transform: scale(1);
                 }
             }
-
             @keyframes glowEffect {
-                0%,
-                100% {
+                0%, 100% {
                     box-shadow: 0 0 15px rgba(76, 175, 80, 0.1);
                 }
-
                 50% {
                     box-shadow: 0 0 25px rgba(76, 175, 80, 0.2);
                 }
             }
-
-            .alert-danger {
-                margin: 20px 0;
-                padding: 10px 20px;
-                background: #fff2f3;
-                color: #ab0009;
-                border: 1px solid #fd7279;
-                border-radius: $border-radius;
-                font-weight: 600;
-            }
         }
-
         .right-column {
-            background-color: #151515;
+            background: #151515 linear-gradient(to bottom, #151515 0%, rgba(21, 21, 21, 0) 50%) no-repeat center;
             background-image:
                 linear-gradient(to bottom, #151515 0%, rgba(21, 21, 21, 0) 50%),
-                url("./images/gradient-1.svg"), url("./images/gradient-2.png");
-            background-repeat: no-repeat, no-repeat, no-repeat;
+                url("./images/gradient-1.svg"),
+                url("./images/gradient-2.png");
+            background-repeat: no-repeat;
             background-position: center, bottom, bottom;
-            background-size:
-                100%,
-                100% 70%,
-                100% 80%;
+            background-size: 100%, 100% 70%, 100% 80%;
             position: relative;
             overflow: hidden;
-            color: $white;
-            min-height: 100%;
-            padding: 12rem;
-            padding-left: 5rem;
-            padding-right: 0;
+            color: var(--ks-content-primary);
+            padding: 12rem 0 12rem 5rem;
             display: flex;
             flex-direction: column;
-
+            @media (max-width: 768px) {
+                padding: 100px 0 100px 30px;
+            }
             .box {
                 position: absolute;
                 width: 460px;
                 height: 460px;
                 right: 0;
                 bottom: 0;
-                background: url("./images/box.png") no-repeat;
-                background-size: contain;
-                background-position: bottom right;
+                background: url("./images/box.png") no-repeat bottom right / contain;
                 z-index: 0;
-                opacity: 1;
-
                 @media (max-width: 768px) {
                     width: 300px;
                     height: 300px;
                 }
             }
-
-            @media screen and (max-width: 768px) {
-                padding: 100px 0;
-                padding-left: 30px;
-                min-height: auto;
-            }
-
             .testimonial {
-                margin: 0 0 48px;
+                margin-bottom: 48px;
                 padding: 0 64px 0 24px;
-                border-left: 1px solid #fff;
+                border-left: $block-border;
                 font-weight: 700;
                 position: relative;
                 z-index: 2;
-
                 &-quote {
                     font-size: $font-size-lg;
                     line-height: 28px;
                     margin-bottom: 10px;
+                    color: $white;
                 }
-
                 &-author {
                     font-size: $font-size-sm;
-                    color: #e1e1e1;
+                    color: $white;
                     margin-bottom: 10px;
                 }
-
                 &-logo img {
                     aspect-ratio: 187/40;
                     object-fit: contain;
                 }
             }
-
             .flow-image {
                 width: 100%;
                 position: relative;
-                right: 0;
                 z-index: 2;
-
                 img {
                     width: 100%;
-                    height: auto;
-                    object-fit: contain;
                     border-radius: 15px 0 0 15px;
-                    max-width: 100%;
-                    max-height: 100%;
                     margin-left: auto;
                     display: block;
                 }
-
                 &::after {
                     content: "";
                     position: absolute;
@@ -645,12 +588,9 @@
                     bottom: 0;
                     width: 202px;
                     height: 155px;
-                    background: url("./images/visual-cloud.png") no-repeat;
-                    background-size: contain;
-                    background-position: bottom right;
+                    background: url("./images/visual-cloud.png") no-repeat bottom right / contain;
                     transform: translateY(20%);
                     z-index: 2;
-
                     @media (max-width: 768px) {
                         width: 120px;
                         height: 120px;

@@ -18,7 +18,9 @@ import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"))
+const __dirname = path.dirname(
+    new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
+)
 
 // https://astro.build/config
 export default defineConfig({
@@ -41,17 +43,7 @@ export default defineConfig({
             appEntrypoint: "./src/vue-setup.ts",
             devtools: { launchEditor: "idea" },
         }),
-        expressiveCode({
-            defaultProps: {
-                wrap: true,
-                overridesByLang: {
-                    "bash,sh,zsh,shell,twig,powershell": {
-                        frame: "none",
-                    },
-                },
-            },
-            useDarkModeMediaQuery: false,
-        }),
+        expressiveCode(),
         mdx(),
         icon(),
     ],
@@ -83,24 +75,30 @@ export default defineConfig({
                             }
 
                             // if the file basename starts with index.
-                            if(file.basename && file.basename.startsWith("index.")) {
+                            if (
+                                file.basename &&
+                                file.basename.startsWith("index.")
+                            ) {
                                 // if the url start with ./
-                                if(url.startsWith("./") && file.dirname) {
+                                if (url.startsWith("./") && file.dirname) {
                                     // we preprend to the path the last part of the dirname
-                                    url = path.join(path.basename(file.dirname), url.slice(2))
+                                    url = path.join(
+                                        path.basename(file.dirname),
+                                        url.slice(2),
+                                    )
                                 }
 
                                 // if the url starts with ../
-                                if(url.startsWith("../")) {
+                                if (url.startsWith("../")) {
                                     // we replace ../ by ./
                                     url = "./" + url.slice(3)
                                 }
                             }
 
-                            return generateId({entry: url}) + hash
+                            return generateId({ entry: url }) + hash
                         }
                         return url
-                    }
+                    },
                 },
             ],
         ],
@@ -124,30 +122,30 @@ export default defineConfig({
         fonts: [
             {
                 provider: fontProviders.google(),
-                name: "Public Sans",
-                weights: [100, 400, 600, 700, 800],
-                cssVariable: "--font-family-public-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "Source Code Pro",
-                weights: [400, 700],
-                cssVariable: "--font-family-source-code-pro",
-            },
-            {
-                provider: fontProviders.google(),
                 name: "Mona Sans",
-                weights: [400, 700],
+                weights: [400, 500, 600, 700],
                 cssVariable: "--font-family-mona-sans",
             },
             {
                 provider: fontProviders.google(),
                 name: "JetBrains Mono",
-                weights: [400, 700],
+                weights: [400, 500, 600, 700],
                 cssVariable: "--font-family-jetbrains-mono",
             },
         ],
-        svgo: true,
+        svgo: {
+            plugins: [
+                {
+                    name: "preset-default",
+                    params: {
+                        overrides: {
+                            cleanupIds: false,
+                        },
+                    },
+                },
+                "removeDimensions",
+            ],
+        },
     },
     env: {
         schema: {
@@ -187,7 +185,8 @@ export default defineConfig({
     },
     redirects: {
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
-        "/trust": "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
+        "/trust":
+            "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
     },
     vite: {
         resolve: {

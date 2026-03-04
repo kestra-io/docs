@@ -68,7 +68,7 @@ The [configuration](../../configuration/index.md) is done inside the `KESTRA_CON
 :::alert{type="info"}
 If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../10.administrator-guide/16.troubleshooting/index.md).
 
-For running Kestra in Docker Compose with each server component as a separate service, see the [multi-component Docker Compose example](../../server-cli/index.md#kestra-with-server-components-in-different-services).
+For running Kestra in Docker Compose with each server component as a separate service, see the [multi-component Docker Compose example](../../kestra-cli/index.mdx#kestra-with-server-components-in-different-services).
 :::
 
 ### Use a configuration file
@@ -349,7 +349,7 @@ Server components can run independently from each other. Each of them communicat
 - `kestra server scheduler`
 - `kestra server webserver`
 
-For more details on Kestra server commands, check out the [Server CLI documentation](../../server-cli/index.md).
+For more details on Kestra server commands, check out the [Server CLI documentation](../../kestra-cli/index.mdx).
 
 Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgres database backend.
 
