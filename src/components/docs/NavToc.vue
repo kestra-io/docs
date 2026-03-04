@@ -146,7 +146,6 @@
     let visibleHeadings = new Set<string>()
 
     const getFixedHeaderOffset = () => {
-        // Try to get --top-bar-height CSS variable
         const topBarHeightStr = getComputedStyle(document.documentElement).getPropertyValue('--top-bar-height')
         if (topBarHeightStr) {
             const value = parseInt(topBarHeightStr.trim(), 10)
@@ -155,7 +154,6 @@
             }
         }
         
-        // Try computed style on document element
         const scrollPaddingStr = window.getComputedStyle(document.documentElement).scrollPaddingTop
         if (scrollPaddingStr && scrollPaddingStr !== 'auto' && scrollPaddingStr !== '0px') {
             const value = parseInt(scrollPaddingStr, 10)
@@ -164,7 +162,6 @@
             }
         }
         
-        // Fallback: calculate from fixed header elements
         const selectors = [
             "header",
             ".site-header",
@@ -186,14 +183,12 @@
             }
         }
         
-        return 80 // Conservative default
+        return 80
     }
 
     const scrollToElement = (id: string) => {
         const element = document.getElementById(id)
         if (!element) return
-        
-        // Let the browser handle scroll-padding-top from CSS, just scroll into view
         element.scrollIntoView({ behavior: "smooth", block: "start" })
     }
 
@@ -238,14 +233,12 @@
     }
 
     const initializeIntersectionObserver = () => {
-        // Clean up old observer
         if (intersectionObserver) {
             intersectionObserver.disconnect()
         }
         
         const headerOffset = getFixedHeaderOffset()
         
-        // Simple Intersection Observer - just detect when headings enter viewport
         const observerOptions: IntersectionObserverInit = {
             rootMargin: `-${Math.max(headerOffset, 0)}px 0px -50% 0px`,
             threshold: 0
@@ -254,7 +247,6 @@
         intersectionObserver = new IntersectionObserver((entries) => {
             if (isManualScrolling.value) return
             
-            // Find the heading that is closest to the top of the viewport (after header offset)
             const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
             let closestHeading = ""
             let closestDistance = Infinity
@@ -266,7 +258,6 @@
                 const rect = el.getBoundingClientRect()
                 const distanceFromTop = Math.abs(rect.top - headerOffset)
                 
-                // Only consider headings that are visible (not below viewport)
                 if (rect.top < window.innerHeight && distanceFromTop < closestDistance) {
                     closestDistance = distanceFromTop
                     closestHeading = link.id
@@ -278,7 +269,6 @@
             }
         }, observerOptions)
         
-        // Observe all headings
         const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
         allLinks.forEach(link => {
             const el = document.getElementById(link.id)
@@ -295,7 +285,6 @@
     })
     
     onMounted(() => {
-        // Initialize observer on mount
         nextTick(() => {
             initializeIntersectionObserver()
         })
