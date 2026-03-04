@@ -419,7 +419,7 @@ kestractl nsfiles upload prod ./assets --path resources --override
 | `kestractl` | Day-to-day platform operations through the API | Flows, executions, namespaces, namespace files — anything the Kestra API supports |
 | `kestra` (Server CLI) | Runtime and infrastructure operations | Server startup, system/database operations, plugin lifecycle, and maintenance tasks requiring direct runtime access |
 
-In short, use `kestractl` for API-level resource management and automation, and use the Kestra Server CLI for server, process, or database operations. See the full [kestractl reference](/docs/kestra-cli/kestractl) and [Kestra Server CLI reference](/docs/kestra-cli/kestra-server-commands) for details.
+In short, use `kestractl` for API-level resource management and automation, and use the Kestra Server CLI for server, process, or database operations. See the full [kestractl reference](/docs/kestra-cli/kestractl) and [Kestra Server CLI reference](/docs/kestra-cli/kestra-server) for details.
 
 ## GitHub Action
 
