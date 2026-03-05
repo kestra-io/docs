@@ -1,6 +1,6 @@
 ---
 title: Infrastructure automation breaks in the gaps.
-description: Here’s how to fix it with Kestra — without ripping out your stack and serverless infrastructure provided by Modal and BigQuery.
+description: Here’s how to fix it with Kestra — without ripping out your stack.
 date: 2026-03-05T11:30:00
 category: Solutions
 author:
