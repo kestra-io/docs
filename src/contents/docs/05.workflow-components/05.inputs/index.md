@@ -42,6 +42,7 @@ inputs:
     type: STRING
     defaults: "Hello World!"
     displayName: "A string input"
+    required: true
 
   - id: optional
     type: STRING
@@ -52,22 +53,30 @@ inputs:
     type: INT
     defaults: 100
     displayName: "An integer input"
+    required: true
+
 
   - id: list_of_int
     type: ARRAY
     itemType: INT
     defaults: [1, 2, 3]
     displayName: "A list of integers"
+    required: true
+
 
   - id: bool
     type: BOOL
     defaults: true
     displayName: "A boolean input displayed as a toggle."
+    required: true
+
 
   - id: float
     type: FLOAT
     defaults: 100.12
     displayName: "A float input"
+    required: true
+
 
   - id: dropdown
     type: SELECT
@@ -77,6 +86,8 @@ inputs:
       - VALUE_1
       - VALUE_2
       - VALUE_3
+    required: true
+
 
   - id: dropdown_multi
     type: MULTISELECT
@@ -84,43 +95,58 @@ inputs:
       - VALUE_1
       - VALUE_2
       - VALUE_3
+    required: true
 
   - id: instant
     type: DATETIME
     defaults: "2013-08-09T14:19:00Z"
     displayName: "A datetime input"
+    required: true
+
 
   - id: date
     type: DATE
     defaults: "2013-10-25"
     displayName: "A date input"
+    required: true
+
 
   - id: time
     type: TIME
     displayName: "A time input"
     defaults: "14:19:00"
+    required: true
+
 
   - id: duration
     type: DURATION
     defaults: "PT5M6S"
     displayName: "A duration input"
+    required: true
+
 
   - id: file
     type: FILE
     displayName: "Upload a file"
     defaults: nsfile:///hello.txt
     allowedFileExtensions: [".md", ".txt"]
+    required: true
+
 
   - id: json
     type: JSON
     displayName: "A JSON input"
     defaults: |
       [{"name": "kestra", "rating": "best in class"}]
+    required: true
+
 
   - id: uri
     type: URI
     defaults: "https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv"
     displayName: "A URI input"
+    required: true
+
 
   - id: secret
     type: SECRET
@@ -134,11 +160,15 @@ inputs:
       - user: will
         email: will@example.com
     displayName: YAML
+    required: true
+
 
   - id: nested.string
     type: STRING
     defaults: "Hello World!"
     displayName: "A nested string input"
+    required: true
+
 ```
 
 :::alert{type="info"}
@@ -216,14 +246,14 @@ inputs:
   - id: age
     type: INT
     defaults: 42
-    required: false
+    required: true
     min: 18
     max: 64
 
   - id: user
     type: STRING
     defaults: student
-    required: false
+    required: true
     validator: ^student(\d+)?$
 
   - id: float
@@ -231,6 +261,8 @@ inputs:
     defaults: 3.2
     min: 0.2
     max: 5.3
+    required: true
+
 
   - id: duration
     type: DURATION
@@ -242,6 +274,8 @@ inputs:
     defaults: "2024-04-12"
     after: "2024-04-10"
     before: "2024-04-15"
+    required: true
+
 
   - id: time
     type: TIME
@@ -253,6 +287,8 @@ inputs:
     defaults: "2024-04-13T14:17:00Z"
     after: "2024-04-10T14:19:00Z"
     before: "2024-04-15T14:19:00Z"
+    required: true
+
 
 tasks:
   - id: validator
@@ -320,6 +356,8 @@ inputs:
     type: ARRAY
     itemType: INT
     defaults: [1, 2, 3]
+    required: true
+
 
   - id: my_numbers_yaml_list
     type: ARRAY
@@ -328,6 +366,8 @@ inputs:
       - 1
       - 2
       - 3
+    required: true
+
 
 tasks:
   - id: print_status
@@ -394,6 +434,8 @@ inputs:
   - id: string
     type: STRING
     defaults: hello
+    required: true
+
 
   - id: optional
     type: STRING
@@ -557,6 +599,8 @@ inputs:
   - id: date
     type: DATETIME
     defaults: "{{ now() }}"
+    required: true
+
 
 tasks:
   - id: print_date
