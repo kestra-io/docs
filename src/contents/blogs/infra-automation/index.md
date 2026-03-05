@@ -10,15 +10,15 @@ author:
 
 Infrastructure automation is a chain of tools, teams, and handoffs that only looks clean on a diagram.
 
-platform and infrastructure teams are juggling hardware fleets, VM environments, and edge/network changes while trying to keep delivery and operations safe. The automation is often spread across Ansible playbooks, shell scripts, cron, and isolated portals, and it typically lives outside the execution history and observability you already expect for software and data workflows.
+Platform and infrastructure teams are juggling hardware fleets, VM environments, and edge/network changes while trying to keep delivery and operations safe. The automation is often spread across Ansible playbooks, shell scripts, cron, and isolated portals, and it typically lives outside the execution history and observability you already expect for software and data workflows.
 
-With our latest release, we have shipped a lot of new plugin and a point of view: **orchestration is the missing layer** in your infrastructue landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
+With our latest release, we have shipped a lot of new plugins, and a point of view: **orchestration is the missing layer** in your infrastructure landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
 
 Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery (Argo CD), edge/DNS (Cloudflare), bare metal (MAAS), virtualization (KVM/libvirt), source-of-truth workflows (NetBox), and hyperconverged day‑2/recovery automation (Nutanix AHV + snapshots).
 
 ## Your problems are the handoffs between your tools
 
- They come from the spaces between them:
+They come from the spaces between them:
 
 A deployment “finished”… but the application never became healthy.
 
@@ -28,7 +28,7 @@ The server exists… but inventory wasn’t updated, IPs aren’t assigned, and 
 
 A patch ran… but there’s no consolidated run history, no clean rollback story, and approvals live in a different system.
 
-Kestra’s direction in 1.3 is to make those assets passes explicit and reliable, by turning infrastructure work into workflows with consistent semantics (retries, timeouts, approvals, and audit) and a single place to debug what happened.
+Kestra’s direction in 1.3 is to make those asset passes explicit and reliable by turning infrastructure work into workflows with consistent semantics (retries, timeouts, approvals, and audit) and a single place to debug what happened.
 
 ## Integrate first, standardize next, replace only when you’re ready
 
@@ -47,7 +47,7 @@ Kill Switch: a UI mechanism that lets admins stop or contain problematic executi
 
 Credentials: reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
 
-Plugin Defaults UI: manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable. citeturn27view0
+Plugin Defaults UI: manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
 
 And because infrastructure automation is always part “process” (approvals, self-service, controlled access), Kestra’s Enterprise “Apps” matter deeply here: **Apps let you build a UI in front of flows**, forms for data entry, approval buttons, and controlled output views, while the flow remains the backend.
 
@@ -67,11 +67,11 @@ Perform edge actions (DNS changes, cache purge, incident WAF actions),
 
 Notify and record what happened.
 
-Kestra’s Argo CD plugin is intentionally focused on the primitives you need inside that larger workflow: `Sync` to apply the desired Git state and `Status` to read sync/health, conditions, and resources (optionally with refresh). Both tasks are GitOps-focused and run through the Argo CD CLI, with connection flags and timeouts that match real enterprise environments. citeturn13view2
+Kestra’s Argo CD plugin is intentionally focused on the primitives you need inside that larger workflow: `Sync` to apply the desired Git state and `Status` to read sync/health, conditions, and resources (optionally with refresh). Both tasks are GitOps-focused and run through the Argo CD CLI, with connection flags and timeouts that match real enterprise environments.
 
 Then the Cloudflare plugin closes the “delivery doesn’t stop at Kubernetes” problem by making edge operations composable: DNS record operations including `Upsert`, cache purge via `Purge`, WAF IP access rules, Workers KV read/write, namespaces creation, and zone discovery. 
 
-Here’s what that looks like as a workflow pattern (simplified but production-shaped): Argo CD sync + health gate, then DNS and cache updates, all under one execution graph.
+Here’s what that looks like as a workflow pattern (simplified but production-ready): Argo CD sync + health gate, then DNS and cache updates, all under a single execution graph.
 
 ```yaml
 id: rollout-with-health-gate-and-edge-update
@@ -136,7 +136,7 @@ tasks:
 Argo CD `Sync`/`Status` are explicitly designed for this model: apply desired state, then inspect sync/health/conditions/resources with optional refresh. 
 Cloudflare `Upsert` provides a clean DNS “ensure state” operation (with documented inputs like `apiToken`, `zoneId`, `recordType`, `name`, `content`). 
 
-Cloudflare cache `Purge` is built for both “purge all” and “purge specific files,” which is exactly what you want for controlled rollouts and post-incident remediation.
+Cloudflare's cache `Purge` supports both “purge all” and “purge specific files,” which is exactly what you want for controlled rollouts and post-incident remediation.
 
 You stop gating on *hope* (“CI is green”).
 
@@ -144,9 +144,9 @@ You start gating on **observed reality** (app health + explicit edge actions), w
 
 ## Keeping bare metal and the source of truth in sync
 
-Bare metal automation is where orchestration either earns your trust — or gets ignored.
+Bare-metal automation is where orchestration either earns your trust — or gets ignored.
 
-Canonical describes MAAS (“Metal as a Service”) as a private cloud infrastructure management system that makes physical servers behave like cloud instances, with API-driven workflows for deploying and managing machines.
+Canonical describes MAAS (“Metal as a Service”) as a private cloud infrastructure management system that treats physical servers as cloud instances, with API-driven workflows for deploying and managing machines.
 
 Kestra’s MAAS plugin turns that lifecycle into composable tasks: `ListMachines`, `EnlistMachine`, `CommissionMachine`, `DeployMachine`, and `PowerControlMachine`.
 
@@ -162,14 +162,14 @@ Deploy OS images (with cloud-init / user data),
 
 Control power state (on/off/cycle/query) as part of day‑2 operations.
 
-Now connect the other half of the problem: drift doesn’t start at “Terraform plan.” It starts when the source of truth is not part of execution.
+Now connect the other half of the problem: drift doesn’t start at “Terraform plan.” It starts when the source of truth is not part of the execution.
 
-NetBox is widely used as DCIM/IPAM and an infrastructure source-of-truth because it models devices, IP prefixes/addresses, racks, and more. 
-Kestra’s NetBox plugin makes NetBox writes and reads part of the workflow path: list sites/devices, create/update device records, and assign IP 
+NetBox is widely used as a DCIM/IPAM and an infrastructure source of truth because it models devices, IP prefixes/addresses, racks, and more. 
+Kestra’s NetBox plugin makes NetBox writes and reads part of the workflow path: list sites/devices, create/update device records, and assign IP addresses. 
 
-That is how you get “no drift by design”: if provisioning succeeds but inventory update fails, the workflow fails and you can see it.
+That is how you get “no drift by design”: if provisioning succeeds but inventory update fails, the workflow fails, and you can see it.
 
-Here’s a minimal pattern that shows how MAAS provisioning and NetBox updates become one process (again: simplified, but matches actual task shapes and examples from the docs).
+Here’s a minimal pattern that shows how MAAS provisioning and NetBox updates become a single process (again: simplified, but it matches the actual task shapes and examples from the docs).
 
 ```yaml
 id: provision-metal-and-register-in-netbox
@@ -269,8 +269,8 @@ Making those safe and repeatable.
 
 Kestra 1.3’s infrastructure plugins explicitly cover both ends of the virtualization spectrum.
 
-For KVM/libvirt, the plugin is designed around what operators actually need: define, start, stop, delete domains, update configuration, list domains, and react to lifecycle events. It also makes the connectivity reality explicit: it requires access to a `libvirtd` daemon via local socket, SSH, or TLS meaning you can run automation where your hypervisor lives, without poking holes in your network just to “make the tool work. 
-Even the `StartVm` task is shaped for reliability: it can wait until the domain reaches RUNNING state using retry up to a configured time window. 
+For KVM/libvirt, the plugin is designed around what operators actually need: define, start, stop, delete domains, update configuration, list domains, and react to lifecycle events. It also makes the connectivity reality explicit: it requires access to a `libvirtd` daemon via local socket, SSH, or TLS, meaning you can run automation where your hypervisor lives, without poking holes in your network just to “make the tool work. 
+Even the `StartVm` task is shaped for reliability: it can wait until the domain reaches the RUNNING state using a retry up to a configured time window. 
 
 For Nutanix, the plugin is built for the full story: AHV VM lifecycle plus snapshotting and template management “from a single flow,” configured with your endpoint/credentials so runs can safely manage infrastructure as part of larger pipelines. 
 The snapshot tasks are exactly what day‑2 automation wants: create, list, restore, delete snapshots. 
@@ -319,7 +319,7 @@ We integrate with the VMware stack you rely on.
 
 But we are building the replacement to the **Aria/vRA orchestration layer**: the layer where automation logic gets trapped, debugging gets opaque, and cross-domain workflows become painful to evolve.
 
-Kestra’s VMware plugin is designed to orchestrate VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with support for an optional trust store. It also supports event-driven patterns, like triggering flows based on vCenter VM lifecycle events (creation, deletion, power state changes) with filtering.
+Kestra’s VMware plugin is designed to orchestrate the VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with optional support for a trust store. It also supports event-driven patterns, such as triggering flows based on vCenter VM lifecycle events (creation, deletion, power-state changes) with filtering.
 
 That combination, VMware operations *as steps in workflows* is the foundation for a practical exit from portal-first orchestration. No big-bang rewrite. No “replace VMware.” Replace the brittle automation UI layer above it, while keeping the virtualization substrate and surrounding tooling intact.
 
