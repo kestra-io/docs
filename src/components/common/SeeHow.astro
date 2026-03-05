@@ -16,7 +16,7 @@ interface Props {
 const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } = Astro.props;
 ---
 
-<section class="py-5 px-3">
+<section class="px-3">
     <div class="see_how mx-auto w-100 rounded-3 p-1">
         <div class="inner mx-auto w-100">
             <div class="row g-0">
@@ -53,6 +53,7 @@ const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } = Astro.
 
     section {
         background-color: var(--ks-background-body);
+        padding: 70px $rem-1;
         .see_how {
             max-width: 1160px;
             border: $block-border;

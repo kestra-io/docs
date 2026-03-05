@@ -1,0 +1,246 @@
+---
+import Check from "vue-material-design-icons/CheckBold.vue"
+import NoGapGrid from "~/components/common/NoGapGrid.astro"
+import GradientLeft from "./gradients/GradientLeft.astro"
+import GradientRight from "./gradients/GradientRight.astro"
+
+const SELF_HOSTED_FEATURES = [
+    {
+        icon: "mdi:vector-square",
+        title: "Runs where you run",
+        description:
+            "Deploy Kestra on your own infrastructure, cloud, or Kubernetes. Full control over networking, data locality, security boundaries, and upgrade cadence. No vendor lock-in, no black boxes.",
+    },
+    {
+        icon: "mdi:cog",
+        title: "Built for production orchestration",
+        description:
+            "Kestra is designed for long-running, stateful workflows with retries, backfills, and failure handling built in. It's not a task runner bolted onto cron, it's a production-grade orchestration engine.",
+    },
+    {
+        icon: "mdi:code-tags-check",
+        title: "Language and tool agnostic",
+        description:
+            "Orchestrate SQL, Python, shell, APIs, Terraform, dbt, Spark, or custom tools in the same workflows. Kestra doesn't force a runtime or SDK on your teams.",
+    },
+    {
+        icon: "mdi:xml",
+        title: "Declarative by default",
+        description:
+            "Workflows, triggers, and dependencies are defined as code. Version them, review them, promote them across environments. Infrastructure as Code, but for orchestration.",
+    },
+    {
+        icon: "mdi:move-resize-variant",
+        title: "Scales from one team to many",
+        description:
+            "Start with a single namespace or cluster, grow to multiple teams, projects, and environments. Isolation, permissions, and execution limits are first-class concepts.",
+    },
+    {
+        icon: "mdi:domain",
+        title: "Enterprise governance when you need it",
+        description:
+            "Add RBAC, audit logs, secrets management, asset lineage, and co.",
+    },
+]
+
+const CLOUD_HOSTED_FEATURES = [
+    {
+        icon: "mdi:cloud-check-outline",
+        title: "Fully Managed",
+        description:
+            "Forget about infrastructure operations, upgrades, patching, backups, or capacity planning. Kestra Cloud is fully managed by our team so you can focus on building workflows, shipping automation, and delivering value faster.",
+    },
+    {
+        icon: "mdi:rocket-launch-outline",
+        title: "Fast Onboarding & Deployment",
+        description:
+            "Skip the setup phase and go straight to execution. Kestra Cloud gives you a ready-to-use production environment, so your team can start orchestrating pipelines immediately without spending weeks on installation and configuration.",
+    },
+    {
+        icon: "mdi:shield-lock-outline",
+        title: "Security & Access Control",
+        description:
+            "Protect your workflows and your data with enterprise-grade security. Kestra Cloud provides built-in access control, authentication options, and governance features so you can scale adoption across teams while staying compliant.",
+    },
+    {
+        icon: "mdi:chart-line-variant",
+        title: "Monitoring & Observability",
+        description:
+            "Get full visibility into your automation platform. Track executions, debug failures faster, and monitor performance through built-in observability features designed to keep operations smooth and predictable.",
+    },
+    {
+        icon: "mdi:scale-balance",
+        title: "Pay-as-you-scale Model",
+        description:
+            "Start small and expand without friction. Kestra Cloud adapts to your usage, allowing you to grow progressively while keeping costs aligned with real value and adoption.",
+    },
+    {
+        icon: "mdi:move-resize-variant",
+        title: "Scalability & High Availability",
+        description:
+            "Kestra Cloud is designed for reliability and performance, ensuring your orchestration layer remains stable as your workloads and teams grow.",
+    },
+]
+---
+
+<section class="price-grid">
+    <GradientLeft />
+
+    <div class="container">
+        <h2 class="section-title" data-host="self-hosted" data-usal="fade-r">
+            What You Get With Kestra
+        </h2>
+        <h2 class="section-title d-none" data-host="cloud-hosted" data-usal="fade-r">
+            What You Get With Kestra Cloud
+        </h2>
+
+        <div data-host="self-hosted">
+            <NoGapGrid items={SELF_HOSTED_FEATURES} />
+        </div>
+
+        <div class="d-none" data-host="cloud-hosted">
+            <NoGapGrid items={CLOUD_HOSTED_FEATURES} />
+        </div>
+
+        <div class="support-card">
+            <GradientRight />
+            <div class="support-content">
+                <h3 class="support-title" data-usal="fade-l delay-10">Expert Support, Built In</h3>
+                <p class="support-desc" data-usal="fade-l delay-20">
+                    Get direct help from the Kestra team. Upgrade for faster
+                    SLAs, a dedicated channel, and hands-on guidance from the
+                    engineers behind the platform.
+                </p>
+                <ul class="support-list">
+                    <li data-usal="fade-l delay-10"><Check class="check-icon" /> Faster SLAs</li>
+                    <li data-usal="fade-l delay-20">
+                        <Check class="check-icon" /> Dedicated Support Channel
+                    </li>
+                    <li data-usal="fade-l delay-30">
+                        <Check class="check-icon" /> Guidance From Success Engineers
+                    </li>
+                </ul>
+            </div>
+            <div class="support-action">
+                <a
+                    href="#support-plans"
+                    class="btn btn-primary"
+                    data-host="self-hosted"
+                    data-usal="zoomin">Learn more</a
+                >
+                <a
+                    href="/demo"
+                    class="btn btn-primary d-none"
+                    data-host="cloud-hosted"
+                    data-usal="zoomin">Contact us</a
+                >
+            </div>
+        </div>
+
+        <slot />
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .price-grid {
+        padding-block: 140px;
+        background: var(--ks-background-primary-inverse)
+            url("~/assets/pricing/bg_price.webp") no-repeat bottom right / 55%
+            auto;
+        position: relative;
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            background-size: 100% auto;
+        }
+    }
+    .container {
+        margin-inline: auto;
+        padding-inline: 1rem;
+        max-width: 1420px;
+    }
+    .section-title {
+        color: var(--ks-content-primary-inverse);
+        margin-bottom: 2.5rem;
+    }
+    .support-card {
+        margin-top: 2rem;
+        background: var(--ks-background-primary-inverse);
+        border: 1px solid var(--ks-border-secondary-inverse);
+        border-radius: 8px;
+        padding: 4rem;
+        box-shadow: 2px 3px 16px 0 var(--ks-shadows-light-inverse);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        position: relative;
+        overflow: clip;
+
+        .support-content,
+        .support-action {
+            position: relative;
+            z-index: 1;
+        }
+
+        @include media-breakpoint-up(xl) {
+            max-height: 350px;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        .support-content {
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .support-title {
+                color: var(--ks-content-primary-inverse);
+                margin-bottom: 0;
+            }
+
+            .support-desc {
+                color: var(--ks-content-secondary-inverse);
+                font-size: $font-size-md;
+                margin: 0;
+            }
+
+            .support-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+
+                li {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 0.5rem;
+                    color: var(--ks-content-primary-inverse);
+                    font-size: $font-size-md;
+
+                    .check-icon {
+                        font-size: 1.25rem;
+                        margin-top: -4px;
+                        color: var(--ks-content-color-highlight-inverse);
+                    }
+                }
+            }
+        }
+
+        .support-action {
+            flex-shrink: 0;
+
+            .btn {
+                width: 243px;
+                padding: 0.5rem 1.25rem;
+            }
+        }
+    }
+</style>

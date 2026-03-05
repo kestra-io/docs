@@ -139,7 +139,7 @@ tasks:
       - id: healthCheck
         type: io.kestra.plugin.core.http.Request
         method: GET
-        uri: https://kestra.io/api/mock
+        uri: https://kestra.io
 ```
 
 This flow checks an HTTP endpoint every 30 seconds and stops either when it returns 200 or after 50 attempts, whichever comes first. You can reference the child task outputs (here `outputs.healthCheck.code`) inside the `condition` expression. See the [LoopUntil task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.LoopUntil) for additional options.

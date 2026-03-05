@@ -558,7 +558,7 @@
             "rootAlias": ""
           },
           {
-            "name": "ks/Color-gradient-1-inverse 2",
+            "name": "ks/Color-gradient-1-inverse-2",
             "value": "#25232e",
             "var": "",
             "rootAlias": ""
@@ -937,7 +937,7 @@
           },
           {
             "name": "ks/shadows-light",
-            "value": "#2720560d",
+            "value": "#3952F219",
             "var": "",
             "rootAlias": ""
           },
@@ -1288,7 +1288,7 @@
             "rootAlias": ""
           },
           {
-            "name": "ks/Color-gradient-1-inverse 2",
+            "name": "ks/Color-gradient-1-inverse-2",
             "value": "#e9e5fe",
             "var": "",
             "rootAlias": ""
@@ -1840,4 +1840,3 @@
     ]
   }
 ]
-
