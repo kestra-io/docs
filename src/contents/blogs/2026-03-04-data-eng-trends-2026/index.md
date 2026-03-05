@@ -68,7 +68,7 @@ YAML wins because it separates what you want from how to execute it: the orchest
 
 When you're coordinating across languages and systems, imperative Python creates lock-in. A Python-based DAG can only coordinate Python tasks easily. If you need to orchestrate a shell script, a SQL query, and a Go microservice in the same workflow, you either wrap everything in Python (adding unnecessary complexity) or you need a different tool. Declarative orchestration treats all tasks as equal: the orchestration layer is YAML, the execution layer is whatever language makes sense for each task.
 
-This isn't a new pattern. Infrastructure-as-code took off with Terraform and Kubernetes for exactly the same reason: declarative configuration handles heterogeneous systems better than imperative code does. Workflow-as-code is following the same path, just a few years behind.
+This isn't a new pattern. Infrastructure-as-code (IaC) took off with Terraform and Kubernetes for exactly the same reason: declarative configuration handles heterogeneous systems better than imperative code does. Workflow-as-code is following the same path, just a few years behind.
 
 Run a SQL query daily, alert on failure, retry three times: in Airflow, this requires 40+ lines of Python with imports, decorators, error handling, and DAG configuration. In a YAML-first orchestration tool, it's 10 lines of declarative configuration. Both work. But only one is maintainable by a workflow engineer who learned SQL last week, and only one is easy for an AI assistant to generate, validate, and explain.
 
