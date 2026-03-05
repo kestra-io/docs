@@ -324,16 +324,34 @@ The above `curl` command creates the KV pair with key `my_key` and the `Hello Wo
 You can get any particular KV pair using:
 
 ```bash
+curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/{key}
+```
+
+You can also use the filter to specify a Namespace:
+
+```bash
+curl -G "http://localhost:8080/api/v1/main/kv" \
+  --data-urlencode "filters[namespace][EQUALS]={namespace-name}" \
+  -H "Authorization: Bearer <API-TOKEN>"
+```
+
+Older versions of Kestra may use the path to specify a Namespace:
+
+```bash
 curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv/{key}
 ```
+
+:::alert{type="info"}
+As a general tip, your Kestra instance exposes an interactive API reference at https://<your-kestra-host>/api which lists all available endpoints for your installed version.
+:::
 
 For example:
 
 ```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key
+curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/my_key
 ```
 
-This `curl` command retrieves a KV pair with the key `my_key` in the `company.team` namespace. The output of the API contains the data type of the value and the retrieved value of the KV pair:
+This `curl` command retrieves a KV pair with the key `my_key` in the `main` Tenant. The output of the API contains the data type of the value and the retrieved value of the KV pair:
 
 ```json
 {"type": "STRING", "value": "Hello World"}
@@ -341,7 +359,7 @@ This `curl` command retrieves a KV pair with the key `my_key` in the `company.te
 
 ### Read all keys in the namespace
 
-You can list all keys in the namespace as follows:
+You can list all keys in the namespace through the path as follows:
 
 ```bash
 curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv
@@ -359,6 +377,14 @@ The output is returned as a JSON array of all keys in the namespace:
   {"key":"my_key","creationDate":"2024-07-27T06:10:33.422Z","updateDate":"2024-07-27T06:11:08.911Z"},
   {"key":"test_key","creationDate":"2024-07-27T04:37:18.196Z","updateDate":"2024-07-27T04:37:18.196Z"}
 ]
+```
+
+Or with the filters:
+
+```bash
+curl -G "http://localhost:8080/api/v1/main/kv" \
+  --data-urlencode "filters[namespace][EQUALS]=company.team" \
+  -H "Authorization: Bearer <API-TOKEN>"
 ```
 
 ### Delete a KV pair
