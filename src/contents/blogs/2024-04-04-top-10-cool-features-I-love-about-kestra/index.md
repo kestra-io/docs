@@ -46,7 +46,7 @@ id: send-failure-alert
 namespace: company.team
 tasks:
   - id: send-alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#failures"
     executionId: "{{ trigger.executionId }}"

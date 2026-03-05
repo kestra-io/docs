@@ -66,7 +66,7 @@ tasks:
 listeners:
   - tasks:
       - id: slack
-        type: io.kestra.plugin.slack.SlackExecution
+        type: io.kestra.plugin.slack.notifications.SlackExecution
         url: "{{ secret('SLACK_WEBHOOK') }}"
         channel: "#general"
         executionId: "{{ execution.id }}"
@@ -95,7 +95,7 @@ namespace: prod.monitoring
 
 tasks:
   - id: slack
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -154,7 +154,7 @@ Listeners are usually used to send notifications or handle special end-task beha
 listeners:
   - tasks:
       - id: sendSlackAlert
-        type: io.kestra.plugin.slack.SlackExecution
+        type: io.kestra.plugin.slack.notifications.SlackExecution
         url: https://hooks.slack.com/services/XXX/YYY/ZZZ
     conditions:
       - type: io.kestra.plugin.core.condition.ExecutionStatusCondition

@@ -446,7 +446,7 @@ To include a separate notification to the relevant channels, add the [Slack Inco
 
 ```yaml
   - id: slack_notification
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "Machine `{{ flow.id }}` had outdated Python and an upgrade took place during execution `{{ execution.id }}`. Report available at S3: `{{ outputs.upload_output_to_s3.key }}`"
 ```
