@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
-image:
+image: ./todo.jpg
 ---
 
 Infrastructure automation is a chain of tools, teams, and handoffs that only looks clean on a diagram.
