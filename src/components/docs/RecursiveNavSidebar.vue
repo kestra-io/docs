@@ -210,7 +210,7 @@
         }
         .vertical-line {
             position: absolute;
-            left: calc(1.15rem * (var(--depth, 0)) + 7px);
+            left: calc(1.5rem * (var(--depth, 0)) - .8rem);
             top: 6px;
             bottom: 0;
             width: 1px;
@@ -233,7 +233,7 @@
         }
         @for $i from 0 through 6 {
             &.depth-#{$i} {
-                padding-left: calc(1.25rem * ($i));
+                padding-left: calc(1.5rem * ($i - 1));
             }
         }
         a {
@@ -243,7 +243,6 @@
             display: flex;
             scroll-margin: 80px;
             &.active {
-                font-weight: 500;
                 color: var(--ks-content-link) !important;
             }
             &:hover {
@@ -254,7 +253,7 @@
             }
         }
         &:not(.depth-1) a {
-            font-size: 0.875rem;
+            font-size: 0.8rem;
         }
     }
 
@@ -266,7 +265,6 @@
         font-size: 0.875rem;
         font-weight: 700;
         color: var(--ks-content-primary);
-        text-transform: uppercase;
-        margin: 1.5rem 0 0.75rem 0.25rem;
+        margin: 1.5rem 0 0.75rem 0;
     }
 </style>
