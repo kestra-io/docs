@@ -13,7 +13,7 @@ Infrastructure automation is a chain of tools, teams, and handoffs that only loo
 
 Platform and infrastructure teams are juggling hardware fleets, VM environments, and edge/network changes while trying to keep delivery and operations safe. The automation is often spread across Ansible playbooks, shell scripts, cron, and isolated portals, and it typically lives outside the execution history and observability you already expect for software and data workflows.
 
-With our latest release, we have shipped a lot of new plugins, and a point of view: **orchestration is the missing layer** in your infrastructure landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
+With our [latest release](https://kestra.io/blogs/release-1-3), we have shipped a lot of new plugins, and a point of view: **orchestration is the missing layer** in your infrastructure landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
 
 Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery [(Argo CD)](https://kestra.io/plugins/plugin-argocd), edge/DNS [(Cloudflare)](https://kestra.io/plugins/plugin-cloudflare), bare metal [(MAAS)](https://kestra.io/plugins/plugin-ee-canonical/maas/io.kestra.plugin.ee.canonical.maas.commissionmachine), virtualization [(KVM/libvirt)](https://kestra.io/plugins/plugin-kvm/io.kestra.plugin.kvm.createvm), source-of-truth workflows [(NetBox)](https://kestra.io/plugins/plugin-ee-netbox), and hyperconverged day‑2/recovery automation [(Nutanix AHV + snapshots)](https://kestra.io/plugins/plugin-ee-nutanix).
 
@@ -309,57 +309,14 @@ The second is the “signal, not noise” approach to drift detection. The bluep
 
 If you’re running infrastructure at scale, VMware ecosystems often come with operational gravity; and a lot of teams end up living inside VMware automation portals.
 
-Broadcom’s documentation describes **VCF Automation (formerly VMware Aria Automation)** as enabling IT teams and cloud service providers to deliver a self-service private cloud for AI, Kubernetes, and VM-based applications. 
-VMware Aria Automation Orchestrator (vRO lineage) is positioned as an orchestration engine with a built-in scripting model and workflow building blocks. 
-And Broadcom’s tech docs explicitly frame how Aria Automation integrates with Automation Orchestrator via plug-ins to run orchestrator workflows and manage Aria Automation resources. 
+let's be clear, we integrate with the VMware stack you rely on. But more than that, we are the only replacement to the **Aria/vRA orchestration layer**: the one where automation logic gets trapped, debugging gets opaque, and cross-domain workflows become painful to evolve.
 
-Here’s where Kestra’s stance is intentionally direct:
-
-We integrate with the VMware stack you rely on.
-
-But we are building the replacement to the **Aria/vRA orchestration layer**: the layer where automation logic gets trapped, debugging gets opaque, and cross-domain workflows become painful to evolve.
-
-[Kestra’s VMware plugin](https://kestra.io/plugins/plugin-ee-vmware) is designed to orchestrate the VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with optional support for a trust store. It also supports event-driven patterns, such as triggering flows based on vCenter VM lifecycle events (creation, deletion, power-state changes) with filtering.
+[Kestra’s VMware plugin](https://kestra.io/plugins/plugin-ee-vmware) is designed to orchestrate the VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with optional support for a trust store. It also supports event-driven patterns, such as triggering flows based on vCenter VM lifecycle events (creation, deletion, power-state changes) with filtering. is designed to orchestrate the VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with optional support for a trust store. It also supports event-driven patterns, such as triggering flows based on vCenter VM lifecycle events (creation, deletion, power-state changes) with filtering.
 
 That combination, VMware operations *as steps in workflows* is the foundation for a practical exit from portal-first orchestration. No big-bang rewrite. No “replace VMware.” Replace the brittle automation UI layer above it, while keeping the virtualization substrate and surrounding tooling intact.
 
 We’re teasing a dedicated VMware series next: **how to build a practical vRA/Aria exit strategy** while still integrating with VMware for everything you keep and how to modernize safely when you’re ready.
 
-## Links and references
-
-```text
-Kestra 1.3 release post (Native Infrastructure Automation + controls):
-https://kestra.io/blogs/release-1-3
-
-Infrastructure plugin documentation:
-Argo CD Apps (Sync/Status): https://kestra.io/plugins/plugin-argocd/apps
-Cloudflare DNS Records: https://kestra.io/plugins/plugin-cloudflare/records
-Cloudflare Cache: https://kestra.io/plugins/plugin-cloudflare/cache
-Cloudflare IP Access Rules: https://kestra.io/plugins/plugin-cloudflare/accessrules
-Cloudflare Workers KV: https://kestra.io/plugins/plugin-cloudflare/kv
-Cloudflare Workers KV Namespaces: https://kestra.io/plugins/plugin-cloudflare/namespaces
-Cloudflare Zones: https://kestra.io/plugins/plugin-cloudflare/zones
-Canonical MAAS: https://kestra.io/plugins/plugin-ee-canonical/maas
-KVM / Libvirt: https://kestra.io/plugins/plugin-kvm
-NetBox: https://kestra.io/plugins/plugin-ee-netbox
-Nutanix: https://kestra.io/plugins/plugin-ee-nutanix
-VMware: https://kestra.io/plugins/plugin-ee-vmware
-
-Blueprints:
-Blueprints library: https://kestra.io/blueprints
-Blueprints repo: https://github.com/kestra-io/blueprints
-Blueprint concept docs: https://kestra.io/docs/concepts/blueprints
-
-Process + self-service (useful for infra workflows with approvals):
-Apps (Enterprise): https://kestra.io/docs/enterprise/scalability/apps
-Approval processes: https://kestra.io/docs/use-cases/approval-processes
-Pause/Resume guide: https://kestra.io/docs/how-to-guides/pause-resume
-
-VMware Aria / VCF Automation references:
-VCF Automation overview (formerly Aria Automation): https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-0/overview-of-vmware-cloud-foundation-9/what-is-vmware-cloud-foundation-and-vmware-vsphere-foundation/vcf-automation-overview.html
-Aria Automation Orchestrator overview: https://www.vmware.com/docs/vmware-vrealize-orchestrator
-Aria Automation + Orchestrator plug-in docs: https://techdocs.broadcom.com/us/en/vmware-cis/aria/aria-automation/8-18/vro-using-plug-ins-8-18/configuring-the-vra-plug-in.html
-```
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
 
