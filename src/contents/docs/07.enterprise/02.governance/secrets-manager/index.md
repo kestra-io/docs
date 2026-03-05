@@ -16,6 +16,10 @@ Kestra respects your privacy. Therefore, secrets are persisted externally in a b
 
 You can add, modify, or delete secrets from the **Secrets** tab of any given namespace in the Kestra UI or programmatically via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs/resources/namespace_secret).
 
+:::alert{type="info"}
+If you need short-lived OAuth-style access tokens, create a [Credential](../../03.auth/credentials/index.md) that mints/refreshes tokens using the secrets stored in your external manager, then call it with `credential()` in flows.
+:::
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/U0cNzNQ-bkw?si=20ltjCZBXJW8_QAe" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

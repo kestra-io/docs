@@ -717,7 +717,7 @@ if (!pluginType && !subGroup) {
             @include media-breakpoint-up(lg) {
                 grid-area: sidebar;
                 position: sticky;
-                top: 4rem;
+                top: calc(4rem + var(--announce-height));
                 height: 100%;
             }
         }
@@ -748,7 +748,7 @@ if (!pluginType && !subGroup) {
             @include media-breakpoint-up(lg) {
                 grid-area: toc;
                 position: sticky;
-                top: 0;
+                top: var(--announce-height);
                 height: 100%;
             }
 

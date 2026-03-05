@@ -68,7 +68,7 @@ namespace: company.team
 
 tasks:
   - id: send_slack_message_started
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "https://kestra.io/api/mock" # To use this example, replace the url with your own Slack webhook
     payload: |
       {

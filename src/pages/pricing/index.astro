@@ -1,50 +1,26 @@
 ---
 import Layout from "~/components/layout.astro"
-import Heading from "~/components/price/Heading.vue"
-import Table from "~/components/price/Table.vue"
-import Faq from "~/components/common/Faq.vue"
-import Testimonials from "~/components/layout/Testimonials.astro"
-
-const testimonials = [
-    {
-        message:
-            "Kestra enables the entire team, even non-technical members, to understand the benefits and contribute. I’ve onboarded people, created blueprints, and set them up to build their own workflows.",
-        name: "John Kim",
-        designation: "Manager Corporate Strategy",
-        logo: { src: "/landing/pricing/fila.svg" },
-    },
-]
+import Header from "~/components/price/Header.astro"
+import HostSwitcher from "~/components/price/HostSwitcher.astro"
+import PriceGrid from "~/components/price/PriceGrid.astro"
+import PriceBottom from "~/components/price/PriceBottom.astro"
+import PlanTable from "~/components/price/PlanTable.astro"
+import PriceQuote from "~/components/price/PriceQuote.vue"
 
 const title = "Pricing"
 const description =
     "Choose the right plan for your needs. Start with the Open Source version and scale with the Enterprise Edition of Kestra."
-
-const faqItems = [
-    {
-        question: "Is it easy to upgrade from Open Source edition to Kestra Enterprise?",
-        answer: "As easy as it takes to add the license key to the configuration file and restart your server!",
-    },
-    {
-        question: "Does the Enterprise Edition comes with Enterprise Support and SLAs?",
-        answer: "Yes! In addition to all the feature sets, we're providing access to an exclusive customer portal, end-to-end customer onboarding, and guaranteed response time on support requests! Everything operates in a full Customer Success Framework.",
-    },
-    {
-        question: "Is Kestra Enterprise made for small teams?",
-        answer: "Kestra Enterprise is addressing any organizations & professionals seeking to secure production workloads with high-security standards and enterprise support.",
-    },
-]
 ---
 
-<Layout title={title} description={description}>
+<Layout {title} {description}>
     <div class="cont">
-        <Heading client:load />
-        <div id="pricing-table-container">
-            <Table client:visible />
-        </div>
-        <div id="orchestra-core-container">
-            <Testimonials testimonialData={testimonials} />
-        </div>
-        <Faq items={faqItems} client:visible />
+        <Header>
+            <HostSwitcher slot="switcher" />
+        </Header>
+        <PriceGrid />
+        <PlanTable />
+        <PriceQuote client:load />
+        <PriceBottom />
     </div>
 </Layout>
 

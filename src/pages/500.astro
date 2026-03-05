@@ -4,6 +4,7 @@ import Layout from "~/components/layout.astro"
 import Error from "~/components/error/error.vue"
 
 const { error } = Astro.props
+error.statusCode = 500;
 ---
 
 <Layout title="Server Error">

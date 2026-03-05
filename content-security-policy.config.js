@@ -55,7 +55,7 @@ export default {
         "https://*.githubusercontent.com/",
     ],
     // forms
-    "form-action": ["'self'", "https://*.hsforms.com"],
+    "form-action": ["'self'", "https://*.hsforms.com", "https://*.hsforms.net"],
     // iframes
     "frame-src": [
         "'self'",
@@ -67,6 +67,8 @@ export default {
         "https://*.arcade.software",
         "https://*.hubspot.com",
         "https://*.hsforms.com",
+        "https://*.hsforms.net",
+        "http://*.hsforms.net",
     ],
     "connect-src": [
         "'self'",

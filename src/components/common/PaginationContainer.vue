@@ -11,7 +11,7 @@
             showTotal?: boolean
         }>(),
         {
-            sizeOptions: () => [12, 24, 48],
+            sizeOptions: () => [12, 24, 48, 96],
             defaultSize: 24,
             showTotal: true,
         },

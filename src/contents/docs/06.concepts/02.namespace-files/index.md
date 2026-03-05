@@ -68,7 +68,7 @@ Namespace Files make it easy to:
 
 ### Embedded code editor
 
-While creating or editing a Flow, you can access Namespace Files from the Files tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
+While creating or editing a Flow, you can access Namespace Files from the **Namespace Files** tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
 
 To start, add a new file, (e.g., a Python script). Add a folder named `scripts` and a file called `hello.py` with the following content:
 
@@ -162,36 +162,35 @@ Check out the dedicated guides for more information:
 
 ### GitHub Actions CI/CD
 
-You can leverage our official GitHub Action called [deploy-action](https://github.com/kestra-io/deploy-action) to synchronize your Git repository with a given namespace. This is useful if you want to orchestrate complex Python modules, dbt projects, Terraform or Ansible infrastructure, or any other project that contains code and configuration files with potentially multiple nested directories and files.
+Use the official Kestra [GitHub Actions](../../version-control-cicd/cicd/01.github-action/index.md) to upload namespace files directly from your repository. This is ideal for promoting configuration, scripts, or other assets that live alongside your code.
 
-Below is a simple example showing how you can deploy all scripts from the `scripts` directory in your Git branch to the `prod` namespace:
+Example workflow deploying the `scripts/` folder to the `prod` namespace using the `deploy-namespace-files` action:
 
 ```yaml
-name: Kestra CI/CD
-on:
-  push:
-    branches:
-      - main
+name: Kestra Namespace Files
+on: [push]
+
 jobs:
-  prod:
+  upload-namespace-files:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: deploy-scripts-to-prod
-        uses: kestra-io/deploy-action@master
+      - uses: actions/checkout@v5
+      - name: Upload scripts folder to prod
+        uses: kestra-io/github-actions/deploy-namespace-files@main
         with:
-          resource: namespace_files
+          localPath: ./scripts           # folder in the repo
+          namespacePath: scripts         # destination path in the namespace
           namespace: prod
-          directory: ./scripts # directory in the Git repository
-          to: ./scripts # remote directory in the namespace
-          server: https://demo.kestra.io/
-          user: your_username
-          password: ${{secrets.KESTRA_PASSWORD}}
+          server: ${{ secrets.KESTRA_HOSTNAME }}
+          # Choose one auth method:
+          # apiToken: ${{ secrets.KESTRA_API_TOKEN }}   # Enterprise Edition
+          user: ${{ secrets.KESTRA_USERNAME }}          # Basic auth
+          password: ${{ secrets.KESTRA_PASSWORD }}
 ```
 
 :::alert{type="info"}
-When creating a service account role for the GitHub Action in the [Enterprise Edition](../../07.enterprise/index.mdx), you need to grant the `FLOWS` permission to the Role.
-If you deploy namespace files, ensure the role also has namespace file permissions appropriate to your target namespace.
+- Store credentials as GitHub Secrets. Provide `tenant` when targeting multi-tenant Enterprise environments.
+- Ensure the service account role grants namespace file permissions (and `FLOWS` when deploying flows) to your target namespace.
 :::
 
 ### Terraform provider

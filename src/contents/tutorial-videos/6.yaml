@@ -1,0 +1,7 @@
+title: "Kestra Quick Start Guide — 1 Hour Getting Started Tutorial on Building Data Pipelines with Kestra"
+description: "This video is a quick walkthrough of getting started with Kestra using a single docker container. We then show an overview of the UI and build a simple data pipeline that downloads Divvy Bike Data in a zip file, unzips the files, and uploads the CSV to GCS."
+category: "Quick Start Tutorials"
+author: "Michael Shoemaker"
+url: "https://www.youtube.com/watch?v=Jfa4jtLOnIs"
+publicationDate: "2023-12-04T00:00:00.000"
+contentType: "Quick Start Tutorials"
