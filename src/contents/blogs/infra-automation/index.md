@@ -10,9 +10,9 @@ author:
 
 Infrastructure automation is a chain of tools, teams, and handoffs that only looks clean on a diagram.
 
-platform and infrastructure teams are juggling hardware fleets, VM environments, and edge/network changes while trying to keep delivery and operations safe. The automation is often spread across Ansible playbooks, shell scripts, cron, and isolated portals, and it typically lives outside the execution history and observability you already expect for software and data workflows. Kestra 1.3 explicitly calls out this reality: those teams run automation separately from “data pipeline observability,” and bringing it into Kestra gives teams a shared execution history, logs, and observability. 
+platform and infrastructure teams are juggling hardware fleets, VM environments, and edge/network changes while trying to keep delivery and operations safe. The automation is often spread across Ansible playbooks, shell scripts, cron, and isolated portals, and it typically lives outside the execution history and observability you already expect for software and data workflows.
 
-with our latest release, we have shipped a lot of new plugin and a point of view: **orchestration is the missing layer**. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
+with our latest release, we have shipped a lot of new plugin and a point of view: **orchestration is the missing layer** in your infrastructue landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
 
 Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery (Argo CD), edge/DNS (Cloudflare), bare metal (MAAS), virtualization (KVM/libvirt), source-of-truth workflows (NetBox), and hyperconverged day‑2/recovery automation (Nutanix AHV + snapshots).
 
@@ -27,7 +27,6 @@ The service is up… but DNS didn’t move, the cache didn’t purge, or the edg
 The server exists… but inventory wasn’t updated, IPs aren’t assigned, and the source of truth is already wrong.
 
 A patch ran… but there’s no consolidated run history, no clean rollback story, and approvals live in a different system.
-
 
 Kestra’s direction in 1.3 is to make those assets passes explicit and reliable, by turning infrastructure work into workflows with consistent semantics (retries, timeouts, approvals, and audit) and a single place to debug what happened.
 
@@ -138,7 +137,6 @@ Argo CD `Sync`/`Status` are explicitly designed for this model: apply desired st
 Cloudflare `Upsert` provides a clean DNS “ensure state” operation (with documented inputs like `apiToken`, `zoneId`, `recordType`, `name`, `content`). 
 
 Cloudflare cache `Purge` is built for both “purge all” and “purge specific files,” which is exactly what you want for controlled rollouts and post-incident remediation.
-
 
 You stop gating on *hope* (“CI is green”).
 
@@ -321,10 +319,9 @@ We integrate with the VMware stack you rely on.
 
 But we are building the replacement to the **Aria/vRA orchestration layer**: the layer where automation logic gets trapped, debugging gets opaque, and cross-domain workflows become painful to evolve.
 
-The “integrate now” reality is already here: Kestra’s VMware plugin is designed to orchestrate VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with support for an optional trust store.
-It also supports event-driven patterns, like triggering flows based on vCenter VM lifecycle events (creation, deletion, power state changes) with filtering.
+Kestra’s VMware plugin is designed to orchestrate VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with support for an optional trust store. It also supports event-driven patterns, like triggering flows based on vCenter VM lifecycle events (creation, deletion, power state changes) with filtering.
 
-That combination — VMware operations *as steps in workflows* — is the foundation for a practical exit from portal-first orchestration. No big-bang rewrite. No “replace VMware.” Replace the brittle automation UI layer above it, while keeping the virtualization substrate and surrounding tooling intact.
+That combination, VMware operations *as steps in workflows* is the foundation for a practical exit from portal-first orchestration. No big-bang rewrite. No “replace VMware.” Replace the brittle automation UI layer above it, while keeping the virtualization substrate and surrounding tooling intact.
 
 We’re teasing a dedicated VMware series next: **how to build a practical vRA/Aria exit strategy** while still integrating with VMware for everything you keep and how to modernize safely when you’re ready.
 
