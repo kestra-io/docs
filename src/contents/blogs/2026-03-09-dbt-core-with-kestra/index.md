@@ -67,6 +67,10 @@ tasks:
 
 Python-based orchestrators require a different context entirely: DAG definitions, decorator patterns, framework-specific imports. For a team that lives in YAML and SQL, that's a real overhead cost.
 
+The topology updates live as you type — no deploy-to-preview cycle. You can see the DAG take shape before the workflow ever runs.
+
+![Kestra's workflow editor: YAML on the left, live DAG topology on the right — showing a git sync followed by a dbt build task](./kestra-dbt-editor.png)
+
 
 ### Your dbt project stays untouched
 
@@ -161,6 +165,10 @@ tasks:
 
 Tasks run sequentially by default. If the sync fails, dbt never starts. Multiple independent sources can run in parallel, with dbt gated on all of them completing.
 
+Every execution gets a Gantt view showing task timing, plus real-time container logs — so when something does fail, you're looking at exactly what ran, in what order, and where it stopped.
+
+![Kestra execution view: Gantt chart showing the sync task completing before dbt-build starts, with live container logs streaming below](./kestra-dbt-gantt-chart.png)
+
 
 ### Retries
 
@@ -196,6 +204,10 @@ errors:
 ```
 
 The message includes the execution ID, so whoever responds can jump directly to the logs instead of hunting through run history.
+
+You can also set this up as a standalone system flow in Kestra — a single `failure_alert_slack` flow that watches for `FAILED` or `WARNING` status across your entire namespace and routes to Slack automatically, separate from any individual pipeline.
+
+![Kestra editor showing a failure_alert_slack system flow: triggers on FAILED or WARNING status, sends a Slack notification with the execution ID](./kestra-slack-alert.png)
 
 
 ### Git sync and CI
