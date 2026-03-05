@@ -57,9 +57,9 @@ On the other end, a financial analyst at a bank uses Claude Cowork to run a morn
 
 YAML wins because it separates what you want from how to execute it. In a Python-based DAG, all task configuration is expressed in Python -- shell scripts, SQL queries, R models, Julia computations, and Go microservices all get wrapped in Python operator classes that non-Python team members can't read or modify. YAML keeps the orchestration logic in one place and the execution logic in whatever language makes sense for each task. That separation is what lets AI validate configurations before runtime, and what makes the result readable to someone who didn't write it.
 
-This isn't a new pattern. Infrastructure-as-code took off with Terraform and Kubernetes for exactly the same reason: declarative configuration handles heterogeneous systems better than imperative code does. IaC reached mainstream enterprise adoption by roughly 2019. Broad-scope workflow orchestration -- pipelines, infrastructure, and business processes under one declarative layer -- is where that adoption curve is now.
+This isn't a new pattern. Infrastructure-as-code took off with Terraform and Kubernetes for exactly the same reason: declarative configuration handles heterogeneous systems better than imperative code does. Workflow orchestration is following the same path.
 
-Run a SQL query daily, alert on failure, retry three times: in the standard Airflow pattern still running at most enterprise shops, this means 40+ lines of Python across imports, `default_args`, DAG instantiation, operator configuration, and task dependency wiring. 
+Run a SQL query daily, alert on failure, retry three times: in a YAML-first orchestration tool, that's 10 lines of declarative configuration. Maintainable by a workflow engineer who learned SQL last week, and easy for an AI assistant to generate, validate, and explain.
 
 In a YAML-first orchestration tool, it's 10 lines of declarative configuration. Both work. But only one is maintainable by a workflow engineer who learned SQL last week, and only one is easy for an AI assistant to generate, validate, and explain.
 
