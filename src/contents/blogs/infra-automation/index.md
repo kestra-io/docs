@@ -305,7 +305,7 @@ The Argo CD “workflow-shaped GitOps” model is already captured in our bluepr
 The second is the “signal, not noise” approach to drift detection. The blueprint [“Detect and Alert on Infrastructure Configuration Drift with Ansible”](https://kestra.io/blueprints/ansible-config-drift) encodes a simple operational principle: alert only when drift exists, not on every run. 
 
 
-## The elephant in the room: the VMware Aria alternative and the series we’re teasing
+## The elephant in the room: the VMware Aria alternative
 
 If you’re running infrastructure at scale, VMware ecosystems often come with operational gravity; and a lot of teams end up living inside VMware automation portals.
 
