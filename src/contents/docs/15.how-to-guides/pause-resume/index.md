@@ -78,7 +78,7 @@ inputs:
 
 tasks:
   - id: sendApprovalRequest
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ inputs.slack_webhook_uri }}"
     payload: |
       {

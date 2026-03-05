@@ -212,7 +212,7 @@ id: alert
 namespace: system
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{secret('SLACK_WEBHOOK')}}" # format: https://hooks.slack.com/services/xzy/xyz/xyz
     channel: "#general"
     executionId: "{{trigger.executionId}}"
