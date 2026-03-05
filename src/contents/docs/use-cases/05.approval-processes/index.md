@@ -49,7 +49,7 @@ inputs:
 
 tasks:
   - id: notify_manager
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_HR_WEBHOOK') }}"
     payload: |
       {

@@ -31,7 +31,7 @@ tasks:
 
 errors:
   - id: alert_on_failure
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: secret('SLACK_WEBHOOK')
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
 ```
