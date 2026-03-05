@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Martin-Pierre Roset
   image: mproset
+image:
 ---
 
 Infrastructure automation is a chain of tools, teams, and handoffs that only looks clean on a diagram.
@@ -43,11 +44,13 @@ Kestra’s practical philosophy is:
 
 And it’s why we shipped production-grade controls that matter specifically when automation touches infrastructure:
 
-Kill Switch: a UI mechanism that lets admins stop or contain problematic executions fast, scoped down to tenant/namespace/flow/execution, with an audit trail. 
+- Kill Switch: a UI mechanism that lets admins stop or contain problematic executions fast, scoped down to tenant/namespace/flow/execution, with an audit trail. 
 
-Credentials: reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
+- Credentials: reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
 
-Plugin Defaults UI: manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
+- Plugin Defaults UI: manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
+
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Qu8BDAn5EOUrGmwrfLyv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Defaults | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 And because infrastructure automation is always part “process” (approvals, self-service, controlled access), Kestra’s Enterprise “Apps” matter deeply here: **Apps let you build a UI in front of flows**, forms for data entry, approval buttons, and controlled output views, while the flow remains the backend.
 
