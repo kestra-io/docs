@@ -276,7 +276,7 @@
             height: fit-content;
             @include media-breakpoint-up(lg) {
                 position: sticky;
-                top: 80px;
+                top: calc(80px + var(--announce-height));
                 width: 100%;
                 overflow-x: hidden;
                 overflow-y: auto;
@@ -284,7 +284,7 @@
         }
         &.plugin > div {
             @include media-breakpoint-up(lg) {
-                top: 0;
+                top: var(--announce-height);
             }
         }
         nav {

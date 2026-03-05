@@ -140,7 +140,7 @@
                     padding-top: 74vh;
                     display: flex;
                     position: sticky;
-                    top: 16vh;
+                    top: calc(16vh + var(--announce-height));
                     .sticky-features-box {
                         border: 1px solid var(--color--grey-border);
                         border-radius: 4px;

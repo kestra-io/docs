@@ -97,7 +97,7 @@
         margin-bottom: 3rem;
         @media (min-width: 992px) {
             position: sticky;
-            top: 100px;
+            top: calc(100px + var(--announce-height));
         }
 
         .content {
