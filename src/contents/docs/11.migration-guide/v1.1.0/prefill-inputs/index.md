@@ -8,7 +8,7 @@ description: Introduction of the new prefill property for inputs to allow editab
 
 ## Breaking change
 
-If you have flows with input property `defaults`, then `required` can no longer be `false`. This combination will throw an error, as inputs with a default value must be required. Previously this combination was valid, and any flows with inputs using this configuration must be refactored to one of the below combinations.
+If you have flows with input property `defaults`, then `required` can no longer be `false`. This combination will throw an error, as inputs with a default value must be required. Previously this combination was valid, and any flows with inputs using this configuration must be refactored to one of the below combinations. Inputs using `defaults` must have `required: true`.
 
 ## New prefill Property for Inputs
 
