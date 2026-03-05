@@ -33,14 +33,13 @@ Kestra’s direction in 1.3 is to make those asset passes explicit and reliable 
 
 ## Integrate first, standardize next, replace only when you’re ready
 
-
 Kestra’s practical philosophy is:
 
-**Integrate what you already use**, so you can orchestrate end-to-end immediately.
+>**Integrate what you already use**, so you can orchestrate end-to-end immediately.
 
-**Standardize how operations run**, so your delivery and runbooks share the same guardrails.
+>**Standardize how operations run**, so your delivery and runbooks share the same guardrails.
 
-**Replace brittle orchestration silos later**, once your process logic lives in workflows (versioned, observable, auditable), not trapped inside a portal.
+>**Replace brittle orchestration silos later**, once your process logic lives in workflows (versioned, observable, auditable), not trapped inside a portal.
 
 And it’s why we shipped production-grade controls that matter specifically when automation touches infrastructure:
 
