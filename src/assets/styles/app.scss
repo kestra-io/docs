@@ -35,6 +35,11 @@ body {
     }
 }
 
+
+.astro-loading-indicator {
+    z-index: 9999 !important;
+}
+
 :root {
     --spacer: #{$spacer};
     --bs-link-color-rgb: var(--ks-content-link);

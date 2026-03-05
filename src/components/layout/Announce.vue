@@ -142,8 +142,9 @@
                 line-height: 18px;
                 width: 100%;
                 padding-inline: $spacer;
-
+                
                 .text-truncate {
+                    color: var(--ks-content-primary);
                     min-width: 0;
                     flex-shrink: 1;
                 }
