@@ -18,7 +18,7 @@ The Kestra Server CLI (`kestra`) is not a separate tool to install. It is the sa
 
 - **Docker / Docker Compose / Kubernetes**: the CLI is already included in the `kestra/kestra` image.
 - **Standalone JAR**: the downloaded executable (`./kestra-VERSION`) is the CLI.
-- **Managed environments (e.g. Kestra Cloud)**: host-level server commands are typically not available. Use [`kestractl`](./kestractl.md) for API-level operations.
+- **Managed environments (e.g. Kestra Cloud)**: host-level server commands are typically not available. Use [`kestractl`](../kestractl/index.md) for API-level operations.
 
 To install Kestra first, follow one of these guides:
 
