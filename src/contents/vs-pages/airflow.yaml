@@ -1,10 +1,10 @@
-title: "Kestra vs. Apache Airflow 3: Modern Orchestration vs. a Legacy Rebuilt"
-description: "Compare Kestra vs Apache Airflow 3: Declarative YAML orchestration for any language vs. Python DAGs rebuilt for modern infrastructure. See features, setup time, and migration considerations."
+title: "Kestra vs. Apache Airflow 3: Orchestrate Your Stack, Not Just Your DAGs"
+description: "Compare Kestra vs Apache Airflow 3: Declarative YAML orchestration for any language against Python DAGs on a rebuilt interface. See features, setup time, and migration considerations."
 competitorName: Airflow
 
 intro:
-  title: "Kestra vs. Apache Airflow 3: Modern Orchestration vs. a Legacy Rebuilt"
-  description: "Airflow 3 is a meaningful upgrade. But it modernizes the interface without changing the architecture. If you're facing a forced Airflow 2 migration and wondering whether to upgrade or switch, this is what the comparison actually looks like."
+  title: "Kestra vs. Apache Airflow 3: Orchestrate Your Stack, Not Just Your DAGs"
+  description: "Airflow 3 is a meaningful upgrade. A new React UI, DAG versioning, a FastAPI-based REST API. But the orchestration model is unchanged: workflows are Python code the scheduler runs. This is what the comparison with Kestra actually looks like."
 
 philosophy:
   mainTitle: Two Architectures, Not Just Two Tools
@@ -39,7 +39,7 @@ businessValue:
       - "Serves Python-native data teams"
     shadowColor: "#E8F5E9"
     bulletColor: "#4CAF50"
-  footerText: "Airflow 3 is the right choice for Python-native teams with heavy existing investment in the Airflow ecosystem. Kestra is the right choice if you need multi-language teams to contribute, event-driven execution beyond cron, or orchestration that spans data, infrastructure, and business workflows. Either way, the forced Airflow 2 migration is a natural evaluation moment."
+  footerText: "Airflow 3 is the right choice for Python-native teams with heavy existing investment in the Airflow ecosystem. Kestra is the right choice if you need multi-language teams to contribute, event-driven execution beyond cron, or orchestration that spans data, infrastructure, and business workflows."
 
 setupSpeed:
   title: Time to First Workflow
@@ -202,7 +202,7 @@ decisionGuide:
       - "You need event-driven workflows that respond to real-time events, not just cron schedules."
       - "You're managing data, infrastructure, and business processes and want one control plane."
       - "Non-engineers need to trigger or monitor workflows without writing code."
-      - "You're evaluating orchestrators during the Airflow 2 EOL window and want to compare options before committing."
+      - "You're evaluating Airflow 3 and want to compare architectures before committing to the upgrade."
   competitor:
     title: Choose Airflow 3 When
     list:
