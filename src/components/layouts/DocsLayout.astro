@@ -1,5 +1,4 @@
 ---
-
 import "~/assets/styles/custom-elements.scss"
 import NavSideBar from "~/components/docs/NavSideBar.vue"
 import Layout from "~/components/layout.astro"
@@ -26,7 +25,13 @@ const props = Astro.props as Props
 
 <Layout title={props.title} description={props.description} image={props.image}>
     <div
-        class={`container-fluid bd-gutter bd-layout type-docs ${props.isHomePage ? "homepage" : ""}`}
+        class:list={[
+            "container-fluid",
+            "bd-gutter",
+            "bd-layout",
+            "type-docs",
+            { homepage: props.isHomePage },
+        ]}
     >
         <NavSideBar
             type="docs"
@@ -36,7 +41,12 @@ const props = Astro.props as Props
             transition:persist
         />
         <article
-            class={`bd-main order-1 docs ${props.isHomePage ? "homepage" : ""}`}
+            class:list={[
+                "bd-main",
+                "order-1",
+                "docs",
+                { homepage: props.isHomePage },
+            ]}
         >
             <div class="bd-title">
                 <Breadcrumb
@@ -65,7 +75,7 @@ const props = Astro.props as Props
         gap: calc($spacer * 4);
         padding-left: 1rem;
         padding-right: 1rem;
-        max-width: 100%;
+        max-width: 1520px;
         width: 100%;
         overflow: clip !important;
         z-index: 10;
@@ -128,8 +138,6 @@ const props = Astro.props as Props
             }
         }
     }
-
-
 
     :global(.medium-zoom-image) {
         max-width: 100%;
