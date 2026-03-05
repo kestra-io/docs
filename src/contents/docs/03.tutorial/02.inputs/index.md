@@ -12,7 +12,7 @@ Instead of hardcoding values in your flow, use inputs to make your workflows mor
 ## Make Flows dynamic with Inputs
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/uml91UcDd-E?si=5WMFeIQ7gKsb2YB6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://youtu.be/7abajF7wmzY" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
