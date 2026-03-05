@@ -319,7 +319,7 @@ We integrate with the VMware stack you rely on.
 
 But we are building the replacement to the **Aria/vRA orchestration layer**: the layer where automation logic gets trapped, debugging gets opaque, and cross-domain workflows become painful to evolve.
 
-Kestra’s VMware plugin is designed to orchestrate the VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with optional support for a trust store. It also supports event-driven patterns, such as triggering flows based on vCenter VM lifecycle events (creation, deletion, power-state changes) with filtering.
+[Kestra’s VMware plugin](https://kestra.io/plugins/plugin-ee-vmware) is designed to orchestrate the VM lifecycle, snapshotting, and template management across ESXi and vCenter from a single flow, with optional support for a trust store. It also supports event-driven patterns, such as triggering flows based on vCenter VM lifecycle events (creation, deletion, power-state changes) with filtering.
 
 That combination, VMware operations *as steps in workflows* is the foundation for a practical exit from portal-first orchestration. No big-bang rewrite. No “replace VMware.” Replace the brittle automation UI layer above it, while keeping the virtualization substrate and surrounding tooling intact.
 
