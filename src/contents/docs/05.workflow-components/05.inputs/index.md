@@ -53,6 +53,7 @@ inputs:
     defaults: 100
     displayName: "An integer input"
 
+
   - id: list_of_int
     type: ARRAY
     itemType: INT
@@ -84,6 +85,7 @@ inputs:
       - VALUE_1
       - VALUE_2
       - VALUE_3
+    required: true
 
   - id: instant
     type: DATETIME
@@ -215,14 +217,14 @@ namespace: company.team
 inputs:
   - id: age
     type: INT
-    defaults: 42
+    prefill: 42
     required: false
     min: 18
     max: 64
 
   - id: user
     type: STRING
-    defaults: student
+    prefill: student
     required: false
     validator: ^student(\d+)?$
 
