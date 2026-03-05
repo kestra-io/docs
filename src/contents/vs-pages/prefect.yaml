@@ -22,7 +22,7 @@ philosophy:
 businessValue:
   mainTitle: "Python-Only Leaves Half Your Stack Unorchestrated"
   kestra:
-    title: Business-Critical Workflows
+    title: Business-critical Workflows
     list:
       - Automate how your company operates
       - "Cross-functional: data + ops + business"
@@ -230,11 +230,17 @@ commonQuestions:
     answer: "Extract your Python logic from Prefect's @flow and @task decorators and run it directly as a Script task in Kestra. Your SQL, Shell, and Python code works as-is; define orchestration in YAML for triggers, scheduling, and task dependencies. Most teams run both platforms in parallel and migrate incrementally."
   - question: Does Kestra work with Python?
     answer: "Yes. Write inline Python in your YAML or reference external .py files with any pip packages. The optional Kestra Python library lets you pass outputs back to the orchestrator, but it's not required. Your existing scripts run without modification."
-  - question: How does Kestra handle event-driven workflows compared to Prefect?
-    answer: "Kestra ships unlimited event-driven triggers in open source: webhooks, Kafka, Pulsar, RabbitMQ, file arrivals, database changes, and API callbacks, all configured in a single YAML file. Prefect caps event-driven automations at 10 on the free tier, and configuring them requires multiple UI steps."
-  - question: Can I run Kestra in my own infrastructure like Prefect's hybrid model?
-    answer: "Yes. Kestra deploys to Docker, Kubernetes, or any cloud provider via Docker Compose, with the full platform including database and UI running in your environment. Enterprise deployments support air-gapped environments, multi-tenancy, and namespace isolation. Kestra Cloud is also available as a managed option."
   - question: Can Kestra handle the same data pipeline use cases as Prefect?
     answer: "Yes. Kestra orchestrates ETL/ELT pipelines, dbt models, Airbyte syncs, data quality checks, and warehouse operations, with 1200+ plugins covering the same integrations. Orchestration is declarative YAML while transformation logic runs in any language, not Python only."
-  - question: Does running Kestra require more infrastructure than Prefect?
-    answer: "No, it requires less. A single docker compose up stands up the full Kestra platform including the embedded database and UI. Prefect requires a running server, a configured work pool, and at least one worker before you can schedule anything."
+  - question: How does Kestra's setup compare to Prefect's?
+    answer: "Kestra is simpler. A single docker compose up stands up the full platform including the embedded database and UI. Prefect requires a running server, a configured work pool, and at least one worker before you can schedule anything."
+  - question: Can I run Kestra in my own infrastructure like Prefect's hybrid model?
+    answer: "Yes. Kestra deploys to Docker, Kubernetes, or any cloud provider, with the full platform running in your environment. Kestra Cloud is also available as a managed option. Air-gapped deployments are supported for environments with strict network controls."
+  - question: How does Kestra integrate with Git and existing CI/CD pipelines?
+    answer: "Kestra workflows are YAML files that live in Git like any other code. The Kestra Terraform provider and native GitHub Actions integration let you push workflow changes through your existing CI/CD pipeline without manual steps. Prefect's deployment model packages Python flows into container images, which creates slower feedback loops and growing storage overhead as workflow counts scale."
+  - question: How does Kestra handle event-driven workflows compared to Prefect?
+    answer: "Kestra ships unlimited event-driven triggers in open source: webhooks, Kafka, Pulsar, RabbitMQ, file arrivals, database changes, and API callbacks, all configured in a single YAML file. Prefect caps event-driven automations at 10 on the free tier, and configuring them requires multiple UI steps."
+  - question: Can Kestra handle enterprise-scale workloads?
+    answer: "Yes. Kestra handles 100,000+ concurrent tasks with distributed execution and horizontal scaling. The platform is built for high availability with automatic failover and exactly-once execution guarantees. Prefect's Python-based execution model introduces scalability constraints from dependency management and concurrent processing limits."
+  - question: How does Kestra handle access control and multi-tenancy?
+    answer: "Kestra provides namespace isolation with RBAC, SSO/SAML, audit logs for every execution, and native secrets management integration with AWS Secrets Manager, HashiCorp Vault, and Azure Key Vault. Prefect's advanced governance features require Prefect Cloud Enterprise. Kestra's full governance model is available on both self-hosted and Kestra Cloud deployments."
