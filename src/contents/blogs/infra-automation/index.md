@@ -12,7 +12,7 @@ Infrastructure automation is a chain of tools, teams, and handoffs that only loo
 
 platform and infrastructure teams are juggling hardware fleets, VM environments, and edge/network changes while trying to keep delivery and operations safe. The automation is often spread across Ansible playbooks, shell scripts, cron, and isolated portals, and it typically lives outside the execution history and observability you already expect for software and data workflows.
 
-with our latest release, we have shipped a lot of new plugin and a point of view: **orchestration is the missing layer** in your infrastructue landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
+With our latest release, we have shipped a lot of new plugin and a point of view: **orchestration is the missing layer** in your infrastructue landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
 
 Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery (Argo CD), edge/DNS (Cloudflare), bare metal (MAAS), virtualization (KVM/libvirt), source-of-truth workflows (NetBox), and hyperconverged day‑2/recovery automation (Nutanix AHV + snapshots).
 
