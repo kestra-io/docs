@@ -68,6 +68,8 @@ const randomAiQuestions = getRandomAiQuestions()
 const annonces = (await getCollection("annonces"))
     .map((a) => a.data)
     .filter(a => a.id !== 0)
+
+const hasAnnounce = annonces.length > 0
 ---
 
 <html lang="en">
@@ -187,11 +189,11 @@ const annonces = (await getCollection("annonces"))
         style={props.headerBg
             ? `--header-dark-bg: ${props.headerBg}`
             : undefined}
-        class={annonces.length > 0 ? 'has-annonces' : '' }
+        class={hasAnnounce ? 'has-annonces' : '' }
     >
         <Header client:load transition:persist />
         <Search randomAiQuestions={randomAiQuestions} client:load />
-        {annonces.length > 0 ? <Announce client:load transition:persist content={annonces} /> : '' }
+        {hasAnnounce ? <Announce client:load transition:persist content={annonces} /> : '' }
         <main>
             <slot />
         </main>

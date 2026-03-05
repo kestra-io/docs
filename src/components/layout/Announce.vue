@@ -15,10 +15,10 @@
                         :key="slide"
                         v-bind:key="slide?.id"
                     >
-                        <p class="d-flex" @click="slideTo(index)">
-                            <span class="d-inline-block text-truncate">{{
-                                slide.text
-                            }}</span>
+                        <p class="d-flex justify-content-center align-items-center" @click="slideTo(index)">
+                            <span class="d-inline-block text-truncate">
+                                {{ slide.text }}
+                            </span>
                             <a
                                 class="d-inline-block text-nowrap"
                                 :href="slide.href"
@@ -140,6 +140,13 @@
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
+                width: 100%;
+                padding-inline: $spacer;
+
+                .text-truncate {
+                    min-width: 0;
+                    flex-shrink: 1;
+                }
             }
             button {
                 position: absolute;
