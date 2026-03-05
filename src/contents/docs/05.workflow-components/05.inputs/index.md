@@ -217,15 +217,15 @@ namespace: company.team
 inputs:
   - id: age
     type: INT
-    defaults: 42
-    required: true
+    prefill: 42
+    required: false
     min: 18
     max: 64
 
   - id: user
     type: STRING
-    defaults: student
-    required: true
+    prefill: student
+    required: false
     validator: ^student(\d+)?$
 
   - id: float
