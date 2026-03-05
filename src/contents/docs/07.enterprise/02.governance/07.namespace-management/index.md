@@ -90,6 +90,13 @@ tasks:
     fetchOne: true
 ```
 
+### Default service account for SDK plugins
+
+Namespaces can now provide **default authentication credentials** that [SDK-based plugins](/plugins/plugin-kestra) use to run tasks such as [List all Namespaces](/plugins/plugin-kestra/kestra-namespaces/io.kestra.plugin.kestra.namespaces.list). This allows tasks relying on the [Kestra SDK](../../../api-reference/kestra-sdk/index.mdx) to call the API without hard-coding credentials inside the flow.
+
+On the Namespace **Edit** page, open the **Default authentication** section and choose either:
+- **API token** (recommended), or
+- **Basic auth** (username/password)
 
 ### Variables
 
