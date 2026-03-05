@@ -1,6 +1,6 @@
 ---
-title: Infrastructure automation breaks in the gaps.
-description: Here’s how to fix it with Kestra — without ripping out your stack.
+title: Make GitOps, DNS, Inventory, and Compute Behave Like One System.
+description: Orchestrate Argo CD, Cloudflare, MAAS, KVM, NetBox, and Nutanix with consistent guardrails and a single audit trail.
 date: 2026-03-05T11:30:00
 category: Solutions
 author:
@@ -15,7 +15,7 @@ Platform and infrastructure teams are juggling hardware fleets, VM environments,
 
 With our latest release, we have shipped a lot of new plugins, and a point of view: **orchestration is the missing layer** in your infrastructure landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
 
-Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery (Argo CD), edge/DNS (Cloudflare), bare metal (MAAS), virtualization (KVM/libvirt), source-of-truth workflows (NetBox), and hyperconverged day‑2/recovery automation (Nutanix AHV + snapshots).
+Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery [(Argo CD)](https://kestra.io/plugins/plugin-argocd), edge/DNS [(Cloudflare)](https://kestra.io/plugins/plugin-cloudflare), bare metal [(MAAS)](https://kestra.io/plugins/plugin-ee-canonical/maas/io.kestra.plugin.ee.canonical.maas.commissionmachine), virtualization [(KVM/libvirt)](https://kestra.io/plugins/plugin-kvm/io.kestra.plugin.kvm.createvm), source-of-truth workflows [(NetBox)](https://kestra.io/plugins/plugin-ee-netbox), and hyperconverged day‑2/recovery automation [(Nutanix AHV + snapshots)](https://kestra.io/plugins/plugin-ee-nutanix).
 
 ## Your problems are the handoffs between your tools
 
@@ -35,11 +35,11 @@ Kestra’s direction in 1.3 is to make those asset passes explicit and reliable 
 
 Kestra’s practical philosophy is:
 
->**Integrate what you already use**, so you can orchestrate end-to-end immediately.
+> **Integrate what you already use**, so you can orchestrate end-to-end immediately.
 
->**Standardize how operations run**, so your delivery and runbooks share the same guardrails.
+> **Standardize how operations run**, so your delivery and runbooks share the same guardrails.
 
->**Replace brittle orchestration silos later**, once your process logic lives in workflows (versioned, observable, auditable), not trapped inside a portal.
+> **Replace brittle orchestration silos later**, once your process logic lives in workflows (versioned, observable, auditable), not trapped inside a portal.
 
 And it’s why we shipped production-grade controls that matter specifically when automation touches infrastructure:
 
@@ -48,8 +48,6 @@ And it’s why we shipped production-grade controls that matter specifically whe
 - Credentials: reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
 
 - Plugin Defaults UI: manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
-
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Qu8BDAn5EOUrGmwrfLyv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Defaults | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 And because infrastructure automation is always part “process” (approvals, self-service, controlled access), Kestra’s Enterprise “Apps” matter deeply here: **Apps let you build a UI in front of flows**, forms for data entry, approval buttons, and controlled output views, while the flow remains the backend.
 
@@ -154,15 +152,15 @@ Kestra’s MAAS plugin turns that lifecycle into composable tasks: `ListMachines
 
 You can finally express the **actual lifecycle** as a workflow with long-running waits and timeouts that are visible and controllable:
 
-List what’s available,
+- List what’s available,
 
-Enlist hardware (or register a VM/BMC power driver),
+- Enlist hardware (or register a VM/BMC power driver),
 
-Commission with polling + timeout,
+- Commission with polling + timeout,
 
-Deploy OS images (with cloud-init / user data),
+- Deploy OS images (with cloud-init / user data),
 
-Control power state (on/off/cycle/query) as part of day‑2 operations.
+- Control power state (on/off/cycle/query) as part of day‑2 operations.
 
 Now connect the other half of the problem: drift doesn’t start at “Terraform plan.” It starts when the source of truth is not part of the execution.
 
@@ -302,9 +300,9 @@ Kestra’s Blueprints exist to encode those shapes: **each blueprint combines co
 
 For infrastructure orchestration specifically, there are two blueprint patterns worth highlighting because they map directly to the pain points we see in real platform teams.
 
-The Argo CD “workflow-shaped GitOps” model is already captured in blueprints surfaced directly on the Argo CD plugin docs page: “Manage an Argo CD Application with Sync Verification” and “Single-tenant Argo CD rollout with waves, guarded sync strategy, and Status-based readiness gates.” 
+The Argo CD “workflow-shaped GitOps” model is already captured in our blueprints: [“Manage an Argo CD Application with Sync Verification”](https://kestra.io/blueprints/argocd-app-management) and [“Single-tenant Argo CD rollout with waves, guarded sync strategy, and Status-based readiness gates.”](https://kestra.io/blueprints/argocd-single-tenant-wave-rollout) 
 
-The second is the “signal, not noise” approach to drift detection. The blueprint **“Detect and Alert on Infrastructure Configuration Drift with Ansible”** encodes a simple operational principle: alert only when drift exists, not on every run. 
+The second is the “signal, not noise” approach to drift detection. The blueprint [“Detect and Alert on Infrastructure Configuration Drift with Ansible”](https://kestra.io/blueprints/ansible-config-drift) encodes a simple operational principle: alert only when drift exists, not on every run. 
 
 
 ## The elephant in the room: the VMware Aria alternative and the series we’re teasing
