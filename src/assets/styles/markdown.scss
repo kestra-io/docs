@@ -1,6 +1,6 @@
 /**
  * Common markdown styles that apply across the website.
- * 
+ *
  * This file defines the `markdown-styles`, which provides consistent styling for:
  * - Typography: Headings, paragraphs, lists, and links (including external link icons).
  * - Code: Syntax highlighting blocks (Astro Code, Expressive Code) and inline code.
@@ -84,7 +84,7 @@
             color: var(--ks-content-link-hover);
         }
     }
-    
+
     a[target="_blank"]::after,
     a[href^="https://"]:after,
     a[href^="http://"]:after {
@@ -438,8 +438,8 @@
     --ec-frm-tooltipSuccessBg: var(--ks-button-background-primary);
     --ec-frm-frameBoxShdCssVal: none !important;
     --ec-codeFontFml: var(--font-family-jetbrains-mono) !important;
-    --code-background: var(--ks-background-primary);
-    --ec-frm-edBg: var(--ks-background-primary);
+    --code-background: var(--ks-background-input);
+    --ec-frm-edBg: var(--ks-background-input);
     margin-bottom: 2rem;
 
     pre[data-language] {
