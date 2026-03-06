@@ -8,7 +8,7 @@ import { $fetchApi } from "~/utils/fetch"
 import Features from "~/components/home/Features.vue"
 import EveryDev from "~/components/home/EveryDev.astro"
 import TabsSection from "~/components/common/TabsSection.vue"
-import BlueprintsRender from "~/components/common/BlueprintsRender.vue"
+import BlueprintsRender from "~/components/common/BlueprintsRender.astro"
 import EnterpriseSection from "~/components/home/EnterpriseSection.astro"
 import EnterpriseQuotesRender from "~/components/common/EnterpriseQuotesRender.vue"
 import CTA from "~/components/common/CTA.astro"
@@ -96,7 +96,7 @@ const tabs = [
         <EveryDev />
         <TabsSection tabs={tabs} client:visible />
         <PluginsBox />
-        <BlueprintsRender blueprints={blueprints.results} client:visible />
+        <BlueprintsRender blueprints={blueprints.results} />
         <EnterpriseSection />
         <EnterpriseQuotesRender
             quotesCompaniesLogos={quotesLogos}
