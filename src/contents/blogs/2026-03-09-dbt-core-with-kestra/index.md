@@ -58,6 +58,7 @@ And here's the Kestra task that runs it:
 # kestra workflow
 id: dbt_pipeline
 namespace: company.data
+
 tasks:
   - id: build
     type: io.kestra.plugin.dbt.cli.DbtCLI
@@ -196,7 +197,7 @@ When retries are exhausted, you want to know immediately — not when a stakehol
 ```yaml
 errors:
   - id: slack_alert
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: |
       dbt build failed in {{ flow.namespace }}
@@ -222,6 +223,7 @@ tasks:
     branch: main
     namespace: "{{ flow.namespace }}"
     gitDirectory: dbt
+    
   - id: dbt_build
     type: io.kestra.plugin.dbt.cli.DbtCLI
     containerImage: ghcr.io/kestra-io/dbt-duckdb:latest
