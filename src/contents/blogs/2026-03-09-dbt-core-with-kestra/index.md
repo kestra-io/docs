@@ -1,5 +1,5 @@
 ---
-title: "How to Orchestrate dbt Core in Production with Kestra"
+title: "Orchestrate dbt Core in Production with Kestra"
 description: "dbt Core handles transformation but leaves scheduling, retries, upstream dependencies, and failure handling to you. Kestra fills that gap — and its YAML-first model makes it a natural fit for teams already living in dbt."
 date: 2026-03-09T13:00:00
 category: Solutions
