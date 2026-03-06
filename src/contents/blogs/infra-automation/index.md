@@ -43,11 +43,11 @@ Kestra’s practical philosophy is:
 
 And it’s why we shipped production-grade controls that matter specifically when automation touches infrastructure:
 
-- Kill Switch: a UI mechanism that lets admins stop or contain problematic executions fast, scoped down to tenant/namespace/flow/execution, with an audit trail. 
+- [Kill Switch](https://kestra.io/docs/enterprise/instance/kill-switch): a UI mechanism that lets admins stop or contain problematic executions fast, scoped down to tenant/namespace/flow/execution, with an audit trail. 
 
-- Credentials: reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
+- [Credentials](https://kestra.io/docs/enterprise/auth/credentials): reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
 
-- Plugin Defaults UI: manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
+- [Plugin Defaults UI](https://kestra.io/docs/workflow-components/plugin-defaults): manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
 
 And because infrastructure automation is always part “process” (approvals, self-service, controlled access), Kestra’s Enterprise “Apps” matter deeply here: **Apps let you build a UI in front of flows**, forms for data entry, approval buttons, and controlled output views, while the flow remains the backend.
 
@@ -298,7 +298,7 @@ Workflow tooling is only as good as the workflow shapes teams actually use.
 
 Kestra’s Blueprints exist to encode those shapes: **each blueprint combines code and documentation**, is validated, and can be integrated into your flows with a single click on “Use.”
 
-For infrastructure orchestration specifically, there are two blueprint patterns worth highlighting because they map directly to the pain points we see in real platform teams.
+For infrastructure orchestration specifically, there are two blueprint patterns worth highlighting because they map directly to the pain points we see.
 
 The Argo CD “workflow-shaped GitOps” model is already captured in our blueprints: [“Manage an Argo CD Application with Sync Verification”](https://kestra.io/blueprints/argocd-app-management) and [“Single-tenant Argo CD rollout with waves, guarded sync strategy, and Status-based readiness gates.”](https://kestra.io/blueprints/argocd-single-tenant-wave-rollout) 
 
