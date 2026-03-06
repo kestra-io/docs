@@ -6,7 +6,7 @@ import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import SocialProof from "~/components/common/SocialProof.astro"
 
-import Blueprints from "~/components/blueprints/Blueprints.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
 import Explore from "~/components/layout/Explore.astro"
 import LifecycleLayout from "~/components/layout/Lifecycle.astro"
 import SectionCard from "~/components/layout/SectionCard.astro"
@@ -169,7 +169,7 @@ const LIFECYCLE_CARDS = [
             image={{ src: infraUi }}
         />
         <Operation />
-        <Blueprints
+        <BlueprintsGrid
             title='Ready-to-Use <span class="gradient">Automation</span> Patterns'
             {blueprints}
             {tags}

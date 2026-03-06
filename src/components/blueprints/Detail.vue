@@ -1,152 +1,144 @@
 <template>
     <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10">
-                    <h2>Source</h2>
-                    <div class="mb-5">
-                        <Snippets :code="flow" lang="yaml" />
-                    </div>
-                    <h4>About this blueprint</h4>
-                    <div v-if="tagsList.length > 0" class="tags-list">
-                        <span v-for="tag in tagsList" :key="tag" class="tag">{{ tag }}</span>
-                    </div>
-                    <div class="bd-markdown">
-                        <MDCParserAndRenderer :content="description" />
-                    </div>
+        <div class="container-xxl">
+            <div class="wrapper">
+                <div class="snippets">
+                    <Snippets
+                        :code="flow"
+                        lang="yaml"
+                        :expand-threshold="25"
+                    />
                 </div>
-                <div v-if="page.includedTasks && page.includedTasks.length > 0" class="col-md-2">
-                    <div class="plugins-container">
-                        <div v-for="icon in page.includedTasks" :key="icon" class="plugin-icon">
-                            <div class="icon-wrapper">
-                                <div
-                                    class="icon"
-                                    :style="{ backgroundImage: `url('/icons/${icon}.svg')` }"
-                                />
-                            </div>
-                            <p>{{ getLastWord(icon) }}</p>
+                <div class="topology">
+                    <div class="card">
+                        <div class="card-body">
+                            <Topology
+                                :flow-graph="graph"
+                                :source="flow"
+                                :id="page.id"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <BlueprintMarkdown
+        :page="page"
+        :description="description"
+    />
 </template>
 
 <script setup lang="ts">
-    import { computed } from "vue"
     import Snippets from "~/components/common/Snippets.vue"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import BlueprintMarkdown from "~/components/blueprints/BlueprintMarkdown.vue"
+    import Topology from "~/components/blueprints/Topology.client.vue"
 
-    interface Props {
+    defineProps<{
         page: {
-            tags?: string[]
+            id: string | number;
+            title: string;
             includedTasks?: string[]
         }
         description: string
         flow: string
-        tags?: any[]
-    }
-
-    const props = withDefaults(defineProps<Props>(), {
-        tags: () => [],
-    })
-
-    const pageTags = computed(() => props.page.tags || [])
-    const tagsList = computed(() => {
-        return props.tags && Array.isArray(props.tags)
-            ? props.tags.filter((t) => t && pageTags.value.includes(t.id)).map((t) => t.name)
-            : []
-    })
-
-    const getLastWord = (value: string) => {
-        return (
-            value
-                ?.split(".")
-                .pop()
-                ?.replace(/([a-z])([A-Z])/g, "$1 $2") ?? ""
-        )
-    }
+        graph?: any
+    }>()
 </script>
 
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
     section {
-        padding: $rem-3 $rem-1;
+        padding: 0 $rem-1;
+        background-color: var(--ks-background-primary);
     }
 
-    h2,
-    h4,
-    p {
-        color: var(--ks-content-primary);
-    }
-
-    .bd-markdown {
-        :deep(pre) {
-            border: $block-border;
-            padding: $rem-1;
-            border-radius: $border-radius-lg;
-            background-color: var(--ks-background-secondary);
-        }
-    }
-
-    .tags-list {
-        margin: 0 auto $spacer;
+    .wrapper {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: $rem-1;
+        padding-bottom: $rem-4;
 
-        .tag {
-            background: var(--ks-backgroung-tag-category);
-            color: var(--ks-content-tag-category);
-            padding: 0.125rem 0.5rem;
-            border-radius: 4px;
-            font-size: $font-size-sm;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-    }
-
-    .plugins-container {
-        border-radius: 0.5rem;
-        border: $block-border;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-
-        .plugin-icon {
-            display: flex;
+        @include media-breakpoint-down(xl) {
             flex-direction: column;
-            gap: 0.25rem;
-            align-items: center;
-            justify-content: center;
-            padding: $spacer 0.5rem;
-            background: var(--ks-background-tertiary);
-            border-top: 1px solid var(--ks-border-secondary);
+        }
 
-            &:first-child {
-                border-top: none;
+        .snippets {
+            flex: 0 0 580px;
+            max-width: 580px;
+            min-height: 586px;
+
+            @include media-breakpoint-down(xl) {
+                flex: 1 1 auto;
+                max-width: none;
             }
 
-            .icon-wrapper {
-                width: 2.5rem;
-                height: 2.5rem;
+            :deep(.code-card) {
+                height: 586px;
+                display: flex;
+                flex-direction: column;
 
-                .icon {
-                    width: 100%;
-                    height: 100%;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    background-position: center;
+                &.is-expandable:not(.is-expanded) .code-inner {
+                    max-height: none !important;
+                    overflow: hidden;
+                    mask-image: linear-gradient(
+                        to bottom,
+                        var(--ks-background-primary) 70%,
+                        transparent 100%
+                    ) !important;
+                }
+
+                &.is-expanded {
+                    height: auto;
+
+                    .code-inner {
+                        max-height: none !important;
+                        overflow: visible;
+                        mask-image: none !important;
+                    }
+                }
+
+                .code-inner {
+                    flex: 1;
                 }
             }
+        }
 
-            p {
-                margin: 0;
-                font-size: $font-size-sm;
-                font-weight: 700;
-                text-align: center;
+        :deep(.mdc-renderer pre) {
+            padding-bottom: 1rem;
+        }
+
+        .topology {
+            flex: 1;
+            min-width: 0;
+            min-height: 586px;
+            display: flex;
+            flex-direction: column;
+
+            @include media-breakpoint-down(xl) {
+                height: 500px;
+                min-height: auto;
+                flex: none;
+            }
+
+            .card {
+                flex: 1;
+                border-radius: 8px;
+                border: $block-border;
+                overflow: clip;
+
+                .card-body {
+                    height: 100%;
+                    padding: 0;
+                    background-color: var(--ks-background-secondary);
+                    display: flex;
+                    flex-direction: column;
+
+                    & > * {
+                        flex: 1;
+                    }
+                }
             }
         }
     }

@@ -24,30 +24,18 @@
             </ul>
         </div>
 
-        <div class="section">
-            <h6 class="title">Share this news</h6>
-            <div class="share">
-                <a :href="shareX" target="_blank" aria-label="Share on X">
-                    <TwitterXIcon class="icon" />
-                </a>
-                <a :href="shareLinkedin" target="_blank" aria-label="Share on LinkedIn">
-                    <LinkedIn class="icon" />
-                </a>
-                <a :href="shareBluesky" target="_blank" aria-label="Share on BlueSky">
-                    <BlueSkyIcon class="icon" />
-                </a>
-            </div>
-        </div>
+        <Share
+            :title="post.title"
+            :url="post.url"
+            title-text="Share this news"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed } from "vue"
     import Github from "vue-material-design-icons/Github.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
-    import LinkedIn from "vue-material-design-icons/Linkedin.vue"
-    import TwitterXIcon from "~/components/icons/TwitterXIcon.vue"
-    import BlueSkyIcon from "~/components/icons/BlueSkyIcon.vue"
+    import Share from "~/components/common/Share.vue"
 
     interface Post {
         title: string
@@ -55,21 +43,9 @@
         editUrl?: string
     }
 
-    const props = defineProps<{
+    defineProps<{
         post: Post
     }>()
-
-    const shareX = computed(() => {
-        return `https://twitter.com/intent/tweet?text=${encodeURIComponent(props.post.title)}&url=${encodeURIComponent(props.post.url)}`
-    })
-
-    const shareLinkedin = computed(() => {
-        return `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(props.post.url)}&title=${encodeURIComponent(props.post.title)}&summary=${encodeURIComponent(props.post.title)}`
-    })
-
-    const shareBluesky = computed(() => {
-        return `https://bsky.app/intent/compose?text=${encodeURIComponent(props.post.title + " " + props.post.url)}`
-    })
 </script>
 
 <style lang="scss" scoped>
@@ -115,27 +91,6 @@
                     color: var(--ks-content-tertiary);
                     margin-top: -5px;
                 }
-            }
-        }
-    }
-
-    .share {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-
-        a {
-            color: var(--ks-content-tertiary);
-            transition: color 0.2s ease;
-            display: flex;
-            align-items: center;
-
-            &:hover {
-                color: var(--ks-content-link);
-            }
-
-            .icon {
-                font-size: 1.25rem;
             }
         }
     }

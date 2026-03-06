@@ -114,7 +114,7 @@ const FOOTER_SECTIONS: Section[] = [
             { text: "Blogs", href: "/blogs" },
             { text: "Videos", href: "/tutorial-videos" },
             { text: "Administrator Guide", href: "/docs/administrator-guide" },
-            { text: "Release Notes", href: "/changelog" },
+            { text: "Release Notes", href: "/docs/changelog" },
             { text: "API Reference", href: "/docs/api-reference" },
         ]
     },
