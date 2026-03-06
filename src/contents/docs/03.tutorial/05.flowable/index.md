@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/tutorial.svg
 Run tasks or subflows in parallel, create loops, and conditional branching.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/pRRAz5l2WWw" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/pRRAz5l2WWw?si=WJ_0RW2LVAVtXtgQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Branch, Loop, and Parallelize with Flowable Tasks

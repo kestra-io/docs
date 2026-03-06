@@ -10,7 +10,7 @@ Handle errors with automatic retries and notifications.
 Failure is inevitable. Kestra offers automatic retries and error handling to help you build resilient workflows.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/1XzHGwkSrsI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/1XzHGwkSrsI?si=r9NWv4e6Dk-VMXZ0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Handle errors with retries and alerts

@@ -12,7 +12,7 @@ Triggers automatically start your flow based on events or a schedule.
 A trigger can be a scheduled date, the arrival of a new file, a new message in a queue, the completion of another flow's execution and much more.
 
 <div class="video-container">
-  <iframe src="https://youtu.be/Zz6yoGm3u7M" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/Zz6yoGm3u7M?si=adFMQY4kn0LCyzHR" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Defining triggers
