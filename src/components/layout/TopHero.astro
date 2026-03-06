@@ -1,0 +1,30 @@
+---
+const {
+    background = "linear-gradient(106.32deg, #000000 28.36%, #0F1A2E 79.51%)"
+} = Astro.props;
+---
+
+<section class="head">
+    <div class="background" style={{ background }}></div>
+    <slot />
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section.head {
+        position: relative;
+        padding: 2rem 1rem;
+
+        @include media-breakpoint-up(md) {
+            padding: 4rem 1rem;
+            max-height: 555px;
+        }
+
+        .background {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+    }
+</style>

@@ -41,9 +41,12 @@ export async function retrieveRepoReleases(repo: string) {
 
     const headers: Record<string, string> = { "User-Agent": "request" }
 
-    const response = await fetch(`https://api.github.com/repos/kestra-io/${repo}/releases`, {
-        headers,
-    })
+    const response = await fetch(
+        `https://api.github.com/repos/kestra-io/${repo}/releases`,
+        {
+            headers,
+        },
+    )
 
     if (!response.ok) {
         if (response.status === 404) {
@@ -51,7 +54,9 @@ export async function retrieveRepoReleases(repo: string) {
             await addToCache(result, [], 3600)
             return result
         }
-        console.error(`GitHub API error for ${repo}: ${response.status} ${response.statusText}`)
+        console.error(
+            `GitHub API error for ${repo}: ${response.status} ${response.statusText}`,
+        )
         return { versions: [] }
     }
 
@@ -65,9 +70,16 @@ export async function retrieveRepoReleases(repo: string) {
                 publishedAt: release.published_at,
             }))
             .filter((v) => {
-                const major = parseInt(v.version.split(".")[0]);
-                return !isNaN(major) && major >= 1;
-            });
+                const major = parseInt(v.version.split(".")[0])
+                return !isNaN(major) && major >= 1
+            })
+            .toSorted((a, b) => {
+                return a.version < b.version
+                    ? 1
+                    : a.version > b.version
+                      ? -1
+                      : 0
+            })
 
         const result = { versions }
         await addToCache(result, [repo], 3600)
