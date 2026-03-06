@@ -31,13 +31,13 @@ tasks:
 afterExecution:
   - id: onSuccess
     runIf: "{{execution.state == 'SUCCESS'}}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     messageText: "{{flow.namespace}}.{{flow.id}} finished successfully!"
 
   - id: onFailure
     runIf: "{{execution.state == 'FAILED'}}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     messageText: "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"
 ```
@@ -56,7 +56,7 @@ afterExecution:
         type: io.kestra.plugin.core.execution.Fail
     errors:
       - id: sendAlert
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: https://hooks.slack.com/services/xxxxx
         messageText: "Flow {{ flow.namespace }}.{{ flow.id }} with execution ID {{ execution.id }} failed."
 ```

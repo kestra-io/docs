@@ -107,7 +107,7 @@ tasks:
       </tsRequest>
 
   - id: send_slack_alert
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: |
       {

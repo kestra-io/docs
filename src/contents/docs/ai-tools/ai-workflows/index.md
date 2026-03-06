@@ -59,7 +59,7 @@ tasks:
     condition: "{{ outputs.ask_ai['predictions'] | first | jq('.go_sailing') | first }}"
     then:
       - id: notify_me
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
@@ -277,7 +277,7 @@ tasks:
       - output.txt
 
   - id: slack
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: |
       {{
