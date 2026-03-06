@@ -22,8 +22,9 @@
                             <a
                                 class="d-inline-block text-nowrap"
                                 :href="slide.href"
-                                >{{ slide.linkText }}</a
                             >
+                                <ArrowRight />
+                            </a>
                         </p>
                     </Slide>
                 </Carousel>
@@ -34,11 +35,13 @@
 
 <script>
     import { Carousel, Slide } from "vue3-carousel"
+    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 
     export default {
         components: {
             Carousel,
             Slide,
+            ArrowRight,
         },
         props: {
             content: {
@@ -96,44 +99,46 @@
             border-radius: 0;
             border: 0;
             text-align: center;
-            background: transparent;
+            background: #631BFF;
             color: $white;
-            border-bottom: 1px solid #e5e4f721;
             margin-bottom: 0;
             position: relative;
             z-index: 1;
             overflow: hidden;
-            transition:
-                max-height 0.5s linear,
-                color 0.5s linear;
-            height: 3rem;
-            padding-top: 0.85rem;
-            &.scrolled {
-                background: rgba(17, 17, 19, 0.65);
-                transition: background-color 250ms ease-in-out;
-            }
+            height: 2.5rem;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
             @include media-breakpoint-down(sm) {
                 padding-inline: calc($spacer / 2);
             }
-            &::after {
-                content: "";
-                position: absolute;
-                height: 16rem;
-                width: 100%;
-                z-index: -1;
-                top: 0;
-                left: 0;
-                background: linear-gradient(
-                    180deg,
-                    var(--ks-background-body),
-                    #6117ff
-                );
-            }
             a {
-                text-decoration: underline;
-                color: var(--ks-content-color-highlight);
-                font-weight: 400 !important;
-                margin-left: $spacer;
+                text-decoration: none;
+                color: $white;
+                font-weight: 700;
+                margin-left: calc($spacer / 2);
+                display: flex;
+                align-items: center;
+
+                :deep(.material-design-icon) {
+                    bottom: 0;
+                    transition: transform 0.2s ease-in-out;
+                }
+
+                &:hover {
+                    :deep(svg) {
+                        transform: scaleX(1.15);
+                        transform-origin: left;
+                        color: var(--ks-content-link);
+                    }
+                }
+            }
+
+            &:hover {
+                a :deep(.material-design-icon) {
+                    transform: scaleX(1.15);
+                    transform-origin: left;
+                }
             }
             p {
                 margin-bottom: 0;
@@ -144,19 +149,11 @@
                 padding-inline: $spacer;
                 
                 .text-truncate {
-                    color: var(--ks-content-primary);
+                    color: $white;
                     min-width: 0;
                     flex-shrink: 1;
+                    font-weight: 600;
                 }
-            }
-            button {
-                position: absolute;
-                right: 3px;
-                top: 3px;
-                background: none;
-                border: 0;
-                font-size: 24px;
-                color: $white;
             }
         }
     }

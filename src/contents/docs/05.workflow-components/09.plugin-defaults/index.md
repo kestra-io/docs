@@ -71,9 +71,12 @@ pluginDefaults:
 
 In this example, Docker and Python configurations are defined once in `pluginDefaults`, instead of being repeated in every task. This approach helps to streamline the configuration process and reduce the chances of errors caused by inconsistent settings across different tasks.
 
+:::alert{type="info"}
 If you move required attributes into `pluginDefaults`, the UI code editor may show warnings about missing arguments, because defaults are only resolved at runtime. As long as `pluginDefaults` contains the relevant arguments, you can save the flow and ignore the warning displayed in the editor.
 
 ![pluginDefaultsWarning](./warning.png)
+
+:::
 
 ### `forced` attribute in `pluginDefaults`
 
