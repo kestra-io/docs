@@ -132,3 +132,6 @@ Or click on **YAML** and paste the following for example:
 Plugin Defaults are inherited from the parent Namespace to children Namespaces. In the example above, the image shows the Plugin Default was created in the `kestra.company` Namespace. Navigating to the **Plugin Defaults** tab of a child Namespace, for example `kestra.company.data`, shows the parent Namespace's Plugin Defaults. This avoids having to recreate Plugin Defaults across children Namespaces, but it still allows for the children Namespaces to maintain their own isolated defaults if needed.
 
 ![Plugin Default Inheritance](./inherited-plugin-defaults.png)
+
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Qu8BDAn5EOUrGmwrfLyv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Defaults | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
