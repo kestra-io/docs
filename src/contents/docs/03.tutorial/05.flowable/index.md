@@ -180,7 +180,8 @@ tasks:
         type: io.kestra.plugin.scripts.python.Script
         taskRunner:
           type: io.kestra.plugin.scripts.runner.docker.Docker
-        containerImage: ghcr.io/kestra-io/pydata:latest
+        dependencies:
+          - kestra
         script: |
           import random
           import time
