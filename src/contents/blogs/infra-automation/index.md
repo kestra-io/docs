@@ -59,13 +59,13 @@ GitOps is an excellent reconciliation model, but **delivery is bigger than recon
 
 In practice, a safe rollout often needs to:
 
-Sync desired state,
+* Sync desired state,
 
-Wait for application health (not just “synced”),
+* Wait for application health (not just “synced”),
 
-Perform edge actions (DNS changes, cache purge, incident WAF actions),
+* Perform edge actions (DNS changes, cache purge, incident WAF actions),
 
-Notify and record what happened.
+* Notify and record what happened.
 
 Kestra’s Argo CD plugin is intentionally focused on the primitives you need inside that larger workflow: `Sync` to apply the desired Git state and `Status` to read sync/health, conditions, and resources (optionally with refresh). Both tasks are GitOps-focused and run through the Argo CD CLI, with connection flags and timeouts that match real enterprise environments.
 
@@ -257,15 +257,15 @@ That’s the “pain away” moment: **metal provisioning, inventory, and downst
 
 Most teams don’t struggle to “create a VM.” They struggle to operationalize the day‑2 lifecycle:
 
-Ephemeral environments for CI.
+* Ephemeral environments for CI
 
-Cloning and templating.
+* Cloning and templating
 
-Snapshots and rollback.
+* Snapshots and rollback
 
-Event-driven cleanup.
+* Event-driven cleanup
 
-Making those safe and repeatable.
+* Making those safe and repeatable
 
 Kestra 1.3’s infrastructure plugins explicitly cover both ends of the virtualization spectrum.
 
@@ -280,15 +280,15 @@ If you want a real starting point, Kestra ships a Nutanix blueprint called **“
 
 This is the practical pattern you want across AHV, KVM, and (yes) VMware:
 
-Take a snapshot (or create a recovery point),
+* Take a snapshot (or create a recovery point),
 
-Apply change,
+* Apply change,
 
-Verify service health,
+* Verify service health,
 
-Rollback automatically when validation fails,
+* Rollback automatically when validation fails,
 
-Notify with full run context.
+* Notify with full run context.
 
 The value isn’t “more automation.” It’s **automation that fails safely**.
 
