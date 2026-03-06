@@ -321,13 +321,13 @@ The above `curl` command creates the KV pair with key `my_key` and the `Hello Wo
 
 ### Read the value by key
 
-You can get any particular KV pair using:
+You can get all KV pairs using:
 
 ```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/{key}
+curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/
 ```
 
-You can also use the filter to specify a Namespace:
+You can also use the `filters` to specify a Namespace:
 
 ```bash
 curl -G "http://localhost:8080/api/v1/main/kv" \
@@ -344,14 +344,6 @@ curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/mai
 :::alert{type="info"}
 As a general tip, your Kestra instance exposes an interactive API reference at https://<your-kestra-host>/api which lists all available endpoints for your installed version.
 :::
-
-For example:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/my_key
-```
-
-This `curl` command retrieves a KV pair with the key `my_key` in the `main` Tenant. The output of the API contains the data type of the value and the retrieved value of the KV pair:
 
 ```json
 {"type": "STRING", "value": "Hello World"}
