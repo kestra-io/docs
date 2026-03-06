@@ -319,7 +319,7 @@ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/mai
 
 The above `curl` command creates the KV pair with key `my_key` and the `Hello World` string value in the `company.team` namespace. The API does not return any response.
 
-### Read the value by key
+### Read all keys in the namespace
 
 You can get all KV pairs using:
 
@@ -327,11 +327,11 @@ You can get all KV pairs using:
 curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/
 ```
 
-You can also use the `filters` to specify a Namespace:
+You can also use the `filters` to get all KV pairs from a specific Namespace (replace `namespace-name`):
 
 ```bash
 curl -G "http://localhost:8080/api/v1/main/kv" \
-  --data-urlencode "filters[namespace][EQUALS]={namespace-name}" \
+  --data-urlencode "filters[namespace][EQUALS]= namespace-name" \
   -H "Authorization: Bearer <API-TOKEN>"
 ```
 
@@ -345,38 +345,12 @@ curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/mai
 As a general tip, your Kestra instance exposes an interactive API reference at https://<your-kestra-host>/api which lists all available endpoints for your installed version.
 :::
 
-```json
-{"type": "STRING", "value": "Hello World"}
-```
-
-### Read all keys in the namespace
-
-You can list all keys in the namespace through the path as follows:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv
-```
-
-The `curl` command below returns all keys in the `company.team` namespace:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv
-```
-
 The output is returned as a JSON array of all keys in the namespace:
 ```json
 [
   {"key":"my_key","creationDate":"2024-07-27T06:10:33.422Z","updateDate":"2024-07-27T06:11:08.911Z"},
   {"key":"test_key","creationDate":"2024-07-27T04:37:18.196Z","updateDate":"2024-07-27T04:37:18.196Z"}
 ]
-```
-
-Or with the filters:
-
-```bash
-curl -G "http://localhost:8080/api/v1/main/kv" \
-  --data-urlencode "filters[namespace][EQUALS]=company.team" \
-  -H "Authorization: Bearer <API-TOKEN>"
 ```
 
 ### Delete a KV pair
