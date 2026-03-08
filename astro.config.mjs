@@ -177,6 +177,11 @@ export default defineConfig({
                 access: "secret",
                 optional: true,
             }),
+            ASHBY_APIKEY: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
         },
     },
     // require for "/t" url
