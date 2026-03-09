@@ -24,7 +24,6 @@
     },
     "keep_vars": true,
     "preview_urls": true,
-    "minify": true,
     "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
     "observability": {
         "enabled": true,
