@@ -85,5 +85,10 @@
   "engines": {
     "node": ">= 14",
     "npm": ">= 7"
+  },
+  "overrides": {
+    "astro-loading-indicator": {
+      "astro": "$astro"
+    }
   }
 }
