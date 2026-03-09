@@ -61,21 +61,14 @@
     }
 
     h2 {
-        margin: 2rem 0;
         padding: 0;
         display: block;
+        margin-block-start: 4rem;
+        margin-block-end: 2rem;
+    }
 
-        &:not(:first-of-type)::before {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 1px;
-            background: var(--ks-border-primary);
-            margin: $rem-2 0;
-            @include media-breakpoint-up(lg) {
-                margin: $rem-3 0;
-            }
-        }
+    h3 {
+        margin-block-start: 3rem;
     }
 
     // Links
@@ -436,11 +429,16 @@
 
 // Expressive Code specifics
 .expressive-code {
-    --ec-frm-tooltipSuccessBg: var(--ks-button-background-primary);
-    --ec-frm-frameBoxShdCssVal: none !important;
-    --ec-codeFontFml: var(--font-family-jetbrains-mono) !important;
-    --code-background: var(--ks-background-input);
-    --ec-frm-edBg: var(--ks-background-input);
+    :root.light main &, :root.dark main &{
+         &:not(.light,.dark){
+            #{--ec-frm-tooltipSuccessBg}: var(--ks-button-background-primary);
+            #{--ec-frm-frameBoxShdCssVal}: none !important;
+            #{--ec-codeFontFml}: var(--font-family-jetbrains-mono) !important;
+            #{--code-background}: var(--ks-background-input);
+            #{--ec-frm-edBg}: var(--ks-background-input);
+            #{--ec-brdCol}: var(--ks-border-secondary);
+        }
+    }
     margin-bottom: 2rem;
 
     pre[data-language] {

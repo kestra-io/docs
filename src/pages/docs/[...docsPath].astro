@@ -87,12 +87,9 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
         <HelpfulVote client:visible />
         <PrevNext {navigation} currentPath={`/docs/${doc.id}`} client:idle />
     </div>
-    <NavToc
-        links={headingsProcessed}
-        client:visible
-        slot="headings"
-        {editUrl}
-    />
+    <Fragment slot="headings">
+        <NavToc links={headingsProcessed} client:visible {editUrl} />
+    </Fragment>
 </LayoutDocs>
 
 <style lang="scss">

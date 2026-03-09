@@ -215,7 +215,7 @@
             bottom: 0;
             width: 1px;
             height: calc(100% - 10px);
-            background: var(--ks-border-secondary);
+            background: var(--ks-border-primary);
         }
     }
 

@@ -350,7 +350,6 @@
                     &:hover,
                     &.active {
                         color: var(--ks-content-link);
-                        border-left: 1px solid var(--ks-content-link) !important;
                     }
                 }
             }
@@ -365,6 +364,9 @@
                     bottom: 0;
                     width: 1px;
                     background-color: var(--ks-border-primary);
+                }
+                &:hover:before{
+                    background-color: var(--ks-content-link);
                 }
             }
         }
