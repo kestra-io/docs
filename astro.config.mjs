@@ -118,21 +118,21 @@ export default defineConfig({
     image: {
         layout: "constrained",
     },
+    fonts: [
+        {
+            provider: fontProviders.google(),
+            name: "Mona Sans",
+            weights: [400, 500, 600, 700],
+            cssVariable: "--font-family-mona-sans",
+        },
+        {
+            provider: fontProviders.google(),
+            name: "JetBrains Mono",
+            weights: [400, 500, 600, 700],
+            cssVariable: "--font-family-jetbrains-mono",
+        },
+    ],
     experimental: {
-        fonts: [
-            {
-                provider: fontProviders.google(),
-                name: "Mona Sans",
-                weights: [400, 500, 600, 700],
-                cssVariable: "--font-family-mona-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "JetBrains Mono",
-                weights: [400, 500, 600, 700],
-                cssVariable: "--font-family-jetbrains-mono",
-            },
-        ],
         svgo: {
             plugins: [
                 {
