@@ -10,11 +10,9 @@ Give AI coding agents structured knowledge to generate Kestra flows and operate 
 
 ## What are Agent Skills
 
-Agent Skills are structured knowledge files (`SKILL.md`) that teach external AI coding agents how to work with Kestra. They provide the context, commands, and guardrails an agent needs to generate valid flow YAML or operate a Kestra environment via the CLI.
+Agent Skills are `SKILL.md` files that teach external AI coding agents how to build and operate Kestra flows. Each skill bundles schema rules, safe commands, and guardrails so agents generate valid flow YAML or run Kestra via the CLI without hardcoded secrets.
 
-Unlike [AI Copilot](../ai-copilot/index.md), which works inside the Kestra UI, Agent Skills bring Kestra expertise to the tools you already use in your editor or terminal — Claude Code, Cursor, Windsurf, OpenAI Codex, and others.
-
-Unlike [AI Agents](../ai-agents/index.md), which are autonomous tasks running inside Kestra flows, Agent Skills equip your external coding agent with Kestra-specific knowledge so it can help you build and operate flows from your development environment.
+They differ from [AI Copilot](../ai-copilot/index.md) (in-UI assistance) and from [AI Agents](../ai-agents/index.md) (autonomous tasks inside flows); Agent Skills simply give your editor or terminal agent — Claude Code, Cursor, Windsurf, OpenAI Codex, and others — the Kestra know‑how it needs.
 
 Agent Skills follow an emerging standard for giving AI tools domain-specific knowledge. Learn more at [agentskills.io](https://agentskills.io/home), the community hub for agent skills across tools and domains.
 
@@ -70,11 +68,11 @@ Use kestra-ops to validate and deploy all flows in ./flows to prod.namespace wit
 
 - **AI coding agent**: Claude Code, Cursor, Windsurf, OpenAI Codex, OpenCode, or any agent that supports skill files
 - **For kestra-flow**: `curl` and network access to `https://api.kestra.io`
-- **For kestra-ops**: [`kestractl`](../../06.enterprise/kestractl.md) installed with valid credentials
+- **For kestra-ops**: [`kestractl`](../kestra-cli/kestractl/index.md) installed with valid credentials
 
 ## Setup
 
-How you load a skill depends on your AI coding agent. Pick the skills you need from the [repository](https://github.com/kestra-io/agent-skills) — each skill is a `SKILL.md` file under `skills/<skill-name>/`.
+Download the `SKILL.md` into your agent’s rules/skills folder; pick one of the agent-specific recipes below. Skills live in the [repository](https://github.com/kestra-io/agent-skills) under `skills/<skill-name>/`.
 
 The base URL for raw skill files is:
 
@@ -84,26 +82,30 @@ https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/<skill-name
 
 ### Claude Code
 
-Download skills into your project's `.claude/skills/` directory. For example, to add `kestra-flow`:
+Download skills into your project's `.claude/skills/` directory:
 
 ```bash
-mkdir -p .claude/skills/kestra-flow
-curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/kestra-flow/SKILL.md \
-  -o .claude/skills/kestra-flow/SKILL.md
+mkdir -p .claude/skills
+for skill in kestra-flow kestra-ops; do
+  curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/$skill/SKILL.md \
+    -o .claude/skills/$skill/SKILL.md
+done
 ```
 
-Repeat for any other skill you need (e.g. `kestra-ops`). To make skills available across all your projects, use `~/.claude/skills/` instead.
+To make skills available across all your projects, use `~/.claude/skills/` instead.
 
 See the [Claude Code Skills documentation](https://code.claude.com/docs/en/skills) for more details.
 
 ### Cursor
 
-Copy the content of each `SKILL.md` you need into a `.cursor/rules/` file in your project:
+Copy skills into `.cursor/rules/`:
 
 ```bash
 mkdir -p .cursor/rules
-curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/kestra-flow/SKILL.md \
-  -o .cursor/rules/kestra-flow.md
+for skill in kestra-flow kestra-ops; do
+  curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/$skill/SKILL.md \
+    -o .cursor/rules/$skill.md
+done
 ```
 
 ### OpenAI Codex
@@ -111,9 +113,11 @@ curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/ke
 Download skills into your project's `.agents/skills/` directory:
 
 ```bash
-mkdir -p .agents/skills/kestra-flow
-curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/kestra-flow/SKILL.md \
-  -o .agents/skills/kestra-flow/SKILL.md
+mkdir -p .agents/skills
+for skill in kestra-flow kestra-ops; do
+  curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/$skill/SKILL.md \
+    -o .agents/skills/$skill/SKILL.md
+done
 ```
 
 For personal skills available across all projects, use `~/.agents/skills/` instead. See the [Codex Skills documentation](https://developers.openai.com/codex/skills) for more details.
@@ -140,7 +144,7 @@ https://api.example.com/metrics every 30 minutes and stores the response
 in KV store under the key "latest_metrics".
 ```
 
-The agent will fetch the live schema, generate valid YAML with a `Schedule` trigger and `io.kestra.plugin.core.kv.Set` task, and output ready-to-deploy flow code.
+The agent fetches the live schema, generates valid YAML with a `Schedule` trigger and `io.kestra.plugin.core.kv.Set` task, and outputs ready-to-deploy flow code.
 
 ### Validate and deploy with kestra-ops
 
@@ -151,7 +155,7 @@ Use kestra-ops to validate all flows in ./flows, then deploy them to
 prod.pipelines namespace with --override and --fail-fast.
 ```
 
-The agent will run `kestractl flows validate ./flows/`, confirm results, and then run `kestractl flows deploy` with the requested flags.
+The agent validates locally, then deploys with `--override --fail-fast` using `kestractl flows deploy`.
 
 ### Run a flow and report results with kestra-ops
 
@@ -162,7 +166,7 @@ Use kestra-ops to run nightly-refresh in analytics.jobs namespace,
 wait for completion, and report the execution status.
 ```
 
-The agent will run `kestractl executions run analytics.jobs nightly-refresh --wait`, then summarize the execution result.
+The agent runs `kestractl executions run ... --wait`, then summarizes the execution result.
 
 ## Creating Custom Skills
 
