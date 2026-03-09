@@ -105,7 +105,7 @@ const rows = [
             var(--ks-background-secondary) 0%,
             var(--ks-background-body) 100%
         );
-        overflow: hidden;
+        overflow: visible;
 
         .container {
             padding: 0 1rem;
@@ -146,6 +146,8 @@ const rows = [
             flex-direction: column;
             gap: 1rem;
             overflow: hidden;
+            padding-top: 50px;
+            margin-top: -50px;
 
             $mask: linear-gradient(
                 to right,
@@ -164,7 +166,7 @@ const rows = [
                 top: 0;
                 height: 100%;
                 width: 100px;
-                z-index: 2;
+                z-index: 20;
                 pointer-events: none;
                 backdrop-filter: blur(10px);
             }
@@ -194,9 +196,14 @@ const rows = [
             }
 
             .carousel-row {
-                overflow: hidden;
                 display: flex;
                 align-items: center;
+                position: relative;
+                z-index: 1;
+
+                &:hover {
+                    z-index: 10;
+                }
 
                 .carousel-track {
                     display: flex;
@@ -225,6 +232,8 @@ const rows = [
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                position: relative;
+                transition: all 0.2s ease;
 
                 @include media-breakpoint-down(sm) {
                     width: 55px;
@@ -233,6 +242,7 @@ const rows = [
 
                 &:hover {
                     color: var(--ks-content-primary);
+                    z-index: 10;
                 }
             }
         }
