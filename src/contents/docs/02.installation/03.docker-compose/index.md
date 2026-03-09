@@ -19,19 +19,6 @@ The quickest way to a production-ready, lightweight Kestra installation is to le
 
 Make sure you have [Docker](https://docs.docker.com/compose/install) installed before you begin.
 
-:::alert{type="info"}
-**Enterprise Edition images** — log in to the private registry with your license credentials before pulling images:
-
-```bash
-docker login registry.kestra.io --username $LICENSEID --password $FINGERPRINT
-```
-
-Use `registry.kestra.io/docker/kestra-ee:latest` for the newest image, or pin a specific version such as `registry.kestra.io/docker/kestra-ee:v1.0`. See the [Enterprise documentation](../../07.enterprise/index.mdx) and [configuration requirements](../../07.enterprise/05.instance/index.mdx) for deployment prerequisites.
-Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
-:::
-
-
-
 ## Download the Docker Compose file
 
 Download the Docker Compose file using the following command on Linux and macOS:
@@ -58,6 +45,17 @@ docker compose up -d
 ```
 
 Open the URL `http://localhost:8080` in your browser to launch the UI.
+
+:::alert{type="info"}
+**Enterprise Edition images** — log in to the private registry with your license credentials before pulling images:
+
+```bash
+docker login registry.kestra.io --username $LICENSEID --password $FINGERPRINT
+```
+
+Use `registry.kestra.io/docker/kestra-ee:latest` for the newest image, or pin a specific version such as `registry.kestra.io/docker/kestra-ee:v1.0`. See the [Enterprise documentation](../../07.enterprise/index.mdx) and [configuration requirements](../../07.enterprise/05.instance/index.mdx) for deployment prerequisites.
+Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
+:::
 
 ### Adjusting the configuration
 
