@@ -2,7 +2,7 @@
 import Layout from "~/components/layout.astro"
 import Cards from "~/components/use-cases/Cards.astro"
 import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Blueprints from "~/components/common/BlueprintsRender.vue"
+import Blueprints from "~/components/common/BlueprintsRender.astro"
 import Capabilities from "~/components/use-cases/Capabilities.vue"
 import HeaderBox from "~/components/common/HeaderBox.vue"
 import { $fetchApi } from "~/utils/fetch"
@@ -94,7 +94,7 @@ const CAPABILITIES = [
         cards={CARDS_DATA}
     />
 
-    <Blueprints blueprints={blueprints} client:load />
+    <Blueprints blueprints={blueprints} />
 
     <Capabilities
         client:load

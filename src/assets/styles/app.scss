@@ -26,15 +26,14 @@ body {
     color: var(--ks-content-primary);
 
     &.has-annonces {
-        --announce-height: 46px;
-        padding-top: 46px;
+        --announce-height: 40px;
+        padding-top: 40px;
 
         #top-bar {
-            top: 46px;
+            top: 40px;
         }
     }
 }
-
 
 .astro-loading-indicator {
     z-index: 9999 !important;
@@ -809,3 +808,11 @@ small.agree {
     color: var(--ks-content-color-highlight);
 }
 
+.department-tag {
+    font-weight: normal !important;
+    background: var(--ks-background-info);
+    border: 1px solid var(--ks-border-info);
+    color: var(--ks-content-info);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--bs-border-radius);
+}
