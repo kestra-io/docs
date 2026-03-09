@@ -12,17 +12,17 @@ export function optimizeSvgIcon(svgInput: string, prefix: string) {
                 },
             },
             "removeDimensions",
+            "cleanupIds",
             {
                 // when using <svg> elements as icons, we want to ensure that IDs are unique
                 // to prevent conflicts when multiple icons are used on the same page
                 // ids are used for gradients and clip paths, so we can't remove them entirely
                 name: "prefixIds",
                 params: {
-                    prefix: () =>
-                        prefix
-                            .toLowerCase()
-                            .replace(/\s+/g, "-")
-                            .replace(/[^a-z0-9-]/g, ""),
+                    prefix: `${prefix
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/[^a-z0-9-]/g, "")}-${Math.random().toString(36).substring(2, 7)}`,
                 },
             },
             "removeTitle",

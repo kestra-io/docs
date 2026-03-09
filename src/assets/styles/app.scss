@@ -10,7 +10,7 @@
 
 html {
     height: 100%;
-    scroll-padding-top: var(--top-bar-height);
+    scroll-padding-top: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px));
 }
 
 pre {
@@ -26,11 +26,11 @@ body {
     color: var(--ks-content-primary);
 
     &.has-annonces {
-        --announce-height: 46px;
-        padding-top: 46px;
+        --announce-height: 40px;
+        padding-top: 40px;
 
         #top-bar {
-            top: 46px;
+            top: 40px;
         }
     }
 }
@@ -808,3 +808,11 @@ small.agree {
     color: var(--ks-content-color-highlight);
 }
 
+.department-tag {
+    font-weight: normal !important;
+    background: var(--ks-background-info);
+    border: 1px solid var(--ks-border-info);
+    color: var(--ks-content-info);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--bs-border-radius);
+}
