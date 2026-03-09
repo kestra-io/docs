@@ -35,7 +35,6 @@ export default defineConfig({
                 },
             },
             appEntrypoint: "./src/vue-setup.ts",
-            devtools: { launchEditor: "idea" },
         }),
         expressiveCode(),
         mdx(),

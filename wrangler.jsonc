@@ -5,50 +5,16 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
     "name": "docs",
-    "compatibility_date": "2026-02-04",
     "main": "@astrojs/cloudflare/entrypoints/server",
-    "routes": [
-        {
-            "pattern": "kestra.io",
-            "custom_domain": true,
-        },
-        {
-            "pattern": "mta-sts.kestra.io",
-            "custom_domain": true,
-        },
-    ],
+    "compatibility_date": "2026-03-01",
+    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
     "assets": {
         "binding": "ASSETS",
         "directory": "./dist",
-        "html_handling": "drop-trailing-slash",
     },
-    "keep_vars": true,
-    "preview_urls": true,
-    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
     "observability": {
         "enabled": true,
-        "traces": {
-            "enabled": true,
-        },
-        "logs": {
-            "invocation_logs": true,
-            "enabled": true,
-        },
     },
-    "upload_source_maps": true,
-    "logpush": true,
-    /**
-     * Smart Placement
-     * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
-     */
-    // "placement": { "mode": "smart" },
-
-    /**
-     * Bindings
-     * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-     * databases, object storage, AI inference, real-time communication and more.
-     * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-     */
     "kv_namespaces": [
         {
             "binding": "ISR_CACHE",
