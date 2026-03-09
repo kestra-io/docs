@@ -808,3 +808,11 @@ small.agree {
     color: var(--ks-content-color-highlight);
 }
 
+.department-tag {
+    font-weight: normal !important;
+    background: var(--ks-background-info);
+    border: 1px solid var(--ks-border-info);
+    color: var(--ks-content-info);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--bs-border-radius);
+}

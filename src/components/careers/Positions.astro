@@ -4,17 +4,11 @@ import { Image } from "astro:assets"
 import arrowRight from "./assets/arrow_right.svg"
 import arrowRightBlack from "./assets/arrow_right_black.svg"
 import emojiPeople from "./assets/emoji_people.svg"
+import type { AshbyJob } from "~/utils/careers.ts"
+import { slugify } from "@kestra-io/ui-libs"
 
 interface Props {
-    positions: Array<{
-        id: string
-        title: string
-        locations: Array<{
-            emoji: string
-            name: string
-            code: string
-        }>
-    }>
+    positions: Array<AshbyJob>
 }
 
 const { positions } = Astro.props
@@ -33,7 +27,7 @@ const { positions } = Astro.props
                         <li data-usal="fade-l">
                             <a
                                 class="d-flex align-items-center"
-                                href={`/careers/${doc.id}`}
+                                href={`/careers/${doc.jobPostingIds[0]}-${slugify(doc.title)}`}
                             >
                                 <div class="d-flex align-items-center gap-3 info-block">
                                     <Image
@@ -41,14 +35,8 @@ const { positions } = Astro.props
                                         alt="emoji_people"
                                     />
                                     <span>{doc.title}</span>
-                                    <span class="loc">
-                                        (Remote /
-                                        {doc.locations.map((loc) => (
-                                            <span class="ms-1" title={loc.name}>
-                                                {loc.emoji}
-                                            </span>
-                                        ))}
-                                        )
+                                    <span class="department-tag">
+                                        {doc.department?.name || doc.department?.externalName}
                                     </span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3 arrow-block">
@@ -76,8 +64,6 @@ const { positions } = Astro.props
     @import "~/assets/styles/variable";
 
     section {
-        
-
         li {
             a {
                 padding: 1.313rem 2rem;
@@ -85,11 +71,6 @@ const { positions } = Astro.props
                 border: $block-border;
                 background-color: var(--ks-background-tertiary);
                 text-decoration: none;
-
-                span.loc {
-                    font-weight: normal !important;
-                    color: var(--ks-content-secondary);
-                }
 
                 .info-block {
                     flex-grow: 1;

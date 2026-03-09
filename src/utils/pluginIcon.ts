@@ -1,13 +1,7 @@
 import { API_URL } from "astro:env/client"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
-const iconCache: Record<string, string> = {}
-
 export async function fetchPluginIcon(group: string): Promise<string> {
-    if (iconCache[group]) {
-        return iconCache[group]
-    }
-
     const iconResponse = await fetch(
         `${API_URL}/plugins/icons/${group}`,
     )
@@ -23,7 +17,5 @@ export async function fetchPluginIcon(group: string): Promise<string> {
         group,
     )
 
-    iconCache[group] = icon
     return icon
 }
-
