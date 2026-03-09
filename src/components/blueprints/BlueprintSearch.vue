@@ -2,6 +2,7 @@
     <div class="search-bar">
         <Magnify />
         <input
+            ref="searchInput"
             type="text"
             placeholder="Search"
             v-model="searchQueryModel"
@@ -35,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, watch } from "vue"
+    import { ref, watch, onMounted, nextTick } from "vue"
     import { navigate } from "astro:transitions/client"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
@@ -46,6 +47,19 @@
     }>()
 
     const searchQueryModel = ref(props.q ?? "")
+    const searchInput = ref<HTMLInputElement | null>(null)
+
+    onMounted(async () => {
+        if (typeof window !== "undefined" && sessionStorage.getItem("blueprint-search-focus") === "true") {
+            sessionStorage.removeItem("blueprint-search-focus")
+            await nextTick()
+            searchInput.value?.focus()
+            if (searchInput.value) {
+                const len = searchInput.value.value.length
+                searchInput.value.setSelectionRange(len, len)
+            }
+        }
+    })
 
     watch(
         () => props.q,
@@ -77,7 +91,8 @@
         const current = `${window.location.pathname}${window.location.search}`
 
         if (target !== current) {
-            navigate(target)
+            sessionStorage.setItem("blueprint-search-focus", "true")
+            navigate(target, { history: "replace" })
         }
     }
 
@@ -85,6 +100,11 @@
     watch(searchQueryModel, (value) => {
         if (timeout) {
             clearTimeout(timeout)
+        }
+
+        if (!value) {
+            executeSearch(value)
+            return
         }
 
         timeout = setTimeout(() => {

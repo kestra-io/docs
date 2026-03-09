@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between">
-                    <p class="fw-bold mb-0">{{ total }}+ Blueprints</p>
+                    <p class="fw-bold mb-0">{{ total }} Blueprints</p>
 
                     <div class="d-flex align-items-center gap-2">
                         <CustomSelect
