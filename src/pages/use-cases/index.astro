@@ -1,19 +1,13 @@
 ---
 import Layout from "~/components/layout.astro"
-import UseCasesHero from "~/components/use-cases/UseCasesHero.vue"
 import Capabilities from "~/components/use-cases/Capabilities.vue"
 import CardGrid from "~/components/features/shared/CardGrid.astro"
 import EnterpriseSection from "~/components/home/EnterpriseSection.astro"
-import { $fetchApi } from "~/utils/fetch"
 import Section from "~/components/layout/Section.astro"
 
 const TITLE = "Use cases for Modern Data Orchestration"
 const DESCRIPTION =
     "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
-
-const { results: STORIES } = await $fetchApi<{ results: Story[] }>(
-    "/customer-stories-v2?featured=true",
-)
 
 const POSSIBILITIES_DATA = {
     title: "Orchestration <span>Simplified</span>",
@@ -100,7 +94,7 @@ const CAPABILITIES = [
         capabilities={CAPABILITIES}
         client:visible
     />
-    <EnterpriseSection stories={STORIES} />
+    <EnterpriseSection />
 </Layout>
 
 <style lang="scss">

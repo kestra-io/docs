@@ -1,5 +1,5 @@
 import { defineCollection, z } from "astro:content"
-import { glob } from "astro/loaders"
+import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
 import { vsPagesSchema } from "./schemas/vsPages"
 
@@ -98,5 +98,104 @@ export const collections = {
             base: "./src/contents/vs-pages",
         }),
         schema: vsPagesSchema,
+    }),
+    externalBlogs: defineCollection({
+        loader: glob({
+            pattern: "./**/index.yml",
+            base: "./src/contents/external-blogs",
+            generateId,
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                link: z.string(),
+                image: image(),
+                media: z.string(),
+                author: z.string(),
+                publicationDate: z.coerce.date(),
+            }),
+    }),
+    customerStories: defineCollection({
+        loader: glob({
+            pattern: "./**/index.md",
+            base: "./src/contents/customer-stories",
+            generateId,
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                description: z.string(),
+                metaTitle: z.string(),
+                metaDescription: z.string(),
+                heroImage: image(),
+                featured: z.boolean().optional().default(false),
+                featuredImage: image(),
+                logo: image().optional(),
+                logoDark: image().optional(),
+                tasks: z.array(z.string()),
+                kpi1: z.string(),
+                kpi2: z.string(),
+                kpi3: z.string(),
+                quote: z.string(),
+                quotePerson: z.string(),
+                quotePersonTitle: z.string(),
+                industry: z.string(),
+                headquarter: z.string(),
+                solution: z.string(),
+                companyName: z.string(),
+            }),
+    }),
+    tutorialVideos: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/tutorial-videos",
+        }),
+        schema: z.object({
+            title: z.string(),
+            description: z.string().optional(),
+            category: z.string(),
+            author: z.string(),
+            url: z.string(),
+            publicationDate: z.coerce.date(),
+            isFeatured: z.boolean().optional(),
+            contentType: z.string().optional(),
+        }),
+    }),
+    annonces: defineCollection({
+        loader: file("src/contents/annonces/annonces.yml"),
+        schema: z.object({
+            id: z.number(),
+            text: z.string(),
+            href: z.string(),
+            linkText: z.string(),
+        }),
+    }),
+    redirects: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/redirects",
+        }),
+        schema: z.array(
+            z.object({
+                regexp: z.string(),
+                to: z.string(),
+            }),
+        ),
+    }),
+    feeds: defineCollection({
+        loader: glob({
+            pattern: "./**/index.md",
+            base: "./src/contents/feeds",
+            generateId,
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                link: z.string(),
+                href: z.string(),
+                image: image().optional(),
+                publicationDate: z.coerce.date(),
+                addedDate: z.coerce.date(),
+            }),
     }),
 }

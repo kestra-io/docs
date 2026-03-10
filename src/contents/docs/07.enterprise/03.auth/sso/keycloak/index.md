@@ -76,21 +76,41 @@ For more configuration details, refer to the [Keycloak OIDC configuration guide]
 
 ## Manage Groups via OIDC Claims
 
-If you are unable to use [SCIM with Keycloak](../../scim/keycloak/index.md), you can configure Kestra to source user roles and groups from OIDC claims. In this setup, your OIDC provider (e.g., Keycloak) acts as the single source of truth for user membership and roles. This method requires exposing roles via a claim in the ID Token.
+If you are unable to use [SCIM with Keycloak](../../scim/keycloak/index.md), you can configure Kestra to source user groups from OIDC claims. In this setup, Keycloak acts as the single source of truth for user group membership. This method requires creating a `groups` client scope that exposes group membership via a claim in the ID Token.
 
-To get started, you must first have a `kestra` realm and `kestra` client configured in Keycloak. Once complete, you must add the `roles` claim to the ID Token; Kestra uses the ID Token so this must be enabled. To do this in Keycloak, follow these steps:
+### Create a Groups Client Scope
 
-1. Select **Client Scopes**
-2. Click on the **roles** scope
-3. Select **Mappers**
-4. Click on **client roles**
-5. Enable **Add to ID Token**
+In Keycloak, go to **Client Scopes** and click **Create Client Scope**. Name it `groups`, set Type to **Default**, and keep Protocol as **OpenID Connect**.
 
-In case the interface changes to Keycloak, refer to their documentation for [managing resources and scopes](https://www.keycloak.org/docs/latest/authorization_services/#_resource_overview).
+![Create Client Scope](../../../../15.how-to-guides/keycloak/01-groups_create_client_scope.png)
+
+### Add a Group Membership Mapper
+
+In the newly created `groups` scope, go to the **Mappers** tab and click **Configure a new mapper**.
+
+![Add Mappers](../../../../15.how-to-guides/keycloak/02-add-mappers.png)
+
+Select **Group Membership** from the list of available mapper types.
+
+![Configure Mapper](../../../../15.how-to-guides/keycloak/03-configure-mappers.png)
+
+Configure the mapper with the following settings:
+- **Name**: `groups`
+- **Token Claim Name**: `groups`
+- **Full group path**: Off
+- **Add to ID token**: On
+
+![Mapper Details](../../../../15.how-to-guides/keycloak/04-mapper-details.png)
+
+### Add the Client Scope to Your Client
+
+Go to **Clients**, select your Kestra client, and add the `groups` client scope.
+
+![Add Client Scope](../../../../15.how-to-guides/keycloak/05-add_client_scope.png)
 
 ### Configure Kestra
 
-After adding or updating your roles, configure Kestra to fetch the `roles` scope like in following Micronaut configuration; make note of the added `scopes` parameter where the information must be added:
+Update your Micronaut configuration to include `groups` in the scopes:
 
 ```yaml
 micronaut:
@@ -99,23 +119,23 @@ micronaut:
       enabled: true
       clients:
         keycloak:
-          client-id: "kestra"
-          client-secret: "my-secret"
+          client-id: "{{clientId}}"
+          client-secret: "{{clientSecret}}"
           openid:
-            issuer: "http://localhost:8088/realms/kestra"
-          scopes: ["openid", "profile", "email", "roles"] # Add this to enable role mapping
-      endpoints:
-        logout:
-          get-allowed: true
+            issuer: "https://{{keyCloakServer}}/realms/{{yourRealm}}"
+          scopes: ["openid", "profile", "email", "groups"]
+    endpoints:
+      logout:
+        get-allowed: true
 ```
 
-With this configured, you then need to update the `kestra` property in your configuration file to synchronize groups from this claim with the `groups-claim-path`:
+Then configure Kestra to synchronize groups from the `groups` claim:
 
 ```yaml
 kestra:
   security:
     oidc:
-      groups-claim-path: "resource_access.kestra.roles"
+      groups-claim-path: "groups"
 ```
 
-Once the synchronization connection is made, you can use OAuth claims to source user roles with Keycloak as the single source of truth.
+Once configured, Kestra will source user groups from the `groups` claim in the ID Token, with Keycloak as the single source of truth.

@@ -80,6 +80,8 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 - `TENANT_ACCESS`
 - `INVITATION`
 - `GROUP_MEMBERSHIP`
+- `CREDENTIALS`
+- `AI_COPILOT`
 
 :::alert{type="warning"}
 The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/v0.24.0/endpoint-changes/index.md#rbac-updates)
@@ -143,7 +145,7 @@ This interface invites you to create your first User which will be automatically
 
 ### Through the CLI
 
-To create a User with a Superadmin privilege from the [CLI](../../../server-cli/index.md), use the `--superadmin` option:
+To create a User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the `--superadmin` option:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
@@ -189,7 +191,7 @@ You can grant or revoke the Superadmin privilege using the switch in the User Ed
 
 ### Through the CLI
 
-To set an existing User with a Superadmin privilege from the [CLI](../../../server-cli/index.md), use the dedicated command:
+To set an existing User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the dedicated command:
 
 ```bash
 ## Set a user as Super Admin

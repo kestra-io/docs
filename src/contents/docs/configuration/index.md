@@ -42,6 +42,30 @@ kestra:
   url: "http://localhost:8080/"
 ```
 
+### SDK plugin default authentication
+
+SDK-based plugins (for example, [Kestra plugins](/plugins/plugin-kestra) that call the API) can use an `DEFAULT`/`AUTO` authentication mode. Kestra resolves credentials in this order:
+
+1. [Namespace-level](../07.enterprise/02.governance/07.namespace-management/index.md#default-service-account-for-sdk-plugins) default service account
+2. [Tenant-level](../07.enterprise/02.governance/tenants/index.md#default-service-account-for-sdk-plugins) default service account
+3. Global SDK defaults (optional, see below)
+
+If no default is configured, the task fails because no API credentials are available, and they must be set in the task properties.
+
+Set a global default service account (useful for OSS or shared defaults) under `tasks.sdk.authentication`:
+
+```yaml
+tasks:
+  sdk:
+    authentication:
+      username: ${kestra.server.basic-auth.username}
+      password: ${kestra.server.basic-auth.password}
+      # or provide an API token instead of basic auth
+      # token: ${KESTRA_API_TOKEN}
+```
+
+Tenants and Namespaces can override this by defining their own default service account in the UI (see Enterprise docs).
+
 ## Environment Variables
 
 Environment variables override file-based configuration.
@@ -2153,21 +2177,33 @@ Disable local file preview (default `true`) with `kestra.local-files.enable-prev
 
 ## AI Copilot
 
-Enable Copilot in the flow editor:
+Enable Copilot in the flow editor with multiple provider selection:
 
 ```yaml
 kestra:
   ai:
-    type: gemini
-    gemini:
-      model-name: gemini-2.5-flash
-      api-key: YOUR_GEMINI_API_KEY
+    providers:
+      - id: gemini
+        display-name: Gemini - Private
+        type: gemini
+        configuration:
+          model-name: gemini-2.5-flash
+          api-key: YOUR_GEMINI_API_KEY
+      - id: gpt
+        display-name: OpenAI
+        type: openai
+        isDefault: true
+        configuration:
+          model-name: gpt-4
+          api-key: YOUR_OPENAI_API_KEY
 ```
 
 Optional parameters:
 - `temperature`, `top-p`, `top-k`, `max-output-tokens`
 - `log-requests`, `log-responses`
 - `base-url`
+
+Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
 
 **Enterprise Edition** supports multiple providers (Bedrock, Anthropic, Azure OpenAI, DeepSeek, Gemini, Vertex AI, Mistral, OpenAI, and Ollama). See [AI Copilot](../ai-tools/ai-copilot/index.md#enterprise-edition-copilot-configurations).
 

@@ -219,7 +219,7 @@ triggers:
 
 errors:
   - id: alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```

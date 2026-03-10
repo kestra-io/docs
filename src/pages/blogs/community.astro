@@ -1,22 +1,28 @@
 ---
-export const prerender = false
 import CommunityContent from "~/components/blogs/CommunityContent.vue"
 import Layout from "~/components/layout.astro"
-import { $fetchApi } from "~/utils/fetch"
+import { getCollection } from "astro:content"
+import { getImage } from "astro:assets"
 
-const externalNewsData = await $fetchApi(`/external-blogs`)
+const allExternalBlogs = await getCollection("externalBlogs")
 
-const externalNews = externalNewsData.results.map((data: any) => {
-    return {
-        id: data.id,
-        path: data.link,
-        image: data.image,
-        category: data.media,
-        author: { name: data.author },
-        title: data.title,
-        date: data.publicationDate,
-    }
-})
+const externalNews = await Promise.all(
+    allExternalBlogs
+        .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
+        .map(async (entry) => {
+            const image = await getImage({ src: entry.data.image, format: "webp", width: 800 })
+            return {
+                id: entry.id,
+                path: entry.data.link,
+                image: image.src,
+                category: entry.data.media,
+                author: { name: entry.data.author },
+                title: entry.data.title,
+                date: entry.data.publicationDate,
+            }
+        }),
+)
+
 const title = "Insights & News on Data Orchestration"
 const description =
     "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."

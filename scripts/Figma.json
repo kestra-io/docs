@@ -558,7 +558,7 @@
             "rootAlias": ""
           },
           {
-            "name": "ks/Color-gradient-1-inverse 2",
+            "name": "ks/Color-gradient-1-inverse-2",
             "value": "#25232e",
             "var": "",
             "rootAlias": ""
@@ -702,13 +702,13 @@
             "rootAlias": "grey/Black"
           },
           {
-            "name": "ks/backgroung-tag-category",
+            "name": "ks/background-tag-category",
             "value": "#f1efff",
             "var": "primary/100",
             "rootAlias": "primary/100"
           },
           {
-            "name": "ks/backgroung-tag-success",
+            "name": "ks/background-tag-success",
             "value": "#bffddd",
             "var": "green/100",
             "rootAlias": "green/100"
@@ -937,7 +937,7 @@
           },
           {
             "name": "ks/shadows-light",
-            "value": "#2720560d",
+            "value": "#3952F219",
             "var": "",
             "rootAlias": ""
           },
@@ -1288,7 +1288,7 @@
             "rootAlias": ""
           },
           {
-            "name": "ks/Color-gradient-1-inverse 2",
+            "name": "ks/Color-gradient-1-inverse-2",
             "value": "#e9e5fe",
             "var": "",
             "rootAlias": ""
@@ -1432,13 +1432,13 @@
             "rootAlias": "grey/100"
           },
           {
-            "name": "ks/backgroung-tag-category",
+            "name": "ks/background-tag-category",
             "value": "#a796ff",
             "var": "primary/300",
             "rootAlias": "primary/300"
           },
           {
-            "name": "ks/backgroung-tag-success",
+            "name": "ks/background-tag-success",
             "value": "#215d42",
             "var": "green/700",
             "rootAlias": "green/700"
@@ -1840,4 +1840,3 @@
     ]
   }
 ]
-

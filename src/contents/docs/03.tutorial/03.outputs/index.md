@@ -14,7 +14,7 @@ Tasks and flows can generate outputs that are passed to downstream processes. To
 This storage layer helps avoid connector sprawl. For example, the PostgreSQL plugin can extract data and load it into internal storage. Other tasks can then load that data into Snowflake, BigQuery, or Redshift — or process it with another plugin — without direct point-to-point connections. Let's check out Outputs in practice.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/G7rH-VpMOUc?si=sG7Ky8nZMTx98y36" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/ZcITW-Hcv_k?si=3Y22ErLEv4-Q6wt-" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## How to retrieve outputs

@@ -11,11 +11,11 @@
                 <span>{{ story.companyName }}</span> & Kestra: {{ story.title }}
             </h2>
             <div class="use-case">
-                <NuxtImg width="538" :src="story.heroImage" alt="Hero Image" />
+                <img width="538" :src="story.heroImage" alt="Hero Image" />
                 <div class="quote-box">
                     <img v-if="story.logo" :src="story.logo" alt="Logo" class="logo-light" />
                     <img v-if="story.logoDark" :src="story.logoDark" alt="Logo" class="logo-dark" />
-                    <q>{{ story.quote.replace(/[“”"]/g, "").trim() }}</q>
+                    <blockquote>{{ story.quote.replace(/[“”"]/g, "").trim() }}</blockquote>
                     <p class="author">{{ story.quotePerson }}</p>
                     <p class="title">{{ story.quotePersonTitle }}</p>
                     <a
@@ -53,23 +53,13 @@
     export interface Story {
         id: string
         title: string
-        content: string
-        description: string
         quote: string
         quotePerson: string
         quotePersonTitle: string
         companyName: string
-        featuredImage: string
         heroImage: string
         logo: string
         logoDark: string
-        kpi1: string
-        kpi2: string
-        kpi3: string
-        industry: string
-        headquarter: string
-        solution: string
-        tasks: string[]
     }
 
     const activeStory = ref<number>(0)
@@ -235,8 +225,8 @@
                     max-width: 538px;
                     border-radius: 1rem;
                 }
-                q {
-                    color: var(--kestra-io-neutral-gray300);
+                blockquote {
+                    color: var(--kestra-io-neutral-gray700);
                 }
                 .quote-box {
                     text-align: left;

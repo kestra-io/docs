@@ -1,0 +1,7 @@
+title: "Getting Started with Kestra in 15 minutes"
+description: "This video will walk you through how to get started with Kestra to set up a simple workflow that will run a Python script every hour and send the result as a Discord notification!"
+category: "Quick Start Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=a2BZ7vOihjg"
+publicationDate: "2024-04-10T00:00:00.000"
+contentType: "Quick Start Tutorials"

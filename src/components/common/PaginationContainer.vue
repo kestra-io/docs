@@ -11,7 +11,7 @@
             showTotal?: boolean
         }>(),
         {
-            sizeOptions: () => [12, 24, 48],
+            sizeOptions: () => [12, 24, 48, 96],
             defaultSize: 24,
             showTotal: true,
         },
@@ -42,9 +42,17 @@
         (e: "update", payload: { size: number; page: number }): void
     }>()
 
+    let isInitialized = false
+
     watch(
         [itemsPerPage, currentPage],
         ([newSize, newPage]) => {
+            // Skip the initial mount — don't overwrite the URL on hydration
+            if (!isInitialized) {
+                isInitialized = true
+                return
+            }
+
             // Update URL without navigation
             if (typeof window === "undefined") return
             const newUrl = new URL(window.location.href)
