@@ -31,10 +31,10 @@ window.addEventListener("DOMContentLoaded", () => {
             capture_pageview: false,
             capture_pageleave: true,
             autocapture: false,
-            disable_session_recording: true,
+            disable_session_recording: false,
         })
 
-        posthog.register_once({
+        posthog.register_for_session({
             from: "SITE",
         })
 

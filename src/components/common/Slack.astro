@@ -1,0 +1,76 @@
+---
+import CardGrid from "~/components/card/CardGrid.astro"
+import Link from "~/components/common/Link.astro"
+---
+
+<section class="ping">
+    <div class="container">
+        <div
+            class="d-flex flex-column flex-lg-row align-items-center justify-content-between gap-3 px-4"
+        >
+            <div>
+                <h2>
+                    Orchestrate Success <span class="highlight">Together</span>
+                </h2>
+                <p>
+                    Join our <a href="https://kestra.io/slack"
+                        >Slack Community</a
+                    > to share ideas and best practices,get help <br
+                        class="d-none d-lg-block"
+                    />
+                    with technical questions, and discuss with other developers.
+                </p>
+            </div>
+            <Link href="https://kestra.io/slack" class="btn btn-primary"
+                >Join our Slack</Link
+            >
+        </div>
+        <CardGrid
+            title=""
+            items={[
+                {
+                    title: "Ask a question",
+                    icon: "mdi:comment-question-outline",
+                    description:
+                        'Stuck? The <a href="https://kestra-io.slack.com/archives/C03FQKXRK3K">#help</a> channel is here to support you.',
+                },
+                {
+                    title: "Say Hi",
+                    icon: "mdi:hand-wave-outline",
+                    description:
+                        'New to the community? Tell us about yourself and how you\'re using Kestra in the <a href="https://kestra-io.slack.com/archives/C03F317FP9V">#introductions</a> channel.',
+                },
+                {
+                    title: "Share Feedback",
+                    icon: "mdi:comment-quote-outline",
+                    description:
+                        'Something you\'d like to see improved? The <a href="https://kestra-io.slack.com/archives/C03FEC452NQ">#feedback-and-requests</a> channel is a great place to share your thoughts.',
+                },
+            ]}
+        />
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .ping {
+        padding: $rem-4 0;
+        padding-bottom: 30px;
+        background-color: var(--ks-background-secondary);
+        border-top: 1px solid var(--ks-border-secondary);
+    }
+
+    :global(.card-grid-section) {
+        padding-top: 0 !important;
+        background-color: transparent !important;
+    }
+
+    :global(.container) {
+        gap: 1rem !important;
+    }
+
+    a {
+        color: var(--ks-content-link);
+    }
+</style>

@@ -1,29 +1,25 @@
 ---
 import Layout from "~/components/layout.astro"
 import Header from "~/components/home/Header.vue"
-import LogosTable from "~/components/home/LogosTable.astro"
+import LogosTable from "~/components/common/LogosTable.astro"
 import OpenSource from "~/components/home/OpenSource.astro"
-import OpenSourceQuotes from "~/components/home/OpenSourceQuotes.vue"
+import OpenSourceQuotes from "~/components/common/OpenSourceQuotes.vue"
 import { $fetchApi } from "~/utils/fetch"
-import Features from "~/components/home/Features.astro"
+import Features from "~/components/home/Features.vue"
 import EveryDev from "~/components/home/EveryDev.astro"
-import Experience from "~/components/home/Experience.vue"
-import BlueprintsRender from "~/components/home/BlueprintsRender.vue"
-import Enterprise from "~/components/home/Enterprise.vue"
-import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue"
-import CTA from "~/components/home/CTA.astro"
-import PluginsBox from "~/components/PluginsBox.astro"
+import TabsSection from "~/components/common/TabsSection.vue"
+import BlueprintsRender from "~/components/common/BlueprintsRender.astro"
+import EnterpriseSection from "~/components/home/EnterpriseSection.astro"
+import EnterpriseQuotesRender from "~/components/common/EnterpriseQuotesRender.vue"
+import CTA from "~/components/common/CTA.astro"
+import PluginsBox from "~/components/common/PluginsBox.astro"
 import { getValues } from "./api/github"
 import { getImage } from "astro:assets"
-import type { GetImageResult, ImageMetadata } from "astro"
 
 const githubData = await getValues()
 
 const blueprints = await $fetchApi<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?page=1&size=20",
-)
-const stories = await $fetchApi<{ results: any[] }>(
-    "/customer-stories-v2?featured=true",
 )
 
 const quotesCompaniesLogos = import.meta.glob<ImageMetadata>(
@@ -32,21 +28,22 @@ const quotesCompaniesLogos = import.meta.glob<ImageMetadata>(
         import: "default",
     },
 )
+
 const quotesLogos = (
     await Promise.all(
-        Object.entries(quotesCompaniesLogos).map(async ([filePath, mod]) => {
-            const img = await mod()
-            const optimizedImage = await getImage({ src: img, height: 36 })
-            return {
-                name: filePath.split("/").pop(),
-                img: optimizedImage,
-            }
+        Object.entries(quotesCompaniesLogos).map(([filePath, mod]) => {
+            return mod().then(async (img) => {
+                return {
+                    name: filePath.split("/").pop(),
+                    url: await getImage({ src: img, height: 36 }),
+                }
+            })
         }),
     )
 ).reduce(
     (acc, curr) => {
         if (curr.name) {
-            acc[curr.name] = curr.img.src
+            acc[curr.name] = curr.url.src
         }
         return acc
     },
@@ -89,17 +86,61 @@ const tabs = [
 ]
 ---
 
-<Layout>
-    <Header client:load />
-    <LogosTable />
-    <OpenSource {...githubData} />
-    <OpenSourceQuotes client:visible />
-    <Features />
-    <EveryDev />
-    <Experience tabs={tabs} client:visible />
-    <PluginsBox />
-    <BlueprintsRender blueprints={blueprints.results} client:visible />
-    <Enterprise stories={stories.results} client:visible />
-    <EnterpriseQuotesRender quotesCompaniesLogos={quotesLogos} client:visible />
-    <CTA />
+<Layout headerTheme="darkHeader">
+    <div class="home-page">
+        <Header client:load />
+        <LogosTable />
+        <OpenSource {...githubData} />
+        <OpenSourceQuotes client:visible />
+        <Features />
+        <EveryDev />
+        <TabsSection tabs={tabs} client:visible />
+        <PluginsBox />
+        <BlueprintsRender blueprints={blueprints.results} />
+        <EnterpriseSection />
+        <EnterpriseQuotesRender
+            quotesCompaniesLogos={quotesLogos}
+            client:visible
+        />
+        <CTA />
+    </div>
 </Layout>
+
+<script>
+    const SIZE_OF_GRADIENT = 500
+
+    // when the page has finished rendering, all the home card need a little script to react to
+    // mouse movements smoothly.
+    function moveGradient(e: MouseEvent) {
+        const box = e.currentTarget
+        if (!(box instanceof HTMLElement)) {
+            return
+        }
+
+        const { left, top, width, height } = box.getBoundingClientRect()
+
+        const x = e.clientX - left
+        const y = e.clientY - top
+
+        if (
+            x < -SIZE_OF_GRADIENT ||
+            x > width + SIZE_OF_GRADIENT ||
+            y < -SIZE_OF_GRADIENT ||
+            y > height + SIZE_OF_GRADIENT
+        ) {
+            return
+        }
+        box.style.setProperty("--x", `${x}px`)
+        box.style.setProperty("--y", `${y}px`)
+    }
+    const cards = document.querySelectorAll(".home-card")
+    for (const card of cards) {
+        card.addEventListener("mousemove", moveGradient as any)
+    }
+</script>
+<style lang="scss">
+    .home-page {
+        background-color: #0a0b0d;
+        margin-top: -2rem;
+    }
+</style>

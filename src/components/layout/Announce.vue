@@ -10,13 +10,20 @@
                     :breakpoints="breakpoints"
                     :settings="settings"
                 >
-                    <Slide v-for="(slide, index) in content" :key="slide" v-bind:key="slide?.id">
-                        <p class="d-flex" @click="slideTo(index)">
-                            <span class="d-inline-block text-truncate">{{ slide.text }}</span>
-                            <a class="d-inline-block text-nowrap" :href="slide.href">{{
-                                slide.linkText
-                            }}</a>
-                        </p>
+                    <Slide
+                        v-for="(slide, index) in content"
+                        :key="index"
+                    >
+                        <a
+                            class="slide-content d-flex justify-content-center align-items-center text-decoration-none"
+                            :href="slide.href"
+                            @click="slideTo(index)"
+                        >
+                            <span class="d-inline-block text-truncate">
+                                {{ slide.text }}
+                            </span>
+                            <ArrowRight class="d-inline-block text-nowrap" />
+                        </a>
                     </Slide>
                 </Carousel>
             </div>
@@ -25,7 +32,15 @@
 </template>
 
 <script>
+    import { Carousel, Slide } from "vue3-carousel"
+    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+
     export default {
+        components: {
+            Carousel,
+            Slide,
+            ArrowRight,
+        },
         props: {
             content: {
                 type: Object,
@@ -73,79 +88,57 @@
     }
 
     .announce {
-        width: 100%;
-        opacity: 1;
-
         &.hidden {
             opacity: 0;
             display: none;
             top: -100px;
         }
-
         .alert {
             border-radius: 0;
             border: 0;
             text-align: center;
-            backdrop-filter: blur(0.625rem);
-            background-color: transparent;
-            color: var(--bs-white);
-            padding-left: calc($spacer * 0.938) 0.5rem;
-            padding-right: calc($spacer * 0.938) 0.5rem;
-            border-bottom: 1px solid #e5e4f721;
+            background: #631BFF;
+            color: $white;
             margin-bottom: 0;
             position: relative;
             z-index: 1;
             overflow: hidden;
-            transition:
-                max-height 0.5s linear,
-                color 0.5s linear;
-            height: 3rem;
-
-            &.scrolled {
-                background-color: rgba(17, 17, 19, 0.65);
-                transition: background-color 250ms ease-in-out;
-            }
+            height: 2.5rem;
+            padding-top: 10px;
+            padding-bottom: 10px;
 
             @include media-breakpoint-down(sm) {
-                padding-right: calc($spacer / 2);
-                padding-left: calc($spacer / 2);
+                padding-inline: calc($spacer / 2);
             }
-
-            &::after {
-                content: "";
-                position: absolute;
-                height: 16rem;
-                width: 15rem;
-                bottom: 32%;
-                left: -25%;
-                z-index: -1;
-                background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
-                filter: blur(80px);
-            }
-
-            a {
-                text-decoration: underline;
-                color: $purple-36;
-                font-weight: 400 !important;
-                margin-left: $spacer;
-            }
-
-            p {
+            .slide-content {
+                text-decoration: none !important;
                 margin-bottom: 0;
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
-                max-width: 100%;
-            }
+                width: 100%;
+                padding-inline: $spacer;
+                color: $white;
 
-            button {
-                position: absolute;
-                right: 3px;
-                top: 3px;
-                background: none;
-                border: 0;
-                font-size: 24px;
-                color: var(--bs-white);
+                .text-truncate {
+                    color: $white;
+                    min-width: 0;
+                    flex-shrink: 1;
+                    font-weight: 600;
+                }
+
+                :deep(.material-design-icon) {
+                    bottom: 0;
+                    transition: transform 0.2s ease-in-out;
+                    margin-left: calc($spacer / 2);
+                }
+
+                &:hover {
+                    :deep(.material-design-icon) {
+                        transform: scaleX(1.15);
+                        transform-origin: left;
+                    }
+                }
             }
         }
     }
@@ -153,10 +146,9 @@
     :deep(.carousel > .carousel__viewport > .carousel__track) {
         .carousel__slide {
             opacity: 0.5;
-        }
-
-        .carousel__slide--active {
-            opacity: 1;
+            &--active {
+                opacity: 1;
+            }
         }
     }
 </style>

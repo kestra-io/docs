@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/tutorial.svg
 Run tasks or subflows in parallel, create loops, and conditional branching.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/PupBvX35PZQ?si=x9q_j4c8tEE8fZD4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/pRRAz5l2WWw?si=WJ_0RW2LVAVtXtgQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Branch, Loop, and Parallelize with Flowable Tasks
@@ -139,7 +139,7 @@ tasks:
       - id: healthCheck
         type: io.kestra.plugin.core.http.Request
         method: GET
-        uri: https://kestra.io/api/mock
+        uri: https://kestra.io
 ```
 
 This flow checks an HTTP endpoint every 30 seconds and stops either when it returns 200 or after 50 attempts, whichever comes first. You can reference the child task outputs (here `outputs.healthCheck.code`) inside the `condition` expression. See the [LoopUntil task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.LoopUntil) for additional options.
@@ -180,7 +180,8 @@ tasks:
         type: io.kestra.plugin.scripts.python.Script
         taskRunner:
           type: io.kestra.plugin.scripts.runner.docker.Docker
-        containerImage: ghcr.io/kestra-io/pydata:latest
+        dependencies:
+          - kestra
         script: |
           import random
           import time

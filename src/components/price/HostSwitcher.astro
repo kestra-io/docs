@@ -1,0 +1,59 @@
+---
+const { id = "host-switcher" } = Astro.props as { id?: string };
+---
+
+<div class="switcher" id={id}>
+    <button class="active" data-type="self-hosted">Self Hosted</button>
+    <button data-type="cloud-hosted">Cloud Hosted</button>
+</div>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const switcher = document.getElementById("host-switcher");
+        if (!switcher) return;
+
+        const buttons = switcher.querySelectorAll("button");
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                buttons.forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                document.querySelectorAll<HTMLElement>("[data-host]").forEach((el) => {
+                    el.classList.toggle("d-none", el.dataset.host !== btn.dataset.type);
+                });
+            });
+        });
+    });
+</script>
+
+<style lang="scss">
+    .switcher {
+        display: flex;
+        margin: 0 auto 3rem;
+        background: var(--ks-background-tertiary);
+        padding: 0.25rem;
+        border-radius: 0.75rem;
+        gap: 2px;
+        max-width: 245px;
+        height: 50px;
+
+        button {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding-inline: 1rem;
+            border-radius: 0.5rem;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--ks-content-primary);
+            white-space: nowrap;
+
+            &.active {
+                background: var(--ks-content-primary);
+                color: var(--ks-content-primary-inverse);
+            }
+        }
+    }
+</style>

@@ -1,0 +1,74 @@
+---
+export const prerender = false
+import Layout from "~/components/layout.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
+import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
+import { $fetch } from "~/utils/fetch"
+import Header from "~/components/careers/Header.astro"
+import { type AshbyJob, type AshbyJobPosting, fetchJob, type Job, mapJob } from "~/utils/careers.ts"
+import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+
+const { id1, id2, id3, id4, id5 } = Astro.params
+const { url } = Astro.request
+
+const uid = [id1, id2, id3, id4, id5].join("-");
+
+if (!uid) {
+    return Astro.redirect("/careers")
+}
+
+const page: AshbyJobPosting = await fetchJob(uid)
+
+if (!page) {
+    return new Response(null, {
+        status: 404,
+        statusText: "Not found",
+    })
+}
+
+const title = page.title
+---
+
+<Layout title={title}>
+    <Header fullPath="/careers">
+        <h1 data-usal="fade-l">
+            {page.title}
+        </h1>
+        <h4 data-usal="fade-l">
+            <span class="department-tag">{page.departmentName}</span>
+            <MapMarkerOutline /> Remote
+        </h4>
+    </Header>
+
+    <section>
+        <div class="container">
+            <div id="ashby_embed" class="application-form-embed-container" data-jid={uid} data-tab="application" data-noChrome="true"></div>
+        </div>
+    </section>
+
+    <FooterContact
+        title="See all open positions"
+        purple={{
+            text: "Careers page",
+            href: "/careers"
+        }}
+        dark={null}
+    />
+</Layout>
+
+<script is:inline>
+    window.__Ashby = {
+        settings: {
+            autoScroll: false,
+        }
+    }
+</script>
+
+<script is:inline src="https://jobs.ashbyhq.com/kestra/embed?version=2"></script>
+
+<style lang="scss" scoped>
+    #ashby_embed {
+        background: white;
+        padding: 0 1rem;
+    }
+</style>

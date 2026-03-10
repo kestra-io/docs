@@ -1,210 +1,144 @@
 <template>
-    <div class="row">
-        <div class="col-md-10">
-            <h3>Source</h3>
-            <div class="mt-4 relative code mb-3 main-code-block" :class="{ hide: hideCode }">
-                <MDCParserAndRenderer class="bd-markdown" :content="flow" />
-                <div class="show-more" :class="{ hide: !hideCode }">
-                    <a href="" @click.prevent="hideCode = !hideCode">
-                        {{ hideCode ? "See more" : "See less" }}
-                        <ChevronDown v-if="hideCode" />
-                        <ChevronUp v-else />
-                    </a>
+    <section>
+        <div class="container-xxl">
+            <div class="wrapper">
+                <div class="snippets">
+                    <Snippets
+                        :code="flow"
+                        lang="yaml"
+                        :expand-threshold="25"
+                    />
                 </div>
-            </div>
-            <h3>About this blueprint</h3>
-            <div class="title">
-                <p>{{ tagsList }}</p>
-            </div>
-            <MDCParserAndRenderer class="bd-markdown" :content="description" />
-        </div>
-        <div class="col-md-2">
-            <div class="plugins-icons" v-if="page.includedTasks && page.includedTasks.length">
-                <div class="d-flex justify-content-center flex-column plugins-container">
-                    <div
-                        class="plugin-icon card bg-dark-2"
-                        v-for="icon in page.includedTasks"
-                        :key="icon"
-                    >
-                        <CommonTaskIcon :cls="icon" />
-                        <p class="text-center">{{ getLastWord(icon) }}</p>
+                <div class="topology">
+                    <div class="card">
+                        <div class="card-body">
+                            <Topology
+                                :flow-graph="graph"
+                                :source="flow"
+                                :id="page.id"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <BlueprintMarkdown
+        :page="page"
+        :description="description"
+    />
 </template>
 
-<script>
-    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import CommonTaskIcon from "~/components/common/TaskIcon.vue"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+<script setup lang="ts">
+    import Snippets from "~/components/common/Snippets.vue"
+    import BlueprintMarkdown from "~/components/blueprints/BlueprintMarkdown.vue"
+    import Topology from "~/components/blueprints/Topology.client.vue"
 
-    export default {
-        components: {
-            ChevronUp,
-            ChevronDown,
-            CommonTaskIcon,
-            MDCParserAndRenderer,
-        },
-        props: {
-            page: {
-                type: Object,
-                required: true,
-            },
-            description: {
-                type: [Object, String],
-                required: true,
-            },
-            flow: {
-                type: String,
-                required: true,
-            },
-            tags: {
-                type: Array,
-                default: [],
-            },
-        },
-        data() {
-            return {
-                hideCode: true,
-            }
-        },
-        computed: {
-            tagsList() {
-                if (this.tags && this.page.tags) {
-                    return this.tags
-                        .filter((t) => this.page.tags.includes(t.id))
-                        .map((t) => t.name)
-                        .join(" ")
-                }
-                return ""
-            },
-        },
-        methods: {
-            getLastWord(value) {
-                if (!value) return ""
-                const lastWord = value.substring(value.lastIndexOf(".") + 1)
-                const formattedLastWord = lastWord.replace(/([a-z])([A-Z])/g, "$1 $2")
-                return formattedLastWord
-            },
-        },
-    }
+    defineProps<{
+        page: {
+            id: string | number;
+            title: string;
+            includedTasks?: string[]
+        }
+        description: string
+        flow: string
+        graph?: any
+    }>()
 </script>
-<style scoped lang="scss">
+
+<style lang="scss" scoped>
     @import "~/assets/styles/variable";
-    .code {
-        overflow: hidden;
-        position: relative;
-        border: 1px solid #252526;
-        border-radius: 0.5rem;
-        box-sizing: content-box;
-        transition: max-height 0.5s ease;
-        &.hide {
-            max-height: 258px;
+
+    section {
+        padding: 0 $rem-1;
+        background-color: var(--ks-background-primary);
+    }
+
+    .wrapper {
+        display: flex;
+        gap: $rem-1;
+        padding-bottom: $rem-4;
+
+        @include media-breakpoint-down(xl) {
+            flex-direction: column;
         }
-        :deep(.code-block) {
-            padding-bottom: 50px;
-            margin-bottom: 0 !important;
-        }
-        .show-more {
-            border-bottom-right-radius: 13px;
-            border-bottom-left-radius: 13px;
-            position: absolute;
-            bottom: 0;
-            left: 1px;
-            right: 1px;
-            display: flex;
-            justify-content: center;
-            background-image: linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0),
-                rgba(22, 22, 23, 0.52),
-                rgba(22, 22, 23, 0.96),
-                $black-2
-            );
-            padding: 56px 0 10px 0;
-            &.hide {
-                background-image: unset;
+
+        .snippets {
+            flex: 0 0 580px;
+            max-width: 580px;
+            min-height: 586px;
+
+            @include media-breakpoint-down(xl) {
+                flex: 1 1 auto;
+                max-width: none;
             }
-            a {
-                color: $white;
-                font-family: $font-family-monospace;
-            }
-        }
-    }
 
-    h3 {
-        color: $white;
-        font-size: $h2-font-size;
-        font-weight: 500;
-    }
-    div.title {
-        margin: 0 auto calc($spacer / 2);
+            :deep(.code-card) {
+                height: 586px;
+                display: flex;
+                flex-direction: column;
 
-        p {
-            color: $purple-36;
-            font-family: $font-family-monospace;
-            font-size: $font-size-xl;
-            font-weight: 700;
-            text-transform: uppercase;
-            display: inline;
-        }
-    }
-
-    .main-code-block {
-        :deep(.bd-markdown) {
-            .code-block {
-                .language {
-                    top: unset !important;
-                    bottom: 0.5rem !important;
+                &.is-expandable:not(.is-expanded) .code-inner {
+                    max-height: none !important;
+                    overflow: hidden;
+                    mask-image: linear-gradient(
+                        to bottom,
+                        var(--ks-background-primary) 70%,
+                        transparent 100%
+                    ) !important;
                 }
 
-                .copy {
-                    top: 0.5rem !important;
-                    bottom: unset !important;
+                &.is-expanded {
+                    height: auto;
+
+                    .code-inner {
+                        max-height: none !important;
+                        overflow: visible;
+                        mask-image: none !important;
+                    }
+                }
+
+                .code-inner {
+                    flex: 1;
                 }
             }
         }
-    }
-    :deep(.bd-markdown) {
-        color: $white;
 
-        a {
-            color: $purple-36;
+        :deep(.mdc-renderer pre) {
+            padding-bottom: 1rem;
         }
-        .code-block {
-            border: 1px solid #252526;
-        }
-    }
 
-    .plugins-container {
-        border-radius: 0.5rem;
-        border: $block-border;
-
-        .plugin-icon {
+        .topology {
+            flex: 1;
+            min-width: 0;
+            min-height: 586px;
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
-            align-items: center;
-            justify-content: center;
-            min-width: 134px;
-            font-weight: bold;
-            font-size: $font-size-sm;
-            border-radius: 0;
-            border-top: $block-border;
-            padding: calc($spacer * 1.063) 0 calc($spacer * 0.75);
 
-            :deep(.icon-wrapper) {
-                width: calc($spacer * 2.625);
-                height: calc($spacer * 2.625);
+            @include media-breakpoint-down(xl) {
+                height: 500px;
+                min-height: auto;
+                flex: none;
             }
 
-            p {
-                font-size: calc($font-size-base * 0.875);
-                font-weight: 700;
-                color: $white;
+            .card {
+                flex: 1;
+                border-radius: 8px;
+                border: $block-border;
+                overflow: clip;
+
+                .card-body {
+                    height: 100%;
+                    padding: 0;
+                    background-color: var(--ks-background-secondary);
+                    display: flex;
+                    flex-direction: column;
+
+                    & > * {
+                        flex: 1;
+                    }
+                }
             }
         }
     }

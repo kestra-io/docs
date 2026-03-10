@@ -20,13 +20,13 @@ Kestra Enterprise is built on top of the [Open Source Edition](https://github.co
 
 ⚡️**High Availability**: Kestra Enterprise is designed to be highly available and fault-tolerant. It uses a **Kafka** cluster as a backend for event-driven orchestration and **Elasticsearch** for storing logs and metrics. This not only improves performance but also eliminates single points of failure and enables the system to scale for large workloads.
 
-⚡️**Multi-Tenancy**: The Enterprise Edition supports multi-tenancy, enabling separate environments for different teams or projects. Each tenant is fully isolated and can have its own access control policies.
+⚡️**Multi-Tenancy**: The Enterprise Edition supports multi-tenancy, enabling separate environments for different teams or projects. Each tenant is fully isolated, can have its own access control policies, and can optionally run with Worker Isolation and dedicated worker groups to prevent cross-tenant contention.
 
-⚡️**Security and Access Control**: Kestra Enterprise supports Single Sign-On (SSO) and Role-Based Access Control (RBAC), enabling you to integrate with your existing identity provider and manage user access to workflows and resources.
+⚡️**Security and Access Control**: Kestra Enterprise supports Single Sign-On (SSO) and Role-Based Access Control (RBAC), enabling you to integrate with your existing identity provider and manage user access to workflows and resources. Enforce plugin allow-lists, apply read-only secrets for least privilege, and lean on audit logs for full traceability.
 
-⚡️**Enterprise Features**: This edition of Kestra includes additional enterprise features such as Audit Logs, Worker Groups, Custom Blueprints, Namespace-level Secrets, Variables, Unit Tests, and Plugin Defaults.
+⚡️**Enterprise Features**: Audit Logs, Custom Blueprints, Namespace-level secrets/variables and plugin defaults, Assets packaging, declarative Unit Tests for flows, Versioned Plugins for safe upgrades, and operational safeguards like the Kill Switch and in-product Announcements.
 
-⚡️**Secrets Management**: Kestra Enterprise securely stores and manages secrets. It also supports integration with existing secret managers such as AWS Secrets Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, HashiCorp Vault, Doppler, 1Password, and more to come.
+⚡️**Secrets Management**: Kestra Enterprise securely stores and manages secrets. It supports read-only secrets for sensitive values and integrates with existing secret managers such as AWS Secrets Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, HashiCorp Vault, Doppler, 1Password, and more to come.
 
 ⚡️**Support**: The Enterprise Edition comes with guaranteed SLAs and priority support.
 

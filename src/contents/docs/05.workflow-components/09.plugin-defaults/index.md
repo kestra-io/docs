@@ -71,9 +71,12 @@ pluginDefaults:
 
 In this example, Docker and Python configurations are defined once in `pluginDefaults`, instead of being repeated in every task. This approach helps to streamline the configuration process and reduce the chances of errors caused by inconsistent settings across different tasks.
 
+:::alert{type="info"}
 If you move required attributes into `pluginDefaults`, the UI code editor may show warnings about missing arguments, because defaults are only resolved at runtime. As long as `pluginDefaults` contains the relevant arguments, you can save the flow and ignore the warning displayed in the editor.
 
 ![pluginDefaultsWarning](./warning.png)
+
+:::
 
 ### `forced` attribute in `pluginDefaults`
 
@@ -107,15 +110,31 @@ kestra:
           region: "us-east-1"
 ```
 
+## Plugin Defaults Enterprise Edition
 
 :::alert{type="info"}
-In the [Enterprise Edition](../../07.enterprise/index.mdx) or [Kestra Cloud](/cloud), plugin defaults can be configured directly in the UI under the **Plugin Defaults** tab of a namespace. For example:
+In the [Enterprise Edition](../../07.enterprise/index.mdx) or [Kestra Cloud](/cloud), plugin defaults can be configured directly in the UI under the **Plugin Defaults** tab of a Namespace.
+:::
+
+You can create them via form or directly as YAML code for the Namespace:
+
+![Plugin Default Form Creation](./plugin-default-creation.png)
+
+Or click on **YAML** and paste the following for example:
 
 ```yaml
-- type: io.kestra.plugin.aws
+- type: io.kestra.plugin.aws.s3.Upload
   values:
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
     secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
     region: "us-east-1"
 ```
-:::
+
+### Inherited Plugin Defaults
+
+Plugin Defaults are inherited from the parent Namespace to children Namespaces. In the example above, the image shows the Plugin Default was created in the `kestra.company` Namespace. Navigating to the **Plugin Defaults** tab of a child Namespace, for example `kestra.company.data`, shows the parent Namespace's Plugin Defaults. This avoids having to recreate Plugin Defaults across children Namespaces, but it still allows for the children Namespaces to maintain their own isolated defaults if needed.
+
+![Plugin Default Inheritance](./inherited-plugin-defaults.png)
+
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Qu8BDAn5EOUrGmwrfLyv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Defaults | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+

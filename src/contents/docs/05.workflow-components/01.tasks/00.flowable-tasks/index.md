@@ -421,16 +421,20 @@ This task triggers another flow. This enables you to decouple the first flow fro
 You can pass flow outputs as inputs to the triggered subflow (those must be declared in the subflow).
 
 ```yaml
-id: subflow
+id: subflow_example
 namespace: company.team
 
+inputs:
+  - id: my_file
+    type: FILE
+
 tasks:
-  - id: "subflow"
+  - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
     namespace: company.team
-    flowId: my-subflow
+    flowId: my_subflow
     inputs:
-      file: "{{ inputs.myFile }}"
+      file: "{{ inputs.my_file }}"
       store: 12
 ```
 

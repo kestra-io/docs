@@ -1,8 +1,12 @@
 <template>
-    <div class="container">
-        <Section subtitle="Our contributors">
+    <section>
+        <div class="container">
+            <h2 class="text-center">Our contributors</h2>
             <div ref="topOfSection" />
-            <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
+            <div
+                v-if="contributors"
+                class="contributors d-flex flex-wrap justify-content-center"
+            >
                 <template
                     v-for="(contributor, index) in displayedContributors"
                     :key="contributor.name"
@@ -25,11 +29,14 @@
                     </a>
                 </template>
             </div>
-            <div v-if="contributors && moreCount > 0" class="text-center mt-4">
+            <div
+                v-if="contributors && moreCount > 0"
+                class="text-center mt-4"
+            >
                 <button
                     v-if="!isExpanded"
                     type="button"
-                    class="btn btn-animated btn-dark-animated"
+                    class="btn btn-secondary"
                     @click="isExpanded = true"
                     data-usal="zoomin"
                 >
@@ -38,23 +45,21 @@
                 <button
                     v-else
                     type="button"
-                    class="btn btn-animated btn-purple-animated"
+                    class="btn btn-secondary"
                     @click="collapse"
                     data-usal="zoomin"
                 >
                     Show less
                 </button>
             </div>
-        </Section>
-    </div>
+        </div>
+    </section>
 </template>
 
 <script>
-    import Section from "~/components/layout/Section.vue"
     import { useApi } from "~/composables/useApi.ts"
 
     export default {
-        components: { Section },
         setup() {
             return { useApi }
         },
@@ -128,33 +133,30 @@
 <style lang="scss" scoped>
     @import "~/assets/styles/variable";
 
-    :deep(section) {
-        padding-bottom: 0;
-    }
+    section {
+        padding: 7.5rem $rem-1;
+        background: var(--ks-background-secondary);
 
+        h2 {
+            margin-bottom: 3rem;
+        }
+    }
+    
     .contributors {
         height: 100%;
         max-height: 100%;
         overflow: hidden;
         text-align: center;
-        padding: $spacer;
-        column-gap: 2rem;
-        row-gap: 4rem;
-
+        gap: 2rem;
         a {
             width: fit-content;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+            font-size: $font-size-md;
             img {
                 width: 90px;
-            }
-
-            p {
-                max-width: 90px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                color: $purple-35;
-                font-size: $font-size-md;
-                font-weight: 400;
+                height: 90px;
+                border-radius: 50%;
             }
         }
     }

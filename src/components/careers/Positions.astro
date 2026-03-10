@@ -1,0 +1,105 @@
+---
+import Section from "~/components/layout/Section.astro"
+import { Image } from "astro:assets"
+import arrowRight from "./assets/arrow_right.svg"
+import arrowRightBlack from "./assets/arrow_right_black.svg"
+import emojiPeople from "./assets/emoji_people.svg"
+import type { AshbyJob } from "~/utils/careers.ts"
+import { slugify } from "@kestra-io/ui-libs"
+
+interface Props {
+    positions: Array<AshbyJob>
+}
+
+const { positions } = Astro.props
+---
+
+<section>
+    <div class="container" id="positions">
+        <Section
+            subtitle="It's a"
+            subtitleAfter="Match"
+            baseline="We are looking for talented open-source enthusiasts working remotely from anywhere. Browse our open positions, and find a job you love."
+        >
+            <ul class="list-unstyled d-flex flex-column gap-3">
+                {
+                    positions.map((doc) => (
+                        <li data-usal="fade-l">
+                            <a
+                                class="d-flex align-items-center"
+                                href={`/careers/${doc.jobPostingIds[0]}-${slugify(doc.title)}`}
+                            >
+                                <div class="d-flex align-items-center gap-3 info-block">
+                                    <Image
+                                        src={emojiPeople}
+                                        alt="emoji_people"
+                                    />
+                                    <span>{doc.title}</span>
+                                    <span class="department-tag">
+                                        {doc.department?.name || doc.department?.externalName}
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3 arrow-block">
+                                    <Image
+                                        class="arrow-light"
+                                        src={arrowRight}
+                                        alt="arrow_right"
+                                    />
+                                    <Image
+                                        class="arrow-dark"
+                                        src={arrowRightBlack}
+                                        alt="arrow_right"
+                                    />
+                                </div>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </Section>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    section {
+        li {
+            a {
+                padding: 1.313rem 2rem;
+                border-radius: 0.5rem;
+                border: $block-border;
+                background-color: var(--ks-background-tertiary);
+                text-decoration: none;
+
+                .info-block {
+                    flex-grow: 1;
+
+                    span {
+                        color: var(--ks-content-primary);
+                        font-size: $h6-font-size;
+                        font-weight: 700;
+                    }
+                }
+
+                .arrow-block {
+                    .arrow-dark {
+                        display: none;
+
+                        :global(html.light) & {
+                            display: block;
+                        }
+                    }
+
+                    .arrow-light {
+                        display: block;
+
+                        :global(html.light) & {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

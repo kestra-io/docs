@@ -2,76 +2,92 @@
 export const prerender = false
 import { $fetchApi } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
-import BlueprintsHeader from "~/components/blueprints/Header.vue"
-import BlueprintsDetail from "~/components/blueprints/Detail.vue"
-import BlueprintsRelated from "~/components/blueprints/Related.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import Header from "~/components/blueprints/Header.astro"
+import Detail from "~/components/blueprints/Detail.vue"
+import Related from "~/components/blueprints/Related.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
 
 const { id } = Astro.params
 
-// Fetch blueprint data
-let pageData
-let relatedBlueprints = []
+let pageData: Blueprint
 
 try {
-    pageData = await $fetchApi(`/blueprints/${id}/versions/latest`)
+    pageData = await $fetchApi<Blueprint>(`/blueprints/${id}/versions/latest`)
 } catch (e) {
     return Astro.redirect("/404")
 }
 
-// Fetch related blueprints
+const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
+const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+
+let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
+
 if (pageData.tags && pageData.tags.length > 0) {
-    const data = await $fetchApi<{ results: Blueprint[] }>(
-        `/blueprints/versions/latest?tags=${pageData.tags}`,
-    )
-    if (data) {
-        relatedBlueprints = data.results
-            .filter((b) => b.id !== pageData.id) // Exclude current blueprint
-            .sort(() => Math.random() - 0.5) // Shuffle the results
-            .slice(0, 3) // Limit to 3 related blueprints
+    const selectedTagIds = pageData.tags.slice(0, 2)
+
+    for (const tagId of selectedTagIds) {
+        const tag = tags.find((t) => t.id === tagId)
+        if (!tag) continue
+
+        const data = await $fetchApi<{ results: Blueprint[] }>(
+            `/blueprints/versions/latest?tags=${tagId}&size=10`,
+        )
+
+        if (data && data.results.length > 0) {
+            const rowBlueprints = data.results
+                .filter((b) => b.id !== pageData.id)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 6)
+
+            if (rowBlueprints.length > 0) {
+                relatedRows.push({
+                    id: tagId,
+                    title: `More <span class="highlight">${tag.name}</span> Blueprints`,
+                    blueprints: rowBlueprints,
+                })
+            }
+        }
     }
 }
-
-// Parse markdown
-const flowMd = "```yaml\n" + pageData.flow + "\n```"
-
-// Fetch graph data
-const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
-
-// Fetch tags
-const tags = await $fetchApi(`/blueprints/versions/latest/tags`)
 
 const title = pageData.title
 const description = pageData.metaDescription
 ---
 
 <Layout title={title} description={description}>
-    <div>
-        <BlueprintsHeader client:only page={pageData} graph={graph} slug={id} />
-        <div class="container">
-            <BlueprintsDetail
-                client:visible
-                page={pageData}
-                description={pageData.description}
-                flow={flowMd}
+    <Header page={pageData} slug={id} tags={tags} />
+    <Detail
+        client:only
+        page={pageData}
+        description={pageData.description}
+        flow={pageData.flow}
+        graph={graph}
+    />
+    {
+        relatedRows.map((row) => (
+            <Related
+                id={row.id}
+                title={row.title}
+                relatedBlueprints={row.blueprints}
                 tags={tags}
             />
-            {
-                relatedBlueprints.length > 0 && (
-                    <BlueprintsRelated
-                        client:visible
-                        relatedBlueprints={relatedBlueprints}
-                        tags={tags}
-                    />
-                )
-            }
-            <LayoutFooterContact
-                client:visible
-                title="New to Kestra?"
-                subtitle="Use blueprints to kickstart your first workflows."
-                purpleButtonText="Get started with Kestra"
-                purpleButtonHref="/docs/quickstart#start-kestra"
-            />
-        </div>
-    </div>
+        ))
+    }
+    <SeeHow
+        cta={{
+            text: "Get started",
+            href: "/docs/quickstart#start-kestra",
+        }}
+    >
+        <Fragment slot="title">New to Kestra?</Fragment>
+        Use blueprints to kickstart your first workflows.
+    </SeeHow>
 </Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    :global(.content p) {
+        white-space: nowrap;
+        margin-bottom: 2rem;
+    }
+</style>

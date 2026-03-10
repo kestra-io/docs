@@ -1,29 +1,41 @@
 ---
 import Layout from "~/components/layout.astro"
-import CommunityHeader from "~/components/community/Header.astro"
-import CommunitySlack from "~/components/community/Slack.vue"
-import CommunitySection from "~/components/community/Community.vue"
-import CommunityGuidelines from "~/components/community/Guidelines.astro"
-import CommunityContributors from "~/components/community/Contributors.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.astro"
+export const prerender = false
+import Header from "~/components/community/Header.astro"
+import Slack from "~/components/common/Slack.astro"
+import Contributors from "~/components/community/Contributors.vue"
+import CommunityGrid from "~/components/community/CommunityGrid.vue"
+import Guidelines from "~/components/community/Guidelines.vue"
+
+import SeeHow from "~/components/common/SeeHow.astro"
+import seeHowImg from "~/components/community/assets/seehow.webp"
 
 const title = "Join a Thrilling Community of Data Enthusiasts"
 const description =
     "Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} headerTheme="lightHero">
     <div>
-        <CommunityHeader />
-        <CommunitySlack />
-        <CommunitySection client:idle />
-        <CommunityGuidelines />
-        <CommunityContributors client:idle />
-        <LayoutFooterContact
-            title="Getting started"
-            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Read the docs"
-            purpleButtonText="Get started!"
-        />
+        <Header />
+        <Slack />
+        <CommunityGrid client:idle />
+        <Guidelines client:load />
+        <Contributors client:idle />
+        <SeeHow 
+            imgSrc={seeHowImg}
+            cta={{ text: "Join us", href: "https://kestra.io/slack" }}
+        >
+            <Fragment slot="title">Join us on Slack</Fragment>
+            Join us to share ideas and best practices, get help with technical questions, and discuss with other developers.
+        </SeeHow>
     </div>
 </Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    :global(section.ping) {
+        border-color: var(--ks-border-primary) !important;
+    }
+</style>

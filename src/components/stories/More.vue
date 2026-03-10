@@ -21,7 +21,6 @@
 <script setup lang="ts">
     import Card from "./Card.vue"
     import Link from "~/components/common/Link.vue"
-    import type { Story } from "~/components/home/EnterpriseStories.vue"
 
     const props = defineProps<{
         related: {
@@ -39,13 +38,9 @@
             padding-top: 4rem;
             padding-bottom: 5rem;
         }
-        background: #f4f4f4 url("/stories/grid.png") no-repeat center;
+        background: var(--ks-background-secondary) url("/stories/grid.png") no-repeat center;
         background-size: cover;
-        border: 1px solid $white-1;
-
         h2 {
-            font-weight: 700;
-            font-size: 2rem;
             text-align: center;
             width: 100%;
             margin: 0 auto;
@@ -60,22 +55,20 @@
         align-items: center;
         justify-content: flex-end;
         margin-top: 2rem;
-
         .read-link {
             display: flex;
             align-items: center;
             gap: 0.3125rem;
-            color: $black-1;
+            color: var(--ks-content-link);
             font-weight: 700;
             font-size: 1rem;
-
             .arrow-icon {
                 transition: transform 0.3s ease;
             }
-
             &:hover .arrow-icon {
                 transform: translateX(2px);
             }
         }
     }
 </style>
+

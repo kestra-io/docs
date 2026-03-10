@@ -1,0 +1,397 @@
+---
+import { Icon } from "astro-icon/components"
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+import { $fetchApi } from "~/utils/fetch"
+import { type Plugin } from "@kestra-io/ui-libs"
+import { PLANS, getSections, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
+
+const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+const SECTIONS = getSections(totalPlugins)
+---
+
+<section class="compare-plan" data-host="self-hosted" id="comparison-table">
+    <div class="container">
+        <h2 data-usal="fade-r">Compare All Plans</h2>
+
+        <div class="table-wrapper">
+            <table class="plan-table">
+                <thead>
+                    <tr>
+                        <th class="col-feature"></th>
+                        {
+                            PLANS.map((plan, index) => (
+                                <th class="col-plan" data-usal={`zoomin delay-${index * 10}`}>
+                                    <span class="plan-name">{plan.name}</span>
+                                    {plan.button && (
+                                        <a
+                                            href={plan.button.href}
+                                            class={plan.button.class}
+                                        >
+                                            {plan.button.text}
+                                        </a>
+                                    )}
+                                </th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {
+                        SECTIONS.map((section) => (
+                            <>
+                                <tr class="section-row">
+                                    <td colspan="5">{section.title}</td>
+                                </tr>
+                                {section.rows.map((row) => (
+                                    <tr class="feature-row">
+                                        <td class="col-feature">
+                                            <span class="feature-label">
+                                                <span data-usal="fade-r">{row.feature}</span>
+                                                <span class="tooltip-container">
+                                                    <Icon
+                                                        name="mdi:information-slab-circle-outline"
+                                                        class="icon-info"
+                                                    />
+                                                    {row.description && (
+                                                        <span class="tooltip-content">
+                                                            <p class="mb-1">
+                                                                {
+                                                                    row
+                                                                        .description
+                                                                        .text
+                                                                }
+                                                            </p>
+                                                            <a
+                                                                href={
+                                                                    row
+                                                                        .description
+                                                                        .link
+                                                                }
+                                                            >
+                                                                Learn more
+                                                            </a>
+                                                        </span>
+                                                    )}
+                                                </span>
+                                            </span>
+                                        </td>
+                                        {row.values.map((val) => (
+                                            <td class="col-plan">
+                                                <Icon
+                                                    name={
+                                                        val === "check"
+                                                            ? "mdi:check-bold"
+                                                            : "mdi:close"
+                                                    }
+                                                    class={
+                                                        val === "check"
+                                                            ? "icon-check"
+                                                            : "icon-cross"
+                                                    }
+                                                />
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="support-plans-header">
+            <h2 id="support-plans" data-usal="fade-l">Support Plans</h2>
+            <p data-usal="fade-r delay-10">
+                All paid tiers <strong>include</strong> Standard Support by default.
+            </p>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="plan-table support-table">
+                <thead>
+                    <tr>
+                        <th class="col-feature"></th>
+                        {
+                            SUPPORT_PLANS.map((plan) => (
+                                <th class="col-plan">
+                                    <span class="plan-name">{plan}</span>
+                                </th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        SUPPORT_ROWS.map((row) => (
+                            <tr class="feature-row">
+                                <td class="col-feature" data-usal="fade-r">{row.feature}</td>
+                                {row.values.map((val) => (
+                                    <td class="col-plan">
+                                        {val === "check" ? (
+                                            <Icon
+                                                name="mdi:check-bold"
+                                                class="icon-check"
+                                            />
+                                        ) : (
+                                            val
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="support-action">
+            <a href="/demo" class="btn btn-primary" data-usal="zoomin">Contact us</a>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+
+    .compare-plan {
+        padding: 5rem 0 10rem;
+        background-color: var(--ks-background-primary);
+
+        @include media-breakpoint-down(lg) {
+            padding: 2rem 0 4rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+
+    .table-wrapper {
+        @include media-breakpoint-down(xxl) {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
+
+    .plan-table {
+        width: 100%;
+        min-width: 1080px;
+        border-collapse: collapse;
+        border-top: 1px solid var(--ks-border-primary);
+
+        thead {
+            position: sticky;
+            top: calc(62px + var(--announce-height));
+            z-index: 200;
+            background: var(--ks-background-primary);
+
+            th {
+                vertical-align: bottom;
+                padding: 2rem 0.75rem 1.25rem;
+                text-align: center;
+            }
+
+            .btn {
+                display: inline-block;
+                font-size: $font-size-sm;
+                padding: 0.5rem 1.25rem;
+                white-space: nowrap;
+            }
+        }
+
+        .col-feature {
+            min-width: 260px;
+            text-align: left;
+
+            @include media-breakpoint-up(xl) {
+                min-width: 346px;
+            }
+        }
+
+        .col-plan {
+            width: 233.5px;
+            text-align: center;
+
+            @include media-breakpoint-up(xl) {
+                min-width: 233.5px;
+            }
+        }
+
+        .plan-name {
+            display: block;
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            margin-bottom: 0.625rem;
+        }
+
+        .section-row td {
+            padding: 1rem;
+            font-size: $font-size-md;
+            font-weight: 700;
+            color: var(--ks-content-primary);
+            background-color: var(--ks-background-secondary);
+        }
+
+        .feature-row {
+            td {
+                padding: 1rem;
+                border-bottom: 1px solid var(--ks-border-primary);
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+            }
+
+            &:hover td {
+                background: var(--ks-background-purple-light);
+            }
+
+            .col-plan {
+                vertical-align: middle;
+            }
+
+            &:has(+ .section-row) td,
+            &:last-child td {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .feature-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.375rem;
+    }
+
+    .icon-check,
+    .icon-cross {
+        font-size: 1.5rem;
+    }
+
+    .icon-check {
+        color: var(--ks-icon-active);
+    }
+
+    .icon-cross,
+    .icon-info {
+        color: var(--ks-content-tertiary);
+    }
+
+    .icon-info {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .tooltip-container {
+        position: relative;
+        display: inline-flex;
+        cursor: pointer;
+
+        &:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .tooltip-content {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: 240px;
+        padding: 0.5rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        box-shadow: 0 10px 30px var(--ks-shadows-light);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.2s,
+            visibility 0.2s;
+        font-size: $font-size-xs;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            inset-inline: 0;
+            height: 15px;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-bottom-color: var(--ks-border-primary);
+        }
+
+        a {
+            color: var(--ks-content-link);
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .support-plans-header {
+        margin-top: 4rem;
+        h2 {
+            margin-bottom: 0.5rem;
+        }
+
+        #support-plans {
+            scroll-margin-top: 40px;
+        }
+        p {
+            color: var(--ks-content-primary);
+            margin: 0;
+        }
+    }
+
+    .support-table {
+        border-top: none;
+        thead {
+            background: var(--ks-background-secondary);
+            th {
+                padding: 1rem;
+            }
+        }
+
+        .plan-name {
+            margin-bottom: 0;
+        }
+
+        .col-plan {
+            width: 311px;
+            min-width: 260px;
+        }
+    }
+
+    .support-action {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        .btn {
+            width: 243px;
+            padding: 0.5rem 1.25rem;
+        }
+    }
+</style>
