@@ -80,4 +80,8 @@
     :deep(.bg-white) {
         background-color: var(--ks-background-body) !important;
     }
+
+    :deep(.text-color) {
+        color: var(--ks-content-primary) !important;
+    }
 </style>

@@ -144,10 +144,10 @@ const rows = [
             position: relative;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            overflow: hidden;
+            overflow: clip;
             padding-top: 50px;
             margin-top: -50px;
+            touch-action: pan-y;
 
             $mask: linear-gradient(
                 to right,
@@ -156,8 +156,10 @@ const rows = [
                 $black calc(100% - 100px),
                 transparent
             );
-            -webkit-mask-image: $mask;
             mask-image: $mask;
+            -webkit-mask-image: $mask;
+            pointer-events: none;
+            cursor: default;
 
             &::before,
             &::after {
@@ -168,7 +170,6 @@ const rows = [
                 width: 100px;
                 z-index: 20;
                 pointer-events: none;
-                backdrop-filter: blur(10px);
             }
 
             &::before {
@@ -209,6 +210,8 @@ const rows = [
                     display: flex;
                     gap: 10px;
                     width: max-content;
+                    will-change: transform;
+                    pointer-events: none;
                 }
 
                 &.row-1 .carousel-track {
@@ -233,6 +236,9 @@ const rows = [
                 align-items: center;
                 justify-content: center;
                 position: relative;
+                pointer-events: auto;
+                touch-action: pan-y;
+                overscroll-behavior-y: auto;
                 transition: all 0.2s ease;
 
                 @include media-breakpoint-down(sm) {
