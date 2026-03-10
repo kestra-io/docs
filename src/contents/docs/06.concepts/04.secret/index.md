@@ -1,5 +1,5 @@
 ---
-title: Secrets in Kestra – Secure Credentials for Flows
+title: Secrets in Kestra – Store Sensitive Values Securely
 description: Store sensitive information securely.
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/concepts.svg
@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Store sensitive information securely.
 
-## Secrets – secure credentials for Flows
+## Secrets – store sensitive values securely
 
 Secrets are a mechanism that allows you to securely store sensitive information, such as passwords and API keys, and retrieve them in your flows.
 
@@ -22,6 +22,19 @@ To retrieve secrets in a flow, use the `secret()` function, e.g., `"{{ secret('A
 Your flows often need to interact with external systems. To do that, they need to programmatically authenticate using passwords or API keys. Secrets help you securely store such variables and avoid hard-coding sensitive information within your workflow code.
 
 You can leverage the `secret()` function to retrieve sensitive variables within your flow code.
+
+## When should I use Secrets?
+
+Use **Secrets** for static sensitive values such as API keys, passwords, webhook URLs, certificates, and long-lived tokens.
+
+Use [Credentials](../../07.enterprise/03.auth/credentials/index.md) when Kestra needs to manage reusable server-to-server authentication for supported integrations, such as minting or refreshing short-lived access tokens at runtime.
+
+In short:
+
+- use **Secrets** for protected values
+- use **Credentials** for managed authentication objects
+
+Credentials can also reference Secrets for sensitive inputs such as client secrets, private keys, and certificates.
 
 ## Secrets in the Enterprise Edition
 
