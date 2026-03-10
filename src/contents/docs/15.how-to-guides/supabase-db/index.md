@@ -9,8 +9,6 @@ description: Learn how to connect your Supabase Database to Kestra workflows usi
 
 Connect your Supabase Database to your workflows using the PostgreSQL plugin.
 
-## Connect Supabase Database to Kestra
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/DZcOlumKrtc?si=48PCtEOZwSgehiZ6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

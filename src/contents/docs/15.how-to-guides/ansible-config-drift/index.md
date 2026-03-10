@@ -7,8 +7,6 @@ description: Detect configuration drift across your infrastructure using Ansible
 
 Keeps configs consistent and surfaces drift without manual checks with Ansible and Kestra.
 
-## Detect Ansible Config Drift with Kestra
-
 Use Ansible to enforce a required environment variable across multiple hosts and have Kestra alert you in Slack when a change occurs.
 
 ## Files to store as Namespace Files

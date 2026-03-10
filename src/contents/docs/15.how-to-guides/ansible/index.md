@@ -7,8 +7,6 @@ description: Use Ansible playbooks orchestrated by Kestra to audit machine resou
 
 Run Ansible playbooks from Kestra and coordinate downstream infrastructure tasks.
 
-## Check Machine Resources and Tool Versions with Ansible and Kestra
-
 Ansible is an agentless automation tool that uses YAML playbooks to describe desired state and apply it over SSH or APIs. Teams rely on it to install software, manage configs, update systems, and provision cloud infrastructure.
 
 ## System report playbook (cross-platform)
