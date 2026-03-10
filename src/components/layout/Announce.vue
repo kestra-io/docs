@@ -12,20 +12,18 @@
                 >
                     <Slide
                         v-for="(slide, index) in content"
-                        :key="slide"
-                        v-bind:key="slide?.id"
+                        :key="index"
                     >
-                        <p class="d-flex justify-content-center align-items-center" @click="slideTo(index)">
+                        <a
+                            class="slide-content d-flex justify-content-center align-items-center text-decoration-none"
+                            :href="slide.href"
+                            @click="slideTo(index)"
+                        >
                             <span class="d-inline-block text-truncate">
                                 {{ slide.text }}
                             </span>
-                            <a
-                                class="d-inline-block text-nowrap"
-                                :href="slide.href"
-                            >
-                                <ArrowRight />
-                            </a>
-                        </p>
+                            <ArrowRight class="d-inline-block text-nowrap" />
+                        </a>
                     </Slide>
                 </Carousel>
             </div>
@@ -112,47 +110,34 @@
             @include media-breakpoint-down(sm) {
                 padding-inline: calc($spacer / 2);
             }
-            a {
-                text-decoration: none;
-                color: $white;
-                font-weight: 700;
-                margin-left: calc($spacer / 2);
-                display: flex;
-                align-items: center;
-
-                :deep(.material-design-icon) {
-                    bottom: 0;
-                    transition: transform 0.2s ease-in-out;
-                }
-
-                &:hover {
-                    :deep(svg) {
-                        transform: scaleX(1.15);
-                        transform-origin: left;
-                        color: var(--ks-content-link);
-                    }
-                }
-            }
-
-            &:hover {
-                a :deep(.material-design-icon) {
-                    transform: scaleX(1.15);
-                    transform-origin: left;
-                }
-            }
-            p {
+            .slide-content {
+                text-decoration: none !important;
                 margin-bottom: 0;
                 font-size: 0.875rem;
                 font-weight: 400 !important;
                 line-height: 18px;
                 width: 100%;
                 padding-inline: $spacer;
-                
+                color: $white;
+
                 .text-truncate {
                     color: $white;
                     min-width: 0;
                     flex-shrink: 1;
                     font-weight: 600;
+                }
+
+                :deep(.material-design-icon) {
+                    bottom: 0;
+                    transition: transform 0.2s ease-in-out;
+                    margin-left: calc($spacer / 2);
+                }
+
+                &:hover {
+                    :deep(.material-design-icon) {
+                        transform: scaleX(1.15);
+                        transform-origin: left;
+                    }
                 }
             }
         }
