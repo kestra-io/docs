@@ -9,8 +9,6 @@ topics:
 
 Scale your codebase using Terraform to template and define flows
 
-## Leverage Terraform for flow modularity
-
 This article will show you how to leverage terraform in your Kestra codebase and its powerful templating features brought by HCL (Hashicorp Configuration Language).
 
 In order to make your codebase easy to use for users unfamiliar with Kestra syntax, you may want to encapsulate most of the logic and DSL (Domain-specific programming language) into [Terraform modules](https://developer.hashicorp.com/terraform/language/modules).

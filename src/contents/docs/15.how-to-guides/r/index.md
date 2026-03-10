@@ -8,8 +8,6 @@ topics:
 
 Run R code directly inside of your Flows and generate outputs.
 
-## Run R inside of your Flows
-
 R is essential for statistical analysis, visualization, and data manipulation. With Kestra, you can effortlessly automate data ingestion, conduct complex statistical analysis, and handle real-time data processing. Kestra's robust orchestration capabilities ensure that your R scripts run smoothly and efficiently, streamlining your data-driven projects.
 
 This guide is going to walk you through how to get R running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.

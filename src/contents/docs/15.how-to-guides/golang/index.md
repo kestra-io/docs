@@ -9,8 +9,6 @@ description: Run Go code directly within Kestra flows for high-performance scrip
 
 Run Go code directly inside your Flows and generate outputs.
 
-## Run Go inside of your Flows
-
 <div class="video-container">
     <iframe src="https://youtube.com/embed/flGQZeP1MmA" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

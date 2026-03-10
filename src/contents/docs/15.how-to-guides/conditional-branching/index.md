@@ -9,8 +9,6 @@ description: Master conditional branching in Kestra workflows using the Switch t
 
 How to use the Switch task to branch the flow based on a value.
 
-## Conditional Branching
-
 Conditional branching is a process in which the execution of a task is directed along different paths based on specific values. In a flow, it allows for decision-making, where different tasks are executed depending on the value provided.
 
 In this guide, you'll learn how to use Kestra's `Switch` task to control your flow based on a value passed. Depending on the value passed in the `Switch` task, the flow will branch to different task `cases` to execute a specific task. If there is no matching value, Kestra will use the `defaults` branch.

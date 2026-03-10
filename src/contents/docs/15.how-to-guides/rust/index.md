@@ -9,8 +9,6 @@ description: Execute Rust code directly within your Kestra flows using Docker to
 
 Run Rust code directly inside of your Flows and generate outputs.
 
-## Run Rust inside of your Flows
-
 Rust has jumped in popularity over the past few years, mainly due to its performance and reliability in production settings. Compared to Python, Rust is a great choice for performance-critical workloads so might be a good choice to use in your flows.
 
 This guide is going to walk you through how to get Rust running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.

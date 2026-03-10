@@ -10,8 +10,6 @@ topics:
 
 Clone every repository in the `kestra-io` GitHub organization, zip each repo, and upload the archives to Google Cloud Storage (GCS) for safekeeping.
 
-## Test GitHub Repository Backups with Kestra Playground
-
 ---
 
 ## Why run this backup?

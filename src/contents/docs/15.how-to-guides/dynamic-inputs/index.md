@@ -9,8 +9,6 @@ description: Create dynamic dropdown menus for flow inputs that populate from ex
 
 Support dynamic dropdown for inputs based on data from external source.
 
-## Dynamic Dropdown for Inputs
-
 In this guide, we show how you can create a dynamic dropdown list for inputs. The dropdown retrieves the values from an external source. It is possible to do so by storing the values in the [KV store](../../06.concepts/05.kv-store/index.md), and also to directly integrate the external source with the HTTP Pebble function, `http()`.
 
 ## Update KV store on schedule
