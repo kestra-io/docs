@@ -9,8 +9,6 @@ description: Best practices for configuring retries, restarts, and replays in su
 
 How to configure your flows so that failed subflow executions resume correctly without rerunning successful tasks.
 
-## Managing retries, restarts and replays with subflow executions
-
 ---
 
 When working with subflows, it’s important to understand the difference between retries at the **Subflow task level** and retries at the **flow level** within the subflow. This guide explains how to manage retries, restarts, and replays in subflow executions to avoid unnecessary re-execution of completed tasks.

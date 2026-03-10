@@ -10,8 +10,6 @@ description: Synchronize Kestra flows from a local directory to your development
 
 Sync Flows from a local directory.
 
-## Local Flow Synchronization
-
 How to synchronize flows from a local directory on a local development instance.
 
 <div class="video-container">

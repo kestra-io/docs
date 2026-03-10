@@ -9,8 +9,6 @@ description: Connect your serverless Neon PostgreSQL database to Kestra workflow
 
 Connect your Neon serverless database to your workflows using the PostgreSQL plugin.
 
-## Connect Neon Database to Kestra
-
 Neon is an open-source database company whose mission is to take everything that developers love about Postgres — reliability, performance, extensibility — and deliver it as a serverless product.
 
 To get started, make sure you have a [Neon account](https://neon.tech/home) set up and an [installation of Kestra](../../02.installation/index.mdx) running.

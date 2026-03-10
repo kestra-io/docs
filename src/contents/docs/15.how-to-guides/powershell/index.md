@@ -8,8 +8,6 @@ topics:
 
 Run PowerShell code inside of your flow.
 
-## Run Powershell inside of your Flows
-
 Powershell is commonly used for automating the management of systems and resources. With Kestra, you can effortlessly automate builds and tests for production systems, as well as manage cloud configurations and resources. Kestra's robust orchestration capabilities ensure that your Powershell scripts run smoothly and efficiently, streamlining your infrastructure.
 
 This guide is going to walk you through how to get Powershell running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.

@@ -12,8 +12,6 @@ description: Automate the validation and deployment of your Kestra flows using G
 
 How to use GitHub Actions to automatically validate and deploy your flows to Kestra.
 
-## Validate and Deploy your Flows with GitHub Actions
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4MqtD9VtGVs?si=eMqBQFumZG9P4OHb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
