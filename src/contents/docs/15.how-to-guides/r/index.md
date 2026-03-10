@@ -1,22 +1,22 @@
 ---
-title: Run R inside of your Flows
+title: Run R Inside Your Flows
 icon: /src/contents/docs/icons/r.svg
 stage: Getting Started
 topics:
   - Scripting
 ---
 
-Run R code directly inside of your Flows and generate outputs.
+Run R code directly in your flows and generate outputs.
 
 R is essential for statistical analysis, visualization, and data manipulation. With Kestra, you can effortlessly automate data ingestion, conduct complex statistical analysis, and handle real-time data processing. Kestra's robust orchestration capabilities ensure that your R scripts run smoothly and efficiently, streamlining your data-driven projects.
 
-This guide is going to walk you through how to get R running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+This guide is going to walk you through how to get R running in a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-Kestra has an official plugin for R allowing you to execute R code inside of a flow by either writing your R code inline or by executing an `.R` file. You can get outputs and metrics from your R code too.
+Kestra has an official plugin for R allowing you to execute R code in a flow by either writing your R code inline or by executing an `.R` file. You can get outputs and metrics from your R code too.
 
 ## Scripts
 
-If you want to write a short amount of R code to perform a task, you can use the `io.kestra.plugin.scripts.r.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
+If you want to write a short amount of R code to perform a task, you can use the `io.kestra.plugin.scripts.r.Script` type to write it directly in your flow. This allows you to keep everything in one place.
 
 ```yaml
 id: r_script

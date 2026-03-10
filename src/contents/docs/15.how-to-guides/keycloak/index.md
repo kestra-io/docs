@@ -1,5 +1,5 @@
 ---
-title: Configure KeyCloak SSO in Kestra
+title: Configure Keycloak SSO in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,15 +7,15 @@ topics:
 editions: ["EE"]
 ---
 
-Setup KeyCloak SSO to manage authentication for users.
+Set up Keycloak SSO to manage authentication for users.
 
-If you don't have a KeyCloak server already running, you can use a managed service like [Cloud IAM](https://app.cloud-iam.com).
+If you don't have a Keycloak server already running, you can use a managed service like [Cloud IAM](https://app.cloud-iam.com).
 
-You can follow the steps described [here](https://documentation.cloud-iam.com/get-started/complete-tutorial.html) to deploy a managed KeyCloak cluster for free.
+You can follow the steps described [here](https://documentation.cloud-iam.com/get-started/complete-tutorial.html) to deploy a managed Keycloak cluster for free.
 
-## Configure KeyCloak client
+## Configure Keycloak client
 
-Once in KeyCloak, you would need to create a client:
+Once in Keycloak, you need to create a client:
 
 ![alt text](./client1.png)
 ![alt text](./client2.png)
@@ -42,7 +42,7 @@ micronaut:
         get-allowed: true
 ```
 
-You can retrieve `clientId` and `clientSecret` via KeyCloak user interface
+You can retrieve `clientId` and `clientSecret` via the Keycloak user interface.
 
 ![alt text](./clientId.png)
 ![alt text](./clientSecret.png)
@@ -65,6 +65,6 @@ kestra:
           - DELETE
 ```
 
-> Note: depending of the KeyCloak configuration you might want to tune the issuer url.
+> Note: Depending on the Keycloak configuration, you might want to tune the issuer URL.
 
 For more configuration details, refer to the [Keycloak OIDC configuration guide](https://guides.micronaut.io/latest/micronaut-oauth2-keycloak-gradle-java.html).

@@ -1,5 +1,5 @@
 ---
-title: Migrate from Shipyard
+title: Migrate from Shipyard to Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

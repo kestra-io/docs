@@ -69,11 +69,11 @@ tasks:
     dryRun: false
 ```
 
-You should see the same files from the earlier log now inside of Kestra:
+You should see the same files from the earlier log now in Kestra:
 
 ![git2](./git2.png)
 
-We can also see a full list inside of the Outputs tab too:
+We can also see a full list in the Outputs tab too:
 
 ![git3](./git3.png)
 

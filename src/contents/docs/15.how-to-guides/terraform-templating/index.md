@@ -1,5 +1,5 @@
 ---
-title: Leverage Terraform for flow modularity
+title: Use Terraform for Flow Modularity
 icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:

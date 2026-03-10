@@ -1,5 +1,5 @@
 ---
-title: Synchronous Executions API
+title: Use the Synchronous Executions API
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

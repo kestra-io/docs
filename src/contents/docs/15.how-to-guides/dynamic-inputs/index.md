@@ -1,5 +1,5 @@
 ---
-title: Dynamic Dropdown for Inputs
+title: Create a Dynamic Dropdown for Inputs
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

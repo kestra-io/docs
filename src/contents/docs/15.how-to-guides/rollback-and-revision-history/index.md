@@ -1,5 +1,5 @@
 ---
-title: Revision History & Rollback
+title: Use Revision History and Rollback in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

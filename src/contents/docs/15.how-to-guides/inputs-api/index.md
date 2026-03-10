@@ -1,5 +1,5 @@
 ---
-title: Pass Inputs via an API call
+title: Pass Inputs via an API Call
 icon: /src/contents/docs/icons/api.svg
 stage: Getting Started
 topics:

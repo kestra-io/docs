@@ -1,5 +1,5 @@
 ---
-title: Using SQLMesh to run dbt Projects
+title: Use SQLMesh to Run dbt Projects
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

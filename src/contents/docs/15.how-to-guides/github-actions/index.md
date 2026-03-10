@@ -1,5 +1,5 @@
 ---
-title: Validate and Deploy your Flows with GitHub Actions
+title: Validate and Deploy Your Flows with GitHub Actions
 icon: /src/contents/docs/icons/github.svg
 stage: Intermediate
 topics:
@@ -18,7 +18,7 @@ How to use GitHub Actions to automatically validate and deploy your flows to Kes
 
 ---
 
-If you're version controlling your Flows inside of a Git repository, it can be useful to automatically validate that they're in the correct format before merging into your `main` branch. On top of that, you can automatically deploy your flows in your `main` branch to your Kestra instance.
+If you're version controlling your flows in a Git repository, it can be useful to automatically validate that they're in the correct format before merging into your `main` branch. On top of that, you can automatically deploy your flows in your `main` branch to your Kestra instance.
 
 There are three GitHub Actions available:
 - [Validate Flows](https://github.com/kestra-io/github-actions/tree/main/validate-flows) - Validate your flows before deploying anything.
@@ -27,12 +27,12 @@ There are three GitHub Actions available:
 
 ## Validate Your Flows
 
-Using the Validate Flows Action, we can set up our workflow to check all flows inside of the `directory` specified when a commit is pushed to `main` or a Pull Request is opened for the `main` branch. For the full list of inputs, check out the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#validate-flows-action-inputs).
+Using the Validate Flows Action, we can set up our workflow to check all flows in the specified `directory` when a commit is pushed to `main` or a Pull Request is opened for the `main` branch. For the full list of inputs, check out the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#validate-flows-action-inputs).
 
 In the example below:
 1. Triggers when a commit is pushed to `main` or when a PR is opened for the `main` branch.
 2. Checks out the repository so we can access the files in later steps.
-3. Uses the Validate Flows Action to check all the flows inside of the `./kestra/flows` directory.
+3. Uses the Validate Flows Action to check all the flows in the `./kestra/flows` directory.
 
 ```yaml
 name: Kestra CI/CD
@@ -66,7 +66,7 @@ If you want to deploy flows to multiple namespaces, you can add multiple steps u
 In the example below:
 1. Triggers when commits are pushed to `main`.
 2. Checks out the repository so we can access the files in later steps.
-3. Deploys flows inside of `kestra/flows` to the `company.team` namespace in the Kestra instance.
+3. Deploys flows from `kestra/flows` to the `company.team` namespace in the Kestra instance.
 
 ```yaml
 name: Kestra CI/CD
