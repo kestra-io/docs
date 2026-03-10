@@ -1,12 +1,14 @@
+<!-- TODO: Remove this component once used BlueprintCard.astro everywhere -->
 <template>
     <a :href="href" class="blueprint">
         <h6 class="title">
             {{ capitalizedTitle }}
         </h6>
         <div class="task-icons">
-            <div class="icon " v-for="n in blueprint.includedTasks" :key="n">
+            <div class="icon" v-for="n in visibleTasks" :key="n">
                 <TaskIcon :cls="n" />
             </div>
+            <span v-if="extraCount > 0" class="extra-count">+{{ extraCount }}</span>
         </div>
         <div class="footer">
             <hr />
@@ -22,34 +24,42 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
+    import { computed } from "vue"
+    import TaskIcon from "~/components/common/TaskIcon.vue"
 
-const props = withDefaults(
-    defineProps<{
-        blueprint: Blueprint
-        tags?: Array<any>
-        href: string
-    }>(),
-    {
-        tags: () => [],
-    },
-)
+    const props = withDefaults(
+        defineProps<{
+            blueprint: Blueprint
+            tags?: Array<any>
+            href: string
+        }>(),
+        {
+            tags: () => [],
+        },
+    )
 
-const capitalizedTitle = computed(() =>
-    props.blueprint?.title
-        ? props.blueprint.title.charAt(0).toUpperCase() + props.blueprint.title.slice(1)
-        : "",
-)
+    const capitalizedTitle = computed(() =>
+        props.blueprint?.title
+            ? props.blueprint.title.charAt(0).toUpperCase() + props.blueprint.title.slice(1)
+            : "",
+    )
 
-const tagsList = computed(() => {
-    if (props.tags?.length) {
-        return props.tags
-            .filter((t: any) => props.blueprint.tags?.includes(t.id))
-            .map((t: any) => t.name)
-    }
-    return props.blueprint.tags ?? []
-})
+    const MAX_ICONS = 6
+    const visibleTasks = computed(() => 
+        (props.blueprint.includedTasks ?? []).slice(0, MAX_ICONS)
+    )
+    const extraCount = computed(() => 
+        Math.max(0, (props.blueprint.includedTasks ?? []).length - MAX_ICONS)
+    )
+
+    const tagsList = computed(() => {
+        if (props.tags?.length) {
+            return props.tags
+                .filter((t: any) => props.blueprint.tags?.includes(t.id))
+                .map((t: any) => t.name)
+        }
+        return props.blueprint.tags ?? []
+    })
 </script>
 
 <style scoped lang="scss">
@@ -74,7 +84,6 @@ const tagsList = computed(() => {
         display: flex;
         gap: 0.5rem;
         align-items: center;
-        overflow: hidden;
         margin-bottom: 1rem;
         .icon {
             border-radius: 4px;
@@ -89,6 +98,12 @@ const tagsList = computed(() => {
                 width: 24px;
                 height: 24px;
             }
+        }
+        .extra-count {
+            flex-shrink: 0;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            color: var(--ks-content-secondary);
         }
     }
     .title {
@@ -128,7 +143,7 @@ const tagsList = computed(() => {
         white-space: nowrap;
     }
     .category-tag {
-        background: var(--ks-backgroung-tag-category);
+        background: var(--ks-background-tag-category);
         color: var(--ks-content-tag-category);
         padding: 0.125rem 0.5rem;
         border-radius: 40px;

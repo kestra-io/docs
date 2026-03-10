@@ -152,7 +152,7 @@ const CLOUD_PLAN = {
 }
 ---
 
-<Squared client:load>
+<Squared>
     <div class="content">
         <h1 class="title" data-usal="fade-r">Kestra Editions & Plans</h1>
         <p class="description" data-usal="fade-l">
@@ -377,10 +377,7 @@ const CLOUD_PLAN = {
 
                 &.open-source {
                     background: var(--ks-background-secondary);
-                    @include media-breakpoint-up(xl) {
-                        max-height: 559px;
-                        align-self: flex-start;
-                    }
+                    
                 }
 
                 &.enterprise {
@@ -396,6 +393,9 @@ const CLOUD_PLAN = {
                 }
 
                 .card-header {
+                      @include media-breakpoint-up(xl) {
+    min-height: 120px; 
+  }
                     .plan-subtitle {
                         font-size: $font-size-xs;
                         color: var(--ks-content-alert-info);

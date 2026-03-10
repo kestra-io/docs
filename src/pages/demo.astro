@@ -1,51 +1,163 @@
 ---
 import Layout from "~/components/layout.astro"
-import Headers from "~/components/demo/Headers.vue"
-import Logos from "~/components/layout/Logos.vue"
-import BusinessStats from "~/components/layout/BusinessStats.astro"
+import Meeting from "~/components/demo/Meeting.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import headerBackground from "../components/demo/assets/header-background.png"
+import Logos from "~/components/demo/Logos.astro"
+import AppleLogo from "~/components/demo/assets/logos/apple.svg?raw"
 
-import LM from "~/assets/enterprise/leroymerlin.svg?raw"
-import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
+const title = "Book a Demo"
+const description = "Discuss your Orchestration Strategy"
 
-const title = "Ready to See Kestra in Action?"
-const description =
-    "Connect with one of our Product Specialist to get the best out of our product and its value proposition"
-
-const BUSINESS_ITEMS: Array<{
-    type: "stat" | "quote" | "author"
-    value?: string
-    label?: string
-    icon?: any
-    text?: string
-    name?: string
-    role?: string
-    logo?: any
-    class?: string
-}> = [
+const quotes = [
     {
-        type: "stat",
-        icon: { src: ArrowUp },
-        value: "900%",
-        label: "in data production",
-    },
-    {
-        type: "quote",
-        text: "“What was delivered in weeks is now completed <br /> in days with full control for a great partnership.”",
-    },
-    {
-        type: "author",
-        name: "Julien Henrion",
-        role: "Head of Data Engineering",
-        logo: { src: LM, alt: "Leroy Merlin" },
-        class: "align-items-start",
+        quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+        author: "Senior Engineering Manager @ <strong>Apple</strong> (ML team)",
+        smallLogoSvg: AppleLogo,
     },
 ]
 ---
 
 <Layout title={title} description={description}>
-    <div>
-        <Headers client:load routePath="/demo" />
-        <Logos client:load class="mt-5" />
-        <BusinessStats items={BUSINESS_ITEMS} />
-    </div>
+    <section class="demo">
+        <div class="demo-left">
+            <h1>Discuss your <span>Orchestration</span> Strategy</h1>
+            <p class="subtitle">Your Architecture is Unique.</p>
+            <p class="subtitle">Your Challenges are Specific.</p>
+            <ul class="list">
+                <li>
+                    <b>Your Pains:</b> Are you struggling with unreliable pipelines,
+                    legacy fatigue, or lack of visibility?
+                </li>
+                <li>
+                    <b>Your Needs:</b> We’ll discuss your requirements for security,
+                    scale, and language agnostic support.
+                </li>
+                <li>
+                    <b>The Resolution:</b> See exactly how Kestra’s architecture resolves
+                    these friction points in your stack.
+                </li>
+            </ul>
+            <p class="shadow-card">
+                Get a clear understanding of how Kestra fits your platform and a
+                roadmap to solve your current orchestration headaches.
+            </p>
+        </div>
+        <Meeting
+            routePath="/demo"
+            headerBackground={headerBackground}
+            client:idle
+        />
+    </section>
+    <Logos />
+    <Quotes quotes={quotes} />
 </Layout>
+
+<style lang="scss">
+    @import "~/assets/styles/variable";
+    .demo {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        font-size: 0.9rem;
+        overflow: visible;
+        --background-grid-cell-size: 72px;
+        --background-grid-line-color: var(--ks-border-primary);
+        // a grey square grid of 72ps with 1px lines and no spacing.
+        background-image:
+            //only show the top right corner of the grid with a radial gradient
+
+            radial-gradient(
+                farthest-corner at top center,
+                transparent 0.5%,
+                var(--ks-background-primary) 40%
+            ),
+            linear-gradient(
+                to right,
+                transparent calc(var(--background-grid-cell-size) / 2 - 1px),
+                var(--background-grid-line-color)
+                    calc(var(--background-grid-cell-size) / 2 - 1px),
+                var(--background-grid-line-color)
+                    calc(var(--background-grid-cell-size) / 2),
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--background-grid-line-color) 1px,
+                transparent 1px
+            );
+
+        background-size:
+            150% 100%,
+            var(--background-grid-cell-size) var(--background-grid-cell-size),
+            var(--background-grid-cell-size) var(--background-grid-cell-size);
+        background-repeat: no-repeat, repeat, repeat;
+        background-position:
+            center top,
+            50% 0,
+            100% 0;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+
+    h1 {
+        margin-bottom: 2rem;
+        font-size: 3rem;
+        span {
+            // force a return before this element and not after it
+            &:before {
+                content: "\A";
+                white-space: pre;
+            }
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
+    .demo-left {
+        flex: 1;
+        padding: 2rem;
+        @include media-breakpoint-up(lg) {
+            padding: 5%;
+            border-right: 1px solid var(--ks-border-primary);
+        }
+        @include media-breakpoint-up(xl) {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            > * {
+                width: 95%;
+            }
+        }
+        @include media-breakpoint-up(xxl) {
+            > * {
+                max-width: 600px;
+            }
+        }
+    }
+
+    .subtitle {
+        font-size: 1.25rem;
+        margin: 0;
+    }
+
+    .list {
+        font-size: 1.15rem;
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        margin: 2rem 0;
+        li {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    .shadow-card {
+        background-color: var(--ks-background-primary);
+        color: var(--ks-content-primary);
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        font-size: 1.15rem;
+        box-shadow: 0px 0px 15px var(--ks-shadows-light);
+    }
+</style>

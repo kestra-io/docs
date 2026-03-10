@@ -10,8 +10,11 @@ import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
 import LayoutFooter from "~/components/layout/Footer.vue"
 import LayoutFixed from "~/components/layout/Fixed.vue"
+import Announce from "~/components/layout/Announce.vue"
 // import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
+import { getRandomAiQuestions } from "~/utils/aiQuestions"
+import { getCollection } from "astro:content"
 
 interface Props {
     title?: string
@@ -33,7 +36,7 @@ const slug = Astro.routePattern
 
 const title = props.title
     ? props.title + " | Kestra"
-    : "Kestra, Open Source Declarative Data Orchestration"
+    : "Kestra, Open Source Declarative Orchestration Platform"
 const description =
     props.description ??
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
@@ -53,19 +56,28 @@ const query = new URLSearchParams(
         ),
 )
 
-const currentUrlNoQS = new URL(currentUrl.toString().replace(currentUrl.search, ""))
+const currentUrlNoQS = new URL(
+    currentUrl.toString().replace(currentUrl.search, ""),
+)
 const canonicalUrl = new URL(
     currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
     Astro.site,
 )
+
+const randomAiQuestions = getRandomAiQuestions()
+const annonces = (await getCollection("annonces"))
+    .map((a) => a.data)
+    .filter(a => a.id !== 0)
+
+const hasAnnounce = annonces.length > 0
 ---
 
 <html lang="en">
     <head>
         <script is:inline>
-            (function() {
-                document.documentElement.classList.add("dark");
-            })();
+            ;(function () {
+                document.documentElement.classList.add("dark")
+            })()
         </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -160,7 +172,7 @@ const canonicalUrl = new URL(
         <slot name="head" />
 
         <ClientRouter />
-        <LoadingIndicator color="#8405FF" threshold={0} />
+        <LoadingIndicator color="#a796ff" threshold={0} />
 
         <script src="../scripts/analytics.js"></script>
         <script src="../scripts/bootstrap.js"></script>
@@ -169,14 +181,19 @@ const canonicalUrl = new URL(
         <script src="../scripts/theme.ts"></script>
     </head>
     <body
-        data-header-theme={props.headerTheme === "darkHeader" ? "darkBg" : props.headerTheme === "lightHero" ? "dark" : undefined}
-        style={props.headerBg ? `--header-dark-bg: ${props.headerBg}` : undefined}
+        data-header-theme={props.headerTheme === "darkHeader"
+            ? "darkBg"
+            : props.headerTheme === "lightHero"
+              ? "dark"
+              : undefined}
+        style={props.headerBg
+            ? `--header-dark-bg: ${props.headerBg}`
+            : undefined}
+        class={hasAnnounce ? 'has-annonces' : '' }
     >
-        <Header
-            client:load
-            transition:persist
-        />
-        <Search client:load />
+        <Header client:load transition:persist />
+        <Search randomAiQuestions={randomAiQuestions} client:load />
+        {hasAnnounce ? <Announce client:load transition:persist content={annonces} /> : '' }
         <main>
             <slot />
         </main>

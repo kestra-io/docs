@@ -1,54 +1,125 @@
 ---
 export const prerender = false
 
-import Layout from "~/components/layout.astro"
-import Lists from "~/components/blueprints/Lists.vue"
-import FooterContact from "~/components/layout/FooterContact.astro"
 import { $fetchApi } from "~/utils/fetch"
+import Layout from "~/components/layout.astro"
+import Faq from "~/components/common/Faq.vue"
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import BlueprintLists from "~/components/blueprints/BlueprintLists.vue"
+import BlueprintSearch from "~/components/blueprints/BlueprintSearch.vue"
 
-const allTags = await $fetchApi<BlueprintTag[]>(
-    `/blueprints/versions/latest/tags`,
-)
 const page = Astro.url.searchParams.get("page") ?? 1
 const size = Astro.url.searchParams.get("size") ?? 24
-const tagsSelected = Astro.url.searchParams.get("tags") ?? null
 const q = Astro.url.searchParams.get("q") ?? undefined
+const sort = Astro.url.searchParams.get("sort") ?? "A-Z"
+const tagsSelected = Astro.url.searchParams.get("tags") ?? undefined
+
+const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
 
 const tagsForFilter = tagsSelected
-    ? tagsSelected
-          ?.split(",")
-          .map((t) => allTags.find((tag) => tag.name === t)?.id)
-          .filter(Boolean)
-    : null
+    ? tags.find((tag) => tag.name === tagsSelected)?.id
+    : undefined
 
-const { results: blueprints, total } = await $fetchApi<{
+const { results: blueprintsData = [], total = 0 } = (await $fetchApi<{
     results: Blueprint[]
     total: number
 }>(
     `/blueprints/versions/latest?size=${size}&page=${page}` +
         (tagsForFilter ? `&tags=${tagsForFilter}` : "") +
         (q ? `&q=${encodeURIComponent(q)}` : ""),
-)
+)) ?? { results: [], total: 0 }
+
+const blueprints = blueprintsData.sort((a, b) => {
+    if (sort === "A-Z") {
+        return a.title.localeCompare(b.title)
+    } else if (sort === "Z-A") {
+        return b.title.localeCompare(a.title)
+    }
+    return 0
+})
+
+const ITEMS = [
+    {
+        question: "What is a Kestra blueprint?",
+        answer: "A blueprint is a pre-built, ready-to-use workflow template that helps you get started quickly. Each blueprint demonstrates a real-world use case with fully configured tasks, triggers, and integrations — so you can import it and adapt it to your needs.",
+    },
+    {
+        question: "How do I use a blueprint?",
+        answer: "Browse or search for a blueprint that matches your use case. Click on it to view the full workflow definition, then copy it into your Kestra instance. You can use it as-is or customize the tasks, inputs, and triggers to fit your requirements.",
+    },
+    {
+        question: "Can I modify a blueprint after importing it?",
+        answer: "Yes. Blueprints are standard Kestra workflows written in YAML. Once imported, you have full control to add, remove, or reconfigure tasks, change scheduling, update credentials, or extend the flow with additional logic.",
+    },
+    {
+        question: "What categories of blueprints are available?",
+        answer: "Blueprints are organized into categories such as Getting Started, Core, Infrastructure, Data, AI, Business, and Cloud. Each category groups common patterns and integrations to help you find the right starting point.",
+    },
+    {
+        question: "Are blueprints maintained and updated?",
+        answer: "Yes. Blueprints are regularly updated to reflect new plugins, best practices, and platform features. The Kestra team and community continuously contribute new blueprints to cover emerging use cases.",
+    },
+    {
+        question: "Can I contribute my own blueprint?",
+        answer: "Yes. If you've built a workflow that solves a common problem, you can contribute it as a blueprint. Community contributions help expand the library and make it easier for others to get started with similar use cases.",
+    },
+]
+
 const title = "Blueprints"
 const description = "Get started with our library of workflows ready to use"
 ---
 
 <Layout title={title} description={description}>
-    <Lists
-        tags={allTags}
-        tagsSelected={tagsSelected ? tagsSelected.split(",") : ["All tags"]}
+    <BlueprintLists
+        {q}
+        {tags}
+        {total}
+        {blueprints}
+        sortBy={sort}
         currentPage={Number(page)}
         itemsPerPage={Number(size)}
-        {q}
-        {blueprints}
-        {total}
         currentUrl={Astro.request.url}
-        transition:persist
+        {tagsSelected}
         client:idle
-    />
-    <FooterContact
-        title="New to Kestra?"
-        subtitle="Use blueprints to kickstart your first workflows."
-        dark={null}
-    />
+    >
+        <BlueprintSearch {q} slot="search" client:idle />
+        <div class="row g-3">
+            {
+                blueprints.length > 0 ? (
+                    blueprints.map((blueprint) => (
+                        <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                            <BlueprintCard
+                                {blueprint}
+                                {tags}
+                                href={`/blueprints/${blueprint.id}`}
+                            />
+                        </div>
+                    ))
+                ) : (
+                    <div class="col-12 text-center py-5">
+                        <h4>
+                            No blueprints found for
+                            <span class="highlight">{q}</span>
+                        </h4>
+                        <p>
+                            Try searching for a different term or choose a different category
+                        </p>
+                    </div>
+                )
+            }
+        </div>
+    </BlueprintLists>
+    <Faq items={ITEMS} client:visible />
 </Layout>
+
+<style lang="scss">
+    :global(section.faq) {
+        background: var(--ks-background-secondary);
+    }
+
+    .text-center {
+        p {
+            color: var(--ks-content-tertiary);
+        }
+    }
+</style>

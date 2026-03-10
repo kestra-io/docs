@@ -249,7 +249,7 @@ namespace: system
 tasks:
   - id: send_alert
     runIf: "{{ trigger.data }}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://kestra.io/api/mock
     messageText: The following Schedule triggers seem unhealthy {{ trigger.data }}
 

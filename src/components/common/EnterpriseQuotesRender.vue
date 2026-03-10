@@ -2,7 +2,7 @@
     <QuotesCarousel :quotes="sorted">
         <template v-slot:default="{ quote }">
             <div class="quote">
-                <q class="quote-text">{{ quote.text }}</q>
+                <blockquote class="quote-text">{{ quote.text }}</blockquote>
                 <div class="quote-author">
                     <b>{{ quote.author.name }}</b>
                     <span>{{ quote.author.title }}</span>

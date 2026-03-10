@@ -87,7 +87,7 @@ const { title, cta } = Astro.props
 
                 @include media-breakpoint-up(xxl) {
                     position: sticky;
-                    top: 4.1875rem;
+                    top: calc(4.1875rem + var(--announce-height));
                     padding: 18rem 0;
                     text-align: left;
                     align-items: flex-start;

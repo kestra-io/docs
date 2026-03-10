@@ -194,7 +194,7 @@ const SECTIONS = getSections(totalPlugins)
 
         thead {
             position: sticky;
-            top: 62px;
+            top: calc(62px + var(--announce-height));
             z-index: 200;
             background: var(--ks-background-primary);
 
@@ -355,6 +355,10 @@ const SECTIONS = getSections(totalPlugins)
         margin-top: 4rem;
         h2 {
             margin-bottom: 0.5rem;
+        }
+
+        #support-plans {
+            scroll-margin-top: 40px;
         }
         p {
             color: var(--ks-content-primary);
