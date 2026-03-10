@@ -302,7 +302,7 @@ It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` i
 
 Sometimes it is useful to access outputs from other tasks in the same task tree, known as sibling tasks.
 
-If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id`is the identifier of the sibling task, as you would outside of the task tree.
+If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id` is the identifier of the sibling task, as you would outside of the task tree.
 
 For example:
 
