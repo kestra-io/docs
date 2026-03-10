@@ -9,7 +9,7 @@ author:
 image: ./main.jpg
 ---
 
-Infrastructure automation is a chain of tools, teams, and handoffs that only looks clean on a diagram.
+[Infrastructure automation](https://kestra.io/infra-automation) is a chain of tools, teams, and handoffs that only looks clean on a diagram.
 
 Platform and infrastructure teams are juggling hardware fleets, VM environments, and edge/network changes while trying to keep delivery and operations safe. The automation is often spread across Ansible playbooks, shell scripts, cron, and isolated portals, and it typically lives outside the execution history and observability you already expect for software and data workflows.
 
