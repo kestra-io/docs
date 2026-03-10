@@ -1,5 +1,5 @@
 ---
-title: ETL Pipelines in Kestra
+title: Build ETL Pipelines in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

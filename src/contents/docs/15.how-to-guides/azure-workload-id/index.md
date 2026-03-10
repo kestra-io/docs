@@ -1,5 +1,5 @@
 ---
-title: Use Azure Managed Workload on Kestra
+title: Use Azure Managed Workload Identity with Kestra
 icon: /src/contents/docs/icons/azure-aks.svg
 stage: Advanced
 topics:

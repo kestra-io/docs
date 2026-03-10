@@ -1,23 +1,23 @@
 ---
-title: Run Ruby inside of your Flow
+title: Run Ruby Inside Your Flows
 icon: /src/contents/docs/icons/ruby.svg
 stage: Getting Started
 topics:
   - Scripting
 ---
 
-Run Ruby code directly inside of your Flows and generate outputs.
+Run Ruby code directly in your flows and generate outputs.
 
 Ruby is well known for web development but has many other powerful use cases too, such as automation, web scraping, data processing and command-line tools. With Kestra, you can effortlessly automate data ingestion, as well as manage complex automations. Kestra's robust orchestration capabilities ensure that your Ruby scripts run smoothly and efficiently, streamlining your data-driven projects.
 
-This guide is going to walk you through how to get Ruby running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+This guide is going to walk you through how to get Ruby running in a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-Kestra has an official plugin for Ruby allowing you to execute R code inside of a flow by either writing your Ruby code inline or by executing an `.rb` file. You can get outputs and metrics from your Ruby code too.
+Kestra has an official plugin for Ruby allowing you to execute Ruby code in a flow by either writing your Ruby code inline or by executing an `.rb` file. You can get outputs and metrics from your Ruby code too.
 
 
 ## Scripts
 
-If you want to write a short amount of Ruby code to perform a task, you can use the `io.kestra.plugin.scripts.ruby.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
+If you want to write a short amount of Ruby code to perform a task, you can use the `io.kestra.plugin.scripts.ruby.Script` type to write it directly in your flow. This allows you to keep everything in one place.
 
 ```yaml
 id: ruby_output_file

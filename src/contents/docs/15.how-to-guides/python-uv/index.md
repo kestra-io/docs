@@ -7,7 +7,7 @@ topics:
 description: Use uv in Kestra to manage Python dependencies and virtual environments for faster and more reliable script execution.
 ---
 
-Manage your Python Dependecies inside of Kestra using `uv`.
+Manage your Python Dependencies in Kestra using `uv`.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/tyEbyhg6jmY?si=v_vQVfBUvKJD7-rn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -15,7 +15,7 @@ Manage your Python Dependecies inside of Kestra using `uv`.
 
 `uv` is a new Python package and project manager designed to be extremely fast. Written in rust, it aims to fix some of the pitfalls of pip while also combining multiple python dependency management tools like `virtualenv`, `poetry`, and more into one unified tool.
 
-`uv` can be used inside of Kestra to install dependencies as well as manage virtual environments in combination with the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md).
+`uv` can be used in Kestra to install dependencies as well as manage virtual environments in combination with the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md).
 
 ## Install Dependencies
 

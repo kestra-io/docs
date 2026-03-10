@@ -1,5 +1,5 @@
 ---
-title: Conditional Branching
+title: Add Conditional Branching in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

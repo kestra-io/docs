@@ -6,7 +6,7 @@ topics:
   - Integrations
 ---
 
-Learn step-by-step how to read data from a Google Sheet inside of a Kestra flow.
+Learn step-by-step how to read data from a Google Sheet in a Kestra flow.
 
 You can use any Google Sheet for this tutorial. In case you do not have Google Sheet, you can:
 

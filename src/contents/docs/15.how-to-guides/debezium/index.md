@@ -1,5 +1,5 @@
 ---
-title: Debezium Tasks and Triggers
+title: Use Debezium Tasks and Triggers in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

@@ -1,5 +1,5 @@
 ---
-title: Interacting with JSONs in Kestra
+title: Work with JSON in Kestra
 icon: /src/contents/docs/icons/api.svg
 stage: Getting Started
 topics:
@@ -9,7 +9,7 @@ description: Learn how to interact with JSON data in Kestra workflows, including
 
 Interact with JSONs using expressions.
 
-APIs often use JSON bodies to send data. Being able to interact with them inside of your workflows is crucial to any API related orchestration.
+APIs often use JSON bodies to send data. Being able to interact with them in your workflows is crucial to any API related orchestration.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/OaZ5t5lqKO4?si=jf7opiGXlBho9JPj" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -61,7 +61,7 @@ However, if the body is large, we may only want to access a certain part of it. 
 {{ outputs.request.body | jq('.title') | first }}
 ```
 
-This will access the key `title` from the JSON. `jq` will return the result inside of an array when used within an expression. In order to access the value, the function `first` is added to the end of the expression, removing it from the array.
+This will access the key `title` from the JSON. `jq` will return the result in an array when used within an expression. In order to access the value, the function `first` is added to the end of the expression, removing it from the array.
 
 We can put that into the example:
 

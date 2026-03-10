@@ -1,5 +1,5 @@
 ---
-title: Notion Webhook Integration
+title: Integrate Notion Webhooks with Kestra
 icon: /src/contents/docs/icons/notion.svg
 stage: Getting Started
 topics:

@@ -1,5 +1,5 @@
 ---
-title: Connect Neon Database to Kestra
+title: Connect a Neon Database to Kestra
 icon: /src/contents/docs/icons/neon.svg
 stage: Intermediate
 topics:
@@ -42,7 +42,7 @@ With the setup in Neon done, we can go Kestra to set up our connection. While th
 
 To connect, we can copy the URL provided from before. To prevent exposing the password in our flow, take the password saved earlier and store it as a [secret](../../06.concepts/04.secret/index.md). Then, in the URL, switch out the password for the secret expression: `{{ secret('NEON_PASSWORD') }}`.
 
-By using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md), we can configure our connection to Neon once for all tasks inside of our flow rather than individually for each task.
+By using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md), we can configure our connection to Neon once for all tasks in our flow rather than individually for each task.
 
 Once configured, our connection in Kestra will look like the example below:
 
@@ -70,7 +70,7 @@ pluginDefaults:
 
 :::
 
-## Copying a CSV file into Neon inside of a Flow
+## Copying a CSV File into Neon in a Flow
 
 Using this [example CSV](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv), we can copy the data into our table directly from Kestra. You can either set up the columns directly in Neon in the earlier steps or add a task in Kestra to add them automatically like this:
 

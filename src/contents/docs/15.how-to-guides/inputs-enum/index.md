@@ -1,5 +1,5 @@
 ---
-title: Validate Inputs with Enum Data Type
+title: Validate Inputs with the Enum Data Type
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

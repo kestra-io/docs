@@ -1,5 +1,5 @@
 ---
-title: Realtime Triggers
+title: Use Realtime Triggers in Kestra
 icon: /src/contents/docs/icons/plugins.svg
 stage: Getting Started
 topics:

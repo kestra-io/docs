@@ -1,5 +1,5 @@
 ---
-title: Using Dataform in Kestra
+title: Use Dataform in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

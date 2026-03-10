@@ -1,5 +1,5 @@
 ---
-title: Dynamic Flows
+title: Build Dynamic Flows in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

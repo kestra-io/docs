@@ -1,5 +1,5 @@
 ---
-title: Configure Google Service Account
+title: Configure a Google Service Account in Kestra
 icon: /src/contents/docs/icons/gcp-compute.svg
 stage: Getting Started
 topics:
@@ -8,11 +8,11 @@ topics:
 description: Securely configure Google Service Accounts in Kestra to authenticate and access Google Cloud resources and Workspace apps.
 ---
 
-Setup a Google Service Account inside of Kestra.
+Set Up a Google Service Account in Kestra.
 
-When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
+When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate in Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly in Kestra.
 
-## Create Service Account inside of Google Cloud
+## Create Service Account in Google Cloud
 
 Inside of Google Cloud, head to `IAM` and then `Service Accounts`. In here you can add the specific roles to the service account before creating it (this will depend on your use case).
 
@@ -78,16 +78,16 @@ done < .env > $ENV_FILENAME
 echo "SECRET_GCP_SERVICE_ACCOUNT=$(cat service-account.json | base64 -w 0)" >> $ENV_FILENAME
 ```
 
-You can then set the `.env_encoded` file inside of your `docker-compose.yml`:
+You can then set the `.env_encoded` file in your `docker-compose.yml`:
 
 ```yaml
 kestra:
   env_file: .env_encoded
 ```
 
-## Access Service Account inside of Kestra
+## Access Service Account in Kestra
 
-You can now access this inside of Kestra with the following pebble expression:
+You can now access this in Kestra with the following pebble expression:
 
 ```yaml
 "{{ secret('GCP_SERVICE_ACCOUNT') }}"

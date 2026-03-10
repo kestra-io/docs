@@ -1,5 +1,5 @@
 ---
-title: Modularize your triggers and schedules with Terraform
+title: Modularize Triggers and Schedules with Terraform
 icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:
