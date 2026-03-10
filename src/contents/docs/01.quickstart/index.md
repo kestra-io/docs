@@ -51,7 +51,7 @@ The above command starts Kestra with an embedded H2 database that does not persi
 
 ## Next steps
 
-Congrats! You've take the product tour, executed your first flow, and familiarized yourself with Kestra. Next, you can follow the documentation in this order to build on what you've learned so far:
+Congrats! You've taken the product tour, executed your first flow, and familiarized yourself with Kestra. Next, you can follow the documentation in this order to build on what you've learned so far:
 
 - Continue with a [Tutorial](../03.tutorial/index.mdx) to add inputs, outputs, triggers, and more task types.
 - Follow the full [Installation guide](../02.installation/index.mdx) for persistent local or distributed setups.
