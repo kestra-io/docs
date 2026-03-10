@@ -41,9 +41,8 @@ The above command starts Kestra with an embedded H2 database that does not persi
 
 ## Next steps
 
-Congratulations! You have installed Kestra and executed your first flow.
-
 Next, you can follow the documentation in this order:
+
 - Check out the [tutorial](../03.tutorial/index.mdx) to get introduced to concepts and workflow components.
 - Follow the full [installation guide](../02.installation/index.mdx) for persistent local or distributed setups.
 - Explore the available [Plugins](/plugins) to integrate with external systems, and begin orchestrating your applications, microservices, and processes.

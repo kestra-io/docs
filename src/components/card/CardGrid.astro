@@ -22,7 +22,7 @@ const { title, items } = Astro.props;
 
 <section class="card-grid-section">
     <div class="container">
-        <h2 data-usal="fade-u delay-0 duration-400 ease-out" set:html={title} />
+        <h2 set:html={title} data-usal="zoomin" />
 
         <div class="cards-grid">
             {
@@ -34,13 +34,13 @@ const { title, items } = Astro.props;
                         {item.icon && (
                             <Icon name={item.icon} class="icon" />
                         )}
-                        <h6 class="title" set:html={item.title} />
+                        <h6 class="title" set:html={item.title} data-usal="fade-l"/>
                         {item.link ? (
                             <a href={item.link.href} class="btn btn-primary">
                                 {item.link.text}
                             </a>
                         ) : (
-                            item.description && <p class="description" set:html={item.description} />
+                            item.description && <p class="description" set:html={item.description} data-usal="fade-l" />
                         )}
                     </div>
                 ))
@@ -55,7 +55,7 @@ const { title, items } = Astro.props;
     .card-grid-section {
         background-color: var(--ks-background-body);
         width: 100%;
-        padding: 2rem 0.5rem;
+        padding: 3rem 0.5rem;
 
         @include media-breakpoint-up(md) {
             padding: 4rem 8px;
@@ -70,7 +70,7 @@ const { title, items } = Astro.props;
             gap: 2rem;
 
             @include media-breakpoint-up(md) {
-                gap: 4rem;
+                gap: 3rem;
             }
 
             h2 {

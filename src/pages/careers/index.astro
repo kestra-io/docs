@@ -6,8 +6,7 @@ import Header from "~/components/careers/Header.astro"
 import Positions from "~/components/careers/Positions.astro"
 import CardGrid from "~/components/features/shared/CardGrid.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
-import { $fetch } from "~/utils/fetch"
-import { type DoverJob, mapJob } from "~/utils/careers.ts"
+import { type AshbyJob, fetchJobs } from "~/utils/careers.ts"
 
 import Earth from "vue-material-design-icons/Earth.vue"
 import CalendarClock from "vue-material-design-icons/CalendarClock.vue"
@@ -16,13 +15,7 @@ import MedicalBag from "vue-material-design-icons/MedicalBag.vue"
 import ChairRolling from "vue-material-design-icons/ChairRolling.vue"
 import Laptop from "vue-material-design-icons/Laptop.vue"
 
-const jobsList = await $fetch<{ results: DoverJob[] }>(
-    `https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`,
-)
-
-const positions = jobsList.results.map((job) => {
-    return mapJob(job)
-})
+const positions: AshbyJob[] = await fetchJobs();
 
 const PERKS = [
     {
