@@ -1,5 +1,5 @@
 ---
-title: Migrate from Shipyard
+title: Migrate from Shipyard to Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -8,8 +8,6 @@ description: A comprehensive guide for migrating workflows from Shipyard to Kest
 ---
 
 Migrate from Shipyard to Kestra.
-
-## Migrate from Shipyard
 
 This is a guide for users who are considering migration of their workflows from [Shipyard](https://www.shipyardapp.com/) to [Kestra](https://kestra.io/).
 

@@ -1,5 +1,5 @@
 ---
-title: Make HTTP Requests inside of your flows
+title: Make HTTP Requests Inside Your Flows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -8,21 +8,19 @@ topics:
 
 Make HTTP Requests to fetch data and generate outputs.
 
-## Make HTTP Requests inside of your flows
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/sI-BDbb1aPI?si=ygTv9ZVoHPwYMaty" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
 
-You can make HTTP Requests directly inside a flow as well as get outputs from the responses. In this guide, we'll walk you through what HTTP Requests are and how you can use the most common request methods inside of Kestra.
+You can make HTTP Requests directly inside a flow as well as get outputs from the responses. In this guide, we'll walk you through what HTTP Requests are and how you can use the most common request methods in Kestra.
 
 ## What is a HTTP Request?
 
 Hypertext Transfer Protocol (better known as HTTP) [requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_requests) are messages sent between a client and server to request something.
 
-Requests can send or request data, with common methods known as GET, POST, PUT and DELETE requests. We can use these directly inside of Kestra to interact with 3rd party systems to make our workflows more powerful.
+Requests can send or request data, with common methods known as GET, POST, PUT and DELETE requests. We can use these directly in Kestra to interact with 3rd party systems to make our workflows more powerful.
 
 | Request Method | Description |
 | - | - |
@@ -60,7 +58,7 @@ Each request also has a set of Request Headers which can provide additional info
 
 ### Body
 
-Lastly, requests can also have a Request Body which contains all the data we want to send as part of our request. For example, if you wanted to add a user to a system, you would include their information inside of the body like name and email. These are fundamental for POST and PUT requests which are used for creating and updating data on other systems, but other methods like GET don't have them. You can read more about the Request Body on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/API/Request/body)
+Lastly, requests can also have a Request Body which contains all the data we want to send as part of our request. For example, if you wanted to add a user to a system, you would include their information in the body like name and email. These are fundamental for POST and PUT requests which are used for creating and updating data on other systems, but other methods like GET don't have them. You can read more about the Request Body on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/API/Request/body)
 
 When you receive your [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#body_2), it might have a body, for example a GET Request. This is helpful as you can receive data which you can use in your workflows, such as a JSON.
 
@@ -103,7 +101,7 @@ We get the same response that we got in Postman:
 
 While these tools are very useful for testing APIs, it can be challenging to automate requests, as well as integrate them with other platforms.
 
-## Making HTTP Requests inside of Kestra
+## Making HTTP Requests in Kestra
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 

@@ -1,5 +1,5 @@
 ---
-title: Run Rust inside of your Flows
+title: Run Rust Inside Your Flows
 icon: /src/contents/docs/icons/rust.svg
 stage: Getting Started
 topics:
@@ -7,15 +7,13 @@ topics:
 description: Execute Rust code directly within your Kestra flows using Docker to leverage Rust's performance for your data processing tasks.
 ---
 
-Run Rust code directly inside of your Flows and generate outputs.
-
-## Run Rust inside of your Flows
+Run Rust code directly in your flows and generate outputs.
 
 Rust has jumped in popularity over the past few years, mainly due to its performance and reliability in production settings. Compared to Python, Rust is a great choice for performance-critical workloads so might be a good choice to use in your flows.
 
-This guide is going to walk you through how to get Rust running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+This guide is going to walk you through how to get Rust running in a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-There isn't an official Rust plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside of a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language.
+There isn't an official Rust plugin but we can use the `Shell` `Commands` task to execute arbitrary commands in a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language.
 
 In this example, we're using the Docker Task Runner with the `rust:latest` image so that Rust code can be executed.
 
@@ -113,7 +111,7 @@ tasks:
 
 ## Orchestrate with Rust
 
-Rust is a great choice for performance-critical workloads. If you're working with huge datasets, Rust could be a good choice for ETL. Below is an example of how you can setup Rust inside of Kestra to perform an ETL process.
+Rust is a great choice for performance-critical workloads. If you're working with huge datasets, Rust could be a good choice for ETL. Below is an example of how you can setup Rust in Kestra to perform an ETL process.
 
 The example flow uses a Rust image created using the following [sample ETL project](https://github.com/kestra-io/examples/tree/main/examples/rust). The image contains the CLI command `etl` to allow us to start the process.
 

@@ -1,5 +1,5 @@
 ---
-title: SecOps with Kestra
+title: Build SecOps Workflows with Kestra
 icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:
@@ -7,8 +7,6 @@ topics:
 ---
 
 Operationalize SecOps benchmarks with Kestra.
-
-## SecOps with Kestra
 
 This how-to shows how to operationalize SecOps benchmarks with Kestra. You will download a CIS benchmark, store control recommendations as settings, and orchestrate compliance scans and automated remediation across multiple controls and teams.
 
