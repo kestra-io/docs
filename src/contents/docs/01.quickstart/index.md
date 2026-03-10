@@ -31,11 +31,11 @@ docker run --pull=always -it -p 8080:8080 --user=root \
 
 If you re-run the command and Docker reports `You have to remove (or rename) that container to be able to reuse that name.`, remove the old container with `docker rm -f kestra` or pick a different `--name`.
 
-This command:
-
+:::collapse{title="This command does the following:"}
 - starts Kestra on port `8080`
 - stores local files in the `kestra_data` Docker volume
 - mounts `/tmp` and the Docker socket so script and container tasks can run locally
+:::
 
 Open `http://localhost:8080` in your browser to launch the UI, create your user, and take the product tour to begin building your first flow.
 
