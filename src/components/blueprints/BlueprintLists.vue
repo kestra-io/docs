@@ -311,7 +311,7 @@
                 .input:checked + .label {
                     @include media-breakpoint-down(lg) {
                         border-color: var(--ks-border-active);
-                        background: var(--ks-backgroung-tag-category);
+                        background: var(--ks-background-tag-category);
                         color: var(--ks-content-tag-category);
                         font-weight: 600;
                     }
