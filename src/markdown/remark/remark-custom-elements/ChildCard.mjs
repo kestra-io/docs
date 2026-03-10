@@ -42,26 +42,42 @@ const getFrontmatter = (markdown) => {
 
 export function ChildCard(data, _attributes, node, file) {
     const directory = path.dirname(file.history[0])
-    const files = fs
-        .readdirSync(directory)
-        .filter(
-            (f) =>
-                (f.endsWith(".md") || f.endsWith(".mdx")) &&
-                f !== path.basename(file.history[0]),
-        )
+    const unfilteredFiles = fs.readdirSync(directory)
+
+    // if unfilteredFiles are directories,
+    // resolve they index.md or index.mdx file if they exist
+    const resolvedFiles = unfilteredFiles.map((f) => {
+        const fullPath = path.join(directory, f)
+        if (fs.statSync(fullPath).isDirectory()) {
+            const indexMd = path.join(fullPath, "index.md")
+            const indexMdx = path.join(fullPath, "index.mdx")
+            if (fs.existsSync(indexMd)) {
+                return path.join(f, "index.md")
+            } else if (fs.existsSync(indexMdx)) {
+                return path.join(f, "index.mdx")
+            }
+        }
+        return f
+    })
+
+    const files = resolvedFiles.filter(
+        (f) =>
+            (f.endsWith(".md") || f.endsWith(".mdx")) &&
+            f !== path.basename(file.history[0]),
+    )
     const richFiles = files.map((f) => ({
         entry: f,
         data: getFrontmatter(fs.readFileSync(path.join(directory, f), "utf-8")),
     }))
     const currentDir = path.basename(directory)
     data.hName = "div"
-    data.hProperties = { class: "child-cards-wrapper" }
+    data.hProperties = { class: "ks-card-grid" }
     node.children = richFiles.map((richFile) => ({
-        type: "anchor",
+        type: "element",
         data: {
             hName: "a",
             hProperties: {
-                class: "ks-child-card-link ks-card",
+                class: "ks-card",
                 href: generateId({
                     entry: `./${currentDir}/${richFile.entry}`,
                 }),
@@ -72,32 +88,6 @@ export function ChildCard(data, _attributes, node, file) {
                 type: "element",
                 data: {
                     hName: "div",
-                    hProperties: {
-                        class: "ks-card-icon",
-                    },
-                },
-                children: [
-                    {
-                        type: "element",
-                        data: {
-                            hName: "img",
-                            hProperties: {
-                                class: "card-icon-img",
-                                src: richFile.data.icon ?? "/default-icon.svg",
-                                alt:
-                                    richFile.data.title ??
-                                    richFile.entry.replace(/\.mdx?$/, ""),
-                                height: "50px",
-                                width: "50px",
-                            },
-                        },
-                    },
-                ],
-            },
-            {
-                type: "element",
-                data: {
-                    hName: "h4",
                     hProperties: {
                         class: "ks-card-title",
                     },

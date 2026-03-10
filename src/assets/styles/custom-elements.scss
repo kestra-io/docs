@@ -1,0 +1,73 @@
+@import "~/assets/styles/variable";
+
+.ks-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    .ks-card {
+        border-radius: 0.75rem;
+        text-decoration: none;
+        background: var(--ks-background-primary);
+        color: var(--ks-content-primary);
+        border: 1px solid var(--ks-border-primary);
+        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+        transition: all 0.3s;
+        padding: 1rem;
+        padding-inline-end: 3rem;
+        // show title and description on the first column and the icon on the second column
+        display: grid;
+        grid-template-columns: 1fr 2rem;
+        align-items: start;
+        @include media-breakpoint-up(md) {
+            gap: 0.5rem;
+            grid-template-rows: 1.5rem 1fr;
+            padding: 1.5rem;
+        }
+        .ks-card-title {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            grid-area: 1 / 1 / 2 / 2;
+            font-weight: 600;
+            @include media-breakpoint-up(sm) {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        .ks-card-text {
+            // show description under the title in the same column as the title
+            grid-area: 2 / 1 / 3 / 2;
+            font-size: 0.875rem;
+            margin-bottom: 0;
+            :global(p) {
+                color: var(--ks-content-secondary);
+                margin-bottom: 0;
+                overflow: hidden;
+                display: -webkit-box;
+                line-clamp: 3;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .ks-card-icon {
+            // show the icon on the right side of the card
+            grid-area: 1 / 2 / 3 / 3;
+            align-self: center;
+            color: var(--ks-content-secondary);
+            font-size: 2rem;
+            :global(svg) {
+                bottom: 0;
+            }
+        }
+
+        &:hover {
+            border-color: var(--ks-border-active);
+            .ks-card-icon {
+                color: var(--ks-border-active);
+            }
+        }
+    }
+}

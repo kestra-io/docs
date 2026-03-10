@@ -23,4 +23,5 @@ You can use Kestra to:
 
 This tutorial starts with a simple flow that makes an API request and then expands to use nearly Kestra's full toolbox: adding Inputs, downstream tasks, scripts, Outputs, and Triggers. Later sections cover conditional flow logic, parallel task execution, and error handling.
 
-<ChildCard />
+:::ChildCard
+:::
