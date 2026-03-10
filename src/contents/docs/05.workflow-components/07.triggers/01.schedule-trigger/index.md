@@ -70,6 +70,21 @@ triggers:
     timezone: America/New_York
 ```
 
+Schedule that runs on the last day of month:
+
+The Schedule trigger also supports `L` in the day-of-month field to represent the last day of the month.
+
+For example:
+
+```yaml
+triggers:
+  - id: month_end
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 12 L * *"
+```
+
+This runs at `12:00` on the last day of every month, including shorter months like February.
+
 :::alert{type="warning"}
 Schedules cannot **overlap**, meaning concurrent schedule executions are not allowed. If the previous schedule is not ended when the next one must start, the scheduler will wait until the end of the previous one. The same applies during backfills.
 :::
