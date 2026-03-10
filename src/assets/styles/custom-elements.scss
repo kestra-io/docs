@@ -40,7 +40,7 @@
             grid-area: 2 / 1 / 3 / 2;
             font-size: 0.875rem;
             margin-bottom: 0;
-            :global(p) {
+            p {
                 color: var(--ks-content-secondary);
                 margin-bottom: 0;
                 overflow: hidden;
@@ -58,7 +58,7 @@
             align-self: center;
             color: var(--ks-content-secondary);
             font-size: 2rem;
-            :global(svg) {
+            svg {
                 bottom: 0;
             }
         }
