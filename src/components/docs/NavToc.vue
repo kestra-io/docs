@@ -353,20 +353,22 @@
                     }
                 }
             }
-            .depth-3{
-                position: relative;
-                &:before{
-                    display: block;
-                    content: "";
-                    position: absolute;
-                    left: 1.5rem;
-                    top: 0;
-                    bottom: 0;
-                    width: 1px;
-                    background-color: var(--ks-border-primary);
-                }
-                &:hover:before{
-                    background-color: var(--ks-content-link);
+            @for $i from 3 through 6 {
+                .depth-#{$i}{
+                    position: relative;
+                    &:before{
+                        display: block;
+                        content: "";
+                        position: absolute;
+                        left: 1.5rem;
+                        top: 0;
+                        bottom: 0;
+                        width: 1px;
+                        background-color: var(--ks-border-primary);
+                    }
+                    &:hover:before{
+                        background-color: var(--ks-content-link);
+                    }
                 }
             }
         }
