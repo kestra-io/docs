@@ -9,7 +9,7 @@ import HomePageButtons from "~/components/content/HomePageButtons.astro"
 import WhatsNew from "~/components/common/WhatsNew.astro"
 import SupportLinks from "~/components/content/SupportLinks.astro"
 import PluginCount from "~/components/content/PluginCount.vue"
-import BigChildCards from "~/components/docs/BigChildCards.astro"
+import ChildCard from "~/components/docs/ChildCard.astro"
 
 <HomePageHeader title="What is Kestra?" />
 Kestra is an open-source, infinitely-scalable **orchestration platform** that enables all engineers
@@ -25,7 +25,7 @@ Thanks to <PluginCount client:idle /> plugins and embedded Code editor with Git 
     ]}
 />
 
-<BigChildCards directory="/docs/use-cases" title="What’s possible with Kestra" />
+<ChildCard directory="/docs/use-cases" title="What’s possible with Kestra" />
 
 <div style="height: 50px;"></div>
 <div class="video-container">
