@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content"
+import ChevronRightIcon from "vue-material-design-icons/ChevronRight.vue"
 import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
 interface Props {
     title: string
@@ -39,12 +40,13 @@ const links = await getCollection("docs").then((docs) => {
 <div class="big-card-grid">
     {
         links.map((item) => (
-            <a
-                href={item.path}
-                class="big-card"
-            >
-                <h4 class="card-title">{item.title}</h4>
-                <MDCParserAndRenderer content={item.description} class="card-text" />
+            <a href={item.path} class="big-card">
+                <h4 class="ks-card-title">{item.title}</h4>
+                <MDCParserAndRenderer
+                    content={item.description}
+                    class:list={["ks-card-text"]}
+                />
+                <ChevronRightIcon class="ks-card-icon" />
             </a>
         ))
     }
@@ -54,7 +56,8 @@ const links = await getCollection("docs").then((docs) => {
     @import "~/assets/styles/variable";
     .big-card-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        // as many 300px columns you can fit in the container with a minimum gap of 1rem
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1rem;
     }
 
@@ -68,22 +71,63 @@ const links = await getCollection("docs").then((docs) => {
     }
 
     .big-card {
-        border-radius: 0.5rem;
+        border-radius: 0.75rem;
         text-decoration: none;
-        background: var(--ks-background-tertiary);
+        background: var(--ks-background-primary);
         color: var(--ks-content-primary);
         border: 1px solid var(--ks-border-primary);
-        border-image-source: linear-gradient(180deg, var(--ks-border-primary) 0%, var(--ks-border-primary) 100%);
+        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
         transition: all 0.3s;
         padding: 1rem;
+        padding-inline-end: 3rem;
+        // show title adn description on the first column and the icon on the second column
+        display: grid;
+        grid-template-columns: 1fr 2rem;
+        align-items: start;
         @include media-breakpoint-up(md) {
-            padding: 2rem;
+            gap: 1rem;
+            grid-template-rows: 1rem 1fr;
+            padding: 1.5rem;
         }
         h4 {
+            font-size: 1rem;
             margin-bottom: 0.25rem;
+            grid-area: 1 / 1 / 2 / 2;
+            @include media-breakpoint-up(sm) {
+                height: 1rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         }
+
+        .ks-card-text {
+            // show description under the title in the same column as the title
+            grid-area: 2 / 1 / 3 / 2;
+            font-size: 0.875rem;
+            margin-bottom: 0;
+            :global(p) {
+                color: var(--ks-content-secondary);
+                margin-bottom: 0;
+            }
+        }
+
+        .ks-card-icon {
+            // show the icon on the right side of the card
+            grid-area: 1 / 2 / 3 / 3;
+            align-self: center;
+            color: var(--ks-content-secondary);
+            font-size: 2rem;
+            :global(svg) {
+                bottom: 0;
+            }
+        }
+
         &:hover {
-            background: var(--ks-background-secondary);
+            border-color: var(--ks-border-active);
+            .ks-card-icon {
+                color: var(--ks-border-active);
+            }
         }
     }
 </style>
