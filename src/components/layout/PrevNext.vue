@@ -1,27 +1,29 @@
 <template>
     <div v-if="prev || next" class="docs-prev-next">
         <a v-if="prev" :href="prev.path" class="prev" @click="activeSlug = prev.path">
-            <ArrowLeft />
-            <div class="wrapper">
-                <span v-if="directory(prev.path)" class="directory">{{ directory(prev.path) }}</span>
-                <span class="title">{{ prev.title }}</span>
-            </div>
+            <ChevronLeft class="chevron" />
+            Previous
         </a>
         <span v-else />
         <a v-if="next" :href="next.path" class="next" @click="activeSlug = next.path">
             <div class="wrapper">
-                <span v-if="directory(next.path)" class="directory">{{ directory(next.path) }}</span>
-                <span class="title">{{ next.title }}</span>
+                <span v-if="next.sidebarTitle" class="title">{{ next.sidebarTitle }}</span>
+                <span class="description">{{ next.title }}</span>
             </div>
-            <ArrowRight />
+            <div class="next-side">
+                <span class="next-button-label">
+                    Next
+                </span>
+                <ChevronRight class="chevron" />
+            </div>
         </a>
     </div>
 </template>
 
 <script lang="ts" setup>
     import { upperFirst } from "scule"
-    import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
-    import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+    import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
+    import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import { prevNext, type NavItem } from "~/utils/navigation"
     import { activeSlug } from "~/utils/store"
 
@@ -51,41 +53,70 @@
         display: flex;
         width: 100%;
         margin-top: 3rem;
+        background-color: var(--ks-background-secondary);
+        border: none;
+        border-radius: 12px;
+        padding: 4px;
+        gap: 1rem;
+        justify-content: stretch;
         .wrapper {
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
         a {
-            border: $block-border;
-            background-color: var(--ks-background-secondary);
             padding: calc($spacer / 2) $spacer;
             display: flex;
             gap: $spacer;
-            border-radius: var(--bs-border-radius);
-            width: 50%;
             align-items: center;
-            .material-design-icon {
-                color: var(--ks-content-color-highlight);
-            }
-            &.prev {
-                margin-right: calc($spacer / 2);
+            color: var(--ks-content-secondary);
+            font-size: $font-size-sm;
+            .chevron {
+                font-size: 16px;
+                :deep(svg){
+                    bottom:0;
+                }
             }
             &.next {
-                margin-left: calc($spacer / 2);
+                border-radius: 8px;
+                border: $block-border;
                 justify-content: flex-end;
                 text-align: right;
+                background-color: var(--ks-background-primary);
+                flex: 1;
+                gap: 1.5rem;
+                .wrapper{
+                    color: var(--ks-content-primary);
+                }
+
+                .next-side{
+                    border-left: $block-border;
+                    white-space: nowrap;
+                    padding-left: 1.5rem;
+                    padding-block: 0.5rem;
+                    align-items: center;
+                    gap: 1rem;
+                    display: flex;
+                    .next-button-label{
+                        display: none;
+                        @include media-breakpoint-up(md) {
+                            display: block;
+                        }
+                    }
+                }
             }
             .title {
                 display: block;
                 font-weight: bold;
                 color: var(--ks-content-primary);
-                font-size: $font-size-sm;
             }
             .directory {
                 display: block;
                 color: var(--ks-content-secondary);
-                font-size: $font-size-sm;
+            }
+            &:hover{
+                border-color: var(--ks-border-active);
+                color: var(--ks-content-color-highlight);
             }
         }
     }
