@@ -4,7 +4,6 @@ description: Help improve Kestra's documentation. This writer's guide covers loc
 sidebarTitle: Kestra Documentation
 icon: /src/contents/docs/icons/contributing.svg
 ---
-import ChildCard from "~/components/docs/ChildCard.astro"
 
 Contribute to the Kestra Documentation.
 
@@ -54,7 +53,7 @@ This guide is designed to help external contributors get up to speed with the to
 
 ## Contribute to the Kestra documentation
 
-<ChildCard />
+### ChildCard
 
 The documentation is structured on multiple levels. The top level is an index page such as "Getting Started," "Workflow Components," and "Cloud & Enterprise Edition." This acts as a landing page for all content that falls under those high-level categories. To serve a visitor everything within that topic, we use a `ChildCard` component on the index page. This component is built from the `ChildCard.vue` file in the `components/content` directory.
 
@@ -67,7 +66,8 @@ title: Getting Started
 
 Follow the [Quickstart Guide](../../01.quickstart/index.md) to install Kestra and start building your first workflows.
 
-<ChildCard />
+:::ChildCard
+:::
 ```
 
 And the page displays the following with all the sub topics of "Getting Started" listed with their card and icon:
