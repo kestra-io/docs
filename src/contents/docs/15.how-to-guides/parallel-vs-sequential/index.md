@@ -1,5 +1,5 @@
 ---
-title: Parallel vs. Sequential Tasks
+title: Choose Between Parallel and Sequential Tasks
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

@@ -1,5 +1,5 @@
 ---
-title: Slack Events API
+title: Use the Slack Events API with Kestra
 icon: /src/contents/docs/icons/slack.svg
 stage: Getting Started
 topics:

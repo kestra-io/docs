@@ -1,5 +1,5 @@
 ---
-title: SecOps with Kestra
+title: Build SecOps Workflows with Kestra
 icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:

@@ -1,5 +1,5 @@
 ---
-title: Namespace Variables vs KV Store
+title: Choose Between Namespace Variables and KV Store
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

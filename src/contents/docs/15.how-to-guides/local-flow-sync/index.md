@@ -1,5 +1,5 @@
 ---
-title: Local Flow Synchronization
+title: Synchronize Local Flows in Kestra
 icon: /src/contents/docs/icons/admin.svg
 stage: Getting Started
 topics:

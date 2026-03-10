@@ -1,5 +1,5 @@
 ---
-title: Long running and intensive processes on Kubernetes
+title: Run Long-Running and Intensive Processes on Kubernetes
 icon: /src/contents/docs/icons/kubernetes.svg
 stage: Advanced
 topics:

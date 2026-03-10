@@ -1,5 +1,5 @@
 ---
-title: Access Files on your Local Machine in Kestra
+title: Access Files on Your Local Machine in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

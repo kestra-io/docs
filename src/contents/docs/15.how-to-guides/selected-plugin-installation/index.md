@@ -79,7 +79,7 @@ volumes:
   - ./local-plugins:/app/plugins
 ```
 
-You may also use a scripted alias to automate this process. Below is an example for referral:
+You may also use a scripted alias to automate this process. Below is an example for reference:
 
 ```bash
 alias dl="rm -rf ./jar-plugins/* && docker run -d kestra/kestra:develop server local \

@@ -1,5 +1,5 @@
 ---
-title: Managing retries, restarts and replays with subflow executions
+title: Manage Retries, Restarts, and Replays with Subflow Executions
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

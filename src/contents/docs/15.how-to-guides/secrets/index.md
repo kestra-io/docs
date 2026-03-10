@@ -1,5 +1,5 @@
 ---
-title: Configure Secrets
+title: Configure Secrets in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

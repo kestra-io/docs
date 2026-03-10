@@ -1,5 +1,5 @@
 ---
-title: Safeguard Microservices With Unit Tests
+title: Safeguard Microservices with Unit Tests
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

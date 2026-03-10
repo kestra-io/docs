@@ -1,5 +1,5 @@
 ---
-title: Handling null and undefined values
+title: Handle Null and Undefined Values in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -131,7 +131,7 @@ tasks:
 
 ## Processing Trigger values
 
-When using a Trigger, you can use the `{{ trigger }}` expression inside of your flow. However, this expression is undefined if you execute your flow manually.
+When using a Trigger, you can use the `{{ trigger }}` expression in your flow. However, this expression is undefined if you execute your flow manually.
 
 Here's an example of a Webhook trigger that might receive a body of data. You can use the null coalescing operator to handle when the body of data is different to what's expected:
 ```yaml

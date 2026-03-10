@@ -1,5 +1,5 @@
 ---
-title: Multiple Condition Listener
+title: Use the MultipleCondition Listener
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
