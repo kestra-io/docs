@@ -84,8 +84,8 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
     </h1>
     <div class="bd-content">
         <Content />
-        <HelpfulVote client:visible />
         <PrevNext {navigation} currentPath={`/docs/${doc.id}`} client:idle />
+        <HelpfulVote client:visible />
     </div>
     <Fragment slot="headings">
         <NavToc links={headingsProcessed} client:visible {editUrl} />
