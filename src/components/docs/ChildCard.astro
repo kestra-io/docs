@@ -121,16 +121,15 @@ const children = await Promise.all(
             grid-template-columns: 1fr 2rem;
             align-items: start;
             @include media-breakpoint-up(md) {
-                gap: 1rem;
-                grid-template-rows: 1rem 1fr;
+                gap: 0.5rem;
+                grid-template-rows: 1.5rem 1fr;
                 padding: 1.5rem;
             }
-            h4 {
+            .ks-card-title {
                 font-size: 1rem;
                 margin-bottom: 0.25rem;
                 grid-area: 1 / 1 / 2 / 2;
                 @include media-breakpoint-up(sm) {
-                    height: 1rem;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
