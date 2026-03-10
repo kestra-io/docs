@@ -15,7 +15,11 @@ From development clusters to mission-critical production workloads, vSphere envi
 
 But while VMware excels at virtualization, automating what happens around virtual machines is still surprisingly fragmented.
 
-For many organizations, these workflows still live inside legacy orchestration platforms like VMware vRealize Automation (vRA) or Aria Automation. While powerful, these systems often become rigid automation silos where operational logic is difficult to evolve, integrate with modern pipelines, or extend beyond the VMware ecosystem.
+As we explain in our guide on [modern infrastructure automation](https://kestra.io/infra-automation), most companies still rely on a patchwork of scripts, pipelines, and legacy orchestration tools. 
+
+Virtualization workflows are no exception.
+
+ VMware vRealize Automation (vRA) or Aria Automation, while powerful, these systems often become rigid automation silos where operational logic is difficult to evolve, integrate with modern pipelines, or extend beyond the VMware ecosystem.
 
 Kestra takes a different approach. Instead of locking automation inside a virtualization portal, VMware operations become **workflow steps in a broader orchestration platform**, where VM lifecycle management, infrastructure automation, and application workflows can all run together.
 
