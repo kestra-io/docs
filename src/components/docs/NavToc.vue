@@ -35,7 +35,7 @@
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
-                        <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in links">
+                        <ul v-for="tableOfContent in links">
                             <li
                                 v-if="
                                     (tableOfContent.depth ?? 0) > 1 &&
@@ -55,12 +55,11 @@
                                     >{{ tableOfContent.text }}</a
                                 >
                             </li>
-                            <ul class="ps-0 pt-2 pt-lg-0" v-if="tableOfContent?.children?.length">
+                            <ul v-if="tableOfContent?.children?.length">
                                 <template v-for="item in tableOfContent?.children">
                                     <li
                                         v-if="(item.depth ?? 0) > 1 && (item.depth ?? 0) < 6"
                                         @click="closeToc"
-                                        :class="{ 'mt-3': item.depth === 2 }"
                                     >
                                         <a
                                             @click.prevent="menuNavigate"
@@ -156,7 +155,7 @@
             const el = document.querySelector(sel) as HTMLElement | null
             if (el) {
                 const style = window.getComputedStyle(el)
-                const isFixed = ["fixed", "sticky"].includes(style.position) || 
+                const isFixed = ["fixed", "sticky"].includes(style.position) ||
                                Math.round(el.getBoundingClientRect().top) === 0
                 if (isFixed) return el.getBoundingClientRect().height
             }
@@ -167,26 +166,26 @@
     const scrollToElement = (id: string) => {
         const element = document.getElementById(id)
         if (!element) return
-        
+
         const offset = getFixedHeaderOffset()
         const rectTop = element.getBoundingClientRect().top + window.pageYOffset
         const top = Math.max(0, rectTop - offset - 8)
-        
+
         window.scrollTo({ top, behavior: "smooth" })
     }
 
     const updateActiveLink = (id: string) => {
         if (activeLinkId.value === id) return
         activeLinkId.value = id
-        
+
         nextTick(() => {
             const container = document.querySelector("#nav-toc")
             const link = document.querySelector(`#nav-toc a.active`) as HTMLElement
-            
+
             if (container && link) {
                 const cRect = container.getBoundingClientRect()
                 const lRect = link.getBoundingClientRect()
-                
+
                 if (lRect.top < cRect.top || lRect.bottom > cRect.bottom) {
                     link.scrollIntoView({ block: "nearest" })
                 }
@@ -220,10 +219,10 @@
             if (scrollY.value === 0) activeLinkId.value = ""
             return
         }
-        
+
         const offset = getFixedHeaderOffset() + 20
         const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
-        
+
         let currentActive = ""
         for (const link of allLinks) {
             const el = document.getElementById(link.id)
@@ -233,7 +232,7 @@
                 break
             }
         }
-        
+
         if (currentActive) updateActiveLink(currentActive)
     }, 100)
 
@@ -325,15 +324,20 @@
                 }
             }
             ul {
-                margin-bottom: 0;
                 list-style: none;
+                padding-top: 0.5rem;
+                padding-left: 0;
+                margin-block: 0.3rem;
+                @include media-breakpoint-up(lg) {
+                    padding-top: 0;
+                }
                 li {
                     font-size: 0.875rem;
-                    line-height: var(--bs-body-line-height) !important;
+                    line-height: 1.5rem;
                 }
                 li a {
                     padding-left: 0.75rem;
-                    color: var(--ks-content-secondary);
+                    color: var(--ks-content-tertiary);
                     font-weight: 500;
                     cursor: pointer;
                     scroll-margin: 3rem;
@@ -346,7 +350,24 @@
                     &:hover,
                     &.active {
                         color: var(--ks-content-link);
-                        border-left: 1px solid var(--ks-content-link) !important;
+                    }
+                }
+            }
+            @for $i from 3 through 6 {
+                .depth-#{$i}{
+                    position: relative;
+                    &:before{
+                        display: block;
+                        content: "";
+                        position: absolute;
+                        left: 1.5rem;
+                        top: 0;
+                        bottom: 0;
+                        width: 1px;
+                        background-color: var(--ks-border-primary);
+                    }
+                    &:hover:before{
+                        background-color: var(--ks-content-link);
                     }
                 }
             }
