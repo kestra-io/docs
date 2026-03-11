@@ -80,7 +80,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .unified {
         padding: $rem-4 0.5rem $rem-6;

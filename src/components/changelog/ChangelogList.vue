@@ -167,7 +167,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .form-control {
         padding: 0.25rem 0.5rem 0.25rem 2rem;

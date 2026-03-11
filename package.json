@@ -79,7 +79,7 @@
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
-    "sass": "^1.97.3",
+    "sass": "^1.98.0",
     "wrangler": "^4.71.0"
   },
   "engines": {

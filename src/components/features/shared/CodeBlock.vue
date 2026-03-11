@@ -12,7 +12,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .code {
         position: relative;

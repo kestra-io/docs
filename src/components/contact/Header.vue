@@ -35,7 +35,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .square :deep(section.squared) {
         padding-bottom: 90px !important;

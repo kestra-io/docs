@@ -8,12 +8,12 @@
                         {{ description }}
                     </p>
                     <div class="cta d-flex gap-3">
-                        <a 
-                            v-for="item in cta" 
-                            :key="item.text" 
-                            :href="item.href" 
+                        <a
+                            v-for="item in cta"
+                            :key="item.text"
+                            :href="item.href"
                             class="btn btn-animated"
-                            :class="`btn-${item.style}-animated`" 
+                            :class="`btn-${item.style}-animated`"
                             data-usal="zoomin"
                         >
                             {{ item.text }}
@@ -21,15 +21,15 @@
                     </div>
                 </div>
                 <div class="col-md-7 order-0 order-md-1" data-usal="zoomin">
-                    <NuxtImg 
-                        loading="lazy" 
-                        format="webp" 
-                        :width="image.width" 
+                    <NuxtImg
+                        loading="lazy"
+                        format="webp"
+                        :width="image.width"
                         :height="image.height"
-                        class="img-fluid" 
-                        :class="image.class" 
-                        :src="image.src" 
-                        :alt="image.alt" 
+                        class="img-fluid"
+                        :class="image.class"
+                        :src="image.src"
+                        :alt="image.alt"
                     />
                 </div>
             </div>
@@ -57,7 +57,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/styles/variable";
+
 
 .container-fluid {
     background: url("/landing/features/language/header-bg.svg") no-repeat center;

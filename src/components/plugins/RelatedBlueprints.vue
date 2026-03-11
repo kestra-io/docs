@@ -67,7 +67,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .more {
         border-top: $block-border;

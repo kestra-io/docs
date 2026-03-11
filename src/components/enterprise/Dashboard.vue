@@ -110,7 +110,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .dashboard {
         margin-top: 4rem;
@@ -243,7 +243,7 @@
 
         .bottom-title {
             flex: 0 0 288px;
-            
+
             @include media-breakpoint-down(xl) {
                 flex: none;
                 width: 100%;
@@ -286,7 +286,7 @@
                         width: 100%;
                         padding: 1rem;
                         border-right: none !important;
-                        
+
                         &:not(:last-child) {
                             border-bottom: 1px solid var(--ks-border-primary);
                         }

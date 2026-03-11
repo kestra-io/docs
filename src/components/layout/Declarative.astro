@@ -1,35 +1,35 @@
 ---
-import { Icon } from "astro-icon/components";
+import { Icon } from "astro-icon/components"
 
 interface FeatureCard {
-    title: string;
-    description: string;
+    title: string
+    description: string
 }
 
 interface ListSection {
-    title: string;
-    items: string[];
+    title: string
+    items: string[]
 }
 
 interface Props {
     data: {
-        title: string;
-        highlightTitle: string;
-        featureCardsFirst: FeatureCard[];
-        featureCardsSecond: FeatureCard[];
+        title: string
+        highlightTitle: string
+        featureCardsFirst: FeatureCard[]
+        featureCardsSecond: FeatureCard[]
         coil: {
-            label: string;
-            list1: ListSection;
-            list2: ListSection;
+            label: string
+            list1: ListSection
+            list2: ListSection
             list3: {
-                title: string;
-                items: string[];
-            };
-        };
-    };
+                title: string
+                items: string[]
+            }
+        }
+    }
 }
 
-const { data } = Astro.props;
+const { data } = Astro.props
 ---
 
 <section class="main">
@@ -164,8 +164,6 @@ const { data } = Astro.props;
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .main {
         background: var(--ks-background-primary);
 

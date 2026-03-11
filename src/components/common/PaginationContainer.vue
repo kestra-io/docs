@@ -114,7 +114,7 @@
 </template>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
     .pagination-container {
         margin-top: 39px;
         .form-select {

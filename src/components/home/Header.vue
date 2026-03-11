@@ -183,7 +183,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .main-header {
         position: relative;

@@ -167,7 +167,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .wrapper {
         background-color: var(--ks-background-body);

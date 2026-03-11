@@ -15,7 +15,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .detail-content {
         text-align: center;

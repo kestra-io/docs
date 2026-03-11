@@ -30,7 +30,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .topology-root {
         width: 100%;

@@ -197,7 +197,6 @@ export default defineConfig({
                     __dirname,
                     "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
                 ),
-                "~": path.resolve("./src"),
             },
         },
         css: {
@@ -210,6 +209,8 @@ export default defineConfig({
                         "import",
                         "if-function",
                     ],
+                    // path to your scss variables
+                    additionalData: `@use "/src/assets/styles/variable.scss" as *;`,
                 },
             },
         },

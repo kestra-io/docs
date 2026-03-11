@@ -47,7 +47,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .docs-prev-next {
         display: flex;

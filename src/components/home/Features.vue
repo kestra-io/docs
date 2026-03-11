@@ -112,7 +112,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .features-bg {
         background-color: var(--ks-background-body);
