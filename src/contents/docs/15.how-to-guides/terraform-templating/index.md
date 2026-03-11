@@ -34,7 +34,7 @@ Below we will cover the creation of a single Terraform module and a subflow, and
     │   ├── airbyte/
     │   ├── dbt/
     │   ├── triggers/
-    │   ├── main.tf # Instanciate each folder (airbyte, dbt ...)
+    │   ├── main.tf # Instantiate each folder (airbyte, dbt ...)
     │   └── ...
     ├── modules/ # Terraform modules to be used in environments
     │   ├── airbyte_sync/
@@ -56,7 +56,7 @@ Inside a module, you can define a `main.tf` file that will define the resources 
 
 Let's create a module that will define a Kestra flow that will sync data from Airbyte.
 
-## tree structure of a terraform module :
+## Tree structure of a Terraform module
 
 ```
 .
@@ -239,7 +239,7 @@ It is now easy to instantiate the module in your `main.tf` file, and to expose o
 
 In case of changes in the way you want to implement the underlying tasks, you can easily modify the Terraform module without changing the interface (variables).
 
-## Sublfow example: query and display results for a given Postgres database
+## Subflow example: query and display results for a given Postgres database
 
 Subflows are a way to encapsulate logic and make it reusable across your codebase.
 
@@ -282,7 +282,7 @@ outputs:
   type: JSON
 ```
 
-You can either execute this sublow as is, or use it in another flow to avoid repeating the same logic.
+You can either execute this subflow as is, or use it in another flow to avoid repeating the same logic.
 
 Executing the subflow will prompt you to enter the SQL query you want to execute :
 
