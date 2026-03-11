@@ -164,7 +164,7 @@ kestra:
   ...
 ```
 
-The xample uses a file in the location `~/.gcp/workflow-orchestration-credentials.json` so make sure to change this to the location of your JSON file. It maps it to `/.gcp/credentials.json` inside the container, which we'll need to reference in the environment variable.
+The example uses a file in the location `~/.gcp/workflow-orchestration-credentials.json`, so make sure to change this to the location of your JSON file. It maps it to `/.gcp/credentials.json` inside the container, which we'll need to reference in the environment variable.
 
 After that, add an environment variable under `environment` called `GOOGLE_APPLICATION_CREDENTIALS`
 
@@ -251,8 +251,8 @@ services:
 
 ## Google App Passwords
 
-For some Google applications, like Gmail, you won't use a service account for authenticating. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has 2 factor authenication enabled. In this case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then go to **Security**. Select the **App Passwords** option and you'll be able to Generate a new one. This can be used where you'd put your normal password to connect it to Kestra.
+For some Google applications, such as Gmail, you won't use a service account for authentication. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has two-factor authentication enabled. In that case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then **Security**. Select the **App Passwords** option, and you'll be able to generate a new one. This can be used wherever you would normally enter your password to connect it to Kestra.
 
 :::alert{type="info"}
 If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
-::::
+:::
