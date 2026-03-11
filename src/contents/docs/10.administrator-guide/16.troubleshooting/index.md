@@ -183,7 +183,7 @@ kestra:
       path: /home/kestra/tmp
 ```
 
-Volume example:
+Example volume configuration:
 
 ```yaml
 volumes:
