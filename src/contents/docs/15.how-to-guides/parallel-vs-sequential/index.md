@@ -1,5 +1,5 @@
 ---
-title: Parallel vs. Sequential Tasks
+title: Choose Between Parallel and Sequential Tasks
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,8 +7,6 @@ topics:
 ---
 
 When to use parallel tasks and when to use sequential tasks in Kestra.
-
-## Parallel vs. Sequential Tasks
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/8sfCQyCRcP8?si=l-ZGBuEyllYNY2QY" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

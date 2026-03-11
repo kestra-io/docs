@@ -9,8 +9,6 @@ description: Discover how to extend Kestra by using its API to create flows, tri
 
 Extend Kestra by using the API.
 
-## Extend Kestra with the API
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/uf-b7r_38Zk?si=jytDjFPxqiomcveI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

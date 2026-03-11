@@ -143,7 +143,7 @@
         white-space: nowrap;
     }
     .category-tag {
-        background: var(--ks-backgroung-tag-category);
+        background: var(--ks-background-tag-category);
         color: var(--ks-content-tag-category);
         padding: 0.125rem 0.5rem;
         border-radius: 40px;
