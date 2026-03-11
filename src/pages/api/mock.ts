@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro"
 
+export const prerender = false
+
 const handler: APIRoute = async ({ request }) => {
     const method = request.method
     const requestUrl = new URL(request.url)
