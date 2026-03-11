@@ -1,5 +1,16 @@
 ---
 import Layout from "~/components/layout.astro"
+import Hero from "~/components/home/Hero.astro"
+import LogoBar from "~/components/home/LogoBar.astro"
+import Comparison from "~/components/home/Comparison.astro"
+import AdoptBanner from "~/components/home/AdoptBanner.astro"
+import FeatureCards from "~/components/home/FeatureCards.astro"
+import PlatformOverview from "~/components/home/PlatformOverview.astro"
+import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
+import Integrations from "~/components/home/Integrations.astro"
+import Testimonial from "~/components/home/Testimonial.astro"
+import DeploySection from "~/components/home/DeploySection.astro"
+import Blueprints from "~/components/home/Blueprints.astro"
 import EnterpriseSection from "~/components/home/EnterpriseSection.astro"
 import BlueprintsRender from "~/components/common/BlueprintsRender.astro"
 import CTA from "~/components/common/CTA.astro"
@@ -13,9 +24,17 @@ const blueprints = await $fetchApi<{ results: Blueprint[] }>(
 
 <Layout headerTheme="darkHeader">
     <div class="home-page">
-        <PluginsBox />
-        <BlueprintsRender blueprints={blueprints.results} />
-        <EnterpriseSection />
+        <Hero />
+        <LogoBar />
+        <Comparison />
+        <AdoptBanner />
+        <FeatureCards />
+        <PlatformOverview />
+        <UseCaseGrid />
+        <Integrations />
+        <Testimonial />
+        <DeploySection />
+        <Blueprints />
         <CTA />
     </div>
 </Layout>

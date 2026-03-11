@@ -1,0 +1,27 @@
+---
+import BlueprintCard from '../ui/BlueprintCard.astro';
+const blueprints = [
+  { title: 'dbt + Snowflake ELT',      tags: ['dbt', 'Snowflake'] },
+  { title: 'S3 to BigQuery ingestion', tags: ['AWS S3', 'BigQuery'] },
+  { title: 'Slack alert on failure',   tags: ['Slack', 'Monitoring'] },
+  { title: 'OpenAI batch processing',  tags: ['AI', 'OpenAI'] },
+  { title: 'GitHub Actions trigger',   tags: ['CI/CD', 'GitHub'] },
+  { title: 'Postgres CDC pipeline',    tags: ['Postgres', 'CDC'] },
+];
+---
+<section aria-labelledby="blueprints-heading">
+  <h2 id="blueprints-heading"><span>250+ Blueprints,</span> Ready to Build.</h2>
+  <ul role="list">
+    {blueprints.map(b => <BlueprintCard {...b} />)}
+  </ul>
+  <a href="/blueprints">Browse all blueprints</a>
+  <div>
+    <p>
+      Kestra gives you fewer tools to maintain, fewer scripts to debug,
+      fewer dependencies between teams, and one place to see what's running
+      across your company.
+    </p>
+    <a href="/get-started">Try for free</a>
+    <a href="/demo">Book a demo</a>
+  </div>
+</section>

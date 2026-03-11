@@ -1,0 +1,15 @@
+---
+interface Props {
+  title: string;
+  tags: string[];
+}
+const { title, tags } = Astro.props;
+---
+<li>
+  <article>
+    <h3>{title}</h3>
+    <ul role="list">
+      {tags.map(t => <li>{t}</li>)}
+    </ul>
+  </article>
+</li>
