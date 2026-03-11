@@ -74,7 +74,7 @@ Use kestra-ops to validate and deploy all flows in ./flows to prod.namespace wit
 
 ## Setup
 
-Install Kestra agent skills using [skills.sh](https://skills.sh) — it auto-detects your AI coding agent and places the skill files in the right location:
+The easiest way to install Kestra agent skills is with [skills.sh](https://skills.sh) — it auto-detects your AI coding agent and places the skill files in the right location:
 
 ```bash
 npx skills add kestra-io/agent-skills
@@ -82,7 +82,19 @@ npx skills add kestra-io/agent-skills
 
 This works with Claude Code, Cursor, Windsurf, OpenAI Codex, and other agents that support skill files. The CLI detects which agent you’re using and installs the `SKILL.md` files into the correct directory (e.g. `.claude/skills/` for Claude Code, `.cursor/rules/` for Cursor).
 
-You can also browse all available skills in the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository.
+### Manual installation
+
+You can also manually download skill files from the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository. Each skill is a `SKILL.md` file under `skills/<skill-name>/`.
+
+For example, to add the `kestra-ops` skill to Claude Code:
+
+```bash
+mkdir -p .claude/skills/kestra-ops
+curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/kestra-ops/SKILL.md \
+  -o .claude/skills/kestra-ops/SKILL.md
+```
+
+Repeat for any other skill you need (e.g. `kestra-flow`). Adjust the target directory for your agent — `.cursor/rules/` for Cursor, `.agents/skills/` for OpenAI Codex, etc.
 
 ## Example Workflows
 
