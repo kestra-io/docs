@@ -10,8 +10,6 @@ description: Integrate your web applications with Kestra using Webhook triggers 
 
 Integrate Kestra into your JavaScript App using Webhooks.
 
-## Connect Web Apps to Kestra
-
 With Kestra's API First Design, you can build web applications to integrate with Kestra acting as a backend server.
 
 This can be useful if you want a request from your website to be made and start a workflow execution to process orders. For example, you have an online shop where orders are made and you want Kestra to receive these orders and start processing them.
@@ -180,7 +178,7 @@ function App() {
 }
 ```
 
-Now our example will collect the data inside of the `input` field as `dataField` and send it in our request as a key value pair: `dataField: {the input value}`. For example, if I type "Hello" and press **Submit**, it will send the body `{dataField: "Hello"}`.
+Now our example will collect the data in the `input` field as `dataField` and send it in our request as a key value pair: `dataField: {the input value}`. For example, if I type "Hello" and press **Submit**, it will send the body `{dataField: "Hello"}`.
 
 ![js-final](./js-final.png)
 

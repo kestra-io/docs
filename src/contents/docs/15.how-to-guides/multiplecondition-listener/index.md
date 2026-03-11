@@ -1,5 +1,5 @@
 ---
-title: Multiple Condition Listener
+title: Use the MultipleCondition Listener
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -7,8 +7,6 @@ topics:
 ---
 
 How to set up a Flow to only trigger when multiple conditions are met.
-
-## Multiple Condition Listener
 
 In this tutorial, we’ll explore how to set up a flow in Kestra that only triggers when multiple conditions are met. Specifically, we will create a flow that only executes if two other flows, `multiplecondition-flow-a` and `multiplecondition-flow-b`, have executed successfully within the last 24 hours.
 

@@ -9,7 +9,7 @@ Understand the differences between Kestra's Open-Source and Enterprise Editions,
 
 Kestra's Open-Source Edition provides a foundation for workflow automation — it's best suited for solo-developers or small teams exploring workflow orchestration.
 
-The [Enterprise Edition](../07.enterprise/index.mdx) adds enterprise-grade security, scalability, and governance features required by organizations managing complex workflows across multiple teams or environments. It includes advanced authentication and access controls with SSO, SCIM & RBAC, multi-tenancy, high availability, dedicated secrets manager and storage backends per team, dedicated worker groups or on-demand remote task runners, audit logs, service accounts, apps, revision history for every resource, maintenance mode, log shipper, cluster monitoring, backup and restore, and dedicated support with SLAs. In short, everything you need for production deployments with strict compliance or reliability requirements is available in the Enterprise Edition.
+The [Enterprise Edition](../07.enterprise/index.mdx) adds enterprise-grade security, scalability, and governance features required by organizations managing complex workflows across multiple teams or environments. It includes advanced authentication and access controls with SSO, SCIM & RBAC, multi-tenancy, high availability, dedicated secrets manager and storage backends per team, dedicated worker groups or on-demand remote task runners, audit logs, service accounts, apps, revision history for every resource, maintenance mode, log shipper, cluster monitoring, backup and restore, dedicated support with SLAs, plus newer safeguards like assets packaging, versioned plugins, read-only secrets, plugin allow-listing, worker isolation, and built-in flow unit tests. In short, everything you need for production deployments with strict compliance or reliability requirements is available in the Enterprise Edition.
 
 ---
 
@@ -21,6 +21,8 @@ The Open-Source Edition supports basic authentication, suitable for one-person p
 
 For organizations using external [secrets managers](../07.enterprise/02.governance/secrets-manager/index.md) such as Azure Key Vault or HashiCorp Vault, Enterprise Edition integrates directly with these systems. [SCIM directory sync](../07.enterprise/03.auth/scim/index.mdx) automates user (de)provisioning at scale, reducing administrative overhead when onboarding or offboarding team members.
 
+Enterprise-only safeguards include [read-only secrets](../07.enterprise/02.governance/read-only-secrets/index.md) for least-privilege access and [allowed plugins](../07.enterprise/02.governance/allowed-plugins/index.md) to centrally control which plugins may run.
+
 ---
 
 ## Governance and Compliance
@@ -29,7 +31,7 @@ Enterprise Edition provides [audit logs](../07.enterprise/02.governance/06.audit
 
 [Multi-tenancy](../07.enterprise/02.governance/tenants/index.md) allows you to create fully isolated environments, e.g. separate tenants for specific [teams or business units](../14.best-practices/8.business-unit-separation/index.md). Each tenant can use separate secrets managers or dedicated internal storage backends (e.g., AWS S3 for Tenant A, GCS for Tenant B).
 
-[Worker Group](../07.enterprise/04.scalability/worker-group/index.md) ensures tasks from different tenants run on separate infrastructure, reducing the risk of resource contention or cross-tenant breaches. Encryption safeguards data at rest and in transit, meeting regulatory standards.
+[Worker Group](../07.enterprise/04.scalability/worker-group/index.md) ensures tasks from different tenants run on separate infrastructure, reducing the risk of resource contention or cross-tenant breaches. [Worker Isolation](../07.enterprise/02.governance/worker-isolation/index.md) adds hard isolation policies when you need stricter separation. Encryption safeguards data at rest and in transit, meeting regulatory standards.
 
 ---
 
@@ -45,6 +47,8 @@ Please note that Worker Groups are not yet available in Kestra Cloud, only in Ke
 
 [Maintenance Mode](../07.enterprise/05.instance/maintenance-mode/index.md) allows safe upgrades: new executions queue while in-progress tasks complete gracefully, avoiding abrupt workflow termination. [Cluster monitoring](../07.enterprise/05.instance/index.mdx) provides real-time visibility into resource usage, helping teams proactively address infrastructure bottlenecks. Additionally, using **Custom Dashboards**, you can create custom views to track specific metrics, logs, or executions. The [Backup and Restore](../10.administrator-guide/backup-and-restore/index.md) eliminates the risk of data loss or corruption during upgrades, allowing you to recover from accidental deletions or system failures.
 
+[Versioned Plugins](../07.enterprise/05.instance/versioned-plugins/index.md) let you pin plugin versions per environment for safe rollouts, while the [Kill Switch](../07.enterprise/05.instance/kill-switch/index.md) can pause risky changes instantly. [Announcements](../07.enterprise/05.instance/announcements/index.md) provide in-product notifications for maintenance or policy updates.
+
 ---
 
 ## Productivity and Collaboration
@@ -56,6 +60,8 @@ Please note that Worker Groups are not yet available in Kestra Cloud, only in Ke
 **Impersonation** lets admins validate permissions by temporarily assuming a user’s role, which significantly helps with troubleshooting access management issues.
 
 [Apps](../07.enterprise/04.scalability/apps/index.md) turn workflows into user-friendly interfaces. A finance team can build a self-service tool for expense approvals, where non-technical stakeholders can submit requests via a form. Approved requests automatically trigger downstream tasks to process payments.
+
+[Assets](../07.enterprise/02.governance/01.assets/index.md) package reusable files and artifacts alongside flows, and [Unit Tests](../07.enterprise/02.governance/unit-tests/index.md) let teams validate flows early to prevent regressions.
 
 ---
 

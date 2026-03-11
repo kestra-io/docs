@@ -1,16 +1,14 @@
 ---
-title: Run Python inside of your Flows
+title: Run Python Inside Your Flows
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
   - Scripting
 ---
 
-Run Python code directly inside of your Flows and generate outputs.
+Run Python code directly in your flows and generate outputs.
 
-## Run Python inside of your Flows
-
-You can execute Python code inside of a flow by either writing your Python inline or by executing a `.py` file. You can also get outputs and metrics from your Python code too.
+You can execute Python code in a flow by either writing your Python inline or by executing a `.py` file. You can also get outputs and metrics from your Python code too.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/Xv16DUla6hA?si=sKYTpTJPL4p_MA1G" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -31,7 +29,7 @@ For more information, check out the [dedicated guide here](../python-dependencie
 
 ## Script Task
 
-If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly inside of your flow configuration. This allows you to keep everything in one place.
+If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly in your flow configuration. This allows you to keep everything in one place.
 
 ```yaml
 id: python_scripts
@@ -62,7 +60,7 @@ tasks:
       downloads = get_docker_image_downloads()
 ```
 
-You can also include expressions directly inside of your Python code too. In this example, an input is used inside of the Python method:
+You can also include expressions directly in your Python code. In this example, an input is used in the Python method:
 
 ```yaml
 id: python_scripts_expression_input

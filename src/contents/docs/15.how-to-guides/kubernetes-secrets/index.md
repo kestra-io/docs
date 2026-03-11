@@ -11,8 +11,6 @@ description: Learn how to pass secrets to your Kestra deployment via Helm Chart 
 
 How to add Kestra Secrets to your Helm Chart deployment.
 
-## Set Up Secrets from a Helm Chart
-
 :::alert{type="info"}
 Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../../07.enterprise/02.governance/secrets/index.md) functionality allowing you to securely store your secrets in an [external secret manager](../../07.enterprise/02.governance/secrets-manager/index.md) of your choice.
 :::
