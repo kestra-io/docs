@@ -19,7 +19,7 @@
                         <h2 data-usal="fade-r">{{ item.title }}</h2>
                         <p data-usal="fade-l">{{ item.description }}</p>
                         <Link
-                            href="/pricing#comparison-table"
+                            href="/pricing"
                             text="Compare All Plans"
                             class="btn btn-primary"
                             data-usal="zoomin"
