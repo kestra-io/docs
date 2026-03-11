@@ -47,6 +47,8 @@ When executed, it looks like this in Slack:
 
 ![slack](./slack.png)
 
+Use `errors` when you only want failure alerts. If you need different notifications for different final states such as `SUCCESS`, `FAILED`, or `WARNING`, use [`afterExecution`](../../05.workflow-components/20.afterexecution/index.md) instead.
+
 ## Subflows
 
 Copying that snippet into every flow is repetitive and hard to maintain. Instead, move the alerting logic into a Subflow and reference it from any workflow that needs alerts.
