@@ -97,9 +97,9 @@ If you want to add the environment variable to the `kestra` container section in
       SECRET_MYPASSWORD: bXlQcml2YXRlQ29kZQ==
 ```
 
-This secret can be used in a flow using the `{{ secret('MYPASSWORD') }}` syntax, and it will be base64-decoded during flow execution. Make sure to not include the prefix `SECRET_` when calling the `secret('MYPASSWORD')` function, as this prefix is only there in the environment variable definition to prevent Kestra from treating other system variables as secrets (for better performance and increased security).
+This secret can be used in a flow using the `{{ secret('MYPASSWORD') }}` syntax, and it will be base64-decoded during flow execution. Make sure not to include the prefix `SECRET_` when calling the `secret('MYPASSWORD')` function, as this prefix is only there in the environment variable definition to prevent Kestra from treating other system variables as secrets (for better performance and increased security).
 
-Lastly, if you want to reference any non_encoded environment variables in your flows definition, you can always use the syntax `{{envs.lowercase_environment_variable_key}}`.
+Lastly, if you want to reference any non-encoded environment variables in your flow definitions, you can always use the syntax `{{ envs.lowercase_environment_variable_key }}`.
 
 :::alert{type="warning"}
 Note that Kestra has built-in protection to prevent its logs from revealing any encoded secret you have defined.
