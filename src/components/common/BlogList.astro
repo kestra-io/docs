@@ -16,31 +16,43 @@ interface Props {
     headingId?: string
 }
 
-const { posts, title, headingId } = Astro.props;
+const { posts, title, headingId } = Astro.props
 
 const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",
-});
+})
 ---
 
 <div>
     <h2 id={headingId}>{title}</h2>
     <div class="list-of-posts">
-        {posts.map((post, index) => (
-            <>
-                {index > 0 && <hr />}
-                <a href={post.path} class="post-card">
-                    {post.image && <img src={post.image.src} class="card-img-left" alt={post.title} />}
-                    <div class="card-body">
-                        <div class="card-details">
-                            <span class="card-category">{post.category}</span>
-                            <span class="card-date">{dateTimeFormat.format(new Date(post.date))}</span>
+        {
+            posts.map((post, index) => (
+                <>
+                    {index > 0 && <hr />}
+                    <a href={post.path} class="post-card">
+                        {post.image && (
+                            <img
+                                src={post.image.src}
+                                class="card-img-left"
+                                alt={post.title}
+                            />
+                        )}
+                        <div class="card-body">
+                            <div class="card-details">
+                                <span class="card-category">
+                                    {post.category}
+                                </span>
+                                <span class="card-date">
+                                    {dateTimeFormat.format(new Date(post.date))}
+                                </span>
+                            </div>
+                            <p class="card-title">{post.title}</p>
                         </div>
-                        <p class="card-title">{post.title}</p>
-                    </div>
-                </a>
-            </>
-        ))}
+                    </a>
+                </>
+            ))
+        }
     </div>
 </div>
 
@@ -66,13 +78,13 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
             display: flex;
             gap: 1rem;
             align-items: start;
-            padding: 0.5rem 0;
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            // compensate the padding to get alignment with title
+            margin-left: -0.5rem;
 
             &:hover {
-                background-image: radial-gradient(circle, color-mix(in srgb, var(--ks-content-link), transparent 70%) 0%, #13172500 30%);
-                background-position: -280px center;
-
-                background-repeat: no-repeat;
+                background-color: var(--ks-background-secondary);
             }
 
             .card-img-left {
@@ -82,7 +94,6 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                 border-radius: 0.25rem;
                 border: 1px solid var(--ks-border-secondary);
             }
-
 
             .card-body {
                 display: flex;
@@ -96,11 +107,9 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                         margin-right: 1rem;
                     }
 
-
                     .card-date {
                         color: var(--ks-content-tertiary);
                     }
-
                 }
 
                 .card-title {
