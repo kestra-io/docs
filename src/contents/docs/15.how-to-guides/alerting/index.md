@@ -47,13 +47,15 @@ When executed, it looks like this in Slack:
 
 ![slack](./slack.png)
 
+Use `errors` when you only want failure alerts. If you need different notifications for different final states such as `SUCCESS`, `FAILED`, or `WARNING`, use [`afterExecution`](../../05.workflow-components/20.afterexecution/index.md) instead.
+
 ## Subflows
 
-Copying that snippet into every flow is repetitive and hard to maintain. Instead, move the alerting logic into a Subflow and reference it from any workflow that needs alerts.
+Copying that snippet into every flow is repetitive and hard to maintain. Instead, move the alerting logic into a subflow and reference it from any workflow that needs alerts.
 
-Move the `errors` tasks into their own Subflow so the `errors` block only calls that subflow. Update the alert logic once and every consumer benefits.
+Move the `errors` tasks into their own subflow so the `errors` block only calls that subflow. Update the alert logic once and every consumer benefits.
 
-Subflow which contains the alert logic:
+Subflow containing the alert logic:
 
 ```yaml
 id: slack_alert
@@ -66,7 +68,7 @@ tasks:
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
 
-Parent flow which only calls the Subflow when an error occurs:
+Parent flow that calls the subflow only when an error occurs:
 
 ```yaml
 errors:
@@ -76,9 +78,9 @@ errors:
     namespace: system
 ```
 
-## Flow Trigger
+## Flow trigger
 
-Subflows cut down on duplication, but you still need the `errors` block in every flow. For a fully centralized approach, use a **Flow trigger** that reacts to execution status. Trigger conditions let you target specific states (for example, FAILED or WARNING), and you can define separate triggers per status if needed.
+Subflows cut down on duplication, but you still need the `errors` block in every flow. For a fully centralized approach, use a **Flow trigger** that reacts to execution status. Trigger conditions let you target specific states, such as `FAILED` or `WARNING`, and you can define separate triggers per status if needed.
 
 ```yaml
 id: failure_alert_slack
