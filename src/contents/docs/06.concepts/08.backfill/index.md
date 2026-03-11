@@ -110,7 +110,7 @@ Check out the [API Reference](../../api-reference/02.open-source/index.mdx) for 
 :::badge{version=">=0.15" editions="EE,Cloud"}
 :::
 
-For Enterprise and Cloud users, the same process as above can be done with [Service Accounts](../../07.enterprise/03.auth/service-accounts/index.md), so no human user needed to be involved. In this case, you must specify the Tenant to use in the request header and definition: `X-KESTRA-TENANT` and `tenantId`. In the example we use a Tenant named `production`.
+For Enterprise and Cloud users, the same process as above can be done with [Service Accounts](../../07.enterprise/03.auth/service-accounts/index.md), so no human user needs to be involved. In this case, you must specify the Tenant to use in the request header and definition: `X-KESTRA-TENANT` and `tenantId`. In the example, we use a Tenant named `production`.
 
 ```sh
 curl -X PUT http://localhost:8080/api/v1/main/triggers \

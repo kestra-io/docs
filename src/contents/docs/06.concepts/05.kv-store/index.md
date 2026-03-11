@@ -88,7 +88,7 @@ You can create, read, update, and delete KV pairs from the UI in the following w
 
 ### Update, Delete, and Copy KV pairs from the UI
 
-You can edit, delete, or copy any KV pair by clicking on the associated button on the right side of each KV pair. The copy option copies the [Pebble expression of the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY'') }}`) to use directly in your flow.
+You can edit, delete, or copy any KV pair by clicking on the associated button on the right side of each KV pair. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY') }}`) so you can use it directly in your flow.
 
 ![edit_delete_kv_pair](./edit_delete_kv_pair.png)
 
