@@ -74,59 +74,15 @@ Use kestra-ops to validate and deploy all flows in ./flows to prod.namespace wit
 
 ## Setup
 
-Pick the skills you need from the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository — each skill is a `SKILL.md` file under `skills/<skill-name>/`. Download only the skills relevant to your workflow.
-
-The base URL for raw skill files is:
-
-```text
-https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/<skill-name>/SKILL.md
-```
-
-### Claude Code
-
-Download a skill into your project’s `.claude/skills/` directory. For example, to add `kestra-ops`:
+Install Kestra agent skills using [skills.sh](https://skills.sh) — it auto-detects your AI coding agent and places the skill files in the right location:
 
 ```bash
-mkdir -p .claude/skills/kestra-ops
-curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/kestra-ops/SKILL.md \
-  -o .claude/skills/kestra-ops/SKILL.md
+npx skills add kestra-io/agent-skills
 ```
 
-Repeat for any other skill you need (e.g. `kestra-flow`). To make skills available across all your projects, use `~/.claude/skills/` instead.
+This works with Claude Code, Cursor, Windsurf, OpenAI Codex, and other agents that support skill files. The CLI detects which agent you’re using and installs the `SKILL.md` files into the correct directory (e.g. `.claude/skills/` for Claude Code, `.cursor/rules/` for Cursor).
 
-See the [Claude Code Skills documentation](https://code.claude.com/docs/en/skills) for more details.
-
-### Cursor
-
-Copy the skill file into `.cursor/rules/`. For example, to add `kestra-ops`:
-
-```bash
-mkdir -p .cursor/rules
-curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/kestra-ops/SKILL.md \
-  -o .cursor/rules/kestra-ops.md
-```
-
-### OpenAI Codex
-
-Download a skill into your project’s `.agents/skills/` directory. For example, to add `kestra-ops`:
-
-```bash
-mkdir -p .agents/skills/kestra-ops
-curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/kestra-ops/SKILL.md \
-  -o .agents/skills/kestra-ops/SKILL.md
-```
-
-For personal skills available across all projects, use `~/.agents/skills/` instead. See the [Codex Skills documentation](https://developers.openai.com/codex/skills) for more details.
-
-### Other agents
-
-Clone the repository and point your agent to the skill files you need:
-
-```bash
-git clone https://github.com/kestra-io/agent-skills.git
-```
-
-Then reference `agent-skills/skills/kestra-ops/SKILL.md` or any other skill in your agent’s context or configuration.
+You can also browse all available skills in the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository.
 
 ## Example Workflows
 
