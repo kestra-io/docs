@@ -9,7 +9,7 @@
                 </h1>
                 <div class="d-flex align-items-center gap-3 cta" data-usal="zoomin">
                     <Link
-                        href="/pricing#comparison-table"
+                        href="/pricing"
                         text="Compare All Plans"
                         class="btn btn-secondary"
                     />
