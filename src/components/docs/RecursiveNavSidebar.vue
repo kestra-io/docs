@@ -191,7 +191,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .ks-collapse {
         transition: height 0.2s ease-in-out;

@@ -120,7 +120,7 @@
 </template>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .stacked {
         width: 100%;

@@ -76,7 +76,7 @@
 
     onMounted(() => {
         const sections = root.value?.querySelectorAll(".content-section")
-        
+
         observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -98,7 +98,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .scroll-spy {
         position: relative;

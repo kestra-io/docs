@@ -72,7 +72,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .subgroup-content {
         position: relative;

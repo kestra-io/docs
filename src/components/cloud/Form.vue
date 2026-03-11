@@ -171,7 +171,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .meeting-container {
         position: relative;

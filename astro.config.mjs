@@ -217,6 +217,7 @@ export default defineConfig({
                         "import",
                         "if-function",
                     ],
+                    additionalData: `@use "/src/assets/styles/variable" as *;`,
                 },
             },
         },
