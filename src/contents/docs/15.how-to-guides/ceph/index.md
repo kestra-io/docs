@@ -221,7 +221,7 @@ mc cat ceph/kestra-bucket/main/company/team/ceph_test_flow/...
 Expected:
 
 ```json
-{"message": "stored in Ceph"}%
+{"message": "stored in Ceph"}
 ```
 
 ---
