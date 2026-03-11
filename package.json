@@ -80,7 +80,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
     "sass": "^1.97.3",
-    "wrangler": "^4.71.0"
+    "wrangler": "^4.72.0"
   },
   "engines": {
     "node": ">= 14",
