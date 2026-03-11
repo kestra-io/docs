@@ -184,8 +184,9 @@ tasks:
 
 we can add a namespace file in the `company.team` namespace that mimics the format of the API request's return.
 
+`my-namespace-file-with-products.json` to add to the `company.team` namespace:
+
 ```json
-## my-namespace-file-with-products.json to add to company.team namespace
 {
   "Account": {
     "Account Name": "Firefly",
