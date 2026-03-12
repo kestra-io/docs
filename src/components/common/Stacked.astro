@@ -75,27 +75,29 @@ const CARDS = [
 ---
 
 <section class="stacked">
-            <div class="container">
-    {
-        showTitle ? (
-                <slot name="title">
-                    <h2 data-usal="fade-r">
-                        Built for
-                        <span class="highlight">Data</span>,
-                        <span class="highlight">Infrastructure</span>, and
-                        <span class="highlight">AI Teams</span>
-                    </h2>
-                </slot>
+    <div class="container">
+        {
+            showTitle ? (
+                <Fragment>
+                    <slot name="title">
+                        <h2 data-usal="fade-r">
+                            Built for
+                            <span class="highlight">Data</span>,
+                            <span class="highlight">Infrastructure</span>, and
+                            <span class="highlight">AI Teams</span>
+                        </h2>
+                    </slot>
 
-                <slot name="description">
-                    <p data-usal="fade-l">
-                        One orchestrator, many workflows. The platform stays the
-                        same, only the workflows change.
-                    </p>
-                </slot>
-        ) : null
-    }
-            </div>
+                    <slot name="description">
+                        <p data-usal="fade-l">
+                            One orchestrator, many workflows. The platform stays
+                            the same, only the workflows change.
+                        </p>
+                    </slot>
+                </Fragment>
+            ) : null
+        }
+    </div>
 
     {
         CARDS.map((card) => (
