@@ -1,11 +1,63 @@
-<section aria-labelledby="platform-heading">
+---
+import { Image } from "astro:assets"
+
+import agent from "./assets/overview/agent.png"
+import code from "./assets/overview/code.png"
+import eventDriven from "./assets/overview/event-driven.png"
+import governance from "./assets/overview/governance.png"
+
+const images = [
+    { src: code, alt: "Code workflows" },
+    { src: agent, alt: "Agent workflows" },
+    { src: eventDriven, alt: "Event-driven workflows" },
+    { src: governance, alt: "Governance workflows" },
+]
+---
+
+<section class="platform-overview" aria-labelledby="platform-heading">
     <h2 id="platform-heading">One Platform. All Your Workflows.</h2>
-    <figure>
-        <!-- <img
-      src="/images/platform-graphic.png"
-      alt="Kestra platform diagram showing unified workflow orchestration across data, infrastructure, and AI"
-      width="800"
-      height="500"
-    /> -->
+    <figure class="image-stack">
+        {
+            images.map(({ src, alt }, i) => (
+                <Image
+                    src={src}
+                    alt={alt}
+                    class="stack-image"
+                    style={`--i: ${i}`}
+                    loading="lazy"
+                />
+            ))
+        }
     </figure>
 </section>
+
+<style lang="scss">
+    .platform-overview {
+        text-align: center;
+        padding: 4rem 0;
+        background: white;
+        color: var(--hp-content-primary);
+    }
+
+    .image-stack {
+        position: relative;
+        margin: 4rem auto 0;
+        max-width: 900px;
+        height: 700px;
+        --stack-offset: -50px;
+        &:hover {
+            --stack-offset: -150px;
+        }
+    }
+
+    .stack-image {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 438px;
+        transform: translateX(-50%)
+            translateY(calc(var(--i) * var(--stack-offset, -50px))) scaleY(0.7)
+            skew(20deg) rotate(-9deg);
+        transition: transform 0.3s ease;
+    }
+</style>
