@@ -4,7 +4,7 @@ competitorName: Airflow
 
 intro:
   title: "Kestra vs. Apache Airflow 3: Orchestrate Your Stack, Not Just Your DAGs"
-  description: "Airflow schedules Python pipelines for data engineering teams. Kestra orchestrates workflows across your entire stack. One makes your data team more efficient. The other changes what's possible for your whole organization."
+  description: "Airflow schedules Python pipelines for data engineering teams. Kestra orchestrates workflows across your entire stack. One serves Python-native data teams. The other changes what's possible for your business."
 
 philosophy:
   mainTitle: Two Architectures, Two Philosophies
@@ -32,18 +32,18 @@ businessValue:
   competitor:
     title: Data Pipelines for Python Teams
     list:
-      - "Batch-first pipeline scheduling"
-      - "Python-only workflow definitions"
+      - "Schedule-first pipeline orchestration (event-driven features added in v3)"
+      - "Python workflow definitions (Bash/SQL via operators)"
       - "Data engineering scope"
       - "Limited multi-tenancy"
       - "Serves Python-native data teams"
     shadowColor: "#E8F5E9"
     bulletColor: "#4CAF50"
-  footerText: "Airflow works for Python-native teams with deep investment in the Airflow ecosystem. Kestra is the right choice if you need multi-language teams to contribute, event-driven execution beyond cron, or orchestration that spans data, infrastructure, and business workflows."
+  footerText: "Airflow works well for Python-native teams invested in the Airflow ecosystem, especially with Airflow 3's improved event-driven features and Task SDK. Kestra is the right choice if you need multi-language teams to contribute in YAML, event-driven execution as a first-class primitive, or orchestration that spans data, infrastructure, and business workflows."
 
 setupSpeed:
   title: Time to First Workflow
-  subtitle: "Airflow requires an API server, a separate DAG processor, a metadata database, and an executor—all configured, monitored, and scaled independently. Kestra takes the opposite approach: define orchestration in declarative YAML and run it in minutes."
+  subtitle: "Airflow's standalone command works for local development, but production deployments need an API server, DAG processor, metadata database, and executor configured separately. Kestra's single Docker Compose command stands up everything in a format that's already production-shaped."
   kestra:
     title:
       one: "~5"
@@ -59,16 +59,17 @@ setupSpeed:
     lang: sh
   competitor:
     title:
-      one: "~45"
+      one: "~30"
       two: Minutes
-    description: "Install core and providers separately. The webserver, API server, DAG processor, metadata DB, and executor all need to be configured, monitored, and scaled independently. Then start writing your DAGs in Python."
+    description: "The standalone command gets a dev instance running quickly, but on SQLite with no parallelism. Production requires installing providers, configuring the API server, DAG processor, metadata DB, and executor separately."
     shadowColor: "#E8F5E9"
     command: |
       pip install apache-airflow
       pip install apache-airflow-providers-standard
 
-      # Configure API server, DAG processor, metadata DB, executor
-      # Update Kubernetes manifests, Helm values, and monitoring
+      # Dev: airflow standalone (SQLite, no parallelism)
+      # Production: configure API server, DAG processor,
+      # metadata DB, and executor separately
       # Then write your DAGs in Python...
     lang: sh
 
@@ -99,8 +100,8 @@ easeOfUse:
           cron: "0 0 * * *"
     lang: yaml
   competitor:
-    title: "Airflow: Python knowledge required even for simple orchestration"
-    description: "Changing retry logic or scheduling means editing Python and redeploying. Non-Python contributors can't participate directly. Airflow is built for Python developers—everyone else is locked out."
+    title: "Airflow: Python knowledge required for workflow authoring"
+    description: "DAG definitions, retry logic, and scheduling are all Python code. Airflow can run Bash and SQL via operators, but modifying orchestration logic requires Python. Non-Python contributors can view runs in the UI but can't author or edit workflows directly."
     shadowColor: "#E8F5E9"
     code: |
       from airflow import DAG
@@ -129,7 +130,7 @@ visualPreview:
   kestra:
     description: "Orchestrate across data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, and message queues."
   competitor:
-    description: "Purpose-built for Python data pipeline scheduling. Not designed for infrastructure automation, business processes, or non-Python teams."
+    description: "Purpose-built for Python data pipeline scheduling. Airflow 3 adds event-driven Asset Watchers, but the core is schedule-driven. Infrastructure automation and business processes are possible via Python but not first-class use cases."
     shadowColor: "#E8F5E9"
 
 featureGrid:
@@ -140,10 +141,10 @@ featureGrid:
       competitor: Python DAGs
     - feature: Languages supported
       kestra: "Any (Python, SQL, R, Bash, Go, Node.js)"
-      competitor: Python (others via subprocess)
+      competitor: "Python-first (Bash/SQL via operators; multi-language Task SDK experimental)"
     - feature: Architecture
       kestra: Event-driven at core
-      competitor: Batch-first scheduler
+      competitor: "Schedule-first (event-driven Asset Watchers added in v3)"
     - feature: Assets and lineage
       kestra: Data and infrastructure assets
       competitor: Data assets only
@@ -155,13 +156,13 @@ featureGrid:
       competitor: API server + DAG processor + metadata DB + executor
     - feature: Self-service for non-engineers
       kestra: "✓ Kestra Apps"
-      competitor: Not designed for this
+      competitor: "UI is observability-focused, no self-service triggers"
     - feature: Human-in-the-loop
       kestra: "✓ Native task types"
-      competitor: Not designed for this
+      competitor: "Requires custom operator or external tooling"
     - feature: Infrastructure automation
       kestra: "✓ Native support"
-      competitor: Not designed for this
+      competitor: "Possible via Python operators, not a primary use case"
 
 socialProof:
   image:
@@ -179,7 +180,7 @@ socialProof:
     - value: "0"
       label: Pipeline failures
   cta:
-    text: "See how Apple's ML team moved from Airflow to Kestra"
+    text: "See how teams orchestrate at scale with Kestra"
     link: https://kestra.io/use-cases/stories
   theme: "var(--ks-special-green)"
 
@@ -189,9 +190,9 @@ platformStrengths:
     - title: No refactoring required
       description: "Bring existing Python scripts, SQL queries, and Shell commands. Kestra orchestrates them in YAML without wrapping them in decorators or operators. Your code stays portable and your team stays unblocked."
     - title: Orchestrate beyond data pipelines
-      description: "Data pipelines, infrastructure automation, and business processes run from one platform. Airflow is scoped to data pipeline orchestration for Python teams."
+      description: "Data pipelines, infrastructure automation, and business processes run from one platform. Airflow focuses on data pipeline orchestration. Infrastructure and business workflows are possible through Python operators but aren't first-class use cases."
     - title: Event-driven, not just scheduled
-      description: "Native triggers for S3, webhooks, Kafka, database changes, and API events. Workflows start when things happen, not when a cron schedule fires. Unlimited event-driven workflows in open source."
+      description: "Native triggers for S3, webhooks, Kafka, database changes, and API events. Airflow 3 added Asset Watchers for event-driven scheduling, but triggers in Kestra are first-class YAML declarations, not layered onto a schedule-first core. Unlimited event-driven workflows in open source."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job
@@ -208,7 +209,7 @@ decisionGuide:
     list:
       - "Your team is Python-native and invested in the Airflow ecosystem: custom operators, trained staff, institutional knowledge."
       - "You're running on managed services (MWAA, Cloud Composer) and are locked into the Airflow ecosystem."
-      - "Airflow's Python-only and batch-first constraints aren't blocking your roadmap."
+      - "Python-based DAG definitions and Airflow's scheduling model fit your team's workflow."
       - "You have significant custom operator libraries you'd need to rebuild elsewhere."
     shadowColor: "#E8F5E9"
     bulletColor: "#4CAF50"
@@ -217,7 +218,7 @@ commonQuestions:
   - question: How hard is it to migrate from Airflow to Kestra?
     answer: "Kestra doesn't require you to refactor your business logic. Bring existing Python scripts, SQL queries, and Shell commands as-is and define orchestration in YAML. Most teams start new workflows in Kestra and migrate existing pipelines incrementally, using Kestra's Airflow REST API trigger to keep both systems running until the cutover is complete."
   - question: I'm on Airflow 2 and evaluating whether to upgrade to Airflow 3 or switch to Kestra. How should I think about that decision?
-    answer: "Both paths require real work. Upgrading to Airflow 3 means removing SubDAGs, updating deprecated context variables, moving operators to the new providers package, and splitting your webserver into an API server and DAG processor—every change is Airflow-specific. Migrating to Kestra means extracting business logic from DAG files and defining orchestration in YAML; your Python, SQL, and Shell code stays unchanged and portable. The lift is similar. The difference is what you get at the end: Airflow 3 is the same scheduler with a modernized interface. Kestra opens orchestration to your full stack, in any language."
+    answer: "Both paths require real work. Upgrading to Airflow 3 means removing SubDAGs, updating deprecated context variables, moving operators to the new providers package, and splitting your webserver into an API server and DAG processor—every change is Airflow-specific. Migrating to Kestra means extracting business logic from DAG files and defining orchestration in YAML; your Python, SQL, and Shell code stays unchanged and portable. The lift is similar. The difference is what you get at the end: Airflow 3 modernizes the scheduler and adds event-driven features, but DAGs are still Python. Kestra lets any team member contribute workflows in YAML, with tasks running in Python, SQL, Bash, or any language in isolated containers."
   - question: I'm running Airflow on MWAA or Cloud Composer. How does that affect my options?
     answer: "Managed Airflow services mean you're on AWS or Google's upgrade timeline, not your own. Airflow 3 support on MWAA and Cloud Composer typically lags the open-source release by months. Kestra runs anywhere—Docker, Kubernetes, any cloud—and covers the same AWS, GCP, and Azure integrations you're already using."
   - question: Does Kestra support the same data pipeline use cases as Airflow?
@@ -229,7 +230,7 @@ commonQuestions:
   - question: What about Airflow's ecosystem of providers and operators?
     answer: "Kestra's 1200+ plugin library covers the same integrations as Airflow's provider ecosystem. Instead of Python operator classes, Kestra uses declarative plugin tasks in YAML. Your existing Python code runs directly in Script tasks without modification, and custom operator logic becomes a Script or HTTP task without any framework-specific wrapper."
   - question: How does Kestra's event-driven architecture differ from Airflow's?
-    answer: "Airflow is a batch-first scheduler. Sensors and Deferrable Operators add event-driven patterns, but they work around a schedule-centric core. Kestra is event-driven by default: webhooks, S3 and GCS uploads, Kafka and Pulsar messages, database changes, and API events trigger workflows instantly when they occur. Unlimited event-driven workflows are available in the open-source version."
+    answer: "Airflow was built as a schedule-first orchestrator. Airflow 3 adds Asset Watchers and event-driven scheduling, which is a real improvement. Kestra was built event-driven from the start: webhooks, S3 and GCS uploads, Kafka and Pulsar messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows are available in the open-source version."
   - question: How does Kestra handle multi-tenancy and access control compared to Airflow?
     answer: "Airflow's access control is coarse-grained—hard team boundaries typically require separate deployments. Kestra provides namespace isolation out of the box, with RBAC permissions, secrets, and execution history scoped per namespace. Enterprise deployments add SSO/SAML, audit logs for every execution, and tenant-level isolation across a single instance."
   - question: Airflow 3 introduced a new Task SDK that decouples task execution from the scheduler. How does Kestra's execution model compare?
