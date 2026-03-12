@@ -47,7 +47,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     section {
         z-index: 1;

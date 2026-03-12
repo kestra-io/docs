@@ -18,7 +18,11 @@ import GradientCard from "~/components/card/GradientCard.vue"
                 class="btn btn-md btn-secondary">Get Started</a
             >
         </GradientCard>
-        <GradientCard client:visible class="side-box side-box-purple" data-usal="fade-up">
+        <GradientCard
+            client:visible
+            class="side-box side-box-purple"
+            data-usal="fade-up"
+        >
             <Image src={LogoCTA} alt="CTA" class="logo-cta" />
             <p class="pre-title">Schedule a meeting</p>
             <h4>Let's meet</h4>
@@ -32,8 +36,6 @@ import GradientCard from "~/components/card/GradientCard.vue"
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .wrapper {
         background: var(--ks-background-tertiary);
         padding: 60px 0 16px;

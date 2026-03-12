@@ -48,7 +48,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     section {
         padding: 0 $rem-1;

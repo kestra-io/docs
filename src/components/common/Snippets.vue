@@ -50,7 +50,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .code-card {
         position: relative;

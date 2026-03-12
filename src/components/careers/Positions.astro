@@ -36,7 +36,8 @@ const { positions } = Astro.props
                                     />
                                     <span>{doc.title}</span>
                                     <span class="department-tag">
-                                        {doc.department?.name || doc.department?.externalName}
+                                        {doc.department?.name ||
+                                            doc.department?.externalName}
                                     </span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3 arrow-block">
@@ -61,8 +62,6 @@ const { positions } = Astro.props
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         li {
             a {

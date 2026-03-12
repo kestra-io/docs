@@ -60,7 +60,7 @@ const activeQuote = ref(0)
 </template>
 
 <style lang="scss" scoped>
-@import "~/assets/styles/variable";
+
 
 .wrapper {
     background-color: var(--ks-background-purple-light);

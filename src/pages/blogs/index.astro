@@ -37,10 +37,18 @@ const allExternalBlogs = await getCollection("externalBlogs")
 
 const externalNews = await Promise.all(
     allExternalBlogs
-        .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
+        .sort(
+            (a, b) =>
+                b.data.publicationDate.getTime() -
+                a.data.publicationDate.getTime(),
+        )
         .slice(0, 4)
         .map(async (entry) => {
-            const image = await getImage({ src: entry.data.image, format: "webp", width: 800 })
+            const image = await getImage({
+                src: entry.data.image,
+                format: "webp",
+                width: 800,
+            })
             return {
                 id: entry.id,
                 path: entry.data.link,
@@ -61,9 +69,15 @@ const internalBlogs = sortedBlogs.map((blog) => ({
 
 const allTutorialVideos = await getCollection("tutorialVideos")
 const tutorialVideoResults = allTutorialVideos
-    .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
+    .sort(
+        (a, b) =>
+            b.data.publicationDate.getTime() - a.data.publicationDate.getTime(),
+    )
     .slice(0, 3)
-    .map((v) => ({ ...v.data, publicationDate: v.data.publicationDate.toISOString() }))
+    .map((v) => ({
+        ...v.data,
+        publicationDate: v.data.publicationDate.toISOString(),
+    }))
 ---
 
 <Layout>
@@ -83,10 +97,7 @@ const tutorialVideoResults = allTutorialVideos
 </Layout>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .margin {
         margin-top: 44px;
     }
 </style>
-

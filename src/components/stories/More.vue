@@ -30,7 +30,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .more {
         padding: 2.5rem 1rem;

@@ -60,13 +60,13 @@
     const FeaturedBlocks = [
         {
             title: "Declarative",
-            description: 
+            description:
                 "Kestra’s declarative syntax in YAML offers a simple learning curve while enabling powerful orchestration. With both UI-based configuration and the ability to scale to complex use cases, Kestra ensures ease of use without sacrificing flexibility or control.",
             img: declarative,
         },
         {
             title: "Real Time & Event Driven",
-            description: 
+            description:
                 "Handle scheduled, real-time event-driven, and API-based workflows effortlessly. Support business-critical operations with real-time automation, ensuring your workflows adapt and scale to your needs.",
             img: realTime,
         },
@@ -74,7 +74,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .capabilities {
         .hero {
@@ -148,7 +148,7 @@
                         padding: 0;
                         text-align: center;
                         gap: $rem-1;
-                        
+
                         .info {
                             max-width: 100%;
                             padding: $rem-2 $rem-2 0;
