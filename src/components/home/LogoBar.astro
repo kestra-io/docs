@@ -1,10 +1,81 @@
-<section aria-label="Trusted by leading companies">
-  <p>Trusted by teams at</p>
-  <ul role="list">
-    <li>Bloomberg</li>
-    <li>JP Morgan</li>
-    <li>Apple</li>
-    <li>FILA</li>
-    <li>Toyota</li>
-  </ul>
+---
+const svgModules = import.meta.glob<string>("/src/assets/companies/*.svg", {
+    eager: true,
+    import: "default",
+})
+
+const logos = Object.entries(svgModules).map(([path, SvgComponent]) => ({
+    name: path.split("/").pop()!.replace(".svg", ""),
+    SvgComponent,
+}))
+---
+
+<section class="logo-bar" aria-label="Trusted by leading companies">
+    <div class="logo-bar-track-wrapper">
+        <div class="logo-bar-track">
+            {
+                [...logos, ...logos].map(({ name, SvgComponent }) => (
+                    <div class="logo-bar-item" aria-label={name}>
+                        <SvgComponent />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
 </section>
+
+<style lang="scss">
+    .logo-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 0;
+    }
+
+    .logo-bar-title {
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        color: var(--ks-content-primary);
+        margin-bottom: 1rem;
+    }
+
+    .logo-bar-track-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        padding: 2rem;
+    }
+
+    .logo-bar-track {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        width: max-content;
+        animation: scroll-right 120s linear infinite;
+    }
+
+    .logo-bar-item {
+        flex-shrink: 0;
+        height: 28px;
+        width: auto;
+        min-width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            height: 100%;
+            width: auto;
+            display: block;
+        }
+    }
+
+    @keyframes scroll-right {
+        0% {
+            transform: translateX(-50%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+</style>
