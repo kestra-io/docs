@@ -57,6 +57,19 @@ For non-sensitive configuration (e.g., hostnames, table names, feature flags), p
 
 ---
 
+## Credential types
+
+Credentials cover common server-to-server authentication patterns, including:
+
+- OAuth2 `client_credentials` (generic)
+- OAuth2 JWT Bearer extension grant (`jwt_bearer`, RFC 7523)
+- OAuth2 `private_key_jwt` (client authentication)
+- GitHub App
+
+Credentials can reference sensitive inputs via existing [Secrets](../../../06.concepts/04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../02.governance/read-only-secrets/index.md).
+
+---
+
 ## Example: Google service account with JWT Bearer
 
 The following example shows how to use a Google Cloud service account with an OAuth2 JWT Bearer credential in Kestra.
@@ -143,19 +156,6 @@ tasks:
 ```
 
 If the service account has the required permissions on the target project, the request should return `200` and the project metadata in the response body.
-
----
-
-## Credential types
-
-Credentials cover common server-to-server authentication patterns, including:
-
-- OAuth2 `client_credentials` (generic)
-- OAuth2 JWT Bearer extension grant (`jwt_bearer`, RFC 7523)
-- OAuth2 `private_key_jwt` (client authentication)
-- GitHub App
-
-Credentials can reference sensitive inputs via existing [Secrets](../../../06.concepts/04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../02.governance/read-only-secrets/index.md).
 
 ---
 
