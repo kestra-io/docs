@@ -1,0 +1,42 @@
+---
+
+---
+
+<section class="with-logo">
+    <slot />
+</section>
+
+<style lang="scss">
+    .with-logo {
+        padding-block: 140px;
+        background: var(--ks-background-primary-inverse)
+            url("~/assets/pricing/bg_price.webp") no-repeat bottom right / 65%
+            auto;
+        position: relative;
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            background-size: 100% auto;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -198px;
+            left: -44%;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(
+                90deg,
+                var(--ks-Color-gradient-1-inverse) 0%,
+                var(--ks-Color-gradient-1-inverse-2) 100%
+            );
+            filter: blur(32px);
+            transform: rotate(-3.02deg);
+            pointer-events: none;
+            z-index: 0;
+        }
+    }
+</style>
+
