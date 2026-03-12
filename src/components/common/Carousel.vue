@@ -41,6 +41,8 @@
 <style lang="scss" scoped>
     .carousel-container {
         position: relative;
+        margin: -1rem 0;
+
         .navigation {
             position: absolute;
             top: 50%;
@@ -48,7 +50,7 @@
             color: var(--ks-content-primary);
             border-radius: 50%;
             background-color: var(--ks-background-secondary);
-            z-index: 1;
+            z-index: 10;
             height: 44px;
             width: 44px;
             border: none;
@@ -69,6 +71,7 @@
         flex-wrap: nowrap;
         gap: 20px;
         overflow-x: auto;
+        padding: 1rem 0;
         scrollbar-width: none;
     }
 </style>

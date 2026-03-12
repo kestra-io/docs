@@ -1,9 +1,9 @@
 <template>
-    <div class="helpful text-center mt-5">
+    <div class="helpful">
         <p class="mb-0">Was this page helpful?</p>
         <div class="mt-2">
-            <div class="d-flex justify-content-center align-items-center gap-3 thumb">
-                <button class="btn btn-dark me-3" @click="openModal(true)">
+            <div class="thumb">
+                <button class="btn btn-dark" @click="openModal(true)">
                     <ThumbUpOutline />
                     Yes
                 </button>
@@ -140,23 +140,30 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .helpful {
-        padding: calc($spacer / 2) $spacer;
+        padding: .5rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-top: 1rem;
         p {
             font-weight: bold;
         }
         .thumb {
+            display: flex;
+            gap: 1rem;
             :deep(svg) {
                 color: var(--ks-content-link);
                 position: absolute;
                 bottom: -0.15rem;
             }
             .btn {
-                background-color: var(--ks-background-secondary);
-                border-color: var(--ks-border-secondary);
+                background-color: var(--ks-background-primary);
+                border-color: var(--ks-border-primary);
                 color: var(--ks-content-primary);
+                margin: 0;
             }
         }
     }

@@ -179,3 +179,7 @@ For additional configuration details, refer to dedicated [Secrets backend](../..
 :::alert{type="info"}
 If this feature is enabled some UI or flow execution capabilities may not work as expected. If unsure, contact support.
 :::
+
+### Default service account for SDK plugins
+
+Each tenant can define **default authentication credentials** used by [SDK-based plugins](/plugins/plugin-kestra). Configure this in the Tenant settings (API token or basic auth). [Namespaces](../07.namespace-management/index.md#default-service-account-for-sdk-plugins) can override it with their own default service account; otherwise the tenant-level default is used. If neither is set, SDK plugins require the properties to be defined in the tasks.

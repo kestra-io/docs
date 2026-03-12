@@ -1,5 +1,5 @@
 ---
-title: Synchronous Executions API
+title: Use the Synchronous Executions API
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -7,8 +7,6 @@ topics:
 ---
 
 Manage the Executions API Synchronously.
-
-## Synchronous Executions API
 
 There are many use cases where you may want to trigger the flow and get the flow's output in the API's response. In other words, you want the Executions API to behave synchronously.
 

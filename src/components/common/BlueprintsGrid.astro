@@ -1,0 +1,153 @@
+---
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import Link from "~/components/common/Link.astro"
+import Carousel from "~/components/common/Carousel.vue"
+
+interface Props {
+    title: string
+    blueprints: any[]
+    tags: any[]
+    link: {
+        href: string
+        text: string
+    }
+}
+
+const { title, blueprints, tags, link } = Astro.props
+
+const displayBlueprints = blueprints?.slice(0, 20) ?? []
+---
+
+<section class="blueprints-carousel">
+    <div class="container">
+        <h2 data-usal="fade-u delay-0 duration-400 ease-out" set:html={title} />
+
+        <div class="blueprints-container d-md-none">
+            <Carousel client:load>
+                {
+                    displayBlueprints.map((blueprint) => (
+                        <div class="card-wrapper">
+                            <BlueprintCard
+                                blueprint={blueprint}
+                                tags={tags}
+                                href={`/blueprints/${blueprint.id}`}
+                                client:visible
+                            />
+                        </div>
+                    ))
+                }
+            </Carousel>
+        </div>
+
+        <div class="blueprints-grid d-none d-md-block">
+            <div class="row">
+                {
+                    displayBlueprints.slice(0, 6).map((blueprint) => (
+                        <div
+                            class="col-lg-4 col-md-6 mb-3"
+                            data-usal="zoomin-u delay-0 duration-400 ease-out"
+                        >
+                            <BlueprintCard
+                                blueprint={blueprint}
+                                tags={tags}
+                                href={`/blueprints/${blueprint.id}`}
+                                client:visible
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div
+            class="align-self-end mt-4"
+            data-usal="fade-in delay-0 duration-400 ease-out"
+        >
+            <Link href={link.href} text={link.text} />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .blueprints-carousel {
+        width: 100%;
+        padding: 3rem 0;
+        background-image: url("~/assets/landing/infrastructure/grid.svg");
+        background-color: var(--ks-background-tertiary);
+
+        @include media-breakpoint-up(lg) {
+            padding: 4rem 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: $rem-1;
+            @include media-breakpoint-up(md) {
+                gap: $rem-2;
+            }
+            padding: 0 1rem;
+
+            @media (min-width: 576px) and (max-width: 768px) {
+                max-width: 768px;
+            }
+
+            h2 {
+                text-align: center;
+                :global(.gradient) {
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+
+            .blueprints-container {
+                width: 100%;
+
+                .card-wrapper {
+                    flex: 0 0 auto;
+                    width: 291px;
+                    max-width: 291px;
+                    padding: 0;
+                }
+
+                :global(.carousel-container) {
+                    margin: 0;
+
+                    :global(.navigation) {
+                        height: 35px;
+                        width: 35px;
+                        top: 46%;
+                        border: none;
+                    }
+
+                    :global(.navigation-left) {
+                        left: -0.5rem;
+                    }
+
+                    :global(.navigation-right) {
+                        right: -0.5rem;
+                    }
+
+                    :global(.carousel-content) {
+                        gap: 1rem;
+                        padding: 0;
+                    }
+                }
+            }
+
+            .blueprints-grid {
+                width: 100%;
+            }
+
+            .row {
+                width: 100%;
+
+                > * {
+                    padding-right: 8px;
+                    padding-left: 8px;
+                }
+            }
+        }
+    }
+</style>

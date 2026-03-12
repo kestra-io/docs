@@ -1,5 +1,5 @@
 ---
-title: Run Perl inside of your Flows
+title: Run Perl Inside Your Flows
 icon: /src/contents/docs/icons/perl.svg
 stage: Getting Started
 topics:
@@ -7,9 +7,7 @@ topics:
 description: Execute Perl scripts directly within your Kestra flows using Docker to process data or run automation tasks.
 ---
 
-Run Perl code directly inside of your Flows and generate outputs.
-
-## Run Perl inside of your Flows
+Run Perl code directly in your flows and generate outputs.
 
 There isn't an official Perl plugin but we can use the `Shell` `Commands` task to execute arbitrary commands inside a Docker container. We can also specify a container image that contains the necessary libraries to run the specific programming language.
 

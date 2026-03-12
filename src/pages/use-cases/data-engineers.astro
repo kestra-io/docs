@@ -1,7 +1,7 @@
 ---
 import Layout from "~/components/layout.astro"
 import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Blueprints from "~/components/common/BlueprintsRender.vue"
+import Blueprints from "~/components/common/BlueprintsRender.astro"
 import Capabilities from "~/components/use-cases/Capabilities.vue"
 import HeaderBox from "~/components/common/HeaderBox.vue"
 import Cards from "~/components/use-cases/Cards.astro"
@@ -89,7 +89,7 @@ const CAPABILITIES = [
         description="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses."
         cards={CARDS_DATA}
     />
-    <Blueprints {blueprints} client:visible />
+    <Blueprints {blueprints} />
     <Capabilities
         client:visible
         title="for Data Orchestration"

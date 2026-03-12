@@ -1,5 +1,5 @@
 ---
-title: Manage Python Dependencies
+title: Manage Python Dependencies in Kestra
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
@@ -7,9 +7,7 @@ topics:
 description: Learn various ways to manage Python dependencies in Kestra, including using pip, virtual environments, caching, and custom Docker images.
 ---
 
-Manage your Python dependencies inside of Kestra.
-
-## Manage Python Dependencies
+Manage your Python dependencies in Kestra.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/iZeDizdrpMI?si=af1byHzZcxvUL-DQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -45,7 +43,7 @@ tasks:
       Kestra.outputs({"total": total_revenue})
 ```
 
-By using a [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md), we can speed up the execution time so that our task isn't pulling a container image to run the task inside of a container.
+By using a [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md), we can speed up the execution time so that our task isn't pulling a container image to run the task in a container.
 
 ## Cache dependencies
 
@@ -89,7 +87,7 @@ tasks:
 
 ## Set Container Image with Docker Task Runner
 
-If we would prefer to run our task inside of a container, we can set our Task Runner to Docker and specify a container image with the appropriate dependencies bundled in. Our previous example used `pandas` which is bundled into the `ghcr.io/kestra-io/pydata:latest` available as one of the ready to go images on our [GitHub](https://github.com/orgs/kestra-io/packages?repo_name=examples).
+If we would prefer to run our task in a container, we can set our Task Runner to Docker and specify a container image with the appropriate dependencies bundled in. Our previous example used `pandas` which is bundled into the `ghcr.io/kestra-io/pydata:latest` available as one of the ready to go images on our [GitHub](https://github.com/orgs/kestra-io/packages?repo_name=examples).
 
 ```yaml
 id: container_image
@@ -154,7 +152,7 @@ tasks:
 
 ---
 
-You can also build packages directly inside of Kestra and then use that package between different flows in the same namespace. This works for zip files and wheels.
+You can also build packages directly in Kestra and then use that package between different flows in the same namespace. This works for zip files and wheels.
 
 Here's an example that generates a `.tar.gz` package:
 

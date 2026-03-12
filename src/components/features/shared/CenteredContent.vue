@@ -48,7 +48,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .centered-feature {
         background-color: var(--ks-background-body);

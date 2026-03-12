@@ -1,0 +1,153 @@
+---
+import { Icon } from "astro-icon/components"
+import Squared from "~/components/layout/Squared.vue"
+import TaskIcon from "~/components/common/TaskIcon.astro"
+
+const { page, tags: allTags = [] } = Astro.props
+
+const tags = allTags
+    .filter((tag: BlueprintTag) => page.tags?.includes(tag.id))
+    .map((tag: BlueprintTag) => tag.name)
+---
+
+<div class="header">
+    <Squared client:load>
+        <div class="wrapper">
+            <div class="left">
+                <nav class="breadcrumb">
+                    <a href="/" class="tertiary">Home</a>
+                    <Icon name="mdi:chevron-right" class="tertiary" />
+                    <a class="fw-bold" href="/blueprints">Blueprints</a>
+                </nav>
+
+                {
+                    page.includedTasks?.length > 0 && (
+                        <div class="tasks">
+                            {page.includedTasks.map((icon: string) => (
+                                <div class="task">
+                                    <div class="box">
+                                        <TaskIcon cls={icon} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )
+                }
+
+                <h1 class="title mb-0">{page.title}</h1>
+                {/* TODO: short description needed */}
+                <!-- <MDCParserAndRenderer
+                    content={page.shortDescription}
+                    class="description bd-markdown mb-0"
+                /> -->
+            </div>
+
+            <div class="right">
+                <span class="category">Categories</span>
+                {
+                    tags.length > 0 && (
+                        <div class="tags">
+                            {tags.map((tag: string) => (
+                                <span class="tag">{tag}</span>
+                            ))}
+                        </div>
+                    )
+                }
+            </div>
+        </div>
+    </Squared>
+</div>
+
+<style lang="scss">
+    .header :global(.container) {
+        max-width: 1520px !important;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2rem;
+        width: 100%;
+
+        @include media-breakpoint-up(xl) {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
+            @include media-breakpoint-up(xl) {
+                max-width: 891px;
+            }
+
+            .breadcrumb {
+                display: flex;
+                align-items: center;
+                font-size: $font-size-xs;
+                gap: 0.25rem;
+
+                a {
+                    color: var(--ks-content-primary);
+                    text-decoration: none;
+
+                    &.tertiary {
+                        color: var(--ks-content-tertiary);
+                    }
+                }
+
+                .tertiary {
+                    color: var(--ks-content-tertiary);
+                }
+            }
+
+            .tasks {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+
+                .box {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    padding: 5px;
+                    border-radius: 8px;
+                    border: $block-border;
+                    background-color: var(--ks-background-primary);
+                }
+            }
+        }
+
+        .right {
+            min-width: 210px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .category {
+                font-size: $font-size-md;
+                font-weight: 600;
+            }
+
+            .tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+
+                .tag {
+                    background: var(--ks-background-tag-category);
+                    color: var(--ks-content-tag-category);
+                    padding: 0.125rem 0.75rem;
+                    border-radius: 2rem;
+                    font-size: $font-size-xs;
+                    font-weight: 600;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+</style>

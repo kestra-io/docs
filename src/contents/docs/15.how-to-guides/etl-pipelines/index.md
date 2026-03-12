@@ -1,5 +1,5 @@
 ---
-title: ETL Pipelines in Kestra
+title: Build ETL Pipelines in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -7,8 +7,6 @@ topics:
 ---
 
 Build ETL pipelines in Kestra using DuckDB, Python and Task Runners.
-
-## ETL Pipelines in Kestra
 
 This tutorial demonstrates building different ETL pipelines in Kestra.
 

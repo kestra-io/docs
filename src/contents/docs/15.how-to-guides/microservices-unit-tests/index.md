@@ -1,5 +1,5 @@
 ---
-title: Safeguard Microservices With Unit Tests
+title: Safeguard Microservices with Unit Tests
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -9,8 +9,6 @@ editions: ["EE"]
 ---
 
 Build an automated guardrail that pings a microservice endpoint, alerts Slack when it fails, and runs only when its unit tests pass.
-
-## Safeguard Microservices With Unit Tests
 
 Modern microservices and API backends often expose health endpoints. With Kestra you can monitor those endpoints, write unit tests to validate the monitoring flow, and gate downstream automations on the test results. This guide walks through:
 

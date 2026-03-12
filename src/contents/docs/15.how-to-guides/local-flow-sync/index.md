@@ -1,5 +1,5 @@
 ---
-title: Local Flow Synchronization
+title: Synchronize Local Flows in Kestra
 icon: /src/contents/docs/icons/admin.svg
 stage: Getting Started
 topics:
@@ -9,8 +9,6 @@ description: Synchronize Kestra flows from a local directory to your development
 ---
 
 Sync Flows from a local directory.
-
-## Local Flow Synchronization
 
 How to synchronize flows from a local directory on a local development instance.
 

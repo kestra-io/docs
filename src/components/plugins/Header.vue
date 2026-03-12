@@ -121,7 +121,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .header-container {
         background: url("/landing/plugins/hero-plugin.webp") no-repeat center center / cover;

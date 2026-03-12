@@ -121,7 +121,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
     .pagination {
         li {
             margin-right: 0.5rem;

@@ -58,7 +58,12 @@
                         <div class="form-group">
                             <label for="country">Country <span class="required-field">*</span></label>
                             <select id="country" class="form-control" name="country" required>
-                                <option v-for="c in countryList" :key="c.code" :value="c.name" :selected="c.name === 'France'">
+                                <option
+                                    v-for="c in countryList"
+                                    :key="c.code"
+                                    :value="c.name"
+                                    :selected="c.name === 'France'"
+                                >
                                     {{ c.name }}
                                 </option>
                             </select>
@@ -66,10 +71,20 @@
 
                         <div class="form-group">
                             <label for="orchestration_needs">What are you automating ? (one sentence)</label>
-                            <textarea id="orchestration_needs" class="form-control" name="orchestration_needs" rows="2" />
+                            <textarea
+                                id="orchestration_needs"
+                                class="form-control"
+                                name="orchestration_needs"
+                                rows="2"
+                            />
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 mt-3"
+                        >
+                            Submit
+                        </button>
                     </form>
                 </div>
             </div>
@@ -189,13 +204,13 @@
             )
             message.value = isBlocked
                 ? "Please use a professional email address"
-                : error.response?.data?.message || "Form submission error"
+                : error.response?.data?.message ?? "Form submission error"
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .free-trial {
         overflow-x: hidden;
@@ -377,13 +392,23 @@
         }
 
         @keyframes successAppear {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes glowEffect {
-            0%, 100% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.1); }
-            50% { box-shadow: 0 0 25px rgba(76, 175, 80, 0.2); }
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(76, 175, 80, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(76, 175, 80, 0.2);
+            }
         }
     }
 </style>

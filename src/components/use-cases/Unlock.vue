@@ -34,17 +34,17 @@
             </div>
 
             <div class="unlock-cards d-lg-none">
-                <div 
-                    v-for="(left, _index) in content.leftContent" 
-                    :key="left.title" 
+                <div
+                    v-for="(left, _index) in content.leftContent"
+                    :key="left.title"
                     class="card"
                 >
                     <h4 class="content-title mb-2">{{ left.title }}</h4>
                     <h6 class="content-description">{{ left.description }}</h6>
                 </div>
-                <div 
-                    v-for="right in content.rightContent" 
-                    :key="right.title" 
+                <div
+                    v-for="right in content.rightContent"
+                    :key="right.title"
                     class="card"
                 >
                     <h4 class="content-title mb-2">{{ right.title }}</h4>
@@ -68,7 +68,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .unlock-section {
         text-align: center;
