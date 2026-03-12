@@ -56,7 +56,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .custom-details {
         .accordion-header {

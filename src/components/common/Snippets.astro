@@ -1,66 +1,61 @@
 ---
-import { Code } from 'astro-expressive-code/components';
-import { Icon } from "astro-icon/components";
+import { Code } from "astro-expressive-code/components"
+import { Icon } from "astro-icon/components"
 interface Props {
-    code: string;
-    lang?: any;
+    code: string
+    lang?: any
 }
 
-const {
-    code,
-    lang="bash",
-} = Astro.props as Props;
+const { code, lang = "bash" } = Astro.props as Props
 
-const lineCount = code.trim().split("\n").length;
-const isExpandable = lineCount > 12;
+const lineCount = code.trim().split("\n").length
+const isExpandable = lineCount > 12
 ---
 
-{code && (
-    <div class:list={["code-card", { "is-expandable": isExpandable }]}>
-        <div class="code-inner">
-            <div class="code-container">
-                <Code
-                    code={code}
-                    lang={lang}
-                    frame="none"
-                />
+{
+    code && (
+        <div class:list={["code-card", { "is-expandable": isExpandable }]}>
+            <div class="code-inner">
+                <div class="code-container">
+                    <Code code={code} lang={lang} frame="none" />
+                </div>
             </div>
-        </div>
 
-        {isExpandable && (
-            <button class="expand-trigger" data-lines={lineCount}>
-                <Icon name="mdi:dots-horizontal" class="icon" />
-                <span class="text">See all {lineCount} lines</span>
-            </button>
-        )}
-    </div>
-)}
+            {isExpandable && (
+                <button class="expand-trigger" data-lines={lineCount}>
+                    <Icon name="mdi:dots-horizontal" class="icon" />
+                    <span class="text">See all {lineCount} lines</span>
+                </button>
+            )}
+        </div>
+    )
+}
 
 <script>
     const initExpander = () => {
-        document.querySelectorAll(".code-card.is-expandable").forEach((card) => {
-            const btn = card.querySelector(".expand-trigger");
-            if (!btn) return;
+        document
+            .querySelectorAll(".code-card.is-expandable")
+            .forEach((card) => {
+                const btn = card.querySelector(".expand-trigger")
+                if (!btn) return
 
-            btn.addEventListener("click", () => {
-                const text = btn.querySelector(".text");
-                const lines = btn.getAttribute("data-lines");
-                if (text) {
-                    text.textContent = card.classList.toggle("is-expanded")
-                        ? "See less"
-                        : `See all ${lines} lines`;
-                }
-            });
-        });
-    };
+                btn.addEventListener("click", () => {
+                    const text = btn.querySelector(".text")
+                    const lines = btn.getAttribute("data-lines")
+                    if (text) {
+                        text.textContent = card.classList.toggle("is-expanded")
+                            ? "See less"
+                            : `See all ${lines} lines`
+                    }
+                })
+            })
+    }
 
-    initExpander();
-    document.addEventListener("astro:after-swap", initExpander);
+    initExpander()
+    document.addEventListener("astro:after-swap", initExpander)
 </script>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .code-card {
         position: relative;
         border: 1px solid var(--ks-border-primary);
@@ -106,7 +101,11 @@ const isExpandable = lineCount > 12;
         &.is-expandable {
             .code-inner {
                 max-height: 350px;
-                mask-image: linear-gradient(to bottom, var(--ks-background-primary) 70%, transparent 100%);
+                mask-image: linear-gradient(
+                    to bottom,
+                    var(--ks-background-primary) 70%,
+                    transparent 100%
+                );
             }
         }
 
@@ -153,4 +152,3 @@ const isExpandable = lineCount > 12;
         }
     }
 </style>
-

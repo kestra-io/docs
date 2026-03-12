@@ -16,10 +16,12 @@ const { stats } = Astro.props
 
 <section class="stats-section">
     <div class="stats-header container">
-        <h2 data-usal="fade-l">Unified Enterprise-Grade Orchestration Platform</h2>
+        <h2 data-usal="fade-l">
+            Unified Enterprise-Grade Orchestration Platform
+        </h2>
         <p class="mb-0" data-usal="fade-r">
-            Achieve in Days What Once Took Weeks,
-            with Complete Control at Every Step
+            Achieve in Days What Once Took Weeks, with Complete Control at Every
+            Step
         </p>
 
         {
@@ -35,19 +37,13 @@ const { stats } = Astro.props
                 </div>
             )
         }
-        <Link
-            href="/pricing#comparison-table"
-            class="btn btn-primary"
-            data-usal="zoomin"
-        >
+        <Link href="/pricing" class="btn btn-primary" data-usal="zoomin">
             Compare All Plans
         </Link>
     </div>
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .stats-section {
         padding: 7.5rem $rem-1 $rem-5;
         background: var(--ks-background-tertiary);
@@ -60,7 +56,8 @@ const { stats } = Astro.props
             display: flex;
             flex-direction: column;
 
-            h2, p {
+            h2,
+            p {
                 text-align: left;
             }
 

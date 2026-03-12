@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infra-AI Animation</title>
+  <style>
+
+    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body.paused * {
+      animation-play-state: paused !important;
+    }
+
+    body {
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: matrix(0.978148, 0.207912, -0.669131, 0.743145, 64, 0);
+    }
+
+    .card {
+      width: 360px;
+      height: 58px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.015);
+      opacity: 0;
+      transform: translateY(-12px);
+      will-change: opacity, transform, border-color, box-shadow
+    }
+
+    .card.trigger {
+      background: rgba(8, 233, 149, 0.025)
+    }
+
+    .badge {
+      position: absolute;
+      top: -9px;
+      left: 14px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #08E995;
+      background: #0a0a0c;
+      padding: 1px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(8, 233, 149, 0.2);
+      opacity: 0;
+      will-change: opacity
+    }
+
+    .icn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden
+    }
+
+    .icn svg {
+      width: 22px;
+      height: 22px
+    }
+
+    .lbl {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.01em;
+      will-change: color
+    }
+
+    .rt {
+      display: flex;
+      align-items: center;
+      min-width: 20px
+    }
+
+    .blt,
+    .chk {
+      opacity: 0;
+      will-change: opacity, transform
+    }
+
+    .blt svg {
+      width: 15px;
+      height: 15px
+    }
+
+    .chk svg {
+      width: 18px;
+      height: 18px
+    }
+
+    .chk .cp {
+      stroke-dasharray: 20;
+      stroke-dashoffset: 20
+    }
+
+    .cn {
+      height: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      opacity: 0;
+      position: relative;
+      will-change: opacity
+    }
+
+    .dt {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      will-change: background, transform
+    }
+
+    .pt {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #9041FF;
+      box-shadow: 0 0 6px rgba(144, 65, 255, 0.3);
+      opacity: 0;
+      top: 0;
+      will-change: top, opacity
+    }
+
+    .c0 {
+      animation: c0a 10s ease infinite
+    }
+
+    @keyframes c0a {
+
+      0%,
+      2% {
+        opacity: 0;
+        transform: translateY(-12px)
+      }
+
+      5% {
+        opacity: 0.4;
+        transform: translateY(0);
+        border-color: rgba(255, 255, 255, 0.08)
+      }
+
+      9%,
+      76% {
+        opacity: 1;
+        transform: translateY(0);
+        border-color: #08E995;
+        box-shadow: 0 0 16px rgba(8, 233, 149, 0.08), inset 0 0 8px rgba(8, 233, 149, 0.02)
+      }
+
+      88%,
+      100% {
+        opacity: 0;
+        transform: translateY(0);
+        box-shadow: none
+      }
+    }
+
+    .c0 .badge {
+      animation: b0 10s ease infinite
+    }
+
+    @keyframes b0 {
+
+      0%,
+      4% {
+        opacity: 0
+      }
+
+      9%,
+      76% {
+        opacity: 1
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c0 .lbl {
+      animation: l0 10s ease infinite
+    }
+
+    @keyframes l0 {
+
+      0%,
+      4% {
+        color: rgba(255, 255, 255, 0.3)
+      }
+
+      9%,
+      76% {
+        color: rgba(255, 255, 255, 0.88)
+      }
+
+      88%,
+      100% {
+        color: rgba(255, 255, 255, 0)
+      }
+    }
+
+    .c0 .blt {
+      animation: bt0 10s ease infinite
+    }
+
+    @keyframes bt0 {
+
+      0%,
+      7% {
+        opacity: 0;
+        transform: scale(0.5)
+      }
+
+      10%,
+      76% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .cn0 {
+      animation: cn0a 10s ease infinite
+    }
+
+    @keyframes cn0a {
+
+      0%,
+      12% {
+        opacity: 0
+      }
+
+      15%,
+      76% {
+        opacity: 1
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .cn0 .dt {
+      animation: d0a 10s ease infinite
+    }
+
+    @keyframes d0a {
+
+      0%,
+      14% {
+        background: rgba(255, 255, 255, 0.1);
+        transform: scale(1)
+      }
+
+      18% {
+        background: #9041FF;
+        transform: scale(1.5)
+      }
+
+      23%,
+      76% {
+        background: rgba(144, 65, 255, 0.3);
+        transform: scale(1)
+      }
+
+      88%,
+      100% {
+        background: rgba(255, 255, 255, 0)
+      }
+    }
+
+    .cn0 .dt:nth-child(2) {
+      animation-delay: 0.12s
+    }
+
+    .cn0 .dt:nth-child(3) {
+      animation-delay: 0.24s
+    }
+
+    .cn0 .pt {
+      animation: p0a 10s ease infinite
+    }
+
+    @keyframes p0a {
+
+      0%,
+      16% {
+        top: 2px;
+        opacity: 0
+      }
+
+      17% {
+        top: 2px;
+        opacity: 1
+      }
+
+      21% {
+        top: 26px;
+        opacity: 0
+      }
+
+      22%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c1 {
+      animation: c1a 10s ease infinite
+    }
+
+    @keyframes c1a {
+
+      0%,
+      12% {
+        opacity: 0;
+        transform: translateY(-10px);
+        border-color: rgba(255, 255, 255, 0.06);
+        box-shadow: none
+      }
+
+      15% {
+        opacity: 0.4;
+        transform: translateY(0);
+        border-color: rgba(255, 255, 255, 0.08)
+      }
+
+      22% {
+        opacity: 0.4;
+        border-color: rgba(255, 255, 255, 0.08);
+        box-shadow: none
+      }
+
+      25% {
+        opacity: 1;
+        border-color: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 0 20px rgba(144, 65, 255, 0.15), 0 0 6px rgba(144, 65, 255, 0.1), inset 0 0 8px rgba(144, 65, 255, 0.04)
+      }
+
+      30%,
+      76% {
+        opacity: 0.9;
+        border-color: rgba(255, 255, 255, 0.28);
+        box-shadow: 0 0 8px rgba(144, 65, 255, 0.05)
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c1 .lbl {
+      animation: l1a 10s ease infinite
+    }
+
+    @keyframes l1a {
+
+      0%,
+      14% {
+        color: rgba(255, 255, 255, 0)
+      }
+
+      15%,
+      22% {
+        color: rgba(255, 255, 255, 0.3)
+      }
+
+      25%,
+      76% {
+        color: rgba(255, 255, 255, 0.85)
+      }
+
+      88%,
+      100% {
+        color: rgba(255, 255, 255, 0)
+      }
+    }
+
+    .c1 .chk {
+      animation: k1 10s ease infinite
+    }
+
+    @keyframes k1 {
+
+      0%,
+      23% {
+        opacity: 0;
+        transform: scale(0.4)
+      }
+
+      26%,
+      76% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c1 .cp {
+      animation: cp1 10s linear infinite
+    }
+
+    @keyframes cp1 {
+
+      0%,
+      23% {
+        stroke-dashoffset: 20
+      }
+
+      27%,
+      100% {
+        stroke-dashoffset: 0
+      }
+    }
+
+    .cn1 {
+      animation: cn1a 10s ease infinite
+    }
+
+    @keyframes cn1a {
+
+      0%,
+      27% {
+        opacity: 0
+      }
+
+      30%,
+      76% {
+        opacity: 1
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .cn1 .dt {
+      animation: d1a 10s ease infinite
+    }
+
+    @keyframes d1a {
+
+      0%,
+      29% {
+        background: rgba(255, 255, 255, 0.1);
+        transform: scale(1)
+      }
+
+      33% {
+        background: #9041FF;
+        transform: scale(1.5)
+      }
+
+      38%,
+      76% {
+        background: rgba(144, 65, 255, 0.3);
+        transform: scale(1)
+      }
+
+      88%,
+      100% {
+        background: rgba(255, 255, 255, 0)
+      }
+    }
+
+    .cn1 .dt:nth-child(2) {
+      animation-delay: 0.12s
+    }
+
+    .cn1 .dt:nth-child(3) {
+      animation-delay: 0.24s
+    }
+
+    .cn1 .pt {
+      animation: p1a 10s ease infinite
+    }
+
+    @keyframes p1a {
+
+      0%,
+      31% {
+        top: 2px;
+        opacity: 0
+      }
+
+      32% {
+        top: 2px;
+        opacity: 1
+      }
+
+      36% {
+        top: 26px;
+        opacity: 0
+      }
+
+      37%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c2 {
+      animation: c2a 10s ease infinite
+    }
+
+    @keyframes c2a {
+
+      0%,
+      27% {
+        opacity: 0;
+        transform: translateY(-10px);
+        border-color: rgba(255, 255, 255, 0.06);
+        box-shadow: none
+      }
+
+      30% {
+        opacity: 0.4;
+        transform: translateY(0);
+        border-color: rgba(255, 255, 255, 0.08)
+      }
+
+      37% {
+        opacity: 0.4;
+        box-shadow: none
+      }
+
+      40% {
+        opacity: 1;
+        border-color: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 0 20px rgba(144, 65, 255, 0.15), 0 0 6px rgba(144, 65, 255, 0.1), inset 0 0 8px rgba(144, 65, 255, 0.04)
+      }
+
+      45%,
+      76% {
+        opacity: 0.9;
+        border-color: rgba(255, 255, 255, 0.28);
+        box-shadow: 0 0 8px rgba(144, 65, 255, 0.05)
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c2 .lbl {
+      animation: l2a 10s ease infinite
+    }
+
+    @keyframes l2a {
+
+      0%,
+      29% {
+        color: rgba(255, 255, 255, 0)
+      }
+
+      30%,
+      37% {
+        color: rgba(255, 255, 255, 0.3)
+      }
+
+      40%,
+      76% {
+        color: rgba(255, 255, 255, 0.85)
+      }
+
+      88%,
+      100% {
+        color: rgba(255, 255, 255, 0)
+      }
+    }
+
+    .c2 .chk {
+      animation: k2 10s ease infinite
+    }
+
+    @keyframes k2 {
+
+      0%,
+      38% {
+        opacity: 0;
+        transform: scale(0.4)
+      }
+
+      41%,
+      76% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c2 .cp {
+      animation: cp2 10s linear infinite
+    }
+
+    @keyframes cp2 {
+
+      0%,
+      38% {
+        stroke-dashoffset: 20
+      }
+
+      42%,
+      100% {
+        stroke-dashoffset: 0
+      }
+    }
+
+    .cn2 {
+      animation: cn2a 10s ease infinite
+    }
+
+    @keyframes cn2a {
+
+      0%,
+      42% {
+        opacity: 0
+      }
+
+      45%,
+      76% {
+        opacity: 1
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .cn2 .dt {
+      animation: d2a 10s ease infinite
+    }
+
+    @keyframes d2a {
+
+      0%,
+      44% {
+        background: rgba(255, 255, 255, 0.1);
+        transform: scale(1)
+      }
+
+      48% {
+        background: #9041FF;
+        transform: scale(1.5)
+      }
+
+      53%,
+      76% {
+        background: rgba(144, 65, 255, 0.3);
+        transform: scale(1)
+      }
+
+      88%,
+      100% {
+        background: rgba(255, 255, 255, 0)
+      }
+    }
+
+    .cn2 .dt:nth-child(2) {
+      animation-delay: 0.12s
+    }
+
+    .cn2 .dt:nth-child(3) {
+      animation-delay: 0.24s
+    }
+
+    .cn2 .pt {
+      animation: p2a 10s ease infinite
+    }
+
+    @keyframes p2a {
+
+      0%,
+      46% {
+        top: 2px;
+        opacity: 0
+      }
+
+      47% {
+        top: 2px;
+        opacity: 1
+      }
+
+      51% {
+        top: 26px;
+        opacity: 0
+      }
+
+      52%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c3 {
+      animation: c3a 10s ease infinite
+    }
+
+    @keyframes c3a {
+
+      0%,
+      42% {
+        opacity: 0;
+        transform: translateY(-10px);
+        border-color: rgba(255, 255, 255, 0.06);
+        box-shadow: none
+      }
+
+      45% {
+        opacity: 0.4;
+        transform: translateY(0);
+        border-color: rgba(255, 255, 255, 0.08)
+      }
+
+      52% {
+        opacity: 0.4;
+        box-shadow: none
+      }
+
+      55% {
+        opacity: 1;
+        border-color: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 0 20px rgba(144, 65, 255, 0.15), 0 0 6px rgba(144, 65, 255, 0.1), inset 0 0 8px rgba(144, 65, 255, 0.04)
+      }
+
+      60%,
+      78% {
+        opacity: 0.9;
+        border-color: rgba(255, 255, 255, 0.28);
+        box-shadow: 0 0 8px rgba(144, 65, 255, 0.05)
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c3 .lbl {
+      animation: l3a 10s ease infinite
+    }
+
+    @keyframes l3a {
+
+      0%,
+      44% {
+        color: rgba(255, 255, 255, 0)
+      }
+
+      45%,
+      52% {
+        color: rgba(255, 255, 255, 0.3)
+      }
+
+      55%,
+      78% {
+        color: rgba(255, 255, 255, 0.85)
+      }
+
+      88%,
+      100% {
+        color: rgba(255, 255, 255, 0)
+      }
+    }
+
+    .c3 .chk {
+      animation: k3 10s ease infinite
+    }
+
+    @keyframes k3 {
+
+      0%,
+      53% {
+        opacity: 0;
+        transform: scale(0.4)
+      }
+
+      56%,
+      78% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      88%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .c3 .cp {
+      animation: cp3 10s linear infinite
+    }
+
+    @keyframes cp3 {
+
+      0%,
+      53% {
+        stroke-dashoffset: 20
+      }
+
+      57%,
+      100% {
+        stroke-dashoffset: 0
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="flow">
+
+    <div class="card trigger c0">
+      <div class="badge">trigger</div>
+      <div class="icn" style="background:rgba(8,233,149,0.1)">
+        <svg viewBox="0 0 80 80" fill="none">
+          <defs>
+            <linearGradient id="tg" x1="73" y1="68" x2="12" y2="10" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#01000B" />
+              <stop offset="1" stop-color="#520188" />
+            </linearGradient>
+            <linearGradient id="ti" x1="30" y1="9" x2="60" y2="71" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#9041FF" />
+              <stop offset="0.62" stop-color="#F0CEFF" />
+              <stop offset="0.83" stop-color="#F1D3FF" />
+            </linearGradient>
+          </defs>
+          <rect width="80" height="80" rx="20" fill="url(#tg)" />
+          <path
+            d="M54.667 48.09H63L51.333 71V57.91H43L54.667 35V48.09ZM28.444 9V14.8H51.556V9H57.333V14.8H60.223C61.755 14.8 63.224 15.411 64.308 16.499C65.391 17.587 66 19.062 66 20.6V32.2H60.223V29.3H19.777V61.2H34.223V67H19.777C18.245 67 16.776 66.388 15.692 65.301C14.609 64.213 14 62.738 14 61.2V20.6C14 19.062 14.609 17.587 15.692 16.499C16.776 15.411 18.245 14.8 19.777 14.8H22.667V9H28.444Z"
+            fill="url(#ti)" />
+        </svg>
+      </div>
+      <span class="lbl">Nightly Audit</span>
+      <div class="rt">
+        <div class="blt"><svg viewBox="0 0 15 15">
+            <path d="M9 1L4.5 8H7.5L6 14L11.5 7H8.5L9 1Z" fill="#08E995" />
+          </svg></div>
+      </div>
+    </div>
+
+    <div class="cn cn0">
+      <div class="dt"></div>
+      <div class="dt"></div>
+      <div class="dt"></div>
+      <div class="pt"></div>
+    </div>
+
+    <div class="card c1">
+      <div class="icn" style="background:rgba(108,174,62,0.15)">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5 11.5L68.5 11.5L68.5 68.5L11.5 68.5L11.5 11.5Z"
+            fill="url(#paint0_linear_24343_22656_a)" />
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M54.3554 43.8062L54.6404 41.9522C57.0672 43.4 57.1128 44.0099 57.1085 44.0327C57.1028 44.037 56.6696 44.3747 54.3554 43.8062ZM39.8418 38.4866C39.8414 38.8617 39.6925 39.2213 39.4275 39.4868C39.1626 39.7523 38.8033 39.902 38.4282 39.9031C38.0522 39.9031 37.6915 39.7537 37.4256 39.4878C37.1597 39.2219 37.0103 38.8613 37.0103 38.4852C37.0103 38.1092 37.1597 37.7485 37.4256 37.4826C37.6915 37.2167 38.0522 37.0673 38.4282 37.0673C39.2077 37.0673 39.8418 37.7057 39.8418 38.4866ZM51.0551 56.0569C51.0551 56.2322 50.3498 56.4986 49.7299 56.738L49.0958 56.9803C48.4189 57.2496 47.618 57.4919 46.7174 57.6985C44.4716 58.22 41.3737 58.5321 38.4282 58.5321C30.5864 58.5321 26.4084 57.0943 26.4027 55.97L23.2648 30.8372C25.9709 32.9063 31.5298 34.2316 38.4282 34.2316C45.026 34.2316 51.7719 32.9534 54.9354 30.709L52.9889 43.42C48.8977 42.1745 43.8803 39.772 41.4008 38.5778L41.2511 38.5066L41.254 38.4852C41.254 36.9206 39.9857 35.6495 38.4282 35.6495C37.6776 35.6514 36.9585 35.951 36.4287 36.4827C35.8988 37.0144 35.6017 37.7346 35.6024 38.4852C35.6024 40.0484 36.8707 41.321 38.4282 41.321C39.4727 41.321 40.3762 40.741 40.865 39.8931C43.4385 41.13 48.5742 43.5853 52.7723 44.835L51.0551 56.0569ZM38.4296 22.8929C47.9429 22.8929 55.3259 25.5434 55.3786 27.8305L55.3444 28.0414C54.9596 30.2915 47.7178 32.8152 38.4296 32.8152C29.3268 32.8152 23.1679 30.357 22.9114 28.0058L22.89 27.8348C22.9228 25.4436 29.1557 22.8929 38.4282 22.8929L38.4296 22.8929ZM54.8713 40.446L56.7865 27.963C56.7879 27.926 56.795 27.8918 56.795 27.8547C56.795 23.8604 47.457 21.475 38.4282 21.475C28.6043 21.475 21.475 24.1583 21.475 27.8547L21.4793 27.9416L24.9962 56.0569C24.9962 59.7619 36.1853 59.95 38.4282 59.95C41.4734 59.95 44.6897 59.6251 47.0352 59.0807C47.9131 58.8847 48.7753 58.6237 49.6145 58.2998L50.2301 58.0619C51.4328 57.6044 52.4673 57.2097 52.4588 56.1652L54.1403 45.2155C55.0736 45.4406 55.846 45.5575 56.463 45.5575C57.2895 45.5561 57.8495 45.3537 58.1873 44.9476C58.3259 44.7866 58.426 44.5962 58.4801 44.3908C58.5341 44.1854 58.5407 43.9703 58.4993 43.762C58.3184 42.7916 57.1841 41.7599 54.8713 40.446Z"
+            fill="white" />
+          <defs>
+            <linearGradient id="paint0_linear_24343_22656_a" x1="11.5" y1="5711.5" x2="5711.5" y2="11.5"
+              gradientUnits="userSpaceOnUse">
+              <stop stop-color="#1B660F" />
+              <stop offset="1" stop-color="#6CAE3E" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="lbl">Check Hosts System</span>
+      <div class="rt">
+        <div class="chk"><svg viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="7.5" fill="rgba(8,233,149,0.08)" stroke="#08E995" stroke-width="1" />
+            <path class="cp" d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke="#08E995" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" fill="none" />
+          </svg></div>
+      </div>
+    </div>
+
+    <div class="cn cn1">
+      <div class="dt"></div>
+      <div class="dt"></div>
+      <div class="dt"></div>
+      <div class="pt"></div>
+    </div>
+
+    <div class="card c2">
+      <div class="icn" style="background:rgba(255,153,0,0.12)">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M36.7154 38.7478L47.8482 47.524L40.472 29.3303L36.7154 38.7478ZM40 11.5C24.2555 11.5 11.5 24.2555 11.5 40C11.5 55.7445 24.2555 68.5 40 68.5C55.7445 68.5 68.5 55.7445 68.5 40C68.5 24.2555 55.7445 11.5 40 11.5ZM53.7673 52.5988C53.7388 53.721 52.8125 54.6027 51.6886 54.5742C51.131 54.5742 50.7053 54.3604 50.1122 53.8777L35.4079 42.0021L30.4721 54.3604L26.2042 54.3604L38.6641 24.423C38.9615 23.6713 39.6758 23.1886 40.4827 23.2171C41.2522 23.1886 41.9772 23.6624 42.2462 24.423L53.5838 51.7171C53.6853 51.986 53.7691 52.2746 53.7691 52.5436C53.7691 52.5614 53.7673 52.5614 53.7673 52.5988Z"
+            fill="white" />
+        </svg>
+      </div>
+      <span class="lbl">Upload Output to S3</span>
+      <div class="rt">
+        <div class="chk"><svg viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="7.5" fill="rgba(8,233,149,0.08)" stroke="#08E995" stroke-width="1" />
+            <path class="cp" d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke="#08E995" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" fill="none" />
+          </svg></div>
+      </div>
+    </div>
+
+    <div class="cn cn2">
+      <div class="dt"></div>
+      <div class="dt"></div>
+      <div class="dt"></div>
+      <div class="pt"></div>
+    </div>
+
+    <div class="card c3">
+      <div class="icn" style="background:rgba(224,30,90,0.08)">
+        <svg viewBox="0 0 80 80" fill="none">
+          <path
+            d="M23.52 47.38c0 3.24-2.68 5.87-5.99 5.87s-5.99-2.63-5.99-5.87c0-3.24 2.68-5.87 5.99-5.87h5.99v5.87zm3-0c0-3.24 2.67-5.87 5.98-5.87s5.99 2.63 5.99 5.87v14.66c0 3.24-2.68 5.87-5.99 5.87s-5.98-2.63-5.98-5.87V47.38z"
+            fill="#E01E5A" />
+          <path
+            d="M32.5 23.82c-3.31 0-5.99-2.62-5.99-5.87s2.68-5.87 5.99-5.87 5.99 2.63 5.99 5.87v5.87H32.5zm0 2.98c3.31 0 5.99 2.62 5.99 5.87s-2.68 5.87-5.99 5.87H17.49c-3.31 0-5.99-2.63-5.99-5.87s2.68-5.87 5.99-5.87H32.5z"
+            fill="#36C5F0" />
+          <path
+            d="M56.48 32.67c0-3.24 2.68-5.87 5.99-5.87s5.99 2.63 5.99 5.87-2.68 5.87-5.99 5.87h-5.99v-5.87zm-2.99 0c0 3.24-2.68 5.87-5.99 5.87s-5.99-2.63-5.99-5.87V17.96c0-3.24 2.68-5.87 5.99-5.87s5.99 2.63 5.99 5.87v14.71z"
+            fill="#2EB67D" />
+          <path
+            d="M47.5 56.18c3.31 0 5.99 2.62 5.99 5.87s-2.68 5.87-5.99 5.87-5.98-2.63-5.98-5.87v-5.87h5.98zm0-2.93c-3.31 0-5.98-2.63-5.98-5.87s2.67-5.87 5.98-5.87h15.01c3.31 0 5.99 2.63 5.99 5.87s-2.68 5.87-5.99 5.87H47.5z"
+            fill="#ECB22E" />
+        </svg>
+      </div>
+      <span class="lbl">Send Slack Success</span>
+      <div class="rt">
+        <div class="chk"><svg viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="7.5" fill="rgba(8,233,149,0.08)" stroke="#08E995" stroke-width="1" />
+            <path class="cp" d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke="#08E995" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" fill="none" />
+          </svg></div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    window.addEventListener("message", (e) => {
+      if (e.data === "PAUSE") {
+        document.body.classList.add("paused");
+      }
+      if (e.data === "RESUME") {
+        document.body.classList.remove("paused");
+      }
+    });
+  </script>
+</body>
+
+</html>

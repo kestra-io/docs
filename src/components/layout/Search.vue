@@ -475,7 +475,7 @@
 </script>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
+
 
     #search-modal {
         .not-found-content {

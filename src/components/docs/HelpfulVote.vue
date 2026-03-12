@@ -140,7 +140,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .helpful {
         padding: .5rem 1rem;

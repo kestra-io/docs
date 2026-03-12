@@ -2,8 +2,8 @@
 import { Image } from "astro:assets"
 import Link from "~/components/common/Link.astro"
 import LogoCarousel from "~/components/common/LogoCarousel.astro"
-import badge from "~/assets/landing/infrastructure/new.png";
-import badgeMobile from "~/assets/landing/infrastructure/new-sm.png";
+import badge from "~/assets/landing/infrastructure/new.png"
+import badgeMobile from "~/assets/landing/infrastructure/new-sm.png"
 ---
 
 <section>
@@ -32,16 +32,22 @@ import badgeMobile from "~/assets/landing/infrastructure/new-sm.png";
             </h1>
             <p>
                 Standardize provisioning and Day 2 operations with less risk and
-                operational overhead. Get full visibility and control across all infrastructure workflows.
+                operational overhead. Get full visibility and control across all
+                infrastructure workflows.
             </p>
             <div class="d-flex gap-3 flex-column flex-lg-row">
-                <Link href="https://github.com/kestra-io/kestra" class="btn btn-primary text-white"
+                <Link
+                    href="https://github.com/kestra-io/kestra"
+                    class="btn btn-primary text-white"
                     >Try for free - 26k Github stars</Link
                 >
                 <Link href="/demo" class="btn btn-secondary">Book a demo</Link>
             </div>
             <hr />
-            <LogoCarousel title="Trusted by Leading Global Companies" inverted={false} />
+            <LogoCarousel
+                title="Trusted by Leading Global Companies"
+                inverted={false}
+            />
         </div>
         <div class="w-100 overflow-hidden gradient-border">
             <iframe
@@ -55,8 +61,6 @@ import badgeMobile from "~/assets/landing/infrastructure/new-sm.png";
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         position: relative;
         width: 100%;
@@ -176,5 +180,5 @@ import badgeMobile from "~/assets/landing/infrastructure/new-sm.png";
                 }
             }
         }
-    } 
+    }
 </style>

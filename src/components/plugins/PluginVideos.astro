@@ -3,7 +3,7 @@ interface Props {
     videos?: string[]
 }
 
-const { videos = [] } = Astro.props;
+const { videos = [] } = Astro.props
 
 const extractId = (url: string): string | null => {
     const match = url.match(
@@ -12,23 +12,24 @@ const extractId = (url: string): string | null => {
     return match?.[1] ?? null
 }
 
-const videoIds = videos.map(extractId).filter(Boolean) as string[];
+const videoIds = videos.map(extractId).filter(Boolean) as string[]
 ---
 
-{videoIds.length > 0 && (
-    <section id="see-it-in-action" class="videos">
-        <h4 class="videos__title">See it in action</h4>
+{
+    videoIds.length > 0 && (
+        <section id="see-it-in-action" class="videos">
+            <h4 class="videos__title">See it in action</h4>
 
-        <div class="row g-3">
-            {videoIds.map((videoId) => (
-                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
-                    <div class="video-embed">
-                        <iframe
-                            src={`https://www.youtube.com/embed/${videoId}`}
-                            title={`Video ${videoId}`}
-                            loading="lazy"
-                            frameborder="0"
-                            allow="
+            <div class="row g-3">
+                {videoIds.map((videoId) => (
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                        <div class="video-embed">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${videoId}`}
+                                title={`Video ${videoId}`}
+                                loading="lazy"
+                                frameborder="0"
+                                allow="
                                 accelerometer;
                                 autoplay;
                                 clipboard-write;
@@ -37,19 +38,18 @@ const videoIds = videos.map(extractId).filter(Boolean) as string[];
                                 picture-in-picture;
                                 web-share;
                             "
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen
-                        ></iframe>
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen
+                            />
+                        </div>
                     </div>
-                </div>
-            ))}
-        </div>
-    </section>
-)}
+                ))}
+            </div>
+        </section>
+    )
+}
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .videos {
         .videos__title {
             font-weight: 700;

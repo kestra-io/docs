@@ -19,7 +19,7 @@
                         <h2 data-usal="fade-r">{{ item.title }}</h2>
                         <p data-usal="fade-l">{{ item.description }}</p>
                         <Link
-                            href="/pricing#comparison-table"
+                            href="/pricing"
                             text="Compare All Plans"
                             class="btn btn-primary"
                             data-usal="zoomin"
@@ -76,7 +76,7 @@
 
     onMounted(() => {
         const sections = root.value?.querySelectorAll(".content-section")
-        
+
         observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -98,7 +98,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .scroll-spy {
         position: relative;

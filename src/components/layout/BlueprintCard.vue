@@ -45,10 +45,10 @@
     )
 
     const MAX_ICONS = 6
-    const visibleTasks = computed(() => 
+    const visibleTasks = computed(() =>
         (props.blueprint.includedTasks ?? []).slice(0, MAX_ICONS)
     )
-    const extraCount = computed(() => 
+    const extraCount = computed(() =>
         Math.max(0, (props.blueprint.includedTasks ?? []).length - MAX_ICONS)
     )
 
@@ -63,7 +63,7 @@
 </script>
 
 <style scoped lang="scss">
-@import "~/assets/styles/variable";
+
 
 .blueprint {
     height: 188px;

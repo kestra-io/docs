@@ -17,7 +17,8 @@ interface Props {
     }
 }
 
-const { logo, name, title, subtitle, heroImage, cta, metrics } = Astro.props.data
+const { logo, name, title, subtitle, heroImage, cta, metrics } =
+    Astro.props.data
 ---
 
 <div class="container-fluid">
@@ -83,8 +84,6 @@ const { logo, name, title, subtitle, heroImage, cta, metrics } = Astro.props.dat
 </div>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .container-fluid {
         background: url("/landing/usecases/cicd/bg.svg") no-repeat center;
         background-size: 100% 100%;

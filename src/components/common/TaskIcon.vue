@@ -19,7 +19,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .icon-wrapper {
         display: inline-block;

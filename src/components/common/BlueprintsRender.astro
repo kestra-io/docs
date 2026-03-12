@@ -7,22 +7,20 @@ const { blueprints } = Astro.props
 <section>
     <div class="container">
         <h1><span class="highlight">250+ Blueprints,</span> Ready to Build.</h1>
-        <p>Jump start your workflows with a growing library of workflow templates</p>
+        <p>
+            Jump start your workflows with a growing library of workflow
+            templates
+        </p>
     </div>
     <BlueprintsCarousel {blueprints} />
     <div class="button-container">
-        <a
-            href="/blueprints"
-            class="btn btn-lg btn-primary"
-        >
-        Explore Blueprints
-    </a>
+        <a href="/blueprints" class="btn btn-lg btn-primary">
+            Explore Blueprints
+        </a>
     </div>
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         background: var(--ks-background-tertiary);
         padding: 3rem 1.25rem;

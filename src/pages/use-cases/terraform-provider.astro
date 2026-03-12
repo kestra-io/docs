@@ -64,7 +64,7 @@ const MAIN_CONTENT = [
     {
         title: "Modularity in the Infrastructure Management",
         content:
-            "Kestra's Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our <a href=\"/docs/terraform\" class=\"text-decoration-underline link-offset-2\">documentation.</a>",
+            'Kestra\'s Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our <a href="/docs/terraform" class="text-decoration-underline link-offset-2">documentation.</a>',
         image: {
             src: "/terraform/overview/modular-resource-management-code.svg",
             alt: "modular resource management code svg",
@@ -78,7 +78,7 @@ const BENEFITS = [
     {
         title: "Reliable Deployments with Infrastructure as Code",
         content:
-            "Combine Kestra's orchestration capabilities with Terraform's infrastructure-as-code model. Provision resources in minutes for consistent, reproducible, and scalable workflows.<br /><a href=\"/use-cases/ci-cd\" class=\"text-decoration-underline link-offset-2\">Learn more</a>",
+            'Combine Kestra\'s orchestration capabilities with Terraform\'s infrastructure-as-code model. Provision resources in minutes for consistent, reproducible, and scalable workflows.<br /><a href="/use-cases/ci-cd" class="text-decoration-underline link-offset-2">Learn more</a>',
         image: {
             src: "/terraform/use-cases/reliable-deployments.svg",
             alt: "reliable deployments",
@@ -116,10 +116,15 @@ const BENEFITS = [
             }}
         />
 
-        <Cards title="Key <span class='highlight'>Features</span>" cards={CARDS_DATA} />
+        <Cards
+            title="Key <span class='highlight'>Features</span>"
+            cards={CARDS_DATA}
+        />
 
         <Alternation items={MAIN_CONTENT} />
-        <section style="background-color: var(--ks-background-body); color: var(--ks-content-primary);">
+        <section
+            style="background-color: var(--ks-background-body); color: var(--ks-content-primary);"
+        >
             <p class="text-center w-50 mx-auto mb-0 py-2">
                 The inherent modularity in both, Terraform and Kestra, allows
                 you to create reusable blocks of code. These can be shared
@@ -145,8 +150,6 @@ const BENEFITS = [
 </Layout>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .main {
         color: var(--ks-background-body);
     }
