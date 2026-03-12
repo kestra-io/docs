@@ -35,7 +35,7 @@ Use this rule of thumb:
 | A value created by one flow and reused later by another flow | KV Store | It is designed for runtime state shared across flows |
 | A value that changes during execution and must be updated programmatically | KV Store | Flows can read and write KV pairs dynamically |
 | Sensitive material used by a credential, such as a client secret or private key | Secrets | Credentials should reference secrets rather than embed raw secret values |
-| A non-sensitive setting such as region, endpoint, or bucket name | Task properties, variables, or plugin defaults | These are configuration values, not authentication objects |
+| A non-sensitive setting such as region, endpoint, or bucket name | Task properties, [variables](../../05.workflow-components/04.variables/index.md), or [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) | These are configuration values, not authentication objects |
 
 ## When to use credentials
 
@@ -58,7 +58,7 @@ Why credentials are the right choice here:
 Best practice:
 
 - Use credentials for managed authentication objects, not as a generic replacement for secrets.
-- Scope credentials at the namespace or tenant level based on the required reuse.
+- Scope credentials at the namespace or [tenant](../../07.enterprise/02.governance/tenants/index.md) level based on the required reuse. For multi-team setups, align that scope with your [namespace management](../../07.enterprise/02.governance/07.namespace-management/index.md) model.
 - Reference secrets inside credentials for client secrets, private keys, or certificates.
 
 For more details, see [Credentials](../../07.enterprise/03.auth/credentials/index.md).
@@ -80,14 +80,14 @@ Typical examples:
 Why secrets are the default for sensitive values:
 
 - They keep sensitive data out of flow YAML.
-- They can be managed centrally.
+- They can be managed centrally, including through an [external secrets manager](../../07.enterprise/02.governance/secrets-manager/index.md).
 - They reduce accidental exposure when flows are shared across teams.
 - They are the right source for secret values referenced by credentials and task properties.
 
 Best practice:
 
-- Store secrets at the lowest namespace level that still supports the required reuse.
-- Avoid placing broadly scoped secrets at the root namespace unless they truly need to be inherited everywhere.
+- Store secrets at the lowest [namespace](../../07.enterprise/02.governance/07.namespace-management/index.md) level that still supports the required reuse.
+- Avoid placing broadly scoped secrets at the root [namespace](../../07.enterprise/02.governance/07.namespace-management/index.md) unless they truly need to be inherited everywhere. If you need inheritance without allowing downstream edits, consider [read-only secrets](../../07.enterprise/02.governance/read-only-secrets/index.md).
 - Avoid logging secrets or transforming them in ways that could bypass masking.
 
 For more details, see [Secrets](../../06.concepts/04.secret/index.md) and [Best Practices for Secrets in Kestra](../9.secrets-management/index.md).
@@ -134,12 +134,12 @@ This is the preferred pattern when Kestra should mint or refresh tokens for you.
 
 ### Pattern 2: Secrets plus non-sensitive configuration
 
-Use secrets for the confidential part and task properties, variables, or plugin defaults for the rest.
+Use secrets for the confidential part and task properties, [variables](../../05.workflow-components/04.variables/index.md), or [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) for the rest.
 
 Example:
 
 - `password` from `secret('DB_PASSWORD')`
-- `host`, `port`, and `database` from variables or plugin defaults
+- `host`, `port`, and `database` from [variables](../../05.workflow-components/04.variables/index.md) or [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md)
 
 ### Pattern 3: Secret plus KV Store
 
@@ -150,11 +150,11 @@ Example:
 - API key from a secret
 - `last_processed_cursor` from the KV Store
 
-This is common in polling, ingestion, and synchronization flows.
+This is common in [polling triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), ingestion, and synchronization flows.
 
 ### Pattern 4: Plugin defaults plus secrets
 
-Use plugin defaults to centralize repeated connection settings, while referencing secrets for the sensitive fields.
+Use [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) to centralize repeated connection settings, while referencing secrets for the sensitive fields.
 
 This is often the cleanest approach for large teams because it reduces duplication without putting secret material in the flow body.
 
@@ -185,7 +185,7 @@ If yes, consider the **KV Store**.
 If yes, use **secrets**.
 
 5. Is the value stable non-sensitive configuration reused across many tasks?
-If yes, consider **plugin defaults**, variables, or namespace-level configuration.
+If yes, consider [**plugin defaults**](../../05.workflow-components/09.plugin-defaults/index.md), [variables](../../05.workflow-components/04.variables/index.md), or [namespace-level configuration](../../07.enterprise/02.governance/07.namespace-management/index.md).
 
 ## Summary
 
@@ -197,5 +197,5 @@ In most cases, the right answer is not one feature alone, but a combination:
 
 - credentials for token-based authentication
 - secrets for sensitive inputs
-- plugin defaults or variables for non-sensitive configuration
+- [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) or [variables](../../05.workflow-components/04.variables/index.md) for non-sensitive configuration
 - KV Store for changing state
