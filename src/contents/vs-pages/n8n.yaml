@@ -48,7 +48,7 @@ setupSpeed:
     title:
       one: "~5"
       two: Minutes
-    description: "Docker Compose up, open the UI, pick a Blueprint, run it. Your first workflow is a YAML file, the same format it'll be in six months when it's running across teams with retries, scheduling, and namespace isolation."
+    description: "Start with Docker Compose, open the UI, pick a Blueprint, and run it. Your first workflow is a YAML file, the same format it'll be in six months when it's running across teams with retries, scheduling, and namespace isolation."
     command: |
       curl -o docker-compose.yml \
       https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
@@ -61,7 +61,7 @@ setupSpeed:
     title:
       one: "~10"
       two: Minutes
-    description: "Docker run, open the visual editor, drag nodes, connect them. Fast to prototype. But workflows live in the browser by default, and moving them to version control requires the Enterprise tier."
+    description: "Start with a single Docker command, open the visual editor, and drag nodes together. Fast to prototype, but workflows live in the browser by default, and moving them to version control requires the Enterprise tier."
     shadowColor: "#FF9F7A"
     command: |
       docker run -it --rm \
