@@ -8,7 +8,7 @@ description: Reference guide for Kestra CLI commands to manage servers, flows, p
 
 Use `kestra` to interact with the Kestra server and database
 
-## Use the Kestra server CLI effectively
+## Use the Kestra server CLI effectively - AAA
 
 This page includes CLI commands and options for both Open Source and Enterprise editions. Enterprise-only operations are marked with (EE) where relevant.
 
@@ -22,10 +22,10 @@ The Kestra Server CLI (`kestra`) is not a separate tool to install. It is the sa
 
 To install Kestra first, follow one of these guides:
 
-- [Docker](../02.installation/02.docker/index.md)
-- [Docker Compose](../02.installation/03.docker-compose/index.md)
-- [Kubernetes](../02.installation/03.kubernetes/index.md)
-- [Standalone JAR](../02.installation/12.standalone-server/index.md)
+- [Docker](../../02.installation/02.docker/index.md)
+- [Docker Compose](../../02.installation/03.docker-compose/index.md)
+- [Kubernetes](../../02.installation/03.kubernetes/index.md)
+- [Standalone JAR](../../02.installation/12.standalone-server/index.md)
 
 Examples of the same CLI in each mode:
 
@@ -502,7 +502,7 @@ services:
 In production you might run a similar pattern either by:
 
 1. Running Kestra services on dedicated machines. For examples, running the webserver, the scheduler, and the executor on one VM and running one or more workers on other instances.
-2. Using Kubernetes and Helm charts. Read more about how to set these up [in the Kubernetes installation documentation](../02.installation/03.kubernetes/index.md).
+2. Using Kubernetes and Helm charts. Read more about how to set these up [in the Kubernetes installation documentation](../../02.installation/03.kubernetes/index.md).
 
 ---
 
