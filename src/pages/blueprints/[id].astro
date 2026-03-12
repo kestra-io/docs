@@ -2,15 +2,14 @@
 export const prerender = false
 import { $fetchApi } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
-import FooterContact from "~/components/layout/FooterContact.astro"
-import Header from "~/components/blueprints/Header.vue"
+import Header from "~/components/blueprints/Header.astro"
 import Detail from "~/components/blueprints/Detail.vue"
-import Related from "~/components/blueprints/Related.vue"
+import Related from "~/components/blueprints/Related.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
 
 const { id } = Astro.params
 
 let pageData: Blueprint
-let relatedBlueprints: Blueprint[] = []
 
 try {
     pageData = await $fetchApi<Blueprint>(`/blueprints/${id}/versions/latest`)
@@ -18,52 +17,76 @@ try {
     return Astro.redirect("/404")
 }
 
+const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
+const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+
+let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
+
 if (pageData.tags && pageData.tags.length > 0) {
-    const data = await $fetchApi<{ results: Blueprint[] }>(
-        `/blueprints/versions/latest?tags=${pageData.tags}`,
-    )
-    if (data) {
-        relatedBlueprints = data.results
-            .filter((b) => b.id !== pageData.id)
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 3)
+    const selectedTagIds = pageData.tags.slice(0, 2)
+
+    for (const tagId of selectedTagIds) {
+        const tag = tags.find((t) => t.id === tagId)
+        if (!tag) continue
+
+        const data = await $fetchApi<{ results: Blueprint[] }>(
+            `/blueprints/versions/latest?tags=${tagId}&size=10`,
+        )
+
+        if (data && data.results.length > 0) {
+            const rowBlueprints = data.results
+                .filter((b) => b.id !== pageData.id)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 6)
+
+            if (rowBlueprints.length > 0) {
+                relatedRows.push({
+                    id: tagId,
+                    title: `More <span class="highlight">${tag.name}</span> Blueprints`,
+                    blueprints: rowBlueprints,
+                })
+            }
+        }
     }
 }
-
-const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
-
-const tags = await $fetchApi(`/blueprints/versions/latest/tags`)
 
 const title = pageData.title
 const description = pageData.metaDescription
 ---
 
 <Layout title={title} description={description}>
-    <Header client:only page={pageData} graph={graph} slug={id} />
+    <Header page={pageData} slug={id} tags={tags} />
     <Detail
-        client:visible
+        client:only
         page={pageData}
         description={pageData.description}
         flow={pageData.flow}
-        tags={tags}
+        graph={graph}
     />
     {
-        relatedBlueprints.length > 0 && (
+        relatedRows.map((row) => (
             <Related
-                client:visible
-                relatedBlueprints={relatedBlueprints}
+                id={row.id}
+                title={row.title}
+                relatedBlueprints={row.blueprints}
                 tags={tags}
             />
-        )
+        ))
     }
-    <FooterContact
-        title="New to Kestra?"
-        subtitle="Use blueprints to kickstart your first workflows."
-        purple={{
-            text: "Get started with Kestra",
+    <SeeHow
+        cta={{
+            text: "Get started",
             href: "/docs/quickstart#start-kestra",
         }}
-        dark={null}
-    />
+    >
+        <Fragment slot="title">New to Kestra?</Fragment>
+        Use blueprints to kickstart your first workflows.
+    </SeeHow>
 </Layout>
 
+<style lang="scss">
+    :global(.content p) {
+        white-space: nowrap;
+        margin-bottom: 2rem;
+    }
+</style>

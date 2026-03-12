@@ -43,12 +43,12 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     section {
         padding: $rem-3 0;
         background-color: var(--ks-background-primary);
-        
+
         .outer {
             @include media-breakpoint-up(md) {
                 max-width: 933px;

@@ -1,25 +1,54 @@
 <template>
     <section>
         <div class="container">
-            <h2 class="text-center mb-4">Our contributors</h2>
+            <h2 class="text-center">Our contributors</h2>
             <div ref="topOfSection" />
-            <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
-                <template v-for="(contributor, index) in displayedContributors" :key="contributor.name">
-                    <a :href="'https://github.com/' + contributor.name" target="_blank"
-                        class="d-flex flex-column gap-3 align-items-center" data-usal="zoomin">
-                        <img width="90px" height="90px" loading="lazy" class="rounded-circle" :src="contributor.avatar"
-                            :alt="contributor.name" />
+            <div
+                v-if="contributors"
+                class="contributors d-flex flex-wrap justify-content-center"
+            >
+                <template
+                    v-for="(contributor, index) in displayedContributors"
+                    :key="contributor.name"
+                >
+                    <a
+                        :href="'https://github.com/' + contributor.name"
+                        target="_blank"
+                        class="d-flex flex-column gap-3 align-items-center"
+                        data-usal="zoomin"
+                    >
+                        <img
+                            width="90px"
+                            height="90px"
+                            loading="lazy"
+                            class="rounded-circle"
+                            :src="contributor.avatar"
+                            :alt="contributor.name"
+                        />
                         <p>{{ contributor.name }}</p>
                     </a>
                 </template>
             </div>
-            <div v-if="contributors && moreCount > 0" class="text-center mt-4">
-                <button v-if="!isExpanded" type="button" class="btn btn-animated btn-dark-animated"
-                    @click="isExpanded = true" data-usal="zoomin">
+            <div
+                v-if="contributors && moreCount > 0"
+                class="text-center mt-4"
+            >
+                <button
+                    v-if="!isExpanded"
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="isExpanded = true"
+                    data-usal="zoomin"
+                >
                     {{ moreCount }} more contributors
                 </button>
-                <button v-else type="button" class="btn btn-animated btn-purple-animated" @click="collapse"
-                    data-usal="zoomin">
+                <button
+                    v-else
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="collapse"
+                    data-usal="zoomin"
+                >
                     Show less
                 </button>
             </div>
@@ -102,25 +131,32 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     section {
-        padding: $rem-3 $rem-1;
+        padding: 7.5rem $rem-1;
+        background: var(--ks-background-secondary);
+
+        h2 {
+            margin-bottom: 3rem;
+        }
     }
-    
+
     .contributors {
         height: 100%;
         max-height: 100%;
         overflow: hidden;
         text-align: center;
-        padding: $spacer;
-        column-gap: 2rem;
-        row-gap: 4rem;
+        gap: 2rem;
         a {
             width: fit-content;
-            color: var(--ks-content-link);
+            color: var(--ks-content-primary);
+            text-decoration: none;
+            font-size: $font-size-md;
             img {
-                width: 100px;
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
             }
         }
     }

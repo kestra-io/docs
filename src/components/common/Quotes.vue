@@ -60,10 +60,9 @@ const activeQuote = ref(0)
 </template>
 
 <style lang="scss" scoped>
-@import "~/assets/styles/variable";
 
 .wrapper {
-    background-color: var(--ks-background-purple-light);
+    background: var(--ks-background-primary) linear-gradient(var(--ks-background-purple-light), var(--ks-background-purple-light));
     color: var(--ks-content-primary);
 
     .tabs {
@@ -71,6 +70,10 @@ const activeQuote = ref(0)
         justify-content: center;
         border-bottom: 1px solid var(--ks-border-secondary);
         margin: 0 auto;
+
+        @include media-breakpoint-down(sm) {
+            gap: 1rem;
+        }
 
         .tab {
             background: none;
@@ -86,8 +89,11 @@ const activeQuote = ref(0)
 
             :deep(svg) {
                 height: 1.5rem;
-                fill: var(--ks-content-primary);
-                transition: fill 0.3s ease;
+                transition: color 0.3s ease;
+
+                * {
+                    fill: currentColor;
+                }
             }
 
             &[aria-selected='true'],
@@ -100,7 +106,7 @@ const activeQuote = ref(0)
     }
 
     .content {
-        padding: 4rem;
+        padding: 2rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -115,6 +121,7 @@ const activeQuote = ref(0)
         }
 
         @include media-breakpoint-up(lg) {
+            padding: 4rem;
             flex-direction: row;
 
             .big-logo {
@@ -170,7 +177,11 @@ const activeQuote = ref(0)
             .small-logo {
                 :deep(svg) {
                     height: 2rem;
-                    fill: var(--ks-content-primary);
+                    color: var(--ks-content-primary);
+
+                    * {
+                        fill: currentColor !important;
+                    }
                 }
             }
         }
@@ -184,6 +195,11 @@ const activeQuote = ref(0)
         width: 70%;
         margin: 0 auto;
         padding: 1rem 0;
+
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+            gap: 1rem;
+        }
 
         .kpi {
             display: flex;

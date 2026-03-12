@@ -1,53 +1,40 @@
 <template>
     <Topology
-        class="topology-root"
+        class="topology-root w-100 h-100"
         :flow-graph="flowGraph"
-        :id="id"
+        :id="String(id)"
         :source="source"
         :enable-subflow-interaction="false"
+        :is-horizontal="false"
         :icon-component="TaskIcon"
     />
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { getCurrentInstance } from "vue"
+    import { Topology } from "@kestra-io/ui-libs"
     import TaskIcon from "~/components/common/TaskIcon.vue"
+
+    defineProps<{
+        flowGraph: any
+        source: string
+        id: string | number
+    }>()
+
     // Mock i18n for topology
     const currentInstance = getCurrentInstance()
     if (currentInstance) {
-        currentInstance.appContext.config.globalProperties.$t = (key) => key
-    }
-</script>
-
-<script>
-    import { Topology } from "@kestra-io/ui-libs"
-
-    export default {
-        components: { Topology },
-        props: {
-            flowGraph: {
-                type: Object,
-                required: true,
-                default: () => ({}),
-            },
-            source: {
-                type: String,
-                required: true,
-            },
-            id: {
-                type: [String, Number],
-                required: true,
-            },
-        },
+        currentInstance.appContext.config.globalProperties.$t = (key: string) =>
+            key
     }
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .topology-root {
         width: 100%;
-        height: calc($spacer * 19.875);
+        height: 100%;
     }
 
     :deep(.node-wrapper) {
@@ -85,7 +72,16 @@
         border: $container-border !important;
     }
 
+    :deep(.vue-flow) {
+        width: 100%;
+        height: 100%;
+    }
+
     :deep(.bg-white) {
         background-color: var(--ks-background-body) !important;
+    }
+
+    :deep(.text-color) {
+        color: var(--ks-content-primary) !important;
     }
 </style>

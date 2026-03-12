@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.0
+  version: 1.3.2
 tags:
 - name: Flows
   description: Flows api
@@ -5572,7 +5572,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_Dashboard_"
+                $ref: "#/components/schemas/PagedResults_DashboardController.DashboardResponse_"
     post:
       tags:
       - Dashboards
@@ -5597,7 +5597,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dashboard"
+                $ref: "#/components/schemas/DashboardController.DashboardResponse"
   /api/v1/{tenant}/dashboards/charts/export/to-csv:
     post:
       tags:
@@ -5725,7 +5725,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dashboard"
+                $ref: "#/components/schemas/DashboardController.DashboardResponse"
     put:
       tags:
       - Dashboards
@@ -5756,7 +5756,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dashboard"
+                $ref: "#/components/schemas/DashboardController.DashboardResponse"
     delete:
       tags:
       - Dashboards
@@ -18703,12 +18703,16 @@ components:
         count:
           type: integer
           format: int64
-    Dashboard:
+    DashboardController.DashboardResponse:
       required:
+      - deleted
       - id
       - title
       type: object
       properties:
+        tenantId:
+          pattern: "^[a-z0-9][a-z0-9_-]*"
+          type: string
         id:
           minLength: 1
           type: string
@@ -18723,6 +18727,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Chart_ChartOption_"
+        deleted:
+          type: boolean
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+        sourceCode:
+          type: string
     DashboardController.PreviewRequest:
       required:
       - chart
@@ -21401,7 +21415,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_Dashboard_:
+    PagedResults_DashboardController.DashboardResponse_:
       required:
       - results
       - total
@@ -21410,7 +21424,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/Dashboard"
+            $ref: "#/components/schemas/DashboardController.DashboardResponse"
         total:
           type: integer
           format: int64

@@ -1,5 +1,5 @@
 ---
-title: Configure Monitoring with Grafana & Prometheus
+title: Configure Monitoring with Grafana and Prometheus
 icon: /src/contents/docs/icons/grafana.svg
 stage: Intermediate
 topics:
@@ -9,8 +9,6 @@ description: Set up comprehensive monitoring for Kestra using Prometheus for met
 ---
 
 Set up Prometheus and Grafana for monitoring Kestra.
-
-## Configure Monitoring with Grafana & Prometheus
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4borr5sFTSg?si=q1z9mqLXI8arG0a5" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

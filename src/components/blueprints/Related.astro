@@ -1,0 +1,93 @@
+---
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import BlueprintNav from "~/components/blueprints/BlueprintNav.vue"
+
+const { relatedBlueprints, tags, title, id } = Astro.props
+
+const pageSize = 3
+
+const href = (blueprint: { id: number | string }) =>
+    `/blueprints/${blueprint.id}`
+---
+
+<section class="related-bp" data-id={id} data-page-size={pageSize}>
+    <div class="container">
+        <div class="header">
+            {
+                title ? (
+                    <h2 class="mb-0" set:html={title} />
+                ) : (
+                    <h2 class="mb-0">
+                        More related <span class="highlight">blueprints</span>
+                    </h2>
+                )
+            }
+
+            <BlueprintNav
+                client:load
+                items={relatedBlueprints}
+                pageSize={pageSize}
+                id={id}
+            />
+        </div>
+
+        <div class="row">
+            {
+                relatedBlueprints.map((blueprint: Blueprint, index: number) => (
+                    <div
+                        class="col-lg-4 col-md-6 mb-4 blueprint-card-wrapper"
+                        style={index >= pageSize ? "display: none;" : ""}
+                    >
+                        <BlueprintCard
+                            blueprint={blueprint}
+                            tags={tags}
+                            href={href(blueprint)}
+                        />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<script is:inline>
+    window.addEventListener("page-changed", (event) => {
+        const { startIndex, id } = event.detail
+        const section = document.querySelector(`.related-bp[data-id="${id}"]`)
+
+        if (!section) return
+
+        const pageSize = parseInt(section.dataset.pageSize)
+        const cards = section.querySelectorAll(".blueprint-card-wrapper")
+
+        cards.forEach((card, index) => {
+            card.style.display =
+                index >= startIndex && index < startIndex + pageSize
+                    ? "block"
+                    : "none"
+        })
+    })
+</script>
+
+<style lang="scss">
+    section.related-bp {
+        padding: $rem-3 $rem-1;
+        background-color: var(--ks-background-primary);
+
+        &:first-child {
+            padding-top: $rem-3;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+    }
+</style>

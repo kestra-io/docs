@@ -1,7 +1,11 @@
 ---
 import { Image } from "astro:assets"
 
-const { title = "Trusted by leading companies", centered, inverted = true } = Astro.props
+const {
+    title = "Trusted by leading companies",
+    centered,
+    inverted = true,
+} = Astro.props
 
 const COMPANIES = [
     "brainlab",
@@ -20,109 +24,108 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
 <div class:list={["logo-carousel", { centered }]}>
     {title && <span class:list={[{ "no-invert": !inverted }]}>{title}</span>}
     <div class="companies-container w-100 overflow-hidden">
-    <div class="companies d-flex align-items-center">
-        {
-            [...COMPANIES, ...COMPANIES].map((company, index) => (
-                <Image
-                    src={
-                        logos[
-                            `/src/assets/landing/infrastructure/companies/${company}.svg`
-                        ].default
-                    }
-                    alt={company}
-                    class:list={[
-                        "company-logo",
-                        { "d-lg-none": index >= COMPANIES.length },
-                        { "no-invert": !inverted }
-                    ]}
-                />
-            ))
-        }
+        <div class="companies d-flex align-items-center">
+            {
+                [...COMPANIES, ...COMPANIES].map((company, index) => (
+                    <Image
+                        src={
+                            logos[
+                                `/src/assets/landing/infrastructure/companies/${company}.svg`
+                            ].default
+                        }
+                        alt={company}
+                        class:list={[
+                            "company-logo",
+                            { "d-lg-none": index >= COMPANIES.length },
+                            { "no-invert": !inverted },
+                        ]}
+                    />
+                ))
+            }
+        </div>
     </div>
+
+    <style lang="scss">
+        .logo-carousel {
+            display: flex;
+            flex-direction: column;
+
+            &.centered {
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+
+                .companies-container .companies {
+                    @include media-breakpoint-up(lg) {
+                        justify-content: center;
+                        margin-left: 0;
+                        width: auto;
+                        animation: none;
+                    }
+                }
+            }
+        }
+
+        span {
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            color: var(--ks-content-primary);
+            margin-bottom: 1rem;
+
+            &.no-invert {
+                color: $white;
+            }
+        }
+
+        .companies-container {
+            @include media-breakpoint-down(sm) {
+                margin-top: 1rem;
+                -webkit-mask-image: linear-gradient(
+                    to right,
+                    transparent,
+                    black 10%,
+                    black 90%,
+                    transparent
+                );
+                mask-image: linear-gradient(
+                    to right,
+                    transparent,
+                    black 10%,
+                    black 90%,
+                    transparent
+                );
+            }
+
+            .companies {
+                @include media-breakpoint-up(sm) {
+                    gap: 2px;
+                    margin-left: -14px;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    gap: 2rem;
+                    width: max-content;
+                    animation: marquee 20s linear infinite;
+                }
+
+                .company-logo {
+                    flex-shrink: 0;
+                    object-fit: contain;
+
+                    :global(html.light) &:not(.no-invert) {
+                        filter: invert(1);
+                    }
+                }
+            }
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
 </div>
-
-<style lang="scss">
-    @import "~/assets/styles/variable";
-
-    .logo-carousel {
-        display: flex;
-        flex-direction: column;
-
-        &.centered {
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-
-            .companies-container .companies {
-                @include media-breakpoint-up(lg) {
-                    justify-content: center;
-                    margin-left: 0;
-                    width: auto;
-                    animation: none;
-                }
-            }
-        }
-    }
-
-    span {
-        font-family: $font-family-monospace;
-        font-size: $font-size-xs;
-        color: var(--ks-content-primary);
-        margin-bottom: 1rem;
-
-        &.no-invert {
-            color: $white;
-        }
-    }
-
-    .companies-container {
-        @include media-breakpoint-down(sm) {
-            margin-top: 1rem;
-            -webkit-mask-image: linear-gradient(
-                to right,
-                transparent,
-                black 10%,
-                black 90%,
-                transparent
-            );
-            mask-image: linear-gradient(
-                to right,
-                transparent,
-                black 10%,
-                black 90%,
-                transparent
-            );
-        }
-
-        .companies {
-            @include media-breakpoint-up(sm) {
-                gap: 2px;
-                margin-left: -14px;
-            }
-
-            @include media-breakpoint-down(lg) {
-                gap: 2rem;
-                width: max-content;
-                animation: marquee 20s linear infinite;
-            }
-
-            .company-logo {
-                flex-shrink: 0;
-                object-fit: contain;
-
-                :global(html.light) &:not(.no-invert) {
-                    filter: invert(1);
-                }
-            }
-        }
-    }
-
-    @keyframes marquee {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(-50%);
-        }
-    }
-</style>

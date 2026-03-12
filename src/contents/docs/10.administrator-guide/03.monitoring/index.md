@@ -66,7 +66,7 @@ Adding this single flow will ensure that you receive a Slack alert on any flow f
 ![alert notification](../../03.tutorial/06.errors/alert-notification.png)
 
 :::alert{type="warning"}
-Note that if you want this alert to be sent on failure across multiple namespaces, you will need to add an ``OrCondition`` to the ``conditions`` list. See the example below:
+Note that if you want this alert to be sent on failure across multiple namespaces, you will need to add an `OrCondition` to the `conditions` list. See the example below:
 ```yaml
 id: alert
 namespace: company.system
@@ -270,7 +270,7 @@ Check out the [Micronaut documentation](https://micronaut-projects.github.io/mic
 
 Kestra uses Elasticsearch to store all executions and metrics. Therefore, you can easily create a dashboard with [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) to monitor the health of your Kestra instance.
 
-We'd love to see what dashboards you will build. Feel free to share a screenshot or a template of your dashboard with [the community](/slack). Meanwhile, here is an example of a Grafana dashboard that we use internally to monitor Kestra - feel free to use it as a starting point for your own dashboard:
+We'd love to see what dashboards you will build. Feel free to share a screenshot or a template of your dashboard with [the community](/slack). Meanwhile, here is an example of a Grafana dashboard that we use internally to monitor Kestra. Feel free to use it as a starting point for your own dashboard:
 
 ![grafana](./grafana.png)
 

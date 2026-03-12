@@ -90,7 +90,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .video-responsive {
         display: flex;

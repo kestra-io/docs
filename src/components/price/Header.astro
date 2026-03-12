@@ -152,7 +152,7 @@ const CLOUD_PLAN = {
 }
 ---
 
-<Squared client:load>
+<Squared>
     <div class="content">
         <h1 class="title" data-usal="fade-r">Kestra Editions & Plans</h1>
         <p class="description" data-usal="fade-l">
@@ -174,9 +174,19 @@ const CLOUD_PLAN = {
                             class={`plan-card ${plan.name === "Enterprise" ? "enterprise" : ""} ${plan.name === "Open Source" ? "open-source" : ""}`}
                         >
                             <div class="card-header">
-                                <h2 class="plan-name" data-usal="fade-r">{plan.name}</h2>
-                                <div class="plan-subtitle" data-usal="fade-r delay-10">{plan.subtitle}</div>
-                                <div class="plan-description" data-usal="fade-r delay-20">
+                                <h2 class="plan-name" data-usal="fade-r">
+                                    {plan.name}
+                                </h2>
+                                <div
+                                    class="plan-subtitle"
+                                    data-usal="fade-r delay-10"
+                                >
+                                    {plan.subtitle}
+                                </div>
+                                <div
+                                    class="plan-description"
+                                    data-usal="fade-r delay-20"
+                                >
                                     {plan.description}
                                 </div>
                             </div>
@@ -186,9 +196,14 @@ const CLOUD_PLAN = {
                             <ul class="features">
                                 {plan.features.map((feature) => {
                                     const Icon = feature.icon
-                                    const isBold = Icon === CheckBold && plan.name !== "Open Source"
+                                    const isBold =
+                                        Icon === CheckBold &&
+                                        plan.name !== "Open Source"
                                     return (
-                                        <li class={isBold ? "bold" : ""} data-usal="fade-l delay-30">
+                                        <li
+                                            class={isBold ? "bold" : ""}
+                                            data-usal="fade-l delay-30"
+                                        >
                                             <Icon class="icon" />
                                             <span>{feature.text}</span>
                                         </li>
@@ -207,9 +222,14 @@ const CLOUD_PLAN = {
                                     </a>
                                 )}
 
-                                <div class="divider"></div>
+                                <div class="divider" />
 
-                                <p class="footer-note" data-usal="fade-l delay-30">{plan.footerNote}</p>
+                                <p
+                                    class="footer-note"
+                                    data-usal="fade-l delay-30"
+                                >
+                                    {plan.footerNote}
+                                </p>
                             </div>
                         </div>
                     ))
@@ -219,7 +239,9 @@ const CLOUD_PLAN = {
             <div class="cloud-hosted-view d-none" data-host="cloud-hosted">
                 <div class="cloud-card">
                     <div class="card-header">
-                        <h2 class="plan-name" data-usal="fade-r">{CLOUD_PLAN.name}</h2>
+                        <h2 class="plan-name" data-usal="fade-r">
+                            {CLOUD_PLAN.name}
+                        </h2>
                     </div>
 
                     <div class="divider"></div>
@@ -230,7 +252,10 @@ const CLOUD_PLAN = {
                                 const Icon = feature.icon
                                 const isBold = Icon === CheckBold
                                 return (
-                                    <li class={isBold ? "bold" : ""} data-usal="fade-l delay-30">
+                                    <li
+                                        class={isBold ? "bold" : ""}
+                                        data-usal="fade-l delay-30"
+                                    >
                                         <Icon class="icon" />
                                         <span>{feature.text}</span>
                                     </li>
@@ -259,7 +284,11 @@ const CLOUD_PLAN = {
             </div>
         </div>
 
-        <div class="compare-all" data-host="self-hosted" data-usal="fade-u delay-30">
+        <div
+            class="compare-all"
+            data-host="self-hosted"
+            data-usal="fade-u delay-30"
+        >
             <a href="#comparison-table">Compare All Plans <ArrowDown /></a>
         </div>
 
@@ -270,8 +299,6 @@ const CLOUD_PLAN = {
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .content {
         display: flex;
         flex-direction: column;
@@ -377,7 +404,6 @@ const CLOUD_PLAN = {
 
                 &.open-source {
                     background: var(--ks-background-secondary);
-                    
                 }
 
                 &.enterprise {
@@ -393,9 +419,9 @@ const CLOUD_PLAN = {
                 }
 
                 .card-header {
-                      @include media-breakpoint-up(xl) {
-    min-height: 120px; 
-  }
+                    @include media-breakpoint-up(xl) {
+                        min-height: 120px;
+                    }
                     .plan-subtitle {
                         font-size: $font-size-xs;
                         color: var(--ks-content-alert-info);

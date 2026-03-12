@@ -64,8 +64,7 @@ const { title, firstCard, secondCard, cta } = Astro.props
             class="cta d-flex align-items-center flex-column gap-2 bg-light rounded-3 p-4 mx-auto w-100"
         >
             <h5 class="text-center" set:html={cta.title} />
-            <a href={cta.link} class="btn btn-primary text-white">{cta.text}</a
-            >
+            <a href={cta.link} class="btn btn-primary text-white">{cta.text}</a>
         </div>
     </div>
 </section>
@@ -77,8 +76,6 @@ const { title, firstCard, secondCard, cta } = Astro.props
         card2Color: secondCard.iconColor,
     }}
 >
-    @import "~/assets/styles/variable";
-
     section {
         background-color: var(--ks-background-body);
 

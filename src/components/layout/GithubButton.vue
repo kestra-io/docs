@@ -32,8 +32,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-
     .github-button-wrapper {
         display: inline-block;
         vertical-align: middle;

@@ -14,7 +14,7 @@ Tasks and flows can generate outputs that are passed to downstream processes. To
 This storage layer helps avoid connector sprawl. For example, the PostgreSQL plugin can extract data and load it into internal storage. Other tasks can then load that data into Snowflake, BigQuery, or Redshift — or process it with another plugin — without direct point-to-point connections. Let's check out Outputs in practice.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/G7rH-VpMOUc?si=sG7Ky8nZMTx98y36" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/ZcITW-Hcv_k?si=3Y22ErLEv4-Q6wt-" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## How to retrieve outputs
@@ -56,7 +56,7 @@ tasks:
 
 While returning status code is good for unit testing a flow, typically when fetching data from a REST API we want to use that data. Kestra stores that fetched data in the internal storage and makes it available to downstream tasks using the `body` output argument.
 
-Use the `{{ outputs.task_id.body }}` syntax to process that fetched data in a downstream task. To demonstrate, we can add a [Python script](plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) task to our flow below.
+Use the `{{ outputs.task_id.body }}` syntax to process that fetched data in a downstream task. To demonstrate, we can add a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) task to our flow below.
 
 :::alert{type="info"}
 Kestra is language-agnostic — run custom scripts in any flow. You can run Python, Node.js, R, Julia, and an ever-growing number of languages; or execute commands in shell or PowerShell. Check out the [Scripts documentation](../../16.scripts/index.mdx) for more!

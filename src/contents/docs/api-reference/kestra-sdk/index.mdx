@@ -14,4 +14,6 @@ Interact with Kestra's API via language SDKs.
 
 There are [official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, JavaScript, and Python. These SDKs provide a convenient way to interact with Kestra's API and build custom applications on top of it.
 
+SDK-based plugins now support an `DEFAULT`/`AUTO` authentication mode that pulls a default service account globally or from the current [Namespace](../../07.enterprise/02.governance/07.namespace-management/index.md#default-service-account-for-sdk-plugins) (or [Tenant](../../07.enterprise/02.governance/tenants/index.md#default-service-account-for-sdk-plugins)). Configure those defaults in the UI, or set a global fallback under `tasks.sdk.authentication` in your [configuration](../../configuration/index.md#sdk-plugin-default-authentication).
+
 <ChildCard />

@@ -256,7 +256,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "~/assets/styles/variable";
+
 .meeting-container {
     position: relative;
     background-color: #151515;

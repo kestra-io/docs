@@ -10,11 +10,11 @@ Run tasks as Kubernetes pods.
 
 ## Run tasks as Kubernetes pods
 
-This plugin is available only in the [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md) (EE) and Kestra Cloud. The task runner is container-based, so the `containerImage` property must be set. To access the task's working directory, use either the `{{workingDir}}` Pebble expression or the `WORKING_DIR` environment variable. Input files and namespace files are available in this directory.
+This plugin is available only in the [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md) (EE) and Kestra Cloud. The task runner is container-based, so the `containerImage` property must be set. To access the task's working directory, use either the `{{ workingDir }}` Pebble expression or the `WORKING_DIR` environment variable. Input files and namespace files are available in this directory.
 
 To generate output files, you can either:
 - Use the `outputFiles` property of the task and create a file with the same name in the task’s working directory, or
-- Create any file in the output directory, accessible via the `{{outputDir}}` Pebble expression or the `OUTPUT_DIR` environment variable.
+- Create any file in the output directory, accessible via the `{{ outputDir }}` Pebble expression or the `OUTPUT_DIR` environment variable.
 
 When the Kestra Worker running this task is terminated, the pod continues until completion. After restarting, the Worker resumes processing on the existing pod unless `resume` is set to `false`.
 
@@ -81,7 +81,7 @@ tasks:
         clientKeyData: client-key-data
         clientCertData: client-certificate-data
         caCertData: certificate-authority-data
-        masterUrl: server e.g. https://docker-for-desktop:6443
+        masterUrl: server, e.g., https://docker-for-desktop:6443
     commands:
       - echo "Hello from a Kubernetes task runner!"
       - cp data.txt out.txt
@@ -225,7 +225,7 @@ pluginDefaults:
 
 ## Guides
 
-Below are several guides to help you set up the Kubernetes task runner on different platforms.
+The following guides can help you set up the Kubernetes task runner on different platforms.
 
 ### Google Kubernetes Engine (GKE)
 

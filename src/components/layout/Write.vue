@@ -58,7 +58,7 @@ defineProps<{
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .title-sm {
         padding-top: $rem-4;

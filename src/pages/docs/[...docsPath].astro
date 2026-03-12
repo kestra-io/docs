@@ -19,6 +19,35 @@ type Props = CollectionEntry<"docs">
 const doc = Astro.props
 const { Content, headings } = await render(doc)
 
+const headingsProcessed: {
+    id: string
+    text: string
+    depth: number
+    children?: typeof headingsProcessed
+}[] = []
+
+let prevHeading = null
+for (const heading of headings) {
+    const headingLink: (typeof headingsProcessed)[number] = {
+        id: heading.slug,
+        text: heading.text,
+        depth: heading.depth,
+    }
+    // use the depth to create the tree structure of the headings
+    if (prevHeading) {
+        if (headingLink.depth > prevHeading.depth) {
+            // if the current heading is deeper than the previous one, add it as a child of the previous one
+            if (!prevHeading.children) {
+                prevHeading.children = []
+            }
+            prevHeading.children.push(headingLink)
+            continue
+        }
+    }
+    headingsProcessed.push(headingLink)
+    prevHeading = headingLink
+}
+
 const image = new URL(`/meta/docs/${doc.id}.svg`, Astro.url)
 
 const navigation = await buildDocsNavigation()
@@ -41,42 +70,21 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
     image={image.toString()}
 >
     <h1 class="title" slot="title">
-        {
-            icon ? (
-                <img
-                    width="40"
-                    height="40"
-                    src={icon}
-                    alt={`${doc.data.title} icon`}
-                />
-            ) : null
-        }
         {doc.data?.title}
     </h1>
     <div class="bd-content">
         <Content />
-        <HelpfulVote client:visible />
         <PrevNext {navigation} currentPath={`/docs/${doc.id}`} client:idle />
+        <HelpfulVote client:visible />
     </div>
-    <NavToc
-        links={headings.map((heading) => ({
-            id: heading.slug,
-            text: heading.text,
-            depth: heading.depth,
-        }))}
-        client:visible
-        slot="headings"
-        {editUrl}
-    />
+    <Fragment slot="headings">
+        <NavToc links={headingsProcessed} client:visible {editUrl} />
+    </Fragment>
 </LayoutDocs>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .title {
         line-height: 3.25rem;
         margin: 0 auto;
     }
-
-
 </style>

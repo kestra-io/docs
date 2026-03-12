@@ -21,32 +21,21 @@ interface Props {
     }
 }
 
-const {
-    title,
-    kestra,
-    competitor
-} = Astro.props as Props
+const { title, kestra, competitor } = Astro.props as Props
 ---
 
 <section>
     <div class="container">
         <h2 set:html={title} />
         <div class="comparison-box d-flex flex-column flex-xl-row">
-            <Card
-                isKestra={true}
-                logo={kestraLogo}
-                logoAlt="Kestra logo"
-            >
+            <Card isKestra={true} logo={kestraLogo} logoAlt="Kestra logo">
                 <div class="d-flex align-items-center gap-2">
                     <h5>
                         {kestra?.title}
                     </h5>
                 </div>
-                <Snippets
-                    code={kestra?.code ?? ""}
-                    lang={kestra?.lang}
-                />
-                <p class="mb-0" set:html={kestra?.description}></p>
+                <Snippets code={kestra?.code ?? ""} lang={kestra?.lang} />
+                <p class="mb-0" set:html={kestra?.description} />
             </Card>
 
             <Card
@@ -63,15 +52,13 @@ const {
                     code={competitor?.code ?? ""}
                     lang={competitor?.lang}
                 />
-                <p class="mb-0" set:html={competitor?.description}></p>
+                <p class="mb-0" set:html={competitor?.description} />
             </Card>
         </div>
     </div>
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         padding: $spacer * 4 0;
         background-color: var(--ks-background-body);

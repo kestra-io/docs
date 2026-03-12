@@ -1,5 +1,5 @@
 ---
-title: Secrets in Kestra – Secure Credentials for Flows
+title: Secrets in Kestra – Store Sensitive Values Securely
 description: Store sensitive information securely.
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/concepts.svg
@@ -7,9 +7,9 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Store sensitive information securely.
 
-## Secrets – secure credentials for Flows
+## Secrets – store sensitive values securely
 
-Secret is a mechanism that allows you to securely store sensitive information, such as passwords and API keys, and retrieve them in your flows.
+Secrets are a mechanism that allows you to securely store sensitive information, such as passwords and API keys, and retrieve them in your flows.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -17,15 +17,28 @@ Secret is a mechanism that allows you to securely store sensitive information, s
 
 ---
 
-To retrieve secrets in a flow, use the `secret()` function, e.g., `"{{ secret('API_TOKEN'') }}"`. You can leverage your existing secrets manager as a secrets backend.
+To retrieve secrets in a flow, use the `secret()` function, e.g., `"{{ secret('API_TOKEN') }}"`. You can leverage your existing secrets manager as a secrets backend.
 
 Your flows often need to interact with external systems. To do that, they need to programmatically authenticate using passwords or API keys. Secrets help you securely store such variables and avoid hard-coding sensitive information within your workflow code.
 
 You can leverage the `secret()` function to retrieve sensitive variables within your flow code.
 
+## When should I use Secrets?
+
+Use **Secrets** for static sensitive values such as API keys, passwords, webhook URLs, certificates, and long-lived tokens.
+
+Use [Credentials](../../07.enterprise/03.auth/credentials/index.md) when Kestra needs to manage reusable server-to-server authentication for supported integrations, such as minting or refreshing short-lived access tokens at runtime.
+
+In short:
+
+- use **Secrets** for protected values
+- use **Credentials** for managed authentication objects
+
+Credentials can also reference Secrets for sensitive inputs such as client secrets, private keys, and certificates.
+
 ## Secrets in the Enterprise Edition
 
-From the **Secrets** tab, you can edit, delete, and copy your secret to your clipboard as a Pebble expression for use in a flow, such as `"{{ secret('API_TOKEN'') }}"`.
+From the **Secrets** tab, you can edit, delete, and copy your secret to your clipboard as a Pebble expression for use in a flow, such as `"{{ secret('API_TOKEN') }}"`.
 
 ![Secrets EE](./secrets-ee-0.png)
 
@@ -84,9 +97,9 @@ If you want to add the environment variable to the `kestra` container section in
       SECRET_MYPASSWORD: bXlQcml2YXRlQ29kZQ==
 ```
 
-This secret can be used in a flow using the `{{ secret('MYPASSWORD') }}` syntax, and it will be base64-decoded during flow execution. Make sure to not include the prefix `SECRET_` when calling the `secret('MYPASSWORD')` function, as this prefix is only there in the environment variable definition to prevent Kestra from treating other system variables as secrets (for better performance and increased security).
+This secret can be used in a flow using the `{{ secret('MYPASSWORD') }}` syntax, and it will be base64-decoded during flow execution. Make sure not to include the prefix `SECRET_` when calling the `secret('MYPASSWORD')` function, as this prefix is only there in the environment variable definition to prevent Kestra from treating other system variables as secrets (for better performance and increased security).
 
-Lastly, if you want to reference any non_encoded environment variables in your flows definition, you can always use the syntax `{{envs.lowercase_environment_variable_key}}`.
+Lastly, if you want to reference any non-encoded environment variables in your flow definitions, you can always use the syntax `{{ envs.lowercase_environment_variable_key }}`.
 
 :::alert{type="warning"}
 Note that Kestra has built-in protection to prevent its logs from revealing any encoded secret you have defined.

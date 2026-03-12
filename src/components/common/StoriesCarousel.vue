@@ -167,7 +167,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
     .stories {
         background-color: var(--ks-background-body);
         padding: 1rem;

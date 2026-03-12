@@ -1,42 +1,54 @@
 ---
 import Check from "vue-material-design-icons/CheckBold.vue"
-import NoGapGrid from "~/components/common/NoGapGrid.astro"
+import VectorSquare from "vue-material-design-icons/VectorSquare.vue"
+import Cog from "vue-material-design-icons/Cog.vue"
+import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
+import Xml from "vue-material-design-icons/Xml.vue"
+import MoveResizeVariant from "vue-material-design-icons/MoveResizeVariant.vue"
+import Domain from "vue-material-design-icons/Domain.vue"
+import CloudCheckOutline from "vue-material-design-icons/CloudCheckOutline.vue"
+import RocketLaunchOutline from "vue-material-design-icons/RocketLaunchOutline.vue"
+import ShieldLockOutline from "vue-material-design-icons/ShieldLockOutline.vue"
+import ChartLineVariant from "vue-material-design-icons/ChartLineVariant.vue"
+import ScaleBalance from "vue-material-design-icons/ScaleBalance.vue"
+
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import GradientLeft from "./gradients/GradientLeft.astro"
 import GradientRight from "./gradients/GradientRight.astro"
 
 const SELF_HOSTED_FEATURES = [
     {
-        icon: "mdi:vector-square",
+        icon: VectorSquare,
         title: "Runs where you run",
         description:
             "Deploy Kestra on your own infrastructure, cloud, or Kubernetes. Full control over networking, data locality, security boundaries, and upgrade cadence. No vendor lock-in, no black boxes.",
     },
     {
-        icon: "mdi:cog",
+        icon: Cog,
         title: "Built for production orchestration",
         description:
             "Kestra is designed for long-running, stateful workflows with retries, backfills, and failure handling built in. It's not a task runner bolted onto cron, it's a production-grade orchestration engine.",
     },
     {
-        icon: "mdi:code-tags-check",
+        icon: CodeTagsCheck,
         title: "Language and tool agnostic",
         description:
             "Orchestrate SQL, Python, shell, APIs, Terraform, dbt, Spark, or custom tools in the same workflows. Kestra doesn't force a runtime or SDK on your teams.",
     },
     {
-        icon: "mdi:xml",
+        icon: Xml,
         title: "Declarative by default",
         description:
             "Workflows, triggers, and dependencies are defined as code. Version them, review them, promote them across environments. Infrastructure as Code, but for orchestration.",
     },
     {
-        icon: "mdi:move-resize-variant",
+        icon: MoveResizeVariant,
         title: "Scales from one team to many",
         description:
             "Start with a single namespace or cluster, grow to multiple teams, projects, and environments. Isolation, permissions, and execution limits are first-class concepts.",
     },
     {
-        icon: "mdi:domain",
+        icon: Domain,
         title: "Enterprise governance when you need it",
         description:
             "Add RBAC, audit logs, secrets management, asset lineage, and co.",
@@ -45,37 +57,37 @@ const SELF_HOSTED_FEATURES = [
 
 const CLOUD_HOSTED_FEATURES = [
     {
-        icon: "mdi:cloud-check-outline",
+        icon: CloudCheckOutline,
         title: "Fully Managed",
         description:
             "Forget about infrastructure operations, upgrades, patching, backups, or capacity planning. Kestra Cloud is fully managed by our team so you can focus on building workflows, shipping automation, and delivering value faster.",
     },
     {
-        icon: "mdi:rocket-launch-outline",
+        icon: RocketLaunchOutline,
         title: "Fast Onboarding & Deployment",
         description:
             "Skip the setup phase and go straight to execution. Kestra Cloud gives you a ready-to-use production environment, so your team can start orchestrating pipelines immediately without spending weeks on installation and configuration.",
     },
     {
-        icon: "mdi:shield-lock-outline",
+        icon: ShieldLockOutline,
         title: "Security & Access Control",
         description:
             "Protect your workflows and your data with enterprise-grade security. Kestra Cloud provides built-in access control, authentication options, and governance features so you can scale adoption across teams while staying compliant.",
     },
     {
-        icon: "mdi:chart-line-variant",
+        icon: ChartLineVariant,
         title: "Monitoring & Observability",
         description:
             "Get full visibility into your automation platform. Track executions, debug failures faster, and monitor performance through built-in observability features designed to keep operations smooth and predictable.",
     },
     {
-        icon: "mdi:scale-balance",
+        icon: ScaleBalance,
         title: "Pay-as-you-scale Model",
         description:
             "Start small and expand without friction. Kestra Cloud adapts to your usage, allowing you to grow progressively while keeping costs aligned with real value and adoption.",
     },
     {
-        icon: "mdi:move-resize-variant",
+        icon: MoveResizeVariant,
         title: "Scalability & High Availability",
         description:
             "Kestra Cloud is designed for reliability and performance, ensuring your orchestration layer remains stable as your workloads and teams grow.",
@@ -90,7 +102,11 @@ const CLOUD_HOSTED_FEATURES = [
         <h2 class="section-title" data-host="self-hosted" data-usal="fade-r">
             What You Get With Kestra
         </h2>
-        <h2 class="section-title d-none" data-host="cloud-hosted" data-usal="fade-r">
+        <h2
+            class="section-title d-none"
+            data-host="cloud-hosted"
+            data-usal="fade-r"
+        >
             What You Get With Kestra Cloud
         </h2>
 
@@ -105,14 +121,18 @@ const CLOUD_HOSTED_FEATURES = [
         <div class="support-card">
             <GradientRight />
             <div class="support-content">
-                <h3 class="support-title" data-usal="fade-l delay-10">Expert Support, Built In</h3>
+                <h3 class="support-title" data-usal="fade-l delay-10">
+                    Expert Support, Built In
+                </h3>
                 <p class="support-desc" data-usal="fade-l delay-20">
                     Get direct help from the Kestra team. Upgrade for faster
                     SLAs, a dedicated channel, and hands-on guidance from the
                     engineers behind the platform.
                 </p>
                 <ul class="support-list">
-                    <li data-usal="fade-l delay-10"><Check class="check-icon" /> Faster SLAs</li>
+                    <li data-usal="fade-l delay-10">
+                        <Check class="check-icon" /> Faster SLAs
+                    </li>
                     <li data-usal="fade-l delay-20">
                         <Check class="check-icon" /> Dedicated Support Channel
                     </li>
@@ -142,8 +162,6 @@ const CLOUD_HOSTED_FEATURES = [
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .price-grid {
         padding-block: 140px;
         background: var(--ks-background-primary-inverse)

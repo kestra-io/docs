@@ -85,8 +85,6 @@ const CARDS = [
 </section>
 
 <style lang="scss">
-    @use "~/assets/styles/variable" as *;
-
     .wrapper-every-dev {
         padding: 1rem;
         color: var(--ks-content-primary);
@@ -102,15 +100,35 @@ const CARDS = [
             padding: 2rem;
             background-color: transparent;
             background-image:
-                linear-gradient(0deg, #0a0b0dff 0%, #0a0b0d00 20%, #0a0b0d00 80%, #0a0b0dFF 100%),
-                radial-gradient(ellipse at center, #0d0e13AA 0%, #0d0e13DD 50%, #0d0e13FF 100%),
-                radial-gradient(circle at center, #767575 0%, #767575 5%, #76757500 5.5%, #0a0b0d00 100%);
+                linear-gradient(
+                    0deg,
+                    #0a0b0dff 0%,
+                    #0a0b0d00 20%,
+                    #0a0b0d00 80%,
+                    #0a0b0dff 100%
+                ),
+                radial-gradient(
+                    ellipse at center,
+                    #0d0e13aa 0%,
+                    #0d0e13dd 50%,
+                    #0d0e13ff 100%
+                ),
+                radial-gradient(
+                    circle at center,
+                    #767575 0%,
+                    #767575 5%,
+                    #76757500 5.5%,
+                    #0a0b0d00 100%
+                );
             background-repeat: no-repeat, no-repeat, repeat;
             background-position:
                 center bottom,
                 center bottom,
                 center bottom;
-            background-size: cover, 100% 130%, 25px 25px;
+            background-size:
+                cover,
+                100% 130%,
+                25px 25px;
         }
 
         .container {

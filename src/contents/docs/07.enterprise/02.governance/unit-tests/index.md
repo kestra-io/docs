@@ -41,7 +41,7 @@ The following diagram illustrates the structure of flows and unit tests together
 
 ## Configuration
 
-Unit tests are written in YAML like flows, and they are comprised of `testCases` which are then made up of `fixtures` and `assertions`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override.
+Unit tests are written in YAML like flows, and they are comprised of `testCases` which are then made up of `fixtures` and `assertions`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write Unit Tests as code, No code, or with the [AI Copilot](../../../ai-tools/ai-copilot/index.md).
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
@@ -184,8 +184,9 @@ tasks:
 
 we can add a namespace file in the `company.team` namespace that mimics the format of the API request's return.
 
+`my-namespace-file-with-products.json` to add to the `company.team` namespace:
+
 ```json
-## my-namespace-file-with-products.json to add to company.team namespace
 {
   "Account": {
     "Account Name": "Firefly",

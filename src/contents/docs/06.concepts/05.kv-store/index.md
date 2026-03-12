@@ -88,7 +88,7 @@ You can create, read, update, and delete KV pairs from the UI in the following w
 
 ### Update, Delete, and Copy KV pairs from the UI
 
-You can edit, delete, or copy any KV pair by clicking on the associated button on the right side of each KV pair. The copy option copies the [Pebble expression of the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY'') }}`) to use directly in your flow.
+You can edit, delete, or copy any KV pair by clicking on the associated button on the right side of each KV pair. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY') }}`) so you can use it directly in your flow.
 
 ![edit_delete_kv_pair](./edit_delete_kv_pair.png)
 
@@ -319,39 +319,31 @@ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/mai
 
 The above `curl` command creates the KV pair with key `my_key` and the `Hello World` string value in the `company.team` namespace. The API does not return any response.
 
-### Read the value by key
+### Read all keys in the namespace
 
-You can get any particular KV pair using:
+You can get all KV pairs using:
+
+```bash
+curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/
+```
+
+You can also use the `filters` to get all KV pairs from a specific Namespace (replace `namespace-name`):
+
+```bash
+curl -G "http://localhost:8080/api/v1/main/kv" \
+  --data-urlencode "filters[namespace][EQUALS]= namespace-name" \
+  -H "Authorization: Bearer <API-TOKEN>"
+```
+
+Older versions of Kestra may use the path to specify a Namespace:
 
 ```bash
 curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv/{key}
 ```
 
-For example:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key
-```
-
-This `curl` command retrieves a KV pair with the key `my_key` in the `company.team` namespace. The output of the API contains the data type of the value and the retrieved value of the KV pair:
-
-```json
-{"type": "STRING", "value": "Hello World"}
-```
-
-### Read all keys in the namespace
-
-You can list all keys in the namespace as follows:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv
-```
-
-The `curl` command below returns all keys in the `company.team` namespace:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv
-```
+:::alert{type="info"}
+As a general tip, your Kestra instance exposes an interactive API reference at https://<your-kestra-host>/api which lists all available endpoints for your installed version.
+:::
 
 The output is returned as a JSON array of all keys in the namespace:
 ```json

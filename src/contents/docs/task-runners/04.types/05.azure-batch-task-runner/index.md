@@ -23,6 +23,22 @@ To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the Azure Batch ta
 
 Since the working directory of the container is not known in advance, you must explicitly define both the working directory and the output directory when using the Azure Batch runner. For example, use `cat {{ workingDir }}/myFile.txt` rather than `cat myFile.txt`.
 
+## Authentication requirements
+
+The Azure Batch task runner described on this page uses the following credentials:
+
+- a Batch account access key (`account`, `accessKey`, `endpoint`)
+- an Azure Blob Storage connection string (`blobStorage.connectionString`)
+
+Because the runner uses shared keys rather than Azure RBAC to submit jobs, this page does not define a minimum Azure role assignment in the same way as the AWS Batch or Google Cloud Run task runners.
+
+Instead, the minimum requirement for Kestra is:
+
+- access to a Batch account key for the target Batch account
+- access to a Blob Storage connection string for the container used to stage input and output files
+
+If your organization uses Azure RBAC to control who can create or rotate those credentials, manage that access outside Kestra as part of your platform setup.
+
 ## A full flow example
 
 ```yaml

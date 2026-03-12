@@ -97,7 +97,7 @@ Versioned plugins can be installed from the Kestra UI as well as programmaticall
 
 ### From the UI
 
-Below is an video demonstration walking through each step from installation to application in a flow.
+Below is a video demonstration walking through each step from installation to application in a flow.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -140,7 +140,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 With API Token:
 
 ```bash
-curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install /
+curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 -H "Authorization: Bearer YOUR-API-TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'

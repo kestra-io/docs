@@ -8,8 +8,6 @@ topics:
 
 How to Pause and Resume your flows.
 
-## Pause and Resume Flows in Kestra
-
 Here are common scenarios where the Pause and Resume feature is particularly useful:
 1. **Output Validation**: you can pause a workflow to check the logs and view the generated outputs before processing downstream tasks.
 2. **Manual Approval**: the execution can wait for manual approval, e.g. after validating that a file has been correctly uploaded to an external system.

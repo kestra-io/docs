@@ -70,7 +70,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
     .card-block {
         position: relative;
         z-index: 1;

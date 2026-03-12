@@ -11,8 +11,6 @@ description: Push your namespace files, such as scripts and configuration, from 
 
 Push files in your namespace to a Git Repository with the PushNamespaceFiles Task.
 
-## Push Namespace Files to a Git Repository
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/-bEnwR5t7VI?si=Eim8_Las9LJ5jTY6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

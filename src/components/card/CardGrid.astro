@@ -2,27 +2,36 @@
 import { Icon } from "astro-icon/components"
 
 interface Item {
-    icon?: string;
-    title: string;
-    description?: string;
+    icon?: string
+    title: string
+    subtitle?: string
+    description?: string
     link?: {
-        href: string;
-        text: string;
-    };
-    evenBg?: boolean;
+        href: string
+        text: string
+    }
+    evenBg?: boolean
 }
 
 interface Props {
-    title: string;
-    items: Item[];
+    title: string
+    subtitle?: string
+    items: Item[]
+    align?: "left" | "center"
 }
 
-const { title, items } = Astro.props;
+const { title, subtitle, items, align = "center" } = Astro.props
 ---
 
 <section class="card-grid-section">
     <div class="container">
-        <h2 data-usal="fade-u delay-0 duration-400 ease-out" set:html={title} />
+        <div class:list={["head", { "align-left": align === "left" }]}>
+            <h2 data-usal="fade-r">
+                <Fragment set:html={title} />
+                <slot />
+            </h2>
+            <p set:html={subtitle} data-usal="fade-l" />
+        </div>
 
         <div class="cards-grid">
             {
@@ -31,16 +40,24 @@ const { title, items } = Astro.props;
                         class:list={["card", { "even-bg": item.evenBg }]}
                         data-usal={`${index % 2 === 0 ? "fade" : "zoomin"} delay-0 duration-400 ease-out`}
                     >
-                        {item.icon && (
-                            <Icon name={item.icon} class="icon" />
-                        )}
-                        <h6 class="title" set:html={item.title} />
+                        {item.icon && <Icon name={item.icon} class="icon" />}
+                        <h6
+                            class="title"
+                            set:html={item.title}
+                            data-usal="fade-l"
+                        />
                         {item.link ? (
                             <a href={item.link.href} class="btn btn-primary">
                                 {item.link.text}
                             </a>
                         ) : (
-                            item.description && <p class="description" set:html={item.description} />
+                            item.description && (
+                                <p
+                                    class="description"
+                                    set:html={item.description}
+                                    data-usal="fade-l"
+                                />
+                            )
                         )}
                     </div>
                 ))
@@ -50,12 +67,10 @@ const { title, items } = Astro.props;
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .card-grid-section {
         background-color: var(--ks-background-body);
         width: 100%;
-        padding: 2rem 0.5rem;
+        padding: 3rem 0.5rem;
 
         @include media-breakpoint-up(md) {
             padding: 4rem 8px;
@@ -69,13 +84,29 @@ const { title, items } = Astro.props;
             justify-content: center;
             gap: 2rem;
 
-            @include media-breakpoint-up(md) {
-                gap: 4rem;
-            }
-
             h2 {
                 text-align: center;
                 color: var(--ks-content-primary);
+            }
+
+            .head {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                &.align-left {
+                    align-items: flex-start;
+
+                    h2,
+                    p {
+                        text-align: left;
+                    }
+
+                    h2 {
+                        justify-content: flex-start;
+                    }
+                }
             }
 
             .cards-grid {

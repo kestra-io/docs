@@ -66,7 +66,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .custom-modal {
         border: none;
