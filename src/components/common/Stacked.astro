@@ -1,6 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
 import Link from "~/components/common/Link.astro"
+import DataTopologyAnimation from "./animations/data-topology.astro"
+import AiTopologyAnimation from "./animations/ai-topology.astro"
+import InfraAiTopology from "./animations/infra-ai-topology.astro"
 
 const CARDS = [
     {
@@ -21,7 +24,7 @@ const CARDS = [
             { value: "10x", label: "Faster Pipeline Delivery" },
             { value: "90%", label: "Fewer Manual backfills" },
         ],
-        animation: "/animations/data-topology.html",
+        animation: DataTopologyAnimation,
     },
     {
         title: 'Automate <span class="color">Infrastructure</span> With Governance, Not Scripts',
@@ -40,7 +43,7 @@ const CARDS = [
             { value: "6x", label: "faster infrastructure delivery" },
             { value: "90%", label: "lower legacy tooling cost" },
         ],
-        animation: "/animations/infra-ai-animation.html",
+        animation: InfraAiTopology,
     },
     {
         title: 'Operationalize <span class="color">AI Workflows</span> Without Production Chaos',
@@ -60,7 +63,7 @@ const CARDS = [
             { value: "50x", label: "less pipeline maintenance" },
             { value: "3x", label: "faster AI delivery cycles" },
         ],
-        animation: "/animations/ai-topology.html",
+        animation: AiTopologyAnimation,
     },
 ] as const
 ---
@@ -86,7 +89,7 @@ const CARDS = [
 
     {
         CARDS.map((card) => (
-            <div class="stacked-card" data-usal="zoomin">
+            <div class="stacked-card paused" data-usal="zoomin">
                 <div class="badge" data-usal="zoomin">
                     <Icon name={card.badge.icon} />
                     <span>{card.badge.text}</span>
@@ -113,13 +116,7 @@ const CARDS = [
                 </div>
 
                 <div class="right-content">
-                    {card.animation && (
-                        <iframe
-                            src={card.animation}
-                            allowtransparency="true"
-                            loading="lazy"
-                        />
-                    )}
+                    <card.animation />
                 </div>
             </div>
         ))
@@ -131,14 +128,7 @@ const CARDS = [
     const visibilityMap = new Map<HTMLElement, boolean>()
 
     function sendStateToIframe(card: HTMLElement) {
-        const iframe = card.querySelector("iframe")
-        const isVisible = visibilityMap.get(card)
-        if (iframe?.contentWindow && isVisible !== undefined) {
-            iframe.contentWindow.postMessage(
-                isVisible ? "RESUME" : "PAUSE",
-                "*",
-            )
-        }
+        card.classList.toggle("paused", !visibilityMap.get(card))
     }
 
     const observer = new IntersectionObserver(
@@ -154,9 +144,6 @@ const CARDS = [
 
     for (const card of cards) {
         observer.observe(card)
-        card.querySelector("iframe")?.addEventListener("load", () => {
-            sendStateToIframe(card)
-        })
     }
 </script>
 
@@ -197,6 +184,9 @@ const CARDS = [
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            &.paused :global(*) {
+                animation-play-state: paused !important;
+            }
 
             @include media-breakpoint-between(md, xl) {
                 padding: 5rem 3rem 2.5rem;
