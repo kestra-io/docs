@@ -4,6 +4,7 @@ import { Icon } from "astro-icon/components"
 interface Item {
     icon?: string
     title: string
+    subtitle?: string
     description?: string
     link?: {
         href: string
@@ -14,15 +15,23 @@ interface Item {
 
 interface Props {
     title: string
+    subtitle?: string
     items: Item[]
+    align?: "left" | "center"
 }
 
-const { title, items } = Astro.props
+const { title, subtitle, items, align = "center" } = Astro.props
 ---
 
 <section class="card-grid-section">
     <div class="container">
-        <h2 set:html={title} data-usal="zoomin" />
+        <div class:list={["head", { "align-left": align === "left" }]}>
+            <h2 data-usal="fade-r">
+                <Fragment set:html={title} />
+                <slot />
+            </h2>
+            <p set:html={subtitle} data-usal="fade-l" />
+        </div>
 
         <div class="cards-grid">
             {
@@ -75,13 +84,29 @@ const { title, items } = Astro.props
             justify-content: center;
             gap: 2rem;
 
-            @include media-breakpoint-up(md) {
-                gap: 3rem;
-            }
-
             h2 {
                 text-align: center;
                 color: var(--ks-content-primary);
+            }
+
+            .head {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                &.align-left {
+                    align-items: flex-start;
+
+                    h2,
+                    p {
+                        text-align: left;
+                    }
+
+                    h2 {
+                        justify-content: flex-start;
+                    }
+                }
             }
 
             .cards-grid {

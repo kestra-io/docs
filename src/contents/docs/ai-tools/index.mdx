@@ -1,8 +1,8 @@
 ---
-title: Kestra AI Tools – Copilot, Agents, and RAG Workflows
+title: Kestra AI Tools – Copilot, Agents, Agent Skills, and RAG Workflows
 sidebarTitle: AI Tools
 icon: /src/contents/docs/icons/ai.svg
-description: Learn how Kestra's AI Copilot and AI Agents can accelerate your workflow creation and enable autonomous orchestration.
+description: Learn how Kestra's AI Copilot, AI Agents, and Agent Skills can accelerate your workflow creation and enable autonomous orchestration.
 ---
 
 import ChildCard from "~/components/docs/ChildCard.astro"
@@ -11,7 +11,7 @@ Create, refine, and orchestrate workflows using natural language or autonomous d
 
 ## Learn how Kestra AI tools accelerate orchestration
 
-Kestra provides two AI-powered features — **AI Copilot** and **AI Agents** — that extend how workflows can be created and executed.
+Kestra provides two AI-powered features — **AI Copilot** and **AI Agents** — that extend how workflows can be created and executed. Additionally, **Agent Skills** let you bring Kestra expertise to external AI coding agents.
 
 ## AI Copilot
 
@@ -21,13 +21,18 @@ AI Copilot allows users to generate and refine flow definitions from natural lan
 
 AI Agents provide autonomous orchestration capabilities. An AI Agent task uses a large language model (LLM), optional memory, and configured tools such as web search, task execution, or flow calling. The agent can dynamically decide which actions to take, loop until conditions are satisfied, and adapt based on new information. Unlike static flows that follow a fixed sequence, agents operate adaptively while remaining observable and fully defined as code.
 
+## Agent Skills
+
+Agent Skills are structured knowledge files that teach external AI coding agents — such as Claude Code, Cursor, and Windsurf — how to generate Kestra flows and operate Kestra environments using `kestractl`. Unlike AI Copilot (which works inside the Kestra UI) or AI Agents (which run inside flows), Agent Skills bring Kestra expertise directly to your editor or terminal.
+
 ## Summary
 
-Together, AI Copilot and AI Agents introduce two complementary approaches:
+Together, these approaches offer complementary ways to work with AI:
 
 - **AI Copilot**: speeds up flow creation and modification by translating natural language instructions into YAML.
 - **AI Agents**: enable adaptive orchestration patterns where task sequences are not predetermined but are chosen dynamically at runtime.
+- **Agent Skills**: give external AI coding agents structured knowledge to generate valid Kestra flows and operate environments from your development tools.
 
-Both features maintain Kestra’s principle of declarative, code-based orchestration while extending flexibility for different use cases.
+AI Copilot and AI Agents are built into Kestra, while Agent Skills extend Kestra expertise to the external tools you already use.
 
 <ChildCard />

@@ -138,7 +138,7 @@ mc cat r2/kestra-bucket/main/company/team/r2_test_flow/...
 Expected output:
 
 ```json
-{"message": "stored in R2"}%
+{"message": "stored in R2"}
 ```
 
 ---

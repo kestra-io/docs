@@ -76,18 +76,13 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
             display: flex;
             gap: 1rem;
             align-items: start;
-            padding: 0.5rem 0;
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            // compensate the padding to get alignment with title
+            margin-left: -0.5rem;
 
             &:hover {
-                background-image: radial-gradient(
-                    circle,
-                    color-mix(in srgb, var(--ks-content-link), transparent 70%)
-                        0%,
-                    #13172500 30%
-                );
-                background-position: -280px center;
-
-                background-repeat: no-repeat;
+                background-color: var(--ks-background-secondary);
             }
 
             .card-img-left {

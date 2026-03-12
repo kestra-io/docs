@@ -22,12 +22,61 @@ To get started quickly, use [this blueprint](/blueprints/aws-batch-terraform-git
 
 ## How does the AWS Batch task runner work?
 
-In order to support `inputFiles`, `namespaceFiles`, and `outputFiles`, the AWS Batch task runner currently relies on [multi-containers ECS jobs](https://docs.aws.amazon.com/batch/latest/userguide/multi-container-jobs.html) and creates three containers for each job:
+In order to support `inputFiles`, `namespaceFiles`, and `outputFiles`, the AWS Batch task runner currently relies on [multi-container ECS jobs](https://docs.aws.amazon.com/batch/latest/userguide/multi-container-jobs.html) and creates three containers for each job:
 1. A _before_-container that uploads input files to S3.
 2. The _main_ container that fetches input files into the `{{ workingDir }}` directory and runs the task.
 3. An _after_-container that fetches output files using `outputFiles` to make them available from the Kestra UI for download and preview.
 
 Since the working directory of the container isn’t known in advance, you must define the working and output directories explicitly. For example, use `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.
+
+## Minimum permissions required
+
+To submit and monitor AWS Batch jobs, the IAM principal used by Kestra needs permission to create, tag, inspect, and clean up Batch job definitions and jobs. It also needs permission to pass the ECS roles used by the job and to read the AWS Batch log group.
+
+The following policy is the minimum set required by the task runner:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:DescribeLogGroups",
+        "batch:TagResource",
+        "batch:SubmitJob",
+        "batch:RegisterJobDefinition",
+        "batch:ListJobs",
+        "batch:DescribeJobs",
+        "batch:DescribeJobDefinitions",
+        "batch:DescribeComputeEnvironments",
+        "batch:DeregisterJobDefinition"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "<executionRoleArn>",
+        "<serviceRoleArn>",
+        "<taskRoleArn>"
+      ]
+    },
+    {
+      "Action": [
+        "logs:StartLiveTail"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:logs:eu-central-1:<accountId>:log-group:/aws/batch/job"
+    }
+  ]
+}
+```
+
+Replace `<executionRoleArn>`, `<serviceRoleArn>`, `<taskRoleArn>`, and `<accountId>` with the values from your AWS account. If you use a different region, update the CloudWatch Logs ARN accordingly.
 
 ## How to run tasks on AWS ECS Fargate
 
@@ -110,7 +159,7 @@ To use the AWS Batch task runner, you must configure resources in your AWS accou
 You will need:
 
 1. An AWS account.
-2. Kestra Enterprise Edition instance in a version 0.18.0 or later with AWS credentials stored as [secrets](../../../06.concepts/04.secret/index.md).
+2. A Kestra Enterprise Edition instance running version 0.18.0 or later with AWS credentials stored as [secrets](../../../06.concepts/04.secret/index.md).
 
 ---
 
@@ -135,7 +184,7 @@ Create an execution role that allows AWS Batch to manage resources on your behal
 1. Open the [IAM console](https://console.aws.amazon.com/iam).
 2. In the navigation menu, choose **Roles**.
 3. Choose **Create role**.
-4. In the **Select trusted entity**, choose **Custom trust policy** and paste the following `Trust policy JSON:
+4. In the **Select trusted entity**, choose **Custom trust policy** and paste the following trust policy JSON:
     ```json
     {
       "Version": "2012-10-17",
@@ -200,7 +249,7 @@ Now create a new role with the same trust policy as above. Attach the new policy
 1. Open the [IAM console](https://console.aws.amazon.com/iam).
 2. In the navigation menu, choose **Roles**.
 3. Choose **Create role**.
-4. In the **Select trusted entity**, choose **Custom trust policy** and paste the following `Trust policy JSON:
+4. In the **Select trusted entity**, choose **Custom trust policy** and paste the following trust policy JSON:
     ```json
     {
       "Version": "2012-10-17",

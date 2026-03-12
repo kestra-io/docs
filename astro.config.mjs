@@ -209,8 +209,7 @@ export default defineConfig({
                         "import",
                         "if-function",
                     ],
-                    // path to your scss variables
-                    additionalData: `@use "/src/assets/styles/variable.scss" as *;`,
+                    additionalData: `@use "/src/assets/styles/variable" as *;`,
                 },
             },
         },

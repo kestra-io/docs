@@ -81,10 +81,10 @@ The response looks like this:
       {
         "id": "hello",
         "type": "io.kestra.plugin.core.log.Log",
-        "message": "Hello World! \uD83D\uDE80",
-      },
+        "message": "Hello World! \uD83D\uDE80"
+      }
     ],
-  "source": "id: created_by_api\nnamespace: company.team\n\ntasks:\n  - id: hello\n    type: io.kestra.plugin.core.log.Log\n    message: Hello World! \uD83D\uDE80",
+  "source": "id: created_by_api\nnamespace: company.team\n\ntasks:\n  - id: hello\n    type: io.kestra.plugin.core.log.Log\n    message: Hello World! \uD83D\uDE80"
 }
 ```
 
