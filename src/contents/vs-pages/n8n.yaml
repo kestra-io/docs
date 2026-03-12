@@ -130,7 +130,7 @@ visualPreview:
   kestra:
     description: "Orchestrate across data pipelines, infrastructure operations, AI workloads, and business workflows in one unified platform. Distributed, isolated, and built for production."
   competitor:
-    description: "Purpose-built for connecting apps and building visual automations. Strong AI agent tooling. Not designed for infrastructure orchestration or multi-team isolation at scale."
+    description: "Purpose-built for connecting apps and building visual automations. Strong AI agent tooling with LangChain, MCP, and 12 vector store integrations. Not designed for infrastructure orchestration or multi-team isolation at scale."
     shadowColor: "#FF9F7A"
 
 featureGrid:
@@ -143,8 +143,8 @@ featureGrid:
       kestra: Declarative YAML (code-first)
       competitor: Visual canvas (drag-and-drop)
     - feature: Architecture
-      kestra: Distributed, horizontally scalable by default
-      competitor: Node.js, scalable via queue mode (opt-in)
+      kestra: Distributed, queue-based, horizontally scalable by default
+      competitor: Node.js, horizontally scalable via queue mode (Redis + workers)
     - feature: Languages supported
       kestra: "Agnostic (Python, R, Bash, Node.js, Go, SQL & more)"
       competitor: JavaScript, Python (code nodes)
@@ -161,14 +161,26 @@ featureGrid:
       kestra: "✓ Supported"
       competitor: Not available
     - feature: AI approach
-      kestra: "Pipeline orchestration for any AI workload"
-      competitor: "Visual AI agent builder (LangChain, MCP, vector stores)"
+      kestra: "Pipeline orchestration for any AI workload (visual or code-based)"
+      competitor: "Visual AI agent builder (LangChain, MCP, 12 vector stores, evaluations)"
+    - feature: Triggers
+      kestra: "Schedule, webhook, flow, file detection, message queue, polling"
+      competitor: "Schedule, webhook, SSE, Redis, workflow lifecycle, error, app-event"
+    - feature: Failure handling
+      kestra: "Retries with backoff, timeouts, allowed-failure policies, reprocessing"
+      competitor: "Error workflows, retry logic"
+    - feature: Secrets management
+      kestra: "Built-in secrets manager, encrypted variables"
+      competitor: "Encrypted credentials, external secrets integration"
     - feature: License
       kestra: "Apache 2.0 (open-source)"
       competitor: "Sustainable Use License (source-available)"
     - feature: Plugins / Integrations
       kestra: "1,100+"
       competitor: "400+ built-in (1,000+ with community nodes)"
+    - feature: Cloud
+      kestra: "Early access"
+      competitor: "Available (Azure Frankfurt)"
 
 socialProof:
   image:
@@ -223,7 +235,7 @@ commonQuestions:
   - question: How is Kestra different from n8n?
     answer: "Kestra is a code-first orchestration platform for data pipelines, infrastructure automation, and AI workloads at enterprise scale. n8n is a visual-first automation tool for connecting apps and building AI agent workflows. Kestra uses declarative YAML, runs on a distributed architecture with namespace isolation, and deploys through CI/CD. n8n uses a drag-and-drop canvas, runs on Node.js, and builds workflows in the browser. n8n gets you from zero to working automation fast. Kestra carries those workflows into production across teams."
   - question: Can Kestra handle AI workflows like n8n?
-    answer: "Yes, but differently. n8n has a visual AI agent builder with LangChain integration, vector store nodes, and MCP support, great for prototyping chatbots and agent chains. Kestra orchestrates AI as part of larger production pipelines: model training, batch inference, evaluation, deployment, and monitoring with full state tracking and failure handling. If you need a visual agent builder, n8n excels. If you need production AI pipelines integrated with data and infrastructure workflows, Kestra is built for that."
+    answer: "Yes, but differently. n8n has a visual AI agent builder with LangChain integration, 12 vector store integrations, MCP client and server nodes, and an evaluation node for testing agent outputs — great for prototyping chatbots and agent chains. Kestra orchestrates AI workloads the same way it orchestrates everything else: as steps in declarative pipelines with full state tracking, retries, and scheduling — built visually in the UI or in code. You can call any model API, run any ML framework, and package any environment in a Docker container. A single Kestra flow can handle data extraction, model training, evaluation, deployment, and monitoring as one end-to-end pipeline. If you need a visual agent builder, n8n excels. If you need production AI pipelines integrated with data and infrastructure workflows, Kestra is built for that."
   - question: How does Kestra handle my scripts?
     answer: "Kestra is language-agnostic. Run Python, SQL, Go, and more, either inline in your YAML or from external files. Scripts execute in isolated Docker containers by default, with full control over dependencies. No decorators, no wrappers, no framework-specific syntax. Your code stays portable."
   - question: Does Kestra have a visual editor like n8n?
