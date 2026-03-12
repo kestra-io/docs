@@ -1,25 +1,95 @@
+---
+import LegacyApproachIcon from "./assets/comparison/legacy-approach.svg"
+import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
+---
+
 <section aria-labelledby="comparison-heading">
-  <h2 id="comparison-heading">
-    Most Orchestrators Are Built for One Team.<br />
-    <span>Kestra is Built for the Whole Organization.</span>
-  </h2>
-  <div role="region" aria-label="Comparison table">
-    <div>
-      <h3>The Legacy Approach</h3>
-      <ul role="list">
-        <li><span aria-hidden="true">x</span><span>Data engineers own the pipelines</span></li>
-        <li><span aria-hidden="true">x</span><span>Business teams wait for deployments</span></li>
-        <li><span aria-hidden="true">x</span><span>No visibility across the org</span></li>
-      </ul>
+    <h2 id="comparison-heading">
+        Most Orchestrators Are Built for One Team.
+        <span>Kestra is Built for the Whole Organization.</span>
+    </h2>
+    <div role="region" aria-label="Comparison table" class="comparison">
+        <div class="legacy-approach" aria-label="Legacy approach">
+            <h3>The Legacy approach</h3>
+            <LegacyApproachIcon class="legacy-approach-image" />
+            <span>Fragile Glue Code</span>
+        </div>
+
+        <KestraWayAnimation class="kestra-way-image" />
     </div>
-    <div>
-      <h3>Kestra</h3>
-      <ul role="list">
-        <li><span aria-hidden="true">v</span><span>Anyone can build and trigger workflows</span></li>
-        <li><span aria-hidden="true">v</span><span>Real-time observability for every team</span></li>
-        <li><span aria-hidden="true">v</span><span>Unified governance and access control</span></li>
-      </ul>
-    </div>
-  </div>
-  <a href="/modern-data-stack">See Modern Data Stack example</a>
+    <p class="caption">
+        Kestra scales because it is designed for cross-team orchestration from
+        day one.
+    </p>
+    <a href="/modern-data-stack" class="btn btn-lg btn-primary">
+        See Kestra in 60 seconds
+    </a>
 </section>
+
+<style lang="scss">
+    section {
+        padding: 5rem 2rem;
+        background-color: white;
+        color: var(--hp-content-primary);
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        color: black;
+        width: 700px;
+        margin-inline: auto;
+        span {
+            color: var(--hp-content-color-highlight);
+        }
+    }
+
+    .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        max-width: 1200px;
+        margin-inline: auto;
+        height: 396px;
+
+        h3 {
+            color: var(--hp-content-primary);
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        span {
+            font-size: 0.825rem;
+            color: var(--hp-content-tertiary);
+            margin-bottom: 3rem;
+        }
+
+        .legacy-approach {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--hp-background-secondary);
+            border: 1px solid var(--hp-border-secondary);
+            border-radius: 0.5rem;
+        }
+
+        .legacy-approach-image {
+            height: 210px;
+            width: auto;
+        }
+        .kestra-way {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .caption {
+        font-size: 1rem;
+        margin-top: 1.5rem;
+    }
+</style>

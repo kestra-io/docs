@@ -37,9 +37,21 @@ const blueprints = await $fetchApi<{ results: Blueprint[] }>(
 </Layout>
 
 <style lang="scss">
+    /* since the home page will mostly follow its own theme,
+     * we need to define some of the colors here. */
     .home-page {
-        background-color: #0a0b0d;
-        margin-top: -2rem;
+        --hp-background-dark: #0a0b0d;
+        --hp-content-dark: #ffffff;
+        --hp-content-primary: #131316;
+        --hp-background-secondary: #f7f7f7;
+        --hp-content-secondary: #cbd5e1;
+        --hp-background-tertiary: #7f7f86;
+        --hp-content-tertiary: #94a3b8;
+        --hp-border-primary: #f1f1f1;
+        --hp-border-secondary: #cccbce;
+        --hp-content-color-highlight: #631bff;
+        background-color: var(--hp-background-dark);
+        color: var(--hp-content-dark);
         overflow: clip;
     }
 </style>

@@ -5,6 +5,12 @@ import DataTopologyAnimation from "./animations/data-topology.astro"
 import AiTopologyAnimation from "./animations/ai-topology.astro"
 import InfraAiTopology from "./animations/infra-ai-topology.astro"
 
+interface Props {
+    showTitle?: boolean
+}
+
+const { showTitle } = Astro.props
+
 const CARDS = [
     {
         title: 'Ship <span class="color">Data</span> Pipelines Faster and Keep them Reliable',
@@ -69,23 +75,27 @@ const CARDS = [
 ---
 
 <section class="stacked">
-    <div class="container">
-        <slot name="title">
-            <h2 data-usal="fade-r">
-                Built for
-                <span class="highlight">Data</span>,
-                <span class="highlight">Infrastructure</span>, and
-                <span class="highlight">AI Teams</span>
-            </h2>
-        </slot>
+            <div class="container">
+    {
+        showTitle ? (
+                <slot name="title">
+                    <h2 data-usal="fade-r">
+                        Built for
+                        <span class="highlight">Data</span>,
+                        <span class="highlight">Infrastructure</span>, and
+                        <span class="highlight">AI Teams</span>
+                    </h2>
+                </slot>
 
-        <slot name="description">
-            <p data-usal="fade-l">
-                One orchestrator, many workflows. The platform stays the same,
-                only the workflows change.
-            </p>
-        </slot>
-    </div>
+                <slot name="description">
+                    <p data-usal="fade-l">
+                        One orchestrator, many workflows. The platform stays the
+                        same, only the workflows change.
+                    </p>
+                </slot>
+        ) : null
+    }
+            </div>
 
     {
         CARDS.map((card) => (
