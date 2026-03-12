@@ -1,5 +1,4 @@
 ---
-import BlueprintCard from "./BlueprintCard.astro"
 const blueprints = [
     { title: "dbt + Snowflake ELT", tags: ["dbt", "Snowflake"] },
     { title: "S3 to BigQuery ingestion", tags: ["AWS S3", "BigQuery"] },
@@ -15,7 +14,20 @@ const blueprints = [
         <span>250+ Blueprints,</span> Ready to Build.
     </h2>
     <ul role="list">
-        {blueprints.map((b) => <BlueprintCard {...b} />)}
+        {
+            blueprints.map((b) => (
+                <li>
+                    <article>
+                        <h3>{b.title}</h3>
+                        <ul role="list">
+                            {b.tags.map((t) => (
+                                <li>{t}</li>
+                            ))}
+                        </ul>
+                    </article>
+                </li>
+            ))
+        }
     </ul>
     <a href="/blueprints">Browse all blueprints</a>
     <div>
