@@ -16,30 +16,32 @@ const images = [
 
 <section class="platform-overview" aria-labelledby="platform-heading">
     <h2 id="platform-heading">One Platform. All Your Workflows.</h2>
-    <figure class="image-stack">
-        {
-            images.map(({ src, alt }, i) => (
-                <Image
-                    src={src}
-                    alt={alt}
-                    class="stack-image"
-                    style={`--i: ${i - (images.length - 1) / 2};`}
-                    loading="lazy"
-                />
-            ))
-        }
-    </figure>
+    <div class="platform-wrapper">
+        <figure class="image-stack">
+            {
+                images.map(({ src, alt }, i) => (
+                    <Image
+                        src={src}
+                        alt={alt}
+                        class="stack-image"
+                        style={`--i: ${i - (images.length - 1) / 2};`}
+                        loading="lazy"
+                    />
+                ))
+            }
+        </figure>
+    </div>
 </section>
 
 <script>
-    const stack = document.querySelector(".image-stack")
+    const stack = document.querySelector(".platform-wrapper")
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
                 entry.target.classList.toggle("expanded", entry.isIntersecting)
             })
         },
-        { threshold: 0.8 },
+        { threshold: 0.6 },
     )
     if (stack) {
         observer.observe(stack)
@@ -54,15 +56,22 @@ const images = [
         color: var(--hp-content-primary);
     }
 
+    .platform-wrapper {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        --stack-offset: -50px;
+        &.expanded {
+            --stack-offset: -150px;
+        }
+    }
+
     .image-stack {
         position: relative;
         margin: 4rem auto 0;
         max-width: 900px;
         height: 700px;
-        --stack-offset: -50px;
-        &.expanded {
-            --stack-offset: -150px;
-        }
     }
 
     .stack-image {
@@ -74,5 +83,10 @@ const images = [
             translateY(calc(var(--i) * var(--stack-offset, -50px))) scaleY(0.7)
             skew(20deg) rotate(-9deg);
         transition: transform 0.3s ease;
+        border-radius: 1rem;
+        border: 1px solid var(--hp-border-secondary);
+        box-shadow:
+            -3px 4px 0 0 var(--hp-border-secondary),
+            -10px 30px 20px rgba(167, 150, 255, 0.2);
     }
 </style>
