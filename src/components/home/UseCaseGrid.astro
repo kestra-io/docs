@@ -1,37 +1,43 @@
+---
+import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
+---
+
 <section aria-labelledby="usecases-heading">
     <h2 id="usecases-heading">Built for How Modern Teams Actually Work.</h2>
-    <ul role="list">
-        <li>
-            <h3>Any Language. No Lock-in</h3>
-            <p>
-                Run tasks in Python, Bash, Node.js, Go, or containers. No
-                refactoring required.
-            </p>
-        </li>
-        <li>
-            <h3>Build Everything As Code & From the UI</h3>
-            <p>
-                Empower every team members to collaborate from a single
-                tool—code for developers, UI for everyone else, all in sync.
-            </p>
-        </li>
-        <li>
-            <h3>Agentic Automation, Built In</h3>
-            <p>
-                Copilot for speed, agents for action. Create, iterate, and
-                automate workflows with an AI native platform.
-            </p>
-        </li>
-        <li>
-            <h3>API First. CI/CD Native.</h3>
-            <p>
-                Trigger executions, manage workflows and resources through the
-                API, and roll out updates safely with Git-driven CI/CD
-                pipelines.
-            </p>
-        </li>
-    </ul>
-    <a href="/product">See product features</a>
+    <div class="wrapper">
+        <ul role="list">
+            <li>
+                <h3>Any Language. No Lock-in</h3>
+                <p>
+                    Run tasks in Python, Bash, Node.js, Go, or containers. No
+                    refactoring required.
+                </p>
+            </li>
+            <li>
+                <h3>Build Everything As Code & From the UI</h3>
+                <p>
+                    Empower every team members to collaborate from a single
+                    tool—code for developers, UI for everyone else, all in sync.
+                </p>
+            </li>
+            <li>
+                <h3>Agentic Automation, Built In</h3>
+                <p>
+                    Copilot for speed, agents for action. Create, iterate, and
+                    automate workflows with an AI native platform.
+                </p>
+            </li>
+            <li>
+                <h3>API First. CI/CD Native.</h3>
+                <p>
+                    Trigger executions, manage workflows and resources through
+                    the API, and roll out updates safely with Git-driven CI/CD
+                    pipelines.
+                </p>
+            </li>
+        </ul>
+        <a href="/product">See product features<ArrowRightIcon /></a>
+    </div>
 </section>
 
 <style lang="scss">
@@ -46,15 +52,23 @@
             margin-bottom: 2rem;
         }
 
+        .wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            gap: 2rem;
+            padding: 0 1.5rem;
+        }
+
         ul {
             list-style: none;
-            padding: 0 1.5rem;
             display: grid;
+            width: 100%;
             // however 400px columns you can fit in the container with a maximum of 2 columns
             grid-template-columns: repeat(auto-fit, minmax(465px, 1fr));
             gap: 1.5rem;
-            max-width: 1050px;
-            margin: 3rem auto;
 
             li {
                 border: 1px solid var(--hp-border-secondary);
@@ -76,14 +90,12 @@
         }
 
         a {
-            font-weight: bold;
-            color: var(--ks-primary);
+            font-weight: 600;
+            color: var(--hp-content-color-highlight);
             text-decoration: none;
-            border-bottom: 2px solid transparent;
-
-            &:hover {
-                border-color: var(--ks-primary);
-            }
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
     }
 </style>
