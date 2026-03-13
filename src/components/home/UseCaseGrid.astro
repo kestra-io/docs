@@ -1,22 +1,89 @@
 <section aria-labelledby="usecases-heading">
-  <h2 id="usecases-heading">Built for How Modern Teams Actually Work.</h2>
-  <ul role="list">
-    <li>
-      <h3>Any Language. Any Infrastructure.</h3>
-      <p>Write workflows in Python, R, Node.js, or any language your team prefers.</p>
-    </li>
-    <li>
-      <h3>Build Helpful Tools That Power the World.</h3>
-      <p>Give non-technical teams self-service access to trigger and monitor workflows.</p>
-    </li>
-    <li>
-      <h3>Application-Aware Workflows.</h3>
-      <p>React to events from your apps, databases, and cloud services in real time.</p>
-    </li>
-    <li>
-      <h3>Complex Data Transformations at Scale.</h3>
-      <p>Chain dbt, Spark, and custom scripts with built-in dependency management.</p>
-    </li>
-  </ul>
-  <a href="/product">Explore all capabilities</a>
+    <h2 id="usecases-heading">Built for How Modern Teams Actually Work.</h2>
+    <ul role="list">
+        <li>
+            <h3>Any Language. No Lock-in</h3>
+            <p>
+                Write workflows in Python, R, Node.js, or any language your team
+                prefers.
+            </p>
+        </li>
+        <li>
+            <h3>Build Everything As Code & From the UI</h3>
+            <p>
+                Empower every team members to collaborate from a single
+                tool—code for developers, UI for everyone else, all in sync.
+            </p>
+        </li>
+        <li>
+            <h3>Agentic Automation, Built In</h3>
+            <p>
+                Copilot for speed, agents for action. Create, iterate, and
+                automate workflows with an AI native platform.
+            </p>
+        </li>
+        <li>
+            <h3>API First. CI/CD Native.</h3>
+            <p>
+                Trigger executions, manage workflows and resources through the
+                API, and roll out updates safely with Git-driven CI/CD
+                pipelines.
+            </p>
+        </li>
+    </ul>
+    <a href="/product">Explore all capabilities</a>
 </section>
+
+<style lang="scss">
+    section {
+        padding: 4rem 0;
+        background: white;
+        color: var(--hp-content-primary);
+
+        h2 {
+            text-align: center;
+            font-size: $font-size-2xl;
+            margin-bottom: 2rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0 1.5rem;
+            display: grid;
+            // however 400px columns you can fit in the container
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 3rem auto;
+
+            li {
+                border: 1px solid var(--hp-border-secondary);
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+                h3 {
+                    font-size: $font-size-lg;
+                    margin-bottom: 0.5rem;
+                }
+
+                p {
+                    font-size: $font-size-sm;
+                    color: var(--hp-content-secondary);
+                    margin: 0;
+                }
+            }
+        }
+
+        a {
+            font-weight: bold;
+            color: var(--ks-primary);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+
+            &:hover {
+                border-color: var(--ks-primary);
+            }
+        }
+    }
+</style>
