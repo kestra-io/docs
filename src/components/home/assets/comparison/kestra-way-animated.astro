@@ -1,18 +1,21 @@
-<!-- =====================================================================
-     KESTRA ANIMATED WIDGET
-     Drop this block anywhere in your page. No dependencies required.
-     ===================================================================== --><!-- 1. STYLES — scoped to .kestra-widget -->
+---
+const { class: className, ...rest } = Astro.props
+---
+
 <style>
     .kestra-widget {
         position: relative;
         width: 554px;
         height: 396px;
+        background-color: #131316;
+        overflow: hidden;
     }
     .kestra-widget svg,
     .kestra-widget canvas {
         position: absolute;
         top: 0;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
         pointer-events: none;
     }
     .kestra-widget svg {
@@ -26,8 +29,7 @@
     }
 </style>
 
-<!-- 2. MARKUP -->
-<div class="kestra-widget">
+<div class:list={["kestra-widget", className]} {...rest}>
     <svg
         width="554"
         height="396"
@@ -283,8 +285,8 @@
 <script>
     ;(function () {
         const widget = document.querySelector(".kestra-widget")
-        const gctx = widget.querySelector(".glow").getContext("2d")
-        const ctx = widget.querySelector(".ptcl").getContext("2d")
+        const gctx = widget?.querySelector(".glow")?.getContext("2d")
+        const ctx = widget?.querySelector(".ptcl")?.getContext("2d")
 
         /* ── Config ── */
         const C = {

@@ -39,20 +39,27 @@ import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
         text-align: center;
         margin-bottom: 2rem;
         color: black;
-        width: 700px;
         margin-inline: auto;
         span {
             color: var(--hp-content-color-highlight);
         }
+        @include media-breakpoint-up(md) {
+            width: 700px;
+        }
     }
 
     .comparison {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
         gap: 2rem;
-        max-width: 1200px;
         margin-inline: auto;
-        height: 396px;
+
+        @include media-breakpoint-up(md) {
+            display: grid;
+            max-width: 1200px;
+            grid-template-columns: 1fr 1fr;
+        }
 
         h3 {
             color: var(--hp-content-primary);
@@ -75,6 +82,7 @@ import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
             background-color: var(--hp-background-secondary);
             border: 1px solid var(--hp-border-secondary);
             border-radius: 0.5rem;
+            height: 396px;
         }
 
         .legacy-approach-image {
@@ -85,6 +93,11 @@ import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .kestra-way-image {
+            width: auto;
+            height: 396px;
+            border-radius: 0.5rem;
         }
     }
 
