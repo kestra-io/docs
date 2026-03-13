@@ -17,6 +17,30 @@ const images = [
 <section class="platform-overview" aria-labelledby="platform-heading">
     <h2 id="platform-heading">One Platform. All Your Workflows.</h2>
     <div class="platform-wrapper">
+        <div class="event-driven-workflow">
+            <h3>Batch and Event-Driven</h3>
+            <p>Cron, events, webhooks, messages. One engine to run them all.</p>
+        </div>
+        <div class="code-workflow">
+            <h3>Declarative Orchestration</h3>
+            <p>
+                Write workflows in YAML. Version them. Review them. Ship them.
+            </p>
+        </div>
+        <div class="governance-workflow">
+            <h3>Governance and Reliability</h3>
+            <p>
+                Retries, timeouts, SLAs, RBAC, audit logs. SOC 2, Built to run
+                in production.
+            </p>
+        </div>
+        <div class="agent-workflow">
+            <h3>Connect Everything</h3>
+            <p>
+                Cloud, data, infra, CI/CD, ITSM, messaging. Plug into your
+                entire stack.
+            </p>
+        </div>
         <figure class="image-stack">
             {
                 images.map(({ src, alt }, i) => (
@@ -58,12 +82,70 @@ const images = [
 
     .platform-wrapper {
         position: relative;
-        max-width: 1200px;
+        max-width: 1250px;
         margin: 0 auto;
         padding: 0 1rem;
         --stack-offset: -50px;
         &.expanded {
             --stack-offset: -150px;
+            & > div {
+                opacity: 1;
+            }
+        }
+        & > div {
+            position: absolute;
+            width: 220px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            &:after {
+                content: "";
+                position: absolute;
+                width: 115px;
+                height: 1px;
+                background: var(--hp-border-secondary);
+                top: 0.5rem;
+                margin: 1rem;
+            }
+            h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            p {
+                font-size: 0.8rem;
+                color: var(--hp-content-secondary);
+            }
+        }
+        .event-driven-workflow {
+            top: 270px;
+            left: 0;
+            text-align: right;
+            &:after {
+                left: 100%;
+            }
+        }
+        .code-workflow {
+            bottom: 70px;
+            left: 0;
+            text-align: right;
+            &:after {
+                left: 100%;
+            }
+        }
+        .governance-workflow {
+            top: 80px;
+            right: 80px;
+            text-align: left;
+            &:after {
+                right: 100%;
+            }
+        }
+        .agent-workflow {
+            bottom: 200px;
+            right: 80px;
+            text-align: left;
+            &:after {
+                right: 100%;
+            }
         }
     }
 
@@ -76,6 +158,7 @@ const images = [
 
     .stack-image {
         position: absolute;
+        z-index: 1;
         left: 50%;
         top: 30%;
         width: 438px;
