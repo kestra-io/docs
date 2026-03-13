@@ -65,7 +65,7 @@ const images = [
                 entry.target.classList.toggle("expanded", entry.isIntersecting)
             })
         },
-        { threshold: 0.6 },
+        { threshold: 0.8 },
     )
     if (stack) {
         observer.observe(stack)
@@ -90,9 +90,9 @@ const images = [
                 #ffffffdf 100%
             ),
             radial-gradient(
-                circle at top left,
+                ellipse at top center,
                 transparent 0,
-                #ffffff85 35%,
+                #ffffff20 35%,
                 #ffffff 70%
             ),
             linear-gradient(

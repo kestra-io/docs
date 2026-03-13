@@ -8,9 +8,9 @@ import PlatformOverview from "~/components/home/PlatformOverview.astro"
 import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
 import Plugins from "~/components/home/Plugins.astro"
 import Testimonial from "~/components/home/Testimonial.astro"
-import DeploySection from "~/components/home/DeploySection.astro"
 import Blueprints from "~/components/home/Blueprints.astro"
 import ClosingCTA from "~/components/home/ClosingCTA.astro"
+import GetStarted from "~/components/common/GetStarted.astro"
 ---
 
 <Layout headerTheme="darkHeader">
@@ -30,7 +30,11 @@ import ClosingCTA from "~/components/home/ClosingCTA.astro"
         <UseCaseGrid />
         <Plugins />
         <Testimonial />
-        <DeploySection />
+        <GetStarted>
+            <h2 slot="heading" id="get-started-heading">
+                Deploy Anywhere. Keep Everything Governed.
+            </h2>
+        </GetStarted>
         <Blueprints />
         <ClosingCTA />
     </div>
@@ -60,12 +64,18 @@ import ClosingCTA from "~/components/home/ClosingCTA.astro"
         font-size: 2rem;
         text-align: center;
         margin-bottom: 2rem;
-        color: var(--ks-content-primary);
         width: 700px;
         margin-inline: auto;
+    }
 
+    h2#adopt-heading {
+        color: var(--ks-content-primary);
         span {
             color: var(--ks-content-color-highlight);
         }
+    }
+
+    h2#get-started-heading {
+        color: var(--ks-content-primary-inverse);
     }
 </style>
