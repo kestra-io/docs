@@ -48,7 +48,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+    $compact-panel-height: 660px;
 
     section {
         padding: 0 $rem-1;
@@ -67,7 +67,7 @@
         .snippets {
             flex: 1 1 0;
             min-width: 0;
-            min-height: 586px;
+            min-height: $compact-panel-height;
 
             @include media-breakpoint-down(xl) {
                 flex: 1 1 auto;
@@ -75,7 +75,7 @@
             }
 
             :deep(.code-card) {
-                height: 586px;
+                height: $compact-panel-height;
                 display: flex;
                 flex-direction: column;
 
@@ -113,7 +113,7 @@
             flex: 0 0 580px;
             max-width: 580px;
             min-width: 0;
-            min-height: 586px;
+            min-height: $compact-panel-height;
             display: flex;
             flex-direction: column;
 
