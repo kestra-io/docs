@@ -1,20 +1,86 @@
 <section aria-labelledby="testimonial-heading">
-  <h2 id="testimonial-heading" class="sr-only">Customer testimonial</h2>
-  <figure>
-    <blockquote>
-      <p>
-        "Our goal is for Kestra to become the go-to solution across the
-        organization whenever data wrangling and complex pipeline
-        orchestration are needed."
-      </p>
-    </blockquote>
-    <figcaption>
-      <p>Ilse Halleux - CTO, Leroy</p>
-    </figcaption>
-  </figure>
-  <ul role="list" aria-label="Key statistics">
-    <li><span>50%</span><span>reduction in pipeline maintenance time</span></li>
-    <li><span>0</span><span>production incidents since migration</span></li>
-    <li><span>2</span><span>engineers manage 400+ workflows</span></li>
-  </ul>
+    <div class="container">
+        <figure>
+            <blockquote>
+                Our goal is for Kestra to become the go-to solution across the
+                organization whenever data wrangling and complex pipeline
+                orchestration are needed.
+            </blockquote>
+            <figcaption>Rémi Sultan - AI/ML Lead</figcaption>
+        </figure>
+        <ul role="list" aria-label="Key statistics">
+            <li>
+                <span class="kpi-number">50%</span><span class="kpi-title"
+                    >reduction in pipeline maintenance time</span
+                >
+            </li>
+            <li>
+                <span class="kpi-number">0</span><span class="kpi-title"
+                    >production incidents since migration</span
+                >
+            </li>
+            <li>
+                <span class="kpi-number">2</span><span class="kpi-title"
+                    >engineers manage 400+ workflows</span
+                >
+            </li>
+        </ul>
+    </div>
 </section>
+
+<style lang="scss">
+    section {
+        background-color: var(--hp-background-purple-light);
+        color: var(--hp-content-primary);
+        padding: 4rem;
+        text-align: center;
+    }
+    figure {
+        margin: 0;
+        padding: 0;
+        font-style: normal;
+        max-width: 800px;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--hp-border-secondary);
+    }
+
+    blockquote {
+        font-size: 1.5rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        &:before {
+            content: "“";
+            color: var(--hp-content-color-highlight);
+        }
+        &:after {
+            content: "”";
+            color: var(--hp-content-color-highlight);
+        }
+    }
+
+    figcaption {
+        font-size: 1rem;
+        font-family: monospace, monospace;
+        color: var(--hp-content-tertiary);
+        font-size: 1rem;
+    }
+
+    .kpi-number {
+        display: block;
+        font-size: 2rem;
+    }
+
+    .kpi-title {
+        display: block;
+        font-size: 1rem;
+        color: var(--hp-content-secondary);
+    }
+
+    ul[role="list"] {
+        list-style: none;
+        padding: 0;
+        padding-top: 1rem;
+        display: flex;
+        gap: 2rem;
+    }
+</style>
