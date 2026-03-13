@@ -1,6 +1,7 @@
 ---
 import LegacyApproachIcon from "./assets/comparison/legacy-approach.svg"
 import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
+import SixtySeconds from "./SixtySeconds.astro"
 ---
 
 <section aria-labelledby="comparison-heading">
@@ -21,9 +22,7 @@ import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
         Kestra scales because it is designed for cross-team orchestration from
         day one.
     </p>
-    <a href="/modern-data-stack" class="btn btn-lg btn-primary">
-        See Kestra in 60 seconds
-    </a>
+    <SixtySeconds client:visible />
 </section>
 
 <style lang="scss">

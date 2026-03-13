@@ -1,0 +1,112 @@
+<button
+    class="btn btn-lg btn-primary"
+    command="show-modal"
+    commandfor="sixty-seconds-modal"
+>
+    See Kestra in 60 seconds
+</button>
+<dialog id="sixty-seconds-modal" closedby="any">
+    <div class="modal-header">
+        <button
+            type="button"
+            class="btn-close"
+            commandfor="sixty-seconds-modal"
+            command="close"
+            aria-label="Close">X</button
+        >
+    </div>
+    <div class="modal-body">
+        <div class="video-container">
+            <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
+                title="YouTube video player"
+                allow="
+                                accelerometer;
+                                autoplay;
+                                clipboard-write;
+                                encrypted-media;
+                                gyroscope;
+                                picture-in-picture;
+                                web-share;
+                            "
+                allowfullscreen></iframe>
+        </div>
+    </div>
+</dialog>
+
+<style lang="scss">
+    .video-container {
+        iframe {
+            margin-inline: auto;
+            display: block;
+        }
+    }
+
+    dialog {
+        width: 80vw;
+        aspect-ratio: 16 / 11;
+        border-radius: 1rem;
+        box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.8);
+        &::backdrop {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-close {
+            border: none;
+            background: transparent;
+            padding: 0.5rem;
+        }
+    }
+
+    /* Open state of the dialog  */
+    dialog:open {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        font-size: 1.2rem;
+        padding: 0.3rem;
+    }
+
+    /* Closed state of the dialog   */
+    dialog {
+        opacity: 0;
+        transform: scale(0.5) translateY(-15%);
+        transition:
+            opacity 0.4s ease-out,
+            transform 0.4s ease-out,
+            overlay 0.4s ease-out allow-discrete,
+            display 0.4s ease-out allow-discrete;
+    }
+
+    /* Before open state  */
+    /* Needs to be after the previous dialog:open rule to take effect,
+        as the specificity is the same */
+    @starting-style {
+        dialog:open {
+            opacity: 0;
+            transform: scale(0.5) translateY(-15%);
+        }
+    }
+
+    /* Transition the :backdrop when the dialog modal is promoted to the top layer */
+    dialog::backdrop {
+        background-color: transparent;
+        transition:
+            display 0.4s allow-discrete,
+            overlay 0.4s allow-discrete,
+            background-color 0.4s;
+    }
+
+    dialog:open::backdrop {
+        background-color: rgb(0 0 0 / 25%);
+    }
+
+    /* This starting-style rule cannot be nested inside the above selector
+    because the nesting selector cannot represent pseudo-elements. */
+    @starting-style {
+        dialog:open::backdrop {
+            background-color: transparent;
+        }
+    }
+</style>
