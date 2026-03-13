@@ -16,7 +16,7 @@ philosophy:
     title: Visual App Automation
     description: "Visual-first workflow automation platform built around a drag-and-drop node editor. Connect SaaS apps, build AI agent workflows, and prototype automations quickly with JavaScript and Python code nodes."
     shadowColor: "#FF9F7A"
-    subCardBg: "var(--ks-background-orange-light)"
+    subCardBg: "var(--ks-background-blue-light)"
     subCardText: '"How do I connect apps and build automations visually?"'
 
 businessValue:
