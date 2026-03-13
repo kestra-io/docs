@@ -135,17 +135,24 @@ const images = [
         }
         & > div {
             position: absolute;
+            z-index: 2;
             width: 220px;
             opacity: 0;
             transition: all 0.3s ease;
-            &:after {
-                content: "";
-                position: absolute;
-                width: 115px;
-                height: 1px;
-                background: var(--hp-border-secondary);
-                top: 0.5rem;
-                margin: 1rem;
+            background-color: #ffffffaa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--hp-border-secondary);
+            @include media-breakpoint-up(md) {
+                &:after {
+                    content: "";
+                    position: absolute;
+                    width: 115px;
+                    height: 1px;
+                    background: var(--hp-border-secondary);
+                    top: 0.5rem;
+                    margin: 1rem;
+                }
             }
             h3 {
                 font-size: 1rem;
@@ -158,7 +165,10 @@ const images = [
         }
         .event-driven-workflow,
         .code-workflow {
-            left: 0;
+            left: 1rem;
+            @include media-breakpoint-up(md) {
+                left: 0;
+            }
             text-align: right;
             &:after {
                 left: 100%;
@@ -174,7 +184,10 @@ const images = [
 
         .governance-workflow,
         .agent-workflow {
-            right: 80px;
+            right: 1rem;
+            @include media-breakpoint-up(md) {
+                right: 80px;
+            }
             text-align: left;
             &:after {
                 right: 100%;

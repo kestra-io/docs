@@ -64,8 +64,10 @@ import GetStarted from "~/components/common/GetStarted.astro"
         font-size: 2rem;
         text-align: center;
         margin-bottom: 2rem;
-        width: 700px;
         margin-inline: auto;
+        @include media-breakpoint-up(md) {
+            width: 700px;
+        }
     }
 
     h2#adopt-heading {
