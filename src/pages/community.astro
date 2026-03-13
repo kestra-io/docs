@@ -15,26 +15,25 @@ const description =
     "Connect with a vibrant community of data enthusiasts to learn, collaborate, and contribute to the evolution of data orchestration."
 ---
 
-<Layout title={title} description={description} headerTheme="lightHero">
+<Layout title={title} description={description} headerTheme="lightText">
     <div>
         <Header />
         <Slack />
         <CommunityGrid client:idle />
         <Guidelines client:load />
         <Contributors client:idle />
-        <SeeHow 
+        <SeeHow
             imgSrc={seeHowImg}
             cta={{ text: "Join us", href: "https://kestra.io/slack" }}
         >
             <Fragment slot="title">Join us on Slack</Fragment>
-            Join us to share ideas and best practices, get help with technical questions, and discuss with other developers.
+            Join us to share ideas and best practices, get help with technical questions,
+            and discuss with other developers.
         </SeeHow>
     </div>
 </Layout>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     :global(section.ping) {
         border-color: var(--ks-border-primary) !important;
     }

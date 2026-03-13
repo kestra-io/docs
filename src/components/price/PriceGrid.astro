@@ -13,8 +13,7 @@ import ChartLineVariant from "vue-material-design-icons/ChartLineVariant.vue"
 import ScaleBalance from "vue-material-design-icons/ScaleBalance.vue"
 
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
-import GradientLeft from "./gradients/GradientLeft.astro"
-import GradientRight from "./gradients/GradientRight.astro"
+import WithLogo from "~/components/layout/WithLogo.astro"
 
 const SELF_HOSTED_FEATURES = [
     {
@@ -95,14 +94,16 @@ const CLOUD_HOSTED_FEATURES = [
 ]
 ---
 
-<section class="price-grid">
-    <GradientLeft />
-
+<WithLogo>
     <div class="container">
         <h2 class="section-title" data-host="self-hosted" data-usal="fade-r">
             What You Get With Kestra
         </h2>
-        <h2 class="section-title d-none" data-host="cloud-hosted" data-usal="fade-r">
+        <h2
+            class="section-title d-none"
+            data-host="cloud-hosted"
+            data-usal="fade-r"
+        >
             What You Get With Kestra Cloud
         </h2>
 
@@ -115,16 +116,19 @@ const CLOUD_HOSTED_FEATURES = [
         </div>
 
         <div class="support-card">
-            <GradientRight />
             <div class="support-content">
-                <h3 class="support-title" data-usal="fade-l delay-10">Expert Support, Built In</h3>
+                <h3 class="support-title" data-usal="fade-l delay-10">
+                    Expert Support, Built In
+                </h3>
                 <p class="support-desc" data-usal="fade-l delay-20">
                     Get direct help from the Kestra team. Upgrade for faster
                     SLAs, a dedicated channel, and hands-on guidance from the
                     engineers behind the platform.
                 </p>
                 <ul class="support-list">
-                    <li data-usal="fade-l delay-10"><Check class="check-icon" /> Faster SLAs</li>
+                    <li data-usal="fade-l delay-10">
+                        <Check class="check-icon" /> Faster SLAs
+                    </li>
                     <li data-usal="fade-l delay-20">
                         <Check class="check-icon" /> Dedicated Support Channel
                     </li>
@@ -151,23 +155,11 @@ const CLOUD_HOSTED_FEATURES = [
 
         <slot />
     </div>
-</section>
+</WithLogo>
 
 <style lang="scss">
     @import "~/assets/styles/variable";
 
-    .price-grid {
-        padding-block: 140px;
-        background: var(--ks-background-primary-inverse)
-            url("~/assets/pricing/bg_price.webp") no-repeat bottom right / 55%
-            auto;
-        position: relative;
-        overflow: clip;
-
-        @include media-breakpoint-down(lg) {
-            background-size: 100% auto;
-        }
-    }
     .container {
         margin-inline: auto;
         padding-inline: 1rem;
@@ -190,6 +182,25 @@ const CLOUD_HOSTED_FEATURES = [
         gap: 2rem;
         position: relative;
         overflow: clip;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -198px;
+            right: -44%;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(
+                90deg,
+                var(--ks-Color-gradient-1-inverse) 0%,
+                var(--ks-Color-gradient-1-inverse-2) 100%
+            );
+            filter: blur(32px);
+            transform: rotate(-3.02deg);
+            pointer-events: none;
+            z-index: 0;
+        }
 
         .support-content,
         .support-action {
@@ -256,3 +267,4 @@ const CLOUD_HOSTED_FEATURES = [
         }
     }
 </style>
+

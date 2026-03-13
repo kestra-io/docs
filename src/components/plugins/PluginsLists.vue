@@ -159,7 +159,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .total-pages {
         font-size: $font-size-sm;

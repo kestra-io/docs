@@ -127,7 +127,7 @@ const teamMembers = [
         name: "Malay Dewangan",
         title: "Software Engineer",
         image: TeamImages["mdewangan-round.png"],
-    },    
+    },
     {
         name: "Steven Meek",
         title: "Software Engineer",
@@ -206,10 +206,7 @@ const teamMembers = [
         <div class="team-grid" data-usal="fade-u delay-200">
             {
                 teamMembers.map((member, index) => (
-                    <div
-                        class="team-card"
-                        data-usal="zoomin"
-                    >
+                    <div class="team-card" data-usal="zoomin">
                         <Image
                             src={member.image}
                             alt={member.name.replace(/<br\s*\/?>/gi, " ")}
@@ -217,10 +214,7 @@ const teamMembers = [
                             height={164.8}
                         />
                         <div class="team-info">
-                            <p
-                                class="team-name mb-0"
-                                set:html={member.name}
-                            />
+                            <p class="team-name mb-0" set:html={member.name} />
                             {member.title && (
                                 <small class="team-title">{member.title}</small>
                             )}
@@ -241,8 +235,6 @@ const teamMembers = [
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .team-section {
         padding: $rem-4 $rem-1;
         background-color: var(--ks-background-body);

@@ -70,7 +70,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .business-details-container {
         display: flex;

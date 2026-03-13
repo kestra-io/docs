@@ -14,7 +14,7 @@ const description =
     "Discover the team and values behind our mission to empower data-driven organizations worldwide"
 ---
 
-<Layout {title} {description} headerTheme="lightHero">
+<Layout {title} {description} headerTheme="lightText">
     <div class="about-us">
         <Orchestrate />
         <Mission />
@@ -22,12 +22,12 @@ const description =
         <Investors />
         <NewsGrid />
         <Life />
-        <SeeHow 
-            cta={{ 
-                text: "Download Logo Pack", 
-                href: "/kestra-logo-kit.zip", 
-                download: "kestra-logo-kit.zip" 
-            }} 
+        <SeeHow
+            cta={{
+                text: "Download Logo Pack",
+                href: "/kestra-logo-kit.zip",
+                download: "kestra-logo-kit.zip"
+            }}
             imgSrc={assets}
         >
             <Fragment slot="title">Brand assets</Fragment>

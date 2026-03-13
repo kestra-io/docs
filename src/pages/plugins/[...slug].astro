@@ -35,7 +35,6 @@ import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 
-
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
 
@@ -684,8 +683,6 @@ if (!pluginType && !subGroup) {
 </Layout>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .related-blogs {
         padding: 2rem 0;
         border-top: $block-border;
@@ -832,6 +829,4 @@ if (!pluginType && !subGroup) {
     .btn span {
         color: var(--ks-background-secondary);
     }
-
-
 </style>

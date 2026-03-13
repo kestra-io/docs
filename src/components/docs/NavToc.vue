@@ -242,7 +242,7 @@
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "~/assets/styles/variable";
+
 
     .bd-toc {
         @include media-breakpoint-down(lg) {

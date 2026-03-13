@@ -50,7 +50,7 @@
 
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .orchestration {
         padding: 4rem 0;
