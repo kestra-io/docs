@@ -66,9 +66,11 @@ import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
             list-style: none;
             display: grid;
             width: 100%;
-            // however 400px columns you can fit in the container with a maximum of 2 columns
-            grid-template-columns: repeat(auto-fit, minmax(465px, 1fr));
             gap: 1.5rem;
+            padding: 0;
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(auto-fit, minmax(465px, 1fr));
+            }
 
             li {
                 border: 1px solid var(--hp-border-secondary);

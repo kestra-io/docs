@@ -47,12 +47,10 @@
             </span>
         </div>
     </div>
-    <a href="/modern-data-stack" class="btn btn-lg btn-primary">
-        Get Started
+    <a href="/docs/quickstart" class="btn btn-lg btn-primary"> Get Started </a>
+    <a href="/demo" class="btn btn-lg btn-secondary" style="margin-left: 1rem;">
+        Book a demo
     </a>
-    <a href="/demo" class="btn btn-lg btn-secondary" style="margin-left: 1rem;"
-        >Book a demo</a
-    >
     <svg
         width="41"
         height="41"
@@ -99,7 +97,7 @@
 
 <style lang="scss">
     section {
-        padding: 5rem 2rem;
+        padding: 5rem 1rem;
         background-color: white;
         background-image:
             radial-gradient(
@@ -132,8 +130,8 @@
         background-size:
             100% 100%,
             100% 100%,
-            68px 68px,
-            68px 68px;
+            var(--hp-grid-size) var(--hp-grid-size),
+            var(--hp-grid-size) var(--hp-grid-size);
         background-position: center bottom;
         color: var(--hp-content-secondary);
         text-align: center;
@@ -157,6 +155,16 @@
         display: flex;
         gap: 2rem;
         justify-content: center;
+        flex-direction: column;
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+        }
+        svg {
+            display: none;
+            @include media-breakpoint-up(md) {
+                display: block;
+            }
+        }
 
         span {
             display: flex;

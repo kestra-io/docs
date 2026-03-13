@@ -1,93 +1,28 @@
-<section aria-labelledby="testimonial-heading">
-    <div class="container">
-        <figure>
-            <blockquote>
-                Our goal is for Kestra to become the go-to solution across the
+---
+import Quotes from "~/components/common/Quotes.vue"
+
+const quotes = [
+    {
+        quote: `Our goal is for Kestra to become the go-to solution across the
                 organization whenever data wrangling and complex pipeline
-                orchestration are needed.
-            </blockquote>
-            <figcaption>Rémi Sultan - AI/ML Lead</figcaption>
-        </figure>
-        <ul role="list" aria-label="Key statistics">
-            <li>
-                <span class="kpi-number">50%</span>
-                <span class="kpi-title">less maintenance</span>
-            </li>
-            <li>
-                <span class="kpi-number">0</span>
-                <span class="kpi-title">Customer training needed</span>
-            </li>
-            <li>
-                <span class="kpi-number">2</span>
-                <span class="kpi-title">engineers to build the product</span>
-            </li>
-        </ul>
-    </div>
-</section>
+                orchestration are needed.`,
+        author: "Rémi Sultan - AI/ML Lead",
+        kpis: [
+            {
+                value: "50%",
+                name: "less maintenance",
+            },
+            {
+                value: "0",
+                name: "Customer training needed",
+            },
+            {
+                value: "2",
+                name: "engineers to build the product",
+            },
+        ],
+    },
+]
+---
 
-<style lang="scss">
-    section {
-        background-color: var(--hp-background-purple-light);
-        color: var(--hp-content-primary);
-        padding: 4rem;
-        text-align: center;
-    }
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    figure {
-        margin: 0;
-        padding: 0;
-        font-style: normal;
-        max-width: 800px;
-        padding-bottom: 2rem;
-        border-bottom: 1px solid var(--hp-border-secondary);
-    }
-
-    blockquote {
-        font-size: 1.5rem;
-        line-height: 1.6;
-        margin-bottom: 1rem;
-        &:before {
-            content: "“";
-            color: var(--hp-content-color-highlight);
-        }
-        &:after {
-            content: "”";
-            color: var(--hp-content-color-highlight);
-        }
-    }
-
-    figcaption {
-        font-size: 1rem;
-        font-family: monospace, monospace;
-        color: var(--hp-content-tertiary);
-        font-size: 1rem;
-    }
-
-    .kpi-number {
-        display: block;
-        font-size: 2rem;
-    }
-
-    .kpi-title {
-        display: block;
-        font-size: 0.8rem;
-        color: var(--hp-content-secondary);
-    }
-
-    ul[role="list"] {
-        list-style: none;
-        padding: 0;
-        padding-top: 1rem;
-        display: flex;
-        gap: 2rem;
-        max-width: 800px;
-        li {
-            flex: 1;
-        }
-    }
-</style>
+<Quotes quotes={quotes} />

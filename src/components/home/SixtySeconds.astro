@@ -45,10 +45,13 @@
     }
 
     dialog {
-        width: 80vw;
+        width: 95vw;
         aspect-ratio: 16 / 11;
         border-radius: 1rem;
         box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.8);
+        @include media-breakpoint-up(md) {
+            width: 80vw;
+        }
         &::backdrop {
             background-color: rgba(0, 0, 0, 0.8);
         }
