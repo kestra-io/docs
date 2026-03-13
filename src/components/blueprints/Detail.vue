@@ -65,8 +65,8 @@
         }
 
         .snippets {
-            flex: 0 0 580px;
-            max-width: 580px;
+            flex: 1 1 0;
+            min-width: 0;
             min-height: 586px;
 
             @include media-breakpoint-down(xl) {
@@ -110,16 +110,18 @@
         }
 
         .topology {
-            flex: 1;
+            flex: 0 0 580px;
+            max-width: 580px;
             min-width: 0;
             min-height: 586px;
             display: flex;
             flex-direction: column;
 
             @include media-breakpoint-down(xl) {
+                max-width: none;
                 height: 500px;
                 min-height: auto;
-                flex: none;
+                flex: 1 1 auto;
             }
 
             .card {
