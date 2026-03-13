@@ -90,6 +90,7 @@ const images = [
             --stack-offset: -150px;
             & > div {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
         & > div {
@@ -115,37 +116,46 @@ const images = [
                 color: var(--hp-content-secondary);
             }
         }
-        .event-driven-workflow {
-            top: 270px;
+        .event-driven-workflow,
+        .code-workflow {
             left: 0;
             text-align: right;
             &:after {
                 left: 100%;
             }
+        }
+
+        .event-driven-workflow {
+            top: 270px;
         }
         .code-workflow {
             bottom: 70px;
-            left: 0;
-            text-align: right;
-            &:after {
-                left: 100%;
-            }
         }
-        .governance-workflow {
-            top: 80px;
+
+        .governance-workflow,
+        .agent-workflow {
             right: 80px;
             text-align: left;
             &:after {
                 right: 100%;
             }
+        }
+
+        .governance-workflow {
+            top: 80px;
         }
         .agent-workflow {
             bottom: 200px;
-            right: 80px;
-            text-align: left;
-            &:after {
-                right: 100%;
-            }
+        }
+
+        .code-workflow,
+        .agent-workflow {
+            transform: translateY(-150px);
+        }
+
+        .event-driven-workflow,
+        .governance-workflow {
+            transform: translateY(150px);
         }
     }
 
