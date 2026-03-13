@@ -23,13 +23,28 @@ const images = [
                     src={src}
                     alt={alt}
                     class="stack-image"
-                    style={`--i: ${i}`}
+                    style={`--i: ${i - (images.length - 1) / 2};`}
                     loading="lazy"
                 />
             ))
         }
     </figure>
 </section>
+
+<script>
+    const stack = document.querySelector(".image-stack")
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                entry.target.classList.toggle("expanded", entry.isIntersecting)
+            })
+        },
+        { threshold: 0.8 },
+    )
+    if (stack) {
+        observer.observe(stack)
+    }
+</script>
 
 <style lang="scss">
     .platform-overview {
@@ -45,7 +60,7 @@ const images = [
         max-width: 900px;
         height: 700px;
         --stack-offset: -50px;
-        &:hover {
+        &.expanded {
             --stack-offset: -150px;
         }
     }
@@ -53,7 +68,7 @@ const images = [
     .stack-image {
         position: absolute;
         left: 50%;
-        bottom: 0;
+        top: 30%;
         width: 438px;
         transform: translateX(-50%)
             translateY(calc(var(--i) * var(--stack-offset, -50px))) scaleY(0.7)
