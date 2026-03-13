@@ -1,0 +1,249 @@
+---
+import { Icon } from "astro-icon/components"
+import Link from "~/components/common/Link.astro"
+import LogoCarousel from "~/components/common/LogoCarousel.astro"
+
+interface Props {
+    badge: {
+        icon: string
+        label: string
+        theme?: {
+            textColor?: string
+            bg?: string
+            borderFrom?: string
+            borderTo?: string
+        }
+    }
+    title: string
+    description: string
+    iframeSrc: string
+    bg: {
+        mobile: string
+        desktop: string
+        glow?: string
+    }
+}
+
+const {
+    badge,
+    title,
+    description,
+    iframeSrc,
+    bg,
+} = Astro.props
+
+const bgStyle = `--bg-mobile: url(${bg.mobile}); --bg-desktop: url(${bg.desktop})`
+const { textColor, bg: badgeBg, borderFrom, borderTo } = badge.theme ?? {}
+const badgeVars = Object.entries({
+    "--badge-text": textColor,
+    "--badge-bg": badgeBg,
+    "--badge-border-from": borderFrom,
+    "--badge-border-to": borderTo,
+})
+    .filter(([, v]) => v)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join("; ")
+---
+
+<section>
+    <div class="background" style={bgStyle}>
+        {bg.glow && <div class="glow" style={`--bg-glow: url(${bg.glow})`} />}
+    </div>
+    <div class="content d-flex align-items-center mx-auto text-white">
+        <div class="left-box d-flex flex-column align-items-start">
+            <div class="badge-pill mb-3" style={badgeVars} data-usal="zoomin">
+                <Icon name={badge.icon} />
+                <span>{badge.label}</span>
+            </div>
+            <h1 set:html={title} data-usal="fade-u"/>
+            <p set:html={description} data-usal="fade-l"/>
+            <div class="d-flex gap-3 flex-column flex-lg-row">
+                <Link href="/docs/quickstart#start-kestra" class="btn btn-primary" data-usal="zoomin">
+                    Start free (OSS)
+                </Link>
+                <a href="/demo" class="btn btn-secondary" data-usal="zoomin">
+                    Book a demo
+                </a>
+            </div>
+            <hr />
+            <LogoCarousel title="Used by teams at" inverted={false} />
+        </div>
+        <div class="w-100 overflow-hidden gradient-border">
+            <iframe
+                class="arcade-embed w-100"
+                src={iframeSrc}
+                title={badge.label}
+                allowfullscreen
+                allow="clipboard-write"
+            />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    section {
+        position: relative;
+        width: 100%;
+        padding: 6.875rem 6.25rem 6.875rem;
+        overflow: hidden;
+
+        @include media-breakpoint-down(xl) {
+            padding: 5rem 1.25rem 2.5rem;
+        }
+
+        .background {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: var(--bg-mobile);
+            background-position: top center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            pointer-events: none;
+
+            @include media-breakpoint-up(md) {
+                background-image: var(--bg-desktop);
+            }
+
+            .glow {
+                display: none;
+                position: absolute;
+                inset: 0;
+                background-image: var(--bg-glow);
+                background-position: top left;
+                background-size: cover;
+                background-repeat: no-repeat;
+                pointer-events: none;
+
+                @include media-breakpoint-up(xl) {
+                    display: block;
+                }
+            }
+        }
+
+        .content {
+            gap: $rem-4;
+            max-width: 95rem;
+
+            @media (max-width: 97.5rem) {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .left-box {
+                width: 100%;
+
+                @media (min-width: 97.5rem) {
+                    max-width: 43.125rem;
+                }
+
+                :global(.link) {
+                    color: var(--ks-content-primary);
+                }
+
+                .badge-pill {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: fit-content;
+                    min-width: fit-content;
+                    padding: 4px 1.125rem;
+                    gap: 0.625rem;
+                    border-radius: 2.5rem;
+                    background: var(--badge-bg, #0e0e11);
+                    position: relative;
+                    z-index: 1;
+                    font-size: $font-size-xs;
+                    font-weight: 600;
+                    color: var(--badge-text, #fdffce);
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        inset: 0;
+                        border-radius: 2.5rem;
+                        padding: 1px;
+                        background: linear-gradient(
+                            90deg,
+                            var(--badge-border-from, #e6c359) 0%,
+                            var(--badge-border-to, #fffee9) 100%
+                        );
+                        -webkit-mask:
+                            linear-gradient($white 0 0) content-box,
+                            linear-gradient($white 0 0);
+                        -webkit-mask-composite: xor;
+                        mask-composite: exclude;
+                        z-index: -1;
+                    }
+                }
+
+                h1 {
+                    margin-top: 0;
+                    margin-bottom: 1.5rem;
+                }
+
+                p {
+                    margin-bottom: 2rem;
+                    font-size: 1.125rem;
+                }
+
+                hr {
+                    margin: 1.5rem 0;
+                    border: none;
+                    border-top: 1px solid var(--ks-content-primary-inverse);
+                }
+            }
+
+            .gradient-border {
+                position: relative;
+                background: linear-gradient(
+                    135deg,
+                    rgba($white, 0.1) 0%,
+                    rgba($white, 0) 50%,
+                    rgba($white, 0.1) 100%
+                );
+                border-radius: 0.79rem;
+                padding: 0.1rem;
+                backdrop-filter: blur(10px);
+                box-shadow: 0.3125rem 1.125rem 2.75rem 0px #000000bf;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(
+                        132.13deg,
+                        rgba($white, 0.8) 4.37%,
+                        rgba($gray-500, 0.4) 41.25%
+                    );
+                    border-radius: 0.75rem;
+                    padding: 1.05px;
+                    pointer-events: none;
+                    -webkit-mask:
+                        linear-gradient($white 0 0) content-box,
+                        linear-gradient($white 0 0);
+                    mask:
+                        linear-gradient($white 0 0) content-box,
+                        linear-gradient($white 0 0);
+                    -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+                    z-index: -1;
+                }
+
+                .arcade-embed {
+                    aspect-ratio: 16 / 9;
+                    color-scheme: light;
+                    border-radius: 0.54rem;
+                    border: none;
+
+                    @include media-breakpoint-down(md) {
+                        aspect-ratio: 13 / 9;
+                    }
+                }
+            }
+        }
+    }
+</style>

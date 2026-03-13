@@ -70,6 +70,95 @@ Credentials can reference sensitive inputs via existing [Secrets](../../../06.co
 
 ---
 
+## Example: Google service account with JWT Bearer
+
+The following example shows how to use a Google Cloud service account with an OAuth2 JWT Bearer credential in Kestra.
+
+### 1. Create a service account in Google Cloud
+
+In Google Cloud:
+
+1. Go to **IAM & Admin** -> **Service Accounts**.
+2. Create a new service account and grant it only the roles required for your use case.
+3. Open the service account, go to **Keys**, and create a new **JSON** key.
+4. Download the JSON key file.
+
+From that JSON file, you will use:
+
+- `client_email`
+- `private_key`
+- `private_key_id`
+- `token_uri`
+
+For more information, see the [Google service account guide](https://cloud.google.com/iam/docs/service-account-overview).
+
+### 2. Create a secret for the private key
+
+Store the private key from the downloaded JSON in a Kestra secret rather than embedding it directly in the credential.
+
+For example, create a secret named `GCP_PRIVATE_KEY` with the value of the `private_key` field from the JSON file.
+
+You can manage that secret from the Kestra UI or by using an external [Secrets Manager](../../02.governance/secrets-manager/index.md).
+
+### 3. Create the credential in Kestra
+
+In the Credentials UI, create a new credential with the following values:
+
+- **Credential Type:** `OAUTH2`
+- **Auth Config Type:** `JWT_BEARER`
+- **Token Endpoint:** `https://oauth2.googleapis.com/token`
+- **Issuer:** the `client_email` value from the JSON key
+- **Subject:** use the service account email for a standard service account flow; for Google Workspace domain-wide delegation, use the delegated user instead
+- **Private Key:** reference the `GCP_PRIVATE_KEY` secret
+- **Key ID:** the `private_key_id` value from the JSON key
+- **Algorithm:** `RS256`
+- **Additional Claims:** add a `scope` claim containing the Google OAuth scopes required by the API, for example `https://www.googleapis.com/auth/cloud-platform.read-only`
+
+For Google service accounts, the scope must be included in the JWT claims. If you need multiple scopes, provide them as a single space-delimited string in the `scope` claim, for example:
+
+```text
+https://www.googleapis.com/auth/cloud-platform.read-only https://www.googleapis.com/auth/bigquery.readonly
+```
+
+:::alert{type="info"}
+Use the **Test connection** action in the Credentials UI to confirm that Kestra can mint an access token before using the credential in a flow.
+:::
+
+### 4. Use the credential in a flow
+
+Once the credential is saved, you can use it in a flow with the `credential()` Pebble function.
+
+The example below calls the Google Cloud Resource Manager API and sends the access token as a Bearer token in the request header:
+
+```yaml
+id: google_api_with_credential
+namespace: company.team
+
+inputs:
+  - id: project_id
+    type: STRING
+
+tasks:
+  - id: request
+    type: io.kestra.plugin.core.http.Request
+    method: GET
+    uri: "https://cloudresourcemanager.googleapis.com/v1/projects/{{ inputs.project_id }}"
+    options:
+      auth:
+        type: BEARER
+        token: "{{ credential('gcp-service-account') }}"
+
+  - id: log_result
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      code={{ outputs.request.code }}
+      body={{ outputs.request.body }}
+```
+
+If the service account has the required permissions on the target project, the request should return `200` and the project metadata in the response body.
+
+---
+
 ## Token lifecycle and caching
 
 - Tokens are **not persisted**.

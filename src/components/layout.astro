@@ -20,7 +20,14 @@ interface Props {
     title?: string
     description?: string
     image?: string
-    headerTheme?: "lightHero" | "darkHeader"
+    /**
+     * @param headerTheme Controls the header appearance before scrolling.
+     * - `"lightText"` — White nav links/logo; for dark/gradient hero backgrounds.
+     * - `"darkText"` — Dark nav links/logo; for white hero backgrounds.
+     * - `"darkHeader"` — Opaque dark header background in both modes (currently only used on homepage for the riv black bg).
+     * @param headerBg Override the dark header background color. Only applies when `headerTheme="darkHeader"`.
+     */
+    headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
 }
 
@@ -67,7 +74,7 @@ const canonicalUrl = new URL(
 const randomAiQuestions = getRandomAiQuestions()
 const annonces = (await getCollection("annonces"))
     .map((a) => a.data)
-    .filter(a => a.id !== 0)
+    .filter((a) => a.id !== 0)
 
 const hasAnnounce = annonces.length > 0
 ---
@@ -181,19 +188,25 @@ const hasAnnounce = annonces.length > 0
         <script src="../scripts/theme.ts"></script>
     </head>
     <body
-        data-header-theme={props.headerTheme === "darkHeader"
-            ? "darkBg"
-            : props.headerTheme === "lightHero"
-              ? "dark"
-              : undefined}
+        data-header-theme={{
+            darkHeader: "darkBg",
+            lightText: "dark",
+            darkText: "light",
+        }[props.headerTheme!]}
         style={props.headerBg
             ? `--header-dark-bg: ${props.headerBg}`
             : undefined}
-        class={hasAnnounce ? 'has-annonces' : '' }
+        class={hasAnnounce ? "has-annonces" : ""}
     >
         <Header client:load transition:persist />
         <Search randomAiQuestions={randomAiQuestions} client:load />
-        {hasAnnounce ? <Announce client:load transition:persist content={annonces} /> : '' }
+        {
+            hasAnnounce ? (
+                <Announce client:load transition:persist content={annonces} />
+            ) : (
+                ""
+            )
+        }
         <main>
             <slot />
         </main>
