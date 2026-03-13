@@ -68,6 +68,11 @@ Best practice:
 - avoid deleting recent data that is still useful for troubleshooting failed workflows
 - run purge flows on a schedule instead of waiting for storage pressure
 
+Relevant blueprints:
+
+- [Purge execution data including logs, metrics and outputs on a schedule](https://kestra.io/blueprints/purge)
+- [Purge disk space interactively](https://kestra.io/blueprints/purge-disk-space-interactively)
+
 ## When to purge KV pairs
 
 Use [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv) only for runtime state that has expired or is no longer valid.
@@ -84,6 +89,10 @@ Best practice:
 - set TTLs where possible
 - enable automatic purging of expired KV pairs when that matches your operational model
 - avoid using KV purge as a substitute for redesigning unclear state lifecycles
+
+Relevant blueprint:
+
+- [Purge old KV pairs from the KV Store](https://kestra.io/blueprints/kv-store-purge)
 
 If a value is actually configuration or a secret, it probably does not belong in the KV Store in the first place.
 
