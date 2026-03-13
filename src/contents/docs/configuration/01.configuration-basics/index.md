@@ -16,7 +16,7 @@ Kestra reads configuration from YAML. In practice, teams usually provide it in o
 - inline YAML inside Docker Compose
 - Helm values or Kubernetes manifests
 
-Environment variables override file-based configuration.
+Environment variables override file-based configuration, so many teams keep a shared YAML base config in version control and inject deployment-specific values at runtime.
 
 ## Minimal boot configuration
 
@@ -45,6 +45,12 @@ kestra:
   url: "http://localhost:8080/"
 ```
 
+These three choices drive the rest of the deployment:
+
+- `kestra.repository.type` controls the persistence backend for core metadata.
+- `kestra.queue.type` must be compatible with the repository type.
+- `kestra.storage.type` controls where Kestra stores internal files and task artifacts.
+
 ## Environment variable conversion
 
 Convert YAML keys to environment variables like this:
@@ -53,8 +59,16 @@ Convert YAML keys to environment variables like this:
 - replace hyphens (`-`) with underscores
 - convert camelCase boundaries to underscores
 - uppercase everything
+- prefix Kestra-specific keys with `KESTRA_`
 
 Examples:
+
+| Configuration value | Resulting properties |
+| --- | --- |
+| `MYAPP_MYSTUFF` | `myapp.mystuff`, `myapp-mystuff` |
+| `MY_APP_MY_STUFF` | `my.app.my.stuff`, `my.app.my-stuff`, `my-app.my.stuff`, `my-app.my-stuff`, and similar variants |
+
+File-based configuration:
 
 ```yaml
 datasources:
@@ -77,10 +91,28 @@ kestra:
       accessKey: myKey
 ```
 
+or:
+
+```yaml
+kestra:
+  storage:
+    s3:
+      access-key: myKey
+```
+
 becomes:
 
 ```bash
 KESTRA_STORAGE_S3_ACCESS_KEY=myKey
+```
+
+Common patterns:
+
+```bash
+MICRONAUT_SERVER_PORT=8080
+DATASOURCES_POSTGRES_USERNAME=kestra
+KESTRA_STORAGE_TYPE=s3
+KESTRA_URL=https://kestra.example.com
 ```
 
 ## SDK default authentication
@@ -99,7 +131,18 @@ tasks:
     authentication:
       username: ${kestra.server.basic-auth.username}
       password: ${kestra.server.basic-auth.password}
+      # token: ${KESTRA_API_TOKEN}
 ```
+
+If no namespace, tenant, or global default is configured, SDK-based tasks that use `DEFAULT` or `AUTO` authentication fail because no API credentials are available.
+
+## What belongs on the other configuration pages
+
+- Use [Runtime and Storage](../02.runtime-and-storage/index.md) for datasources, queue, repository, internal storage, JVM, environment metadata, and global variables.
+- Use [Observability and Networking](../03.observability-and-networking/index.md) for logs, metrics, Micronaut, endpoints, access logs, SSL, and CORS.
+- Use [Plugins and Execution](../04.plugins-and-execution/index.md) for plugin installation, plugin defaults, retries, local flow sync, templates, and execution behavior.
+- Use [Security and Secrets](../05.security-and-secrets/index.md) for encryption, secret backends, auth hardening, and liveness settings.
+- Use [Enterprise and Advanced](../06.enterprise-and-advanced/index.md) for EE license, Kafka, Elasticsearch, indexer, AI Copilot, and air-gapped deployments.
 
 ## Next steps
 

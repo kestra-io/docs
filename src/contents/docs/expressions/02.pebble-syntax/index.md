@@ -21,7 +21,7 @@ Examples:
 {% if inputs.region == "eu" %}Europe{% endif %}
 ```
 
-To escape Pebble syntax literally, use the `raw` tag described in [Operators, Tags, and Tests](../05.operators-tags-tests/index.md#raw).
+To escape Pebble syntax literally, use the `raw` tag described in [Operators, Tags, and Tests](../05.operators-tags-tests/index.md#tags).
 
 ## Accessing values
 
@@ -42,6 +42,27 @@ Use bracket notation for special characters or indexed access:
 If a task ID, output key, or attribute contains a hyphen, use bracket notation. To avoid that, prefer `camelCase` or `snake_case`.
 :::
 
+## Parsing nested expressions
+
+Kestra renders expressions once by default. If a variable contains Pebble that should be evaluated later, use `render()`:
+
+```yaml
+variables:
+  trigger_or_yesterday: "{{ trigger.date ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
+  input_or_yesterday: "{{ inputs.mydate ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
+
+tasks:
+  - id: yesterday
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ render(vars.trigger_or_yesterday) }}"
+
+  - id: input_or_yesterday
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ render(vars.input_or_yesterday) }}"
+```
+
+This pattern is especially useful with namespace variables, composed flow variables, and fallback logic based on trigger context.
+
 ## Common syntax patterns
 
 ### Comments
@@ -60,6 +81,7 @@ In YAML, continue to use `#` for comments outside the expression itself.
 Pebble supports:
 
 - strings: `"Hello World"`
+- numbers such as `100 + 10l * 2.5`
 - booleans: `true`, `false`
 - null: `null`
 - lists: `["apple", "banana"]`
@@ -85,21 +107,7 @@ Macros are reusable template snippets:
 {{ input(name="country") }}
 ```
 
-## Rendering nested expressions
-
-Kestra renders expressions once by default. If a variable contains Pebble that should be evaluated later, use `render()`:
-
-```yaml
-variables:
-  trigger_or_yesterday: "{{ trigger.date ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
-
-tasks:
-  - id: yesterday
-    type: io.kestra.plugin.core.log.Log
-    message: "{{ render(vars.trigger_or_yesterday) }}"
-```
-
-This pattern is especially useful with namespace variables or composed flow variables.
+Macros only access their local arguments.
 
 ## Control flow and fallbacks
 
@@ -110,10 +118,28 @@ Common patterns:
 - `??` for fallback values
 - `? :` for ternary expressions
 
-Example:
+Examples:
 
 ```twig
 {{ inputs.mydate ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}
+```
+
+```twig
+{% for article in articles %}
+  {{ article.title }}
+{% else %}
+  No articles available.
+{% endfor %}
+```
+
+```twig
+{% if category == "news" %}
+  {{ news }}
+{% elseif category == "sports" %}
+  {{ sports }}
+{% else %}
+  Select a category
+{% endif %}
 ```
 
 For full operator and tag details, see [Operators, Tags, and Tests](../05.operators-tags-tests/index.md).

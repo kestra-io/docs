@@ -67,9 +67,23 @@ Examples:
 ```twig
 {{ foo ?? bar ?? "default" }}
 {{ foo == null ? bar : baz }}
+{{ foo ?? bar ?? raise }}
 ```
 
 For undefined vs null behavior, see the [Handling null and undefined values](../../15.how-to-guides/null-values/index.md) guide.
+
+### Operator precedence
+
+Pebble operators are evaluated in this order:
+
+1. `.`
+2. `|`
+3. `%`, `/`, `*`
+4. `-`, `+`
+5. `==`, `!=`, `>`, `<`, `>=`, `<=`
+6. `is`, `is not`
+7. `and`
+8. `or`
 
 ## Tags
 
@@ -104,6 +118,12 @@ Examples:
 {% endfor %}
 ```
 
+```twig
+{% filter lower | title %}
+  hello world
+{% endfilter %}
+```
+
 ## Tests
 
 Tests are used with `is` and `is not`.
@@ -119,10 +139,16 @@ Common tests:
 - `map`
 - `null`
 
-Example:
+Examples:
 
 ```twig
 {% if user.email is empty %}
+  ...
+{% endif %}
+```
+
+```twig
+{% if name is not null %}
   ...
 {% endif %}
 ```

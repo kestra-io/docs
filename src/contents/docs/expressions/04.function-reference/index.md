@@ -9,7 +9,11 @@ Use functions when you need to generate or retrieve a value dynamically with syn
 
 ## Common function groups
 
+Functions are best thought of as helpers that either fetch something, compute something, or force evaluation behavior that plain variables and filters cannot provide on their own.
+
 ### Rendering and debugging
+
+This group matters when expressions stop behaving the way you expect. `render()` and `printContext()` are often the quickest way to understand whether a value is missing, nested, or still just a string.
 
 - `render()` evaluates nested Pebble expressions
 - `renderOnce()` renders a value only once
@@ -23,6 +27,8 @@ Examples:
 ```
 
 ### Secrets and file access
+
+These functions bridge expressions to external or stored data. Use them when the value is not already present in the execution context and must be resolved at runtime.
 
 - `secret()` reads a secret from Kestra's secret backend
 - `read()` reads the contents of a namespace file or internal-storage file
@@ -38,6 +44,8 @@ Examples:
 
 ### Data parsing helpers
 
+These helpers are most useful when a task output is still a serialized string and you want to treat it like structured data in later expressions.
+
 - `fromJson()`
 - `fromIon()`
 - `yaml()`
@@ -50,6 +58,8 @@ Examples:
 ```
 
 ### Execution and workflow helpers
+
+This group is more situational, but it becomes valuable in complex flows where you need to inspect sibling results, build links back into Kestra, or summarize failures.
 
 - `errorLogs()` for error summaries in alerts
 - `currentEachOutput()` for simpler access to sibling outputs inside `ForEach`
@@ -69,6 +79,8 @@ Examples:
 
 ## Most important functions in practice
 
+If you only remember a few functions, remember the ones below. They are the ones most likely to change how you model a real flow.
+
 ### `render()`
 
 Use `render()` when a variable itself contains Pebble and must be evaluated:
@@ -76,6 +88,8 @@ Use `render()` when a variable itself contains Pebble and must be evaluated:
 ```twig
 {{ render(namespace.github.token) }}
 ```
+
+Without `render()`, namespace or flow variables that contain Pebble are treated as plain strings.
 
 ### `secret()`
 
@@ -99,6 +113,17 @@ Useful for error notifications:
 
 ```twig
 {{ errorLogs() }}
+```
+
+### Other frequently useful helpers
+
+```twig
+{{ max(user.score, highscore) }}
+{{ min(user.score, lowScore) }}
+{{ now() }}
+{{ range(0, 8, 2) }}
+{{ uuid() }}
+{{ randomInt(1, 10) }}
 ```
 
 ## Related pages

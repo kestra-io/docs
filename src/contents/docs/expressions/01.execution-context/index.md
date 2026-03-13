@@ -52,7 +52,7 @@ To inspect the full runtime context, use `{{ printContext() }}` in the Debug Exp
 | `{{ parent.taskrun.value }}` | Value of the nearest parent task run |
 | `{{ parent.outputs }}` | Outputs of the nearest parent task run |
 | `{{ parents }}` | List of parent task runs |
-| `{{ labels }}` | Execution labels |
+| `{{ labels }}` | Execution labels accessible by key |
 
 Example:
 
@@ -91,10 +91,10 @@ When the execution is started by a `Flow` trigger:
 
 Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the [runtime and storage configuration](../../configuration/02.runtime-and-storage/index.md).
 
-- Reference `ENV_FOO` as `{{ envs.foo }}`
-- Reference the configured environment name as `{{ kestra.environment }}`
-- Reference the configured Kestra URL as `{{ kestra.url }}`
-- Reference global variables from configuration as `{{ globals.foo }}`
+- reference `ENV_FOO` as `{{ envs.foo }}`
+- reference the configured environment name as `{{ kestra.environment }}`
+- reference the configured Kestra URL as `{{ kestra.url }}`
+- reference global variables from configuration as `{{ globals.foo }}`
 
 ## Flow variables and inputs
 
@@ -153,6 +153,8 @@ tasks:
       token: "{{ credential('my_oauth') }}"
 ```
 
+`credential()` returns the short-lived token only. The credential itself is managed in the Kestra UI.
+
 Use namespace variables in Enterprise Edition with `namespace.*`. If a namespace variable itself contains Pebble, evaluate it with `render()`:
 
 ```yaml
@@ -166,5 +168,9 @@ message: |
   First: {{ outputs.first.value }}
   Second: {{ outputs['second-task'].value }}
 ```
+
+:::alert{type="info"}
+If a task ID or output key contains a hyphen, use bracket notation such as `outputs['second-task']`. To avoid that, prefer `camelCase` or `snake_case`.
+:::
 
 For more detail, see [Full Reference](../99.full-reference/index.md).
