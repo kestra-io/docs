@@ -73,10 +73,50 @@ const images = [
 </script>
 
 <style lang="scss">
+    section {
+        padding: 5rem 2rem;
+        background-color: white;
+        background-image:
+            linear-gradient(
+                to bottom,
+                var(--hp-background-purple-light) 0%,
+                var(--hp-background-purple-light) 1%,
+                color-mix(
+                        in srgb,
+                        var(--hp-background-purple-light) 20%,
+                        white 50%
+                    )
+                    40%,
+                #ffffffdf 100%
+            ),
+            radial-gradient(
+                circle at top left,
+                transparent 0,
+                #ffffff85 35%,
+                #ffffff 70%
+            ),
+            linear-gradient(
+                to right,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            );
+        background-size:
+            100% 100%,
+            100% 100%,
+            68px 68px,
+            68px 68px;
+        background-position: center bottom;
+        color: var(--hp-content-secondary);
+        text-align: center;
+    }
     .platform-overview {
         text-align: center;
         padding: 4rem 0;
-        background: white;
         color: var(--hp-content-primary);
     }
 

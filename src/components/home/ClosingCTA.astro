@@ -100,17 +100,22 @@
         padding: 5rem 2rem;
         background-color: white;
         background-image:
-            // radial gradient from center bottom purple to transparent at 80%
-
             radial-gradient(
-                circle at 60% 150%,
+                ellipse at 55% 130%,
+                var(--hp-content-color-highlight) 0%,
+                var(--hp-content-color-highlight) 1%,
                 color-mix(
                         in srgb,
-                        var(--hp-content-color-highlight) 50%,
-                        transparent 35%
+                        var(--hp-content-color-highlight) 20%,
+                        white 50%
                     )
-                    0%,
-                white 25%
+                    18%,
+                transparent 35%
+            ),
+            radial-gradient(
+                ellipse at bottom center,
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(255, 255, 255, 1) 100%
             ),
             linear-gradient(
                 to right,
@@ -124,8 +129,10 @@
             );
         background-size:
             100% 100%,
-            55px 55px,
-            55px 55px;
+            100% 100%,
+            68px 68px,
+            68px 68px;
+        background-position: center bottom;
         color: var(--hp-content-secondary);
         text-align: center;
     }
