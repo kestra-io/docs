@@ -1,42 +1,40 @@
 ---
-const blueprints = [
-    { title: "dbt + Snowflake ELT", tags: ["dbt", "Snowflake"] },
-    { title: "S3 to BigQuery ingestion", tags: ["AWS S3", "BigQuery"] },
-    { title: "Slack alert on failure", tags: ["Slack", "Monitoring"] },
-    { title: "OpenAI batch processing", tags: ["AI", "OpenAI"] },
-    { title: "GitHub Actions trigger", tags: ["CI/CD", "GitHub"] },
-    { title: "Postgres CDC pipeline", tags: ["Postgres", "CDC"] },
-]
+import { $fetchApi } from "~/utils/fetch"
+import BlueprintsCarousel from "../common/BlueprintsCarousel.astro"
+
+const { results: blueprints } = await $fetchApi<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?page=1&size=20",
+)
 ---
 
 <section aria-labelledby="blueprints-heading">
-    <h2 id="blueprints-heading">
-        <span>250+ Blueprints,</span> Ready to Build.
-    </h2>
-    <ul role="list">
-        {
-            blueprints.map((b) => (
-                <li>
-                    <article>
-                        <h3>{b.title}</h3>
-                        <ul role="list">
-                            {b.tags.map((t) => (
-                                <li>{t}</li>
-                            ))}
-                        </ul>
-                    </article>
-                </li>
-            ))
-        }
-    </ul>
-    <a href="/blueprints">Browse all blueprints</a>
-    <div>
+    <div class="container">
+        <h2 id="blueprints-heading">
+            <span>250+ Blueprints,</span> Ready to Build.
+        </h2>
         <p>
-            Kestra gives you fewer tools to maintain, fewer scripts to debug,
-            fewer dependencies between teams, and one place to see what's
-            running across your company.
+            Jump-start your workflows with a growing library of workflow
+            templates
         </p>
-        <a href="/get-started">Try for free</a>
-        <a href="/demo">Book a demo</a>
     </div>
+    <BlueprintsCarousel blueprints={blueprints} />
 </section>
+
+<style lang="scss">
+    section {
+        background-color: #ffffff;
+        color: var(--hp-content-primary);
+        padding: 4rem;
+        text-align: left;
+    }
+    h2 {
+        font-size: 2rem;
+        span {
+            color: var(--hp-content-color-highlight);
+        }
+    }
+    p {
+        margin-bottom: 2rem;
+        color: var(--hp-content-secondary);
+    }
+</style>

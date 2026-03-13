@@ -11,12 +11,7 @@ import Testimonial from "~/components/home/Testimonial.astro"
 import DeploySection from "~/components/home/DeploySection.astro"
 import Blueprints from "~/components/home/Blueprints.astro"
 import CTA from "~/components/common/CTA.astro"
-import { $fetchApi } from "~/utils/fetch"
 import Stacked from "~/components/common/Stacked.astro"
-
-const blueprints = await $fetchApi<{ results: Blueprint[] }>(
-    "/blueprints/versions/latest?page=1&size=20",
-)
 ---
 
 <Layout headerTheme="darkHeader">
@@ -54,6 +49,5 @@ const blueprints = await $fetchApi<{ results: Blueprint[] }>(
         background-color: var(--hp-background-dark);
         color: var(--hp-content-dark);
         overflow: clip;
-        margin-top: var(--announce-height);
     }
 </style>
