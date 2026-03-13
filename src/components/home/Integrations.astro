@@ -1,32 +1,119 @@
+---
+import { $fetchApi } from "~/utils/fetch"
+import TaskIcon from "../common/TaskIcon.astro"
+
+const excluded =
+    /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
+const metadata =
+    await $fetchApi<{ artifactId: string; group: string; name: string }[]>(
+        "/plugins/metadata",
+    )
+const plugins = metadata
+    .filter((p) => p.artifactId && !excluded.test(p.artifactId))
+    .map((p) => ({
+        ...p,
+        link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
+    }))
+    .sort(() => 0.5 - Math.random())
+
+const plugins1 = plugins.slice(0, plugins.length / 2)
+const plugins2 = plugins.slice(plugins.length / 2)
+---
+
 <section aria-labelledby="integrations-heading">
-    <h2 id="integrations-heading">
-        Work With Your Stack, Not the Other Way Around.
-    </h2>
-    <p>
-        Kestra integrates with your existing cloud, data, infrastructure, and
-        SaaS tools. With 1,100+ plugins, you can orchestrate everything without
-        building custom glue code.
-    </p>
-    <a href="/integrations">See all integrations</a>
-    <ul role="list" aria-label="Integration logos">
-        <!-- <li><img src="/logos/aws.svg"       alt="AWS" /></li>
-    <li><img src="/logos/gcp.svg"       alt="Google Cloud" /></li>
-    <li><img src="/logos/azure.svg"     alt="Microsoft Azure" /></li>
-    <li><img src="/logos/github.svg"    alt="GitHub" /></li>
-    <li><img src="/logos/gitlab.svg"    alt="GitLab" /></li>
-    <li><img src="/logos/dbt.svg"       alt="dbt" /></li>
-    <li><img src="/logos/spark.svg"     alt="Apache Spark" /></li>
-    <li><img src="/logos/kafka.svg"     alt="Apache Kafka" /></li>
-    <li><img src="/logos/slack.svg"     alt="Slack" /></li>
-    <li><img src="/logos/postgres.svg"  alt="PostgreSQL" /></li>
-    <li><img src="/logos/snowflake.svg" alt="Snowflake" /></li>
-    <li><img src="/logos/airbyte.svg"   alt="Airbyte" /></li> -->
+    <div class="container">
+        <h2 id="integrations-heading">
+            Work With Your Stack, <br />
+            Not the Other Way Around.
+        </h2>
+        <p>
+            Kestra integrates with your existing cloud, data, infrastructure,
+            and SaaS tools. <br />With 1,100+ plugins, you can orchestrate
+            everything without building custom glue code.
+        </p>
+    </div>
+
+    <ul role="list" aria-label="Integration logos" class="sliding-right">
+        {
+            [...plugins1, ...plugins1].map((plugin, idx) => (
+                <li class="track">
+                    <a href={plugin.link} class="plugin-logo" target="_blank">
+                        <TaskIcon cls={plugin.group} />
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+    <ul role="list" aria-label="Integration logos" class="sliding-left">
+        {
+            [...plugins2, ...plugins2].map((plugin, idx) => (
+                <li class="track">
+                    <a href={plugin.link} class="plugin-logo" target="_blank">
+                        <TaskIcon cls={plugin.group} />
+                    </a>
+                </li>
+            ))
+        }
     </ul>
 </section>
 
-<style>
+<style lang="scss">
     section {
         background-color: var(--hp-background-secondary);
         color: var(--hp-content-secondary);
+        text-align: left;
+        padding: 4rem 0;
+        p,
+        h2 {
+            margin: 1.5rem 1rem;
+        }
+        p {
+            margin-bottom: 3rem;
+        }
+        ul {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 1rem;
+            list-style: none;
+            padding: 0.2rem 0;
+            overflow: hidden;
+            li {
+                flex-shrink: 0;
+                width: 80px;
+                height: 80px;
+                padding: 0.5rem;
+                box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 0.5rem;
+            }
+            :global(svg) {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        .sliding-right li {
+            animation: slideRight 60s linear infinite;
+        }
+        .sliding-left li {
+            animation: slideLeft 60s linear infinite;
+        }
+
+        @keyframes slideRight {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-1000%);
+            }
+        }
+        @keyframes slideLeft {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(1000%);
+            }
+        }
     }
 </style>

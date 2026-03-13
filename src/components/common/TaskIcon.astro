@@ -1,14 +1,15 @@
 ---
 import { fetchPluginIcon } from "~/utils/pluginIcon"
-const { cls } = Astro.props
+const { cls, class: className, ...rest } = Astro.props
 
 const IconStr = await fetchPluginIcon(cls)
 ---
 
 <div
-    class="icon-wrapper"
+    class:list={["icon-wrapper", className]}
     data-tooltip={cls.split(".").pop()}
     set:html={IconStr}
+    {...rest}
 />
 
 <style lang="scss">
