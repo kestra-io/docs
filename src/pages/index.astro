@@ -3,7 +3,6 @@ import Layout from "~/components/layout.astro"
 import Hero from "~/components/home/Hero.astro"
 import LogoBar from "~/components/home/LogoBar.astro"
 import Comparison from "~/components/home/Comparison.astro"
-import AdoptBanner from "~/components/home/AdoptBanner.astro"
 import PlatformOverview from "~/components/home/PlatformOverview.astro"
 import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
 import Integrations from "~/components/home/Integrations.astro"
@@ -19,8 +18,14 @@ import Stacked from "~/components/common/Stacked.astro"
         <Hero />
         <LogoBar />
         <Comparison />
-        <AdoptBanner />
-        <Stacked />
+        <Stacked>
+            <h2 slot="title" id="adopt-heading">
+                Adopt Once.<br />
+                <span>Standardize Everywhere.</span>
+            </h2>
+
+            <div slot="description"></div>
+        </Stacked>
         <PlatformOverview />
         <UseCaseGrid />
         <Integrations />
@@ -49,5 +54,18 @@ import Stacked from "~/components/common/Stacked.astro"
         background-color: var(--hp-background-dark);
         color: var(--hp-content-dark);
         overflow: clip;
+    }
+
+    h2 {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        color: var(--hp-content-dark);
+        width: 700px;
+        margin-inline: auto;
+
+        span {
+            color: var(--hp-content-color-highlight);
+        }
     }
 </style>

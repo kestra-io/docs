@@ -48,34 +48,36 @@ const plugins2 = plugins.slice(plugins.length / 2)
         </p>
     </div>
 
-    <ul role="list" aria-label="Integration logos" class="sliding-right">
-        {
-            [...plugins1, ...plugins1].map((plugin) => (
-                <li class="track">
-                    <a
-                        href={plugin.link}
-                        class="plugin-logo"
-                        target="_blank"
-                        set:html={plugin.icon}
-                    />
-                </li>
-            ))
-        }
-    </ul>
-    <ul role="list" aria-label="Integration logos" class="sliding-left">
-        {
-            [...plugins2, ...plugins2].map((plugin) => (
-                <li class="track">
-                    <a
-                        href={plugin.link}
-                        class="plugin-logo"
-                        target="_blank"
-                        set:html={plugin.icon}
-                    />
-                </li>
-            ))
-        }
-    </ul>
+    <div class="track">
+        <ul role="list" aria-label="Integration logos" class="sliding-to-left">
+            {
+                [...plugins1, ...plugins1].map((plugin) => (
+                    <li>
+                        <a
+                            href={plugin.link}
+                            class="plugin-logo"
+                            target="_blank"
+                            set:html={plugin.icon}
+                        />
+                    </li>
+                ))
+            }
+        </ul>
+        <ul role="list" aria-label="Integration logos" class="sliding-to-right">
+            {
+                [...plugins2, ...plugins2].map((plugin) => (
+                    <li>
+                        <a
+                            href={plugin.link}
+                            class="plugin-logo"
+                            target="_blank"
+                            set:html={plugin.icon}
+                        />
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
 </section>
 
 <style lang="scss">
@@ -91,6 +93,12 @@ const plugins2 = plugins.slice(plugins.length / 2)
         p {
             margin-bottom: 3rem;
         }
+        .track {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
         ul {
             display: flex;
             flex-wrap: nowrap;
@@ -98,7 +106,7 @@ const plugins2 = plugins.slice(plugins.length / 2)
             gap: 1rem;
             list-style: none;
             padding: 0.2rem 0;
-            overflow: hidden;
+
             li {
                 flex-shrink: 0;
                 width: 80px;
@@ -106,6 +114,7 @@ const plugins2 = plugins.slice(plugins.length / 2)
                 padding: 0.5rem;
                 box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
                 border-radius: 0.5rem;
+                background: white;
             }
             :global(svg) {
                 width: 60px;
@@ -113,27 +122,27 @@ const plugins2 = plugins.slice(plugins.length / 2)
             }
         }
 
-        .sliding-right li {
-            animation: slideRight 60s linear infinite;
+        .sliding-to-right {
+            animation: slideToRight 60s linear infinite;
         }
-        .sliding-left li {
-            animation: slideLeft 60s linear infinite;
+        .sliding-to-left {
+            animation: slideToLeft 60s linear infinite;
         }
 
-        @keyframes slideRight {
+        @keyframes slideToRight {
             0% {
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(-1000%);
+                transform: translateX(-50%);
             }
         }
-        @keyframes slideLeft {
+        @keyframes slideToLeft {
             0% {
-                transform: translateX(0%);
+                transform: translateX(-50%);
             }
             100% {
-                transform: translateX(1000%);
+                transform: translateX(0);
             }
         }
     }
