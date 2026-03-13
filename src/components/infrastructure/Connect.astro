@@ -1,46 +1,67 @@
 ---
-import { Image } from "astro:assets"
 import PluginsCarousel from "~/components/common/PluginsCarousel.astro"
 
-const { plugins = [] } = Astro.props
+interface Props {
+    plugins?: {
+        name: string
+        logo: any
+    }[]
+    title?: string
+    link?: {
+        href: string
+        text: string
+    }
+    vertical?: "infrastructure" | "data"
+}
+
+const {
+    plugins = [],
+    title = "Connect With Any Infrastructure Tools",
+    link = { href: "/plugins", text: "See all plugins" },
+    vertical = "infrastructure",
+} = Astro.props
 ---
 
-<div class="connect">
+<div class={`connect connect--${vertical}`}>
     <div class="connect__row">
         <div class="connect__panel connect__panel--left">
-            <div id="lottie-container" class="connect__lottie"></div>
+            <div
+                id="lottie-container"
+                class="connect__lottie"
+                data-vertical={vertical}
+            >
+            </div>
         </div>
 
         <div class="connect__panel connect__panel--right">
-            <PluginsCarousel
-                {plugins}
-                title="Connect With Any Infrastructure Tools"
-                link={{
-                    href: "/plugins",
-                    text: "See all plugins",
-                }}
-            />
+            <PluginsCarousel {plugins} {title} {link} />
         </div>
     </div>
 </div>
 
 <script>
     import lottie from "lottie-web"
-    import animationData from "~/assets/lottie/plugins-lottie.json"
 
-    document.addEventListener("astro:page-load", () => {
+    const ANIMATIONS = {
+        data: () => import("~/assets/lottie/data-plugins.json"),
+        infrastructure: () => import("~/assets/lottie/plugins-lottie.json"),
+    }
+
+    document.addEventListener("astro:page-load", async () => {
         const container = document.getElementById("lottie-container")
+        if (!container) return
 
-        if (container) {
-            container.innerHTML = ""
-            lottie.loadAnimation({
-                container: container,
-                renderer: "svg",
-                loop: true,
-                autoplay: true,
-                animationData,
-            })
-        }
+        const vertical = (container.dataset.vertical ?? "infrastructure") as keyof typeof ANIMATIONS
+        const animationData = (await ANIMATIONS[vertical]()).default
+
+        container.innerHTML = ""
+        lottie.loadAnimation({
+            container,
+            renderer: "svg",
+            loop: true,
+            autoplay: true,
+            animationData,
+        })
     })
 </script>
 
@@ -52,30 +73,35 @@ const { plugins = [] } = Astro.props
         justify-content: center;
         position: relative;
         overflow: hidden;
+        padding: 100px 16px;
 
         &::before {
             content: "";
             position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: auto;
-            background-image: url("~/assets/landing/infrastructure/connect.svg");
+            inset: 0;
             background-repeat: no-repeat;
-            background-size: auto;
+            background-position: left bottom;
+            z-index: 1;
+        }
+
+        &--infrastructure::before {
+            background-image: url("~/assets/landing/infrastructure/connect.svg");
+        }
+
+        &--data::before {
+            background-image: url("~/assets/landing/data/connect-data.svg");
         }
 
         &__row {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3rem 1.25rem;
+            padding: 0 1.25rem;
             position: relative;
             z-index: 2;
 
             @include media-breakpoint-up(xl) {
-                padding: 4rem 1.25rem;
+                padding: 0 1.25rem;
                 gap: 100px;
             }
 
@@ -94,34 +120,33 @@ const { plugins = [] } = Astro.props
             @include media-breakpoint-down(lg) {
                 align-items: center;
             }
-        }
 
-        &__panel--left {
-            height: 536px;
+            &--left {
+                height: 536px;
+                @include media-breakpoint-down(lg) {
+                    width: 100%;
+                    height: auto;
+                }
+            }
 
-            @include media-breakpoint-down(lg) {
-                width: 100%;
-                height: auto;
+            &--right {
+                display: flex;
+                flex-direction: column;
+                gap: 1.25rem;
+
+                @include media-breakpoint-up(lg) {
+                    gap: 2rem;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    width: 100%;
+                }
             }
         }
 
         &__lottie {
             width: 100%;
             height: 100%;
-        }
-
-        &__panel--right {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-
-            @include media-breakpoint-up(lg) {
-                gap: 2rem;
-            }
-
-            @include media-breakpoint-down(lg) {
-                width: 100%;
-            }
         }
     }
 </style>

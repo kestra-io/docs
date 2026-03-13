@@ -1,0 +1,1182 @@
+<style is:global>
+    .scene {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .glow-wrap {
+        position: relative;
+        padding: 4px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        z-index: 2;
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s ease,
+            filter 0.6s ease;
+    }
+
+    .glow-wrap.disappear {
+        animation: disappearAnim 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes disappearAnim {
+        0% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0px);
+        }
+        30% {
+            opacity: 1;
+            transform: scale(1.03) translateY(-4px);
+            filter: blur(0px);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.92) translateY(12px);
+            filter: blur(6px);
+        }
+    }
+
+    .glow-wrap.appear {
+        animation: appearAnim 0.7s cubic-bezier(0.2, 0, 0, 1) forwards;
+    }
+
+    @keyframes appearAnim {
+        0% {
+            opacity: 0;
+            transform: scale(0.94) translateY(10px);
+            filter: blur(6px);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0px);
+        }
+    }
+
+    .copilot-card {
+        position: relative;
+        background: #fff;
+        border-radius: 10px;
+        border: 1px solid #718bfe;
+        width: 500px;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+    }
+
+    .panel {
+        width: 100%;
+        transition: none;
+    }
+
+    #copilotPanel {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .copilot-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px 12px;
+        border-bottom: 1px solid #ecebef;
+    }
+
+    .copilot-icon {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+    }
+
+    .copilot-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #131316;
+        letter-spacing: -0.01em;
+    }
+
+    .copilot-subtitle {
+        font-size: 10.5px;
+        color: #9797a6;
+        margin-top: 1px;
+    }
+
+    .input-wrap {
+        padding: 12px 14px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .input-area {
+        position: relative;
+        border: 1px solid #ecebef;
+        border-radius: 8px;
+        background: #fff;
+        transition:
+            border-color 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .input-area.focused {
+        border-color: #631bff;
+        box-shadow: 0 0 0 3px rgba(99, 27, 255, 0.12);
+    }
+
+    .input-inner {
+        padding: 10px 12px 36px;
+        font-size: 15px;
+        font-weight: 400;
+        color: #131316;
+        line-height: 1.55;
+        min-height: 70px;
+    }
+
+    .input-placeholder {
+        color: #b0b3ba;
+        font-style: normal;
+    }
+
+    .input-typing {
+        display: none;
+    }
+
+    .input-bottom-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 6px 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid #f2f2f5;
+    }
+
+    .input-icons-left {
+        display: flex;
+        gap: 2px;
+        align-items: center;
+    }
+
+    .input-icon-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 6px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9797a6;
+    }
+
+    .input-icon-btn:hover {
+        background: #f5f5f8;
+    }
+
+    .input-send-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: #8405ff;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.1s ease;
+    }
+
+    .input-send-btn.clicking {
+        transform: scale(0.88);
+    }
+
+    .type-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 13px;
+        background: #631bff;
+        vertical-align: middle;
+        animation: blink 0.65s step-end infinite;
+        margin-left: 1px;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
+    }
+
+    .submit-row {
+        padding: 0 14px 14px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        background: #631bff;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 0;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition:
+            transform 0.1s ease,
+            box-shadow 0.15s ease;
+        box-shadow: 0 2px 12px rgba(99, 27, 255, 0.4);
+        letter-spacing: -0.01em;
+    }
+
+    .submit-btn.clicking {
+        transform: scale(0.95);
+        box-shadow: 0 1px 4px rgba(99, 27, 255, 0.2);
+    }
+
+    .submit-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .cursor-dot {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        pointer-events: none;
+        z-index: 100;
+        transition: none;
+        display: none;
+        filter: drop-shadow(0 0 3px rgba(180, 170, 255, 0.5))
+            drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
+    }
+
+    .cursor-dot svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .loading-overlay {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        gap: 14px;
+    }
+
+    .loading-spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid rgba(99, 27, 255, 0.15);
+        border-top-color: #631bff;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .loading-text {
+        font-size: 12px;
+        color: #9797a6;
+        animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%,
+        100% {
+            opacity: 0.6;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+
+    #codePanel {
+        display: none;
+    }
+
+    .code-header {
+        background: #f8f8fa;
+        border-bottom: 1px solid #e1e3e5;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .code-tabs {
+        display: flex;
+        gap: 2px;
+    }
+
+    .code-tab {
+        padding: 4px 12px;
+        font-size: 11px;
+        border-radius: 6px;
+        color: #9797a6;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .code-tab.active {
+        background: #ecedf2;
+        color: #131316;
+    }
+
+    .code-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .code-action-btn {
+        background: none;
+        border: 1px solid #e1e3e5;
+        color: #6b6b80;
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 10px;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .code-action-btn:last-child {
+        background: rgba(99, 27, 255, 0.08);
+        color: #631bff;
+        border-color: rgba(99, 27, 255, 0.25);
+    }
+
+    .code-body {
+        background: #fff;
+        padding: 16px 20px 20px;
+        font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+        font-size: 11.5px;
+        line-height: 1.6;
+        color: #1e1e2e;
+        text-align: left;
+        height: 240px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        white-space: pre;
+        border-radius: 0 0 10px 10px;
+        position: relative;
+        scrollbar-width: thin;
+        scrollbar-color: #d0d0dc #fff;
+    }
+
+    .code-body::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .code-body::-webkit-scrollbar-track {
+        background: #f8f8fa;
+    }
+
+    .code-body::-webkit-scrollbar-thumb {
+        background: #d0d0dc;
+        border-radius: 3px;
+    }
+
+    .code-body::-webkit-scrollbar-thumb:hover {
+        background: #b8b8c8;
+    }
+
+    .code-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 12px;
+        background: #631bff;
+        vertical-align: middle;
+        animation: blink 0.65s step-end infinite;
+    }
+
+    .sy-key {
+        color: #7c3aed;
+        font-weight: 500;
+    }
+
+    .sy-val {
+        color: #0284c7;
+    }
+
+    .sy-str {
+        color: #059669;
+    }
+
+    .sy-cmt {
+        color: #94a3b8;
+        font-style: italic;
+    }
+
+    .sy-trigger {
+        color: #7c3aed;
+        font-weight: 500;
+    }
+
+    .sy-new {
+        background: rgba(99, 27, 255, 0.08);
+        border-radius: 2px;
+    }
+
+    .trigger-lines {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .trigger-lines.visible {
+        opacity: 1;
+    }
+
+    .trigger-line-added {
+        display: block;
+        background: rgba(22, 163, 74, 0.08);
+        border-left: 2px solid #16a34a;
+        padding-left: 6px;
+        margin-left: -20px;
+        padding-right: 20px;
+        animation: highlightFade 2.5s ease forwards;
+    }
+
+    @keyframes highlightFade {
+        0% {
+            background: rgba(22, 163, 74, 0.15);
+        }
+        100% {
+            background: rgba(22, 163, 74, 0.06);
+        }
+    }
+
+    .panel-fade-out {
+        animation: fadeOut 0.35s ease forwards;
+    }
+
+    .panel-fade-in {
+        animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .model-selector {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        padding: 3px 7px;
+        border-radius: 5px;
+        border: 1px solid #e8e8ee;
+        background: #f8f8fa;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 500;
+        color: #5a5a70;
+        white-space: nowrap;
+        transition: background 0.15s;
+    }
+
+    .model-selector:hover {
+        background: #f0f0f5;
+    }
+
+    .model-selector-text {
+        line-height: 1;
+    }
+</style>
+
+<div class="scene">
+    <div class="glow-wrap">
+        <div class="copilot-card" id="copilotCard">
+            <div
+                class="cursor-dot"
+                id="cursorDot"
+                style="display: block; left: 250px; top: 108px;"
+            >
+                <svg viewBox="0 0 28 32" fill="none">
+                    <path
+                        d="M4 2L24 13L15 15.5L11 25L4 2Z"
+                        fill="none"
+                        stroke="rgba(210,200,255,0.5)"
+                        stroke-width="4"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"></path>
+                    <path
+                        d="M4 2L24 13L15 15.5L11 25L4 2Z"
+                        fill="#1a1830"
+                        stroke="none"></path>
+                    <path
+                        d="M4 2L24 13L15 15.5L11 25L4 2Z"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.9)"
+                        stroke-width="1.5"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"></path>
+                </svg>
+            </div>
+
+            <div class="panel" id="copilotPanel" style="display: flex;">
+                <div class="copilot-header">
+                    <svg
+                        class="copilot-icon"
+                        viewBox="619 306 30 30"
+                        fill="none"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M631.943 334.769C631.753 335.28 631.184 335.539 630.673 335.349C627.363 334.113 624.704 331.549 623.346 328.304C623.136 327.801 623.373 327.222 623.876 327.012C624.379 326.801 624.958 327.038 625.168 327.541C626.316 330.284 628.566 332.454 631.363 333.498C631.874 333.689 632.134 334.258 631.943 334.769Z"
+                            fill="#CE75FF"></path>
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M646.549 320.182C646.038 320.373 645.469 320.114 645.278 319.603C644.225 316.79 642.03 314.531 639.256 313.392C638.752 313.184 638.511 312.608 638.718 312.103C638.925 311.598 639.502 311.357 640.007 311.565C643.287 312.912 645.882 315.581 647.127 318.911C647.319 319.422 647.059 319.991 646.549 320.182Z"
+                            fill="#CE75FF"></path>
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M635.229 317.399L634.514 320.35C634.228 321.529 633.306 322.451 632.127 322.737L629.176 323.452L632.127 324.168C633.306 324.454 634.228 325.375 634.514 326.555L635.229 329.506L635.945 326.555C636.231 325.375 637.152 324.454 638.332 324.168L641.283 323.452L638.332 322.737C637.152 322.451 636.231 321.529 635.945 320.35L635.229 317.399ZM636.661 315.801C636.297 314.299 634.161 314.299 633.797 315.801L632.795 319.933C632.665 320.469 632.246 320.888 631.71 321.018L627.578 322.02C626.076 322.384 626.076 324.52 627.578 324.884L631.71 325.886C632.246 326.017 632.665 326.435 632.795 326.971L633.797 331.104C634.161 332.606 636.297 332.606 633.797 315.801L636.661 315.801ZM636.661 331.104C636.297 332.606 634.161 332.606 633.797 331.104L632.795 326.971C632.665 326.435 632.246 326.017 631.71 325.886L627.578 324.884C626.076 324.52 626.076 322.384 627.578 322.02L631.71 321.018C632.246 320.888 632.665 320.469 632.795 319.933L633.797 315.801C634.161 314.299 636.297 314.299 636.661 315.801L637.664 319.933C637.794 320.469 638.212 320.888 638.748 321.018L642.881 322.02C644.383 322.384 644.383 324.52 642.881 324.884L638.748 325.886C638.212 326.017 637.794 326.435 637.664 326.971L636.661 331.104Z"
+                            fill="#9300FF"></path>
+                        <circle cx="646.202" cy="330.034" r="1.3" fill="#F62E76"
+                        ></circle>
+                        <circle cx="624.256" cy="316.867" r="1.1" fill="#F62E76"
+                        ></circle>
+                        <circle cx="641.811" cy="334.427" r="1.1" fill="#CD88FF"
+                        ></circle>
+                        <circle cx="628.643" cy="312.48" r="1.1" fill="#CD88FF"
+                        ></circle>
+                    </svg>
+                    <div>
+                        <div class="copilot-title">AI Copilot</div>
+                    </div>
+                </div>
+
+                <div class="input-wrap">
+                    <div class="input-area focused" id="inputArea">
+                        <div class="input-inner">
+                            <div
+                                class="input-placeholder"
+                                id="inputPlaceholder"
+                                style="display: none;"
+                            >
+                                Add instructions to update your Kestra Flow
+                            </div>
+                            <div
+                                class="input-typing"
+                                id="inputTyping"
+                                style="display: block;"
+                            >
+                                <span id="typedText">Add </span><span
+                                    class="type-cursor"
+                                    id="typeCursor"></span>
+                            </div>
+                        </div>
+                        <div class="input-bottom-bar">
+                            <div class="input-icons-left"></div>
+                            <div
+                                style="display:flex;align-items:center;gap:5px;"
+                            >
+                                <div class="model-selector">
+                                    <span class="model-selector-text"
+                                        >gpt-5-nano</span
+                                    >
+                                    <svg
+                                        width="8"
+                                        height="8"
+                                        viewBox="0 0 8 8"
+                                        fill="none"
+                                        ><path
+                                            d="M1.5 3L4 5.5L6.5 3"
+                                            stroke="#9797A6"
+                                            stroke-width="1.2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"></path></svg
+                                    >
+                                </div>
+                                <button
+                                    class="input-icon-btn"
+                                    aria-label="Microphone"
+                                >
+                                    <svg
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 14 14"
+                                        fill="none"
+                                        ><rect
+                                            x="4.5"
+                                            y="1"
+                                            width="5"
+                                            height="7.5"
+                                            rx="2.5"
+                                            stroke="currentColor"
+                                            stroke-width="1.2"></rect><path
+                                            d="M2 6.5C2 9.26 4.24 11.5 7 11.5C9.76 11.5 12 9.26 12 6.5"
+                                            stroke="currentColor"
+                                            stroke-width="1.2"
+                                            stroke-linecap="round"></path><line
+                                            x1="7"
+                                            y1="11.5"
+                                            x2="7"
+                                            y2="13.5"
+                                            stroke="currentColor"
+                                            stroke-width="1.2"
+                                            stroke-linecap="round"></line></svg
+                                    >
+                                </button>
+                                <button
+                                    class="input-send-btn"
+                                    id="submitBtn"
+                                    aria-label="Send"
+                                >
+                                    <svg
+                                        width="13"
+                                        height="13"
+                                        viewBox="0 0 13 13"
+                                        fill="none"
+                                        ><path
+                                            d="M6.5 11V2M6.5 2L2.5 6M6.5 2L10.5 6"
+                                            stroke="white"
+                                            stroke-width="1.6"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"></path></svg
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="loading-overlay"
+                    id="loadingOverlay"
+                    style="display: none;"
+                >
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">
+                        Generating Flow YAML for you...
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel" id="codePanel" style="display: none;">
+                <div class="code-header">
+                    <div class="code-tabs">
+                        <div class="code-tab active">nyc_weather.yaml</div>
+                    </div>
+                    <div class="code-actions">
+                        <button class="code-action-btn">Copy</button>
+                        <button
+                            class="code-action-btn"
+                            id="applyBtn"
+                            style="background: rgba(99, 27, 255, 0.08); color: rgb(99, 27, 255); border-color: rgba(99, 27, 255, 0.25);"
+                            >Apply</button
+                        >
+                    </div>
+                </div>
+                <div class="code-body" id="codeBody"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    const PROMPT_TEXT = "Add a trigger to run the flow every day at 9 AM"
+
+    const BASE_YAML_LINES = [
+        {
+            raw: "id: eland_854830",
+            html: '<span class="sy-key">id</span>: eland_854830',
+        },
+        {
+            raw: "namespace: company.team",
+            html: '<span class="sy-key">namespace</span>: company.team',
+        },
+        { raw: "" },
+        { raw: "tasks:", html: '<span class="sy-key">tasks</span>:' },
+        {
+            raw: "  - id: fetch_weather_data",
+            html: '  - <span class="sy-key">id</span>: fetch_weather_data',
+        },
+        {
+            raw: "    type: io.kestra.plugin.scripts.python.Script",
+            html: '    <span class="sy-key">type</span>: <span class="sy-val">io.kestra.plugin.scripts.python.Script</span>',
+        },
+        {
+            raw: "    description: Fetch current weather data for New York City",
+            html: '    <span class="sy-key">description</span>: <span class="sy-str">Fetch current weather data for New York City</span>',
+        },
+        {
+            raw: "    dependencies:",
+            html: '    <span class="sy-key">dependencies</span>:',
+        },
+        {
+            raw: "      - requests",
+            html: '      - <span class="sy-str">requests</span>',
+        },
+        {
+            raw: "    script: |",
+            html: '    <span class="sy-key">script</span>: |',
+        },
+        {
+            raw: "      import requests",
+            html: '      <span class="sy-key">import</span> requests',
+        },
+        { raw: "" },
+        {
+            raw: '      CITY_NAME = "New York"',
+            html: '      <span class="sy-val">CITY_NAME</span> = <span class="sy-str">"New York"</span>',
+        },
+        {
+            raw: '      API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"',
+            html: '      <span class="sy-val">API_KEY</span> = <span class="sy-str">"YOUR_OPENWEATHERMAP_API_KEY"</span> <span class="sy-cmt"># Replace with your actual API key</span>',
+        },
+        {
+            raw: '      WEATHER_API_URL = f"http://api.openweathermap.org/..."',
+            html: '      <span class="sy-val">WEATHER_API_URL</span> = <span class="sy-str">f"http://api.openweathermap.org/data/2.5/weather?..."</span>',
+        },
+        { raw: "" },
+        {
+            raw: "      response = requests.get(WEATHER_API_URL)",
+            html: '      response = requests.get(<span class="sy-val">WEATHER_API_URL</span>)',
+        },
+        {
+            raw: "      weather_data = response.json()",
+            html: "      weather_data = response.json()",
+        },
+        { raw: "" },
+        {
+            raw: "      if response.status_code == 200:",
+            html: '      <span class="sy-key">if</span> response.status_code == <span class="sy-str">200</span>:',
+        },
+        {
+            raw: '          temperature = weather_data["main"]["temp"]',
+            html: '          temperature = weather_data[<span class="sy-str">"main"</span>][<span class="sy-str">"temp"</span>]',
+        },
+        {
+            raw: '          print(f"Current weather: {temperature}°C")',
+            html: '          print(<span class="sy-str">f"Current weather: {temperature}°C, {description}"</span>)',
+        },
+        { raw: "      else:", html: '      <span class="sy-key">else</span>:' },
+        {
+            raw: "          print(f\"Error: {weather_data['message']}\")",
+            html: '          print(<span class="sy-str">f"Error: {weather_data[\'message\']}"</span>)',
+        },
+    ]
+
+    const TRIGGER_LINES = [
+        { raw: "", html: "" },
+        { raw: "triggers:", html: '<span class="sy-trigger">triggers</span>:' },
+        {
+            raw: "  - id: daily_9am_schedule",
+            html: '  - <span class="sy-key">id</span>: <span class="sy-val">daily_9am_schedule</span>',
+        },
+        {
+            raw: "    type: io.kestra.plugin.core.trigger.Schedule",
+            html: '    <span class="sy-key">type</span>: <span class="sy-val">io.kestra.plugin.core.trigger.Schedule</span>',
+        },
+        {
+            raw: '    cron: "0 9 * * *"',
+            html: '    <span class="sy-key">cron</span>: <span class="sy-str">"0 9 * * *"</span>',
+        },
+    ]
+
+{
+    let tid = null
+    const copilotCard = document.querySelector(".copilot-card")
+    const after = (fn, ms) => {
+        clearTimeout(tid)
+        tid = setTimeout(async () => {
+            await waitForVisible()
+            fn()
+        }, ms)
+    }
+
+    const copilotPanel = copilotCard.querySelector("#copilotPanel")
+    const inputArea = copilotCard.querySelector("#inputArea")
+    const inputPH = copilotCard.querySelector("#inputPlaceholder")
+    const inputTyping = copilotCard.querySelector("#inputTyping")
+    const typedText = copilotCard.querySelector("#typedText")
+    const submitBtn = copilotCard.querySelector("#submitBtn")
+    const loadingOv = copilotCard.querySelector("#loadingOverlay")
+    const codePanel = copilotCard.querySelector("#codePanel")
+    const codeBody = copilotCard.querySelector("#codeBody")
+    const cursorDot = copilotCard.querySelector("#cursorDot")
+
+    let cursorAnim = null
+
+    async function waitForVisible() {
+        while (copilotCard.closest(".paused")) {
+            await new Promise((r) => setTimeout(r, 100))
+        }
+    }
+
+    function getCardRect(el) {
+        const card = copilotCard.getBoundingClientRect()
+        const er = el.getBoundingClientRect()
+        return {
+            x: er.left - card.left + er.width / 2,
+            y: er.top - card.top + er.height / 2,
+        }
+    }
+
+    function moveCursorTo(el, duration, callback) {
+        const pos = getCardRect(el)
+        const startX = parseFloat(cursorDot.style.left) || 80
+        const startY = parseFloat(cursorDot.style.top) || 60
+        const steps = Math.round(duration / 16)
+        let step = 0
+
+        clearInterval(cursorAnim)
+        cursorAnim = setInterval(async () => {
+            if (copilotCard.closest(".paused")) return
+
+            step++
+            const t = step / steps
+            const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+            cursorDot.style.left = startX + (pos.x - startX) * ease + "px"
+            cursorDot.style.top = startY + (pos.y - startY) * ease + "px"
+            if (step >= steps) {
+                clearInterval(cursorAnim)
+                if (callback) {
+                    await waitForVisible()
+                    callback()
+                }
+            }
+        }, 16)
+    }
+
+    function showCursor(x, y) {
+        cursorDot.style.display = "block"
+        cursorDot.style.left = x + "px"
+        cursorDot.style.top = y + "px"
+    }
+
+    function hideCursor() {
+        cursorDot.style.display = "none"
+    }
+
+    function typeText(target, text, i, callback) {
+        if (i > text.length) {
+            if (callback) {
+                ;(async () => {
+                    await waitForVisible()
+                    callback()
+                })()
+            }
+            return
+        }
+        if (copilotCard.closest(".paused")) {
+            setTimeout(() => typeText(target, text, i, callback), 100)
+            return
+        }
+        target.textContent = text.slice(0, i)
+        const delay = 28 + Math.random() * 30
+        setTimeout(() => typeText(target, text, i + 1, callback), delay)
+    }
+
+    let committedLines = []
+
+    let _currentNode = null
+    let _cursorNode = null
+
+    function rebuildDOM() {
+        codeBody.innerHTML = ""
+        _currentNode = null
+        _cursorNode = null
+        for (const l of committedLines) {
+            const span = document.createElement("span")
+            span.innerHTML = (l || "") + "\n"
+            codeBody.appendChild(span)
+        }
+    }
+
+    function renderCode(partial, showCsr) {
+        rebuildDOM()
+        if (partial) {
+            _currentNode = document.createElement("span")
+            _currentNode.innerHTML = partial
+            codeBody.appendChild(_currentNode)
+        }
+        if (showCsr) {
+            _cursorNode = document.createElement("span")
+            _cursorNode.className = "code-cursor"
+            codeBody.appendChild(_cursorNode)
+        }
+    }
+
+    function updateCurrentNode(html, showCsr) {
+        if (!_currentNode) {
+            _currentNode = document.createElement("span")
+            codeBody.appendChild(_currentNode)
+        }
+        _currentNode.innerHTML = html
+        if (showCsr) {
+            if (!_cursorNode) {
+                _cursorNode = document.createElement("span")
+                _cursorNode.className = "code-cursor"
+                codeBody.appendChild(_cursorNode)
+            }
+        } else {
+            if (_cursorNode) {
+                _cursorNode.remove()
+                _cursorNode = null
+            }
+        }
+    }
+
+    function sliceHtml(htmlStr, n) {
+        let rem = n
+        const d = document.createElement("div")
+        d.innerHTML = htmlStr
+        let out = ""
+        for (const node of d.childNodes) {
+            if (rem <= 0) break
+            if (node.nodeType === 3) {
+                const t = node.textContent.slice(0, rem)
+                out += t
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                rem -= t.length
+            } else {
+                const t = node.textContent
+                const take = Math.min(t.length, rem)
+                out += `<span class="${node.className}">${t.slice(0, take).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`
+                rem -= take
+            }
+        }
+        return out
+    }
+
+    function typeNextLine() {
+        committedLines = BASE_YAML_LINES.map((l) => l.html)
+        rebuildDOM()
+        codeBody.scrollTop = codeBody.scrollHeight
+        after(insertTrigger, 600)
+    }
+
+    function smoothScrollTo(target, duration, callback) {
+        const start = codeBody.scrollTop
+        const dist = target - start
+        const t0 = performance.now()
+        function tick(now) {
+            if (copilotCard.closest(".paused")) {
+                requestAnimationFrame(tick)
+                return
+            }
+            const elapsed = now - t0
+            const progress = Math.min(elapsed / duration, 1)
+            const ease =
+                progress < 0.5
+                    ? 4 * progress * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2
+            codeBody.scrollTop = start + dist * ease
+            if (progress < 1) requestAnimationFrame(tick)
+            else if (callback) {
+                ;(async () => {
+                    await waitForVisible()
+                    callback()
+                })()
+            }
+        }
+        requestAnimationFrame(tick)
+    }
+
+    function insertTrigger() {
+        const placeholders = []
+        for (const L of TRIGGER_LINES) {
+            const ph = document.createElement("span")
+            ph.style.cssText =
+                "display:block;visibility:hidden;white-space:pre;"
+            ph.textContent = L.raw || " "
+            codeBody.appendChild(ph)
+            placeholders.push(ph)
+        }
+
+        const targetScroll = codeBody.scrollHeight - codeBody.clientHeight / 2
+        smoothScrollTo(targetScroll, 650, () => {
+            placeholders.forEach((ph) => ph.remove())
+
+            const lineNodes = TRIGGER_LINES.map((L) => {
+                const span = document.createElement("span")
+                if (L.raw === "") {
+                    span.innerHTML = "\n"
+                } else {
+                    span.className = "trigger-line-added"
+                    span.style.visibility = "hidden"
+                    span.innerHTML = L.html + "\n"
+                }
+                codeBody.appendChild(span)
+                return span
+            })
+
+            _cursorNode = document.createElement("span")
+            _cursorNode.className = "code-cursor"
+
+            let ti = 0
+            function typeTriggerLine() {
+                if (ti >= TRIGGER_LINES.length) {
+                    if (_cursorNode.parentNode) _cursorNode.remove()
+                    after(clickApplyThenRestart, 700)
+                    return
+                }
+                const L = TRIGGER_LINES[ti]
+                const node = lineNodes[ti]
+                ti++
+
+                if (L.raw === "") {
+                    after(typeTriggerLine, 40)
+                    return
+                }
+
+                node.style.visibility = "visible"
+                node.innerHTML = ""
+                node.appendChild(_cursorNode)
+
+                const rawLen = L.raw.length
+                let ci = 1
+                function step() {
+                    if (copilotCard.closest(".paused")) {
+                        setTimeout(step, 100)
+                        return
+                    }
+                    if (ci <= rawLen) {
+                        node.innerHTML = sliceHtml(L.html, ci)
+                        node.innerHTML += "\n"
+                        node.appendChild(_cursorNode)
+                        const ch = L.raw[ci - 1] || ""
+                        const delay = ch === " " ? 14 : 18 + Math.random() * 16
+                        ci++
+                        setTimeout(step, delay)
+                    } else {
+                        node.innerHTML = L.html + "\n"
+                        after(typeTriggerLine, 50)
+                    }
+                }
+                step()
+            }
+            typeTriggerLine()
+        })
+    }
+
+    function showCopilot(immediate) {
+        codePanel.style.display = "none"
+        copilotPanel.style.display = "flex"
+        if (!immediate) copilotPanel.classList.add("panel-fade-in")
+        setTimeout(() => copilotPanel.classList.remove("panel-fade-in"), 400)
+        inputArea.classList.remove("focused")
+        inputPH.style.display = "block"
+        inputTyping.style.display = "none"
+        typedText.textContent = ""
+        loadingOv.style.display = "none"
+        submitBtn.classList.remove("clicking")
+    }
+
+    function showCode() {
+        copilotPanel.classList.add("panel-fade-out")
+        setTimeout(() => {
+            copilotPanel.style.display = "none"
+            copilotPanel.classList.remove("panel-fade-out")
+            codePanel.style.display = "block"
+            codePanel.classList.add("panel-fade-in")
+            setTimeout(() => codePanel.classList.remove("panel-fade-in"), 400)
+            committedLines = []
+            renderCode("", false)
+            after(typeNextLine, 200)
+        }, 350)
+    }
+
+    function clickApplyThenRestart() {
+        const applyBtn = copilotCard.querySelector("#applyBtn")
+        const cardRect = copilotCard.getBoundingClientRect()
+        const applyRect = applyBtn.getBoundingClientRect()
+        showCursor(applyRect.left - cardRect.left - 60, 20)
+        moveCursorTo(applyBtn, 600, () => {
+            applyBtn.style.transform = "scale(0.93)"
+            applyBtn.style.background = "rgba(99,27,255,0.2)"
+            after(() => {
+                applyBtn.style.transform = ""
+                hideCursor()
+                const glowWrap = copilotCard.closest(".glow-wrap")
+                glowWrap.classList.add("disappear")
+                after(() => {
+                    glowWrap.classList.remove("disappear")
+                    restart()
+                }, 950)
+            }, 160)
+        })
+    }
+
+    function restart() {
+        hideCursor()
+        const applyBtn = copilotCard.querySelector("#applyBtn")
+        applyBtn.style.background = "rgba(99,27,255,0.08)"
+        applyBtn.style.transform = ""
+        const glowWrap = copilotCard.closest(".glow-wrap")
+        glowWrap.classList.add("appear")
+        setTimeout(() => glowWrap.classList.remove("appear"), 750)
+        showCopilot(false)
+        after(startCopilotAnim, 900)
+    }
+
+    function startCopilotAnim() {
+        showCursor(40, 30)
+        after(() => {
+            moveCursorTo(inputArea, 700, () => {
+                inputArea.classList.add("focused")
+                after(() => {
+                    inputPH.style.display = "none"
+                    inputTyping.style.display = "block"
+                    typeText(typedText, PROMPT_TEXT, 0, () => {
+                        after(() => {
+                            moveCursorTo(submitBtn, 600, () => {
+                                submitBtn.classList.add("clicking")
+                                after(() => {
+                                    submitBtn.classList.remove("clicking")
+                                    inputArea.classList.remove("focused")
+                                    loadingOv.style.display = "flex"
+                                    hideCursor()
+                                    after(() => {
+                                        showCode()
+                                    }, 1800)
+                                }, 180)
+                            })
+                        }, 400)
+                    })
+                }, 300)
+            })
+        }, 500)
+    }
+
+    showCopilot(true)
+    after(startCopilotAnim, 900)
+}
+</script>

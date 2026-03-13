@@ -1,0 +1,105 @@
+---
+import { API_URL } from "astro:env/client"
+import Layout from "~/components/layout.astro"
+
+import Faq from "~/components/common/Faq.vue"
+import Intro from "~/components/data/Intro.astro"
+import Solves from "~/components/data/Solves.astro"
+import Actual from "~/components/data/Actual.astro"
+import Prompt from "~/components/data/Prompt.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import DataPlugins from "~/components/data/DataPlugins.astro"
+import ComparisonGrid from "~/components/data/ComparisonGrid.astro"
+import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
+
+const { results: blueprints } = await fetch(
+    `${API_URL}/blueprints/versions/latest?tags=data&page=1&size=20`,
+).then((res) => res.json())
+
+const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
+    (res) => res.json(),
+)
+
+const title = "Declarative Orchestration for Modern Data Engineers"
+const description =
+    "Ship Data Pipelines in 5 Minutes. Run Them at Enterprise Scale."
+
+const items = [
+    {
+        question: "Is Kestra production-ready for mission-critical pipelines?",
+        answer: "Yes. Kestra 1.0 was released in 2025. Enterprise customers process millions of executions daily with 99.9% uptime SLAs. We support HA deployments with automatic failover.",
+    },
+    {
+        question: "Can I migrate from Airflow without rewriting everything?",
+        answer: "Yes. Most teams migrate incrementally. We provide conversion utilities, Blueprint templates matching common Airflow patterns, and a <a href='/docs/migration-guide/airflow'>migration guide</a>",
+    },
+    {
+        question: "How does pricing work?",
+        answer: "Open source is free forever with unlimited executions. Enterprise Edition adds SSO/SAML, RBAC, priority support, SLA guarantees. Kestra Cloud is usage-based. <a href='/pricing'>Link to pricing</a>",
+    },
+    {
+        question: "Do I need to know YAML? What if my team doesn’t?",
+        answer: "Basic YAML only. If you’ve used GitHub Actions or Docker Compose, you’re ready. Most teams ship their first pipeline within 30 minutes. Blueprints provide templates so you’re not starting from scratch.",
+    },
+    {
+        question:
+            "Can I use my existing Python, SQL, and Bash scripts without changes?",
+        answer: "Yes. Your scripts run as-is. No refactoring, no framework wrappers. Reference them in YAML, and Kestra handles orchestration, scheduling, retries, and monitoring.",
+    },
+    {
+        question: "How do I deploy Kestra? What are my options?",
+        answer: "Local dev: Single Docker container. Production: Kubernetes (our Helm charts), Docker Compose, or fully managed Kestra Cloud. Supports air-gapped and on-premise deployments for enterprise.",
+    },
+    {
+        question:
+            "Does Kestra support backfills, scheduling, and event-driven triggers?",
+        answer: "Yes. Cron scheduling, backfilling with configurable concurrency, manual triggers, API webhooks, file watchers, database change streams, message queues (Kafka, SQS, etc.). Full scheduling flexibility.",
+    },
+    {
+        question: "What if I need features beyond data orchestration later?",
+        answer: "That’s exactly why teams choose Kestra. Orchestrate AI model training, infrastructure provisioning (Terraform, Ansible), business process automation, and multi-system workflows all in one platform. No need to add another tool.",
+    },
+    {
+        question: "How does Kestra handle failures and retries?",
+        answer: "Built-in retry policies (exponential backoff, max attempts), timeout handling, failure alerting (Slack, PagerDuty, email), and automatic error logging. You can define failure workflows and compensating actions.",
+    },
+    {
+        question: "What about security and compliance? Do you support SSO?",
+        answer: "Yes. SOC2 Type II certified, GDPR compliant. Supports SAML/SSO (Okta, Azure AD, etc.), RBAC with fine-grained permissions, audit logs, secrets management (HashiCorp Vault, AWS Secrets Manager), and network policies.",
+    },
+]
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <Intro />
+    <Solves />
+    <CustomerQuotes />
+    <Actual />
+    <Prompt />
+    <BlueprintsGrid
+        title='Start from proven Data <span class="highlight">patterns</span>'
+        subtitle="Pick from our production-ready Blueprints for common data workflows. Copy, customize, deploy in minutes."
+        {blueprints}
+        {tags}
+        link={{
+            href: "/blueprints?tags=data",
+            text: "View more Data blueprints",
+        }}
+    />
+    <DataPlugins />
+    <ComparisonGrid />
+    <SeeHow>
+        <Fragment slot="title">
+            Start With Data. Grow Without Limits.
+        </Fragment>
+        Join 500+ data teams who’ve modernized their orchestration with Kestra.
+    </SeeHow>
+    <Faq {items} client:visible />
+</Layout>
+
+<style lang="scss">
+    :global(.items) {
+        margin-top: 2rem;
+    }
+</style>

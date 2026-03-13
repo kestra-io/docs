@@ -1,0 +1,29 @@
+---
+import Versus from "~/components/layout/Versus.astro"
+
+const VERSUS_CONTENT = {
+    title: "Data Orchestration Shouldn’t Be Hard",
+    firstCard: {
+        title: "The challenge",
+        icon: "mdi:close-octagon",
+        iconColor: "#FF3434",
+        items: [
+            "Airflow gives you dependency conflicts, executor tuning, infra complexity instead of building pipelines.",
+            "Analysts use SQL. ML engineers use Python. Ops use Bash. But your orchestrator only speak Python.",
+            "Weeks learning DSL patterns before shipping one pipeline.",
+        ],
+    },
+    secondCard: {
+        title: "How Kestra solves it",
+        icon: "mdi:checkbox-multiple-marked-circle-outline",
+        iconColor: "#631BFF",
+        items: [
+            "Docker install and you’re running. No dependency management, no executor configuration. Just workflows.",
+            "Write tasks in any language. YAML orchestrates, your code stays native. No wrappers, no refactoring required.",
+            "Know YAML? You’re ready. Pick a Blueprint and ship in under 5 minutes. Zero proprietary abstractions.",
+        ],
+    },
+}
+---
+
+<Versus {...VERSUS_CONTENT} />
