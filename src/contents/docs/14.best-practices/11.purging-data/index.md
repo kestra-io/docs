@@ -32,11 +32,11 @@ Use this rule of thumb:
 
 | If you want to remove... | Prefer | Why |
 | --- | --- | --- |
-| Old execution records | `PurgeExecutions` | It permanently deletes execution metadata and related execution data |
-| Old execution and trigger logs | `PurgeLogs` | It is designed for bulk log cleanup |
-| Expired runtime state in the KV Store | `PurgeKV` or automatic KV expiration purge | It removes stale KV entries without treating them as static configuration |
-| Old Namespace file versions | `PurgeFiles` | It applies retention rules to Namespace files and their versions |
-| Old asset records, usages, or lineage data | `PurgeAssets` | It applies retention to asset-related records without touching executions or logs |
+| Old execution records | [`PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) | It permanently deletes execution metadata and related execution data |
+| Old execution and trigger logs | [`PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs) | It is designed for bulk log cleanup |
+| Expired runtime state in the KV Store | [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv) or automatic KV expiration purge | It removes stale KV entries without treating them as static configuration |
+| Old Namespace file versions | [`PurgeFiles`](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) | It applies retention rules to Namespace files and their versions |
+| Old asset records, usages, or lineage data | [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) | It applies retention to asset-related records without touching executions or logs |
 | A flow, namespace, or other object only in the UI | UI deletion | It hides records, but does not perform the same hard deletion as purge tasks |
 
 ## Use purge tasks for retention, not for routine cleanup by hand
@@ -54,7 +54,7 @@ This makes retention predictable and easier to review.
 
 ## When to purge executions and logs
 
-Use `PurgeExecutions` and `PurgeLogs` when your main goal is to reduce the footprint of historical operational data.
+Use [`PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) and [`PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs) when your main goal is to reduce the footprint of historical operational data.
 
 This is usually the right choice when:
 
@@ -70,7 +70,7 @@ Best practice:
 
 ## When to purge KV pairs
 
-Use `PurgeKV` only for runtime state that has expired or is no longer valid.
+Use [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv) only for runtime state that has expired or is no longer valid.
 
 The KV Store is best used for mutable state such as:
 
@@ -89,7 +89,7 @@ If a value is actually configuration or a secret, it probably does not belong in
 
 ## When to purge Namespace files
 
-Use `PurgeFiles` when your goal is to manage retention of Namespace file versions rather than execution data.
+Use [`PurgeFiles`](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) when your goal is to manage retention of Namespace file versions rather than execution data.
 
 This is useful when:
 
@@ -105,7 +105,7 @@ Best practice:
 
 ## When to purge assets and lineage
 
-Use `PurgeAssets` when you need retention for asset metadata, asset usage records, or lineage data.
+Use [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) when you need retention for asset metadata, asset usage records, or lineage data.
 
 This is different from purging executions or logs. Asset retention is its own concern and should be managed separately.
 
@@ -115,7 +115,7 @@ Best practice:
 - define retention based on operational or compliance requirements
 - purge only the records you intend to remove, especially if you want to keep lineage or usage data longer than the assets themselves
 
-`PurgeAssets` is an Enterprise Edition feature.
+[`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) is an Enterprise Edition feature.
 
 ## Purge tasks vs. UI deletion
 
@@ -151,7 +151,7 @@ Use KV TTLs and expired-key cleanup for temporary runtime state rather than accu
 
 ### Pattern 3: Version retention for Namespace files
 
-Apply `PurgeFiles` with explicit namespace scope and file patterns when teams manage reusable scripts or SQL as Namespace files.
+Apply [`PurgeFiles`](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) with explicit namespace scope and file patterns when teams manage reusable scripts or SQL as Namespace files.
 
 ### Pattern 4: Separate retention policies by data type
 
