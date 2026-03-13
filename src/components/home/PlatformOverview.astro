@@ -136,7 +136,7 @@ const images = [
         & > div {
             position: absolute;
             z-index: 2;
-            width: 220px;
+            width: 250px;
             opacity: 0;
             transition: all 0.3s ease;
             background-color: #ffffffaa;
@@ -144,14 +144,16 @@ const images = [
             border-radius: 0.5rem;
             border: 1px solid var(--hp-border-secondary);
             @include media-breakpoint-up(md) {
+                border-color: transparent;
+                z-index: 0;
                 &:after {
                     content: "";
                     position: absolute;
                     width: 115px;
                     height: 1px;
                     background: var(--hp-border-secondary);
-                    top: 0.5rem;
-                    margin: 1rem;
+                    top: 2rem;
+                    margin: 0;
                 }
             }
             h3 {
