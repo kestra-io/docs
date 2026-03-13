@@ -357,7 +357,7 @@ tasks:
     message: "{{ outputs.second['value 1'].values.data }}"
 ```
 
-You can also use the `currentEachOutput` function to access the current tree task. See [Expressions](../../expressions/index.md#currenteachoutput) for more details.
+You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.function-reference/index.md) for more details.
 
 :::alert{type="warning"}
 Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) as it runs tasks in parallel.

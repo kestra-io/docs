@@ -21,7 +21,7 @@ Kestra provides two authentication methods:
 - Basic Auth – enabled by default
 - OpenID Connect (OIDC)
 
-By default, JWT token security is configured to use the default Kestra encryption key. If you haven't already configured it, generate a secret that is at least 256 bits and add it to your [Kestra configuration](../../../configuration/index.md) as follows:
+By default, JWT token security is configured to use the default Kestra encryption key. If you haven't already configured it, generate a secret that is at least 256 bits and add it to your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) as follows:
 
 ```yaml
 kestra:

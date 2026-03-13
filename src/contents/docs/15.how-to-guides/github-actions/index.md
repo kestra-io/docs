@@ -124,7 +124,7 @@ jobs:
 
 ## Authentication
 
-If you have [authentication](../../configuration/index.md#http-basic-authentication) enabled in your Kestra instance, you will need to add additional properties so your action can authenticate with your instance.
+If you have [authentication](../../configuration/05.security-and-secrets/index.md) enabled in your Kestra instance, you will need to add additional properties so your action can authenticate with your instance.
 
 ### Basic Authentication
 

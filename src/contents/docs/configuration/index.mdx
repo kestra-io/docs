@@ -1,0 +1,48 @@
+---
+title: Configure Kestra – Settings, Environments, and Defaults
+sidebarTitle: Configuration
+icon: /src/contents/docs/icons/admin.svg
+description: Learn where Kestra configuration lives, how users typically edit it, and which configuration section to use for runtime, storage, observability, security, plugins, and enterprise features.
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Use this page when you need to know where Kestra configuration is defined, how it is overridden, and which part of the config tree controls a given capability.
+
+## Where Kestra configuration lives
+
+Kestra configuration is YAML-based, but the place you edit it depends on how you run Kestra.
+
+| Deployment style | Where you usually edit configuration |
+| --- | --- |
+| Local Docker or Docker Compose | The `KESTRA_CONFIGURATION` environment variable or your `docker-compose.yml` |
+| Kubernetes | Your Helm values or rendered manifests |
+| VM or standalone server | A YAML config file plus environment variables such as `JAVA_OPTS` or `KESTRA_*` |
+| Managed or shared environments | A checked-in deployment config, then environment-specific overrides through environment variables or platform secrets |
+
+Environment variables override file-based configuration, so many teams keep a shared base config in YAML and inject deployment-specific values at runtime.
+
+## Start here
+
+- Use [Configuration Basics](./01.configuration-basics/index.md) to understand config sources, overrides, environment variable conversion, and the minimal setup required to boot Kestra.
+- Use [Runtime and Storage](./02.runtime-and-storage/index.md) for repository, queue, datasource, storage, server, and JVM settings.
+- Use [Observability and Networking](./03.observability-and-networking/index.md) for telemetry, logs, metrics, Micronaut, endpoints, and webserver behavior.
+- Use [Plugins and Execution](./04.plugins-and-execution/index.md) for plugin installation, plugin defaults, retries, tasks, system flows, templates, and file access.
+- Use [Security and Secrets](./05.security-and-secrets/index.md) for encryption, secret backends, auth-related security settings, and server hardening.
+- Use [Enterprise and Advanced Features](./06.enterprise-and-advanced/index.md) for EE license settings, Elasticsearch, Kafka, indexer, AI Copilot, and air-gapped deployments.
+- Use [Full Reference](./99.full-reference/index.md) when you want the complete legacy page in one place.
+
+## Common tasks
+
+| If you need to... | Start here |
+| --- | --- |
+| Find the file or deployment surface where config is edited | [Configuration Basics](./01.configuration-basics/index.md) |
+| Configure queue, repository, datasource, storage, or server settings | [Runtime and Storage](./02.runtime-and-storage/index.md) |
+| Tune logs, metrics, telemetry, endpoints, CORS, SSL, or UI web settings | [Observability and Networking](./03.observability-and-networking/index.md) |
+| Configure plugin defaults, task temp storage, retries, or local flow sync | [Plugins and Execution](./04.plugins-and-execution/index.md) |
+| Set up encryption, secret backends, RBAC-adjacent security, or server auth | [Security and Secrets](./05.security-and-secrets/index.md) |
+| Configure Enterprise-only platform services such as Kafka, Elasticsearch, AI Copilot, or air-gapped operation | [Enterprise and Advanced Features](./06.enterprise-and-advanced/index.md) |
+
+## Browse configuration docs
+
+<ChildCard />

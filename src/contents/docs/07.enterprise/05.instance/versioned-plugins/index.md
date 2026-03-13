@@ -64,7 +64,7 @@ kestra:
         url: https://registry.kestra.io/maven
 ```
 
-Refer to the [Plugins section](../../../configuration/index.md#plugins) in the Configuration guide for custom Maven repositories.
+Refer to the [Plugins and Execution](../../../configuration/04.plugins-and-execution/index.md) page in the Configuration guide for custom Maven repositories.
 
 With remote storage enabled, installed plugins are stored in a plugins repository in the `_plugins/repository` path. For example, the below paths show the storage for 0.19.0 and 0.20.0 versions of the Shell script plugin:
 
@@ -89,7 +89,7 @@ For locally stored plugins configured by the `localRepositoryPath` attribute, th
 
 ## Configuration for EE-specific plugins
 
-Some plugins are available only in the Enterprise Edition (EE) of Kestra. To install EE-specific plugins, you need to make sure that your [Kestra configuration](../../../configuration/index.md) has the `kestra.ee.license.fingerprint` property set (apart from the `kestra.ee.license.id` and `kestra.ee.license.key` properties). The `kestra.ee.license.fingerprint` property is used to verify that the EE license is valid and allows you to use EE-specific plugins.
+Some plugins are available only in the Enterprise Edition (EE) of Kestra. To install EE-specific plugins, you need to make sure that your [Enterprise and Advanced configuration](../../../configuration/06.enterprise-and-advanced/index.md) has the `kestra.ee.license.fingerprint` property set (apart from the `kestra.ee.license.id` and `kestra.ee.license.key` properties). The `kestra.ee.license.fingerprint` property is used to verify that the EE license is valid and allows you to use EE-specific plugins.
 
 ## Install versioned plugins
 
@@ -184,7 +184,7 @@ To install versioned plugins from the [Kestra CLI](../../../kestra-cli/kestra-se
 The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled.
 
 - `--locally=true` installs the plugin locally.
-- `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../../configuration/index.md#internal-storage) directly.
+- `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured runtime and storage backend](../../../configuration/02.runtime-and-storage/index.md) directly.
 
 ## `version` property in a Flow
 

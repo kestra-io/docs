@@ -33,7 +33,7 @@ kubectl get svc
 Navigate to the RDS console to create a PostgreSQL database. Once your database is created, configure the settings, ensuring the database is accessible from your EKS cluster. Make note of the database endpoint and port after creation for later use.
 
 ## Prepare an AWS S3 Bucket
-Create a private S3 bucket (i.e., with public access blocked). Keep a record of the bucket name as this is needed for the [Kestra configuration](../../configuration/index.md).
+Create a private S3 bucket (i.e., with public access blocked). Keep a record of the bucket name as this is needed for the [Kestra runtime and storage configuration](../../configuration/02.runtime-and-storage/index.md).
 
 
 ## Install Kestra on AWS EKS

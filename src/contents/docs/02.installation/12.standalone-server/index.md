@@ -23,7 +23,7 @@ For example, to launch Kestra:
 - In local mode (with an H2 local file database), you run `./kestra-VERSION server local`.
 - In standalone mode (you need to provide a configuration with a connection to a database) , you run `./kestra-VERSION server standalone`.
 
-For more information on database configuration, check out the [configuration reference](../../configuration/index.md#database)
+For more information on database configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md)
 
 :::alert{type="warning"}
 Running the jar version comes without any [plugins](/plugins). You need to install them manually with the `kestra plugins install directory_with_plugins/` command. Alternatively, point to a directory with the plugins in the configuration file or an environment variable `KESTRA_PLUGINS_PATH` (e.g., `KESTRA_PLUGINS_PATH=/Users/anna/dev/plugins`).
@@ -46,7 +46,7 @@ By default, Kestra looks for `${HOME}/.kestra/config.yaml`. Use absolute paths f
 
 When using `KESTRA_CONFIGURATION`, ensure a `confs/` directory exists in the working directory: Kestra persists the generated configuration file there on startup. Quote multi-line values (as shown in the [Docker deployment guide](../02.docker/index.md#using-the-kestra_configuration-environment-variable)) so the YAML structure remains intact.
 
-Configuration options are available in the [Configuration Reference](../../configuration/index.md). You can also review the default settings on [GitHub](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yaml).
+Configuration options are available in the [Configuration landing page](../../configuration/index.mdx). You can also review the default settings on [GitHub](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yaml).
 
 ## Deploy as a systemd service
 
