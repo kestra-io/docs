@@ -183,8 +183,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .main-header {
         position: relative;
         &::before {
