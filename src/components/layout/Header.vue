@@ -70,23 +70,21 @@
                     class="navbar-toggler d-flex d-lg-none align-items-center gap-2"
                     @click="globalClick(isOpen)"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#main-header"
                     aria-controls="main-header"
-                    aria-expanded="false"
+                    :aria-expanded="isOpen"
                     aria-label="Toggle navigation"
                 >
-                    <span class="menu-text">Menu</span>
+                    <span class="menu-text">{{ isOpen ? 'Close' : 'Menu' }}</span>
                     <Segment v-if="!isOpen" />
                     <Close v-if="isOpen" />
                 </button>
             </div>
 
             <div class="collapse navbar-collapse" id="main-header">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
                     <li
                         class="nav-item dropdown"
-                        @mouseover="mouseOver('product')"
+                        @mouseover="mouseOver('product', $event)"
                         @mouseleave="mouseOut('product')"
                     >
                         <a
@@ -102,7 +100,7 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
-                        <div class="dropdown-menu pb-1 d-lg-none">
+                        <div class="dropdown-menu d-lg-none">
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.product.items" :key="item.link">
                                     <a
@@ -124,7 +122,7 @@
                     </li>
                     <li
                         class="nav-item dropdown"
-                        @mouseover="mouseOver('solutions')"
+                        @mouseover="mouseOver('solutions', $event)"
                         @mouseleave="mouseOut('solutions')"
                     >
                         <a
@@ -140,11 +138,11 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
-                        <div class="dropdown-menu pb-1 d-lg-none">
+                        <div class="dropdown-menu d-lg-none">
                             <ul class="dropdown-column">
-                                <p class="column-caption">Capabilities</p>
+                                <p class="column-caption">Use-cases</p>
                                 <li
-                                    v-for="item in menuItems.solutions.capabilities"
+                                    v-for="item in menuItems.solutions.useCases"
                                     :key="item.link"
                                 >
                                     <a
@@ -160,8 +158,8 @@
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
-                                <p class="column-caption">By Roles</p>
-                                <li v-for="item in menuItems.solutions.roles" :key="item.link">
+                                <p class="column-caption">Users</p>
+                                <li v-for="item in menuItems.solutions.user" :key="item.link">
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
@@ -175,75 +173,8 @@
                                 </li>
                             </ul>
                             <ul class="dropdown-column">
-                                <p class="column-caption">By Industries</p>
-                                <li v-for="item in menuItems.solutions.industries" :key="item.link">
-                                    <a
-                                        class="dropdown-item"
-                                        :href="item.link"
-                                        @click="globalClick(true)"
-                                    >
-                                        <div class="item-row">
-                                            <component :is="item.icon" />
-                                            <span>{{ item.title }}</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="dropdown-column">
-                                <p class="column-caption">Resources</p>
-                                <li v-for="item in menuItems.solutions.resources" :key="item.link">
-                                    <a
-                                        class="dropdown-item"
-                                        :href="item.link"
-                                        @click="globalClick(true)"
-                                    >
-                                        <div class="item-row">
-                                            <component :is="item.icon" />
-                                            <span>{{ item.title }}</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li
-                        class="nav-item dropdown"
-                        @mouseover="mouseOver('resources')"
-                        @mouseleave="mouseOut('resources')"
-                    >
-                        <a
-                            class="nav-link dropdown-toggle"
-                            :class="{ show: showMenuId === 'resources' && showMenu }"
-                            href="#"
-                            role="button"
-                            :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
-                        >
-                            Learn
-                            <ChevronDown
-                                class="d-inline-block dropdown-chevron"
-                            />
-                        </a>
-                        <div class="dropdown-menu pb-1 d-lg-none">
-                            <ul class="dropdown-column">
-                                <li v-for="item in menuItems.resources.mainItems" :key="item.link">
-                                    <a
-                                        class="dropdown-item"
-                                        :href="item.link"
-                                        @click="globalClick(true)"
-                                    >
-                                        <div class="item-row">
-                                            <component :is="item.icon" />
-                                            <span>{{ item.title }}</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="dropdown-column">
-                                <li
-                                    v-for="item in menuItems.resources.additionalItems"
-                                    :key="item.link"
-                                >
+                                <p class="column-caption">Industries</p>
+                                <li v-for="item in menuItems.solutions.industry" :key="item.link">
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
@@ -261,6 +192,15 @@
                     <li class="nav-item">
                         <a
                             class="nav-link"
+                            href="/pricing"
+                            @click="globalClick(true)"
+                        >
+                            <span>Pricing</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
                             href="/plugins"
                             role="button"
                             @click="globalClick(true)"
@@ -268,15 +208,40 @@
                             <span>Plugins</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li
+                        class="nav-item dropdown"
+                        @mouseover="mouseOver('resources', $event)"
+                        @mouseleave="mouseOut('resources')"
+                    >
                         <a
                             class="nav-link dropdown-toggle"
-                            href="/pricing"
+                            :class="{ show: showMenuId === 'resources' && showMenu }"
+                            href="#"
                             role="button"
-                            @click="globalClick(true)"
+                            :data-bs-toggle="isMobile ? 'dropdown' : undefined"
+                            aria-expanded="false"
                         >
-                            <span>Pricing</span>
+                            Learn
+                            <ChevronDown
+                                class="d-inline-block dropdown-chevron"
+                            />
                         </a>
+                        <div class="dropdown-menu d-lg-none">
+                            <ul class="dropdown-column">
+                                <li v-for="item in menuItems.resources.items" :key="item.link">
+                                    <a
+                                        class="dropdown-item"
+                                        :href="item.link"
+                                        @click="globalClick(true)"
+                                    >
+                                        <div class="item-row">
+                                            <component :is="item.icon" />
+                                            <span>{{ item.title }}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
 
@@ -284,32 +249,31 @@
                     <li class="nav-item">
                         <GithubButton
                             :small="true"
-                            class="d-block d-sm-inline-block mb-1 mn-sm-0"
+                            class="d-block d-sm-inline-block mb-1"
                         />
                         <a
                             @click="globalClick(true)"
-                            class="d-none mb-1 mn-sm-0 btn btn-sm btn-secondary btn-sm me-0 me-sm-2 d-lg-inline-block"
+                            class="d-none mb-1 btn btn-sm btn-secondary me-0 me-sm-2 d-lg-inline-block"
                             href="/demo"
                         >
-                            <span> Talk to us </span>
+                            <span> Book a demo </span>
                         </a>
                         <a
                             @click="globalClick(true)"
-                            class="d-block d-sm-inline-block mb-1 mn-sm-0 btn btn-primary btn-sm get-started"
+                            class="d-block d-sm-inline-block mb-1 btn btn-primary btn-sm get-started"
                             href="/docs/quickstart#start-kestra"
                         >
                             <span> Get Started! </span>
                         </a>
                         <a
                             @click="globalClick(true)"
-                            class="d-lg-none d-sm-inline-block d-xs-block mb-1 mn-sm-0 btn btn-secondary btn-md"
+                            class="d-lg-none d-sm-inline-block mb-1 btn btn-secondary btn-md"
                             href="/demo"
                         >
-                            <span> Talk to Us </span>
+                            <span> Book a demo </span>
                         </a>
                         <button
                             @click="globalClick(true)"
-                            href="#"
                             id="header-search-button"
                             class="btn btn-sm d-none d-lg-inline-block icon-button"
                             data-bs-toggle="modal"
@@ -327,12 +291,6 @@
             class="d-lg-block d-none menu-container"
             :style="{ opacity: showMenu || mouseoverMenu ? 100 : 0 }"
         >
-            <div
-                class="header-arrow"
-                :style="{
-                    transform: `translateY(12px) translateX(${headerArrowTranslateX}px) rotate(45deg)`,
-                }"
-            ></div>
             <div class="menu-shadow-container">
                 <div
                     :style="{
@@ -353,7 +311,7 @@
                         >
                             <div class="header-menu-content">
                                 <div class="header-menu-card-section-column">
-                                    <ul class="d-flex flex-column w-100 gap-2 py-lg-0">
+                                    <ul class="d-flex flex-column w-100">
                                         <li
                                             v-for="item in menuItems.product.items"
                                             :key="item.link"
@@ -371,9 +329,6 @@
                                                             item.tag
                                                         }}</strong>
                                                     </div>
-                                                    <p>
-                                                        {{ item.description }}
-                                                    </p>
                                                 </div>
                                             </a>
                                         </li>
@@ -387,63 +342,12 @@
                             class="header-menu-card-section"
                         >
                             <div class="header-menu-content">
-                                <div class="row m-0 w-100 pt-2 flex-nowrap">
-                                    <div class="col-lg-4 header-solution-column">
-                                        <div class="menu-title">
-                                            <p>Capabilities</p>
-                                        </div>
+                                <div class="row w-100 h-100 flex-nowrap" style="--bs-gutter-x: 10px;">
+                                    <div class="col-lg-4">
+                                        <p class="solutions-col-heading">Use-cases</p>
                                         <ul>
                                             <li
-                                                v-for="item in menuItems.solutions.capabilities"
-                                                :key="item.link"
-                                            >
-                                                <a
-                                                    class="dropdown-item"
-                                                    :href="item.link"
-                                                    @click="globalClick(true)"
-                                                >
-                                                    <div>
-                                                        <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
-                                                        </div>
-                                                        <p>
-                                                            {{ item.description }}
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-4 header-solution-column">
-                                        <div class="menu-title">
-                                            <p>By Roles</p>
-                                        </div>
-                                        <ul>
-                                            <li
-                                                v-for="item in menuItems.solutions.roles"
-                                                :key="item.link"
-                                            >
-                                                <a
-                                                    class="dropdown-item"
-                                                    :href="item.link"
-                                                    @click="globalClick(true)"
-                                                >
-                                                    <div>
-                                                        <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <div class="menu-title">
-                                            <p>By Industries</p>
-                                        </div>
-                                        <ul>
-                                            <li
-                                                v-for="item in menuItems.solutions.industries"
+                                                v-for="item in menuItems.solutions.useCases"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -461,13 +365,33 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-4 header-solution-column">
-                                        <div class="menu-title">
-                                            <p>Resources</p>
-                                        </div>
+                                    <div class="col-lg-4">
+                                        <p class="solutions-col-heading">Users</p>
+                                        <ul>
+                                            <li
+                                                v-for="item in menuItems.solutions.user"
+                                                :key="item.link"
+                                            >
+                                                <a
+                                                    class="dropdown-item"
+                                                    :href="item.link"
+                                                    @click="globalClick(true)"
+                                                >
+                                                    <div>
+                                                        <div class="same-row">
+                                                            <component :is="item.icon" />
+                                                            <span>{{ item.title }}</span>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p class="solutions-col-heading">Industries</p>
                                         <ul class="d-flex flex-column w-100 list-unstyled">
                                             <li
-                                                v-for="item in menuItems.solutions.resources"
+                                                v-for="item in menuItems.solutions.industry"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -494,55 +418,29 @@
                             class="header-menu-card-section"
                         >
                             <div class="header-menu-content">
-                                <div class="row m-0 w-100">
-                                    <div class="col-lg-6">
-                                        <ul>
-                                            <li
-                                                v-for="item in menuItems.resources.mainItems"
-                                                :key="item.link"
+                                <div class="header-menu-card-section-column">
+                                    <ul class="d-flex flex-column w-100">
+                                        <li
+                                            v-for="item in menuItems.resources.items"
+                                            :key="item.link"
+                                        >
+                                            <a
+                                                class="dropdown-item"
+                                                :href="item.link"
+                                                @click="globalClick(true)"
                                             >
-                                                <a
-                                                    class="dropdown-item"
-                                                    :href="item.link"
-                                                    @click="globalClick(true)"
-                                                >
-                                                    <div>
-                                                        <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
-                                                        </div>
-                                                        <p>
-                                                            {{ item.description }}
-                                                        </p>
+                                                <div>
+                                                    <div class="same-row">
+                                                        <component :is="item.icon" />
+                                                        <span>{{ item.title }}</span>
+                                                        <strong v-if="item.tag" class="tag">{{
+                                                            item.tag
+                                                        }}</strong>
                                                     </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <ul>
-                                            <li
-                                                v-for="item in menuItems.resources.additionalItems"
-                                                :key="item.link"
-                                            >
-                                                <a
-                                                    class="dropdown-item"
-                                                    :href="item.link"
-                                                    @click="globalClick(true)"
-                                                >
-                                                    <div>
-                                                        <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
-                                                        </div>
-                                                        <p>
-                                                            {{ item.description }}
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -574,7 +472,6 @@
     const showDownloadLogos = ref(false)
     const showMenu = ref(false)
     const showMenuId = ref<string | null>(null)
-    const headerArrowTranslateX = ref(0)
     const headerMenuTranslateX = ref("50vw")
     const mouseoverMenu = ref(false)
     const headerMenuSize = ref({
@@ -595,14 +492,22 @@
 
     let collapse: Collapse | undefined = undefined
 
+    function getCollapseInstance(): Collapse | undefined {
+        if (!collapse) {
+            const BootstrapCollapse = window.$bootstrap?.Collapse
+            if (BootstrapCollapse) {
+                const el = document.getElementById("main-header")
+                if (el) {
+                    collapse = BootstrapCollapse.getOrCreateInstance(el, { toggle: false })
+                }
+            }
+        }
+        return collapse
+    }
+
     onMounted(() => {
-        // Wait for bootstrap to be available
         nextTick(() => {
-            collapse = window.$bootstrap.Collapse
-                ? new window.$bootstrap.Collapse("#main-header", {
-                      toggle: false,
-                  })
-                : undefined
+            getCollapseInstance()
         })
 
         isMobile.value = window.innerWidth <= 991
@@ -651,29 +556,34 @@
         }, 100)
     }
 
-    function mouseOver(id: string) {
-        if (window.innerWidth > 991) {
-            document.querySelectorAll(".header-menu-card-section").forEach((obj) => {
-                obj.classList.remove("opacity-100")
-                obj.classList.remove("z-1")
-            })
-            let menu = document.getElementById(id)
-            if (menu) {
-                if (closeMenuTimeout.value) {
-                    clearTimeout(closeMenuTimeout.value)
-                    closeMenuTimeout.value = null
-                }
-                mouseoverMenu.value = false
-                showMenu.value = true
-                showMenuId.value = id
-                headerMenuSize.value = menuSize(id, window.innerWidth).size
-                headerMenuTranslateX.value = menuSize(id, window.innerWidth).headerMenuTranslateX
-                headerArrowTranslateX.value = menuSize(id, window.innerWidth).headerArrowTranslateX
-                menu.classList.add("z-1")
-                menu.classList.add("opacity-100")
-                headerMenuPointerEvents.value = "auto"
-            }
+    function mouseOver(id: string, event: MouseEvent) {
+        if (window.innerWidth <= 991) return
+
+        if (closeMenuTimeout.value) {
+            clearTimeout(closeMenuTimeout.value)
+            closeMenuTimeout.value = null
         }
+
+        const menu = document.getElementById(id)
+        if (!menu) return
+
+        document.querySelectorAll(".header-menu-card-section").forEach((el) => {
+            el.classList.remove("opacity-100", "z-1")
+        })
+
+        showMenu.value = true
+        showMenuId.value = id
+        mouseoverMenu.value = false
+        headerMenuPointerEvents.value = "auto"
+        headerMenuSize.value = menuSize(id)
+
+        const { left, width } = (event.currentTarget as HTMLElement).getBoundingClientRect()
+        const menuWidth = parseInt(headerMenuSize.value.width)
+        const offset = id === "solutions" ? 0 : 45
+        const maxLeft = window.innerWidth - menuWidth - 16
+        headerMenuTranslateX.value = `${Math.max(16, Math.min(left - offset, maxLeft))}px`
+
+        menu.classList.add("z-1", "opacity-100")
     }
 
     function mouseOut(id: string) {
@@ -691,14 +601,15 @@
 
     function globalClick(close?: boolean) {
         if (window.innerWidth < 992) {
+            const collapseInstance = getCollapseInstance()
             if (close === true) {
-                collapse?.hide()
+                collapseInstance?.hide()
                 isOpen.value = false
             } else if (close === false) {
-                collapse?.show()
+                collapseInstance?.show()
                 isOpen.value = true
             } else {
-                collapse?.toggle()
+                collapseInstance?.toggle()
                 isOpen.value = !isOpen.value
             }
             return

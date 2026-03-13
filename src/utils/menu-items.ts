@@ -1,32 +1,22 @@
 import type { Component } from "vue"
-import OpenSourceInitiative from "vue-material-design-icons/OpenSourceInitiative.vue"
-import Security from "vue-material-design-icons/Security.vue"
-import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
-import Xml from "vue-material-design-icons/Xml.vue"
+
+import Car from "vue-material-design-icons/Car.vue"
+import DNA from "vue-material-design-icons/Dna.vue"
+import Looks from "vue-material-design-icons/Looks.vue"
+import ChartLine from "vue-material-design-icons/ChartLine.vue"
+import CartMinus from "vue-material-design-icons/CartMinus.vue"
 import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import WebBox from "vue-material-design-icons/WebBox.vue"
-import Terraform from "vue-material-design-icons/Terraform.vue"
-import ArrowCollapseAll from "vue-material-design-icons/ArrowCollapseAll.vue"
-import Binoculars from "vue-material-design-icons/Binoculars.vue"
-import ChartBarStacked from "vue-material-design-icons/ChartBarStacked.vue"
+import SourceBranch from "vue-material-design-icons/SourceBranch.vue"
+import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
+import CogSyncOutline from "vue-material-design-icons/CogSyncOutline.vue"
+import TextBoxOutline from "vue-material-design-icons/TextBoxOutline.vue"
+import FileCodeOutline from "vue-material-design-icons/FileCodeOutline.vue"
+import ShapePlusOutline from "vue-material-design-icons/ShapePlusOutline.vue"
+import ShieldLockOutline from "vue-material-design-icons/ShieldLockOutline.vue"
+import OpenSourceInitiative from "vue-material-design-icons/OpenSourceInitiative.vue"
 import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
-import BasketOutline from "vue-material-design-icons/BasketOutline.vue"
-import MedicalBag from "vue-material-design-icons/MedicalBag.vue"
-import CarBack from "vue-material-design-icons/CarBack.vue"
-import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-import Domain from "vue-material-design-icons/Domain.vue"
-import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
-import ProgressQuestion from "vue-material-design-icons/ProgressQuestion.vue"
-import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
-import PostOutline from "vue-material-design-icons/PostOutline.vue"
-import BookOpenPageVariant from "vue-material-design-icons/BookOpenPageVariant.vue"
-import Tools from "vue-material-design-icons/Tools.vue"
-import ViewList from "vue-material-design-icons/ViewList.vue"
-import VideoCheckOutline from "vue-material-design-icons/VideoCheckOutline.vue"
-import LightbulbOn40 from "vue-material-design-icons/LightbulbOn40.vue"
-import HeadQuestion from "vue-material-design-icons/HeadQuestion.vue"
-import Flare from "vue-material-design-icons/Flare.vue"
-import ListBox from "vue-material-design-icons/ListBox.vue"
+import FormatQuoteCloseOutline from "vue-material-design-icons/FormatQuoteCloseOutline.vue"
+import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
 
 interface MenuItem {
     icon: Component
@@ -37,19 +27,13 @@ interface MenuItem {
 }
 
 interface MenuItems {
-    product: {
-        items: MenuItem[]
-    }
+    product: { items: MenuItem[] }
     solutions: {
-        capabilities: MenuItem[]
-        roles: MenuItem[]
-        industries: MenuItem[]
-        resources: MenuItem[]
+        useCases: MenuItem[]
+        user: MenuItem[]
+        industry: MenuItem[]
     }
-    resources: {
-        mainItems: MenuItem[]
-        additionalItems: MenuItem[]
-    }
+    resources: { items: MenuItem[] }
 }
 
 export const menuItems: MenuItems = {
@@ -58,185 +42,102 @@ export const menuItems: MenuItems = {
             {
                 icon: OpenSourceInitiative,
                 title: "Core Features",
-                description: "Explore Kestra's Core Capabilities",
-                link: "/features",
+                link: "/features"
             },
             {
-                icon: Security,
+                icon: ShieldLockOutline,
                 title: "Enterprise Edition",
-                description: "Security and Governance for Enterprise Needs",
-                link: "/enterprise",
+                link: "/enterprise"
             },
             {
                 icon: CloudOutline,
                 title: "Cloud Edition",
-                description: "the Cloud edition managed by Kestra",
                 link: "/cloud",
-                tag: "Request Access",
+                tag: "Request Access"
+            },
+            {
+                icon: Looks,
+                title: "Platform Overview",
+                link: "/overview"
             },
         ],
     },
     solutions: {
-        capabilities: [
+        useCases: [
             {
-                icon: Xml,
-                title: "Declarative Orchestration",
-                description: "Infrastructure as Code of All Your Workflows",
-                link: "/features/declarative-data-orchestration",
+                icon: SourceBranch,
+                title: "Data Workflow",
+                // TODO: Add link
+                link: ""
             },
             {
-                icon: RefreshAuto,
-                title: "Automation Platform",
-                description: "Scheduling and Automation Made Easy",
-                link: "/features/scheduling-and-automation",
+                icon: CogSyncOutline,
+                title: "Infrastructure Automation",
+                link: "/infra-automation"
             },
             {
-                icon: WebBox,
-                title: "Language Agnostic",
-                description: "Orchestrate business logic in any language",
-                link: "/features/code-in-any-language",
-            },
-            {
-                icon: Terraform,
-                title: "Kestra's Terraform Provider",
-                description: "Deploy & manage all resources with Terraform",
-                link: "/use-cases/terraform-provider",
-            },
-            {
-                icon: ArrowCollapseAll,
-                title: "API-First",
-                description: "Learn more about Kestra's API features",
-                link: "/features/api-first",
-            },
-            {
-                icon: Binoculars,
-                title: "Platform Overview",
-                description: "Powerful Capabilities from the UI",
-                link: "/overview",
+                icon: ChartTimelineVariantShimmer,
+                title: "AI Workflows",
+                // TODO: Add link
+                link: ""
             },
         ],
-        roles: [
+        user: [
             {
-                icon: ChartBarStacked,
+                icon: ChartLine,
                 title: "Data Engineers",
-                link: "/use-cases/data-engineers",
+                link: "/use-cases/data-engineers"
             },
             {
                 icon: RefreshAuto,
                 title: "Software Engineers",
-                link: "/use-cases/software-engineers",
+                link: "/use-cases/software-engineers"
             },
             {
                 icon: ServerNetworkOutline,
                 title: "Platform Engineers",
-                link: "/use-cases/platform-engineers",
+                link: "/use-cases/platform-engineers"
             },
         ],
-        industries: [
+        industry: [
             {
-                icon: BasketOutline,
-                title: "Retail & Supply Chain",
-                link: "/use-cases/retail",
+                icon: Car,
+                title: "Automotive",
+                link: "/use-cases/automotive"
             },
             {
-                icon: MedicalBag,
-                title: "Healthcare & Pharmaceuticals",
-                link: "/use-cases/healthcare",
+                icon: CartMinus,
+                title: "Retail",
+                link: "/use-cases/retail"
             },
             {
-                icon: CarBack,
-                title: "Automotive & Heavy Equipment",
-                link: "/use-cases/automotive",
-            },
-            {
-                icon: ArrowRight,
-                title: "All use-cases",
-                link: "/docs/use-cases",
-            },
-        ],
-        resources: [
-            {
-                icon: Domain,
-                title: "About Us",
-                link: "/about-us",
-            },
-            {
-                icon: HandshakeOutline,
-                title: "Partner",
-                link: "/partners",
-            },
-            {
-                icon: ProgressQuestion,
-                title: "FAQ",
-                link: "/faq",
-            },
-            {
-                icon: AccountGroupOutline,
-                title: "Community Overview",
-                link: "/community",
-            },
-            {
-                icon: PostOutline,
-                title: "Community Contents",
-                link: "/blogs/community",
-            },
-            {
-                icon: BookOpenPageVariant,
-                title: "Customer Stories",
-                link: "/use-cases/stories",
-            },
-            {
-                icon: ListBox,
-                title: "Changelog",
-                link: "/docs/changelog",
+                icon: DNA,
+                title: "Healthcare",
+                link: "/use-cases/healthcare"
             },
         ],
     },
     resources: {
-        mainItems: [
+        items: [
             {
-                icon: Tools,
+                icon: FileCodeOutline,
                 title: "Docs",
-                description: "Everything Kestra",
-                link: "/docs",
+                link: "/docs"
             },
             {
-                icon: PostOutline,
-                title: "Blog",
-                description: "Tutorials, Guides, Market Trends and More",
-                link: "/blogs",
-            },
-            {
-                icon: ViewList,
+                icon: ShapePlusOutline,
                 title: "Blueprints",
-                description: "A Library of ready to use Workflows",
-                link: "/blueprints",
+                link: "/blueprints"
             },
             {
-                icon: VideoCheckOutline,
-                title: "Video Tutorials",
-                description: "your favourite tutorials in video",
-                link: "/tutorial-videos",
-            },
-        ],
-        additionalItems: [
-            {
-                icon: LightbulbOn40,
-                title: "How to guides",
-                description: "Learn step by step how to address use-cases",
-                link: "/docs/how-to-guides",
+                icon: TextBoxOutline,
+                title: "Blog",
+                link: "/blogs"
             },
             {
-                icon: HeadQuestion,
-                title: "Why kestra",
-                description: "Trust kestra as your unified orchestration tool",
-                link: "/docs/why-kestra",
-            },
-            {
-                icon: Flare,
-                title: "Quickstart installation guide",
-                description: "Trust kestra as your unified orchestration tool",
-                link: "/docs/installation",
+                icon: FormatQuoteCloseOutline,
+                title: "Customer Stories",
+                link: "/use-cases/stories"
             },
         ],
     },

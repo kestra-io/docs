@@ -243,7 +243,6 @@
         },
         unmounted() {
             window.removeEventListener("keydown", this.handleKeyboard)
-            document.documentElement.style.removeProperty("--top-bar-height")
         },
         computed: {
             allSum() {
