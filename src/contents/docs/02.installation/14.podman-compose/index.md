@@ -73,7 +73,7 @@ Open the URL `http://localhost:8080` in your browser to launch the UI.
 
 The command above starts a *standalone* server (all architecture components in one JVM).
 
-The [configuration](../../configuration/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
+The [configuration](../../configuration/01.configuration-basics/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
 
 :::alert{type="info"}
 If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../10.administrator-guide/16.troubleshooting/index.md).

@@ -67,7 +67,7 @@ Polling Triggers have specific constraints:
 Internally, the Scheduler checks every second to determine whether any trigger needs evaluation.
 
 :::alert{type="info"}
-**Note:** By default, Kestra handles all date and time values using your system's timezone. You can override this behavior using [JVM options](../../configuration/index.md)
+**Note:** By default, Kestra handles all date and time values using your system's timezone. You can override this behavior using [JVM options](../../configuration/02.runtime-and-storage/index.md)
 :::
 
 ## Indexer

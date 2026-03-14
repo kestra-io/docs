@@ -1,17 +1,17 @@
 ---
-title: Configure Kestra – Settings, Environments, and Defaults
-sidebarTitle: Configuration
+title: Kestra Configuration Full Reference – Settings, Environments, and Defaults
+sidebarTitle: Full Reference
 icon: /src/contents/docs/icons/admin.svg
 description: Explore Kestra's comprehensive configuration options for settings, environments, and defaults. Learn how to manage data sources, logging, security, and AI to customize your Kestra instance.
 ---
 
-Configuration reference for Kestra.
+Complete configuration reference for Kestra.
 
 Almost everything in Kestra is configurable. This page covers key options such as data sources, logging, security, and AI.
 
 ## Configure Kestra for your environment
 
-Kestra reads configuration from YAML. Provide it as an environment variable, a file, or inline in Docker Compose (see [installation options](../02.installation/02.docker/index.md#configuration)). The configuration holds deployment-specific options and is divided into sections that map to system components:
+Kestra reads configuration from YAML. Provide it as an environment variable, a file, or inline in Docker Compose (see [installation options](../../02.installation/02.docker/index.md#configuration)). The configuration holds deployment-specific options and is divided into sections that map to system components:
 
 ```yaml
 datasources:
@@ -46,8 +46,8 @@ kestra:
 
 SDK-based plugins (for example, [Kestra plugins](/plugins/plugin-kestra) that call the API) can use an `DEFAULT`/`AUTO` authentication mode. Kestra resolves credentials in this order:
 
-1. [Namespace-level](../07.enterprise/02.governance/07.namespace-management/index.md#default-service-account-for-sdk-plugins) default service account
-2. [Tenant-level](../07.enterprise/02.governance/tenants/index.md#default-service-account-for-sdk-plugins) default service account
+1. [Namespace-level](../../07.enterprise/02.governance/07.namespace-management/index.md#default-service-account-for-sdk-plugins) default service account
+2. [Tenant-level](../../07.enterprise/02.governance/tenants/index.md#default-service-account-for-sdk-plugins) default service account
 3. Global SDK defaults (optional, see below)
 
 If no default is configured, the task fails because no API credentials are available, and they must be set in the task properties.
@@ -154,7 +154,7 @@ See [Internal storage](#internal-storage) for details.
 
 ### Queue configuration
 
-Queues must be compatible with the repository type. Defaults depend on your architecture and [installation](../02.installation/index.mdx).
+Queues must be compatible with the repository type. Defaults depend on your architecture and [installation](../../02.installation/index.mdx).
 
 Available types:
 
@@ -207,7 +207,7 @@ kestra:
 Supported: PostgreSQL, H2, MySQL.
 Use H2 for local **development**. For **production**, use PostgreSQL (or MySQL if PostgreSQL isn’t an option).
 
-See [software requirements](../10.administrator-guide/00.requirements/index.md) for minimum versions.
+See [software requirements](../../10.administrator-guide/00.requirements/index.md) for minimum versions.
 
 :::alert{type="info"}
 For PostgreSQL performance issues, consider `random_page_cost=1.1` to improve index usage on queue queries. You can also set `kestra.queue.postgres.disable-seq-scan=true` to force index usage on polling.
@@ -384,7 +384,7 @@ kestra:
 
 ## Telemetry
 
-Anonymous usage reporting is enabled by default; see [details](../10.administrator-guide/usage/index.md).
+Anonymous usage reporting is enabled by default; see [details](../../10.administrator-guide/usage/index.md).
 
 Disable:
 
@@ -532,7 +532,7 @@ kestra:
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
 - `kestra.ee.license.id`: license identifier.
-- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../07.enterprise/05.instance/versioned-plugins/index.md).
+- `kestra.ee.license.fingerprint`: license authentication. This is required for using [Versioned Plugins](../../07.enterprise/05.instance/versioned-plugins/index.md).
 - `kestra.ee.license.key`: license key.
 
 Kestra validates the license on startup.
@@ -573,7 +573,7 @@ kestra:
 ## Multi-tenancy
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
+Removed in 0.23. See the [0.23 migration guide](../../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
 :::
 
 Enable (pre-0.23):
@@ -588,7 +588,7 @@ kestra:
 ## Default tenant
 
 :::alert{type="warning"}
-Removed in 0.23. See the [0.23 migration guide](../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
+Removed in 0.23. See the [0.23 migration guide](../../11.migration-guide/v0.23.0/tenant-migration-ee/index.md).
 :::
 
 Disable the default tenant when multi-tenancy is on:
@@ -1170,7 +1170,7 @@ micronaut:
         - /path/to/your/flows
 ```
 
-See the [local flow sync guide](../15.how-to-guides/local-flow-sync/index.md).
+See the [local flow sync guide](../../15.how-to-guides/local-flow-sync/index.md).
 
 ## Plugins
 
@@ -1229,10 +1229,10 @@ kestra:
 Defaults are evaluated **by the Executor** and propagated to all components. Keep a single, unified `kestra.plugins.defaults` across servers; workers do not render templates themselves.
 :::
 
-For finer control, use flow-level [`pluginDefaults`](../05.workflow-components/09.plugin-defaults/index.md#plugin-defaults-on-a-flow-level).
+For finer control, use flow-level [`pluginDefaults`](../../05.workflow-components/09.plugin-defaults/index.md#plugin-defaults-on-a-flow-level).
 
 :::alert{type="info"}
-See [Plugin defaults](../05.workflow-components/09.plugin-defaults/index.md).
+See [Plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md).
 :::
 
 #### Forced plugin defaults
@@ -1372,7 +1372,7 @@ To set task-level retries globally, use plugin defaults:
 
 ## Secret managers
 
-Configure a [secrets backend](../07.enterprise/02.governance/secrets-manager/index.md) via `kestra.secret`. To isolate from specific Kestra services from being able to access secrets, use `kestra.secret.isolation`. 
+Configure a [secrets backend](../../07.enterprise/02.governance/secrets-manager/index.md) via `kestra.secret`. To isolate from specific Kestra services from being able to access secrets, use `kestra.secret.isolation`. 
 
 ```yaml
 kestra:
@@ -1391,7 +1391,7 @@ kestra:
 
 If configured in the UI, top-level keys are implied. Example UI screenshot:
 
-![Secrets UI Configuration](./is-secrets-configuration.png)
+![Secrets UI Configuration](../is-secrets-configuration.png)
 
 ### AWS Secrets Manager
 
@@ -1533,7 +1533,7 @@ Using the `kestra.security` configuration, you can set up multiple security feat
 
 ### Super-admin
 
-The [Super-admin](../07.enterprise/03.auth/rbac/index.md#super-admin) has the highest privileges.
+The [Super-admin](../../07.enterprise/03.auth/rbac/index.md#super-admin) has the highest privileges.
 
 ```yaml
 kestra:
@@ -1563,7 +1563,7 @@ kestra:
         FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
 ```
 
-With [multi-tenancy](../07.enterprise/02.governance/tenants/index.md), restrict to one tenant:
+With [multi-tenancy](../../07.enterprise/02.governance/tenants/index.md), restrict to one tenant:
 
 ```yaml
 kestra:
@@ -1617,7 +1617,7 @@ kestra:
       password: kestra
 ```
 
-For multi-user auth (SSO, RBAC), see the **Enterprise** [authentication page](../07.enterprise/03.auth/04.authentication/index.md).
+For multi-user auth (SSO, RBAC), see the **Enterprise** [authentication page](../../07.enterprise/03.auth/04.authentication/index.md).
 
 ### Delete configuration files
 
@@ -1631,7 +1631,7 @@ kestra:
 
 ### Server liveness & heartbeats
 
-Kestra servers send heartbeats for liveness. Refer to the [Server Lifecycle Administration](../10.administrator-guide/server-lifecycle/index.md) documentation for more details.
+Kestra servers send heartbeats for liveness. Refer to the [Server Lifecycle Administration](../../10.administrator-guide/server-lifecycle/index.md) documentation for more details.
 
 #### `kestra.server.liveness.enabled` (Boolean, default `true`)
 
@@ -1761,7 +1761,7 @@ kestra:
 
 Also configurable in the UI:
 
-![Internal Storage UI Configuration](./is-secrets-configuration.png)
+![Internal Storage UI Configuration](../is-secrets-configuration.png)
 
 ### S3
 
@@ -1973,7 +1973,7 @@ kestra:
 
 ## Enabling templates
 
-Templates are [deprecated](../11.migration-guide/v0.11.0/templates/index.md) and disabled by default since 0.11.0. Re-enable:
+Templates are [deprecated](../../11.migration-guide/v0.11.0/templates/index.md) and disabled by default since 0.11.0. Re-enable:
 
 ```yaml
 kestra:
@@ -2033,7 +2033,7 @@ Camel case becomes hyphenated.
 
 ### Recursive rendering
 
-Restore [pre-0.14.0 behavior](../11.migration-guide/v0.14.0/recursive-rendering/index.md) (defaults to `false`):
+Restore [pre-0.14.0 behavior](../../11.migration-guide/v0.14.0/recursive-rendering/index.md) (defaults to `false`):
 
 ```yaml
 kestra:
@@ -2158,7 +2158,7 @@ kestra:
 
 ## Allowed file paths
 
-To use the [universal file access protocol](../06.concepts/file-access/index.md), bind-mount the host directory and allow it in config:
+To use the [universal file access protocol](../../06.concepts/file-access/index.md), bind-mount the host directory and allow it in config:
 
 ```yaml
   kestra:
@@ -2205,7 +2205,7 @@ Optional parameters:
 
 Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
 
-**Enterprise Edition** supports multiple providers (Bedrock, Anthropic, Azure OpenAI, DeepSeek, Gemini, Vertex AI, Mistral, OpenAI, and Ollama). See [AI Copilot](../ai-tools/ai-copilot/index.md#enterprise-edition-copilot-configurations).
+**Enterprise Edition** supports multiple providers (Bedrock, Anthropic, Azure OpenAI, DeepSeek, Gemini, Vertex AI, Mistral, OpenAI, and Ollama). See [AI Copilot](../../ai-tools/ai-copilot/index.md#enterprise-edition-copilot-configurations).
 
 ## Air-gapped Kestra Instance (EE)
 

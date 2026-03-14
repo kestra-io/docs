@@ -138,7 +138,7 @@ After executing the flow, the only remaining variable is `nested.unchanged` with
 
 ### How do I escape a block in Pebble syntax to ensure that it won't be parsed?
 
-To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../../expressions/index.md#tag). For example, the following returns the string `{{ myvar }}` instead of the value of `myvar`:
+To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../../expressions/05.operators-tags-tests/index.md). For example, the following returns the string `{{ myvar }}` instead of the value of `myvar`:
 
 ```yaml
 {% raw %}{{ myvar }}{% endraw %}

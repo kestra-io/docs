@@ -53,7 +53,7 @@ Scalable alternatives are available as plugins:
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) — for [Google Cloud Storage](https://cloud.google.com/storage).
 - [Storage Azure](https://github.com/kestra-io/storage-azure) — for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 
-For details, see [Internal storage configuration](../../configuration/index.md#internal-storage-configuration).
+For details, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 ## Queue
 

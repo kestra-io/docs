@@ -51,7 +51,7 @@ Depending on the Kestra internal queue and repository implementation, there can 
 
 ### Storing data inside the internal storage
 
-Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [internal storage configuration](../../configuration/index.md#internal-storage).
+Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 When using the internal storage, data is, by default, stored using [Amazon Ion](https://amazon-ion.github.io/ion-docs/) format.
 
@@ -323,7 +323,7 @@ tasks:
     type: "io.kestra.plugin.core.storage.PurgeExecution"
 ```
 
-The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [configurations](../../configuration/index.md).
+The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 
 Also, the [Purge](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Purge) task can be used to purge storages, logs, and executions of previous execution. For example, this flow purges all of these every day:

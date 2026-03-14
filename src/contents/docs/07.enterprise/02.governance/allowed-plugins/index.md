@@ -13,7 +13,7 @@ How to configure Kestra to allow or restrict specific plugins.
 
 Kestra comes with the full library of official plugins by default. However, in some cases you may want to restrict which plugins are available to specific teams or users. For example, you might allow a team to use only BigQuery tasks while blocking script execution. Kestra enables this by letting you define allowlists (`includes`) and blocklists (`excludes`) using plugin names or regular expressions.
 
-To allow specific plugins, add the `includes` attribute in your [Kestra configuration](../../../configuration/index.md) file and list the approved plugins or use a regular expression. Below is an example that `includes` all plugins from the `io.kestra` package using a regular expression.
+To allow specific plugins, add the `includes` attribute in your [Plugins and Execution configuration](../../../configuration/04.plugins-and-execution/index.md) file and list the approved plugins or use a regular expression. Below is an example that `includes` all plugins from the `io.kestra` package using a regular expression.
 
 ```yaml
 kestra:
@@ -25,7 +25,7 @@ kestra:
 
 ## Restricted plugins
 
-To restrict certain plugins, add the `excludes` attribute in your [Kestra configuration](../../../configuration/index.md) file and list the disallowed plugins or use a regular expression. Below is the previous example with `excludes` added to disallow the `io.kestra.plugin.core.debug.Echo` plugin.
+To restrict certain plugins, add the `excludes` attribute in your [Plugins and Execution configuration](../../../configuration/04.plugins-and-execution/index.md) file and list the disallowed plugins or use a regular expression. Below is the previous example with `excludes` added to disallow the `io.kestra.plugin.core.debug.Echo` plugin.
 
 ```yaml
 kestra:

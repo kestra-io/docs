@@ -25,7 +25,7 @@ The docs include references for both the [Open Source](../../api-reference/02.op
 
 ## Making Requests with Authentication
 
-If you have [Basic Auth enabled](../../configuration/index.md#http-basic-authentication) or you’re using the [Enterprise Edition](/enterprise), authenticate each request. With cURL you can pass credentials via `-u username:password`. The example below uses the defaults from the [Kestra Docker Compose](../../02.installation/03.docker-compose/index.md):
+If you have [Basic Auth enabled](../../configuration/05.security-and-secrets/index.md) or you’re using the [Enterprise Edition](/enterprise), authenticate each request. With cURL you can pass credentials via `-u username:password`. The example below uses the defaults from the [Kestra Docker Compose](../../02.installation/03.docker-compose/index.md):
 
 ```bash
 curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8080/api/v1/executions/company.team/hello_world

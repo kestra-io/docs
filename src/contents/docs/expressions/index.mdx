@@ -1,0 +1,35 @@
+---
+title: Kestra Expressions Guide – Pebble and Context Variables
+description: Learn how to work with Kestra expressions using the execution context, Pebble syntax, filters, functions, and operators.
+sidebarTitle: Expressions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Use this page when you need to understand what expressions are available, how Pebble syntax works, or which filter or function to use.
+
+## Find the right expressions doc
+
+The old Expressions page tried to cover execution context variables, Pebble syntax, filters, functions, operators, tags, tests, and troubleshooting all in one place. This prototype splits those concerns into smaller pages organized by user intent.
+
+- Start with [Execution Context Variables](./01.execution-context/index.md) if you need to know what values are available in flows.
+- Go to [Pebble Syntax](./02.pebble-syntax/index.md) if you need help writing expressions.
+- Use [Filter Reference](./03.filter-reference/index.md) when you know you need a filter but are not sure which category it belongs to.
+- Use [Function Reference](./04.function-reference/index.md) for runtime helpers such as `render()`, `secret()`, `read()`, and `printContext()`.
+- Use [Operators, Tags, and Tests](./05.operators-tags-tests/index.md) for control flow and boolean logic.
+- Use [Full Reference](./99.full-reference/index.md) if you want the complete legacy page in one place.
+
+## Common tasks
+
+| If you need to... | Start here |
+| --- | --- |
+| Access `inputs`, `outputs`, `vars`, `trigger`, or `namespace` values | [Execution Context Variables](./01.execution-context/index.md) |
+| Format dates, parse JSON, or transform strings | [Filter Reference](./03.filter-reference/index.md) |
+| Render nested expressions or inspect the full context | [Function Reference](./04.function-reference/index.md) |
+| Write loops, conditions, fallbacks, and comparisons | [Pebble Syntax](./02.pebble-syntax/index.md) and [Operators, Tags, and Tests](./05.operators-tags-tests/index.md) |
+| Troubleshoot a difficult expression with every example in one place | [Full Reference](./99.full-reference/index.md) |
+
+## Browse expressions docs
+
+<ChildCard />
