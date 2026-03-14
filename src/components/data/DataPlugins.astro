@@ -1,0 +1,38 @@
+---
+import Connect from "~/components/infrastructure/Connect.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+const totalPlugins = await fetchTotalPluginsCount()
+
+const PLUGINS = [
+    { cls: "io.kestra.plugin.fivetran", name: "Fivetran" },
+    { cls: "io.kestra.plugin.jdbc.snowflake", name: "Snowflake" },
+    { cls: "io.kestra.plugin.databricks", name: "Databricks" },
+    { cls: "io.kestra.plugin.azure", name: "Azure" },
+    { cls: "io.kestra.plugin.dbt", name: "DBT" },
+    { cls: "io.kestra.plugin.airbyte", name: "Airbyte" },
+    { cls: "io.kestra.plugin.mongodb", name: "MongoDB" },
+    { cls: "io.kestra.plugin.cassandra", name: "Cassandra" },
+    { cls: "io.kestra.plugin.jdbc.postgresql", name: "PostgreSQL" },
+    { cls: "io.kestra.plugin.jdbc.mysql", name: "MySQL" },
+    { cls: "io.kestra.plugin.jdbc.redshift", name: "Redshift" },
+    { cls: "io.kestra.plugin.gcp.bigquery", name: "BigQuery" },
+    { cls: "io.kestra.plugin.jdbc.clickhouse", name: "ClickHouse" },
+    { cls: "io.kestra.plugin.redis", name: "Redis" },
+    { cls: "io.kestra.plugin.elasticsearch", name: "Elasticsearch" },
+    { cls: "io.kestra.plugin.kafka", name: "Kafka" },
+    { cls: "io.kestra.plugin.pulsar", name: "Pulsar" },
+    { cls: "io.kestra.plugin.amqp", name: "RabbitMQ" },
+]
+
+const plugins = PLUGINS.map((p) => ({
+    name: p.name,
+    logo: `/icons/${p.cls}.svg`,
+}))
+---
+
+<Connect
+    {plugins}
+    title={`${totalPlugins}+ Plugins To Works Automate <br class='d-none d-lg-block' /> Your Entire Data Stack`}
+    link={{ href: "/plugins?category=DATA", text: "See all plugins" }}
+    vertical="data"
+/>

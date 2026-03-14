@@ -1,0 +1,111 @@
+---
+import Copilot from "~/components/common/animations/copilot.astro"
+
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+const totalPlugins = await fetchTotalPluginsCount()
+---
+
+<section class="prompt paused">
+    <div class="container">
+        <div class="content">
+            <h2>
+                From Prompt to Production <span class="highlight">in 60 Seconds</span>
+            </h2>
+            <p>
+                Kestra Copilot turns natural language into working pipelines
+                using dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and
+                {totalPlugins}+ plugins.
+            </p>
+        </div>
+
+        <div class="copilot-wrapper">
+            <Copilot />
+        </div>
+
+        <a href="/docs/ai-tools/ai-copilot" class="btn btn-primary">
+            Try it yourself
+        </a>
+    </div>
+</section>
+
+<script>
+    const section = document.querySelector(".prompt")
+    if (section) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        section.classList.remove("paused")
+                    } else {
+                        section.classList.add("paused")
+                    }
+                }
+            },
+            { threshold: 0.1 },
+        )
+        observer.observe(section)
+    }
+</script>
+
+<style lang="scss">
+    .prompt {
+        background: var(--ks-background-primary-inverse);
+        display: flex;
+        justify-content: center;
+        padding: $rem-5 $rem-1;
+        position: relative;
+        overflow: hidden;
+
+        &.paused :global(*) {
+            animation-play-state: paused !important;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            width: 573px;
+            height: 557px;
+            background: radial-gradient(
+                circle,
+                #7540f0b3 0%,
+                rgba(255, 255, 255, 0) 70%
+            );
+            z-index: 0;
+            pointer-events: none;
+            transform: rotate(-62.37deg);
+        }
+
+        &::before {
+            bottom: -230px;
+            left: -230px;
+        }
+
+        &::after {
+            top: -230px;
+            right: -230px;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+            align-items: center;
+            text-align: center;
+
+            h2 {
+                color: var(--ks-content-primary-inverse);
+            }
+
+            .highlight {
+                color: var(--ks-content-color-highlight-inverse);
+            }
+
+            p {
+                color: var(--ks-content-secondary-inverse);
+                max-width: $container-max-width;
+            }
+        }
+    }
+</style>

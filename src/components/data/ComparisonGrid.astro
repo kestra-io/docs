@@ -1,0 +1,155 @@
+---
+import Link from "~/components/common/Link.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+
+const COMPARISON_DATA = [
+    {
+        feature: "Workflow definition",
+        kestra: "Declarative YAML",
+        legacy: "Python DAGs",
+        modern: "Python SDKs with custom abstractions",
+        why: "Your existing scripts work as-is. Zero migration tax.",
+    },
+    {
+        feature: "Languages supported",
+        kestra: "Any (Python, SQL, R, Bash, etc.)",
+        legacy: "Python only",
+        modern: "Python only",
+        why: "Analysts use SQL, engineers use Python, ops use Bash.",
+    },
+    {
+        feature: "Time to first pipeline",
+        kestra: "< 5 minutes",
+        legacy: "1-2 hours",
+        modern: "30-60 minutes",
+        why: "Ship 10x faster. Deliver value day one.",
+    },
+    {
+        feature: "Learning curve",
+        kestra: "YAML (immediate)",
+        legacy: "Framework + infrastructure setup",
+        modern: "Framework concepts and abstractions",
+        why: "Junior engineers ship pipelines their first day.",
+    },
+    {
+        feature: "Live DAG preview",
+        kestra: "Yes, real-time",
+        legacy: "No (deploy to see)",
+        modern: "No (deploy to see)",
+        why: "See changes instantly. No deploy-to-preview cycles.",
+    },
+    {
+        feature: "Event-driven triggers",
+        kestra: "Native, unlimited",
+        legacy: "Limited sensors (polling-based)",
+        modern: "Yes, native support",
+        why: "React in seconds, not minutes, with real-time workflows.",
+    },
+    {
+        feature: "Execution isolation",
+        kestra: "Containers per task",
+        legacy: "Shared workers",
+        modern: "Configurable",
+        why: "No dependency conflicts. Ship fearlessly.",
+    },
+    {
+        feature: "Built-in observability",
+        kestra: "Metrics, logs, tracing included",
+        legacy: "Requires manual setup",
+        modern: "Setup required or cloud-dependent",
+        why: "Debug in minutes with full visibility out of the box.",
+    },
+    {
+        feature: "Multi-language team support",
+        kestra: "SQL, Python, Bash all native",
+        legacy: "Python wrappers required",
+        modern: "Python wrappers required",
+        why: "Everyone contributes using their native tools.",
+    },
+    {
+        feature: "Scope beyond data",
+        kestra: "AI, infra, business workflows",
+        legacy: "Data pipelines only",
+        modern: "Data pipelines primary focus",
+        why: "Future-proof your platform with one orchestrator for everything.",
+    },
+    {
+        feature: "Enterprise deployment",
+        kestra: "Self-hosted or cloud",
+        legacy: "Self-managed infrastructure",
+        modern: "Self-hosted or cloud-first",
+        why: "50%+ lower TCO. Less infrastructure, less ops time.",
+    },
+    {
+        feature: "Migration path",
+        kestra: "Incremental (run Airflow + Kestra in parallel)",
+        legacy: "N/A",
+        modern: "Requires full rewrite",
+        why: "Move pipelines one by one, no big-bang cutover.",
+    },
+]
+
+const COMPARISON_COLUMNS = ["legacy", "modern", "why"]
+---
+
+<div class="comparison-grid">
+    <FeatureGrid
+        featureGrid={{
+            title: "Kestra is Not Just Another Orchestrator",
+            tableData: COMPARISON_DATA,
+        }}
+        columns={COMPARISON_COLUMNS}
+    >
+        <Fragment slot="more">
+            <th>Legacy orchestrators<br />(e.g. Airflow)</th>
+            <th>Modern alternatives</th>
+            <th>Why this matters</th>
+        </Fragment>
+        <Fragment slot="cta">
+            <Link
+                data-usal="zoomin"
+                href="/docs/migration-guide"
+                class="btn btn-secondary"
+            >
+                Get the migration playbook
+            </Link>
+        </Fragment>
+    </FeatureGrid>
+</div>
+
+<style lang="scss">
+    .comparison-grid {
+        :global(.container) {
+            max-width: 1520px !important;
+            padding: 4rem 0.75rem;
+
+            :global(.title) {
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+
+            & > .btn-secondary {
+                margin-top: 2rem;
+                align-self: center;
+                width: fit-content;
+            }
+        }
+
+        :global(.table-wrapper) {
+            @include media-breakpoint-up(xl) {
+                width: 1520px !important;
+            }
+        }
+
+        :global(table) {
+            table-layout: auto !important;
+
+            :global(th),
+            :global(td) {
+                width: auto !important;
+                padding: 1.25rem !important;
+                border-bottom: $block-border;
+            }
+        }
+    }
+</style>

@@ -57,7 +57,7 @@ const badgeVars = Object.entries({
             </div>
             <h1 set:html={title} data-usal="fade-u"/>
             <p set:html={description} data-usal="fade-l"/>
-            <div class="d-flex gap-3 flex-column flex-lg-row">
+            <div class="d-flex gap-3 flex-column flex-md-row">
                 <Link href="/docs/quickstart#start-kestra" class="btn btn-primary" data-usal="zoomin">
                     Start free (OSS)
                 </Link>
@@ -86,11 +86,11 @@ const badgeVars = Object.entries({
     section {
         position: relative;
         width: 100%;
-        padding: 6.875rem 6.25rem 6.875rem;
+        padding: 7rem 6.25rem 10rem;
         overflow: hidden;
 
         @include media-breakpoint-down(xl) {
-            padding: 5rem 1.25rem 2.5rem;
+            padding: 3rem 1.25rem 2.5rem;
         }
 
         .background {

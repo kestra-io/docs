@@ -1,0 +1,88 @@
+---
+import CardGrid from "~/components/card/CardGrid.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
+
+import execution1 from "./assets/execution-1.webp"
+import execution2 from "./assets/execution-2.webp"
+import execution3 from "./assets/execution-3.webp"
+import execution4 from "./assets/execution-4.webp"
+import execution5 from "./assets/execution-5.webp"
+import execution6 from "./assets/execution-6.webp"
+
+const title = `Cut Orchestration Costs By <span class='highlight'>80%</span> *`
+
+const items = [
+    {
+        title: "Infrastructure costs",
+        icon: "mdi:server-network-outline",
+        description:
+            "Self-hosted Kestra runs on minimal infrastructure. No overprovisioned workers or complex component scaling. Deploy on your existing Kubernetes cluster or a single VM.",
+    },
+    {
+        title: "Engineering time",
+        icon: "mdi:clock-time-five-outline",
+        description:
+            "Eliminate weeks of operational overhead. No upgrades breaking plugins, no dependency conflicts, no executor tuning. Ship pipelines, not infrastructure.",
+    },
+    {
+        title: "Licensing and managed services",
+        icon: "mdi:license",
+        description:
+            "Many orchestrators lock enterprise features behind expensive managed plans. Kestra delivers them in open source or flexible commercial licensing.",
+    },
+]
+
+const ACTUALS = [
+    {
+        title: "Any Language, Native Execution",
+        description:
+            "Define pipelines in <strong>declarative YAML</strong>. Run tasks in Python, SQL, R, Bash, or any script. Execute in isolated containers on Docker, Kubernetes, or custom workers.",
+        image: execution1,
+    },
+    {
+        title: "Start From Blueprints, Ship in Minutes",
+        description:
+            "Pick from <strong>200+ production-ready blueprints</strong> for dbt, Airbyte, Spark, and ML. Customize in a live YAML editor with real-time DAG preview. Ship your first pipeline in minutes.",
+        image: execution2,
+        reverse: true,
+    },
+    {
+        title: "Enterprise-Grade Observability",
+        description:
+            "Built-in monitoring and distributed tracing. Real-time logs, Gantt views, and alerts. SLA tracking included. Integrates with Datadog, Prometheus, and Grafana.",
+        image: execution3,
+    },
+    {
+        title: "Built For The Stack You Run in Production",
+        description:
+            "Native integrations for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1200+ integrationsfrom event-driven triggers for files, APIs, databases, and queues.",
+        image: execution4,
+        reverse: true,
+    },
+    {
+        title: "Version Control Native + CI/CD Ready",
+        description:
+            "YAML lives in Git. Code review, branch-based development, automated testing, and rollbacks all work with your existing workflow. Deploy via CLI, API, or Terraform. Supports GitOps patterns.",
+        image: execution5,
+    },
+    {
+        title: "Scale From Prototype to Enterprise",
+        description:
+            "Handles 100,000+ concurrent tasks with built-in multi-tenancy. High availability with automatic failover. Start with data pipelines, expand to AI, and business critical workflows.",
+        image: execution6,
+        reverse: true,
+    },
+]
+---
+
+<SectionCard cards={ACTUALS}>
+    <Fragment slot="title">
+        Built For How <span class="highlight">Data Teams</span> Actually Work
+    </Fragment>
+</SectionCard>
+<CardGrid
+    {title}
+    {items}
+    align="left"
+    subtitle="Reported by teams switching from Airflow to Kestra in production.*"
+/>

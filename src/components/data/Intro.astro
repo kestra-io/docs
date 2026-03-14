@@ -1,0 +1,47 @@
+---
+import bgMobile from "~/assets/landing/data/mob-bkg-Data.webp"
+import bgDesktop from "~/assets/landing/data/desk-bkg-Data.webp"
+import VerticalsIntro from "~/components/common/VerticalsIntro.astro"
+---
+
+<div class="data-intro">
+    <VerticalsIntro
+        badge={{
+            icon: "mdi:source-branch",
+            label: "Data Orchestration",
+            theme: {
+                textColor: "#59BCE6",
+                borderFrom: "#59BCE6",
+                borderTo: "#1F46F0",
+            },
+        }}
+        title={`Ship Data Pipelines in 5 Minutes.<br class="d-none d-xl-block" />Run Them at Enterprise Scale`}
+        description="One platform for data, AI, and business-critical workflows."
+        iframeSrc="https://demo.arcade.software/CiCQ2Uw69Dnlt4S9ZPB7?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true"
+        bg={{
+            mobile: bgMobile.src,
+            desktop: bgDesktop.src,
+        }}
+    />
+</div>
+
+<style lang="scss">
+    .data-intro :global(section) {
+        &::before {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 257px;
+            background: radial-gradient(
+                circle,
+                #41baee53 0%,
+                rgba(251, 249, 249, 0) 70%
+            );
+            z-index: 0;
+            pointer-events: none;
+            transform: rotate(-62.37deg);
+            bottom: -150px;
+            left: -150px;
+        }
+    }
+</style>
