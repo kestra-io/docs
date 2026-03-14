@@ -1,0 +1,83 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#FFF0FA"/>
+<g filter="url(#filter0_d_prefect)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#FF4BBD" shape-rendering="crispEdges"/>
+<!-- Flows icon: branching DAG (represents @flow/@task code) -->
+<circle cx="67" cy="112" r="3" fill="black"/>
+<path d="M67 115V119M67 119L61 123M67 119L73 123" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<circle cx="61" cy="126" r="3" fill="black"/>
+<circle cx="73" cy="126" r="3" fill="black"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Flows</text>
+</g>
+<g filter="url(#filter1_d_prefect)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#FF4BBD" shape-rendering="crispEdges"/>
+<!-- Deployments icon: upload arrow with platform (deploy = ship code) -->
+<path d="M174.334 111L169.334 117H173.334V123H175.334V117H179.334L174.334 111Z" fill="black"/>
+<rect x="167.334" y="125.5" width="14" height="2.5" rx="1.25" fill="black"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Deployments</text>
+</g>
+<g filter="url(#filter2_d_prefect)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#FF4BBD" shape-rendering="crispEdges"/>
+<!-- Work Pools icon: tapering stacked bars (funnelling work to workers) -->
+<rect x="263" y="111" width="38" height="5" rx="2.5" fill="black"/>
+<rect x="266" y="119" width="32" height="5" rx="2.5" fill="black"/>
+<rect x="270" y="127" width="24" height="5" rx="2.5" fill="black"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Work Pools</text>
+</g>
+<g filter="url(#filter3_d_prefect)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#FF4BBD" shape-rendering="crispEdges"/>
+<!-- Workers icon: two stacked server bars with LED dots -->
+<rect x="371" y="110" width="38" height="9" rx="2" fill="black"/>
+<circle cx="375" cy="114.5" r="1.5" fill="white"/>
+<circle cx="379" cy="114.5" r="1.5" fill="white"/>
+<rect x="371" y="122" width="38" height="9" rx="2" fill="black"/>
+<circle cx="375" cy="126.5" r="1.5" fill="white"/>
+<circle cx="379" cy="126.5" r="1.5" fill="white"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Workers</text>
+</g>
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="black"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="black"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="black"/>
+<defs>
+<filter id="filter0_d_prefect" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.294 0 0 0 0 0.741 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_prefect"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_prefect" result="shape"/>
+</filter>
+<filter id="filter1_d_prefect" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.294 0 0 0 0 0.741 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_prefect"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_prefect" result="shape"/>
+</filter>
+<filter id="filter2_d_prefect" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.294 0 0 0 0 0.741 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_prefect"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_prefect" result="shape"/>
+</filter>
+<filter id="filter3_d_prefect" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.294 0 0 0 0 0.741 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_prefect"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_prefect" result="shape"/>
+</filter>
+</defs>
+</svg>

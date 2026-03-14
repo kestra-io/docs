@@ -1,0 +1,131 @@
+---
+import { getEntry } from "astro:content"
+import Layout from "~/components/layout.astro"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import SocialProof from "~/components/common/SocialProof.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+
+import prefectLogo from "~/components/versus/assets/prefect.svg?raw"
+import prefectMonogram from "~/components/versus/assets/prefect-monograme.svg?raw"
+import lmfrImage from "~/components/versus/assets/lmfr.png"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import prefectImg from "~/components/versus/assets/prefect-img.svg"
+import heroUI from "~/components/versus/assets/hero_ui.webp"
+import heroBg from "~/components/versus/assets/hero_bg.webp"
+
+const entry = await getEntry("vsPages", "prefect")
+if (!entry) throw new Error("Could not find vsPages/prefect collection entry")
+
+const {
+    title,
+    description,
+    competitorName,
+
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    socialProof,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+} = entry.data
+---
+
+<Layout {title} {description} headerTheme="lightHero">
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: prefectMonogram,
+        }}
+        image={{ src: heroUI, alt: "kestra ui" }}
+        bgImg={heroBg.src}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: prefectLogo,
+            linkImg: prefectImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo: prefectLogo,
+        }}
+    />
+    <SocialProof
+        {...socialProof}
+        image={{ ...socialProof.image, src: lmfrImage }}
+    />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">
+            Getting Started with Declarative Orchestration
+        </Fragment>
+        See how Kestra can simplify your data pipelines—and scale beyond them.
+    </SeeHow>
+</Layout>
