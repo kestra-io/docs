@@ -1,0 +1,246 @@
+title: "Kestra vs. n8n: Orchestrate at Scale, Not Just Connect Apps"
+description: "Compare Kestra vs n8n: Code-first universal orchestration in any language with YAML vs visual drag-and-drop app automation. See features, architecture, and use cases."
+competitorName: n8n
+
+intro:
+  title: "Kestra vs. n8n: Orchestrate at Scale, Not Just Connect Apps"
+  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, infrastructure, and AI workloads at enterprise scale. One automates tasks. The other carries it into production across teams."
+
+philosophy:
+  mainTitle: Two Platforms, Two Philosophies
+  kestra:
+    title: "Universal Orchestration: Code-First at Scale"
+    description: "Write workflows in YAML. Run tasks in any language. Deploy through Git and CI/CD. Kestra orchestrates data pipelines, infrastructure, and AI workloads with isolated execution and team-level governance built in."
+    subCardText: '"How do I orchestrate production workflows across teams and environments?"'
+  competitor:
+    title: Visual App Automation
+    description: "Visual-first workflow automation platform built around a drag-and-drop node editor. Connect SaaS apps, build AI agent workflows, and prototype automations quickly with JavaScript and Python code nodes."
+    shadowColor: "#FF9F7A"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I connect apps and build automations visually?"'
+
+businessValue:
+  mainTitle: "App Automation Gets You Started.<br />Orchestration Runs Your Business."
+  kestra:
+    title: Enterprise-Scale Orchestration
+    list:
+      - Automate data pipelines, infrastructure, and AI workloads
+      - "Cross-functional: data + platform + DevOps + business"
+      - Production-grade reliability with retries, concurrency controls, and audit trails
+      - Scales to billions of executions across teams
+      - Serves the entire engineering organization
+  competitor:
+    title: App-to-App Automation
+    list:
+      - Connect SaaS apps and build integrations
+      - Technical teams and marketing automation
+      - Speed of setup and visual iteration
+      - Single-team automation workflows
+      - Serves individual teams and developers
+    shadowColor: "#FF9F7A"
+    bulletColor: "#FF6B3D"
+  footerText: "n8n is a strong choice for connecting apps and prototyping automations visually, especially AI agent workflows. Kestra takes a different approach: declarative YAML, your existing Python, SQL, and Shell scripts without refactoring, and production workflows with namespace-level isolation. One platform handles a single team's app integrations. The other runs orchestration across the engineering org."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Both tools start with a single Docker command. The difference isn't setup time. In Kestra, your first workflow is already production-shaped: YAML you can commit, review, and deploy through CI/CD. In n8n, your first workflow lives in the browser and needs reworking before it's production-ready."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Start with Docker Compose, open the UI, pick a Blueprint, and run it. Your first workflow is a YAML file, the same format it'll be in six months when it's running across teams with retries, scheduling, and namespace isolation."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~10"
+      two: Minutes
+    description: "Start with a single Docker command, open the visual editor, and drag nodes together. Fast to prototype, but workflows live in the browser by default, and moving them to version control requires the Enterprise tier."
+    shadowColor: "#FF9F7A"
+    command: |
+      docker run -it --rm \
+        -p 5678:5678 \
+        n8nio/n8n
+
+      # Open localhost:5678
+      # Drag nodes, connect them, execute.
+    lang: sh
+
+easeOfUse:
+  title: Workflows Your Whole Team Can Read
+  kestra:
+    title: "Kestra: Readable, reviewable, deployable"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows go through pull requests and CI/CD like any other code."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "n8n: Visual canvas, browser-based"
+    description: "Workflows are built by dragging nodes onto a canvas and connecting them. Fast for prototyping, but version control is an Enterprise feature and workflows live in the browser by default."
+    shadowColor: "#FF9F7A"
+    code: |
+      // n8n workflows are built visually in the browser.
+      // Exported as JSON for backup/sharing:
+      {
+        "nodes": [
+          {
+            "name": "Schedule Trigger",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "parameters": { "rule": { "interval": [{ "field": "hours", "hour": 8 }] } }
+          },
+          {
+            "name": "Run dbt",
+            "type": "n8n-nodes-base.executeCommand",
+            "parameters": { "command": "dbt run --select reporting" }
+          },
+          {
+            "name": "Slack Notification",
+            "type": "n8n-nodes-base.slack",
+            "parameters": { "text": "Daily report ready" }
+          }
+        ]
+      }
+    lang: json
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate across data pipelines, infrastructure operations, AI workloads, and business workflows in one unified platform. Distributed, isolated, and built for production."
+  competitor:
+    description: "Purpose-built for connecting apps and building visual automations. Strong AI agent tooling with LangChain, MCP, and 12 vector store integrations. Not designed for infrastructure orchestration or multi-team isolation at scale."
+    shadowColor: "#FF9F7A"
+
+featureGrid:
+  title: Kestra vs n8n at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Visual app-to-app automation
+    - feature: Workflow definition
+      kestra: Declarative YAML (code-first)
+      competitor: Visual canvas (drag-and-drop)
+    - feature: Architecture
+      kestra: Distributed, queue-based, horizontally scalable by default
+      competitor: Node.js, horizontally scalable via queue mode (Redis + workers)
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, Go, SQL & more)"
+      competitor: JavaScript, Python (code nodes)
+    - feature: Task isolation
+      kestra: "Container per task"
+      competitor: Shared Node.js process
+    - feature: Version control
+      kestra: "Native (Git, CI/CD, Terraform)"
+      competitor: Enterprise feature (Git-based)
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation, RBAC per namespace"
+      competitor: RBAC with project-level roles (no namespace isolation)
+    - feature: Air-gapped deployment
+      kestra: "✓ Supported"
+      competitor: Not available
+    - feature: AI approach
+      kestra: "Pipeline orchestration for any AI workload (visual or code-based)"
+      competitor: "Visual AI agent builder (LangChain, MCP, 12 vector stores, evaluations)"
+    - feature: Triggers
+      kestra: "Schedule, webhook, flow, file detection, message queue, polling"
+      competitor: "Schedule, webhook, SSE, Redis, workflow lifecycle, error, app-event"
+    - feature: Failure handling
+      kestra: "Retries with backoff, timeouts, allowed-failure policies, reprocessing"
+      competitor: "Error workflows, retry logic"
+    - feature: Secrets management
+      kestra: "Built-in secrets manager, encrypted variables"
+      competitor: "Encrypted credentials, external secrets integration"
+    - feature: License
+      kestra: "Apache 2.0 (open-source)"
+      competitor: "Sustainable Use License (source-available)"
+    - feature: Plugins / Integrations
+      kestra: "1,100+"
+      competitor: "400+ built-in (1,000+ with community nodes)"
+    - feature: Cloud
+      kestra: "Early access"
+      competitor: "Available (Azure Frankfurt)"
+
+socialProof:
+  image:
+    alt: Apple ML team success story
+    width: 333
+    height: 364
+  quote:
+    text: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
+    author: "Senior Engineering Manager @ Apple (ML team)"
+  metrics:
+    - value: "200"
+      label: Engineers onboarded
+    - value: "2x"
+      label: Faster workflow creation
+    - value: "0"
+      label: Pipeline failures
+  cta:
+    text: "See how teams orchestrate at scale with Kestra"
+    link: https://kestra.io/use-cases/stories
+  theme: "var(--ks-special-green)"
+
+platformStrengths:
+  title: Kestra Is Built for How Engineering Teams Actually Work
+  features:
+    - title: Bring your own scripts
+      description: "Bring your existing Python, SQL, Shell, Go, and R scripts. Define workflows in declarative YAML. No wrappers, no framework lock-in."
+    - title: Minutes to first workflow
+      description: "Build your first scheduled workflow in under 5 minutes with our <a href='/docs/quickstart'>Quickstart Guide</a>. No Node.js runtime to manage, no visual canvas required. Write YAML and execute."
+    - title: Orchestrate anything
+      description: "Data pipelines, infrastructure provisioning, AI workloads. One platform with container-level isolation and RBAC per namespace."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Data pipelines, infrastructure automation, or AI workloads at production scale."
+      - "Multi-language teams (Python, SQL, Bash, R, Go) that need orchestration beyond JavaScript."
+      - "Workflows that go through pull requests, CI/CD, and code review."
+      - "Multi-team environments with namespace isolation and compliance requirements."
+  competitor:
+    title: Choose n8n When
+    list:
+      - "Connecting SaaS apps and building integration workflows fast."
+      - "Visual drag-and-drop workflow building is the team's preferred model."
+      - "AI agent workflows, chatbots, or RAG pipelines are the primary use case."
+      - "A lightweight, self-hosted automation tool for a single team."
+    shadowColor: "#FF9F7A"
+    bulletColor: "#FF6B3D"
+
+commonQuestions:
+  - question: How is Kestra different from n8n?
+    answer: "Kestra is a code-first orchestration platform for data pipelines, infrastructure automation, and AI workloads at enterprise scale. n8n is a visual-first automation tool for connecting apps and building AI agent workflows. Kestra uses declarative YAML, runs on a distributed architecture with namespace isolation, and deploys through CI/CD. n8n uses a drag-and-drop canvas, runs on Node.js, and builds workflows in the browser. n8n gets you from zero to working automation fast. Kestra carries those workflows into production across teams."
+  - question: Can Kestra handle AI workflows like n8n?
+    answer: "Yes, but differently. n8n has a visual AI agent builder with LangChain integration, 12 vector store integrations, MCP client and server nodes, and an evaluation node for testing agent outputs — great for prototyping chatbots and agent chains. Kestra orchestrates AI workloads the same way it orchestrates everything else: as steps in declarative pipelines with full state tracking, retries, and scheduling — built visually in the UI or in code. You can call any model API, run any ML framework, and package any environment in a Docker container. A single Kestra flow can handle data extraction, model training, evaluation, deployment, and monitoring as one end-to-end pipeline. If you need a visual agent builder, n8n excels. If you need production AI pipelines integrated with data and infrastructure workflows, Kestra is built for that."
+  - question: How does Kestra handle my scripts?
+    answer: "Kestra is language-agnostic. Run Python, SQL, Go, and more, either inline in your YAML or from external files. Scripts execute in isolated Docker containers by default, with full control over dependencies. No decorators, no wrappers, no framework-specific syntax. Your code stays portable."
+  - question: Does Kestra have a visual editor like n8n?
+    answer: "Kestra has a built-in UI with a topology view, live execution monitoring, and a code editor with embedded documentation. But the primary authoring model is YAML, not a visual canvas. This is intentional: YAML workflows go through Git, pull requests, and CI/CD like any other code. For teams that need auditability and governance, this model scales better than browser-based editing."
+  - question: How much time do I need to get started?
+    answer: "Five minutes. Download the Docker Compose file, run docker compose up, and open the UI at localhost:8080. Pick a Blueprint, customize it, and execute. No Node.js runtime to configure, no database to provision separately. If you know YAML (or can read it), you can build workflows immediately."
+  - question: Is Kestra open-source like n8n?
+    answer: "Kestra is Apache 2.0 licensed, fully open-source with no usage restrictions. n8n uses the Sustainable Use License, which is source-available but not open-source: it restricts competing use and requires a paid license for some commercial scenarios. Both offer enterprise editions with additional features."
