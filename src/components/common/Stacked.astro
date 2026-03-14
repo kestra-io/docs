@@ -17,8 +17,7 @@ const CARDS = [
         },
         cta: {
             text: "Explore data use cases",
-            // TODO: add link when available after Data page is done
-            href: "",
+            href: "/data",
         },
         features: [
             { value: "10x", label: "Faster Pipeline Delivery" },
@@ -56,8 +55,7 @@ const CARDS = [
         },
         cta: {
             text: "Explore AI automation use cases",
-            // TODO: add link when available after AI page is done
-            href: "",
+            href: "/ai-automation",
         },
         features: [
             { value: "50x", label: "less pipeline maintenance" },
@@ -115,7 +113,7 @@ const CARDS = [
                     </Link>
                 </div>
 
-                <div class="right-content">
+                <div class="right-content d-none d-xl-block">
                     <card.animation />
                 </div>
             </div>
@@ -170,7 +168,9 @@ const CARDS = [
         }
 
         .stacked-card {
-            position: sticky;
+            @include media-breakpoint-up(sm) {
+                position: sticky;
+            }
             max-width: 1400px;
             min-height: 400px;
             padding: 5rem 1.5rem 2.5rem;
@@ -375,14 +375,16 @@ const CARDS = [
 
                     @if $i == 1 {
                         margin-bottom: 8.75rem;
-
                         @include media-breakpoint-up(xxl) {
                             margin-bottom: 200px;
                         }
                     } @else if $i == 2 {
                         margin-top: -4.375rem;
                         margin-bottom: 4.375rem;
-
+                        @include media-breakpoint-down(sm) {
+                            margin-top: -2rem;
+                            margin-bottom: 2rem;
+                        }
                         @include media-breakpoint-up(xxl) {
                             margin-top: -6.25rem;
                             margin-bottom: 6.25rem;
