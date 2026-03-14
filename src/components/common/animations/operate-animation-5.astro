@@ -1,0 +1,908 @@
+<style>
+    .oa-5 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100%;
+        overflow: hidden;
+        font-family: "JetBrains Mono", monospace;
+
+        .scene-wrapper {
+            width: 580px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .dashboard {
+            position: relative;
+            z-index: 1;
+            width: 600px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 9px;
+            transform: scale(0.85);
+            transform-origin: center center;
+            flex-shrink: 0;
+        }
+
+        .anim-card {
+            border-radius: 10px;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.45);
+            padding: 12px 14px;
+            position: relative;
+            overflow: hidden;
+            transition:
+                border-color 0.5s,
+                box-shadow 0.5s;
+        }
+        .anim-card.span3 {
+            grid-column: span 3;
+        }
+        .anim-card.pulse-err {
+            border-color: rgba(246, 46, 118, 0.7);
+            box-shadow: 0 0 22px rgba(246, 46, 118, 0.28);
+        }
+        .anim-card.pulse-ok {
+            border-color: rgba(72, 247, 160, 0.6);
+            box-shadow: 0 0 22px rgba(72, 247, 160, 0.22);
+        }
+        .anim-card.pulse-warn {
+            border-color: rgba(247, 201, 72, 0.6);
+            box-shadow: 0 0 18px rgba(247, 201, 72, 0.18);
+        }
+
+        .card-label {
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.28);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 4px;
+        }
+        .card-label-lg {
+            font-size: 9.5px;
+            color: rgba(255, 255, 255, 0.55);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .big-pct {
+            font-size: 34px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            transition: color 0.5s;
+        }
+        .big-pct.green {
+            color: #48f7a0;
+        }
+        .big-pct.red {
+            color: #f62e76;
+        }
+        .big-pct.warn {
+            color: #f7c948;
+        }
+
+        .pct-sub {
+            font-size: 8px;
+            margin-top: 5px;
+            color: rgba(255, 255, 255, 0.22);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 7.5px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            transition:
+                background 0.4s,
+                color 0.4s;
+        }
+        .badge.up {
+            background: rgba(72, 247, 160, 0.15);
+            color: #48f7a0;
+        }
+        .badge.down {
+            background: rgba(246, 46, 118, 0.15);
+            color: #f62e76;
+        }
+        .badge.warn {
+            background: rgba(247, 201, 72, 0.13);
+            color: #f7c948;
+        }
+
+        canvas.spark {
+            display: block;
+            width: 100%;
+            height: 32px;
+            margin-top: 8px;
+        }
+
+        .total-nums {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .tn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 8.5px;
+        }
+        .tn-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .tn-val {
+            color: rgba(255, 255, 255, 0.55);
+            transition: color 0.3s;
+        }
+        .bar-chart-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .bc-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .bc-label {
+            font-size: 7.5px;
+            color: rgba(255, 255, 255, 0.25);
+            width: 38px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .bc-track {
+            flex: 1;
+            height: 7px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+        .bc-bar {
+            height: 100%;
+            border-radius: 4px;
+            width: 0%;
+            transition:
+                width 0.8s ease-out,
+                background 0.5s;
+        }
+        .bc-val {
+            font-size: 7.5px;
+            color: rgba(255, 255, 255, 0.3);
+            width: 32px;
+            flex-shrink: 0;
+        }
+
+        .ip-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .ip-table th {
+            font-size: 7.5px;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            padding: 0 0 6px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .ip-table td {
+            font-size: 9px;
+            padding: 5px 0 3px;
+            color: rgba(255, 255, 255, 0.45);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: middle;
+        }
+        .ip-table tr:last-child td {
+            border-bottom: none;
+        }
+        .ip-table td:first-child {
+            color: rgba(255, 255, 255, 0.22);
+            font-size: 8px;
+        }
+
+        .state-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 8px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition:
+                background 0.4s,
+                color 0.4s;
+        }
+        .state-pill.created {
+            background: rgba(101, 154, 210, 0.13);
+            color: #659ad2;
+        }
+        .state-pill.running {
+            background: rgba(169, 80, 255, 0.13);
+            color: #a950ff;
+        }
+        .state-pill.success {
+            background: rgba(72, 247, 160, 0.13);
+            color: #48f7a0;
+        }
+        .state-pill.failed {
+            background: rgba(246, 46, 118, 0.13);
+            color: #f62e76;
+        }
+        .s-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: background 0.4s;
+        }
+        .state-pill.running .s-dot {
+            animation: oa5-blink-d 0.85s step-end infinite;
+        }
+        .state-pill.failed .s-dot {
+            animation: oa5-blink-d 0.5s step-end infinite;
+        }
+
+        .row-prog {
+            height: 2px;
+            border-radius: 1px;
+            margin-top: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+        .row-prog-bar {
+            height: 100%;
+            border-radius: 1px;
+            transition:
+                width 0.6s linear,
+                background 0.4s;
+        }
+
+        .ip-row {
+            transition:
+                opacity 0.4s,
+                transform 0.4s;
+        }
+        .ip-row.fade-in {
+            animation: oa5-rfi 0.35s ease forwards;
+        }
+        .ip-row.fade-out {
+            animation: oa5-rfo 0.4s ease forwards;
+        }
+
+        .spark-flash {
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+    }
+
+    @keyframes oa5-blink-d {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes oa5-rfi {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes oa5-rfo {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+            transform: translateX(10px);
+        }
+    }
+</style>
+
+<div class="oa-5">
+    <div class="scene-wrapper">
+        <div class="dashboard">
+            <div class="anim-card" id="oa5-cSuccess">
+                <div class="card-label">Success Ratio</div>
+                <div class="big-pct green" id="oa5-valSuccess">98.7%</div>
+                <div class="pct-sub">
+                    <span class="badge up" id="oa5-badgeSuccess">↑ +0.3%</span>
+                    last 24h
+                </div>
+                <canvas class="spark" id="oa5-spkSuccess"></canvas>
+            </div>
+
+            <div class="anim-card" id="oa5-cFailed">
+                <div class="card-label">Failed Ratio</div>
+                <div class="big-pct red" id="oa5-valFailed">1.3%</div>
+                <div class="pct-sub">
+                    <span class="badge up" id="oa5-badgeFailed">normal</span>
+                </div>
+                <canvas class="spark" id="oa5-spkFailed"></canvas>
+            </div>
+
+            <div class="anim-card" id="oa5-cTotal">
+                <div class="card-label">Total Executions</div>
+                <div class="total-nums">
+                    <div class="tn">
+                        <div class="tn-dot" style="background: #48f7a0"></div>
+                        <span class="tn-val" id="oa5-tnSuccess">3 847</span>
+                    </div>
+                    <div class="tn">
+                        <div class="tn-dot" style="background: #f62e76"></div>
+                        <span class="tn-val" id="oa5-tnFail">51</span>
+                    </div>
+                    <div class="tn">
+                        <div class="tn-dot" style="background: #659ad2"></div>
+                        <span class="tn-val" id="oa5-tnRun">12</span>
+                    </div>
+                </div>
+                <div class="bar-chart-wrap">
+                    <div class="bc-row">
+                        <span class="bc-label">success</span>
+                        <div class="bc-track">
+                            <div
+                                class="bc-bar"
+                                id="oa5-bc1"
+                                style="background: #48f7a0"
+                            >
+                            </div>
+                        </div>
+                        <span class="bc-val" id="oa5-bcv1">98.7%</span>
+                    </div>
+                    <div class="bc-row">
+                        <span class="bc-label">failed</span>
+                        <div class="bc-track">
+                            <div
+                                class="bc-bar"
+                                id="oa5-bc2"
+                                style="background: #f62e76"
+                            >
+                            </div>
+                        </div>
+                        <span class="bc-val" id="oa5-bcv2">1.3%</span>
+                    </div>
+                    <div class="bc-row">
+                        <span class="bc-label">running</span>
+                        <div class="bc-track">
+                            <div
+                                class="bc-bar"
+                                id="oa5-bc3"
+                                style="background: #659ad2"
+                            >
+                            </div>
+                        </div>
+                        <span class="bc-val" id="oa5-bcv3">0.3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="anim-card span3" id="oa5-cInProgress">
+                <div class="card-label-lg">Executions in progress</div>
+                <table class="ip-table">
+                    <thead>
+                        <tr>
+                            <th>Execution ID</th>
+                            <th>Namespace</th>
+                            <th>Flow</th>
+                            <th>State</th>
+                            <th style="width: 80px">Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody id="oa5-ipBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    ;(function () {
+        var root = document.querySelector(".oa-5")
+        function isPaused() {
+            return !!root.closest(".paused")
+        }
+
+        var sleep = function (ms) {
+            return new Promise(function (resolve) {
+                setTimeout(resolve, ms)
+            }).then(function () {
+                return new Promise(function (resolve) {
+                    function check() {
+                        if (isPaused()) setTimeout(check, 100)
+                        else resolve()
+                    }
+                    check()
+                })
+            })
+        }
+
+        function animVal(el, from, to, dur, suffix, dec) {
+            if (suffix === undefined) suffix = "%"
+            if (dec === undefined) dec = 1
+            var t0 = performance.now()
+            function step(now) {
+                var p = Math.min((now - t0) / dur, 1)
+                var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2
+                el.textContent = (from + (to - from) * e).toFixed(dec) + suffix
+                if (p < 1) requestAnimationFrame(step)
+            }
+            requestAnimationFrame(step)
+        }
+        function animNum(el, from, to, dur) {
+            var t0 = performance.now()
+            function step(now) {
+                var p = Math.min((now - t0) / dur, 1)
+                var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2
+                var v = Math.round(from + (to - from) * e)
+                el.textContent = v.toLocaleString("fr-FR")
+                if (p < 1) requestAnimationFrame(step)
+            }
+            requestAnimationFrame(step)
+        }
+
+        function parseRGB(s) {
+            var m = s.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
+            return m ? [m[1], m[2], m[3]] : [200, 200, 200]
+        }
+        function drawSpark(id, data, color) {
+            var c = root.querySelector("#" + id)
+            if (!c) return
+            var dpr = devicePixelRatio || 1
+            c.width = c.offsetWidth * dpr
+            c.height = c.offsetHeight * dpr
+            var ctx = c.getContext("2d")
+            ctx.scale(dpr, dpr)
+            var W = c.offsetWidth,
+                H = c.offsetHeight
+            var mn = Math.min.apply(null, data),
+                mx = Math.max.apply(null, data),
+                rng = mx - mn || 1
+            var pts = data.map(function (v, i) {
+                return {
+                    x: (i / (data.length - 1)) * W,
+                    y: H - ((v - mn) / rng) * (H * 0.75) - H * 0.1,
+                }
+            })
+            ctx.clearRect(0, 0, W, H)
+            var rgb = parseRGB(color)
+            ctx.beginPath()
+            ctx.moveTo(pts[0].x, H)
+            pts.forEach(function (p) {
+                ctx.lineTo(p.x, p.y)
+            })
+            ctx.lineTo(pts[pts.length - 1].x, H)
+            ctx.closePath()
+            var g2 = ctx.createLinearGradient(0, 0, 0, H)
+            g2.addColorStop(
+                0,
+                "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ",0.22)",
+            )
+            g2.addColorStop(
+                1,
+                "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ",0)",
+            )
+            ctx.fillStyle = g2
+            ctx.fill()
+            ctx.beginPath()
+            pts.forEach(function (p, i) {
+                if (i === 0) ctx.moveTo(p.x, p.y)
+                else ctx.lineTo(p.x, p.y)
+            })
+            ctx.strokeStyle = color
+            ctx.lineWidth = 1.5
+            ctx.lineJoin = "round"
+            ctx.stroke()
+        }
+        function rnd(base, amp, n) {
+            var a = []
+            var v = base
+            for (var i = 0; i < n; i++) {
+                v += (Math.random() - 0.5) * amp
+                v = Math.max(base - amp * 3, Math.min(base + amp * 3, v))
+                a.push(v)
+            }
+            return a
+        }
+
+        var N = 32
+        var spkS = rnd(98.7, 0.25, N),
+            spkF = rnd(1.3, 0.2, N)
+        function drawAll(sc, fc) {
+            if (!sc) sc = "#48f7a0"
+            if (!fc) fc = "#f62e76"
+            drawSpark("oa5-spkSuccess", spkS, sc)
+            drawSpark("oa5-spkFailed", spkF, fc)
+        }
+        drawAll()
+
+        function setBars(s, f, r) {
+            root.querySelector("#oa5-bc1").style.width = s + "%"
+            root.querySelector("#oa5-bc2").style.width = f + "%"
+            root.querySelector("#oa5-bc3").style.width = r + "%"
+            root.querySelector("#oa5-bcv1").textContent = s.toFixed(1) + "%"
+            root.querySelector("#oa5-bcv2").textContent = f.toFixed(1) + "%"
+            root.querySelector("#oa5-bcv3").textContent = r.toFixed(1) + "%"
+        }
+        setTimeout(function () {
+            setBars(98.7, 1.3, 0.3)
+        }, 200)
+
+        var FLOWS = [
+            "etl-pipeline",
+            "sync-users",
+            "report-gen",
+            "ml-infer",
+            "data-export",
+            "audit-logs",
+        ]
+        var NS = ["prod", "staging", "prod", "dev", "prod", "staging"]
+        function uid() {
+            return "exec-" + Math.random().toString(36).slice(2, 7)
+        }
+
+        var rows = []
+
+        function makeTr(id, ns, flow, state, prog) {
+            var tr = document.createElement("tr")
+            tr.className = "ip-row"
+            var dotBg = {
+                created: "#659AD2",
+                running: "#A950FF",
+                success: "#48f7a0",
+                failed: "#f62e76",
+            }[state]
+            var barBg = {
+                created: "rgba(101,154,210,0.5)",
+                running: "rgba(169,80,255,0.6)",
+                success: "#48f7a0",
+                failed: "#f62e76",
+            }[state]
+            tr.innerHTML =
+                "<td>" +
+                id +
+                "</td>" +
+                "<td>" +
+                ns +
+                "</td>" +
+                "<td>" +
+                flow +
+                "</td>" +
+                '<td><span class="state-pill ' +
+                state +
+                '"><span class="s-dot" style="background:' +
+                dotBg +
+                '"></span>' +
+                state +
+                "</span></td>" +
+                '<td><div class="row-prog"><div class="row-prog-bar" style="width:' +
+                prog +
+                "%;background:" +
+                barBg +
+                '"></div></div></td>'
+            return tr
+        }
+
+        function updateTrState(tr, state, prog) {
+            var dotBg = {
+                created: "#659AD2",
+                running: "#A950FF",
+                success: "#48f7a0",
+                failed: "#f62e76",
+            }[state]
+            var barBg = {
+                created: "rgba(101,154,210,0.5)",
+                running: "rgba(169,80,255,0.6)",
+                success: "#48f7a0",
+                failed: "#f62e76",
+            }[state]
+            var pill = tr.querySelector(".state-pill")
+            pill.className = "state-pill " + state
+            pill.innerHTML =
+                '<span class="s-dot" style="background:' +
+                dotBg +
+                '"></span>' +
+                state
+            if (state === "running" || state === "failed") {
+                pill.querySelector(".s-dot").style.animation =
+                    "oa5-blink-d " +
+                    (state === "failed" ? 0.5 : 0.85) +
+                    "s step-end infinite"
+            }
+            var bar = tr.querySelector(".row-prog-bar")
+            bar.style.width = prog + "%"
+            bar.style.background = barBg
+        }
+
+        function removeRow(r) {
+            return new Promise(function (res) {
+                r.tr.classList.add("fade-out")
+                setTimeout(function () {
+                    r.tr.remove()
+                    res()
+                }, 400)
+            })
+        }
+
+        var ipBody = root.querySelector("#oa5-ipBody")
+
+        function addRow(state) {
+            if (!state) state = "created"
+            var fi = Math.floor(Math.random() * FLOWS.length)
+            var prog =
+                state === "created"
+                    ? 0
+                    : state === "running"
+                      ? Math.floor(Math.random() * 50 + 5)
+                      : 100
+            var tr = makeTr(uid(), NS[fi], FLOWS[fi], state, prog)
+            ipBody.appendChild(tr)
+            requestAnimationFrame(function () {
+                tr.classList.add("fade-in")
+            })
+            var obj = { tr: tr, state: state, prog: prog, age: 0, id: uid() }
+            rows.push(obj)
+            return obj
+        }
+
+        function initTable() {
+            ipBody.innerHTML = ""
+            rows = []
+            addRow("running")
+            addRow("running")
+            addRow("created")
+        }
+
+        function tickRows() {
+            rows.forEach(function (r) {
+                r.age++
+                if (r.state === "created" && r.age >= 2) {
+                    r.state = "running"
+                    r.prog = 5
+                    updateTrState(r.tr, "running", r.prog)
+                }
+                if (r.state === "running") {
+                    r.prog = Math.min(100, r.prog + (Math.random() * 14 + 4))
+                    updateTrState(r.tr, "running", Math.round(r.prog))
+                }
+                if (r.state === "running" && r.prog >= 100) {
+                    r.state = "success"
+                    r.prog = 100
+                    updateTrState(r.tr, "success", 100)
+                    setTimeout(function () {
+                        removeRow(r).then(function () {
+                            rows = rows.filter(function (x) {
+                                return x !== r
+                            })
+                            if (rows.length < 4) addRow("created")
+                        })
+                    }, 700)
+                }
+            })
+            if (rows.length < 3) addRow("created")
+        }
+
+        var cSuccess = root.querySelector("#oa5-cSuccess")
+        var cFailed = root.querySelector("#oa5-cFailed")
+        var valSuccess = root.querySelector("#oa5-valSuccess")
+        var valFailed = root.querySelector("#oa5-valFailed")
+        var badgeSuccess = root.querySelector("#oa5-badgeSuccess")
+        var badgeFailed = root.querySelector("#oa5-badgeFailed")
+        var tnSuccessEl = root.querySelector("#oa5-tnSuccess")
+        var tnFailEl = root.querySelector("#oa5-tnFail")
+        var tnRunEl = root.querySelector("#oa5-tnRun")
+
+        var curS = 98.7,
+            curF = 1.3,
+            curTotal = 3847,
+            curFail = 51,
+            curRun = 12
+        var failRowObj = null
+        var phase = "healthy"
+
+        async function loop() {
+            initTable()
+            setInterval(tickRows, 480)
+
+            while (true) {
+                phase = "healthy"
+                cSuccess.className = "anim-card"
+                cFailed.className = "anim-card"
+                for (var i = 0; i < 8; i++) {
+                    await sleep(480)
+                    var dS = (Math.random() - 0.35) * 0.18
+                    curS = Math.min(99.4, Math.max(97.5, curS + dS))
+                    var dF = (Math.random() - 0.65) * 0.15
+                    curF = Math.min(2.2, Math.max(0.5, curF + dF))
+                    curTotal += Math.floor(Math.random() * 15 + 5)
+                    if (Math.random() > 0.75) curFail++
+                    curRun = Math.floor(Math.random() * 8 + 8)
+
+                    animVal(
+                        valSuccess,
+                        parseFloat(valSuccess.textContent) || curS,
+                        curS,
+                        380,
+                    )
+                    animVal(
+                        valFailed,
+                        parseFloat(valFailed.textContent) || curF,
+                        curF,
+                        380,
+                    )
+                    animNum(
+                        tnSuccessEl,
+                        parseInt(
+                            (tnSuccessEl.textContent || "").replace(/\s/g, ""),
+                        ),
+                        curTotal,
+                        380,
+                    )
+                    tnFailEl.textContent = curFail
+                    tnRunEl.textContent = curRun
+
+                    spkS.push(curS)
+                    spkS.shift()
+                    spkF.push(curF)
+                    spkF.shift()
+                    drawAll()
+                    setBars(
+                        +curS.toFixed(1),
+                        +curF.toFixed(1),
+                        +((curRun / (curTotal || 1)) * 100).toFixed(1),
+                    )
+
+                    badgeSuccess.className = "badge up"
+                    badgeSuccess.textContent = "↑ +0.3%"
+                    badgeFailed.className = "badge up"
+                    badgeFailed.textContent = "normal"
+                }
+
+                phase = "incident"
+                var prevS = curS,
+                    prevF = curF
+                curS = 88.4
+                curF = 11.2
+
+                for (var k = 0; k < 3; k++) {
+                    spkS.push(prevS - ((prevS - curS) * (k + 1)) / 3)
+                    spkS.shift()
+                }
+                for (var k = 0; k < 3; k++) {
+                    spkF.push(prevF + ((curF - prevF) * (k + 1)) / 3)
+                    spkF.shift()
+                }
+                drawSpark("oa5-spkSuccess", spkS, "#f62e76")
+                drawSpark("oa5-spkFailed", spkF, "#f62e76")
+
+                animVal(valSuccess, prevS, curS, 700)
+                animVal(valFailed, prevF, curF, 700)
+                badgeSuccess.className = "badge down"
+                badgeSuccess.textContent = "↓ drop"
+                badgeFailed.className = "badge down"
+                badgeFailed.textContent = "↑ spike"
+                cSuccess.className = "anim-card pulse-warn"
+                cFailed.className = "anim-card pulse-err"
+                setBars(curS, curF, 0.4)
+
+                if (failRowObj) {
+                    rows = rows.filter(function (x) {
+                        return x !== failRowObj
+                    })
+                    failRowObj.tr.remove()
+                }
+                var fi = Math.floor(Math.random() * FLOWS.length)
+                var ftr = makeTr(uid(), "prod", FLOWS[fi], "failed", 42)
+                ipBody.prepend(ftr)
+                requestAnimationFrame(function () {
+                    ftr.classList.add("fade-in")
+                })
+                failRowObj = { tr: ftr, state: "failed", prog: 42, age: 99 }
+                rows.unshift(failRowObj)
+
+                await sleep(2200)
+
+                phase = "recover"
+                var snapS = curS,
+                    snapF = curF
+
+                for (var i = 0; i < 6; i++) {
+                    await sleep(350)
+                    curS = Math.min(98.7, curS + 1.8 + Math.random() * 0.5)
+                    curF = Math.max(1.3, curF - 1.7 - Math.random() * 0.4)
+                    spkS.push(curS)
+                    spkS.shift()
+                    spkF.push(curF)
+                    spkF.shift()
+                    var sc = i < 3 ? "rgba(247,201,72,0.9)" : "#48f7a0"
+                    drawSpark("oa5-spkSuccess", spkS, sc)
+                    drawSpark("oa5-spkFailed", spkF, "#f62e76")
+                    animVal(
+                        valSuccess,
+                        parseFloat(valSuccess.textContent) || curS,
+                        curS,
+                        300,
+                    )
+                    animVal(
+                        valFailed,
+                        parseFloat(valFailed.textContent) || curF,
+                        curF,
+                        300,
+                    )
+                    setBars(+curS.toFixed(1), +curF.toFixed(1), 0.3)
+                }
+
+                if (failRowObj && failRowObj.tr.parentNode) {
+                    updateTrState(failRowObj.tr, "success", 100)
+                    await sleep(800)
+                    await removeRow(failRowObj)
+                    rows = rows.filter(function (x) {
+                        return x !== failRowObj
+                    })
+                    failRowObj = null
+                    addRow("created")
+                }
+
+                curS = 98.7
+                curF = 1.3
+                animVal(
+                    valSuccess,
+                    parseFloat(valSuccess.textContent) || curS,
+                    curS,
+                    400,
+                )
+                animVal(
+                    valFailed,
+                    parseFloat(valFailed.textContent) || curF,
+                    curF,
+                    400,
+                )
+                badgeSuccess.className = "badge up"
+                badgeSuccess.textContent = "↑ +0.3%"
+                badgeFailed.className = "badge up"
+                badgeFailed.textContent = "normal"
+                cSuccess.className = "anim-card pulse-ok"
+                cFailed.className = "anim-card pulse-ok"
+                spkS[N - 1] = 98.7
+                spkF[N - 1] = 1.3
+                drawAll()
+                setBars(98.7, 1.3, 0.3)
+
+                await sleep(1000)
+                cSuccess.className = "anim-card"
+                cFailed.className = "anim-card"
+                await sleep(500)
+            }
+        }
+
+        loop()
+    })()
+</script>
+

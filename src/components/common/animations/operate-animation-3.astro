@@ -1,0 +1,867 @@
+<style>
+    .oa-3 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100%;
+        font-family: "Segoe UI", sans-serif;
+        overflow: hidden;
+
+        .scene-wrapper {
+            width: 580px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .scene {
+            position: relative;
+            width: 780px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: 30px;
+            transform: scale(0.85);
+            transform-origin: center center;
+            flex-shrink: 0;
+        }
+
+        #oa3-boxWorkflow {
+            position: absolute;
+            width: 76px;
+            height: 76px;
+            left: 40px;
+            top: 186px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition:
+                border-color 0.3s,
+                box-shadow 0.3s,
+                background 0.3s;
+        }
+        #oa3-boxWorkflow .label {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+        #oa3-boxWorkflow.active {
+            border-color: rgba(124, 111, 255, 1);
+            box-shadow:
+                0 0 16px 2px rgba(124, 111, 255, 0.45),
+                0 0 4px 1px rgba(124, 111, 255, 0.9);
+            background: rgba(124, 111, 255, 0.08);
+        }
+
+        #oa3-kestraBox {
+            position: absolute;
+            left: 270px;
+            top: 50px;
+            width: 160px;
+            height: 300px;
+            border-radius: 16px;
+            border: 1.5px dashed rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 0 10px;
+            transition:
+                border-color 0.3s,
+                box-shadow 0.3s;
+        }
+        #oa3-kestraBox.active {
+            border-color: #631bff;
+            border-style: solid;
+            box-shadow:
+                0 0 28px rgba(99, 27, 255, 0.5),
+                inset 0 0 16px rgba(99, 27, 255, 0.15);
+        }
+
+        .kestra-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .trigger-item {
+            width: 120px;
+            height: 72px;
+            border-radius: 10px;
+            border: 1.5px solid rgba(255, 255, 255, 0.13);
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin: 4px 0;
+            transition:
+                border-color 0.3s,
+                box-shadow 0.3s,
+                background 0.3s;
+        }
+        .trigger-item .label {
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+        #oa3-trigEvent.active {
+            border-color: #f7c948;
+            box-shadow: 0 0 12px rgba(247, 201, 72, 0.35);
+            background: rgba(247, 201, 72, 0.06);
+        }
+        #oa3-trigSchedule.active {
+            border-color: rgba(72, 247, 160, 1);
+            box-shadow: 0 0 12px rgba(72, 247, 160, 0.35);
+            background: rgba(72, 247, 160, 0.06);
+        }
+        #oa3-trigWebhook.active {
+            border-color: rgba(72, 195, 247, 1);
+            box-shadow: 0 0 12px rgba(72, 195, 247, 0.35);
+            background: rgba(72, 195, 247, 0.06);
+        }
+
+        #oa3-counter {
+            margin-top: 8px;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            letter-spacing: 0.04em;
+        }
+        #oa3-counter .num {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+        #oa3-counter.flash .num {
+            color: #fff;
+            text-shadow: 0 0 8px #fff;
+        }
+
+        #oa3-gantt {
+            position: absolute;
+            left: 480px;
+            top: 125px;
+            width: 180px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(255, 255, 255, 0.13);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 14px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .gantt-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .gantt-status-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.04em;
+            transition: color 0.3s;
+        }
+        .gantt-icon-wrap {
+            position: relative;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        .gantt-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gantt-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .gantt-bar-wrap {
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+        .gantt-bar {
+            height: 100%;
+            width: 100%;
+            border-radius: 3px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: background 0.4s;
+        }
+        .gantt-bar.animating {
+            animation: oa3-bar-grow-rtl 1.6s ease-out forwards;
+        }
+
+        .gantt-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.07);
+            margin: 4px 0;
+        }
+
+        .gantt-logs {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow: hidden;
+        }
+        .log-line {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 8px;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.25);
+            opacity: 0;
+            transform: translateY(4px);
+            transition:
+                opacity 0.3s,
+                transform 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .log-line.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .log-line .log-time {
+            color: rgba(255, 255, 255, 0.18);
+        }
+        .log-line .log-ok {
+            color: #48f7a0;
+        }
+        .log-line .log-info {
+            color: #659ad2;
+        }
+        .log-line .log-warn {
+            color: #f7c948;
+        }
+
+        #oa3-gantt.running .gantt-status-label {
+            color: #659ad2;
+        }
+        #oa3-gantt.running .gantt-icon.spin-icon {
+            opacity: 1;
+            animation: oa3-spin 1s linear infinite;
+        }
+        #oa3-gantt.running .gantt-bar {
+            background: #659ad2;
+        }
+        #oa3-gantt.success .gantt-status-label {
+            color: #48f7a0;
+        }
+        #oa3-gantt.success .gantt-icon.check-icon {
+            opacity: 1;
+        }
+        #oa3-gantt.success .gantt-bar {
+            background: #48f7a0;
+        }
+
+        .svg-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+        }
+    }
+
+    @keyframes oa3-bar-grow-rtl {
+        from {
+            transform: scaleX(0);
+        }
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    @keyframes oa3-beam-travel {
+        0% {
+            stroke-dashoffset: 500;
+            opacity: 1;
+        }
+        85% {
+            opacity: 1;
+        }
+        100% {
+            stroke-dashoffset: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes oa3-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div class="oa-3">
+    <div class="scene-wrapper">
+        <div class="scene">
+            <svg class="svg-lines" id="oa3-svgLines"></svg>
+
+            <div id="oa3-boxWorkflow">
+                <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+                    <polyline
+                        points="14,16 7,24 14,32"
+                        stroke="rgba(255,255,255,0.6)"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="none"></polyline>
+                    <polyline
+                        points="34,16 41,24 34,32"
+                        stroke="rgba(255,255,255,0.6)"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="none"></polyline>
+                    <line
+                        x1="29"
+                        y1="12"
+                        x2="19"
+                        y2="36"
+                        stroke="rgba(255,255,255,0.4)"
+                        stroke-width="2"
+                        stroke-linecap="round"></line>
+                </svg>
+                <span class="label">Workflow</span>
+            </div>
+
+            <div id="oa3-kestraBox">
+                <div class="kestra-logo-wrap">
+                    <svg width="34" height="34" viewBox="0 0 50 50" fill="none">
+                        <path
+                            d="M23.2073 19.1959C24.1832 18.22 25.7655 18.22 26.7415 19.1959L30.7532 23.2077C31.7291 24.1836 31.7291 25.7659 30.7532 26.7418L26.7415 30.7536C25.7655 31.7295 24.1832 31.7295 23.2073 30.7536L19.1956 26.7418C18.2196 25.7659 18.2196 24.1836 19.1956 23.2077L23.2073 19.1959Z"
+                            fill="#A950FF"></path>
+                        <path
+                            d="M41.6846 19.164C42.643 18.2055 44.197 18.2055 45.1555 19.164L49.2305 23.2389C50.1889 24.1974 50.1889 25.7514 49.2305 26.7099L45.1555 30.7848C44.197 31.7433 42.643 31.7433 41.6846 30.7848L37.6096 26.7099C36.6511 25.7514 36.6511 24.1974 37.6096 23.2389L41.6846 19.164Z"
+                            fill="#A950FF"></path>
+                        <path
+                            d="M23.2389 0.718862C24.1974 -0.23962 25.7514 -0.239621 26.7099 0.71886L30.7848 4.7938C31.7433 5.75228 31.7433 7.30628 30.7848 8.26476L26.7099 12.3397C25.7514 13.2982 24.1974 13.2982 23.2389 12.3397L19.164 8.26477C18.2055 7.30629 18.2055 5.75228 19.164 4.7938L23.2389 0.718862Z"
+                            fill="#E9C1FF"></path>
+                        <path
+                            d="M21.5313 13.985C22.5072 14.9609 22.5072 16.5433 21.5313 17.5192L17.5196 21.5309C16.5436 22.5068 14.9613 22.5069 13.9854 21.5309L9.97367 17.5192C8.99773 16.5433 8.99773 14.9609 9.97367 13.985L13.9854 9.9733C14.9613 8.99736 16.5436 8.99736 17.5196 9.9733L21.5313 13.985Z"
+                            fill="#CD88FF"></path>
+                        <path
+                            d="M12.3397 23.2389C13.2982 24.1974 13.2982 25.7514 12.3397 26.7099L8.26476 30.7848C7.30628 31.7433 5.75228 31.7433 4.79379 30.7848L0.718861 26.7099C-0.23962 25.7514 -0.239621 24.1974 0.718861 23.2389L4.7938 19.164C5.75228 18.2055 7.30629 18.2055 8.26477 19.164L12.3397 23.2389Z"
+                            fill="#A950FF"></path>
+                        <path
+                            d="M39.9762 13.985C40.9521 14.9609 40.9521 16.5433 39.9762 17.5192L35.9645 21.5309C34.9886 22.5068 33.4062 22.5069 32.4303 21.5309L28.4186 17.5192C27.4426 16.5433 27.4426 14.9609 28.4186 13.985L32.4303 9.9733C33.4062 8.99736 34.9886 8.99736 35.9645 9.9733L39.9762 13.985Z"
+                            fill="#CD88FF"></path>
+                        <path
+                            d="M28.9225 40.3319C31.1028 42.5123 31.1028 46.0473 28.9225 48.2276C26.7422 50.408 23.2071 50.408 21.0268 48.2276C18.8465 46.0473 18.8465 42.5123 21.0268 40.3319C23.2072 38.1516 26.7422 38.1516 28.9225 40.3319Z"
+                            fill="#F62E76"></path>
+                    </svg>
+                </div>
+                <div class="trigger-item" id="oa3-trigEvent">
+                    <svg width="26" height="26" viewBox="0 0 48 48" fill="none">
+                        <polygon
+                            points="27,5 13,26 23,26 21,43 35,22 25,22"
+                            fill="rgba(247,201,72,0.85)"></polygon>
+                    </svg>
+                    <span class="label">Event</span>
+                </div>
+                <div class="trigger-item" id="oa3-trigSchedule">
+                    <svg width="26" height="26" viewBox="0 0 48 48" fill="none">
+                        <rect
+                            x="6"
+                            y="10"
+                            width="36"
+                            height="32"
+                            rx="4"
+                            stroke="rgba(72,247,160,0.8)"
+                            stroke-width="2"
+                            fill="none"></rect>
+                        <line
+                            x1="6"
+                            y1="18"
+                            x2="42"
+                            y2="18"
+                            stroke="rgba(72,247,160,0.8)"
+                            stroke-width="2"></line>
+                        <line
+                            x1="16"
+                            y1="6"
+                            x2="16"
+                            y2="14"
+                            stroke="rgba(72,247,160,0.8)"
+                            stroke-width="2.5"
+                            stroke-linecap="round"></line>
+                        <line
+                            x1="32"
+                            y1="6"
+                            x2="32"
+                            y2="14"
+                            stroke="rgba(72,247,160,0.8)"
+                            stroke-width="2.5"
+                            stroke-linecap="round"></line>
+                        <rect
+                            x="12"
+                            y="23"
+                            width="6"
+                            height="5"
+                            rx="1.5"
+                            fill="rgba(72,247,160,0.7)"></rect>
+                        <rect
+                            x="21"
+                            y="23"
+                            width="6"
+                            height="5"
+                            rx="1.5"
+                            fill="rgba(72,247,160,0.7)"></rect>
+                        <rect
+                            x="30"
+                            y="23"
+                            width="6"
+                            height="5"
+                            rx="1.5"
+                            fill="rgba(72,247,160,0.35)"></rect>
+                    </svg>
+                    <span class="label">Schedule</span>
+                </div>
+                <div class="trigger-item" id="oa3-trigWebhook">
+                    <svg width="26" height="26" viewBox="0 0 48 48" fill="none">
+                        <rect
+                            x="5"
+                            y="15"
+                            width="38"
+                            height="18"
+                            rx="5"
+                            stroke="rgba(72,195,247,0.8)"
+                            stroke-width="2"
+                            fill="none"></rect>
+                        <text
+                            x="24"
+                            y="28"
+                            text-anchor="middle"
+                            font-size="11"
+                            font-weight="700"
+                            fill="rgba(72,195,247,0.9)"
+                            font-family="monospace"
+                        >
+                            API
+                        </text>
+                    </svg>
+                    <span class="label">Webhook</span>
+                </div>
+            </div>
+
+            <div
+                id="oa3-counter"
+                style="position: absolute; left: 520px; top: 100px"
+            >
+                <span class="num" id="oa3-counterNum">#1 041</span> executions
+            </div>
+
+            <div id="oa3-gantt" class="idle">
+                <div class="gantt-header">
+                    <span class="gantt-status-label" id="oa3-ganttLabel"
+                        >Idle</span
+                    >
+                    <div class="gantt-icon-wrap">
+                        <svg
+                            class="gantt-icon spin-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+                            <path
+                                d="M12 4C9.33 4 7 5.34 5.56 7.36L3 4.81V11H9.19L6.41 8.22C7.5 6.86 9.15 6 11 6C14.31 6 17 8.69 17 12H19C19 7.58 15.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12H4C4 16.42 7.58 20 12 20C14.67 20 17 18.66 18.44 16.64L21 19.19V13H14.81L17.59 15.78C16.5 17.14 14.85 18 13 18H12Z"
+                                fill="#659AD2"></path>
+                        </svg>
+                        <svg
+                            class="gantt-icon check-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+                            <path
+                                d="M20 6L9 17L4 12"
+                                stroke="#48f7a0"
+                                stroke-width="2.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="gantt-bars">
+                    <div class="gantt-bar-wrap">
+                        <div class="gantt-bar" id="oa3-bar1"></div>
+                    </div>
+                </div>
+                <div class="gantt-divider"></div>
+                <div class="gantt-logs" id="oa3-ganttLogs">
+                    <div class="log-line" id="oa3-log1">
+                        <span class="log-time">00:00:01</span>
+                        <span class="log-info">INFO</span> trigger received
+                    </div>
+                    <div class="log-line" id="oa3-log2">
+                        <span class="log-time">00:00:02</span>
+                        <span class="log-info">INFO</span> initializing tasks
+                    </div>
+                    <div class="log-line" id="oa3-log3">
+                        <span class="log-time">00:00:03</span>
+                        <span class="log-info">RUN </span> running tasks
+                    </div>
+                    <div class="log-line" id="oa3-log4">
+                        <span class="log-time">00:00:05</span>
+                        <span class="log-ok"> OK </span> execution success
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    ;(function () {
+        var root = document.querySelector(".oa-3")
+        function isPaused() {
+            return !!root.closest(".paused")
+        }
+
+        var WF_RIGHT = 40 + 76
+        var WF_CY = 186 + 38
+        var KB_L = 270,
+            KB_T = 50,
+            KB_W = 160
+        var TRIG_LEFT = KB_L + 20
+        var TRIG_RIGHT = KB_L + 140
+        var TRIG_CY = {
+            event: KB_T + 58 + 36,
+            schedule: KB_T + 58 + 80 + 36,
+            webhook: KB_T + 58 + 150 + 36,
+        }
+        var G_LEFT = KB_L + KB_W + 50
+        var GANTT_CY = {
+            event: TRIG_CY.event,
+            schedule: TRIG_CY.schedule,
+            webhook: TRIG_CY.webhook,
+        }
+
+        var svg = root.querySelector("#oa3-svgLines")
+        var defs = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "defs",
+        )
+        svg.appendChild(defs)
+
+        function addBase(d) {
+            var p = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path",
+            )
+            p.setAttribute("d", d)
+            p.setAttribute("stroke", "rgba(255,255,255,0.15)")
+            p.setAttribute("stroke-width", "1.5")
+            p.setAttribute("stroke-dasharray", "4 4")
+            p.setAttribute("fill", "none")
+            svg.appendChild(p)
+        }
+
+        var keys = ["event", "schedule", "webhook"]
+        keys.forEach(function (k) {
+            var ty = TRIG_CY[k]
+            var midX = (WF_RIGHT + TRIG_LEFT) / 2
+            var d =
+                "M " +
+                WF_RIGHT +
+                " " +
+                WF_CY +
+                " C " +
+                midX +
+                " " +
+                WF_CY +
+                ", " +
+                midX +
+                " " +
+                ty +
+                ", " +
+                TRIG_LEFT +
+                " " +
+                ty
+            addBase(d)
+        })
+
+        var beamPaths = {}
+        function makeBeam(key, d, c0, c1, x1, y1, x2, y2, i) {
+            var gId = "oa3-g-" + i
+            var grad = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "linearGradient",
+            )
+            grad.setAttribute("id", gId)
+            grad.setAttribute("gradientUnits", "userSpaceOnUse")
+            grad.setAttribute("x1", x1)
+            grad.setAttribute("y1", y1)
+            grad.setAttribute("x2", x2)
+            grad.setAttribute("y2", y2)
+            var s1 = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "stop",
+            )
+            s1.setAttribute("offset", "0%")
+            s1.setAttribute("stop-color", c0)
+            var s2 = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "stop",
+            )
+            s2.setAttribute("offset", "100%")
+            s2.setAttribute("stop-color", c1)
+            grad.appendChild(s1)
+            grad.appendChild(s2)
+            defs.appendChild(grad)
+            var p = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path",
+            )
+            p.setAttribute("d", d)
+            p.setAttribute("stroke", "url(#" + gId + ")")
+            p.setAttribute("stroke-width", "2.5")
+            p.setAttribute("stroke-linecap", "round")
+            p.setAttribute("fill", "none")
+            p.setAttribute("stroke-dasharray", "500")
+            p.setAttribute("stroke-dashoffset", "500")
+            p.style.opacity = "0"
+            svg.appendChild(p)
+            beamPaths[key] = p
+        }
+
+        var trigColors = {
+            event: ["rgba(124,111,255,1)", "#f7c948"],
+            schedule: ["rgba(124,111,255,1)", "#48f7a0"],
+            webhook: ["rgba(124,111,255,1)", "#48c3f7"],
+        }
+        var outColors = {
+            event: ["#631BFF", "#f7c948"],
+            schedule: ["#631BFF", "#48f7a0"],
+            webhook: ["#631BFF", "#48c3f7"],
+        }
+
+        keys.forEach(function (k, i) {
+            var ty = TRIG_CY[k],
+                gy = GANTT_CY[k]
+            var midXin = (WF_RIGHT + TRIG_LEFT) / 2
+            var dIn =
+                "M " +
+                WF_RIGHT +
+                " " +
+                WF_CY +
+                " C " +
+                midXin +
+                " " +
+                WF_CY +
+                ", " +
+                midXin +
+                " " +
+                ty +
+                ", " +
+                TRIG_LEFT +
+                " " +
+                ty
+            var midXout = (TRIG_RIGHT + G_LEFT) / 2
+            makeBeam(
+                "in-" + k,
+                dIn,
+                trigColors[k][0],
+                trigColors[k][1],
+                WF_RIGHT,
+                WF_CY,
+                TRIG_LEFT,
+                ty,
+                i,
+            )
+            makeBeam(
+                "out-" + k,
+                "M " +
+                    TRIG_RIGHT +
+                    " " +
+                    ty +
+                    " C " +
+                    midXout +
+                    " " +
+                    ty +
+                    ", " +
+                    midXout +
+                    " " +
+                    gy +
+                    ", " +
+                    G_LEFT +
+                    " " +
+                    gy,
+                outColors[k][0],
+                outColors[k][1],
+                TRIG_RIGHT,
+                ty,
+                G_LEFT,
+                gy,
+                i + 10,
+            )
+        })
+
+        function fireBeam(key, cb) {
+            var p = beamPaths[key]
+            p.style.animation = "none"
+            p.setAttribute("stroke-dashoffset", "500")
+            p.style.opacity = "1"
+            p.offsetHeight
+            p.style.animation = "oa3-beam-travel 0.7s ease-in forwards"
+            p.addEventListener(
+                "animationend",
+                function () {
+                    p.style.animation = "none"
+                    p.style.opacity = "0"
+                    p.setAttribute("stroke-dashoffset", "500")
+                    if (cb) cb()
+                },
+                { once: true },
+            )
+        }
+
+        var execCount = 1041
+        var counterNum = root.querySelector("#oa3-counterNum")
+        var counter = root.querySelector("#oa3-counter")
+        function bumpCounter() {
+            execCount++
+            counterNum.textContent = "#" + execCount.toLocaleString("fr-FR")
+            counter.classList.add("flash")
+            setTimeout(function () {
+                counter.classList.remove("flash")
+            }, 600)
+        }
+
+        var gantt = root.querySelector("#oa3-gantt")
+        var bars = [root.querySelector("#oa3-bar1")]
+        var logs = [
+            root.querySelector("#oa3-log1"),
+            root.querySelector("#oa3-log2"),
+            root.querySelector("#oa3-log3"),
+            root.querySelector("#oa3-log4"),
+        ]
+        var ganttLabel = root.querySelector("#oa3-ganttLabel")
+
+        function setGanttIdle() {
+            gantt.className = "idle"
+            ganttLabel.textContent = ""
+            bars.forEach(function (b) {
+                b.style.animation = "none"
+                b.className = "gantt-bar"
+                b.style.transform = "scaleX(0)"
+            })
+            logs.forEach(function (l) {
+                l.classList.remove("show")
+            })
+        }
+        function setGanttRunning() {
+            gantt.className = "running"
+            ganttLabel.textContent = "Running"
+            bars.forEach(function (b) {
+                b.style.animation = "none"
+                b.style.transform = "scaleX(0)"
+                b.offsetHeight
+                b.className = "gantt-bar animating"
+            })
+            logs.forEach(function (l) {
+                l.classList.remove("show")
+            })
+            ;[0, 1, 2].forEach(function (i) {
+                setTimeout(
+                    function () {
+                        logs[i].classList.add("show")
+                    },
+                    200 + i * 400,
+                )
+            })
+        }
+        function setGanttSuccess() {
+            gantt.className = "success"
+            ganttLabel.textContent = "Success"
+            bars.forEach(function (b) {
+                b.style.animation = "none"
+                b.style.transform = "scaleX(1)"
+            })
+            setTimeout(function () {
+                logs[3].classList.add("show")
+            }, 100)
+        }
+
+        var triggers = [
+            { key: "event", el: root.querySelector("#oa3-trigEvent") },
+            { key: "schedule", el: root.querySelector("#oa3-trigSchedule") },
+            { key: "webhook", el: root.querySelector("#oa3-trigWebhook") },
+        ]
+        var idx = 0
+        var kestraBox = root.querySelector("#oa3-kestraBox")
+        var boxWorkflow = root.querySelector("#oa3-boxWorkflow")
+
+        function resetAll() {
+            boxWorkflow.classList.remove("active")
+            kestraBox.classList.remove("active")
+            triggers.forEach(function (t) {
+                t.el.classList.remove("active")
+            })
+            setGanttIdle()
+        }
+
+        function runSequence() {
+            resetAll()
+            var trig = triggers[idx]
+            idx = (idx + 1) % triggers.length
+            boxWorkflow.classList.add("active")
+            setTimeout(function () {
+                fireBeam("in-" + trig.key, function () {
+                    boxWorkflow.classList.remove("active")
+                    kestraBox.classList.add("active")
+                    trig.el.classList.add("active")
+                    bumpCounter()
+                    setTimeout(function () {
+                        kestraBox.classList.remove("active")
+                        trig.el.classList.remove("active")
+                        setGanttRunning()
+                        setTimeout(function () {
+                            setGanttSuccess()
+                            wait(runSequence, 1800)
+                        }, 1600)
+                    }, 1000)
+                })
+            }, 300)
+        }
+
+        function wait(fn, ms) {
+            setTimeout(function () {
+                if (isPaused()) wait(fn, 100)
+                else fn()
+            }, ms)
+        }
+
+        wait(runSequence, 600)
+    })()
+</script>
+

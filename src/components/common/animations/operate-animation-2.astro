@@ -1,0 +1,593 @@
+<style>
+    .oa-2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        overflow: hidden;
+
+        .scene-wrapper {
+            width: 580px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .scene {
+            position: relative;
+            width: 680px;
+            height: 560px;
+            transform: scale(0.85);
+            transform-origin: center center;
+            flex-shrink: 0;
+        }
+
+        .lang-card {
+            position: absolute;
+            width: 76px;
+            height: 76px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition:
+                border-color 0.3s,
+                box-shadow 0.3s;
+        }
+
+        .lang-card .glow {
+            position: absolute;
+            inset: -14px;
+            border-radius: 22px;
+            opacity: 0;
+            filter: blur(20px);
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .lang-card svg {
+            position: relative;
+            z-index: 1;
+        }
+        .lang-card.active .glow {
+            opacity: 0.6;
+        }
+
+        .kestra-wrap {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .kestra-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(255, 255, 255, 0.22);
+            transition:
+                border-color 0.3s,
+                box-shadow 0.3s,
+                border-style 0.1s;
+        }
+
+        .kestra-glow {
+            position: absolute;
+            inset: -24px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(99, 27, 255, 0.75) 0%,
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .kestra-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .refresh-icon {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            transform-origin: center;
+        }
+
+        .kestra-wrap.active .kestra-ring {
+            border-color: #631bff;
+            border-style: solid;
+            box-shadow:
+                0 0 22px rgba(99, 27, 255, 0.8),
+                inset 0 0 12px rgba(99, 27, 255, 0.3);
+        }
+        .kestra-wrap.active .kestra-glow {
+            opacity: 1;
+        }
+        .kestra-wrap.active .refresh-icon {
+            opacity: 1;
+        }
+
+        .refresh-icon.spinning {
+            animation: oa2-spin 1.1s linear infinite;
+        }
+
+        .success-area {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            white-space: nowrap;
+        }
+        .success-area.show {
+            opacity: 1;
+        }
+
+        .success-check {
+            width: 22px;
+            height: 22px;
+            background: #030307;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .success-label {
+            color: #fff;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            opacity: 0.85;
+        }
+    }
+
+    @keyframes oa2-beam-travel {
+        0% {
+            stroke-dashoffset: 300;
+            opacity: 1;
+        }
+        85% {
+            opacity: 1;
+        }
+        100% {
+            stroke-dashoffset: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes oa2-line-draw {
+        from {
+            stroke-dashoffset: 120;
+        }
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes oa2-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div class="oa-2">
+    <div class="scene-wrapper">
+        <div class="scene" id="oa2-scene">
+            <svg
+                id="oa2-connector-svg"
+                style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    overflow: visible;
+                "
+            ></svg>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    ;(function () {
+        var root = document.querySelector(".oa-2")
+        function isPaused() {
+            return !!root.closest(".paused")
+        }
+
+        var SW = 680,
+            SH = 560
+        var KESTRA_R = 48
+        var KESTRA_CX = SW / 2
+        var KESTRA_CY = 280
+        var CARD_W = 76,
+            CARD_H = 76
+        var CARD_Y = 20
+        var CARD_BOTTOM = CARD_Y + CARD_H
+        var SUCCESS_Y = SH - 56
+
+        var LANGS = [
+            {
+                id: "r",
+                label: "R",
+                color: "#276DC3",
+                glowColor: "rgba(39,109,195,0.65)",
+                beamColor: "#659AD2",
+                svg: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M23.477 33.0477C14.217 33.0477 6.71025 28.0202 6.71025 21.8186C6.71025 15.6168 14.217 10.5894 23.477 10.5894C32.7371 10.5894 40.2438 15.6168 40.2438 21.8186C40.2438 28.0202 32.7371 33.0477 23.477 33.0477ZM26.0435 14.9796C19.005 14.9796 13.2993 18.4166 13.2993 22.6563C13.2993 26.8961 19.005 30.3331 26.0435 30.3331C33.0819 30.3331 38.2761 27.9833 38.2761 22.6563C38.2761 17.331 33.0819 14.9796 26.0435 14.9796Z" fill="url(#rp0)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M32.2452 27.9817C32.2452 27.9817 33.26 28.288 33.8495 28.5863C34.0541 28.6898 34.4081 28.8964 34.6634 29.1676C34.9135 29.4332 35.0354 29.7024 35.0354 29.7024L39.0347 36.4454L32.5707 36.4483L29.5479 30.772C29.5479 30.772 28.929 29.7085 28.5481 29.4001C28.2304 29.1429 28.0949 29.0513 27.7808 29.0513C27.5621 29.0513 26.245 29.0513 26.245 29.0513L26.2462 36.4442L20.5262 36.4466L20.5262 17.562L32.0126 17.562C32.0126 17.562 37.2443 17.6564 37.2443 22.6338C37.2443 27.6113 32.2452 27.9817 32.2452 27.9817ZM29.7572 21.6584L26.2944 21.6561L26.2927 24.8672L29.7572 24.8661C29.7572 24.8661 31.3616 24.8611 31.3616 23.2326C31.3616 21.5714 29.7572 21.6584 29.7572 21.6584Z" fill="url(#rp1)"/><defs><linearGradient id="rp0" x1="6.71025" y1="10.5894" x2="31.7198" y2="43.0215" gradientUnits="userSpaceOnUse"><stop stop-color="#CBCED0"/><stop offset="1" stop-color="#84838B"/></linearGradient><linearGradient id="rp1" x1="20.5262" y1="17.562" x2="39.4086" y2="36.0667" gradientUnits="userSpaceOnUse"><stop stop-color="#276DC3"/><stop offset="1" stop-color="#165CAA"/></linearGradient></defs></svg>',
+            },
+            {
+                id: "python",
+                label: "Python",
+                color: "#FFD43B",
+                glowColor: "rgba(255,212,59,0.55)",
+                beamColor: "#FFD43B",
+                svg: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M23.2371 6.55545C21.8695 6.5618 20.5635 6.67844 19.4143 6.88179C16.0289 7.47988 15.4143 8.73172 15.4142 11.0403L15.4142 14.0893L23.4143 14.0893L23.4143 15.1056L12.4119 15.1056C10.0869 15.1056 8.05099 16.5031 7.4142 19.1616C6.67966 22.2088 6.64708 24.1104 7.4142 27.2922C7.98287 29.6606 9.34094 31.3482 11.666 31.3482L14.4166 31.3482L14.4166 27.6931C14.4166 25.0526 16.7012 22.7234 19.4143 22.7234L27.405 22.7234C29.6293 22.7234 31.405 20.8919 31.405 18.6581L31.405 11.0403C31.405 8.87227 29.576 7.24363 27.405 6.88179C26.0307 6.65302 24.6048 6.5491 23.2371 6.55545ZM18.9108 9.00768C19.7371 9.00768 20.412 9.69353 20.412 10.5368C20.412 11.3771 19.7371 12.0567 18.9108 12.0567C18.0815 12.0567 17.4096 11.3771 17.4096 10.5368C17.4096 9.69353 18.0815 9.00768 18.9108 9.00768Z" fill="url(#pyg0)"/><path d="M32.4027 15.1056L32.4027 18.6581C32.4027 21.4123 30.0677 23.7304 27.405 23.7304L19.4143 23.7304C17.2255 23.7304 15.4142 25.6037 15.4142 27.7957L15.4142 35.4135C15.4142 37.5815 17.2995 38.8568 19.4143 39.4788C21.9466 40.2234 24.375 40.3579 27.405 39.4788C29.419 38.8956 31.405 37.7221 31.405 35.4135L31.405 32.3645L23.4143 32.3645L23.4143 31.3482L35.405 31.3482C37.7301 31.3482 38.5965 29.7264 39.4051 27.2922C40.2403 24.7862 40.2048 22.3763 39.4051 19.1616C38.8305 16.847 37.733 15.1056 35.405 15.1056L32.4027 15.1056ZM27.9085 34.3971C28.7378 34.3971 29.4097 35.0767 29.4097 35.917C29.4097 36.7603 28.7378 37.4461 27.9085 37.4461C27.0821 37.4461 26.4073 36.7603 26.4073 35.917C26.4073 35.0767 27.0821 34.3971 27.9085 34.3971Z" fill="url(#pyg1)"/><defs><linearGradient id="pyg0" x1="6.85101" y1="6.55518" x2="31.7965" y2="27.7846" gradientUnits="userSpaceOnUse"><stop stop-color="#5A9FD4"/><stop offset="1" stop-color="#306998"/></linearGradient><linearGradient id="pyg1" x1="27.7162" y1="35.6606" x2="21.0981" y2="26.3866" gradientUnits="userSpaceOnUse"><stop stop-color="#FFD43B"/><stop offset="1" stop-color="#FFE873"/></linearGradient></defs></svg>',
+            },
+            {
+                id: "ruby",
+                label: "Ruby",
+                color: "#E42B1E",
+                glowColor: "rgba(228,43,30,0.6)",
+                beamColor: "#FB7655",
+                svg: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#rclip)"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.7457 28.8934L13.598 40.2613L38.3877 38.5791L40.2991 13.584L32.7457 28.8934Z" fill="url(#rl0)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M38.431 38.5623L36.3002 23.8564L30.4961 31.5203L38.431 38.5623Z" fill="url(#rl1)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M38.4589 38.5623L22.8491 37.3369L13.6832 40.2292L38.4589 38.5623Z" fill="url(#rl2)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.7042 40.2334L17.6039 27.4585L9.02346 29.2931L13.7042 40.2334Z" fill="url(#rl3)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30.4947 31.5621L26.9066 17.5073L16.637 27.1342L30.4947 31.5621Z" fill="url(#rl4)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.4845 17.7057L29.7779 9.77783L27.0757 18.5161L39.4845 17.7057Z" fill="url(#rl5)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M34.9463 6.9511L29.2372 10.106L25.6352 6.90918L34.9463 6.9511Z" fill="url(#rl6)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M6.76554 33.5785L9.1576 29.2163L7.22244 24.02L6.76554 33.5785Z" fill="url(#rl7)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M7.0939 23.8563L9.04024 29.3768L17.4977 27.4794L27.1525 18.5063L29.8771 9.85049L25.589 6.82129L18.2955 9.55148C15.9957 11.6892 11.5357 15.9187 11.375 15.9983C11.2171 16.0793 8.42965 21.3441 7.0939 23.8563Z" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.9277 13.9372C18.9089 8.99935 25.3305 6.08193 27.7953 8.56761C30.2572 11.0547 27.6458 17.0963 22.6646 22.0327C17.6835 26.9705 11.3415 30.0486 8.87955 27.563C6.41483 25.0773 8.94661 18.875 13.9277 13.9372Z" fill="url(#rl8)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.7042 40.2289L17.5745 27.4121L30.4235 31.5395C25.7777 35.8961 20.6107 39.5806 13.7042 40.2289Z" fill="url(#rl9)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.1707 18.4814L30.4682 31.5469C34.3497 27.467 37.833 23.0797 39.539 17.6528L27.1707 18.4814Z" fill="url(#rl10)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.5055 17.7195C40.8259 13.7346 41.1304 8.0199 34.9044 6.95801L29.7975 9.78042L39.5055 17.7195Z" fill="url(#rl11)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M6.76554 33.5208C6.94718 40.0962 11.6922 40.194 13.714 40.2513L9.04582 29.3501L6.76554 33.5208Z" fill="#9E1209"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.1889 18.5024C30.1705 20.3341 36.1814 24.0158 36.303 24.0829C36.493 24.1905 38.8949 20.0337 39.4398 17.6836L27.1889 18.501Z" fill="url(#rr12)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M17.5689 27.4121L22.7415 37.3911C25.8 35.7326 28.1949 33.7122 30.3885 31.5465L17.5689 27.4121Z" fill="url(#rr13)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9.02488 29.3644L8.29273 38.0901C9.67599 39.9792 11.5762 40.144 13.5729 39.9959C12.1295 36.4023 9.24564 29.2191 9.02488 29.3644Z" fill="url(#rl14)"/><path fill-rule="evenodd" clip-rule="evenodd" d="M29.7668 9.80152L40.042 11.2435C39.4929 8.91987 37.8092 7.42064 34.9393 6.95117L29.7668 9.80152Z" fill="url(#rl15)"/></g><defs><linearGradient id="rl0" x1="36.2276" y1="43.3031" x2="29.1534" y2="30.8132" gradientUnits="userSpaceOnUse"><stop stop-color="#FB7655"/><stop offset="0.41" stop-color="#E42B1E"/><stop offset="1" stop-color="#990000"/></linearGradient><linearGradient id="rl1" x1="39.7514" y1="32.8113" x2="30.6344" y2="26.6928" gradientUnits="userSpaceOnUse"><stop stop-color="#871101"/><stop offset="1" stop-color="#911209"/></linearGradient><linearGradient id="rl2" x1="32.4564" y1="43.6817" x2="23.3409" y2="37.5633" gradientUnits="userSpaceOnUse"><stop stop-color="#871101"/><stop offset="1" stop-color="#911209"/></linearGradient><linearGradient id="rl3" x1="13.3144" y1="28.3821" x2="14.7284" y2="37.5675" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="0.23" stop-color="#E57252"/><stop offset="0.46" stop-color="#DE3B20"/><stop offset="1" stop-color="#A60003"/></linearGradient><linearGradient id="rl4" x1="23.0363" y1="19.8058" x2="23.5561" y2="29.1798" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="0.23" stop-color="#E4714E"/><stop offset="0.56" stop-color="#BE1A0D"/><stop offset="1" stop-color="#A80D00"/></linearGradient><linearGradient id="rl5" x1="31.6628" y1="11.1401" x2="33.2221" y2="17.8594" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="0.18" stop-color="#E46342"/><stop offset="0.4" stop-color="#C82410"/><stop offset="1" stop-color="#A80D00"/></linearGradient><linearGradient id="rl6" x1="26.9024" y1="8.77448" x2="33.6203" y2="5.41554" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="0.54" stop-color="#C81F11"/><stop offset="1" stop-color="#BF0905"/></linearGradient><linearGradient id="rl7" x1="7.42643" y1="26.0404" x2="7.97974" y2="31.5762" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="0.31" stop-color="#DE4024"/><stop offset="1" stop-color="#BF190B"/></linearGradient><linearGradient id="rl8" x1="3.62456" y1="33.0723" x2="29.6173" y2="6.34601" gradientUnits="userSpaceOnUse"><stop stop-color="#BD0012"/><stop offset="0.07" stop-color="white"/><stop offset="0.17" stop-color="white"/><stop offset="0.27" stop-color="#C82F1C"/><stop offset="0.33" stop-color="#820C01"/><stop offset="0.46" stop-color="#A31601"/><stop offset="0.72" stop-color="#B31301"/><stop offset="1" stop-color="#E82609"/></linearGradient><linearGradient id="rl9" x1="23.5337" y1="35.769" x2="15.705" y2="33.8366" gradientUnits="userSpaceOnUse"><stop stop-color="#8C0C01"/><stop offset="0.54" stop-color="#990C00"/><stop offset="1" stop-color="#A80D0E"/></linearGradient><linearGradient id="rl10" x1="36.9807" y1="26.3716" x2="30.0267" y2="20.1385" gradientUnits="userSpaceOnUse"><stop stop-color="#7E110B"/><stop offset="1" stop-color="#9E0C00"/></linearGradient><linearGradient id="rl11" x1="39.5362" y1="14.9348" x2="36.0725" y2="11.2307" gradientUnits="userSpaceOnUse"><stop stop-color="#79130D"/><stop offset="1" stop-color="#9E120B"/></linearGradient><radialGradient id="rr12" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(31.1095 20.2573) scale(8.52304)"><stop stop-color="#A80D00"/><stop offset="1" stop-color="#7E0E08"/></radialGradient><radialGradient id="rr13" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.3057 31.4892) scale(11.3302)"><stop stop-color="#A30C00"/><stop offset="1" stop-color="#800E08"/></radialGradient><linearGradient id="rl14" x1="11.28" y1="40.2209" x2="8.45621" y2="30.6415" gradientUnits="userSpaceOnUse"><stop stop-color="#8B2114"/><stop offset="0.43" stop-color="#9E100A"/><stop offset="1" stop-color="#B3100C"/></linearGradient><linearGradient id="rl15" x1="32.9385" y1="8.47974" x2="39.2679" y2="11.2742" gradientUnits="userSpaceOnUse"><stop stop-color="#B31000"/><stop offset="0.44" stop-color="#910F08"/><stop offset="1" stop-color="#791C12"/></linearGradient><clipPath id="rclip"><rect width="34.1219" height="34.1219" fill="white" transform="translate(6.47139 6.4375)"/></clipPath></defs></svg>',
+            },
+            {
+                id: "js",
+                label: "JS",
+                color: "#F7DF1E",
+                glowColor: "rgba(247,223,30,0.5)",
+                beamColor: "#F7DF1E",
+                svg: '<svg width="42" height="42" viewBox="0 0 44 44" fill="none"><rect x="5" y="5" width="34" height="34" rx="3" fill="#F7DF1E"/><text x="8" y="33" font-family="monospace" font-weight="800" font-size="15" fill="#000">JS</text></svg>',
+            },
+            {
+                id: "julia",
+                label: "Julia",
+                color: "#9558B2",
+                glowColor: "rgba(149,88,178,0.6)",
+                beamColor: "#9558B2",
+                svg: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.7886 39.4332C17.995 39.4332 21.4048 36.0233 21.4048 31.817C21.4048 27.6107 17.995 24.2008 13.7886 24.2008C9.58232 24.2008 6.17243 27.6107 6.17243 31.817C6.17243 36.0233 9.58232 39.4332 13.7886 39.4332Z" fill="#D5635C"/><path d="M13.7887 40.0155C12.1669 40.0155 10.5816 39.5346 9.23315 38.6336C7.88471 37.7326 6.83372 36.4519 6.2131 34.9536C5.59248 33.4553 5.4301 31.8066 5.74649 30.216C6.06288 28.6254 6.84383 27.1644 7.99059 26.0176C9.13735 24.8708 10.5984 24.0899 12.189 23.7735C13.7796 23.4571 15.4283 23.6195 16.9266 24.2401C18.4249 24.8607 19.7056 25.9117 20.6066 27.2602C21.5076 28.6086 21.9885 30.194 21.9885 31.8157C21.9861 33.9897 21.1214 36.0739 19.5842 37.6112C18.0469 39.1484 15.9627 40.0131 13.7887 40.0155ZM13.7887 24.7844C12.398 24.7844 11.0386 25.1967 9.8823 25.9694C8.726 26.742 7.82477 27.8401 7.29259 29.1249C6.7604 30.4097 6.62116 31.8235 6.89246 33.1875C7.16377 34.5514 7.83344 35.8043 8.81679 36.7876C9.80014 37.771 11.053 38.4407 12.417 38.712C13.7809 38.9833 15.1947 38.844 16.4795 38.3118C17.7643 37.7796 18.8624 36.8784 19.6351 35.7221C20.4077 34.5658 20.8201 33.2064 20.8201 31.8157C20.8176 29.9517 20.076 28.1648 18.7579 26.8469C17.4397 25.529 15.6527 24.7864 13.7887 24.7844Z" fill="#CB3C33"/><path d="M23.7845 22.2978C27.9909 22.2978 31.4007 18.888 31.4007 14.6816C31.4007 10.4753 27.9909 7.06543 23.7845 7.06543C19.5782 7.06543 16.1683 10.4753 16.1683 14.6816C16.1683 18.888 19.5782 22.2978 23.7845 22.2978Z" fill="#60AD51"/><path d="M23.7845 22.8815C22.1628 22.8815 20.5774 22.4006 19.229 21.4996C17.8805 20.5986 16.8296 19.3179 16.2089 17.8196C15.5883 16.3213 15.4259 14.6726 15.7423 13.082C16.0587 11.4914 16.8397 10.0304 17.9864 8.88359C19.1332 7.73684 20.5942 6.95588 22.1848 6.63949C23.7754 6.3231 25.4241 6.48549 26.9225 7.10611C28.4208 7.72673 29.7014 8.77771 30.6024 10.1262C31.5034 11.4746 31.9843 13.0599 31.9843 14.6817C31.9819 16.8557 31.1172 18.9399 29.58 20.4772C28.0428 22.0144 25.9585 22.8791 23.7845 22.8815ZM23.7845 7.65296C22.3939 7.65296 21.0344 8.06534 19.8781 8.83796C18.7218 9.61057 17.8206 10.7087 17.2884 11.9935C16.7562 13.2783 16.617 14.6921 16.8883 16.0561C17.1596 17.42 17.8293 18.6729 18.8126 19.6562C19.796 20.6396 21.0488 21.3092 22.4128 21.5805C23.7767 21.8519 25.1905 21.7126 26.4753 21.1804C27.7601 20.6482 28.8583 19.747 29.6309 18.5907C30.4035 17.4344 30.8159 16.075 30.8159 14.6843C30.8138 12.8201 30.0724 11.0329 28.7542 9.71468C27.436 8.39649 25.6487 7.65503 23.7845 7.65296Z" fill="#389826"/><path d="M33.7806 39.4332C37.987 39.4332 41.3968 36.0233 41.3968 31.817C41.3968 27.6107 37.987 24.2008 33.7806 24.2008C29.5743 24.2008 26.1644 27.6107 26.1644 31.817C26.1644 36.0233 29.5743 39.4332 33.7806 39.4332Z" fill="#AA79C1"/><path d="M33.7807 40.0155C32.1589 40.0155 30.5735 39.5345 29.225 38.6335C27.8765 37.7324 26.8256 36.4517 26.205 34.9533C25.5844 33.4549 25.4221 31.8062 25.7386 30.2155C26.0551 28.6249 26.8362 27.1638 27.983 26.0171C29.1299 24.8704 30.5911 24.0896 32.1818 23.7733C33.7725 23.4571 35.4212 23.6197 36.9195 24.2405C38.4178 24.8613 39.6983 25.9125 40.5992 27.2611C41.5 28.6097 41.9807 30.1952 41.9805 31.817C41.9777 33.9908 41.1129 36.0747 39.5757 37.6116C38.0385 39.1486 35.9545 40.0131 33.7807 40.0155ZM33.7807 24.7844C32.39 24.7844 31.0306 25.1967 29.8743 25.9694C28.718 26.742 27.8168 27.8401 27.2846 29.1249C26.7524 30.4097 26.6132 31.8235 26.8845 33.1875C27.1558 34.5514 27.8254 35.8043 28.8088 36.7876C29.7921 37.771 31.045 38.4407 32.409 38.712C33.7729 38.9833 35.1867 38.844 36.4715 38.3118C37.7563 37.7796 38.8544 36.8784 39.6271 35.7221C40.3997 34.5658 40.812 33.2064 40.812 31.8157C40.8096 29.9517 40.068 28.1648 38.7499 26.8469C37.4317 25.529 35.6447 24.7864 33.7807 24.7844Z" fill="#9558B2"/></svg>',
+            },
+            {
+                id: "cpp",
+                label: "C++",
+                color: "#00599C",
+                glowColor: "rgba(0,89,156,0.6)",
+                beamColor: "#659AD2",
+                svg: '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38.5204 31.9158C38.7542 31.5108 38.8995 31.0545 38.8995 30.6447L38.8995 16.4201C38.8995 16.0103 38.7544 15.5541 38.5205 15.1491L24 23.5325L38.5204 31.9158Z" fill="#00599C"/><path d="M25.2903 39.9918L37.6092 32.8796C37.9641 32.6747 38.2866 32.3209 38.5204 31.9158L24 23.5325L9.4796 31.9159C9.71342 32.3209 10.036 32.6748 10.3908 32.8796L22.7097 39.9918C23.4193 40.4016 24.5807 40.4016 25.2903 39.9918Z" fill="#004482"/><path d="M38.5205 15.1491C38.2866 14.744 37.964 14.3901 37.6092 14.1852L25.2903 7.07296C24.5807 6.66318 23.4193 6.66318 22.7097 7.07296L10.3908 14.1852C9.68109 14.5949 9.10049 15.6006 9.10049 16.4201L9.10049 30.6447C9.10049 31.0545 9.24569 31.5108 9.4796 31.9158L24 23.5325L38.5205 15.1491Z" fill="#659AD2"/><path d="M24 33.4655C18.5229 33.4655 14.067 29.0095 14.067 23.5325C14.067 18.0554 18.5229 13.5994 24 13.5994C27.5342 13.5994 30.8303 15.5013 32.6019 18.5628L28.3031 21.0504C27.4165 19.518 25.7675 18.5659 24 18.5659C21.2614 18.5659 19.0335 20.7939 19.0335 23.5325C19.0335 26.2709 21.2614 28.499 24 28.499C25.7677 28.499 27.4167 27.5469 28.3034 26.0142L32.6022 28.5017C30.8306 31.5635 27.5344 33.4655 24 33.4655Z" fill="white"/><path d="M33.933 22.9806L32.8293 22.9806L32.8293 21.8769L31.7258 21.8769L31.7258 22.9806L30.622 22.9806L30.622 24.0842L31.7258 24.0842L31.7258 25.188L32.8293 25.188L32.8293 24.0842L33.933 24.0842L33.933 22.9806Z" fill="white"/><path d="M38.0718 22.9806L36.968 22.9806L36.968 21.8769L35.8645 21.8769L35.8645 22.9806L34.7608 22.9806L34.7608 24.0842L35.8645 24.0842L35.8645 25.188L36.968 25.188L36.968 24.0842L38.0718 24.0842L38.0718 22.9806Z" fill="white"/></svg>',
+            },
+        ]
+
+        var scene = root.querySelector("#oa2-scene")
+        var svgEl = root.querySelector("#oa2-connector-svg")
+
+        var totalW = LANGS.length * CARD_W + (LANGS.length - 1) * 16
+        var startX = (SW - totalW) / 2
+
+        function cardCX(i) {
+            return startX + i * (CARD_W + 16) + CARD_W / 2
+        }
+
+        function kestraPoint(angle) {
+            return {
+                x: KESTRA_CX + KESTRA_R * Math.sin(angle),
+                y: KESTRA_CY - KESTRA_R * Math.cos(angle),
+            }
+        }
+
+        function angleToCard(i) {
+            var dx = cardCX(i) - KESTRA_CX
+            var dy = CARD_BOTTOM - KESTRA_CY
+            return Math.atan2(dx, -dy)
+        }
+
+        var kestraBottom = { x: KESTRA_CX, y: KESTRA_CY + KESTRA_R }
+
+        LANGS.forEach(function (l, i) {
+            var card = document.createElement("div")
+            card.className = "lang-card"
+            card.id = "oa2-card-" + l.id
+            card.style.left = startX + i * (CARD_W + 16) + "px"
+            card.style.top = CARD_Y + "px"
+            card.innerHTML =
+                '<div class="glow" style="background:' +
+                l.glowColor +
+                '"></div>' +
+                l.svg
+            scene.appendChild(card)
+        })
+
+        var kestraWrap = document.createElement("div")
+        kestraWrap.id = "oa2-kestra"
+        kestraWrap.className = "kestra-wrap"
+        kestraWrap.style.cssText =
+            "top:" +
+            (KESTRA_CY - KESTRA_R) +
+            "px;width:" +
+            KESTRA_R * 2 +
+            "px;height:" +
+            KESTRA_R * 2 +
+            "px;border-radius:50%;"
+        kestraWrap.innerHTML =
+            '\
+  <div class="kestra-glow"></div>\
+  <div class="kestra-ring"></div>\
+  <div class="kestra-inner">\
+    <svg width="46" height="46" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">\
+      <path d="M23.2073 19.1959C24.1832 18.22 25.7655 18.22 26.7415 19.1959L30.7532 23.2077C31.7291 24.1836 31.7291 25.7659 30.7532 26.7418L26.7415 30.7536C25.7655 31.7295 24.1832 31.7295 23.2073 30.7536L19.1956 26.7418C18.2196 25.7659 18.2196 24.1836 19.1956 23.2077L23.2073 19.1959Z" fill="#A950FF"/>\
+      <path d="M41.6846 19.164C42.643 18.2055 44.197 18.2055 45.1555 19.164L49.2305 23.2389C50.1889 24.1974 50.1889 25.7514 49.2305 26.7099L45.1555 30.7848C44.197 31.7433 42.643 31.7433 41.6846 30.7848L37.6096 26.7099C36.6511 25.7514 36.6511 24.1974 37.6096 23.2389L41.6846 19.164Z" fill="#A950FF"/>\
+      <path d="M23.2389 0.718862C24.1974 -0.23962 25.7514 -0.239621 26.7099 0.71886L30.7848 4.7938C31.7433 5.75228 31.7433 7.30628 30.7848 8.26476L26.7099 12.3397C25.7514 13.2982 24.1974 13.2982 23.2389 12.3397L19.164 8.26477C18.2055 7.30629 18.2055 5.75228 19.164 4.7938L23.2389 0.718862Z" fill="#E9C1FF"/>\
+      <path d="M21.5313 13.985C22.5072 14.9609 22.5072 16.5433 21.5313 17.5192L17.5196 21.5309C16.5436 22.5068 14.9613 22.5069 13.9854 21.5309L9.97367 17.5192C8.99773 16.5433 8.99773 14.9609 9.97367 13.985L13.9854 9.9733C14.9613 8.99736 16.5436 8.99736 17.5196 9.9733L21.5313 13.985Z" fill="#CD88FF"/>\
+      <path d="M12.3397 23.2389C13.2982 24.1974 13.2982 25.7514 12.3397 26.7099L8.26476 30.7848C7.30628 31.7433 5.75228 31.7433 4.79379 30.7848L0.718861 26.7099C-0.23962 25.7514 -0.239621 24.1974 0.718861 23.2389L4.7938 19.164C5.75228 18.2055 7.30629 18.2055 8.26477 19.164L12.3397 23.2389Z" fill="#A950FF"/>\
+      <path d="M39.9762 13.985C40.9521 14.9609 40.9521 16.5433 39.9762 17.5192L35.9645 21.5309C34.9886 22.5068 33.4062 22.5069 32.4303 21.5309L28.4186 17.5192C27.4426 16.5433 27.4426 14.9609 28.4186 13.985L32.4303 9.9733C33.4062 8.99736 34.9886 8.99736 35.9645 9.9733L39.9762 13.985Z" fill="#CD88FF"/>\
+      <path d="M28.9225 40.3319C31.1028 42.5123 31.1028 46.0473 28.9225 48.2276C26.7422 50.408 23.2071 50.408 21.0268 48.2276C18.8465 46.0473 18.8465 42.5123 21.0268 40.3319C23.2072 38.1516 26.7422 38.1516 28.9225 40.3319Z" fill="#F62E76"/>\
+    </svg>\
+  </div>\
+  <svg class="refresh-icon" id="oa2-refresh-icon" viewBox="0 0 24 24" fill="none">\
+    <path d="M12 4C9.33 4 7 5.34 5.56 7.36L3 4.81V11H9.19L6.41 8.22C7.5 6.86 9.15 6 11 6C14.31 6 17 8.69 17 12H19C19 7.58 15.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12H4C4 16.42 7.58 20 12 20C14.67 20 17 18.66 18.44 16.64L21 19.19V13H14.81L17.59 15.78C16.5 17.14 14.85 18 13 18H12Z" fill="#631BFF"/>\
+  </svg>'
+        scene.appendChild(kestraWrap)
+
+        var refreshIcon = kestraWrap.querySelector(".refresh-icon")
+        refreshIcon.style.left = KESTRA_R * 2 + 8 + "px"
+        refreshIcon.style.top = KESTRA_R - 11 + "px"
+
+        var successArea = document.createElement("div")
+        successArea.className = "success-area"
+        successArea.id = "oa2-success-area"
+        successArea.style.top = SUCCESS_Y - 11 + "px"
+        successArea.innerHTML =
+            '\
+  <div class="success-check">\
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">\
+      <path d="M2 7L5.5 10.5L12 4" stroke="#06F0B1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>\
+    </svg>\
+  </div>\
+  <span class="success-label" id="oa2-success-label">Success</span>'
+        scene.appendChild(successArea)
+
+        var beamPaths = []
+        var defs = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "defs",
+        )
+        svgEl.appendChild(defs)
+
+        LANGS.forEach(function (l, i) {
+            var cx = cardCX(i),
+                cy = CARD_BOTTOM
+            var angle = angleToCard(i)
+            var kPt = kestraPoint(angle)
+            var midY = (cy + kPt.y) / 2
+            var pathD =
+                "M " +
+                cx +
+                " " +
+                cy +
+                " C " +
+                cx +
+                " " +
+                midY +
+                ", " +
+                kPt.x +
+                " " +
+                midY +
+                ", " +
+                kPt.x +
+                " " +
+                kPt.y
+
+            var base = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path",
+            )
+            base.setAttribute("d", pathD)
+            base.setAttribute("stroke", "rgba(255,255,255,0.12)")
+            base.setAttribute("stroke-width", "1.5")
+            base.setAttribute("stroke-dasharray", "3 3")
+            base.setAttribute("fill", "none")
+            svgEl.appendChild(base)
+
+            var gradId = "oa2-beam-grad-" + i
+            var grad = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "linearGradient",
+            )
+            grad.setAttribute("id", gradId)
+            grad.setAttribute("gradientUnits", "userSpaceOnUse")
+            grad.setAttribute("x1", cx)
+            grad.setAttribute("y1", cy)
+            grad.setAttribute("x2", kPt.x)
+            grad.setAttribute("y2", kPt.y)
+            var s1 = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "stop",
+            )
+            s1.setAttribute("offset", "0%")
+            s1.setAttribute("stop-color", l.beamColor)
+            var s2 = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "stop",
+            )
+            s2.setAttribute("offset", "100%")
+            s2.setAttribute("stop-color", "#631BFF")
+            grad.appendChild(s1)
+            grad.appendChild(s2)
+            defs.appendChild(grad)
+
+            var beam = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "path",
+            )
+            beam.setAttribute("d", pathD)
+            beam.setAttribute("stroke", "url(#" + gradId + ")")
+            beam.setAttribute("stroke-width", "2.5")
+            beam.setAttribute("fill", "none")
+            beam.setAttribute("stroke-linecap", "round")
+            beam.setAttribute("stroke-dasharray", "300")
+            beam.setAttribute("stroke-dashoffset", "300")
+            beam.style.opacity = "0"
+            svgEl.appendChild(beam)
+            beamPaths.push(beam)
+        })
+
+        var successLineLen = SUCCESS_Y - kestraBottom.y - 22
+        var successLine = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line",
+        )
+        successLine.setAttribute("x1", KESTRA_CX)
+        successLine.setAttribute("y1", kestraBottom.y)
+        successLine.setAttribute("x2", KESTRA_CX)
+        successLine.setAttribute("y2", SUCCESS_Y - 22)
+        successLine.setAttribute("stroke", "#631BFF")
+        successLine.setAttribute("stroke-width", "1.5")
+        successLine.setAttribute("stroke-dasharray", successLineLen)
+        successLine.setAttribute("stroke-dashoffset", successLineLen)
+        successLine.style.opacity = "0"
+        svgEl.appendChild(successLine)
+
+        var kestra = root.querySelector("#oa2-kestra")
+        var rIcon = root.querySelector("#oa2-refresh-icon")
+        var sucArea = root.querySelector("#oa2-success-area")
+        var sucLabel = root.querySelector("#oa2-success-label")
+
+        var currentIdx = -1
+        var tids = []
+        function q(fn, ms) {
+            var t = setTimeout(function () {
+                if (isPaused()) {
+                    q(fn, 100)
+                } else {
+                    fn()
+                }
+            }, ms)
+            tids.push(t)
+        }
+        function clearAll() {
+            for (var i = 0; i < tids.length; i++) {
+                clearTimeout(tids[i])
+            }
+            tids = []
+        }
+
+        function resetLang(i) {
+            if (i < 0) return
+            var card = root.querySelector("#oa2-card-" + LANGS[i].id)
+            card.classList.remove("active")
+            card.style.borderColor = ""
+            card.style.boxShadow = ""
+            var b = beamPaths[i]
+            b.style.animation = "none"
+            b.style.opacity = "0"
+            b.setAttribute("stroke-dashoffset", "300")
+        }
+
+        function resetKestra() {
+            kestra.classList.remove("active")
+            rIcon.classList.remove("spinning")
+            rIcon.style.opacity = "0"
+            sucArea.classList.remove("show")
+            successLine.style.opacity = "0"
+            successLine.setAttribute("stroke-dashoffset", successLineLen)
+        }
+
+        function activateLang(i) {
+            var l = LANGS[i]
+            var card = root.querySelector("#oa2-card-" + l.id)
+            var beam = beamPaths[i]
+
+            card.classList.add("active")
+            card.style.borderColor = l.color
+            card.style.boxShadow =
+                "0 0 16px " + l.glowColor + ", inset 0 0 6px " + l.glowColor
+
+            q(function () {
+                beam.style.opacity = "1"
+                beam.setAttribute("stroke-dashoffset", "300")
+                beam.offsetHeight
+                beam.style.animation = "none"
+                beam.offsetHeight
+                beam.style.animation = "oa2-beam-travel 0.75s ease-in forwards"
+                beam.addEventListener(
+                    "animationend",
+                    function () {
+                        beam.style.animation = "none"
+                        beam.setAttribute("stroke-dashoffset", "0")
+                        beam.style.opacity = "1"
+                    },
+                    { once: true },
+                )
+            }, 300)
+
+            q(function () {
+                kestra.classList.add("active")
+                rIcon.style.opacity = "1"
+                rIcon.classList.add("spinning")
+            }, 900)
+
+            q(function () {
+                successLine.style.opacity = "1"
+                successLine.style.transition = "none"
+                successLine.setAttribute("stroke-dashoffset", successLineLen)
+                successLine.offsetHeight
+                successLine.style.transition = "stroke-dashoffset 0.5s ease-out"
+                successLine.setAttribute("stroke-dashoffset", "0")
+            }, 1550)
+
+            q(function () {
+                rIcon.classList.remove("spinning")
+                rIcon.style.opacity = "0"
+                sucLabel.textContent = l.label + " — Success"
+                sucArea.classList.add("show")
+            }, 2000)
+        }
+
+        var HOLD = 3000
+        var PAUSE = 500
+
+        function runCycle() {
+            function next() {
+                var prev = currentIdx
+                currentIdx = (currentIdx + 1) % LANGS.length
+                if (prev >= 0) {
+                    resetLang(prev)
+                    resetKestra()
+                }
+                q(
+                    function () {
+                        activateLang(currentIdx)
+                        q(next, HOLD)
+                    },
+                    prev >= 0 ? PAUSE : 0,
+                )
+            }
+            next()
+        }
+
+        setTimeout(runCycle, 500)
+    })()
+</script>
+

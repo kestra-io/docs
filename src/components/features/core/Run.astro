@@ -1,0 +1,90 @@
+---
+import { Icon } from "astro-icon/components"
+
+const CARDS = [
+    "Deploy with Docker, Kubernetes, or VM-based setups.",
+    "Scale execution capacity horizontally as workloads grow.",
+    "Operate reliably with fault-tolerant design patterns and production-ready architecture options.",
+]
+---
+
+<section class="run">
+    <div class="container">
+        <h2 data-usal="fade-l">
+            Run Anywhere, <br class="d-none d-md-block" />
+            Scale When it Matters
+        </h2>
+        <p data-usal="fade-r">
+            Start small on a laptop, deploy on a VM, or run in Kubernetes. When
+            load grows, Kestra's architecture supports scaling and high
+            availability patterns so orchestration doesn't become your
+            bottleneck.
+        </p>
+
+        <div class="cards">
+            {
+                CARDS.map((text) => (
+                    <div class="card" data-usal="zoomin">
+                        <Icon name="mdi:check-bold" class="check-icon" />
+                        <p>{text}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .run {
+        padding: 5.625rem 1rem;
+        background: var(--ks-background-body);
+        border-bottom: 0.0625rem solid var(--ks-border-primary);
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            p {
+                max-width: $container-max-width;
+                margin-top: 1rem;
+            }
+        }
+
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            width: 100%;
+            align-items: center;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            max-width: 52.5rem;
+            width: 100%;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            background: var(--ks-background-primary);
+            border: 1px solid var(--ks-border-secondary);
+            box-shadow: 2px 0.1875rem 1rem 0px var(--ks-shadows-light);
+            color: var(--ks-content-primary);
+            text-align: left;
+
+            .check-icon {
+                display: flex;
+                flex-shrink: 0;
+                margin-right: 2rem;
+                margin-bottom: -0.25rem;
+                width: 2rem;
+                height: 2rem;
+                color: var(--ks-icon-color);
+            }
+        }
+    }
+</style>
+

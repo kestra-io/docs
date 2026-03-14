@@ -123,13 +123,13 @@ export default defineConfig({
             {
                 provider: fontProviders.google(),
                 name: "Mona Sans",
-                weights: [400, 500, 600, 700],
+                weights: [300, 400, 500, 600, 700],
                 cssVariable: "--font-family-mona-sans",
             },
             {
                 provider: fontProviders.google(),
                 name: "JetBrains Mono",
-                weights: [400, 500, 600, 700],
+                weights: [200, 300, 400, 500, 600, 700],
                 cssVariable: "--font-family-jetbrains-mono",
             },
         ],
