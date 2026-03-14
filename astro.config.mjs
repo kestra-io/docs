@@ -25,13 +25,7 @@ const __dirname = path.dirname(
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
-    adapter: cloudflare({
-        // only use cloudflare images in production
-        imageService:
-            process.env.NO_IMAGE_OPTIM === "true"
-                ? "passthrough"
-                : "cloudflare",
-    }),
+    adapter: cloudflare({ prerenderEnvironment: "node" }),
     trailingSlash: "ignore",
     integrations: [
         vue({
@@ -41,7 +35,6 @@ export default defineConfig({
                 },
             },
             appEntrypoint: "./src/vue-setup.ts",
-            devtools: { launchEditor: "idea" },
         }),
         expressiveCode(),
         mdx(),
@@ -118,21 +111,21 @@ export default defineConfig({
     image: {
         layout: "constrained",
     },
+    fonts: [
+        {
+            provider: fontProviders.google(),
+            name: "Mona Sans",
+            weights: [400, 500, 600, 700],
+            cssVariable: "--font-family-mona-sans",
+        },
+        {
+            provider: fontProviders.google(),
+            name: "JetBrains Mono",
+            weights: [400, 500, 600, 700],
+            cssVariable: "--font-family-jetbrains-mono",
+        },
+    ],
     experimental: {
-        fonts: [
-            {
-                provider: fontProviders.google(),
-                name: "Mona Sans",
-                weights: [400, 500, 600, 700],
-                cssVariable: "--font-family-mona-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "JetBrains Mono",
-                weights: [400, 500, 600, 700],
-                cssVariable: "--font-family-jetbrains-mono",
-            },
-        ],
         svgo: {
             plugins: [
                 {
@@ -204,7 +197,6 @@ export default defineConfig({
                     __dirname,
                     "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
                 ),
-                "~": path.resolve("./src"),
             },
         },
         css: {

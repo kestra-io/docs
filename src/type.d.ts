@@ -62,11 +62,6 @@ interface PluginInformation {
     isEnterprise?: boolean
 }
 
-type KVNamespace = import("@cloudflare/workers-types").KVNamespace
-type ENV = {
-    ISR_CACHE: KVNamespace
-}
-
 type Runtime = import("@astrojs/cloudflare").Runtime<ENV>
 
 declare namespace App {
@@ -76,7 +71,7 @@ declare namespace App {
 }
 
 declare module "*.vue" {
-    import { DefineComponent } from "vue";
-    const component: DefineComponent<{}, {}, any>;
-    export default component;
+    import { DefineComponent } from "vue"
+    const component: DefineComponent<{}, {}, any>
+    export default component
 }
