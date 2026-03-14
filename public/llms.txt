@@ -1,0 +1,137 @@
+# Kestra
+
+> Kestra is an open-source orchestration platform for building, scheduling, and running business-critical workflows. It combines declarative YAML flows, event-driven and scheduled automation, API-first operations, and a large plugin ecosystem for data, infrastructure, and application workflows.
+
+Kestra docs are available as markdown. Append `.md` to any docs URL or set `Accept: text/markdown`. This is the primary LLM-oriented index for Kestra documentation and key product pages on `kestra.io`. Use it to find the best entry point for product concepts, setup, workflow authoring, operations, APIs, plugins, and platform resources.
+
+## Get Started
+
+First-time setup, local installation, your first flow, and the fastest path to understanding how Kestra works.
+
+- [Quickstart](https://kestra.io/docs/quickstart): Run Kestra locally with Docker and execute your first workflow
+- [Installation Guide](https://kestra.io/docs/installation): Choose Docker, Docker Compose, Kubernetes, VM, or standalone installation paths
+- [Tutorial](https://kestra.io/docs/tutorial): Learn Kestra step by step with inputs, outputs, triggers, and errors
+- [Architecture](https://kestra.io/docs/architecture): Understand the main deployment models and system components
+- [Why Kestra](https://kestra.io/docs/why-kestra): Product positioning and core platform value
+- [Open Source vs. Enterprise Edition](https://kestra.io/docs/oss-vs-paid): Compare OSS, Enterprise, and hosted capabilities
+
+## Build Workflows
+
+Core authoring concepts for flows, tasks, triggers, variables, expressions, namespace assets, and execution behavior.
+
+All 33 pages: https://kestra.io/docs/workflow-components - key pages below
+
+- [Workflow Components](https://kestra.io/docs/workflow-components): Overview of the building blocks used in every Kestra flow
+- [Tasks](https://kestra.io/docs/workflow-components/tasks): Define runnable and flowable steps inside a workflow
+- [Triggers](https://kestra.io/docs/workflow-components/triggers): Start flows on schedules, events, webhooks, polling, and realtime signals
+- [Inputs](https://kestra.io/docs/workflow-components/inputs): Define runtime parameters for flows
+- [Outputs](https://kestra.io/docs/workflow-components/outputs): Expose results for downstream tasks and users
+- [Subflows](https://kestra.io/docs/workflow-components/subflows): Compose larger automations from reusable flows
+- [Retries](https://kestra.io/docs/workflow-components/retries): Control resilience and retry behavior
+
+## Concepts
+
+Platform concepts and lookup docs for data handling, templating, revisions, secrets, storage, and internal primitives.
+
+All 14 pages: https://kestra.io/docs/concepts - key pages below
+
+- [Concepts](https://kestra.io/docs/concepts): High-level entry point for Kestra terminology and behavior
+- [Namespace Files](https://kestra.io/docs/concepts/namespace-files): Manage reusable files scoped to a namespace
+- [Secrets](https://kestra.io/docs/concepts/secret): Store and reference sensitive values securely
+- [Key-Value Store](https://kestra.io/docs/concepts/kv-store): Share state and configuration across workflows
+- [Backfill](https://kestra.io/docs/concepts/backfill): Re-run historical periods in a controlled way
+- [Storage](https://kestra.io/docs/concepts/storage): Understand Kestra's internal file storage model
+- [Expressions](https://kestra.io/docs/expressions): Use Pebble templating and context variables in flows
+
+## Scripts And Execution
+
+Guidance for writing code in any language, choosing execution environments, and isolating compute.
+
+- [Scripts Guide](https://kestra.io/docs/scripts): Run shell, Python, JavaScript, and other language tasks in Kestra
+- [Task Runners](https://kestra.io/docs/task-runners): Offload task execution to Kubernetes, Batch, Fargate, and other remote compute backends
+- [Task Runner Types](https://kestra.io/docs/task-runners/types): Browse supported task runner implementations
+- [Commands vs Scripts](https://kestra.io/docs/scripts/commands-vs-scripts): Choose the right execution pattern for code tasks
+- [Installing Dependencies](https://kestra.io/docs/scripts/installing-dependencies): Manage packages and runtime dependencies for script tasks
+- [Input and Output Files](https://kestra.io/docs/scripts/input-output-files): Exchange files between tasks and executions
+
+## AI
+
+AI-assisted workflow creation, agent integration, and RAG or agentic orchestration patterns.
+
+All 6 pages: https://kestra.io/docs/ai-tools - key pages below
+
+- [AI Tools](https://kestra.io/docs/ai-tools): Overview of Copilot, Agents, Agent Skills, and AI workflow patterns
+- [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot): Generate and refine flow definitions from natural language
+- [AI Agents](https://kestra.io/docs/ai-tools/ai-agents): Build autonomous orchestration patterns with agents
+- [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills): Teach external coding agents how to work with Kestra
+- [AI Workflows](https://kestra.io/docs/ai-tools/ai-workflows): Build AI-native automations on top of Kestra
+- [AI RAG Workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows): Retrieval-augmented workflow patterns and examples
+
+## Enterprise Docs
+
+Enterprise-only and hosted-platform documentation for governance, authentication, scalability, instance management, and setup.
+
+All 49 pages: https://kestra.io/docs/enterprise - key pages below
+
+- [Cloud and Enterprise Edition](https://kestra.io/docs/enterprise): Entry point for Enterprise and Cloud capabilities
+- [Overview](https://kestra.io/docs/enterprise/overview): Enterprise architecture, features, and setup guidance
+- [Governance](https://kestra.io/docs/enterprise/governance): Security, tenancy, auditability, secrets, and control features
+- [Authentication and Users](https://kestra.io/docs/enterprise/auth): RBAC, SSO, API tokens, service accounts, and user management
+- [Scalability and Productivity](https://kestra.io/docs/enterprise/scalability): Worker Groups, Task Runners, Apps, and scale-oriented features
+- [Instance Management](https://kestra.io/docs/enterprise/instance): Upgrade, maintenance, and instance-level administration
+- [Cloud and Enterprise FAQ](https://kestra.io/docs/enterprise/ee-faq): Common questions about licensing, configuration, sessions, and enterprise features
+
+## Operate And Scale
+
+Administration, production operations, security, upgrades, monitoring, performance, and enterprise deployment concerns.
+
+- [Administrator Guide](https://kestra.io/docs/administrator-guide): Operate, secure, and troubleshoot Kestra in production
+- [Configuration](https://kestra.io/docs/configuration): Full configuration reference for server, storage, auth, logging, AI, and more
+- [Performance](https://kestra.io/docs/performance): Benchmarks, tuning guidance, and sizing considerations
+- [Releases and LTS Policy](https://kestra.io/docs/releases): Release cadence, versioning, and support windows
+- [Migration Guide](https://kestra.io/docs/migration-guide): Upgrade notes and breaking changes across Kestra versions
+- [Best Practices](https://kestra.io/docs/best-practices): Opinionated guidance for reliable, secure, maintainable workflows
+- [Cloud and Enterprise Edition](https://kestra.io/docs/enterprise): Enterprise-only features such as governance, auth, scalability, and instance management
+
+## APIs, CLI, And IaC
+
+Programmatic control through REST APIs, SDKs, CLI tooling, and Terraform.
+
+- [API Reference](https://kestra.io/docs/api-reference): Entry point for both Open Source and Enterprise API docs
+- [Kestra Open Source API Reference](https://kestra.io/docs/api-reference/open-source): OSS endpoints for flows, executions, logs, triggers, and more
+- [Kestra Cloud and Enterprise API Reference](https://kestra.io/docs/api-reference/enterprise): Enterprise and Cloud endpoints for advanced platform features
+- [Kestra SDK](https://kestra.io/docs/api-reference/kestra-sdk): Official Java, Python, and Node.js clients for the API
+- [Kestra CLI](https://kestra.io/docs/kestra-cli): Choose between `kestractl` and the server CLI
+- [kestractl](https://kestra.io/docs/kestra-cli/kestractl): API-oriented CLI for day-to-day platform operations
+- [Kestra Server CLI](https://kestra.io/docs/kestra-cli/kestra-server): Runtime, maintenance, and infrastructure-oriented CLI commands
+- [Terraform Provider](https://kestra.io/docs/terraform): Manage Kestra resources as code
+
+## Developer Guides
+
+Implementation guidance for integrations, plugins, CI/CD, no-code use cases, and workflow patterns.
+
+- [How-to Guides](https://kestra.io/docs/how-to-guides): Hands-on integration and implementation guides across tools and platforms
+- [Plugin Developer Guide](https://kestra.io/docs/plugin-developer-guide): Build, test, document, and publish custom Kestra plugins
+- [Version Control and CI/CD](https://kestra.io/docs/version-control-cicd): GitOps workflows and deployment automation patterns
+- [No Code](https://kestra.io/docs/no-code): Build flows and dashboards visually without writing YAML
+- [Use Cases](https://kestra.io/docs/use-cases): Example solutions for data pipelines, microservices, approvals, infrastructure, and Python workflows
+- [Contribute to Kestra](https://kestra.io/docs/contribute-to-kestra): Code, docs, and community contribution paths
+
+## Product And Website Resources
+
+Top-level website destinations that complement the docs with discoverability, templates, product packaging, and current updates.
+
+- [Plugins](https://kestra.io/plugins): Browse Kestra task, trigger, condition, and storage plugins
+- [Blueprints](https://kestra.io/blueprints): Ready-to-use workflow templates and examples
+- [Enterprise](https://kestra.io/enterprise): Product overview for self-hosted enterprise deployments
+- [Cloud](https://kestra.io/cloud): Hosted Kestra offering and managed platform overview
+- [Pricing](https://kestra.io/pricing): Commercial packaging and plan details
+- [Features](https://kestra.io/features): High-level product capability overview
+- [Use Cases](https://kestra.io/use-cases): Industry and role-based solution pages
+- [Blog](https://kestra.io/blogs): Product updates, technical guides, and engineering articles
+- [Docs Changelog](https://kestra.io/docs/changelog): Latest documentation and product update entries
+
+## Additional Reference
+
+- [Glossary](https://kestra.io/docs/glossary): Definitions of common Kestra and orchestration terms
+- [Brand Assets](https://kestra.io/docs/brand-assets): Logos and brand usage guidance
