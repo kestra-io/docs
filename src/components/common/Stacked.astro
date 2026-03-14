@@ -375,6 +375,9 @@ const CARDS = [
 
                     @if $i == 1 {
                         margin-bottom: 8.75rem;
+                        @include media-breakpoint-down(sm) {
+                            margin-bottom: 4rem;
+                        }
                         @include media-breakpoint-up(xxl) {
                             margin-bottom: 200px;
                         }
