@@ -1,0 +1,87 @@
+---
+import CardGrid from "~/components/card/CardGrid.astro"
+
+const ITEMS = [
+    {
+        title: "Define Flows in YAML",
+        icon: "mdi:xml",
+        description:
+            "Flows are declarative definitions of what should run and in what order: tasks, dependencies, conditions, triggers, and runtime parameters.",
+    },
+    {
+        title: "Integrate with 1200+ Tools",
+        icon: "mdi:puzzle-check-outline",
+        description:
+            "Everything is plugin, from core building blocks to integrations with your stack. That's how Kestra stays universal without becoming a monolith.",
+    },
+    {
+        title: "Observability, Built-in",
+        icon: "mdi:eye",
+        description:
+            "Each run becomes an execution with a complete, inspectable history: status per task, logs, outputs, and timing.",
+    },
+]
+---
+
+<CardGrid
+    title="Simple Model"
+    subtitle="Define workflow logic once. Kestra provides triggering, <br /> execution control, observability, and recovery out of the box."
+    items={ITEMS}
+    align="left"
+>
+    <div class="steps">
+        <span class="step p">Define</span>
+        <span class="s">&gt;</span>
+        <span class="step b">Execute</span>
+        <span class="s">&gt;</span>
+        <span class="step g">Monitor</span>
+    </div>
+</CardGrid>
+
+<style lang="scss">
+    .steps {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: normal;
+        font-family: $font-family-monospace;
+        @include media-breakpoint-down(md) {
+            gap: 0.25rem;
+        }
+
+        .step {
+            background: var(--ks-background-primary);
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 6px;
+            padding: 2px 8px;
+            box-shadow: 2px 2px 8px var(--ks-shadows-light);
+            font-size: $font-size-lg;
+            flex-shrink: 0;
+
+            @include media-breakpoint-down(md) {
+                font-size: $font-size-sm;
+                padding: 1px 6px;
+            }
+
+            &.p {
+                color: #7c3aed;
+            }
+            &.b {
+                color: #2563eb;
+            }
+            &.g {
+                color: #10b981;
+            }
+        }
+        .s {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-lg;
+            font-weight: 200;
+
+            @include media-breakpoint-down(md) {
+                font-size: $font-size-sm;
+            }
+        }
+    }
+</style>
+

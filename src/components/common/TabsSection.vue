@@ -9,7 +9,7 @@
         </slot>
         <slot name="cta">
             <a
-                href="docs/getting-started/quickstart#start-kestra"
+                href="/docs/getting-started/quickstart#start-kestra"
                 target="_blank"
                 class="btn btn-md btn-primary"
                 >Get Started</a

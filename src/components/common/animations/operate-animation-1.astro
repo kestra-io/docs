@@ -1,0 +1,1064 @@
+<style>
+    .oa-1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100%;
+
+        .scene {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .glow-wrap {
+            position: relative;
+            padding: 4px;
+            border-radius: 14px;
+            border: 1px solid rgba(113, 139, 254, 0.4);
+            z-index: 2;
+        }
+        .anim-card {
+            position: relative;
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid #718bfe;
+            width: 456px;
+            padding: 20px 32px 24px;
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+        }
+        .badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.5);
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .badge.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .badge.ok {
+            background: #22c55e;
+        }
+        .badge.err {
+            background: #ef4444;
+        }
+        .badge svg {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+            stroke-width: 2.8;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .badge.switching {
+            animation: oa1-badgeFlip 0.35s ease forwards;
+        }
+
+        .code {
+            font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+            font-size: 12.5px;
+            line-height: 1.9;
+            color: #131316;
+            min-height: 220px;
+            white-space: pre;
+        }
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 13px;
+            background: #631bff;
+            vertical-align: middle;
+            animation: oa1-blink 0.65s step-end infinite;
+        }
+        .err-char {
+            color: #ef4444;
+            text-decoration: underline wavy #ef4444;
+            background: rgba(239, 68, 68, 0.08);
+            border-radius: 2px;
+        }
+        .kw {
+            color: #631bff;
+        }
+        .val {
+            color: #131316;
+        }
+        .url {
+            color: #131316;
+            text-decoration: underline;
+        }
+        .cmt {
+            color: #a5a4aa;
+            font-style: italic;
+        }
+        .cmt-to-kw {
+            color: #a5a4aa;
+            font-style: italic;
+            transition: color 0.35s ease;
+        }
+        .cmt-to-kw.resolved {
+            color: #631bff;
+            font-style: normal;
+        }
+        .tmpl {
+            color: #dd5f00;
+        }
+
+        .sugg-inline {
+            display: none;
+            margin-top: 4px;
+        }
+        .sugg-pill {
+            display: inline-flex;
+            align-items: center;
+            border: 1.5px solid #c8c7ce;
+            border-radius: 999px;
+            background: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11px;
+            color: #131316;
+            overflow: hidden;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.09);
+            white-space: nowrap;
+            margin-left: 28px;
+        }
+        .pill-nav {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 5px 10px;
+            border-right: 1.5px solid #c8c7ce;
+        }
+        .pill-nav button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 2px;
+            display: flex;
+            align-items: center;
+        }
+        .pill-nav button svg {
+            width: 10px;
+            height: 10px;
+            stroke: #131316;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .pill-counter {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 0 2px;
+        }
+        .pill-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            font-size: 11px;
+            color: #131316;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+            transition: background 0.12s;
+        }
+        .pill-action:hover {
+            background: #f3f3f5;
+        }
+        .pill-action + .pill-action {
+            border-left: 1.5px solid #c8c7ce;
+        }
+        .pill-action.selected {
+            background: #ede9ff;
+            color: #631bff;
+            font-weight: 600;
+        }
+        .pill-action.selected .pill-key {
+            background: #631bff;
+            color: #fff;
+        }
+        .pill-key {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8e8ea;
+            border-radius: 4px;
+            font-size: 10px;
+            padding: 1px 5px;
+            color: #444;
+            min-width: 22px;
+        }
+        .pill-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8e8ea;
+            border-radius: 4px;
+            width: 20px;
+            height: 18px;
+        }
+        .pill-arrow svg {
+            width: 9px;
+            height: 9px;
+            stroke: #444;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .topo-outer {
+            width: 464px;
+            overflow: hidden;
+            height: 0;
+            transition: height 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+            transform-origin: top center;
+        }
+        .topo-outer.visible {
+            height: 160px;
+        }
+        .topo-outer.hiding {
+            height: 0;
+        }
+        .topo-svg {
+            width: 100%;
+            height: 160px;
+            display: block;
+            overflow: visible;
+        }
+
+        .t-line {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.45);
+            stroke-width: 1.5;
+            stroke-dasharray: 5 4;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .t-line.on {
+            opacity: 1;
+            animation: oa1-dashFlow 0.9s linear infinite;
+        }
+
+        .t-node {
+            transition:
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.5s ease;
+        }
+        .t-node.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .t-frame {
+            fill: rgba(89, 188, 230, 0.05);
+            stroke: #59bce6;
+            stroke-width: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .t-frame.on {
+            opacity: 1;
+        }
+        .t-frame-label {
+            font-family: -apple-system, sans-serif;
+            font-size: 11px;
+            fill: #59bce6;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .t-frame-label.on {
+            opacity: 1;
+        }
+    }
+
+    @keyframes oa1-badgeFlip {
+        0% {
+            transform: scale(1) rotate(0deg);
+        }
+        40% {
+            transform: scale(0) rotate(90deg);
+        }
+        60% {
+            transform: scale(0) rotate(-90deg);
+        }
+        100% {
+            transform: scale(1) rotate(0deg);
+        }
+    }
+    @keyframes oa1-blink {
+        50% {
+            opacity: 0;
+        }
+    }
+    @keyframes oa1-dashFlow {
+        to {
+            stroke-dashoffset: -18;
+        }
+    }
+</style>
+
+<div class="oa-1">
+    <div class="scene">
+        <div class="glow-wrap">
+            <div class="anim-card">
+                <div class="badge" id="oa1-badge">
+                    <svg id="oa1-bico" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="code" id="oa1-code"></div>
+                <div class="sugg-inline" id="oa1-suggInline">
+                    <div class="sugg-pill">
+                        <div class="pill-nav">
+                            <button>
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="15 18 9 12 15 6"
+                                    ></polyline>
+                                </svg>
+                            </button>
+                            <span class="pill-counter">1/1</span>
+                            <button>
+                                <svg viewBox="0 0 24 24">
+                                    <polyline points="9 18 15 12 9 6"
+                                    ></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                        <button class="pill-action selected" id="oa1-acceptBtn">
+                            Accept <span class="pill-key">Tab</span>
+                        </button>
+                        <button class="pill-action" id="oa1-acceptWordBtn">
+                            Accept Word <span class="pill-key">⌘</span><span
+                                class="pill-arrow"
+                                ><svg viewBox="0 0 24 24">
+                                    <polyline points="9 18 15 12 9 6"
+                                    ></polyline></svg
+                                ></span
+                            >
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="topo-outer" id="oa1-topoOuter">
+            <svg
+                class="topo-svg"
+                viewBox="0 0 400 200"
+            >
+                <defs>
+                    <linearGradient
+                        id="oa1-nodeBg"
+                        x1="0.9"
+                        y1="0.1"
+                        x2="0.1"
+                        y2="0.9"
+                    >
+                        <stop offset="0%" stop-color="#01000B"></stop>
+                        <stop offset="100%" stop-color="#520188"></stop>
+                    </linearGradient>
+                    <linearGradient
+                        id="oa1-borderGrad"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+                        <stop offset="0%" stop-color="rgba(181,231,255,0.8)"
+                        ></stop>
+                        <stop offset="22%" stop-color="rgba(241,117,255,0.75)"
+                        ></stop>
+                        <stop offset="100%" stop-color="rgba(241,117,255,0.08)"
+                        ></stop>
+                    </linearGradient>
+                    <linearGradient
+                        id="oa1-iconGrad"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1"
+                    >
+                        <stop offset="0%" stop-color="#EFD3FF"></stop>
+                        <stop offset="63%" stop-color="#F0D5FF"></stop>
+                        <stop offset="83%" stop-color="#F1D4FF"></stop>
+                        <stop offset="91%" stop-color="#9152FF"></stop>
+                    </linearGradient>
+                </defs>
+
+                <rect
+                    id="oa1-tFrame"
+                    class="t-frame"
+                    x="157"
+                    y="30"
+                    width="188"
+                    height="96"
+                    rx="14"
+                    ry="14"></rect>
+
+                <line
+                    id="oa1-tLine1"
+                    class="t-line"
+                    x1="131"
+                    y1="80"
+                    x2="157"
+                    y2="80"></line>
+                <line
+                    id="oa1-tLine2"
+                    class="t-line"
+                    x1="233"
+                    y1="80"
+                    x2="269"
+                    y2="80"></line>
+
+                <g
+                    id="oa1-nStatus"
+                    class="t-node hidden"
+                    transform="translate(200,80)"
+                >
+                    <rect
+                        x="-38"
+                        y="-38"
+                        width="76"
+                        height="76"
+                        rx="15"
+                        fill="rgba(255,255,255,0.03)"
+                        stroke="rgba(255,255,255,0.14)"
+                        stroke-width="1"></rect>
+                    <rect
+                        x="-28"
+                        y="-28"
+                        width="56"
+                        height="56"
+                        rx="11"
+                        fill="url(#oa1-nodeBg)"></rect>
+                    <rect
+                        x="-28"
+                        y="-28"
+                        width="56"
+                        height="56"
+                        rx="11"
+                        fill="none"
+                        stroke="url(#oa1-borderGrad)"
+                        stroke-width="1.3"></rect>
+                    <text
+                        x="0"
+                        y="-5"
+                        text-anchor="middle"
+                        font-family="'SF Mono',monospace"
+                        font-size="10"
+                        font-weight="700"
+                        fill="#F3E6FE"
+                    >
+                        HTTP
+                    </text>
+                    <text
+                        x="0"
+                        y="14"
+                        text-anchor="middle"
+                        font-family="'SF Mono',monospace"
+                        font-size="15"
+                        font-weight="700"
+                        fill="#F3E6FE"
+                    >
+                        ?
+                    </text>
+                </g>
+
+                <g
+                    id="oa1-nIf"
+                    class="t-node hidden"
+                    transform="translate(195,80)"
+                >
+                    <rect
+                        x="-38"
+                        y="-38"
+                        width="76"
+                        height="76"
+                        rx="15"
+                        fill="rgba(255,255,255,0.03)"
+                        stroke="rgba(255,255,255,0.14)"
+                        stroke-width="1"></rect>
+                    <rect
+                        x="-28"
+                        y="-28"
+                        width="56"
+                        height="56"
+                        rx="11"
+                        fill="url(#oa1-nodeBg)"></rect>
+                    <rect
+                        x="-28"
+                        y="-28"
+                        width="56"
+                        height="56"
+                        rx="11"
+                        fill="none"
+                        stroke="url(#oa1-borderGrad)"
+                        stroke-width="1.3"></rect>
+                    <g transform="translate(-14,-13) scale(1.08)">
+                        <path
+                            d="M4.25 17.95L6.48 15.72L7.35 16.59L5.12 18.81L7.31 21L6.45 21.87L4.25 19.68L2.03 21.9L1.16 21.04L3.39 18.81L1.13 16.55L1.99 15.68L4.25 17.95Z"
+                            fill="url(#oa1-iconGrad)"></path>
+                        <path
+                            d="M24.57 16.94L20.29 21.22L17.23 18.17L18.15 17.25L20.29 19.39L23.65 16.03L24.57 16.94Z"
+                            fill="url(#oa1-iconGrad)"></path>
+                        <path
+                            d="M10.51 7.37H5.46V12.13L7.29 10.3L8.6 11.62L4.3 15.92L0 11.62L1.31 10.3L3.17 12.16V4.9H3.17V4.86H10.51V7.37Z"
+                            fill="url(#oa1-iconGrad)"></path>
+                        <path
+                            d="M22.05 12.13L23.88 10.3L25.19 11.62L20.89 15.92L16.59 11.62L17.9 10.3L19.75 12.16V7.32H14.18V4.9H22.05V12.13Z"
+                            fill="url(#oa1-iconGrad)"></path>
+                        <rect
+                            x="11.73"
+                            y="6.73"
+                            width="1.22"
+                            height="0.61"
+                            fill="url(#oa1-iconGrad)"></rect>
+                        <rect
+                            x="11.12"
+                            y="5.5"
+                            width="0.61"
+                            height="1.22"
+                            fill="url(#oa1-iconGrad)"></rect>
+                        <rect
+                            x="12.95"
+                            y="5.5"
+                            width="0.61"
+                            height="1.22"
+                            fill="url(#oa1-iconGrad)"></rect>
+                        <rect
+                            x="11.73"
+                            y="4.89"
+                            width="1.22"
+                            height="0.61"
+                            fill="url(#oa1-iconGrad)"></rect>
+                        <rect
+                            x="11.07"
+                            y="0"
+                            width="2.55"
+                            height="4.28"
+                            fill="url(#oa1-iconGrad)"></rect>
+                    </g>
+                </g>
+
+                <g
+                    id="oa1-nLog"
+                    class="t-node hidden"
+                    transform="translate(307,80)"
+                >
+                    <rect
+                        x="-38"
+                        y="-38"
+                        width="76"
+                        height="76"
+                        rx="15"
+                        fill="rgba(255,255,255,0.03)"
+                        stroke="rgba(255,255,255,0.14)"
+                        stroke-width="1"></rect>
+                    <rect
+                        x="-28"
+                        y="-28"
+                        width="56"
+                        height="56"
+                        rx="11"
+                        fill="url(#oa1-nodeBg)"></rect>
+                    <rect
+                        x="-28"
+                        y="-28"
+                        width="56"
+                        height="56"
+                        rx="11"
+                        fill="none"
+                        stroke="url(#oa1-borderGrad)"
+                        stroke-width="1.3"></rect>
+                    <text
+                        x="0"
+                        y="-7"
+                        text-anchor="middle"
+                        font-family="'SF Mono',monospace"
+                        font-size="10.5"
+                        font-weight="700"
+                        fill="#F3E6FE"
+                    >
+                        LOG
+                    </text>
+                    <rect
+                        x="-15"
+                        y="-1"
+                        width="30"
+                        height="21"
+                        rx="3"
+                        fill="none"
+                        stroke="rgba(144,82,255,0.85)"
+                        stroke-width="1"></rect>
+                    <path
+                        d="M-11,8 L-5,11 L-11,14"
+                        fill="none"
+                        stroke="#EFD3FF"
+                        stroke-width="1.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    <line
+                        x1="-3"
+                        y1="11"
+                        x2="7"
+                        y2="11"
+                        stroke="#EFD3FF"
+                        stroke-width="1.2"
+                        stroke-linecap="round"></line>
+                </g>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    ;(function () {
+        const root = document.querySelector(".oa-1")
+        const codeEl = root.querySelector("#oa1-code"),
+            badge = root.querySelector("#oa1-badge"),
+            bico = root.querySelector("#oa1-bico")
+        const suggInline = root.querySelector("#oa1-suggInline"),
+            acceptBtn = root.querySelector("#oa1-acceptBtn"),
+            acceptWordBtn = root.querySelector("#oa1-acceptWordBtn")
+        const topoOuter = root.querySelector("#oa1-topoOuter")
+        const nStatus = root.querySelector("#oa1-nStatus"),
+            nIf = root.querySelector("#oa1-nIf"),
+            nLog = root.querySelector("#oa1-nLog")
+        const tFrame = root.querySelector("#oa1-tFrame")
+        const tLine1 = root.querySelector("#oa1-tLine1"),
+            tLine2 = root.querySelector("#oa1-tLine2")
+
+        function isPaused() {
+            return !!root.closest(".paused")
+        }
+
+        let tid = null
+        const after = (fn, ms) => {
+            clearTimeout(tid)
+            tid = setTimeout(() => {
+                if (isPaused()) {
+                    after(fn, 100)
+                } else {
+                    fn()
+                }
+            }, ms)
+        }
+
+        function setBadge(s) {
+            if (s === "hide") {
+                badge.className = "badge"
+                return
+            }
+            const vis = badge.classList.contains("show")
+            const swap =
+                vis &&
+                ((s === "err" && badge.classList.contains("ok")) ||
+                    (s === "ok" && badge.classList.contains("err")))
+            if (swap) {
+                badge.classList.add("switching")
+                setTimeout(() => {
+                    badge.classList.remove("switching")
+                    badge.className = "badge show " + s
+                    ub(s)
+                }, 175)
+            } else {
+                badge.className = "badge show " + s
+                ub(s)
+            }
+        }
+        function ub(s) {
+            bico.innerHTML =
+                s === "ok"
+                    ? '<polyline points="20 6 9 17 4 12"/>'
+                    : '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
+        }
+
+        function esc(s) {
+            return s
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+        }
+        function kw(s) {
+            return '<span class="kw">' + esc(s) + "</span>"
+        }
+        function val(s) {
+            return '<span class="val">' + esc(s) + "</span>"
+        }
+        function url(s) {
+            return '<span class="url">' + esc(s) + "</span>"
+        }
+        function tmpl(s) {
+            return '<span class="tmpl">' + esc(s) + "</span>"
+        }
+
+        var LINES = [
+            {
+                raw: "id: health_check",
+                html: kw("id") + esc(": health_check"),
+            },
+            {
+                raw: "namespace: company.team",
+                html: kw("namespace") + esc(": company.team"),
+            },
+            { raw: "" },
+            { raw: "tasks:", html: kw("tasks:") },
+            {
+                raw: "  - id: status_check",
+                html: esc("  - ") + kw("id") + esc(": status_check"),
+            },
+            {
+                raw: "    type: io.kestra.plugin.core.http.Request",
+                html:
+                    esc("    ") +
+                    kw("type") +
+                    esc(": ") +
+                    val("io.kestra.plugin.core.http.Request"),
+            },
+            {
+                raw: "    uri: https://kestra.io",
+                html:
+                    esc("    ") +
+                    kw("uri") +
+                    esc(": ") +
+                    url("https://kestra.io"),
+            },
+            { raw: "" },
+            {
+                raw: "  - id: check",
+                html: esc("  - ") + kw("id") + esc(": check"),
+            },
+            {
+                raw: "    type: io.kestra.plugin.core.flow.If",
+                html:
+                    esc("    ") +
+                    kw("type") +
+                    esc(": ") +
+                    val("io.kestra.plugin.core.flow.If"),
+            },
+            {
+                raw: '    condition: "{{ outputs.status_check.code == 200 }}"',
+                html:
+                    esc("    ") +
+                    kw("condition") +
+                    esc(': "') +
+                    tmpl("{{ outputs.status_check.code == 200 }}") +
+                    esc('"'),
+            },
+            { raw: "    then:", html: esc("    ") + kw("then:") },
+            {
+                raw: "      - id: log",
+                html: esc("      - ") + kw("id") + esc(": log"),
+            },
+            {
+                raw: "        type: io.kestra.plugin.core.log.Log",
+                html:
+                    esc("        ") +
+                    kw("type") +
+                    esc(": ") +
+                    val("io.kestra.plugin.core.log.Log"),
+            },
+            {
+                raw: '        message: "Status OK"',
+                html:
+                    esc("        ") +
+                    kw("message") +
+                    esc(': "') +
+                    val("Status OK") +
+                    esc('"'),
+            },
+        ]
+
+        var TYPO_LINE = 5,
+            TYPO_PREFIX = "    type: io.kestra.plugin.core.http.Reque",
+            TYPO_WRONG = "ts",
+            TYPO_CORRECT = "st"
+
+        var TOPO1_LINE = 6
+        var SUGG_LINE = 9
+        var TOPO3_LINE = 14
+
+        function sliceHtml(h, n) {
+            var rem = n
+            var d = document.createElement("div")
+            d.innerHTML = h
+            var out = ""
+            for (var node of d.childNodes) {
+                if (rem <= 0) break
+                if (node.nodeType === 3) {
+                    var t = node.textContent.slice(0, rem)
+                    out += esc(t)
+                    rem -= t.length
+                } else {
+                    var t2 = node.textContent,
+                        take = Math.min(t2.length, rem)
+                    out +=
+                        '<span class="' +
+                        node.className +
+                        '">' +
+                        esc(t2.slice(0, take)) +
+                        "</span>"
+                    rem -= take
+                }
+            }
+            return out
+        }
+
+        var committed = []
+        function render(partial, cursor) {
+            var h = ""
+            for (var l of committed) h += l + "\n"
+            if (partial !== undefined) h += partial
+            if (cursor) h += '<span class="cursor"></span>'
+            codeEl.innerHTML = h
+        }
+        function delay(ch) {
+            if (!ch) return 50
+            if (ch === ".") return 30 + Math.random() * 15
+            if (ch === ":") return 35 + Math.random() * 15
+            if (ch === " ") return 18 + Math.random() * 10
+            return 22 + Math.random() * 18
+        }
+
+        var li = 0,
+            ci = 0,
+            topoPhase = 0
+
+        function showPhase1() {
+            if (topoPhase >= 1) return
+            topoPhase = 1
+            topoOuter.classList.add("visible")
+            nStatus.setAttribute("transform", "translate(200,100)")
+            nStatus.classList.remove("hidden")
+        }
+
+        function showPhase2() {
+            if (topoPhase >= 2) return
+            topoPhase = 2
+            nStatus.setAttribute("transform", "translate(93,72)")
+            setTimeout(function () {
+                tFrame.classList.add("on")
+            }, 350)
+            setTimeout(function () {
+                nIf.classList.remove("hidden")
+            }, 450)
+            setTimeout(function () {
+                tLine1.classList.add("on")
+            }, 700)
+        }
+
+        function showPhase3() {
+            if (topoPhase >= 3) return
+            topoPhase = 3
+            setTimeout(function () {
+                nLog.classList.remove("hidden")
+            }, 200)
+            setTimeout(function () {
+                tLine2.classList.add("on")
+            }, 500)
+        }
+
+        function resetTopo() {
+            topoPhase = 0
+            topoOuter.classList.remove("visible")
+            nStatus.classList.add("hidden")
+            nStatus.setAttribute("transform", "translate(200,120)")
+            nIf.classList.add("hidden")
+            nLog.classList.add("hidden")
+            tFrame.classList.remove("on")
+            tLine1.classList.remove("on")
+            tLine2.classList.remove("on")
+        }
+
+        function reset() {
+            clearTimeout(tid)
+            committed = []
+            li = 0
+            ci = 0
+            suggInline.style.display = "none"
+            setBadge("hide")
+            render("", false)
+            resetTopo()
+            after(start, 400)
+        }
+        function start() {
+            setBadge("ok")
+            after(typeNext, 80)
+        }
+
+        function typeNext() {
+            if (li >= LINES.length) {
+                allDone()
+                return
+            }
+            var L = LINES[li]
+            if (L.raw === "") {
+                committed.push("")
+                li++
+                ci = 0
+                after(typeNext, 75 + Math.random() * 35)
+                return
+            }
+            if (li === TYPO_LINE && ci === 0) {
+                after(function () {
+                    typo(0, 0)
+                }, 60)
+                return
+            }
+            if (ci < L.raw.length) {
+                ci++
+                render(sliceHtml(L.html, ci), true)
+                after(typeNext, delay(L.raw[ci - 1]))
+            } else {
+                committed.push(L.html)
+                var done = li
+                li++
+                ci = 0
+                if (done === TOPO1_LINE) {
+                    render("", false)
+                    after(function () {
+                        showPhase1()
+                        after(typeNext, 500)
+                    }, 350)
+                    return
+                }
+                if (done === SUGG_LINE) {
+                    render("", false)
+                    after(showSuggestion, 480)
+                    return
+                }
+                after(typeNext, 60 + Math.random() * 25)
+            }
+        }
+
+        function typo(stage, idx) {
+            var L = LINES[TYPO_LINE]
+            switch (stage) {
+                case 0:
+                    if (idx < TYPO_PREFIX.length) {
+                        render(sliceHtml(L.html, idx + 1), true)
+                        after(function () {
+                            typo(0, idx + 1)
+                        }, delay(TYPO_PREFIX[idx]))
+                    } else
+                        after(function () {
+                            typo(1, 0)
+                        }, 90)
+                    break
+                case 1:
+                    if (idx < TYPO_WRONG.length) {
+                        render(
+                            sliceHtml(L.html, TYPO_PREFIX.length) +
+                                '<span class="err-char">' +
+                                esc(TYPO_WRONG.slice(0, idx + 1)) +
+                                "</span>",
+                            true,
+                        )
+                        after(function () {
+                            typo(1, idx + 1)
+                        }, 100)
+                    } else {
+                        setBadge("err")
+                        after(function () {
+                            typo(2, TYPO_WRONG.length)
+                        }, 680)
+                    }
+                    break
+                case 2:
+                    if (idx > 0) {
+                        var w = TYPO_WRONG.slice(0, idx - 1)
+                        render(
+                            sliceHtml(L.html, TYPO_PREFIX.length) +
+                                (w
+                                    ? '<span class="err-char">' +
+                                      esc(w) +
+                                      "</span>"
+                                    : ""),
+                            true,
+                        )
+                        after(function () {
+                            typo(2, idx - 1)
+                        }, 80)
+                    } else {
+                        setBadge("ok")
+                        after(function () {
+                            typo(3, 0)
+                        }, 140)
+                    }
+                    break
+                case 3:
+                    if (idx < TYPO_CORRECT.length) {
+                        render(
+                            sliceHtml(L.html, TYPO_PREFIX.length + idx + 1),
+                            true,
+                        )
+                        after(function () {
+                            typo(3, idx + 1)
+                        }, delay(TYPO_CORRECT[idx]))
+                    } else {
+                        ci = TYPO_PREFIX.length + TYPO_CORRECT.length
+                        after(typeNext, 65)
+                    }
+                    break
+            }
+        }
+
+        function showSuggestion() {
+            render(
+                '<span id="oa1-ghostCond" class="cmt-to-kw">    condition:</span>',
+                true,
+            )
+            suggInline.style.display = "block"
+            after(doAccept, 2000)
+        }
+        function doAccept() {
+            clearTimeout(tid)
+            suggInline.style.display = "none"
+            var g = root.querySelector("#oa1-ghostCond")
+            if (g) g.classList.add("resolved")
+            showPhase2()
+            after(function () {
+                li = 10
+                ci = "    condition:".length
+                render(kw("    condition") + esc(":"), false)
+                after(typeNext, 80)
+            }, 420)
+        }
+        acceptBtn.addEventListener("click", function () {
+            clearTimeout(tid)
+            doAccept()
+        })
+        acceptWordBtn.addEventListener("click", function () {
+            clearTimeout(tid)
+            doAccept()
+        })
+
+        function allDone() {
+            render("", false)
+            showPhase3()
+            after(function () {
+                topoOuter.classList.remove("visible")
+                after(reset, 700)
+            }, 3500)
+        }
+
+        reset()
+    })()
+</script>
+

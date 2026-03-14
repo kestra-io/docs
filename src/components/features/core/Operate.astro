@@ -1,0 +1,450 @@
+---
+import { Icon } from 'astro-icon/components';
+import Animation1 from '~/components/common/animations/operate-animation-1.astro';
+import Animation2 from '~/components/common/animations/operate-animation-2.astro';
+import Animation3 from '~/components/common/animations/operate-animation-3.astro';
+import Animation4 from '~/components/common/animations/operate-animation-4.astro';
+import Animation5 from '~/components/common/animations/operate-animation-5.astro';
+
+const FEATURES = [
+    {
+        icon: 'mdi:restore',
+        title: 'Retries and failure policies'
+    },
+    {
+        icon: 'mdi:clock-time-five-outline',
+        title: 'Timeouts and concurrency limits'
+    },
+    {
+        icon: 'mdi:server-outline',
+        title: 'Worker group assignement'
+    },
+    {
+        icon: 'mdi:text-box-outline',
+        title: 'Automatic log capture'
+    },
+    {
+        icon: 'mdi:alert',
+        title: 'Error handling and conditional branching'
+    }
+];
+
+const CARDS = [
+    {
+        title: '<span class="highlight">Declarative</span> Workflows <br /> Maintainable as Complexity Grows',
+        description: 'Define orchestration logic in YAML. Keep workflows clear even as they grow: branching, loops, parallelism, and failure handling live in the orchestration layer.',
+        badge: {
+            text: "Declarative"
+        },
+        animation: Animation1,
+        items: [
+            {
+                title: 'Orchestration & business logic separation',
+                description: 'Keep orchestration lightweight while your business logic stays portable.'
+            },
+            {
+                title: 'Strong typing & validation',
+                description: 'Catch errors early and reduce "fails-in-prod" surprises.'
+            },
+            {
+                title: 'Human + machine friendly',
+                description: 'YAML stays readable for humans and works well with automation.',
+                wide: true
+            }
+        ]
+    },
+    {
+        title: 'Run Your Existing Scripts <span class= "highlight">As-Is</span> in Any Language',
+        description: 'Execute business logic in the language your team already uses. Kestra handles orchestration, isolation, and lifecycle without forcing rewrites or framework lock-in.',
+        badge: {
+            text: "Scripts"
+        },
+        animation: Animation2,
+        items: [
+            {
+                title: 'Docker enabled by default',
+                description: 'Consistent runtime environments without building and managing images by hand.'
+            },
+            {
+                title: 'Embedded code editor',
+                description: 'Develop scripts and orchestration in one place when you want speed.'
+            },
+            {
+                title: 'Git sync in both directions',
+                description: "Pull from Git or push from Kestra's IDE to Git for review and collaboration."
+            },
+            {
+                title: 'No vendor lock-in',
+                description: 'Orchestration stays portable; business logic stays platform-independent.'
+            }
+        ]
+    },
+    {
+        title: '<span class= "highlight">Schedules</span> When You Want Them, <br/> <span class= "highlight">Event-Driven</span> When You Need Them',
+        description: 'From cron to event-driven: one scheduling layer you can trust in production.',
+        badge: {
+            text: "Scheduled"
+        },
+        animation: Animation3,
+        items: [
+            {
+                title: 'Time-based scheduling',
+                description: 'From simple intervals to CRON and condition-based schedules.'
+            },
+            {
+                title: 'Event-driven triggers',
+                description: 'Initiate workflows on real-world events, and even restrict listening to specific windows.'
+            },
+            {
+                title: 'API-based triggers',
+                description: 'Integrate cleanly with systems that already speak HTTP.'
+            },
+            {
+                title: 'Backfills',
+                description: 'Automatically catch up after an outage — from the UI, without redeploying code.'
+            },
+            {
+                title: 'Subflows',
+                description: 'Build reusable workflow components and call them across projects.',
+                wide: true
+            }
+        ]
+    },
+    {
+        title: '<span class="highlight">API-First</span> by Design',
+        description: 'The same actions you perform manually can be automated: create and manage workflows, start executions, inspect results, and integrate orchestration into your existing developer platform.',
+        badge: {
+            text: "API-First"
+        },
+        animation: Animation4,
+        items: [
+            {
+                title: 'API coverage across the platform',
+                description: 'From workflow operations to administration.'
+            },
+            {
+                title: 'Extensibility for custom interfaces',
+                description: 'Build internal tools on top of Kestra instead of around it.'
+            },
+            {
+                title: 'Terraform integration',
+                description: 'Manage orchestration resources Infrastructure as Code best practices.'
+            },
+            {
+                title: 'In-flow HTTP tasks + HTTP triggers',
+                description: 'Integrate external systems directly into workflows.'
+            }
+        ]
+    },
+    {
+        title: 'Operate Workflows Like a Product <br /> <span class="highlight">Debug</span>, <span class="highlight">Observe</span>, and <span class="highlight">Recover</span> Fast',
+        description: 'Kestra gives you a central control plane for your workflows, so when something fails, you find it, understand it, and recover fast, without rebuilding custom tooling.',
+        badge: {
+            text: "Observable"
+        },
+        animation: Animation5,
+        items: [
+            {
+                title: 'Execution timeline & logs',
+                description: 'Track every step for debugging and optimization.'
+            },
+            {
+                title: 'Outputs & metrics visualization',
+                description: 'Inspect results and monitor system health from the UI.'
+            },
+            {
+                title: 'Live workflow topology',
+                description: 'Understand dependencies at a glance.'
+            },
+            {
+                title: 'Built-in documentation in the editor',
+                description: 'Keep plugin/task details close to where you write flows.'
+            },
+            {
+                title: 'Recovery workflows',
+                description: 'Retries, alerts, and replay to reduce mean time to recovery.',
+                wide: true
+            }
+        ]
+    }
+];
+---
+
+<section class="operate">
+    <h2>
+        Build and Operate Production Workflows
+    </h2>
+    <div class="container">
+        {CARDS.map((card, index) => (
+            <div class="card">
+                <div class="badge" data-usal="zoomin">
+                    <Icon name="mdi:file-code-outline" class="badge-icon" />
+                    <span>{card.badge.text}</span>
+                </div>
+                <div class="content">
+                    <h3 set:html={card.title} data-usal="fade-r" />
+                    <p data-usal="fade-l">{card.description}</p>
+                    <div class="items-grid">
+                        {card.items.map((item) => (
+                            <div
+                                class:list={['item-card', { wide: item.wide }]}
+                                data-usal="zoomin"
+                            >
+                                <h4>{item.title}</h4>
+                                <p>{item.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                    {index === 0 && (
+                        <div class="extra-feature">
+                            <h6>Built-in execution controls</h6>
+                            <div class="features-list">
+                                {FEATURES.map((feature) => (
+                                    <div class="feature-item">
+                                        <Icon name={feature.icon} />
+                                        <span class="title">{feature.title}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <div class="right">
+                    <card.animation />
+                </div>
+            </div>
+        ))}
+    </div>
+</section>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+            const card = entry.target as HTMLElement;
+            card.classList.toggle('paused', !entry.isIntersecting);
+        }
+    }, {
+        threshold: 0.1
+    });
+
+    const cards = document.querySelectorAll('.operate .card');
+    cards.forEach((card) => {
+        (card as HTMLElement).classList.add('paused');
+        observer.observe(card as HTMLElement);
+    });
+</script>
+
+<style lang="scss">
+    .operate {
+        width: 100%;
+        min-height: 4658px;
+        padding: 3rem 2rem;
+
+        @include media-breakpoint-down(md) {
+            padding: 1rem 0.75rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            padding: 5.4375rem 120px;
+        }
+
+        background: var(--ks-background-primary) url("~/assets/landing/infrastructure/grid.svg") no-repeat top;
+
+        h2 {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            padding-left: 6.875rem;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            border-radius: 1rem;
+            border: 1px solid var(--ks-border-secondary);
+            background: var(--ks-background-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+            overflow: hidden;
+
+            @include media-breakpoint-down(xl) {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2rem;
+                padding-left: 0;
+            }
+
+            .badge {
+                position: absolute;
+                top: 2rem;
+                left: 2rem;
+                width: fit-content;
+                padding: 0.375rem 1.125rem;
+                gap: 0.5rem;
+                border-radius: 2.5rem;
+                border: 1px solid var(--ks-border-active);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: $font-size-xs;
+                color: var(--ks-content-color-highlight);
+
+                .badge-icon {
+                    font-size: 1rem;
+                    margin-top: -2px;
+                }
+            }
+
+            .content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 2rem;
+                flex: 1;
+
+                @include media-breakpoint-down(xl) {
+                    padding: 6rem 2rem 0;
+                    width: 100%;
+                }
+
+                h3 {
+                    color: var(--ks-content-primary);
+                }
+
+                p {
+                    color: var(--ks-content-secondary);
+                    margin-top: -1rem;
+                }
+
+                .items-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1rem;
+                    width: 100%;
+
+                    @include media-breakpoint-up(xl) {
+                        max-width: 600px;
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .item-card {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+                        padding: 1rem 2rem;
+                        border-radius: 0.625rem;
+                        background: var(--ks-background-primary);
+                        border: 1px solid var(--ks-border-secondary);
+                        box-shadow: 2px 0.1875rem 1rem 0px var(--ks-shadows-light);
+
+                        &.wide {
+                            grid-column: span 2;
+                            width: 100%;
+
+                            @include media-breakpoint-down(md) {
+                                grid-column: span 1;
+                            }
+                        }
+
+                        h4 {
+                            font-size: $font-size-sm;
+                            margin: 0;
+                            color: var(--ks-content-primary);
+                        }
+
+                        p {
+                            font-size: $font-size-xs;
+                            margin: 0;
+                            color: var(--ks-content-secondary);
+                        }
+                    }
+                }
+
+                .extra-feature {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    border-radius: 0.625rem;
+                    padding: 1rem;
+                    color: var(--ks-content-primary);
+
+                    .features-list {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 1rem;
+
+                        @include media-breakpoint-down(sm) {
+                            grid-template-columns: 1fr;
+                        }
+
+                        .feature-item {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            gap: 0.625rem;
+
+                            :global(svg) {
+                                color: var(--ks-icon-color);
+                                font-size: 1rem;
+                            }
+
+                            .title {
+                                font-size: $font-size-sm;
+                                white-space: nowrap;
+
+                                @include media-breakpoint-down(sm) {
+                                    font-size: $font-size-xs;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .right {
+                width: 625px;
+                height: 844px;
+                flex: 0 0 625px;
+                background: linear-gradient(
+                    157.65deg,
+                    #5733C5 5.65%,
+                    #141414 28.44%,
+                    #000000 51.96%,
+                    #5D61FF 86.31%
+                );
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                @include media-breakpoint-down(xl) {
+                    width: 100%;
+                    height: 500px;
+                }
+
+                @include media-breakpoint-down(md) {
+                    height: 400px;
+                }
+
+                overflow: hidden;
+
+            }
+        }
+    }
+</style>
+

@@ -47,6 +47,7 @@
         margin-bottom: 1rem;
         position: relative;
         scroll-margin: 4.5rem;
+        text-box: trim-both cap alphabetic;
 
         &:hover [href] {
             position: absolute;
@@ -350,7 +351,6 @@
                 color: var(--ks-content-link);
                 background-color: var(--ks-background-secondary);
                 border-radius: 4px;
-
 
                 &::before {
                     color: var(--ks-content-link);

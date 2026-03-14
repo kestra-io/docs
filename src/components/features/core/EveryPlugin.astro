@@ -1,0 +1,372 @@
+---
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import { Icon } from "astro-icon/components"
+import { $fetchApi } from "~/utils/fetch"
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+import KestraIcon from "~/components/icons/KestraIcon.vue"
+
+let plugins: {
+    artifactId: string
+    group: string
+    name: string
+    link: string
+}[] = []
+let totalPlugins = "0+"
+
+try {
+    const excluded =
+        /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
+    const metadata =
+        await $fetchApi<{ artifactId: string; group: string; name: string }[]>(
+            "/plugins/metadata",
+        )
+    plugins = metadata
+        .filter((p) => p.artifactId && !excluded.test(p.artifactId))
+        .map((p) => ({
+            ...p,
+            link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
+        }))
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 20)
+
+    const subgroupsData = await $fetchApi("/plugins/subgroups")
+    const count = calculateTotalPlugins(subgroupsData)
+    totalPlugins = `${Math.floor(count / 100) * 100}+`
+} catch (e) {
+    console.error("Failed to fetch plugins", e)
+}
+
+const carouselPlugins = [...plugins, ...plugins]
+---
+
+<section class="every-plugin">
+    <div class="container">
+        <div class="inner-content">
+            <div class="text-content">
+                <h2 data-usal="fade-r">
+                    <span class="highlight">Everything</span> in Kestra is Plugin-Powered
+                </h2>
+                <p data-usal="fade-l">
+                    Plugins are not just "connectors." In Kestra, plugins are
+                    the capability layer.
+                </p>
+            </div>
+            <a href="/plugins" class="btn btn-secondary" data-usal="zoomin">
+                See all plugins
+            </a>
+        </div>
+
+        <div class="plugins" data-usal="zoomin">
+            <div class="top">
+                <div class="text">
+                    <h4>
+                        <Icon
+                            name="mdi:puzzle-check-outline"
+                            class="material-design-icon"
+                        />
+                        Integrations
+                    </h4>
+                    <p>
+                        Databases, warehouses, queues, cloud services, CI/CD,
+                        security tools, and more. <br />
+                        integrate without writing glue code for every system in your
+                        stack.
+                    </p>
+                </div>
+
+                {
+                    plugins.length > 0 && (
+                        <div class="carousel">
+                            <div class="track">
+                                {carouselPlugins.map((plugin, idx) => (
+                                    <a
+                                        href={plugin.link}
+                                        class="plugin-logo"
+                                        target="_blank"
+                                    >
+                                        <TaskIcon cls={plugin.group} />
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+
+            <div class="bottom row m-0">
+                <div class="col-12 col-md-6 left-bottom">
+                    <h5>
+                        <KestraIcon />Core Plugins
+                    </h5>
+                    <p>
+                        Control flow, triggers, execution context, storage I/O,
+                        HTTP calls, logs, metrics, templating, dashboards, the
+                        "batteries included" layer you use in every workflow.
+                    </p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <h5>
+                        <Icon
+                            name="mdi:hammer-wrench"
+                            class="material-design-icon"
+                        />
+                        Build your own
+                    </h5>
+                    <p>
+                        Need an internal system integration or a proprietary
+                        API? Build a plugin once and reuse it everywhere, with
+                        the same execution semantics as the rest of the
+                        platform.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="choose">
+            Choose from {totalPlugins} plugins and integrations, build your own when
+            needed.
+        </h5>
+    </div>
+</section>
+
+<style lang="scss">
+    .every-plugin {
+        padding: 8rem 0.75rem;
+        background: var(--ks-background-primary-inverse);
+        position: relative;
+        overflow: hidden;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            width: 120%;
+            height: 354px;
+            border-radius: 50%;
+            background: linear-gradient(
+                90deg,
+                var(--ks-Color-gradient-1-inverse) 0%,
+                var(--ks-Color-gradient-1-inverse-2) 100%
+            );
+            filter: blur(32px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        &::before {
+            top: -210px;
+            left: -65%;
+        }
+
+        &::after {
+            bottom: -150px;
+            right: -32%;
+            transform: rotate(5deg);
+            transform-origin: right center;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            .inner-content {
+                padding-bottom: 2.5rem;
+                gap: 0.5rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                @include media-breakpoint-down(lg) {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                h2 {
+                    color: var(--ks-content-primary-inverse);
+                }
+
+                .highlight {
+                    color: var(--ks-content-color-highlight-inverse);
+                }
+
+                p {
+                    color: var(--ks-content-secondary-inverse);
+                }
+
+                .text-content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+            }
+
+            .choose {
+                text-align: center;
+                margin-top: 2rem;
+                color: var(--ks-content-primary-inverse);
+            }
+
+            .plugins {
+                background: var(--ks-background-primary-inverse);
+                border: 1px solid var(--ks-content-color-highlight-inverse);
+                box-shadow: 0px 0.5625rem 2.25rem 0px #9d6aeb;
+                border-radius: $border-radius-lg;
+                display: flex;
+                flex-direction: column;
+                color: var(--ks-content-primary-inverse);
+
+                .top {
+                    flex: 1;
+                    border-bottom: 1px solid var(--ks-border-primary-inverse);
+                    padding: 3rem 0 0;
+                    display: flex;
+                    flex-direction: column;
+
+                    .text {
+                        padding: 3rem 6rem 0;
+
+                        @include media-breakpoint-down(lg) {
+                            padding: 0 3rem;
+                        }
+                    }
+
+                    .carousel {
+                        width: 100%;
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        padding: 2.5rem 0 3rem;
+                        pointer-events: none;
+
+                        $mask: linear-gradient(
+                            to right,
+                            transparent,
+                            var(--ks-background-primary-inverse) 100px,
+                            var(--ks-background-primary-inverse)
+                                calc(100% - 100px),
+                            transparent
+                        );
+                        -webkit-mask-image: $mask;
+                        mask-image: $mask;
+
+                        &::before,
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            height: 100%;
+                            width: 120px;
+                            z-index: 2;
+                            pointer-events: none;
+                            backdrop-filter: blur(0.625rem);
+                        }
+
+                        &::before {
+                            left: 0;
+                            -webkit-mask-image: linear-gradient(
+                                to right,
+                                var(--ks-background-primary-inverse),
+                                transparent
+                            );
+                            mask-image: linear-gradient(
+                                to right,
+                                var(--ks-background-primary-inverse),
+                                transparent
+                            );
+                        }
+
+                        &::after {
+                            right: 0;
+                            -webkit-mask-image: linear-gradient(
+                                to left,
+                                var(--ks-background-primary-inverse),
+                                transparent
+                            );
+                            mask-image: linear-gradient(
+                                to left,
+                                var(--ks-background-primary-inverse),
+                                transparent
+                            );
+                        }
+
+                        &:hover .track {
+                            animation-play-state: paused;
+                        }
+
+                        .track {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.625rem;
+                            width: max-content;
+                            height: 4.9375rem;
+                            will-change: transform;
+                            animation: scroll-left 50s linear infinite;
+                        }
+
+                        .plugin-logo {
+                            width: 4.375rem;
+                            height: 4.375rem;
+                            background: $white;
+                            border-radius: 0.75rem;
+                            border: 1px solid var(--ks-border-primary-inverse);
+                            box-shadow: 0px 0.25rem 2.25rem #9d6aeb;
+                            padding: 0.5rem;
+                            flex-shrink: 0;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            pointer-events: auto;
+                            transition: all 0.2s ease;
+
+                            &:hover {
+                                transform: translateY(-3px);
+                                z-index: 10;
+                            }
+                        }
+                    }
+                }
+
+                .material-design-icon {
+                    color: var(--ks-content-color-highlight-inverse);
+                    margin-right: 0.5rem;
+                }
+
+                p {
+                    color: var(--ks-content-secondary-inverse);
+                    font-size: $font-size-sm;
+                }
+
+                .bottom {
+                    flex: 1;
+
+                    > div {
+                        padding: 4rem 6rem;
+
+                        @include media-breakpoint-down(lg) {
+                            padding: 3rem;
+                        }
+                    }
+
+                    .left-bottom {
+                        border-right: 1px solid var(--ks-border-primary-inverse);
+
+                        @include media-breakpoint-down(md) {
+                            border-right: none;
+                            border-bottom: 1px solid
+                                var(--ks-border-primary-inverse);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @keyframes scroll-left {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+</style>
+
