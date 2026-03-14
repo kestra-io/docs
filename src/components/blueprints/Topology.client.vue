@@ -109,6 +109,10 @@
         border: $container-border !important;
     }
 
+    :deep(.material-design-icon > .material-design-icon__svg) {
+        bottom: 0;
+    }
+
     :deep(.vue-flow) {
         width: 100%;
         height: 100%;
