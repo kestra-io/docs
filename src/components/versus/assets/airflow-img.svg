@@ -1,0 +1,75 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#EBF5FF"/>
+<g filter="url(#filter0_d_airflow)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#017CEE" shape-rendering="crispEdges"/>
+<!-- Schedule icon: clock -->
+<circle cx="67" cy="121" r="11" stroke="black" stroke-width="1.5" fill="none"/>
+<path d="M67 121V113" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M67 121L73 121" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<circle cx="67" cy="121" r="1.5" fill="black"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Schedule</text>
+</g>
+<g filter="url(#filter1_d_airflow)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#017CEE" shape-rendering="crispEdges"/>
+<!-- Extract icon: wrench (from dagster) -->
+<path d="M186.471 132.363L184.696 134.137C184.461 134.37 184.145 134.501 183.814 134.501C183.484 134.501 183.167 134.37 182.933 134.137L168.083 119.312C167.677 119.43 167.256 119.493 166.833 119.5C166.037 119.499 165.253 119.309 164.546 118.944C163.838 118.58 163.228 118.051 162.766 117.403C162.304 116.755 162.003 116.006 161.889 115.219C161.774 114.431 161.849 113.628 162.108 112.875L165.283 116.05L165.946 115.387L167.721 113.613L168.383 112.95L165.208 109.775C165.961 109.516 166.764 109.441 167.552 109.556C168.339 109.67 169.088 109.971 169.736 110.433C170.384 110.895 170.913 111.505 171.277 112.212C171.642 112.92 171.832 113.704 171.833 114.5C171.826 114.923 171.763 115.344 171.646 115.75L186.471 130.6C186.703 130.834 186.834 131.151 186.834 131.481C186.834 131.811 186.703 132.128 186.471 132.363ZM162.196 130.6C161.963 130.834 161.832 131.151 161.832 131.481C161.832 131.811 161.963 132.128 162.196 132.363L163.971 134.137C164.205 134.37 164.522 134.501 164.852 134.501C165.182 134.501 165.499 134.37 165.733 134.137L172.571 127.312L169.033 123.775M184.333 109.5L179.333 112L179.333 114.5L176.621 117.213L179.121 119.712L181.833 117L184.333 117L186.833 112L184.333 109.5Z" fill="black"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Extract</text>
+</g>
+<g filter="url(#filter2_d_airflow)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#017CEE" shape-rendering="crispEdges"/>
+<!-- Transform icon: Python @decorator / code file -->
+<path d="M288 110H276C274.9 110 274 110.9 274 112V130C274 131.1 274.9 132 276 132H290C291.1 132 292 131.1 292 130V114L288 110ZM288 111.5L290.5 114H288V111.5ZM278 120H289V122H278V120ZM278 124H289V126H278V124ZM278 116H286V118H278V116Z" fill="black"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Transform</text>
+</g>
+<g filter="url(#filter3_d_airflow)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#017CEE" shape-rendering="crispEdges"/>
+<!-- Load icon: warehouse (from dagster, x+108) -->
+<path d="M382.666 130.75H385.166V133.25H382.666V130.75ZM390.166 110.75L377.666 117V133.25H380.166V123.25H400.166V133.25H402.666V117L390.166 110.75ZM385.166 120.75H380.166V118.25H385.166V120.75ZM392.666 120.75H387.666V118.25H392.666V120.75ZM400.166 120.75H395.166V118.25H400.166V120.75ZM382.666 125.75H385.166V128.25H382.666V125.75ZM387.666 125.75H390.166V128.25H387.666V125.75ZM387.666 130.75H390.166V133.25H387.666V130.75ZM392.666 130.75H395.166V133.25H392.666V130.75Z" fill="black"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="black">Load</text>
+</g>
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="black"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="black"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="black"/>
+<defs>
+<filter id="filter0_d_airflow" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.004 0 0 0 0 0.486 0 0 0 0 0.933 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_airflow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_airflow" result="shape"/>
+</filter>
+<filter id="filter1_d_airflow" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.004 0 0 0 0 0.486 0 0 0 0 0.933 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_airflow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_airflow" result="shape"/>
+</filter>
+<filter id="filter2_d_airflow" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.004 0 0 0 0 0.486 0 0 0 0 0.933 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_airflow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_airflow" result="shape"/>
+</filter>
+<filter id="filter3_d_airflow" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.004 0 0 0 0 0.486 0 0 0 0 0.933 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_airflow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_airflow" result="shape"/>
+</filter>
+</defs>
+</svg>
