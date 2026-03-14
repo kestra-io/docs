@@ -1,0 +1,28 @@
+---
+import Quotes from "~/components/common/Quotes.vue"
+
+const quotes = [
+    {
+        quote: `Our goal is for Kestra to become the go-to solution across the
+                organization whenever data wrangling and complex pipeline
+                orchestration are needed.`,
+        author: "Rémi Sultan - AI/ML Lead",
+        kpis: [
+            {
+                value: "50%",
+                name: "less maintenance",
+            },
+            {
+                value: "0",
+                name: "Customer training needed",
+            },
+            {
+                value: "2",
+                name: "engineers to build the product",
+            },
+        ],
+    },
+]
+---
+
+<Quotes quotes={quotes} />

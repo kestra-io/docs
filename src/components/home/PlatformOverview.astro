@@ -1,0 +1,240 @@
+---
+import { Image } from "astro:assets"
+
+import agent from "./assets/overview/agent.png"
+import code from "./assets/overview/code.png"
+import eventDriven from "./assets/overview/event-driven.png"
+import governance from "./assets/overview/governance.png"
+
+const images = [
+    { src: code, alt: "Code workflows" },
+    { src: agent, alt: "Agent workflows" },
+    { src: eventDriven, alt: "Event-driven workflows" },
+    { src: governance, alt: "Governance workflows" },
+]
+---
+
+<section class="platform-overview" aria-labelledby="platform-heading">
+    <h2 id="platform-heading">One Platform. All Your Workflows.</h2>
+    <div class="platform-wrapper">
+        <div class="event-driven-workflow">
+            <h3>Batch and Event-Driven</h3>
+            <p>Cron, events, webhooks, messages. One engine to run them all.</p>
+        </div>
+        <div class="code-workflow">
+            <h3>Declarative Orchestration</h3>
+            <p>
+                Write workflows in YAML. Version them. Review them. Ship them.
+            </p>
+        </div>
+        <div class="governance-workflow">
+            <h3>Governance and Reliability</h3>
+            <p>
+                Retries, timeouts, SLAs, RBAC, audit logs. SOC 2, Built to run
+                in production.
+            </p>
+        </div>
+        <div class="agent-workflow">
+            <h3>Connect Everything</h3>
+            <p>
+                Cloud, data, infra, CI/CD, ITSM, messaging. Plug into your
+                entire stack.
+            </p>
+        </div>
+        <figure class="image-stack">
+            {
+                images.map(({ src, alt }, i) => (
+                    <Image
+                        src={src}
+                        alt={alt}
+                        class="stack-image"
+                        style={`--i: ${i - (images.length - 1) / 2};`}
+                        loading="lazy"
+                    />
+                ))
+            }
+        </figure>
+    </div>
+</section>
+
+<script>
+    const stack = document.querySelector(".platform-wrapper")
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                entry.target.classList.toggle("expanded", entry.isIntersecting)
+            })
+        },
+        { threshold: 0.8 },
+    )
+    if (stack) {
+        observer.observe(stack)
+    }
+</script>
+
+<style lang="scss">
+    section {
+        padding: 5rem 2rem;
+        background-color: white;
+        background-image:
+            linear-gradient(
+                to bottom,
+                var(--hp-background-purple-light) 0%,
+                var(--hp-background-purple-light) 1%,
+                color-mix(
+                        in srgb,
+                        var(--hp-background-purple-light) 20%,
+                        white 50%
+                    )
+                    40%,
+                #ffffffdf 100%
+            ),
+            radial-gradient(
+                ellipse at top center,
+                transparent 0,
+                #ffffff20 35%,
+                #ffffff 70%
+            ),
+            linear-gradient(
+                to right,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            );
+        background-size:
+            100% 100%,
+            100% 100%,
+            var(--hp-grid-size) var(--hp-grid-size),
+            var(--hp-grid-size) var(--hp-grid-size);
+        background-position: center bottom;
+        color: var(--hp-content-secondary);
+        text-align: center;
+    }
+    .platform-overview {
+        text-align: center;
+        padding: 4rem 0;
+        color: var(--hp-content-primary);
+    }
+
+    .platform-wrapper {
+        position: relative;
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        --stack-offset: -50px;
+        &.expanded {
+            --stack-offset: -150px;
+            & > div {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        & > div {
+            position: absolute;
+            z-index: 2;
+            width: 250px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            background-color: #ffffffaa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--hp-border-secondary);
+            @include media-breakpoint-up(md) {
+                border-color: transparent;
+                z-index: 0;
+                &:after {
+                    content: "";
+                    position: absolute;
+                    width: 115px;
+                    height: 1px;
+                    background: var(--hp-border-secondary);
+                    top: 2rem;
+                    margin: 0;
+                }
+            }
+            h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            p {
+                font-size: 0.8rem;
+                color: var(--hp-content-secondary);
+            }
+        }
+        .event-driven-workflow,
+        .code-workflow {
+            left: 1rem;
+            @include media-breakpoint-up(md) {
+                left: 0;
+            }
+            text-align: right;
+            &:after {
+                left: 100%;
+            }
+        }
+
+        .event-driven-workflow {
+            top: 230px;
+        }
+        .code-workflow {
+            bottom: 70px;
+        }
+
+        .governance-workflow,
+        .agent-workflow {
+            right: 1rem;
+            @include media-breakpoint-up(md) {
+                right: 80px;
+            }
+            text-align: left;
+            &:after {
+                right: 100%;
+            }
+        }
+
+        .governance-workflow {
+            top: 80px;
+        }
+        .agent-workflow {
+            bottom: 200px;
+        }
+
+        .code-workflow,
+        .agent-workflow {
+            transform: translateY(-150px);
+        }
+
+        .event-driven-workflow,
+        .governance-workflow {
+            transform: translateY(150px);
+        }
+    }
+
+    .image-stack {
+        position: relative;
+        margin: 4rem auto 0;
+        max-width: 900px;
+        height: 700px;
+    }
+
+    .stack-image {
+        position: absolute;
+        z-index: 1;
+        left: 50%;
+        top: 30%;
+        width: 438px;
+        transform: translateX(-50%)
+            translateY(calc(var(--i) * var(--stack-offset, -50px))) scaleY(0.7)
+            skew(20deg) rotate(-9deg);
+        transition: transform 0.3s ease;
+        border-radius: 1rem;
+        border: 1px solid var(--hp-border-secondary);
+        box-shadow:
+            -3px 4px 0 0 var(--hp-border-secondary),
+            -10px 30px 20px rgba(167, 150, 255, 0.2);
+    }
+</style>

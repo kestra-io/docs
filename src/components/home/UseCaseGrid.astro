@@ -1,0 +1,103 @@
+---
+import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
+---
+
+<section aria-labelledby="usecases-heading">
+    <h2 id="usecases-heading">Built for How Modern Teams Actually Work.</h2>
+    <div class="wrapper">
+        <ul role="list">
+            <li>
+                <h3>Any Language. No Lock-in</h3>
+                <p>
+                    Run tasks in Python, Bash, Node.js, Go, or containers. No
+                    refactoring required.
+                </p>
+            </li>
+            <li>
+                <h3>Build Everything As Code & From the UI</h3>
+                <p>
+                    Empower every team members to collaborate from a single
+                    tool—code for developers, UI for everyone else, all in sync.
+                </p>
+            </li>
+            <li>
+                <h3>Agentic Automation, Built In</h3>
+                <p>
+                    Copilot for speed, agents for action. Create, iterate, and
+                    automate workflows with an AI native platform.
+                </p>
+            </li>
+            <li>
+                <h3>API First. CI/CD Native.</h3>
+                <p>
+                    Trigger executions, manage workflows and resources through
+                    the API, and roll out updates safely with Git-driven CI/CD
+                    pipelines.
+                </p>
+            </li>
+        </ul>
+        <a href="/features">See product features<ArrowRightIcon /></a>
+    </div>
+</section>
+
+<style lang="scss">
+    section {
+        padding: 4rem 0;
+        background: white;
+        color: var(--hp-content-primary);
+
+        h2 {
+            text-align: center;
+            font-size: $font-size-2xl;
+            margin-bottom: 2rem;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            gap: 2rem;
+            padding: 0 1.5rem;
+        }
+
+        ul {
+            list-style: none;
+            display: grid;
+            width: 100%;
+            gap: 1.5rem;
+            padding: 0;
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(auto-fit, minmax(465px, 1fr));
+            }
+
+            li {
+                border: 1px solid var(--hp-border-secondary);
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+                h3 {
+                    font-size: $font-size-lg;
+                    margin-bottom: 0.5rem;
+                }
+
+                p {
+                    font-size: $font-size-sm;
+                    color: var(--hp-content-secondary);
+                    margin: 0;
+                }
+            }
+        }
+
+        a {
+            font-weight: 600;
+            color: var(--hp-content-color-highlight);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+</style>

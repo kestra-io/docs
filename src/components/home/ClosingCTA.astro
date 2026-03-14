@@ -1,0 +1,183 @@
+<section aria-labelledby="closing-heading">
+    <div class="block">
+        <p>
+            Kestra gives you <strong>
+                fewer tools to maintain, fewer scripts to debug, fewer
+                dependencies between teams, and one place to see what’s running
+            </strong> across your company.
+        </p>
+        <div class="frise">
+            <span>One Platform</span>
+            <svg
+                width="41"
+                height="41"
+                viewBox="0 0 41 41"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <g filter="url(#filter0_d_23248_29847)">
+                    <path
+                        d="M3 0L26.0031 0L40.359 16.1886L26.0031 32.0717L3 32.0717L17.3559 16.1886L3 0Z"
+                        fill="#F7F7F7"></path>
+                    <path
+                        d="M25.7783 0.5L39.6875 16.1846L25.7813 31.5713L4.12695 31.5713L17.7266 16.5234L18.0273 16.1914L17.7295 15.8564L4.1123 0.5L25.7783 0.5Z"
+                        stroke="black"></path>
+                </g>
+            </svg>
+
+            <span>One Standard</span>
+            <svg
+                width="41"
+                height="41"
+                viewBox="0 0 41 41"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <g filter="url(#filter0_d_23248_29847)">
+                    <path
+                        d="M3 0L26.0031 0L40.359 16.1886L26.0031 32.0717L3 32.0717L17.3559 16.1886L3 0Z"
+                        fill="#F7F7F7"></path>
+                    <path
+                        d="M25.7783 0.5L39.6875 16.1846L25.7813 31.5713L4.12695 31.5713L17.7266 16.5234L18.0273 16.1914L17.7295 15.8564L4.1123 0.5L25.7783 0.5Z"
+                        stroke="black"></path>
+                </g>
+            </svg>
+            <span style="color: var(--hp-content-color-highlight);">
+                One Source of Truth
+            </span>
+        </div>
+    </div>
+    <a href="/docs/quickstart" class="btn btn-lg btn-primary"> Get Started </a>
+    <a href="/demo" class="btn btn-lg btn-secondary" style="margin-left: 1rem;">
+        Book a demo
+    </a>
+    <svg
+        width="41"
+        height="41"
+        viewBox="0 0 41 41"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <defs>
+            <filter
+                id="filter0_d_23248_29847"
+                x="0"
+                y="0"
+                width="40.3589"
+                height="40.0717"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+            >
+                <feFlood flood-opacity="0" result="BackgroundImageFix"
+                ></feFlood>
+                <feColorMatrix
+                    in="SourceAlpha"
+                    type="matrix"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"></feColorMatrix>
+                <feOffset dx="-3" dy="8"></feOffset>
+                <feComposite in2="hardAlpha" operator="out"></feComposite>
+                <feColorMatrix
+                    type="matrix"
+                    values="0 0 0 0 0.861686 0 0 0 0 0.857324 0 0 0 0 0.86591 0 0 0 1 0"
+                ></feColorMatrix>
+                <feBlend
+                    mode="normal"
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_23248_29847"></feBlend>
+                <feBlend
+                    mode="normal"
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_23248_29847"
+                    result="shape"></feBlend>
+            </filter>
+        </defs>
+    </svg>
+</section>
+
+<style lang="scss">
+    section {
+        padding: 5rem 1rem;
+        background-color: white;
+        background-image:
+            radial-gradient(
+                ellipse at 55% 130%,
+                var(--hp-content-color-highlight) 0%,
+                var(--hp-content-color-highlight) 1%,
+                color-mix(
+                        in srgb,
+                        var(--hp-content-color-highlight) 20%,
+                        white 50%
+                    )
+                    18%,
+                transparent 35%
+            ),
+            radial-gradient(
+                ellipse at bottom center,
+                rgba(255, 255, 255, 0.7) 0%,
+                rgba(255, 255, 255, 1) 100%
+            ),
+            linear-gradient(
+                to right,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            );
+        background-size:
+            100% 100%,
+            100% 100%,
+            var(--hp-grid-size) var(--hp-grid-size),
+            var(--hp-grid-size) var(--hp-grid-size);
+        background-position: center bottom;
+        color: var(--hp-content-secondary);
+        text-align: center;
+    }
+
+    .block {
+        max-width: 636px;
+        margin-inline: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        p {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .frise {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        flex-direction: column;
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+        }
+        svg {
+            display: none;
+            @include media-breakpoint-up(md) {
+                display: block;
+            }
+        }
+
+        span {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: var(--hp-content-secondary);
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+            font-family: monospace;
+            border: 1px solid var(--hp-border-secondary);
+            background-color: #ffffff;
+        }
+    }
+</style>

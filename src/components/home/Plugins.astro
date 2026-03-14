@@ -1,0 +1,152 @@
+---
+import { $fetchApi } from "~/utils/fetch"
+import TaskIcon from "../common/TaskIcon.astro"
+import { optimizeSvgIcon } from "~/utils/svgo"
+
+const excluded =
+    /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
+const metadata =
+    await $fetchApi<{ artifactId: string; group: string; name: string }[]>(
+        "/plugins/metadata",
+    )
+
+const iconsStash = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
+
+const plugins = metadata
+    .filter((p) => p.artifactId && !excluded.test(p.artifactId))
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 90)
+    .map((p) => {
+        const iconGroup: string = Object.keys(iconsStash).filter((group) =>
+            group.startsWith(p.group),
+        )[0]
+        return {
+            ...p,
+            link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
+            icon: iconsStash[iconGroup]?.icon
+                ? optimizeSvgIcon(atob(iconsStash[iconGroup].icon), iconGroup)
+                : "",
+        }
+    })
+
+const plugins1 = plugins.slice(0, plugins.length / 2)
+const plugins2 = plugins.slice(plugins.length / 2)
+---
+
+<section aria-labelledby="integrations-heading">
+    <div class="container">
+        <h2 id="integrations-heading">
+            Work With Your Stack, <br />
+            Not the Other Way Around.
+        </h2>
+        <p>
+            Kestra integrates with your existing cloud, data, infrastructure,
+            and SaaS tools. <br />With 1,100+ plugins, you can orchestrate
+            everything without building custom glue code.
+        </p>
+    </div>
+
+    <div class="track">
+        <ul role="list" aria-label="Integration logos" class="sliding-to-left">
+            {
+                [...plugins1, ...plugins1].map((plugin) => (
+                    <li>
+                        <a
+                            href={plugin.link}
+                            class="plugin-logo"
+                            target="_blank"
+                            set:html={plugin.icon}
+                        />
+                    </li>
+                ))
+            }
+        </ul>
+        <ul role="list" aria-label="Integration logos" class="sliding-to-right">
+            {
+                [...plugins2, ...plugins2].map((plugin) => (
+                    <li>
+                        <a
+                            href={plugin.link}
+                            class="plugin-logo"
+                            target="_blank"
+                            set:html={plugin.icon}
+                        />
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    section {
+        background-color: var(--hp-background-secondary);
+        color: var(--hp-content-secondary);
+        text-align: left;
+        padding: 4rem 0;
+        p,
+        h2 {
+            margin: 1.5rem 1rem;
+        }
+        p {
+            margin-bottom: 3rem;
+        }
+        .track {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+        ul {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 1rem;
+            list-style: none;
+            padding: 0.2rem 0;
+
+            li {
+                flex-shrink: 0;
+                width: 80px;
+                height: 80px;
+                padding: 0.5rem;
+                box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 0.5rem;
+                background: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            :global(svg) {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        .sliding-to-right {
+            animation: slideToRight 60s linear infinite;
+        }
+        .sliding-to-left {
+            animation: slideToLeft 60s linear infinite;
+        }
+
+        @keyframes slideToRight {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        @keyframes slideToLeft {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    }
+</style>

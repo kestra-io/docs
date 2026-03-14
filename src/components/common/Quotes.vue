@@ -5,7 +5,7 @@ defineProps<{
     quotes: {
         quote: string
         author: string
-        smallLogoSvg: string
+        smallLogoSvg?: string
         bigLogoSrc?: string
         kpis?: {
             name: string
@@ -40,7 +40,7 @@ const activeQuote = ref(0)
                     <blockquote class="quote-content">{{ quotes[activeQuote].quote }}</blockquote>
                 </h1>
                 <p v-html="quotes[activeQuote].author" data-usal="fade-l"/>
-                <div class="small-logo" v-if="quotes.length === 1" v-html="quotes[activeQuote].smallLogoSvg" />
+                <div class="small-logo" v-if="quotes.length === 1 && quotes[activeQuote].smallLogoSvg" v-html="quotes[activeQuote].smallLogoSvg" />
             </div>
         </div>
         <div v-if="quotes[activeQuote].kpis" class="kpis">
