@@ -170,7 +170,7 @@ Here is the list of supported data types:
 - `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2042-12-03`.
 - `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
 - `DURATION`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
-- `FILE`: Either a file uploaded at execution time as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="files"; filename="<input-id>"` (where `<input-id>` is the input name), or a default file referenced via the universal file protocol using `nsfile:///path/to/file` (namespace file) or `file:///path/to/file` (local file from an allowed path). `FILE` type inputs also have the `allowedFileExtensions` property to control which types of files can be uploaded.
+- `FILE`: Either a file uploaded at execution time as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="<input-id>"; filename="<file-name>"` (where `<input-id>` is the input name and `<file-name>` is the original filename of the file being uploaded), or a default file referenced via the universal file protocol using `nsfile:///path/to/file` (namespace file) or `file:///path/to/file` (local file from an allowed path). `FILE` type inputs also have the `allowedFileExtensions` property to control which types of files can be uploaded.
 - `JSON`: Must be a valid JSON string and will be converted to a typed form.
 - `YAML`: Must be a valid YAML string.
 - `URI`: Must be a valid URI and will be kept as a string.
