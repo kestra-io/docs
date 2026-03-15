@@ -14,31 +14,31 @@ To upload a file for an input of type `FILE`, you should now use the part **name
 For example, when using `cURL` to start an execution for the following flow:
 
 ```yaml
-id: file
+id: file_flow
 namespace: company.team
 
 inputs:
-  - id: file
+  - id: fileInput
     type: FILE
 
 tasks:
   - id: hello
     type: io.kestra.plugin.core.log.Log
-    message: "{{inputs.file}}"
+    message: "{{inputs.fileInput}}"
 ```
 
 **Before 0.24 - now deprecated**
 
 ```bash
-curl -v "http://localhost:8080/api/v1/executions/company.team/file" \
+curl -v "http://localhost:8080/api/v1/executions/company.team/file_flow" \
     -H "Content-Type:multipart/form-data"    \
-    -F "files=@/tmp/test.txt;filename=file"
+    -F "files=@/tmp/test.txt;filename=fileInput"
 ```
 
 **Since 0.24**
 
 ```bash
-curl -v "http://localhost:8080/api/v1/executions/company.team/file" \
+curl -v "http://localhost:8080/api/v1/executions/company.team/file_flow" \
     -H "Content-Type:multipart/form-data" \
-    -F "file=@/tmp/test.txt;filename=test.txt"
+    -F "fileInput=@/tmp/test.txt;filename=test.txt"
 ```
