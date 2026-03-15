@@ -32,8 +32,9 @@ export const GET: APIRoute = async () => {
                 .flatMap((value) => {
                     return value.map((t: PluginElement) => {
                         const subgroup = mapping.clsToSubgroup[t.cls]
-                        return `/plugins/${pluginName}${subgroup ? "/" + subgroup : ""}/${t.cls.toLocaleLowerCase()}`
-                    })
+                        const url = `/plugins/${pluginName}${subgroup ? "/" + subgroup : ""}/${t.cls.toLocaleLowerCase()}`
+                        return t.deprecated ? null : url
+                    }).filter(url => url !== null)
                 }),
         )
     })
