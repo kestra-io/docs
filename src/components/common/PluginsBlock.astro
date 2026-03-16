@@ -45,7 +45,11 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
                 </p>
             </div>
             <slot name="cta">
-                <Link href="/plugins" class="btn btn-secondary" data-usal="zoomin">
+                <Link
+                    href="/plugins"
+                    class="btn btn-secondary"
+                    data-usal="zoomin"
+                >
                     See all plugins
                 </Link>
             </slot>
@@ -57,12 +61,11 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
             rows.map((items) => (
                 <div class="carousel-row">
                     <div class="carousel-track">
-                        {[...items, ...items]
-                            .map((plugin) => (
-                                <a href={plugin.link} class="plugin-logo">
-                                    <TaskIcon cls={plugin.group} />
-                                </a>
-                            ))}
+                        {[...items, ...items, ...items].map((plugin) => (
+                            <a href={plugin.link} class="plugin-logo">
+                                <TaskIcon cls={plugin.group} />
+                            </a>
+                        ))}
                     </div>
                 </div>
             ))

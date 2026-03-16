@@ -6,11 +6,11 @@ import Comparison from "~/components/home/Comparison.astro"
 import Stacked from "~/components/common/Stacked.astro"
 import PlatformOverview from "~/components/home/PlatformOverview.astro"
 import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
-import Plugins from "~/components/home/Plugins.astro"
 import Testimonial from "~/components/home/Testimonial.astro"
 import Blueprints from "~/components/home/Blueprints.astro"
 import ClosingCTA from "~/components/home/ClosingCTA.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
 ---
 
 <Layout headerTheme="darkHeader">
@@ -28,7 +28,17 @@ import GetStarted from "~/components/common/GetStarted.astro"
         </Stacked>
         <PlatformOverview />
         <UseCaseGrid />
-        <Plugins />
+        <PluginsBlock>
+            <span slot="title">
+                Work With Your Stack, <br />
+                Not the Other Way Around.
+            </span>
+            <span slot="description">
+                Kestra integrates with your existing cloud, data,
+                infrastructure, and SaaS tools. <br />With 1,100+ plugins, you
+                can orchestrate everything without building custom glue code.
+            </span>
+        </PluginsBlock>
         <Testimonial />
         <GetStarted>
             <h2 slot="heading" id="get-started-heading">
