@@ -5,6 +5,8 @@ import agent from "./assets/overview/agent.png"
 import code from "./assets/overview/code.png"
 import eventDriven from "./assets/overview/event-driven.png"
 import governance from "./assets/overview/governance.png"
+import { $fetchApi } from "~/utils/fetch"
+import { API_URL } from "astro:env/client"
 
 const images = [
     {
@@ -22,6 +24,7 @@ const images = [
         title: "Connect Everything",
         description:
             "Cloud, data, infra, CI/CD, ITSM, messaging. Plug into your entire stack.",
+        connectors: true,
     },
     {
         src: eventDriven,
@@ -40,6 +43,26 @@ const images = [
             "Retries, timeouts, SLAs, RBAC, audit logs. SOC 2, Built to run in production.",
     },
 ]
+
+const pluginsDisplayed = [
+    "dbt.cli.DbtCLI",
+    "airbyte.connections.Sync",
+    "gcp.cli.GCloudCLI",
+    "servicenow.Get",
+]
+const pluginIcons = await Promise.all(
+    pluginsDisplayed.map(async (plugin) => {
+        try {
+            const iconResponse = await fetch(
+                `${API_URL}/plugins/icons/io.kestra.plugin.${plugin}`,
+            )
+            return await iconResponse.text()
+        } catch (e) {
+            console.warn(`Could not load icon for plugin ${plugin}:`, e)
+            return null
+        }
+    }),
+)
 ---
 
 <section class="platform-overview" aria-labelledby="platform-heading">
@@ -47,21 +70,34 @@ const images = [
     <div class="platform-wrapper">
         <div class="image-stack">
             {
-                images.map(({ src, alt, title, description, className }, i) => (
-                    <figure>
-                        <figcaption class={className}>
-                            <h3>{title}</h3>
-                            <p>{description}</p>
-                        </figcaption>
-                        <Image
-                            src={src}
-                            alt={alt}
-                            class="stack-image"
-                            style={`--i: ${i - (images.length - 1) / 2};`}
-                            loading="lazy"
-                        />
-                    </figure>
-                ))
+                images.map(
+                    (
+                        { src, alt, title, description, className, connectors },
+                        i,
+                    ) => (
+                        <figure>
+                            <Image
+                                src={src}
+                                alt={alt}
+                                class="stack-image"
+                                style={`--i: ${i - (images.length - 1) / 2};`}
+                                loading="lazy"
+                            />
+                            <figcaption class={className}>
+                                <h3>{title}</h3>
+                                <p>{description}</p>
+                                {connectors && (
+                                    <p class="connectors">
+                                        {pluginIcons.map((icon, index) => (
+                                            <span set:html={icon} />
+                                        ))}
+                                        1200+ plugins
+                                    </p>
+                                )}
+                            </figcaption>
+                        </figure>
+                    ),
+                )
             }
         </div>
     </div>
@@ -142,12 +178,6 @@ const images = [
         margin: 0 auto;
         padding: 0 1rem;
         --stack-offset: -320px;
-        figure {
-            border-radius: 0.5rem;
-            overflow: hidden;
-            border: 1px solid var(--hp-border-secondary);
-            box-shadow: -10px 30px 20px rgba(167, 150, 255, 0.2);
-        }
         @include media-breakpoint-up(md) {
             --stack-offset: -50px;
             &.expanded {
@@ -157,19 +187,49 @@ const images = [
                     transform: translateY(0);
                 }
             }
-            figure {
-                border: none;
-            }
         }
         figcaption {
             position: static;
+            text-align: left;
             transition: all 0.3s ease;
-            background-color: #ffffffaa;
-            padding: 1rem;
+            padding-block: 1rem;
             border-radius: 0.5rem;
+            --figure-bar-width: 20px;
+
+            .connectors {
+                display: flex;
+                gap: 0.5rem;
+                margin-top: 1rem;
+                justify-content: start;
+                white-space: nowrap;
+                align-items: center;
+                gap: 0.5rem;
+
+                span {
+                    width: 24px;
+                    height: 24px;
+                    display: flex;
+                    flex-shrink: 0;
+                    justify-content: center;
+                    align-items: center;
+                    @include media-breakpoint-up(md) {
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 4px;
+                        background-color: #ffffff;
+                        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+                    }
+
+                    :global(svg) {
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+            }
+
             @include media-breakpoint-up(md) {
                 opacity: 0;
-                background-color: transparent;
+                padding: 1rem;
                 position: absolute;
                 width: 250px;
                 z-index: 3;
@@ -177,7 +237,7 @@ const images = [
                     content: "";
                     position: absolute;
                     z-index: 1;
-                    width: 115px;
+                    width: var(--figure-bar-width);
                     height: 1px;
                     background: var(--hp-border-secondary);
                     top: 2rem;
@@ -193,6 +253,9 @@ const images = [
                     top: 30px;
                 }
             }
+            @include media-breakpoint-up(lg) {
+                --figure-bar-width: 115px;
+            }
             h3 {
                 font-size: 1rem;
                 margin-bottom: 0.5rem;
@@ -203,11 +266,10 @@ const images = [
                 margin: 0;
             }
         }
-        .event-driven-workflow,
-        .code-workflow {
-            left: 1rem;
-            text-align: left;
-            @include media-breakpoint-up(md) {
+        // on odd indexes, position caption on the left, otherwise on the right
+        figure:nth-child(odd) figcaption {
+            left: -1rem;
+            @include media-breakpoint-up(lg) {
                 left: 0;
                 text-align: right;
             }
@@ -215,35 +277,38 @@ const images = [
                 left: 100%;
             }
             &:after {
-                right: -115px;
+                right: calc(var(--figure-bar-width) * -1);
             }
         }
 
-        .event-driven-workflow {
-            top: 230px;
-        }
-        .code-workflow {
-            bottom: 70px;
-        }
-
-        .governance-workflow,
-        .agent-workflow {
-            right: 0;
-
-            text-align: left;
+        figure:nth-child(even) figcaption {
+            @include media-breakpoint-up(md) {
+                right: -1rem;
+                text-align: right;
+            }
+            @include media-breakpoint-up(lg) {
+                right: 0;
+                text-align: left;
+            }
             &:before {
                 right: 100%;
             }
             &:after {
-                left: -115px;
+                left: calc(var(--figure-bar-width) * -1);
             }
         }
 
         .governance-workflow {
             top: 80px;
         }
+        .event-driven-workflow {
+            top: 230px;
+        }
         .agent-workflow {
-            bottom: 200px;
+            top: 420px;
+        }
+        .code-workflow {
+            bottom: 70px;
         }
 
         @include media-breakpoint-up(md) {
@@ -269,9 +334,12 @@ const images = [
     }
 
     .stack-image {
-        border-top: 1px solid var(--hp-border-secondary);
+        max-width: none;
+        width: 100vw;
+        margin-top: 2rem;
+        border: 1px solid var(--hp-border-secondary);
+        border-radius: 0.5rem;
         @include media-breakpoint-up(md) {
-            border: 1px solid var(--hp-border-secondary);
             border-radius: 1rem;
             position: absolute;
             z-index: 1;
