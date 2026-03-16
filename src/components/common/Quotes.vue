@@ -35,13 +35,11 @@ const activeQuote = ref(0)
         </div>
         <div class="content">
             <img v-if="quotes[activeQuote].bigLogoSrc" :src="quotes[activeQuote].bigLogoSrc" class="big-logo" />
-            <div class="text" :class="{'text-center': !quotes[activeQuote].bigLogoSrc}">
-                <h1 class="quote-title" data-usal="fade-r">
-                    <blockquote class="quote-content">{{ quotes[activeQuote].quote }}</blockquote>
-                </h1>
-                <p v-html="quotes[activeQuote].author" data-usal="fade-l"/>
+            <figure class="text" :class="{'text-center': !quotes[activeQuote].bigLogoSrc}">
+                <blockquote class="quote-content" data-usal="fade-r">{{ quotes[activeQuote].quote }}</blockquote>
+                <figcaption v-html="quotes[activeQuote].author" data-usal="fade-l"/>
                 <div class="small-logo" v-if="quotes.length === 1 && quotes[activeQuote].smallLogoSvg" v-html="quotes[activeQuote].smallLogoSvg" />
-            </div>
+            </figure>
         </div>
         <div v-if="quotes[activeQuote].kpis" class="kpis">
             <div v-for="kpi in quotes[activeQuote].kpis" :key="kpi.name" class="kpi">
@@ -135,35 +133,34 @@ const activeQuote = ref(0)
             gap: 2rem;
             align-items: center;
 
-            .quote-title {
+
+            .quote-content {
                 margin: 0;
                 color: var(--ks-content-primary);
                 font-weight: normal;
+                font-size: 2rem;
                 line-height: 1.3;
+                display: inline;
+                padding: 0;
+                margin: 0;
 
-                .quote-content {
-                    display: inline;
-                    padding: 0;
-                    margin: 0;
+                &::before,
+                &::after {
+                    color: var(--ks-content-color-highlight);
+                }
 
-                    &::before,
-                    &::after {
-                        color: var(--ks-content-color-highlight);
-                    }
+                &::before {
+                    content: "“";
+                    margin-right: 0.25rem;
+                }
 
-                    &::before {
-                        content: "“";
-                        margin-right: 0.25rem;
-                    }
-
-                    &::after {
-                        content: "”";
-                        margin-left: 0.25rem;
-                    }
+                &::after {
+                    content: "”";
+                    margin-left: 0.25rem;
                 }
             }
 
-            p {
+            figcaption {
                 margin: 0;
 
                 @include media-breakpoint-up(lg) {
