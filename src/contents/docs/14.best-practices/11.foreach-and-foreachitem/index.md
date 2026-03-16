@@ -156,7 +156,8 @@ tasks:
 
   - id: log_batch_stats
     type: io.kestra.plugin.core.log.Log
-    message: "Batches={{ outputs.process_batches.numberOfBatches }}, iterations={{ outputs.process_batches.iterations }}"
+    message: "{{ outputs.process_batches_merge.subflowOutputs }}"
+
 ```
 
 And the subflow:
@@ -175,26 +176,30 @@ tasks:
     message: "{{ read(inputs.orders_file) }}"
 
 outputs:
-  - id: batch_file
-    type: FILE
-    value: "{{ inputs.orders_file }}"
+  - id: batch_preview
+    type: STRING
+    value: "{{ read(inputs.orders_file) }}"
 ```
 
 Here, `orders_file` is a batch file generated from the ION output of `CsvToIon`. Each subflow execution receives one batch file through `{{ taskrun.items }}`.
 
 ## Use `ForEachItem` outputs correctly
 
-`ForEachItem` exposes useful parent-task outputs:
+`ForEachItem` is best consumed through its internal helper task outputs:
 
-- `{{ outputs.task_id.numberOfBatches }}` gives the total number of batches.
-- `{{ outputs.task_id.iterations.SUCCESS }}` shows how many child executions succeeded.
-- `{{ outputs.task_id.uri }}` points to a file containing the merged outputs from the child subflows.
+- `{{ outputs.task_id_split.splits }}` contains the file listing generated batch URIs.
+- `{{ outputs.task_id_merge.subflowOutputs }}` contains a file with the merged outputs from the child subflows.
+
+If your `ForEachItem` task id is `process_batches`, those become:
+
+- `{{ outputs.process_batches_split.splits }}`
+- `{{ outputs.process_batches_merge.subflowOutputs }}`
 
 This is different from `ForEach`, where you typically access outputs by loop value, such as `outputs.inner['north'].value`.
 
 ### Example: consume merged subflow outputs
 
-If the subflow defines typed flow outputs, the parent `ForEachItem` task can expose them as a merged file through `{{ outputs.process_batches.uri }}`.
+If the subflow defines typed flow outputs, `ForEachItem` merges them into a file exposed by the internal merge task.
 
 ```yaml
 id: parent_read_merged_outputs
@@ -223,7 +228,7 @@ tasks:
 
   - id: log_merged_outputs_uri
     type: io.kestra.plugin.core.log.Log
-    message: "{{ outputs.process_batches.uri }}"
+    message: "{{ outputs.process_batches_merge.subflowOutputs }}"
 ```
 
 Use that URI when a downstream task needs the collected outputs from all child subflows.
