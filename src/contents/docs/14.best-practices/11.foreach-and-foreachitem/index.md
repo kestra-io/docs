@@ -181,7 +181,7 @@ tasks:
 outputs:
   - id: batch_summary
     type: STRING
-    value: "{{ 'Processed batch ' ~ taskrun.iteration ~ ' with content: ' ~ read(inputs.orders_file) }}"
+    value: "{{ 'Processed batch content: ' ~ read(inputs.orders_file) }}"
 ```
 
 Here, `orders_file` is a batch file generated from the ION output of `CsvToIon`. Each subflow execution receives one batch file through `{{ taskrun.items }}`.
