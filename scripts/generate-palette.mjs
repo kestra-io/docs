@@ -14,7 +14,7 @@ const AUTO_GENERATED_COMMENT = `/**
  * at Kestra first, so your changes are not overwritten.
  */`;
 
-const [{ color: paletteLight }, { color: paletteDark }] = figma[1].values;
+const [{ color: paletteLight }, { color: paletteDark }] = figma[0].values;
 
 /**
  * @param {Array<{name: string, value: string}>} palette1

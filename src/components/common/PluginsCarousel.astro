@@ -5,22 +5,26 @@ import Link from "./Link.astro"
 interface Props {
     plugins: {
         name: string
-        logo: ImageMetadata
+        logo: ImageMetadata | string
     }[]
     title?: string
+    subtitle?: string
     link?: {
         href: string
         text: string
     }
 }
 
-const { plugins, title, link } = Astro.props
+const { plugins, title, subtitle, link } = Astro.props
 
 const PLUGINS_CAROUSEL = [...plugins, ...plugins]
 ---
 
 <div class="plugins-carousel">
-    {title && <h2>{title}</h2>}
+    <div>
+        {title && <h2 set:html={title} />}
+        {subtitle && <p set:html={subtitle} class= "mt-2" />}
+    </div>
 
     <div class="icon-scroll">
         <div class="carousel">
@@ -28,12 +32,21 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
                 PLUGINS_CAROUSEL.map((plugin) => (
                     <div class="plugin-wrapper">
                         <div class="plugin-icon">
-                            <Image
-                                src={plugin.logo}
-                                alt={plugin.name}
-                                width={plugin.logo.width}
-                                height={plugin.logo.height}
-                            />
+                            {typeof plugin.logo === 'string' ? (
+                                <img
+                                    src={plugin.logo}
+                                    alt={plugin.name}
+                                    width="70"
+                                    height="70"
+                                />
+                            ) : (
+                                <Image
+                                    src={plugin.logo}
+                                    alt={plugin.name}
+                                    width={plugin.logo.width}
+                                    height={plugin.logo.height}
+                                />
+                            )}
                         </div>
                         <p class="plugin-name">{plugin.name}</p>
                     </div>
@@ -67,14 +80,17 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
         }
 
         h2 {
-            width: 395px;
-            font-weight: 600;
-            color: #fff;
+            width: fit-content;
+            color: $white;
             margin: 0;
 
             @include media-breakpoint-down(lg) {
                 width: 100%;
             }
+        }
+
+        p {
+            color: $white;
         }
     }
 
@@ -129,7 +145,7 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
             white-space: nowrap;
             top: 0;
             left: 0;
-            animation: infiscroll 12s linear infinite;
+            animation: infiscroll 30s linear infinite;
             z-index: 10;
             -webkit-mask-image: linear-gradient(
                 to right,
@@ -160,17 +176,18 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
                     width: 70px;
                     height: 70px;
                     @include media-breakpoint-up(lg) {
-                        width: 99px;
-                        height: 99px;
+                        width: 90px;
+                        height: 90px;
                     }
                     border-radius: 0.875rem;
                     box-shadow: 0 0.125rem 0.25rem var(--ks-card-shadow);
                     overflow: hidden;
-                    background: #fff;
+                    background: $white;
+                    padding: 0.25rem;
 
                     img {
-                        width: 95%;
-                        height: 95%;
+                        width: 90%;
+                        height: 90%;
                         object-fit: contain;
                     }
                 }
