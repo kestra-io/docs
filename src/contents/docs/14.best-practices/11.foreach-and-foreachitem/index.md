@@ -136,6 +136,8 @@ tasks:
   - id: extract
     type: io.kestra.plugin.jdbc.duckdb.Query
     sql: |
+      INSTALL httpfs;
+      LOAD httpfs;
       SELECT *
       FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=true);
     store: true
@@ -200,6 +202,8 @@ tasks:
   - id: extract
     type: io.kestra.plugin.jdbc.duckdb.Query
     sql: |
+      INSTALL httpfs;
+      LOAD httpfs;
       SELECT *
       FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=true);
     store: true
