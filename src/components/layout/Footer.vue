@@ -124,6 +124,7 @@ const FOOTER_SECTIONS: Section[] = [
             { text: "Airflow vs Kestra", href: "/vs/airflow" },
             { text: "Prefect vs Kestra", href: "/vs/prefect" },
             { text: "Dagster vs Kestra", href: "/vs/dagster" },
+            { text: "n8n vs Kestra", href: "/vs/n8n" },
             { text: "AWS Step Functions vs Kestra", href: "/vs/aws-step-functions" },
         ]
     },
