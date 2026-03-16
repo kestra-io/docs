@@ -212,7 +212,56 @@ const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
         : (page?.body?.plugins ?? []),
 )
 
-const subGroupWrapper = pluginsWithoutDeprecated.find(
+const toElementKey = (title?: string): string | undefined => {
+    if (!title) return undefined
+
+    const words = title.match(/[a-zA-Z0-9]+/g)?.map((word) => word.toLowerCase())
+    if (!words || words.length === 0) return undefined
+
+    return [
+        words[0],
+        ...words
+            .slice(1)
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1)),
+    ].join("")
+}
+
+const pluginMetadataTitle = (plugin: Plugin): string | undefined =>
+    allPluginMetadata?.find((m) => m.group === (plugin.subGroup ?? plugin.group))
+        ?.title
+
+const pluginsForDisplay = pluginsWithoutDeprecated.map((plugin) => {
+    const elementKeys = Object.entries(plugin)
+        .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+        .map(([key]) => key)
+
+    const isOnlyAdditionalPlugins =
+        plugin.subGroup !== undefined &&
+        elementKeys.length === 1 &&
+        elementKeys[0] === "additionalPlugins"
+
+    if (!isOnlyAdditionalPlugins) {
+        return plugin
+    }
+
+    const displayKey = toElementKey(pluginMetadataTitle(plugin))
+    if (
+        !displayKey ||
+        displayKey === "additionalPlugins" ||
+        Object.hasOwn(plugin, displayKey)
+    ) {
+        return plugin
+    }
+
+    return Object.fromEntries(
+        Object.entries(plugin).map(([key, value]) => [
+            key === "additionalPlugins" ? displayKey : key,
+            value,
+        ]),
+    ) as Plugin
+})
+
+const subGroupWrapper = pluginsForDisplay.find(
     (p) => slugify(subGroupName(p)) === subGroup,
 )
 const { currentPageIcon, subGroupsIcons } = await getIcon(
@@ -236,14 +285,14 @@ const relatedBlogs = blogs
         return new Date(a.data.date) > new Date(b.data.date) ? 1 : -1
     })
 
-const rootPlugin = pluginsWithoutDeprecated?.find(
+const rootPlugin = pluginsForDisplay?.find(
     (p: Plugin) => p.subGroup === undefined,
 )
 
 const currentSubgroupPlugin =
     !subGroup || pluginType
         ? undefined
-        : pluginsWithoutDeprecated?.find((p) => {
+        : pluginsForDisplay?.find((p) => {
               const subgroupLastSegment = p.subGroup?.split(".").pop()
               const possibleSubgroupMatches = [
                   slugify(subGroupName(p)),
@@ -575,7 +624,7 @@ if (!pluginType && !subGroup) {
     <div class="container-fluid bd-gutter bd-layout">
         <PluginSidebar
             pluginWrapper={rootPlugin}
-            pluginsWithoutDeprecated={pluginsWithoutDeprecated}
+            pluginsWithoutDeprecated={pluginsForDisplay}
             pluginName={pluginName}
             title={headingTitle}
             routeParts={splitRouteSlug}
@@ -607,7 +656,7 @@ if (!pluginType && !subGroup) {
                 page={pageWithToc}
                 icons={pluginType ? {} : subGroupsIcons}
                 plugin-type={pluginType}
-                plugins={pluginType ? [] : pluginsWithoutDeprecated}
+                plugins={pluginType ? [] : pluginsForDisplay}
                 pluginName={pluginName}
                 subGroup={subGroup}
                 routePath={pathname}
