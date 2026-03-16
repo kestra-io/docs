@@ -5,6 +5,7 @@ import Carousel from "~/components/common/Carousel.vue"
 
 interface Props {
     title: string
+    subtitle?: string
     blueprints: any[]
     tags: any[]
     link: {
@@ -13,14 +14,17 @@ interface Props {
     }
 }
 
-const { title, blueprints, tags, link } = Astro.props
+const { title, subtitle, blueprints, tags, link } = Astro.props
 
 const displayBlueprints = blueprints?.slice(0, 20) ?? []
 ---
 
 <section class="blueprints-carousel">
     <div class="container">
-        <h2 data-usal="fade-u delay-0 duration-400 ease-out" set:html={title} />
+        <div>
+            <h2 data-usal="fade-l" set:html={title} />
+            <p data-usal="fade-r" set:html={subtitle} />
+        </div>
 
         <div class="blueprints-container d-md-none">
             <Carousel client:load>

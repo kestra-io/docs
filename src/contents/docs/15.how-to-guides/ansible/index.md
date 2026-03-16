@@ -381,7 +381,7 @@ tasks:
       - ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Or, keep the playbook as a [Namespace File](../../05.concepts/02.namespace-files.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli).
+Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files/index.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli).
 
 ![Namespace Files](./flow-namespace-files.png)
 
