@@ -118,6 +118,7 @@ tasks:
 ## Best practices for `ForEachItem`
 
 - Store the dataset in internal storage first and pass its URI to `items`.
+- If your source file is CSV, JSON, Excel, or another external format, convert it to ION before passing it to `ForEachItem`.
 - Batch by `rows`, `partitions`, or `bytes` based on how the downstream subflow processes data.
 - Design the subflow so it can be rerun independently for one batch.
 - Prefer passing `taskrun.items` to a `FILE` input in the subflow.
@@ -133,20 +134,19 @@ id: parent_foreachitem
 namespace: company.team
 
 tasks:
-  - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
-    sql: |
-      INSTALL httpfs;
-      LOAD httpfs;
-      SELECT *
-      FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=true);
-    store: true
+  - id: download_orders_csv
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: orders_to_ion
+    type: io.kestra.plugin.serdes.csv.CsvToIon
+    from: "{{ outputs.download_orders_csv.uri }}"
 
   - id: process_batches
     type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
+    items: "{{ outputs.orders_to_ion.uri }}"
     batch:
-      rows: 100
+      rows: 2
     namespace: company.team
     flowId: process_order_batch
     wait: true
@@ -156,7 +156,7 @@ tasks:
 
   - id: log_batch_stats
     type: io.kestra.plugin.core.log.Log
-    message: "Batches={{ outputs.process_batches.numberOfBatches }}, success={{ outputs.process_batches.iterations.SUCCESS ?? 0 }}"
+    message: "Batches={{ outputs.process_batches.numberOfBatches }}, iterations={{ outputs.process_batches.iterations }}"
 ```
 
 And the subflow:
@@ -180,6 +180,8 @@ outputs:
     value: "{{ inputs.orders_file }}"
 ```
 
+Here, `orders_file` is a batch file generated from the ION output of `CsvToIon`. Each subflow execution receives one batch file through `{{ taskrun.items }}`.
+
 ## Use `ForEachItem` outputs correctly
 
 `ForEachItem` exposes useful parent-task outputs:
@@ -199,20 +201,19 @@ id: parent_read_merged_outputs
 namespace: company.team
 
 tasks:
-  - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
-    sql: |
-      INSTALL httpfs;
-      LOAD httpfs;
-      SELECT *
-      FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=true);
-    store: true
+  - id: download_orders_csv
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: orders_to_ion
+    type: io.kestra.plugin.serdes.csv.CsvToIon
+    from: "{{ outputs.download_orders_csv.uri }}"
 
   - id: process_batches
     type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
+    items: "{{ outputs.orders_to_ion.uri }}"
     batch:
-      rows: 250
+      rows: 2
     namespace: company.team
     flowId: process_order_batch
     wait: true
