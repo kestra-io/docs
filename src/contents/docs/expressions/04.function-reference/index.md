@@ -26,6 +26,8 @@ Examples:
 {{ printContext() }}
 ```
 
+`renderOnce()` is the safer choice when you need one extra evaluation pass but do not want recursive expansion to keep walking nested Pebble content.
+
 ### Secrets and file access
 
 These functions bridge expressions to external or stored data. Use them when the value is not already present in the execution context and must be resolved at runtime.
@@ -42,6 +44,8 @@ Examples:
 {{ fileURI('my_file.txt') }}
 ```
 
+`read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs.
+
 ### Data parsing helpers
 
 These helpers are most useful when a task output is still a serialized string and you want to treat it like structured data in later expressions.
@@ -54,6 +58,7 @@ Examples:
 
 ```twig
 {{ fromJson('[1, 2, 3]')[0] }}
+{{ fromIon(read(outputs.serialize.uri)).someField }}
 {{ yaml('foo: [666, 1, 2]').foo[0] }}
 ```
 
@@ -77,9 +82,36 @@ This group is more situational, but it becomes valuable in complex flows where y
 - `http()`
 - `fileSize()`, `fileExists()`, `fileEmpty()`
 
-## Most important functions in practice
+### Template inheritance helpers
 
-If you only remember a few functions, remember the ones below. They are the ones most likely to change how you model a real flow.
+These are less common than runtime-oriented helpers, but they matter when you are using Pebble blocks and template inheritance directly.
+
+#### `block()`
+
+`block()` renders the contents of a named block multiple times. It is different from the Pebble `block` tag, which declares the block:
+
+```twig
+{% block "post" %}content{% endblock %}
+
+{{ block("post") }}
+```
+
+#### `parent()`
+
+Use `parent()` inside an overriding block to include the original block content from the parent template:
+
+```twig
+{% extends "parent.peb" %}
+
+{% block "content" %}
+child content
+{{ parent() }}
+{% endblock %}
+```
+
+## Common function patterns
+
+The functions below are the ones most likely to shape a real flow. This section focuses on the practical cases where they change how you write expressions, not just what they do in isolation.
 
 ### `render()`
 
@@ -115,7 +147,33 @@ Useful for error notifications:
 {{ errorLogs() }}
 ```
 
-### Other frequently useful helpers
+It is most useful in `errors` blocks, where you need a compact summary of what failed without manually traversing task state objects.
+
+### `fromIon()`
+
+Use `fromIon()` when a previous task or serializer produces Ion rather than JSON:
+
+```twig
+{{ fromIon(read(outputs.serialize.uri)).someField }}
+```
+
+### `read()`
+
+`read()` is the simplest way to turn a file URI back into inline content for a later expression:
+
+```twig
+{{ read(outputs.someTask.uri) }}
+```
+
+### `renderOnce()`
+
+Equivalent to `render(expression, recursive=false)`:
+
+```twig
+{{ renderOnce(namespace.github.token) }}
+```
+
+### Numeric and generation helpers
 
 ```twig
 {{ max(user.score, highscore) }}
@@ -125,6 +183,49 @@ Useful for error notifications:
 {{ uuid() }}
 {{ randomInt(1, 10) }}
 ```
+
+### File and runtime helpers
+
+These helpers are usually used in operational flows rather than day-to-day templating:
+
+```twig
+{{ randomPort() }}
+{{ fileSize(outputs.download.uri) }}
+{{ fileExists(outputs.download.uri) }}
+{{ fileEmpty(outputs.download.uri) }}
+{{ tasksWithState('failed') }}
+```
+
+### `http()`
+
+`http()` lets an expression fetch a remote payload directly:
+
+```twig
+{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}
+```
+
+Use it sparingly. It is convenient for dynamic dropdowns and lightweight lookups, but task-level HTTP calls are usually easier to observe and retry.
+
+### `isIn()`
+
+Use `isIn()` for conditions where one value must be tested against a short allowlist:
+
+```twig
+{{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}
+```
+
+That reads more clearly than chaining multiple equality checks in `runIf`, SLAs, or alert conditions.
+
+### `appLink()`
+
+Enterprise Edition's `appLink()` builds links back to Kestra Apps:
+
+```twig
+{{ appLink(appId='com.example.my-app') }}
+{{ appLink(baseUrl=true) }}
+```
+
+Use it in notifications when you want recipients to jump directly into the related app rather than the generic flow UI.
 
 ## Related pages
 

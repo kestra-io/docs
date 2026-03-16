@@ -50,7 +50,7 @@ datasources:
 
 The examples below are intentionally minimal. Use them to confirm the backend choice and basic connection shape first, then add pooling and operational settings afterward.
 
-Minimal datasource examples from the full reference:
+Minimal datasource examples:
 
 :::collapse{title="PostgreSQL"}
 ```yaml
@@ -137,7 +137,7 @@ datasources:
     minimum-idle: 10
 ```
 
-Rough connection planning from the full reference:
+Rough connection planning:
 
 - standalone server: about 10 connections
 - split components: about 40 connections
@@ -194,7 +194,7 @@ Common options include:
 - `minio`
 - other object-storage-compatible backends
 
-The default local storage is fine for local testing but not for resilient production deployments.
+The default local storage is fine for local testing but not for every production topology. The important distinction is whether every Kestra component can see the same files.
 
 Representative examples:
 
@@ -212,7 +212,161 @@ kestra:
     type: gcs
 ```
 
-The full reference also includes backend-specific sections for `s3`, `minio`, `seaweedfs`, `oos`, `azure`, and `gcs`.
+### Local storage deployment guidance
+
+Local storage works well for standalone deployments with a persistent volume. In distributed deployments, it only works safely when all components share the same filesystem through a `ReadWriteMany` volume or an equivalent shared storage layer.
+
+If that shared filesystem does not exist, move to object storage instead of trying to share host paths between services.
+
+### Storage isolation
+
+Like secret isolation, storage isolation lets you prevent specific services from resolving internal-storage files:
+
+```yaml
+kestra:
+  storage:
+    type: gcs
+    isolation:
+      enabled: true
+      denied-services:
+        - EXECUTOR
+```
+
+This is useful when you want orchestration components to reference files, but do not want every service process to fetch file contents directly.
+
+### S3
+
+Use S3 when Kestra runs in AWS or when another object store exposes a compatible API.
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      endpoint: "<your-s3-endpoint>"
+      access-key: "<your-aws-access-key-id>"
+      secret-key: "<your-aws-secret-access-key>"
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+      force-path-style: false
+```
+
+If Kestra runs on EC2 or EKS with IAM roles, omit static credentials and keep only the region and bucket:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+```
+
+For cross-account access, use STS assume-role settings:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+      sts-role-arn: "<role-arn>"
+      sts-role-external-id: "<optional>"
+      sts-role-session-name: "<optional>"
+      sts-role-session-duration: "<optional>"
+      sts-endpoint-override: "<optional>"
+```
+
+### MinIO
+
+MinIO is a good self-hosted choice when you want object storage behavior without depending on a cloud provider:
+
+```yaml
+kestra:
+  storage:
+    type: minio
+    minio:
+      endpoint: my.domain.com
+      port: 9000
+      secure: false
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+      region: "default"
+      bucket: my-bucket
+      part-size: 5MB
+```
+
+If MinIO uses `MINIO_DOMAIN`, enable `kestra.storage.minio.vhost: true` and keep `endpoint` set to the base domain rather than `bucket.domain`.
+
+### SeaweedFS
+
+SeaweedFS fits teams that want a lightweight distributed object storage layer in self-managed environments:
+
+```yaml
+kestra:
+  storage:
+    type: seaweedfs
+    seaweedfs:
+      filer-host: localhost
+      filer-port: 18888
+      prefix: ""
+      replication: "000"
+```
+
+### Outscale Object Storage
+
+Outscale uses the MinIO-compatible backend type. The main thing that changes is the endpoint and the requirement to keep TLS enabled:
+
+```yaml
+kestra:
+  storage:
+    type: minio
+    minio:
+      endpoint: https://oos.eu-west-2.outscale.com
+      bucket: your-bucket-name
+      accessKey: YOUR_ACCESS_KEY
+      secretKey: YOUR_SECRET_KEY
+      port: 443
+      secure: true
+```
+
+### Azure Blob Storage
+
+Choose one Azure authentication method and keep the others unset:
+
+```yaml
+kestra:
+  storage:
+    type: azure
+    azure:
+      endpoint: "https://unittestkt.blob.core.windows.net"
+      container: storage
+      connection-string: "<connection-string>"
+      shared-key-account-name: "<name>"
+      shared-key-account-access-key: "<access-key>"
+      sas-token: "<sas-token>"
+```
+
+:::alert{type="info"}
+Disable hierarchical namespace on the target container. That Azure feature is not supported by the storage backend.
+:::
+
+### Google Cloud Storage
+
+Use GCS when the deployment already runs in GCP or when workload identity is easier to manage than static keys:
+
+```yaml
+kestra:
+  storage:
+    type: gcs
+    gcs:
+      bucket: "<bucket>"
+      project-id: "<project-id>"
+      service-account: "<JSON or use default credentials>"
+```
+
+If `service-account` is omitted, Kestra falls back to default GCP credentials, which is usually the right choice on GKE or GCE.
 
 ## Server, environment, and JVM settings
 
@@ -259,29 +413,51 @@ kestra:
     cache-enabled: true
 ```
 
-## Storage and file-related runtime settings
+`env-vars-prefix` controls which environment variables become available in expressions under `envs.*`. For example, `ENV_MY_VARIABLE` becomes `{{ envs.my_variable }}`.
 
-This final group is where file-handling behavior becomes operationally important, especially for script-heavy flows, large artifacts, or deployments with strict filesystem boundaries.
+Use `globals` for values that need to be available in every flow, `recursive-rendering` only when you intentionally want pre-0.14 recursive behavior, and `cache-enabled` when you need to trade CPU for correctness while debugging template changes.
 
-This section also covers:
+## Optional runtime features
 
-- temporary task storage under `kestra.tasks.tmp-dir`
-- storing execution data in internal storage
-- allowed file paths for universal file access
+These settings are not part of the core queue or repository setup, but they do matter in real deployments.
 
-Example temporary workspace configuration:
+Some notifications and generated links depend on `kestra.url` being set to the public base URL without `/ui` or `/api`:
 
 ```yaml
 kestra:
-  tasks:
-    tmp-dir:
-      path: /tmp/kestra-wd/tmp
+  url: https://www.my-host.com/kestra/
 ```
 
-If you want large execution payloads stored in internal storage instead of the primary repository, use the settings documented in the full reference section for store execution data.
+The web UI can also be customized at runtime:
+
+```yaml
+kestra:
+  webserver:
+    google-analytics: UA-12345678-1
+    html-head: |
+      <style type="text/css">
+        .v-sidebar-menu .logo:after {
+          content: "Local";
+        }
+      </style>
+```
+
+Use `html-head` sparingly for environment banners, extra CSS, or internal scripts that must load with the app shell.
+
+To allow universal file access from host-mounted paths, both mount the directory and add it to the allowlist:
+
+```yaml
+kestra:
+  local-files:
+    allowed-paths:
+      - /scripts
+    enable-preview: false
+```
+
+Without the allowlist, file-access URIs pointing at local host paths will be rejected even if the path is mounted into the container.
 
 ## When to use this page
 
 - Need logs, telemetry, metrics, endpoints, CORS, or SSL: [Observability and Networking](../03.observability-and-networking/index.md)
-- Need plugin defaults, retries, or system flows: [Plugins and Execution](../04.plugins-and-execution/index.md)
+- Need plugin defaults, retries, task temp storage, templates, or system flows: [Plugins and Execution](../04.plugins-and-execution/index.md)
 - Need secret backends or server hardening: [Security and Secrets](../05.security-and-secrets/index.md)

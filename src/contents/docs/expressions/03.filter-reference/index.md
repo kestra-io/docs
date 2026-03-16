@@ -80,6 +80,49 @@ tasks:
 
 The practical rule with `jq` is that it is great for extracting or transforming a small part of a larger payload, but it is usually overkill when plain dot access already gets you the value you need.
 
+### Worked JSON payload example
+
+This larger example is useful when you need to mix accessors, math, collection helpers, and JSON-aware filters in one expression flow:
+
+```yaml
+id: json_payload_example
+namespace: company.team
+
+inputs:
+  - id: payload
+    type: JSON
+    defaults: |-
+      {
+        "name": "John Doe",
+        "score": {
+          "English": 72,
+          "Maths": 88,
+          "French": 95,
+          "Spanish": 85,
+          "Science": 91
+        },
+        "address": {
+          "city": "Paris",
+          "country": "France"
+        },
+        "graduation_years": [2020, 2021, 2022, 2023]
+      }
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Student name: {{ inputs.payload.name }}"
+      - "Score in languages: {{ inputs.payload.score.English + inputs.payload.score.French + inputs.payload.score.Spanish }}"
+      - "Total subjects: {{ inputs.payload.score | length }}"
+      - "Total score: {{ inputs.payload.score | values | jq('reduce .[] as $num (0; .+$num)') | first }}"
+      - "Complete address: {{ inputs.payload.address.city }}, {{ inputs.payload.address.country | upper }}"
+      - "Started college in: {{ inputs.payload.graduation_years | first }}"
+      - "Completed college in: {{ inputs.payload.graduation_years | last }}"
+```
+
+Use a pattern like this when the payload already arrives as JSON input and you want to keep the manipulation inside expressions instead of adding a preprocessing task.
+
 ## Numbers and collections
 
 These filters are the everyday cleanup tools for expression values. Use them when you already have the right data, but need to reformat it, count it, sort it, or coerce it into the type another task expects.
@@ -176,6 +219,23 @@ You can also provide existing and target formats with named arguments:
 {{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
 ```
 
+When you are formatting an already parsed datetime, only `format` is usually needed. Use `existingFormat` when the source is still a plain string.
+
+### Time zones
+
+Specify a target time zone when downstream systems require a local representation rather than UTC:
+
+```twig
+{{ now() | date("yyyy-MM-dd'T'HH:mm:ssX", timeZone="UTC") }}
+```
+
+Supported arguments include:
+
+- `format`
+- `existingFormat`
+- `timeZone`
+- `locale`
+
 ### `dateAdd`
 
 ```twig
@@ -191,6 +251,30 @@ You can also provide existing and target formats with named arguments:
 
 These are useful for integrations that require Unix timestamps with specific precision.
 
+Supported date formats include standard Java `DateTimeFormatter` patterns and shortcuts such as `iso`, `sql`, `iso_date_time`, and `iso_zoned_date_time`.
+
+### Temporal worked example
+
+```yaml
+id: temporal_dates
+namespace: company.team
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Present timestamp: {{ now() }}"
+      - "Formatted timestamp: {{ now() | date('yyyy-MM-dd') }}"
+      - "Previous day: {{ now() | dateAdd(-1, 'DAYS') }}"
+      - "Next day: {{ now() | dateAdd(1, 'DAYS') }}"
+      - "Timezone (seconds): {{ now() | timestamp(timeZone='Asia/Kolkata') }}"
+      - "Timezone (microseconds): {{ now() | timestampMicro(timeZone='Asia/Kolkata') }}"
+      - "Timezone (milliseconds): {{ now() | timestampMilli(timeZone='Asia/Kolkata') }}"
+      - "Timezone (nanoseconds): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
+```
+
+This kind of example is a good sanity check when you are validating timestamp precision before sending values to an external API.
+
 ## YAML filters
 
 Use YAML filters when you are generating configuration or manifest-style text inside a task. They are less common in simple flows, but very useful in templated Kubernetes, Docker, or config-management patterns.
@@ -203,6 +287,22 @@ Parse YAML into an object:
 {{ "foo: bar" | yaml }}
 ```
 
+This is especially useful in templated tasks where the source data starts as text but later expressions need object-style access.
+
+#### Example: using `yaml` in a templated task
+
+```yaml
+id: yaml_filter_example
+namespace: company.team
+
+tasks:
+  - id: yaml_filter
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      {{ "foo: bar" | yaml }}
+      {{ {"key": "value"} | yaml }}
+```
+
 ### `indent` and `nindent`
 
 Useful when generating templated YAML or embedding structured content:
@@ -211,6 +311,36 @@ Useful when generating templated YAML or embedding structured content:
 {{ labels | yaml | indent(4) }}
 {{ variables.yaml_data | yaml | nindent(4) }}
 ```
+
+#### Example with `indent` and `nindent`
+
+```yaml
+id: templated_task_example
+namespace: company.team
+
+labels:
+  example: test
+
+variables:
+  yaml_data: |
+    key1: value1
+    key2: value2
+
+tasks:
+  - id: yaml_with_indent
+    type: io.kestra.plugin.core.templating.TemplatedTask
+    spec: |
+      id: example-task
+      type: io.kestra.plugin.core.log.Log
+      message: |
+        Metadata:
+        {{ labels | yaml | indent(4) }}
+
+        Variables:
+        {{ variables.yaml_data | yaml | nindent(4) }}
+```
+
+Use `indent` when the first line is already in place and only following lines need alignment. Use `nindent` when you need to start a fresh indented block on the next line.
 
 ## Choosing the right filter quickly
 

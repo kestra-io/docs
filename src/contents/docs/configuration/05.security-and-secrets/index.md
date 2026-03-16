@@ -56,7 +56,7 @@ Choose the backend based on where your organization already stores secrets. In p
 
 Kestra can be configured to use a secrets backend through `kestra.secret.*`.
 
-The full reference covers:
+This page covers:
 
 - AWS Secrets Manager
 - Azure Key Vault
@@ -117,7 +117,48 @@ kestra:
       secret: "a-secure-32-character-minimum-key"
 ```
 
-Supported Vault auth methods in the full reference are Userpass, Token, and AppRole. The full reference also documents JDBC-backed secrets, secret tags, and secret caching.
+Supported Vault auth methods include Userpass, Token, and AppRole. JDBC-backed secrets, secret tags, and secret caching are covered below.
+
+### JDBC secret backend
+
+Use JDBC-backed secrets only when secrets must stay inside the same database boundary as Kestra and you do not already have a dedicated secret manager:
+
+```yaml
+kestra:
+  secret:
+    type: jdbc
+    jdbc:
+      secret: "your-secret-key"
+```
+
+### Secret tags
+
+Some backends let you scope lookups with tags so the same secret manager can serve multiple environments:
+
+```yaml
+kestra:
+  secret:
+    <secret-type>:
+      tags:
+        application: kestra-production
+```
+
+Tags are useful when secrets are selected by metadata rather than by one fixed path convention.
+
+### Secret cache
+
+Caching reduces repeated secret-manager calls for frequently used values:
+
+```yaml
+kestra:
+  secret:
+    cache:
+      enabled: true
+      maximum-size: 1000
+      expire-after-write: 60s
+```
+
+Use a cache when executions hit the same secret names repeatedly, but keep TTLs conservative if secret rotation happens often.
 
 ![Secrets UI Configuration](../is-secrets-configuration.png)
 
@@ -154,6 +195,81 @@ endpoints:
       password: your-password
 ```
 
+### Super-admin
+
+The super-admin account has the highest level of platform access and should be reserved for break-glass administration:
+
+```yaml
+kestra:
+  security:
+    super-admin:
+      username: your_username
+      password: ${KESTRA_SUPERADMIN_PASSWORD}
+      tenant-admin-access:
+        - <optional>
+```
+
+:::alert{type="warning"}
+Never store clear-text passwords in config. Use environment variables or your platform secret mechanism.
+:::
+
+### Default role
+
+Assign a default role to newly created users when you want them to land with a predictable permission set:
+
+```yaml
+kestra:
+  security:
+    default-role:
+      name: default
+      description: "Default role"
+      permissions:
+        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+```
+
+In multi-tenant environments, scope that role to one tenant:
+
+```yaml
+kestra:
+  security:
+    default-role:
+      name: default
+      description: "Default role"
+      permissions:
+        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+      tenant-id: staging
+```
+
+### Invitation expiration and password rules
+
+Invitation links expire after seven days by default. Extend them if user onboarding happens through slower approval processes:
+
+```yaml
+kestra:
+  security:
+    invitations:
+      expire-after: P30D
+```
+
+For username/password auth, enforce password complexity explicitly:
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-regexp: "<regexp-rule>"
+```
+
+### Delete configuration files after startup
+
+If the runtime reads secrets from configuration files, delete them after startup so tasks cannot read them later from disk:
+
+```yaml
+kestra:
+  configurations:
+    delete-files-on-start: true
+```
+
 Liveness and heartbeat settings also belong here:
 
 ```yaml
@@ -167,7 +283,35 @@ kestra:
       heartbeat-interval: 3s
 ```
 
-The full reference also documents heartbeat frequency, missed-heartbeat handling, worker task restart strategy, termination grace period, and server service instance purge retention.
+Use the OSS-style settings above for JDBC-backed deployments. In Kafka-based EE deployments, `timeout` and `initial-delay` are commonly increased to `1m`.
+
+Heartbeat and restart behavior also belong here:
+
+- `kestra.heartbeat.frequency` controls how often workers emit heartbeats. Default: `10s`.
+- `kestra.heartbeat.heartbeat-missed` controls how many missed heartbeats mark a worker as dead. Default: `3`.
+- `kestra.server.worker-task-restart-strategy` accepts `NEVER`, `IMMEDIATELY`, or `AFTER_TERMINATION_GRACE_PERIOD` and determines what happens to running worker tasks during shutdown.
+
+Set the termination grace period long enough for tasks to exit cleanly:
+
+```yaml
+kestra:
+  server:
+    termination-grace-period: 5m
+```
+
+If the deployment regularly creates empty server instances, adjust how often purge runs:
+
+```yaml
+kestra:
+  server:
+    service:
+      purge:
+        retention: 7d
+```
+
+:::alert{type="warning"}
+Keep the external process manager timeout longer than Kestra's own termination grace period. Otherwise Kubernetes, Docker, or systemd can kill the process before graceful shutdown finishes.
+:::
 
 ## Related docs
 

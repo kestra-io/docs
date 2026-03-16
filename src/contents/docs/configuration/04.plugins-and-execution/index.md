@@ -163,7 +163,6 @@ This part of the configuration also includes:
 - system flows
 - local flow synchronization
 - enabling templates
-- storing execution data in internal storage
 
 Global retries for internal storage and secret-manager calls:
 
@@ -193,13 +192,46 @@ Example task-level retry default:
 
 That distinction matters: `kestra.retries` protects platform integrations such as storage and secret backends, while task retry behavior should be managed through plugin defaults or the flow itself.
 
-Common execution and task settings include:
+Use `kestra.tasks.tmp-dir` when task runners need a predictable working directory on the host or inside a mounted volume:
 
 ```yaml
 kestra:
   tasks:
     tmp-dir:
       path: /tmp/kestra-wd/tmp
+```
+
+Make sure your container or VM volume mounts line up with that path:
+
+```yaml
+volumes:
+  - kestra-data:/app/storage
+  - /var/run/docker.sock:/var/run/docker.sock
+  - /home/kestra:/home/kestra
+```
+
+Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
+
+```yaml
+kestra:
+  system-flows:
+    namespace: system
+```
+
+Disable tutorial flows outside trial or demo environments:
+
+```yaml
+kestra:
+  tutorial-flows:
+    enabled: false
+```
+
+Templates are deprecated and disabled by default, but can still be re-enabled for migration work:
+
+```yaml
+kestra:
+  templates:
+    enabled: true
 ```
 
 ```yaml
@@ -230,4 +262,5 @@ Those settings are documented in more detail on [Runtime and Storage](../02.runt
 
 - Flow-level plugin defaults: [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md)
 - Universal file access: [File Access](../../06.concepts/file-access/index.md)
-- Storage, JVM, and global variables: [Runtime and Storage](../02.runtime-and-storage/index.md)
+- Storage backends, JVM, and global variables: [Runtime and Storage](../02.runtime-and-storage/index.md)
+- Execution data isolation and enterprise-only runtime features: [Enterprise and Advanced](../06.enterprise-and-advanced/index.md)

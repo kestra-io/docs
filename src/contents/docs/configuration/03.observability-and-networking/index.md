@@ -83,7 +83,7 @@ micronaut:
           - /prometheus
 ```
 
-If you need structured platform-specific logging, the full reference includes `logback.xml` examples for GCP and ECS.
+If you need structured platform-specific logging, use `logback.xml` patterns tailored to your target platform such as GCP or ECS.
 
 ## Metrics and telemetry exports
 

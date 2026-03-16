@@ -70,7 +70,7 @@ kestra:
         - "Blueprints/Flow Blueprints"
 ```
 
-The old multi-tenancy and default-tenant configuration documented in the full reference was removed in `0.23.0`; keep it only for migration work.
+The old multi-tenancy and default-tenant configuration was removed in `0.23.0`; keep it only in mind for migration work.
 
 ## Elasticsearch, Kafka, and indexing
 
@@ -134,7 +134,7 @@ kestra:
 
 Kafka tuning is usually about cluster shape rather than syntax. Partition count limits how much component-level concurrency you can achieve, while replication settings should match your broker topology and HA expectations.
 
-The full reference also covers:
+This page also covers:
 
 - SSL-secured Kafka clients
 - default topic partition and replication settings
@@ -143,6 +143,39 @@ The full reference also covers:
 - consumer and topic prefixes for shared clusters
 - Kafka Streams local state directory
 - message protection for oversized Kafka messages
+
+Representative advanced Kafka settings:
+
+```yaml
+kestra:
+  kafka:
+    client:
+      properties:
+        bootstrap.servers: "localhost:9092"
+        security.protocol: SSL
+    defaults:
+      topic:
+        partitions: 3
+        replication-factor: 3
+    topics:
+      executions:
+        properties:
+          retention.ms: 604800000
+```
+
+Use client properties for transport and auth, `defaults` for cluster-wide topic behavior, and `topics.*.properties` only when one topic needs behavior that differs from the rest.
+
+Shared-cluster deployments often also need prefixes or dedicated topic names to avoid collisions with other tenants or environments.
+
+To reject oversized Kafka messages early:
+
+```yaml
+kestra:
+  kafka:
+    message-protection:
+      enabled: true
+      limit: 1048576
+```
 
 Indexer settings control batch indexing from Kafka into Elasticsearch:
 
@@ -153,14 +186,93 @@ kestra:
     batch-duration: PT1S
 ```
 
+If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
+
 ## AI and isolated environments
 
 These are the most optional settings on the page. They matter only if you are enabling Copilot integrations or operating Kestra in restricted network environments.
 
-The full reference also includes:
+This page also includes:
 
 - AI Copilot provider configuration
 - air-gapped instance settings
+
+### AI Copilot
+
+Enterprise Edition supports multiple providers in one configuration, which is useful when teams need both a default internal model and a fallback external model:
+
+```yaml
+kestra:
+  ai:
+    providers:
+      - id: gemini
+        display-name: Gemini - Private
+        type: gemini
+        configuration:
+          model-name: gemini-2.5-flash
+          api-key: YOUR_GEMINI_API_KEY
+      - id: gpt
+        display-name: OpenAI
+        type: openai
+        isDefault: true
+        configuration:
+          model-name: gpt-4
+          api-key: YOUR_OPENAI_API_KEY
+```
+
+Optional provider settings include `temperature`, `top-p`, `top-k`, `max-output-tokens`, `log-requests`, `log-responses`, and `base-url`.
+
+### Air-gapped mode
+
+Use air-gapped mode when the UI and blueprint experience must avoid external dependencies:
+
+```yaml
+kestra:
+  ee:
+    airgapped: true
+```
+
+When enabled, the UI hides or adapts features that normally depend on external services, such as hosted fonts, external blueprint sources, or embedded internet content.
+
+### Execution data in internal storage
+
+If EE outputs and inputs must be isolated per tenant or namespace, store execution data in internal storage:
+
+```yaml
+kestra:
+  ee:
+    execution-data:
+      internal-storage:
+        enabled: true
+```
+
+To enforce that behavior everywhere:
+
+```yaml
+kestra:
+  ee:
+    execution-data:
+      internal-storage:
+        force-globally: true
+```
+
+### Mail service
+
+Invitation and password-reset emails rely on the EE mail service:
+
+```yaml
+kestra:
+  ee:
+    mail-service:
+      host: host.smtp.io
+      port: 587
+      username: user
+      password: password
+      from: configurable@mail.com
+      from-name: Kestra
+      auth: true
+      starttls-enable: true
+```
 
 Use this page when an instance needs non-default enterprise infrastructure, custom UI platform behavior, or advanced deployment constraints rather than routine runtime configuration.
 
