@@ -173,15 +173,24 @@ const images = [
                 position: absolute;
                 width: 250px;
                 z-index: 3;
-                &:after {
+                &:before {
                     content: "";
                     position: absolute;
-                    z-index: -1;
+                    z-index: 1;
                     width: 115px;
                     height: 1px;
                     background: var(--hp-border-secondary);
                     top: 2rem;
-                    margin: 0;
+                }
+                &:after {
+                    content: "";
+                    position: absolute;
+                    z-index: 2;
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 4px;
+                    background: var(--hp-border-secondary);
+                    top: 30px;
                 }
             }
             h3 {
@@ -202,8 +211,11 @@ const images = [
                 left: 0;
                 text-align: right;
             }
-            &:after {
+            &:before {
                 left: 100%;
+            }
+            &:after {
+                right: -115px;
             }
         }
 
@@ -219,8 +231,11 @@ const images = [
             right: 0;
 
             text-align: left;
-            &:after {
+            &:before {
                 right: 100%;
+            }
+            &:after {
+                left: -115px;
             }
         }
 
