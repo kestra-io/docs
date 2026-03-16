@@ -406,7 +406,7 @@ namespace: company.team
 
 tasks:
   - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
+    type: io.kestra.plugin.jdbc.duckdb.Queries
     sql: |
       INSTALL httpfs;
       LOAD httpfs;
@@ -416,7 +416,7 @@ tasks:
 
   - id: each_raw
     type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
+    items: "{{ outputs.extract.outputs[0].uri }}"
     namespace: company.team
     flowId: subflow_raw_string_input
     inputs:
