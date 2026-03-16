@@ -126,7 +126,7 @@ easeOfUse:
     lang: json
 
 visualPreview:
-  mainTitle: Full-stack orchestration. App automation.
+  mainTitle: Full-stack Orchestration vs. App Automation
   kestra:
     description: "Orchestrate across data pipelines, infrastructure operations, AI workloads, and business workflows in one unified platform. Distributed, isolated, and built for production."
   competitor:
@@ -134,7 +134,7 @@ visualPreview:
     shadowColor: "#FF9F7A"
 
 featureGrid:
-  title: Kestra vs n8n at a Glance
+  title: Kestra vs. n8n at a Glance
   tableData:
     - feature: Primary use case
       kestra: Universal workflow orchestration
