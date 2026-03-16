@@ -1,74 +1,51 @@
 ---
 import { $fetchApi } from "~/utils/fetch"
 import { type PluginMetadata } from "@kestra-io/ui-libs"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 import Link from "~/components/common/Link.astro"
 import TaskIcon from "~/components/common/TaskIcon.astro"
 
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
 const totalPlugins = await fetchTotalPluginsCount()
+const metadata = await $fetchApi<PluginMetadata[]>("/plugins/metadata")
 
-const pluginMetadata = await $fetchApi<PluginMetadata[]>("/plugins/metadata")
+const excluded =
+    /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
 
-const filteredPlugins = pluginMetadata
-    .filter(
-        (r) =>
-            r.artifactId &&
-            !["core", "plugin-kestra", "plugin-debezium"].includes(
-                r.artifactId,
-            ) &&
-            !r.artifactId.startsWith("plugin-ee") &&
-            !r.artifactId.startsWith("secret-") &&
-            !r.artifactId.startsWith("storage-"),
-    )
-    .map((plugin) => ({
-        ...plugin,
-        link:
-            `/plugins/${plugin.artifactId}` +
-            (`plugin-${plugin.name}` !== plugin.artifactId
-                ? "/" + plugin.name
-                : ""),
+const plugins = metadata
+    .filter((p) => p.artifactId && !excluded.test(p.artifactId))
+    .map((p) => ({
+        ...p,
+        link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
     }))
     .sort(() => 0.5 - Math.random())
 
-const rows = [
-    {
-        items: filteredPlugins.slice(0, 20),
-        cls: "row-1",
-    },
-    {
-        items: filteredPlugins.slice(20, 40),
-        cls: "row-2",
-    },
-]
+const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
 ---
 
 <section class="plugins">
     <div class="container">
-        <div class="content-wrapper">
-            <div class="text-block">
+        <div class="content">
+            <div class="title-block">
                 <h2 data-usal="fade-r">
                     <slot name="title">
                         <span class="highlight">{totalPlugins}+ Plugins</span>
                         <br /> That Integrate With Your Stack
                     </slot>
                 </h2>
-                <p data-usal="fade-l">
+                <p data-usal="fade-l" class="mb-0">
                     <slot name="description">
                         Connect with third-party systems, data sources, and
                         applications.
-                        <br />
+                        <br class="d-none d-lg-block" />
                         And if you require a custom integration, our platform makes
                         it easy to build custom plugins.
                     </slot>
                 </p>
             </div>
             <slot name="cta">
-                <Link
-                    data-usal="zoomin"
-                    href="/plugins"
-                    class="btn btn-secondary"
-                >
+                <Link href="/plugins" class="btn btn-secondary" data-usal="zoomin">
                     See all plugins
                 </Link>
             </slot>
@@ -77,14 +54,15 @@ const rows = [
 
     <div class="carousel">
         {
-            rows.map((row) => (
-                <div class={`carousel-row ${row.cls}`}>
+            rows.map((items) => (
+                <div class="carousel-row">
                     <div class="carousel-track">
-                        {[...row.items, ...row.items].map((plugin) => (
-                            <a href={plugin.link} class="plugin-logo">
-                                <TaskIcon cls={plugin.group} />
-                            </a>
-                        ))}
+                        {[...items, ...items]
+                            .map((plugin) => (
+                                <a href={plugin.link} class="plugin-logo">
+                                    <TaskIcon cls={plugin.group} />
+                                </a>
+                            ))}
                     </div>
                 </div>
             ))
@@ -94,7 +72,7 @@ const rows = [
 
 <style lang="scss">
     section.plugins {
-        padding: 6.25rem 0;
+        padding: 6rem 0;
         display: flex;
         flex-direction: column;
         gap: 4.5rem;
@@ -103,35 +81,28 @@ const rows = [
             var(--ks-background-secondary) 0%,
             var(--ks-background-body) 100%
         );
-        overflow: visible;
 
         .container {
-            padding: 0 1rem;
-
-            .content-wrapper {
+            padding: 0 $rem-1;
+            .content {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 text-align: left;
-                width: 100%;
+                gap: $rem-2;
 
                 @include media-breakpoint-down(md) {
                     flex-direction: column;
                     gap: $rem-2;
                 }
 
-                :global(.link) {
+                .btn-secondary {
                     white-space: nowrap;
                 }
 
-                .text-block {
-                    max-width: 893px;
-
+                .title-block {
                     h2 {
                         margin-bottom: $rem-1;
-                    }
-                    p {
-                        margin: 0;
                     }
                 }
             }
@@ -146,77 +117,33 @@ const rows = [
             padding-top: 50px;
             margin-top: -50px;
             touch-action: pan-y;
+            pointer-events: none;
 
-            $mask: linear-gradient(
+            mask-image: linear-gradient(
                 to right,
                 transparent,
                 $black 100px,
                 $black calc(100% - 100px),
                 transparent
             );
-            mask-image: $mask;
-            -webkit-mask-image: $mask;
-            pointer-events: none;
-            cursor: default;
-
-            &::before,
-            &::after {
-                content: "";
-                position: absolute;
-                top: 0;
-                height: 100%;
-                width: 100px;
-                z-index: 20;
-                pointer-events: none;
-            }
-
-            &::before {
-                left: 0;
-                background: linear-gradient(
-                    to right,
-                    var(--ks-background-body),
-                    transparent
-                );
-                $mask-left: linear-gradient(to right, $black, transparent);
-                -webkit-mask-image: $mask-left;
-                mask-image: $mask-left;
-            }
-
-            &::after {
-                right: 0;
-                background: linear-gradient(
-                    to left,
-                    var(--ks-background-body),
-                    transparent
-                );
-                $mask-right: linear-gradient(to left, $black, transparent);
-                -webkit-mask-image: $mask-right;
-                mask-image: $mask-right;
-            }
 
             .carousel-row {
                 display: flex;
                 align-items: center;
                 position: relative;
                 z-index: 1;
-
-                &:hover {
-                    z-index: 10;
-                }
-
                 .carousel-track {
                     display: flex;
                     gap: 10px;
                     width: max-content;
                     will-change: transform;
-                    pointer-events: none;
                 }
 
-                &.row-1 .carousel-track {
+                &:nth-child(1) .carousel-track {
                     animation: scroll-left 50s linear infinite;
                     padding-bottom: 0.5rem;
                 }
-                &.row-2 .carousel-track {
+                &:nth-child(2) .carousel-track {
                     animation: scroll-right 50s linear infinite;
                 }
             }
@@ -226,8 +153,8 @@ const rows = [
                 height: 79px;
                 background: var(--ks-background-primary);
                 border-radius: 12px;
-                border: 1px solid var(--ks-border-primary);
-                box-shadow: 0px 1.61px 3.21px 0px var(--ks-shadows-light);
+                border: $block-border;
+                box-shadow: 0px 2px 4px 0px var(--ks-shadows-light);
                 padding: 12px;
                 flex-shrink: 0;
                 display: flex;
@@ -235,8 +162,6 @@ const rows = [
                 justify-content: center;
                 position: relative;
                 pointer-events: auto;
-                touch-action: pan-y;
-                overscroll-behavior-y: auto;
                 transition: all 0.2s ease;
 
                 @include media-breakpoint-down(sm) {

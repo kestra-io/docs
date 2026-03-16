@@ -57,7 +57,7 @@ const badgeVars = Object.entries({
             </div>
             <h1 set:html={title} data-usal="fade-u"/>
             <p set:html={description} data-usal="fade-l"/>
-            <div class="d-flex gap-3 flex-column flex-lg-row">
+            <div class="d-flex gap-3 flex-column flex-md-row">
                 <Link href="/docs/quickstart#start-kestra" class="btn btn-primary" data-usal="zoomin">
                     Start free (OSS)
                 </Link>
@@ -69,13 +69,15 @@ const badgeVars = Object.entries({
             <LogoCarousel title="Used by teams at" inverted={false} />
         </div>
         <div class="w-100 overflow-hidden gradient-border">
-            <iframe
-                class="arcade-embed w-100"
-                src={iframeSrc}
-                title={badge.label}
-                allowfullscreen
-                allow="clipboard-write"
-            />
+            <div class="iframe-wrapper">
+                <iframe
+                    class="arcade-embed"
+                    src={iframeSrc}
+                    title={badge.label}
+                    allowfullscreen
+                    allow="clipboard-write"
+                />
+            </div>
         </div>
     </div>
 </section>
@@ -84,11 +86,11 @@ const badgeVars = Object.entries({
     section {
         position: relative;
         width: 100%;
-        padding: 6.875rem 6.25rem 6.875rem;
+        padding: 7rem 6.25rem 10rem;
         overflow: hidden;
 
         @include media-breakpoint-down(xl) {
-            padding: 5rem 1.25rem 2.5rem;
+            padding: 3rem 1.25rem 2.5rem;
         }
 
         .background {
@@ -202,24 +204,21 @@ const badgeVars = Object.entries({
                     rgba($white, 0) 50%,
                     rgba($white, 0.1) 100%
                 );
-                border-radius: 0.79rem;
-                padding: 0.1rem;
+                border-radius: 0.875rem;
+                padding: 0.35rem;
                 backdrop-filter: blur(10px);
                 box-shadow: 0.3125rem 1.125rem 2.75rem 0px #000000bf;
 
                 &::before {
                     content: "";
                     position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
+                    inset: 0;
                     background: linear-gradient(
                         132.13deg,
                         rgba($white, 0.8) 4.37%,
                         rgba($gray-500, 0.4) 41.25%
                     );
-                    border-radius: 0.75rem;
+                    border-radius: inherit;
                     padding: 1.05px;
                     pointer-events: none;
                     -webkit-mask:
@@ -233,17 +232,30 @@ const badgeVars = Object.entries({
                     z-index: -1;
                 }
 
-                .arcade-embed {
+                .iframe-wrapper {
+                    position: relative;
+                    width: 100%;
                     aspect-ratio: 16 / 9;
-                    color-scheme: light;
-                    border-radius: 0.54rem;
-                    border: none;
+                    border-radius: 0.5rem;
+                    overflow: hidden;
 
-                    @include media-breakpoint-down(md) {
+                    @include media-breakpoint-down(sm) {
                         aspect-ratio: 13 / 9;
                     }
+                }
+
+                .arcade-embed {
+                    position: absolute;
+                    top: -1px;
+                    left: -1px;
+                    width: calc(100% + 2px);
+                    height: calc(100% + 2px);
+                    display: block;
+                    color-scheme: light;
+                    border: none;
                 }
             }
         }
     }
 </style>
+

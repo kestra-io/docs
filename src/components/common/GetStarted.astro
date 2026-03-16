@@ -1,0 +1,276 @@
+---
+import { Image } from "astro:assets"
+import WithLogo from "~/components/layout/WithLogo.astro"
+import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+import CORE_IMAGE from "~/assets/layout/started/core.svg"
+import CLOUD_IMAGE from "~/assets/layout/started/cloud.svg"
+import ENTERPRISE_IMAGE from "~/assets/layout/started/enterprise-logo.png"
+
+const PLANS = [
+    {
+        slug: "open-source",
+        name: "Open Source",
+        description: "Self-host on Docker or Kubernetes. Free Forever",
+        image: CORE_IMAGE,
+        button: {
+            text: "Get started",
+            href: "https://kestra.io/docs/getting-started/quickstart",
+            variant: "btn-secondary",
+        },
+    },
+    {
+        slug: "enterprise",
+        name: "Enterprise",
+        description:
+            "SSO, RBAC, audit logs, multi-tenancy, built for critical environments.",
+        image: ENTERPRISE_IMAGE,
+        button: {
+            text: "Learn more",
+            href: "/enterprise",
+            variant: "btn-primary",
+        },
+    },
+    {
+        slug: "cloud",
+        name: "Cloud",
+        description:
+            "Managed platform, production-ready, scalable. Fastest time to value.",
+        image: CLOUD_IMAGE,
+        button: {
+            text: "Request access",
+            href: "/cloud",
+            variant: "btn-secondary",
+        },
+    },
+]
+---
+
+<WithLogo>
+    <div class="container">
+        <slot name="heading">
+            <h2 data-usal="fade-l">Get Started with Kestra</h2>
+        </slot>
+
+        <div class="cards-wrapper">
+            {
+                PLANS.map((plan) => (
+                    <div class={`plan-card ${plan.slug}`}>
+                        <div class="card-content">
+                            <div class="image">
+                                {plan.slug === "enterprise" && (
+                                    <div class="logo-bg" />
+                                )}
+                                <Image
+                                    src={plan.image}
+                                    alt={plan.name}
+                                    class="plan-image"
+                                />
+                            </div>
+                            <h4 class="plan-name" data-usal="fade-r">
+                                {plan.name}
+                            </h4>
+                            <p class="plan-description" data-usal="fade-l">
+                                {plan.description}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a
+                                href={plan.button.href}
+                                class={`btn ${plan.button.variant}`}
+                                data-usal="zoomin"
+                            >
+                                {plan.button.text}
+                            </a>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+
+        <h6 class="compare" data-usal="fade-u">
+            <a href="/pricing#comparison-table">
+                Compare all plans <ArrowRight class="icon" />
+            </a>
+        </h6>
+    </div>
+</WithLogo>
+
+<style lang="scss">
+    .container {
+        margin-inline: auto;
+        padding-inline: 0.75rem;
+        position: relative;
+
+        h2 {
+            color: var(--ks-content-primary-inverse);
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+    }
+
+    .cards-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 2rem;
+
+        @include media-breakpoint-down(lg) {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 800px;
+            margin-inline: auto;
+            gap: 2rem;
+
+            .plan-card.enterprise {
+                order: -1;
+                grid-column: span 2;
+                max-width: 465px;
+                margin-inline: auto;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+
+            .plan-card.enterprise {
+                order: 0;
+                grid-column: span 1;
+            }
+        }
+    }
+
+    .plan-card {
+        padding: 3.5rem 2rem 2rem;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        background: hsla(0, 0%, 100%, 0.02);
+        backdrop-filter: blur(24px);
+        border: 1px solid var(--ks-border-primary-inverse);
+        width: 100%;
+        transition: transform 0.3s ease;
+
+        @include media-breakpoint-down(lg) {
+            border-radius: 1rem !important;
+            max-height: fit-content;
+        }
+
+        @include media-breakpoint-up(lg) {
+            &.open-source {
+                width: 340px;
+                height: 612px;
+                border-right: none;
+                border-radius: 0.625rem 0 0 0.625rem;
+            }
+
+            &.cloud {
+                width: 340px;
+                height: 612px;
+                border-left: none;
+                border-radius: 0 0.625rem 0.625rem 0;
+            }
+
+            &.enterprise {
+                width: 465px;
+                height: 666px;
+                z-index: 2;
+                border-radius: 0.625rem;
+            }
+        }
+
+        &.enterprise {
+            backdrop-filter: none;
+            background: var(--ks-background-secondary-inverse);
+            border: 1px solid var(--ks-border-secondary-inverse);
+            box-shadow: 2px 3px 1rem 0px var(--ks-shadows-light-inverse);
+
+            .plan-name {
+                margin-top: 1rem;
+            }
+
+            .plan-image {
+                transform: scaleX(-1) rotate(-15deg);
+            }
+        }
+    }
+
+    .card-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .plan-name {
+            color: var(--ks-content-primary-inverse);
+        }
+
+        .plan-description {
+            color: var(--ks-content-secondary-inverse);
+        }
+    }
+
+    .image {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+        min-height: 250px;
+    }
+
+    .logo-bg {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-35deg);
+        width: 150px;
+        height: 190px;
+        background: linear-gradient(71deg, #0e0a28 40%, #794fed 75%);
+        mix-blend-mode: plus-lighter;
+        border-radius: 50%;
+        filter: blur(2.5rem);
+        z-index: 0;
+    }
+
+    .plan-image {
+        max-width: 250px;
+        width: 100%;
+        height: auto;
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-footer {
+        text-align: center;
+        margin-top: auto;
+        padding-top: 2rem;
+
+        .btn {
+            width: 100%;
+            display: block;
+        }
+
+        html.light & .btn-secondary {
+            background-color: transparent;
+            color: $white !important;
+            border-color: $white !important;
+        }
+    }
+
+    .compare {
+        text-align: center;
+        color: var(--ks-content-link-inverse);
+
+        a:hover {
+            color: var(--ks-content-secondary-inverse);
+        }
+    }
+
+    :global(.with-logo) {
+        padding-block: 5.625rem !important;
+    }
+</style>
+
