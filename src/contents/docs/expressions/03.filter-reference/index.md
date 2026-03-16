@@ -223,5 +223,3 @@ Useful when generating templated YAML or embedding structured content:
 | Split or join text | `split`, `join` |
 | Normalize casing | `lower`, `upper`, `title`, `capitalize` |
 | Render YAML in a templated task | `yaml`, `indent`, `nindent` |
-
-For exhaustive per-filter examples, see [Full Reference](../99.full-reference/index.md#basic-filters).

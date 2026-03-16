@@ -167,4 +167,4 @@ Use this page when an instance needs non-default enterprise infrastructure, cust
 ## When to use this page
 
 - Need secure runtime or secret backend settings: [Security and Secrets](../05.security-and-secrets/index.md)
-- Need full Elasticsearch or Kafka property examples: [Full Reference](../99.full-reference/index.md#elasticsearch)
+- Need queue, repository, storage, or JVM setup: [Runtime and Storage](../02.runtime-and-storage/index.md)

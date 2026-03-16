@@ -21,7 +21,7 @@ The table below summarizes the highlights of this release.
 | **Realtime Triggers**            | The improved Trigger UI allows you to view **logs** of each Realtime Trigger and **restart** it directly from the UI.                                                                                                                  | Both Open-Source and Enterprise  | [Link](../../docs/05.workflow-components/07.triggers/05.realtime-trigger/index.md) |
 | **Task Runners**                 | Task Runners are out of Beta — you can safely use the `taskRunner` property in all script and CLI tasks in production at scale.                                                                                                        | Both Open-Source and Enterprise  | [Link](../../docs/task-runners/index.mdx)                       |
 | **SCIM Directory Sync**          | Enterprise customers can automate the **sync of users and groups** from their Identity Provider to Kestra using the SCIM v2.0 protocol.                                                                                                | Enterprise Edition                  | [Link](../../docs/07.enterprise/03.auth/scim/index.mdx)                              |
-| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](../../docs/configuration/index.md#database)                             |
+| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](../../docs/configuration/02.runtime-and-storage/index.md#database-and-datasources)                             |
 | **Audit Logs**                   | Audit Logs have undergone a major overhaul, now including a diff-based display of changes and enabling new use cases such as filtering for executions created by specific users.                                                       | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/06.audit-logs/index.md)                       |
 | **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets/index.md)                          |
 
@@ -116,7 +116,7 @@ Based on requests from several Enterprise customers, we've added SQL Server as a
 
 Until we remove the `preview` label, we recommend using SQL Server in development/staging environments only and PostgreSQL for production JDBC-based deployments.
 
-To help you set up a SQL Server backend, check our [Database Configuration Guide](../../docs/configuration/index.md#database).
+To help you set up a SQL Server backend, check our [Database Configuration Guide](../../docs/configuration/02.runtime-and-storage/index.md#database-and-datasources).
 
 ---
 

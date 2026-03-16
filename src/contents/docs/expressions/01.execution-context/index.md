@@ -173,4 +173,4 @@ message: |
 If a task ID or output key contains a hyphen, use bracket notation such as `outputs['second-task']`. To avoid that, prefer `camelCase` or `snake_case`.
 :::
 
-For more detail, see [Full Reference](../99.full-reference/index.md).
+For Pebble syntax details, continue with [Pebble Syntax](../02.pebble-syntax/index.md). For runtime helpers, go to [Function Reference](../04.function-reference/index.md).

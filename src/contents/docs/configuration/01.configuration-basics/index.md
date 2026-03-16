@@ -148,4 +148,4 @@ If no namespace, tenant, or global default is configured, SDK-based tasks that u
 
 - Need repository, datasource, storage, JVM, or server settings: [Runtime and Storage](../02.runtime-and-storage/index.md)
 - Need logs, metrics, or SSL settings: [Observability and Networking](../03.observability-and-networking/index.md)
-- Need the complete unabridged page: [Full Reference](../99.full-reference/index.md)
+- Need secret backends or advanced EE infrastructure: [Security and Secrets](../05.security-and-secrets/index.md) and [Enterprise and Advanced](../06.enterprise-and-advanced/index.md)

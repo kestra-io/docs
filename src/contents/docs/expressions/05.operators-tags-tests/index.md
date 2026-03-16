@@ -158,4 +158,3 @@ Examples:
 - Need expression-writing basics: [Pebble Syntax](../02.pebble-syntax/index.md)
 - Need data transformations: [Filter Reference](../03.filter-reference/index.md)
 - Need runtime helpers: [Function Reference](../04.function-reference/index.md)
-- Need every operator, tag, and test example in one place: [Full Reference](../99.full-reference/index.md#operators)

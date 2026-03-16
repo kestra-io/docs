@@ -130,4 +130,4 @@ Useful for error notifications:
 
 - Need variables like `inputs`, `outputs`, or `namespace`: [Execution Context Variables](../01.execution-context/index.md)
 - Need filters like `date`, `default`, or `jq`: [Filter Reference](../03.filter-reference/index.md)
-- Need complete examples for every function: [Full Reference](../99.full-reference/index.md#functions)
+- Need Pebble syntax and nested rendering patterns: [Pebble Syntax](../02.pebble-syntax/index.md)

@@ -165,7 +165,7 @@ When we `Set` a new value for `user_name`, we have to use another `Get` task to 
 
 ## Processing data
 
-For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.md).
+For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.mdx).
 
 For more complex data transformations, Kestra offers various data processing plugins including transform tasks or custom scripts.
 

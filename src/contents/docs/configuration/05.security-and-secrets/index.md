@@ -173,4 +173,4 @@ The full reference also documents heartbeat frequency, missed-heartbeat handling
 
 - Secrets manager concepts: [External Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md)
 - Enterprise auth and RBAC: [Authentication and Users](../../07.enterprise/03.auth/index.mdx)
-- Full property list: [Full Reference](../99.full-reference/index.md#secret-managers)
+- EE platform settings and advanced backends: [Enterprise and Advanced](../06.enterprise-and-advanced/index.md)

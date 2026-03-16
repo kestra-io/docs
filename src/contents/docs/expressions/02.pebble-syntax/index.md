@@ -63,6 +63,40 @@ tasks:
 
 This pattern is especially useful with namespace variables, composed flow variables, and fallback logic based on trigger context.
 
+### Multiline JSON bodies
+
+When an HTTP request body contains multiline user input, avoid partial string interpolation. Instead, build the whole payload as a single Pebble expression so JSON escaping happens correctly.
+
+```yaml
+id: multiline_input_passed_to_json_body
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: This is my title
+  - id: message
+    type: STRING
+    defaults: |-
+      This is my long
+      multiline message.
+  - id: priority
+    type: INT
+    defaults: 5
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.http.Request
+    uri: https://kestra.io/api/mock
+    method: POST
+    body: |
+      {{ {
+        "title": inputs.title,
+        "message": inputs.message,
+        "priority": inputs.priority
+      } | toJson }}
+```
+
 ## Common syntax patterns
 
 ### Comments
@@ -149,4 +183,4 @@ For full operator and tag details, see [Operators, Tags, and Tests](../05.operat
 - Need available runtime variables: [Execution Context Variables](../01.execution-context/index.md)
 - Need filters such as `date`, `jq`, `default`, or `yaml`: [Filter Reference](../03.filter-reference/index.md)
 - Need functions such as `render()`, `secret()`, or `printContext()`: [Function Reference](../04.function-reference/index.md)
-- Need exhaustive syntax examples: [Full Reference](../99.full-reference/index.md)
+- Need operator details such as `??`, ternary expressions, tags, or tests: [Operators, Tags, and Tests](../05.operators-tags-tests/index.md)

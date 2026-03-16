@@ -284,4 +284,4 @@ If you want large execution payloads stored in internal storage instead of the p
 
 - Need logs, telemetry, metrics, endpoints, CORS, or SSL: [Observability and Networking](../03.observability-and-networking/index.md)
 - Need plugin defaults, retries, or system flows: [Plugins and Execution](../04.plugins-and-execution/index.md)
-- Need all property-level details: [Full Reference](../99.full-reference/index.md#database)
+- Need secret backends or server hardening: [Security and Secrets](../05.security-and-secrets/index.md)

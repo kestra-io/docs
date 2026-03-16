@@ -235,5 +235,3 @@ Use this section when you need to:
 - adjust access log format for GCP or ECS
 - configure Prometheus-style metrics ingestion
 - change management endpoint behavior
-
-For detailed properties and examples, see [Full Reference](../99.full-reference/index.md#telemetry).

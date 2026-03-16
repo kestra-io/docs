@@ -230,4 +230,4 @@ Those settings are documented in more detail on [Runtime and Storage](../02.runt
 
 - Flow-level plugin defaults: [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md)
 - Universal file access: [File Access](../../06.concepts/file-access/index.md)
-- Full property-level details: [Full Reference](../99.full-reference/index.md#plugins)
+- Storage, JVM, and global variables: [Runtime and Storage](../02.runtime-and-storage/index.md)
