@@ -154,10 +154,13 @@ tasks:
     inputs:
       orders_file: "{{ taskrun.items }}"
 
-  - id: log_batch_stats
+  - id: log_merged_outputs_uri
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.process_batches_merge.subflowOutputs }}"
 
+  - id: preview_merged_outputs
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(outputs.process_batches_merge.subflowOutputs) }}"
 ```
 
 And the subflow:
@@ -176,9 +179,9 @@ tasks:
     message: "{{ read(inputs.orders_file) }}"
 
 outputs:
-  - id: batch_preview
+  - id: batch_summary
     type: STRING
-    value: "{{ read(inputs.orders_file) }}"
+    value: "{{ 'Processed batch ' ~ taskrun.iteration ~ ' with content: ' ~ read(inputs.orders_file) }}"
 ```
 
 Here, `orders_file` is a batch file generated from the ION output of `CsvToIon`. Each subflow execution receives one batch file through `{{ taskrun.items }}`.
@@ -199,7 +202,7 @@ This is different from `ForEach`, where you typically access outputs by loop val
 
 ### Example: consume merged subflow outputs
 
-If the subflow defines typed flow outputs, `ForEachItem` merges them into a file exposed by the internal merge task.
+If the subflow defines typed flow outputs, `ForEachItem` merges them into a file exposed by the internal merge task. In the example above, each child execution returns a `batch_summary` string, and the merge task gathers those subflow outputs into a single file.
 
 ```yaml
 id: parent_read_merged_outputs
@@ -229,9 +232,14 @@ tasks:
   - id: log_merged_outputs_uri
     type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.process_batches_merge.subflowOutputs }}"
+
+  - id: preview_merged_outputs
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(outputs.process_batches_merge.subflowOutputs) }}"
 ```
 
-Use that URI when a downstream task needs the collected outputs from all child subflows.
+Use `{{ outputs.process_batches_merge.subflowOutputs }}` when a downstream task needs the collected outputs from all child subflows.
+If you want to inspect the merged file content directly, use `read(outputs.process_batches_merge.subflowOutputs)`.
 
 ## Common mistakes to avoid
 
