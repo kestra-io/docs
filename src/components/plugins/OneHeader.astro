@@ -11,28 +11,31 @@ interface Props {
     headingDescription?: string
 }
 
-const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.props;
+const { headingTitle, rootPlugin, currentPageIcon, headingDescription } =
+    Astro.props
 ---
 
 <h4 class="py-0 title">
-    {currentPageIcon && (
-        <div class="pageIcon">
-            <Image
-                src={currentPageIcon}
-                alt={headingTitle}
-                width={80}
-                height={80}
-                class="blurred-bg"
-            />
-            <Image
-                src={currentPageIcon}
-                alt={headingTitle}
-                width={80}
-                height={80}
-                class="page-icon"
-            />
-        </div>
-    )}
+    {
+        currentPageIcon && (
+            <div class="pageIcon">
+                <Image
+                    src={currentPageIcon}
+                    alt={headingTitle}
+                    width={80}
+                    height={80}
+                    class="blurred-bg"
+                />
+                <Image
+                    src={currentPageIcon}
+                    alt={headingTitle}
+                    width={80}
+                    height={80}
+                    class="page-icon"
+                />
+            </div>
+        )
+    }
     <div class="title-content d-flex flex-column justify-space-between w-100">
         <div class="d-flex align-items-center flex-wrap gap-3">
             <span>{headingTitle}</span>
@@ -44,23 +47,29 @@ const { headingTitle, rootPlugin, currentPageIcon, headingDescription } = Astro.
                 class="mt-1"
             />
         </div>
-        {headingDescription && (
-            <div class="bd-content">
-                <MDCParserAndRenderer content={headingDescription} />
-            </div>
-        )}
+        {
+            headingDescription && (
+                <div class="bd-content">
+                    <MDCParserAndRenderer content={headingDescription} />
+                </div>
+            )
+        }
     </div>
-    {rootPlugin?.license && (
-        <div class="title-actions d-flex flex-column gap-2 ps-4">
-            <span class="btn enterprise-badge">Enterprise Edition</span>
-            <a href="/demo" class="btn btn-primary" target="_blank"> Talk to us </a>
-        </div>
-    )}
+    {
+        rootPlugin?.license && (
+            <div class="title-actions d-flex flex-column gap-2 ps-4">
+                <span class="btn enterprise-badge">Enterprise Edition</span>
+                <a href="/demo" class="btn btn-primary" target="_blank">
+                    {" "}
+                    Talk to us{" "}
+                </a>
+            </div>
+        )
+    }
 </h4>
 
 <style lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "~/assets/styles/variable";
 
     .pageIcon {
         min-width: 104px;

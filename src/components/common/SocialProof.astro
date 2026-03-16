@@ -4,33 +4,27 @@ import Link from "~/components/common/Link.astro"
 
 interface Props {
     image: {
-        src: ImageMetadata;
-        alt: string;
-        width?: number;
-        height?: number;
-    };
+        src: ImageMetadata
+        alt: string
+        width?: number
+        height?: number
+    }
     quote: {
-        text: string;
-        author: string;
-    };
+        text: string
+        author: string
+    }
     metrics: {
-        value: string;
-        label: string;
-    }[];
+        value: string
+        label: string
+    }[]
     cta: {
-        text?: string;
-        link: string;
-    },
-    theme?: string;
+        text?: string
+        link: string
+    }
+    theme?: string
 }
 
-const {
-    image,
-    quote,
-    metrics,
-    cta,
-    theme = "#FC7115",
-} = Astro.props as Props;
+const { image, quote, metrics, cta, theme = "#FC7115" } = Astro.props as Props
 ---
 
 <section class="read-story">
@@ -54,12 +48,14 @@ const {
         <div class="right-div d-flex flex-column gap-5">
             <div data-usal="fade-u delay-25 duration-500 ease-out">
                 <h3>
-                    <span class="quote-mark">“</span>{quote.text}<span class="quote-mark">”</span>
+                    <span class="quote-mark">“</span>{quote.text}<span
+                        class="quote-mark">”</span
+                    >
                 </h3>
                 <small>{quote.author}</small>
             </div>
 
-            <hr class="my-0">
+            <hr class="my-0" />
 
             <div
                 class="metrics-grid"
@@ -91,8 +87,6 @@ const {
 </section>
 
 <style lang="scss" define:vars={{ theme }}>
-    @import "~/assets/styles/variable";
-
     .read-story {
         background-color: var(--ks-background-primary-inverse);
         padding: $rem-4 $rem-2;

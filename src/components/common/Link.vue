@@ -46,7 +46,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     $button-transition-timing: 100ms;
 

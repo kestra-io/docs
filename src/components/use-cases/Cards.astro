@@ -66,13 +66,11 @@ const { title, description, cards, class: className } = Astro.props
 </div>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .container-fluid {
         text-align: center;
         padding: calc($spacer * 3) $spacer;
-        background: var(--ks-background-body)
-            url("/retail/header-mask.svg") 100% 100%;
+        background: var(--ks-background-body) url("/retail/header-mask.svg")
+            100% 100%;
 
         .container {
             .title-block {

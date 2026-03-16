@@ -33,7 +33,7 @@
     }>()
 
     const ALL_NEWS = "All news"
-    
+
     const categoryMap: Record<string, string> = {
         "Company News": "Company news",
         "News & Products Updates": "News & Products Updates",
@@ -66,7 +66,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .contain {
         width: 100%;

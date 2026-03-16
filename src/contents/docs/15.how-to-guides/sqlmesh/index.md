@@ -1,5 +1,5 @@
 ---
-title: Using SQLMesh to run dbt Projects
+title: Use SQLMesh to Run dbt Projects
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -8,8 +8,6 @@ version: ">= 0.18.0"
 ---
 
 Using SQLMesh to run dbt project with Kestra.
-
-## Using SQLMesh to run dbt Projects
 
 SQLMesh is an open source python data transformation and modelling framework. It automates everything needed to run a scalable data transformation platform. SQLMesh works with a variety of [engines and orchestrators](https://sqlmesh.readthedocs.io/en/stable/integrations/overview/).
 

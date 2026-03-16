@@ -48,7 +48,7 @@
 </style>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .mdc-renderer {
         & :deep(pre) {

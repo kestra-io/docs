@@ -160,7 +160,7 @@ tasks:
     key: user_name
 ```
 
-When we `Set` a new value for `user_name`, we have to use another `Get` task to get the most up to date value, and then reference the `Get` task `id` in our log underneath to get the latest value. The same applies to the `Delete` task. In order to show that it has been deleted, we try to get the data from the key deleetd in the `delete_data` task to show that.
+When we `Set` a new value for `user_name`, we have to use another `Get` task to retrieve the most up-to-date value, and then reference that `Get` task `id` in the log below to show the latest value. The same applies to the `Delete` task. To show that the value has been deleted, we try to retrieve data from the key deleted in the `delete_data` task.
 :::
 
 ## Processing data
@@ -195,7 +195,7 @@ tasks:
 
 - id: convertBackToIon
   type: io.kestra.plugin.serdes.csv.CsvToIon
-  from: "{{outputs.convertToCsv.uri}}""
+  from: "{{ outputs.convertToCsv.uri }}"
 ```
 
 ### Processing data using scripts
@@ -346,9 +346,9 @@ triggers:
 
 ### Internal storage FAQ
 
-#### How to read a file from the internal storage as a string?
+#### How to read a file from internal storage as a string
 
-The 'read' function expects an argument 'path' that is a path to a namespace file or an internal storage URI. Note that when using inputs, outputs or trigger variables, you don't need any extra quotation marks. Here is how you can use such variables along with the 'read' function:
+The `read()` function expects a `path` argument that points to a namespace file or an internal storage URI. Note that when using inputs, outputs, or trigger variables, you don't need any extra quotation marks. Here is how you can use those variables with the `read()` function:
 - `{{ read(inputs.file) }}` for a FILE-type input variable named `file`
 - `{{ read(outputs.mytaskid.uri) }}` for an output `uri` from a task named `mytaskid`
 - `{{ read(trigger.uri) }}` for a `uri` of many triggers incl. Kafka, AWS SQS, GCP PubSub, etc.

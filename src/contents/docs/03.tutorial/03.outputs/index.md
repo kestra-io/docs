@@ -56,7 +56,7 @@ tasks:
 
 While returning status code is good for unit testing a flow, typically when fetching data from a REST API we want to use that data. Kestra stores that fetched data in the internal storage and makes it available to downstream tasks using the `body` output argument.
 
-Use the `{{ outputs.task_id.body }}` syntax to process that fetched data in a downstream task. To demonstrate, we can add a [Python script](plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) task to our flow below.
+Use the `{{ outputs.task_id.body }}` syntax to process that fetched data in a downstream task. To demonstrate, we can add a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) task to our flow below.
 
 :::alert{type="info"}
 Kestra is language-agnostic — run custom scripts in any flow. You can run Python, Node.js, R, Julia, and an ever-growing number of languages; or execute commands in shell or PowerShell. Check out the [Scripts documentation](../../16.scripts/index.mdx) for more!

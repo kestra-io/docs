@@ -3,7 +3,9 @@ import { Image } from "astro:assets"
 ---
 
 <section>
-    <div class="position-relative container-fluid d-flex justify-content-center">
+    <div
+        class="position-relative container-fluid d-flex justify-content-center"
+    >
         <div class="position-relative">
             <Image
                 width={774}
@@ -24,22 +26,26 @@ import { Image } from "astro:assets"
                 />
             </div>
         </div>
-        <div class="description position-absolute start-50 translate-middle text-center w-50">
-            <h1>Kestra Partner <br /><span class="highlight">Ecosystem</span></h1>
+        <div
+            class="description position-absolute start-50 translate-middle text-center w-50"
+        >
+            <h1>
+                Kestra Partner <br /><span class="highlight">Ecosystem</span>
+            </h1>
             <p class="text">
-                Whether you are building something new, upgrading a legacy stack, or
-                re-platforming, you can trust Kestra and our partner ecosystem to make that journey
-                a success.
+                Whether you are building something new, upgrading a legacy
+                stack, or re-platforming, you can trust Kestra and our partner
+                ecosystem to make that journey a success.
             </p>
             <br />
-            <a href="#form" class="btn btn-animated btn-purple-animated mt-4">Become a partner</a>
+            <a href="#form" class="btn btn-animated btn-purple-animated mt-4"
+                >Become a partner</a
+            >
         </div>
     </div>
 </section>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
     .container-fluid {
         padding-bottom: 8rem;
 

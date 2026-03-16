@@ -9,7 +9,7 @@ const description =
     "Instantly access a read-only version of Kestra to explore its interface and workflows, no setup required."
 ---
 
-<Layout title={title} description={description} headerTheme="lightHero">
+<Layout title={title} description={description} headerTheme="lightText">
     <div class="livedemo">
         <Header client:load />
         <Features
@@ -21,8 +21,6 @@ const description =
 </Layout>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
     .livedemo {
         &::after {
             content: "";

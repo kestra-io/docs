@@ -125,7 +125,7 @@ kestra:
   tasks:
     tmp-dir:
       path: /tmp/kestra-wd/tmp
-  url: http://localhost:8080/'
+  url: http://localhost:8080/
 ```
 
 :::alert{type="info"}

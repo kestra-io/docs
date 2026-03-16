@@ -1,13 +1,13 @@
 ---
-import { Icon } from "astro-icon/components";
-import Squared from "~/components/layout/Squared.vue";
-import TaskIcon from "~/components/common/TaskIcon.astro";
+import { Icon } from "astro-icon/components"
+import Squared from "~/components/layout/Squared.vue"
+import TaskIcon from "~/components/common/TaskIcon.astro"
 
-const { page, tags: allTags = [] } = Astro.props;
+const { page, tags: allTags = [] } = Astro.props
 
 const tags = allTags
     .filter((tag: BlueprintTag) => page.tags?.includes(tag.id))
-    .map((tag: BlueprintTag) => tag.name);
+    .map((tag: BlueprintTag) => tag.name)
 ---
 
 <div class="header">
@@ -19,19 +19,21 @@ const tags = allTags
                     <Icon name="mdi:chevron-right" class="tertiary" />
                     <a class="fw-bold" href="/blueprints">Blueprints</a>
                 </nav>
-    
-                {page.includedTasks?.length > 0 && (
-                    <div class="tasks">
-                        {page.includedTasks.map((icon: string) => (
-                            <div class="task">
-                                <div class="box">
-                                    <TaskIcon cls={icon} />
+
+                {
+                    page.includedTasks?.length > 0 && (
+                        <div class="tasks">
+                            {page.includedTasks.map((icon: string) => (
+                                <div class="task">
+                                    <div class="box">
+                                        <TaskIcon cls={icon} />
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-    
+                            ))}
+                        </div>
+                    )
+                }
+
                 <h1 class="title mb-0">{page.title}</h1>
                 {/* TODO: short description needed */}
                 <!-- <MDCParserAndRenderer
@@ -39,26 +41,24 @@ const tags = allTags
                     class="description bd-markdown mb-0"
                 /> -->
             </div>
-    
+
             <div class="right">
                 <span class="category">Categories</span>
-                {tags.length > 0 && (
-                    <div class="tags">
-                        {tags.map((tag: string) => (
-                            <span class="tag">
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                )}
+                {
+                    tags.length > 0 && (
+                        <div class="tags">
+                            {tags.map((tag: string) => (
+                                <span class="tag">{tag}</span>
+                            ))}
+                        </div>
+                    )
+                }
             </div>
         </div>
     </Squared>
 </div>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .header :global(.container) {
         max-width: 1520px !important;
     }

@@ -280,7 +280,7 @@ with open("/tmp/128M.txt", 'rb') as fh:
 
 ### Get URL to follow the Execution progress
 
-The executions endpoint also [returns a URL](https://github.com/kestra-io/kestra/issues/4256), allowing you to follow the execution progress from the UI. This is helpful for externally triggered, long-running executions that require users to follow the workflow progress. Below shows the steps to how you can use it:
+The executions endpoint also [returns a URL](https://github.com/kestra-io/kestra/issues/4256), allowing you to follow the execution progress from the UI. This is helpful for externally triggered, long-running executions that require users to monitor workflow progress. Below are the steps to use it:
 
 1) First, create a flow:
 

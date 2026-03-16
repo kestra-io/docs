@@ -1,25 +1,25 @@
 @import "../variable";
 
-@mixin dark-nav-content {
+@mixin dark-nav-content($color: $white) {
     a.nav-link:not(.btn),
     .nav-item a:not(.btn),
     div.nav-items a:not(.btn),
     .navbar-toggler {
-        color: $white;
+        color: $color;
 
         &:hover,
         &.show {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: $white;
+            background-color: rgba($color, 0.08);
+            color: $color;
             border-radius: $border-radius;
         }
     }
 
     .material-design-icon {
-        color: $white;
+        color: $color;
 
         &:hover {
-            color: rgba(255, 255, 255, 0.83);
+            color: rgba($color, 0.83);
         }
     }
 }
@@ -494,6 +494,20 @@ nav {
             @include dark-nav-content;
         }
 
+        html.dark body[data-header-theme="light"] &:not(.scrolled):not(.open) {
+            .navbar-brand {
+                .logo-dark {
+                    display: none;
+                }
+
+                .logo-light {
+                    display: block;
+                }
+            }
+
+            @include dark-nav-content($black);
+        }
+
         body[data-header-theme="darkBg"] &:not(.scrolled):not(.open) {
             background-color: var(--header-dark-bg, #0a0b0d);
 
@@ -731,3 +745,4 @@ nav {
         }
     }
 }
+

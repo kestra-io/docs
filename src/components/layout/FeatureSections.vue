@@ -69,7 +69,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .feature-sections {
         padding: 4rem 0;

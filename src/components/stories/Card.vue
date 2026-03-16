@@ -32,7 +32,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .story-card {
         height: 434px;

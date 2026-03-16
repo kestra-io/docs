@@ -48,9 +48,9 @@ Once running, open a terminal on your laptop and connect to your instance throug
 
 Kestra can be run directly from the `.jar` binary or using Docker. We use Docker here for quicker setup:
 1. Install Docker on the EC2 instance. [You can find the last updated instruction on the Docker website](https://docs.docker.com/engine/install/ubuntu/).
-2. [Install docker-compose](https://docs.docker.com/compose/install/).
+2. [Install Docker Compose](https://docs.docker.com/compose/install/).
 
-To check your installation, run `docker version` and `docker-compose version`. You're now ready to download and launch the Kestra server.
+To check your installation, run `docker version` and `docker compose version`. You're now ready to download and launch the Kestra server.
 
 
 ## Step 2: Download and run Kestra
@@ -98,7 +98,7 @@ You can now access your Kestra instance and create, edit, and run Flows.
 
 ## Step 4: Use AWS RDS PostgreSQL as a database backend
 
-This first installation relies on a PostgreSQL database running alongside the Kestra server on the EC2 instance (see the PostgreSQL service running thanks to the docker-compose).
+This first installation relies on a PostgreSQL database running alongside the Kestra server on the EC2 instance (see the PostgreSQL service running in Docker Compose).
 
 For a simple proof of concept (PoC), you can keep the PostgreSQL database running in Docker.
 
@@ -140,9 +140,9 @@ datasources:
     password: <your-password>
 ```
 
-Because you now use RDS service, you do not need the PostgreSQL service anymore. Remove it from the `docker-compose.yml` file.
+Because you now use the RDS service, you do not need the PostgreSQL service anymore. Remove it from the `docker-compose.yml` file.
 
-In order for the changes to take effect, restart the docker services with `docker compose restart` or `docker compose up -d`.
+For the changes to take effect, restart the Docker services with `docker compose restart` or `docker compose up -d`.
 
 ## Step 5: Use AWS S3 for storage
 

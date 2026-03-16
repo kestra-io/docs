@@ -153,7 +153,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .container-fluid {
         color: $white;

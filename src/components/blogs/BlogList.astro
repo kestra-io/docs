@@ -15,9 +15,11 @@ const { blogs, externalNews, videos } = Astro.props
             <h2>Latest Community News</h2>
             <div class="grid community-grid">
                 {
-                    externalNews.slice(0, 3).map((blog: any) => (
-                        <BlogCard blog={blog} target="_blank" />
-                    ))
+                    externalNews
+                        .slice(0, 3)
+                        .map((blog: any) => (
+                            <BlogCard blog={blog} target="_blank" />
+                        ))
                 }
             </div>
 
@@ -31,8 +33,6 @@ const { blogs, externalNews, videos } = Astro.props
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         padding: $rem-4 $rem-1;
         background: var(--ks-background-body);

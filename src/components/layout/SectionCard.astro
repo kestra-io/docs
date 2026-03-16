@@ -26,7 +26,12 @@ const { cards } = Astro.props
                         class="cards"
                         data-usal={`fade duration-400 delay-${50 + index * 50} ease-out`}
                     >
-                        <div class:list={["inner-card", { reverse: card.reverse }]}>
+                        <div
+                            class:list={[
+                                "inner-card",
+                                { reverse: card.reverse },
+                            ]}
+                        >
                             <div
                                 class="content-card"
                                 data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
@@ -52,8 +57,6 @@ const { cards } = Astro.props
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .section-card {
         background: var(--ks-background-body);
         padding: 3rem 1rem;
@@ -105,7 +108,7 @@ const { cards } = Astro.props
                         display: flex;
                         flex-direction: column-reverse;
                         align-items: center;
-                        
+
                         @include media-breakpoint-up(md) {
                             flex-direction: row;
                             padding-left: 2rem;

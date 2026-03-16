@@ -108,7 +108,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .plugin-sidebar {
         @include media-breakpoint-up(lg) {

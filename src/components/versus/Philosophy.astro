@@ -19,11 +19,7 @@ interface Props {
     }
 }
 
-const {
-    mainTitle,
-    kestra,
-    competitor
-} = Astro.props as Props
+const { mainTitle, kestra, competitor } = Astro.props as Props
 ---
 
 <section>
@@ -60,8 +56,6 @@ const {
 </section>
 
 <style lang="scss" define:vars={{ competitorSubCardBg: competitor?.subCardBg }}>
-    @import "~/assets/styles/variable";
-
     section {
         padding: $spacer * 4 0;
         background-color: var(--ks-background-body);
@@ -87,7 +81,8 @@ const {
             }
         }
 
-        p, h5 {
+        p,
+        h5 {
             color: var(--ks-content-primary);
         }
 
@@ -135,4 +130,3 @@ const {
         }
     }
 </style>
-

@@ -1,0 +1,75 @@
+---
+import Quotes from "~/components/common/Quotes.vue"
+
+import graviteeLogo from "~/contents/customer-stories/25/logo.svg?raw"
+import leroyMerlinLogo from "~/contents/customer-stories/14/logo.svg?raw"
+import fortune500Logo from "~/components/enterprise/assets/fortune500.svg?raw"
+
+const CUSTOMER_QUOTES = [
+    {
+        quote: "Our goal is for Kestra to become the go-to solution across the organization whenever data wrangling and complex pipeline orchestration are needed.",
+        author: "Rémi Sultan — AI/ML Lead",
+        smallLogoSvg: graviteeLogo,
+        kpis: [
+            {
+                name: "less maintenance",
+                value: "50%",
+            },
+            {
+                name: "Customer training needed",
+                value: "0",
+            },
+            {
+                name: "Engineers to build the product",
+                value: "2",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/25-when-your-api-writes-its-own-docs-with-kestra",
+    },
+    {
+        quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!",
+        author: "Principal Hosting",
+        smallLogoSvg: fortune500Logo,
+        kpis: [
+            {
+                name: "Isolated automation platforms",
+                value: "4+1",
+            },
+            {
+                name: "faster time to deliver",
+                value: "30x",
+            },
+            {
+                name: "In licensing cost VS Aria Automation",
+                value: "-90%",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-ot-with-kestra",
+    },
+    {
+        quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+        author: "Julien Henrion — Head of Data Engineering",
+        smallLogoSvg: leroyMerlinLogo,
+        kpis: [
+            {
+                name: "In Data Production",
+                value: "+900%",
+            },
+            {
+                name: "active users",
+                value: "+250",
+            },
+            {
+                name: "workflows Created",
+                value: "+5000",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900",
+    },
+]
+---
+
+<Quotes quotes={CUSTOMER_QUOTES} client:load />

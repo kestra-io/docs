@@ -29,7 +29,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .info-ctn {
         gap: 0.625rem;

@@ -24,14 +24,16 @@ const { data } = Astro.props
                     <span class="highlight">{data.highlightTitle}</span>
                 </h1>
                 <div class="features-grid">
-                    {data.features.map((feature) => (
-                        <div class="feature-item" data-usal="fade-up">
-                            <h5>{feature.title}</h5>
-                            <p class="feature-text">
-                                {feature.description}
-                            </p>
-                        </div>
-                    ))}
+                    {
+                        data.features.map((feature) => (
+                            <div class="feature-item" data-usal="fade-up">
+                                <h5>{feature.title}</h5>
+                                <p class="feature-text">
+                                    {feature.description}
+                                </p>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
         </div>
@@ -68,8 +70,6 @@ const { data } = Astro.props
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .main {
         background-color: var(--ks-background-body);
         overflow: hidden;
@@ -193,7 +193,9 @@ const { data } = Astro.props
             .fivetran-image {
                 @include media-breakpoint-up(xl) {
                     top: 120px;
-                    img { max-height: 230px; }
+                    img {
+                        max-height: 230px;
+                    }
                 }
             }
 

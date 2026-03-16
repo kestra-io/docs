@@ -35,7 +35,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .quote-section {
         position: relative;

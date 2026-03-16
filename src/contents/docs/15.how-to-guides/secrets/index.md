@@ -1,5 +1,5 @@
 ---
-title: Configure Secrets
+title: Configure Secrets in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -8,8 +8,6 @@ description: Learn how to securely configure and use secrets in Kestra to protec
 ---
 
 Learn how to securely configure and use secrets in Kestra.
-
-## Configure Secrets
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

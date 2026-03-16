@@ -7,45 +7,67 @@ interface Props {
     text?: string
     class?: string
     reversed?: boolean
-    [x: string]: any;
+    [x: string]: any
 }
 
 const { href, text, class: className, reversed = false, ...rest } = Astro.props
 ---
 
 <a href={href} class:list={["link", className, { reversed }]} {...rest}>
-    {reversed && (
-        <svg viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
-            <g class="arrow-head">
-                <path
-                    d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
-                    stroke="currentColor"
-                    stroke-width="2"></path>
-            </g>
-            <g class="arrow-body">
-                <path d="M3.5 4.5H0" stroke="currentColor" stroke-width="2"></path>
-            </g>
-        </svg>
-    )}
+    {
+        reversed && (
+            <svg
+                viewBox="0 0 6 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="arrow-icon"
+            >
+                <g class="arrow-head">
+                    <path
+                        d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+                </g>
+                <g class="arrow-body">
+                    <path
+                        d="M3.5 4.5H0"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+                </g>
+            </svg>
+        )
+    }
     {text ? text : <slot />}
-    {!reversed && (
-        <svg viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
-            <g class="arrow-head">
-                <path
-                    d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
-                    stroke="currentColor"
-                    stroke-width="2"></path>
-            </g>
-            <g class="arrow-body">
-                <path d="M3.5 4.5H0" stroke="currentColor" stroke-width="2"></path>
-            </g>
-        </svg>
-    )}
+    {
+        !reversed && (
+            <svg
+                viewBox="0 0 6 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="arrow-icon"
+            >
+                <g class="arrow-head">
+                    <path
+                        d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+                </g>
+                <g class="arrow-body">
+                    <path
+                        d="M3.5 4.5H0"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+                </g>
+            </svg>
+        )
+    }
 </a>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     $button-transition-timing: 100ms;
 
     .link {

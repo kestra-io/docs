@@ -42,13 +42,13 @@
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/styles/variable";
+
 
     section {
         background: var(--ks-background-body);
         padding: $spacer * 3 $spacer;
         color: var(--ks-content-primary);
-        
+
         .card {
             background: var(--ks-background-body);
             padding: $rem-1;

@@ -71,7 +71,7 @@
 </script>
 
  <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     section {
         background-color: var(--ks-background-secondary);

@@ -39,7 +39,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .-row {
         align-items: stretch;

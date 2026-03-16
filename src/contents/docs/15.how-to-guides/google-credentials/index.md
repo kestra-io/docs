@@ -1,5 +1,5 @@
 ---
-title: Configure Google Service Account
+title: Configure a Google Service Account in Kestra
 icon: /src/contents/docs/icons/gcp-compute.svg
 stage: Getting Started
 topics:
@@ -8,13 +8,11 @@ topics:
 description: Securely configure Google Service Accounts in Kestra to authenticate and access Google Cloud resources and Workspace apps.
 ---
 
-Setup a Google Service Account inside of Kestra.
+Set Up a Google Service Account in Kestra.
 
-## Configure Google Service Account
+When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate in Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly in Kestra.
 
-When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
-
-## Create Service Account inside of Google Cloud
+## Create Service Account in Google Cloud
 
 Inside of Google Cloud, head to `IAM` and then `Service Accounts`. In here you can add the specific roles to the service account before creating it (this will depend on your use case).
 
@@ -80,16 +78,16 @@ done < .env > $ENV_FILENAME
 echo "SECRET_GCP_SERVICE_ACCOUNT=$(cat service-account.json | base64 -w 0)" >> $ENV_FILENAME
 ```
 
-You can then set the `.env_encoded` file inside of your `docker-compose.yml`:
+You can then set the `.env_encoded` file in your `docker-compose.yml`:
 
 ```yaml
 kestra:
   env_file: .env_encoded
 ```
 
-## Access Service Account inside of Kestra
+## Access Service Account in Kestra
 
-You can now access this inside of Kestra with the following pebble expression:
+You can now access this in Kestra with the following pebble expression:
 
 ```yaml
 "{{ secret('GCP_SERVICE_ACCOUNT') }}"
@@ -166,7 +164,7 @@ kestra:
   ...
 ```
 
-The xample uses a file in the location `~/.gcp/workflow-orchestration-credentials.json` so make sure to change this to the location of your JSON file. It maps it to `/.gcp/credentials.json` inside the container, which we'll need to reference in the environment variable.
+The example uses a file in the location `~/.gcp/workflow-orchestration-credentials.json`, so make sure to change this to the location of your JSON file. It maps it to `/.gcp/credentials.json` inside the container, which we'll need to reference in the environment variable.
 
 After that, add an environment variable under `environment` called `GOOGLE_APPLICATION_CREDENTIALS`
 
@@ -253,8 +251,8 @@ services:
 
 ## Google App Passwords
 
-For some Google applications, like Gmail, you won't use a service account for authenticating. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has 2 factor authenication enabled. In this case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then go to **Security**. Select the **App Passwords** option and you'll be able to Generate a new one. This can be used where you'd put your normal password to connect it to Kestra.
+For some Google applications, such as Gmail, you won't use a service account for authentication. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has two-factor authentication enabled. In that case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then **Security**. Select the **App Passwords** option, and you'll be able to generate a new one. This can be used wherever you would normally enter your password to connect it to Kestra.
 
 :::alert{type="info"}
 If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
-::::
+:::

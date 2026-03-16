@@ -74,7 +74,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .wrapper-tabs {
         background-color: #0a0b0d;

@@ -42,7 +42,7 @@ const teamMembers = [
         name: "Parham Parvizi",
         title: "Solution Architect",
         image: TeamImages["pparvizi-round.png"],
-    },   
+    },
     {
         name: "Florian Cailles",
         title: "Lead Growth Engineer",
@@ -72,6 +72,16 @@ const teamMembers = [
         name: "Elliot Gunn",
         title: "Product Marketing Manager",
         image: TeamImages["egunn-round.png"],
+    },
+    {
+        name: "Nenad Malić",
+        title: "Product Marketing Lead",
+        image: TeamImages["nmalic-round.png"],
+    },
+    {
+        name: "Virgile Fanucci",
+        title: "Lead SEO/SEA",
+        image: TeamImages["vfanucci-round.png"],
     },
     {
         name: "Nicolas Callens",
@@ -119,6 +129,11 @@ const teamMembers = [
         image: TeamImages["mdewangan-round.png"],
     },
     {
+        name: "Steven Meek",
+        title: "Software Engineer",
+        image: TeamImages["smeek-round.png"],
+    },
+    {
         name: "Nicolas Kwiatkowski",
         title: "Software Engineer",
         image: TeamImages["nkwiatkowski-round.png"],
@@ -136,7 +151,7 @@ const teamMembers = [
     {
         name: "Bart Ledoux",
         title: "Software Engineer",
-        image: TeamImages["elevatebart.png"],
+        image: TeamImages["bledoux-round.png"],
     },
     {
         name: "Piyush Bhaskar",
@@ -191,10 +206,7 @@ const teamMembers = [
         <div class="team-grid" data-usal="fade-u delay-200">
             {
                 teamMembers.map((member, index) => (
-                    <div
-                        class="team-card"
-                        data-usal="zoomin"
-                    >
+                    <div class="team-card" data-usal="zoomin">
                         <Image
                             src={member.image}
                             alt={member.name.replace(/<br\s*\/?>/gi, " ")}
@@ -202,10 +214,7 @@ const teamMembers = [
                             height={164.8}
                         />
                         <div class="team-info">
-                            <p
-                                class="team-name mb-0"
-                                set:html={member.name}
-                            />
+                            <p class="team-name mb-0" set:html={member.name} />
                             {member.title && (
                                 <small class="team-title">{member.title}</small>
                             )}
@@ -226,8 +235,6 @@ const teamMembers = [
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .team-section {
         padding: $rem-4 $rem-1;
         background-color: var(--ks-background-body);

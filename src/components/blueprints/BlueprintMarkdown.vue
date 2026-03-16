@@ -69,7 +69,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .markdown {
         padding: 0 $rem-1;

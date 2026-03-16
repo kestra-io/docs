@@ -184,7 +184,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     section.lists {
         padding: 1.875rem 0.75rem;

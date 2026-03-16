@@ -75,7 +75,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     section.guidelines {
         padding-top: 120px;

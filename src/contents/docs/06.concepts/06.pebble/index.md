@@ -110,7 +110,7 @@ Note how in this example, the `waitForCompletion` property is templated using Pe
 
 ## Date formatting
 
-Pebble can be very useful to make small transformation on the fly - without the need to use Python or some dedicated programming language.
+Pebble can be very useful for making small transformations on the fly without the need to use Python or another dedicated programming language.
 
 For instance, we can use the `date` filter to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 

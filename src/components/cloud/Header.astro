@@ -38,7 +38,9 @@ const FEATURES = [
             <div class="img-title" data-usal="fade-r">
                 <Image src={cloudVisual} alt="Cloud Visual" />
                 <h1>
-                    Kestra Cloud<br /><span class="highlight">Request Access</span>
+                    Kestra Cloud<br /><span class="highlight"
+                        >Request Access</span
+                    >
                 </h1>
             </div>
 
@@ -54,7 +56,10 @@ const FEATURES = [
             <div class="feature-grid">
                 {
                     FEATURES.map((f, index) => (
-                        <div class="feature-item" data-usal={`fade-u delay-${index * 50}`}>
+                        <div
+                            class="feature-item"
+                            data-usal={`fade-u delay-${index * 50}`}
+                        >
                             <div class="title-row">
                                 <Icon name={f.icon} class="icon" />
                                 <h5>{f.title}</h5>
@@ -96,13 +101,10 @@ const FEATURES = [
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .header {
         overflow: hidden;
 
         .row {
-
             .left-column {
                 background: url("~/components/cloud/assets/left-bg.png")
                     no-repeat center / cover;
@@ -238,7 +240,7 @@ const FEATURES = [
                     right: 0;
                     width: 100%;
                     height: 100%;
-                    
+
                     @include media-breakpoint-down(lg) {
                         object-fit: cover;
                         pointer-events: none;

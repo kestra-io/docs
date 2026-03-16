@@ -9,7 +9,7 @@ Manage all resources associated with a Namespace in one place.
 
 ## Manage Namespace resources from the UI
 
-Starting in **v0.18.0**, Kestra introduces the **Namespaces** tab in the UI for Open Source users. This view displays all Namespaces associated with different flows in your Kestra instance.
+The **Namespaces** tab in the UI for Open Source users displays all Namespaces associated with different flows in your Kestra instance.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=9gVEROGc5hXcIJR2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

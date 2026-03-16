@@ -1,0 +1,1471 @@
+<style>
+    .flow {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: matrix(0.978148, 0.207912, -0.669131, 0.743145, 0, 0);
+    }
+
+    .cluster {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 18px 14px 14px;
+        border-radius: 18px;
+        border: 1.5px solid #59bce6;
+        background: rgba(89, 188, 230, 0.08);
+        gap: 0;
+        opacity: 0;
+    }
+
+    .cluster-label {
+        position: absolute;
+        top: -10px;
+        left: 14px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: #59bce6;
+        background: #0a0a0c;
+        padding: 1px 9px;
+        border-radius: 6px;
+        border: 1px solid rgba(89, 188, 230, 0.28);
+        opacity: 0;
+    }
+
+    .anim-card {
+        width: 360px;
+        height: 58px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 12px;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.015);
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+
+    .icn {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .icn svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .lbl {
+        flex: 1;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.3);
+        letter-spacing: 0.01em;
+    }
+
+    .rt {
+        display: flex;
+        align-items: center;
+        min-width: 20px;
+    }
+
+    .chk {
+        opacity: 0;
+    }
+
+    .chk svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .chk .cp {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+    }
+
+    .cn {
+        height: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        opacity: 0;
+    }
+
+    .dt {
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        flex-shrink: 0;
+    }
+
+    .cn-in {
+        height: 20px;
+        gap: 4px;
+    }
+
+    /* CLUSTER */
+    .cluster {
+        animation: cla 19s ease infinite;
+    }
+
+    @keyframes cla {
+        0% {
+            opacity: 0;
+        }
+
+        4% {
+            opacity: 0.6;
+        }
+
+        7%,
+        88% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .cluster-label {
+        animation: cll 19s ease infinite;
+    }
+
+    @keyframes cll {
+        0%,
+        3% {
+            opacity: 0;
+        }
+
+        6%,
+        88% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    /* CARD 1 */
+    .c1 {
+        animation: c1a 19s ease infinite;
+    }
+
+    @keyframes c1a {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        4% {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+
+        12% {
+            opacity: 1;
+            border-color: rgba(89, 188, 230, 0.4);
+            box-shadow: 0 0 18px rgba(89, 188, 230, 0.15);
+        }
+
+        18%,
+        88% {
+            opacity: 0.9;
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: none;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c1 .lbl {
+        animation: l1a 19s ease infinite;
+    }
+
+    @keyframes l1a {
+        0% {
+            color: rgba(255, 255, 255, 0);
+        }
+
+        4% {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        12%,
+        88% {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        97%,
+        100% {
+            color: rgba(255, 255, 255, 0);
+        }
+    }
+
+    .c1 .chk {
+        animation: k1 19s ease infinite;
+    }
+
+    @keyframes k1 {
+        0%,
+        11% {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        14%,
+        88% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c1 .cp {
+        animation: cp1 19s linear infinite;
+    }
+
+    @keyframes cp1 {
+        0%,
+        11% {
+            stroke-dashoffset: 20;
+        }
+
+        15%,
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* CONNECTOR 1→2 */
+    .cni1 {
+        animation: cni1a 19s ease infinite;
+    }
+
+    @keyframes cni1a {
+        0%,
+        15% {
+            opacity: 0;
+        }
+
+        18%,
+        88% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .cni1 .dt {
+        animation: pulse_blue 1.2s ease-in-out infinite;
+    }
+
+    .cni1 .dt:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .cni1 .dt:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    /* CARD 2 */
+    .c2 {
+        animation: c2a 19s ease infinite;
+    }
+
+    @keyframes c2a {
+        0%,
+        16% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        19% {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+
+        27% {
+            opacity: 1;
+            border-color: rgba(89, 188, 230, 0.4);
+            box-shadow: 0 0 18px rgba(89, 188, 230, 0.15);
+        }
+
+        32%,
+        88% {
+            opacity: 0.9;
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: none;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c2 .lbl {
+        animation: l2a 19s ease infinite;
+    }
+
+    @keyframes l2a {
+        0%,
+        17% {
+            color: rgba(255, 255, 255, 0);
+        }
+
+        19% {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        27%,
+        88% {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        97%,
+        100% {
+            color: rgba(255, 255, 255, 0);
+        }
+    }
+
+    .c2 .chk {
+        animation: k2 19s ease infinite;
+    }
+
+    @keyframes k2 {
+        0%,
+        26% {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        29%,
+        88% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c2 .cp {
+        animation: cp2 19s linear infinite;
+    }
+
+    @keyframes cp2 {
+        0%,
+        26% {
+            stroke-dashoffset: 20;
+        }
+
+        30%,
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* CONNECTOR 2→3 */
+    .cni2 {
+        animation: cni2a 19s ease infinite;
+    }
+
+    @keyframes cni2a {
+        0%,
+        29% {
+            opacity: 0;
+        }
+
+        32%,
+        88% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .cni2 .dt {
+        animation: pulse_blue 1.2s ease-in-out infinite;
+    }
+
+    .cni2 .dt:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .cni2 .dt:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    /* CARD 3 */
+    .c3 {
+        animation: c3a 19s ease infinite;
+    }
+
+    @keyframes c3a {
+        0%,
+        30% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        33% {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+
+        41% {
+            opacity: 1;
+            border-color: rgba(89, 188, 230, 0.4);
+            box-shadow: 0 0 18px rgba(89, 188, 230, 0.15);
+        }
+
+        46%,
+        88% {
+            opacity: 0.9;
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: none;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c3 .lbl {
+        animation: l3a 19s ease infinite;
+    }
+
+    @keyframes l3a {
+        0%,
+        31% {
+            color: rgba(255, 255, 255, 0);
+        }
+
+        33% {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        41%,
+        88% {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        97%,
+        100% {
+            color: rgba(255, 255, 255, 0);
+        }
+    }
+
+    .c3 .chk {
+        animation: k3 19s ease infinite;
+    }
+
+    @keyframes k3 {
+        0%,
+        40% {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        43%,
+        88% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c3 .cp {
+        animation: cp3 19s linear infinite;
+    }
+
+    @keyframes cp3 {
+        0%,
+        40% {
+            stroke-dashoffset: 20;
+        }
+
+        44%,
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* CONNECTOR 3→4 */
+    .cni3 {
+        animation: cni3a 19s ease infinite;
+    }
+
+    @keyframes cni3a {
+        0%,
+        43% {
+            opacity: 0;
+        }
+
+        46%,
+        88% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .cni3 .dt {
+        animation: pulse_blue 1.2s ease-in-out infinite;
+    }
+
+    .cni3 .dt:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .cni3 .dt:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    /* CARD 4 */
+    .c4 {
+        animation: c4a 19s ease infinite;
+    }
+
+    @keyframes c4a {
+        0%,
+        44% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        47% {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+
+        55% {
+            opacity: 1;
+            border-color: rgba(89, 188, 230, 0.4);
+            box-shadow: 0 0 18px rgba(89, 188, 230, 0.15);
+        }
+
+        60%,
+        88% {
+            opacity: 0.9;
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: none;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c4 .lbl {
+        animation: l4a 19s ease infinite;
+    }
+
+    @keyframes l4a {
+        0%,
+        45% {
+            color: rgba(255, 255, 255, 0);
+        }
+
+        47% {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        55%,
+        88% {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        97%,
+        100% {
+            color: rgba(255, 255, 255, 0);
+        }
+    }
+
+    .c4 .chk {
+        animation: k4 19s ease infinite;
+    }
+
+    @keyframes k4 {
+        0%,
+        54% {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        57%,
+        88% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c4 .cp {
+        animation: cp4 19s linear infinite;
+    }
+
+    @keyframes cp4 {
+        0%,
+        54% {
+            stroke-dashoffset: 20;
+        }
+
+        58%,
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* CONNECTOR cluster→c5 */
+    .cn4 {
+        animation: cn4a 19s ease infinite;
+    }
+
+    @keyframes cn4a {
+        0%,
+        58% {
+            opacity: 0;
+        }
+
+        61%,
+        88% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .cn4 .dt {
+        animation: pulse_purple 1.2s ease-in-out infinite;
+    }
+
+    .cn4 .dt:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .cn4 .dt:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    /* CARD 5 */
+    .c5 {
+        animation: c5a 19s ease infinite;
+    }
+
+    @keyframes c5a {
+        0%,
+        60% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        63% {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+
+        71% {
+            opacity: 1;
+            border-color: rgba(144, 65, 255, 0.4);
+            box-shadow: 0 0 20px rgba(144, 65, 255, 0.15);
+        }
+
+        76%,
+        88% {
+            opacity: 0.9;
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: none;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c5 .lbl {
+        animation: l5a 19s ease infinite;
+    }
+
+    @keyframes l5a {
+        0%,
+        61% {
+            color: rgba(255, 255, 255, 0);
+        }
+
+        63% {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        71%,
+        88% {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        97%,
+        100% {
+            color: rgba(255, 255, 255, 0);
+        }
+    }
+
+    .c5 .chk {
+        animation: k5 19s ease infinite;
+    }
+
+    @keyframes k5 {
+        0%,
+        70% {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        73%,
+        88% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c5 .cp {
+        animation: cp5 19s linear infinite;
+    }
+
+    @keyframes cp5 {
+        0%,
+        70% {
+            stroke-dashoffset: 20;
+        }
+
+        74%,
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* CONNECTOR c5→c6 */
+    .cn5 {
+        animation: cn5a 19s ease infinite;
+    }
+
+    @keyframes cn5a {
+        0%,
+        73% {
+            opacity: 0;
+        }
+
+        76%,
+        88% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .cn5 .dt {
+        animation: pulse_purple 1.2s ease-in-out infinite;
+    }
+
+    .cn5 .dt:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .cn5 .dt:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    /* CARD 6 */
+    .c6 {
+        animation: c6a 19s ease infinite;
+    }
+
+    @keyframes c6a {
+        0%,
+        75% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        77% {
+            opacity: 0.4;
+            transform: translateY(0);
+        }
+
+        83% {
+            opacity: 1;
+            border-color: rgba(144, 65, 255, 0.4);
+            box-shadow: 0 0 20px rgba(144, 65, 255, 0.15);
+        }
+
+        85%,
+        88% {
+            opacity: 0.9;
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: none;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c6 .lbl {
+        animation: l6a 19s ease infinite;
+    }
+
+    @keyframes l6a {
+        0%,
+        76% {
+            color: rgba(255, 255, 255, 0);
+        }
+
+        77% {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        83%,
+        88% {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        97%,
+        100% {
+            color: rgba(255, 255, 255, 0);
+        }
+    }
+
+    .c6 .chk {
+        animation: k6 19s ease infinite;
+    }
+
+    @keyframes k6 {
+        0%,
+        82% {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+
+        84%,
+        88% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .c6 .cp {
+        animation: cp6 19s linear infinite;
+    }
+
+    @keyframes cp6 {
+        0%,
+        82% {
+            stroke-dashoffset: 20;
+        }
+
+        85%,
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* DOT PULSES */
+    @keyframes pulse_blue {
+        0%,
+        100% {
+            background: rgba(89, 188, 230, 0.2);
+        }
+
+        50% {
+            background: #59bce6;
+            box-shadow: 0 0 5px rgba(89, 188, 230, 0.6);
+        }
+    }
+
+    @keyframes pulse_purple {
+        0%,
+        100% {
+            background: rgba(144, 65, 255, 0.2);
+        }
+
+        50% {
+            background: #9041ff;
+            box-shadow: 0 0 5px rgba(144, 65, 255, 0.6);
+        }
+    }
+</style>
+
+<div class="flow">
+    <!-- ── DBT CLUSTER ── -->
+    <div class="cluster">
+        <div class="cluster-label" style="text-transform:none">dbt</div>
+
+        <!-- TASK 1: Working Directory -->
+        <div class="anim-card c1">
+            <div class="icn" style="background:transparent">
+                <svg
+                    width="80"
+                    height="80"
+                    viewBox="0 0 80 80"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <g filter="url(#filter0_i_wd)">
+                        <path
+                            d="M1.01881e-07 20C4.56138e-08 8.95431 8.95431 1.79089e-07 20 1.51245e-07L60 5.04155e-08C71.0457 2.2572e-08 80 8.95431 80 20L80 60C80 71.0457 71.0457 80 60 80L20 80C8.95431 80 3.61911e-07 71.0457 3.05644e-07 60L1.01881e-07 20Z"
+                            fill="url(#paint0_linear_wd)"></path>
+                    </g>
+                    <g clip-path="url(#clip1_wd)" data-figma-skip-parse="true">
+                        <g
+                            transform="matrix(2.03763e-10 0.04 -0.04 1.0083e-10 40 40)"
+                        >
+                            <foreignObject
+                                x="-1025"
+                                y="-1025"
+                                width="2050"
+                                height="2050"
+                            >
+                                <div
+                                    style="background:conic-gradient(from 90deg,rgba(181,231,255,1) 0deg,rgba(241,117,255,1) 72.6923deg,rgba(241,117,255,0.1) 360deg);height:100%;width:100%;opacity:1"
+                                >
+                                </div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                    <path
+                        d="M60 76.6667L60 80L20 80L20 76.6667L60 76.6667ZM76.6667 60L76.6667 20C76.6667 10.7953 69.2047 3.33333 60 3.33333L20 3.33333C10.7953 3.33333 3.33333 10.7953 3.33333 20L3.33333 60C3.33333 69.2047 10.7953 76.6667 20 76.6667L20 80C8.95431 80 3.61911e-07 71.0457 3.05644e-07 60L1.01881e-07 20C4.56138e-08 8.95431 8.9543 1.79089e-07 20 1.51245e-07L60 5.04155e-08C71.0457 2.2572e-08 80 8.9543 80 20L80 60C80 71.0457 71.0457 80 60 80L60 76.6667C69.2047 76.6667 76.6667 69.2047 76.6667 60Z"
+                        fill="url(#border_wd)"></path>
+                    <path
+                        d="M40.7021 25.3369L57.9453 25.3369C59.1149 25.337 60.2364 25.7886 61.0635 26.5918C61.8906 27.3952 62.3554 28.4849 62.3555 29.6211L62.3555 37.1191C60.9883 36.5623 59.4889 36.1978 57.9453 36.0479L57.9453 29.6211L22.6562 29.6211L22.6562 51.043L42.5059 51.043C42.6602 52.5425 43.0359 54 43.6094 55.3281L40.7021 55.3281L40.7021 70.1758L37.8945 70.1758L37.8945 55.3281L22.6562 55.3281C20.2083 55.3279 18.2461 53.3993 18.2461 51.043L18.2461 25.3369C18.2462 22.9593 20.2084 21.0529 22.6562 21.0527L35.8896 21.0527L37.8945 22.999L37.8945 9.82422L40.7021 9.82422L40.7021 25.3369ZM50.7988 47.5732C50.424 48.3015 50.2256 49.1159 50.2256 49.9727C50.2257 51.3929 50.8069 52.7545 51.8408 53.7588C52.8748 54.7631 54.2769 55.3281 55.7393 55.3281L55.7393 52.1143L60.7021 56.9346L60.7676 56.999C60.6353 57.106 60.4766 57.1953 55.7393 61.7539L55.7393 58.541C53.3995 58.541 51.1554 57.6382 49.501 56.0312C47.8467 54.4244 46.9171 52.245 46.917 49.9727C46.917 48.2162 47.4684 46.5878 48.3945 45.2383L50.7988 47.5732ZM55.7393 41.4033C58.079 41.4033 60.3231 42.3062 61.9775 43.9131C63.632 45.52 64.5615 47.7001 64.5615 49.9727C64.5614 51.7291 64.0102 53.3575 63.084 54.707L60.6797 52.3711C61.0544 51.6429 61.2529 50.8293 61.2529 49.9727C61.2529 48.5523 60.6717 47.1899 59.6377 46.1855C58.6037 45.1813 57.2015 44.6172 55.7393 44.6172L55.7393 47.8301L50.7773 43.0098L50.7109 42.9463C50.8433 42.8392 50.9976 42.7532 55.7393 38.1904L55.7393 41.4033Z"
+                        fill="url(#icon_wd)"></path>
+                    <defs>
+                        <filter
+                            id="filter0_i_wd"
+                            x="0"
+                            y="0"
+                            width="80"
+                            height="82"
+                            filterUnits="userSpaceOnUse"
+                            color-interpolation-filters="sRGB"
+                        >
+                            <feFlood
+                                flood-opacity="0"
+                                result="BackgroundImageFix"></feFlood>
+                            <feBlend
+                                mode="normal"
+                                in="SourceGraphic"
+                                in2="BackgroundImageFix"
+                                result="shape"></feBlend>
+                            <feColorMatrix
+                                in="SourceAlpha"
+                                type="matrix"
+                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                result="hardAlpha"></feColorMatrix>
+                            <feOffset dy="2"></feOffset>
+                            <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                            <feComposite
+                                in2="hardAlpha"
+                                operator="arithmetic"
+                                k2="-1"
+                                k3="1"></feComposite>
+                            <feColorMatrix
+                                type="matrix"
+                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.75 0"
+                            ></feColorMatrix>
+                            <feBlend
+                                mode="normal"
+                                in2="shape"
+                                result="effect1_innerShadow"></feBlend>
+                        </filter>
+                        <clipPath id="clip1_wd">
+                            <path
+                                d="M60 76.6667L60 80L20 80L20 76.6667L60 76.6667ZM76.6667 60L76.6667 20C76.6667 10.7953 69.2047 3.33333 60 3.33333L20 3.33333C10.7953 3.33333 3.33333 10.7953 3.33333 20L3.33333 60C3.33333 69.2047 10.7953 76.6667 20 76.6667L20 80C8.95431 80 0 71.0457 0 60L0 20C0 8.95431 8.9543 0 20 0L60 0C71.0457 0 80 8.9543 80 20L80 60C80 71.0457 71.0457 80 60 80L60 76.6667C69.2047 76.6667 76.6667 69.2047 76.6667 60Z"
+                            ></path>
+                        </clipPath>
+                        <linearGradient
+                            id="paint0_linear_wd"
+                            x1="73.3333"
+                            y1="68.3333"
+                            x2="11.6667"
+                            y2="10"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop stop-color="#01000B"></stop>
+                            <stop offset="1" stop-color="#520188"></stop>
+                        </linearGradient>
+                        <linearGradient
+                            id="border_wd"
+                            x1="0"
+                            y1="0"
+                            x2="80"
+                            y2="80"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop stop-color="#B5E7FF"></stop>
+                            <stop offset="0.2" stop-color="#F175FF"></stop>
+                            <stop
+                                offset="1"
+                                stop-color="#F175FF"
+                                stop-opacity="0.1"></stop>
+                        </linearGradient>
+                        <linearGradient
+                            id="icon_wd"
+                            x1="18"
+                            y1="10"
+                            x2="65"
+                            y2="62"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop stop-color="#9041FF"></stop>
+                            <stop offset="0.62" stop-color="#EFCEFF"></stop>
+                            <stop offset="0.83" stop-color="#F1D3FF"></stop>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <span class="lbl">dbt</span>
+            <div class="rt">
+                <div class="chk">
+                    <svg viewBox="0 0 18 18" fill="none">
+                        <circle
+                            cx="9"
+                            cy="9"
+                            r="7.5"
+                            fill="rgba(8,233,149,0.08)"
+                            stroke="#08E995"
+                            stroke-width="1"></circle>
+                        <path
+                            class="cp"
+                            d="M5.5 9.2L7.8 11.5L12.5 6.5"
+                            stroke="#08E995"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            fill="none"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="cn cn-in cni1">
+            <div class="dt"></div>
+            <div class="dt"></div>
+            <div class="dt"></div>
+        </div>
+
+        <!-- TASK 2: Clone Repository -->
+        <div class="anim-card c2">
+            <div class="icn" style="background:rgba(240,80,50,0.1)">
+                <svg
+                    width="80"
+                    height="80"
+                    viewBox="0 0 80 80"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M67.4251 37.461L42.538 12.5752C41.1051 11.1416 38.7807 11.1416 37.3465 12.5752L32.1791 17.7438L38.7342 24.2988C40.2577 23.7839 42.0046 24.1295 43.2185 25.3441C44.44 26.5661 44.7824 28.3279 44.2545 29.857L50.5732 36.175C52.1023 35.6478 53.8653 35.9889 55.0861 37.2116C56.792 38.9175 56.792 41.6817 55.0861 43.3889C53.3789 45.0954 50.6147 45.0954 48.907 43.3889C47.6241 42.1048 47.3065 40.219 47.9572 38.6384L42.0641 32.7459L42.0641 48.2523C42.4797 48.4582 42.8724 48.7324 43.2185 49.0785C44.9244 50.7844 44.9244 53.5486 43.2185 55.2564C41.5126 56.9617 38.7466 56.9617 37.0419 55.2564C35.336 53.548 35.336 50.7838 37.0419 49.0785C37.4637 48.6573 37.9519 48.3385 38.473 48.1251L38.473 32.4741C37.9519 32.2608 37.465 31.945 37.0419 31.5207C35.7498 30.2292 35.439 28.3322 36.1015 26.7454L29.6395 20.2822L12.5742 37.3456C11.1406 38.7804 11.1406 41.1048 12.5742 42.5384L37.4625 67.4248C38.8955 68.8584 41.2192 68.8584 42.654 67.4248L67.4251 42.6538C68.8587 41.2202 68.8587 38.8946 67.4251 37.461Z"
+                        fill="#F05133"></path>
+                </svg>
+            </div>
+            <span class="lbl">Clone Repository</span>
+            <div class="rt">
+                <div class="chk">
+                    <svg viewBox="0 0 18 18" fill="none">
+                        <circle
+                            cx="9"
+                            cy="9"
+                            r="7.5"
+                            fill="rgba(8,233,149,0.08)"
+                            stroke="#08E995"
+                            stroke-width="1"></circle>
+                        <path
+                            class="cp"
+                            d="M5.5 9.2L7.8 11.5L12.5 6.5"
+                            stroke="#08E995"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            fill="none"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="cn cn-in cni2">
+            <div class="dt"></div>
+            <div class="dt"></div>
+            <div class="dt"></div>
+        </div>
+
+        <!-- TASK 3: dbt Build -->
+        <div class="anim-card c3">
+            <div class="icn" style="background:transparent">
+                <svg
+                    width="80"
+                    height="80"
+                    viewBox="0 0 80 80"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M65.4638 12.5043C64.8199 12.0638 64.0964 11.7519 63.3341 11.5859C62.5522 11.4138 61.7457 11.3828 60.9529 11.494C60.1219 11.6101 59.3166 11.8665 58.5716 12.2525L55.0957 14.1712L51.6128 16.086L48.1263 18.0012L44.6434 19.9333C43.8887 20.3748 43.0796 20.7177 42.2376 20.9537C41.4227 21.19 40.5798 21.3138 39.7313 21.3212C38.8844 21.3316 38.0393 21.2274 37.2202 21.0116C36.3752 20.7878 35.5631 20.4539 34.8051 20.0184L31.4274 18.1816L28.0498 16.3448L24.6721 14.5147L21.2909 12.6779C20.0384 11.8784 18.5405 11.5558 17.07 11.7695C15.7129 11.9805 14.4544 12.6068 13.4677 13.5621C12.473 14.5051 11.7963 15.7343 11.5321 17.0793C11.2606 18.5375 11.528 20.0451 12.2841 21.3212L13.4677 23.4914L16.077 28.2535L18.6863 33.0156L19.8734 35.1857C20.3145 35.9323 20.6569 36.7327 20.8932 37.567C21.1173 38.3827 21.2319 39.2245 21.2336 40.0704C21.232 40.9186 21.1175 41.7629 20.8932 42.5808C20.6831 43.4419 20.3595 44.2711 19.9307 45.0468L18.077 48.5061L16.2197 51.9554L14.3624 55.4012L12.5052 58.8502C12.1932 59.4156 11.9529 60.0179 11.7906 60.6429C11.6375 61.2334 11.5694 61.8427 11.5871 62.4525C11.6099 63.0515 11.7248 63.6435 11.9274 64.2077C12.1319 64.7991 12.4276 65.3547 12.8046 65.8541C13.2638 66.4852 13.8348 67.027 14.4888 67.4529C15.1387 67.8847 15.8587 68.1991 16.6173 68.3815C17.3958 68.5724 18.202 68.6241 18.9986 68.5345C19.8295 68.4389 20.6364 68.1934 21.3798 67.8099L24.996 65.8269L28.6076 63.8472L32.2204 61.8642L35.8331 59.8809C34.7467 59.1006 33.7417 58.2117 32.8356 57.2278C31.9273 56.2389 31.0949 55.1838 30.3433 54.0711C29.5847 52.9554 28.8903 51.7921 28.2474 50.6084C27.6725 49.5539 27.1389 48.4858 26.6252 47.4246C27.5334 49.1253 29.4888 50.9316 32.0298 52.7446C35.1205 54.8714 38.342 56.8026 41.6739 58.5272C45.1775 60.3912 48.7727 62.1533 51.8783 63.7112C54.9839 65.2691 57.6162 66.6193 59.1775 67.65C60.438 68.396 61.9356 68.6321 63.3645 68.3099C64.6895 67.9804 65.8794 67.2456 66.7667 66.2079C67.6958 65.1551 68.2994 63.8553 68.5047 62.4662C68.7187 60.9979 68.4155 59.5008 67.6474 58.2313L65.5118 54.367L60.8347 45.8632L56.1565 37.3594L54.0443 33.5393C53.5918 32.7774 53.1005 32.0397 52.5718 31.3285C52.0466 30.6307 51.4788 29.966 50.8713 29.3385C50.2676 28.7137 49.622 28.1307 48.9392 27.5936C48.2449 27.0469 47.5101 26.5534 46.7416 26.1173C47.9355 26.6615 49.1498 27.2262 50.3403 27.8351C51.5398 28.4394 52.7072 29.1059 53.8373 29.8318C54.966 30.555 56.0353 31.3671 57.0349 32.2604C58.0433 33.1685 58.9498 34.1836 59.7389 35.2878L61.6604 31.7706L63.5832 28.2535L65.5118 24.7293L67.4334 21.2122C67.7538 20.6834 67.9947 20.1103 68.148 19.5114C68.3008 18.9173 68.3689 18.3047 68.3515 17.6915C68.3284 17.0726 68.2136 16.4606 68.0111 15.8752C67.8055 15.2761 67.5059 14.7136 67.1234 14.2086C66.6878 13.5367 66.124 12.9574 65.4638 12.5043ZM20.8897 61.7721C20.9394 62.4911 20.6782 63.1971 20.1728 63.7109C19.6674 64.2247 18.9662 64.4972 18.2465 64.4594C16.7756 64.4716 15.5734 63.2889 15.5612 61.818C15.549 60.347 16.7323 59.1449 18.2033 59.1327C18.9219 59.082 19.6273 59.3419 20.1412 59.8467C20.6552 60.3516 20.9276 61.0526 20.8897 61.7721ZM15.6209 18.338C15.5712 17.619 15.8325 16.9133 16.3378 16.3995C16.8432 15.8856 17.5444 15.6129 18.2641 15.6507C18.9831 15.601 19.6882 15.8619 20.202 16.3673C20.7159 16.8727 20.9895 17.5741 20.9517 18.2938C21.0014 19.0128 20.7401 19.7186 20.2348 20.2324C19.7294 20.7462 19.0282 21.0187 18.3085 20.9809C17.5895 21.0306 16.8832 20.7696 16.3694 20.2643C15.8556 19.7589 15.5831 19.0577 15.6209 18.338ZM64.3586 61.6905C64.3696 62.7697 63.7283 63.7492 62.7353 64.1717C61.7422 64.5942 60.593 64.3765 59.8231 63.6203C59.0532 62.864 58.8149 61.7182 59.2196 60.7177C59.6243 59.7173 60.5918 59.0594 61.671 59.0511C62.3896 59.0004 63.095 59.2603 63.6089 59.7651C64.1229 60.27 64.3965 60.9711 64.3586 61.6905ZM46.3299 39.0464C45.5442 37.7607 44.2483 37.2573 42.6938 37.2743C40.5705 37.3453 38.6924 38.672 37.9161 40.6496C37.1399 42.6272 37.6139 44.877 39.1219 46.3734C37.4369 46.1589 35.9086 45.2781 34.8776 43.9282C33.8466 42.5782 33.399 40.8715 33.6356 39.1894C34.1356 35.8185 37.4865 33.1992 40.8541 33.672C43.7045 34.1551 46.0476 36.1994 46.3299 39.0464ZM64.5492 18.1134C64.5124 19.5499 63.3429 20.6991 61.9061 20.7119C60.4692 20.7247 59.2809 19.5967 59.2184 18.1611C59.2553 16.7246 60.4235 15.5755 61.8604 15.5626C63.2973 15.5498 64.4867 16.6779 64.5492 18.1134Z"
+                        fill="#FF694B"></path>
+                </svg>
+            </div>
+            <span class="lbl">dbt Build</span>
+            <div class="rt">
+                <div class="chk">
+                    <svg viewBox="0 0 18 18" fill="none">
+                        <circle
+                            cx="9"
+                            cy="9"
+                            r="7.5"
+                            fill="rgba(8,233,149,0.08)"
+                            stroke="#08E995"
+                            stroke-width="1"></circle>
+                        <path
+                            class="cp"
+                            d="M5.5 9.2L7.8 11.5L12.5 6.5"
+                            stroke="#08E995"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            fill="none"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="cn cn-in cni3">
+            <div class="dt"></div>
+            <div class="dt"></div>
+            <div class="dt"></div>
+        </div>
+
+        <!-- TASK 4: Python -->
+        <div class="anim-card c4">
+            <div class="icn" style="background:transparent">
+                <svg
+                    width="80"
+                    height="80"
+                    viewBox="0 0 80 80"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M39.4985 11.1426C37.1738 11.1534 34.9538 11.3516 33.0004 11.6973C27.246 12.7139 26.2012 14.8418 26.2012 18.7659L26.2012 23.9485L39.7996 23.9485L39.7996 25.6761L21.0978 25.6761C17.1458 25.6761 13.6852 28.0515 12.6028 32.5704C11.3542 37.75 11.2989 40.9822 12.6028 46.3906C13.5694 50.4165 15.8779 53.2849 19.8299 53.2849L24.5054 53.2849L24.5054 47.0722C24.5054 42.5838 28.3888 38.6247 33.0004 38.6247L46.583 38.6247C50.3639 38.6247 53.3822 35.5116 53.3822 31.7145L53.3822 18.7659C53.3822 15.0807 50.2733 12.3123 46.583 11.6973C44.247 11.3084 41.8232 11.1318 39.4985 11.1426ZM32.1446 15.3108C33.5492 15.3108 34.6963 16.4766 34.6963 17.9101C34.6963 19.3384 33.5492 20.4934 32.1446 20.4934C30.7349 20.4934 29.5929 19.3384 29.5929 17.9101C29.5929 16.4766 30.7349 15.3108 32.1446 15.3108Z"
+                        fill="url(#py_grad0)"></path>
+                    <path
+                        d="M55.078 25.6761L55.078 31.7145C55.078 36.3961 51.1089 40.3364 46.5829 40.3364L33.0004 40.3364C29.2799 40.3364 26.2012 43.5206 26.2012 47.2465L26.2012 60.1951C26.2012 63.8804 29.4057 66.048 33.0004 67.1053C37.3049 68.371 41.4326 68.5997 46.5829 67.1053C50.0064 66.1141 53.3821 64.1193 53.3821 60.1951L53.3821 55.0125L39.7996 55.0125L39.7996 53.285L60.1813 53.285C64.1334 53.285 65.6061 50.5283 66.9805 46.3907C68.4003 42.131 68.3399 38.0347 66.9805 32.5704C66.0039 28.6361 64.1385 25.6761 60.1813 25.6761L55.078 25.6761ZM47.4388 58.4676C48.8484 58.4676 49.9905 59.6226 49.9905 61.051C49.9905 62.4844 48.8484 63.6502 47.4388 63.6502C46.0342 63.6502 44.8871 62.4844 44.8871 61.051C44.8871 59.6226 46.0342 58.4676 47.4388 58.4676Z"
+                        fill="url(#py_grad1)"></path>
+                    <defs>
+                        <linearGradient
+                            id="py_grad0"
+                            x1="11.6455"
+                            y1="11.1421"
+                            x2="54.0476"
+                            y2="47.2277"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop stop-color="#5A9FD4"></stop>
+                            <stop offset="1" stop-color="#306998"></stop>
+                        </linearGradient>
+                        <linearGradient
+                            id="py_grad1"
+                            x1="47.112"
+                            y1="60.6152"
+                            x2="35.8625"
+                            y2="44.8513"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop stop-color="#FFD43B"></stop>
+                            <stop offset="1" stop-color="#FFE873"></stop>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <span class="lbl">Python</span>
+            <div class="rt">
+                <div class="chk">
+                    <svg viewBox="0 0 18 18" fill="none">
+                        <circle
+                            cx="9"
+                            cy="9"
+                            r="7.5"
+                            fill="rgba(8,233,149,0.08)"
+                            stroke="#08E995"
+                            stroke-width="1"></circle>
+                        <path
+                            class="cp"
+                            d="M5.5 9.2L7.8 11.5L12.5 6.5"
+                            stroke="#08E995"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            fill="none"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div><!-- /cluster -->
+
+    <div class="cn cn4">
+        <div class="dt"></div>
+        <div class="dt"></div>
+        <div class="dt"></div>
+    </div>
+
+    <!-- TASK 5: Slack Notification -->
+    <div class="anim-card c5">
+        <div class="icn" style="background:rgba(224,30,90,0.08)">
+            <svg viewBox="0 0 80 80" fill="none">
+                <path
+                    d="M23.52 47.38c0 3.24-2.68 5.87-5.99 5.87s-5.99-2.63-5.99-5.87c0-3.24 2.68-5.87 5.99-5.87h5.99v5.87zm3-0c0-3.24 2.67-5.87 5.98-5.87s5.99 2.63 5.99 5.87v14.66c0 3.24-2.68 5.87-5.99 5.87s-5.98-2.63-5.98-5.87V47.38z"
+                    fill="#E01E5A"></path>
+                <path
+                    d="M32.5 23.82c-3.31 0-5.99-2.62-5.99-5.87s2.68-5.87 5.99-5.87 5.99 2.63 5.99 5.87v5.87H32.5zm0 2.98c3.31 0 5.99 2.62 5.99 5.87s-2.68 5.87-5.99 5.87H17.49c-3.31 0-5.99-2.63-5.99-5.87s2.68-5.87 5.99-5.87H32.5z"
+                    fill="#36C5F0"></path>
+                <path
+                    d="M56.48 32.67c0-3.24 2.68-5.87 5.99-5.87s5.99 2.63 5.99 5.87-2.68 5.87-5.99 5.87h-5.99v-5.87zm-2.99 0c0 3.24-2.68 5.87-5.99 5.87s-5.99-2.63-5.99-5.87V17.96c0-3.24 2.68-5.87 5.99-5.87s5.99 2.63 5.99 5.87v14.71z"
+                    fill="#2EB67D"></path>
+                <path
+                    d="M47.5 56.18c3.31 0 5.99 2.62 5.99 5.87s-2.68 5.87-5.99 5.87-5.98-2.63-5.98-5.87v-5.87h5.98zm0-2.93c-3.31 0-5.98-2.63-5.98-5.87s2.67-5.87 5.98-5.87h15.01c3.31 0 5.99 2.63 5.99 5.87s-2.68 5.87-5.99 5.87H47.5z"
+                    fill="#ECB22E"></path>
+            </svg>
+        </div>
+        <span class="lbl">Send Slack Notification</span>
+        <div class="rt">
+            <div class="chk">
+                <svg viewBox="0 0 18 18" fill="none">
+                    <circle
+                        cx="9"
+                        cy="9"
+                        r="7.5"
+                        fill="rgba(8,233,149,0.08)"
+                        stroke="#08E995"
+                        stroke-width="1"></circle>
+                    <path
+                        class="cp"
+                        d="M5.5 9.2L7.8 11.5L12.5 6.5"
+                        stroke="#08E995"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="none"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="cn cn5">
+        <div class="dt"></div>
+        <div class="dt"></div>
+        <div class="dt"></div>
+    </div>
+
+    <!-- TASK 6: Email Notification -->
+    <div class="anim-card c6">
+        <div class="icn" style="background:transparent">
+            <svg
+                width="80"
+                height="80"
+                viewBox="0 0 80 80"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <g filter="url(#filter0_i_em)">
+                    <path
+                        d="M1.01881e-07 20C4.56138e-08 8.95431 8.95431 1.79089e-07 20 1.51245e-07L60 5.04155e-08C71.0457 2.2572e-08 80 8.95431 80 20L80 60C80 71.0457 71.0457 80 60 80L20 80C8.95431 80 3.61911e-07 71.0457 3.05644e-07 60L1.01881e-07 20Z"
+                        fill="url(#paint0_linear_em)"></path>
+                </g>
+                <g clip-path="url(#clip1_em)">
+                    <g
+                        transform="matrix(2.03763e-10 0.04 -0.04 1.0083e-10 40 40)"
+                    >
+                        <foreignObject
+                            x="-1025"
+                            y="-1025"
+                            width="2050"
+                            height="2050"
+                        >
+                            <div
+                                style="background:conic-gradient(from 90deg,rgba(181,231,255,1) 0deg,rgba(241,117,255,1) 72.6923deg,rgba(241,117,255,0.1) 360deg);height:100%;width:100%;opacity:1"
+                            >
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <path
+                    d="M60 76.6667L60 80L20 80L20 76.6667L60 76.6667ZM76.6667 60L76.6667 20C76.6667 10.7953 69.2047 3.33333 60 3.33333L20 3.33333C10.7953 3.33333 3.33333 10.7953 3.33333 20L3.33333 60C3.33333 69.2047 10.7953 76.6667 20 76.6667L20 80C8.95431 80 3.61911e-07 71.0457 3.05644e-07 60L1.01881e-07 20C4.56138e-08 8.95431 8.9543 1.79089e-07 20 1.51245e-07L60 5.04155e-08C71.0457 2.2572e-08 80 8.9543 80 20L80 60C80 71.0457 71.0457 80 60 80L60 76.6667C69.2047 76.6667 76.6667 69.2047 76.6667 60Z"
+                    fill="url(#border_em)"></path>
+                <path
+                    d="M64.381 26.4675L40 11L15.619 26.4675C14.053 27.4256 13 29.1503 13 31.1488L13 58.5248C13 61.5362 15.43 64 18.4 64L61.6 64C64.57 64 67 61.5362 67 58.5248L67 31.1488C67 29.1503 65.947 27.4256 64.381 26.4675ZM61.6 58.5248L18.4 58.5248L18.4 36.624L40 50.312L61.6 36.624L61.6 58.5248ZM40 44.8368L18.4 31.1488L40 17.4607L61.6 31.1488L40 44.8368Z"
+                    fill="url(#icon_em)"></path>
+                <defs>
+                    <filter
+                        id="filter0_i_em"
+                        x="0"
+                        y="0"
+                        width="80"
+                        height="82"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB"
+                    >
+                        <feFlood flood-opacity="0" result="BackgroundImageFix"
+                        ></feFlood>
+                        <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            result="shape"></feBlend>
+                        <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"></feColorMatrix>
+                        <feOffset dy="2"></feOffset>
+                        <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                        <feComposite
+                            in2="hardAlpha"
+                            operator="arithmetic"
+                            k2="-1"
+                            k3="1"></feComposite>
+                        <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.75 0"
+                        ></feColorMatrix>
+                        <feBlend
+                            mode="normal"
+                            in2="shape"
+                            result="effect1_innerShadow"></feBlend>
+                    </filter>
+                    <clipPath id="clip1_em">
+                        <path
+                            d="M60 76.6667L60 80L20 80L20 76.6667L60 76.6667ZM76.6667 60L76.6667 20C76.6667 10.7953 69.2047 3.33333 60 3.33333L20 3.33333C10.7953 3.33333 3.33333 10.7953 3.33333 20L3.33333 60C3.33333 69.2047 10.7953 76.6667 20 76.6667L20 80C8.95431 80 0 71.0457 0 60L0 20C0 8.95431 8.9543 0 20 0L60 0C71.0457 0 80 8.9543 80 20L80 60C80 71.0457 71.0457 80 60 80L60 76.6667C69.2047 76.6667 76.6667 69.2047 76.6667 60Z"
+                        ></path>
+                    </clipPath>
+                    <linearGradient
+                        id="paint0_linear_em"
+                        x1="73.3333"
+                        y1="68.3333"
+                        x2="11.6667"
+                        y2="10"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop stop-color="#01000B"></stop>
+                        <stop offset="1" stop-color="#520188"></stop>
+                    </linearGradient>
+                    <linearGradient
+                        id="border_em"
+                        x1="0"
+                        y1="0"
+                        x2="80"
+                        y2="80"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop stop-color="#B5E7FF"></stop>
+                        <stop offset="0.2" stop-color="#F175FF"></stop>
+                        <stop offset="1" stop-color="#F175FF" stop-opacity="0.1"
+                        ></stop>
+                    </linearGradient>
+                    <linearGradient
+                        id="icon_em"
+                        x1="40"
+                        y1="33.9474"
+                        x2="43.0393"
+                        y2="63.6894"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop stop-color="#EEDBFF"></stop>
+                        <stop offset="0.485577" stop-color="#A950FF"></stop>
+                        <stop offset="1" stop-color="#F7E7FF"></stop>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <span class="lbl">Send Email Notification</span>
+        <div class="rt">
+            <div class="chk">
+                <svg viewBox="0 0 18 18" fill="none">
+                    <circle
+                        cx="9"
+                        cy="9"
+                        r="7.5"
+                        fill="rgba(8,233,149,0.08)"
+                        stroke="#08E995"
+                        stroke-width="1"></circle>
+                    <path
+                        class="cp"
+                        d="M5.5 9.2L7.8 11.5L12.5 6.5"
+                        stroke="#08E995"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="none"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>

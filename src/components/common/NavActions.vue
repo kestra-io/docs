@@ -64,7 +64,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .nav-actions {
         display: flex;

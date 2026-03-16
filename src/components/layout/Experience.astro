@@ -6,55 +6,69 @@ const { data } = Astro.props
 
 <section class="experience">
     <div class="container">
-        {data.sections.map((section: any, sectionIndex: number) => (
-            <div
-                class="section"
-                data-section-index={sectionIndex}
-            >
-                {section.title && (
-                    <div class="section-title" data-usal="fade-up">
-                        <h2 set:html={section.title.replace(/\*\*([^*]+)\*\*/g, '<span class="highlight">$1</span>')} />
-                    </div>
-                )}
-
-                {section.subsections.map((subsection: any, subsectionIndex: number) => (
-                    <div
-                        data-subsection-index={subsectionIndex}
-                    >
-                        {subsection.title && (
-                            <div class="section-subtitle" data-usal="fade-up">
-                                <h3>{subsection.title}</h3>
-                            </div>
-                        )}
-
-                        <div class="features-grid">
-                            {subsection.cards.map((card: any, cardIndex: number) => (
-                                <div
-                                    class="card"
-                                    data-usal="fade-up"
-                                >
-                                    <h5>
-                                        {card.icon && <Icon name={card.icon} class="icon" />}
-                                        <span class="text-truncate">{card.title}</span>
-                                    </h5>
-                                    <p>{card.description}</p>
-                                    <a href={card.link} class="cta">
-                                        <span>{card.cta}</span>
-                                        <Icon name="mdi:arrow-right" />
-                                    </a>
-                                </div>
-                            ))}
+        {
+            data.sections.map((section: any, sectionIndex: number) => (
+                <div class="section" data-section-index={sectionIndex}>
+                    {section.title && (
+                        <div class="section-title" data-usal="fade-up">
+                            <h2
+                                set:html={section.title.replace(
+                                    /\*\*([^*]+)\*\*/g,
+                                    '<span class="highlight">$1</span>',
+                                )}
+                            />
                         </div>
-                    </div>
-                ))}
-            </div>
-        ))}
+                    )}
+
+                    {section.subsections.map(
+                        (subsection: any, subsectionIndex: number) => (
+                            <div data-subsection-index={subsectionIndex}>
+                                {subsection.title && (
+                                    <div
+                                        class="section-subtitle"
+                                        data-usal="fade-up"
+                                    >
+                                        <h3>{subsection.title}</h3>
+                                    </div>
+                                )}
+
+                                <div class="features-grid">
+                                    {subsection.cards.map(
+                                        (card: any, cardIndex: number) => (
+                                            <div
+                                                class="card"
+                                                data-usal="fade-up"
+                                            >
+                                                <h5>
+                                                    {card.icon && (
+                                                        <Icon
+                                                            name={card.icon}
+                                                            class="icon"
+                                                        />
+                                                    )}
+                                                    <span class="text-truncate">
+                                                        {card.title}
+                                                    </span>
+                                                </h5>
+                                                <p>{card.description}</p>
+                                                <a href={card.link} class="cta">
+                                                    <span>{card.cta}</span>
+                                                    <Icon name="mdi:arrow-right" />
+                                                </a>
+                                            </div>
+                                        ),
+                                    )}
+                                </div>
+                            </div>
+                        ),
+                    )}
+                </div>
+            ))
+        }
     </div>
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .experience {
         padding: 4rem 0 6rem;
         background: var(--ks-background-body);
@@ -65,7 +79,11 @@ const { data } = Astro.props
             position: absolute;
             inset: 0;
             height: 2582px;
-            background-image: radial-gradient(circle, var(--ks-border-primary) 1px, transparent 1px);
+            background-image: radial-gradient(
+                circle,
+                var(--ks-border-primary) 1px,
+                transparent 1px
+            );
             background-size: 20px 20px;
             opacity: 0.4;
             z-index: 1;
@@ -125,17 +143,27 @@ const { data } = Astro.props
         border-radius: 0;
 
         @include media-breakpoint-up(xl) {
-            &:not(:nth-child(3n + 1)) { border-left: none; }
-            &:nth-child(n + 4) { border-top: none; }
+            &:not(:nth-child(3n + 1)) {
+                border-left: none;
+            }
+            &:nth-child(n + 4) {
+                border-top: none;
+            }
         }
 
         @include media-breakpoint-between(md, xl) {
-            &:nth-child(even) { border-left: none; }
-            &:nth-child(n + 3) { border-top: none; }
+            &:nth-child(even) {
+                border-left: none;
+            }
+            &:nth-child(n + 3) {
+                border-top: none;
+            }
         }
 
         @include media-breakpoint-down(md) {
-            &:not(:first-child) { border-top: none; }
+            &:not(:first-child) {
+                border-top: none;
+            }
         }
 
         h5 {
@@ -144,7 +172,6 @@ const { data } = Astro.props
             align-items: center;
             gap: 16px;
             color: var(--ks-content-primary);
-
         }
 
         .icon {
@@ -185,7 +212,7 @@ const { data } = Astro.props
                 transform: scaleX(1);
                 transform-origin: bottom left;
             }
-            
+
             [data-icon] {
                 width: 20px;
                 height: 20px;
@@ -209,13 +236,23 @@ const { data } = Astro.props
     .section {
         --color: #1761fd;
 
-        &[data-section-index="0"] { --color: #8405ff; }
+        &[data-section-index="0"] {
+            --color: #8405ff;
+        }
         &[data-section-index="1"] {
             --color: #029e73;
-            [data-subsection-index="1"], [data-subsection-index="2"] { --color: #1761fd; }
+            [data-subsection-index="1"],
+            [data-subsection-index="2"] {
+                --color: #1761fd;
+            }
         }
-        &[data-section-index="2"] { --color: #05a084; }
+        &[data-section-index="2"] {
+            --color: #05a084;
+        }
 
-        .icon, .cta { color: var(--color) !important; }
+        .icon,
+        .cta {
+            color: var(--color) !important;
+        }
     }
 </style>

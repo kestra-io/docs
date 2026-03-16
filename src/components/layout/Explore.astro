@@ -16,19 +16,15 @@ interface Props {
     reversed?: boolean
 }
 
-const {
-    title,
-    description,
-    cta,
-    image,
-    reversed = false,
-} = Astro.props
+const { title, description, cta, image, reversed = false } = Astro.props
 ---
 
 <section class="section-prose-img">
     <div class:list={["container", { reversed }]}>
         <div class="left-div" data-usal="slide-r delay-0 duration-600 ease-out">
-            <h2 data-usal="fade-u delay-50 duration-500 ease-out" class="mb-0">{title}</h2>
+            <h2 data-usal="fade-u delay-50 duration-500 ease-out" class="mb-0">
+                {title}
+            </h2>
             <p data-usal="fade-u delay-100 duration-500 ease-out" class="mb-0">
                 {description}
             </p>
@@ -40,7 +36,10 @@ const {
                 {cta.text}
             </a>
         </div>
-        <div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
+        <div
+            class="right-div"
+            data-usal="slide-l delay-25 duration-700 ease-out"
+        >
             <Image
                 src={image.src}
                 alt="ui"
@@ -55,8 +54,6 @@ const {
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .section-prose-img {
         padding: 3rem 1rem 3rem;
         background: var(--ks-background-secondary);
@@ -75,7 +72,7 @@ const {
 
             @include media-breakpoint-down(lg) {
                 flex-direction: column;
-                
+
                 &.reversed {
                     flex-direction: column;
                 }

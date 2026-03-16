@@ -7,13 +7,13 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Manage file caching inside Kestra.
 
-## Caching in Kestra – speed up repeated Tasks
+## Caching in Kestra – speed up repeated tasks
 
-Kestra provides a file caching, which is especially useful when you work with sizable package dependencies that don't change often.
+Kestra provides file caching, which is especially useful when you work with sizable package dependencies that don't change often.
 
 ## Cache files in a `WorkingDirectory` task
 
-The file caching functionality on the  `WorkingDirectory` task allows you to cache a subset of files to speed up your workflow execution. This is especially useful when you work with sizable package dependencies that don't change often.
+The file caching functionality on the `WorkingDirectory` task allows you to cache a subset of files to speed up your workflow execution. This is especially useful when you work with sizable package dependencies that don't change often.
 
 :::alert{type="info"}
 Kestra can only cache files installed or created as part of the script tasks if the script uses a `PROCESS` runner. If the script uses a `DOCKER` runner, the files will not be cached and the `WorkingDirectory` task will [throw an error](https://github.com/kestra-io/kestra/issues/2233): `Unable to execute WorkingDirectory post actions`.
