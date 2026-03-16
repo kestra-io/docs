@@ -52,8 +52,8 @@
         Book a demo
     </a>
     <svg
-        width="41"
-        height="41"
+        width="0"
+        height="0"
         viewBox="0 0 41 41"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -165,15 +165,17 @@
             flex-direction: row;
         }
         svg {
-            display: none;
+            transform: rotate(90deg);
+            margin-inline: auto;
             @include media-breakpoint-up(md) {
-                display: block;
+                transform: rotate(0);
             }
         }
 
         span {
             display: flex;
             align-items: center;
+            justify-content: center;
             font-weight: bold;
             color: var(--ks-content-secondary);
             font-size: 1rem;
