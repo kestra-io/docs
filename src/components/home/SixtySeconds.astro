@@ -16,34 +16,55 @@
         >
     </div>
     <div class="modal-body">
-        <div class="video-container">
-            <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1"
-                title="YouTube video player"
-                allow="
-                                accelerometer;
-                                autoplay;
-                                clipboard-write;
-                                encrypted-media;
-                                gyroscope;
-                                picture-in-picture;
-                                web-share;
-                            "
-                allowfullscreen></iframe>
-        </div>
+        <div class="video-container"></div>
     </div>
 </dialog>
 
-<style lang="scss">
-    .video-container {
-        iframe {
-            margin-inline: auto;
-            display: block;
-        }
-    }
+<script>
+    const dialog = document.getElementById("sixty-seconds-modal")
+    const videoContainer = dialog?.querySelector(".video-container")
+    const buttonTrigger = document.querySelector(
+        'button[command="show-modal"][commandfor="sixty-seconds-modal"]',
+    )
 
+    buttonTrigger?.addEventListener("click", () => {
+        if (!videoContainer) return
+        const iframeOrig = videoContainer.querySelector("iframe")
+        if (!iframeOrig) {
+            const iframe = document.createElement("iframe")
+            iframe.width = "100%"
+            iframe.height = "100%"
+            iframe.src =
+                "https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1&enablejsapi=1"
+            iframe.title = "Kestra in 60 seconds"
+            iframe.allow =
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            iframe.allowFullscreen = true
+            videoContainer.appendChild(iframe)
+        } else {
+            controlVideo("playVideo", iframeOrig)
+        }
+    })
+
+    dialog?.addEventListener("close", () => {
+        const iframe = videoContainer?.querySelector("iframe")
+        if (iframe) {
+            controlVideo("stopVideo", iframe)
+        }
+    })
+
+    function controlVideo(
+        vidFunc: string,
+        iframe: HTMLIFrameElement | null = null,
+    ) {
+        iframe?.contentWindow?.postMessage(
+            '{"event":"command","func":"' + vidFunc + '","args":""}',
+            "*",
+        )
+    }
+</script>
+
+<style lang="scss">
     dialog {
         width: 95vw;
         aspect-ratio: 16 / 11;
@@ -61,6 +82,12 @@
             background: transparent;
             padding: 0.5rem;
         }
+        .video-container {
+            iframe {
+                margin-inline: auto;
+                display: none;
+            }
+        }
     }
 
     /* Open state of the dialog  */
@@ -69,6 +96,10 @@
         transform: scale(1) translateY(0);
         font-size: 1.2rem;
         padding: 0.3rem;
+
+        iframe {
+            display: block;
+        }
     }
 
     /* Closed state of the dialog   */
