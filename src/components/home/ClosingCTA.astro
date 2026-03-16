@@ -98,33 +98,38 @@
 <style lang="scss">
     section {
         padding: 5rem 1rem;
-        background-color: white;
+        background-color: var(--ks-background-body);
         background-image:
             radial-gradient(
                 ellipse at 55% 130%,
-                var(--hp-content-color-highlight) 0%,
-                var(--hp-content-color-highlight) 1%,
+                var(--ks-content-color-highlight) 0%,
+                var(--ks-content-color-highlight) 1%,
                 color-mix(
                         in srgb,
-                        var(--hp-content-color-highlight) 20%,
-                        white 50%
+                        var(--ks-content-color-highlight) 20%,
+                        var(--ks-background-body) 50%
                     )
                     18%,
                 transparent 35%
             ),
             radial-gradient(
                 ellipse at bottom center,
-                rgba(255, 255, 255, 0.7) 0%,
-                rgba(255, 255, 255, 1) 100%
+                color-mix(
+                        in srgb,
+                        var(--ks-background-body) 70%,
+                        transparent 30%
+                    )
+                    0%,
+                var(--ks-background-body) 100%
             ),
             linear-gradient(
                 to right,
-                var(--hp-border-secondary) 1px,
+                var(--ks-border-secondary) 1px,
                 transparent 1px
             ),
             linear-gradient(
                 to bottom,
-                var(--hp-border-secondary) 1px,
+                var(--ks-border-secondary) 1px,
                 transparent 1px
             );
         background-size:
@@ -133,7 +138,7 @@
             var(--hp-grid-size) var(--hp-grid-size),
             var(--hp-grid-size) var(--hp-grid-size);
         background-position: center bottom;
-        color: var(--hp-content-secondary);
+        color: var(--ks-content-secondary);
         text-align: center;
     }
 
@@ -170,14 +175,14 @@
             display: flex;
             align-items: center;
             font-weight: bold;
-            color: var(--hp-content-secondary);
+            color: var(--ks-content-secondary);
             font-size: 1rem;
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
             white-space: nowrap;
             font-family: monospace;
-            border: 1px solid var(--hp-border-secondary);
-            background-color: #ffffff;
+            border: 1px solid var(--ks-border-secondary);
+            background-color: var(--ks-background-body);
         }
     }
 </style>
