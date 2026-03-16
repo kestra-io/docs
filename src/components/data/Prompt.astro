@@ -68,26 +68,28 @@ const totalPlugins = await fetchTotalPluginsCount()
         &::after {
             content: "";
             position: absolute;
-            width: 573px;
-            height: 557px;
-            background: radial-gradient(
-                circle,
-                #7540f0b3 0%,
-                rgba(255, 255, 255, 0) 70%
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(
+                135deg,
+                #5774f7 0%,
+                #622ddd 100%
             );
             z-index: 0;
             pointer-events: none;
-            transform: rotate(-62.37deg);
+            filter: blur(150px);
+            opacity: 0.4;
+            border-radius: 50%;
         }
 
         &::before {
-            bottom: -230px;
-            left: -230px;
+            bottom: -300px;
+            left: -300px;
         }
 
         &::after {
-            top: -230px;
-            right: -230px;
+            top: -300px;
+            right: -300px;
         }
         .container {
             position: relative;
