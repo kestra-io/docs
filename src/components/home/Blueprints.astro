@@ -24,8 +24,11 @@ const { results: blueprints } = await $fetchApi<{ results: Blueprint[] }>(
     section {
         background-color: var(--ks-background-body);
         color: var(--ks-content-primary);
-        padding: 4rem;
         text-align: left;
+        padding: 2rem 1rem;
+        @include media-breakpoint-up(md) {
+            padding: 4rem;
+        }
     }
     h2 {
         font-size: 2rem;

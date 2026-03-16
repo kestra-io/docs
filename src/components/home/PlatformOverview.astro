@@ -128,6 +128,10 @@ const pluginIcons = await Promise.all(
     section {
         padding: 5rem 2rem;
         background-color: white;
+        --background-gradient-opacity: 100%;
+        @include media-breakpoint-up(md) {
+            --background-gradient-opacity: 70%;
+        }
         background-image:
             linear-gradient(
                 to bottom,
@@ -144,8 +148,18 @@ const pluginIcons = await Promise.all(
             radial-gradient(
                 ellipse at top center,
                 transparent 0,
-                #ffffff20 35%,
-                #ffffff 70%
+                color-mix(
+                        in srgb,
+                        #ffffff var(--background-gradient-opacity),
+                        transparent 65%
+                    )
+                    30%,
+                color-mix(
+                        in srgb,
+                        #ffffff var(--background-gradient-opacity),
+                        transparent 100%
+                    )
+                    100%
             ),
             linear-gradient(
                 to right,
