@@ -70,7 +70,9 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
             color: var(--ks-content-primary);
-            margin-bottom: 1rem;
+            @include media-breakpoint-up(lg) {
+                margin-bottom: 1rem;
+            }
 
             &.no-invert {
                 color: $white;
