@@ -14,7 +14,7 @@ interface Props {
     title: string
     firstCard: ComparisonCard
     secondCard: ComparisonCard
-    cta: {
+    cta?: {
         title: string
         text: string
         link: string
@@ -24,7 +24,7 @@ interface Props {
 const { title, firstCard, secondCard, cta } = Astro.props
 ---
 
-<section class="py-5 px-sm-0 px-2">
+<section>
     <div class="container d-flex flex-column gap-5">
         <h2 class="text-center" set:html={title} />
         <div
@@ -60,12 +60,14 @@ const { title, firstCard, secondCard, cta } = Astro.props
                 </ul>
             </div>
         </div>
-        <div
-            class="cta d-flex align-items-center flex-column gap-2 bg-light rounded-3 p-4 mx-auto w-100"
-        >
-            <h5 class="text-center" set:html={cta.title} />
-            <a href={cta.link} class="btn btn-primary text-white">{cta.text}</a>
-        </div>
+        {cta && (
+            <div
+                class="cta d-flex align-items-center flex-column gap-2 bg-light rounded-3 p-4 mx-auto w-100"
+            >
+                <h5 class="text-center" set:html={cta.title} />
+                <a href={cta.link} class="btn btn-primary text-white">{cta.text}</a>
+            </div>
+        )}
     </div>
 </section>
 
@@ -78,6 +80,8 @@ const { title, firstCard, secondCard, cta } = Astro.props
 >
     section {
         background-color: var(--ks-background-body);
+        padding: 4rem 0.75rem;
+        padding-bottom: 7rem;
 
         .inner-box {
             @include media-breakpoint-up(xl) {

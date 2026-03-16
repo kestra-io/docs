@@ -35,16 +35,17 @@ const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } =
                     class="col-12 col-md-6 rounded-3 d-flex align-items-center px-4 py-3 py-md-5"
                 >
                     <div class="content">
-                        <h3 class="mb-3">
+                        <h3 class="mb-3" data-usal="fade-r">
                             <slot name="title" />
                         </h3>
-                        <p>
+                        <p data-usal="fade-l">
                             <slot />
                         </p>
                         <Link
                             href={cta.href}
                             class="btn btn-primary text-white"
                             download={cta.download}
+                            data-usal="zoomin"
                         >
                             {cta.text}
                         </Link>
