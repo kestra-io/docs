@@ -40,6 +40,31 @@ Use `ForEachItem` when:
 `ForEachItem` expects `items` to be a Kestra internal storage URI, for example `{{ outputs.extract.uri }}` or a `FILE` input. If your source data is a regular JSON array, Excel file, Parquet file, or another non line-oriented format, convert it first.
 :::
 
+## `Subflow` vs `ForEachItem`
+
+`Subflow` and `ForEachItem` both create child executions, but they solve different orchestration problems.
+
+Use `Subflow` when:
+
+- You want to trigger one child flow once.
+- You already know the exact inputs to pass to that child flow.
+- You want execution isolation without batching or iteration.
+- You are decomposing a large workflow into smaller reusable modules.
+
+Use `ForEachItem` when:
+
+- You want to start many child flow executions from one dataset or file.
+- You need batching by `rows`, `partitions`, or `bytes`.
+- You want to process file-backed items incrementally at scale.
+- You want Kestra to merge outputs from multiple child executions.
+
+Rule of thumb:
+
+- `Subflow` is one child execution for one unit of work.
+- `ForEachItem` is many child executions for many units of work.
+
+For example, if you need to process one uploaded file in a dedicated child flow, use `Subflow`. If you need to split that file into many batches and process each batch in its own child flow execution, use `ForEachItem`.
+
 ## Understand the main difference
 
 `ForEach` iterates over a list of values and exposes:
