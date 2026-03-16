@@ -58,14 +58,20 @@ const images = [
 </section>
 
 <script>
+    const THRESHOLD = -250
     const stack = document.querySelector(".platform-wrapper")
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
-                entry.target.classList.toggle("expanded", entry.isIntersecting)
+                const isEntryAboveTheFold =
+                    entry.boundingClientRect.top < THRESHOLD
+                entry.target.classList.toggle(
+                    "expanded",
+                    entry.isIntersecting || isEntryAboveTheFold,
+                )
             })
         },
-        { threshold: 0.8 },
+        { threshold: 0.6 },
     )
     if (stack) {
         observer.observe(stack)
@@ -145,6 +151,7 @@ const images = [
             border: 1px solid var(--hp-border-secondary);
             @include media-breakpoint-up(md) {
                 border-color: transparent;
+                background-color: transparent;
                 z-index: 0;
                 &:after {
                     content: "";
