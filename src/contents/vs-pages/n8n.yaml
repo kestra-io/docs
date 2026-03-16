@@ -73,7 +73,7 @@ setupSpeed:
     lang: sh
 
 easeOfUse:
-  title: Workflows Your Whole Team Can Read
+  title: Code-native vs. Click-to-build
   kestra:
     title: "Kestra: Readable, reviewable, deployable"
     description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows go through pull requests and CI/CD like any other code."
@@ -126,7 +126,7 @@ easeOfUse:
     lang: json
 
 visualPreview:
-  mainTitle: One Platform for Your Entire Technology Stack
+  mainTitle: Full-stack orchestration. App automation.
   kestra:
     description: "Orchestrate across data pipelines, infrastructure operations, AI workloads, and business workflows in one unified platform. Distributed, isolated, and built for production."
   competitor:
