@@ -32,7 +32,7 @@
         list-style-type: none;
         display: flex;
         gap: .5rem;
-        padding: 0 .5rem;
+        padding: .5rem;
         margin-top: 1.5rem;
         margin-inline: -.5rem;
         flex-wrap: nowrap;
@@ -54,14 +54,14 @@
             font-weight: 400;
             border: none;
             border-radius: 4px;
-            padding: 0 .5rem;
+            padding: .2rem .5rem;
             &:focus-visible {
                 box-shadow: none;
             }
             &.active {
                 background-color: var(--ks-background-body);
                 color: var(--ks-content-primary);
-                box-shadow: 0px 0px 3px 3px #5E6ED429;
+                box-shadow: 0px 0px 10px 1px #5E6ED429;
 
             }
         }
