@@ -78,6 +78,7 @@
         overflow-x: auto;
         padding: 1rem var(--carrousel-padding-inline);
         scrollbar-width: none;
+        scroll-snap-type: x mandatory;
         --carrousel-gradient-width: calc(6 * var(--carrousel-padding-inline));
         --carrousel-gradient-width-inverse: calc(100% - var(--carrousel-gradient-width));
         -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--carrousel-gradient-width), #000 var(--carrousel-gradient-width-inverse), transparent);
