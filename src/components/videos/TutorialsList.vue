@@ -1,88 +1,76 @@
 <template>
-    <section>
-        <div class="container">
-            <div class="row content mb-2">
-                <div class="col-12">
-                    <h1 data-usal="fade-left title">Video Tutorials</h1>
-                    <h4 data-usal="fade-r" class="fw-normal">
-                        Get started with our video tutorials
-                    </h4>
-                    <TutorialsListTabs
-                        :categories="categories"
-                        :current-category="currentCategory"
-                    />
-                    <div class="tab-content">
-                        <div class="tutorials-container" role="tabpanel">
-                            <div v-if="featuredVideo" class="row">
-                                <div>
-                                    <iframe
-                                        width="764"
-                                        height="424"
-                                        :src="featuredVideo.iframeUrl"
-                                        :title="featuredVideo.title"
-                                        frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        referrerpolicy="strict-origin-when-cross-origin"
-                                        allowfullscreen
-                                    />
-                                </div>
-                                <div>
-                                    <div class="info-block">
-                                        <div class="content">
-                                            <p class="category">{{ featuredVideo.category }}</p>
-                                            <h3 class="title">{{ featuredVideo.title }}</h3>
-                                            <p v-if="featuredVideo.publicationDate" class="video-info">
-                                                {{ formatDate(featuredVideo.publicationDate) }}
-                                            </p>
-                                            <p class="canal-name">{{ featuredVideo.author }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tutorials-list">
-                                <div
-                                    v-for="video in videos"
-                                    :key="video.title"
-                                >
-                                    <VideosTutorialVideo
-                                        :video="video"
-                                        @click="openVideoModal(video)"
-                                    />
+    <div class="content">
+        <div>
+            <div class="tab-content">
+                <div class="tutorials-container" role="tabpanel">
+                    <div v-if="featuredVideo" class="row">
+                        <div>
+                            <iframe
+                                width="764"
+                                height="424"
+                                :src="featuredVideo.iframeUrl"
+                                :title="featuredVideo.title"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen
+                            />
+                        </div>
+                        <div>
+                            <div class="info-block">
+                                <div class="content">
+                                    <p class="category">{{ featuredVideo.category }}</p>
+                                    <h3 class="title">{{ featuredVideo.title }}</h3>
+                                    <p v-if="featuredVideo.publicationDate" class="video-info">
+                                        {{ formatDate(featuredVideo.publicationDate) }}
+                                    </p>
+                                    <p class="canal-name">{{ featuredVideo.author }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="tutorials-list">
+                        <div
+                            v-for="video in videos"
+                            :key="video.title"
+                        >
+                            <VideosTutorialVideo
+                                :video="video"
+                                @click="openVideoModal(video)"
+                            />
+                        </div>
+                    </div>
                 </div>
-                <PaginationContainer
-                    :current-url="currentUrl"
-                    :total-items="totalItems"
-                    :show-total="false"
-                    @update="onPaginationUpdate"
+            </div>
+        </div>
+        <PaginationContainer
+            :current-url="currentUrl"
+            :total-items="totalItems"
+            :show-total="false"
+            @update="onPaginationUpdate"
+        />
+    </div>
+
+    <Modal v-model:show="videoVisible" class="video-modal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="video-container">
+                <iframe
+                    v-if="videoVisible"
+                    :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
+                    :title="visibleVideoData.title"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
                 />
             </div>
         </div>
-
-        <Modal v-model:show="videoVisible" class="video-modal">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="video-container">
-                    <iframe
-                        v-if="videoVisible"
-                        :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
-                        :title="visibleVideoData.title"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allowfullscreen
-                    />
-                </div>
-            </div>
-        </Modal>
-    </section>
+    </Modal>
 </template>
 
 <script setup lang="ts">
@@ -212,20 +200,7 @@
 
 
     section {
-        padding: $rem-4 $rem-1;
         position: relative;
-        &::after {
-            content: "";
-            position: absolute;
-            height: 12.5rem;
-            width: 20%;
-            top: 3%;
-            left: 10%;
-            z-index: 1;
-            filter: blur(110px);
-            background: linear-gradient(180deg, rgba(98, 24, 255, 0) 0%, #6117ff 100%);
-            pointer-events: none;
-        }
     }
 
     :deep(.modal-content) {
@@ -251,25 +226,9 @@
         padding: 1rem;
     }
 
-    .nav-tabs {
-        margin-top: 1.5rem;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        border-bottom: 1px solid var(--ks-border-secondary);
-    }
-
     .content {
         @include media-breakpoint-up(md) {
             margin-right: $rem-1;
-        }
-        h1 {
-            color: var(--ks-content-primary);
-            margin-bottom: $rem-1;
-        }
-        h4 {
-            color: var(--ks-content-secondary);
-            margin-bottom: 2rem;
         }
     }
 
@@ -324,7 +283,8 @@
         .tutorials-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            row-gap: 3rem;
+            column-gap: 1.5rem;
         }
     }
 </style>

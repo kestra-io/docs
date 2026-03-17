@@ -4,6 +4,7 @@ import Layout from "~/components/layout.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import TutorialsList from "~/components/videos/TutorialsList.vue"
 import { getCollection } from "astro:content"
+import TutorialsListTabs from "~/components/videos/TutorialsListTabs.vue"
 
 const categories = new Map([
     ["all", "All videos"],
@@ -51,16 +52,70 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
 ---
 
 <Layout title={title} description={description}>
-    <TutorialsList
-        currentUrl={Astro.request.url}
-        {...{
-            tutorialVideo,
-            page,
-            itemsPerPage,
-            currentCategory,
-            categories,
-        }}
-        client:visible
-    />
+    <section class="header" transition:persist>
+        <div class="container">
+            <h1 data-usal="fade-left title">Video Tutorials</h1>
+            <p data-usal="fade-r">Get started with our video tutorials</p>
+        </div>
+        <form class="container">
+            <label for="email">Subscribe to updates</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            />
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+    <section>
+        <div class="container">
+            <TutorialsListTabs
+                categories={categories}
+                current-category={currentCategory}
+            />
+            <TutorialsList
+                currentUrl={Astro.request.url}
+                {...{
+                    tutorialVideo,
+                    page,
+                    itemsPerPage,
+                    currentCategory,
+                    categories,
+                }}
+                client:visible
+            />
+        </div>
+    </section>
     <FooterContact title="Get Started" />
 </Layout>
+
+<style lang="scss">
+    .header {
+        padding-top: 6rem;
+        background-color: var(--ks-background-secondary);
+    }
+    h1 {
+        color: var(--ks-content-primary);
+        margin-bottom: 0.5rem;
+    }
+    p {
+        color: var(--ks-content-secondary);
+        margin-bottom: 2rem;
+    }
+
+    form {
+        padding: 1rem 0.5rem 4rem;
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--ks-content-primary);
+        }
+        button {
+            background: var(--ks-background-body);
+            color: var(--ks-content-primary);
+            border-radius: 3px;
+            border: 1px solid var(--ks-content-primary);
+        }
+    }
+</style>
