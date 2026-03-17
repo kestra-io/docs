@@ -32,9 +32,9 @@ Download the SQL script and pipe it into the PostgreSQL container:
 cat seed_demo_data.sql | docker compose exec -T postgres psql -U kestra
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 The `-T` flag disables pseudo-TTY allocation, which is required when piping input to `docker compose exec`.
-::
+:::
 
 ## Key Properties
 
