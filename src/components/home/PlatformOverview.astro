@@ -75,12 +75,11 @@ const pluginIcons = await Promise.all(
                         { src, alt, title, description, className, connectors },
                         i,
                     ) => (
-                        <figure>
+                        <figure style={`--i: ${i - (images.length - 1) / 2};`}>
                             <Image
                                 src={src}
                                 alt={alt}
                                 class="stack-image"
-                                style={`--i: ${i - (images.length - 1) / 2};`}
                                 loading="lazy"
                             />
                             <figcaption class={className}>
@@ -198,7 +197,6 @@ const pluginIcons = await Promise.all(
                 --stack-offset: -150px;
                 figcaption {
                     opacity: 1;
-                    transform: translateY(0);
                 }
             }
         }
@@ -247,6 +245,12 @@ const pluginIcons = await Promise.all(
                 position: absolute;
                 width: 250px;
                 z-index: 3;
+                background: #ffffffdf;
+                transform: translateY(calc(var(--i) * var(--stack-offset)));
+            }
+            @include media-breakpoint-up(lg) {
+                --figure-bar-width: 115px;
+                z-index: 0;
                 &:before {
                     content: "";
                     position: absolute;
@@ -256,19 +260,6 @@ const pluginIcons = await Promise.all(
                     background: var(--hp-border-secondary);
                     top: 2rem;
                 }
-                &:after {
-                    content: "";
-                    position: absolute;
-                    z-index: 2;
-                    width: 5px;
-                    height: 5px;
-                    border-radius: 4px;
-                    background: var(--hp-border-secondary);
-                    top: 30px;
-                }
-            }
-            @include media-breakpoint-up(lg) {
-                --figure-bar-width: 115px;
             }
             h3 {
                 font-size: 1rem;
@@ -280,23 +271,9 @@ const pluginIcons = await Promise.all(
                 margin: 0;
             }
         }
-        // on odd indexes, position caption on the left, otherwise on the right
-        figure:nth-child(odd) figcaption {
-            left: -1rem;
-            @include media-breakpoint-up(lg) {
-                left: 0;
-                text-align: right;
-            }
-            &:before {
-                left: 100%;
-            }
-            &:after {
-                right: calc(var(--figure-bar-width) * -1);
-            }
-        }
-
         figure:nth-child(even) figcaption {
             @include media-breakpoint-up(md) {
+                top: 42%;
                 right: -1rem;
                 text-align: right;
             }
@@ -312,36 +289,29 @@ const pluginIcons = await Promise.all(
             }
         }
 
-        .governance-workflow {
-            top: 80px;
-        }
-        .event-driven-workflow {
-            top: 230px;
-        }
-        .agent-workflow {
-            top: 420px;
-        }
-        .code-workflow {
-            bottom: 70px;
-        }
-
-        @include media-breakpoint-up(md) {
-            .code-workflow,
-            .agent-workflow {
-                transform: translateY(-150px);
+        // on odd indexes, position caption on the left, otherwise on the right
+        figure:nth-child(odd) figcaption {
+            @include media-breakpoint-up(md) {
+                left: -1rem;
+                top: 49%;
             }
-
-            .event-driven-workflow,
-            .governance-workflow {
-                transform: translateY(150px);
+            @include media-breakpoint-up(lg) {
+                left: 0;
+                text-align: right;
+            }
+            &:before {
+                left: 100%;
+            }
+            &:after {
+                right: calc(var(--figure-bar-width) * -1);
             }
         }
     }
 
     .image-stack {
         position: relative;
-        margin: 4rem auto 0;
-        max-width: 1200px;
+        margin: 2rem auto 0;
+        max-width: 1150px;
         @include media-breakpoint-up(md) {
             height: 700px;
         }
@@ -350,19 +320,20 @@ const pluginIcons = await Promise.all(
     .stack-image {
         max-width: none;
         width: 100vw;
-        margin-top: 2rem;
+        margin-top: 6rem;
         border: 1px solid var(--hp-border-secondary);
         border-radius: 0.5rem;
         @include media-breakpoint-up(md) {
+            margin-top: 0;
             border-radius: 1rem;
             position: absolute;
             z-index: 1;
-            left: 51%;
+            left: 52%;
             top: 30%;
             width: 438px;
             box-shadow:
                 -3px 4px 0 0 var(--hp-border-secondary),
-                -10px 30px 20px rgba(167, 150, 255, 0.2);
+                -15px 20px 40px rgba(167, 150, 255, 0.3);
             transform: translateX(-50%)
                 translateY(calc(var(--i) * var(--stack-offset, -50px)))
                 scaleY(0.7) skew(20deg) rotate(-9deg);
