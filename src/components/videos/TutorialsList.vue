@@ -7,12 +7,12 @@
                     <h4 data-usal="fade-r" class="fw-normal">
                         Get started with our video tutorials
                     </h4>
-                    <ul id="myTab" class="nav nav-tabs mt-3 flex-nowrap overflow-x-auto overflow-y-hidden"
+                    <ul id="myTab" class="nav nav-tabs"
                         role="tablist">
                         <li
                             v-for="category in categories"
                             :key="category"
-                            class="nav-item text-nowrap"
+                            class="nav-item"
                             role="presentation"
                         >
                             <a class="nav-link" :class="{ active: currentCategory === category }" type="button"
@@ -24,7 +24,7 @@
                     <div id="myTabContent" class="tab-content">
                         <div class="tutorials-container" role="tabpanel">
                             <div v-if="featuredVideo" class="row">
-                                <div class="col-12 col-lg-8">
+                                <div>
                                     <iframe
                                         width="764"
                                         height="424"
@@ -36,7 +36,7 @@
                                         allowfullscreen
                                     />
                                 </div>
-                                <div class="col-12 col-lg-4">
+                                <div>
                                     <div class="info-block">
                                         <div class="content">
                                             <p class="category">{{ featuredVideo.category }}</p>
@@ -50,17 +50,14 @@
                                 </div>
                             </div>
                             <div class="tutorials-list">
-                                <div class="row">
-                                    <div
-                                        v-for="video in videos"
-                                        :key="video.title"
-                                        class="col-12 col-md-6 col-lg-4 mb-4"
-                                    >
-                                        <VideosTutorialVideo
-                                            :video="video"
-                                            @click="openVideoModal(video)"
-                                        />
-                                    </div>
+                                <div
+                                    v-for="video in videos"
+                                    :key="video.title"
+                                >
+                                    <VideosTutorialVideo
+                                        :video="video"
+                                        @click="openVideoModal(video)"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -277,10 +274,15 @@
     }
 
     .nav-tabs {
+        margin-top: 1.5rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
         border-bottom: 1px solid var(--ks-border-secondary);
     }
 
     .nav-item {
+        white-space: nowrap;
         .nav-link {
             color: var(--ks-content-primary);
             font-size: $font-size-md;
@@ -367,6 +369,12 @@
                     line-height: unset;
                 }
             }
+        }
+
+        .tutorials-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
     }
 </style>
