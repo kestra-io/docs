@@ -83,12 +83,7 @@ import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
         scrollbar-width: none;
         scroll-snap-type: x mandatory;
         --carrousel-gradient-width: 2rem;
-        @include media-breakpoint-up(md) {
-            --carrousel-gradient-width: 6rem;
-        }
-        --carrousel-gradient-width-inverse: calc(
-            100% - var(--carrousel-gradient-width)
-        );
+        --carrousel-gradient-width-inverse: calc(100% - 6rem);
         -webkit-mask-image: linear-gradient(
             to right,
             transparent,
