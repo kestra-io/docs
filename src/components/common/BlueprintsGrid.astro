@@ -21,9 +21,9 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
 
 <section class="blueprints-carousel">
     <div class="container">
-        <div>
-            <h2 data-usal="fade-l" set:html={title} />
-            <p data-usal="fade-r" set:html={subtitle} />
+        <div class="header text-center">
+            <h2 data-usal="fade-r" set:html={title} />
+            <p data-usal="fade-l" set:html={subtitle} />
         </div>
 
         <div class="blueprints-container d-md-none">
@@ -74,6 +74,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
     .blueprints-carousel {
         width: 100%;
         padding: 3rem 0;
+        overflow: hidden;
         background-image: url("~/assets/landing/infrastructure/grid.svg");
         background-color: var(--ks-background-tertiary);
 
@@ -95,9 +96,16 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
             @media (min-width: 576px) and (max-width: 768px) {
                 max-width: 768px;
             }
+            
+            .header {
+                width: 100%;
+            }
 
             h2 {
-                text-align: center;
+                margin-bottom: 1rem;
+                @include media-breakpoint-up(lg) {
+                    text-align: center;
+                }
                 :global(.gradient) {
                     color: var(--ks-content-color-highlight);
                 }
@@ -143,7 +151,8 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
             }
 
             .row {
-                width: 100%;
+                margin-right: -8px;
+                margin-left: -8px;
 
                 > * {
                     padding-right: 8px;

@@ -1,0 +1,157 @@
+---
+import Cog from "vue-material-design-icons/Cog.vue"
+import Xml from "vue-material-design-icons/Xml.vue"
+import VectorSquare from "vue-material-design-icons/VectorSquare.vue"
+import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
+import MoveResizeVariant from "vue-material-design-icons/MoveResizeVariant.vue"
+
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
+
+const AI_FEATURES = [
+    {
+        icon: VectorSquare,
+        title: "Security & Compliance",
+        description:
+            "SOC 2 Type II. GDPR. Secrets management (Vault, AWS, Azure). Self-hosted, air-gapped, or cloud.",
+    },
+    {
+        icon: Cog,
+        title: "RBAC & Multi-tenancy",
+        description:
+            "Namespace isolation, SSO/LDAP/SCIM, service accounts. Teams move fast inside centrally enforced guardrails.",
+    },
+    {
+        icon: CodeTagsCheck,
+        title: "Audit Logs",
+        description:
+            "Every execution, user action, and resource change recorded. External log aggregation for your SIEM.",
+    },
+    {
+        icon: Xml,
+        title: "SLAs & Support",
+        description:
+            "Up to 24x7 coverage, 1-hour P0 response, dedicated Slack/Teams channel, automated disaster recovery.",
+    },
+    {
+        icon: MoveResizeVariant,
+        title: "Observability & Cost Control",
+        description:
+            "Track token, GPU, and infra spend per workflow and team. Worker groups to right-size compute. 100k+ concurrent tasks.",
+    },
+]
+---
+
+<section class="ai-feat">
+    <div class="container-xxl">
+        <h2 class="title" data-usal="fade-r">
+            <span class="highlight">Enterprise-grade</span> AI Orchestration
+        </h2>
+        <NoGapGrid items={AI_FEATURES}>
+            <div
+                class="feature-card"
+            >
+                <a
+                    href="/enterprise"
+                    class="btn btn-secondary"
+                    data-usal="zoomin"
+                >
+                    Explore Enterprise
+                </a>
+            </div>
+        </NoGapGrid>
+    </div>
+</section>
+
+<style lang="scss">
+    .ai-feat {
+        padding: 140px 1rem;
+        gap: 40px;
+        background: var(--ks-background-primary-inverse);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) {
+            padding: 4rem 1rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: 352.83px;
+            height: 343.43px;
+            border-radius: 50%;
+            background: linear-gradient(
+                179.01deg,
+                #bffddd 0.85%,
+                #bffddd 62.43%
+            );
+            opacity: 1;
+            transform: rotate(45deg);
+            filter: blur(32px);
+            z-index: 1;
+            top: -250px;
+            left: -250px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            width: 120%;
+            height: 314px;
+            border-radius: 50%;
+            background: linear-gradient(
+                90deg,
+                var(--ks-special-green) 0%,
+                var(--ks-Color-gradient-1-inverse-2) 100%
+            );
+            filter: blur(32px);
+            transform: rotate(-13.2074deg);
+            z-index: 0;
+            top: -210px;
+            left: -65%;
+        }
+
+        .title {
+            color: var(--ks-content-primary-inverse);
+            margin-bottom: 2.5rem;
+
+            .highlight {
+                color: var(--ks-special-green);
+            }
+        }
+
+        :global(.features-grid) {
+            box-shadow: 0px 9px 36px 0px var(--ks-shadows-green);
+        }
+
+        .container-xxl {
+            max-width: 1420px;
+
+            .feature-card {
+                width: 100%;
+                padding: 2rem 4rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                box-shadow: 1px 1px 0 0 var(--ks-border-secondary-inverse);
+
+                @include media-breakpoint-down(lg) {
+                    padding: 2rem;
+                }
+
+                @include media-breakpoint-down(md) {
+                    width: 100%;
+                }
+
+                .btn {
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+</style>
