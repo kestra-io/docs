@@ -28,8 +28,8 @@ import SixtySeconds from "./SixtySeconds.astro"
 <style lang="scss">
     section {
         padding: 5rem 2rem;
-        background-color: white;
-        color: var(--hp-content-primary);
+        background-color: var(--ks-background-body);
+        color: var(--ks-content-primary);
         text-align: center;
     }
 
@@ -37,10 +37,10 @@ import SixtySeconds from "./SixtySeconds.astro"
         font-size: 2rem;
         text-align: center;
         margin-bottom: 2rem;
-        color: black;
+        color: var(--ks-content-primary);
         margin-inline: auto;
         span {
-            color: var(--hp-content-color-highlight);
+            color: var(--ks-content-color-highlight);
         }
         @include media-breakpoint-up(md) {
             width: 700px;
