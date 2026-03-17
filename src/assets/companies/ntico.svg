@@ -10,9 +10,9 @@
         </filter>
         <mask id="mask0_71_258">
             <path style="mix-blend-mode:luminosity" d="M112.583 0H0.083252V37H112.583V0Z"
-                fill="url(#pattern0)" />
+                fill="url(#pattern0ntico)" />
         </mask>
-        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+        <pattern id="pattern0ntico" patternContentUnits="objectBoundingBox" width="1" height="1">
             <use xlink:href="#image0_71_258" transform="scale(0.00111111 0.00337838)"
                 filter="url(#white-filter)" />
         </pattern>
