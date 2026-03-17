@@ -7,7 +7,7 @@
                     <h4 data-usal="fade-r" class="fw-normal">
                         Get started with our video tutorials
                     </h4>
-                    <ul id="myTab" class="nav nav-tabs"
+                    <ul class="nav nav-tabs"
                         role="tablist">
                         <li
                             v-for="category in categories"
