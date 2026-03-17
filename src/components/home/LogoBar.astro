@@ -67,15 +67,17 @@ const logos = Object.entries(svgModules)
         display: flex;
         align-items: center;
         gap: 3rem;
+        // avoid blink when end of track is reached and animation restarts
+        padding-left: 3rem;
         width: max-content;
-        animation: scroll-right 10s linear infinite;
+        animation: scroll-right 15s linear infinite;
     }
 
     .logo-bar-item {
         flex-shrink: 0;
         height: 40px;
         width: auto;
-        min-width: 100px;
+        min-width: 15vw;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -89,7 +91,7 @@ const logos = Object.entries(svgModules)
 
     @keyframes scroll-right {
         0% {
-            transform: translateX(-60%);
+            transform: translateX(-50%);
         }
         100% {
             transform: translateX(0);
