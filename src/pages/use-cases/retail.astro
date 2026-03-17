@@ -11,7 +11,8 @@ import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.v
 import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
 import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
 import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import LeroyMerlin from "~/assets/companies/leroy-merlin.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
+import LeroyMerlin from "./assets/leroy-merlin.svg?raw"
 
 const HEADER = {
     title: "Kestra for Retail and Consuming goods",
@@ -77,14 +78,13 @@ const SOLUTIONS_TITLE = "Use Cases in <span class='highlight'>Retail</span>"
 const LEROY = {
     logo: {
         alt: "Leroy Logo",
-        src: LeroyMerlin,
+        src: optimizeSvgIcon(LeroyMerlin, "leroy-merlin-logo"),
         subtitle: "Customer Success",
         width: "127px",
         height: "76px",
     },
     alt: "Leroy",
-    title:
-        "Leroy Merlin France enabling data mesh architecture and 900% increase in productivity with Kestra",
+    title: "Leroy Merlin France enabling data mesh architecture and 900% increase in productivity with Kestra",
     description:
         "Leroy Merlin France transformed data infrastructure by adopting Kestra, enabling a data mesh architecture and achieving a remarkable 900% boost in productivity. The shift empowered hundreds of data practitioners to create high-quality, scalable analytics, fundamentally changing how data is managed and valued across the organization.",
     cta: {
@@ -141,7 +141,7 @@ const OPS = {
 const PLUGINS = {
     title: "Connect Your",
     highlight: "Entire Stack",
-    description: "with Dedicated Plugins"
+    description: "with Dedicated Plugins",
 }
 
 const FOOTER = {
@@ -165,55 +165,54 @@ const DESCRIPTION = HEADER.description
 ---
 
 <Layout title={TITLE} description={DESCRIPTION}>
-        <DetailsHero
-            client:load
-            title={HEADER.tag}
-            description={HEADER.description}
-            image={{
-                src: HEADER.image.href,
-                alt: HEADER.image.alt,
-                width: HEADER.image.width,
-                height: HEADER.image.height,
-                class: HEADER.image.style,
-            }}
-            actions={{
-                dark: HEADER.cta[0],
-                purple: HEADER.cta[1],
-            }}
-        />
+    <DetailsHero
+        client:load
+        title={HEADER.tag}
+        description={HEADER.description}
+        image={{
+            src: HEADER.image.href,
+            alt: HEADER.image.alt,
+            width: HEADER.image.width,
+            height: HEADER.image.height,
+            class: HEADER.image.style,
+        }}
+        actions={{
+            dark: HEADER.cta[0],
+            purple: HEADER.cta[1],
+        }}
+    />
 
-        <Cards title={SOLUTIONS_TITLE} cards={SOLUTIONS} />
+    <Cards title={SOLUTIONS_TITLE} cards={SOLUTIONS} />
 
-        <CustomerStory
-            client:visible
-            class="retail"
-            title={LEROY.title}
-            description={LEROY.description}
-            image={{
-                src: LEROY.image.href,
-                alt: LEROY.image.alt,
-            }}
-            logo={{
-                src: LEROY.logo.src,
-                alt: LEROY.logo.alt,
-                width: LEROY.logo.width,
-            }}
-            href={LEROY.cta.href}
-        />
+    <CustomerStory
+        client:visible
+        class="retail"
+        title={LEROY.title}
+        description={LEROY.description}
+        image={{
+            src: LEROY.image.href,
+            alt: LEROY.image.alt,
+        }}
+        logo={{
+            src: LEROY.logo.src,
+            alt: LEROY.logo.alt,
+            width: LEROY.logo.width,
+        }}
+        href={LEROY.cta.href}
+    />
 
-        <RetailOps
-            title={OPS.title}
-            description={OPS.description}
-            items={OPS.items}
-            client:visible
-        />
+    <RetailOps
+        title={OPS.title}
+        description={OPS.description}
+        items={OPS.items}
+        client:visible
+    />
 
-        <FeaturePlugins content={PLUGINS} />
+    <FeaturePlugins content={PLUGINS} />
 
-        <FooterContact
-            title={FOOTER.title}
-            dark={FOOTER.cta[0]}
-            purple={FOOTER.cta[1]}
-        />
+    <FooterContact
+        title={FOOTER.title}
+        dark={FOOTER.cta[0]}
+        purple={FOOTER.cta[1]}
+    />
 </Layout>
-

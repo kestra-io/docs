@@ -6,13 +6,14 @@ import BusinessStats from "~/components/layout/BusinessStats.astro"
 import Unlock from "~/components/use-cases/Unlock.vue"
 import HeaderBox from "~/components/common/HeaderBox.vue"
 import Cards from "~/components/use-cases/Cards.astro"
-import Quadis from "~/assets/companies/quadis.svg?raw"
+import Quadis from "./assets/quadis.svg?raw"
 import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
 import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
 import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
 import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
 import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
 import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 const TITLE = "Kestra for Automotive"
 const DESCRIPTION =
@@ -21,7 +22,7 @@ const DESCRIPTION =
 const COMPANY_INFO = {
     personName: "Ruben Boniz Martinez",
     personRole: "Team Lead",
-    logo: Quadis,
+    logo: optimizeSvgIcon(Quadis, "quadis-logo"),
     logoAlt: "Quadis",
 }
 

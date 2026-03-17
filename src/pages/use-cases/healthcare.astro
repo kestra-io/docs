@@ -5,13 +5,14 @@ import Cards from "~/components/use-cases/Cards.astro"
 import BusinessStats from "~/components/layout/BusinessStats.astro"
 import Unlock from "~/components/use-cases/Unlock.vue"
 import HeaderBox from "~/components/common/HeaderBox.vue"
-import SophiaGenetics from "~/assets/companies/sophia-genetics.svg?raw"
+import SophiaGenetics from "./assets/sophia-genetics.svg?raw"
 import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
 import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
 import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
 import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
 import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
 import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 const TITLE = "Kestra for Healthcare"
 const DESCRIPTION =
@@ -20,7 +21,7 @@ const DESCRIPTION =
 const COMPANY_INFO = {
     personName: "Yohann Nédélec",
     personRole: "Tech Lead",
-    logo: SophiaGenetics,
+    logo: optimizeSvgIcon(SophiaGenetics, "sophia-genetics-logo"),
     logoAlt: "Sophia Genetics",
 }
 
