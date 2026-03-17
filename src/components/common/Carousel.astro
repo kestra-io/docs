@@ -80,6 +80,9 @@ import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
         gap: 20px;
         overflow-x: auto;
         padding: 1rem var(--carrousel-padding-inline);
+        // so that when we scroll we can
+        // extract cards from the right gradient blur
+        padding-right: 7rem;
         scrollbar-width: none;
         scroll-snap-type: x mandatory;
         --carrousel-gradient-width: 2rem;
