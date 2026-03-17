@@ -82,7 +82,10 @@ import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
         padding: 1rem var(--carrousel-padding-inline);
         scrollbar-width: none;
         scroll-snap-type: x mandatory;
-        --carrousel-gradient-width: calc(6 * var(--carrousel-padding-inline));
+        --carrousel-gradient-width: 2rem;
+        @include media-breakpoint-up(md) {
+            --carrousel-gradient-width: 6rem;
+        }
         --carrousel-gradient-width-inverse: calc(
             100% - var(--carrousel-gradient-width)
         );
