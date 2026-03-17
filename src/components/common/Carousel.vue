@@ -19,10 +19,12 @@
 
     const wrapper = useTemplateRef("wrapper")
 
+    const ONE_BLUEPRINT_WIDTH_WITH_MARGIN = 370
+
     const scrollLeft = () => {
         if (wrapper.value) {
             wrapper.value.scrollTo({
-                left: wrapper.value.scrollLeft - 400,
+                left: wrapper.value.scrollLeft - ONE_BLUEPRINT_WIDTH_WITH_MARGIN,
                 behavior: "smooth",
             })
         }
@@ -31,7 +33,7 @@
     const scrollRight = () => {
         if (wrapper.value) {
             wrapper.value.scrollTo({
-                left: wrapper.value.scrollLeft + 400,
+                left: wrapper.value.scrollLeft + ONE_BLUEPRINT_WIDTH_WITH_MARGIN,
                 behavior: "smooth",
             })
         }
@@ -45,23 +47,22 @@
 
         .navigation {
             position: absolute;
-            top: 50%;
+            top: 104%;
             transform: translateY(-50%);
             color: var(--ks-content-primary);
-            border-radius: 50%;
+            border-radius: 4px;
             background-color: var(--ks-background-secondary);
             z-index: 10;
-            height: 44px;
             width: 44px;
             border: none;
-            font-size: 24px;
+            font-size: 16px;
             padding: 0;
             border: 1px solid var(--ks-border-primary);
             &-left {
-                left: 1rem;
+                left: 2rem;
             }
             &-right {
-                right: 1rem;
+                right: 2rem;
             }
         }
     }
@@ -71,7 +72,9 @@
         flex-wrap: nowrap;
         gap: 20px;
         overflow-x: auto;
-        padding: 1rem 0;
+        padding: 1rem 2rem;
         scrollbar-width: none;
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 100px, #000 calc(100% - 100px), transparent);
+        mask-image: linear-gradient(to right, transparent, #000 100px, #000 calc(100% - 100px), transparent);
     }
 </style>
