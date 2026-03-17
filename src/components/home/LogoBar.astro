@@ -1,5 +1,5 @@
 ---
-const svgModules = import.meta.glob<string>("~/assets/companies/*.svg", {
+const svgModules = import.meta.glob<string>("./assets/logos/*.svg", {
     eager: true,
     import: "default",
 })
@@ -9,7 +9,7 @@ const logos = Object.entries(svgModules)
         name: path.split("/").pop()!.replace(".svg", ""),
         SvgComponent,
     }))
-    // randomize the order of logos on each page load
+    // randomize the order of logos on each page build
     .sort((a, b) => 0.5 - Math.random())
 ---
 
@@ -33,6 +33,20 @@ const logos = Object.entries(svgModules)
         flex-direction: column;
         align-items: center;
         padding: 2rem 0;
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            #000 15%,
+            #000 85%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            #000 15%,
+            #000 85%,
+            transparent 100%
+        );
     }
 
     .logo-bar-title {
@@ -54,7 +68,7 @@ const logos = Object.entries(svgModules)
         align-items: center;
         gap: 3rem;
         width: max-content;
-        animation: scroll-right 120s linear infinite;
+        animation: scroll-right 10s linear infinite;
     }
 
     .logo-bar-item {
@@ -75,7 +89,7 @@ const logos = Object.entries(svgModules)
 
     @keyframes scroll-right {
         0% {
-            transform: translateX(-50%);
+            transform: translateX(-60%);
         }
         100% {
             transform: translateX(0);
