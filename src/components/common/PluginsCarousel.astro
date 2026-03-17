@@ -21,9 +21,9 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
 ---
 
 <div class="plugins-carousel">
-    <div>
-        {title && <h2 set:html={title} />}
-        {subtitle && <p set:html={subtitle} class= "mt-2" />}
+    <div class="text-content">
+        {title && <h2 set:html={title} data-usal="fade-r" />}
+        {subtitle && <p set:html={subtitle} class="mt-2" data-usal="fade-l" />}
     </div>
 
     <div class="icon-scroll">
@@ -32,7 +32,7 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
                 PLUGINS_CAROUSEL.map((plugin) => (
                     <div class="plugin-wrapper">
                         <div class="plugin-icon">
-                            {typeof plugin.logo === 'string' ? (
+                            {typeof plugin.logo === "string" ? (
                                 <img
                                     src={plugin.logo}
                                     alt={plugin.name}
@@ -91,6 +91,7 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
 
         p {
             color: $white;
+            max-width: 547px;
         }
     }
 
@@ -180,7 +181,7 @@ const PLUGINS_CAROUSEL = [...plugins, ...plugins]
                         height: 90px;
                     }
                     border-radius: 0.875rem;
-                    box-shadow: 0 0.125rem 0.25rem var(--ks-card-shadow);
+                    box-shadow: 0 0.125rem 0.25rem var(--ks-shadows-light);
                     overflow: hidden;
                     background: $white;
                     padding: 0.25rem;
