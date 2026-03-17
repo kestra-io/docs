@@ -44,6 +44,10 @@
     .carousel-container {
         position: relative;
         margin: -1rem 0;
+        --carrousel-padding-inline: 1rem;
+        @include media-breakpoint-up(md) {
+            --carrousel-padding-inline: 2rem;
+        }
 
         .navigation {
             position: absolute;
@@ -59,10 +63,10 @@
             padding: 0;
             border: 1px solid var(--ks-border-primary);
             &-left {
-                left: 2rem;
+                left: var(--carrousel-padding-inline);
             }
             &-right {
-                right: 2rem;
+                right: var(--carrousel-padding-inline);
             }
         }
     }
@@ -72,9 +76,11 @@
         flex-wrap: nowrap;
         gap: 20px;
         overflow-x: auto;
-        padding: 1rem 2rem;
+        padding: 1rem var(--carrousel-padding-inline);
         scrollbar-width: none;
-        -webkit-mask-image: linear-gradient(to right, transparent, #000 100px, #000 calc(100% - 100px), transparent);
-        mask-image: linear-gradient(to right, transparent, #000 100px, #000 calc(100% - 100px), transparent);
+        --carrousel-gradient-width: calc(6 * var(--carrousel-padding-inline));
+        --carrousel-gradient-width-inverse: calc(100% - var(--carrousel-gradient-width));
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--carrousel-gradient-width), #000 var(--carrousel-gradient-width-inverse), transparent);
+        mask-image: linear-gradient(to right, transparent, #000 var(--carrousel-gradient-width), #000 var(--carrousel-gradient-width-inverse), transparent);
     }
 </style>
