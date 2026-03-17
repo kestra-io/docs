@@ -7,21 +7,11 @@
                     <h4 data-usal="fade-r" class="fw-normal">
                         Get started with our video tutorials
                     </h4>
-                    <ul class="nav nav-tabs"
-                        role="tablist">
-                        <li
-                            v-for="category in categories"
-                            :key="category"
-                            class="nav-item"
-                            role="presentation"
-                        >
-                            <a class="nav-link" :class="{ active: currentCategory === category }" type="button"
-                                :href="`/tutorial-videos/${categoryToSlug[category]}`">
-                                {{ category }}
-                            </a>
-                        </li>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
+                    <TutorialsListTabs
+                        :categories="categories"
+                        :current-category="currentCategory"
+                    />
+                    <div class="tab-content">
                         <div class="tutorials-container" role="tabpanel">
                             <div v-if="featuredVideo" class="row">
                                 <div>
@@ -102,6 +92,7 @@
     import Modal from "~/components/common/Modal.vue"
     import VideosTutorialVideo from "~/components/videos/TutorialVideo.vue"
     import PaginationContainer from "~/components/common/PaginationContainer.vue"
+    import TutorialsListTabs from "./TutorialsListTabs.vue"
 
     interface VideoData {
         title: string
@@ -121,10 +112,11 @@
 
     const props = withDefaults(
         defineProps<{
+            currentUrl: string
+            categories: Map<string, string>
             page?: number
             itemsPerPage?: number
             currentCategory?: string
-            currentUrl: string
             tutorialVideo?: TutorialVideoResponse
         }>(),
         {
@@ -142,20 +134,6 @@
     const videoVisible = ref(false)
     const visibleVideoData = ref<VideoData>({} as VideoData)
     const totalItems = ref(0)
-
-    const categories = [
-        "All videos",
-        "Deep Dive Tutorials",
-        "Quick Start Tutorials",
-        "Feature Highlight",
-    ] as const
-
-    const categoryToSlug: Record<string, string> = {
-        "All videos": "all",
-        "Deep Dive Tutorials": "deep-dive",
-        "Quick Start Tutorials": "quick-start",
-        "Feature Highlight": "feature-highlight",
-    }
 
     function formatDate(dateString: string): string {
         try {
@@ -279,34 +257,6 @@
         overflow-x: auto;
         overflow-y: hidden;
         border-bottom: 1px solid var(--ks-border-secondary);
-    }
-
-    .nav-item {
-        white-space: nowrap;
-        .nav-link {
-            color: var(--ks-content-primary);
-            font-size: $font-size-md;
-            font-weight: 400;
-            border: none;
-            &:focus-visible {
-                box-shadow: none;
-            }
-            &.active {
-                color: var(--ks-content-link);
-                font-weight: 700;
-                background-color: transparent;
-                border-bottom: 2px solid var(--ks-content-link);
-            }
-        }
-    }
-
-    .nav::-webkit-scrollbar {
-        display: none;
-    }
-
-    .nav {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
     }
 
     .content {

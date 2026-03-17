@@ -5,7 +5,7 @@ import FooterContact from "~/components/layout/FooterContact.astro"
 import TutorialsList from "~/components/videos/TutorialsList.vue"
 import { getCollection } from "astro:content"
 
-const tags = new Map([
+const categories = new Map([
     ["all", "All videos"],
     ["deep-dive", "Deep Dive Tutorials"],
     ["quick-start", "Quick Start Tutorials"],
@@ -14,7 +14,7 @@ const tags = new Map([
 
 const { slug } = Astro.params
 
-const currentCategory = slug ? (tags.get(slug) ?? "") : ""
+const currentCategory = slug ? (categories.get(slug) ?? "") : ""
 
 const PageURL = new URL(Astro.request.url)
 
@@ -29,7 +29,8 @@ const currentCategoryFilter = slug === "all" ? "" : currentCategory
 const allVideos = await getCollection("tutorialVideos")
 
 const sortedVideos = allVideos.sort(
-    (a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime(),
+    (a, b) =>
+        b.data.publicationDate.getTime() - a.data.publicationDate.getTime(),
 )
 
 const filteredVideos = currentCategoryFilter
@@ -38,9 +39,10 @@ const filteredVideos = currentCategoryFilter
 
 const total = filteredVideos.length
 const start = (page - 1) * itemsPerPage
-const results = filteredVideos
-    .slice(start, start + itemsPerPage)
-    .map((v) => ({ ...v.data, publicationDate: v.data.publicationDate.toISOString() }))
+const results = filteredVideos.slice(start, start + itemsPerPage).map((v) => ({
+    ...v.data,
+    publicationDate: v.data.publicationDate.toISOString(),
+}))
 
 const tutorialVideo = { results, total }
 
@@ -50,14 +52,15 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
 
 <Layout title={title} description={description}>
     <TutorialsList
-        client:visible
         currentUrl={Astro.request.url}
         {...{
             tutorialVideo,
             page,
             itemsPerPage,
             currentCategory,
+            categories,
         }}
+        client:visible
     />
     <FooterContact title="Get Started" />
 </Layout>
