@@ -58,8 +58,7 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
                     src={image.src}
                     alt={image.alt}
                     class="hero-ui"
-                    width={844}
-                    height={593}
+                    width={850}
                     densities={[1, 2]}
                 />
             )
@@ -94,6 +93,9 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
 
             .content {
                 max-width: 550px;
+                @include media-breakpoint-up(xl) {
+                    padding-top: 5rem;
+                }
 
                 .badge {
                     span {
