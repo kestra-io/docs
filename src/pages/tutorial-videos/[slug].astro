@@ -7,6 +7,7 @@ import { getCollection } from "astro:content"
 import Tabs from "~/components/common/Tabs.vue"
 import Mesh from "~/components/layout/Mesh.vue"
 import Subscribe from "~/components/layout/Subscribe.vue"
+import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
 
 const categories = new Map([
     ["all", "All videos"],
@@ -81,7 +82,7 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
             />
         </div>
     </section>
-    <FooterContact title="Get Started" />
+    <SubscribeToNewsletter client:visible />
 </Layout>
 
 <style lang="scss">

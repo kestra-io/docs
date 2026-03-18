@@ -6,7 +6,7 @@ import { getImage } from "astro:assets"
 import Mesh from "~/components/layout/Mesh.vue"
 import Layout from "~/components/layout.astro"
 import Subscribe from "~/components/layout/Subscribe.vue"
-import UpdateLetter from "~/components/layout/Updateletter.vue"
+import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
 import { allBlogCategories } from "~/components/blogs/categories"
 
 export const getStaticPaths = (() => {
@@ -104,7 +104,7 @@ const tutorialVideoResults = allTutorialVideos
         videos={tutorialVideoResults}
         category={category}
     />
-    <UpdateLetter client:visible />
+    <SubscribeToNewsletter client:visible />
 </Layout>
 
 <style lang="scss">
