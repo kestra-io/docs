@@ -4,9 +4,7 @@
   to: https://api.kestra.io/v1/communities/slack/redirect
 - regexp: "/terms-and-services"
   to: "/enterprise-license-agreement"
-- regexp: "/blog$"
-  to: "/blogs/$all"
-- regexp: "/blog/(.*)"
-  to: "/blogs/$1"
+- regexp: "/blog"
+  to: "/blogs"
 - regexp: "/changelog"
   to: "/docs/changelog"
