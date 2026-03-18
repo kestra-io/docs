@@ -251,14 +251,21 @@ kestra:
       expire-after: P30D
 ```
 
-For username/password auth, enforce password complexity explicitly:
+For username/password auth, configure password complexity explicitly:
 
 ```yaml
 kestra:
   security:
     basic-auth:
-      password-regexp: "<regexp-rule>"
+      password-min-length: 8
+      password-require-special: true
+      password-min-digits: 1
+      password-min-lower-case: 1
+      password-min-upper-case: 1
+      password-allowed-special-characters: "!@#$%^&*"
 ```
+
+These rules apply anywhere Kestra asks a user to set or reset a password, including the initial setup flow, invitation acceptance, and user management screens.
 
 ### Delete configuration files after startup
 
