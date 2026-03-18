@@ -1,24 +1,25 @@
 ---
 import Quotes from "~/components/common/Quotes.vue"
+import JPmorganChaseLogo from "./assets/logos/JP-Morgan-Chase-Co.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 const quotes = [
     {
-        quote: `Our goal is for Kestra to become the go-to solution across the
-                organization whenever data wrangling and complex pipeline
-                orchestration are needed.`,
-        author: "Rémi Sultan - AI/ML Lead",
+        quote: `We processed billions of rows and thousands of weekly API pulls in under 3 months. For the first time, our analysts aren't waiting for engineering—they’re building the workflows themselves.`,
+        author: "VP of Cybersecurity - <b>@jpmorgan Chase</b>",
+        smallLogoSvg: optimizeSvgIcon(JPmorganChaseLogo, "JPmorganChaseLogo"),
         kpis: [
             {
-                value: "50%",
-                name: "less maintenance",
+                value: "Billions",
+                name: "of records processed securely",
             },
             {
-                value: "0",
-                name: "Customer training needed",
+                value: "< 3 Months",
+                name: "to go from zero to full production",
             },
             {
-                value: "2",
-                name: "engineers to build the product",
+                value: "100+",
+                name: "users empowered to build workflows",
             },
         ],
     },
