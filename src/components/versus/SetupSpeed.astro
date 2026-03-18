@@ -7,19 +7,23 @@ interface Props {
     title?: string
     subtitle?: string
     kestra?: {
-        title?: string | {
-            one?: string
-            two?: string
-        }
+        title?:
+            | string
+            | {
+                  one?: string
+                  two?: string
+              }
         description?: string
         command?: string
     }
     competitor?: {
         logo?: any
-        title?: string | {
-            one?: string
-            two?: string
-        }
+        title?:
+            | string
+            | {
+                  one?: string
+                  two?: string
+              }
         description?: string
         shadowColor?: string
         command?: string
@@ -27,12 +31,7 @@ interface Props {
     }
 }
 
-const {
-    title,
-    subtitle,
-    kestra,
-    competitor
-} = Astro.props as Props
+const { title, subtitle, kestra, competitor } = Astro.props as Props
 ---
 
 <section>
@@ -40,18 +39,20 @@ const {
         <h2 set:html={title} />
         <p set:html={subtitle} />
         <div class="comparison-box d-flex flex-column flex-lg-row">
-            <Card
-                isKestra={true}
-                logo={kestraLogo}
-                logoAlt="Kestra logo"
-            >
+            <Card isKestra={true} logo={kestraLogo} logoAlt="Kestra logo">
                 <div class="d-flex align-items-center gap-2">
                     <h3 class="mb-0">
-                        {typeof kestra?.title === 'object'
-                            ? kestra?.title?.one
-                            : kestra?.title}
+                        {
+                            typeof kestra?.title === "object"
+                                ? kestra?.title?.one
+                                : kestra?.title
+                        }
                     </h3>
-                    {typeof kestra?.title === 'object' && <h5 class="mb-0">{kestra?.title?.two}</h5>}
+                    {
+                        typeof kestra?.title === "object" && (
+                            <h5 class="mb-0">{kestra?.title?.two}</h5>
+                        )
+                    }
                 </div>
                 <Snippets code={kestra?.command ?? ""} />
                 <p class="mb-0">{kestra?.description}</p>
@@ -64,11 +65,17 @@ const {
             >
                 <div class="d-flex align-items-center gap-2">
                     <h3 class="mb-0">
-                        {typeof competitor?.title === 'object'
-                            ? competitor?.title?.one
-                            : competitor?.title}
+                        {
+                            typeof competitor?.title === "object"
+                                ? competitor?.title?.one
+                                : competitor?.title
+                        }
                     </h3>
-                    {typeof competitor?.title === 'object' && <h5 class="mb-0">{competitor?.title?.two}</h5>}
+                    {
+                        typeof competitor?.title === "object" && (
+                            <h5 class="mb-0">{competitor?.title?.two}</h5>
+                        )
+                    }
                 </div>
                 <Snippets
                     code={competitor?.command ?? ""}
@@ -81,8 +88,6 @@ const {
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         padding: $spacer * 4 0;
         background-color: var(--ks-background-body);

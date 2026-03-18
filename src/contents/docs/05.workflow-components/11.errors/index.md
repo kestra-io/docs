@@ -36,9 +36,35 @@ errors:
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
 ```
 
+## `errors` vs `afterExecution`
+
+Both `errors` and `afterExecution` can be used for post-run actions, but they solve different problems.
+
+Use `errors` when you want failure handling to happen as part of the execution lifecycle when a task or flow errors. Use `afterExecution` when you want to react to the final execution state once the run has already finished.
+
+For post-run actions based on the final execution state, see the [`afterExecution` documentation](../20.afterexecution/index.md).
+
+| Use case | Prefer |
+| --- | --- |
+| Send an alert only when the flow fails | `errors` |
+| Handle errors only inside one flowable task and its children | `errors` |
+| Run different tasks for `SUCCESS`, `FAILED`, or `WARNING` | `afterExecution` |
+| Run reports or notifications that depend on the final execution state | `afterExecution` |
+
+Pros of `errors`:
+
+- Failure-specific by design.
+- Available at the flow level and locally inside flowable tasks.
+- Well suited for remediation, cleanup, or alerts tied to a failure path.
+
+Cons of `errors`:
+
+- It is focused on error paths, not success paths.
+- It is less convenient when you want one block that branches on multiple final states.
+
 Two kinds of error handlers can be defined:
-* **Global**: error handling global to a flow that must be at the root of the flow
-* **Local**: error handling local to a Flowable Task, handles errors for the flowable task and its children
+- **Global**: error handling for the entire flow, defined at the root level
+- **Local**: error handling for a Flowable Task and its children
 
 ## Global error handler
 
@@ -117,7 +143,7 @@ tasks:
     format: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-There's also the `allowWarning` property which acts similar to the `allowFailure` property, but the execution will finish in a `SUCCESS` state even if warnings occurred.
+There is also the `allowWarning` property, which works similarly to `allowFailure`, but the execution finishes in a `SUCCESS` state even if warnings occur.
 
 ```yaml
 id: allow_warning

@@ -51,7 +51,7 @@ Depending on the Kestra internal queue and repository implementation, there can 
 
 ### Storing data inside the internal storage
 
-Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [internal storage configuration](../../configuration/index.md#internal-storage).
+Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 When using the internal storage, data is, by default, stored using [Amazon Ion](https://amazon-ion.github.io/ion-docs/) format.
 
@@ -160,12 +160,12 @@ tasks:
     key: user_name
 ```
 
-When we `Set` a new value for `user_name`, we have to use another `Get` task to get the most up to date value, and then reference the `Get` task `id` in our log underneath to get the latest value. The same applies to the `Delete` task. In order to show that it has been deleted, we try to get the data from the key deleetd in the `delete_data` task to show that.
+When we `Set` a new value for `user_name`, we have to use another `Get` task to retrieve the most up-to-date value, and then reference that `Get` task `id` in the log below to show the latest value. The same applies to the `Delete` task. To show that the value has been deleted, we try to retrieve data from the key deleted in the `delete_data` task.
 :::
 
 ## Processing data
 
-For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.md).
+For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.mdx).
 
 For more complex data transformations, Kestra offers various data processing plugins including transform tasks or custom scripts.
 
@@ -195,7 +195,7 @@ tasks:
 
 - id: convertBackToIon
   type: io.kestra.plugin.serdes.csv.CsvToIon
-  from: "{{outputs.convertToCsv.uri}}""
+  from: "{{ outputs.convertToCsv.uri }}"
 ```
 
 ### Processing data using scripts
@@ -323,7 +323,7 @@ tasks:
     type: "io.kestra.plugin.core.storage.PurgeExecution"
 ```
 
-The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [configurations](../../configuration/index.md).
+The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 
 Also, the [Purge](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Purge) task can be used to purge storages, logs, and executions of previous execution. For example, this flow purges all of these every day:
@@ -346,9 +346,9 @@ triggers:
 
 ### Internal storage FAQ
 
-#### How to read a file from the internal storage as a string?
+#### How to read a file from internal storage as a string
 
-The 'read' function expects an argument 'path' that is a path to a namespace file or an internal storage URI. Note that when using inputs, outputs or trigger variables, you don't need any extra quotation marks. Here is how you can use such variables along with the 'read' function:
+The `read()` function expects a `path` argument that points to a namespace file or an internal storage URI. Note that when using inputs, outputs, or trigger variables, you don't need any extra quotation marks. Here is how you can use those variables with the `read()` function:
 - `{{ read(inputs.file) }}` for a FILE-type input variable named `file`
 - `{{ read(outputs.mytaskid.uri) }}` for an output `uri` from a task named `mytaskid`
 - `{{ read(trigger.uri) }}` for a `uri` of many triggers incl. Kafka, AWS SQS, GCP PubSub, etc.
@@ -406,7 +406,7 @@ namespace: company.team
 
 tasks:
   - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
+    type: io.kestra.plugin.jdbc.duckdb.Queries
     sql: |
       INSTALL httpfs;
       LOAD httpfs;
@@ -416,7 +416,7 @@ tasks:
 
   - id: each_raw
     type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
+    items: "{{ outputs.extract.outputs[0].uri }}"
     namespace: company.team
     flowId: subflow_raw_string_input
     inputs:

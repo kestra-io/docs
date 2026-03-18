@@ -15,7 +15,7 @@ Run tasks as local processes.
   <iframe src="https://www.youtube.com/embed/CC_CnH74qnk?si=_Pq-GBV2UadYlKxE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-The following example shows a Shell script configured with the Process task runner, which runs a Shell command as a child process on the Kestra host:
+The following example shows a shell script configured with the Process task runner, which runs a command as a child process on the Kestra host:
 
 ```yaml
 id: process_task_runner

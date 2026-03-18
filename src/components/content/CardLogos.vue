@@ -55,7 +55,7 @@ import monogram from './assets/logo-monogram-version.png'
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .logo-item {
         display: flex;

@@ -1,5 +1,5 @@
 ---
-title: Realtime Triggers
+title: Use Realtime Triggers in Kestra
 icon: /src/contents/docs/icons/plugins.svg
 stage: Getting Started
 topics:
@@ -9,8 +9,6 @@ description: React to events instantly with Kestra's Realtime Triggers for Kafka
 ---
 
 How to React to events as they happen with millisecond latency.
-
-## Realtime Triggers
 
 As soon as you add a Realtime Trigger to your workflow, Kestra starts an always-on thread that listens to the external system for new events. When a new event occurs, Kestra starts a workflow execution to process the event.
 

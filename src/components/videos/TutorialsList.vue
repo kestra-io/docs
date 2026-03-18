@@ -234,7 +234,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     section {
         padding: $rem-4 $rem-1;

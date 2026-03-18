@@ -21,7 +21,10 @@ const SECTIONS = getSections(totalPlugins)
                         <th class="col-feature"></th>
                         {
                             PLANS.map((plan, index) => (
-                                <th class="col-plan" data-usal={`zoomin delay-${index * 10}`}>
+                                <th
+                                    class="col-plan"
+                                    data-usal={`zoomin delay-${index * 10}`}
+                                >
                                     <span class="plan-name">{plan.name}</span>
                                     {plan.button && (
                                         <a
@@ -48,7 +51,9 @@ const SECTIONS = getSections(totalPlugins)
                                     <tr class="feature-row">
                                         <td class="col-feature">
                                             <span class="feature-label">
-                                                <span data-usal="fade-r">{row.feature}</span>
+                                                <span data-usal="fade-r">
+                                                    {row.feature}
+                                                </span>
                                                 <span class="tooltip-container">
                                                     <Icon
                                                         name="mdi:information-slab-circle-outline"
@@ -127,7 +132,9 @@ const SECTIONS = getSections(totalPlugins)
                     {
                         SUPPORT_ROWS.map((row) => (
                             <tr class="feature-row">
-                                <td class="col-feature" data-usal="fade-r">{row.feature}</td>
+                                <td class="col-feature" data-usal="fade-r">
+                                    {row.feature}
+                                </td>
                                 {row.values.map((val) => (
                                     <td class="col-plan">
                                         {val === "check" ? (
@@ -148,14 +155,14 @@ const SECTIONS = getSections(totalPlugins)
         </div>
 
         <div class="support-action">
-            <a href="/demo" class="btn btn-primary" data-usal="zoomin">Contact us</a>
+            <a href="/demo" class="btn btn-primary" data-usal="zoomin"
+                >Contact us</a
+            >
         </div>
     </div>
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .compare-plan {
         padding: 5rem 0 10rem;
         background-color: var(--ks-background-primary);
@@ -355,6 +362,10 @@ const SECTIONS = getSections(totalPlugins)
         margin-top: 4rem;
         h2 {
             margin-bottom: 0.5rem;
+        }
+
+        #support-plans {
+            scroll-margin-top: 40px;
         }
         p {
             color: var(--ks-content-primary);

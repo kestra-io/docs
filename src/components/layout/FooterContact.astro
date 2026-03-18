@@ -36,36 +36,36 @@ const animationType = (type: string) => (animation ? type : "")
             {subtitle && <p class="subtitle">{subtitle}</p>}
             <div class="buttons">
                 {
-                dark?.text && (
-                    <a href={dark?.href} class="btn btn-secondary mb-2">
-                        {dark?.text}
-                    </a>
-                )
-            }
-            {
-                purple?.text && (
-                    <a
-                        href={purple?.href}
-                        class:list={["btn btn-primary mb-2", { 'ms-sm-3': dark?.text }]}
-                    >
-                        {purple?.text}
-                    </a>
-                )
-            }
+                    dark?.text && (
+                        <a href={dark?.href} class="btn btn-secondary mb-2">
+                            {dark?.text}
+                        </a>
+                    )
+                }
+                {
+                    purple?.text && (
+                        <a
+                            href={purple?.href}
+                            class:list={[
+                                "btn btn-primary mb-2",
+                                { "ms-sm-3": dark?.text },
+                            ]}
+                        >
+                            {purple?.text}
+                        </a>
+                    )
+                }
+            </div>
         </div>
-    </div>
     </div>
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         background: var(--ks-background-body);
         padding: $spacer * 4 0;
     }
     .footer-contact {
-
         .cta-card {
             display: flex;
             flex-direction: column;

@@ -13,7 +13,7 @@ If you haven't already, follow the [Quickstart Guide](../../01.quickstart/index.
 ## Build your first Hello World Flow
 
 <div class=video-container>
-  <iframe src="https://www.youtube.com/embed/6kV6OqadU90?si=hmEcf3dZGOm8xIV3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/Foq3RZfwV90?si=uO7xdC5TXZxMGShB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Flows
@@ -145,7 +145,7 @@ When you want to tweak a flow step by step without rerunning everything, use the
 
 ### Autocompletion
 
-Kestra supports [hundreds of tasks](/plugins) integrating with various external systems. It's not necessary nor possible to memorize all potential tasks or properties (maybe one day) Use the shortcut `CTRL + SPACE` on Windows/Linux or `fn + control + SPACE` on macOS to trigger autocompletion to list available tasks or properties of a given task. Kestra also has built-in documentation accessible through the UI for Flow, Task, and Trigger properties, so you don't have to context switch between building a flow and learning the ins and outs of a component.
+Kestra supports [hundreds of tasks](/plugins) integrating with various external systems. It's neither necessary nor possible to memorize all potential tasks or properties, maybe one day. Use the shortcut `CTRL + SPACE` on Windows/Linux or `fn + control + SPACE` on macOS to trigger autocompletion and list available tasks or properties for a given task. Kestra also has built-in documentation accessible through the UI for Flow, Task, and Trigger properties, so you don't have to context switch between building a flow and learning the ins and outs of a component.
 
 :::alert{type="info"}
 If you want to comment or uncomment out part of your code, use `CTRL + /` on Windows/Linux or `⌘ + /` on macOS. All available keyboard shortcuts are listed in the code editor context menu.

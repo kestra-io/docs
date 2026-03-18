@@ -58,18 +58,49 @@
                         <div class="form-group">
                             <label for="country">Country <span class="required-field">*</span></label>
                             <select id="country" class="form-control" name="country" required>
-                                <option v-for="c in countryList" :key="c.code" :value="c.name" :selected="c.name === 'France'">
+                                <option
+                                    v-for="c in countryList"
+                                    :key="c.code"
+                                    :value="c.name"
+                                    :selected="c.name === 'France'"
+                                >
                                     {{ c.name }}
                                 </option>
                             </select>
                         </div>
-
+                        <div class="form-group">
+    <label for="free_trial_start_date">
+        When would you like to start your free trial? <span class="required-field">*</span>
+    </label>
+    <select
+        id="free_trial_start_date"
+        class="form-control"
+        name="free_trial_start_date"
+        required
+    >
+        <option value="" disabled selected>Select an option</option>
+        <option value="As soon as possible">As soon as possible</option>
+        <option value="In the next 2 weeks">In the next 2 weeks</option>
+        <option value="Within 1 month">Within 1 month</option>
+        <option value="Within 3 months">Within 3 months</option>
+        <option value="Not sure yet">Not sure yet</option>
+    </select>
+</div>
                         <div class="form-group">
                             <label for="orchestration_needs">What are you automating ? (one sentence)</label>
-                            <textarea id="orchestration_needs" class="form-control" name="orchestration_needs" rows="2" />
+                            <textarea
+                                id="orchestration_needs"
+                                class="form-control"
+                                name="orchestration_needs"
+                                rows="2"
+                            />
                         </div>
-
-                        <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 mt-3"
+                        >
+                            Submit
+                        </button>
                     </form>
                 </div>
             </div>
@@ -135,7 +166,7 @@
             return
         }
 
-        const { firstname, lastname, email, company, jobtitle, country, orchestration_needs } = form
+        const { firstname, lastname, email, company, jobtitle, country, free_trial_start_date, orchestration_needs } = form
         const kuid = localStorage.getItem("KUID")
         const useCaseRadio = form.querySelector('input[name="use_case"]:checked') as HTMLInputElement | null
 
@@ -160,6 +191,7 @@
                 field("0-1", "jobtitle", jobtitle.value),
                 field("0-2", "vertical_selector", useCaseRadio?.value ?? ""),
                 field("0-2", "countriesall", country.value),
+                field("0-1", "free_trial_start_date", free_trial_start_date.value),
                 field("0-1", "orchestration_needs", orchestration_needs.value),
                 field("0-1", "kuid", kuid),
                 field("0-1", "form_submission_identifier", "Enterprise Free Trial Form"),
@@ -189,13 +221,13 @@
             )
             message.value = isBlocked
                 ? "Please use a professional email address"
-                : error.response?.data?.message || "Form submission error"
+                : error.response?.data?.message ?? "Form submission error"
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .free-trial {
         overflow-x: hidden;
@@ -377,13 +409,23 @@
         }
 
         @keyframes successAppear {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes glowEffect {
-            0%, 100% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.1); }
-            50% { box-shadow: 0 0 25px rgba(76, 175, 80, 0.2); }
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(76, 175, 80, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(76, 175, 80, 0.2);
+            }
         }
     }
 </style>

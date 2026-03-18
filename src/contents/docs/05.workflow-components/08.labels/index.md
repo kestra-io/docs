@@ -11,8 +11,7 @@ Labels are key-value pairs in Kestra that let you organize [flows](../01.flow/in
 
 You can organize flows and executions by project, priority, maintainer, or any other relevant criteria. Unlike fixed categories, labels support flexible filtering, grouping, and discovery.
 
-Labels can be associated with both the flow definition and individual execution instances. This allows you to distinguish between different executions
-of the same flow.
+Labels can be associated with both the flow definition and individual execution instances. This allows you to distinguish between different executions of the same flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/dwuj5jOHIOA?si=ioct3HALKVKojax4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -36,8 +35,7 @@ tasks:
     message: hello from a flow with labels
 ```
 
-Executing such a flow results in the execution inheriting both `team: finance` and `priority: HIGH` labels by default. However, you can also define
-additional labels at the time of execution launch.
+Executing such a flow results in the execution inheriting both `team: finance` and `priority: HIGH` labels by default. However, you can also define additional labels at the time of execution launch.
 
 ## Benefits of labels
 
@@ -60,8 +58,7 @@ When running the `process_invoice_flow`, you can add execution labels (e.g., `cu
 You can also label executions related to a pre-production run. For example, using a `purpose: pre-prod` label. This enables you to safely
 delete only those executions associated with the pre-production phase.
 
-In multi-team environments, labels help you to separate executions by team — for example, `support: EMEA` and `support: APAC`—when the same flow handles
-data from different regions.
+In multi-team environments, labels help you separate executions by team, for example `support: EMEA` and `support: APAC`, when the same flow handles data from different regions.
 
 ## Execution labels propagated from flow labels
 

@@ -75,7 +75,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .container-fluid {
         background-size: 100% 100%;

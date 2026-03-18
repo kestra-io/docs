@@ -85,7 +85,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .container-fluid {
         background: url("/landing/usecases/cicd/bg.svg") no-repeat center;

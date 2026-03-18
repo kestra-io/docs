@@ -35,23 +35,25 @@ The [Scripts Plugin](https://github.com/kestra-io/plugin-scripts) provides conve
 
 > Note that `outputs` require a **dictionary**, while `metrics` expect a **list of dictionaries**.
 
-Below is an example showing `outputs` with key-value pairs:
+Below is an example showing an `outputs` object with key-value pairs:
 
 ```json
-"outputs": {
+{
+  "outputs": {
     "key": "value",
     "exampleList": [1, 2, 3],
     "tags": {
-	    "s3Bucket": "declarative-orchestration",
-	    "region": "us-east-1"
+      "s3Bucket": "declarative-orchestration",
+      "region": "us-east-1"
     }
+  }
 }
 ```
 If using the [Enterprise or Cloud Edition](../../07.enterprise/index.mdx), you can encrypt script task outputs with `::{"encryptedOutputs":{"key":"value"}}::`. For a full example, check out the section in our [Outputs guide](../../05.workflow-components/06.outputs/index.md#encrypted-outputs-from-script-tasks).
 
 Here is the representation of a `metrics` object. It's a **list of dictionaries**:
 
-```json
+```text
 "metrics": [
     {
         "name": "myMetric", // mandatory, the name of the metrics

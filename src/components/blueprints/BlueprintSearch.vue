@@ -114,7 +114,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .search-bar {
         display: flex;

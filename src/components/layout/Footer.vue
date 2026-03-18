@@ -124,6 +124,7 @@ const FOOTER_SECTIONS: Section[] = [
             { text: "Airflow vs Kestra", href: "/vs/airflow" },
             { text: "Prefect vs Kestra", href: "/vs/prefect" },
             { text: "Dagster vs Kestra", href: "/vs/dagster" },
+            { text: "n8n vs Kestra", href: "/vs/n8n" },
             { text: "AWS Step Functions vs Kestra", href: "/vs/aws-step-functions" },
         ]
     },
@@ -149,7 +150,7 @@ const FOOTER_SECTIONS: Section[] = [
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     footer {
         position: relative;
@@ -238,7 +239,7 @@ const FOOTER_SECTIONS: Section[] = [
                 margin-top: 26px;
             }
         }
-        
+
         .logo {
             content: url("~/assets/logo-white.svg");
             width: 180px;

@@ -73,7 +73,7 @@
                 top: offsetPosition,
                 behavior: "smooth",
             })
-            
+
             history.pushState(null, "", `#${id}`)
             activeLinkId.value = id
         }
@@ -81,7 +81,7 @@
 
     const updateActiveLink = () => {
         const headings = props.links.map(link => document.getElementById(link.id)).filter(el => el !== null) as HTMLElement[]
-        
+
         const scrollPosition = window.scrollY + 120 // offset
 
         for (let i = headings.length - 1; i >= 0; i--) {
@@ -90,7 +90,7 @@
                 return
             }
         }
-        
+
         if (headings.length > 0 && scrollPosition < headings[0].offsetTop) {
             activeLinkId.value = ""
         }
@@ -107,7 +107,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .title {
         color: var(--ks-content-primary);
@@ -167,7 +167,7 @@
             font-size: $font-size-sm;
             line-height: 1.4;
             transition: color 0.2s ease;
-            
+
             &:hover {
                 color: var(--ks-content-link);
             }

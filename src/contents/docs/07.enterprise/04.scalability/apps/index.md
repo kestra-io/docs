@@ -196,7 +196,7 @@ You can copy the URL from the Apps catalog page in the Kestra UI.
 
 ### App expressions
 
-From within flows, you can generate App URLs using the Enterprise-only `appLink` expression. See the [Expressions guide](../../../expressions/index.md#applink) for parameters and examples.
+From within flows, you can generate App URLs using the Enterprise-only `appLink` expression. See the [Function Reference](../../../expressions/04.function-reference/index.md) for parameters and examples.
 
 ---
 

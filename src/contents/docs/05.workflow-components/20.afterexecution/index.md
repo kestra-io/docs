@@ -8,7 +8,7 @@ version: "0.22.0"
 
 Run tasks after a flow execution completes.
 
-## Afterexecution tasks – post-run actions
+## `afterExecution` tasks – post-run actions
 
 `afterExecution` tasks run once a flow has finished, allowing you to act on the final execution status.
 
@@ -42,7 +42,31 @@ afterExecution:
     messageText: "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"
 ```
 
-Any errors in the `afterExecution` block will not change the state of the flow from Success to Failed, and will not trigger a flow that relies on ExecutionStatus = Failed. You can create a state change by using a [Sequential flowable task](../01.tasks/00.flowable-tasks/index.md#sequential) with an `errors` block like in the example below:
+## `afterExecution` vs `errors`
+
+Both constructs are useful for notifications and follow-up actions, but they run at different moments.
+
+- `errors` runs when a task or flow errors and is primarily for failure handling.
+- `afterExecution` runs only after the execution reaches its final state.
+
+For failure-specific handling, including local handlers inside flowable tasks, see the [`errors` documentation](../11.errors/index.md).
+
+Choose `afterExecution` when you need to branch on the final status of the whole execution, for example to send one message for `SUCCESS`, another for `FAILED`, and a third for `WARNING`.
+
+Choose `errors` when you only care about failure handling or when you need local error handling inside a specific flowable task.
+
+Pros of `afterExecution`:
+
+- It works naturally with final states such as `SUCCESS`, `FAILED`, and `WARNING`.
+- It keeps all post-run outcome logic in one place.
+- It is well suited for final notifications, reporting, and auditing tasks.
+
+Cons of `afterExecution`:
+
+- It cannot be scoped locally to a flowable task the way `errors` can.
+- Errors inside `afterExecution` do not change the final execution state.
+
+Any errors in the `afterExecution` block will not change the state of the flow from `SUCCESS` to `FAILED`, and they will not trigger a flow that relies on `ExecutionStatus = FAILED`. You can force a state change by using a [Sequential flowable task](../01.tasks/00.flowable-tasks/index.md#sequential) with an `errors` block, as in the example below:
 
 ```yaml
 afterExecution:
@@ -96,7 +120,7 @@ afterExecution:
     message: Execution {{ execution.state }} # Will show FAILED
 ```
 
-After executing the above, you can see that the `finally` task has a status of RUNNING while the `afterExecution` task says FAILED.
+After running the example above, the `finally` task appears with a `RUNNING` state while the `afterExecution` task shows `FAILED`.
 
 ![after-execution-1](./after-execution-1.png)
 

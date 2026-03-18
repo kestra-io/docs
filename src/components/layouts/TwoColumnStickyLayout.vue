@@ -52,7 +52,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .layout-wrapper {
         padding: $rem-4 0;

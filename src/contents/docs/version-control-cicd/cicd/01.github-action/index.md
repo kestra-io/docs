@@ -162,6 +162,7 @@ jobs:
 with:
   server: ${{ secrets.KESTRA_HOSTNAME }}
   apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+---
 # Using basic auth
 with:
   server: ${{ secrets.KESTRA_HOSTNAME }}

@@ -92,14 +92,10 @@ const newsItems = [
 </div>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
-
     .container {
         max-width: 100%;
         background-color: var(--ks-background-body);
         padding: 5rem 1rem;
-
 
         @include media-breakpoint-up(sm) {
             padding: 4rem 1rem;
@@ -143,7 +139,6 @@ const newsItems = [
             &:not(:first-child) {
                 border-top: 1px solid var(--ks-border-primary);
             }
-
         }
 
         @media (min-width: 768px) and (max-width: 1199px) {
@@ -151,11 +146,9 @@ const newsItems = [
                 border-right: 1px solid var(--ks-border-primary);
             }
 
-
             &:not(:first-child):not(:nth-child(2)) {
                 border-top: 1px solid var(--ks-border-primary);
             }
-
         }
 
         @media (min-width: 1200px) {
@@ -165,13 +158,11 @@ const newsItems = [
                 border-bottom: 1px solid var(--ks-border-primary);
             }
 
-
             &:nth-child(2),
             &:nth-child(5) {
                 border-left: 1px solid var(--ks-border-primary);
                 border-right: 1px solid var(--ks-border-primary);
             }
-
         }
 
         @include media-breakpoint-down(md) {
@@ -208,7 +199,6 @@ const newsItems = [
             margin: 0;
             color: var(--ks-content-tertiary);
         }
-
     }
 
     .card-content {
@@ -241,6 +231,5 @@ const newsItems = [
         font-weight: 600;
         color: var(--ks-content-primary);
         line-height: 1.4;
-
     }
 </style>

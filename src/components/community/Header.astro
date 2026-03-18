@@ -5,9 +5,7 @@ import headerBg from "./assets/header-bg.svg?raw"
 import TopHero from "~/components/layout/TopHero.astro"
 ---
 
-<TopHero
-    background="linear-gradient(0deg, #000000 20%, #0f1a2e 100%)"
->
+<TopHero background="linear-gradient(0deg, #000000 20%, #0f1a2e 100%)">
     <div class="container">
         <h1 data-usal="fade-r">Connect and Collaborate</h1>
         <p data-usal="fade-l">
@@ -38,8 +36,6 @@ import TopHero from "~/components/layout/TopHero.astro"
 </TopHero>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     :global(section.head) {
         padding-bottom: 0 !important;
         overflow: hidden;

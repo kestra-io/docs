@@ -17,11 +17,7 @@ interface Props {
     }
 }
 
-const {
-    mainTitle,
-    kestra,
-    competitor
-} = Astro.props as Props
+const { mainTitle, kestra, competitor } = Astro.props as Props
 ---
 
 <section>
@@ -62,8 +58,6 @@ const {
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         padding: $spacer * 4 0;
         background-color: var(--ks-background-body);

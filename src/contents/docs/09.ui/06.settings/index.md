@@ -24,15 +24,15 @@ Options you can configure under **Main Configuration** include:
 - **Default Log Display**: Expand all, Collapse all, or Expand only failed tasks
 - **Execute the Flow**: In the same tab or in a new tab
 - **Default Execution Tab**: Sets which Execution tab you are directed to (e.g., Gantt, Logs, Outputs, etc.) after executing a flow.
-- **Default Flow Tab**: Sets which flow tab you are immediately on when clicking on a flow (e.g., Overview, Topology, Edit, etc.)
+- **Default Flow Tab**: Sets which flow tab opens by default when you click a flow (e.g., Overview, Topology, Edit, etc.)
 
 ---
 
 ## Theme preferences
 
-Kestra allows you to have a Light or Dark mode.
+Kestra supports both Light and Dark mode.
 
-You can also specify the Editor to be a separate Light or Dark mode too. In addition, you can adjust the font size and family for the Editor too.
+You can also configure the Editor independently in Light or Dark mode. In addition, you can adjust the Editor font size and family.
 
 There's also the option to change the environment name and color to help you identify if you have multiple Kestra instances, for example a `dev` and `prod` environment.
 

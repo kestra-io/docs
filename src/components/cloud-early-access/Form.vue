@@ -382,7 +382,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .column-container {
         display: grid;

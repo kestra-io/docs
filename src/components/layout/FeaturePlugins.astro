@@ -15,7 +15,10 @@ const { content } = Astro.props
 
 const PLUGINS = [
     { src: "/icons/io.kestra.plugin.fivetran-white.svg", alt: "Fivetran" },
-    { src: "/icons/io.kestra.plugin.jdbc.snowflake-white.svg", alt: "Snowflake" },
+    {
+        src: "/icons/io.kestra.plugin.jdbc.snowflake-white.svg",
+        alt: "Snowflake",
+    },
     { src: "/icons/io.kestra.plugin.aws-white.svg", alt: "AWS" },
     { src: "/icons/io.kestra.plugin.databricks-white.svg", alt: "Databricks" },
     { src: "/icons/io.kestra.plugin.azure-white.svg", alt: "Azure" },
@@ -65,8 +68,6 @@ const displayDescription = content.description.replace(
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         background-color: var(--ks-background-secondary);
         border-top: $block-border;

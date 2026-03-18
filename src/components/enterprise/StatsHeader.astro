@@ -1,0 +1,114 @@
+---
+import Link from "~/components/common/Link.astro"
+
+interface Stat {
+    category?: string
+    value?: string
+    label?: string
+}
+
+interface Props {
+    stats?: Stat[]
+}
+
+const { stats } = Astro.props
+---
+
+<section class="stats-section">
+    <div class="stats-header container">
+        <h2 data-usal="fade-l">
+            Unified Enterprise-Grade Orchestration Platform
+        </h2>
+        <p class="mb-0" data-usal="fade-r">
+            Achieve in Days What Once Took Weeks, with Complete Control at Every
+            Step
+        </p>
+
+        {
+            stats && stats.length > 0 && (
+                <div class="stats-grid">
+                    {stats.map(({ category, value, label }) => (
+                        <div class="stat-block" data-usal="fade-up">
+                            {category && <p>{category}</p>}
+                            {value && <div class="value">{value}</div>}
+                            {label && <h5>{label}</h5>}
+                        </div>
+                    ))}
+                </div>
+            )
+        }
+        <Link href="/pricing" class="btn btn-primary" data-usal="zoomin">
+            Compare All Plans
+        </Link>
+    </div>
+</section>
+
+<style lang="scss">
+    .stats-section {
+        padding: 7.5rem $rem-1 $rem-5;
+        background: var(--ks-background-tertiary);
+
+        @include media-breakpoint-down(md) {
+            padding: $rem-4 0.5rem;
+        }
+
+        .stats-header {
+            display: flex;
+            flex-direction: column;
+
+            h2,
+            p {
+                text-align: left;
+            }
+
+            .stats-grid {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1.5rem;
+                margin-top: $rem-2;
+
+                @include media-breakpoint-down(xl) {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                @include media-breakpoint-down(sm) {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .stat-block {
+                padding: $rem-2;
+                border-radius: 0.75rem;
+                background: var(--ks-background-primary);
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                border: 1px solid var(--ks-border-secondary);
+                box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+
+                p {
+                    margin: 0;
+                    color: var(--ks-content-tertiary);
+                }
+
+                .value {
+                    font-weight: 600;
+                    font-size: $rem-5;
+                    color: var(--ks-content-color-highlight);
+                    line-height: 1;
+
+                    @include media-breakpoint-down(md) {
+                        font-size: $rem-4;
+                    }
+                }
+            }
+
+            .btn {
+                width: fit-content;
+                white-space: nowrap;
+                margin: $rem-2 auto 0;
+            }
+        }
+    }
+</style>

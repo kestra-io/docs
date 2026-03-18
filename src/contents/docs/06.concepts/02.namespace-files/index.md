@@ -70,7 +70,7 @@ Namespace Files make it easy to:
 
 While creating or editing a Flow, you can access Namespace Files from the **Namespace Files** tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
 
-To start, add a new file, (e.g., a Python script). Add a folder named `scripts` and a file called `hello.py` with the following content:
+To start, add a new file (e.g., a Python script). Add a folder named `scripts` and a file called `hello.py` with the following content:
 
 ```python
 print("Hello from the Editor!")
@@ -269,7 +269,7 @@ In version 0.24, we introduced a universal file protocol that simplifies accessi
 
 Usually, pointing to a file location, rather than reading the file's content, is required when you want to use a file as an input to a CLI command (e.g., in a `Commands` task such as `io.kestra.plugin.scripts.python.Commands` or `io.kestra.plugin.scripts.node.Commands`). In all other cases, the `read()` function can be used to read the content of a file as a string (e.g., in `Query` or `Script` tasks).
 
-You can also use the `io.kestra.plugin.core.flow.WorkingDirectory` task to read namespace files there and then use them in child tasks that require reading the file path in CLI commands for example like: `python scipts/hello.py`.
+You can also use the `io.kestra.plugin.core.flow.WorkingDirectory` task to read namespace files and then use them in child tasks that require a file path in CLI commands, for example: `python scripts/hello.py`.
 
 ### The `read()` function
 

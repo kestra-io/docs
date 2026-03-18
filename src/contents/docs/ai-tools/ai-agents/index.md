@@ -101,7 +101,7 @@ pluginDefaults:
 
 The goal of the AI Agent is to summarize text. The flow uses three inputs -- `summary_length`, `language`, and `text` -- to control the length, language, and source text for the summary.
 
-All inputs have a default value, and more or less can be used and referenced in downstream agentic tasks depending on the use case with [expressions](../../expressions/index.md). When executing the flow, all the inputs can be selected or modified from the defaults.
+All inputs have a default value, and more or less can be used and referenced in downstream agentic tasks depending on the use case with [expressions](../../expressions/index.mdx). When executing the flow, all the inputs can be selected or modified from the defaults.
 
 ![AI Agent Flow Inputs](./ai-agent-inputs.png)
 

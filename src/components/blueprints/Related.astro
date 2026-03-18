@@ -2,12 +2,7 @@
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import BlueprintNav from "~/components/blueprints/BlueprintNav.vue"
 
-const {
-    relatedBlueprints,
-    tags,
-    title,
-    id
-} = Astro.props
+const { relatedBlueprints, tags, title, id } = Astro.props
 
 const pageSize = 3
 
@@ -15,11 +10,7 @@ const href = (blueprint: { id: number | string }) =>
     `/blueprints/${blueprint.id}`
 ---
 
-<section
-    class="related-bp"
-    data-id={id}
-    data-page-size={pageSize}
->
+<section class="related-bp" data-id={id} data-page-size={pageSize}>
     <div class="container">
         <div class="header">
             {
@@ -62,9 +53,7 @@ const href = (blueprint: { id: number | string }) =>
 <script is:inline>
     window.addEventListener("page-changed", (event) => {
         const { startIndex, id } = event.detail
-        const section = document.querySelector(
-            `.related-bp[data-id="${id}"]`,
-        )
+        const section = document.querySelector(`.related-bp[data-id="${id}"]`)
 
         if (!section) return
 
@@ -81,8 +70,6 @@ const href = (blueprint: { id: number | string }) =>
 </script>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section.related-bp {
         padding: $rem-3 $rem-1;
         background-color: var(--ks-background-primary);

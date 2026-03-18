@@ -1,20 +1,24 @@
 ---
 interface Props {
-    fullPath: string;
+    fullPath: string
 }
 
-const { fullPath } = Astro.props;
+const { fullPath } = Astro.props
 ---
 
 <div class="header-container">
     <div class="header container d-flex flex-column align-items-center gap-3">
         <slot>
-            <h1 data-usal="fade-l">Join our <span class="highlight">Team</span></h1>
+            <h1 data-usal="fade-l">
+                Join our <span class="highlight">Team</span>
+            </h1>
             <h4 data-usal="fade-r">
-                Drive innovation in a globally distributed, collaborative environment
+                Drive innovation in a globally distributed, collaborative
+                environment
             </h4>
             <a
-                href={(fullPath === "/careers" ? "" : "/careers") + "#positions"}
+                href={(fullPath === "/careers" ? "" : "/careers") +
+                    "#positions"}
                 class="btn btn-animated btn-purple-animated mt-4"
                 data-usal="zoomin"
             >
@@ -25,8 +29,6 @@ const { fullPath } = Astro.props;
 </div>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .header-container {
         margin-top: $rem-5;
         background: url("~/assets/dotted-bg.svg") no-repeat top;

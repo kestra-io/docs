@@ -1,5 +1,5 @@
 ---
-title: Long running and intensive processes on Kubernetes
+title: Run Long-Running and Intensive Processes on Kubernetes
 icon: /src/contents/docs/icons/kubernetes.svg
 stage: Advanced
 topics:
@@ -9,8 +9,6 @@ description: Execute long-running and resource-intensive tasks on Kubernetes usi
 ---
 
 Schedule long running and intensive processes with Kestra on Kubernetes.
-
-## Long running and intensive processes on Kubernetes
 
 Long running tasks hold strong importance in the world of automation.
 They can range from data processing, machine learning, and data analytics to batch processing, ETL, and more.

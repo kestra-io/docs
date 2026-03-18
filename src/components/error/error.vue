@@ -54,7 +54,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .squared {
         padding-bottom: 0 !important;

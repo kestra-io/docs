@@ -41,7 +41,7 @@ defineProps<{
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
 
     section {

@@ -35,13 +35,11 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-
     .quote-section {
         position: relative;
         z-index: 10;
         width: 100%;
-        background: var(--ks-background-primary);
+        background: var(--ks-background-body);
         border-bottom: 1px solid var(--ks-border-primary);
 
         &::before {
@@ -67,7 +65,7 @@
         }
 
         :deep(.wrapper) {
-            background-color: transparent !important;
+            background: none !important;
 
             .navigation {
                 display: none;

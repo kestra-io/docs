@@ -3,10 +3,8 @@ export const prerender = false
 import Layout from "~/components/layout.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
-import { $fetch } from "~/utils/fetch"
 import Header from "~/components/careers/Header.astro"
-import { type AshbyJob, type AshbyJobPosting, fetchJob, type Job, mapJob } from "~/utils/careers.ts"
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import { type AshbyJobPosting, fetchJob } from "~/utils/careers.ts"
 
 const { id1, id2, id3, id4, id5 } = Astro.params
 const { url } = Astro.request
@@ -57,7 +55,7 @@ const title = page.title
         subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
         purple={{
             text: "Send an Open Application",
-            href: "http://localhost:4321/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply",
+            href: "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply",
         }}
         dark={null}
     />

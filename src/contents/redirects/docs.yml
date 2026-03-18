@@ -84,3 +84,5 @@
   to: "/docs/plugin-developer-guide"
 - regexp: "^/docs/tutorial/docker"
   to: "/docs/tutorial/scripts"
+- regexp: "^/docs/enterprise/apps"
+  to: "/docs/enterprise/scalability/apps"

@@ -36,7 +36,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .copy {
         display: inline-flex;
@@ -64,7 +64,7 @@
 
             .icon {
                 display: flex;
-                
+
                 :deep(svg) {
                     width: 18px;
                     height: 18px;

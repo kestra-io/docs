@@ -67,7 +67,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
+
 
     .block {
         display: flex;

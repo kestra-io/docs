@@ -77,7 +77,7 @@
 
 <style scoped lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "~/assets/styles/variable";
+
 
     .plugin {
         height: 188px;
@@ -142,7 +142,7 @@
             .category-tag {
                 display: inline-block;
                 margin-right: 0.25rem;
-                background: var(--ks-backgroung-tag-category);
+                background: var(--ks-background-tag-category);
                 color: var(--ks-content-tag-category);
                 padding: 0.125rem 0.5rem;
                 border-radius: 40px;

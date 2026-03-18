@@ -1,5 +1,5 @@
 ---
-title: Debezium Tasks and Triggers
+title: Use Debezium Tasks and Triggers in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -8,8 +8,6 @@ description: Enable Change Data Capture (CDC) in your databases to use Debezium 
 ---
 
 How to enable databases to leverage Debezium tasks and triggers.
-
-## Debezium Tasks and Triggers
 
 In order to ensure the change data capture works seamlessly and to get the Debezium tasks and triggers running, you need to perform the necessary setup on the database. Below are instructions on how to set this up.
 

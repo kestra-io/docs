@@ -114,13 +114,13 @@ Starting your first workflow in Kestra takes minutes. There’s no long setup th
 
 ### Rich Governance and Security
 
-Kestra Enterprise Edition has built-in features for:
+The Enterprise Edition scales Kestra to have enterprise-grade security, scalability, and governance features required by organizations managing complex workflows across multiple teams or environments:
 
-- **RBAC and SSO**: Control who can create, run, or view workflows.
-- **Audit Logs**: See exactly who changed what and when.
-- **Secrets Management**: Securely manage API tokens, passwords, and other sensitive data.
-- **Cluster Monitoring:** View the health of your infrastructure from the integrated Admin dashboard.
-- **Multi-Tenant Architecture**: Isolate different business units, teams or projects for security and clarity.
+- **Access & Identity**: SSO + RBAC with Audit Logs for full traceability, plus invitations/SCIM to manage users at scale.
+- **Secrets & Policy**: Bring your own secrets manager or use built-in storage, apply read-only secrets, and enforce allowed-plugin lists.
+- **Isolation & Control**: Multi-tenant architecture with worker isolation and dedicated worker groups; a kill switch for safe pauses and maintenance mode with in-product announcements for change comms.
+- **Change Safety**: Assets packaging for artifact lineage tracking, versioned plugins to pin dependencies, and flow unit tests to catch regressions before deploy.
+- **Operations Visibility**: Cluster monitoring from the Instance dashboard keeps runtime health transparent.
 
 ### Clear Visibility into Dependencies
 

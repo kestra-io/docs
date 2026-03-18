@@ -120,7 +120,7 @@ You can create them via form or directly as YAML code for the Namespace:
 
 ![Plugin Default Form Creation](./plugin-default-creation.png)
 
-Or click on **YAML** and paste the following for example:
+Or click on **YAML** and, for example, paste the following:
 
 ```yaml
 - type: io.kestra.plugin.aws.s3.Upload
@@ -137,4 +137,3 @@ Plugin Defaults are inherited from the parent Namespace to children Namespaces. 
 ![Plugin Default Inheritance](./inherited-plugin-defaults.png)
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Qu8BDAn5EOUrGmwrfLyv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Defaults | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
-

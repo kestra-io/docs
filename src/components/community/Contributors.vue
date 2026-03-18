@@ -131,7 +131,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     section {
         padding: 7.5rem $rem-1;
@@ -141,7 +141,7 @@
             margin-bottom: 3rem;
         }
     }
-    
+
     .contributors {
         height: 100%;
         max-height: 100%;

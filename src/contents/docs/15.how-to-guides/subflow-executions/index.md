@@ -1,5 +1,5 @@
 ---
-title: Managing retries, restarts and replays with subflow executions
+title: Manage Retries, Restarts, and Replays with Subflow Executions
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -8,8 +8,6 @@ description: Best practices for configuring retries, restarts, and replays in su
 ---
 
 How to configure your flows so that failed subflow executions resume correctly without rerunning successful tasks.
-
-## Managing retries, restarts and replays with subflow executions
 
 ---
 

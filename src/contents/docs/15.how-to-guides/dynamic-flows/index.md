@@ -1,5 +1,5 @@
 ---
-title: Dynamic Flows
+title: Build Dynamic Flows in Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -117,7 +117,7 @@ In order to generate this flow dynamically for any number of items, we will use 
 import os
 from ruamel.yaml import YAML
 
-## Get the items from the environment variable and split it by comma(,)
+## Get the items from the environment variable and split them by commas
 items = os.getenv('EXTRACT_ITEMS', "products,orders").split(",")
 
 def http_download_task(idx, item):

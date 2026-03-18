@@ -19,26 +19,17 @@ interface Props {
     footerText?: string
 }
 
-const {
-    mainTitle,
-    kestra,
-    competitor,
-    footerText
-} = Astro.props as Props
+const { mainTitle, kestra, competitor, footerText } = Astro.props as Props
 ---
 
 <section>
     <div class="container">
         <h2 set:html={mainTitle} />
         <div class="comparison-box d-flex flex-column flex-lg-row">
-            <Card
-                isKestra={true}
-                logo={kestraLogo}
-                logoAlt="Kestra logo"
-            >
+            <Card isKestra={true} logo={kestraLogo} logoAlt="Kestra logo">
                 <h5>{kestra?.title}</h5>
                 <ul>
-                    {kestra?.list?.map(item => <li>{item}</li>)}
+                    {kestra?.list?.map((item) => <li>{item}</li>)}
                 </ul>
             </Card>
             <Card
@@ -56,9 +47,13 @@ const {
     </div>
 </section>
 
-<style lang="scss" define:vars={{ competitorShadowColor: competitor?.shadowColor, competitorBulletColor: competitor?.bulletColor }}>
-    @import "~/assets/styles/variable";
-
+<style
+    lang="scss"
+    define:vars={{
+        competitorShadowColor: competitor?.shadowColor,
+        competitorBulletColor: competitor?.bulletColor,
+    }}
+>
     section {
         padding: $spacer * 4 0;
         background: var(--ks-background-body);

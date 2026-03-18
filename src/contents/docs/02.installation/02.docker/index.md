@@ -29,7 +29,7 @@ docker run --pull=always -it -p 8080:8080 --user=root \
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
 
 :::alert{type="info"}
-The above command starts Kestra with an embedded H2 database that does not persist data. Storage files are stored on the `kestra_data` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
+The above command starts Kestra with an embedded H2 database that does not persist data. Storage files are stored on the `kestra_data` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../03.docker-compose/index.md).
 :::
 
 :::alert{type="info"}
@@ -93,7 +93,7 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
 
 ### Using the `KESTRA_CONFIGURATION` environment variable
 
-You can adjust the [Kestra configuration](../../configuration/index.md) by passing the `KESTRA_CONFIGURATION` variable to the Docker container via the `-e` option.
+You can adjust the [Kestra configuration](../../configuration/01.configuration-basics/index.md) by passing the `KESTRA_CONFIGURATION` variable to the Docker container via the `-e` option.
 This environment variable must be a valid YAML string.
 
 Managing a large configuration via a single YAML string can be tedious. To simplify this, consider using a configuration file instead.
@@ -125,7 +125,7 @@ kestra:
   tasks:
     tmp-dir:
       path: /tmp/kestra-wd/tmp
-  url: http://localhost:8080/'
+  url: http://localhost:8080/
 ```
 
 :::alert{type="info"}
