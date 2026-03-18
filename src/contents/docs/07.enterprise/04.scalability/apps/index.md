@@ -26,7 +26,7 @@ You can think of Apps as **custom UIs for flows**. They are useful both for exte
 
 ---
 
-## Common app use cases
+## Common App use cases
 
 Most Apps fall into one of these two patterns:
 - **Execution forms**: users submit a form that starts a new execution with input parameters. For example, a requester can specify resources that need to be provisioned, and those inputs feed directly into a flow.
@@ -50,7 +50,7 @@ In short, Apps make it easy to turn your Kestra workflows into simple applicatio
 
 ---
 
-## How app stages map to execution progress
+## How App stages map to execution progress
 
 Apps render different blocks based on the current execution state. This is useful when you want the page to guide users through the full lifecycle of a request, from submission to approval to delivery.
 
@@ -70,7 +70,7 @@ This stage-based layout is what makes Apps easier for non-technical users: they 
 
 ---
 
-## Common app patterns
+## Common App patterns
 
 The examples below are a good starting point when designing your own App:
 
@@ -93,7 +93,7 @@ If you want inspiration beyond the examples on this page, browse the Apps-focuse
 
 ---
 
-## Creating apps in code
+## Creating Apps in code
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -189,7 +189,7 @@ This pattern also works for adjacent use cases such as database access requests,
 
 ---
 
-## Creating apps no code
+## Creating Apps no code
 
 Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
 
@@ -293,11 +293,11 @@ For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
 When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or conduct a survey. You can share the app URL on social media, embed it within your website, or send it via email.
 
 
-### Private access for using apps
+### Private access for using Apps
 
 When an app is set to `PRIVATE`, only users with the `APPEXECUTION` RBAC permission can submit requests. This setup works well when you want to allow a specific group (such as business stakeholders or external partners) to use the app without giving them direct access to the Kestra UI. You can invite these users to a specific Kestra tenant, where they’ll only see the App Catalog, optionally restricted to apps in a specific namespace. This fine-grained access control ensures that only authorized users can access and use the apps.
 
-### Private access for building apps
+### Private access for building Apps
 
 The `APP` RBAC permission controls who can create, read, update, or delete apps within a tenant. This permission can also be restricted to specific namespaces. Unlike the `APPEXECUTION` permission which governs the ability to submit requests using apps, the `APP` permission manages the ability to build, modify, and delete apps.
 
