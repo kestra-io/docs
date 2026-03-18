@@ -1,44 +1,42 @@
 <template>
     <div class="content">
-        <div>
-            <div class="tab-content">
-                <div class="tutorials-container" role="tabpanel">
-                    <div v-if="featuredVideo" class="row">
-                        <div>
-                            <iframe
-                                width="764"
-                                height="424"
-                                :src="featuredVideo.iframeUrl"
-                                :title="featuredVideo.title"
-                                frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                allowfullscreen
-                            />
-                        </div>
-                        <div>
-                            <div class="info-block">
-                                <div class="content">
-                                    <p class="category">{{ featuredVideo.category }}</p>
-                                    <h3 class="title">{{ featuredVideo.title }}</h3>
-                                    <p v-if="featuredVideo.publicationDate" class="video-info">
-                                        {{ formatDate(featuredVideo.publicationDate) }}
-                                    </p>
-                                    <p class="canal-name">{{ featuredVideo.author }}</p>
-                                </div>
+        <div class="tab-content">
+            <div class="tutorials-container" role="tabpanel">
+                <div v-if="featuredVideo" class="row">
+                    <div>
+                        <iframe
+                            width="764"
+                            height="424"
+                            :src="featuredVideo.iframeUrl"
+                            :title="featuredVideo.title"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen
+                        />
+                    </div>
+                    <div>
+                        <div class="info-block">
+                            <div class="content">
+                                <p class="category">{{ featuredVideo.category }}</p>
+                                <h3 class="title">{{ featuredVideo.title }}</h3>
+                                <p v-if="featuredVideo.publicationDate" class="video-info">
+                                    {{ formatDate(featuredVideo.publicationDate) }}
+                                </p>
+                                <p class="canal-name">{{ featuredVideo.author }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="tutorials-list">
-                        <div
-                            v-for="video in videos"
-                            :key="video.title"
-                        >
-                            <VideosTutorialVideo
-                                :video="video"
-                                @click="openVideoModal(video)"
-                            />
-                        </div>
+                </div>
+                <div class="tutorials-list">
+                    <div
+                        v-for="video in videos"
+                        :key="video.title"
+                    >
+                        <VideosTutorialVideo
+                            :video="video"
+                            @click="openVideoModal(video)"
+                        />
                     </div>
                 </div>
             </div>
@@ -80,7 +78,6 @@
     import Modal from "~/components/common/Modal.vue"
     import VideosTutorialVideo from "~/components/videos/TutorialVideo.vue"
     import PaginationContainer from "~/components/common/PaginationContainer.vue"
-    import TutorialsListTabs from "./TutorialsListTabs.vue"
 
     interface VideoData {
         title: string
@@ -197,8 +194,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     section {
         position: relative;
     }
@@ -230,6 +225,10 @@
         @include media-breakpoint-up(md) {
             margin-right: $rem-1;
         }
+    }
+
+    .tab-content{
+        margin: 0;
     }
 
     .tutorials-container {
