@@ -5,7 +5,7 @@ icon: /src/contents/docs/icons/best-practices.svg
 description: Learn when to use Download, HTTP Request, or script-based fetching in Kestra, and how to choose the right pattern for files, APIs, and custom integrations.
 ---
 
-Choose the simplest fetch pattern that matches the shape of the data and the amount of control you need.
+Choose the simplest fetch pattern that matches the shape, size, and the amount of control you need.
 
 ## Decision guide
 
@@ -13,6 +13,7 @@ Use `Download` when:
 
 - You need to retrieve a file over HTTP or HTTPS.
 - The result is naturally a file, such as CSV, JSON, ZIP, or a binary artifact.
+- The result is a large payload.
 - You want the response body streamed directly to Kestra internal storage.
 - Downstream tasks should consume a file URI rather than an in-memory response body.
 
@@ -20,7 +21,7 @@ Use `Request` when:
 
 - You need to call an HTTP API and inspect the response directly.
 - You need to work with status codes, headers, form data, JSON payloads, or authentication options.
-- The response is small enough to treat as task output.
+- The response is small enough to treat as task output, less than 10 MB.
 - You are orchestrating an API call, not implementing a full client.
 
 Use a script task when:
