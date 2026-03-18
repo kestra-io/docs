@@ -23,7 +23,7 @@ With Kestra, you can use an existing LDAP directory to authenticate users and sy
 
 ## Configuration
 
-LDAP is configured under the security context of your [Kestra configuration](../../../../configuration/index.md) file. 
+LDAP is configured under the security context of your [Kestra Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md) file. 
 
 [LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) supports `context`, `search`, and `groups` as core configuration properties supported out of the box. These properties define the connection context, user attribute mapping, and group filtering needed to synchronize users and their group memberships with Kestra.
 

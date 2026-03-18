@@ -11,7 +11,7 @@ Control your orchestration logic.
 
 Flowable tasks control orchestration logic — running tasks or subflows in parallel, creating loops, and handling conditional branching. They do not run heavy operations; those are handled by workers.
 
-Flowable tasks use [expressions](../../../expressions/index.md) from the execution context to determine which tasks run next. For example, you can use the outputs of a previous task in a `Switch` task to decide which task to run next.
+Flowable tasks use [expressions](../../../expressions/index.mdx) from the execution context to determine which tasks run next. For example, you can use the outputs of a previous task in a `Switch` task to decide which task to run next.
 
 ### Sequential
 
