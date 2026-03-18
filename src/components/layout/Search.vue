@@ -261,7 +261,7 @@
                 } else {
                     this.selectedFacet = undefined
                 }
-                this.search()
+                this.search('')
             },
             onHiddenSearch() {
                 this.selectedIndex = null
@@ -283,7 +283,7 @@
                 return axios
                     .get(`${API_URL}/search`, {
                         params: {
-                            q: value,
+                            q: value ?? '',
                             type: this.selectedFacet,
                         },
                         cancelToken: this.cancelToken.token,
@@ -355,7 +355,7 @@
             selectFacet(facet) {
                 if (this.selectedFacet !== facet) {
                     this.selectedFacet = facet
-                    this.search(this.searchValue)
+                    this.search(this.searchValue ?? '')
                 }
             },
             handleKeyboard(e) {
