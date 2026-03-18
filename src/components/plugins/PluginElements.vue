@@ -53,8 +53,8 @@
     const getElementHref = (element: PluginElement) => {
         const base = `/plugins/${pluginName}`
         return subGroup
-            ? `${base}/${slugify(subGroupName(subGroup))}/${element.cls}`
-            : `${base}/${element.cls}`
+            ? `${base}/${slugify(subGroupName(subGroup))}/${element.cls.toLowerCase()}`
+            : `${base}/${element.cls.toLowerCase()}`
     }
 
     const isElementActive = (element: PluginElement) => {
