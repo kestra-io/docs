@@ -6,7 +6,9 @@ topics:
   - Kestra Concepts
 ---
 
-Quickly populate your Kestra instance with realistic demo flows and executions using a single SQL script. This is useful for demos, testing dashboards, taking screenshots, or exploring Kestra's UI with meaningful data.
+Quickly populate your Kestra instance with realistic demo flows and executions using a single SQL script.
+ 
+This is useful for demos, testing dashboards, taking screenshots, or exploring Kestra's UI with meaningful data.
 
 ## Prerequisites
 
