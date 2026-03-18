@@ -33,6 +33,7 @@ Examples:
 These functions bridge expressions to external or stored data. Use them when the value is not already present in the execution context and must be resolved at runtime.
 
 - `secret()` reads a secret from Kestra's secret backend
+- `credential()` reads a short-lived token from a managed EE credential
 - `read()` reads the contents of a namespace file or internal-storage file
 - `fileURI()` resolves a namespace file URI
 
@@ -40,6 +41,7 @@ Examples:
 
 ```twig
 {{ secret('GITHUB_ACCESS_TOKEN') }}
+{{ credential('my_oauth') }}
 {{ read('subdir/file.txt') }}
 {{ fileURI('my_file.txt') }}
 ```
@@ -130,6 +132,16 @@ Use `secret()` for sensitive values:
 ```twig
 {{ secret('API_KEY') }}
 ```
+
+### `credential()`
+
+In Enterprise Edition, use `credential()` to inject a short-lived token from a managed credential:
+
+```twig
+{{ credential('my_oauth') }}
+```
+
+Use [Execution Context Variables](../01.execution-context/index.md) for the setup model and a fuller HTTP example. `credential()` returns the token only, while the credential definition itself is managed in the Kestra UI.
 
 ### `currentEachOutput()`
 
