@@ -1,10 +1,12 @@
 <section class="header-container">
     <div class="header container">
-        <h1>Open roles</h1>
-        <p>
-            Drive innovation in a globally distributed, collaborative
-            environment
-        </p>
+        <slot>
+            <h1>Open roles</h1>
+            <p>
+                Drive innovation in a globally distributed, collaborative
+                environment
+            </p>
+        </slot>
     </div>
 </section>
 
@@ -42,7 +44,7 @@
             p {
                 color: var(--ks-content-primary);
                 text-align: left;
-                margin-bottom: 0;
+                margin-bottom: 0.5rem;
                 font-weight: 400;
             }
         }
