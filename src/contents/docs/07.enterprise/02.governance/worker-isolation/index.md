@@ -75,7 +75,7 @@ For [Bash tasks](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.scr
 
 ```yaml
 kestra:
-  tasks:
+  plugins:
     defaults:
       - type: io.kestra.plugin.scripts.shell.Commands
         forced: true
@@ -84,6 +84,8 @@ kestra:
           taskRunner:
             type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
+
+`kestra.tasks.defaults` still works for backward compatibility, but `kestra.plugins.defaults` is the current and recommended property.
 
 Forced plugin defaults:
 - Ensure a property is set globally for a task, and no task can override it.

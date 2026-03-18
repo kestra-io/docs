@@ -23,6 +23,19 @@ Queues and repositories must stay compatible:
 - JDBC queue with H2, MySQL, or PostgreSQL repository
 - Kafka queue with Elasticsearch repository in Enterprise Edition
 
+## Allocated CPU cores
+
+Kestra sizes several internal thread pools based on the number of CPU cores available to the process. By default, it uses the number of CPU cores reported by the runtime environment.
+
+If you want Kestra to size those pools using a different value, set `kestra.allocated-cpu-cores`:
+
+```yaml
+kestra:
+  allocated-cpu-cores: 2
+```
+
+This is useful when you want to limit how aggressively Kestra allocates worker, scheduler, and queue-related threads without changing container limits or host-level CPU settings.
+
 ## Database and datasources
 
 Start here if you are choosing the persistence layer for a new Kestra instance or moving from a local setup to a durable environment. In most teams, this is the first configuration page they revisit after initial installation.

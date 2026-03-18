@@ -69,9 +69,19 @@ When building new flows in a Namespace, Namespace secrets are accessible from th
 
 Plugin Defaults can also be defined at the Namespace level. These plugin defaults are then applied for all tasks of the corresponding type defined in the flows under the same Namespace.
 
-On the Namespaces page, select the Namespace where you want to define the plugin defaults and navigate to the **Plugin defaults** tab. You can add the plugin defaults here and save the changes by clicking on the **Save** button at the bottom of the page.
+On the Namespaces page, select the Namespace where you want to define the plugin defaults and navigate to the **Plugin Defaults** tab.
 
 ![Define Plugin Defaults](./plugindefaults-namespaces.png)
+
+From there, you can:
+
+- add a plugin default with a guided form
+- switch between predefined plugin types and a custom plugin type
+- switch between form mode and YAML mode
+- preview the YAML for an existing plugin default
+- export plugin defaults from the current Namespace
+- import plugin defaults from a YAML file
+- inspect inherited plugin defaults together with the parent Namespace they come from
 
 You can reference secrets and variables defined with the same Namespace in the plugin defaults.
 
@@ -89,6 +99,8 @@ tasks:
     sql: select * from employees
     fetchOne: true
 ```
+
+Namespace-level plugin defaults are inherited by child Namespaces. This makes it possible to define shared defaults once in a parent Namespace and let child Namespaces reuse them while still adding their own overrides when needed.
 
 ### Default service account for SDK plugins
 
@@ -193,7 +205,7 @@ github:
   token: "{{ secret('GITHUB_TOKEN') }}"
 ```
 
-Then, create another file for `task_defaults_marketing.yml`:
+Then, create another file for `plugin_defaults_marketing.yml`:
 
 ```yaml
 - type: io.kestra.plugin.aws
@@ -214,7 +226,7 @@ resource "kestra_namespace" "marketing" {
   namespace_id  = "marketing"
   description   = "Namespace for the marketing team"
   variables     = file("variables_marketing.yml")
-  task_defaults = file("task_defaults_marketing.yml")
+  plugin_defaults = file("plugin_defaults_marketing.yml")
 }
 ```
 

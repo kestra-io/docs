@@ -97,6 +97,12 @@ kestra:
           region: "us-east-1"
 ```
 
+Global plugin defaults must be configured under `kestra.plugins.defaults`.
+
+:::alert{type="info"}
+The legacy `kestra.tasks.defaults` property is still supported for backward compatibility, but it is deprecated. Use `kestra.plugins.defaults` for all new configurations.
+:::
+
 If you want to set defaults only for a specific task, you can do that too:
 
 ```yaml
@@ -110,17 +116,35 @@ kestra:
           region: "us-east-1"
 ```
 
+### Precedence of global, flow, and task values
+
+Kestra applies plugin defaults in this order:
+
+1. Global plugin defaults from `kestra.plugins.defaults`
+2. Flow-level `pluginDefaults`
+3. Properties defined directly on the task
+
+That means flow-level defaults override global defaults, and task properties override non-forced defaults.
+
+If `forced: true` is set on a plugin default, that default overrides properties defined directly on the task. This is especially useful for governance and isolation use cases such as enforcing a task runner.
+
 ## Plugin Defaults Enterprise Edition
 
 :::alert{type="info"}
 In the [Enterprise Edition](../../07.enterprise/index.mdx) or [Kestra Cloud](/cloud), plugin defaults can be configured directly in the UI under the **Plugin Defaults** tab of a Namespace.
 :::
 
-You can create them via form or directly as YAML code for the Namespace:
+You can create them from the Namespace UI using the guided form or YAML editor:
 
 ![Plugin Default Form Creation](./plugin-default-creation.png)
 
-Or click on **YAML** and, for example, paste the following:
+The add/edit dialog lets you:
+
+- choose a predefined plugin type or enter a custom plugin type
+- switch between a form view and a YAML view
+- preview the generated YAML for an existing plugin default
+
+If you switch to **YAML**, you can paste content such as:
 
 ```yaml
 - type: io.kestra.plugin.aws.s3.Upload
@@ -132,8 +156,12 @@ Or click on **YAML** and, for example, paste the following:
 
 ### Inherited Plugin Defaults
 
-Plugin Defaults are inherited from the parent Namespace to children Namespaces. In the example above, the image shows the Plugin Default was created in the `kestra.company` Namespace. Navigating to the **Plugin Defaults** tab of a child Namespace, for example `kestra.company.data`, shows the parent Namespace's Plugin Defaults. This avoids having to recreate Plugin Defaults across children Namespaces, but it still allows for the children Namespaces to maintain their own isolated defaults if needed.
+Plugin Defaults are inherited from the parent Namespace to children Namespaces. In the example above, the image shows the Plugin Default was created in the `kestra.company` Namespace. Navigating to the **Plugin Defaults** tab of a child Namespace, for example `kestra.company.data`, shows the parent Namespace's Plugin Defaults together with the Namespace they come from. This avoids having to recreate Plugin Defaults across children Namespaces, but it still allows for the children Namespaces to maintain their own isolated defaults if needed.
 
 ![Plugin Default Inheritance](./inherited-plugin-defaults.png)
+
+### Import and export
+
+From the Namespace **Plugin Defaults** tab, you can also export the current Namespace plugin defaults to YAML and import them back into another Namespace. This is useful when promoting a curated set of defaults across environments or teams.
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Qu8BDAn5EOUrGmwrfLyv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Defaults | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
