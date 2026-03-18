@@ -18,7 +18,7 @@ Checks are useful to enforce business rules on inputs (e.g., allowed values, dat
 
 Each item in `checks` supports the following properties:
 
-- `condition` *(required)*: Pebble expression that must evaluate to a boolean. For example, you can design checks against Inputs, Key-Value pairs, or other [expression](../../expressions/index.md) accessible workflow components.
+- `condition` *(required)*: Pebble expression that must evaluate to a boolean. For example, you can design checks against Inputs, Key-Value pairs, or other [expression](../../expressions/index.mdx) accessible workflow components.
 - `message` *(required)*: Text displayed when the condition is false.
 - `style` *(optional, default `INFO`)*: Visual style for the message. One of `ERROR`, `SUCCESS`, `WARNING`, `INFO`.
 - `behavior` *(optional, default `BLOCK_EXECUTION`)*: How the flow should react when the condition is false. One of:
