@@ -123,12 +123,12 @@ To enable Kestra Enterprise features, configure the following parameters:
 
 | Configuration Parameter | Required | Documentation Link                                                                                                                 | Description |
 | :---------------------- | :------- |:-----------------------------------------------------------------------------------------------------------------------------------| :---------- |
-| Enterprise License | Yes | [EE License](../../../configuration/index.md#ee-license)                                                                           | License information for the Kestra instance |
-| Multi-tenancy | Yes | [Multi-tenancy](../../../configuration/index.md#multi-tenancy)                                                                     | Enables/disables multi-tenancy (required for SCIM) |
-| Secret Manager | Yes | [Secret Managers](../../../configuration/index.md#secret-managers)                                                                 | Configure a secret manager in RW or RO mode |
-| Encryption Key | Yes | [Encryption](../../../configuration/index.md#encryption)                                                                           | Key to encrypt inputs/outputs in flows |
-| Security | No | [Security](../../../configuration/index.md#security)                                                                               | Configure Super Admin (also settable in UI on startup) |
-| User Invitations | No | [Kestra URL](../../../configuration/index.md#kestra-url), [Mail Server](../../../configuration/index.md#configuring-a-mail-server) | Required for email invitations (not needed with LDAP/SCIM) |
+| Enterprise License | Yes | [Enterprise and Advanced Features](../../../configuration/06.enterprise-and-advanced/index.md)                                     | License information for the Kestra instance |
+| Multi-tenancy | Yes | [Enterprise and Advanced Features](../../../configuration/06.enterprise-and-advanced/index.md)                                     | Enables/disables multi-tenancy (required for SCIM) |
+| Secret Manager | Yes | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure a secret manager in RW or RO mode |
+| Encryption Key | Yes | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Key to encrypt inputs/outputs in flows |
+| Security | No | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure Super Admin (also settable in UI on startup) |
+| User Invitations | No | [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md), [Observability and Networking](../../../configuration/03.observability-and-networking/index.md) | Required for email invitations (not needed with LDAP/SCIM) |
 | SSO | No | [SSO](../../03.auth/sso/index.md)                                                                                                  | Configure OIDC provider |
 | LDAP | No | [LDAP](../../03.auth/sso/ldap/index.md)                                                                                            | Connect to an existing LDAP provider |
 | SCIM | No | [SCIM](../../03.auth/scim/index.mdx)                                                                                               | Sync user/group membership with SCIM 2.0 |

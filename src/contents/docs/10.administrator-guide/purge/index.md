@@ -152,7 +152,7 @@ Purge tasks perform **hard deletion**, permanently removing records and reclaimi
 This distinction matters for compliance and troubleshooting: purge flows are best for cleaning up space, while UI deletions preserve history for auditability.
 
 :::alert{type="warning"}
-Purge tasks do not affect Kestra’s [internal queues](../../08.architecture/01.main-components/index.md#queue). Queue retention is managed separately via [JDBC Cleaner](../../configuration/index.md#jdbc-cleaner) (for database) or [topic retention](../../configuration/index.md#topic-retention) (for Kafka).
+Purge tasks do not affect Kestra’s [internal queues](../../08.architecture/01.main-components/index.md#queue). Queue retention is managed separately via the [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) for JDBC or the [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md) for Kafka.
 :::
 
 :::collapse{title="Renamed Purge Tasks in 0.18.0"}

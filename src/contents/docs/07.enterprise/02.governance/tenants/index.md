@@ -144,13 +144,13 @@ Note that there is an exception to this rule if a tenant is created by a Superad
 
 ### Dedicated storage and secrets backend per tenant
 
-By default, each tenant uses the same [internal storage](../../../configuration/index.md#internal-storage) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
+By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
 To configure a dedicated storage and secrets backend per tenant, navigate to the **Instance - Tenants** in the UI and click on the **Details** button of the tenant you'd like to configure. Then, select the storage and secrets backend you want to use for that tenant:
 
 ![tenants-dedicated-internal-storage](./tenants-dedicated-internal-storage.png)
 
-For storage configuration examples, refer to [Internal Storage](../../../configuration/index.md#internal-storage) in the configuration guide.
+For storage configuration examples, refer to [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md) in the configuration guide.
 
 ![tenants-dedicated-secrets-manager](./tenants-dedicated-secrets-manager.png)
 
@@ -174,7 +174,7 @@ kestra:
       deniedServices: [EXECUTOR, WEBSERVER]
 ```
 
-For additional configuration details, refer to dedicated [Secrets backend](../../../configuration/index.md#secret-managers) and [Internal Storage](../../../configuration/index.md#internal-storage) in the configuration guide.
+For additional configuration details, refer to dedicated [Security and Secrets](../../../configuration/05.security-and-secrets/index.md) and [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md) pages in the configuration guide.
 
 :::alert{type="info"}
 If this feature is enabled some UI or flow execution capabilities may not work as expected. If unsure, contact support.

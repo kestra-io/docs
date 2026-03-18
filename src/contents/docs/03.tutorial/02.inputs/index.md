@@ -36,7 +36,7 @@ tasks:
     message: Hey there, {{ inputs.user }}
 ```
 
-In the Log task, you'll notice `inputs.user`. To retrieve an input value, you need to identify the input in an [expression](../../expressions/index.md). In Kestra, bracket notation `{{   }}` is used to wrap an expression. For an input, follow this general `{{ inputs.input_id }}` syntax.
+In the Log task, you'll notice `inputs.user`. To retrieve an input value, you need to identify the input in an [expression](../../expressions/index.mdx). In Kestra, bracket notation `{{   }}` is used to wrap an expression. For an input, follow this general `{{ inputs.input_id }}` syntax.
 
 In the example above, the input `id` is set to `user`, and it's referenced in the task message as `{{ inputs.user }}`. Leverage [autocompletion](../01.fundamentals/index.md#autocompletion) in the flow editor to use expressions; they can be tricky at first, let Kestra do the hard work.
 
