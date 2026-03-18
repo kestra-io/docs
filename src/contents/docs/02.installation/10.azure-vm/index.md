@@ -191,7 +191,7 @@ kestra:
 
 For the changes to take effect, restart the Docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
 
-For more information on Azure Blob storage configuration, check out the [Azure configuration guide](../../configuration/index.md#azure).
+For more information on Azure Blob storage configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md).
 
 ## Next steps
 

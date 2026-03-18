@@ -61,7 +61,7 @@ Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if y
 
 The command from the previous section starts a standalone server, with all architectural components running in one JVM.
 
-The [configuration](../../configuration/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker Compose file or pass it as a Docker CLI argument.
+The [configuration](../../configuration/01.configuration-basics/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker Compose file or pass it as a Docker CLI argument.
 
 :::alert{type="info"}
 If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../10.administrator-guide/16.troubleshooting/index.md).

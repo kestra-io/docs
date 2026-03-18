@@ -10,12 +10,12 @@ release: 0.17.0
 
 How to adapt flows to the `NON_NULL` JSON serialization strategy.
 
-Kestra 0.17 migrates away from the previously used `NON_DEFAULT` JSON serialization strategy to fix various limitations and make the flow behavior more user-friendly. This change makes empty lists or maps serialized instead of being undefined. Adapting [Pebble expressions](../../../expressions/index.md) relying on the previously existing behavior is necessary to keep the functionality untouched.
+Kestra 0.17 migrates away from the previously used `NON_DEFAULT` JSON serialization strategy to fix various limitations and make the flow behavior more user-friendly. This change makes empty lists or maps serialized instead of being undefined. Adapting [Pebble expressions](../../../expressions/index.mdx) relying on the previously existing behavior is necessary to keep the functionality untouched.
 
 There are three main cases where Pebble expressions might be affected:
 
-1) [Ternary operator](../../../expressions/index.md#conditional-ternary-operator)
-2) [Null-Coalescing Operator](../../../expressions/index.md#null-coalescing-operator)
+1) [Operators, Tags, and Tests](../../../expressions/05.operators-tags-tests/index.md)
+2) [Pebble Syntax](../../../expressions/02.pebble-syntax/index.md)
 3) [Conditions in Pebble](../../../06.concepts/06.pebble/index.md#using-conditions-in-pebble)
 
 ## 0.16

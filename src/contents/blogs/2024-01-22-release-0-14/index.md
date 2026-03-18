@@ -46,7 +46,7 @@ We've made several improvements to our embedded VS Code Editor and the [VS Code 
 
 ## Recursive rendering of Pebble expressions
 
-So far, the templating engine has been rendering all [expressions](../../docs/expressions/index.md) **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions, or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
+So far, the templating engine has been rendering all [expressions](../../docs/expressions/index.mdx) **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions, or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
 
 Starting from this release, the default rendering behavior is **not recursive**. We've also introduced a new `render()` function that gives you more control over which expressions should be rendered and how.
 

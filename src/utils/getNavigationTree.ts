@@ -30,8 +30,8 @@ const navigationTree = {
     ],
     "Manage Kestra": ["Administrator Guide", "Migration Guide", "Performance"],
     "Reference Docs": [
-        "Configuration",
         "Releases & LTS Policy",
+        "Configuration",
         "Expressions",
         "Terraform Provider",
         "API Reference",

@@ -35,7 +35,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
     - [External Events](#external-events) - external events happen external, or outside of the Kestra platform to start a flow.
 - [Execution](#execution) - a single run of a flow, existing in a specific state.
 - [Execution context](#execution-context) - a collection of variables and metadata that allows for dynamic rendering of flow properties during a workflow's execution.
-- [Expressions](#expressions) - accessing and using variables in flows, combining the Pebble templating engine with the execution context to dynamically render flow properties. [Expressions](../expressions/index.md) allow you to dynamically set values within your workflows. Expression syntax uses curly braces, e.g., `{{ your_expression }}`.
+- [Expressions](#expressions) - accessing and using variables in flows, combining the Pebble templating engine with the execution context to dynamically render flow properties. [Expressions](../expressions/index.mdx) allow you to dynamically set values within your workflows. Expression syntax uses curly braces, e.g., `{{ your_expression }}`.
 
 ## F
 

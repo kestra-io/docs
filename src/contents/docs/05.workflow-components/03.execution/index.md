@@ -334,7 +334,7 @@ You will see output similar to the following:
 
 You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
 
-Keep in mind that you need to configure the URL of your Kestra instance within your [configuration](../../configuration/index.md) file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
+Keep in mind that you need to configure the URL of your Kestra instance within your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
 
 ```yaml
 kestra:
