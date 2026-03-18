@@ -44,7 +44,7 @@ const { title, description, subtitle, subtitleAfter, items, cta } = Astro.props
             )
         }
 
-        <div class="row card-group no-shadow mb-2 justify-content-center mt-5">
+        <div class="cards-grid">
             {
                 items.map((item) => {
                     const isIconComponent =
@@ -76,16 +76,12 @@ const { title, description, subtitle, subtitleAfter, items, cta } = Astro.props
                         number: item.number,
                     }
 
-                    return (
-                        <div class="col-12 col-md-6 col-lg-4 mb-4">
-                            {IconComponent ? (
-                                <Card client:visible {...cardProps}>
-                                    <IconComponent slot="icon" />
-                                </Card>
-                            ) : (
-                                <Card client:visible {...cardProps} />
-                            )}
-                        </div>
+                    return IconComponent ? (
+                        <Card {...cardProps}>
+                            <IconComponent slot="icon" />
+                        </Card>
+                    ) : (
+                        <Card {...cardProps} />
                     )
                 })
             }
@@ -118,23 +114,6 @@ const { title, description, subtitle, subtitleAfter, items, cta } = Astro.props
             position: relative;
             z-index: 10;
 
-            &::before {
-                content: "";
-                position: absolute;
-                width: 214px;
-                height: 227px;
-                background: linear-gradient(
-                    140deg,
-                    rgba(70, 24, 255, 0) -42%,
-                    #7e1cfa 77%
-                );
-                filter: blur(82px);
-                left: 50%;
-                transform: translateX(-50%);
-                top: 5rem;
-                z-index: -1;
-            }
-
             .heading {
                 max-width: 800px;
             }
@@ -156,6 +135,16 @@ const { title, description, subtitle, subtitleAfter, items, cta } = Astro.props
                 margin-bottom: 0;
                 color: var(--ks-content-primary);
             }
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            @include media-breakpoint-up(xl) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            gap: 1rem;
+            margin-top: 3rem;
         }
     }
 </style>
