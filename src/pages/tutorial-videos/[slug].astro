@@ -5,6 +5,7 @@ import FooterContact from "~/components/layout/FooterContact.astro"
 import TutorialsList from "~/components/videos/TutorialsList.vue"
 import { getCollection } from "astro:content"
 import TutorialsListTabs from "~/components/videos/TutorialsListTabs.vue"
+import Updateletter from "~/components/layout/Updateletter.vue"
 
 const categories = new Map([
     ["all", "All videos"],
@@ -57,17 +58,8 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
             <h1 data-usal="fade-left title">Video Tutorials</h1>
             <p data-usal="fade-r">Get started with our video tutorials</p>
         </div>
-        <form class="container">
-            <label for="email">Subscribe to updates</label>
-            <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                required
-            />
-            <button type="submit">Subscribe</button>
-        </form>
     </section>
+    <Updateletter />
     <section>
         <div class="container">
             <TutorialsListTabs
