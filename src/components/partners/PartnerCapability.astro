@@ -1,0 +1,117 @@
+---
+import { Image } from "astro:assets"
+
+interface Props {
+    title: string
+    description: string
+    capabilities: {
+        image: any
+        alt: string
+        title: string
+        text: string
+    }[]
+}
+
+const { title, description, capabilities } = Astro.props
+---
+
+<section class="partner-capability">
+    <div class="container">
+        <div class="intro">
+            <h2>{title}</h2>
+            <p>{description}</p>
+        </div>
+        <div class="row custom-gap mt-5">
+            {
+                capabilities.map((card, index) => (
+                    <div class="col-12">
+                        <div
+                            class:list={[
+                                "capability-card",
+                                { reverse: index % 2 !== 0 },
+                            ]}
+                        >
+                            <div class="card-left">
+                                <div class="inner-card">
+                                    <Image src={card.image} alt={card.alt} />
+                                </div>
+                            </div>
+                            <div class="card-right">
+                                <h3>{card.title}</h3>
+                                <p>{card.text}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .partner-capability {
+        padding: 4rem 1rem;
+        background: var(--ks-background-body);
+
+        .intro {
+            p,
+            h2 {
+                max-width: $container-max-width;
+                margin: $rem-1 auto;
+                text-align: center;
+            }
+        }
+
+        .custom-gap {
+            gap: 3rem;
+        }
+
+        .capability-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            width: 100%;
+            min-height: 412px;
+
+            @include media-breakpoint-down(xl) {
+                flex-direction: column !important;
+                gap: 2rem;
+            }
+
+            &.reverse {
+                flex-direction: row-reverse;
+            }
+
+            .card-left {
+                width: 100%;
+                max-width: 538px;
+                gap: 10px;
+                border-radius: 13px;
+                border: 1px solid var(--ks-border-primary);
+                padding: 6px;
+
+                .inner-card {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+
+            .card-right {
+                width: 100%;
+                max-width: 538px;
+            }
+        }
+    }
+</style>
