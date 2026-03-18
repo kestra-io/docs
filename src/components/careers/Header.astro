@@ -1,46 +1,49 @@
----
-interface Props {
-    fullPath: string
-}
-
-const { fullPath } = Astro.props
----
-
-<div class="header-container">
-    <div class="header container d-flex flex-column align-items-center gap-3">
-        <slot>
-            <h1 data-usal="fade-l">
-                Join our <span class="highlight">Team</span>
-            </h1>
-            <h4 data-usal="fade-r">
-                Drive innovation in a globally distributed, collaborative
-                environment
-            </h4>
-            <a
-                href={(fullPath === "/careers" ? "" : "/careers") +
-                    "#positions"}
-                class="btn btn-animated btn-purple-animated mt-4"
-                data-usal="zoomin"
-            >
-                Open positions
-            </a>
-        </slot>
+<section class="header-container">
+    <div class="header container">
+        <h1>Open roles</h1>
+        <p>
+            Drive innovation in a globally distributed, collaborative
+            environment
+        </p>
     </div>
-</div>
+</section>
 
 <style lang="scss">
     .header-container {
-        margin-top: $rem-5;
-        background: url("~/assets/dotted-bg.svg") no-repeat top;
+        --careers-grid-size: 55px;
+        background-image:
+            radial-gradient(
+                ellipse at top center,
+                var(--ks-background-purple-light) 0%,
+                color-mix(in srgb, var(--ks-background-body), transparent 65%)
+                    30%,
+                var(--ks-background-body) 70%
+            ),
+            linear-gradient(
+                to right,
+                var(--ks-border-secondary) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--ks-border-secondary) 1px,
+                transparent 1px
+            );
+        background-size:
+            100% 100%,
+            var(--careers-grid-size) var(--careers-grid-size),
+            var(--careers-grid-size) var(--careers-grid-size);
+        background-position: center bottom;
         .header {
-            padding-bottom: calc($spacer * 4);
+            padding-top: 6rem;
+            padding-bottom: 4rem;
 
-            :global(h1),
-            :global(h4) {
+            h1,
+            p {
                 color: var(--ks-content-primary);
-                text-align: center;
+                text-align: left;
                 margin-bottom: 0;
-                font-weight: 600;
+                font-weight: 400;
             }
         }
     }
