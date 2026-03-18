@@ -86,3 +86,5 @@
   to: "/docs/tutorial/scripts"
 - regexp: "^/docs/enterprise/apps"
   to: "/docs/enterprise/scalability/apps"
+- regexp: "/docs/quickstart/contributing"
+  to: "/docs/contribute-to-kestra"
