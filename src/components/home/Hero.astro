@@ -47,9 +47,12 @@ import HeroAnimation from "~/components/common/animations/hero.astro"
     @use "~/assets/styles/variable" as *;
 
     section {
-        padding-top: 2rem;
-        background: url("./assets/hero/bg-grid.svg") no-repeat center bottom;
+        padding-top: 100px;
         position: relative;
+        @include media-breakpoint-up(md) {
+            padding-top: 2rem;
+            background: url("./assets/hero/bg-grid.svg") no-repeat center bottom;
+        }
     }
 
     .hero {
@@ -78,9 +81,12 @@ import HeroAnimation from "~/components/common/animations/hero.astro"
     .hero h1 {
         grid-area: 1/1/2/2;
         font-weight: 500;
-        font-size: 3.5rem;
-        line-height: 3.9375rem;
-        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        @include media-breakpoint-up(md) {
+            font-size: 3.5rem;
+            line-height: 3.9375rem;
+            margin-bottom: 1.5rem;
+        }
     }
 
     .gradient {
@@ -91,16 +97,21 @@ import HeroAnimation from "~/components/common/animations/hero.astro"
 
     .hero p {
         grid-area: 2/1/3/2;
-        font-size: 1.3rem;
         color: var(--hp-color-dark-secondary);
+        @include media-breakpoint-up(md) {
+            font-size: 1.3rem;
+        }
     }
 
     .tags {
-        grid-area: 3/1/4/2;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        max-width: 800px;
+        display: none;
+        @include media-breakpoint-up(md) {
+            grid-area: 3/1/4/2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            max-width: 800px;
+        }
     }
 
     .tags span {
@@ -121,11 +132,19 @@ import HeroAnimation from "~/components/common/animations/hero.astro"
 
     .buttons {
         grid-area: 4/1/5/2;
-        margin-top: 3rem;
+        a {
+            width: 100%;
+        }
+        @include media-breakpoint-up(md) {
+            margin-top: 3rem;
+            a {
+                width: auto;
+            }
+        }
     }
 
     .hero-animation {
-        background: url("/images/hero-animation.png") no-repeat center;
-        background-size: contain;
+        transform: scale(0.4);
+        transform-origin: 70% 0;
     }
 </style>
