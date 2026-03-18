@@ -1,0 +1,20 @@
+amazon-ion==0.13.0
+    # via kestra
+certifi==2026.2.25
+    # via requests
+charset-normalizer==3.4.6
+    # via requests
+idna==3.11
+    # via requests
+kestra==1.3.0
+    # via -r /tmp/6gdXsLp2I8M8Okq0hciBdq/e51f058bb25588b0020ee54a4d99594a0fc394d4d691cc0ce811a6dd24ea9c17-requirements.in
+python-dateutil==2.9.0.post0
+    # via kestra
+requests==2.32.5
+    # via kestra
+ruamel-yaml==0.19.1
+    # via -r /tmp/6gdXsLp2I8M8Okq0hciBdq/e51f058bb25588b0020ee54a4d99594a0fc394d4d691cc0ce811a6dd24ea9c17-requirements.in
+six==1.17.0
+    # via python-dateutil
+urllib3==2.6.3
+    # via requests
