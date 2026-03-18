@@ -97,6 +97,8 @@ tasks:
 ```
 This produces two separate log entries, one with `1` and the other with `2`.
 
+In `ForEach`, `taskrun.iteration` is often paired with `iterationOutput()` when you need to read a previous iteration's result. For example, `{{ iterationOutput('my_task', taskrun.iteration - 1) }}` fetches the output of `my_task` from the previous loop index.
+
 ### Parent task run values
 
 You can also use the `{{ parent.taskrun.value }}` expression to access a task run value from a parent task within nested flowable child tasks:

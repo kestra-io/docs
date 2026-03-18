@@ -359,6 +359,32 @@ tasks:
 
 You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.function-reference/index.md) for more details.
 
+If you need the output from a previous iteration of the same task, or from a sibling task in a previous iteration, use `iterationOutput()` instead.
+
+For example, this flow builds a running total by reading the previous iteration's output:
+
+```yaml
+id: foreach_prefix_sum
+namespace: company.team
+
+tasks:
+  - id: foreach
+    type: io.kestra.plugin.core.flow.ForEach
+    values: ["100", "200", "300"]
+    tasks:
+      - id: prefix_sum
+        type: io.kestra.plugin.core.debug.Return
+        format: >-
+          {% set idx = taskrun.iteration %}
+          {% if idx == 0 %}
+            {{ taskrun.value | trim | number }}
+          {% else %}
+            {{ iterationOutput('prefix_sum', idx - 1) | trim | number + taskrun.value | trim | number }}
+          {% endif %}
+```
+
+`iterationOutput()` defaults to the current task and the previous iteration, so `{{ iterationOutput() }}` is equivalent to reading the current task's output from `taskrun.iteration - 1`.
+
 :::alert{type="warning"}
 Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) as it runs tasks in parallel.
 :::

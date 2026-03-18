@@ -33,7 +33,6 @@ Examples:
 These functions bridge expressions to external or stored data. Use them when the value is not already present in the execution context and must be resolved at runtime.
 
 - `secret()` reads a secret from Kestra's secret backend
-- `credential()` reads a short-lived token from a managed EE credential
 - `read()` reads the contents of a namespace file or internal-storage file
 - `fileURI()` resolves a namespace file URI
 
@@ -41,7 +40,6 @@ Examples:
 
 ```twig
 {{ secret('GITHUB_ACCESS_TOKEN') }}
-{{ credential('my_oauth') }}
 {{ read('subdir/file.txt') }}
 {{ fileURI('my_file.txt') }}
 ```
@@ -70,6 +68,7 @@ This group is more situational, but it becomes valuable in complex flows where y
 
 - `errorLogs()` for error summaries in alerts
 - `currentEachOutput()` for simpler access to sibling outputs inside `ForEach`
+- `iterationOutput()` to read outputs from previous or explicit `ForEach` iterations
 - `tasksWithState()` to inspect tasks by state
 - `appLink()` in Enterprise Edition to generate Kestra App URLs
 
@@ -133,16 +132,6 @@ Use `secret()` for sensitive values:
 {{ secret('API_KEY') }}
 ```
 
-### `credential()`
-
-In Enterprise Edition, use `credential()` to inject a short-lived token from a managed credential:
-
-```twig
-{{ credential('my_oauth') }}
-```
-
-Use [Execution Context Variables](../01.execution-context/index.md) for the setup model and a fuller HTTP example. `credential()` returns the token only, while the credential definition itself is managed in the Kestra UI.
-
 ### `currentEachOutput()`
 
 Use it inside `ForEach` flows to avoid manual `taskrun.value` indexing:
@@ -150,6 +139,24 @@ Use it inside `ForEach` flows to avoid manual `taskrun.value` indexing:
 ```twig
 {{ currentEachOutput(outputs.make_data).values.data }}
 ```
+
+### `iterationOutput()`
+
+Use `iterationOutput()` inside `ForEach` when the current iteration depends on work completed in an earlier loop index:
+
+```twig
+{{ iterationOutput() }}
+{{ iterationOutput('prefix_sum', taskrun.iteration - 1) }}
+```
+
+Defaulting behavior:
+
+- `iterationOutput()` uses the current task and the previous iteration
+- `iterationOutput('taskId')` uses the provided task and the previous iteration
+- `iterationOutput(null, 2)` uses the current task and iteration `2`
+- `iterationOutput('taskId', null)` uses the provided task and the previous iteration
+
+Guard the first iteration explicitly, because there is no previous iteration to read when `taskrun.iteration == 0`.
 
 ### `errorLogs()`
 

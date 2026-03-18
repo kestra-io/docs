@@ -170,6 +170,7 @@ In this execution, you can access:
 
 - The iteration value i.e., the index of a loop (the loop index starts at 0) using the syntax `{{ taskrun.iteration }}`
 - The output of a sibling task using the syntax `{{ outputs.sibling[taskrun.value].value }}`
+- The output from a previous iteration using `iterationOutput()`, for example `{{ iterationOutput() }}` for the same task or `{{ iterationOutput('taskId', taskrun.iteration - 1) }}` for a sibling task in an earlier iteration
 
 ---
 
