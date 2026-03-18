@@ -70,7 +70,7 @@ Use kestra-ops to validate and deploy all flows in ./flows to prod.namespace wit
 
 - **AI coding agent**: Claude Code, Cursor, Windsurf, OpenAI Codex, OpenCode, or any agent that supports skill files
 - **For kestra-flow**: `curl` and network access to `https://api.kestra.io`
-- **For kestra-ops**: [`kestractl`](../kestra-cli/kestractl/index.md) installed with valid credentials
+- **For kestra-ops**: [`kestractl`](../../kestra-cli/kestractl/index.md) installed with valid credentials
 
 ## Setup
 
