@@ -97,7 +97,8 @@ const githubReleaseRepo = (() => {
             return "plugin-scripts"
         case name.startsWith("plugin-debezium-") || name === "plugin-debezium":
             return "plugin-debezium"
-        case name.startsWith("plugin-transform-") || name === "plugin-transform":
+        case name.startsWith("plugin-transform-") ||
+            name === "plugin-transform":
             return "plugin-transform"
         default:
             return name
@@ -218,7 +219,9 @@ const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
 const toElementKey = (title?: string): string | undefined => {
     if (!title) return undefined
 
-    const words = title.match(/[a-zA-Z0-9]+/g)?.map((word) => word.toLowerCase())
+    const words = title
+        .match(/[a-zA-Z0-9]+/g)
+        ?.map((word) => word.toLowerCase())
     if (!words || words.length === 0) return undefined
 
     return [
@@ -230,8 +233,9 @@ const toElementKey = (title?: string): string | undefined => {
 }
 
 const pluginMetadataTitle = (plugin: Plugin): string | undefined =>
-    allPluginMetadata?.find((m) => m.group === (plugin.subGroup ?? plugin.group))
-        ?.title
+    allPluginMetadata?.find(
+        (m) => m.group === (plugin.subGroup ?? plugin.group),
+    )?.title
 
 const pluginsForDisplay = pluginsWithoutDeprecated.map((plugin) => {
     const elementKeys = Object.entries(plugin)
@@ -668,7 +672,6 @@ if (!pluginType && !subGroup) {
                     : subgroupBlueprintCounts}
                 metadataMap={metadataMap}
                 schemas={pluginType ? {} : elementTitle}
-                client:idle
             />
 
             {
