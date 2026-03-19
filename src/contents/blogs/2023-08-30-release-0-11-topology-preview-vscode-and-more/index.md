@@ -482,7 +482,7 @@ tasks:
 Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](../../docs/11.migration-guide/v0.11.0/templates/index.md) explains why templates are being phased out and how to transition from templates to subflows.
 :::
 
-If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../../docs/configuration/index.md) option to still be able to use them:
+If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../../docs/configuration/index.mdx) option to still be able to use them:
 
 ```yaml
 kestra:
@@ -537,4 +537,3 @@ This post covered new features and enhancements added in Kestra 0.11.0. Which of
 If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).
-

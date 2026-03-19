@@ -169,7 +169,7 @@ kestra:
 
 ![S3 iam](./IAM-usergroup.png)
 
-For more information on S3 storage configuration, check out the [S3 configuration guide](../../configuration/index.md#s3).
+For more information on S3 storage configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md).
 
 ## Next steps
 

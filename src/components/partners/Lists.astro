@@ -118,39 +118,52 @@ const PARTNERS = [
     <div class="container overflow-visible">
         <div class="row g-3">
             {
-                PARTNERS.map((partner) => (
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card">
-                            <div
-                                class:list={[
-                                    "badge",
-                                    partner.type.toLowerCase(),
-                                ]}
-                            >
-                                {partner.type}
+                PARTNERS.map((partner) => {
+                    const isExternal = partner.href.startsWith("http");
+                    return (
+                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                            <div class="card">
+                                <div
+                                    class:list={[
+                                        "badge",
+                                        partner.type.toLowerCase(),
+                                    ]}
+                                >
+                                    {partner.type}
+                                </div>
+                                <div class="placeholder">
+                                    <img
+                                        src={partner.logo.src}
+                                        alt={partner.name}
+                                    />
+                                </div>
+                                <h6 class="mb-0">{partner.name}</h6>
+                                <p class="mb-0">{partner.description}</p>
+                                <a
+                                    href={partner.href}
+                                    class="visit-link"
+                                    target={isExternal ? "_blank" : undefined}
+                                    rel={
+                                        isExternal
+                                            ? "noopener noreferrer"
+                                            : undefined
+                                    }
+                                >
+                                    <h6 class="mb-0">
+                                        {isExternal ? (
+                                            <>
+                                                Visit {partner.name} website
+                                                <Icon name="mdi:open-in-new" />
+                                            </>
+                                        ) : (
+                                            `Visit ${partner.name} page`
+                                        )}
+                                    </h6>
+                                </a>
                             </div>
-                            <div class="placeholder">
-                                <img
-                                    src={partner.logo.src}
-                                    alt={partner.name}
-                                />
-                            </div>
-                            <h6 class="mb-0">{partner.name}</h6>
-                            <p class="mb-0">{partner.description}</p>
-                            <a
-                                href={partner.href}
-                                class="visit-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <h6 class="mb-0">
-                                    Visit {partner.name} page
-                                    <Icon name="mdi:open-in-new" />
-                                </h6>
-                            </a>
                         </div>
-                    </div>
-                ))
+                    );
+                })
             }
         </div>
     </div>
