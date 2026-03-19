@@ -129,7 +129,7 @@
                     flex-grow: 1;
 
                     span {
-                        font-weight: 700;
+                        font-weight: 600;
                     }
                 }
 
