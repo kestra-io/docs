@@ -1,0 +1,32 @@
+---
+import Connect from "~/components/infrastructure/Connect.astro"
+
+const PLUGINS = [
+    { cls: "io.kestra.plugin.ai.agent", name: "AI Agent" },
+    { cls: "io.kestra.plugin.anthropic", name: "Anthropic" },
+    { cls: "io.kestra.plugin.gemini", name: "Gemini" },
+    { cls: "io.kestra.plugin.deepseek", name: "DeepSeek" },
+    { cls: "io.kestra.plugin.mistral", name: "Mistral" },
+    { cls: "io.kestra.plugin.openai", name: "OpenAI" },
+    { cls: "io.kestra.plugin.gcp.vertexai", name: "Vertex AI" },
+    { cls: "io.kestra.plugin.weaviate", name: "Weaviate" },
+    { cls: "io.kestra.plugin.ai.rag", name: "RAG" },
+    { cls: "io.kestra.plugin.huggingface", name: "Hugging Face" },
+    { cls: "io.kestra.plugin.perplexity", name: "Perplexity" },
+    { cls: "io.kestra.plugin.ollama.cli", name: "Ollama" },
+    { cls: "io.kestra.plugin.klaviyo.jobs", name: "Klaviyo" },
+]
+
+const plugins = PLUGINS.map((p) => ({
+    name: p.name,
+    logo: `/icons/${p.cls}.svg`,
+}))
+---
+
+<Connect
+    {plugins}
+    title={`Keep Hugging Face. Keep <br /> LangGraph. Add Orchestration.`}
+    subtitle={`Kestra doesn't replace your LLM framework or vector database. It covers what they weren't designed for: scheduling, data routing, failure handling, and approval gates before anything reaches production.`}
+    link={{ href: "/plugins?category=AI", text: "See all plugins" }}
+    vertical="ai"
+/>

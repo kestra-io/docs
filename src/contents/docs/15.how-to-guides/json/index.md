@@ -31,7 +31,7 @@ The API `https://kestra.io/api/mock` will return a JSON body that looks like the
 ```
 
 
-Kestra can make a request to this API using the `Request` task. This will give us an output called `body` containing our JSON body. To access this in later tasks, we can use an [expression](../../expressions/index.md) like `{{ outputs.request.body }}`. This will return the full body:
+Kestra can make a request to this API using the `Request` task. This will give us an output called `body` containing our JSON body. To access this in later tasks, we can use an [expression](../../expressions/index.mdx) like `{{ outputs.request.body }}`. This will return the full body:
 
 ```yaml
 id: json_demo

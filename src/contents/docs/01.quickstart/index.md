@@ -7,17 +7,19 @@ description: Get started with Kestra in minutes by launching Kestra locally with
 
 Launch Kestra locally, create a simple flow, and run your first execution in a few minutes.
 
-## Run your first Kestra Workflow with Docker
+## Run your first Kestra workflow with Docker
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/bQNmXge5vSY?si=ueqzWRVVtuGiAwjU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+## Prerequisites
+
+- Install Docker in your environment. We recommend [Docker Desktop](https://docs.docker.com/get-docker/).
+- If you use Windows, make sure [WSL](https://docs.docker.com/desktop/wsl/) is enabled.
+
 ## Start Kestra
 
-:::alert{type="info"}
-**Prerequisite**: Make sure Docker is installed in your environment. We recommend [Docker Desktop](https://docs.docker.com/get-docker/).
-:::
 Once Docker is running, start Kestra with a single command. If you are using Windows, make sure to use [WSL](https://docs.docker.com/desktop/wsl/):
 
 ```bash

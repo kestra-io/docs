@@ -2,10 +2,10 @@
 import { Icon } from "astro-icon/components"
 
 interface Item {
-    icon?: string
-    title: string
-    subtitle?: string
-    description?: string
+    icon?: string;
+    title: string;
+    subtitle?: string;
+    description?: string;
     link?: {
         href: string
         text: string
@@ -14,20 +14,20 @@ interface Item {
 }
 
 interface Props {
-    title: string
-    subtitle?: string
-    items: Item[]
-    align?: "left" | "center"
+    title: string;
+    subtitle?: string;
+    items: Item[];
+    align?: "left" | "center";
 }
 
-const { title, subtitle, items, align = "center" } = Astro.props
+const { title, subtitle, items, align = "center" } = Astro.props;
 ---
 
 <section class="card-grid-section">
     <div class="container">
         <div class:list={["head", { "align-left": align === "left" }]}>
             <h2 data-usal="fade-r">
-                <Fragment set:html={title} />
+                <span class="title-text"><Fragment set:html={title} /></span>
                 <slot />
             </h2>
             <p set:html={subtitle} data-usal="fade-l" />
@@ -87,6 +87,15 @@ const { title, subtitle, items, align = "center" } = Astro.props
             h2 {
                 text-align: center;
                 color: var(--ks-content-primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+
+                .title-text {
+                    display: block;
+                }
             }
 
             .head {
