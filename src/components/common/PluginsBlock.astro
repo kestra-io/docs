@@ -3,9 +3,9 @@ import { $fetchApi } from "~/utils/fetch"
 import { type PluginMetadata } from "@kestra-io/ui-libs"
 
 import Link from "~/components/common/Link.astro"
-import TaskIcon from "~/components/common/TaskIcon.astro"
 
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 const totalPlugins = await fetchTotalPluginsCount()
 const metadata = await $fetchApi<PluginMetadata[]>("/plugins/metadata")
@@ -13,15 +13,31 @@ const metadata = await $fetchApi<PluginMetadata[]>("/plugins/metadata")
 const excluded =
     /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
 
+const iconsStash = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
+
 const plugins = metadata
     .filter((p) => p.artifactId && !excluded.test(p.artifactId))
-    .map((p) => ({
-        ...p,
-        link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
-    }))
     .sort(() => 0.5 - Math.random())
+    .slice(0, 80)
+    .map((p) => {
+        const iconGroup: string = Object.keys(iconsStash).filter((group) =>
+            group.startsWith(p.group),
+        )[0]
+        return {
+            ...p,
+            link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
+            icon: iconsStash[iconGroup]?.icon
+                ? optimizeSvgIcon(atob(iconsStash[iconGroup].icon), iconGroup)
+                : "",
+        }
+    })
 
-const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
+const rows = [
+    plugins.slice(0, plugins.length / 2),
+    plugins.slice(plugins.length / 2),
+]
 ---
 
 <section class="plugins">
@@ -45,7 +61,11 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
                 </p>
             </div>
             <slot name="cta">
-                <Link href="/plugins" class="btn btn-secondary" data-usal="zoomin">
+                <Link
+                    href="/plugins"
+                    class="btn btn-secondary"
+                    data-usal="zoomin"
+                >
                     See all plugins
                 </Link>
             </slot>
@@ -57,12 +77,14 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
             rows.map((items) => (
                 <div class="carousel-row">
                     <div class="carousel-track">
-                        {[...items, ...items]
-                            .map((plugin) => (
-                                <a href={plugin.link} class="plugin-logo">
-                                    <TaskIcon cls={plugin.group} />
-                                </a>
-                            ))}
+                        {[...items, ...items].map((plugin) => (
+                            <a
+                                href={plugin.link}
+                                class="plugin-logo"
+                                data-tooltip={plugin.title}
+                                set:html={plugin.icon}
+                            />
+                        ))}
                     </div>
                 </div>
             ))
@@ -76,6 +98,7 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
         display: flex;
         flex-direction: column;
         gap: 4.5rem;
+        color: var(--ks-content-primary);
         background: linear-gradient(
             180deg,
             var(--ks-background-secondary) 0%,
@@ -169,9 +192,31 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
                     height: 55px;
                 }
 
+                :global(svg) {
+                    width: 100%;
+                    height: 100%;
+                }
+
                 &:hover {
                     color: var(--ks-content-primary);
                     z-index: 10;
+                }
+
+                &[data-tooltip]:hover::after {
+                    content: attr(data-tooltip);
+                    position: absolute;
+                    bottom: calc(100% + 10px);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: var(--ks-background-body);
+                    border: 1px solid var(--ks-border-secondary);
+                    border-radius: 8px;
+                    color: var(--ks-content-primary);
+                    font-size: $font-size-xs;
+                    padding: 0.25rem 0.5rem;
+                    white-space: nowrap;
+                    z-index: 1000;
+                    pointer-events: none;
                 }
             }
         }
