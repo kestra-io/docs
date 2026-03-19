@@ -86,19 +86,22 @@ const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup
 
 const githubReleaseRepo = (() => {
     const name = pluginName ?? ""
-    // because core plugin is part of kestra repo
-    if (name === "core") {
-        return "kestra"
+    switch (true) {
+        // because core plugin is part of kestra repo
+        case name === "core":
+            return "kestra"
+        // because plugin-jdbc is the parent for many subgroups in same repo.
+        case name.startsWith("plugin-jdbc-") || name === "plugin-jdbc":
+            return "plugin-jdbc"
+        case name.startsWith("plugin-script-") || name === "plugin-script":
+            return "plugin-scripts"
+        case name.startsWith("plugin-debezium-") || name === "plugin-debezium":
+            return "plugin-debezium"
+        case name.startsWith("plugin-transform-") || name === "plugin-transform":
+            return "plugin-transform"
+        default:
+            return name
     }
-    // because plugin-jdbc is the parent for many subgroups in same repo.
-    if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") {
-        return "plugin-jdbc"
-    }
-
-    if (name.startsWith("plugin-script-") || name === "plugin-script") {
-        return "plugin-scripts"
-    }
-    return name
 })()
 
 const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
