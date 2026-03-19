@@ -681,68 +681,68 @@ if (!pluginType && !subGroup) {
                     />
                 )
             }
-        </article>
 
-        {
-            pluginType === undefined && currentPluginVideos?.length > 0 && (
-                <PluginVideos videos={currentPluginVideos} />
-            )
-        }
-
-        <RelatedBlueprints
-            pluginName={pluginName}
-            pluginWrapper={rootPlugin}
-            currentSubgroupPlugin={currentSubgroupPlugin}
-            subGroupName={currentSubgroupPlugin
-                ? slugify(subGroupName(currentSubgroupPlugin))
-                : subGroup}
-            pluginType={pluginType}
-            customId={blueprintsSectionHeading?.id}
-        />
-
-        {
-            pluginType === undefined &&
-                subGroup === undefined &&
-                relatedBlogs &&
-                relatedBlogs.length > 0 && (
-                    <div class="related-blogs">
-                        <BlogList
-                            posts={relatedBlogs.map((p) => ({
-                                ...p.data,
-                                path: `/blogs/${p.id}`,
-                                date: p.data.date.toISOString(),
-                            }))}
-                            title="Latest Blog Posts"
-                            headingId="latest-blog-posts"
-                        />
-                    </div>
+            {
+                pluginType === undefined && currentPluginVideos?.length > 0 && (
+                    <PluginVideos videos={currentPluginVideos} />
                 )
-        }
+            }
 
-        {
-            currentPluginCategories?.length > 0 && (
-                <SimilarPlugins
-                    {allPlugins}
-                    pluginsData={pluginsInformation.byPlugin}
-                    categories={currentPluginCategories}
-                    {pluginName}
-                />
-            )
-        }
+            <RelatedBlueprints
+                pluginName={pluginName}
+                pluginWrapper={rootPlugin}
+                currentSubgroupPlugin={currentSubgroupPlugin}
+                subGroupName={currentSubgroupPlugin
+                    ? slugify(subGroupName(currentSubgroupPlugin))
+                    : subGroup}
+                pluginType={pluginType}
+                customId={blueprintsSectionHeading?.id}
+            />
+
+            {
+                pluginType === undefined &&
+                    subGroup === undefined &&
+                    relatedBlogs &&
+                    relatedBlogs.length > 0 && (
+                        <div class="related-blogs">
+                            <BlogList
+                                posts={relatedBlogs.map((p) => ({
+                                    ...p.data,
+                                    path: `/blogs/${p.id}`,
+                                    date: p.data.date.toISOString(),
+                                }))}
+                                title="Latest Blog Posts"
+                                headingId="latest-blog-posts"
+                            />
+                        </div>
+                    )
+            }
+
+            {
+                currentPluginCategories?.length > 0 && (
+                    <SimilarPlugins
+                        {allPlugins}
+                        pluginsData={pluginsInformation.byPlugin}
+                        categories={currentPluginCategories}
+                        {pluginName}
+                    />
+                )
+            }
+        </article>
+        <NavToc
+            links={pageWithToc.body.toc?.links}
+            editLink={pageWithToc.editLink}
+            extension={pageWithToc.extension}
+            stem={pageWithToc.stem}
+            version={githubVersions}
+            releasesUrl={githubReleasesUrl}
+            categories={currentPluginCategories}
+            metadata={currentPluginMetadata}
+            capitalize
+            isPluginPage
+            class="right-sidebar"
+        />
     </div>
-    <NavToc
-        links={pageWithToc.body.toc?.links}
-        editLink={pageWithToc.editLink}
-        extension={pageWithToc.extension}
-        stem={pageWithToc.stem}
-        version={githubVersions}
-        releasesUrl={githubReleasesUrl}
-        categories={currentPluginCategories}
-        metadata={currentPluginMetadata}
-        capitalize
-        isPluginPage
-        class="right-sidebar"
-    />
 </Layout>
 
 <style lang="scss">
