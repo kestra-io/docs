@@ -197,7 +197,7 @@ triggers:
 :::
 
 
-Check the [Flow trigger docs](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md) and [plugin examples](/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
+Check the [Flow trigger docs](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md) and [plugin examples](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
 
 ## Task conditions with `runIf`
 

@@ -15,7 +15,7 @@ Since our [public launch](../2022-02-01-kestra-opensource/index.md), we've done 
 
 ## Performance for large clusters
 
-Since we already have a [large deployment](../2022-02-22-leroy-merlin-usage-kestra/index.md) at Leroy Merlin, we have often encountered performance issues, but this one was more complicated to find. Here, we'll outline some metrics based on our large deployment on [Leroy Merlin](2022-02-22-leroy-merlin-usage-kestra)'s production environment and show you some before and after graphs for the same workload. Leroy Merlin's usage is mostly processed overnight, with all flows starting simultaneously around 3AM with 4000+ executions and 40,000+ tasks.
+Since we already have a [large deployment](../2022-02-22-leroy-merlin-usage-kestra/index.md) at Leroy Merlin, we have often encountered performance issues, but this one was more complicated to find. Here, we'll outline some metrics based on our large deployment on [Leroy Merlin](../2022-02-22-leroy-merlin-usage-kestra/index.md)'s production environment and show you some before and after graphs for the same workload. Leroy Merlin's usage is mostly processed overnight, with all flows starting simultaneously around 3AM with 4000+ executions and 40,000+ tasks.
 
 We have done a lot of work to **reduce CPU usage and latency**.
 
