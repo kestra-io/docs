@@ -1,16 +1,18 @@
 <template>
-    <Suspense>
-        <SchemaToHtmlV2
-            class="plugin-schema"
-            :schema
-            :plugin-type
-            :props-initially-expanded="true"
-        >
-            <template #markdown="{ content }">
-                <MDCParserAndRenderer v-if="content" :content="content" />
-            </template>
-        </SchemaToHtmlV2>
-    </Suspense>
+    <div class="bd-content">
+        <Suspense>
+            <SchemaToHtmlV2
+                class="plugin-schema"
+                :schema
+                :plugin-type
+                :props-initially-expanded="true"
+            >
+                <template #markdown="{ content }">
+                    <MDCParserAndRenderer v-if="content" :content="content" />
+                </template>
+            </SchemaToHtmlV2>
+        </Suspense>
+    </div>
 </template>
 
 <script lang="ts" setup>
