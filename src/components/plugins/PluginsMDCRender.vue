@@ -27,7 +27,13 @@
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
+    .bd-content {
+        margin: 0 auto;
+        padding: 2rem 0;
+        @include media-breakpoint-up(lg) {
+            max-width: 100%;
+        }
+    }
     .plugin-schema {
         :deep(hr) {
             opacity: 0.5;
