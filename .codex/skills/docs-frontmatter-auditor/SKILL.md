@@ -60,3 +60,9 @@ Use this skill for metadata and page-type review in the Kestra docs repo.
 - Report missing, unnecessary, or suspicious metadata clearly.
 - Prefer minimal fixes over broad normalization.
 - Say explicitly when a recommendation is an inference from nearby patterns rather than a confirmed repo rule.
+
+## Skill maintenance
+
+- Treat pressure tests against real repo pages as part of the skill's validation surface.
+- If a pressure test reveals a metadata or page-type issue the skill did not clearly instruct you to catch, update the relevant reference file after fixing or documenting the page issue.
+- Keep those updates narrow and operational. Add the new rule or check to the smallest relevant place instead of expanding the skill broadly.

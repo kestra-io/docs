@@ -57,3 +57,9 @@ Use this skill to review documentation examples as teaching artifacts.
 - Distinguish editorial improvements from technical uncertainty.
 - Say when an example looks plausible but was not executed.
 - Preserve the teaching goal and reduce noise around it.
+
+## Skill maintenance
+
+- Use pressure tests on real docs pages to find example-review gaps.
+- If a pressure test reveals a class of example problem the skill did not clearly cover, update `references/example-rules.md` with a concise new check or fix pattern.
+- Prefer generalizable checks such as snippet completeness, stability, or framing over page-specific notes.

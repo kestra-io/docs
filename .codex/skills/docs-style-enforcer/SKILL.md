@@ -58,3 +58,9 @@ Use this skill for editorial cleanup and style review in the Kestra docs repo.
 - Preserve intent while improving clarity.
 - Flag style issues separately from technical uncertainty.
 - Say when a change is based on the Kestra style guide versus a local page-pattern inference.
+
+## Skill maintenance
+
+- Use pressure tests on real docs pages to validate whether the style rules catch actual issues without overfiring.
+- If a pressure test exposes a missed pattern, add a concise rule or checklist item to `references/style-guide.md`.
+- If a pressure test shows the skill is flagging acceptable prose too aggressively, narrow the rule rather than adding exceptions everywhere.
