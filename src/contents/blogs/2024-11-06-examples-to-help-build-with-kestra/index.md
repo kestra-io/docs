@@ -154,7 +154,7 @@ tasks:
         }
 ```
 
-[Check out the Blueprint here](/blueprints/shell-execute-code)
+[Check out the Blueprint here](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.codeexecution)
 
 ## Access Your Git repositories Inside of Your Workflows
 
@@ -314,7 +314,7 @@ triggers:
     serdeType: JSON
 ```
 
-[Check out the Blueprint here](/blueprints/pubsub-realtime-trigger)
+[Check out the Blueprint here](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
 
 ### Run a Python script on Azure with Azure Batch VMs
 
@@ -381,7 +381,7 @@ tasks:
           print_environment_info()
 ```
 
-[Check out the Blueprint here](/blueprints/azure-batch-runner)
+[Check out the Blueprint here](/plugins/plugin-ee-azure/runner/io.kestra.plugin.ee.azure.runner.batch)
 
 ## Add Alerts to Your Workflows
 
@@ -406,7 +406,7 @@ tasks:
       }
 ```
 
-[Check out the Blueprint here](/blueprints/slack-incoming-webhook)
+[Check out the Blueprint here](/plugins/plugin-slack/notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook)
 
 ### Set up alerts for failed workflow executions using Discord
 
