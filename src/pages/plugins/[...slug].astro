@@ -785,6 +785,29 @@ if (!pluginType && !subGroup) {
                 padding: 2rem !important;
             }
 
+            :global(.element-card),
+            :global(.plugin) {
+                background-color: var(--ks-background-primary) !important;
+                border-color: var(--ks-border-primary) !important;
+                box-shadow: none !important;
+                &:hover {
+                    border-color: var(--ks-border-active) !important;
+                }
+                :global(h6) {
+                    color: var(--ks-content-primary);
+                }
+                :global(.plugin-info) {
+                    background-color: transparent;
+                    border: $block-border;
+                    :global(.plugin-class) {
+                        color: var(--ks-content-link) !important;
+                    }
+                }
+                :global(.description) {
+                    text-transform: none;
+                }
+            }
+
             :global(code) {
                 border: none !important;
                 background-color: transparent !important;

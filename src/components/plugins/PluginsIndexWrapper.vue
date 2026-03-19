@@ -1,10 +1,9 @@
 <script lang="ts" setup>
     import { ref, onMounted, onUnmounted } from "vue"
-
     import { navigate } from "astro:transitions/client"
     import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
     import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
-    import PluginsMDCParserAndRenderer from "./PluginsMDCParserAndRenderer.vue"
+    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
 
     const activeId = ref("")
 
@@ -55,7 +54,7 @@
         @navigate="navigate"
     >
         <template #markdown="{ content }">
-            <PluginsMDCParserAndRenderer :content />
+            <MDCParserAndRenderer :content />
         </template>
     </PluginIndex>
 </template>

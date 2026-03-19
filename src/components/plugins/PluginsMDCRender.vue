@@ -7,10 +7,7 @@
             :props-initially-expanded="true"
         >
             <template #markdown="{ content }">
-                <PluginsMDCParserAndRenderer
-                    v-if="content"
-                    :content="content"
-                />
+                <MDCParserAndRenderer v-if="content" :content="content" />
             </template>
         </SchemaToHtmlV2>
     </Suspense>
@@ -18,7 +15,7 @@
 
 <script lang="ts" setup>
     import { SchemaToHtmlV2, type JSONSchema } from "@kestra-io/ui-libs"
-    import PluginsMDCParserAndRenderer from "./PluginsMDCParserAndRenderer.vue"
+    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
 
     const props = defineProps<{
         schema: JSONSchema
