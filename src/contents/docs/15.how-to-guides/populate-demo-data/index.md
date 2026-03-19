@@ -12,7 +12,7 @@ This is useful for demos, testing dashboards, taking screenshots, or exploring K
 
 ## Prerequisites
 
-- Kestra running via [Docker Compose](../../02.installation/02.docker-compose/index.md) with a **PostgreSQL** backend
+- Kestra running via [Docker Compose](../../02.installation/03.docker-compose/index.md) with a **PostgreSQL** backend
 - Access to the `postgres` container via `docker compose exec`
 
 ## What Gets Inserted
