@@ -1,9 +1,9 @@
 <template>
     <Suspense>
         <SchemaToHtmlV2
-            v-if="page.body.jsonSchema"
+            v-if="schema"
             class="plugin-schema"
-            :schema="page.body.jsonSchema"
+            :schema="schema"
             plugin-type=""
             :props-initially-expanded="true"
         >
