@@ -1,23 +1,21 @@
 <template>
-    <div class="bd-content">
-        <Suspense>
-            <SchemaToHtmlV2
-                class="plugin-schema"
-                :schema
-                :plugin-type
-                :props-initially-expanded="true"
-            >
-                <template #markdown="{ content }">
-                    <MDCParserAndRenderer v-if="content" :content="content" />
-                </template>
-            </SchemaToHtmlV2>
-        </Suspense>
-    </div>
+    <Suspense>
+        <SchemaToHtmlV2
+            class="plugin-schema"
+            :schema
+            :plugin-type
+            :props-initially-expanded="true"
+        >
+            <template #markdown="{ content }">
+                <MDCParserAndRenderer v-if="content" :content="content" />
+            </template>
+        </SchemaToHtmlV2>
+    </Suspense>
 </template>
 
 <script lang="ts" setup>
     import { SchemaToHtmlV2, type JSONSchema } from "@kestra-io/ui-libs"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
 
     const props = defineProps<{
         schema: JSONSchema
