@@ -184,22 +184,22 @@ featureGrid:
 
 socialProof:
   image:
-    alt: FILA success story
+    alt: Leroy Merlin success story
     width: 333
     height: 364
   quote:
-    text: "We looked at Airflow and NiFi, but Kestra's architecture made the most sense for us in terms of scalability. The wide range of plugins and the ability to integrate with our systems was a key factor in our decision."
-    author: "John Kim, IT Lead @ FILA"
+    text: "Kestra made the data mesh possible, we produce far more data now, and deliver it nearly 10 times faster."
+    author: "Julien Henrion, CDO @ Leroy Merlin"
   metrics:
-    - value: "2.5M"
-      label: Monthly executions
-    - value: "2,000+"
-      label: Active workflows
-    - value: "25+"
-      label: Engineers using Kestra
+    - value: "+900%"
+      label: Data production
+    - value: "+250"
+      label: Active users
+    - value: "+5,000"
+      label: Workflows created
   cta:
     text: "See how teams modernize orchestration with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
   theme: "var(--ks-special-green)"
 
 platformStrengths:
