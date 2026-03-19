@@ -24,7 +24,7 @@ Check out our [Plugin Developer Guide](../../plugin-developer-guide/index.mdx) f
 
 We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes.
 
-Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.md) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
+Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.mdx) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
 
 ---
 
