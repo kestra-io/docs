@@ -662,7 +662,13 @@ if (!pluginType && !subGroup) {
 
             <div class="bd-content ks-plugins-core">
                 {
-                    pluginType === undefined ? (
+                    pluginType ? (
+                        <PluginsMDCRender
+                            schema={(pageWithToc.body as any).jsonSchema}
+                            pluginType={pluginType}
+                            client:idle
+                        />
+                    ) : (
                         <PluginsIndexWrapper
                             plugins={pluginsForDisplay}
                             icons={subGroupsIcons}
@@ -672,12 +678,6 @@ if (!pluginType && !subGroup) {
                             subgroupBlueprintCounts={subgroupBlueprintCounts}
                             metadataMap={metadataMap}
                             schemas={elementTitle}
-                            client:idle
-                        />
-                    ) : (
-                        <PluginsMDCRender
-                            schema={(pageWithToc.body as any).jsonSchema}
-                            pluginType={pluginType}
                             client:idle
                         />
                     )
