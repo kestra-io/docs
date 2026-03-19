@@ -180,7 +180,7 @@ Check the [trigger documentation](../../docs/05.workflow-components/07.triggers/
 
 ### Automatic Encryption and Decryption of HTTP Task Outputs
 
-For maximum security, the HTTP trigger and the HTTP Request task now additionally support an automatic encryption and decryption of outputs. This [feature](https://github.com/kestra-io/plugin-fs/pull/100) ensures that sensitive data is protected both in transit and at rest. To enable encryption, set the `encryptBody` [boolean flag](/plugins/core/http/io.kestra.plugin.core.http.trigger#encryptbody) to `true`. Also, make sure to configure the `kestra.encryption.secret-key` in your [Kestra configuration](../../docs/configuration/index.md#encryption).
+For maximum security, the HTTP trigger and the HTTP Request task now additionally support an automatic encryption and decryption of outputs. This [feature](https://github.com/kestra-io/plugin-fs/pull/100) ensures that sensitive data is protected both in transit and at rest. To enable encryption, set the `encryptBody` [boolean flag](/plugins/core/http/io.kestra.plugin.core.http.trigger#encryptbody) to `true`. Also, make sure to configure the `kestra.encryption.secret-key` in your [Kestra configuration](../../docs/configuration/05.security-and-secrets/index.md#encryption).
 
 ---
 

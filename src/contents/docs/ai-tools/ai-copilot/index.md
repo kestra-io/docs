@@ -26,7 +26,7 @@ Copilot grounds its suggestions in your Namespace metadata. It automatically rea
 
 ## Configuration
 
-To add Copilot to your flow editor, add the following to your [Kestra configuration](../../configuration/index.md). The `providers` array lets you register multiple LLMs and pick a default (`isDefault: true`):
+To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). The `providers` array lets you register multiple LLMs and pick a default (`isDefault: true`):
 
 ```yaml
 kestra:

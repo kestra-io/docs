@@ -199,7 +199,7 @@ You can access a logger via the run context. The run context will provide a logg
 String rendered = runContext.render(string).as(String.class).orElse(null);
 ```
 
-Kestra supports [expressions](../../expressions/index.md) as tasks parameters. To use them, your task attribute must be encapsulated into the `Property` carrier type.
+Kestra supports [expressions](../../expressions/index.mdx) as tasks parameters. To use them, your task attribute must be encapsulated into the `Property` carrier type.
 
 A dynamic property must be rendered before usage; this will use our templating engine, Pebble, to render the property into the target type. Rendering properties using the `Property` carrier type via the run context is null-safe, it will return an empty Optional or an empty collection for lists and maps.
 
