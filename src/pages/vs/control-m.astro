@@ -1,0 +1,131 @@
+---
+import { getEntry } from "astro:content"
+import Layout from "~/components/layout.astro"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import SocialProof from "~/components/common/SocialProof.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+
+import controlMLogo from "~/components/versus/assets/control-m.svg?raw"
+import controlMMonogram from "~/components/versus/assets/control-m-monograme.svg?raw"
+import lmfrImage from "~/components/versus/assets/lmfr.png"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import controlMImg from "~/components/versus/assets/control-m-img.svg"
+import heroUI from "~/components/versus/assets/hero_ui_n8n.webp"
+import heroBg from "~/components/versus/assets/hero_bg.webp"
+
+const entry = await getEntry("vsPages", "control-m")
+if (!entry) throw new Error("Could not find vsPages/control-m collection entry")
+
+const {
+    title,
+    description,
+    competitorName,
+
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    socialProof,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+} = entry.data
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: controlMMonogram,
+        }}
+        image={{ src: heroUI, alt: "kestra ui" }}
+        bgImg={heroBg.src}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: controlMLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: controlMLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: controlMLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: controlMLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: controlMLogo,
+            linkImg: controlMImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo: controlMLogo,
+        }}
+    />
+    <SocialProof
+        {...socialProof}
+        image={{ ...socialProof.image, src: lmfrImage }}
+    />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: controlMLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">
+            Getting Started with Declarative Orchestration
+        </Fragment>
+        See how Kestra can simplify your workflows—and scale beyond legacy batch scheduling.
+    </SeeHow>
+</Layout>
