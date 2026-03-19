@@ -68,5 +68,6 @@ The first non-heading, non-import body line may appear in cards and previews. It
 - `title` or `sidebarTitle` written in sentence case instead of Title Case
 - Guide metadata on pages that are not really guides
 - Version or edition flags added without evidence
+- Version-specific prose added to a normal page when structured metadata or a migration guide would be more appropriate
 - First sentence too long or too generic for cards
 - Icon missing on pages that visually belong with neighboring content

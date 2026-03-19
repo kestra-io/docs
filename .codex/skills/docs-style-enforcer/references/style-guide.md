@@ -89,6 +89,14 @@ Examples:
 - Long openings before the first useful detail
 - Decorative screenshots
 - Code blocks with no framing or explanation
+- Time-scoped phrasing such as `as of version X.YY` in normal docs unless the page is a migration guide or version-specific exception
+
+## Version references
+
+- Treat docs as describing the current supported behavior by default.
+- Avoid phrases such as `as of version X.YY`, `starting in version X.YY`, or `currently` in normal docs unless there is a clear product requirement for version scoping.
+- Mention versions by default in migration guides, and only elsewhere when version scoping is necessary to prevent incorrect guidance.
+- If version-specific behavior matters outside a migration guide, prefer structured metadata or a clearly justified note over casual prose mentions.
 
 ## Review checklist
 
