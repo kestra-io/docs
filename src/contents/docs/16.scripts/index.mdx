@@ -29,6 +29,8 @@ There are dedicated plugins for `Python`, `R`, `Julia`, `Ruby`, `Node.js`, `Powe
 
 By default, these tasks run in individual Docker containers (taskRunner type: `io.kestra.plugin.scripts.runner.docker.Docker`). You can overwrite that default behavior if you prefer that your scripts run in a local process (taskRunner type: `io.kestra.plugin.core.runner.Process`) instead.
 
+Some script plugins also support polling triggers. Python, Shell, Ruby, Go, and Node provide `ScriptTrigger` and `CommandsTrigger` types that run code on an interval and start a flow execution only when an `exitCondition` matches. Read more in the [Polling Trigger guide](../05.workflow-components/07.triggers/04.polling-trigger/index.md).
+
 If you use the [Enterprise Edition](../07.enterprise/index.mdx), you can also run your scripts on [dedicated remote workers](../07.enterprise/04.scalability/worker-group/index.md) by specifying a `workerGroup` property or using other [Task Runner types](../task-runners/04.types/index.mdx) for AWS, GCP, Azure, and Kubernetes.
 
 The following pages dive into details of each task runner, supported programming languages, and how to manage dependencies.
