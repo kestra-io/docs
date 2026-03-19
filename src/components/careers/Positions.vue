@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="location-block">
-                            <span>{{ doc.location.name }}</span>
+                            <span>Remote ({{ doc.location.name }})</span>
                         </div>
                         <div class="arrow-block">
                             <ArrowRight alt="arrow_right" />
@@ -131,6 +131,10 @@
                     span {
                         font-weight: 700;
                     }
+                }
+
+                .location-block {
+                    color: var(--ks-content-tertiary);
                 }
 
                 .arrow-block {
