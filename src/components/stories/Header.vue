@@ -4,8 +4,20 @@
         <div class="container">
             <div class="top">
                 <div class="left">
-                    <img height="56" loading="lazy" :src="logo" :alt="logo" class="logo-dark"/>
-                    <img height="56" loading="lazy" :src="logoDark" :alt="logoDark" class="logo-light"/>
+                    <img
+                        height="56"
+                        loading="lazy"
+                        :src="logo"
+                        :alt="logo"
+                        class="logo-dark"
+                    />
+                    <img
+                        height="56"
+                        loading="lazy"
+                        :src="logoDark"
+                        :alt="logoDark"
+                        class="logo-light"
+                    />
                     <h1 v-if="title">{{ title }}</h1>
                     <p class="baseline">{{ metaDescription }}</p>
                 </div>
@@ -20,7 +32,11 @@
             </div>
 
             <div class="bottom">
-                <div v-for="(kpi, index) in kpis" :key="index" class="kpi-section">
+                <div
+                    v-for="(kpi, index) in kpis"
+                    :key="index"
+                    class="kpi-section"
+                >
                     <MDCParserAndRenderer v-if="kpi" :content="kpi" />
                 </div>
             </div>
@@ -48,8 +64,6 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../assets/styles/variable";
-
     .header {
         position: relative;
         background: var(--ks-background-body);
