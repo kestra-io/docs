@@ -1,3 +1,26 @@
+---
+import type { AshbyJob } from "~/utils/careers"
+import FilterForm from "./FilterForm.vue"
+
+interface Props {
+    positions: AshbyJob[]
+}
+
+const { positions = [] } = Astro.props
+
+const departments = new Map<string, string>()
+const locations = new Map<string, string>()
+
+for (const position of positions) {
+    if (position.department) {
+        departments.set(position.department.id, position.department.name)
+    }
+    if (position.location) {
+        locations.set(position.location.id, position.location.name)
+    }
+}
+---
+
 <section class="header-container">
     <div class="header container">
         <slot>
@@ -6,6 +29,11 @@
                 Drive innovation in a globally distributed, collaborative
                 environment
             </p>
+            <FilterForm
+                departments={departments}
+                locations={locations}
+                client:idle
+            />
         </slot>
     </div>
 </section>

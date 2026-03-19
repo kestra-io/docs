@@ -3,7 +3,7 @@ export const prerender = false
 
 import Layout from "~/components/layout.astro"
 import Header from "~/components/careers/Header.astro"
-import Positions from "~/components/careers/Positions.astro"
+import Positions from "~/components/careers/Positions.vue"
 import CardGrid from "~/components/features/shared/CardGrid.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import { type AshbyJob, fetchJobs } from "~/utils/careers.ts"
@@ -15,39 +15,45 @@ import MedicalBag from "vue-material-design-icons/MedicalBag.vue"
 import ChairRolling from "vue-material-design-icons/ChairRolling.vue"
 import Laptop from "vue-material-design-icons/Laptop.vue"
 
-const positions: AshbyJob[] = await fetchJobs();
+const positions: AshbyJob[] = await fetchJobs()
 
 const PERKS = [
     {
         icon: Earth,
         title: "Work from anywhere",
-        description: "We're a remote-first and completely distributed team, so you can work wherever home is."
+        description:
+            "We're a remote-first and completely distributed team, so you can work wherever home is.",
     },
     {
         icon: CalendarClock,
         title: "Flexible working hours",
-        description: "Flexibility in schedule to be there for life’s important moments."
+        description:
+            "Flexibility in schedule to be there for life’s important moments.",
     },
     {
         icon: ScaleBalance,
         title: "Work/life balance",
-        description: "Prioritize work-life balance in the way that works best for you and a generous vacation policy."
+        description:
+            "Prioritize work-life balance in the way that works best for you and a generous vacation policy.",
     },
     {
         icon: MedicalBag,
         title: "Expanded health benefits",
-        description: "Including premium medical, dental, and vision coverage for employees and their dependent loved ones."
+        description:
+            "Including premium medical, dental, and vision coverage for employees and their dependent loved ones.",
     },
     {
         icon: ChairRolling,
         title: "Office costs covered",
-        description: "Work from home or any other coworking space - we’ll cover the costs."
+        description:
+            "Work from home or any other coworking space - we’ll cover the costs.",
     },
     {
         icon: Laptop,
         title: "Up-to-date always",
-        description: "We’ll cover all hardware and software needed so you’re always with the latest versions."
-    }
+        description:
+            "We’ll cover all hardware and software needed so you’re always with the latest versions.",
+    },
 ]
 
 const title = "Join Us and Shape the Future of Data Orchestration"
@@ -56,8 +62,8 @@ const description =
 ---
 
 <Layout title={title} description={description}>
-    <Header fullPath="/careers" />
-    <Positions {positions} />
+    <Header {positions} client:idle />
+    <Positions {positions} client:load />
     <CardGrid
         subtitle="Committed to"
         subtitleAfter="Excellence"
@@ -68,11 +74,11 @@ const description =
         title="Join our community"
         dark={{
             text: "Join our Slack",
-            href: "/slack"
+            href: "/slack",
         }}
         purple={{
             text: "Contribute",
-            href: "/docs/plugin-developer-guide"
+            href: "/docs/plugin-developer-guide",
         }}
     />
 </Layout>
