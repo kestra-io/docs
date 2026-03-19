@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+    import MagnifyIcon from "vue-material-design-icons/Magnify.vue"
     import {
         searchDepartment,
         searchLocation,
@@ -12,21 +13,25 @@
 
 <template>
     <form>
-        <input
-            type="search"
-            placeholder="Search roles"
-            name="search"
-            v-model="searchString"
-        />
+        <div class="search">
+            <input
+                type="search"
+                placeholder="Search roles"
+                name="search"
+                v-model="searchString"
+            />
+            <MagnifyIcon />
+        </div>
+
         <select v-model="searchDepartment" name="department">
             <option value="">Department</option>
-            <option v-for="(name, id) in departments" :key="id" :value="id">
+            <option v-for="[id, name] in departments" :key="id" :value="id">
                 {{ name }}
             </option>
         </select>
         <select v-model="searchLocation" name="location">
             <option value="">Location</option>
-            <option v-for="(name, id) in locations" :key="id" :value="id">
+            <option v-for="[id, name] in locations" :key="id" :value="id">
                 {{ name }}
             </option>
         </select>
@@ -55,11 +60,30 @@
                 border-color: var(--ks-content-color-highlight);
             }
         }
-        input {
+        .search {
             flex: 1;
+            position: relative;
+            min-width: 300px;
+            span {
+                position: absolute;
+                font-size: 24px;
+                right: 1rem;
+                top: 50%;
+                margin: 0;
+                padding: 0;
+                transform: translateY(-50%);
+                color: var(--ks-content-secondary);
+                :deep(svg) {
+                    bottom: 0;
+                }
+            }
+            input {
+                width: 100%;
+            }
         }
         select {
             appearance: base-select;
+            min-width: 200px;
         }
     }
 </style>
