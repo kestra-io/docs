@@ -748,13 +748,6 @@ if (!pluginType && !subGroup) {
 </Layout>
 
 <style lang="scss">
-    .bd-content {
-        margin: 0 auto;
-        padding: 2rem 0;
-        @include media-breakpoint-up(lg) {
-            max-width: 100%;
-        }
-    }
     .related-blogs {
         padding: 2rem 0;
         border-top: $block-border;
@@ -770,6 +763,33 @@ if (!pluginType && !subGroup) {
         padding: 0;
         display: flex;
         flex-direction: column;
+
+        .bd-content {
+            margin: 0 auto;
+            padding: 2rem 0;
+            @include media-breakpoint-up(lg) {
+                max-width: 100%;
+            }
+
+            :global(.gradient-overlay),
+            :global(.more-btn) {
+                background: linear-gradient(
+                    transparent,
+                    var(--ks-background-body)
+                );
+            }
+
+            :global(div.description) {
+                border-color: var(--ks-border-primary) !important;
+                margin: 0 -2rem !important;
+                padding: 2rem !important;
+            }
+
+            :global(code) {
+                border: none !important;
+                background-color: transparent !important;
+            }
+        }
 
         @include media-breakpoint-up(lg) {
             display: grid;
@@ -843,16 +863,6 @@ if (!pluginType && !subGroup) {
             min-width: 116px;
             padding: 0.25rem 0.625rem;
             white-space: nowrap;
-        }
-
-        :global(.gradient-overlay, .more-btn) {
-            background: linear-gradient(transparent, var(--ks-background-body));
-        }
-
-        :global(div.description) {
-            border-color: var(--ks-border-primary) !important;
-            margin: 0 -2rem !important;
-            padding: 2rem !important;
         }
     }
 
