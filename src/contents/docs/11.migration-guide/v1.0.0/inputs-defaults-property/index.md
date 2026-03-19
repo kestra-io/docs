@@ -9,7 +9,7 @@ description: Details on the change to dynamic rendering for input default values
 
 ## Input defaults are now dynamic
 
-The `defaults` property of all inputs is now dynamic. This change has implications for users who use a Pebble [expression](../../../expressions/index.md) as a default value. Consider this use case:
+The `defaults` property of all inputs is now dynamic. This change has implications for users who use a Pebble [expression](../../../expressions/index.mdx) as a default value. Consider this use case:
 
 ```yaml
 id: session

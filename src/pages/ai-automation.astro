@@ -1,0 +1,127 @@
+---
+import { API_URL } from "astro:env/client"
+import Layout from "~/components/layout.astro"
+
+import Faq from "~/components/common/Faq.vue"
+import Link from "~/components/common/Link.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Any from "~/components/ai-automation/Any.astro"
+import Build from "~/components/ai-automation/Build.astro"
+import Intro from "~/components/ai-automation/Intro.astro"
+import AIFeat from "~/components/ai-automation/AIFeat.astro"
+import AIPlugins from "~/components/ai-automation/AIPlugins.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
+
+import AppleLogo from "~/assets/teams/apple.svg?raw"
+
+const title = "Stop writing glue code around your AI pipelines."
+const description =
+    "Kestra orchestrates everything your LLM framework doesn't: data ingestion, scheduling, retries, human approvals, and outputs. Works alongside LangChain, LlamaIndex, and whatever else is already in your stack."
+
+const { results: blueprints } = await fetch(
+    `${API_URL}/blueprints/versions/latest?tags=AI&page=1&size=20`,
+).then((res) => res.json())
+
+const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
+    (res) => res.json(),
+)
+
+const items = [
+    {
+        question: "What types of AI workflows can I orchestrate with Kestra?",
+        answer: "Complex AI workflows, RAG pipelines, LLM application workflows, ML training and deployment pipelines, AI-powered data processing, and custom AI workflows. Anything that combines LLMs or ML models with data and APIs.",
+    },
+    {
+        question:
+            "What are agentic workflows and how does Kestra support them?",
+        answer: "Agentic workflows involve AI systems making multi-step decisions, calling tools, and coordinating actions with minimal human intervention. Kestra orchestrates these workflows with built-in guardrails: human-in-the-loop approval steps for high-risk actions, retry logic for transient failures, timeouts to prevent runaway execution, and stateful execution for long-running processes. We support MCP (Model Context Protocol) server integration for tool discovery and execution.",
+    },
+    {
+        question: "How do I get started with AI orchestration?",
+        answer: "Try Kestra locally with Docker in 2 minutes. Browse AI Blueprints for AI workflows, RAG pipelines, or LLM applications. Start with a template, customize for your use case, and deploy. Or book a demo to see AI orchestration in action.",
+    },
+    {
+        question: "Does Kestra support all LLM providers?",
+        answer: "Yes. We have native integrations for OpenAI, Anthropic Claude, Cohere, Mistral, and Hugging Face. You can also call any LLM API (including open-source models) using HTTP tasks or Python scripts.",
+    },
+    {
+        question: "Can I use LangChain or LlamaIndex with Kestra?",
+        answer: "Absolutely. Kestra orchestrates the overall workflow while you use LangChain/LlamaIndex for complex logic and LLM interactions. Run them in Python tasks, capture outputs, and coordinate multi-step workflows declaratively.",
+    },
+    {
+        question:
+            "Can I build AI workflows with conditional logic and decision points?",
+        answer: "Yes. Use conditional logic to route workflow paths based on LLM responses, execute parallel LLM tasks, and chain multiple AI operations. For complex patterns, integrate LangChain or LlamaIndex within your workflow tasks.",
+    },
+    {
+        question: "How do I handle retries and rate limits for LLM APIs?",
+        answer: "Kestra has built-in retry strategies with exponential backoff and configurable rate limiting. Set it once in YAML (e.g., max 10 retries, 60 requests/minute) and it applies automatically to all LLM calls.",
+    },
+    {
+        question: "What about vector databases for RAG?",
+        answer: "We support Pinecone, Weaviate, Qdrant, Chroma, and Elasticsearch. Orchestrate document ingestion, embedding generation, vector store updates, and retrieval in one workflow.",
+    },
+    {
+        question: "How does Kestra track LLM costs and token usage?",
+        answer: "Native LLM tasks automatically capture token counts and calculate costs based on provider pricing. View costs per workflow run, per task, or aggregated across all workflows. Export to your analytics tools.",
+    },
+    {
+        question: "How do I debug when an AI workflow fails?",
+        answer: "Full execution traces show every LLM call, workflow decision, and data transformation. View logs, inspect intermediate outputs, check token usage, and see exactly where failures occurred. Replay failed workflows after fixes.",
+    },
+]
+
+const AppleQuotes = [
+    {
+        quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+        author: "Senior Engineering Manager (ML Team)",
+        smallLogoSvg: AppleLogo,
+    },
+]
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <Intro />
+    <Any />
+    <Build />
+    <Quotes quotes={AppleQuotes} />
+    <AIFeat />
+    <BlueprintsGrid
+        title='Deploy production <span class="highlight">AI workflows</span> in minutes'
+        subtitle="Production-ready orchestration workflows for RAG systems, AI workflow coordination, ML pipelines, and LLM applications"
+        {blueprints}
+        {tags}
+        link={{
+            href: "/blueprints?tags=AI",
+            text: "Browse all AI blueprints",
+        }}
+    />
+    <AIPlugins />
+    <div class="see-how">
+        <SeeHow
+            cta={{
+                href: "/blueprints?tags=AI",
+                text: "Explore AI Blueprints",
+            }}
+        >
+            <Fragment slot="title">
+                Start with a blueprint. Ship to production today.
+            </Fragment>
+            Pick a use case, run it locally, and extend it to fit your stack. No configuration
+            required to get started.
+            <div slot="footer" class="mt-3">
+                <Link href="/demo" class="btn btn-secondary">
+                    Book a demo
+                </Link>
+            </div>
+        </SeeHow>
+    </div>
+    <Faq {items} client:visible />
+</Layout>
+
+<style lang="scss">
+    .see-how :global(.see) {
+        border-bottom: 1px solid var(--ks-border-secondary);
+    }
+</style>

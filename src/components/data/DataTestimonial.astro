@@ -1,0 +1,72 @@
+---
+import Quotes from "~/components/common/Quotes.vue"
+import AppleLogo from "~/assets/landing/data/apple.svg?raw"
+import GorgiasLogo from "~/contents/customer-stories/13/logo.svg?raw"
+import LeroyMerlinLogo from "~/contents/customer-stories/14/logo.svg?raw"
+
+const DATA_QUOTES = [
+    {
+        quote: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey.",
+        author: "Julien Henrion, Head of Data Engineering",
+        smallLogoSvg: LeroyMerlinLogo,
+        kpis: [
+            {
+                name: "in data production",
+                value: "+900%",
+            },
+            {
+                name: "active users",
+                value: "+250",
+            },
+            {
+                name: "workflows created",
+                value: "+5,000",
+            },
+        ],
+        storyLink:
+            "https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent",
+    },
+    {
+        quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+        author: "Senior Engineering Manager, ML team @ Apple",
+        smallLogoSvg: AppleLogo,
+        kpis: [
+            {
+                name: "engineers onboarded",
+                value: "200",
+            },
+            {
+                name: "faster workflow creation",
+                value: "2x",
+            },
+            {
+                name: "pipeline failures",
+                value: "0",
+            },
+        ],
+    },
+    {
+        quote: "Kestra has been a keystone to designing complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our HighTouch reverse-ETL jobs seamlessly.",
+        author: "Antoine Balliet, Senior Data Engineer",
+        smallLogoSvg: GorgiasLogo,
+        kpis: [
+            {
+                name: "Centralized control plane",
+                value: "Centralized",
+            },
+            {
+                name: "executions per month",
+                value: "20,000+",
+            },
+            {
+                name: "workflows in production",
+                value: "70+",
+            },
+        ],
+        storyLink:
+            "https://kestra.io/use-cases/stories/13-cicd-and-control-plane-accelerated-deployments-better-data-process",
+    },
+]
+---
+
+<Quotes quotes={DATA_QUOTES} client:load />

@@ -8,6 +8,7 @@ import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
 import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
 import BlogList from "~/components/common/BlogList.astro"
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
+import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
 import { $fetchApi } from "~/utils/fetch"
@@ -86,19 +87,23 @@ const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup
 
 const githubReleaseRepo = (() => {
     const name = pluginName ?? ""
-    // because core plugin is part of kestra repo
-    if (name === "core") {
-        return "kestra"
+    switch (true) {
+        // because core plugin is part of kestra repo
+        case name === "core":
+            return "kestra"
+        // because plugin-jdbc is the parent for many subgroups in same repo.
+        case name.startsWith("plugin-jdbc-") || name === "plugin-jdbc":
+            return "plugin-jdbc"
+        case name.startsWith("plugin-script-") || name === "plugin-script":
+            return "plugin-scripts"
+        case name.startsWith("plugin-debezium-") || name === "plugin-debezium":
+            return "plugin-debezium"
+        case name.startsWith("plugin-transform-") ||
+            name === "plugin-transform":
+            return "plugin-transform"
+        default:
+            return name
     }
-    // because plugin-jdbc is the parent for many subgroups in same repo.
-    if (name.startsWith("plugin-jdbc-") || name === "plugin-jdbc") {
-        return "plugin-jdbc"
-    }
-
-    if (name.startsWith("plugin-script-") || name === "plugin-script") {
-        return "plugin-scripts"
-    }
-    return name
 })()
 
 const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
@@ -212,7 +217,59 @@ const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
         : (page?.body?.plugins ?? []),
 )
 
-const subGroupWrapper = pluginsWithoutDeprecated.find(
+const toElementKey = (title?: string): string | undefined => {
+    if (!title) return undefined
+
+    const words = title
+        .match(/[a-zA-Z0-9]+/g)
+        ?.map((word) => word.toLowerCase())
+    if (!words || words.length === 0) return undefined
+
+    return [
+        words[0],
+        ...words
+            .slice(1)
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1)),
+    ].join("")
+}
+
+const pluginMetadataTitle = (plugin: Plugin): string | undefined =>
+    allPluginMetadata?.find(
+        (m) => m.group === (plugin.subGroup ?? plugin.group),
+    )?.title
+
+const pluginsForDisplay = pluginsWithoutDeprecated.map((plugin) => {
+    const elementKeys = Object.entries(plugin)
+        .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+        .map(([key]) => key)
+
+    const isOnlyAdditionalPlugins =
+        plugin.subGroup !== undefined &&
+        elementKeys.length === 1 &&
+        elementKeys[0] === "additionalPlugins"
+
+    if (!isOnlyAdditionalPlugins) {
+        return plugin
+    }
+
+    const displayKey = toElementKey(pluginMetadataTitle(plugin))
+    if (
+        !displayKey ||
+        displayKey === "additionalPlugins" ||
+        Object.hasOwn(plugin, displayKey)
+    ) {
+        return plugin
+    }
+
+    return Object.fromEntries(
+        Object.entries(plugin).map(([key, value]) => [
+            key === "additionalPlugins" ? displayKey : key,
+            value,
+        ]),
+    ) as Plugin
+})
+
+const subGroupWrapper = pluginsForDisplay.find(
     (p) => slugify(subGroupName(p)) === subGroup,
 )
 const { currentPageIcon, subGroupsIcons } = await getIcon(
@@ -236,14 +293,14 @@ const relatedBlogs = blogs
         return new Date(a.data.date) > new Date(b.data.date) ? 1 : -1
     })
 
-const rootPlugin = pluginsWithoutDeprecated?.find(
+const rootPlugin = pluginsForDisplay?.find(
     (p: Plugin) => p.subGroup === undefined,
 )
 
 const currentSubgroupPlugin =
     !subGroup || pluginType
         ? undefined
-        : pluginsWithoutDeprecated?.find((p) => {
+        : pluginsForDisplay?.find((p) => {
               const subgroupLastSegment = p.subGroup?.split(".").pop()
               const possibleSubgroupMatches = [
                   slugify(subGroupName(p)),
@@ -575,7 +632,7 @@ if (!pluginType && !subGroup) {
     <div class="container-fluid bd-gutter bd-layout">
         <PluginSidebar
             pluginWrapper={rootPlugin}
-            pluginsWithoutDeprecated={pluginsWithoutDeprecated}
+            pluginsWithoutDeprecated={pluginsForDisplay}
             pluginName={pluginName}
             title={headingTitle}
             routeParts={splitRouteSlug}
@@ -603,83 +660,89 @@ if (!pluginType && !subGroup) {
                 }
             </div>
 
-            <PluginsMDCRender
-                page={pageWithToc}
-                icons={pluginType ? {} : subGroupsIcons}
-                plugin-type={pluginType}
-                plugins={pluginType ? [] : pluginsWithoutDeprecated}
-                pluginName={pluginName}
-                subGroup={subGroup}
-                routePath={pathname}
-                subgroupBlueprintCounts={pluginType
-                    ? {}
-                    : subgroupBlueprintCounts}
-                metadataMap={metadataMap}
-                schemas={pluginType ? {} : elementTitle}
-                client:idle
-            />
-
             {
-                pluginType === undefined && currentPluginVideos?.length > 0 && (
-                    <PluginVideos videos={currentPluginVideos} />
-                )
-            }
-
-            <RelatedBlueprints
-                pluginName={pluginName}
-                pluginWrapper={rootPlugin}
-                currentSubgroupPlugin={currentSubgroupPlugin}
-                subGroupName={currentSubgroupPlugin
-                    ? slugify(subGroupName(currentSubgroupPlugin))
-                    : subGroup}
-                pluginType={pluginType}
-                customId={blueprintsSectionHeading?.id}
-            />
-
-            {
-                pluginType === undefined &&
-                    subGroup === undefined &&
-                    relatedBlogs &&
-                    relatedBlogs.length > 0 && (
-                        <div class="related-blogs">
-                            <BlogList
-                                posts={relatedBlogs.map((p) => ({
-                                    ...p.data,
-                                    path: `/blogs/${p.id}`,
-                                    date: p.data.date.toISOString(),
-                                }))}
-                                title="Latest Blog Posts"
-                                headingId="latest-blog-posts"
-                            />
-                        </div>
-                    )
-            }
-
-            {
-                currentPluginCategories?.length > 0 && (
-                    <SimilarPlugins
-                        {allPlugins}
-                        pluginsData={pluginsInformation.byPlugin}
-                        categories={currentPluginCategories}
-                        {pluginName}
+                pluginType ? (
+                    <PluginsMDCRender
+                        schema={(pageWithToc.body as any).jsonSchema}
+                        pluginType={pluginType}
+                        client:idle
+                    />
+                ) : (
+                    <PluginsIndexWrapper
+                        plugins={pluginsForDisplay}
+                        icons={subGroupsIcons}
+                        pluginName={pluginName}
+                        subGroup={subGroup}
+                        routePath={pathname}
+                        subgroupBlueprintCounts={subgroupBlueprintCounts}
+                        metadataMap={metadataMap}
+                        schemas={elementTitle}
+                        client:idle
                     />
                 )
             }
         </article>
-        <NavToc
-            links={pageWithToc.body.toc?.links}
-            editLink={pageWithToc.editLink}
-            extension={pageWithToc.extension}
-            stem={pageWithToc.stem}
-            version={githubVersions}
-            releasesUrl={githubReleasesUrl}
-            categories={currentPluginCategories}
-            metadata={currentPluginMetadata}
-            capitalize
-            isPluginPage
-            class="right-sidebar"
+
+        {
+            pluginType === undefined && currentPluginVideos?.length > 0 && (
+                <PluginVideos videos={currentPluginVideos} />
+            )
+        }
+
+        <RelatedBlueprints
+            pluginName={pluginName}
+            pluginWrapper={rootPlugin}
+            currentSubgroupPlugin={currentSubgroupPlugin}
+            subGroupName={currentSubgroupPlugin
+                ? slugify(subGroupName(currentSubgroupPlugin))
+                : subGroup}
+            pluginType={pluginType}
+            customId={blueprintsSectionHeading?.id}
         />
+
+        {
+            pluginType === undefined &&
+                subGroup === undefined &&
+                relatedBlogs &&
+                relatedBlogs.length > 0 && (
+                    <div class="related-blogs">
+                        <BlogList
+                            posts={relatedBlogs.map((p) => ({
+                                ...p.data,
+                                path: `/blogs/${p.id}`,
+                                date: p.data.date.toISOString(),
+                            }))}
+                            title="Latest Blog Posts"
+                            headingId="latest-blog-posts"
+                        />
+                    </div>
+                )
+        }
+
+        {
+            currentPluginCategories?.length > 0 && (
+                <SimilarPlugins
+                    {allPlugins}
+                    pluginsData={pluginsInformation.byPlugin}
+                    categories={currentPluginCategories}
+                    {pluginName}
+                />
+            )
+        }
     </div>
+    <NavToc
+        links={pageWithToc.body.toc?.links}
+        editLink={pageWithToc.editLink}
+        extension={pageWithToc.extension}
+        stem={pageWithToc.stem}
+        version={githubVersions}
+        releasesUrl={githubReleasesUrl}
+        categories={currentPluginCategories}
+        metadata={currentPluginMetadata}
+        capitalize
+        isPluginPage
+        class="right-sidebar"
+    />
 </Layout>
 
 <style lang="scss">
@@ -693,10 +756,6 @@ if (!pluginType && !subGroup) {
         }
     }
 
-    .plugin-title {
-        font-size: 1.5em;
-    }
-
     .container-fluid {
         border-top: 1px solid var(--ks-border-primary);
         padding: 0;
@@ -708,15 +767,6 @@ if (!pluginType && !subGroup) {
             grid-template-columns: 250px 1fr 269px;
             grid-template-areas: "sidebar article toc";
             gap: 0;
-        }
-
-        > .plugin-sidebar {
-            @include media-breakpoint-up(lg) {
-                grid-area: sidebar;
-                position: sticky;
-                top: calc(4rem + var(--announce-height));
-                height: 100%;
-            }
         }
 
         > .bd-main {
@@ -777,32 +827,6 @@ if (!pluginType && !subGroup) {
 
             @include media-breakpoint-down(lg) {
                 margin-top: $spacer;
-            }
-        }
-
-        .desc {
-            font-size: clamp(0.875rem, 0.8rem + 0.2vw, 1rem);
-            max-width: 650px;
-            color: var(--ks-content-secondary);
-            margin-top: 0.25rem;
-            font-weight: normal;
-            line-height: 1.5;
-
-            @include media-breakpoint-up(md) {
-                font-size: 1rem;
-            }
-            @include media-breakpoint-down(lg) {
-                font-size: 0.75rem;
-            }
-
-            @media screen and (max-width: 1100px) {
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                line-clamp: 4;
-                -webkit-line-clamp: 4;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: normal;
             }
         }
 
