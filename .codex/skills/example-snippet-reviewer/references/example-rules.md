@@ -20,7 +20,7 @@ Use existing local patterns first. If no local pattern is established, these def
 ## Review checks
 
 1. Is the example full or partial?
-2. Does the page say what to look for?
+2. Does the page say what to look for in the example, not just what the example is?
 3. Is the code fence tagged with the correct language?
 4. Is the snippet complete, with closed quotes, balanced delimiters, and a complete command or program?
 5. Are identifiers and values consistent?
@@ -37,6 +37,7 @@ Use existing local patterns first. If no local pattern is established, these def
 - Label partial snippets explicitly.
 - Fix truncated snippets and unbalanced quotes before making stylistic edits.
 - Add a short lead-in before the block.
+- Add a short lead-in that tells the reader what the example demonstrates or what to notice.
 - Add a brief interpretation or verification note after the block.
 - Split commands from output when copy-paste matters.
 - Flag floating `latest` tags in setup and deployment examples for review, even if you do not change them automatically.

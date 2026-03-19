@@ -9,8 +9,6 @@ version: ">= 0.23.0"
 
 Build tests to ensure proper flow behavior.
 
-## Unit tests – validate Flows safely
-
 Tests let you verify that your flow behaves as expected, without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task, rather than executing the entire flow.
 
 <div class="video-container">
@@ -25,15 +23,9 @@ Unit tests are configured for and connected to their respective flows. To create
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
----
-
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
 
----
-
 ![Tests Interface](./unit-test-interface.png)
-
----
 
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
@@ -41,7 +33,7 @@ The following diagram illustrates the structure of flows and unit tests together
 
 ## Configuration
 
-Unit tests are written in YAML like flows, and they are comprised of `testCases` which are then made up of `fixtures` and `assertions`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write Unit Tests as code, No code, or with the [AI Copilot](../../../ai-tools/ai-copilot/index.md).
+Unit tests are written in YAML like flows. A test is made up of `testCases`, and each test case is made up of `fixtures` and `assertions`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write unit tests as code, in No Code, or with the [AI Copilot](../../../ai-tools/ai-copilot/index.md).
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
@@ -56,11 +48,12 @@ Common fixture types:
 If you don't specify any fixtures, the test will run the entire flow as in production, executing all tasks and producing outputs as usual.
 :::
 
-For example, take the following flow that does these listed tasks:
-1. Sends a message to Slack to alert a channel that it is running
-2. Extracts data from an API
-3. Transforms the returned data to match a certain format
-4. Loads the transformed data to a BigQuery table
+The following flow:
+
+1. sends a Slack message when it starts
+2. extracts data from an API
+3. transforms the returned data
+4. loads the transformed data into BigQuery
 
 ```yaml
 id: etl_daily_products_bigquery
@@ -94,7 +87,7 @@ tasks:
     format: JSON
 ```
 
-A comprehensive unit test for this flow might look like the following:
+This example test suite shows two common patterns: letting one transformation run normally while mocking side effects, and fully mocking an upstream task to isolate a downstream transformation.
 
 ```yaml
 id: etl_daily_products_bigquery_testsuite
@@ -133,7 +126,7 @@ testCases:
         contains: "MY-PRODUCT-1"
 ```
 
-The `id` is unique to the test suite, and the `namespace` and `flowId` must match the intended flow to be tested against. They will automatically pipe into the test when creating from a flow. The `testCases` property is composed with the aforementioned `fixtures` and `assertions`. You can design multiple tests with their own specific designs.
+The `id` is unique to the test suite, and the `namespace` and `flowId` must match the intended flow. When you create a test from a flow, those values are filled in automatically. The `testCases` property contains the `fixtures` and `assertions` for each test case.
 
 In the first test case, `extract_should_return_data`, the `fixtures` include tasks to replace the Slack alert and BigQuery data load so as to not clutter a Slack channel with test alert messages or a BigQuery table with test data but still test the overall design of the flow.
 
@@ -153,11 +146,11 @@ Execution details are not stored in the Executions page like normally run flows 
 
 ![Test Execution Details](./test-execution.png)
 
-## Unit test with namespace file
+## Unit test with a namespace file
 
-You can also simulate flows with namespace files that are scripts, test data, or any other sort of file content. Taking the previous example, we can include a namespace file that includes sample data from the production API endpoint, so that we do not need to make any API calls simply to test the flow. This prevents accumulating cost for requests or any sort of limit on calls a service might have.
+You can also simulate flows with namespace files that contain scripts, test data, or any other file content. In the previous example, you can add a namespace file that contains sample data from the production API endpoint so you do not need to make any API calls during testing. This avoids extra cost and unnecessary calls to external services.
 
-With the following flow:
+Use the following flow:
 
 ```yaml
 id: etl_download_file
@@ -182,9 +175,9 @@ tasks:
     message: "{{ outputs.transform_to_uppercase.this_task_should_not_be_run }}"
 ```
 
-we can add a namespace file in the `company.team` namespace that mimics the format of the API request's return.
+Then add a namespace file in the `company.team` namespace that mimics the API response format.
 
-`my-namespace-file-with-products.json` to add to the `company.team` namespace:
+For example, add `my-namespace-file-with-products.json` to the `company.team` namespace:
 
 ```json
 {
@@ -229,7 +222,7 @@ we can add a namespace file in the `company.team` namespace that mimics the form
 }
 ```
 
-This way, in our mock test, we can use the following configuration to test the transformation on sample data, rather than making the API request:
+This test uses the namespace file as mocked task output so the transformation runs against sample data instead of making the API request:
 
 ```yaml
 id: etl_mockfile_from_ns
@@ -425,7 +418,7 @@ In this example:
 
 This approach allows you to test the complete flow logic while avoiding the overhead and complexity of executing actual scripts during testing.
 
-## Available assertions operators
+## Available assertion operators
 
 While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The complete list is as follows:
 
@@ -445,11 +438,11 @@ While the above example uses `isNotNull` and `contains` as assertion operators, 
 | in                   | Asserts the value is in the specified list of values, e.g. `in: [200, 201, 202]`                  |
 | notIn                | Asserts the value is not in the specified list of values, e.g. `notIn: [404, 500]`                |
 
-## Assert on Execution Outputs
+## Assert on execution outputs
 
-Rather than assert with an operator and a set value, you can use execution outputs in your tests. To assert on execution outputs, use the `{{ execution.outputs.your_output_id }}` syntax in your test assertions. This allows you to verify that the outputs of your tasks match the expected values.
+Rather than assert with an operator and a fixed value, you can use execution outputs in your tests. To assert on execution outputs, use the `{{ execution.outputs.your_output_id }}` syntax in your test assertions. This allows you to verify that task outputs match the expected values.
 
-The below example assumes there is a flow that outputs a value:
+The following example assumes there is a flow that outputs a value:
 
 ```yaml
 id: flow_outputs_demo
