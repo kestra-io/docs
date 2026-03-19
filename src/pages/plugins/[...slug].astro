@@ -8,6 +8,7 @@ import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
 import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
 import BlogList from "~/components/common/BlogList.astro"
 import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
+import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
 import { $fetchApi } from "~/utils/fetch"
@@ -659,20 +660,28 @@ if (!pluginType && !subGroup) {
                 }
             </div>
 
-            <PluginsMDCRender
-                page={pageWithToc}
-                icons={pluginType ? {} : subGroupsIcons}
-                plugin-type={pluginType}
-                plugins={pluginType ? [] : pluginsForDisplay}
-                pluginName={pluginName}
-                subGroup={subGroup}
-                routePath={pathname}
-                subgroupBlueprintCounts={pluginType
-                    ? {}
-                    : subgroupBlueprintCounts}
-                metadataMap={metadataMap}
-                schemas={pluginType ? {} : elementTitle}
-            />
+            <div class="bd-content">
+                {
+                    pluginType === undefined ? (
+                        <PluginsIndexWrapper
+                            page={pageWithToc}
+                            icons={subGroupsIcons}
+                            pluginType={pluginType}
+                            pluginName={pluginName}
+                            subGroup={subGroup}
+                            routePath={pathname}
+                            subgroupBlueprintCounts={subgroupBlueprintCounts}
+                            metadataMap={metadataMap}
+                            schemas={elementTitle}
+                            client:idle
+                        />
+                    ) : (
+                        <PluginsMDCRender
+                            schema={(pageWithToc.body as any).jsonSchema}
+                        />
+                    )
+                }
+            </div>
 
             {
                 pluginType === undefined && currentPluginVideos?.length > 0 && (

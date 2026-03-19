@@ -1,90 +1,30 @@
 <template>
-    <div class="bd-content">
-        <PluginIndex
-            v-if="pluginType === undefined"
-            :icons
-            :plugins
-            :plugin-name
-            :sub-group
-            :route-path
-            :subgroup-blueprint-counts
-            :metadata-map
-            :schemas
-            @navigate="navigateTo($event)"
-            :active-id="activeId"
+    <Suspense>
+        <SchemaToHtmlV2
+            v-if="page.body.jsonSchema"
+            class="plugin-schema"
+            :schema="page.body.jsonSchema"
+            plugin-type=""
+            :props-initially-expanded="true"
         >
-            <template v-slot:markdown="{ content }">
-                <MDCParserAndRenderer :content class="long" />
+            <template #markdown="{ content }">
+                <MDCParserAndRenderer v-if="content" :content="content" />
             </template>
-        </PluginIndex>
-        <Suspense v-else>
-            <SchemaToHtmlV2
-                v-if="page.body.jsonSchema"
-                class="plugin-schema"
-                :schema="page.body.jsonSchema"
-                :plugin-type="pluginType ?? ''"
-                :props-initially-expanded="true"
-            >
-                <template #markdown="{ content }">
-                    <MDCParserAndRenderer v-if="content" :content="content" />
-                </template>
-            </SchemaToHtmlV2>
-        </Suspense>
-    </div>
+        </SchemaToHtmlV2>
+    </Suspense>
 </template>
 
 <script lang="ts" setup>
-    import { ref, onMounted, onUnmounted } from "vue"
-    import { SchemaToHtmlV2, type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
-    import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
+    import { SchemaToHtmlV2, type JSONSchema } from "@kestra-io/ui-libs"
     import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 
-    const props = withDefaults(
-        defineProps<{
-            page: any
-            routePath: string
-            pluginType?: string
-            icons?: Record<string, string>
-            plugins?: Plugin[]
-            pluginName: string
-            subGroup?: string
-            subgroupBlueprintCounts?: Record<string, number>
-            metadataMap?: Record<string, PluginMetadata>
-            schemas?: Record<string, { title?: string }>
-        }>(),
-        {
-            icons: () => ({}),
-            plugins: () => [],
-            pluginName: undefined,
-            subGroup: undefined,
-        },
-    )
-
-    const activeId = ref("")
-
-    const updateActiveId = () => {
-        activeId.value = window.location.hash.substring(1).toLowerCase()
-    }
-
-    const events = ['hashchange', 'popstate']
-
-    onMounted(() => {
-        updateActiveId()
-        events.forEach(event => window.addEventListener(event, updateActiveId))
-    })
-
-    onUnmounted(() => {
-        events.forEach(event => window.removeEventListener(event, updateActiveId))
-    })
-
-    function navigateTo(url: string) {
-        window.location.assign(url)
-    }
+    const props = defineProps<{
+        schema: JSONSchema
+    }>()
 </script>
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
 
     .bd-content {
         margin: 0 auto;
@@ -130,7 +70,8 @@
     .plugin-schema {
         :deep(hr) {
             opacity: 0.5;
-            border-top: calc(2 * var(--bs-border-width)) solid var(--ks-background-primary);
+            border-top: calc(2 * var(--bs-border-width)) solid
+                var(--ks-background-primary);
             margin: 0 !important;
         }
         :deep(article) {
@@ -194,7 +135,8 @@
                     margin-bottom: 0 !important;
                 }
                 > *:not(:first-child) {
-                    border-top: var(--bs-border-width) var(--bs-border-style) var(--ks-border-primary);
+                    border-top: var(--bs-border-width) var(--bs-border-style)
+                        var(--ks-border-primary);
                 }
                 .border:not(.type-box) {
                     border-color: var(--ks-border-primary) !important;
@@ -230,7 +172,8 @@
         padding: 2rem !important;
     }
 
-    :deep(.gradient-overlay), :deep(.more-btn) {
+    :deep(.gradient-overlay),
+    :deep(.more-btn) {
         background: linear-gradient(transparent, var(--ks-background-body));
     }
 </style>
