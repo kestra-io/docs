@@ -1,13 +1,28 @@
 ---
 import { Icon } from "astro-icon/components"
 import Squared from "~/components/layout/Squared.vue"
-import TaskIcon from "~/components/common/TaskIcon.astro"
+import { $fetchApi } from "~/utils/fetch"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 const { page, tags: allTags = [] } = Astro.props
 
 const tags = allTags
     .filter((tag: BlueprintTag) => page.tags?.includes(tag.id))
     .map((tag: BlueprintTag) => tag.name)
+
+const iconsStash = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
+
+const getIcon = (cls: string) => {
+    const iconGroup = Object.keys(iconsStash).find((group) =>
+        cls.startsWith(group),
+    )
+
+    return iconGroup && iconsStash[iconGroup]?.icon
+        ? optimizeSvgIcon(atob(iconsStash[iconGroup].icon), iconGroup)
+        : ""
+}
 ---
 
 <div class="header">
@@ -25,9 +40,11 @@ const tags = allTags
                         <div class="tasks">
                             {page.includedTasks.map((icon: string) => (
                                 <div class="task">
-                                    <div class="box">
-                                        <TaskIcon cls={icon} />
-                                    </div>
+                                    <div
+                                        class="box"
+                                        data-tooltip={icon.split(".").pop()}
+                                        set:html={getIcon(icon)}
+                                    />
                                 </div>
                             ))}
                         </div>
@@ -35,7 +52,7 @@ const tags = allTags
                 }
 
                 <h1 class="title mb-0">{page.title}</h1>
-                {/* TODO: short description needed */}
+                {/* TODO: short description needed to accomodate figma*/}
                 <!-- <MDCParserAndRenderer
                     content={page.shortDescription}
                     class="description bd-markdown mb-0"
@@ -118,6 +135,7 @@ const tags = allTags
                     border-radius: 8px;
                     border: $block-border;
                     background-color: var(--ks-background-primary);
+                    @include task-icon-wrapper;
                 }
             }
         }

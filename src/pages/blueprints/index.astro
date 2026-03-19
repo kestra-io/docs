@@ -16,6 +16,10 @@ const tagsSelected = Astro.url.searchParams.get("tags") ?? undefined
 
 const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
 
+const iconsStash = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
+
 const tagsForFilter = tagsSelected
     ? tags.find((tag) => tag.name === tagsSelected)?.id
     : undefined
@@ -91,6 +95,7 @@ const description = "Get started with our library of workflows ready to use"
                             <BlueprintCard
                                 {blueprint}
                                 {tags}
+                                {iconsStash}
                                 href={`/blueprints/${blueprint.id}`}
                             />
                         </div>

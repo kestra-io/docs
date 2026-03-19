@@ -6,6 +6,10 @@ import { $fetchApi } from "~/utils/fetch"
 const { blueprints } = Astro.props
 
 const tags = await $fetchApi<BlueprintTag[]>("/blueprints/versions/latest/tags")
+
+const iconsStash = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
 ---
 
 <Carousel client:load>
@@ -14,6 +18,7 @@ const tags = await $fetchApi<BlueprintTag[]>("/blueprints/versions/latest/tags")
             <BlueprintCard
                 blueprint={blueprint}
                 tags={tags}
+                iconsStash={iconsStash}
                 href={`/blueprints/${blueprint.id}`}
             />
         ))

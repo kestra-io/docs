@@ -2,6 +2,7 @@
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import Link from "~/components/common/Link.astro"
 import Carousel from "~/components/common/Carousel.vue"
+import { $fetchApi } from "~/utils/fetch"
 
 interface Props {
     title: string
@@ -17,6 +18,10 @@ interface Props {
 const { title, subtitle, blueprints, tags, link } = Astro.props
 
 const displayBlueprints = blueprints?.slice(0, 20) ?? []
+
+const iconsStash = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
 ---
 
 <section class="blueprints-carousel">
@@ -34,6 +39,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
                             <BlueprintCard
                                 blueprint={blueprint}
                                 tags={tags}
+                                iconsStash={iconsStash}
                                 href={`/blueprints/${blueprint.id}`}
                             />
                         </div>
@@ -53,6 +59,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
                             <BlueprintCard
                                 blueprint={blueprint}
                                 tags={tags}
+                                iconsStash={iconsStash}
                                 href={`/blueprints/${blueprint.id}`}
                             />
                         </div>

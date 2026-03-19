@@ -1,7 +1,8 @@
 ---
-import TaskIcon from "~/components/common/TaskIcon.astro"
+import { $fetchApi } from "~/utils/fetch"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
-const { blueprint, tags = [], href } = Astro.props
+const { blueprint, tags = [], href, iconsStash } = Astro.props
 
 const MAX_ICONS = 6
 const allTasks = blueprint.includedTasks ?? []
@@ -17,6 +18,16 @@ const tagsList = tags?.length
           .filter((t: any) => blueprint.tags?.includes(t.id))
           .map((t: any) => t.name)
     : (blueprint.tags ?? [])
+
+const getIcon = (cls: string) => {
+    const iconGroup = Object.keys(iconsStash).find((group) =>
+        cls.startsWith(group),
+    )
+
+    return iconGroup && iconsStash[iconGroup]?.icon
+        ? optimizeSvgIcon(atob(iconsStash[iconGroup].icon), iconGroup)
+        : ""
+}
 ---
 
 <a href={href} class="blueprint">
@@ -26,9 +37,11 @@ const tagsList = tags?.length
     <div class="task-icons">
         {
             visibleTasks.map((cls: string) => (
-                <div class="icon">
-                    <TaskIcon cls={cls} />
-                </div>
+                <div
+                    class="icon"
+                    data-tooltip={cls.split(".").pop()}
+                    set:html={getIcon(cls)}
+                />
             ))
         }
         {extraCount > 0 && <span class="extra-count">+{extraCount}</span>}
@@ -81,6 +94,8 @@ const tagsList = tags?.length
                 align-items: center;
                 flex-shrink: 0;
                 padding: 4px;
+
+                @include task-icon-wrapper;
             }
             .extra-count {
                 flex-shrink: 0;

@@ -1,6 +1,7 @@
 ---
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import BlueprintNav from "~/components/blueprints/BlueprintNav.vue"
+import { $fetchApi } from "~/utils/fetch"
 
 const { relatedBlueprints, tags, title, id } = Astro.props
 
@@ -8,6 +9,10 @@ const pageSize = 3
 
 const href = (blueprint: { id: number | string }) =>
     `/blueprints/${blueprint.id}`
+
+const iconsStash = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
 ---
 
 <section class="related-bp" data-id={id} data-page-size={pageSize}>
@@ -41,6 +46,7 @@ const href = (blueprint: { id: number | string }) =>
                         <BlueprintCard
                             blueprint={blueprint}
                             tags={tags}
+                            iconsStash={iconsStash}
                             href={href(blueprint)}
                         />
                     </div>

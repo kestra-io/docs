@@ -116,6 +116,8 @@ $font-sizes: map-merge(
     )
 );
 
+@import "task-icon";
+
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
