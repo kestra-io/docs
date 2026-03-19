@@ -25,7 +25,14 @@ const __dirname = path.dirname(
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
-    adapter: cloudflare({ prerenderEnvironment: "node" }),
+    adapter: cloudflare({
+        prerenderEnvironment: "node",
+        // only use cloudflare images in production
+        imageService:
+            process.env.NO_IMAGE_OPTIM === "true"
+                ? "passthrough"
+                : "cloudflare",
+    }),
     trailingSlash: "ignore",
     integrations: [
         vue({
