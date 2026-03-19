@@ -54,7 +54,7 @@ For scenarios with a limited number of sources to integrate, Kestra offers a str
 
 As Kestra comes with many plugins you can already move data from one database to another. From one filesystem to another. You can also listen to queue systems for new messages, listen for [events on file systems such as S3 buckets of FTP servers](../../docs/05.workflow-components/07.triggers/index.mdx).
 
-Moreover Kestra has a [Singer plugin](/plugins/plugin-singer) allowing to consolidate data integration with the famous systems of taps and targets. This way you can find an in-between between Airbyte and Kestra standalone.
+Moreover Kestra has a [Singer plugin](/plugins) allowing to consolidate data integration with the famous systems of taps and targets. This way you can find an in-between between Airbyte and Kestra standalone.
 
 ## What’s Next?
 
