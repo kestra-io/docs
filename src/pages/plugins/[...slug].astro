@@ -660,7 +660,7 @@ if (!pluginType && !subGroup) {
                 }
             </div>
 
-            <div class="bd-content">
+            <div class="bd-content ks-plugins-core">
                 {
                     pluginType === undefined ? (
                         <PluginsIndexWrapper
@@ -747,6 +747,28 @@ if (!pluginType && !subGroup) {
 </Layout>
 
 <style lang="scss">
+    .ks-plugins-core {
+        margin: 0 auto;
+        padding: 2rem 0;
+        @include media-breakpoint-up(lg) {
+            max-width: 100%;
+        }
+        :global(.plugin) {
+            background-color: var(--ks-background-primary) !important;
+            box-shadow: none !important;
+            border-color: var(--ks-border-primary);
+            &:hover {
+                border-color: var(--ks-border-active) !important;
+            }
+            h6 {
+                color: var(--ks-content-primary);
+            }
+            :global(.description) {
+                text-transform: none;
+            }
+        }
+    }
+
     .related-blogs {
         padding: 2rem 0;
         border-top: $block-border;
