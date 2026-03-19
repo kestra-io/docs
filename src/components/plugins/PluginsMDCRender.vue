@@ -1,10 +1,9 @@
 <template>
     <Suspense>
         <SchemaToHtmlV2
-            v-if="schema"
             class="plugin-schema"
-            :schema="schema"
-            plugin-type=""
+            :schema
+            :plugin-type
             :props-initially-expanded="true"
         >
             <template #markdown="{ content }">
@@ -20,52 +19,12 @@
 
     const props = defineProps<{
         schema: JSONSchema
+        pluginType: string
     }>()
 </script>
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
-    .bd-content {
-        margin: 0 auto;
-        padding: 2rem 0;
-        @include media-breakpoint-up(lg) {
-            max-width: 100%;
-        }
-        :deep(code) {
-            border: none !important;
-            background-color: transparent !important;
-        }
-        :deep(.plugin) {
-            background-color: var(--ks-background-primary) !important;
-            box-shadow: none !important;
-            border-color: var(--ks-border-primary);
-            &:hover {
-                border-color: var(--ks-border-active) !important;
-            }
-            h6 {
-                color: var(--ks-content-primary);
-            }
-        }
-        :deep(.element-card) {
-            background-color: var(--ks-background-primary) !important;
-            border-color: var(--ks-border-primary) !important;
-            box-shadow: none !important;
-            &:hover {
-                border-color: var(--ks-border-active) !important;
-            }
-            h6 {
-                color: var(--ks-content-primary);
-            }
-            .plugin-info {
-                background-color: transparent;
-                border: $block-border;
-                .plugin-class {
-                    color: var(--ks-content-link) !important;
-                }
-            }
-        }
-    }
 
     .plugin-schema {
         :deep(hr) {
@@ -162,9 +121,6 @@
         }
     }
 
-    :deep(.plugin .description) {
-        text-transform: none !important;
-    }
     :deep(div.description) {
         border-color: var(--ks-border-primary) !important;
         margin: 0 -2rem !important;

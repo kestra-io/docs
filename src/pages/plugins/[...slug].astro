@@ -666,7 +666,6 @@ if (!pluginType && !subGroup) {
                         <PluginsIndexWrapper
                             plugins={pluginsForDisplay}
                             icons={subGroupsIcons}
-                            pluginType={pluginType}
                             pluginName={pluginName}
                             subGroup={subGroup}
                             routePath={pathname}
@@ -678,6 +677,8 @@ if (!pluginType && !subGroup) {
                     ) : (
                         <PluginsMDCRender
                             schema={(pageWithToc.body as any).jsonSchema}
+                            pluginType={pluginType}
+                            client:idle
                         />
                     )
                 }
@@ -766,6 +767,29 @@ if (!pluginType && !subGroup) {
             :global(.description) {
                 text-transform: none;
             }
+        }
+        :global(.element-card) {
+            background-color: var(--ks-background-primary) !important;
+            border-color: var(--ks-border-primary) !important;
+            box-shadow: none !important;
+            &:hover {
+                border-color: var(--ks-border-active) !important;
+            }
+            h6 {
+                color: var(--ks-content-primary);
+            }
+            :global(.plugin-info) {
+                background-color: transparent;
+                border: $block-border;
+                :global(.plugin-class) {
+                    color: var(--ks-content-link) !important;
+                }
+            }
+        }
+
+        :global(code) {
+            border: none !important;
+            background-color: transparent !important;
         }
     }
 
