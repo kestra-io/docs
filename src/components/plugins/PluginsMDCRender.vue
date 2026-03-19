@@ -1,23 +1,24 @@
 <template>
-    <div class="bd-content">
-        <Suspense>
-            <SchemaToHtmlV2
-                class="plugin-schema"
-                :schema
-                :plugin-type
-                :props-initially-expanded="true"
-            >
-                <template #markdown="{ content }">
-                    <MDCParserAndRenderer v-if="content" :content="content" />
-                </template>
-            </SchemaToHtmlV2>
-        </Suspense>
-    </div>
+    <Suspense>
+        <SchemaToHtmlV2
+            class="plugin-schema"
+            :schema
+            :plugin-type
+            :props-initially-expanded="true"
+        >
+            <template #markdown="{ content }">
+                <PluginsMDCParserAndRenderer
+                    v-if="content"
+                    :content="content"
+                />
+            </template>
+        </SchemaToHtmlV2>
+    </Suspense>
 </template>
 
 <script lang="ts" setup>
     import { SchemaToHtmlV2, type JSONSchema } from "@kestra-io/ui-libs"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import PluginsMDCParserAndRenderer from "./PluginsMDCParserAndRenderer.vue"
 
     const props = defineProps<{
         schema: JSONSchema
@@ -27,13 +28,7 @@
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    .bd-content {
-        margin: 0 auto;
-        padding: 2rem 0;
-        @include media-breakpoint-up(lg) {
-            max-width: 100%;
-        }
-    }
+
     .plugin-schema {
         :deep(hr) {
             opacity: 0.5;

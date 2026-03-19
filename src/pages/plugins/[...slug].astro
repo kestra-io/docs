@@ -660,27 +660,29 @@ if (!pluginType && !subGroup) {
                 }
             </div>
 
-            {
-                pluginType ? (
-                    <PluginsMDCRender
-                        schema={(pageWithToc.body as any).jsonSchema}
-                        pluginType={pluginType}
-                        client:idle
-                    />
-                ) : (
-                    <PluginsIndexWrapper
-                        plugins={pluginsForDisplay}
-                        icons={subGroupsIcons}
-                        pluginName={pluginName}
-                        subGroup={subGroup}
-                        routePath={pathname}
-                        subgroupBlueprintCounts={subgroupBlueprintCounts}
-                        metadataMap={metadataMap}
-                        schemas={elementTitle}
-                        client:idle
-                    />
-                )
-            }
+            <div class="bd-content">
+                {
+                    pluginType ? (
+                        <PluginsMDCRender
+                            schema={(pageWithToc.body as any).jsonSchema}
+                            pluginType={pluginType}
+                            client:idle
+                        />
+                    ) : (
+                        <PluginsIndexWrapper
+                            plugins={pluginsForDisplay}
+                            icons={subGroupsIcons}
+                            pluginName={pluginName}
+                            subGroup={subGroup}
+                            routePath={pathname}
+                            subgroupBlueprintCounts={subgroupBlueprintCounts}
+                            metadataMap={metadataMap}
+                            schemas={elementTitle}
+                            client:idle
+                        />
+                    )
+                }
+            </div>
 
             {
                 pluginType === undefined && currentPluginVideos?.length > 0 && (
@@ -746,6 +748,13 @@ if (!pluginType && !subGroup) {
 </Layout>
 
 <style lang="scss">
+    .bd-content {
+        margin: 0 auto;
+        padding: 2rem 0;
+        @include media-breakpoint-up(lg) {
+            max-width: 100%;
+        }
+    }
     .related-blogs {
         padding: 2rem 0;
         border-top: $block-border;
@@ -834,6 +843,16 @@ if (!pluginType && !subGroup) {
             min-width: 116px;
             padding: 0.25rem 0.625rem;
             white-space: nowrap;
+        }
+
+        :global(.gradient-overlay, .more-btn) {
+            background: linear-gradient(transparent, var(--ks-background-body));
+        }
+
+        :global(div.description) {
+            border-color: var(--ks-border-primary) !important;
+            margin: 0 -2rem !important;
+            padding: 2rem !important;
         }
     }
 
