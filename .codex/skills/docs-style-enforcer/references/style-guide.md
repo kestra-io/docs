@@ -9,6 +9,7 @@ Use these rules when editing prose in the docs repo.
 - Explain the why, not just the how.
 - Prefer consistency over novelty.
 - Write for a global technical audience.
+- Keep the page focused on one dominant page type.
 
 ## Voice and tone
 
@@ -30,10 +31,12 @@ The first sentence should:
 
 ## Headings
 
+- Keep frontmatter `title` and `sidebarTitle` in Title Case.
 - Use sentence case.
 - Make headings descriptive.
 - Do not restate the title as the first H2.
 - Keep heading depth shallow where possible.
+- Avoid repetitive heading patterns such as repeated `Here is an example...` lead-ins when a table, list, or shorter intro would scan better.
 
 ## Procedures
 
@@ -41,6 +44,14 @@ The first sentence should:
 - Include prerequisites before procedural steps.
 - Use imperative verbs in numbered steps.
 - End with verification or next steps.
+
+## Page-type discipline
+
+- Landing pages should orient and route readers.
+- Concept pages should explain and frame.
+- How-to guides should drive one task to completion.
+- Reference pages should help readers look up facts quickly.
+- Do not let one page sprawl across multiple page types unless there is a strong user need.
 
 ## Code and examples
 

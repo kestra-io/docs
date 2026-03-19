@@ -22,16 +22,19 @@ Use existing local patterns first. If no local pattern is established, these def
 1. Is the example full or partial?
 2. Does the page say what to look for?
 3. Is the code fence tagged with the correct language?
-4. Are identifiers and values consistent?
-5. Are there unnecessary branches, options, or unrelated details?
-6. Does the example reflect current product terminology and likely behavior?
-7. Does the page explain how to verify success?
+4. Is the snippet complete, with closed quotes, balanced delimiters, and a complete command or program?
+5. Are identifiers and values consistent?
+6. Are there unnecessary branches, options, or unrelated details?
+7. Does the example reflect current product terminology and likely behavior?
+8. Does the example rely on unstable tags, release-candidate images, or external services that may age poorly?
+9. Does the page explain how to verify success?
 
 ## Common fixes
 
 - Replace vague IDs with descriptive ones.
 - Remove unrelated steps or parameters.
 - Label partial snippets explicitly.
+- Fix truncated snippets and unbalanced quotes before making stylistic edits.
 - Add a short lead-in before the block.
 - Add a brief interpretation or verification note after the block.
 - Split commands from output when copy-paste matters.

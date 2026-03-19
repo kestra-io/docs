@@ -31,14 +31,26 @@ The contributor guide also documents repo conventions for `docId`, which is used
 
 1. Confirm the file is in `src/contents/docs`.
 2. Confirm the frontmatter fields match the page’s actual role.
-3. Check that `title` is specific and user-facing.
+3. Check that `title` is specific, user-facing, and uses Title Case.
 4. Check that `description` is concise and accurate.
-5. Check whether `sidebarTitle` would improve navigation clarity.
+5. Check whether `sidebarTitle` would improve navigation clarity, and keep it in Title Case.
 6. Check whether `icon` follows existing section patterns.
 7. For guides, check whether `topics` and `stage` are expected.
 8. For edition-limited or version-limited content, check `editions` and `version`.
 9. For migration guides, check `release`.
 10. For contextual docs pages, check whether `docId` is appropriate based on nearby patterns.
+
+## Page-type fit checks
+
+The metadata and the body should point to the same page type.
+
+- Landing pages should orient the reader and link to child pages rather than carrying many worked examples.
+- Concept pages should explain what something is and how it works before diving into task detail.
+- How-to guides should focus on one outcome with prerequisites, steps, and verification.
+- Reference pages should optimize for lookup rather than narrative walkthrough.
+- Migration guides should stay tightly scoped to version changes and required actions.
+
+If the frontmatter suggests one page role but the body behaves like another, flag that mismatch even if the raw schema is valid.
 
 ## Card-opening rule
 
@@ -53,6 +65,7 @@ The first non-heading, non-import body line may appear in cards and previews. It
 
 - Missing or vague `description`
 - Overlong page titles that should use `sidebarTitle`
+- `title` or `sidebarTitle` written in sentence case instead of Title Case
 - Guide metadata on pages that are not really guides
 - Version or edition flags added without evidence
 - First sentence too long or too generic for cards
