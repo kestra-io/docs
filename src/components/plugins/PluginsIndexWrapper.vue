@@ -107,4 +107,9 @@
             background-color: transparent !important;
         }
     }
+
+    :deep(.gradient-overlay),
+    :deep(.more-btn) {
+        background: linear-gradient(transparent, var(--ks-background-body));
+    }
 </style>
