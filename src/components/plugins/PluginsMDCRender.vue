@@ -36,7 +36,17 @@
             border: none !important;
             background-color: transparent !important;
         }
-
+        :deep(.plugin) {
+            background-color: var(--ks-background-primary) !important;
+            box-shadow: none !important;
+            border-color: var(--ks-border-primary);
+            &:hover {
+                border-color: var(--ks-border-active) !important;
+            }
+            h6 {
+                color: var(--ks-content-primary);
+            }
+        }
         :deep(.element-card) {
             background-color: var(--ks-background-primary) !important;
             border-color: var(--ks-border-primary) !important;
@@ -152,6 +162,9 @@
         }
     }
 
+    :deep(.plugin .description) {
+        text-transform: none !important;
+    }
     :deep(div.description) {
         border-color: var(--ks-border-primary) !important;
         margin: 0 -2rem !important;
