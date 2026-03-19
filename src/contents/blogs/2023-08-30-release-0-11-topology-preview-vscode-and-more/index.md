@@ -253,7 +253,7 @@ We've also introduced additional CLI tasks to the following existing plugins:
 
 ### Google Cloud CLI
 
-Using the `gcloud` [CLI task](/plugins/plugin-gcp#cli), you can automate virtually any action that you can perform on Google Cloud Platform. Below is an example from the [blueprints catalog](/blueprints/) showing various ways of capturing relevant API responses from the CLI output.
+Using the `gcloud` [CLI task](/plugins/plugin-gcp#cli), you can automate virtually any action that you can perform on Google Cloud Platform. Below is an example from the [blueprints catalog](/blueprints) showing various ways of capturing relevant API responses from the CLI output.
 
 ```yaml
 id: gcloudCLI
