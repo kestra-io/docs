@@ -28,6 +28,7 @@ Use existing local patterns first. If no local pattern is established, these def
 7. Does the example reflect current product terminology and likely behavior?
 8. Does the example rely on unstable tags, release-candidate images, or external services that may age poorly?
 9. Does the page explain how to verify success?
+10. For operational setup examples, should image tags or versions be pinned for reproducibility, or at least called out explicitly if they are intentionally floating?
 
 ## Common fixes
 
@@ -38,6 +39,7 @@ Use existing local patterns first. If no local pattern is established, these def
 - Add a short lead-in before the block.
 - Add a brief interpretation or verification note after the block.
 - Split commands from output when copy-paste matters.
+- Flag floating `latest` tags in setup and deployment examples for review, even if you do not change them automatically.
 
 ## Technical caution
 

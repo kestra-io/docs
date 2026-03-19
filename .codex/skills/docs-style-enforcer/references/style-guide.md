@@ -37,6 +37,20 @@ The first sentence should:
 - Do not restate the title as the first H2.
 - Keep heading depth shallow where possible.
 - Avoid repetitive heading patterns such as repeated `Here is an example...` lead-ins when a table, list, or shorter intro would scan better.
+- Remove decorative or stray horizontal rules near the top of a page unless they serve a clear structural purpose.
+
+## Capitalization
+
+- Capitalize formal Kestra feature names when referring to the product entity rather than the generic concept.
+- Use lowercase for generic concepts such as `flow`, `task`, `namespace`, or `execution` unless they are part of an official feature name or visible UI label.
+- Match visible UI labels exactly, including capitalization.
+- When a term can be either generic or product-specific, prefer consistency within the page and follow the local product naming pattern.
+
+Examples:
+
+- `Open the Outputs tab.` because `Outputs` is a visible UI label.
+- `Use a flow to orchestrate the process.` because `flow` is generic there.
+- `Create a Flow trigger only if that is the official feature name shown in product UI or docs nearby.`
 
 ## Procedures
 
@@ -44,6 +58,7 @@ The first sentence should:
 - Include prerequisites before procedural steps.
 - Use imperative verbs in numbered steps.
 - End with verification or next steps.
+- On setup pages, prefer a real prerequisites section over burying requirements in body text or alerts.
 
 ## Page-type discipline
 
@@ -80,7 +95,8 @@ The first sentence should:
 1. The page type is clear.
 2. The first sentence works as standalone summary text.
 3. Headings use sentence case.
-4. Prose is direct and active.
-5. Terminology is consistent.
-6. Links and screenshots earn their place.
-7. The reader can verify success or find the next relevant path.
+4. Capitalization matches Kestra feature names and visible UI labels.
+5. Prose is direct and active.
+6. Terminology is consistent.
+7. Links and screenshots earn their place.
+8. The reader can verify success or find the next relevant path.
