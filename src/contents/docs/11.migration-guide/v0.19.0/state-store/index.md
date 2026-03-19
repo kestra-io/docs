@@ -39,7 +39,7 @@ The [State Store tasks](/plugins/core#state) are deprecated in favor of equivale
 ## How to migrate
 
 All plugins that were using State Store now leverage KV Store under the hood. This includes:
-- all [Singer plugins](/plugins/plugin-singer)
+- all [Singer plugins](/plugins)
 - all [Debezium plugins](https://github.com/kestra-io/plugin-debezium)
 - [CloudQuery plugin](/plugins/plugin-cloudquery)
 
