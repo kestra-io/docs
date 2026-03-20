@@ -12,6 +12,7 @@ import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
 import { $fetchApi } from "~/utils/fetch"
+import { API_URL } from "astro:env/client"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
     filterPluginsWithoutDeprecated,
@@ -131,37 +132,20 @@ const [
 ])
 
 if (isEePlugin) {
-    // For EE plugins, use the dedicated paginated releases endpoint
     try {
         const eeData = await $fetchApi<{
-            results: { version: string; releaseNotesUrl: string; kestraVersion: string }[]
+            results: { version: string; kestraVersion: string; releaseDate: string | null }[]
             total: number
         }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
 
         githubVersions.versions = eeData.results.map((r) => ({
             version: r.version,
-            publishedAt: null,
+            publishedAt: r.releaseDate,
             minCoreCompatibilityVersion: r.kestraVersion,
-            releaseNotesUrl: r.releaseNotesUrl,
+            releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
         }))
     } catch (e) {
-        console.error("EE releases fetch failed, falling back to artifacts", e)
-        // Fallback: extract versions from the public artifacts endpoint
-        try {
-            const { artifacts = {} } = await $fetchApi("/plugins/artifacts")
-            const eeArtifacts = (Object.values(artifacts).flat() as any[])
-                .filter((a) => a.artifactId === githubReleaseRepo)
-                .toSorted((a: any, b: any) =>
-                    a.version < b.version ? 1 : a.version > b.version ? -1 : 0,
-                )
-            githubVersions.versions = eeArtifacts.map((a: any) => ({
-                version: a.version,
-                publishedAt: null,
-                minCoreCompatibilityVersion: a.minCoreCompatibilityVersion,
-            }))
-        } catch (e2) {
-            console.error("Artifacts fallback also failed", e2)
-        }
+        console.error("EE releases fetch failed", e)
     }
 } else {
     try {
