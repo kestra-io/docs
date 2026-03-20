@@ -21,9 +21,9 @@ import Operation from "~/components/infrastructure/Operation.astro"
 
 import infraUi from "~/assets/landing/infrastructure/infra-ui.png"
 
-const TITLE =
+const title =
     "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
-const DESCRIPTION =
+const description =
     "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
 
 const { results: blueprints } = await fetch(
@@ -72,12 +72,6 @@ const VERSUS_CONTENT = {
     },
 }
 
-const FORTUNE_METRICS = [
-    { value: "-90%", label: "In licensing cost" },
-    { value: "One", label: "Control Plane" },
-    { value: "x10", label: "Time to value" },
-]
-
 const LIFECYCLE_CARDS = [
     {
         title: "Ansible Playbooks, Automated the Right Way",
@@ -87,8 +81,6 @@ const LIFECYCLE_CARDS = [
             href: "/docs/how-to-guides/ansible",
             text: "Automate your Playbooks with Kestra",
         },
-        background: "#0D0D0D",
-        animation: "slide-r delay-50 duration-600 ease-out",
     },
     {
         title: "Automated Infrastructure Ticketing Lifecycle",
@@ -98,13 +90,12 @@ const LIFECYCLE_CARDS = [
             href: "/docs/how-to-guides/servicenow-trigger",
             text: "Manage your full ticket lifecycle",
         },
-        background: "#631BFF",
-        animation: "slide-l delay-100 duration-600 ease-out",
     },
 ]
+
 ---
 
-<Layout title={TITLE} description={DESCRIPTION} headerTheme="lightText">
+<Layout {title} {description} headerTheme="lightText">
     <div class="infra">
         <Intro />
         <Versus {...VERSUS_CONTENT} />

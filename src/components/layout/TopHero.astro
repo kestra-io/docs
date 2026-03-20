@@ -13,9 +13,11 @@ const { title, description, image } = Astro.props
                 <div class="row">
                     <div class="col-12 col-lg-6">
                         <div class="banner-box left">
-                            {title && <h1>{title}</h1>}
-                            {description && <p>{description}</p>}
-                            <div class="d-flex gap-3 flex-column flex-md-row">
+                            {title && <h1 data-usal="fade-r">{title}</h1>}
+                            {description && (
+                                <p data-usal="fade-l">{description}</p>
+                            )}
+                            <div class="d-flex gap-3 flex-column flex-md-row" data-usal="zoomin">
                                 <Link
                                     href="/docs/quickstart#start-kestra"
                                     class="btn btn-primary"
@@ -96,6 +98,10 @@ const { title, description, image } = Astro.props
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+
+                @include media-breakpoint-up(lg) {
+                    max-width: 450px;
+                }
             }
             &.right {
                 display: flex;
