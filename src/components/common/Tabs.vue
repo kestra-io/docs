@@ -1,23 +1,31 @@
 <template>
     <div class="container">
-        <div class="tabs">
-            <button
-                v-for="category in categories"
-                :key="category"
-                class="tab"
-                :class="{ active: modelValue === category }"
-                @click="$emit('update:modelValue', category)"
+        <ul class="tabs">
+            <li
+                v-for="[slug, category] in categories"
+                :key="slug"
             >
-                {{ category }}
-            </button>
-        </div>
+                <a
+                    class="tab"
+                    :class="{ active: modelValue === slug }"
+                    @click.prevent="
+                        $emit('update:modelValue', slug);
+                    "
+                    :href="`${rootHref}/${slug}`"
+                    role="presentation"
+                >
+                    {{ category }}
+                </a>
+            </li>
+        </ul>
     </div>
 </template>
 
 <script setup lang="ts">
     defineProps<{
         modelValue: string
-        categories: string[]
+        categories: Map<string, string>
+        rootHref: string
     }>()
 
     defineEmits<{
@@ -26,8 +34,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .container {
         display: flex;
         justify-content: flex-start;
@@ -38,10 +44,12 @@
         display: flex;
         gap: 0.25rem;
         flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: 0;
     }
 
     .tab {
-        border: none;
         background: transparent;
         padding: 0.5rem 1.25rem;
         border-radius: 0.5rem;
@@ -49,6 +57,7 @@
         color: var(--ks-content-secondary);
         white-space: nowrap;
         transition: all 0.2s ease;
+        border: 1px solid transparent;
 
         &:hover {
             color: var(--ks-content-primary);

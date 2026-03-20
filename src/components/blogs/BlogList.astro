@@ -4,12 +4,12 @@ import Link from "~/components/common/Link.astro"
 import LatestVideos from "~/components/blogs/LatestVideos.vue"
 import BlogGrid from "~/components/blogs/BlogGrid.vue"
 
-const { blogs, externalNews, videos } = Astro.props
+const { blogs, externalNews, videos, category } = Astro.props
 ---
 
 <section>
     <div class="container">
-        <BlogGrid client:load blogs={blogs} />
+        <BlogGrid client:load blogs={blogs} slug={category} />
 
         <div class="community-section">
             <h2>Latest Community News</h2>
