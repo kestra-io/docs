@@ -37,6 +37,7 @@
             placeholder="Department"
             id="departmentSelect"
             size="lg"
+            class="custom-select"
         />
         <CustomSelect
             v-model="searchLocation"
@@ -50,6 +51,7 @@
             placeholder="Location"
             id="locationSelect"
             size="lg"
+            class="custom-select"
         />
     </form>
 </template>
@@ -63,7 +65,7 @@
 
         input {
             padding: 0.75rem 1rem;
-            border: 1px solid var(--ks-border-primary);
+            border: 1px solid var(--ks-border-secondary);
             border-radius: 4px;
             font-size: 12px;
             background-color: var(--ks-background-body);
@@ -97,7 +99,7 @@
             }
         }
         .custom-select {
-            min-width: 200px;
+            --ks-custom-select-border: var(--ks-border-secondary);
         }
     }
 </style>

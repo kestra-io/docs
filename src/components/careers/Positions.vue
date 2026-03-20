@@ -95,7 +95,7 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            margin-bottom: 4rem;
+            margin-bottom: 7rem;
         }
 
         h2 {
@@ -113,6 +113,7 @@
                 align-items: center;
                 gap: 1.5rem;
                 transition: background-color 0.8s ease;
+                border-bottom: 1px solid var(--ks-border-primary);
                 &:hover {
                     background-color: var(--ks-background-secondary);
                 }
@@ -133,7 +134,7 @@
                     }
                 }
 
-                .location-block {
+                .location-block span {
                     color: var(--ks-content-tertiary);
                 }
 

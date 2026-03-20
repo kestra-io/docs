@@ -48,10 +48,6 @@
         },
     )
 
-    defineOptions({
-        inheritAttrs: false,
-    })
-
     const emit = defineEmits<{
         "update:modelValue": [value: string]
     }>()
@@ -80,6 +76,10 @@
         }
         .btn-custom {
             border: $block-border;
+            border-color: var(
+                --ks-custom-select-border,
+                var(--ks-border-primary)
+            );
             background-color: var(--ks-background-input);
             color: var(--ks-content-primary);
             font-weight: normal;

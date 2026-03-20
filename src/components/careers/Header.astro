@@ -50,9 +50,21 @@ for (const position of positions) {
             radial-gradient(
                 ellipse farthest-side at 50% -40px,
                 var(--ks-background-purple-hover) 0%,
-                color-mix(in srgb, var(--ks-background-body), transparent 65%)
-                    30%,
-                var(--ks-background-body) 70%
+                color-mix(
+                        in srgb,
+                        var(--ks-background-purple-hover),
+                        transparent 5%
+                    )
+                    10%,
+                color-mix(
+                        in srgb,
+                        var(--ks-background-purple-hover),
+                        transparent 40%
+                    )
+                    15%,
+                color-mix(in srgb, var(--ks-background-body), transparent 45%)
+                    60%,
+                var(--ks-background-body) 75%
             ),
             linear-gradient(
                 to right,
@@ -65,20 +77,26 @@ for (const position of positions) {
                 transparent 1px
             );
         background-size:
-            180% 100%,
+            110% 100%,
             var(--careers-grid-size) var(--careers-grid-size),
             var(--careers-grid-size) var(--careers-grid-size);
-        background-position: center bottom;
+        background-position:
+            center top,
+            center bottom,
+            center bottom;
         .header {
-            padding-top: 6rem;
-            padding-bottom: 4rem;
+            padding-top: 9rem;
+            padding-bottom: 2rem;
+
+            h1 {
+                font-weight: 600;
+            }
 
             h1,
             p {
                 color: var(--ks-content-primary);
                 text-align: left;
                 margin-bottom: 0.5rem;
-                font-weight: 400;
             }
 
             p {
