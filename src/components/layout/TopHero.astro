@@ -13,9 +13,9 @@ const { title, description, image } = Astro.props
                 <div class="row">
                     <div class="col-12 col-lg-6">
                         <div class="banner-box left">
-                            {title && <h1 data-usal="fade-r">{title}</h1>}
+                            {title && <h1 data-usal="fade-r" set:html={title}></h1>}
                             {description && (
-                                <p data-usal="fade-l">{description}</p>
+                                <p data-usal="fade-l" set:html={description}></p>
                             )}
                             <div class="d-flex gap-3 flex-column flex-md-row" data-usal="zoomin">
                                 <Link
@@ -80,10 +80,10 @@ const { title, description, image } = Astro.props
 
         .container > .row {
             align-items: center;
+            gap: 2rem;
 
             @include media-breakpoint-up(lg) {
                 flex-wrap: nowrap;
-                gap: 2rem;
             }
         }
 
