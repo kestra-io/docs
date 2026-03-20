@@ -113,7 +113,7 @@
     const isSelected = (tagName: string) => {
         return tagName === ""
             ? !props.tagsSelected
-            : props.tagsSelected === tagName
+            : props.tagsSelected?.toLowerCase() === tagName.toLowerCase()
     }
 
     const handleTagChange = (tagName: string) => {
