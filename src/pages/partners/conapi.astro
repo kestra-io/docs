@@ -5,7 +5,7 @@ import Quotes from "~/components/common/Quotes.vue"
 import ConapiLogo from "~/assets/landing/partners/conapi-logo-small.svg?raw"
 
 import PartnerBanner from "~/components/partners/PartnerBanner.astro"
-import PartnerCapability from "~/components/partners/PartnerCapability.astro"
+import Capability from "~/components/partners/Capability.astro"
 import seeHowImg from "~/assets/landing/partners/conapi-cta.webp"
 
 import jms from "~/assets/landing/partners/conapi-jms.webp"
@@ -91,7 +91,7 @@ const ConapiQuotes = [
         description={banner.description}
     />
     <Quotes quotes={ConapiQuotes} />
-    <PartnerCapability
+    <Capability
         title={capabilities.title}
         description={capabilities.description}
         capabilities={capabilities.items}

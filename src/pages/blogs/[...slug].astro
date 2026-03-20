@@ -2,7 +2,7 @@
 import { render, getCollection, type CollectionEntry } from "astro:content"
 import { getImage, Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
-import Updateletter from "~/components/layout/Updateletter.vue"
+import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
 import BlogDetails from "~/components/blogs/BlogDetails.vue"
 import BlogToc from "~/components/blogs/BlogToc.vue"
 import BlogSocials from "~/components/blogs/BlogSocials.vue"
@@ -116,7 +116,7 @@ const jsonLinkedData = {
                 <Content />
             </div>
         </TwoColumnStickyLayout>
-        <Updateletter client:visible />
+        <SubscribeToNewsletter client:visible />
     </section>
 </Layout>
 

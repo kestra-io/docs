@@ -37,7 +37,10 @@ const { cards } = Astro.props
                                 data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
                             >
                                 <h3 set:html={card.title} />
-                                <p set:html={card.description} />
+                                <div
+                                    class="description"
+                                    set:html={card.description}
+                                />
                             </div>
 
                             <div class="img-card">
@@ -69,10 +72,7 @@ const { cards } = Astro.props
 
             h2 {
                 margin-bottom: $rem-3;
-
-                @include media-breakpoint-up(md) {
-                    text-align: left;
-                }
+                text-align: center;
 
                 :global(.gradient) {
                     color: var(--ks-content-color-highlight);
@@ -113,7 +113,7 @@ const { cards } = Astro.props
                         border-radius: $border-radius-lg;
                         display: flex;
                         flex-direction: column-reverse;
-                        align-items: center;
+                        align-items: stretch;
                         justify-content: space-between;
                         overflow: hidden;
 
@@ -133,8 +133,10 @@ const { cards } = Astro.props
                         }
 
                         .content-card {
+                            flex: 1;
                             display: flex;
                             flex-direction: column;
+                            justify-content: center;
                             gap: 0.5rem;
                             padding-bottom: 1rem;
                             padding: 1rem 0.5rem;
@@ -153,8 +155,24 @@ const { cards } = Astro.props
 
                             @include media-breakpoint-up(xl) {
                                 width: 400px;
-                                height: 212px;
+                                min-height: 212px;
                                 gap: 16px;
+                            }
+
+                            .description {
+                                color: var(--ks-content-primary);
+                                font-size: $font-size-sm;
+
+                                ul {
+                                    padding-left: $rem-1;
+                                    list-style: disc;
+
+                                    li {
+                                        &::marker {
+                                            color: var(--ks-content-primary);
+                                        }
+                                    }
+                                }
                             }
                         }
 
