@@ -68,7 +68,7 @@
             border: 1px solid var(--ks-border-secondary);
             border-radius: 4px;
             font-size: 12px;
-            background-color: var(--ks-background-body);
+            background-color: var(--ks-background-input);
             color: var(--ks-content-primary);
             transition: border-color 0.3s ease;
 
@@ -78,9 +78,8 @@
             }
         }
         .search {
-            flex: 1;
             position: relative;
-            min-width: 300px;
+            width: 350px;
             span {
                 position: absolute;
                 font-size: 24px;
