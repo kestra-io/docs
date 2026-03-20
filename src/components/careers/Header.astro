@@ -3,7 +3,7 @@ import type { AshbyJob } from "~/utils/careers"
 import FilterForm from "./FilterForm.vue"
 
 interface Props {
-    positions: AshbyJob[]
+    positions?: AshbyJob[]
 }
 
 const { positions = [] } = Astro.props

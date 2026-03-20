@@ -5,11 +5,13 @@ import FooterContact from "~/components/layout/FooterContact.astro"
 import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
 import Header from "~/components/careers/Header.astro"
 import { type AshbyJobPosting, fetchJob } from "~/utils/careers.ts"
+import Share from "~/components/common/Share.vue"
+import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 
 const { id1, id2, id3, id4, id5 } = Astro.params
 const { url } = Astro.request
 
-const uid = [id1, id2, id3, id4, id5].join("-");
+const uid = [id1, id2, id3, id4, id5].join("-")
 
 if (!uid) {
     return Astro.redirect("/careers")
@@ -28,11 +30,16 @@ const title = page.title
 ---
 
 <Layout title={title}>
-    <Header fullPath="/careers">
+    <Header>
+        <div class="breadcrumbs" data-usal="fade-l">
+            <a href="/">Home</a> &gt; <a class="last" href="/careers">
+                Open Roles
+            </a>
+        </div>
         <h1 data-usal="fade-l">
             {page.title}
         </h1>
-        <h4 data-usal="fade-l">
+        <!-- <h4 data-usal="fade-l">
             <span class="department-tag">{page.departmentName}</span>
             <MapMarkerOutline /> Remote
         </h4>
@@ -42,21 +49,83 @@ const title = page.title
             data-usal="zoomin"
         >
             Apply for this job
-        </a>
+        </a> -->
     </Header>
 
     <section>
-        <div class="container">
-            <article set:html={page.descriptionHtml} data-usal="fade-up" />
+        <div class="container job-description">
+            <article set:html={page.descriptionHtml} />
+            <div class="sidebar">
+                <h3>Location</h3>
+                <p>
+                    {page.locationIds?.primaryLocationId}
+                </p>
+
+                <hr />
+
+                <Share
+                    title={page.title}
+                    titleText="Share this role"
+                    url={url}
+                    class="mt-4"
+                />
+                <a
+                    href={url + "/apply"}
+                    class="btn btn-animated btn-purple-animated mt-4"
+                    data-usal="zoomin"
+                >
+                    Apply for this job
+                    <ArrowRight class="ml-2" />
+                </a>
+            </div>
         </div>
+        <FooterContact
+            title="Join our team"
+            subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
+            purple={{
+                text: "Send an Open Application",
+                href: "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply",
+            }}
+            dark={null}
+        />
     </section>
-    <FooterContact
-        title="Join our team"
-        subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
-        purple={{
-            text: "Send an Open Application",
-            href: "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply",
-        }}
-        dark={null}
-    />
+
+    <style lang="scss">
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            a {
+                color: var(--ks-content-secondary);
+            }
+
+            .last {
+                color: var(--ks-content-primary);
+            }
+        }
+        .job-description {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            .sidebar {
+                flex: 0 0 250px;
+
+                padding: 1.5rem;
+                border-radius: 8px;
+                h3 {
+                    color: var(--ks-content-secondary);
+                    font-size: 0.9rem;
+                    margin-bottom: 0.5rem;
+                }
+                p {
+                    color: var(--ks-content-primary);
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    </style>
 </Layout>
