@@ -1,228 +1,229 @@
 {
-    "id": "jp_1001a",
-    "title": "Senior Backend Engineer",
-    "descriptionPlain": "About Kestra\nKestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale. Backed by top-tier investors, we're growing fast and looking for talented individuals to join our engineering team.\n\nAbout the Role\nWe are looking for a Senior Backend Engineer to join our core platform team. You will design and implement key features of our orchestration engine, collaborate closely with the open-source community, and help shape the future of workflow automation.\n\nWhat You'll Do\n- Design and build new features for the Kestra orchestration engine\n- Improve performance, reliability, and scalability of the platform\n- Write clean, well-tested, and well-documented code in Java and Kotlin\n- Collaborate with product, design, and other engineering teams\n- Participate in code reviews and architectural discussions\n- Engage with the open-source community through GitHub issues and pull requests\n\nWhat We're Looking For\n- 5+ years of experience in backend software engineering\n- Strong proficiency in Java or Kotlin\n- Experience with distributed systems and event-driven architectures\n- Familiarity with containerization (Docker, Kubernetes)\n- Excellent problem-solving and communication skills\n- Experience with open-source projects is a plus\n\nBenefits\n- Competitive salary and equity package\n- Flexible hybrid work from our Paris office\n- Health insurance and meal vouchers\n- 25 days of paid vacation\n- Learning and development budget\n- Team offsites twice a year",
-    "descriptionHtml": "<div><h2>About Kestra</h2><p>Kestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale. Backed by top-tier investors, we're growing fast and looking for talented individuals to join our engineering team.</p><h2>About the Role</h2><p>We are looking for a Senior Backend Engineer to join our core platform team. You will design and implement key features of our orchestration engine, collaborate closely with the open-source community, and help shape the future of workflow automation.</p><h2>What You'll Do</h2><ul><li>Design and build new features for the Kestra orchestration engine</li><li>Improve performance, reliability, and scalability of the platform</li><li>Write clean, well-tested, and well-documented code in Java and Kotlin</li><li>Collaborate with product, design, and other engineering teams</li><li>Participate in code reviews and architectural discussions</li><li>Engage with the open-source community through GitHub issues and pull requests</li></ul><h2>What We're Looking For</h2><ul><li>5+ years of experience in backend software engineering</li><li>Strong proficiency in Java or Kotlin</li><li>Experience with distributed systems and event-driven architectures</li><li>Familiarity with containerization (Docker, Kubernetes)</li><li>Excellent problem-solving and communication skills</li><li>Experience with open-source projects is a plus</li></ul><h2>Benefits</h2><ul><li>Competitive salary and equity package</li><li>Flexible hybrid work from our Paris office</li><li>Health insurance and meal vouchers</li><li>25 days of paid vacation</li><li>Learning and development budget</li><li>Team offsites twice a year</li></ul></div>",
-    "descriptionSocial": "Join Kestra as a Senior Backend Engineer and help build the future of open-source workflow orchestration. Work with Java/Kotlin, distributed systems, and a passionate community.",
-    "descriptionParts": {
-        "descriptionOpening": {
-            "html": "<p>Kestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale.</p>",
-            "plain": "Kestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale."
-        },
-        "descriptionBody": {
-            "html": "<h2>About the Role</h2><p>We are looking for a Senior Backend Engineer to join our core platform team.</p><h2>What You'll Do</h2><ul><li>Design and build new features for the Kestra orchestration engine</li><li>Improve performance, reliability, and scalability of the platform</li><li>Write clean, well-tested, and well-documented code in Java and Kotlin</li><li>Collaborate with product, design, and other engineering teams</li><li>Participate in code reviews and architectural discussions</li><li>Engage with the open-source community through GitHub issues and pull requests</li></ul><h2>What We're Looking For</h2><ul><li>5+ years of experience in backend software engineering</li><li>Strong proficiency in Java or Kotlin</li><li>Experience with distributed systems and event-driven architectures</li><li>Familiarity with containerization (Docker, Kubernetes)</li><li>Excellent problem-solving and communication skills</li><li>Experience with open-source projects is a plus</li></ul>",
-            "plain": "About the Role\nWe are looking for a Senior Backend Engineer to join our core platform team.\n\nWhat You'll Do\n- Design and build new features for the Kestra orchestration engine\n- Improve performance, reliability, and scalability of the platform\n- Write clean, well-tested, and well-documented code in Java and Kotlin\n- Collaborate with product, design, and other engineering teams\n- Participate in code reviews and architectural discussions\n- Engage with the open-source community through GitHub issues and pull requests\n\nWhat We're Looking For\n- 5+ years of experience in backend software engineering\n- Strong proficiency in Java or Kotlin\n- Experience with distributed systems and event-driven architectures\n- Familiarity with containerization (Docker, Kubernetes)\n- Excellent problem-solving and communication skills\n- Experience with open-source projects is a plus"
-        },
-        "descriptionClosing": {
-            "html": "<h2>Benefits</h2><ul><li>Competitive salary and equity package</li><li>Flexible hybrid work from our Paris office</li><li>Health insurance and meal vouchers</li><li>25 days of paid vacation</li><li>Learning and development budget</li><li>Team offsites twice a year</li></ul>",
-            "plain": "Benefits\n- Competitive salary and equity package\n- Flexible hybrid work from our Paris office\n- Health insurance and meal vouchers\n- 25 days of paid vacation\n- Learning and development budget\n- Team offsites twice a year"
-        }
+  "id": "jp_1001a",
+  "title": "Senior Backend Engineer",
+  "descriptionPlain": "About Kestra\nKestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale. Backed by top-tier investors, we're growing fast and looking for talented individuals to join our engineering team.\n\nAbout the Role\nWe are looking for a Senior Backend Engineer to join our core platform team. You will design and implement key features of our orchestration engine, collaborate closely with the open-source community, and help shape the future of workflow automation.\n\nWhat You'll Do\n- Design and build new features for the Kestra orchestration engine\n- Improve performance, reliability, and scalability of the platform\n- Write clean, well-tested, and well-documented code in Java and Kotlin\n- Collaborate with product, design, and other engineering teams\n- Participate in code reviews and architectural discussions\n- Engage with the open-source community through GitHub issues and pull requests\n\nWhat We're Looking For\n- 5+ years of experience in backend software engineering\n- Strong proficiency in Java or Kotlin\n- Experience with distributed systems and event-driven architectures\n- Familiarity with containerization (Docker, Kubernetes)\n- Excellent problem-solving and communication skills\n- Experience with open-source projects is a plus\n\nBenefits\n- Competitive salary and equity package\n- Flexible hybrid work from our Paris office\n- Health insurance and meal vouchers\n- 25 days of paid vacation\n- Learning and development budget\n- Team offsites twice a year",
+  "descriptionHtml": "<div><h2>About Kestra</h2><p>Kestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale. Backed by top-tier investors, we're growing fast and looking for talented individuals to join our engineering team.</p><h2>About the Role</h2><p>We are looking for a Senior Backend Engineer to join our core platform team. You will design and implement key features of our orchestration engine, collaborate closely with the open-source community, and help shape the future of workflow automation.</p><h2>What You'll Do</h2><ul><li>Design and build new features for the Kestra orchestration engine</li><li>Improve performance, reliability, and scalability of the platform</li><li>Write clean, well-tested, and well-documented code in Java and Kotlin</li><li>Collaborate with product, design, and other engineering teams</li><li>Participate in code reviews and architectural discussions</li><li>Engage with the open-source community through GitHub issues and pull requests</li></ul><h2>What We're Looking For</h2><ul><li>5+ years of experience in backend software engineering</li><li>Strong proficiency in Java or Kotlin</li><li>Experience with distributed systems and event-driven architectures</li><li>Familiarity with containerization (Docker, Kubernetes)</li><li>Excellent problem-solving and communication skills</li><li>Experience with open-source projects is a plus</li></ul><h2>Benefits</h2><ul><li>Competitive salary and equity package</li><li>Flexible hybrid work from our Paris office</li><li>Health insurance and meal vouchers</li><li>25 days of paid vacation</li><li>Learning and development budget</li><li>Team offsites twice a year</li></ul></div>",
+  "descriptionSocial": "Join Kestra as a Senior Backend Engineer and help build the future of open-source workflow orchestration. Work with Java/Kotlin, distributed systems, and a passionate community.",
+  "descriptionParts": {
+    "descriptionOpening": {
+      "html": "<p>Kestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale.</p>",
+      "plain": "Kestra is the leading open-source orchestration platform, enabling engineers to build, run, and monitor complex workflows at scale."
     },
-    "departmentName": "Engineering",
-    "teamName": "Platform",
-    "teamNameHierarchy": [
-        "Engineering",
-        "Platform"
-    ],
-    "jobId": "job_a1b2c3d4-1001",
-    "locationIds": {
-        "primaryLocationId": "loc_paris_01",
-        "secondaryLocationIds": []
+    "descriptionBody": {
+      "html": "<h2>About the Role</h2><p>We are looking for a Senior Backend Engineer to join our core platform team.</p><h2>What You'll Do</h2><ul><li>Design and build new features for the Kestra orchestration engine</li><li>Improve performance, reliability, and scalability of the platform</li><li>Write clean, well-tested, and well-documented code in Java and Kotlin</li><li>Collaborate with product, design, and other engineering teams</li><li>Participate in code reviews and architectural discussions</li><li>Engage with the open-source community through GitHub issues and pull requests</li></ul><h2>What We're Looking For</h2><ul><li>5+ years of experience in backend software engineering</li><li>Strong proficiency in Java or Kotlin</li><li>Experience with distributed systems and event-driven architectures</li><li>Familiarity with containerization (Docker, Kubernetes)</li><li>Excellent problem-solving and communication skills</li><li>Experience with open-source projects is a plus</li></ul>",
+      "plain": "About the Role\nWe are looking for a Senior Backend Engineer to join our core platform team.\n\nWhat You'll Do\n- Design and build new features for the Kestra orchestration engine\n- Improve performance, reliability, and scalability of the platform\n- Write clean, well-tested, and well-documented code in Java and Kotlin\n- Collaborate with product, design, and other engineering teams\n- Participate in code reviews and architectural discussions\n- Engage with the open-source community through GitHub issues and pull requests\n\nWhat We're Looking For\n- 5+ years of experience in backend software engineering\n- Strong proficiency in Java or Kotlin\n- Experience with distributed systems and event-driven architectures\n- Familiarity with containerization (Docker, Kubernetes)\n- Excellent problem-solving and communication skills\n- Experience with open-source projects is a plus"
     },
-    "linkedData": {
-        "@context": "https://schema.org/",
-        "@type": "JobPosting",
-        "title": "Senior Backend Engineer",
-        "description": "Join Kestra as a Senior Backend Engineer and help build the future of open-source workflow orchestration.",
-        "identifier": {
-            "@type": "PropertyValue",
-            "name": "Kestra",
-            "value": "jp_1001a"
-        },
-        "datePosted": "2026-02-15",
-        "hiringOrganization": {
-            "@type": "Organization",
-            "name": "Kestra",
-            "sameAs": "https://kestra.io"
-        },
-        "jobLocation": {
-            "@type": "Place",
-            "address": {
-                "@type": "PostalAddress"
-            }
-        },
-        "employmentType": "FULL_TIME"
-    },
-    "publishedDate": "2026-02-15T10:00:00.000Z",
-    "applicationDeadline": "",
-    "address": {
-        "postalAddress": {
-            "postalCode": "75009",
-            "addressRegion": "Île-de-France",
-            "streetAddress": "12 Rue de Mogador",
-            "addressCountry": "FR",
-            "addressLocality": "Paris"
-        }
-    },
-    "isRemote": false,
-    "workplaceType": "Hybrid",
-    "employmentType": "FullTime",
-    "applicationFormDefinition": {
-        "sections": [
-            {
-                "title": "Personal Information",
-                "descriptionHtml": "",
-                "descriptionPlain": "",
-                "fields": [
-                    {
-                        "isRequired": true,
-                        "descriptionHtml": "",
-                        "descriptionPlain": "",
-                        "field": {
-                            "id": "field_name",
-                            "type": "String",
-                            "path": "_systemfield_name",
-                            "humanReadablePath": "Name",
-                            "title": "Full Name",
-                            "isNullable": false,
-                            "selectableValues": []
-                        }
-                    },
-                    {
-                        "isRequired": true,
-                        "descriptionHtml": "",
-                        "descriptionPlain": "",
-                        "field": {
-                            "id": "field_email",
-                            "type": "String",
-                            "path": "_systemfield_email",
-                            "humanReadablePath": "Email",
-                            "title": "Email Address",
-                            "isNullable": false,
-                            "selectableValues": []
-                        }
-                    },
-                    {
-                        "isRequired": false,
-                        "descriptionHtml": "",
-                        "descriptionPlain": "",
-                        "field": {
-                            "id": "field_phone",
-                            "type": "String",
-                            "path": "_systemfield_phone",
-                            "humanReadablePath": "Phone",
-                            "title": "Phone Number",
-                            "isNullable": true,
-                            "selectableValues": []
-                        }
-                    },
-                    {
-                        "isRequired": true,
-                        "descriptionHtml": "<p>Upload your resume/CV</p>",
-                        "descriptionPlain": "Upload your resume/CV",
-                        "field": {
-                            "id": "field_resume",
-                            "type": "File",
-                            "path": "_systemfield_resume",
-                            "humanReadablePath": "Resume",
-                            "title": "Resume/CV",
-                            "isNullable": false,
-                            "selectableValues": []
-                        }
-                    },
-                    {
-                        "isRequired": false,
-                        "descriptionHtml": "",
-                        "descriptionPlain": "",
-                        "field": {
-                            "id": "field_linkedin",
-                            "type": "String",
-                            "path": "customField_linkedin",
-                            "humanReadablePath": "LinkedIn",
-                            "title": "LinkedIn Profile URL",
-                            "isNullable": true,
-                            "selectableValues": []
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-    "surveyFormDefinitions": [],
-    "isListed": true,
-    "suppressDescriptionOpening": false,
-    "suppressDescriptionClosing": false,
-    "externalLink": "https://jobs.ashbyhq.com/kestra/jp_1001a",
-    "applyLink": "https://jobs.ashbyhq.com/kestra/jp_1001a/application",
-    "compensation": {
-        "compensationTierSummary": "€70,000 - €95,000 per year",
-        "summaryComponents": [
-            {
-                "summary": "€70,000 - €95,000 per year",
-                "compensationType": "Salary",
-                "interval": "Yearly",
-                "currencyCode": "EUR",
-                "minValue": 70000,
-                "maxValue": 95000
-            }
-        ],
-        "compensationTiers": [
-            {
-                "id": "tier_01",
-                "title": "Senior Backend Engineer",
-                "additionalInformation": "Based on experience level and location",
-                "components": [
-                    {
-                        "id": "comp_01",
-                        "summary": "€70,000 - €95,000 per year",
-                        "compensationType": "Salary",
-                        "interval": "Yearly",
-                        "currencyCode": "EUR",
-                        "minValue": 70000,
-                        "maxValue": 95000
-                    }
-                ],
-                "tierSummary": "€70,000 - €95,000 per year"
-            }
-        ],
-        "shouldDisplayCompensationOnJobBoard": true
-    },
-    "updatedAt": "2026-03-10T14:30:00.000Z",
-    "applicationLimitCalloutHtml": "",
-    "job": {
-        "id": "job_a1b2c3d4-1001",
-        "title": "Senior Backend Engineer",
-        "employmentType": "FullTime",
-        "locationId": "loc_paris_01",
-        "jobPostingIds": [
-            "jp_1001a",
-            "jp_1001b"
-        ],
-        "customRequisitionId": "1",
-        "departmentId": "dept_eng",
-        "department": {
-            "id": "dept_eng",
-            "name": "Engineering",
-            "externalName": "Engineering"
-        },
-        "location": {
-            "id": "loc_paris_01",
-            "name": "Paris, France",
-            "externalName": null,
-            "isArchived": false,
-            "address": {
-                "postalAddress": {
-                    "postalCode": "75009",
-                    "addressRegion": "Île-de-France",
-                    "streetAddress": "12 Rue de Mogador",
-                    "addressCountry": "FR",
-                    "addressLocality": "Paris"
-                }
-            },
-            "isRemote": false,
-            "workplaceType": "Hybrid",
-            "parentLocationId": "loc_eu",
-            "type": "Office"
-        }
+    "descriptionClosing": {
+      "html": "<h2>Benefits</h2><ul><li>Competitive salary and equity package</li><li>Flexible hybrid work from our Paris office</li><li>Health insurance and meal vouchers</li><li>25 days of paid vacation</li><li>Learning and development budget</li><li>Team offsites twice a year</li></ul>",
+      "plain": "Benefits\n- Competitive salary and equity package\n- Flexible hybrid work from our Paris office\n- Health insurance and meal vouchers\n- 25 days of paid vacation\n- Learning and development budget\n- Team offsites twice a year"
     }
+  },
+  "departmentName": "Engineering",
+  "teamName": "Platform",
+  "teamNameHierarchy": [
+    "Engineering",
+    "Platform"
+  ],
+  "jobId": "job_a1b2c3d4-1001",
+  "locationName": "Paris, France",
+  "locationIds": {
+    "primaryLocationId": "loc_paris_01",
+    "secondaryLocationIds": []
+  },
+  "linkedData": {
+    "@context": "https://schema.org/",
+    "@type": "JobPosting",
+    "title": "Senior Backend Engineer",
+    "description": "Join Kestra as a Senior Backend Engineer and help build the future of open-source workflow orchestration.",
+    "identifier": {
+      "@type": "PropertyValue",
+      "name": "Kestra",
+      "value": "jp_1001a"
+    },
+    "datePosted": "2026-02-15",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": "Kestra",
+      "sameAs": "https://kestra.io"
+    },
+    "jobLocation": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress"
+      }
+    },
+    "employmentType": "FULL_TIME"
+  },
+  "publishedDate": "2026-02-15T10:00:00.000Z",
+  "applicationDeadline": "",
+  "address": {
+    "postalAddress": {
+      "postalCode": "75009",
+      "addressRegion": "Île-de-France",
+      "streetAddress": "12 Rue de Mogador",
+      "addressCountry": "FR",
+      "addressLocality": "Paris"
+    }
+  },
+  "isRemote": false,
+  "workplaceType": "Hybrid",
+  "employmentType": "FullTime",
+  "applicationFormDefinition": {
+    "sections": [
+      {
+        "title": "Personal Information",
+        "descriptionHtml": "",
+        "descriptionPlain": "",
+        "fields": [
+          {
+            "isRequired": true,
+            "descriptionHtml": "",
+            "descriptionPlain": "",
+            "field": {
+              "id": "field_name",
+              "type": "String",
+              "path": "_systemfield_name",
+              "humanReadablePath": "Name",
+              "title": "Full Name",
+              "isNullable": false,
+              "selectableValues": []
+            }
+          },
+          {
+            "isRequired": true,
+            "descriptionHtml": "",
+            "descriptionPlain": "",
+            "field": {
+              "id": "field_email",
+              "type": "String",
+              "path": "_systemfield_email",
+              "humanReadablePath": "Email",
+              "title": "Email Address",
+              "isNullable": false,
+              "selectableValues": []
+            }
+          },
+          {
+            "isRequired": false,
+            "descriptionHtml": "",
+            "descriptionPlain": "",
+            "field": {
+              "id": "field_phone",
+              "type": "String",
+              "path": "_systemfield_phone",
+              "humanReadablePath": "Phone",
+              "title": "Phone Number",
+              "isNullable": true,
+              "selectableValues": []
+            }
+          },
+          {
+            "isRequired": true,
+            "descriptionHtml": "<p>Upload your resume/CV</p>",
+            "descriptionPlain": "Upload your resume/CV",
+            "field": {
+              "id": "field_resume",
+              "type": "File",
+              "path": "_systemfield_resume",
+              "humanReadablePath": "Resume",
+              "title": "Resume/CV",
+              "isNullable": false,
+              "selectableValues": []
+            }
+          },
+          {
+            "isRequired": false,
+            "descriptionHtml": "",
+            "descriptionPlain": "",
+            "field": {
+              "id": "field_linkedin",
+              "type": "String",
+              "path": "customField_linkedin",
+              "humanReadablePath": "LinkedIn",
+              "title": "LinkedIn Profile URL",
+              "isNullable": true,
+              "selectableValues": []
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "surveyFormDefinitions": [],
+  "isListed": true,
+  "suppressDescriptionOpening": false,
+  "suppressDescriptionClosing": false,
+  "externalLink": "https://jobs.ashbyhq.com/kestra/jp_1001a",
+  "applyLink": "https://jobs.ashbyhq.com/kestra/jp_1001a/application",
+  "compensation": {
+    "compensationTierSummary": "€70,000 - €95,000 per year",
+    "summaryComponents": [
+      {
+        "summary": "€70,000 - €95,000 per year",
+        "compensationType": "Salary",
+        "interval": "Yearly",
+        "currencyCode": "EUR",
+        "minValue": 70000,
+        "maxValue": 95000
+      }
+    ],
+    "compensationTiers": [
+      {
+        "id": "tier_01",
+        "title": "Senior Backend Engineer",
+        "additionalInformation": "Based on experience level and location",
+        "components": [
+          {
+            "id": "comp_01",
+            "summary": "€70,000 - €95,000 per year",
+            "compensationType": "Salary",
+            "interval": "Yearly",
+            "currencyCode": "EUR",
+            "minValue": 70000,
+            "maxValue": 95000
+          }
+        ],
+        "tierSummary": "€70,000 - €95,000 per year"
+      }
+    ],
+    "shouldDisplayCompensationOnJobBoard": true
+  },
+  "updatedAt": "2026-03-10T14:30:00.000Z",
+  "applicationLimitCalloutHtml": "",
+  "job": {
+    "id": "job_a1b2c3d4-1001",
+    "title": "Senior Backend Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "jp_1001a",
+      "jp_1001b"
+    ],
+    "customRequisitionId": "1",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  }
 }
