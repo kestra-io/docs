@@ -51,8 +51,8 @@ The following code snippet creates the Databricks Compute cluster.
 id: databricks-create-cluster
 namespace: company.team
 tasks:
-  - id: "create-cluster"
-    type: "io.kestra.plugin.databricks.cluster.CreateCluster"
+  - id: create-cluster
+    type: io.kestra.plugin.databricks.cluster.CreateCluster
     authentication:
     token: <your-token>
     host: <your-host>
@@ -142,8 +142,8 @@ The following code snippet will delete the cluster from your Databricks workspac
 id: databricks-delete-cluster
 namespace: company.team
 tasks:
-  - id: "delete_cluster"
-    type: "io.kestra.plugin.databricks.cluster.DeleteCluster"
+  - id: delete_cluster
+    type: io.kestra.plugin.databricks.cluster.DeleteCluster
     authentication:
     token: <your-token>
     host: <your-host>

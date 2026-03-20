@@ -110,8 +110,8 @@ You can even set the plugin defaults globally or on a namespace level to ensure 
 id: redshift_data_pipeline
 namespace: company.team
 tasks:
-  - id: "redshift_create_table_products"
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+  - id: redshift_create_table_products
+    type: io.kestra.plugin.jdbc.redshift.Query
     sql: |
       create table if not exists products
       (
@@ -120,8 +120,8 @@ tasks:
           category     varchar(100),
           brand        varchar(100)
       );
-  - id: "redshift_insert_into_products"
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+  - id: redshift_insert_into_products
+    type: io.kestra.plugin.jdbc.redshift.Query
     sql: |
       insert into products values
       (1,'streamline turn-key systems','Electronics','gomez'),
@@ -130,12 +130,12 @@ tasks:
       (4,'syndicate robust ROI','Outdoor','ruiz-price'),
       (5,'optimize next-generation mindshare','Outdoor','richardson');
   - id: join_orders_and_products
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+    type: io.kestra.plugin.jdbc.redshift.Query
     sql: |
       select o.order_id, o.customer_name, o.customer_email, p.id as product_id, p.name as product_name, p.category as product_category, p.brand as product_brand, o.price, o.quantity, o.total from orders o join products p on o.product_id = p.id
     store: true
 pluginDefaults:
-  - type: "io.kestra.plugin.jdbc.redshift.Query"
+  - type: io.kestra.plugin.jdbc.redshift.Query
     values:
       url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev
       username: redshift_username

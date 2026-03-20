@@ -51,7 +51,7 @@ namespace: company.team
 
 tasks:
   - id: query
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://localhost:3306/test
     username: root
     password: "{{ secret('MYSQL_PASSWORD') }}"
@@ -83,7 +83,7 @@ namespace: company.team
 
 tasks:
   - id: query
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://localhost:3306/test
     username: root
     sql: select * from employees
@@ -114,7 +114,7 @@ namespace: company.team
 
 tasks:
   - id: query
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://localhost:3306/test
     username: "{{ namespace.mysql_user }}"
     sql: select * from employees

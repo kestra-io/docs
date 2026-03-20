@@ -12,7 +12,7 @@ Trigger one flow based on the execution of another flow.
 A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Flow"
+type: io.kestra.plugin.core.trigger.Flow
 ```
 
 Kestra can automatically start a flow as soon as another flow ends. This allows you to create dependencies between flows, even when those flows are owned by different teams.
