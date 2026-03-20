@@ -106,6 +106,8 @@ const githubReleaseRepo = (() => {
     }
 })()
 
+const isEePlugin = githubReleaseRepo.includes("plugin-ee")
+
 // Batch 1: fetch github releases, artifacts, and all plugins in parallel
 const [
     githubVersions,
@@ -114,8 +116,10 @@ const [
     allPluginMetadata,
     pluginsInformation,
 ] = await Promise.all([
-    retrieveRepoReleases(githubReleaseRepo),
-    !githubReleaseRepo.includes("plugin-ee")
+    isEePlugin
+        ? Promise.resolve({ versions: [] as any[] })
+        : retrieveRepoReleases(githubReleaseRepo),
+    !isEePlugin
         ? $fetchApi("/plugins/artifacts").catch((e) => {
               console.error("Artifacts fetch failed", e)
               return {}
@@ -126,7 +130,40 @@ const [
     $fetchApi(`/plugins/pluginsInformation`),
 ])
 
-if (!githubReleaseRepo.includes("plugin-ee")) {
+if (isEePlugin) {
+    // For EE plugins, use the dedicated paginated releases endpoint
+    try {
+        const eeData = await $fetchApi<{
+            results: { version: string; releaseNotesUrl: string; kestraVersion: string }[]
+            total: number
+        }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
+
+        githubVersions.versions = eeData.results.map((r) => ({
+            version: r.version,
+            publishedAt: null,
+            minCoreCompatibilityVersion: r.kestraVersion,
+            releaseNotesUrl: r.releaseNotesUrl,
+        }))
+    } catch (e) {
+        console.error("EE releases fetch failed, falling back to artifacts", e)
+        // Fallback: extract versions from the public artifacts endpoint
+        try {
+            const { artifacts = {} } = await $fetchApi("/plugins/artifacts")
+            const eeArtifacts = (Object.values(artifacts).flat() as any[])
+                .filter((a) => a.artifactId === githubReleaseRepo)
+                .toSorted((a: any, b: any) =>
+                    a.version < b.version ? 1 : a.version > b.version ? -1 : 0,
+                )
+            githubVersions.versions = eeArtifacts.map((a: any) => ({
+                version: a.version,
+                publishedAt: null,
+                minCoreCompatibilityVersion: a.minCoreCompatibilityVersion,
+            }))
+        } catch (e2) {
+            console.error("Artifacts fallback also failed", e2)
+        }
+    }
+} else {
     try {
         const { artifacts = {} } = artifactsData as {
             artifacts?: Record<string, any[]>
@@ -155,7 +192,9 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
     }
 }
 
-const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
+const githubReleasesUrl = isEePlugin
+    ? null
+    : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 
