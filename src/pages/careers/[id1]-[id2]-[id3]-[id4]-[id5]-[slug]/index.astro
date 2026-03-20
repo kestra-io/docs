@@ -1,7 +1,7 @@
 ---
 export const prerender = false
 import Layout from "~/components/layout.astro"
-import Header from "~/components/careers/Header.astro"
+import HeaderDetails from "~/components/careers/HeaderDetails.astro"
 import { type AshbyJobPosting, fetchJob } from "~/utils/careers.ts"
 import Share from "~/components/common/Share.vue"
 import Link from "~/components/common/Link.astro"
@@ -28,16 +28,7 @@ const title = page.title
 ---
 
 <Layout title={title}>
-    <Header>
-        <div class="breadcrumbs" data-usal="fade-l">
-            <a href="/">Home</a> &gt; <a class="last" href="/careers">
-                Open Roles
-            </a>
-        </div>
-        <h1 data-usal="fade-l">
-            {page.title}
-        </h1>
-    </Header>
+    <HeaderDetails title={page.title} />
 
     <section>
         <div class="container job-description">
@@ -65,47 +56,34 @@ const title = page.title
             </div>
         </div>
     </section>
-
-    <style lang="scss">
-        .breadcrumbs {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.8rem;
-            a {
-                color: var(--ks-content-secondary);
-            }
-
-            .last {
-                color: var(--ks-content-primary);
-            }
-        }
-        .job-description {
-            display: flex;
-            gap: 2rem;
-            margin-block: 3rem;
-            .sidebar {
-                flex: 0 0 250px;
-
-                padding: 1.5rem;
-                border-radius: 8px;
-                h3 {
-                    color: var(--ks-content-secondary);
-                    font-size: 0.9rem;
-                    margin-bottom: 0.5rem;
-                }
-                p {
-                    color: var(--ks-content-primary);
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    margin-bottom: 1rem;
-                }
-            }
-        }
-        .apply-btn {
-            margin-top: 3rem;
-            color: white;
-        }
-    </style>
 </Layout>
+
+<style lang="scss">
+    .job-description {
+        display: flex;
+        gap: 2rem;
+        margin-block: 3rem;
+        .sidebar {
+            flex: 0 0 250px;
+
+            padding: 1.5rem;
+            border-radius: 8px;
+            h3 {
+                color: var(--ks-content-secondary);
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+            p {
+                color: var(--ks-content-primary);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+    .apply-btn {
+        margin-top: 3rem;
+        color: white;
+    }
+</style>
