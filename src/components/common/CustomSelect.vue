@@ -4,12 +4,13 @@
         <div class="dropdown">
             <button
                 class="btn btn-sm btn-custom"
+                :class="[`btn-custom-${$props.size}`]"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
             >
-                <span>{{ selectedLabel }}</span>
-                <component :is="ChevronDown" class="icon" />
+                <span class="placeholder-value">{{ selectedLabel }}</span>
+                <ChevronDown class="icon" />
             </button>
             <ul class="dropdown-menu">
                 <li v-for="option in options" :key="option.value">
@@ -31,21 +32,36 @@
     import { computed } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 
-    const props = defineProps<{
-        modelValue: string
-        options: {
-            value: string
-            label: string
-        }[]
-        label?: string
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            modelValue: string
+            options: {
+                value: string
+                label: string
+            }[]
+            label?: string
+            placeholder?: string
+            size?: "sm" | "lg"
+        }>(),
+        {
+            size: "sm",
+        },
+    )
+
+    defineOptions({
+        inheritAttrs: false,
+    })
 
     const emit = defineEmits<{
         "update:modelValue": [value: string]
     }>()
 
     const selectedLabel = computed(() => {
-        return props.options.find((o) => o.value === props.modelValue)?.label ?? ""
+        return (
+            props.options.find((o) => o.value === props.modelValue)?.label ??
+            props.placeholder ??
+            ""
+        )
     })
 
     const selectOption = (option: { value: string; label: string }) => {
@@ -54,8 +70,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .select-wrapper {
         display: flex;
         align-items: center;
@@ -68,15 +82,24 @@
             border: $block-border;
             background-color: var(--ks-background-input);
             color: var(--ks-content-primary);
-            font-size: 0.875rem;
             font-weight: normal;
             transition: border-color 0.2s ease;
-            padding: 0.25rem 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            span {
+            &-sm {
+                padding: 0.25rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            &-lg {
+                padding: 12px 1rem;
+                border-radius: 4px;
+                min-width: 200px;
+            }
+            .placeholder-value {
                 flex-shrink: 0;
+                text-align: left;
+                flex: 1;
                 font-size: 12px;
             }
             :deep(svg) {

@@ -41,26 +41,31 @@ for (const position of positions) {
 <style lang="scss">
     .header-container {
         --careers-grid-size: 55px;
+        --careers-grid-color: color-mix(
+            in srgb,
+            var(--ks-border-secondary) 30%,
+            var(--ks-background-purple-light) 70%
+        );
         background-image:
             radial-gradient(
-                ellipse at top center,
-                var(--ks-background-purple-light) 0%,
+                ellipse farthest-side at 50% -40px,
+                var(--ks-background-purple-hover) 0%,
                 color-mix(in srgb, var(--ks-background-body), transparent 65%)
                     30%,
                 var(--ks-background-body) 70%
             ),
             linear-gradient(
                 to right,
-                var(--ks-border-secondary) 1px,
+                var(--careers-grid-color) 1px,
                 transparent 1px
             ),
             linear-gradient(
                 to bottom,
-                var(--ks-border-secondary) 1px,
+                var(--careers-grid-color) 1px,
                 transparent 1px
             );
         background-size:
-            100% 100%,
+            180% 100%,
             var(--careers-grid-size) var(--careers-grid-size),
             var(--careers-grid-size) var(--careers-grid-size);
         background-position: center bottom;
@@ -74,6 +79,10 @@ for (const position of positions) {
                 text-align: left;
                 margin-bottom: 0.5rem;
                 font-weight: 400;
+            }
+
+            p {
+                margin-bottom: 2rem;
             }
         }
     }

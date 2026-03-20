@@ -1,10 +1,12 @@
 <script lang="ts" setup>
     import MagnifyIcon from "vue-material-design-icons/Magnify.vue"
+
     import {
         searchDepartment,
         searchLocation,
         searchString,
     } from "./filterState"
+    import CustomSelect from "../common/CustomSelect.vue"
     defineProps<{
         departments: Map<string, string>
         locations: Map<string, string>
@@ -23,18 +25,32 @@
             <MagnifyIcon />
         </div>
 
-        <select v-model="searchDepartment" name="department">
-            <option value="">Department</option>
-            <option v-for="[id, name] in departments" :key="id" :value="id">
-                {{ name }}
-            </option>
-        </select>
-        <select v-model="searchLocation" name="location">
-            <option value="">Location</option>
-            <option v-for="[id, name] in locations" :key="id" :value="id">
-                {{ name }}
-            </option>
-        </select>
+        <CustomSelect
+            v-model="searchDepartment"
+            :options="
+                Array.from(
+                    departments
+                        .entries()
+                        .map(([id, name]) => ({ value: id, label: name })),
+                )
+            "
+            placeholder="Department"
+            id="departmentSelect"
+            size="lg"
+        />
+        <CustomSelect
+            v-model="searchLocation"
+            :options="
+                Array.from(
+                    locations
+                        .entries()
+                        .map(([id, name]) => ({ value: id, label: name })),
+                )
+            "
+            placeholder="Location"
+            id="locationSelect"
+            size="lg"
+        />
     </form>
 </template>
 
@@ -42,15 +58,14 @@
     form {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 0.5rem;
         margin-bottom: 2rem;
 
-        input,
-        select {
+        input {
             padding: 0.75rem 1rem;
             border: 1px solid var(--ks-border-primary);
             border-radius: 4px;
-            font-size: 1rem;
+            font-size: 12px;
             background-color: var(--ks-background-body);
             color: var(--ks-content-primary);
             transition: border-color 0.3s ease;
@@ -67,12 +82,12 @@
             span {
                 position: absolute;
                 font-size: 24px;
-                right: 1rem;
+                right: 0.8rem;
                 top: 50%;
                 margin: 0;
                 padding: 0;
                 transform: translateY(-50%);
-                color: var(--ks-content-secondary);
+                color: var(--ks-content-tertiary);
                 :deep(svg) {
                     bottom: 0;
                 }
@@ -81,8 +96,7 @@
                 width: 100%;
             }
         }
-        select {
-            appearance: base-select;
+        .custom-select {
             min-width: 200px;
         }
     }

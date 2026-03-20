@@ -101,13 +101,13 @@
         h2 {
             color: var(--ks-content-tertiary);
             font-family: $font-family-monospace;
-            font-size: 1rem;
+            font-size: 0.8rem;
             font-weight: 400;
         }
 
         li {
             a {
-                padding: 1rem 1rem;
+                padding: 1rem 0.8rem;
                 text-decoration: none;
                 display: flex;
                 align-items: center;
