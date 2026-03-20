@@ -4,53 +4,47 @@ export const prerender = false
 import Layout from "~/components/layout.astro"
 import Header from "~/components/careers/Header.astro"
 import Positions from "~/components/careers/Positions.vue"
-import CardGrid from "~/components/features/shared/CardGrid.astro"
-import FooterContact from "~/components/layout/FooterContact.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import imgSrc from "~/components/careers/assets/see_how.png"
 import { type AshbyJob, fetchJobs } from "~/utils/careers.ts"
-
-import Earth from "vue-material-design-icons/Earth.vue"
-import CalendarClock from "vue-material-design-icons/CalendarClock.vue"
-import ScaleBalance from "vue-material-design-icons/ScaleBalance.vue"
-import MedicalBag from "vue-material-design-icons/MedicalBag.vue"
-import ChairRolling from "vue-material-design-icons/ChairRolling.vue"
-import Laptop from "vue-material-design-icons/Laptop.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
 
 const positions: AshbyJob[] = await fetchJobs()
 
 const PERKS = [
     {
-        icon: Earth,
         title: "Work from anywhere",
+        icon: "mdi:earth",
         description:
             "We're a remote-first and completely distributed team, so you can work wherever home is.",
     },
     {
-        icon: CalendarClock,
         title: "Flexible working hours",
+        icon: "mdi:calendar-clock",
         description:
             "Flexibility in schedule to be there for life’s important moments.",
     },
     {
-        icon: ScaleBalance,
         title: "Work/life balance",
+        icon: "mdi:scale-balance",
         description:
             "Prioritize work-life balance in the way that works best for you and a generous vacation policy.",
     },
     {
-        icon: MedicalBag,
         title: "Expanded health benefits",
+        icon: "mdi:medical-bag",
         description:
             "Including premium medical, dental, and vision coverage for employees and their dependent loved ones.",
     },
     {
-        icon: ChairRolling,
         title: "Office costs covered",
+        icon: "mdi:chair-rolling",
         description:
             "Work from home or any other coworking space - we’ll cover the costs.",
     },
     {
-        icon: Laptop,
         title: "Up-to-date always",
+        icon: "mdi:laptop",
         description:
             "We’ll cover all hardware and software needed so you’re always with the latest versions.",
     },
@@ -65,20 +59,32 @@ const description =
     <Header {positions} client:idle />
     <Positions {positions} client:load />
     <CardGrid
-        subtitle="Committed to"
-        subtitleAfter="Excellence"
-        description="We take care of everything you need to help you grow and do the best work of your career."
+        title="Committed to Excellence"
+        subtitle="We take care of everything you need to help you grow and do the best work of your career."
         items={PERKS}
     />
-    <FooterContact
-        title="Join our community"
-        dark={{
-            text: "Join our Slack",
-            href: "/slack",
+    <SeeHow
+        cta={{
+            text: "Send an Open Application",
+            href: "mailto:careers@kestra.io",
         }}
-        purple={{
-            text: "Contribute",
-            href: "/docs/plugin-developer-guide",
-        }}
-    />
+        imgSrc={imgSrc}
+    >
+        <h2 slot="title">
+            Open Application: Shape the Future of Workflow Orchestration
+        </h2>
+        <p>
+            Interested in joining us but not able to find what you are looking
+            for? Let's talk anyway.
+        </p>
+    </SeeHow>
 </Layout>
+
+<style lang="scss">
+    h2 {
+        font-size: 1.5rem;
+    }
+    p {
+        font-size: 1rem;
+    }
+</style>
