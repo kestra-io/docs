@@ -5,7 +5,7 @@ import Quotes from "~/components/common/Quotes.vue"
 import NticoLogo from "~/assets/landing/partners/ntico-logo.svg?raw"
 
 import PartnerBanner from "~/components/partners/PartnerBanner.astro"
-import PartnerCapability from "~/components/partners/PartnerCapability.astro"
+import Capability from "~/components/partners/Capability.astro"
 
 import seeHowImg from "~/assets/landing/partners/ntico-cta.webp"
 import assessment from "~/assets/landing/partners/ntico-assessment.webp"
@@ -98,7 +98,7 @@ const NticoQuotes = [
         features={banner.features}
     />
     <Quotes quotes={NticoQuotes} />
-    <PartnerCapability
+    <Capability
         title={capabilities.title}
         capabilities={capabilities.items}
         description={capabilities.description}
