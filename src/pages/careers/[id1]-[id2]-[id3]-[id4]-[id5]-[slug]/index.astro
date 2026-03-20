@@ -2,11 +2,10 @@
 export const prerender = false
 import Layout from "~/components/layout.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
-import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
 import Header from "~/components/careers/Header.astro"
 import { type AshbyJobPosting, fetchJob } from "~/utils/careers.ts"
 import Share from "~/components/common/Share.vue"
-import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+import Link from "~/components/common/Link.astro"
 
 const { id1, id2, id3, id4, id5 } = Astro.params
 const { url } = Astro.request
@@ -58,14 +57,12 @@ const title = page.title
                     url={url}
                     class="mt-4"
                 />
-                <a
+                <Link
                     href={url + "/apply"}
                     class="btn btn-animated btn-purple-animated mt-4"
-                    data-usal="zoomin"
                 >
                     Apply for this job
-                    <ArrowRight class="ml-2" />
-                </a>
+                </Link>
             </div>
         </div>
         <FooterContact
