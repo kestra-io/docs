@@ -120,7 +120,6 @@
 
                 span {
                     color: var(--ks-content-primary);
-                    font-size: $h6-font-size;
                 }
 
                 .info-block {
