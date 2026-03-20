@@ -46,44 +46,9 @@ for (const position of positions) {
             var(--ks-border-secondary) 30%,
             var(--ks-background-purple-light) 70%
         );
-        background-image:
-            radial-gradient(
-                ellipse farthest-side at 50% -40px,
-                var(--ks-background-purple-hover) 0%,
-                color-mix(
-                        in srgb,
-                        var(--ks-background-purple-hover),
-                        transparent 5%
-                    )
-                    10%,
-                color-mix(
-                        in srgb,
-                        var(--ks-background-purple-hover),
-                        transparent 40%
-                    )
-                    15%,
-                color-mix(in srgb, var(--ks-background-body), transparent 45%)
-                    60%,
-                var(--ks-background-body) 75%
-            ),
-            linear-gradient(
-                to right,
-                var(--careers-grid-color) 1px,
-                transparent 1px
-            ),
-            linear-gradient(
-                to bottom,
-                var(--careers-grid-color) 1px,
-                transparent 1px
-            );
-        background-size:
-            110% 100%,
-            var(--careers-grid-size) var(--careers-grid-size),
-            var(--careers-grid-size) var(--careers-grid-size);
-        background-position:
-            center top,
-            center bottom,
-            center bottom;
+        background: url("~/assets/squared-grid.svg") no-repeat top center /
+            1400px auto;
+
         .header {
             padding-top: 9rem;
             padding-bottom: 2rem;
