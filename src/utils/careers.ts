@@ -234,6 +234,7 @@ interface AshbyJobPosting {
     teamName: string
     teamNameHierarchy: string[]
     jobId: string
+    locationName: string
     locationIds: JobLocationIds
     linkedData: JobLinkedData
     publishedDate: string

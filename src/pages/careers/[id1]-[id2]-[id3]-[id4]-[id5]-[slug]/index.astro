@@ -46,7 +46,7 @@ const title = page.title
             <div class="sidebar">
                 <h3>Location</h3>
                 <p>
-                    {page.locationIds?.primaryLocationId}
+                    {page.locationName}
                 </p>
 
                 <hr />
@@ -65,15 +65,6 @@ const title = page.title
                 </Link>
             </div>
         </div>
-        <FooterContact
-            title="Join our team"
-            subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
-            purple={{
-                text: "Send an Open Application",
-                href: "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply",
-            }}
-            dark={null}
-        />
     </section>
 
     <style lang="scss">
@@ -93,7 +84,7 @@ const title = page.title
         .job-description {
             display: flex;
             gap: 2rem;
-            margin-top: 3rem;
+            margin-block: 3rem;
             .sidebar {
                 flex: 0 0 250px;
 
