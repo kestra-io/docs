@@ -15,8 +15,8 @@ philosophy:
   competitor:
     title: Centralized Workload Automation
     description: "Enterprise batch scheduler built around a central Control-M/Server, managed by an operations team. Jobs are defined in a GUI or JSON, scheduled through the server, and executed by agents deployed on target hosts. Changes flow through the ops team."
-    shadowColor: "#FFD6A5"
-    subCardBg: "#2d2418"
+    shadowColor: "#FE5100"
+    subCardBg: "var(--ks-background-orange-light)"
     subCardText: '"How do we schedule and monitor batch jobs across our mainframe and distributed systems?"'
 
 businessValue:
@@ -37,8 +37,8 @@ businessValue:
       - "Schedule-first architecture (event-driven features added recently)"
       - "Proprietary licensing starting at $2,400/month, per-job overage fees"
       - "Steep learning curve with complex upgrade process"
-    shadowColor: "#FFD6A5"
-    bulletColor: "#FF9800"
+    shadowColor: "#FE5100"
+    bulletColor: "#FE5100"
   footerText: "Control-M is a proven choice for organizations with mainframe workloads and centralized operations teams who need a single pane of glass across legacy and modern systems. Kestra is the right choice if you want developers to own their own workflows, need event-driven automation beyond batch scheduling, or want open-source orchestration without per-job licensing costs."
 
 setupSpeed:
@@ -62,7 +62,7 @@ setupSpeed:
       one: "Days to"
       two: Weeks
     description: "Production deployment requires installing Control-M/Enterprise Manager, Control-M/Server, and Control-M/Agents on each target host. Configuration involves database setup, agent-server connectivity, and security policies. The free Workbench sandbox helps with job authoring, but production infrastructure takes significant setup."
-    shadowColor: "#FFD6A5"
+    shadowColor: "#FE5100"
     command: |
       # 1. Install Control-M/Enterprise Manager (central console)
       # 2. Install Control-M/Server (scheduling engine + database)
@@ -109,7 +109,7 @@ easeOfUse:
   competitor:
     title: "Control-M: JSON definitions managed by ops"
     description: "Jobs-as-Code uses JSON with Control-M-specific properties like RunAs, Host, and Application. Job definitions are authored in the GUI or JSON, then deployed through the Automation API. Modifying orchestration logic typically requires the operations team."
-    shadowColor: "#FFD6A5"
+    shadowColor: "#FE5100"
     code: |
       {
         "ERPDataSync": {
@@ -143,7 +143,7 @@ visualPreview:
     description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from a single open-source platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
   competitor:
     description: "Enterprise batch workload automation across mainframe, distributed, and cloud environments. Strong legacy system coverage with connectors for SAP, mainframe, and managed file transfer. Proprietary platform with per-job licensing and agent-based architecture."
-    shadowColor: "#FFD6A5"
+    shadowColor: "#FE5100"
 
 featureGrid:
   title: Kestra vs. Control-M at a Glance
@@ -230,8 +230,8 @@ decisionGuide:
       - "You need native managed file transfer with SFTP, AS2, and PGP encryption."
       - "Your organization is already invested in the BMC ecosystem and Control-M is the standard."
       - "Regulatory requirements demand a Gartner Magic Quadrant Leader in workload automation."
-    shadowColor: "#FFD6A5"
-    bulletColor: "#FF9800"
+    shadowColor: "#FE5100"
+    bulletColor: "#FE5100"
 
 commonQuestions:
   - question: How hard is it to migrate from Control-M to Kestra?

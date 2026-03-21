@@ -14,7 +14,7 @@ import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 
-import controlMLogo from "~/components/versus/assets/control-m.svg?raw"
+import bmcLogo from "~/components/versus/assets/control-m.svg?raw"
 import controlMMonogram from "~/components/versus/assets/control-m-monograme.svg?raw"
 import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
@@ -22,7 +22,7 @@ import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import controlMImg from "~/components/versus/assets/control-m-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_n8n.webp"
+import heroUI from "~/components/versus/assets/hero_ui_control_m.webp"
 import heroBg from "~/components/versus/assets/hero_bg.webp"
 
 const entry = await getEntry("vsPages", "control-m")
@@ -61,28 +61,28 @@ const {
         {...philosophy}
         competitor={{
             ...philosophy.competitor,
-            logo: controlMLogo,
+            logo: bmcLogo,
         }}
     />
     <BusinessValue
         {...businessValue}
         competitor={{
             ...businessValue.competitor,
-            logo: controlMLogo,
+            logo: bmcLogo,
         }}
     />
     <SetupSpeed
         {...setupSpeed}
         competitor={{
             ...setupSpeed.competitor,
-            logo: controlMLogo,
+            logo: bmcLogo,
         }}
     />
     <EaseOfUse
         {...easeOfUse}
         competitor={{
             ...easeOfUse.competitor,
-            logo: controlMLogo,
+            logo: bmcLogo,
         }}
     />
     <VisualPreview
@@ -93,14 +93,14 @@ const {
         }}
         competitor={{
             ...visualPreview.competitor,
-            logo: controlMLogo,
+            logo: bmcLogo,
             linkImg: controlMImg,
         }}
     />
     <FeatureGrid
         featureGrid={{
             ...featureGrid,
-            competitorLogo: controlMLogo,
+            competitorLogo: bmcLogo,
         }}
     />
     <SocialProof
@@ -118,7 +118,7 @@ const {
         {...decisionGuide}
         competitor={{
             ...decisionGuide.competitor,
-            logo: controlMLogo,
+            logo: bmcLogo,
         }}
     />
     <Faq items={commonQuestions} client:visible />
