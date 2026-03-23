@@ -1,11 +1,14 @@
 ---
+import { fetchPluginIconCached } from "~/utils/pluginIcon"
 const { cls } = Astro.props
+
+const IconStr = await fetchPluginIconCached(cls, Astro.locals.runtime)
 ---
 
-<img
+<div
     class="icon-wrapper"
     data-tooltip={cls.split(".").pop()}
-    src={`/icons/${cls}.svg`}
+    set:html={IconStr}
 />
 
 <style lang="scss">
