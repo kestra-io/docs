@@ -12,7 +12,7 @@ Execute flows using the Webhooks Trigger.
 
 Webhooks are HTTP requests that are triggered by an event. These are useful for being able to tell another application to do something, such as starting the execution of a Flow inside of Kestra.
 
-If your provider can send an idempotency key (e.g., `Idempotency-Key` header), set it as `system.correlationId` and add a duplicate guard as shown in [Idempotency with correlation IDs](../idempotency/index.md) to prevent double-processing.
+If your provider sends an idempotency key header (e.g., `Idempotency-Key`), map it to `system.correlationId` and add a duplicate guard as shown in [Idempotency with correlation IDs](../idempotency/index.md) to prevent double-processing.
 
 ## Using Webhooks in Kestra
 
