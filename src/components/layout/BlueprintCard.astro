@@ -1,7 +1,7 @@
 ---
 import TaskIcon from "~/components/common/TaskIcon.astro"
 
-const { blueprint, tags = [], href } = Astro.props
+const { blueprint, tags = [], href, getIcon } = Astro.props
 
 const MAX_ICONS = 6
 const allTasks = blueprint.includedTasks ?? []
@@ -27,7 +27,7 @@ const tagsList = tags?.length
         {
             visibleTasks.map((cls: string) => (
                 <div class="icon">
-                    <TaskIcon cls={cls} />
+                    <TaskIcon cls={cls} getIcon={getIcon} />
                 </div>
             ))
         }

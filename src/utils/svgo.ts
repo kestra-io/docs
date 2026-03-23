@@ -22,10 +22,20 @@ export function optimizeSvgIcon(svgInput: string, prefix: string) {
                     prefix: `${prefix
                         .toLowerCase()
                         .replace(/\s+/g, "-")
-                        .replace(/[^a-z0-9-]/g, "")}-${Math.random().toString(36).substring(2, 7)}`,
+                        .replace(
+                            /[^a-z0-9-]/g,
+                            "",
+                        )}-${Math.random().toString(36).substring(2, 7)}`,
                 },
             },
             "removeTitle",
+            // remove style from root of db2 icon
+            {
+                name: "removeAttrs",
+                params: {
+                    attrs: "svg:style",
+                },
+            },
         ],
         // replace self closing tags with explicit closing tags to ensure
         // compatibility with svg coming out of Figma

@@ -6,7 +6,7 @@ import { optimizeSvgIcon } from "~/utils/svgo"
 
 export async function GET({ params }: { params: { cls: string } }) {
     const clsComplete = params.cls
-    const [cls,modifier] = clsComplete.split("-")
+    const [cls, modifier] = clsComplete.split("-")
     const response = await fetch(`${API_URL}/plugins/icons/${cls}`)
 
     if (!response.ok) {
@@ -21,7 +21,7 @@ export async function GET({ params }: { params: { cls: string } }) {
     return new Response(modifiedSvg, {
         headers: {
             "Content-Type": "image/svg+xml",
-            "Cache-Control": "max-age=86400",
+            "Cache-Control": "max-age=86400", // cache icons for 1 day
         },
     })
 }

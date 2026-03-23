@@ -1,7 +1,12 @@
 ---
-const { cls } = Astro.props
+interface Props {
+    cls: string
+    getIcon?: (cls: string) => Promise<string>
+}
+const { cls, getIcon } = Astro.props
 
-const IconStr = await (await fetch(`/icons/${cls}.svg`)).text()
+const IconStr =
+    (await getIcon?.(cls)) ?? (await fetch(`/icons/${cls}.svg`)).text()
 ---
 
 <div

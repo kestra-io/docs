@@ -5,6 +5,10 @@ import { $fetchApi } from "~/utils/fetch"
 
 const { blueprints } = Astro.props
 
+const iconsRaw = await $fetchApi<{
+    [group: string]: { name: string; icon: string }
+}>("/plugins/icons")
+
 const tags = await $fetchApi<BlueprintTag[]>("/blueprints/versions/latest/tags")
 ---
 
@@ -15,6 +19,14 @@ const tags = await $fetchApi<BlueprintTag[]>("/blueprints/versions/latest/tags")
                 blueprint={blueprint}
                 tags={tags}
                 href={`/blueprints/${blueprint.id}`}
+                getIcon={async (cls: string) => {
+                    const iconGroup = Object.keys(iconsRaw).find((group) =>
+                        cls.startsWith(group),
+                    )
+                    if (!iconGroup) return ""
+                    const iconData = iconsRaw[iconGroup]
+                    return iconData ? atob(iconData.icon) : ""
+                }}
             />
         ))
     }
