@@ -189,11 +189,32 @@ try {
 }
 
 // Batch 2: fetch remaining data in parallel
-const [subgroups, { countByPlugins: blueprintCounts }] = await Promise.all([
+const [
+    subgroups,
+    { countByPlugins: blueprintCounts },
+    pageData,
+    originalIcons,
+    elementIcons,
+] = await Promise.all([
     $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`),
     $fetchApi<{ countByPlugins: Record<string, number> }>(
         `/blueprints/countByPlugins`,
     ),
+    pluginType === undefined
+        ? null
+        : $fetchApi<{
+              markdown: string
+              schema: JSONSchema & {
+                  properties: {
+                      $deprecated?: "true" | "false"
+                  }
+              }
+          }>(`/plugins/definitions/${pluginType}`).catch((e) => {
+              console.error("Plugin definition fetch failed", e)
+              return null
+          }),
+    $fetchApi(`/plugins/${pluginName}/icons/subgroups`),
+    $fetchApi(`/plugins/${pluginName}/icons`),
 ])
 
 const sidebarPluginData = generateSidebarPluginData(
@@ -201,37 +222,26 @@ const sidebarPluginData = generateSidebarPluginData(
     allPluginMetadata,
 )
 
-async function makePagePluginDefinition() {
-    try {
-        const pageData = await $fetchApi<{
-            markdown: string
-            schema: JSONSchema & {
-                properties: {
-                    $deprecated?: "true" | "false"
-                }
-            }
-        }>(`/plugins/definitions/${pluginType}`)
-        const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
-        const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
-
-        if (pageData.schema.properties.$deprecated === "true") {
-            return null
-        }
-
-        return {
-            name,
-            type: definitionType,
-            ...nuxtBlocksFromJsonSchema(pageData.schema),
-        }
-    } catch {
+function makePagePluginDefinition() {
+    if (!pageData) {
         return null
+    }
+    const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
+    const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
+
+    if (pageData.schema.properties.$deprecated === "true") {
+        return null
+    }
+
+    return {
+        name,
+        type: definitionType,
+        ...nuxtBlocksFromJsonSchema(pageData.schema),
     }
 }
 
 const page: PluginPage | null =
-    pluginType === undefined
-        ? sidebarPluginData
-        : await makePagePluginDefinition()
+    pluginType === undefined ? sidebarPluginData : makePagePluginDefinition()
 
 const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
     pluginType
@@ -295,7 +305,8 @@ const subGroupWrapper = pluginsForDisplay.find(
     (p) => slugify(subGroupName(p)) === subGroup,
 )
 const { currentPageIcon, subGroupsIcons } = await getIcon(
-    pluginName,
+    originalIcons,
+    elementIcons,
     pluginType,
     page?.body.group,
     subGroupWrapper?.subGroup,
