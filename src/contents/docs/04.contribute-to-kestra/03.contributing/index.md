@@ -24,7 +24,7 @@ Check out our [Plugin Developer Guide](../../plugin-developer-guide/index.mdx) f
 
 We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes.
 
-Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.md) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
+Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.mdx) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
 
 ---
 
@@ -140,7 +140,7 @@ Now that you can run the frontend, if opened, you will see a loading screen runn
 It waits for a backend to answer.
 To set it up:
 
-- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Kestra configuration](../../configuration/index.md) YAML definition:
+- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) YAML definition:
 
 ```yaml
 micronaut:

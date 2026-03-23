@@ -1,28 +1,120 @@
 ---
-const {
-    background = "linear-gradient(106.32deg, #000000 28.36%, #0F1A2E 79.51%)",
-} = Astro.props
+import { Image } from "astro:assets"
+import Link from "~/components/common/Link.astro"
+
+const { title, description, image } = Astro.props
 ---
 
 <section class="head">
-    <div class="background" style={{ background }}></div>
+    <div class="background"></div>
+    {
+        (title || description || image) && (
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="banner-box left">
+                            {title && <h1 data-usal="fade-r" set:html={title}></h1>}
+                            {description && (
+                                <p data-usal="fade-l" set:html={description}></p>
+                            )}
+                            <div class="d-flex gap-3 flex-column flex-md-row" data-usal="zoomin">
+                                <slot name="cta">
+                                    <Link
+                                        href="/docs/quickstart#start-kestra"
+                                        class="btn btn-primary"
+                                        data-usal="zoomin"
+                                    >
+                                        Try for free
+                                    </Link>
+                                </slot>
+                                <a
+                                    href="/demo"
+                                    class="btn btn-secondary"
+                                    data-usal="zoomin"
+                                >
+                                    Book a demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {image && (
+                        <div class="col-12 col-lg-6">
+                            <div class="banner-box right">
+                                <Image src={image} alt="Hero Image" />
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        )
+    }
     <slot />
 </section>
 
 <style lang="scss">
     section.head {
         position: relative;
-        padding: 2rem 1rem;
+        padding: 4rem 1rem;
+        overflow: hidden;
 
-        @include media-breakpoint-up(md) {
-            padding: 4rem 1rem;
-            max-height: 555px;
+        &::before {
+            content: "";
+            position: fixed;
+            top: -470px;
+            right: 30%;
+            background: radial-gradient(
+                circle,
+                #581fd38f 0%,
+                rgba(88, 31, 211, 0) 70%
+            );
+            width: 659px;
+            height: 629px;
         }
-
         .background {
             position: fixed;
             inset: 0;
             z-index: -1;
+            background:
+                url("data:image/svg+xml,%3Csvg%20width%3D%22692%22%20height%3D%22650%22%20viewBox%3D%220%200%20692%20650%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20filter%3D%22url%28%23filter0_f_23296_49843%29%22%20style%3D%22mix-blend-mode%3Aplus-lighter%22%3E%0A%3Cellipse%20cx%3D%22456.063%22%20cy%3D%22374.685%22%20rx%3D%22314.375%22%20ry%3D%22428.033%22%20transform%3D%22rotate%2835.1363%20456.063%20374.685%29%22%20fill%3D%22url%28%23paint0_linear_23296_49843%29%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3Cfilter%20id%3D%22filter0_f_23296_49843%22%20x%3D%220%22%20y%3D%22-119.431%22%20width%3D%22912.127%22%20height%3D%22988.232%22%20filterUnits%3D%22userSpaceOnUse%22%20color-interpolation-filters%3D%22sRGB%22%3E%0A%3CfeFlood%20flood-opacity%3D%220%22%20result%3D%22BackgroundImageFix%22%2F%3E%0A%3CfeBlend%20mode%3D%22normal%22%20in%3D%22SourceGraphic%22%20in2%3D%22BackgroundImageFix%22%20result%3D%22shape%22%2F%3E%0A%3CfeGaussianBlur%20stdDeviation%3D%2250%22%20result%3D%22effect1_foregroundBlur_23296_49843%22%2F%3E%0A%3C%2Ffilter%3E%0A%3ClinearGradient%20id%3D%22paint0_linear_23296_49843%22%20x1%3D%22360.664%22%20y1%3D%22339.072%22%20x2%3D%22645.284%22%20y2%3D%22267.337%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%0A%3Cstop%20stop-color%3D%22%230E0A28%22%2F%3E%0A%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239F4FED%22%2F%3E%0A%3C%2FlinearGradient%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E")
+                    no-repeat right 0% top / auto 100%,
+                linear-gradient(106.32deg, #000000 28.36%, #0f1a2e 79.51%);
+        }
+
+        .container > .row {
+            align-items: center;
+            gap: 2rem;
+
+            @include media-breakpoint-up(lg) {
+                flex-wrap: nowrap;
+            }
+        }
+
+        .banner-box {
+            margin: 0 auto;
+            color: $white;
+
+            @include media-breakpoint-up(lg) {
+                max-width: 548px;
+            }
+            &.left {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                @include media-breakpoint-up(lg) {
+                    max-width: 470px;
+                }
+            }
+            &.right {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
         }
     }
 </style>

@@ -3,14 +3,15 @@ import { Icon } from "astro-icon/components"
 
 interface Item {
     icon?: string;
+    number?: string;
     title: string;
     subtitle?: string;
     description?: string;
     link?: {
-        href: string
-        text: string
-    }
-    evenBg?: boolean
+        href: string;
+        text: string;
+    };
+    evenBg?: boolean;
 }
 
 interface Props {
@@ -30,7 +31,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 <span class="title-text"><Fragment set:html={title} /></span>
                 <slot />
             </h2>
-            <p set:html={subtitle} data-usal="fade-l" />
+            <p set:html={subtitle} data-usal="fade-l" class="subtitle" />
         </div>
 
         <div class="cards-grid">
@@ -41,6 +42,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                         data-usal={`${index % 2 === 0 ? "fade" : "zoomin"} delay-0 duration-400 ease-out`}
                     >
                         {item.icon && <Icon name={item.icon} class="icon" />}
+                        {item.number && <h3 class="number">{item.number}</h3>}
                         <h6
                             class="title"
                             set:html={item.title}
@@ -95,6 +97,15 @@ const { title, subtitle, items, align = "center" } = Astro.props;
 
                 .title-text {
                     display: block;
+                }
+            }
+
+            .subtitle {
+                @include media-breakpoint-up(lg) {
+                    max-width: $container-max-width;
+                    margin: 0.5rem auto;
+                    text-align: center;
+                    font-size: $font-size-lg;
                 }
             }
 
@@ -156,6 +167,12 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                         color: var(--ks-content-link);
                         width: 1.5rem;
                         height: 1.5rem;
+                    }
+
+                    .number {
+                        margin: 0;
+                        color: var(--ks-icon-color);
+                        align-self: flex-start;
                     }
 
                     .title {

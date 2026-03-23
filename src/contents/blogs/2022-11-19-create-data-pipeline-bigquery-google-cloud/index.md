@@ -187,8 +187,8 @@ tasks:
       basic.auth.user.info: <USERNAME:PASSWORD>
     keyDeserializer: STRING
     valueDeserializer: AVRO
-  - id: "storage_write"
-    type: "io.kestra.plugin.gcp.bigquery.StorageWrite"
+  - id: storage_write
+    type: io.kestra.plugin.gcp.bigquery.StorageWrite
     bufferSize: 100
     from: "{{ outputs.transform.uri }}"
     destinationTable: "kestra-dev.ETL_demo.transactions_logs"

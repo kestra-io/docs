@@ -1,137 +1,117 @@
 ---
 import Layout from "~/components/layout.astro"
-import PartnerHeader from "~/components/partners/PartnerHeader.astro"
-import PartnerMain from "~/components/partners/PartnerMain.astro"
-import Alternation from "~/components/features/shared/Alternation.astro"
-import FooterContact from "~/components/layout/FooterContact.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import NticoLogo from "~/assets/landing/partners/ntico-logo.svg?raw"
 
-const TITLE =
+import PartnerBanner from "~/components/partners/PartnerBanner.astro"
+import Capability from "~/components/partners/Capability.astro"
+
+import seeHowImg from "~/assets/landing/partners/ntico-cta.webp"
+import assessment from "~/assets/landing/partners/ntico-assessment.webp"
+import modernization from "~/assets/landing/partners/ntico-modernization.webp"
+import implementation from "~/assets/landing/partners/ntico-implementation.webp"
+import support from "~/assets/landing/partners/ntico-support.webp"
+import solutions from "~/assets/landing/partners/ntico-partner.webp"
+import BannerImage from "~/assets/landing/partners/nticoxkestra.svg"
+
+const title =
     "Ntico & Kestra: Your Partner for Data Orchestration and ETL Solutions"
-const DESCRIPTION =
+const description =
     "The Ntico team is ready to support you in your data orchestration and ETL projects with Kestra."
 
-const HEADER_DATA = {
-    logo: "/partners/ntico/logo.svg",
-    name: "Ntico",
-    title: "Ntico & Kestra: Your Partner for Data Orchestration and ETL Solutions",
-    subtitle:
+const banner = {
+    title: "Ntico & Kestra Partnership",
+    description:
         "The Ntico team is ready to support you in your data orchestration and ETL projects with Kestra.",
-    heroImage: "/partners/ntico/hero-img.svg",
-    cta: { href: "/demo", text: "Talk to us" },
-    about: { subtitle: "About Ntico" },
-    metrics: [
-        { type: "logo", logo: "/partners/ntico/logo.svg" },
+    cta: { text: "Book a demo", href: "/demo" },
+    image: BannerImage,
+    features: [
         {
-            type: "text",
-            title: "Kestra Expertise",
-            description: "Data Orchestration",
-        },
-        {
-            type: "text",
             title: "Headquarters",
-            description: "Villeneuve d'Ascq, France",
+            text: "Villeneuve d'Ascq, France",
         },
         {
-            type: "text",
+            title: "Kestra Expertise",
+            text: "Data Orchestration",
+        },
+        {
             title: "Solution",
-            description:
-                "Ntico is a Digital Services Company that supports you in digital transformation",
+            text: "Ntico is a Digital Services Company that supports you in digital transformation",
         },
     ],
 }
 
-const INTRO_DATA = {
+const capabilities = {
     title: "Ntico: Expertise in Data Orchestration and ETL with Kestra",
     description:
         "For businesses looking to enhance their data workflows, Ntico brings specialized expertise in implementing Kestra. They delivers tailored solutions that simplify data management, optimize ETL processes, and ensure seamless integration with your existing systems.",
-}
-
-const QUOTE_DATA = {
-    quote: "Kestra is an efficient solution for processing all types of data streams. Efficient in development with a clear UI, a comprehensive DevOps process, and an impressive number of plugins that allow it to adapt to all of our clients' technical contexts. Efficient in execution thanks to its scalability and real-time processing monitoring. Efficient in client support with a highly skilled and available team. We are happy to be able to support this wonderful project.",
-    author: { name: "Emmanuel Santerne", role: "Partner at Ntico" },
-}
-
-const ALTERNATION_ITEMS = [
-    {
-        title: "Assessment and Strategy",
-        content:
-            "<p>Ntico begins by thoroughly assessing your current data infrastructure. They analyze your existing workflows, tools, and integration points to develop a strategy that aligns with your business objectives. The goal is to ensure that your transition to Kestra enhances your data orchestration and ETL capabilities without disruption.</p>",
-        image: {
-            src: "/partners/ntico/artworks_features-1.svg",
+    items: [
+        {
+            image: assessment,
             alt: "Assessment and Strategy",
-            width: "560",
-            height: "420",
+            title: "Assessment and Strategy",
+            text: "Ntico begins by thoroughly assessing your current data infrastructure. They analyze your existing workflows, tools, and integration points to develop a strategy that aligns with your business objectives. The goal is to ensure that your transition to Kestra enhances your data orchestration and ETL capabilities without disruption.",
         },
-    },
-    {
-        title: "Implementation and Migration",
-        content:
-            "<p>Ntico manages the entire implementation process, from configuring your Kestra environment to migrating existing ETL pipelines. Their experts ensure that the integration is smooth and that your data processes run efficiently. Ntico handles the complexities so you can focus on leveraging your data.</p>",
-        image: {
-            src: "/partners/ntico/artworks_features-2.svg",
+        {
+            image: implementation,
             alt: "Implementation and Migration",
-            width: "560",
-            height: "420",
+            title: "Implementation and Migration",
+            text: "Ntico manages the entire implementation process, from configuring your Kestra environment to migrating existing ETL pipelines. Their experts ensure that the integration is smooth and that your data processes run efficiently. Ntico handles the complexities so you can focus on leveraging your data.",
         },
-    },
-    {
-        title: "Ongoing Support and Optimization",
-        content:
-            "<p>After the initial setup, Ntico continues to provide support to optimize your Kestra workflows. Whether you need to scale your operations, integrate new data sources, or refine your ETL processes, Ntico is there to help. Their support ensures that your Kestra environment evolves with your business needs.</p>",
-        image: {
-            src: "/partners/ntico/artworks_features-3.svg",
+        {
+            image: support,
             alt: "Ongoing Support and Optimization",
-            width: "560",
-            height: "420",
+            title: "Ongoing Support and Optimization",
+            text: "After the initial setup, Ntico continues to provide support to optimize your Kestra workflows. Whether you need to scale your operations, integrate new data sources, or refine your ETL processes, Ntico is there to help. Their support ensures that your Kestra environment evolves with your business needs.",
         },
-    },
-    {
-        title: "Modernization and Data Engineering",
-        content:
-            "<p>Ntico brings extensive experience in data engineering and modernization. They assist in redesigning and optimizing your data workflows, making the most of Kestra's capabilities. Ntico's services include everything from data pipeline creation to advanced data processing, ensuring that your data infrastructure is robust and future-proof.</p>",
-        image: {
-            src: "/partners/ntico/artworks_features-4.svg",
+        {
+            image: modernization,
             alt: "Modernization and Data Engineering",
-            width: "560",
-            height: "420",
+            title: "Modernization and Data Engineering",
+            text: "Ntico brings extensive experience in data engineering and modernization. They assist in redesigning and optimizing your data workflows, making the most of Kestra's capabilities. Ntico’s services include everything from data pipeline creation to advanced data processing, ensuring that your data infrastructure is robust and future-proof.",
         },
-    },
-    {
-        title: "Tailored Solutions for Your Business",
-        content:
-            "<p>Ntico understands that every business is unique. They provide customized solutions that fit your specific technical context, budget, and business goals. Whether you're looking to modernize your data architecture, improve your ETL processes, or simply enhance your data orchestration, Ntico is your trusted partner.</p>",
-        image: {
-            src: "/partners/ntico/artworks_features-5.svg",
+        {
+            image: solutions,
             alt: "Tailored Solutions for Your Business",
-            width: "560",
-            height: "420",
+            title: "Tailored Solutions for Your Business",
+            text: "Ntico understands that every business is unique. They provide customized solutions that fit your specific technical context, budget, and business goals. Whether you’re looking to modernize your data architecture, improve your ETL processes, or simply enhance your data orchestration, Ntico is your trusted partner.",
         },
+    ],
+}
+
+const NticoQuotes = [
+    {
+        quote: "Kestra is an efficient solution for processing all types of data streams. Efficient in development with a clear UI, a comprehensive DevOps process, and an impressive number of plugins that allow it to adapt to all of our clients' technical contexts.",
+        author: "Emmanuel Santerne - Partner at Ntico",
+        smallLogoSvg: NticoLogo,
     },
 ]
-
-const FOOTER_CONTACT = {
-    title: "Contact Ntico",
-    subtitle:
-        "Ready to enhance your data orchestration and ETL processes with Kestra? Ntico's experts are here to assist you.",
-    purple: {
-        text: "Contact Ntico",
-        href: "https://www.ntico.com/contactez-nous/",
-    },
-}
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <div class="main">
-        <PartnerHeader data={HEADER_DATA} />
-        <section>
-            <PartnerMain intro={INTRO_DATA} quote={QUOTE_DATA} />
-        </section>
-        <Alternation items={ALTERNATION_ITEMS} />
-        <FooterContact
-            client:visible
-            title={FOOTER_CONTACT.title}
-            subtitle={FOOTER_CONTACT.subtitle}
-            purple={FOOTER_CONTACT.purple}
-        />
-    </div>
+<Layout {title} {description}>
+    <PartnerBanner
+        title={banner.title}
+        description={banner.description}
+        cta={banner.cta}
+        image={banner.image}
+        features={banner.features}
+    />
+    <Quotes quotes={NticoQuotes} />
+    <Capability
+        title={capabilities.title}
+        capabilities={capabilities.items}
+        description={capabilities.description}
+    />
+    <SeeHow
+        imgSrc={seeHowImg}
+        cta={{
+            text: "Contact Ntico",
+            href: "https://www.ntico.com/contactez-nous/",
+        }}
+    >
+        <Fragment slot="title">Contact Ntico</Fragment>
+        Ready to enhance your data orchestration and ETL processes with Kestra? Ntico’s
+        experts are here to assist you.
+    </SeeHow>
 </Layout>

@@ -7,13 +7,13 @@ description: Learn how to write unit tests for your Kestra plugins using JUnit a
 
 To avoid regression, we recommend adding unit tests for all your tasks.
 
-## Add unit tests for Kestra plugins
-
-There are two main ways to unit-test your tasks. In both cases, your tests must be annotated with `@KestraTest` to start the needed Kestra components properly.
+There are two main ways to test your tasks. In both cases, annotate your tests with `@KestraTest` so the required Kestra components start correctly.
 
 ## Unit test a RunnableTask
 
 This is the most common way to test a `RunnableTask`. You create your `RunnableTask`, test its `run()` method, and assert on its output or exception.
+
+This example shows a task test that builds the task, creates a `RunContext`, runs the task directly, and asserts on the output:
 
 :::collapse{title="Example"}
 
@@ -40,13 +40,15 @@ class ExampleTest {
 ```
 :::
 
-This is done the same as any Java unit tests. Feel free to use any dependencies, test methods, and start docker containers as you need.
-Kestra tests are Micronaut tests so you can inject any bean in them.
+This works like any other Java unit test. You can use additional dependencies, helper methods, and Docker containers when needed.
+Kestra tests are Micronaut tests, so you can inject any bean into them.
 
 
 ## Unit test with a full flow
 
 If you want to add some unit tests with a full flow (which can be necessary in some rare cases, for example, for a `FlowableTask`), you will use the `@ExecuteFlow` annotation.
+
+This example shows a flow-level test that executes a test flow from `src/test/resources` and asserts on the resulting execution:
 
 :::collapse{title="Example"}
 ```java
@@ -90,5 +92,5 @@ testImplementation group: "io.kestra", name: "runner-memory", version: kestraVer
 testImplementation group: "io.kestra", name: "storage-local", version: kestraVersion
 ```
 
-This will enable the in memory runner and will run your flow without any other dependencies (e.g., kafka).
+This enables the in-memory runner and runs your flow without any other dependencies such as Kafka.
 If you created it from our plugin template, those are usually already included in your project.

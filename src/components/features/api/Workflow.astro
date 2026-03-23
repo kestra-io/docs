@@ -1,0 +1,167 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import Link from "~/components/common/Link.astro"
+
+import httpIcon from "~/assets/landing/features/api/request.svg"
+import pluginIcon from "~/assets/landing/features/api/plugin-icon.svg"
+import executionIcon from "~/assets/landing/features/api/execution.svg"
+---
+
+<section class="workflow">
+    <div class="container">
+        <div class="row section-row">
+            <div class="col-12 col-lg-auto d-flex justify-content-center">
+                <div class="workflow-left">
+                    <Image
+                        src={httpIcon}
+                        alt="HTTP Request"
+                        width={80}
+                        height={80}
+                    />
+                    <div class="arrow"></div>
+                    <Image
+                        src={pluginIcon}
+                        alt="Plugin Icon"
+                        width={80}
+                        height={80}
+                    />
+                    <div class="arrow"></div>
+                    <Image
+                        src={executionIcon}
+                        alt="Execution Icon"
+                        width={80}
+                        height={80}
+                    />
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-auto d-flex justify-content-center">
+                <div class="workflow-right">
+                    <h2>
+                        Workflow <span class="highlight">Integration</span>
+                        <br class="d-none d-md-block" /> and
+                        <span class="highlight">Automation</span>
+                    </h2>
+                    <div class="feature-item">
+                        <div class="header">
+                            <Icon name="mdi:web" class="icon" />
+                            <h6 class="title">In-Flow HTTP Requests</h6>
+                        </div>
+                        <p class="description">
+                            Utilize the HTTP Request task within your workflows
+                            to connect to external APIs, fetch data or trigger
+                            actions within your Kestra flows.
+                        </p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="header">
+                            <Icon name="mdi:bell-ring" class="icon" />
+                            <h6 class="title">Event-Driven Triggers</h6>
+                        </div>
+                        <p class="description">
+                            The HTTP Trigger opens your workflows for
+                            integration with any external events.
+                        </p>
+                    </div>
+                    <Link href="/demo" class="btn btn-primary">
+                        Book a demo
+                    </Link>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .workflow {
+        background: var(--ks-background-primary-inverse);
+        padding: 7.125rem 1rem;
+
+        .section-row {
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+        }
+
+        &-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 24.75rem;
+            padding: 2.9375rem 6.25rem;
+            border-radius: 1rem;
+            background: var(--ks-background-secondary-inverse);
+            border: 1px dashed var(--ks-border-secondary-inverse);
+            box-shadow: 0px 0.5625rem 2.25rem 0px var(--ks-shadows-xl-inverse);
+
+            .arrow {
+                position: relative;
+                width: 1.5px;
+                height: 3.3125rem;
+                margin: 0.75rem 0;
+                background-color: var(--ks-border-secondary-inverse);
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: -0.25rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-left: 0.3125rem solid transparent;
+                    border-right: 0.3125rem solid transparent;
+                    border-top: 0.3125rem solid var(--ks-border-secondary-inverse);
+                }
+            }
+        }
+
+        &-right {
+            max-width: 30.375rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
+            h2 {
+                color: var(--ks-content-primary-inverse);
+            }
+
+            .highlight {
+                color: var(--ks-content-color-highlight-inverse);
+            }
+
+            .feature-item {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .header {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.25rem;
+
+                    .icon {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        color: var(--ks-content-color-highlight-inverse);
+                    }
+
+                    .title {
+                        margin-bottom: 0;
+                        color: var(--ks-content-primary-inverse);
+                    }
+                }
+
+                .description {
+                    margin: 0;
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-tertiary-inverse);
+                }
+            }
+
+            .btn {
+                width: fit-content;
+            }
+        }
+    }
+</style>
