@@ -3,9 +3,9 @@ import { Icon } from "astro-icon/components"
 import Link from "~/components/common/Link.astro"
 import Capability from "~/components/partners/Capability.astro"
 
-import visualsImg from "~/assets/landing/features/declarative/code.svg"
+import visualsImgSrc from "~/assets/landing/features/declarative/code.svg"
 
-const FEATURES = [
+const FEATURES_DEFAULT = [
     {
         icon: "mdi:calculator-variant-outline",
         title: "Faster Development Cycles",
@@ -25,6 +25,13 @@ const FEATURES = [
             "Readable, structured definitions make workflows accessible to both engineers and cross-functional teams.",
     },
 ]
+
+const { 
+    title = "Simple Yet <span class='highlight'>Powerful</span>", 
+    text = "In just a few lines, you define parallel execution over a dynamic list. No boilerplate orchestration code. No hidden control flow. The workflow definition is the execution contract. Declarative YAML lowers the barrier to entry while remaining powerful enough for production systems. New contributors can understand and modify workflows quickly, and teams can evolve them without refactoring procedural logic",
+    image = visualsImgSrc,
+    features = FEATURES_DEFAULT
+} = Astro.props
 ---
 
 <section class="powerful">
@@ -32,10 +39,10 @@ const FEATURES = [
         <Capability
             capabilities={[
                 {
-                    image: visualsImg,
+                    image: image,
                     alt: "Simple Yet Powerful",
-                    title: "Simple Yet <span class='highlight'>Powerful</span>",
-                    text: "In just a few lines, you define parallel execution over a dynamic list. No boilerplate orchestration code. No hidden control flow. The workflow definition is the execution contract. Declarative YAML lowers the barrier to entry while remaining powerful enough for production systems. New contributors can understand and modify workflows quickly, and teams can evolve them without refactoring procedural logic",
+                    title: title,
+                    text: text,
                 },
             ]}
         />
@@ -43,13 +50,13 @@ const FEATURES = [
         <div class="feat">
             <div class="row g-0">
                 {
-                    FEATURES.map((item, index) => (
-                        <div class="col-12 col-lg-4">
+                    features.map((item: any, index: number) => (
+                        <div class:list={["col-12", features.length === 2 ? "col-lg-6" : "col-lg-4"]}>
                             <div
                                 class:list={[
                                     "feat-item",
                                     { first: index === 0 },
-                                    { last: index === FEATURES.length - 1 },
+                                    { last: index === features.length - 1 },
                                 ]}
                             >
                                 <div>
@@ -68,9 +75,13 @@ const FEATURES = [
                 }
             </div>
         </div>
-        <Link href="/demo" class="btn btn-primary">
-            Book a Demo
-        </Link>
+        <div class="cta-container">
+            <slot name="button">
+                <Link href="/demo" class="btn btn-primary">
+                    Book a Demo
+                </Link>
+            </slot>
+        </div>
     </div>
 </section>
 
@@ -127,10 +138,9 @@ const FEATURES = [
             }
         }
 
-        .btn {
-            margin: 0 auto;
-            display: block;
-            width: fit-content;
+        .cta-container {
+            display: flex;
+            justify-content: center;
             margin-top: 2rem;
         }
     }
