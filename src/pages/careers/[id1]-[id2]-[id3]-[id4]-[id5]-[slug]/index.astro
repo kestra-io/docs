@@ -62,7 +62,7 @@ const title = page.title
     .job-description {
         display: flex;
         gap: 2rem;
-        margin-block: 3rem;
+        margin-bottom: 3rem;
         .sidebar {
             flex: 0 0 250px;
             align-self: flex-start;
@@ -87,5 +87,17 @@ const title = page.title
     .apply-btn {
         margin-top: 3rem;
         color: white;
+    }
+    article {
+        :global(h3) {
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+        :global(p) {
+            margin: 0;
+        }
+        :global(ul) {
+            margin-bottom: 1.5rem;
+        }
     }
 </style>
