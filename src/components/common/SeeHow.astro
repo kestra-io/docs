@@ -17,7 +17,7 @@ const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } =
     Astro.props
 ---
 
-<section class="px-3">
+<section class="px-3 see">
     <div class="see_how mx-auto w-100 rounded-3 p-1">
         <div class="inner mx-auto w-100">
             <div class="row g-0">
@@ -35,19 +35,21 @@ const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } =
                     class="col-12 col-md-6 rounded-3 d-flex align-items-center px-4 py-3 py-md-5"
                 >
                     <div class="content">
-                        <h3 class="mb-3">
+                        <h3 class="mb-3" data-usal="fade-r">
                             <slot name="title" />
                         </h3>
-                        <p>
+                        <p data-usal="fade-l">
                             <slot />
                         </p>
                         <Link
                             href={cta.href}
-                            class="btn btn-primary text-white"
+                            class="btn btn-primary"
                             download={cta.download}
+                            data-usal="zoomin"
                         >
                             {cta.text}
                         </Link>
+                        <slot name="footer" />
                     </div>
                 </div>
             </div>

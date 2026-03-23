@@ -52,8 +52,6 @@
 </script>
 
 <style scoped lang="scss">
-
-
     .layout-wrapper {
         padding: $rem-4 0;
         @include media-breakpoint-down(xl) {

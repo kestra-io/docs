@@ -1,0 +1,253 @@
+---
+import { Icon } from "astro-icon/components"
+
+import ntico from "./assets/ntico.svg"
+import conapi from "./assets/conapi.svg"
+import dremio from "./assets/dremio.svg"
+import dlthub from "./assets/dlthub.svg"
+import airbyte from "./assets/airbyte.svg"
+import davidson from "./assets/davidson.svg"
+import snowflake from "./assets/snowflake.svg"
+import converteo from "./assets/converteo.svg"
+import terraform from "./assets/terraform.svg"
+import databricks from "./assets/databricks.svg"
+import hanalytics from "./assets/hanalytics.svg"
+import motherduck from "./assets/motherduck.svg"
+
+const PARTNERS = [
+    {
+        name: "Conapi",
+        logo: conapi,
+        type: "Consulting",
+        description:
+            "Conapi specializes in system integration, connecting legacy systems with modern tools through enterprise integration and API management.",
+        href: "/partners/conapi",
+    },
+    {
+        name: "Snowflake",
+        logo: snowflake,
+        type: "Technology",
+        description:
+            "Snowflake's platform enables a wide range of workloads including data warehousing, data lakes, and data engineering.",
+        href: "https://www.snowflake.com/",
+    },
+    {
+        name: "Converteo",
+        logo: converteo,
+        type: "Consulting",
+        description:
+            "Converteo is a leading consulting firm specializing in data strategy and digital transformation.",
+        href: "https://www.converteo.com/",
+    },
+    {
+        name: "Terraform",
+        logo: terraform,
+        type: "Technology",
+        description:
+            "Terraform lets you provision and version infrastructure as code. With Kestra, you can orchestrate Terraform runs reliably in automated workflows.",
+        href: "https://www.terraform.io/",
+    },
+    {
+        name: "Databricks",
+        logo: databricks,
+        type: "Technology",
+        description:
+            "Databricks provides a unified analytics platform for data engineering, data science, and machine learning.",
+        href: "https://www.databricks.com/",
+    },
+    {
+        name: "Dremio",
+        logo: dremio,
+        type: "Technology",
+        description:
+            "Dremio is the easy and open data lakehouse platform that delivers self-service analytics and data management.",
+        href: "https://www.dremio.com/",
+    },
+    {
+        name: "Davidson",
+        logo: davidson,
+        type: "Consulting",
+        description:
+            "Davidson is a technology and management consulting firm focused on innovation and digital solutions.",
+        href: "https://www.davidson.fr/",
+    },
+    {
+        name: "Airbyte",
+        logo: airbyte,
+        type: "Technology",
+        description:
+            "Airbyte is an open-source data integration platform that helps you move data from any source to any destination.",
+        href: "https://airbyte.com/",
+    },
+    {
+        name: "Hanalytics",
+        logo: hanalytics,
+        type: "Consulting",
+        description:
+            "Hanalytics specializes in data analytics and business intelligence solutions for modern organizations.",
+        href: "https://hanalytics.io/",
+    },
+    {
+        name: "dlthub",
+        logo: dlthub,
+        type: "Technology",
+        description:
+            "dlthub provides declarative data loading tools to build robust and scalable data pipelines.",
+        href: "https://dlthub.com/",
+    },
+    {
+        name: "MotherDuck",
+        logo: motherduck,
+        type: "Technology",
+        description:
+            "MotherDuck is a serverless data platform built on DuckDB, designed for performant and simple data analytics.",
+        href: "https://motherduck.com/",
+    },
+    {
+        name: "Ntico",
+        logo: ntico,
+        type: "Consulting",
+        description:
+            "Ntico is a data consulting partner focused on delivering high-impact data solutions and insights.",
+        href: "/partners/ntico",
+    },
+]
+---
+
+<section class="lists">
+    <div class="container overflow-visible">
+        <div class="row g-3">
+            {
+                PARTNERS.map((partner) => {
+                    const isExternal = partner.href.startsWith("http");
+                    return (
+                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                            <div class="card">
+                                <div
+                                    class:list={[
+                                        "badge",
+                                        partner.type.toLowerCase(),
+                                    ]}
+                                >
+                                    {partner.type}
+                                </div>
+                                <div class="placeholder">
+                                    <img
+                                        src={partner.logo.src}
+                                        alt={partner.name}
+                                    />
+                                </div>
+                                <h6 class="mb-0">{partner.name}</h6>
+                                <p class="mb-0">{partner.description}</p>
+                                <a
+                                    href={partner.href}
+                                    class="visit-link"
+                                    target={isExternal ? "_blank" : undefined}
+                                    rel={
+                                        isExternal
+                                            ? "noopener noreferrer"
+                                            : undefined
+                                    }
+                                >
+                                    <h6 class="mb-0">
+                                        {isExternal ? (
+                                            <>
+                                                Visit {partner.name} website
+                                                <Icon name="mdi:open-in-new" />
+                                            </>
+                                        ) : (
+                                            `Visit ${partner.name} page`
+                                        )}
+                                    </h6>
+                                </a>
+                            </div>
+                        </div>
+                    );
+                })
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .lists {
+        padding-top: 64px;
+        padding-bottom: 90px;
+        background: var(--ks-background-body);
+
+        .card {
+            width: 100%;
+            max-width: 273px;
+            min-height: 356px;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid var(--ks-border-secondary);
+            background: var(--ks-background-primary);
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .placeholder {
+                width: 100%;
+                height: 140px;
+                border-radius: 8px;
+                border: 1px solid var(--ks-border-primary);
+                background: #f7f7f7;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1.5rem;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            .badge {
+                width: fit-content;
+                padding: 2px 8px;
+                border-radius: 40px;
+                font-weight: 600;
+                font-size: $font-size-xs;
+
+                &.consulting {
+                    background: var(--ks-background-tag-success);
+                    color: var(--ks-content-tag-success);
+                }
+
+                &.technology {
+                    background: var(--ks-background-tag-category);
+                    color: var(--ks-content-tag-category);
+                }
+            }
+
+            h6 {
+                color: var(--ks-content-primary);
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+                font-size: $font-size-xs;
+            }
+
+            .visit-link {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 0.25rem;
+                text-decoration: none;
+                margin-top: auto;
+
+                h6 {
+                    color: var(--ks-content-link);
+                    font-size: $font-size-xs;
+                    margin-top: 0.5rem;
+                }
+            }
+        }
+    }
+</style>

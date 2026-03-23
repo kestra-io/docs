@@ -19,9 +19,8 @@
             />
         </div>
 
-        <div class="video-content">
+        <div class="video-metadata">
             <p class="category">{{ video.category }}</p>
-            <h3 class="title">{{ video.title }}</h3>
             <time
                 v-if="video.publicationDate"
                 class="video-info"
@@ -31,6 +30,7 @@
             </time>
             <p class="author">{{ video.author }}</p>
         </div>
+        <h3 class="title">{{ video.title }}</h3>
     </article>
 </template>
 
@@ -76,11 +76,7 @@
     const formattedDate = computed(() => {
         if (!props.video.publicationDate) return ""
         try {
-            return new Intl.DateTimeFormat("de-DE", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-            }).format(new Date(props.video.publicationDate))
+            return new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(new Date(props.video.publicationDate))
         } catch (e) {
             return props.video.publicationDate
         }
@@ -127,10 +123,9 @@
                 }
             }
         }
-        .video-content {
+        .video-metadata {
             display: flex;
-            flex-direction: column;
-            gap: calc($spacer * 0.125);
+            gap: .2rem;
             .category {
                 margin: 0;
                 font-size: $font-size-sm;
@@ -139,29 +134,38 @@
                 color: var(--ks-content-link);
                 letter-spacing: 0.5px;
             }
-            .title {
-                margin: 0;
-                font-size: $font-size-base;
-                font-weight: 600;
-                line-height: calc($spacer * 1.5);
-                color: var(--ks-content-primary);
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
+
             .video-info {
                 margin: 0;
                 font-size: $font-size-sm;
                 color: var(--ks-content-secondary);
                 font-weight: 400;
+                &:before{
+                    content: "•";
+                    margin-right: .2rem;
+                }
             }
             .author {
                 margin: 0;
                 font-size: $font-size-sm;
                 color: var(--ks-content-tertiary);
                 font-weight: 400;
+                &:before{
+                    content: "•";
+                    margin-right: .2rem;
+                }
             }
+        }
+        .title {
+            margin: 0;
+            font-size: $font-size-base;
+            font-weight: 600;
+            line-height: calc($spacer * 1.5);
+            color: var(--ks-content-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     }
 </style>

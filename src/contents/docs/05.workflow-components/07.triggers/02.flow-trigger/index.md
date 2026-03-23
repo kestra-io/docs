@@ -12,7 +12,7 @@ Trigger one flow based on the execution of another flow.
 A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Flow"
+type: io.kestra.plugin.core.trigger.Flow
 ```
 
 Kestra can automatically start a flow as soon as another flow ends. This allows you to create dependencies between flows, even when those flows are owned by different teams.
@@ -24,7 +24,7 @@ Check the [Flow trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Fl
 A Flow trigger requires preconditions to filter which upstream executions can trigger the flow, often within a defined time window.
 
 :::alert{type="info"}
-[Pebble expressions](../../../expressions/index.md) cannot be used in Flow Trigger (pre)conditions. You must declaratively define any condition variables.
+[Pebble expressions](../../../expressions/index.mdx) cannot be used in Flow Trigger (pre)conditions. You must declaratively define any condition variables.
 :::
 
 ### Filters

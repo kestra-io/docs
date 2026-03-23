@@ -61,9 +61,8 @@ const activeQuote = ref(0)
 
 <style lang="scss" scoped>
 
-
 .wrapper {
-    background-color: var(--ks-background-purple-light);
+    background: var(--ks-background-primary) linear-gradient(var(--ks-background-purple-light), var(--ks-background-purple-light));
     color: var(--ks-content-primary);
 
     .tabs {

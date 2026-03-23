@@ -1,101 +1,150 @@
 ---
-import LanguageLayout from "~/components/features/shared/LanguageLayout.astro"
+import type { Plugin } from "@kestra-io/ui-libs"
+import { $fetchApi } from "~/utils/fetch"
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 
-const FEATURES = {
-    title: "Advanced <span>Julia Scripting with Kestra</span>",
-    items: [
-        {
-            image: "/landing/features/language/sub-pages/icon-customize.svg",
-            title: "Customize at Runtime",
-            description:
-                "Install any Julia package dynamically as your project demands, maintaining flexibility and power.",
-        },
-        {
-            image: "/landing/features/language/sub-pages/icon-sync.svg",
-            title: "Import or Sync your Entire Project",
-            description:
-                "Sync your entire Julia project into Kestra, ensuring that all components, from packages to custom modules, are managed effectively.",
-        },
-        {
-            image: "/landing/features/language/sub-pages/icon-cloud.svg",
-            title: "Cloud-Agnostic Execution",
-            description:
-                "Deploy and execute your Julia scripts on any cloud platform using Kestra’s Task Runners, optimizing for performance and cost efficiency.",
-        },
-    ],
-}
+import Layout from "~/components/layout.astro"
+import Link from "~/components/common/Link.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import Capability from "~/components/partners/Capability.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
 
-const POWER_DESC = [
-    "Julia is renowned for high-performance numerical analysis and computational science. Leverage Kestra to orchestrate your Julia scripts, enhancing their capabilities in large-scale analytics and machine learning applications. From data ingestion to complex numerical simulations, Kestra streamlines your Julia workflows, accelerating development and deployment.",
-]
+import visualHero from "~/assets/landing/features/code-in-any-lang/julia/julia-hero.svg"
+import visualsImg from "~/assets/landing/features/code-in-any-lang/julia/visuals.webp"
+import juliaSpecificImg from "~/assets/landing/features/code-in-any-lang/julia/julia-capabilities.svg"
+import anyLanguage1 from "~/assets/landing/features/code-in-any-lang/python/any-language-1.webp"
+import anyLanguage2 from "~/assets/landing/features/code-in-any-lang/julia/any-language-2.webp"
+import anyLanguage3 from "~/assets/landing/features/code-in-any-lang/julia/any-language-3.webp"
 
-const SCRIPTS = [
+const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+
+const title = "Julia Orchestration"
+const description =
+    "Add any Julia package to your environment as your workflows demand, maintaining flexibility without pre-configurations."
+
+const MAIN_ITEMS = [
     {
-        title: "Embrace GitOps best practices for your Julia scripts",
+        icon: "mdi:leak",
+        title: "Customize at Runtime",
         description:
-            "Kestra takes Julia script orchestration to the next level by embracing Continuous Integration/Continuous Deployment (CI/CD) and GitOps principles. Manage your Julia workflows with the same rigor as your application code: version control, automated testing, and consistent, repeatable deployment environments. Kestra  lets you define workflows in YAML, ensuring that your orchestration is as maintainable and scalable as your applications.",
-        source: "/landing/features/language/git-with-kestra.svg",
-        imgWidth: "520px",
-        imgHeight: "282px",
+            "Install any Julia package dynamically as your project demands, maintaining flexibility and power.",
     },
     {
-        title: "Integration with Docker, Seamless Environment Management",
+        icon: "mdi:hub-outline",
+        title: "Import or Sync your Entire Project",
         description:
-            "Simplify managing environments for Julia scripts with Kestra’s Docker integration. Ensure your scripts execute in isolated and consistent settings to enhance reproducibility and scalability. Manage everything from Kestra's intuitive editor, making environment management straightforward and effective.",
-        source: "/landing/features/language/julia/scripts/docker.svg",
-        imgWidth: "568px",
-        imgHeight: "420px",
+            "Sync your entire Julia project into Kestra, ensuring that all components, from packages to custom modules, are managed effectively.",
+    },
+    {
+        icon: "mdi:checkbox-multiple-marked-circle-outline",
+        title: "Cloud-Agnostic Execution",
+        description:
+            "Deploy and execute your Julia scripts on any cloud platform using Kestra’s Task Runners, optimizing for performance and cost efficiency.",
+    },
+]
+
+const SCRIPT_FEATURES = [
+    {
+        title: "GitOps for Julia Workflows",
+        description:
+            "Manage your Julia scripts with the same discipline as application code. Version workflows in Git, integrate them into CI/CD pipelines, and deploy consistently across environments. Define orchestration in YAML, keep everything under version control, and ship changes through the same review and release process as the rest of your stack.",
+        image: anyLanguage1,
+    },
+    {
+        title: "Docker for Julia Workflows",
+        description:
+            "Run Julia scripts in isolated Docker containers to guarantee consistent dependencies and reproducible runs across environments. Define the runtime directly in your workflow, and let Kestra handle execution, no manual environment management required.",
+        image: anyLanguage2,
+        reverse: true,
     },
     {
         title: "Embedded Julia Scripts for Simplicity",
         description:
             "For simpler tasks requiring immediate results, use Kestra’s task feature to embed Julia scripts directly into your workflows. This is perfect for quick data manipulations, statistical calculations, or alert setups within broader workflows, enhancing both speed and efficiency.",
-        source: "/landing/features/language/julia/scripts/embedded-julia.svg",
-        imgWidth: "538px",
-        imgHeight: "206px",
-        mask: "mask-1",
+        image: anyLanguage3,
     },
-]
-
-const ORCHESTRATOR_DESC = [
-    "Integrate seamlessly with your existing Julia scripts without requiring any code modifications. Continue developing in Julia as usual, and let Kestra handle the orchestration. This seamless integration allows you to focus on creating powerful, efficient code without worrying about the operational overhead.",
-    "Maintain your focus on writing great code, not on adapting it to fit the orchestration tool. Whether your scripts are set up for data processing, automation, or any other task, integrating them into Kestra is as simple as defining your workflow.",
 ]
 ---
 
-<LanguageLayout
-    meta={{
-        title: "Julia Orchestration",
-        description: FEATURES.items[0].description,
-    }}
-    header={{
-        title: "Julia Scripts",
-        description:
-            "Build declaratively your workflows and seamlessly run all your Julia Scripts",
-        source: "/landing/features/language/julia/header.svg",
-    }}
-    features={FEATURES}
-    power={{
-        title: "with Julia",
-        description: POWER_DESC,
-        source: "/landing/features/language/julia/power.svg",
-    }}
-    scripts={{
-        title: "Julia",
-        data: SCRIPTS,
-    }}
-    orchestrator={{
-        description: ORCHESTRATOR_DESC,
-        source: "/landing/features/language/julia/scripts/julia-puzzle.svg",
-    }}
-    footer={{
-        title: "Getting Started with Declarative Orchestration",
-        links: {
-            dark: {
-                text: "Get started",
-                href: "/docs/quickstart#start-kestra",
-            },
-            purple: { text: "Talk to us", href: "/demo" },
-        },
-    }}
-/>
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Orchestrate your Julia Scripts"
+        description="Build declaratively your workflows and seamlessly run all your Julia Scripts"
+        image={visualHero}
+    >
+        <Link
+            slot="cta"
+            href="/docs/quickstart#start-kestra"
+            class="btn btn-primary"
+        >
+            Get Started
+        </Link>
+    </TopHero>
+
+    <CardGrid
+        title="Advanced Julia Scripting with Kestra"
+        items={MAIN_ITEMS}
+    />
+
+    <div class="gitops">
+        <Capability
+            capabilities={[
+                {
+                    image: juliaSpecificImg,
+                    alt: "Simple Yet Powerful",
+                    title: "<span class='highlight'>Power</span> Your Projects with Julia",
+                    text: "Julia is renowned for high-performance numerical analysis and computational science. Leverage Kestra to orchestrate your Julia scripts, enhancing their capabilities in large-scale analytics and machine learning applications. <br /><br /> From data ingestion to complex numerical simulations, Kestra streamlines your Julia workflows, accelerating development and deployment.",
+                },
+            ]}
+        />
+    </div>
+
+    <SectionCard cards={SCRIPT_FEATURES}>
+        <Fragment slot="title">Orchestrating Julia Scripts with Kestra</Fragment>
+    </SectionCard>
+
+    <div class="gitops">
+        <Capability
+            title="Let Your Orchestrator Adapt to <br class='d-none d-lg-block'> Your Code, Not the Reverse"
+            capabilities={[
+                {
+                    image: visualsImg,
+                    alt: "Simple Yet Powerful",
+                    title: "Keep Your Julia Code. Orchestrate Around It",
+                    text: "No rewrites. No adaptation layer. Define the workflow, call your script, and let Kestra handle execution, scaling, and reliability — so you can focus on performance and logic, not infrastructure.",
+                },
+            ]}
+        />
+    </div>
+
+    <PluginsBlock>
+        <Fragment slot="title">Platform Independent</Fragment>
+        <Fragment slot="description">
+            Select from {totalPlugins}+ integrations and swap tools when needed
+        </Fragment>
+    </PluginsBlock>
+
+    <SeeHow cta={{ text: "Talk to Sales", href: "/demo" }}>
+        <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
+        Replace legacy schedulers, brittle scripts, and disconnected automation tools
+        with a unified orchestration platform.
+    </SeeHow>
+</Layout>
+
+<style lang="scss">
+    .gitops {
+        :global(.powerful),
+        :global(.partner-capability),
+        :global(.feat) {
+            background: var(--ks-background-secondary) !important;
+        }
+
+        :global(hr) {
+            border: 1px solid var(--ks-border-secondary) !important;
+        }
+    }
+</style>

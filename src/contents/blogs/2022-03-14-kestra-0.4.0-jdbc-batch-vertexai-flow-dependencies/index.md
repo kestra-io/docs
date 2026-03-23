@@ -15,7 +15,7 @@ Since our [public launch](../2022-02-01-kestra-opensource/index.md), we've done 
 
 ## Performance for large clusters
 
-Since we already have a [large deployment](../2022-02-22-leroy-merlin-usage-kestra/index.md) at Leroy Merlin, we have often encountered performance issues, but this one was more complicated to find. Here, we'll outline some metrics based on our large deployment on [Leroy Merlin](2022-02-22-leroy-merlin-usage-kestra)'s production environment and show you some before and after graphs for the same workload. Leroy Merlin's usage is mostly processed overnight, with all flows starting simultaneously around 3AM with 4000+ executions and 40,000+ tasks.
+Since we already have a [large deployment](../2022-02-22-leroy-merlin-usage-kestra/index.md) at Leroy Merlin, we have often encountered performance issues, but this one was more complicated to find. Here, we'll outline some metrics based on our large deployment on [Leroy Merlin](../2022-02-22-leroy-merlin-usage-kestra/index.md)'s production environment and show you some before and after graphs for the same workload. Leroy Merlin's usage is mostly processed overnight, with all flows starting simultaneously around 3AM with 4000+ executions and 40,000+ tasks.
 
 We have done a lot of work to **reduce CPU usage and latency**.
 
@@ -77,14 +77,14 @@ Here is an example:
 ```yaml
 tasks:
   - id: query
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://127.0.0.1:56982/
     username: mysql_user
     password: mysql_passwd
     sql: select * from users
     store: true
   - id: load
-    type: "io.kestra.plugin.jdbc.sqlserver.Batch"
+    type: io.kestra.plugin.jdbc.sqlserver.Batch
     url: jdbc:sqlserver://localhost:41433;trustServerCertificate=true
     username: sa
     password: Sqls3rv3r_Pa55word!
@@ -162,7 +162,7 @@ You can still use Kestra's internal storage with any singer taps and use the dat
     # same as above
     raw: false
   - id: update
-    type: "io.kestra.plugin.jdbc.sqlserver.Batch"
+    type: io.kestra.plugin.jdbc.sqlserver.Batch
     url: jdbc:sqlserver://localhost:41433;trustServerCertificate=true
     username: sa
     password: Sqls3rv3r_Pa55word!

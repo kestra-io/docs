@@ -31,7 +31,7 @@ micronaut:
       enabled: true
 ```
 
-More information can be found in the [configuration documentation](../../configuration/index.md#configuring-cors).
+More information can be found in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 ## Building a Workflow with a Webhook Trigger
 

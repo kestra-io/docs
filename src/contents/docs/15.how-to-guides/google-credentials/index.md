@@ -123,8 +123,8 @@ With this, we can add this to the `serviceAccount` property like so:
 If you're using multiple tasks that will require the service account secret, you can set up a Plugin Default to apply this property to all tasks of this type. For example:
 ```yaml
 tasks:
-  - id: "upload"
-    type: "io.kestra.plugin.googleworkspace.drive.Upload"
+  - id: upload
+    type: io.kestra.plugin.googleworkspace.drive.Upload
     from: "{{ inputs.file }}"
     parents:
       - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"

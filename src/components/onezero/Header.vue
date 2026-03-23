@@ -117,12 +117,11 @@
 
 <style lang="scss" scoped>
 
-
     section {
         position: relative;
         width: 100%;
-        background: var(--ks-background-artwork) url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
-        margin-top: -2rem;
+        background: #131316 url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
+        margin-top: calc(-2rem - var(--announce-height));
         @include media-breakpoint-up(lg) {
             background-position: center top 30rem;
         }
@@ -264,3 +263,4 @@
         }
     }
 </style>
+

@@ -51,7 +51,7 @@ Depending on the Kestra internal queue and repository implementation, there can 
 
 ### Storing data inside the internal storage
 
-Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [internal storage configuration](../../configuration/index.md#internal-storage).
+Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 When using the internal storage, data is, by default, stored using [Amazon Ion](https://amazon-ion.github.io/ion-docs/) format.
 
@@ -165,7 +165,7 @@ When we `Set` a new value for `user_name`, we have to use another `Get` task to 
 
 ## Processing data
 
-For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.md).
+For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.mdx).
 
 For more complex data transformations, Kestra offers various data processing plugins including transform tasks or custom scripts.
 
@@ -319,11 +319,11 @@ It can be used at the end of a flow to purge all its generated files.
 
 ```yaml
 tasks:
-  - id: "purge-execution"
-    type: "io.kestra.plugin.core.storage.PurgeExecution"
+  - id: purge-execution
+    type: io.kestra.plugin.core.storage.PurgeExecution
 ```
 
-The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [configurations](../../configuration/index.md).
+The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 
 Also, the [Purge](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Purge) task can be used to purge storages, logs, and executions of previous execution. For example, this flow purges all of these every day:
@@ -332,8 +332,8 @@ id: purge
 namespace: company.team
 
 tasks:
-  - id: "purge"
-    type: "io.kestra.plugin.core.storage.Purge"
+  - id: purge
+    type: io.kestra.plugin.core.storage.Purge
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
 
 triggers:
@@ -406,7 +406,7 @@ namespace: company.team
 
 tasks:
   - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
+    type: io.kestra.plugin.jdbc.duckdb.Queries
     sql: |
       INSTALL httpfs;
       LOAD httpfs;
@@ -416,7 +416,7 @@ tasks:
 
   - id: each_raw
     type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
+    items: "{{ outputs.extract.outputs[0].uri }}"
     namespace: company.team
     flowId: subflow_raw_string_input
     inputs:

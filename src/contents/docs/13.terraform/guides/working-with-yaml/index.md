@@ -99,8 +99,8 @@ Create the yaml file for the flow:
 
 ```yaml
 tasks:
-  - id: "query"
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+  - id: query
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:postgresql://127.0.0.1:56982/
     username: postgres
     password: pg_passwd
@@ -123,8 +123,8 @@ The `tf` files will required the `yaml` files that will require the `sql` files 
 
 ```yaml
 tasks:
-  - id: "query"
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+  - id: query
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:postgresql://127.0.0.1:56982/
     username: postgres
     password: pg_passwd

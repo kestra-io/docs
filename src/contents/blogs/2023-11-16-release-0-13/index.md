@@ -361,7 +361,7 @@ To avoid overwhelming you with details, we'll only list the new plugins in alpha
 10. [Modal](/plugins/plugin-modal)
 11. [OpsGenie (Atlassian)](/plugins/plugin-opsgenie)
 12. [PagerDuty](/plugins/plugin-pagerduty)
-13. [SendGrid](/plugins/plugin-sendgrid)
+13. [SendGrid](/plugins/plugin-twilio/sendgrid)
 14. [Sentry](/plugins/plugin-sentry)
 15. [SqlMesh](/plugins/plugin-sqlmesh)
 16. [SQLite](/plugins/plugin-jdbc-sqlite)

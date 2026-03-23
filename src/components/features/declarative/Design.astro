@@ -1,0 +1,35 @@
+---
+import SectionCard from "~/components/layout/SectionCard.astro"
+
+import anyLanguage1 from "~/assets/landing/features/declarative/any-language-1.webp"
+import anyLanguage2 from "~/assets/landing/features/declarative/any-language-2.webp"
+
+const FEATURES = [
+    {
+        title: "YAML as the Orchestration Layer",
+        description: `
+            <ul>
+                <li><strong>Structured definitions:</strong> Mappings and sequences keep dependencies and control flow explicit and predictable.</li>
+                <li><strong>Inline documentation & comments:</strong> they live alongside logic, making workflows easier to review and maintain.</li>
+                <li><strong>Extensible types:</strong> Custom task types and plugins extend the language while preserving the declarative model.</li>
+            </ul>
+        `,
+        image: anyLanguage1,
+    },
+    {
+        title: "Empower Your Team",
+        description: `
+            <ul>
+                <li><strong>Accelerate time to value:</strong> Define workflows declaratively and move from idea to production faster, without building custom orchestration logic.</li>
+                <li><strong>Faster iteration cycles:</strong> Adapt to changing requirements by updating configuration, not rewriting procedural code.</li>
+                <li><strong>Reduce maintenance burden:</strong> Focus on defining the desired outcome while Kestra handles execution, retries, and state management.</li>
+            </ul>
+        `,
+        image: anyLanguage2,
+        reverse: true,
+    },
+]
+
+---
+
+<SectionCard cards={FEATURES} />

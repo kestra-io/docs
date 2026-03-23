@@ -39,6 +39,7 @@
                 </small>
             </template>
         </div>
+        <slot />
     </div>
 </template>
 
@@ -58,8 +59,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .features-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -98,6 +97,7 @@
                 align-self: start;
                 width: 1.5rem;
                 height: 1.5rem;
+                margin-bottom: 4px;
             }
 
             .feature-title {
