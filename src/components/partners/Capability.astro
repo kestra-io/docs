@@ -18,7 +18,7 @@ const { title, description, capabilities } = Astro.props
 <section class="partner-capability">
     <div class="container">
         <div class="intro">
-            <h2>{title}</h2>
+            <h2 set:html={title}></h2>
             <p>{description}</p>
         </div>
         <div class="row custom-gap mt-5">
@@ -37,8 +37,8 @@ const { title, description, capabilities } = Astro.props
                                 </div>
                             </div>
                             <div class="card-right">
-                                <h3 set:html={card.title}></h3>
-                                <p set:html={card.text}></p>
+                                <h3 set:html={card.title} data-usal="fade-l"></h3>
+                                <p set:html={card.text} data-usal="fade-r"></p>
                             </div>
                         </div>
                     </div>
@@ -94,15 +94,14 @@ const { title, description, capabilities } = Astro.props
                     width: 100%;
                     height: 100%;
                     border-radius: 8px;
-                    overflow: hidden;
                     display: flex;
                     align-items: center;
                     justify-content: center;
 
                     img {
                         width: 100%;
-                        height: 100%;
                         object-fit: cover;
+                        border-radius: 8px;
                     }
                 }
             }
