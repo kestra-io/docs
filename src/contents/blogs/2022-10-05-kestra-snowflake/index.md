@@ -62,8 +62,8 @@ This task downloads data from the Snowflake server to an internal Kestra stage w
 The following code snippet downloads the default database to the specified `fileName` location on the internal Kestra server.
 
 ```yaml
-id: "download"
-type: "io.kestra.plugin.jdbc.snowflake.Download"
+id: download
+type: io.kestra.plugin.jdbc.snowflake.Download
 stageName: MYSTAGE
 fileName: prefix/destFile.csv
 ```
@@ -74,8 +74,8 @@ This task uploads data to an internal [Snowflake stage](https://docs.snowflake.c
 The following code snippet uploads data to the specified `fileName` location.
 
 ```yaml
-id: "upload"
-type: "io.kestra.plugin.jdbc.snowflake.Upload"
+id: upload
+type: io.kestra.plugin.jdbc.snowflake.Upload
 stageName: MYSTAGE
 prefix: testUploadStream
 fileName: destFile.csv
@@ -116,8 +116,8 @@ fetchType: FETCH
 While managing data, you might not need all the information from your Snowflake stage. The Download task allows you to fetch only the specific columns you need. This is achievable by modifying the sql property in the task:
 
 ```yaml
-id: "selective_download"
-type: "io.kestra.plugin.jdbc.snowflake.Download"
+id: selective_download
+type: io.kestra.plugin.jdbc.snowflake.Download
 stageName: MYSTAGE
 sql: SELECT column1, column2 FROM source
 fileName: destFile.csv
@@ -127,8 +127,8 @@ fileName: destFile.csv
 Uploading data often involves a transformation process. The Upload task allows you to upload and transform your data in a single step, as shown below:
 
 ```yaml
-id: "transformed_upload"
-type: "io.kestra.plugin.jdbc.snowflake.Upload"
+id: transformed_upload
+type: io.kestra.plugin.jdbc.snowflake.Upload
 stageName: MYSTAGE
 prefix: transformedData
 fileName: destFile.csv

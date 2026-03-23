@@ -17,7 +17,9 @@ const tagsSelected = Astro.url.searchParams.get("tags") ?? undefined
 const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
 
 const tagsForFilter = tagsSelected
-    ? tags.find((tag) => tag.name === tagsSelected)?.id
+    ? tags.find(
+          (tag) => tag.name.toLowerCase() === tagsSelected.toLowerCase(),
+      )?.id
     : undefined
 
 const { results: blueprintsData = [], total = 0 } = (await $fetchApi<{

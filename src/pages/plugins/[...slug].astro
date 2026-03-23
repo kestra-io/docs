@@ -660,89 +660,91 @@ if (!pluginType && !subGroup) {
                 }
             </div>
 
+            <div class="bd-content">
+                {
+                    pluginType ? (
+                        <PluginsMDCRender
+                            schema={(pageWithToc.body as any).jsonSchema}
+                            pluginType={pluginType}
+                            client:idle
+                        />
+                    ) : (
+                        <PluginsIndexWrapper
+                            plugins={pluginsForDisplay}
+                            icons={subGroupsIcons}
+                            pluginName={pluginName}
+                            subGroup={subGroup}
+                            routePath={pathname}
+                            subgroupBlueprintCounts={subgroupBlueprintCounts}
+                            metadataMap={metadataMap}
+                            schemas={elementTitle}
+                            client:idle
+                        />
+                    )
+                }
+            </div>
+
             {
-                pluginType ? (
-                    <PluginsMDCRender
-                        schema={(pageWithToc.body as any).jsonSchema}
-                        pluginType={pluginType}
-                        client:idle
-                    />
-                ) : (
-                    <PluginsIndexWrapper
-                        plugins={pluginsForDisplay}
-                        icons={subGroupsIcons}
-                        pluginName={pluginName}
-                        subGroup={subGroup}
-                        routePath={pathname}
-                        subgroupBlueprintCounts={subgroupBlueprintCounts}
-                        metadataMap={metadataMap}
-                        schemas={elementTitle}
-                        client:idle
+                pluginType === undefined && currentPluginVideos?.length > 0 && (
+                    <PluginVideos videos={currentPluginVideos} />
+                )
+            }
+
+            <RelatedBlueprints
+                pluginName={pluginName}
+                pluginWrapper={rootPlugin}
+                currentSubgroupPlugin={currentSubgroupPlugin}
+                subGroupName={currentSubgroupPlugin
+                    ? slugify(subGroupName(currentSubgroupPlugin))
+                    : subGroup}
+                pluginType={pluginType}
+                customId={blueprintsSectionHeading?.id}
+            />
+
+            {
+                pluginType === undefined &&
+                    subGroup === undefined &&
+                    relatedBlogs &&
+                    relatedBlogs.length > 0 && (
+                        <div class="related-blogs">
+                            <BlogList
+                                posts={relatedBlogs.map((p) => ({
+                                    ...p.data,
+                                    path: `/blogs/${p.id}`,
+                                    date: p.data.date.toISOString(),
+                                }))}
+                                title="Latest Blog Posts"
+                                headingId="latest-blog-posts"
+                            />
+                        </div>
+                    )
+            }
+
+            {
+                currentPluginCategories?.length > 0 && (
+                    <SimilarPlugins
+                        {allPlugins}
+                        pluginsData={pluginsInformation.byPlugin}
+                        categories={currentPluginCategories}
+                        {pluginName}
                     />
                 )
             }
         </article>
-
-        {
-            pluginType === undefined && currentPluginVideos?.length > 0 && (
-                <PluginVideos videos={currentPluginVideos} />
-            )
-        }
-
-        <RelatedBlueprints
-            pluginName={pluginName}
-            pluginWrapper={rootPlugin}
-            currentSubgroupPlugin={currentSubgroupPlugin}
-            subGroupName={currentSubgroupPlugin
-                ? slugify(subGroupName(currentSubgroupPlugin))
-                : subGroup}
-            pluginType={pluginType}
-            customId={blueprintsSectionHeading?.id}
+        <NavToc
+            links={pageWithToc.body.toc?.links}
+            editLink={pageWithToc.editLink}
+            extension={pageWithToc.extension}
+            stem={pageWithToc.stem}
+            version={githubVersions}
+            releasesUrl={githubReleasesUrl}
+            categories={currentPluginCategories}
+            metadata={currentPluginMetadata}
+            capitalize
+            isPluginPage
+            class="right-sidebar"
         />
-
-        {
-            pluginType === undefined &&
-                subGroup === undefined &&
-                relatedBlogs &&
-                relatedBlogs.length > 0 && (
-                    <div class="related-blogs">
-                        <BlogList
-                            posts={relatedBlogs.map((p) => ({
-                                ...p.data,
-                                path: `/blogs/${p.id}`,
-                                date: p.data.date.toISOString(),
-                            }))}
-                            title="Latest Blog Posts"
-                            headingId="latest-blog-posts"
-                        />
-                    </div>
-                )
-        }
-
-        {
-            currentPluginCategories?.length > 0 && (
-                <SimilarPlugins
-                    {allPlugins}
-                    pluginsData={pluginsInformation.byPlugin}
-                    categories={currentPluginCategories}
-                    {pluginName}
-                />
-            )
-        }
     </div>
-    <NavToc
-        links={pageWithToc.body.toc?.links}
-        editLink={pageWithToc.editLink}
-        extension={pageWithToc.extension}
-        stem={pageWithToc.stem}
-        version={githubVersions}
-        releasesUrl={githubReleasesUrl}
-        categories={currentPluginCategories}
-        metadata={currentPluginMetadata}
-        capitalize
-        isPluginPage
-        class="right-sidebar"
-    />
 </Layout>
 
 <style lang="scss">
@@ -761,6 +763,56 @@ if (!pluginType && !subGroup) {
         padding: 0;
         display: flex;
         flex-direction: column;
+
+        .bd-content {
+            margin: 0 auto;
+            padding: 2rem 0;
+            @include media-breakpoint-up(lg) {
+                max-width: 100%;
+            }
+
+            :global(.gradient-overlay),
+            :global(.more-btn) {
+                background: linear-gradient(
+                    transparent,
+                    var(--ks-background-body)
+                );
+            }
+
+            :global(div.description) {
+                border-color: var(--ks-border-primary) !important;
+                margin: 0 -2rem !important;
+                padding: 2rem !important;
+            }
+
+            :global(.element-card),
+            :global(.plugin) {
+                background-color: var(--ks-background-primary) !important;
+                border-color: var(--ks-border-primary) !important;
+                box-shadow: none !important;
+                &:hover {
+                    border-color: var(--ks-border-active) !important;
+                }
+                :global(h6) {
+                    color: var(--ks-content-primary);
+                }
+                :global(.plugin-info) {
+                    background-color: transparent;
+                    border: $block-border;
+                    :global(.plugin-class) {
+                        color: var(--ks-content-link) !important;
+                    }
+                }
+                :global(.description) {
+                    text-transform: none;
+                }
+            }
+
+            :global(code) {
+                border: none !important;
+                background-color: transparent !important;
+            }
+        }
 
         @include media-breakpoint-up(lg) {
             display: grid;

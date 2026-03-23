@@ -248,7 +248,7 @@ tasks:
     message: Hello there! I received {{ trigger.body }} from Azure EventHubs!
 triggers:
   - id: readFromEventHubs
-    type: "io.kestra.plugin.azure.eventhubs.RealtimeTrigger"
+    type: io.kestra.plugin.azure.eventhubs.RealtimeTrigger
     eventHubName: kestra
     namespace: kestra-namespace
     connectionString: "{{ secret('EVENTHUBS_CONNECTION') }}"

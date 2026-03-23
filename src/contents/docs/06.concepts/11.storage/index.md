@@ -319,8 +319,8 @@ It can be used at the end of a flow to purge all its generated files.
 
 ```yaml
 tasks:
-  - id: "purge-execution"
-    type: "io.kestra.plugin.core.storage.PurgeExecution"
+  - id: purge-execution
+    type: io.kestra.plugin.core.storage.PurgeExecution
 ```
 
 The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
@@ -332,8 +332,8 @@ id: purge
 namespace: company.team
 
 tasks:
-  - id: "purge"
-    type: "io.kestra.plugin.core.storage.Purge"
+  - id: purge
+    type: io.kestra.plugin.core.storage.Purge
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
 
 triggers:

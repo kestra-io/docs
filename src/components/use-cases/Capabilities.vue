@@ -121,30 +121,6 @@
             imageAlt: "Compliance Audits",
             pageHref: "/use-cases/disaster-recovery",
         },
-        {
-            title: "Orchestrate your Python Scripts",
-            description:
-                "Dive deeper to discover how Kestra optimizes Python script execution across diverse environments.",
-            imageSource: "/landing/features/language/card-pages/python-card.svg",
-            imageAlt: "Python Scripts",
-            pageHref: "/features/code-in-any-language/python",
-        },
-        {
-            title: "Orchestrate your R Scripts",
-            description:
-                "Discover Kestra's powerful orchestration capabilities for R scripts, simplifying complex data analytics.",
-            imageSource: "/landing/features/language/card-pages/r-card.svg",
-            imageAlt: "R Scripts",
-            pageHref: "/features/code-in-any-language/r",
-        },
-        {
-            title: "Orchestrate your Julia Scripts",
-            description:
-                "Learn about Kestra’s support for Julia, optimizing high-performance numerical analysis and computational projects.",
-            imageSource: "/landing/features/language/card-pages/julia-card.svg",
-            imageAlt: "Julia Scripts",
-            pageHref: "/features/code-in-any-language/julia",
-        },
     ]
 
     const filteredCapabilities = computed(() => {

@@ -11,13 +11,12 @@ Start Kestra with a PostgreSQL database backend by using a Docker Compose file.
   <iframe src="https://www.youtube.com/embed/SGL8ywf3OJQ?si=Ww-JsVKvceR_n08j" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Deploy Kestra with Docker Compose and PostgreSQL
+This guide shows how to start Kestra with Docker Compose and PostgreSQL for a local or server deployment.
 
----
+## Prerequisites
 
-The quickest way to a production-ready, lightweight Kestra installation is to leverage Docker and Docker Compose. This guide helps you get started with Kestra using Docker.
-
-Make sure you have [Docker](https://docs.docker.com/compose/install) installed before you begin.
+- Install [Docker](https://docs.docker.com/compose/install/) before you begin.
+- Make sure Docker Compose is available in your Docker installation.
 
 ## Download the Docker Compose file
 
@@ -61,7 +60,7 @@ Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if y
 
 The command from the previous section starts a standalone server, with all architectural components running in one JVM.
 
-The [configuration](../../configuration/01.configuration-basics/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker Compose file or pass it as a Docker CLI argument.
+The [configuration](../../configuration/01.configuration-basics/index.md) lives in the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update that environment variable inside the Docker Compose file or pass it as a Docker CLI argument.
 
 :::alert{type="info"}
 If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../10.administrator-guide/16.troubleshooting/index.md).
@@ -71,7 +70,7 @@ For running Kestra in Docker Compose with each server component as a separate se
 
 ### Use a configuration file
 
-If you want to use a configuration file instead of the `KESTRA_CONFIGURATION` environment variable to configure Kestra, you can update the default `docker-compose.yml`.
+If you want to use a configuration file instead of the `KESTRA_CONFIGURATION` environment variable, update the default `docker-compose.yml`.
 
 First, create a configuration file containing the `KESTRA_CONFIGURATION` environment variable defined in the `docker-compose.yml` file. You can name it `application.yaml`.
 
@@ -101,13 +100,13 @@ Next, update the `kestra` service in the `docker-compose.yml` file to mount this
 Check out all of our available [Docker image tags](./../02.docker/index.md#docker-image-tags) to see which one is best for your use case.
 :::
 
-### Networking in Docker Compose
+### Configure networking in Docker Compose
 
-The [default docker-compose](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) file doesn't configure networking for the Kestra containers. This means that you won't be able to access any services exposed via `localhost` on your local machine (e.g., another Docker container with a mapped port). Your machine and the Docker container operate on different networks. To use a locally exposed service from Kestra container, you can use the `host.docker.internal` hostname or `172.17.0.1`. The  `host.docker.internal` address allows you to reach your host machine's services from Kestra's container.
+The [default Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) does not configure networking for the Kestra containers. This means you cannot access services exposed via `localhost` on your local machine, such as another Docker container with a mapped port. Your machine and the Docker container operate on different networks. To use a locally exposed service from the Kestra container, use the `host.docker.internal` hostname or `172.17.0.1`. The `host.docker.internal` address lets you reach your host machine's services from the container.
 
-Alternatively, you can leverage Docker network. By default, your Kestra container is placed in a `default` network. You can add your custom services to the `docker-compose.yml` file provided by Kestra and use the services' alias (keys from `services`) to reach them.
+Alternatively, you can use a Docker network. By default, your Kestra container is placed in a `default` network. You can add your custom services to the `docker-compose.yml` file provided by Kestra and use the service aliases, which are the keys in `services`, to reach them.
 
-A better approach may be to create a new network (e.g., `kestra_net`) and add your services to it. Then, you can add this network to the `networks` section of the `kestra` service. With this configuration, you have access via `localhost` to all your exposed ports.
+A better approach may be to create a new network such as `kestra_net` and add your services to it. Then add that network to the `networks` section of the `kestra` service. With this configuration, you can access your exposed ports through `localhost`.
 
 The example below shows how you can add `iceberg-rest`, `minio`, and `mc` (i.e., MinIO client) to your Kestra Docker Compose file.
 
@@ -244,7 +243,7 @@ services:
 ```
 :::
 
-Finally, you can also use the `host` network mode for the `kestra` service. This makes your container use your host network, and you are then able to reach all your exposed ports. This means you have to change the `services.kestra.environment.KESTRA_CONFIGURATION.datasources.postgres.url` to `jdbc:postgresql://localhost:5432/kestra`. This is the easiest way reach all ports, but it can be a security risk.
+Finally, you can use `host` network mode for the `kestra` service. This makes the container use your host network, so it can reach all exposed ports. In that case, change `services.kestra.environment.KESTRA_CONFIGURATION.datasources.postgres.url` to `jdbc:postgresql://localhost:5432/kestra`. This is the easiest way to reach all ports, but it can be a security risk.
 
 See the example below using `network_mode: host`.
 

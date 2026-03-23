@@ -32,8 +32,8 @@ export function prunePluginsForCards(
             categories: info.categories ?? p.categories,
             description: (p.subGroup?.startsWith(p.group) ? info.description : groupInfo?.description) ?? p.description,
             className: info.className,
-            elementCounts: info.elementCounts ?? groupInfo?.elementCounts,
-            blueprints: info.blueprints ?? groupInfo?.blueprints,
+            elementCounts: info.elementCounts,
+            blueprints: info.blueprints,
             isEnterprise: p.group?.includes('.ee.') ?? false,
         }
     })
