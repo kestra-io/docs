@@ -1,4 +1,4 @@
-# Kestra
+# Kestra Product Documentation
 
 > Kestra is an open-source orchestration platform for building, scheduling, and running business-critical workflows. It combines declarative YAML flows, event-driven and scheduled automation, API-first operations, and a large plugin ecosystem for data, infrastructure, and application workflows.
 
