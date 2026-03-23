@@ -106,11 +106,31 @@ const githubReleaseRepo = (() => {
     }
 })()
 
-const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
+// Batch 1: fetch github releases, artifacts, and all plugins in parallel
+const [
+    githubVersions,
+    artifactsData,
+    allPlugins,
+    allPluginMetadata,
+    pluginsInformation,
+] = await Promise.all([
+    retrieveRepoReleases(githubReleaseRepo),
+    !githubReleaseRepo.includes("plugin-ee")
+        ? $fetchApi("/plugins/artifacts").catch((e) => {
+              console.error("Artifacts fetch failed", e)
+              return {}
+          })
+        : Promise.resolve({}),
+    $fetchApi<Plugin[]>(`/plugins/subgroups`),
+    $fetchApi<PluginMetadata[]>(`/plugins/metadata`),
+    $fetchApi(`/plugins/pluginsInformation`),
+])
 
 if (!githubReleaseRepo.includes("plugin-ee")) {
     try {
-        const { artifacts = {} } = await $fetchApi("/plugins/artifacts")
+        const { artifacts = {} } = artifactsData as {
+            artifacts?: Record<string, any[]>
+        }
         const normalizeRepoUrl = (url?: string) => {
             if (!url) return undefined
             return url
@@ -131,15 +151,13 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
             )?.minCoreCompatibilityVersion
         })
     } catch (e) {
-        console.error("Artifacts fetch failed", e)
+        console.error("Artifacts annotation failed", e)
     }
 }
 
 const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
-
-const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
-const navigation = generateNavigationFromSubgroups(pluginsData)
-const aliasMapping = getAliasMapping(pluginsData)
+const navigation = generateNavigationFromSubgroups(allPlugins)
+const aliasMapping = getAliasMapping(allPlugins)
 
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
@@ -170,10 +188,14 @@ try {
     // do nothing if plugin not found
 }
 
-const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
-const pluginsInformation = await $fetchApi(`/plugins/pluginsInformation`)
+// Batch 2: fetch remaining data in parallel
+const [subgroups, { countByPlugins: blueprintCounts }] = await Promise.all([
+    $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`),
+    $fetchApi<{ countByPlugins: Record<string, number> }>(
+        `/blueprints/countByPlugins`,
+    ),
+])
 
-const subgroups = await $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`)
 const sidebarPluginData = generateSidebarPluginData(
     subgroups,
     allPluginMetadata,
@@ -278,12 +300,6 @@ const { currentPageIcon, subGroupsIcons } = await getIcon(
     page?.body.group,
     subGroupWrapper?.subGroup,
 )
-
-const allPlugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
-
-const { countByPlugins: blueprintCounts } = await $fetchApi<{
-    countByPlugins: Record<string, number>
-}>(`/blueprints/countByPlugins`)
 
 const blogs = await getCollection("blogs")
 
