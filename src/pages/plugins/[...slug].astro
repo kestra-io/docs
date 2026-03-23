@@ -12,6 +12,7 @@ import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
 import { $fetchApi } from "~/utils/fetch"
+import { API_URL } from "astro:env/client"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
     filterPluginsWithoutDeprecated,
@@ -106,6 +107,8 @@ const githubReleaseRepo = (() => {
     }
 })()
 
+const isEePlugin = githubReleaseRepo.includes("plugin-ee")
+
 // Batch 1: fetch github releases, artifacts, and all plugins in parallel
 const [
     githubVersions,
@@ -114,8 +117,10 @@ const [
     allPluginMetadata,
     pluginsInformation,
 ] = await Promise.all([
-    retrieveRepoReleases(githubReleaseRepo),
-    !githubReleaseRepo.includes("plugin-ee")
+    isEePlugin
+        ? Promise.resolve({ versions: [] as any[] })
+        : retrieveRepoReleases(githubReleaseRepo),
+    !isEePlugin
         ? $fetchApi("/plugins/artifacts").catch((e) => {
               console.error("Artifacts fetch failed", e)
               return {}
@@ -126,7 +131,23 @@ const [
     $fetchApi(`/plugins/pluginsInformation`),
 ])
 
-if (!githubReleaseRepo.includes("plugin-ee")) {
+if (isEePlugin) {
+    try {
+        const eeData = await $fetchApi<{
+            results: { version: string; kestraVersion: string; releaseDate: string | null }[]
+            total: number
+        }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
+
+        githubVersions.versions = eeData.results.map((r) => ({
+            version: r.version,
+            publishedAt: r.releaseDate,
+            minCoreCompatibilityVersion: r.kestraVersion,
+            releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
+        }))
+    } catch (e) {
+        console.error("EE releases fetch failed", e)
+    }
+} else {
     try {
         const { artifacts = {} } = artifactsData as {
             artifacts?: Record<string, any[]>
@@ -155,7 +176,9 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
     }
 }
 
-const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
+const githubReleasesUrl = isEePlugin
+    ? null
+    : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 
