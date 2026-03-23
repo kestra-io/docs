@@ -90,7 +90,7 @@ tasks:
 
   - id: check_existing
     type: io.kestra.plugin.core.http.Request
-    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?q=labels.system.correlationId:{{ vars.idem_key }}&state[]=SUCCESS&size=1"
+    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?labels=system.correlationId:{{ vars.idem_key }}&state=SUCCESS&size=1"
     method: GET
     headers:
       Authorization: "Bearer {{ secret('KESTRA_API_TOKEN') }}"
@@ -129,7 +129,7 @@ tasks:
 
   - id: check_existing
     type: io.kestra.plugin.core.http.Request
-    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?q=labels.system.correlationId:{{ vars.idem_key }}&state[]=SUCCESS&size=1"
+    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?labels=system.correlationId:{{ vars.idem_key }}&state=SUCCESS&size=1"
     method: GET
     headers:
       Authorization: "Bearer {{ secret('KESTRA_API_TOKEN') }}"
@@ -155,7 +155,7 @@ triggers:
 ## Operate with correlation IDs
 
 - **UI filtering:** In Executions, add the label filter `system.correlationId:your-key` to view the entire lineage.
-- **API search:** Use the same `q=labels.system.correlationId:{value}` query parameter in the Executions search API to audit or programmatically detect duplicates.
+- **API search:** Use `labels=system.correlationId:{value}&state=SUCCESS` as query parameters in the Executions search API to audit or programmatically detect duplicates.
 - **Subflows:** Because the value propagates automatically, downstream executions share the same `system.correlationId` without any extra configuration.
 
 ::alert{type="warning"}
