@@ -108,7 +108,7 @@ tasks:
         message: "First time for {{ vars.idem_key }}, proceed"
 ```
 
-Store your tenant ID and API token as a [KV pair](/docs/concepts/kv-store) and [Secret](/docs/concepts/secret) respectively so the flow can reference them without hardcoding.
+Store your tenant ID and API token as a [KV pair](../../06.concepts/05.kv-store/index.md) and [Secret](../../06.concepts/04.secret/index.md) respectively so the flow can reference them without hardcoding.
 
 ## Example: webhook retries
 
