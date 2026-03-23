@@ -1,8 +1,7 @@
 ---
-import { fetchPluginIcon } from "~/utils/pluginIcon"
 const { cls } = Astro.props
 
-const IconStr = await fetchPluginIcon(cls)
+const IconStr = await (await fetch(`/icons/${cls}.svg`)).text()
 ---
 
 <div
