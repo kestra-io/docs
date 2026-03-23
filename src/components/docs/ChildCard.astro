@@ -63,7 +63,7 @@ const children = await Promise.all(
                     : "")
 
             return {
-                title: doc.data.title,
+                title: doc.data.sidebarTitle ?? doc.data.title,
                 description,
                 path: `/docs/${doc.id}`,
                 release: doc.data.release,
