@@ -109,6 +109,20 @@ kestra:
 
 This creates tags such as `label_country` and uses `__none__` when a configured label key is missing, which keeps the metric tag set stable.
 
+To collect metrics from other service instances and re-expose them on the webserver's monitoring endpoint, use `sharedServiceInstanceMetrics`. Each key is a service type (`EXECUTOR`, `INDEXER`, `SCHEDULER`, `WEBSERVER`, `WORKER`) and each value is a list of fully-qualified metric names:
+
+```yaml
+kestra:
+  metrics:
+    sharedServiceInstanceMetrics:
+      WORKER:
+        - kestra.worker.job.pending
+        - kestra.worker.job.thread
+        - kestra.worker.job.running
+```
+
+See [Service Instance Metrics](../../10.administrator-guide/service-instance-metrics/index.md) for details.
+
 For traces, metrics, and logs exported through OpenTelemetry, use the dedicated [OpenTelemetry guide](../../10.administrator-guide/open-telemetry/index.md).
 
 ## Network and HTTP settings
