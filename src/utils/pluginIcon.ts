@@ -26,13 +26,13 @@ export async function fetchPluginIconCached(
     const kv = runtime.env.ICON_CACHE as KVNamespace
     const cacheKey = `icon:${cls}`
 
-    const cached = await kv.get(cacheKey)
+    const cached = await kv?.get(cacheKey)
     if (cached) return cached
 
     const result = await fetchPluginIcon(cls)
 
     // Store with 24h TTL (in seconds)
-    await kv.put(cacheKey, result, { expirationTtl: CACHE_TTL })
+    await kv?.put(cacheKey, result, { expirationTtl: CACHE_TTL })
 
     return result
 }
