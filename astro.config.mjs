@@ -7,6 +7,7 @@ import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
 import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
+import ecConfig from "./ec.config.mjs"
 
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
@@ -43,7 +44,7 @@ export default defineConfig({
             appEntrypoint: "./src/vue-setup.ts",
             devtools: { launchEditor: "idea" },
         }),
-        expressiveCode(),
+        expressiveCode(ecConfig),
         mdx(),
         icon(),
     ],
