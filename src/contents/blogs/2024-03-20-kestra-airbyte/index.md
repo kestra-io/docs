@@ -97,8 +97,8 @@ Now, create a flow on the Kestra UI. We will be using the [Sync task](/plugins/t
 id: airbyte-sync
 namespace: company.team
 tasks:
-  - id: "sync"
-    type: "io.kestra.plugin.airbyte.connections.Sync"
+  - id: sync
+    type: io.kestra.plugin.airbyte.connections.Sync
     url: "http://<hostname>:8000"
     connectionId: "<conenction_id>"
     username: airbyte
@@ -117,8 +117,8 @@ The flow should look as follows:
 id: airbyte-check-status
 namespace: company.team
 tasks:
-  - id: "check_status"
-    type: "io.kestra.plugin.airbyte.connections.CheckStatus"
+  - id: check_status
+    type: io.kestra.plugin.airbyte.connections.CheckStatus
     url: http://<hostname>:8080
     jobId: 2
     username: airbyte

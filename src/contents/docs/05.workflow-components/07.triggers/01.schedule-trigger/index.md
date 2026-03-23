@@ -12,7 +12,7 @@ Schedule flows using cron expressions.
 The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Schedule"
+type: io.kestra.plugin.core.trigger.Schedule
 ```
 
 Kestra can trigger flows on a defined schedule. If you need to wait for another system to be ready and no event mechanism is available, you can configure one or more time-based schedules for your flow.
