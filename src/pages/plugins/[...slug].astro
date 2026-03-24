@@ -28,7 +28,7 @@ import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import PluginsSubgroupIndex from "~/components/plugins/PluginsSubgroupIndex.astro"
 import PluginPageContent from "~/components/plugins/PluginPageContent.astro"
-import PluginsNavToc from "~/components/plugins/PluginsNavToc.astro"
+import PluginsNavToc from "~/components/plugins/PluginsNavToc.vue"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -107,7 +107,6 @@ const [
 ])
 
 const navigation = generateNavigationFromSubgroups(allPlugins)
-const aliasMapping = getAliasMapping(allPlugins)
 
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
@@ -126,6 +125,7 @@ const isSubgroupIndex = pluginType === undefined
 
 // try to redirect if alias found
 try {
+    const aliasMapping = getAliasMapping(allPlugins)
     const mappedUrl = redirectAlias(
         aliasMapping,
         pathname,
@@ -520,6 +520,7 @@ const ogImage =
             {currentPluginCategories}
             {currentPluginMetadata}
             {currentPluginVideos}
+            client:visible
         />
     </div>
 </Layout>
