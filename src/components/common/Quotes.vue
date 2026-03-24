@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
+import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
 
 defineProps<{
     quotes: {
@@ -45,7 +47,7 @@ const activeQuote = ref(0)
         </div>
         <div v-if="quotes[activeQuote].kpis" class="kpis">
             <div v-for="kpi in quotes[activeQuote].kpis" :key="kpi.name" class="kpi">
-                <strong>{{ kpi.value }}</strong>
+                <h1>{{ kpi.value }}</h1>
                 <span>{{ kpi.name }}</span>
             </div>
         </div>
@@ -53,8 +55,12 @@ const activeQuote = ref(0)
             <a v-if="quotes[activeQuote].storyLink" :href="quotes[activeQuote].storyLink" target="_blank" rel="noopener noreferrer">
                 Read the Story
             </a>
-            <button v-if="quotes.length > 1" @click="() => { if(activeQuote > 0) {activeQuote--} }">&lt;</button>
-            <button v-if="quotes.length > 1" @click="() => { if(activeQuote < quotes.length - 1) {activeQuote++} }">&gt;</button>
+            <button v-if="quotes.length > 1" @click="() => { if(activeQuote > 0) {activeQuote--} }">
+                <ChevronLeft />
+            </button>
+            <button v-if="quotes.length > 1" @click="() => { if(activeQuote < quotes.length - 1) {activeQuote++} }">
+                <ChevronRight />
+            </button>
         </div>
     </div>
 </template>
@@ -62,7 +68,10 @@ const activeQuote = ref(0)
 <style lang="scss" scoped>
 
 .wrapper {
-    background: var(--ks-background-primary) linear-gradient(var(--ks-background-purple-light), var(--ks-background-purple-light));
+    background: linear-gradient(
+        var(--ks-background-purple-light),
+        var(--ks-background-purple-light)),
+        var(--ks-background-primary);
     color: var(--ks-content-primary);
 
     .tabs {
@@ -207,12 +216,8 @@ const activeQuote = ref(0)
             align-items: center;
             flex: 1;
 
-            strong {
-                font-size: 1.5rem;
-            }
-
             span {
-                font-size: 0.7rem;
+                font-size: $font-size-md;
                 color: var(--ks-content-secondary);
             }
         }
@@ -223,17 +228,20 @@ const activeQuote = ref(0)
         justify-content: end;
         gap: .5rem;
         align-items: center;
-        font-size: .8rem;
         padding: 1rem;
 
         a,
         button {
-            color: var(--ks-content-primary);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            height: 32px;
+            border-radius: 4px;
             border: 1px solid var(--ks-border-primary-inverse);
-            border-radius: 2px;
+            padding: 8px 16px;
+            color: var(--ks-content-primary);
             text-decoration: none;
-            font-size: .5rem;
-            padding: .15rem .6rem;
+            background: none;
 
             &:hover {
                 background: var(--ks-background-purple-hover);
@@ -241,12 +249,20 @@ const activeQuote = ref(0)
         }
 
         a {
+            width: fit-content;
             font-weight: bold;
+            font-size: $font-size-xs;
         }
 
         button {
+            width: 44px;
             cursor: pointer;
-            background: none;
+
+            :deep(svg) {
+                bottom: 0;
+                font-size: 1rem;
+                left: -2px;
+            }
 
             &:disabled {
                 color: var(--ks-content-secondary);
