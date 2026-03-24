@@ -1,4 +1,4 @@
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 
 function colorFixedB64Icon(b64Icon: string) {
     return Buffer.from(
@@ -23,8 +23,8 @@ export async function getIcon(
     group?: string,
     subGroup?: string,
 ) {
-    const originalIcons = await $fetchApi(`/plugins/${pluginName}/icons/subgroups`)
-    const elementIcons = await $fetchApi(`/plugins/${pluginName}/icons`)
+    const originalIcons = await $fetchApiCached(`/plugins/${pluginName}/icons/subgroups`)
+    const elementIcons = await $fetchApiCached(`/plugins/${pluginName}/icons`)
 
     const originalIconsAsString = getPluginIconsAsString(originalIcons)
     const elementIconsAsString = getPluginIconsAsString(elementIcons)

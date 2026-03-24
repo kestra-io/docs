@@ -1,11 +1,11 @@
 ---
 import { Icon } from "astro-icon/components"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { type Plugin } from "@kestra-io/ui-libs"
 import { PLANS, getSections, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
 
-const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 const SECTIONS = getSections(totalPlugins)
 ---

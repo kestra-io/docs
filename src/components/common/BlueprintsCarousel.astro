@@ -1,11 +1,11 @@
 ---
 import Carousel from "~/components/common/Carousel.vue"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 
 const { blueprints } = Astro.props
 
-const tags = await $fetchApi<BlueprintTag[]>("/blueprints/versions/latest/tags")
+const tags = await $fetchApiCached<BlueprintTag[]>("/blueprints/versions/latest/tags")
 ---
 
 <Carousel client:load>

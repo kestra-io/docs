@@ -1,4 +1,4 @@
-import { $fetchNoCache } from "./fetch"
+import { $fetch } from "./fetch"
 import { ASHBY_APIKEY } from "astro:env/server"
 
 const headers = {
@@ -8,7 +8,7 @@ const headers = {
 }
 
 export const fetchDepartment = async (): Promise<Department[]> => {
-    return $fetchNoCache<{ results: Department[] }>(
+    return $fetch<{ results: Department[] }>(
         `https://api.ashbyhq.com/department.list`,
         {
             method: "POST",
@@ -20,7 +20,7 @@ export const fetchDepartment = async (): Promise<Department[]> => {
 export const fetchJobs = async (): Promise<AshbyJob[]> => {
     const departments = await fetchDepartment();
 
-    const jobsList = await $fetchNoCache<{ results: AshbyJob[] }>(
+    const jobsList = await $fetch<{ results: AshbyJob[] }>(
         `https://api.ashbyhq.com/job.list`,
         {
             method: "POST",
@@ -52,7 +52,7 @@ export const fetchJobs = async (): Promise<AshbyJob[]> => {
 }
 
 export const fetchJob = async (jobPostingId: string): Promise<AshbyJobPosting> => {
-    const job = await $fetchNoCache<{ results: AshbyJobPosting }>(
+    const job = await $fetch<{ results: AshbyJobPosting }>(
         `https://api.ashbyhq.com/jobPosting.info`,
         {
             method: "POST",
