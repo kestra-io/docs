@@ -106,6 +106,13 @@ const githubReleaseRepo = (() => {
     }
 })()
 
+const cachingConfig: RequestInit = {
+    cf: {
+        cacheTtl: 60 * 60, // 1 hour
+        cacheEverything: true,
+    },
+}
+
 // Batch 1: fetch github releases, artifacts, and all plugins in parallel
 const [
     githubVersions,
@@ -116,14 +123,14 @@ const [
 ] = await Promise.all([
     retrieveRepoReleases(githubReleaseRepo),
     !githubReleaseRepo.includes("plugin-ee")
-        ? $fetchApi("/plugins/artifacts").catch((e) => {
+        ? $fetchApi("/plugins/artifacts", cachingConfig).catch((e) => {
               console.error("Artifacts fetch failed", e)
               return {}
           })
         : Promise.resolve({}),
-    $fetchApi<Plugin[]>(`/plugins/subgroups`),
-    $fetchApi<PluginMetadata[]>(`/plugins/metadata`),
-    $fetchApi(`/plugins/pluginsInformation`),
+    $fetchApi<Plugin[]>(`/plugins/subgroups`, cachingConfig),
+    $fetchApi<PluginMetadata[]>(`/plugins/metadata`, cachingConfig),
+    $fetchApi(`/plugins/pluginsInformation`, cachingConfig),
 ])
 
 if (!githubReleaseRepo.includes("plugin-ee")) {
@@ -196,10 +203,14 @@ const [
     originalIcons,
     elementIcons,
 ] = await Promise.all([
-    $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`),
+    $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`, cachingConfig),
     $fetchApi<{ countByPlugins: Record<string, number> }>(
         `/blueprints/countByPlugins`,
-    ),
+        cachingConfig,
+    ).catch((e) => {
+        console.error("Blueprint counts fetch failed", e)
+        return { countByPlugins: {} }
+    }),
     pluginType === undefined
         ? null
         : $fetchApi<{
