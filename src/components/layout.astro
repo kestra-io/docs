@@ -75,6 +75,10 @@ const randomAiQuestions = getRandomAiQuestions()
 const annonces = (await getCollection("annonces"))
     .map((a) => a.data)
     .filter((a) => a.id !== 0)
+const searchableBlogs = (await getCollection("blogs")).map((blog) => ({
+    title: blog.data.title,
+    url: `blogs/${blog.id}`,
+}))
 
 const hasAnnounce = annonces.length > 0
 ---
@@ -199,7 +203,11 @@ const hasAnnounce = annonces.length > 0
         class={hasAnnounce ? "has-annonces" : ""}
     >
         <Header client:load transition:persist />
-        <Search randomAiQuestions={randomAiQuestions} client:load />
+        <Search
+            randomAiQuestions={randomAiQuestions}
+            searchableBlogs={searchableBlogs}
+            client:load
+        />
         {
             hasAnnounce ? (
                 <Announce client:load transition:persist content={annonces} />

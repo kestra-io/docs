@@ -223,6 +223,10 @@
                 type: Array,
                 required: true,
             },
+            searchableBlogs: {
+                type: Array,
+                required: true,
+            },
         },
         data() {
             return {
@@ -306,7 +310,19 @@
                             this.selectedItem = this.searchResults[0]
                             this.loading = false
                         } else {
-                            this.resetData()
+                            const fallbackResults =
+                                this.selectedFacet === "BLOGS"
+                                    ? this.fallbackBlogResults(value)
+                                    : []
+
+                            if (fallbackResults.length) {
+                                this.searchResults = fallbackResults
+                                this.selectedIndex = 0
+                                this.selectedItem = this.searchResults[0]
+                                this.loading = false
+                            } else {
+                                this.resetData()
+                            }
                         }
 
                         if (response?.data.facets) {
@@ -322,6 +338,32 @@
                     .catch((e) => {
                         if (e.code !== "ERR_CANCELED") {
                             this.resetData()
+                        }
+                    })
+            },
+            fallbackBlogResults(value) {
+                const searchTerm = value?.trim()?.toLowerCase()
+                if (!searchTerm || !this.searchableBlogs?.length) {
+                    return []
+                }
+
+                return this.searchableBlogs
+                    .filter((blog) => blog.title?.toLowerCase().includes(searchTerm))
+                    .slice(0, 50)
+                    .map((blog) => {
+                        const title = blog.title || ""
+                        const index = title.toLowerCase().indexOf(searchTerm)
+                        const highlightTitle =
+                            index !== -1
+                                ? `${title.slice(0, index)}<mark>${title.slice(index, index + searchTerm.length)}</mark>${title.slice(index + searchTerm.length)}`
+                                : undefined
+
+                        return {
+                            url: blog.url,
+                            type: "BLOGS",
+                            title,
+                            highlights: [],
+                            highlightTitle,
                         }
                     })
             },
