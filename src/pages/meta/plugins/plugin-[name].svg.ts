@@ -1,14 +1,13 @@
 import { generate } from "~/utils/ogImage.ts"
-import { $fetch, $fetchApi } from "~/utils/fetch.ts"
+import { $fetchApiCached } from "~/utils/fetch.ts"
 import type { Plugin } from "@kestra-io/ui-libs"
-import { API_URL } from "astro:env/client"
 
 export const prerender = false
 
 export async function GET({ request, params }: { request: any; params: { name: string } }) {
     const name = params.name
-    const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
-    const metadata = await $fetch(`${API_URL}/plugins/plugin-${name}`)
+    const pluginsData = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
+    const metadata = await $fetchApiCached(`/plugins/plugin-${name}`)
     const plugin = pluginsData.filter((p) => p.name === "plugin-" + name)[0]
 
     const category = "Plugins"

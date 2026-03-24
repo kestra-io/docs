@@ -5,13 +5,13 @@ import Blueprints from "~/components/common/BlueprintsRender.astro"
 import Capabilities from "~/components/use-cases/Capabilities.vue"
 import HeaderBox from "~/components/common/HeaderBox.vue"
 import Cards from "~/components/use-cases/Cards.astro"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 
 const TITLE = "Simplify Your Data Engineering Challenges with Kestra"
 const DESCRIPTION =
     "Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
 
-const response = await $fetchApi<{ results: Blueprint[] }>(
+const response = await $fetchApiCached<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?page=1&size=20",
 )
 const blueprints = response.results

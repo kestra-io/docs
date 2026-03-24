@@ -1,5 +1,4 @@
 ---
-import { API_URL } from "astro:env/client"
 import { formatPluginName } from "~/utils/pluginUtils"
 
 import Layout from "~/components/layout.astro"
@@ -20,19 +19,16 @@ import Govern from "~/components/infrastructure/Govern.astro"
 import Operation from "~/components/infrastructure/Operation.astro"
 
 import infraUi from "~/assets/landing/infrastructure/infra-ui.png"
+import { $fetchApiCached } from "~/utils/fetch.ts"
 
 const title =
     "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
 const description =
     "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
 
-const { results: blueprints } = await fetch(
-    `${API_URL}/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
-).then((res) => res.json())
+const { results: blueprints } = await $fetchApiCached(`/blueprints/versions/latest?tags=infrastructure&page=1&size=20`)
 
-const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
-    (res) => res.json(),
-)
+const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`);
 
 const plugins = Object.entries(
     (await import.meta.glob("/src/contents/docs/icons/plugins/*.svg", {
