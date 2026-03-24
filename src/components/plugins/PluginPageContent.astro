@@ -1,0 +1,61 @@
+---
+import { $fetchApi } from "~/utils/fetch"
+import PluginsMDCRender from "./PluginsMDCRender.vue"
+import PluginsMDCRenderWrapper from "./PluginsMDCRenderWrapper.astro"
+import type { JSONSchema } from "@kestra-io/ui-libs"
+import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
+
+interface Props {
+    pluginType: string
+    splitRouteSlug: string[]
+}
+
+const { pluginType } = Astro.props
+
+const pageData = await $fetchApi<{
+    markdown: string
+    schema: JSONSchema & {
+        properties: {
+            $deprecated?: "true" | "false"
+        }
+    }
+}>(`/plugins/definitions/${pluginType}`).catch((e) => {
+    console.error("Plugin definition fetch failed", e)
+    return null
+})
+
+const page = (() => {
+    if (!pageData) {
+        return null
+    }
+    const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
+    const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
+
+    if (pageData.schema.properties.$deprecated === "true") {
+        return null
+    }
+
+    return {
+        name,
+        type: definitionType,
+        ...nuxtBlocksFromJsonSchema(pageData.schema),
+    }
+})()
+
+if (page === null) {
+    console.warn("Redirecting due to no content")
+
+    return Astro.redirect(
+        `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
+        301,
+    )
+}
+---
+
+<PluginsMDCRenderWrapper>
+    <PluginsMDCRender
+        schema={page?.body.jsonSchema ?? {}}
+        pluginType={pluginType}
+        client:idle
+    />
+</PluginsMDCRenderWrapper>

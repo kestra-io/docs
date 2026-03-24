@@ -2,12 +2,15 @@ import { API_URL } from "astro:env/client"
 
 const cacheObject: Record<string, any> = {}
 
-export async function $fetch<T = any>(url: string, init: RequestInit = {}): Promise<T> {
+export async function $fetch<T = any>(
+    url: string,
+    init: RequestInit = {},
+): Promise<T> {
     if (cacheObject[url]) {
         return cacheObject[url]
     }
 
-    const data = await $fetchNoCache(url, init);
+    const data = await $fetchNoCache(url, init)
 
     cacheObject[url] = data
     return data
@@ -32,12 +35,15 @@ export async function $fetchNoCache<T = any>(
         )
     }
 
-    const data = await response.json()
+    const data = await response.json<T>()
 
     return data
 }
 
-export async function $fetchApi<T = any>(url: string, init: RequestInit = {}): Promise<T> {
+export async function $fetchApi<T = any>(
+    url: string,
+    init: RequestInit = {},
+): Promise<T> {
     return $fetch<T>(`${API_URL}${url}`, init)
 }
 
