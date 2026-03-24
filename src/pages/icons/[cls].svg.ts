@@ -21,7 +21,7 @@ export async function GET({ params }: { params: { cls: string } }) {
     return new Response(modifiedSvg, {
         headers: {
             "Content-Type": "image/svg+xml",
-            "Cache-Control": "max-age=86400",
+            "Cache-Control": "public, max-age=86400",
         },
     })
 }
