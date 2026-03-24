@@ -122,19 +122,33 @@ const [
     allPlugins,
     allPluginMetadata,
     pluginsInformation,
+    subgroups,
+    { countByPlugins: blueprintCounts },
+    originalIcons,
+    elementIcons,
 ] = await Promise.all([
     isEePlugin
         ? Promise.resolve({ versions: [] as any[] })
         : retrieveRepoReleases(githubReleaseRepo),
-    !isEePlugin
-        ? $fetchApi("/plugins/artifacts", cachingConfig).catch((e) => {
+    isEePlugin
+        ? Promise.resolve({})
+        : $fetchApi("/plugins/artifacts", cachingConfig).catch((e) => {
               console.error("Artifacts fetch failed", e)
               return {}
-          })
-        : Promise.resolve({}),
+          }),
     $fetchApi<Plugin[]>(`/plugins/subgroups`, cachingConfig),
     $fetchApi<PluginMetadata[]>(`/plugins/metadata`, cachingConfig),
     $fetchApi(`/plugins/pluginsInformation`, cachingConfig),
+    $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`, cachingConfig),
+    $fetchApi<{ countByPlugins: Record<string, number> }>(
+        `/blueprints/countByPlugins`,
+        cachingConfig,
+    ).catch((e) => {
+        console.error("Blueprint counts fetch failed", e)
+        return { countByPlugins: {} as Record<string, number> }
+    }),
+    $fetchApi(`/plugins/${pluginName}/icons/subgroups`),
+    $fetchApi(`/plugins/${pluginName}/icons`),
 ])
 
 if (isEePlugin) {
@@ -207,6 +221,8 @@ const pluginType = (() => {
     }`
 })()
 
+const isSubgroupIndex = pluginType === undefined
+
 // try to redirect if alias found
 try {
     const mappedUrl = redirectAlias(
@@ -224,37 +240,19 @@ try {
 }
 
 // Batch 2: fetch remaining data in parallel
-const [
-    subgroups,
-    { countByPlugins: blueprintCounts },
-    pageData,
-    originalIcons,
-    elementIcons,
-] = await Promise.all([
-    $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`, cachingConfig),
-    $fetchApi<{ countByPlugins: Record<string, number> }>(
-        `/blueprints/countByPlugins`,
-        cachingConfig,
-    ).catch((e) => {
-        console.error("Blueprint counts fetch failed", e)
-        return { countByPlugins: {} as Record<string, number> }
-    }),
-    pluginType === undefined
-        ? null
-        : $fetchApi<{
-              markdown: string
-              schema: JSONSchema & {
-                  properties: {
-                      $deprecated?: "true" | "false"
-                  }
+const pageData = await (isSubgroupIndex
+    ? null
+    : $fetchApi<{
+          markdown: string
+          schema: JSONSchema & {
+              properties: {
+                  $deprecated?: "true" | "false"
               }
-          }>(`/plugins/definitions/${pluginType}`).catch((e) => {
-              console.error("Plugin definition fetch failed", e)
-              return null
-          }),
-    $fetchApi(`/plugins/${pluginName}/icons/subgroups`),
-    $fetchApi(`/plugins/${pluginName}/icons`),
-])
+          }
+      }>(`/plugins/definitions/${pluginType}`).catch((e) => {
+          console.error("Plugin definition fetch failed", e)
+          return null
+      }))
 
 const sidebarPluginData = generateSidebarPluginData(
     subgroups,
@@ -279,13 +277,14 @@ function makePagePluginDefinition() {
     }
 }
 
-const page: PluginPage | null =
-    pluginType === undefined ? sidebarPluginData : makePagePluginDefinition()
+const page: PluginPage | null = isSubgroupIndex
+    ? sidebarPluginData
+    : makePagePluginDefinition()
 
 const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
-    pluginType
-        ? (sidebarPluginData?.body?.plugins ?? [])
-        : (page?.body?.plugins ?? []),
+    isSubgroupIndex
+        ? (page?.body?.plugins ?? [])
+        : (sidebarPluginData?.body?.plugins ?? []),
 )
 
 const toElementKey = (title?: string): string | undefined => {
@@ -364,7 +363,7 @@ const rootPlugin = pluginsForDisplay?.find(
 )
 
 const currentSubgroupPlugin =
-    !subGroup || pluginType
+    !subGroup || !isSubgroupIndex
         ? undefined
         : pluginsForDisplay?.find((p) => {
               const subgroupLastSegment = p.subGroup?.split(".").pop()
@@ -425,11 +424,11 @@ const currentPageMetadata = (() => {
     return meta
 })()
 
-const headingTitle = pluginType
-    ? formatElementName(pluginType)
-    : ((rootPlugin
+const headingTitle = isSubgroupIndex
+    ? ((rootPlugin
           ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
           : undefined) ?? pluginName)
+    : formatElementName(pluginType)
 
 let combinedDescription = currentPageMetadata?.description
 const body = (currentPageMetadata as any)?.body
@@ -437,12 +436,12 @@ if (body && body !== combinedDescription) {
     combinedDescription += (combinedDescription ? "\n\n" : "") + body
 }
 
-const headingDescription = pluginType
-    ? page?.title
-    : (combinedDescription ??
+const headingDescription = isSubgroupIndex
+    ? (combinedDescription ??
       (subGroup === undefined
           ? (rootPlugin?.longDescription ?? combinedDescription)
           : (currentSubgroupPlugin?.longDescription ?? combinedDescription)))
+    : page?.title
 
 const pageNamesHeading = {
     ...pageNames,
@@ -525,7 +524,7 @@ function makeTOC() {
             return generateTocForPluginElements(currentSubgroupPlugin)
         }
 
-        if (!subGroup && !pluginType) {
+        if (!subGroup && isSubgroupIndex) {
             const subGroups =
                 pluginsWithoutDeprecated?.filter((p) => p.subGroup) ?? []
             return subGroups.length
@@ -554,14 +553,14 @@ function makeTOC() {
         return result
     })()
 
-    const baseTocLinks = pluginType
+    const baseTocLinks = !isSubgroupIndex
         ? (page?.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
           [])
         : page?.body?.toc
           ? []
           : pluginToc
 
-    const hasBlueprints = pluginType
+    const hasBlueprints = !isSubgroupIndex
         ? blueprintCounts?.[pluginType] > 0
         : subGroup
           ? subgroupBlueprintCounts?.[
@@ -571,7 +570,7 @@ function makeTOC() {
 
     const tocLinks = [
         ...baseTocLinks,
-        ...(pluginType === undefined && rootPlugin?.longDescription
+        ...(isSubgroupIndex && rootPlugin?.longDescription
             ? [
                   {
                       id: "how-to-use-this-plugin",
@@ -580,7 +579,7 @@ function makeTOC() {
                   },
               ]
             : []),
-        ...(pluginType === undefined && currentPluginVideos?.length > 0
+        ...(isSubgroupIndex && currentPluginVideos?.length > 0
             ? [{ id: "see-it-in-action", depth: 2, text: "See it in action" }]
             : []),
         ...(hasBlueprints &&
@@ -594,9 +593,7 @@ function makeTOC() {
                   },
               ]
             : []),
-        ...(pluginType === undefined &&
-        subGroup === undefined &&
-        relatedBlogs?.length > 0
+        ...(isSubgroupIndex && relatedBlogs?.length > 0
             ? [{ id: "latest-blog-posts", depth: 2, text: "Latest Blog Posts" }]
             : []),
         ...(currentPluginCategories?.length > 0
@@ -680,18 +677,17 @@ const elementTitle = (() =>
             .filter(([_, v]) => typeof v === "object" && Boolean(v?.title)),
     ))()
 
-let ogImage: string | null = null
-
-if (!pluginType && !subGroup) {
-    ogImage = `/meta/plugins/${pluginName}.svg`
-} else if (subGroup) {
-    const filterElement = subgroups.filter(
-        (r) => slugify(r.title) === subGroup,
-    )[0]
-    ogImage = `/meta/plugins/group-${filterElement?.subGroup}.svg`
-} else {
-    ogImage = `/meta/plugins/${pluginType}.svg`
-}
+const ogImage =
+    isSubgroupIndex && !subGroup
+        ? `/meta/plugins/${pluginName}.svg`
+        : subGroup
+          ? (() => {
+                const filterElement = subgroups.filter(
+                    (r) => slugify(r.title) === subGroup,
+                )[0]
+                return `/meta/plugins/group-${filterElement?.subGroup}.svg`
+            })()
+          : `/meta/plugins/${pluginType}.svg`
 ---
 
 <Layout title={headingTitle} description={headingDescription} image={ogImage}>
