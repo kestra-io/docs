@@ -3,6 +3,7 @@ import Layout from "~/components/layout.astro"
 import Car from "~/assets/use-cases/automotive/car.svg"
 import heroFront from "~/assets/use-cases/automotive/hero-front.svg"
 import Quadis from "~/assets/use-cases/automotive/quadis.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 import Link from "~/components/common/Link.astro"
 import Quotes from "~/components/common/Quotes.vue"
@@ -49,13 +50,11 @@ const ITEMS = [
     },
 ]
 
-// TODO: Quadis
-
 const quotes = [
     {
         quote: "We're convinced to have chosen the right tool. The support and communication are great, it's easy to adapt to any tool and for any people to understand",
         author: "Rubén Boniz Martinez - Senior Engineering Manager",
-        smallLogoSvg: Quadis,
+        smallLogoSvg: optimizeSvgIcon(Quadis, "quadis-logo"),
         kpis: [
             {
                 name: "Downtime",
