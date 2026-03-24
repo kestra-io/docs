@@ -140,9 +140,15 @@ const [
 if (isEePlugin) {
     try {
         const eeData = await $fetchApi<{
-            results: { version: string; kestraVersion: string; releaseDate: string | null }[]
+            results: {
+                version: string
+                kestraVersion: string
+                releaseDate: string | null
+            }[]
             total: number
-        }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
+        }>(
+            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
+        )
 
         githubVersions.versions = eeData.results.map((r) => ({
             version: r.version,
@@ -231,7 +237,7 @@ const [
         cachingConfig,
     ).catch((e) => {
         console.error("Blueprint counts fetch failed", e)
-        return { countByPlugins: {} }
+        return { countByPlugins: {} as Record<string, number> }
     }),
     pluginType === undefined
         ? null
