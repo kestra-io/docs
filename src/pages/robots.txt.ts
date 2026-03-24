@@ -12,8 +12,11 @@ Disallow: ${disabled ? "*" : "/slack"}
 ${disabled ? "" : `# Block the /blueprints pagination bug (critical - 501 errors)
 Disallow: /blueprints?*clid=*
 Disallow: /blueprints?*size=*
-# Block Nuxt build assets (301 redirects, no SEO value)
+# Block build assets 
 Disallow: /_nuxt/
+Disallow: /__nuxt_content/
+Disallow: /_astro/
+Disallow: /cdn-cgi/
 # Block tracking parameters
 Disallow: /*?q=
 Disallow: /*?search=
