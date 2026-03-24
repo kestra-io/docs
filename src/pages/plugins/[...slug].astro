@@ -32,6 +32,7 @@ import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import PluginsSubgroupIndex from "~/components/plugins/PluginsSubgroupIndex.astro"
 import PluginPageContent from "~/components/plugins/PluginPageContent.astro"
+import PluginsNavToc from "~/components/plugins/PluginsNavToc.astro"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -114,11 +115,12 @@ const [
     artifactsData,
     allPlugins,
     allPluginMetadata,
-    pluginsInformation,
     subgroups,
     { countByPlugins: blueprintCounts },
     originalIcons,
     elementIcons,
+    // for similar plugins, we want to display information that's similar
+    pluginsInformation,
 ] = await Promise.all([
     isEePlugin
         ? Promise.resolve({ versions: [] as any[] })
@@ -131,7 +133,6 @@ const [
           }),
     $fetchApi<Plugin[]>(`/plugins/subgroups`, cachingConfig),
     $fetchApi<PluginMetadata[]>(`/plugins/metadata`, cachingConfig),
-    $fetchApi(`/plugins/pluginsInformation`, cachingConfig),
     $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`, cachingConfig),
     $fetchApi<{ countByPlugins: Record<string, number> }>(
         `/blueprints/countByPlugins`,
@@ -142,6 +143,7 @@ const [
     }),
     $fetchApi(`/plugins/${pluginName}/icons/subgroups`, cachingConfig),
     $fetchApi(`/plugins/${pluginName}/icons`, cachingConfig),
+    $fetchApi(`/plugins/pluginsInformation`, cachingConfig),
 ])
 
 if (isEePlugin) {
@@ -196,7 +198,7 @@ if (isEePlugin) {
 }
 
 const githubReleasesUrl = isEePlugin
-    ? null
+    ? undefined
     : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
@@ -324,9 +326,7 @@ const relatedBlogs = blogs
  * This will be the root plugin.
  * Page title and description will be derived from it.
  */
-const rootPlugin = pluginsForDisplay?.find(
-    (p: Plugin) => p.subGroup === undefined,
-)
+const rootPlugin = pluginsForDisplay?.find((p) => p.subGroup === undefined)
 
 const currentSubgroupPlugin =
     !subGroup || !isSubgroupIndex
@@ -419,23 +419,6 @@ const pageNamesHeading = {
         getPluginTitle(rootPlugin!, metadataMap) ?? pluginName,
 }
 
-const generateTocForPluginElements = (wrapper: Plugin) =>
-    Object.entries(wrapper)
-        .filter(([key]) =>
-            isEntryAPluginElementPredicate(key, wrapper[key as keyof Plugin]),
-        )
-        .map(([key]) => {
-            const formattedElementType = key.replace(
-                /[A-Z]/g,
-                (match) => ` ${match}`,
-            )
-            return {
-                id: `section-${slugify(formattedElementType)}`,
-                depth: 2,
-                text: formatElementType(key),
-            }
-        })
-
 const currentPluginVideos = (() => {
     const meta = currentPluginMetadata
     if (!meta) return []
@@ -484,103 +467,6 @@ const currentPluginCategories = (() => {
           ? subgroupCats
           : (pluginCats ?? [])
 })()
-
-function makeTOC() {
-    if (!page) return []
-    const pluginToc = (() => {
-        if (!rootPlugin) return []
-
-        if (subGroup && currentSubgroupPlugin) {
-            return generateTocForPluginElements(currentSubgroupPlugin)
-        }
-
-        if (!subGroup && isSubgroupIndex) {
-            const subGroups =
-                pluginsWithoutDeprecated?.filter((p) => p.subGroup) ?? []
-            return subGroups.length
-                ? subGroups.map((sub) => ({
-                      id: slugify(subGroupName(sub)),
-                      depth: 2,
-                      text: subGroupName(sub),
-                  }))
-                : generateTocForPluginElements(rootPlugin)
-        }
-
-        return []
-    })()
-
-    const subgroupBlueprintCounts = (() => {
-        const result: Record<string, number> = {}
-
-        pluginsWithoutDeprecated?.forEach((subgroupWrapper) => {
-            const subgroupKey = subgroupWrapper.subGroup
-            if (subgroupKey !== undefined) {
-                const formattedKey = `${subgroupWrapper.group ?? subgroupWrapper.name}-${slugify(subGroupName(subgroupWrapper))}`
-                result[formattedKey] = blueprintCounts?.[subgroupKey] ?? 0
-            }
-        })
-
-        return result
-    })()
-
-    const baseTocLinks = isSubgroupIndex
-        ? page?.body?.toc
-            ? []
-            : pluginToc
-        : (page?.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
-          [])
-
-    const hasBlueprints = !isSubgroupIndex
-        ? blueprintCounts?.[pluginType] > 0
-        : subGroup
-          ? subgroupBlueprintCounts?.[
-                `${rootPlugin?.group ?? pluginName}-${subGroup}`
-            ] > 0
-          : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
-
-    const tocLinks = [
-        ...baseTocLinks,
-        ...(isSubgroupIndex && rootPlugin?.longDescription
-            ? [
-                  {
-                      id: "how-to-use-this-plugin",
-                      depth: 2,
-                      text: "How to use this plugin",
-                  },
-              ]
-            : []),
-        ...(isSubgroupIndex && currentPluginVideos?.length > 0
-            ? [{ id: "see-it-in-action", depth: 2, text: "See it in action" }]
-            : []),
-        ...(hasBlueprints &&
-        blueprintsSectionHeading?.id &&
-        blueprintsSectionHeading?.text
-            ? [
-                  {
-                      id: blueprintsSectionHeading.id,
-                      depth: 2,
-                      text: blueprintsSectionHeading.text,
-                  },
-              ]
-            : []),
-        ...(isSubgroupIndex && relatedBlogs?.length > 0
-            ? [{ id: "latest-blog-posts", depth: 2, text: "Latest Blog Posts" }]
-            : []),
-        ...(currentPluginCategories?.length > 0
-            ? [
-                  {
-                      id: "more-plugins-in-this-category",
-                      depth: 2,
-                      text: "More Plugins in this Category",
-                  },
-              ]
-            : []),
-    ]
-
-    return tocLinks
-}
-
-const tocLinks = makeTOC()
 
 // if no content to show, redirect to parent until /plugins
 if (
@@ -716,18 +602,24 @@ const ogImage =
                 )
             }
         </article>
-        <NavToc
-            links={tocLinks}
-            editLink={page?.editLink}
-            extension={page?.extension}
-            stem={page?.stem}
-            version={githubVersions}
-            releasesUrl={githubReleasesUrl}
-            categories={currentPluginCategories}
-            metadata={currentPluginMetadata}
-            capitalize
-            isPluginPage
-            class="right-sidebar"
+        <PluginsNavToc
+            pluginName={pluginName}
+            pluginType={pluginType}
+            page={page}
+            rootPlugin={rootPlugin}
+            subGroup={subGroup}
+            currentSubgroupPlugin={currentSubgroupPlugin}
+            pluginsWithoutDeprecated={pluginsWithoutDeprecated}
+            pluginType={pluginType}
+            blueprintsSectionHeading={blueprintsSectionHeading}
+            relatedBlogs={relatedBlogs}
+            blueprintCounts={blueprintCounts}
+            githubVersions={githubVersions}
+            githubReleasesUrl={githubReleasesUrl}
+            currentPluginCategories={currentPluginCategories}
+            currentPluginMetadata={currentPluginMetadata}
+            currentPluginVideos={currentPluginVideos}
+            server:defer
         />
     </div>
 </Layout>

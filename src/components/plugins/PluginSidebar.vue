@@ -100,7 +100,12 @@
     interface SimplePlugin {
         subGroup?: string
         title: string
-        [key: string]: PluginElement[] | string | undefined
+        [key: string]:
+            | PluginElement[]
+            | string
+            | string[]
+            | Record<string, any>
+            | undefined
     }
 
     const props = defineProps<{
