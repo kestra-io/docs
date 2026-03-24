@@ -9,45 +9,58 @@ import SeeHow from "~/components/common/SeeHow.astro"
 
 const { id } = Astro.params
 
-let pageData: Blueprint
+let data: [Blueprint, any, BlueprintTag[]]
 
 try {
-    pageData = await $fetchApi<Blueprint>(`/blueprints/${id}/versions/latest`)
+    data = await Promise.all([
+        $fetchApi<Blueprint>(`/blueprints/${id}/versions/latest`),
+        $fetchApi(`/blueprints/${id}/versions/latest/graph`),
+        $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`),
+    ])
 } catch (e) {
     return Astro.redirect("/404")
 }
 
-const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
-const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+const [pageData, graph, tags] = data
 
 let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
 
 if (pageData.tags && pageData.tags.length > 0) {
     const selectedTagIds = pageData.tags.slice(0, 2)
 
-    for (const tagId of selectedTagIds) {
-        const tag = tags.find((t) => t.id === tagId)
-        if (!tag) continue
+    const taggedBlueprints = await Promise.all(
+        selectedTagIds.map((tagId) => {
+            const tag = tags.find((t) => t.id === tagId)
+            if (!tag) return
 
-        const data = await $fetchApi<{ results: Blueprint[] }>(
-            `/blueprints/versions/latest?tags=${tagId}&size=10`,
-        )
+            return $fetchApi<{ results: Blueprint[] }>(
+                `/blueprints/versions/latest?tags=${tagId}&size=10`,
+            ).then((data) => ({
+                results: data.results,
+                tagName: tag.name,
+                tagId,
+            }))
+        }),
+    )
 
-        if (data && data.results.length > 0) {
-            const rowBlueprints = data.results
-                .filter((b) => b.id !== pageData.id)
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 6)
+    taggedBlueprints
+        .filter((t) => typeof t !== "undefined")
+        .forEach(({ results, tagName, tagId }) => {
+            if (results?.length) {
+                const rowBlueprints = results
+                    .filter((b) => b.id !== pageData.id)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 6)
 
-            if (rowBlueprints.length > 0) {
-                relatedRows.push({
-                    id: tagId,
-                    title: `More <span class="highlight">${tag.name}</span> Blueprints`,
-                    blueprints: rowBlueprints,
-                })
+                if (rowBlueprints.length > 0) {
+                    relatedRows.push({
+                        id: tagId,
+                        title: `More <span class="highlight">${tagName}</span> Blueprints`,
+                        blueprints: rowBlueprints,
+                    })
+                }
             }
-        }
-    }
+        })
 }
 
 const title = pageData.title
