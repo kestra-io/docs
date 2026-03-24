@@ -89,7 +89,7 @@ export const getSections = (totalPlugins: number): Section[] => [
                 values: ["cross", "check", "check", "check"],
                 description: {
                     text: "Pause and resume workflow executions with custom inputs",
-                    link: "/docs/how-to-guides/pause-resume",
+                    link: "/docs/use-cases/approval-processes#humantask-assign-specific-users-for-approval",
                 },
             },
         ],

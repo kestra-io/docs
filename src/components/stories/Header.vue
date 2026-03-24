@@ -83,7 +83,7 @@
             }
             .top {
                 width: 100%;
-                gap: 2rem;
+                gap: 4rem;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -126,6 +126,11 @@
                             font-size: 2.5rem;
                         }
                         margin: 0;
+                        display: -webkit-box;
+                        line-clamp: 3;
+                        -webkit-line-clamp: 3;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
                     }
                     .baseline {
                         font-weight: 500;

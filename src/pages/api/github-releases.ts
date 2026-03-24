@@ -12,6 +12,7 @@ export interface ReleaseInfo {
     version: string
     publishedAt: string | null
     minCoreCompatibilityVersion?: string | null
+    releaseNotesUrl?: string | null
 }
 
 const cache: { [key: string]: { data: any; expiry: number } } = {}
