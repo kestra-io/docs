@@ -1,0 +1,66 @@
+---
+import BlogList from "../common/BlogList.astro"
+import PluginsIndexWrapper from "./PluginsIndexWrapper.vue"
+import PluginsMDCRenderWrapper from "./PluginsMDCRenderWrapper.astro"
+import PluginVideos from "./PluginVideos.astro"
+
+interface Props {
+    plugins: any[]
+    subGroupsIcons: Record<string, string>
+    pluginName: string
+    subGroup?: string
+    pathname: string
+    subgroupBlueprintCounts: Record<string, number>
+    metadataMap: Record<string, any>
+    currentPluginVideos: any[]
+    elementTitle: Record<string, { title: string | undefined }>
+    relatedBlogs?: any[]
+}
+
+const {
+    plugins,
+    subGroupsIcons,
+    pluginName,
+    subGroup,
+    pathname,
+    subgroupBlueprintCounts,
+    metadataMap,
+    currentPluginVideos,
+    elementTitle,
+    relatedBlogs,
+} = Astro.props
+---
+
+<PluginsMDCRenderWrapper>
+    <PluginsIndexWrapper
+        plugins={plugins}
+        icons={subGroupsIcons}
+        pluginName={pluginName}
+        subGroup={subGroup}
+        routePath={pathname}
+        subgroupBlueprintCounts={subgroupBlueprintCounts}
+        metadataMap={metadataMap}
+        schemas={elementTitle}
+        client:idle
+    />
+</PluginsMDCRenderWrapper>
+{
+    currentPluginVideos.length ? (
+        <PluginVideos videos={currentPluginVideos} />
+    ) : null
+}
+{
+    subGroup === undefined && relatedBlogs && relatedBlogs.length > 0 && (
+        <div class="related-blogs">
+            <BlogList
+                posts={relatedBlogs.map((p) => ({
+                    ...p.data,
+                    path: `/blogs/${p.id}`,
+                    date: p.data.date.toISOString(),
+                }))}
+                title="Latest Blog Posts"
+                headingId="latest-blog-posts"
+            />
+        </div>
+    )
+}

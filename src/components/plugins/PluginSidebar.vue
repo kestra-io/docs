@@ -1,6 +1,14 @@
 <template>
-    <nav v-if="pluginWrapper || pluginsWithoutDeprecated.length > 0" class="plugin-sidebar">
-        <div class="search" data-bs-toggle="modal" data-bs-target="#search-modal" title="Search">
+    <nav
+        v-if="pluginWrapper || pluginsWithoutDeprecated.length > 0"
+        class="plugin-sidebar"
+    >
+        <div
+            class="search"
+            data-bs-toggle="modal"
+            data-bs-target="#search-modal"
+            title="Search"
+        >
             <div class="input-group">
                 <div class="input-icon">
                     <span class="input-group-text"><Magnify /></span>
@@ -19,7 +27,10 @@
                 >
                     <summary class="subgroup-title">
                         <ChevronRight class="chevron-icon" />
-                        <a :href="navigateToSubgroup(subGroup)" class="subgroup-link">
+                        <a
+                            :href="navigateToSubgroup(subGroup)"
+                            class="subgroup-link"
+                        >
                             {{ subGroupName(subGroup) }}
                         </a>
                     </summary>
@@ -33,7 +44,10 @@
                 </details>
             </div>
             <PluginElements
-                v-else-if="pluginWrapper && Object.keys(groupedDirectElements).length > 0"
+                v-else-if="
+                    pluginWrapper &&
+                    Object.keys(groupedDirectElements).length > 0
+                "
                 :grouped-elements="groupedDirectElements"
                 :plugin-name="pluginName"
                 :show-line="true"
@@ -46,13 +60,23 @@
         <div class="plugin-links">
             <div class="link-section">
                 <h4>Request a plugin</h4>
-                <a href="https://kestra.io/slack" external target="_blank" class="link">
+                <a
+                    href="https://kestra.io/slack"
+                    external
+                    target="_blank"
+                    class="link"
+                >
                     Ask on slack
                 </a>
             </div>
             <div class="link-section">
                 <h4>Create a plugin</h4>
-                <a href="/docs/plugin-developer-guide" external target="_blank" class="link">
+                <a
+                    href="/docs/plugin-developer-guide"
+                    external
+                    target="_blank"
+                    class="link"
+                >
                     Go to the developer platform
                 </a>
             </div>
@@ -75,20 +99,26 @@
     import PluginElements from "~/components/plugins/PluginElements.vue"
 
     const props = defineProps<{
-        pluginWrapper: Plugin | undefined
+        pluginWrapper?: Plugin
         pluginsWithoutDeprecated: Plugin[]
         pluginName: string
         title: string
         routeParts: string[]
     }>()
 
-    const groupPluginElements = (subGroup: Plugin): Record<string, PluginElement[]> =>
+    const groupPluginElements = (
+        subGroup: Plugin,
+    ): Record<string, PluginElement[]> =>
         Object.fromEntries(
             Object.entries(subGroup)
-                .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                .filter(([key, value]) =>
+                    isEntryAPluginElementPredicate(key, value),
+                )
                 .map(([key, value]) => [
                     key,
-                    (value as PluginElement[]).filter(({ deprecated }) => !deprecated),
+                    (value as PluginElement[]).filter(
+                        ({ deprecated }) => !deprecated,
+                    ),
                 ]),
         )
 
@@ -100,16 +130,15 @@
         props.pluginWrapper ? groupPluginElements(props.pluginWrapper) : {},
     )
 
-    const isSubGroupOpen = (subGroup: Plugin) =>
-        props.routeParts.length >= 2 && slugify(subGroupName(subGroup)) === props.routeParts[1]
+    const isSubGroupOpen = (subGroup: { title: string }) =>
+        props.routeParts.length >= 2 &&
+        slugify(subGroupName(subGroup as any)) === props.routeParts[1]
 
     const navigateToSubgroup = (subGroup: Plugin) =>
         `/plugins/${props.pluginName}/${slugify(subGroupName(subGroup))}`
 </script>
 
 <style scoped lang="scss">
-
-
     .plugin-sidebar {
         @include media-breakpoint-up(lg) {
             padding: 2rem;
@@ -278,4 +307,3 @@
         }
     }
 </style>
-
