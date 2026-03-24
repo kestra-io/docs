@@ -1,0 +1,2459 @@
+<style>
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background: #0a0a0a;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .stack-inner {
+        width: 720px;
+        height: 526px;
+        position: relative;
+    }
+    .block {
+        position: absolute;
+        width: 720px;
+        left: 0;
+    }
+    .block:nth-child(1) {
+        top: 256px;
+        z-index: 1;
+    }
+    .block:nth-child(2) {
+        top: 83px;
+        z-index: 2;
+    }
+    .block:nth-child(3) {
+        top: -90px;
+        z-index: 3;
+    }
+    .block:nth-child(1) {
+        animation: float1 4s ease-in-out infinite 0s;
+    }
+    .block:nth-child(2) {
+        animation: float2 4s ease-in-out infinite 0.8s;
+    }
+    .block:nth-child(3) {
+        animation: float3 4s ease-in-out infinite 1.6s;
+    }
+    @keyframes float1 {
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    @keyframes float2 {
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    @keyframes float3 {
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    .ng {
+        animation: nG 3s ease-in-out infinite 0s;
+    }
+    .nb {
+        animation: nB 3s ease-in-out infinite 0.4s;
+    }
+    .na {
+        animation: nA 3s ease-in-out infinite 0.8s;
+    }
+    @keyframes nG {
+        0%,
+        100% {
+            stroke: #2dff5c;
+            stroke-width: 1.6;
+        }
+        50% {
+            stroke: #90ffb8;
+            stroke-width: 2.8;
+        }
+    }
+    @keyframes nB {
+        0%,
+        100% {
+            stroke: #6060ff;
+            stroke-width: 1.6;
+        }
+        50% {
+            stroke: #a8a8ff;
+            stroke-width: 2.8;
+        }
+    }
+    @keyframes nA {
+        0%,
+        100% {
+            stroke: #ff9900;
+            stroke-width: 1.6;
+        }
+        50% {
+            stroke: #ffcc66;
+            stroke-width: 2.8;
+        }
+    }
+
+    /* Kestra pulse animation */
+    .logo-inactive {
+        filter: grayscale(1) brightness(0.7);
+        transition:
+            filter 0.6s ease,
+            opacity 0.6s ease;
+    }
+    .logo-active {
+        filter: grayscale(0) brightness(1);
+        transition:
+            filter 0.6s ease,
+            opacity 0.6s ease;
+    }
+    .block:nth-child(3) svg g[id^="ai-logo"] {
+        isolation: isolate;
+    }
+
+    @keyframes kestra-pulse {
+        0%,
+        100% {
+            opacity: 0.15;
+            transform: scale(0.85);
+            filter: blur(0px);
+        }
+        40% {
+            opacity: 1;
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 4px rgba(169, 80, 255, 0.9));
+        }
+        65% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+    }
+    @keyframes kestra-pulse-pink {
+        0%,
+        100% {
+            opacity: 0.15;
+            transform: scale(0.85);
+        }
+        40% {
+            opacity: 1;
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 4px rgba(246, 46, 118, 0.9));
+        }
+        65% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+    }
+    .kestra-anim path {
+        opacity: 0.15;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: kestra-pulse 1.6s ease-in-out infinite;
+    }
+    .kestra-anim path:nth-child(1) {
+        animation-delay: 0s;
+    }
+    .kestra-anim path:nth-child(2) {
+        animation-delay: 0.18s;
+    }
+    .kestra-anim path:nth-child(3) {
+        animation-delay: 0.36s;
+    }
+    .kestra-anim path:nth-child(4) {
+        animation-delay: 0.54s;
+    }
+    .kestra-anim path:nth-child(5) {
+        animation-delay: 0.72s;
+    }
+    .kestra-anim path:nth-child(6) {
+        animation-delay: 0.9s;
+    }
+    .kestra-anim path:nth-child(7) {
+        animation-delay: 1.08s;
+        animation-name: kestra-pulse-pink;
+    }
+
+    @keyframes glowPulse {
+        0%,
+        100% {
+            opacity: 0.8;
+            filter: brightness(1);
+        }
+        50% {
+            opacity: 1;
+            filter: brightness(1.4);
+        }
+    }
+</style>
+<script>
+    // Randomise animation durations on load
+    ;(function () {
+        function r(min: number, max: number) {
+            return (min + Math.random() * (max - min)).toFixed(2) + "s"
+        }
+
+        // Float des blocs
+        const blocks = document.querySelectorAll(".block")
+        blocks.forEach((b) => {
+            const dur = r(3, 6)
+            ;(b as HTMLElement).style.animationDuration = dur
+        })
+
+        // Pulse lueurs violettes (glowPulse)
+        document.querySelectorAll('[style*="glowPulse"]').forEach((el) => {
+            const cur = (el as HTMLElement).style.animation
+            ;(el as HTMLElement).style.animation = cur.replace(
+                /[\d.]+s/,
+                r(1.8, 4),
+            )
+        })
+
+        // Kestra paths
+        document.querySelectorAll(".kestra-anim path").forEach((p) => {
+            ;(p as HTMLElement).style.animationDuration = r(1.2, 2.8)
+        })
+
+        // Background glow
+        const bg = document.querySelector('[style*="bgGlowPulse"]')
+        if (bg) (bg as HTMLElement).style.animationDuration = r(2.5, 5)
+    })()
+</script>
+
+<!-- Lueur centrale background -->
+<div
+    style="
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, rgba(138,46,242,0.45) 0%, rgba(138,46,242,0.2) 30%, rgba(138,46,242,0.05) 60%, transparent 75%);
+  animation: bgGlowPulse 3.5s ease-in-out infinite;
+"
+>
+</div>
+
+<style>
+    @keyframes bgGlowPulse {
+        0%,
+        100% {
+            opacity: 0.7;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+    }
+</style>
+
+<div class="stack-inner">
+    <div class="block">
+        <svg
+            width="720"
+            height="360"
+            viewBox="0 0 720 360"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <defs>
+                <radialGradient id="tC" cx="50%" cy="45%" r="65%"
+                    ><stop offset="0%" stop-color="#201400"></stop><stop
+                        offset="100%"
+                        stop-color="#090500"></stop></radialGradient
+                >
+                <linearGradient
+                    id="fC"
+                    x1="60"
+                    y1="175"
+                    x2="60"
+                    y2="217"
+                    gradientUnits="userSpaceOnUse"
+                    ><stop offset="0%" stop-color="#1a1000"></stop><stop
+                        offset="100%"
+                        stop-color="#060400"></stop></linearGradient
+                >
+                <linearGradient
+                    id="rC"
+                    x1="660"
+                    y1="175"
+                    x2="360"
+                    y2="295"
+                    gradientUnits="userSpaceOnUse"
+                    ><stop offset="0%" stop-color="#180e00"></stop><stop
+                        offset="100%"
+                        stop-color="#060300"></stop></linearGradient
+                >
+                <filter id="glC" x="-10%" y="-20%" width="120%" height="150%"
+                    ><feDropShadow
+                        dx="0"
+                        dy="6"
+                        stdDeviation="14"
+                        flood-color="#ff9900"
+                        flood-opacity="0.3"></feDropShadow></filter
+                >
+                <filter
+                    id="logoGlow"
+                    x="-40%"
+                    y="-40%"
+                    width="180%"
+                    height="180%"
+                >
+                    <feComposite
+                        in="SourceGraphic"
+                        in2="SourceGraphic"
+                        operator="over"
+                        result="src"></feComposite>
+                    <feGaussianBlur in="src" stdDeviation="3" result="blur"
+                    ></feGaussianBlur>
+                    <feDropShadow
+                        dx="4"
+                        dy="8"
+                        stdDeviation="4"
+                        flood-color="#000000"
+                        flood-opacity="0.6"
+                        result="shadow"></feDropShadow>
+                    <feMerge
+                        ><feMergeNode in="blur"></feMergeNode><feMergeNode
+                            in="shadow"></feMergeNode><feMergeNode
+                            in="SourceGraphic"></feMergeNode></feMerge
+                    >
+                </filter>
+                <linearGradient id="txtC" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff"></stop>
+                    <stop offset="100%" stop-color="#ff9900"></stop>
+                </linearGradient>
+            </defs>
+            <g filter="url(#glC)">
+                <path d="M660,175 L360,295 L360,337 L660,217 Z" fill="url(#rC)"
+                ></path>
+                <line
+                    x1="660"
+                    y1="175"
+                    x2="660"
+                    y2="217"
+                    stroke="#ff9900"
+                    stroke-width="1"
+                    opacity="0.45"></line>
+                <path
+                    d="M360,337 L660,217"
+                    stroke="#ff9900"
+                    stroke-width="1"
+                    fill="none"
+                    opacity="0.4"></path>
+                <path d="M60,175 L360,295 L360,337 L60,217 Z" fill="url(#fC)"
+                ></path>
+                <line
+                    x1="60"
+                    y1="175"
+                    x2="60"
+                    y2="217"
+                    stroke="#ff9900"
+                    stroke-width="1"
+                    opacity="0.4"></line>
+                <path
+                    d="M60,217 L360,337"
+                    stroke="#ff9900"
+                    stroke-width="1"
+                    fill="none"
+                    opacity="0.45"></path>
+                <path d="M60,175 L360,55 L660,175 L360,295 Z" fill="url(#tC)"
+                ></path>
+                <path
+                    class="na"
+                    d="M60,175 L360,55 L660,175 L360,295 Z"
+                    fill="none"></path>
+                <!-- Lueur + particules bloc Infra -->
+                <defs>
+                    <filter
+                        id="glowBloomC"
+                        x="-60%"
+                        y="-60%"
+                        width="220%"
+                        height="220%"
+                    >
+                        <feGaussianBlur
+                            in="SourceGraphic"
+                            stdDeviation="8"
+                            result="blur1"></feGaussianBlur>
+                        <feGaussianBlur
+                            in="SourceGraphic"
+                            stdDeviation="3"
+                            result="blur2"></feGaussianBlur>
+                        <feColorMatrix
+                            in="blur1"
+                            type="matrix"
+                            values="1 0 0 0 0.3  0 0 1 0 0  0 0 1 0 0.6  0 0 0 2.5 0"
+                            result="colored"></feColorMatrix>
+                        <feMerge
+                            ><feMergeNode in="colored"
+                            ></feMergeNode><feMergeNode in="blur2"
+                            ></feMergeNode><feMergeNode in="SourceGraphic"
+                            ></feMergeNode></feMerge
+                        >
+                    </filter>
+                    <linearGradient
+                        id="glowC0"
+                        x1="53.0258"
+                        y1="25.0008"
+                        x2="53.0258"
+                        y2="209.684"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop offset="0%" stop-color="#8A2EF2" stop-opacity="0"
+                        ></stop>
+                        <stop
+                            offset="40%"
+                            stop-color="#a855f7"
+                            stop-opacity="0.6"></stop>
+                        <stop
+                            offset="75%"
+                            stop-color="#c084fc"
+                            stop-opacity="0.9"></stop>
+                        <stop offset="100%" stop-color="#e9d5ff"></stop>
+                    </linearGradient>
+                    <linearGradient
+                        id="glowC1"
+                        x1="53.0253"
+                        y1="25.0008"
+                        x2="53.0253"
+                        y2="209.684"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0"
+                        ></stop>
+                        <stop
+                            offset="50%"
+                            stop-color="#a855f7"
+                            stop-opacity="0.7"></stop>
+                        <stop offset="100%" stop-color="#f0abfc"></stop>
+                    </linearGradient>
+                </defs>
+                <g
+                    transform="translate(306.5,-5)"
+                    pointer-events="none"
+                    style="animation: glowPulse 2.5s ease-in-out infinite;"
+                    filter="url(#glowBloomC)"
+                >
+                    <path
+                        d="M52.8244 209.684L0 188.716V0H106.052V188.716L52.8244 209.684Z"
+                        fill="url(#glowC0)"></path>
+                    <path
+                        d="M52.9158 209.684L24.1935 198.504V10.4842L81.8571 9.43578V198.151L52.9158 209.684Z"
+                        fill="url(#glowC1)"></path>
+                </g>
+                <foreignObject
+                    x="296"
+                    y="-15"
+                    width="127"
+                    height="230"
+                    pointer-events="none"
+                >
+                    <canvas
+                        id="glow-particles-c"
+                        width="127"
+                        height="230"
+                        style="display:block;"></canvas>
+                </foreignObject>
+                <line
+                    x1="360"
+                    y1="295"
+                    x2="360"
+                    y2="337"
+                    stroke="#ff9900"
+                    stroke-width="0.8"
+                    opacity="0.35"></line>
+                <text
+                    font-family="sans-serif"
+                    font-size="11"
+                    font-weight="500"
+                    letter-spacing="2.5"
+                    fill="url(#txtC)"
+                    pointer-events="none"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    transform="translate(210,256) skewY(22)"
+                    >INFRASTRUCTURE STACK</text
+                >
+
+                <!--
+      Logos sur la face avant gauche du bloc Infra.
+      Face avant : A(60,175) D(360,295) D'(360,337) A'(60,217)
+      Centre vertical face = y≈196 à x=60, y≈276 à x=360
+      On place les logos en ligne horizontale au centre de la face,
+      avec skewY(22) pour coller au plan incliné.
+      4 logos espacés régulièrement entre x=90 et x=330.
+    -->
+
+                <!-- GCP — face avant, 1er logo -->
+                <g
+                    id="ic-logo-1"
+                    transform="translate(125,97) skewY(22) scale(0.87)"
+                    opacity="0.3"
+                    filter="url(#logoGlow)"
+                >
+                    <path
+                        d="M36.7154 38.7478L47.8482 47.524L40.472 29.3303L36.7154 38.7478ZM40 11.5C24.2555 11.5 11.5 24.2555 11.5 40C11.5 55.7445 24.2555 68.5 40 68.5C55.7445 68.5 68.5 55.7445 68.5 40C68.5 24.2555 55.7445 11.5 40 11.5ZM53.7673 52.5988C53.7388 53.721 52.8125 54.6027 51.6886 54.5742C51.131 54.5742 50.7053 54.3604 50.1122 53.8777L35.4079 42.0021L30.4721 54.3604H26.2042L38.6641 24.423C38.9615 23.6713 39.6758 23.1886 40.4827 23.2171C41.2522 23.1886 41.9772 23.6624 42.2462 24.423L53.5838 51.7171C53.6853 51.986 53.7691 52.2746 53.7691 52.5436C53.7691 52.5614 53.7673 52.5614 53.7673 52.5988Z"
+                        fill="white"></path>
+                </g>
+
+                <!-- AWS — face avant, 2e logo -->
+                <g
+                    id="ic-logo-2"
+                    transform="translate(235,172) skewY(22) scale(0.87) translate(0,-42)"
+                    opacity="0.3"
+                    filter="url(#logoGlow)"
+                >
+                    <path
+                        d="M27.5632 35.3363C27.5632 36.0378 27.6391 36.6065 27.7718 37.0236C27.9234 37.4406 28.113 37.8956 28.3784 38.3885C28.4732 38.5402 28.5111 38.6918 28.5111 38.8245C28.5111 39.0141 28.3974 39.2037 28.1509 39.3933L26.9566 40.1895C26.786 40.3032 26.6154 40.3601 26.4637 40.3601C26.2741 40.3601 26.0845 40.2653 25.895 40.0947C25.6296 39.8103 25.4021 39.507 25.2125 39.2037C25.0229 38.8814 24.8333 38.5212 24.6248 38.0852C23.1461 39.8293 21.2883 40.7013 19.0513 40.7013C17.4588 40.7013 16.1887 40.2464 15.2598 39.3364C14.3308 38.4264 13.8569 37.2131 13.8569 35.6965C13.8569 34.0851 14.4256 32.7771 15.582 31.7913C16.7384 30.8055 18.274 30.3126 20.2266 30.3126C20.8712 30.3126 21.5347 30.3695 22.2361 30.4642C22.9376 30.559 23.658 30.7107 24.4163 30.8813V29.4974C24.4163 28.0566 24.113 27.0519 23.5253 26.4642C22.9186 25.8765 21.8949 25.5921 20.4352 25.5921C19.7717 25.5921 19.0892 25.668 18.3878 25.8386C17.6863 26.0092 17.0039 26.2177 16.3403 26.4831C16.037 26.6158 15.8095 26.6917 15.6768 26.7296C15.5441 26.7675 15.4493 26.7865 15.3735 26.7865C15.1081 26.7865 14.9754 26.5969 14.9754 26.1988V25.2699C14.9754 24.9665 15.0133 24.739 15.1081 24.6063C15.2029 24.4736 15.3735 24.3409 15.6389 24.2082C16.3024 23.867 17.0986 23.5826 18.0276 23.3551C18.9565 23.1087 19.9423 22.9949 20.9849 22.9949C23.2409 22.9949 24.8902 23.5068 25.9518 24.5305C26.9945 25.5542 27.5253 27.1087 27.5253 29.1941V35.3363H27.5632ZM19.8664 38.2179C20.4921 38.2179 21.1366 38.1042 21.8191 37.8767C22.5016 37.6492 23.1082 37.2321 23.6201 36.6634C23.9234 36.3032 24.1509 35.9051 24.2646 35.4501C24.3784 34.9951 24.4542 34.4453 24.4542 33.8008V33.0046C23.9044 32.8719 23.3167 32.7581 22.7101 32.6823C22.1034 32.6065 21.5158 32.5685 20.9281 32.5685C19.6579 32.5685 18.729 32.815 18.1034 33.3268C17.4778 33.8387 17.1745 34.5591 17.1745 35.507C17.1745 36.398 17.402 37.0615 17.8759 37.5165C18.3309 37.9904 18.9944 38.2179 19.8664 38.2179ZM35.0894 40.2653C34.7482 40.2653 34.5207 40.2084 34.369 40.0757C34.2174 39.962 34.0846 39.6966 33.9709 39.3364L29.5159 24.6822C29.4021 24.303 29.3453 24.0566 29.3453 23.9239C29.3453 23.6205 29.4969 23.4499 29.8002 23.4499H31.6581C32.0183 23.4499 32.2647 23.5068 32.3974 23.6395C32.5491 23.7533 32.6628 24.0187 32.7766 24.3789L35.9615 36.9288L38.9188 24.3789C39.0136 23.9997 39.1274 23.7533 39.279 23.6395C39.4307 23.5258 39.6961 23.4499 40.0373 23.4499H41.5539C41.9141 23.4499 42.1606 23.5068 42.3122 23.6395C42.4639 23.7533 42.5966 24.0187 42.6724 24.3789L45.6677 37.0804L48.9474 24.3789C49.0612 23.9997 49.1939 23.7533 49.3266 23.6395C49.4782 23.5258 49.7247 23.4499 50.0659 23.4499H51.829C52.1323 23.4499 52.3029 23.6016 52.3029 23.9239C52.3029 24.0187 52.2839 24.1134 52.265 24.2272C52.246 24.3409 52.2081 24.4926 52.1323 24.7011L47.5635 39.3554C47.4498 39.7345 47.3171 39.981 47.1654 40.0947C47.0137 40.2084 46.7673 40.2843 46.445 40.2843H44.8147C44.4545 40.2843 44.208 40.2274 44.0564 40.0947C43.9047 39.962 43.772 39.7155 43.6962 39.3364L40.7577 27.1087L37.8383 39.3174C37.7435 39.6966 37.6297 39.943 37.4781 40.0757C37.3264 40.2084 37.061 40.2653 36.7198 40.2653H35.0894ZM59.4499 40.7772C58.4641 40.7772 57.4783 40.6634 56.5304 40.4359C55.5826 40.2084 54.8432 39.962 54.3503 39.6776C54.047 39.507 53.8385 39.3174 53.7626 39.1468C53.6868 38.9762 53.6489 38.7866 53.6489 38.616V37.6492C53.6489 37.2511 53.8006 37.0615 54.0849 37.0615C54.1987 37.0615 54.3124 37.0804 54.4262 37.1184C54.5399 37.1563 54.7105 37.2321 54.9001 37.3079C55.5447 37.5923 56.2461 37.8198 56.9854 37.9715C57.7437 38.1231 58.4831 38.1989 59.2414 38.1989C60.4357 38.1989 61.3646 37.9904 62.0092 37.5733C62.6538 37.1563 62.995 36.5496 62.995 35.7724C62.995 35.2416 62.8244 34.8055 62.4831 34.4453C62.1419 34.0851 61.4973 33.7629 60.5684 33.4595L57.8196 32.6065C56.4357 32.1704 55.4119 31.5259 54.7864 30.6728C54.1608 29.8386 53.8385 28.9097 53.8385 27.9239C53.8385 27.1277 54.0091 26.4263 54.3503 25.8196C54.6916 25.213 55.1465 24.6822 55.7153 24.2651C56.284 23.8291 56.9286 23.5068 57.6869 23.2793C58.4452 23.0518 59.2414 22.957 60.0755 22.957C60.4926 22.957 60.9286 22.976 61.3457 23.0329C61.7817 23.0897 62.1798 23.1656 62.5779 23.2414C62.9571 23.3362 63.3173 23.431 63.6585 23.5447C63.9997 23.6585 64.2651 23.7722 64.4547 23.886C64.7201 24.0376 64.9097 24.1893 65.0235 24.3599C65.1372 24.5116 65.1941 24.7201 65.1941 24.9855V25.8765C65.1941 26.2746 65.0424 26.4831 64.758 26.4831C64.6064 26.4831 64.3599 26.4073 64.0377 26.2557C62.9571 25.7628 61.7438 25.5163 60.3978 25.5163C59.3172 25.5163 58.4641 25.6869 57.8764 26.0471C57.2888 26.4073 56.9854 26.9571 56.9854 27.7343C56.9854 28.2652 57.175 28.7201 57.5542 29.0803C57.9333 29.4405 58.6347 29.8007 59.6395 30.123L62.3315 30.9761C63.6964 31.4121 64.6822 32.0188 65.2699 32.796C65.8576 33.5733 66.142 34.4643 66.142 35.4501C66.142 36.2653 65.9713 37.0046 65.649 37.6492C65.3078 38.2937 64.8528 38.8625 64.2651 39.3174C63.6775 39.7914 62.976 40.1326 62.1609 40.3791C61.3078 40.6445 60.4168 40.7772 59.4499 40.7772Z"
+                        fill="white"></path>
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M63.0328 49.9906C56.7958 54.5973 47.734 57.0428 39.9425 57.0428C29.0229 57.0428 19.1839 53.0048 11.7525 46.2938C11.1648 45.763 11.6956 45.0426 12.3971 45.4597C20.4351 50.1233 30.3499 52.948 40.606 52.948C47.5255 52.948 55.1275 51.5072 62.1229 48.5498C63.1655 48.0758 64.0565 49.2323 63.0328 49.9906Z"
+                        fill="#FF9900"></path>
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M65.63 47.0332C64.8338 46.0095 60.3598 46.5403 58.3313 46.7867C57.7247 46.8626 57.6299 46.3318 58.1797 45.9336C61.7437 43.4312 67.6016 44.1516 68.2841 44.9858C68.9666 45.8389 68.0945 51.6968 64.758 54.5025C64.2461 54.9385 63.7532 54.711 63.9807 54.1423C64.739 52.2655 66.4262 48.0379 65.63 47.0332Z"
+                        fill="#FF9900"></path>
+                </g>
+
+                <!-- Terraform — face avant, 3e logo -->
+                <g
+                    id="ic-logo-3"
+                    transform="translate(378,137) skewY(-22) scale(0.87)"
+                    opacity="0.3"
+                    filter="url(#logoGlow)"
+                >
+                    <path
+                        d="M49.4986 78.6925V96.6762L65.0794 87.6899V69.6873L49.4986 78.6925Z"
+                        fill="#4040B2"></path>
+                    <path
+                        d="M32.2093 69.6873L47.7901 78.6925V96.6763L32.2093 87.6789V69.6873ZM14.9199 59.646V77.6392L30.5007 86.6365V68.6418L14.9199 59.646ZM32.2093 107.649L47.7901 116.646V98.6513L32.2093 89.6555V107.649Z"
+                        fill="#5C4EE5"></path>
+                </g>
+
+                <!-- Kubernetes — face avant, 4e logo -->
+                <g
+                    id="ic-logo-4"
+                    transform="translate(520,147) skewY(-22) scale(0.87) translate(-218,-59)"
+                    opacity="0.3"
+                    filter="url(#logoGlow)"
+                >
+                    <path
+                        d="M246.802 59.583C246.299 59.6084 245.805 59.7333 245.35 59.9505L225.534 69.4188C225.021 69.6637 224.571 70.0201 224.216 70.4615C223.861 70.9029 223.611 71.4179 223.484 71.9683L218.595 93.2365C218.482 93.7265 218.47 94.234 218.558 94.729C218.646 95.2239 218.834 95.6963 219.11 96.118C219.177 96.2212 219.248 96.321 219.325 96.4171L233.041 113.471C233.396 113.912 233.847 114.268 234.36 114.513C234.872 114.758 235.434 114.885 236.004 114.885L257.999 114.88C258.568 114.88 259.13 114.754 259.643 114.509C260.156 114.265 260.606 113.909 260.962 113.468L274.673 96.412C275.028 95.9705 275.278 95.4553 275.405 94.9047C275.532 94.354 275.532 93.7821 275.405 93.2314L270.509 71.9633C270.382 71.4128 270.132 70.8978 269.777 70.4564C269.422 70.015 268.971 69.6586 268.458 69.4137L248.64 59.9505C248.068 59.6773 247.436 59.551 246.802 59.583Z"
+                        fill="#326CE5"></path>
+                    <path
+                        d="M245.514 76.0205L245.161 82.2423L245.136 82.255C245.112 82.8116 244.654 83.256 244.092 83.256C243.861 83.256 243.649 83.1821 243.476 83.0558L243.466 83.0609L238.364 79.4444C239.932 77.9026 241.938 76.7632 244.249 76.2385C244.671 76.1426 245.093 76.0715 245.514 76.0205ZM248.486 76.0205C251.185 76.3524 253.68 77.5743 255.593 79.4469L250.524 83.0406L250.506 83.033C250.056 83.3616 249.423 83.2801 249.072 82.8404C248.928 82.6603 248.853 82.4485 248.844 82.2347L248.839 82.2322L248.486 76.0205ZM236.514 81.7684L241.172 85.9348L241.167 85.9602C241.588 86.3257 241.65 86.96 241.299 87.3997C241.155 87.5798 240.963 87.7006 240.757 87.757L240.752 87.7773L234.781 89.5007C234.477 86.7218 235.132 84.0205 236.514 81.7684ZM257.45 81.7709C258.142 82.8927 258.667 84.1457 258.979 85.504C259.287 86.846 259.364 88.1857 259.237 89.4804L253.236 87.752L253.231 87.7266C252.693 87.5797 252.363 87.0331 252.488 86.4848C252.539 86.2602 252.659 86.0702 252.82 85.9298L252.818 85.9171L257.45 81.7709ZM246.043 86.2567H247.952L249.138 87.7393L248.712 89.5893L246.999 90.413L245.28 89.5868L244.855 87.7367L246.043 86.2567ZM252.161 91.3304C252.242 91.3263 252.323 91.3337 252.402 91.3482L252.412 91.3355L258.588 92.3797C257.684 94.9191 255.955 97.1191 253.644 98.5913L251.246 92.8004L251.254 92.7902C251.034 92.2785 251.254 91.6784 251.761 91.4343C251.891 91.3719 252.026 91.3373 252.161 91.3304ZM241.788 91.3558C242.259 91.3624 242.682 91.6895 242.792 92.1693C242.843 92.3939 242.818 92.6165 242.733 92.813L242.751 92.8358L240.379 98.5685C238.161 97.1453 236.395 95.0144 235.45 92.3999L241.573 91.3609L241.583 91.3735C241.651 91.3609 241.721 91.3548 241.788 91.3558ZM246.961 93.8673C247.125 93.8613 247.292 93.895 247.45 93.9712C247.657 94.0712 247.818 94.2286 247.919 94.4173H247.942L250.96 99.8712C250.568 100.002 250.165 100.115 249.754 100.208C247.445 100.732 245.144 100.574 243.06 99.8636L246.071 94.4198H246.076C246.257 94.0821 246.6 93.8806 246.961 93.8673Z"
+                        fill="white"></path>
+                </g>
+            </g>
+        </svg>
+    </div>
+    <div class="block">
+        <svg
+            width="720"
+            height="360"
+            viewBox="0 0 720 360"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <defs>
+                <radialGradient id="tB" cx="50%" cy="45%" r="65%"
+                    ><stop offset="0%" stop-color="#0e0e28"></stop><stop
+                        offset="100%"
+                        stop-color="#050510"></stop></radialGradient
+                >
+                <linearGradient
+                    id="fB"
+                    x1="60"
+                    y1="175"
+                    x2="60"
+                    y2="217"
+                    gradientUnits="userSpaceOnUse"
+                    ><stop offset="0%" stop-color="#0c0c20"></stop><stop
+                        offset="100%"
+                        stop-color="#04040d"></stop></linearGradient
+                >
+                <linearGradient
+                    id="rB"
+                    x1="660"
+                    y1="175"
+                    x2="360"
+                    y2="295"
+                    gradientUnits="userSpaceOnUse"
+                    ><stop offset="0%" stop-color="#0a0a1c"></stop><stop
+                        offset="100%"
+                        stop-color="#040410"></stop></linearGradient
+                >
+                <filter id="glB" x="-10%" y="-20%" width="120%" height="150%"
+                    ><feDropShadow
+                        dx="0"
+                        dy="6"
+                        stdDeviation="14"
+                        flood-color="#6060ff"
+                        flood-opacity="0.3"></feDropShadow></filter
+                >
+                <linearGradient id="txtB" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff"></stop>
+                    <stop offset="100%" stop-color="#6060ff"></stop>
+                </linearGradient>
+            </defs>
+            <g filter="url(#glB)">
+                <path d="M660,175 L360,295 L360,337 L660,217 Z" fill="url(#rB)"
+                ></path>
+                <line
+                    x1="660"
+                    y1="175"
+                    x2="660"
+                    y2="217"
+                    stroke="#6060ff"
+                    stroke-width="1"
+                    opacity="0.45"></line>
+                <path
+                    d="M360,337 L660,217"
+                    stroke="#6060ff"
+                    stroke-width="1"
+                    fill="none"
+                    opacity="0.4"></path>
+                <path d="M60,175 L360,295 L360,337 L60,217 Z" fill="url(#fB)"
+                ></path>
+                <line
+                    x1="60"
+                    y1="175"
+                    x2="60"
+                    y2="217"
+                    stroke="#6060ff"
+                    stroke-width="1"
+                    opacity="0.4"></line>
+                <path
+                    d="M60,217 L360,337"
+                    stroke="#6060ff"
+                    stroke-width="1"
+                    fill="none"
+                    opacity="0.45"></path>
+                <path d="M60,175 L360,55 L660,175 L360,295 Z" fill="url(#tB)"
+                ></path>
+                <path
+                    class="nb"
+                    d="M60,175 L360,55 L660,175 L360,295 Z"
+                    fill="none"></path>
+                <!-- Lueur + particules bloc Data -->
+                <defs>
+                    <filter
+                        id="glowBloomB"
+                        x="-60%"
+                        y="-60%"
+                        width="220%"
+                        height="220%"
+                    >
+                        <feGaussianBlur
+                            in="SourceGraphic"
+                            stdDeviation="8"
+                            result="blur1"></feGaussianBlur>
+                        <feGaussianBlur
+                            in="SourceGraphic"
+                            stdDeviation="3"
+                            result="blur2"></feGaussianBlur>
+                        <feColorMatrix
+                            in="blur1"
+                            type="matrix"
+                            values="1 0 0 0 0.3  0 0 1 0 0  0 0 1 0 0.6  0 0 0 2.5 0"
+                            result="colored"></feColorMatrix>
+                        <feMerge
+                            ><feMergeNode in="colored"
+                            ></feMergeNode><feMergeNode in="blur2"
+                            ></feMergeNode><feMergeNode in="SourceGraphic"
+                            ></feMergeNode></feMerge
+                        >
+                    </filter>
+                    <linearGradient
+                        id="glowB0"
+                        x1="53.0258"
+                        y1="25.0008"
+                        x2="53.0258"
+                        y2="209.684"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop offset="0%" stop-color="#8A2EF2" stop-opacity="0"
+                        ></stop>
+                        <stop
+                            offset="40%"
+                            stop-color="#a855f7"
+                            stop-opacity="0.6"></stop>
+                        <stop
+                            offset="75%"
+                            stop-color="#c084fc"
+                            stop-opacity="0.9"></stop>
+                        <stop offset="100%" stop-color="#e9d5ff"></stop>
+                    </linearGradient>
+                    <linearGradient
+                        id="glowB1"
+                        x1="53.0253"
+                        y1="25.0008"
+                        x2="53.0253"
+                        y2="209.684"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0"
+                        ></stop>
+                        <stop
+                            offset="50%"
+                            stop-color="#a855f7"
+                            stop-opacity="0.7"></stop>
+                        <stop offset="100%" stop-color="#f0abfc"></stop>
+                    </linearGradient>
+                </defs>
+                <g
+                    transform="translate(306.5,-5)"
+                    pointer-events="none"
+                    style="animation: glowPulse 2.5s ease-in-out infinite 0.8s;"
+                    filter="url(#glowBloomB)"
+                >
+                    <path
+                        d="M52.8244 209.684L0 188.716V0H106.052V188.716L52.8244 209.684Z"
+                        fill="url(#glowB0)"></path>
+                    <path
+                        d="M52.9158 209.684L24.1935 198.504V10.4842L81.8571 9.43578V198.151L52.9158 209.684Z"
+                        fill="url(#glowB1)"></path>
+                </g>
+                <foreignObject
+                    x="296"
+                    y="-15"
+                    width="127"
+                    height="230"
+                    pointer-events="none"
+                >
+                    <canvas
+                        id="glow-particles-b"
+                        width="127"
+                        height="230"
+                        style="display:block;"></canvas>
+                </foreignObject>
+                <line
+                    x1="360"
+                    y1="295"
+                    x2="360"
+                    y2="337"
+                    stroke="#6060ff"
+                    stroke-width="0.8"
+                    opacity="0.35"></line>
+                <text
+                    font-family="sans-serif"
+                    font-size="11"
+                    font-weight="500"
+                    letter-spacing="2.5"
+                    fill="url(#txtB)"
+                    pointer-events="none"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    transform="translate(210,256) skewY(22)">DATA TOOLS</text
+                >
+
+                <!-- Logos sur face avant Data — mêmes positions qu'Infra -->
+                <filter
+                    id="logoGlowB"
+                    x="-40%"
+                    y="-40%"
+                    width="180%"
+                    height="180%"
+                >
+                    <feComposite
+                        in="SourceGraphic"
+                        in2="SourceGraphic"
+                        operator="over"
+                        result="src"></feComposite>
+                    <feGaussianBlur in="src" stdDeviation="3" result="blur"
+                    ></feGaussianBlur>
+                    <feDropShadow
+                        dx="4"
+                        dy="8"
+                        stdDeviation="4"
+                        flood-color="#000000"
+                        flood-opacity="0.6"
+                        result="shadow"></feDropShadow>
+                    <feMerge
+                        ><feMergeNode in="blur"></feMergeNode><feMergeNode
+                            in="shadow"></feMergeNode><feMergeNode
+                            in="SourceGraphic"></feMergeNode></feMerge
+                    >
+                </filter>
+
+                <g
+                    id="dt-logo-1"
+                    transform="translate(125,92) skewY(22) scale(0.87)"
+                    opacity="0.3"
+                    filter="url(#logoGlowB)"
+                >
+                    <path
+                        d="M59.4415 40.046C59.9813 40.3849 60.4347 40.6869 60.9096 40.9704C62.4701 41.8743 64.0357 42.77 65.6067 43.6574C66.7045 44.2737 67.4385 45.1304 67.645 46.4306C67.9227 48.1501 66.5565 50.0298 64.8202 50.2178C63.9447 50.3331 63.0558 50.1566 62.2912 49.7155C58.5903 47.5585 54.8587 45.4014 51.127 43.2752C49.9243 42.5882 49.2025 41.6267 49.1163 40.2401C49.0237 38.7918 49.733 37.7226 50.9111 37.0078C52.9774 35.7596 55.0838 34.5825 57.1748 33.3776L62.0013 30.6044C62.618 30.247 63.235 29.8957 63.9906 29.8557C64.7379 29.8102 65.4803 30.0059 66.1083 30.4135C66.7361 30.8212 67.2164 31.4196 67.4785 32.1206C68.0492 33.6797 67.4447 35.2728 66.026 36.1942C65.1009 36.8103 64.1077 37.325 63.1456 37.8828C62.0661 38.499 60.9867 39.1154 59.9041 39.7501C59.7746 39.7964 59.6575 39.8949 59.4415 40.046Z"
+                        fill="#32C0F0"></path>
+                    <path
+                        d="M20.5796 40.0089C19.5217 39.3925 18.5472 38.8225 17.5665 38.2556C16.4192 37.5929 15.275 36.9212 14.1185 36.2773C12.5765 35.4299 11.9597 33.4885 12.5086 32.1141C13.3167 30.0589 15.5279 29.1991 17.474 30.2654C18.9605 31.082 20.416 31.9539 21.8871 32.8013C24.1571 34.1141 26.4208 35.439 28.706 36.7303C29.7238 37.3033 30.5041 38.0397 30.7877 39.1953C30.9683 39.8113 30.9596 40.4672 30.7628 41.0782C30.5658 41.689 30.19 42.2269 29.6836 42.6219C29.032 43.12 28.3411 43.564 27.6173 43.95C24.3154 45.877 21.0083 47.7884 17.696 49.6845C16.5271 50.3656 15.2935 50.4858 14.0599 49.8109C13.6022 49.566 13.2084 49.2173 12.91 48.7928C12.6116 48.3683 12.417 47.8797 12.3417 47.3666C12.2665 46.8533 12.3127 46.3295 12.4766 45.8374C12.6406 45.3451 12.9177 44.8982 13.2858 44.5325C13.8577 44.0241 14.4858 43.5826 15.1578 43.2167C16.8201 42.2275 18.504 41.2752 20.1787 40.3046C20.2896 40.2431 20.3852 40.1598 20.5796 40.0089Z"
+                        fill="#32C0F0"></path>
+                    <path
+                        d="M30.1518 23.4156V22.445C30.1518 20.2201 30.1518 17.9923 30.1518 15.7675C30.1591 14.8965 30.4928 14.0599 31.0872 13.4228C31.6814 12.7856 32.4932 12.3941 33.3622 12.3255C34.9381 12.2362 36.9397 13.3763 36.986 15.6442C37.0168 17.339 36.986 19.0338 36.986 20.7348C36.986 23.5697 36.986 26.4047 36.986 29.2396C37.0085 30.0025 36.7725 30.7508 36.3164 31.3632C35.8603 31.9757 35.2105 32.4162 34.4725 32.6138C33.9987 32.7437 33.5034 32.7768 33.0164 32.7111C32.5294 32.6454 32.0606 32.4824 31.6383 32.2316C29.1711 30.808 26.713 29.3947 24.2643 27.9915L20.3383 25.7298C19.7256 25.4073 19.2118 24.9249 18.8518 24.3339C18.4583 23.6803 18.2969 22.9132 18.3937 22.1566C18.4906 21.4002 18.8399 20.6984 19.3854 20.1647C19.9269 19.6262 20.6324 19.283 21.3906 19.1893C22.149 19.0956 22.9169 19.2566 23.5734 19.647C24.7052 20.2818 25.8187 20.9536 26.9412 21.6006C27.9714 22.1768 29.0014 22.753 30.1518 23.4156Z"
+                        fill="#32C0F0"></path>
+                    <path
+                        d="M30.1524 56.6673L26.7414 58.6271C25.7081 59.2219 24.6813 59.832 23.6418 60.4143C22.9179 60.8463 22.0632 61.0049 21.2324 60.8621C20.4014 60.7191 19.6491 60.2837 19.1114 59.6348C18.106 58.4177 18.0937 56.4608 19.207 55.3361C19.7376 54.8212 20.3326 54.3767 20.9772 54.0141C24.4315 51.9959 27.9071 50.0084 31.3705 48.0084C32.3728 47.4292 33.3998 47.124 34.5563 47.4969C35.2658 47.6931 35.8901 48.1184 36.332 48.7064C36.7741 49.2947 37.0085 50.0125 36.9988 50.7478C37.0174 52.495 36.9988 54.2454 36.9988 55.9862C36.9988 58.7411 36.9988 61.4969 36.9988 64.2539C37.0115 65.1399 36.6766 65.9956 36.0656 66.6376C35.4545 67.2799 34.6161 67.6575 33.7299 67.6896C33.2708 67.7091 32.8125 67.636 32.3824 67.4747C31.9522 67.3135 31.559 67.0675 31.2261 66.7512C30.893 66.4349 30.6271 66.0549 30.4444 65.6338C30.2614 65.2127 30.1652 64.7591 30.1615 64.3C30.1245 62.1 30.1615 59.8998 30.1615 57.7028L30.1524 56.6673Z"
+                        fill="#32C0F0"></path>
+                    <path
+                        d="M49.9087 23.3692L52.4778 21.8963C53.7421 21.1731 55.0045 20.446 56.2649 19.7146C57.1222 19.2185 58.0321 18.9627 59.0097 19.2493C60.5055 19.6838 61.4183 20.6883 61.6126 22.2322C61.7853 23.6281 61.1376 24.6972 60.0026 25.4645C59.1022 26.0809 58.1369 26.577 57.1962 27.1193C54.2817 28.8017 51.3582 30.4688 48.453 32.1667C46.9109 33.0634 44.9618 32.8569 43.827 31.4825C43.3344 30.918 43.0571 30.1978 43.0437 29.4489C43.0437 24.8638 43.0437 20.2785 43.0437 15.6964C43.0484 14.9334 43.3093 14.1941 43.7842 13.5967C44.2592 12.9992 44.9208 12.5781 45.6636 12.4007C46.4063 12.2232 47.1871 12.2997 47.8812 12.6178C48.5753 12.936 49.1426 13.4775 49.4923 14.1557C49.735 14.6826 49.8622 15.2551 49.8655 15.8351C49.9087 17.9921 49.8839 20.1275 49.8839 22.2753L49.9087 23.3692Z"
+                        fill="#32C0F0"></path>
+                    <path
+                        d="M49.9078 56.7908V64.254C49.9046 65.1467 49.5519 66.0028 48.9251 66.6391C48.2984 67.2754 47.4473 67.6412 46.554 67.6586C45.6605 67.676 44.7959 67.3433 44.1449 66.7317C43.494 66.1203 43.1082 65.2784 43.0705 64.3865C43.021 63.154 43.0705 61.8936 43.0705 60.6488C43.0705 57.3577 43.0705 54.0668 43.0705 50.7882C43.0618 50.3218 43.15 49.8585 43.33 49.4281C43.5098 48.9977 43.7774 48.6094 44.1155 48.2878C44.4537 47.9661 44.8551 47.7183 45.2942 47.5598C45.7333 47.4014 46.2007 47.3361 46.6664 47.3678C47.2473 47.4105 47.812 47.5774 48.3226 47.8577C52.1068 50.0146 55.8661 52.1903 59.6348 54.3625C60.1558 54.63 60.6061 55.0173 60.9481 55.4924C61.2901 55.9677 61.5144 56.5172 61.6024 57.0958C61.8831 58.846 60.4583 60.7289 58.685 60.883C57.7814 60.9694 56.8741 60.7596 56.1005 60.285C54.2502 59.185 52.3997 58.1282 50.5245 57.0527C50.3242 56.9534 50.1182 56.866 49.9078 56.7908Z"
+                        fill="#32C0F0"></path>
+                    <path
+                        d="M46.3775 40.0342C46.5164 40.7769 46.1863 41.3007 45.6775 41.7968C44.3482 43.0879 43.0499 44.413 41.7331 45.7226C41.5119 45.9481 41.2481 46.1272 40.9567 46.2494C40.6655 46.3718 40.3528 46.4347 40.0367 46.4347C39.7208 46.4347 39.4081 46.3718 39.1169 46.2494C38.8255 46.1272 38.5617 45.9481 38.3405 45.7226C36.9856 44.3792 35.6359 43.0357 34.2913 41.692C33.8498 41.2499 33.6003 40.6519 33.5968 40.0273C33.5934 39.4028 33.8361 38.8019 34.2727 38.3548C35.6359 36.9846 37.0041 35.6176 38.3775 34.2535C38.8186 33.8306 39.4055 33.5933 40.0167 33.5905C40.6279 33.5875 41.217 33.8193 41.6621 34.2381C42.9974 35.56 44.3081 36.9128 45.6714 38.2162C46.1987 38.7338 46.5225 39.2855 46.3775 40.0342ZM40.0646 37.757C39.87 37.8027 39.6836 37.8787 39.5125 37.982C38.9824 38.4573 38.479 38.9613 38.0045 39.492C37.6961 39.8585 37.7299 40.25 38.0723 40.6444C38.4725 41.1011 38.9009 41.5324 39.3553 41.9355C39.4391 42.0322 39.543 42.1095 39.6595 42.1628C39.776 42.2158 39.9026 42.2433 40.0306 42.2433C40.1587 42.2433 40.2853 42.2158 40.4018 42.1628C40.5184 42.1095 40.622 42.0322 40.7061 41.9355C41.1432 41.5513 41.5552 41.1397 41.9396 40.703C42.3714 40.213 42.3591 39.7938 41.9119 39.2948C41.5416 38.8816 41.1472 38.4905 40.7306 38.1238C40.5239 37.9758 40.3002 37.8528 40.0646 37.757Z"
+                        fill="#32C0F0"></path>
+                </g>
+
+                <g
+                    id="dt-logo-2"
+                    transform="translate(235,132) skewY(22) scale(0.87)"
+                    opacity="0.3"
+                    filter="url(#logoGlowB)"
+                >
+                    <path
+                        d="M65.4629 12.504C64.8189 12.0635 64.0954 11.7517 63.3331 11.5856C62.5512 11.4136 61.7447 11.3825 60.9519 11.4938C60.1209 11.6098 59.3156 11.8662 58.5707 12.2523L55.0948 14.1709L51.6118 16.0858L48.1254 18.0009L44.6424 19.933C43.8877 20.3746 43.0786 20.7175 42.2367 20.9535C41.4217 21.1898 40.5788 21.3136 39.7303 21.321C38.8834 21.3314 38.0383 21.2271 37.2193 21.0114C36.3742 20.7876 35.5622 20.4536 34.8041 20.0181L31.4265 18.1813L28.0488 16.3445L24.6711 14.5145L21.2899 12.6777C20.0374 11.8782 18.5395 11.5556 17.069 11.7692C15.7119 11.9802 14.4535 12.6065 13.4668 13.5619C12.472 14.5048 11.7954 15.7341 11.5311 17.079C11.2596 18.5373 11.527 20.0448 12.2832 21.321L13.4668 23.4911L16.076 28.2532L18.6853 33.0154L19.8724 35.1855C20.3135 35.932 20.6559 36.7325 20.8923 37.5667C21.1163 38.3824 21.2309 39.2242 21.2326 40.0701C21.2311 40.9183 21.1165 41.7626 20.8923 42.5806C20.6821 43.4417 20.3585 44.2709 19.9297 45.0466L18.076 48.5059L16.2187 51.9552L14.3615 55.401L12.5042 58.85C12.1922 59.4154 11.9519 60.0176 11.7896 60.6426C11.6365 61.2332 11.5684 61.8424 11.5861 62.4522C11.6089 63.0513 11.7238 63.6433 11.9265 64.2074C12.1309 64.7988 12.4266 65.3545 12.8036 65.8539C13.2628 66.4849 13.8338 67.0268 14.4878 67.4527C15.1377 67.8845 15.8577 68.1988 16.6164 68.3813C17.3948 68.5722 18.2011 68.6239 18.9976 68.5342C19.8286 68.4387 20.6355 68.1932 21.3788 67.8097L24.9951 65.8267L28.6067 63.8469L32.2194 61.8639L35.8322 59.8807C34.7457 59.1004 33.7408 58.2115 32.8346 57.2275C31.9263 56.2387 31.0939 55.1835 30.3423 54.0709C29.5837 52.9552 28.8893 51.7919 28.2464 50.6081C27.6716 49.5537 27.1379 48.4856 26.6243 47.4243C27.5325 49.1251 29.4878 50.9313 32.0288 52.7443C35.1195 54.8711 38.341 56.8024 41.6729 58.5269C45.1765 60.391 48.7717 62.1531 51.8773 63.711C54.9829 65.2689 57.6152 66.6191 59.1765 67.6497C60.437 68.3957 61.9347 68.6318 63.3635 68.3097C64.6885 67.9801 65.8784 67.2454 66.7658 66.2077C67.6949 65.1548 68.2984 63.8551 68.5037 62.466C68.7177 60.9976 68.4146 59.5005 67.6464 58.231L65.5108 54.3668L60.8338 45.863L56.1555 37.3591L54.0433 33.5391C53.5908 32.7772 53.0996 32.0394 52.5709 31.3283C52.0456 30.6305 51.4778 29.9658 50.8703 29.3383C50.2666 28.7135 49.6211 28.1305 48.9382 27.5933C48.2439 27.0467 47.5092 26.5532 46.7406 26.1171C47.9346 26.6613 49.1488 27.226 50.3393 27.8348C51.5389 28.4391 52.7062 29.1056 53.8363 29.8316C54.965 30.5548 56.0344 31.3668 57.0339 32.2601C58.0423 33.1683 58.9488 34.1834 59.7379 35.2875L61.6595 31.7704L63.5822 28.2532L65.5108 24.7291L67.4324 21.2119C67.7528 20.6832 67.9938 20.1101 68.147 19.5111C68.2998 18.917 68.3679 18.3044 68.3505 17.6913C68.3275 17.0723 68.2127 16.4603 68.0102 15.875C67.8045 15.2758 67.5049 14.7133 67.1225 14.2083C66.6868 13.5365 66.123 12.9572 65.4629 12.504ZM20.8888 61.7718C20.9384 62.4908 20.6772 63.1969 20.1718 63.7107C19.6665 64.2245 18.9653 64.4969 18.2456 64.4592C16.7746 64.4714 15.5725 63.2887 15.5603 61.8177C15.548 60.3468 16.7313 59.1447 18.2023 59.1324C18.9209 59.0817 19.6263 59.3416 20.1402 59.8465C20.6542 60.3513 20.9266 61.0524 20.8888 61.7718ZM15.6199 18.3378C15.5702 17.6188 15.8315 16.913 16.3368 16.3992C16.8422 15.8854 17.5434 15.6127 18.2631 15.6504C18.9821 15.6007 19.6872 15.8617 20.2011 16.3671C20.7149 16.8724 20.9885 17.5739 20.9507 18.2936C21.0004 19.0126 20.7392 19.7183 20.2338 20.2321C19.7284 20.746 19.0273 21.0184 18.3075 20.9807C17.5886 21.0303 16.8822 20.7694 16.3684 20.264C15.8546 19.7586 15.5822 19.0575 15.6199 18.3378ZM64.3576 61.6903C64.3686 62.7694 63.7274 63.749 62.7343 64.1715C61.7412 64.594 60.592 64.3763 59.8221 63.62C59.0522 62.8638 58.8139 61.718 59.2186 60.7175C59.6233 59.717 60.5908 59.0592 61.67 59.0509C62.3886 59.0002 63.094 59.26 63.608 59.7649C64.1219 60.2697 64.3955 60.9708 64.3576 61.6903ZM46.3289 39.0462C45.5432 37.7604 44.2473 37.257 42.6928 37.274C40.5695 37.3451 38.6914 38.6718 37.9152 40.6494C37.1389 42.6269 37.613 44.8767 39.121 46.3732C37.4359 46.1586 35.9077 45.2779 34.8766 43.9279C33.8456 42.5779 33.3981 40.8713 33.6346 39.1892C34.1346 35.8183 37.4856 33.199 40.8531 33.6718C43.7036 34.1548 46.0466 36.1991 46.3289 39.0462ZM64.5483 18.1132C64.5114 19.5497 63.342 20.6988 61.9051 20.7117C60.4682 20.7245 59.2799 19.5964 59.2174 18.1609C59.2543 16.7244 60.4226 15.5752 61.8595 15.5624C63.2964 15.5496 64.4858 16.6776 64.5483 18.1132Z"
+                        fill="#FF694B"></path>
+                </g>
+
+                <g
+                    id="dt-logo-3"
+                    transform="translate(500,137) skewY(-22) scale(0.87)"
+                    opacity="0.3"
+                    filter="url(#logoGlowB)"
+                >
+                    <defs>
+                        <linearGradient
+                            id="pyG0"
+                            x1="11.6445"
+                            y1="11.1421"
+                            x2="54.0467"
+                            y2="47.2277"
+                            gradientUnits="userSpaceOnUse"
+                            ><stop stop-color="#5A9FD4"></stop><stop
+                                offset="1"
+                                stop-color="#306998"></stop></linearGradient
+                        >
+                        <linearGradient
+                            id="pyG1"
+                            x1="47.111"
+                            y1="60.6152"
+                            x2="35.8615"
+                            y2="44.8513"
+                            gradientUnits="userSpaceOnUse"
+                            ><stop stop-color="#FFD43B"></stop><stop
+                                offset="1"
+                                stop-color="#FFE873"></stop></linearGradient
+                        >
+                    </defs>
+                    <path
+                        d="M39.4975 11.1426C37.1728 11.1534 34.9528 11.3516 32.9994 11.6973C27.245 12.7139 26.2002 14.8418 26.2002 18.7659V23.9485H39.7986V25.6761H21.0969C17.1448 25.6761 13.6842 28.0515 12.6018 32.5704C11.3533 37.75 11.2979 40.9822 12.6018 46.3906C13.5684 50.4165 15.8769 53.2849 19.829 53.2849H24.5044V47.0722C24.5044 42.5838 28.3878 38.6247 32.9994 38.6247H46.582C50.3629 38.6247 53.3812 35.5116 53.3812 31.7145V18.7659C53.3812 15.0807 50.2723 12.3123 46.582 11.6973C44.246 11.3084 41.8222 11.1318 39.4975 11.1426ZM32.1436 15.3108C33.5482 15.3108 34.6953 16.4766 34.6953 17.9101C34.6953 19.3384 33.5482 20.4934 32.1436 20.4934C30.7339 20.4934 29.5919 19.3384 29.5919 17.9101C29.5919 16.4766 30.7339 15.3108 32.1436 15.3108Z"
+                        fill="url(#pyG0)"></path>
+                    <path
+                        d="M55.077 25.6761V31.7145C55.077 36.3961 51.108 40.3364 46.582 40.3364H32.9994C29.2789 40.3364 26.2002 43.5206 26.2002 47.2465V60.1951C26.2002 63.8804 29.4048 66.048 32.9994 67.1053C37.3039 68.371 41.4317 68.5997 46.582 67.1053C50.0054 66.1141 53.3812 64.1193 53.3812 60.1951V55.0125H39.7986V53.285H60.1804C64.1325 53.285 65.6052 50.5283 66.9796 46.3907C68.3993 42.131 68.3389 38.0347 66.9796 32.5704C66.0029 28.6361 64.1375 25.6761 60.1804 25.6761H55.077ZM47.4378 58.4676C48.8475 58.4676 49.9895 59.6226 49.9895 61.051C49.9895 62.4844 48.8475 63.6502 47.4378 63.6502C46.0332 63.6502 44.8861 62.4844 44.8861 61.051C44.8861 59.6226 46.0332 58.4676 47.4378 58.4676Z"
+                        fill="url(#pyG1)"></path>
+                </g>
+
+                <g
+                    id="dt-logo-4"
+                    transform="translate(378,187) skewY(-22) scale(0.87)"
+                    opacity="0.3"
+                    filter="url(#logoGlowB)"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M49.2108 11.9868C52.7659 11.2153 56.5782 11.3149 60.0039 12.6172C62.3908 13.5464 64.4847 15.0989 66.0673 17.1129C66.8205 18.0701 66.9167 19.3525 66.9665 20.5303C66.9997 23.329 66.4423 26.0978 65.7289 28.7919C64.3686 33.7787 62.3015 38.5564 59.7036 43.0057C59.4485 43.4442 59.1665 43.8663 58.8592 44.2699L58.763 43.7755C59.0865 42.9178 59.5593 42.1099 59.7418 41.2008C60.3921 38.6344 59.8413 35.9917 59.6074 33.4087C59.3619 30.9701 60.1847 28.5978 60.1648 26.1658C60.2594 24.9746 59.7932 23.8482 59.3386 22.7782C57.7013 19.0754 55.0934 15.7791 51.7506 13.5163C50.9361 12.9506 50.0237 12.5541 49.2108 11.9868Z"
+                        fill="#326690"></path>
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M39.3317 12.3252C43.7064 11.7628 48.3017 12.9805 51.7771 15.7459C54.6504 18.0402 56.9199 21.1491 58.1425 24.6445C56.1103 24.5732 53.8044 24.4886 52.1604 25.9169C50.6706 27.1877 50.4782 29.3559 50.8133 31.1791C51.593 35.5106 54.1179 39.1918 55.9842 43.087C56.4803 44.0011 57.1472 44.7974 57.7792 45.6169C57.0244 46.0035 56.1833 46.3701 55.7553 47.1564C55.0055 48.3791 55.2676 49.8705 55.0834 51.2291C54.6521 55.0348 54.2274 58.8454 53.6136 62.6261C53.3233 64.4393 52.5635 66.3654 50.868 67.2678C49.1344 68.1604 47.1188 68.7194 45.1679 68.4175C43.3149 68.0874 42.1486 66.3438 41.6244 64.6417C41.2395 63.215 41.1997 61.727 41.0902 60.2604C40.9186 56.7168 40.8854 53.1678 40.9907 49.6216C41.0686 48.2364 40.3653 46.7948 39.1443 46.1212C38.552 45.7861 37.8602 45.7397 37.1983 45.6866C37.7176 43.082 39.2869 40.8309 39.8244 38.2296C40.5229 35.0113 40.138 31.6602 39.423 28.48C39.0746 26.894 37.8802 25.4906 36.2909 25.1057C33.8456 24.4819 31.3787 25.4508 29.1906 26.4826C29.466 22.8894 30.4182 19.2115 32.5947 16.2934C33.3969 15.217 34.4058 14.3116 35.5623 13.6302C36.7189 12.9488 38.0015 12.5051 39.3317 12.3252Z"
+                        fill="#326690"></path>
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M20.6868 12.6238C24.5821 11.8656 28.5768 12.6686 32.3161 13.8215C30.6509 15.6524 29.3953 17.8174 28.6332 20.172C27.613 23.3273 27.1468 26.685 27.389 29.9996C27.5401 32.3348 27.4595 34.6793 27.1484 36.9987C26.7453 40.0229 27.9447 43.1351 30.1677 45.1773C28.6548 46.9656 27.0506 48.6727 25.5841 50.5025C24.9371 51.2739 24.0628 52.1913 22.9596 51.9624C21.6689 51.5841 20.8478 50.393 20.1294 49.3246C18.1885 46.1826 17.0156 42.6358 15.9439 39.1138C14.7428 34.9466 13.7292 30.7113 13.1469 26.4063C12.8566 23.1315 13.0374 19.6179 14.6964 16.7015C15.9373 14.4917 18.2548 13.085 20.6868 12.6238ZM53.9487 27.7335C53.471 28.1316 53.9869 28.7222 54.3966 28.9096C55.392 29.5002 56.7524 28.6741 56.7855 27.5261C55.8897 27.1047 54.7616 27.1462 53.9487 27.7335ZM53.4195 27.1926C54.8529 26.1641 56.7275 26.393 58.3848 26.4959C58.3134 28.8118 57.6067 31.0812 57.8373 33.4137C58.0447 36.2969 58.8725 39.3958 57.5271 42.1315C55.7238 38.5033 53.3913 35.0395 52.5784 30.9999C52.3478 29.7126 52.2898 28.0852 53.4195 27.1926Z"
+                        fill="#326690"></path>
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M34.1758 27.7998C33.9004 27.8994 33.6117 28.0885 33.6681 28.4269C33.8655 29.5799 35.3934 30.2816 36.3556 29.5633C36.7803 29.3228 37.2266 28.6559 36.7372 28.2544C36.0404 27.6821 35.0235 27.5692 34.1758 27.7998ZM29.1259 28.6841C30.9226 27.5095 33.0244 26.5905 35.1993 26.7165C36.3274 26.7663 37.3676 27.5709 37.638 28.6924C38.6267 32.6738 38.932 37.0999 37.0391 40.869C36.3873 42.3259 35.8331 43.8244 35.3802 45.3548C32.2315 45.388 29.5523 42.6972 28.9949 39.6679C28.6133 37.9543 29.111 36.2306 29.1691 34.5136C29.3018 32.5726 29.1641 30.6267 29.1259 28.6841ZM57.5072 47.8067C57.9734 47.46 58.6353 47.1398 59.1761 47.5197C61.4688 48.7391 64.133 48.1435 66.5717 47.8465C65.0819 49.3097 63.0182 49.9965 60.9893 50.2188C59.6456 50.3798 58.2504 50.4279 56.9531 49.9783C56.9597 49.2368 56.9199 48.3575 57.5072 47.8067ZM34.4213 50.6469C35.7385 49.9318 36.2594 48.3542 37.4903 47.5446C38.8291 47.3522 39.8095 49.3645 38.7959 50.3167C36.8185 53.0241 32.8602 53.5417 30.0018 52.0686C31.412 51.4067 33.0609 51.4581 34.4213 50.6469Z"
+                        fill="#326690"></path>
+                </g>
+            </g>
+        </svg>
+    </div>
+    <div class="block">
+        <svg
+            width="720"
+            height="360"
+            viewBox="0 0 720 360"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <defs>
+                <radialGradient id="tA" cx="50%" cy="45%" r="65%"
+                    ><stop offset="0%" stop-color="#112613"></stop><stop
+                        offset="100%"
+                        stop-color="#050d06"></stop></radialGradient
+                >
+                <linearGradient
+                    id="fA"
+                    x1="60"
+                    y1="175"
+                    x2="60"
+                    y2="217"
+                    gradientUnits="userSpaceOnUse"
+                    ><stop offset="0%" stop-color="#0c1e0e"></stop><stop
+                        offset="100%"
+                        stop-color="#030805"></stop></linearGradient
+                >
+                <linearGradient
+                    id="rA"
+                    x1="660"
+                    y1="175"
+                    x2="360"
+                    y2="295"
+                    gradientUnits="userSpaceOnUse"
+                    ><stop offset="0%" stop-color="#0a1a0c"></stop><stop
+                        offset="100%"
+                        stop-color="#030705"></stop></linearGradient
+                >
+                <filter id="glA" x="-10%" y="-20%" width="120%" height="150%"
+                    ><feDropShadow
+                        dx="0"
+                        dy="6"
+                        stdDeviation="14"
+                        flood-color="#2dff5c"
+                        flood-opacity="0.3"></feDropShadow></filter
+                >
+                <filter
+                    id="logoGlowA"
+                    x="-40%"
+                    y="-40%"
+                    width="180%"
+                    height="180%"
+                >
+                    <feComposite
+                        in="SourceGraphic"
+                        in2="SourceGraphic"
+                        operator="over"
+                        result="src"></feComposite>
+                    <feGaussianBlur in="src" stdDeviation="3" result="blur"
+                    ></feGaussianBlur>
+                    <feDropShadow
+                        dx="4"
+                        dy="8"
+                        stdDeviation="4"
+                        flood-color="#000000"
+                        flood-opacity="0.6"
+                        result="shadow"></feDropShadow>
+                    <feMerge
+                        ><feMergeNode in="blur"></feMergeNode><feMergeNode
+                            in="shadow"></feMergeNode><feMergeNode
+                            in="SourceGraphic"></feMergeNode></feMerge
+                    >
+                </filter>
+                <linearGradient id="txtA" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff"></stop>
+                    <stop offset="100%" stop-color="#2dff5c"></stop>
+                </linearGradient>
+            </defs>
+            <g filter="url(#glA)">
+                <path d="M660,175 L360,295 L360,337 L660,217 Z" fill="url(#rA)"
+                ></path>
+                <line
+                    x1="660"
+                    y1="175"
+                    x2="660"
+                    y2="217"
+                    stroke="#2dff5c"
+                    stroke-width="1"
+                    opacity="0.45"></line>
+                <path
+                    d="M360,337 L660,217"
+                    stroke="#2dff5c"
+                    stroke-width="1"
+                    fill="none"
+                    opacity="0.4"></path>
+                <path d="M60,175 L360,295 L360,337 L60,217 Z" fill="url(#fA)"
+                ></path>
+                <line
+                    x1="60"
+                    y1="175"
+                    x2="60"
+                    y2="217"
+                    stroke="#2dff5c"
+                    stroke-width="1"
+                    opacity="0.4"></line>
+                <path
+                    d="M60,217 L360,337"
+                    stroke="#2dff5c"
+                    stroke-width="1"
+                    fill="none"
+                    opacity="0.45"></path>
+                <path d="M60,175 L360,55 L660,175 L360,295 Z" fill="url(#tA)"
+                ></path>
+                <path
+                    class="ng"
+                    d="M60,175 L360,55 L660,175 L360,295 Z"
+                    fill="none"
+                    stroke="#2dff5c"
+                    stroke-width="1.6"></path>
+                <!-- Lueur face top bloc AI -->
+                <defs>
+                    <filter
+                        id="glowBloomA"
+                        x="-60%"
+                        y="-60%"
+                        width="220%"
+                        height="220%"
+                    >
+                        <feGaussianBlur
+                            in="SourceGraphic"
+                            stdDeviation="8"
+                            result="blur1"></feGaussianBlur>
+                        <feGaussianBlur
+                            in="SourceGraphic"
+                            stdDeviation="3"
+                            result="blur2"></feGaussianBlur>
+                        <feColorMatrix
+                            in="blur1"
+                            type="matrix"
+                            values="1 0 0 0 0.3  0 0 1 0 0  0 0 1 0 0.6  0 0 0 2.5 0"
+                            result="colored"></feColorMatrix>
+                        <feMerge
+                            ><feMergeNode in="colored"
+                            ></feMergeNode><feMergeNode in="blur2"
+                            ></feMergeNode><feMergeNode in="SourceGraphic"
+                            ></feMergeNode></feMerge
+                        >
+                    </filter>
+                    <linearGradient
+                        id="glowA0"
+                        x1="53.0258"
+                        y1="25.0008"
+                        x2="53.0258"
+                        y2="209.684"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop offset="0%" stop-color="#8A2EF2" stop-opacity="0"
+                        ></stop>
+                        <stop
+                            offset="40%"
+                            stop-color="#a855f7"
+                            stop-opacity="0.6"></stop>
+                        <stop
+                            offset="75%"
+                            stop-color="#c084fc"
+                            stop-opacity="0.9"></stop>
+                        <stop offset="100%" stop-color="#e9d5ff"></stop>
+                    </linearGradient>
+                    <linearGradient
+                        id="glowA1"
+                        x1="53.0253"
+                        y1="25.0008"
+                        x2="53.0253"
+                        y2="209.684"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0"
+                        ></stop>
+                        <stop
+                            offset="50%"
+                            stop-color="#a855f7"
+                            stop-opacity="0.7"></stop>
+                        <stop offset="100%" stop-color="#f0abfc"></stop>
+                    </linearGradient>
+                </defs>
+                <g
+                    id="ai-glow-overlay"
+                    transform="translate(306.5,-5)"
+                    pointer-events="none"
+                    style="animation: glowPulse 2.5s ease-in-out infinite;"
+                    filter="url(#glowBloomA)"
+                >
+                    <path
+                        d="M52.8244 209.684L0 188.716V0H106.052V188.716L52.8244 209.684Z"
+                        fill="url(#glowA0)"></path>
+                    <path
+                        d="M52.9158 209.684L24.1935 198.504V10.4842L81.8571 9.43578V198.151L52.9158 209.684Z"
+                        fill="url(#glowA1)"></path>
+                </g>
+                <!-- Particules canvas par-dessus la lueur -->
+                <foreignObject
+                    id="ai-particles-fo"
+                    x="296"
+                    y="-15"
+                    width="127"
+                    height="230"
+                    pointer-events="none"
+                >
+                    <canvas
+                        id="glow-particles"
+                        width="127"
+                        height="230"
+                        style="display:block;"></canvas>
+                </foreignObject>
+                <text
+                    font-family="sans-serif"
+                    font-size="11"
+                    font-weight="500"
+                    letter-spacing="2.5"
+                    fill="url(#txtA)"
+                    pointer-events="none"
+                    text-anchor="middle"
+                    dominant-baseline="middle"
+                    transform="translate(210,256) skewY(22)">AI MODELS</text
+                >
+            </g>
+        </svg>
+        <!-- Logos AI block — outside glA filter group for correct z-index -->
+
+        <!-- Logo 1 — GitHub (blanc) -->
+        <g
+            id="ai-logo-1"
+            transform="translate(125,92) skewY(22) scale(0.87)"
+            opacity="0.3"
+            filter="url(#logoGlowA)"
+        >
+            <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M29.6923 11.3455C30.2519 11.5658 30.7571 11.9285 31.2157 12.4078C31.98 13.2006 32.6251 14.3354 33.1174 15.68C33.6122 17.0324 33.9335 18.5299 34.0552 20.0326C35.6865 19.1097 37.4968 18.5478 39.3638 18.3848L39.496 18.3745C41.75 18.1931 43.9781 18.5999 45.9212 19.6025C46.1829 19.7398 46.4394 19.8875 46.6907 20.0429C46.8202 18.5688 47.1363 17.105 47.6234 15.7836C48.1157 14.4364 48.7608 13.3042 49.5225 12.5088C49.9482 12.0483 50.4688 11.6859 51.0485 11.4466C51.7143 11.1875 52.4216 11.1409 53.1108 11.3378C54.1497 11.6331 55.0409 12.2912 55.743 13.2472C56.3856 14.1203 56.8675 15.2396 57.1965 16.5816C57.7924 19.0014 57.896 22.1856 57.4944 26.0252L57.6318 26.1288L57.6991 26.178C59.6604 27.6703 61.0257 29.7974 61.7486 32.2665C62.8756 36.119 62.3082 40.4405 60.3651 42.8578L60.3184 42.9122L60.3236 42.9199C61.404 44.8942 62.0595 46.9798 62.1994 49.1379L62.2046 49.2157C62.3704 51.9749 61.6864 54.7522 60.0956 57.4804L60.0775 57.5063L60.1034 57.5685C61.3263 60.5661 61.7097 63.5844 61.2382 66.6001L61.2226 66.7011C61.1496 67.1416 60.9048 67.5352 60.542 67.7955C60.1792 68.0559 59.728 68.1617 59.2873 68.0898C59.0691 68.0558 58.8597 67.979 58.6712 67.8638C58.4827 67.7487 58.3188 67.5975 58.1888 67.4189C58.0589 67.2404 57.9654 67.0379 57.9139 66.8231C57.8623 66.6084 57.8536 66.3856 57.8883 66.1674C58.3209 63.4911 57.9142 60.807 56.6447 58.0763C56.5262 57.8226 56.4736 57.5431 56.4917 57.2637C56.5098 56.9843 56.5981 56.714 56.7483 56.4777L56.7587 56.4622C58.3235 54.0683 58.9712 51.721 58.8313 49.4151C58.7121 47.3969 57.9893 45.4149 56.7587 43.5262C56.5193 43.159 56.434 42.7124 56.5213 42.2829C56.6086 41.8533 56.8613 41.4754 57.225 41.2307L57.2483 41.2152C57.8779 40.8032 58.4582 39.7514 58.751 38.3135C59.074 36.6132 58.9897 34.8606 58.5049 33.1992C57.9737 31.3856 57.0022 29.8725 55.642 28.8388C54.1005 27.6626 52.0589 27.0952 49.4758 27.2584C49.1381 27.2804 48.8015 27.2005 48.5096 27.0292C48.2177 26.8578 47.9839 26.6028 47.8384 26.2972C47.0249 24.5743 45.8383 23.3411 44.359 22.5768C42.9387 21.8679 41.3486 21.57 39.768 21.7166C36.5424 21.9731 33.6977 23.7919 32.8505 26.0848C32.7307 26.4075 32.5151 26.6858 32.2326 26.8826C31.9502 27.0794 31.6143 27.1852 31.2701 27.1859C28.5057 27.191 26.3657 27.8387 24.8008 29.0072C23.4484 30.0176 22.5261 31.4296 22.039 33.1214C21.5982 34.7139 21.5379 36.3877 21.8628 38.0077C22.153 39.4534 22.7204 40.6504 23.3707 41.2955L23.3914 41.3136C23.9407 41.8499 24.0572 42.6868 23.6738 43.3474C22.7411 44.9589 22.0442 47.3606 21.9302 49.669C21.8006 52.3065 22.4121 54.5968 23.793 56.2394L23.8344 56.2886C24.0428 56.5315 24.1769 56.8292 24.2205 57.1462C24.2642 57.4633 24.2156 57.7861 24.0806 58.0763C22.5882 61.2785 22.1297 63.9108 22.6245 65.9835C22.7135 66.4145 22.6307 66.8632 22.3939 67.2341C22.157 67.605 21.7848 67.8688 21.3563 67.9694C20.9279 68.07 20.4771 67.9994 20.1 67.7727C19.7228 67.546 19.4489 67.1811 19.3368 66.7555C18.7072 64.1181 19.1347 61.0972 20.5622 57.6928L20.5985 57.6022L20.5778 57.5711C19.8761 56.5347 19.3525 55.3885 19.0285 54.1797L19.0155 54.1304C18.6222 52.6223 18.4675 51.0619 18.5569 49.5058C18.6709 47.1482 19.2772 44.7335 20.1684 42.7956L20.1995 42.7282L20.1943 42.723C19.4352 41.6401 18.873 40.254 18.5621 38.7202L18.5491 38.658C18.1208 36.5186 18.2033 34.3084 18.7901 32.2069C19.4689 29.8363 20.8032 27.7999 22.7696 26.3283C22.9251 26.2117 23.0883 26.0951 23.2515 25.9863C22.8396 22.1182 22.9432 18.9133 23.5417 16.478C23.8707 15.1359 24.3552 14.0167 24.9977 13.1436C25.6972 12.1902 26.5885 11.5321 27.6274 11.2341C28.3166 11.0372 29.0265 11.0813 29.6923 11.343V11.3455ZM40.3561 34.8962C42.7811 34.8962 45.0196 35.7071 46.6933 37.1113C48.3255 38.4767 49.2971 40.311 49.2971 42.1375C49.2971 44.4382 48.2452 46.231 46.3617 47.3762C44.7554 48.3477 42.6024 48.8193 40.1359 48.8193C37.5218 48.8193 35.2885 48.1482 33.677 46.9176C32.0784 45.6999 31.182 43.99 31.182 42.1375C31.182 40.3058 32.2132 38.4663 33.9179 37.0958C35.6486 35.7045 37.9337 34.8962 40.3561 34.8962ZM40.3561 37.2175C38.5587 37.2018 36.809 37.7954 35.3921 38.9016C34.1977 39.8602 33.5215 41.0649 33.5215 42.1401C33.5215 43.249 34.0656 44.2879 35.1019 45.0781C36.2808 45.9771 38.014 46.4979 40.1359 46.4979C42.206 46.4979 43.9522 46.117 45.1414 45.3942C46.3409 44.6688 46.955 43.6169 46.955 42.1375C46.955 41.0416 46.3176 39.8317 45.1854 38.8834C43.9315 37.8342 42.2319 37.2175 40.3561 37.2175ZM42.0713 40.3524L42.0816 40.3628C42.3925 40.754 42.3278 41.3214 41.9365 41.6323L41.18 42.2282V43.3837C41.1786 43.6409 41.0753 43.8871 40.8927 44.0683C40.7101 44.2494 40.4631 44.3508 40.2059 44.3501C39.9486 44.3508 39.7016 44.2494 39.519 44.0683C39.3364 43.8871 39.2331 43.6409 39.2317 43.3837V42.1919L38.5296 41.6271C38.437 41.5529 38.36 41.4611 38.303 41.357C38.2461 41.2528 38.2103 41.1385 38.1978 41.0204C38.1853 40.9024 38.1962 40.7831 38.2301 40.6693C38.2639 40.5556 38.3199 40.4496 38.3949 40.3576C38.5478 40.1715 38.768 40.0532 39.0076 40.0284C39.2473 40.0037 39.487 40.0745 39.6747 40.2255L40.2318 40.6711L40.8018 40.2203C40.9888 40.0725 41.2262 40.0036 41.4634 40.0283C41.7005 40.053 41.9186 40.1693 42.0713 40.3524ZM29.0135 35.3806C30.2519 35.3806 31.2597 36.3911 31.2597 37.6372C31.2604 38.2346 31.024 38.8078 30.6023 39.2309C30.1806 39.654 29.6083 39.8925 29.0109 39.8939C28.4144 39.8918 27.8431 39.6534 27.4221 39.2309C27.0011 38.8084 26.7647 38.2363 26.7647 37.6398C26.7633 37.0425 26.9991 36.469 27.4203 36.0454C27.8414 35.6218 28.4161 35.3827 29.0135 35.3806ZM51.5692 35.3806C52.8128 35.3806 53.8181 36.3911 53.8181 37.6372C53.8188 38.2346 53.5823 38.8078 53.1606 39.2309C52.739 39.654 52.1666 39.8925 51.5692 39.8939C50.9728 39.8918 50.4015 39.6534 49.9804 39.2309C49.5594 38.8084 49.323 38.2363 49.323 37.6398C49.3216 37.0425 49.5574 36.469 49.9786 36.0454C50.3998 35.6218 50.9719 35.3827 51.5692 35.3806ZM28.4876 14.4804L28.4798 14.4856C28.1796 14.6161 27.9233 14.8302 27.7414 15.1022L27.7284 15.1178C27.3709 15.6075 27.06 16.3277 26.8268 17.2734C26.3864 19.0662 26.2672 21.499 26.5056 24.481C27.6196 24.1494 28.8347 23.9421 30.1431 23.867L30.169 23.8644L30.2182 23.7763C30.3374 23.5639 30.4644 23.3592 30.6017 23.1571C30.9203 21.1596 30.6587 18.7734 29.9462 16.8251C29.599 15.8821 29.1767 15.1411 28.7725 14.7188C28.6891 14.631 28.5961 14.5528 28.4953 14.4856L28.4876 14.4804ZM52.2558 14.5841L52.2506 14.5867C52.1498 14.6538 52.0568 14.732 51.9734 14.8198C51.5692 15.2421 51.1443 15.9857 50.7998 16.9288C50.0484 18.9859 49.7971 21.5301 50.2039 23.5924L50.3541 23.8437L50.3749 23.88H50.4526C51.7384 23.8803 53.0175 24.0653 54.2507 24.4292C54.4735 21.5171 54.3492 19.1362 53.9191 17.377C53.6859 16.4313 53.375 15.7111 53.0149 15.2214L53.0045 15.2059C52.823 14.9329 52.5666 14.7179 52.2662 14.5867H52.2558V14.5841Z"
+                fill="white"></path>
+        </g>
+
+        <!-- Logo 2 — OpenAI (blanc) -->
+        <g
+            id="ai-logo-2"
+            transform="translate(235,132) skewY(22) scale(0.87)"
+            opacity="0.3"
+            filter="url(#logoGlowA)"
+        >
+            <path
+                d="M37.2792 11.0041C31.0443 11.0041 25.5049 15.0189 23.5741 20.9447C21.5926 21.3532 19.7208 22.1789 18.0834 23.3671C16.4459 24.5553 15.0802 26.0786 14.0773 27.8356C10.9503 33.2402 11.6643 40.0347 15.8536 44.667C14.5602 48.5473 15.0041 52.7932 17.0696 56.3066C20.1775 61.7305 26.431 64.5101 32.5502 63.2168C33.8901 64.7289 35.5371 65.9379 37.3809 66.7635C39.2249 67.5888 41.2237 68.0118 43.2439 68.0038C49.4789 68.0038 55.0184 63.9889 56.9491 58.0631C60.9639 57.2328 64.4193 54.7234 66.4267 51.1721C69.5729 45.7677 68.8589 38.9732 64.6705 34.3407V34.3215C65.3093 32.4036 65.5313 30.3714 65.3216 28.3608C65.1118 26.3502 64.4752 24.4076 63.4544 22.6628C60.3458 17.2582 54.0917 14.4779 47.9921 15.7713C46.6461 14.2631 44.995 13.0581 43.148 12.2363C41.3011 11.4144 39.3007 10.9944 37.2792 11.0041ZM37.2792 14.7104L37.26 14.7296C39.7694 14.7296 42.1826 15.5982 44.1126 17.2007C44.0353 17.239 43.8808 17.3355 43.7651 17.3936L32.4156 23.937C31.8363 24.2653 31.4889 24.8829 31.4889 25.5587V40.9231L26.6054 38.1053V25.4041C26.6043 22.571 27.7278 19.8533 29.7292 17.8481C31.7307 15.8429 34.4462 14.7148 37.2792 14.7104ZM50.9516 19.1835C52.8323 19.1799 54.6809 19.6729 56.3101 20.6126C57.9393 21.5524 59.2915 22.9056 60.2301 24.5355C61.4654 26.6975 61.9283 29.2261 61.5036 31.6774C61.4263 31.6192 61.2725 31.5426 61.1753 31.4845L49.8258 24.9213C49.5402 24.7598 49.2178 24.6749 48.8897 24.6749C48.5618 24.6749 48.2393 24.7598 47.9537 24.9213L34.6541 32.6034V26.967L45.6372 20.6164C47.2519 19.6802 49.0849 19.1858 50.9516 19.1828V19.1835ZM22.8798 25.0177V38.5101C22.8798 39.1858 23.2273 39.7843 23.8066 40.1317L37.0863 47.7948L32.1831 50.632L21.2192 44.3006C18.769 42.8806 16.9824 40.5463 16.2515 37.8105C15.5205 35.0745 15.9051 32.1602 17.3206 29.7076C18.5694 27.5431 20.5361 25.8844 22.8798 25.0177ZM48.3204 28.3568L59.3034 34.6881C64.4187 37.6415 66.1553 44.1658 63.2019 49.2811L63.2211 49.3003C61.9667 51.4622 59.9976 53.1222 57.6619 53.9717V40.4786C57.6619 39.8027 57.3144 39.1853 56.735 38.8575L43.4361 31.1747L48.3204 28.3568ZM40.2517 33.009L45.8498 36.2517V42.7179L40.2517 45.9606L34.6541 42.7179V36.2517L40.2517 33.009ZM49.0536 38.1053L53.9369 40.9231V53.605C53.9369 59.5117 49.1501 64.2987 43.2631 64.2987V64.2796C40.7729 64.2796 38.3407 63.4109 36.4297 61.8092C36.507 61.7709 36.6807 61.6737 36.7772 61.6156L48.1267 55.0721C48.7062 54.7438 49.0726 54.1262 49.0529 53.4505L49.0536 38.1053ZM45.8683 46.405V52.0408L34.8854 58.3723C29.77 61.3065 23.2458 59.5692 20.2924 54.4729H20.3116C19.0572 52.3301 18.6126 49.7823 19.0374 47.3312C19.1147 47.3893 19.2692 47.4658 19.3657 47.5239L30.7153 54.0873C31.0008 54.2487 31.3233 54.3336 31.6512 54.3336C31.9793 54.3336 32.3018 54.2487 32.5873 54.0873L45.8683 46.405Z"
+                fill="white"></path>
+        </g>
+
+        <!-- Logo 3 — Gemini (gradient) -->
+        <g
+            id="ai-logo-3"
+            transform="translate(378,187) skewY(-22) scale(0.87)"
+            opacity="0.3"
+            filter="url(#logoGlowA)"
+        >
+            <defs>
+                <radialGradient
+                    id="gemG"
+                    cx="0"
+                    cy="0"
+                    r="1"
+                    gradientUnits="userSpaceOnUse"
+                    gradientTransform="translate(17.1573 34.6669) rotate(18.6832) scale(60.6694 486)"
+                >
+                    <stop offset="0.067" stop-color="#9168C0"></stop>
+                    <stop offset="0.343" stop-color="#5684D1"></stop>
+                    <stop offset="0.672" stop-color="#1BA1E3"></stop>
+                </radialGradient>
+            </defs>
+            <path
+                d="M68.5 40.057C61.1049 40.5108 54.1311 43.6532 48.8921 48.8921C43.6532 54.1311 40.5108 61.1049 40.057 68.5H39.943C39.4899 61.1047 36.3478 54.1304 31.1087 48.8913C25.8696 43.6522 18.8953 40.5101 11.5 40.057V39.943C18.8953 39.4899 25.8696 36.3478 31.1087 31.1087C36.3478 25.8696 39.4899 18.8953 39.943 11.5H40.057C40.5108 18.8951 43.6532 25.8689 48.8921 31.1079C54.1311 36.3468 61.1049 39.4892 68.5 39.943V40.057Z"
+                fill="url(#gemG)"></path>
+        </g>
+
+        <!-- Logo 4 — Langchain (bleu #4D6BFE) -->
+        <g
+            id="ai-logo-4"
+            transform="translate(500,137) skewY(-22) scale(0.87)"
+            opacity="0.3"
+            filter="url(#logoGlowA)"
+        >
+            <path
+                d="M44.3389 20.4307L59.9429 59.5692H68.5L52.8959 20.4307H44.3389Z"
+                fill="white"></path>
+            <path
+                d="M26.236 44.0815L31.5752 30.3271L36.9145 44.0815H26.236ZM27.1016 20.4307L11.5 59.5692H20.2235L23.4143 51.3501H39.7367L42.927 59.5692H51.6505L36.0488 20.4307H27.1016Z"
+                fill="white"></path>
+        </g>
+    </div>
+</div>
+
+<!-- Prolongement lueur violette sous le bloc Infra -->
+<div
+    style="
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -130px;
+    width: 107px;
+    pointer-events: none;
+    z-index: 0;
+    animation: glowPulse 2.5s ease-in-out infinite;
+  "
+>
+    <svg
+        width="107"
+        height="160"
+        viewBox="0 0 107 160"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <defs>
+            <linearGradient
+                id="glowDown0"
+                x1="53"
+                y1="0"
+                x2="53"
+                y2="160"
+                gradientUnits="userSpaceOnUse"
+            >
+                <stop offset="0%" stop-color="#C08EF9"></stop>
+                <stop offset="100%" stop-color="#8A2EF2" stop-opacity="0"
+                ></stop>
+            </linearGradient>
+            <linearGradient
+                id="glowDown1"
+                x1="53"
+                y1="0"
+                x2="53"
+                y2="160"
+                gradientUnits="userSpaceOnUse"
+            >
+                <stop offset="0%" stop-color="#8A2EF2"></stop>
+                <stop offset="100%" stop-color="#8A2EF2" stop-opacity="0"
+                ></stop>
+            </linearGradient>
+        </defs>
+        <path
+            d="M52.8244 0L0 21V160H106.052V21L52.8244 0Z"
+            fill="url(#glowDown1)"></path>
+        <path
+            d="M52.9158 0L24.1935 11V149.5L81.8571 150.5V11L52.9158 0Z"
+            fill="url(#glowDown0)"></path>
+    </svg>
+</div>
+
+<canvas
+    id="particles"
+    style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;"
+></canvas>
+<script>
+    const canvas = document.getElementById("particles") as HTMLCanvasElement
+    const ctx = canvas.getContext("2d")
+    function resizeCanvas() {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+    }
+    resizeCanvas()
+    window.addEventListener("resize", resizeCanvas)
+
+    const blocks = document.querySelectorAll(".block")
+    const blockInfra = blocks[0]
+    const blockData = blocks[1]
+    const blockAI = blocks[2]
+
+    const infraLogos = ["ic-logo-1", "ic-logo-2", "ic-logo-3", "ic-logo-4"]
+    const dataLogos = ["dt-logo-1", "dt-logo-2", "dt-logo-3", "dt-logo-4"]
+    const aiLogos = ["ai-logo-1", "ai-logo-2", "ai-logo-3", "ai-logo-4"]
+    const colors = { infra: "#ff9900", data: "#4090ff", ai: "#2dff5c" }
+
+    // ── Block glow + animated border ──────────────────────────────────────
+    // We inject a rotating gradient border overlay into the SVG when active
+    // The isometric top face path: M60,175 L360,55 L660,175 L360,295 Z
+    // The front faces paths are also animated
+
+    let borderAnims: { [key: number]: number } = {} // blockIndex -> animFrame id
+
+    function setBlockGlow(block: HTMLElement, active: boolean, color: string) {
+        const svg = block.querySelector("svg")
+        if (!svg) return
+        const idx = Array.from(document.querySelectorAll(".block")).indexOf(
+            block,
+        )
+
+        // Cancel previous anim
+        if (borderAnims[idx]) {
+            cancelAnimationFrame(borderAnims[idx])
+            delete borderAnims[idx]
+        }
+
+        // Remove existing overlay
+        const old = svg.querySelector("#border-overlay-" + idx)
+        if (old) old.remove()
+
+        svg.style.transition = "filter 0.7s ease"
+        if (!active) {
+            svg.style.filter = ""
+            return
+        }
+
+        svg.style.filter = `drop-shadow(0 0 10px ${color}) drop-shadow(0 0 22px ${color}55)`
+
+        // Create defs for conic gradient (simulated via SVG)
+        // We use a <linearGradient> that we rotate over time
+        const ns = "http://www.w3.org/2000/svg"
+        const defs =
+            svg.querySelector("defs") ||
+            svg.insertBefore(
+                document.createElementNS(ns, "defs"),
+                svg.firstChild,
+            )
+
+        // Create gradient
+        const gradId = "border-grad-" + idx
+        let grad = defs.querySelector("#" + gradId)
+        if (!grad) {
+            grad = document.createElementNS(ns, "linearGradient")
+            grad.setAttribute("id", gradId)
+            grad.setAttribute("gradientUnits", "userSpaceOnUse")
+            // stops: color → white → color
+            ;[
+                [0, "#ffffff"],
+                [0.3, color],
+                [0.6, "#ffffff"],
+                [1, color],
+            ].forEach(([o, c]) => {
+                const stop = document.createElementNS(ns, "stop")
+                stop.setAttribute("offset", o)
+                stop.setAttribute("stop-color", c)
+                grad.appendChild(stop)
+            })
+            defs.appendChild(grad)
+        }
+
+        // Create overlay group
+        const g = document.createElementNS(ns, "g")
+        g.setAttribute("id", "border-overlay-" + idx)
+        g.setAttribute("pointer-events", "none")
+
+        // Top face border
+        const top = document.createElementNS(ns, "path")
+        top.setAttribute("d", "M60,175 L360,55 L660,175 L360,295 Z")
+        top.setAttribute("fill", "none")
+        top.setAttribute("stroke", `url(#${gradId})`)
+        top.setAttribute("stroke-width", "2.5")
+        top.setAttribute("opacity", "0.9")
+        g.appendChild(top)
+
+        // Front left face
+        const fl = document.createElementNS(ns, "path")
+        fl.setAttribute("d", "M60,175 L360,295 L360,337 L60,217 Z")
+        fl.setAttribute("fill", "none")
+        fl.setAttribute("stroke", `url(#${gradId})`)
+        fl.setAttribute("stroke-width", "2.5")
+        fl.setAttribute("opacity", "0.7")
+        g.appendChild(fl)
+
+        // Front right face
+        const fr = document.createElementNS(ns, "path")
+        fr.setAttribute("d", "M660,175 L360,295 L360,337 L660,217 Z")
+        fr.setAttribute("fill", "none")
+        fr.setAttribute("stroke", `url(#${gradId})`)
+        fr.setAttribute("stroke-width", "2.5")
+        fr.setAttribute("opacity", "0.7")
+        g.appendChild(fr)
+
+        svg.insertBefore(g, svg.querySelector("g[filter]") || svg.lastChild)
+
+        // Animate gradient rotation by updating x1,y1,x2,y2
+        let angle = 0
+        const cx = 360,
+            cy = 175 // center of the isometric shape
+        const r = 320
+        function animBorder() {
+            angle += 1.2
+            const rad = (angle * Math.PI) / 180
+            grad.setAttribute("x1", cx + Math.cos(rad) * r)
+            grad.setAttribute("y1", cy + Math.sin(rad) * r)
+            grad.setAttribute("x2", cx + Math.cos(rad + Math.PI) * r)
+            grad.setAttribute("y2", cy + Math.sin(rad + Math.PI) * r)
+            borderAnims[idx] = requestAnimationFrame(animBorder)
+        }
+        animBorder()
+
+        // Activate/deactivate spin border
+        const filterIds = ["glC", "glB", "glA"]
+        const borderId = "spin-border-" + filterIds[idx]
+        const borderEl = svg.querySelector("#" + borderId)
+        if (borderEl) {
+            if (active) {
+                borderEl.classList.remove("active")
+                void borderEl.offsetWidth // reflow to restart animation
+                borderEl.classList.add("active")
+            } else {
+                borderEl.classList.remove("active")
+            }
+        }
+    }
+
+    // ── Logo fade ──────────────────────────────────────────────────────────
+    function fadeLogos(ids, inOut, delay = 0, duration = 0.5) {
+        ids.forEach((id, i) => {
+            const el = document.getElementById(id)
+            if (!el) return
+            setTimeout(
+                () => {
+                    if (inOut) {
+                        el.classList.remove("logo-inactive")
+                        el.classList.add("logo-active")
+                        el.style.opacity = "1"
+                    } else {
+                        el.classList.remove("logo-active")
+                        el.classList.add("logo-inactive")
+                        el.style.opacity = "0.5"
+                    }
+                },
+                delay + (inOut ? i * 120 : i * 30),
+            )
+        })
+    }
+
+    // ── Dashed lines going UPWARD from block corners ───────────────────────
+    // Isometric block has 4 corners: left, top, right, bottom
+    // We get their screen positions from getBoundingClientRect
+    // Lines animate upward (toward the block above)
+
+    let dashedLines = []
+
+    function getBlockCorners(block) {
+        const r = block.getBoundingClientRect()
+        const w = r.width,
+            h = r.height
+        return [
+            { x: r.left + w * 0.083, y: r.top + h * 0.486 - 10 }, // left corner
+            { x: r.left + w * 0.917, y: r.top + h * 0.486 - 10 }, // right corner
+            { x: r.left + w * 0.5, y: r.top + h * 0.819 - 10 }, // bottom corner
+        ]
+    }
+
+    function spawnDashedLines(block, color, goUp) {
+        const corners = getBlockCorners(block)
+        // Only use the 4 structural corners of the isometric shape
+        // direction: goUp=true → lines go UP (toward block above), goUp=false → DOWN
+        const length = 145
+        corners.forEach((corner) => {
+            dashedLines.push({
+                x: corner.x,
+                y: corner.y,
+                length,
+                goUp,
+                color,
+                progress: 0,
+                speed: 0.014,
+            })
+        })
+    }
+
+    function clearDashedLines() {
+        dashedLines = []
+    }
+
+    // ── Main render loop ───────────────────────────────────────────────────
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        dashedLines.forEach((l) => {
+            l.progress = Math.min(1, l.progress + l.speed)
+            const traveled = l.length * l.progress
+            const yEnd = l.goUp ? l.y - traveled : l.y + traveled
+            const alpha = l.progress > 0.75 ? (1 - l.progress) / 0.25 : 1
+
+            ctx.save()
+            ctx.setLineDash([5, 7])
+            ctx.lineDashOffset = -(Date.now() * 0.06)
+            ctx.strokeStyle =
+                l.color +
+                Math.floor(alpha * 220)
+                    .toString(16)
+                    .padStart(2, "0")
+            ctx.lineWidth = 1.5
+            ctx.shadowBlur = 10
+            ctx.shadowColor = l.color
+            ctx.beginPath()
+            ctx.moveTo(l.x, l.y)
+            ctx.lineTo(l.x, yEnd)
+            ctx.stroke()
+            ctx.restore()
+        })
+
+        dashedLines = dashedLines.filter((l) => l.progress < 1)
+        requestAnimationFrame(animate)
+    }
+    animate()
+
+    // ── Kestra run labels (always visible, state-driven) ─────────────────
+    const ns = "http://www.w3.org/2000/svg"
+    const GRAY = "#dde0f0"
+    const GREEN = "#2dff5c"
+
+    const runLabels = [
+        "BUILDING VIRTUAL MACHINE",
+        "FETCHING DATA",
+        "ADD CONTEXT",
+    ]
+    const doneLabels = [
+        "INFRASTRUCTURE UP",
+        "DATA IS UP TO DATE",
+        "CONTEXT AI SEND",
+    ]
+
+    // Refresh icon path
+    const REFRESH_PATH =
+        "M12 4C9.33 4 7 5.34 5.56 7.36L3 4.81V11H9.19L6.41 8.22C7.5 6.86 9.15 6 11 6C14.31 6 17 8.69 17 12H19C19 7.58 15.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12H4C4 16.42 7.58 20 12 20C14.67 20 17 18.66 18.44 16.64L21 19.19V13H14.81L17.59 15.78C16.5 17.14 14.85 18 13 18H12Z"
+    const CHECK_PATH = "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+
+    let labelGroups = [] // [{g, iconG, iconPath, text, timer}]
+    let spinAngles = [0, 0, 0]
+    let timerIntervals = [null, null, null]
+    let timerStarts = [0, 0, 0]
+    let spinning = [false, false, false]
+    let spinRAFs = [null, null, null]
+
+    function createGlowFilter(defs, id) {
+        if (defs.querySelector("#" + id)) return
+        const f = document.createElementNS(ns, "filter")
+        f.setAttribute("id", id)
+        const blur = document.createElementNS(ns, "feGaussianBlur")
+        blur.setAttribute("stdDeviation", "2.5")
+        blur.setAttribute("result", "blur")
+        const merge = document.createElementNS(ns, "feMerge")
+        ;["blur", "SourceGraphic"].forEach((inp) => {
+            const n = document.createElementNS(ns, "feMergeNode")
+            n.setAttribute("in", inp)
+            merge.appendChild(n)
+        })
+        f.appendChild(blur)
+        f.appendChild(merge)
+        defs.appendChild(f)
+    }
+
+    function buildCornerLines(block, i) {
+        const svg = block.querySelector("svg")
+        // 3 corners: left(60,175), right(660,175), bottom(360,295)
+        // Lines go upward 145px from each corner
+        const corners = [
+            { x: 60, y: 175 },
+            { x: 660, y: 175 },
+            { x: 360, y: 295 },
+        ]
+        const colors_static = ["#ff9900", "#4090ff", "#2dff5c"]
+        const col = colors_static[i]
+
+        const g = document.createElementNS(ns, "g")
+        g.setAttribute("id", "corner-lines-" + i)
+        g.setAttribute("pointer-events", "none")
+        g.setAttribute("opacity", "0.25") // subtle by default
+
+        // For Infra (i=0), add a center line going UP in data color to bridge the gap
+        if (i === 0) {
+            const bridgeLine = document.createElementNS(ns, "line")
+            bridgeLine.setAttribute("x1", 360)
+            bridgeLine.setAttribute("y1", 165) // top of Infra SVG area
+            bridgeLine.setAttribute("x2", 360)
+            bridgeLine.setAttribute("y2", 10)
+            bridgeLine.setAttribute("stroke", "#4090ff")
+            bridgeLine.setAttribute("stroke-width", "1.5")
+            bridgeLine.setAttribute("stroke-dasharray", "5 7")
+            bridgeLine.setAttribute("stroke-linecap", "round")
+            g.appendChild(bridgeLine)
+        }
+
+        corners.forEach((c, ci) => {
+            const line = document.createElementNS(ns, "line")
+            line.setAttribute("x1", c.x)
+            line.setAttribute("y1", c.y - 10)
+            line.setAttribute("x2", c.x)
+            line.setAttribute("y2", c.y - 155)
+            line.setAttribute("stroke", col)
+            line.setAttribute("stroke-width", "1.5")
+            line.setAttribute("stroke-dasharray", "5 7")
+            line.setAttribute("stroke-linecap", "round")
+            g.appendChild(line)
+        })
+
+        svg.insertBefore(g, svg.querySelector("g[filter]") || svg.lastChild)
+    }
+
+    function buildLabel(block, i) {
+        const svg = block.querySelector("svg")
+        const defs = svg.querySelector("defs")
+        createGlowFilter(defs, "kestra-glow")
+
+        const g = document.createElementNS(ns, "g")
+        g.setAttribute("transform", "translate(400,296) skewY(-22)")
+        g.setAttribute("pointer-events", "none")
+
+        // Kestra animated logo
+        const kestraG = document.createElementNS(ns, "g")
+        kestraG.setAttribute("transform", "translate(-14,-10) scale(1.01)")
+        kestraG.setAttribute("class", "kestra-anim")
+        kestraG.setAttribute("opacity", "0")
+        const kPaths = [
+            [
+                "M9.68365 8.00985C10.0909 7.60262 10.7511 7.60262 11.1584 8.00985L12.8323 9.6838C13.2395 10.091 13.2395 10.7513 12.8323 11.1585L11.1584 12.8325C10.7511 13.2397 10.0909 13.2397 9.68365 12.8325L8.0097 11.1585C7.60247 10.7513 7.60247 10.091 8.0097 9.68381L9.68365 8.00985Z",
+                "#A950FF",
+            ],
+            [
+                "M17.3936 7.9965C17.7936 7.59656 18.442 7.59656 18.8419 7.9965L20.5423 9.69684C20.9422 10.0968 20.9422 10.7452 20.5423 11.1452L18.8419 12.8455C18.442 13.2454 17.7936 13.2454 17.3936 12.8455L15.6933 11.1452C15.2933 10.7452 15.2933 10.0968 15.6933 9.69684L17.3936 7.9965Z",
+                "#A950FF",
+            ],
+            [
+                "M9.69684 0.299958C10.0968 -0.0999856 10.7452 -0.0999861 11.1452 0.299957L12.8455 2.0003C13.2455 2.40024 13.2455 3.04868 12.8455 3.44862L11.1452 5.14896C10.7452 5.5489 10.0968 5.5489 9.69684 5.14896L7.9965 3.44862C7.59656 3.04868 7.59656 2.40024 7.9965 2.0003L9.69684 0.299958Z",
+                "#E9C1FF",
+            ],
+            [
+                "M8.98431 5.83549C9.39154 6.24272 9.39154 6.90297 8.98431 7.3102L7.31035 8.98415C6.90312 9.39138 6.24288 9.39138 5.83565 8.98415L4.16169 7.3102C3.75446 6.90297 3.75446 6.24272 4.16169 5.83549L5.83565 4.16154C6.24288 3.75431 6.90313 3.75431 7.31035 4.16154L8.98431 5.83549Z",
+                "#CD88FF",
+            ],
+            [
+                "M5.14896 9.69684C5.5489 10.0968 5.5489 10.7452 5.14896 11.1452L3.44862 12.8455C3.04868 13.2454 2.40024 13.2454 2.0003 12.8455L0.299958 11.1452C-0.0999857 10.7452 -0.099986 10.0968 0.299957 9.69684L2.0003 7.9965C2.40024 7.59656 3.04868 7.59656 3.44862 7.9965L5.14896 9.69684Z",
+                "#A950FF",
+            ],
+            [
+                "M16.6808 5.83549C17.088 6.24272 17.088 6.90297 16.6808 7.3102L15.0068 8.98415C14.5996 9.39138 13.9393 9.39138 13.5321 8.98415L11.8582 7.3102C11.4509 6.90297 11.4509 6.24272 11.8582 5.83549L13.5321 4.16154C13.9393 3.75431 14.5996 3.75431 15.0068 4.16154L16.6808 5.83549Z",
+                "#CD88FF",
+            ],
+            [
+                "M12.0684 16.8292C12.9782 17.739 12.9782 19.2141 12.0684 20.1238C11.1586 21.0336 9.68359 21.0336 8.77381 20.1238C7.86403 19.2141 7.86403 17.739 8.77381 16.8292C9.6836 15.9194 11.1586 15.9194 12.0684 16.8292Z",
+                "#F62E76",
+            ],
+        ]
+        const kDelays = [
+            "0s",
+            "0.18s",
+            "0.36s",
+            "0.54s",
+            "0.72s",
+            "0.90s",
+            "1.08s",
+        ]
+        kPaths.forEach(([d, fill], ki) => {
+            const p = document.createElementNS(ns, "path")
+            p.setAttribute("d", d)
+            p.setAttribute("fill", fill)
+            p.style.animationDelay = kDelays[ki]
+            p.style.animationName =
+                ki === 6 ? "kestra-pulse-pink" : "kestra-pulse"
+            p.style.animationDuration = "1.6s"
+            p.style.animationTimingFunction = "ease-in-out"
+            p.style.animationIterationCount = "infinite"
+            p.style.transformBox = "fill-box"
+            p.style.transformOrigin = "center"
+            kestraG.appendChild(p)
+        })
+        g.appendChild(kestraG)
+
+        // Check icon (hidden by default)
+        const iconG = document.createElementNS(ns, "g")
+        iconG.setAttribute("transform", "translate(-18,-12) scale(1.1)")
+        iconG.setAttribute("opacity", "0")
+        const iconPath = document.createElementNS(ns, "path")
+        iconPath.setAttribute("d", CHECK_PATH)
+        iconPath.setAttribute("fill", GREEN)
+        iconG.appendChild(iconPath)
+        g.appendChild(iconG)
+
+        const text = document.createElementNS(ns, "text")
+        text.setAttribute("x", "20")
+        text.setAttribute("y", "4")
+        const txtGradIds = ["txtC", "txtB", "txtA"]
+        text.setAttribute("font-family", "Space Grotesk, sans-serif")
+        text.setAttribute("font-size", "9")
+        text.setAttribute("font-weight", "500")
+        text.setAttribute("fill", "url(#" + txtGradIds[i] + ")")
+        text.setAttribute("letter-spacing", "2.5")
+        text.setAttribute("dominant-baseline", "middle")
+        text.textContent = runLabels[i]
+        g.appendChild(text)
+
+        const timer = document.createElementNS(ns, "text")
+        timer.setAttribute("x", "215")
+        timer.setAttribute("y", "4")
+        timer.setAttribute("font-family", "JetBrains Mono, monospace")
+        timer.setAttribute("font-size", "9")
+        timer.setAttribute("font-weight", "400")
+        timer.setAttribute("fill", GRAY)
+        timer.setAttribute("letter-spacing", "0.5")
+        timer.setAttribute("dominant-baseline", "middle")
+        timer.setAttribute("opacity", "0.7")
+        timer.textContent = ""
+        g.appendChild(timer)
+
+        svg.appendChild(g)
+        labelGroups[i] = { g, iconG, iconPath, text, timer }
+    }
+
+    // Init all logos as inactive (gray, visible)
+    ;[...infraLogos, ...dataLogos, ...aiLogos].forEach((id) => {
+        const el = document.getElementById(id)
+        if (el) {
+            el.classList.add("logo-inactive")
+            el.style.opacity = "0.5"
+        }
+    })
+
+    // Init corner lines + labels
+    Array.from(document.querySelectorAll(".block")).forEach((b, i) => {
+        // Corner lines now drawn on canvas
+        buildLabel(b, i)
+        labelGroups[i].g.setAttribute("opacity", "0")
+    })
+
+    // Spin loop
+    function spinLoop(i) {
+        if (!spinning[i]) return
+        spinAngles[i] += 2.5
+        labelGroups[i].iconG.setAttribute(
+            "transform",
+            `translate(-18,-12) scale(1.1) rotate(${spinAngles[i]}, 12, 12)`,
+        )
+        spinRAFs[i] = requestAnimationFrame(() => spinLoop(i))
+    }
+
+    function setLabelRunning(i, color) {
+        const l = labelGroups[i]
+        if (!l) return
+        l.g.setAttribute("opacity", "1")
+        // Reset and show Kestra animated logo, hide check
+        const kg = l.g.querySelector(".kestra-anim")
+        if (kg) {
+            // Reset animation
+            kg.querySelectorAll("path").forEach((p, ki) => {
+                p.style.animationName =
+                    ki === 6 ? "kestra-pulse-pink" : "kestra-pulse"
+                p.style.opacity = "0.15"
+                p.style.transform = ""
+            })
+            kg.style.transition = "none"
+            kg.style.opacity = "1"
+            kg.setAttribute("opacity", "1")
+        }
+        l.iconG.setAttribute("opacity", "0")
+        l.iconG.style.opacity = "0"
+        const tgIds = ["txtC", "txtB", "txtA"]
+        l.text.setAttribute("fill", "url(#" + tgIds[i] + ")")
+        l.text.textContent = runLabels[i]
+        // Different speed per block so final displayed value differs
+        // Infra: slow (~2s shown), Data: medium (~1.2s), AI: fast (~0.8s)
+        const speeds = [0.51, 0.31, 0.21]
+        const speed = speeds[i]
+        if (timerIntervals[i]) clearInterval(timerIntervals[i])
+        timerStarts[i] = Date.now()
+        if (l.timer) {
+            l.timer.textContent = "0.00s"
+            l.timer.setAttribute("fill", GRAY)
+            timerIntervals[i] = setInterval(() => {
+                const elapsed = ((Date.now() - timerStarts[i]) / 1000) * speed
+                l.timer.textContent = elapsed.toFixed(2) + "s"
+            }, 50)
+        }
+    }
+
+    function animateCornerLines(i) {
+        const blockList = Array.from(document.querySelectorAll(".block"))
+        const fromBlock = blockList[i]
+        const toBlock = blockList[i + 1]
+        if (!fromBlock || !toBlock) return
+        // Spawn 3 scan lines staggered
+        const colList = [colors.infra, colors.data, colors.ai]
+        const col = colList[i]
+        for (let w = 0; w < 3; w++) {
+            setTimeout(
+                () =>
+                    spawnGlowPulse(
+                        fromBlock,
+                        toBlock,
+                        colList[i],
+                        colList[i + 1],
+                    ),
+                w * 500,
+            )
+        }
+    }
+
+    function setLabelDone(i) {
+        const l = labelGroups[i]
+        if (!l) return
+        spinning[i] = false
+        if (spinRAFs[i]) {
+            cancelAnimationFrame(spinRAFs[i])
+            spinRAFs[i] = null
+        }
+        if (timerIntervals[i]) {
+            clearInterval(timerIntervals[i])
+            timerIntervals[i] = null
+        }
+        // Stop Kestra animation - fully colored
+        const kg2 = l.g.querySelector(".kestra-anim")
+        if (kg2) {
+            kg2.querySelectorAll("path").forEach((p) => {
+                p.style.animationName = "none"
+                p.style.opacity = "1"
+                p.style.transform = "scale(1)"
+            })
+            // Fade out Kestra logo
+            kg2.style.transition = "opacity 0.4s ease"
+            setTimeout(() => {
+                kg2.style.opacity = "0"
+            }, 200)
+        }
+
+        // Fade in check after short delay
+        setTimeout(() => {
+            l.iconG.setAttribute("opacity", "1")
+            l.iconG.setAttribute("transform", "translate(-18,-12) scale(1.1)")
+            l.iconPath.setAttribute("d", CHECK_PATH)
+            l.iconPath.setAttribute("fill", GREEN)
+            l.iconG.style.transition = "opacity 0.4s ease"
+            l.iconG.style.opacity = "0"
+            requestAnimationFrame(() => {
+                l.iconG.style.opacity = "1"
+            })
+        }, 300)
+
+        // Hide Kestra anim, show check (handled above with delay)
+        const tgIdsDone = ["txtC", "txtB", "txtA"]
+        l.text.setAttribute("fill", "url(#" + tgIdsDone[i] + ")")
+        l.text.textContent = doneLabels[i]
+        if (l.timer) {
+            // Freeze at current displayed value (already scaled by speed)
+            const frozen = l.timer.textContent
+            if (timerIntervals[i]) {
+                clearInterval(timerIntervals[i])
+                timerIntervals[i] = null
+            }
+            l.timer.textContent = frozen
+            l.timer.setAttribute("fill", GRAY)
+            l.timer.setAttribute("opacity", "0.6")
+        }
+        // Animate lines when data is sent
+        if (i === 0) activateInfraDataLines()
+        if (i === 1) activateDataAILines()
+    }
+
+    function setLabelIdle(i) {
+        const l = labelGroups[i]
+        if (!l) return
+        spinning[i] = false
+        if (spinRAFs[i]) {
+            cancelAnimationFrame(spinRAFs[i])
+            spinRAFs[i] = null
+        }
+        if (timerIntervals[i]) {
+            clearInterval(timerIntervals[i])
+            timerIntervals[i] = null
+        }
+        l.g.setAttribute("opacity", "0")
+        const kg = l.g && l.g.querySelector(".kestra-anim")
+        if (kg) kg.setAttribute("opacity", "0")
+        l.iconG.setAttribute("opacity", "0")
+        if (l.timer) l.timer.textContent = ""
+    }
+
+    let spinRAF = null // kept for compatibility
+
+    // ── Glow pulse traveling up dashed lines ──────────────────────────────
+    let glowPulses = []
+
+    function lerpColor(c1, c2, t) {
+        // Convert hex to HSL, interpolate in HSL space to avoid desaturated midpoints
+        function hexToHsl(hex) {
+            let r = parseInt(hex.slice(1, 3), 16) / 255
+            let g = parseInt(hex.slice(3, 5), 16) / 255
+            let b = parseInt(hex.slice(5, 7), 16) / 255
+            const max = Math.max(r, g, b),
+                min = Math.min(r, g, b)
+            let h,
+                s,
+                l = (max + min) / 2
+            if (max === min) {
+                h = s = 0
+            } else {
+                const d = max - min
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+                switch (max) {
+                    case r:
+                        h = (g - b) / d + (g < b ? 6 : 0)
+                        break
+                    case g:
+                        h = (b - r) / d + 2
+                        break
+                    case b:
+                        h = (r - g) / d + 4
+                        break
+                }
+                h /= 6
+            }
+            return [h * 360, s * 100, l * 100]
+        }
+        function hslToHex(h, s, l) {
+            h /= 360
+            s /= 100
+            l /= 100
+            let r, g, b
+            if (s === 0) {
+                r = g = b = l
+            } else {
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s,
+                    p = 2 * l - q
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1
+                    if (t > 1) t -= 1
+                    if (t < 1 / 6) return p + (q - p) * 6 * t
+                    if (t < 1 / 2) return q
+                    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+                    return p
+                }
+                r = hue2rgb(p, q, h + 1 / 3)
+                g = hue2rgb(p, q, h)
+                b = hue2rgb(p, q, h - 1 / 3)
+            }
+            return (
+                "#" +
+                [r, g, b]
+                    .map((v) =>
+                        Math.round(v * 255)
+                            .toString(16)
+                            .padStart(2, "0"),
+                    )
+                    .join("")
+            )
+        }
+        const [h1, s1, l1] = hexToHsl(c1)
+        const [h2, s2, l2] = hexToHsl(c2)
+        // Interpolate hue going the short way around
+        let dh = h2 - h1
+        if (dh > 180) dh -= 360
+        if (dh < -180) dh += 360
+        return hslToHex(h1 + dh * t, s1 + (s2 - s1) * t, l1 + (l2 - l1) * t)
+    }
+
+    function spawnGlowPulse(fromBlock, toBlock, colorStart, colorEnd) {
+        const fromRect = fromBlock.getBoundingClientRect()
+        const toRect = toBlock.getBoundingClientRect()
+        const xs = [
+            fromRect.left + fromRect.width * 0.083,
+            fromRect.left + fromRect.width * 0.5,
+            fromRect.left + fromRect.width * 0.917,
+        ]
+        xs.forEach((x, xi) => {
+            const isCenterCol = xi === 1
+            glowPulses.push({
+                x,
+                yStart:
+                    fromRect.top +
+                    fromRect.height * (isCenterCol ? 0.819 : 0.486) -
+                    10 +
+                    (isCenterCol ? 50 : 0),
+                yEnd:
+                    toRect.top +
+                    toRect.height * (isCenterCol ? 0.819 : 0.486) -
+                    10 +
+                    (isCenterCol ? 100 : 0),
+                progress: 0,
+                speed: 0.012,
+                colorStart: colorStart || "#ff9900",
+                colorEnd: colorEnd || "#4090ff",
+            })
+        })
+    }
+
+    // Line animation state
+    let infraDataLinesActive = false
+    let infraDataLinesAnimOffset = 0
+    let dataAILinesActive = false
+    let dataAILinesAnimOffset = 0
+
+    function activateInfraDataLines() {
+        infraDataLinesActive = true
+        infraDataLinesAnimOffset = 0
+    }
+    function deactivateInfraDataLines() {
+        infraDataLinesActive = false
+    }
+    function activateDataAILines() {
+        dataAILinesActive = true
+        dataAILinesAnimOffset = 0
+    }
+    function deactivateDataAILines() {
+        dataAILinesActive = false
+    }
+
+    function drawStaticCenterLines() {
+        const blockList = Array.from(document.querySelectorAll(".block"))
+        const infra = blockList[0].getBoundingClientRect()
+        const data = blockList[1].getBoundingClientRect()
+
+        const yTop = data.bottom
+        const yBottom = infra.top
+
+        const centerX = infra.left + infra.width * 0.5
+        const xs = [centerX - 270, centerX, centerX + 270]
+        const offsets = [25, 73 + 55, 25]
+
+        const gapCenter = yTop + (yBottom - yTop) / 2
+        const lineHeight = 95
+        const yLineStart = gapCenter - lineHeight / 2
+        const yLineEnd = gapCenter + lineHeight / 2
+
+        if (infraDataLinesActive) infraDataLinesAnimOffset -= 0.5
+
+        xs.forEach((x, xi) => {
+            const offset = offsets[xi]
+            const yS = yLineStart + offset
+            const yE = yLineEnd + offset
+
+            ctx.save()
+            if (infraDataLinesActive) {
+                ctx.setLineDash([4, 6])
+                ctx.lineDashOffset = infraDataLinesAnimOffset
+                ctx.strokeStyle = "#ff9900ff"
+                ctx.lineWidth = 2
+                ctx.shadowBlur = 20
+                ctx.shadowColor = "#ff9900"
+            } else {
+                ctx.setLineDash([4, 6])
+                ctx.strokeStyle = "#ffffff44"
+                ctx.lineWidth = 1.2
+                ctx.shadowBlur = 0
+            }
+            ctx.beginPath()
+            ctx.moveTo(x, yS)
+            ctx.lineTo(x, yE)
+            ctx.stroke()
+            ctx.setLineDash([])
+            ctx.restore()
+        })
+
+        // Data → AI lines
+        const data2 = blockList[1].getBoundingClientRect()
+        const ai = blockList[2].getBoundingClientRect()
+
+        const yTop2 = ai.bottom
+        const yBottom2 = data2.top
+        const centerX2 = data2.left + data2.width * 0.5
+        const xs2 = [centerX2 - 270, centerX2, centerX2 + 270]
+        const offsets2 = [25, 73 + 55, 25]
+
+        const gapCenter2 = yTop2 + (yBottom2 - yTop2) / 2
+        const yLineStart2 = gapCenter2 - lineHeight / 2
+        const yLineEnd2 = gapCenter2 + lineHeight / 2
+
+        if (dataAILinesActive) dataAILinesAnimOffset -= 0.5
+
+        xs2.forEach((x, xi) => {
+            const offset = offsets2[xi]
+            const yS = yLineStart2 + offset
+            const yE = yLineEnd2 + offset
+
+            ctx.save()
+            if (dataAILinesActive) {
+                ctx.setLineDash([4, 6])
+                ctx.lineDashOffset = dataAILinesAnimOffset
+                ctx.strokeStyle = "#4090ffff"
+                ctx.lineWidth = 2
+                ctx.shadowBlur = 20
+                ctx.shadowColor = "#4090ff"
+            } else {
+                ctx.setLineDash([4, 6])
+                ctx.strokeStyle = "#ffffff44"
+                ctx.lineWidth = 1.2
+                ctx.shadowBlur = 0
+            }
+            ctx.beginPath()
+            ctx.moveTo(x, yS)
+            ctx.lineTo(x, yE)
+            ctx.stroke()
+            ctx.setLineDash([])
+            ctx.restore()
+        })
+    }
+
+    function animGlowPulses() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        glowPulses = [] // pulses disabled
+        drawStaticCenterLines()
+        glowPulses = glowPulses.filter((p) => p.progress < 1)
+        glowPulses.forEach((p) => {
+            p.progress = Math.min(1, p.progress + p.speed)
+            const t = p.progress
+            const y = p.yStart + (p.yEnd - p.yStart) * t
+            const alpha = t < 0.12 ? t / 0.12 : t > 0.82 ? (1 - t) / 0.18 : 1
+            const color = lerpColor(p.colorStart, p.colorEnd, t)
+
+            // Clip: don't draw above the destination block top
+            ctx.save()
+            ctx.beginPath()
+            ctx.rect(0, p.yEnd - 20, canvas.width, canvas.height)
+            ctx.clip()
+
+            // Glowing dot traveling up the line
+            const grad = ctx.createRadialGradient(p.x, y, 0, p.x, y, 8)
+            grad.addColorStop(
+                0,
+                color +
+                    Math.floor(alpha * 255)
+                        .toString(16)
+                        .padStart(2, "0"),
+            )
+            grad.addColorStop(
+                0.4,
+                color +
+                    Math.floor(alpha * 160)
+                        .toString(16)
+                        .padStart(2, "0"),
+            )
+            grad.addColorStop(1, color + "00")
+
+            ctx.beginPath()
+            ctx.arc(p.x, y, 8, 0, Math.PI * 2)
+            ctx.fillStyle = grad
+            ctx.fill()
+
+            // Bright core
+            ctx.beginPath()
+            ctx.arc(p.x, y, 1.5, 0, Math.PI * 2)
+            ctx.fillStyle =
+                "#ffffff" +
+                Math.floor(alpha * 255)
+                    .toString(16)
+                    .padStart(2, "0")
+            ctx.shadowBlur = 6
+            ctx.shadowColor = color
+            ctx.fill()
+            ctx.shadowBlur = 0
+
+            // Trail
+            const trailLen = 40
+            const trailGrad = ctx.createLinearGradient(
+                p.x,
+                y,
+                p.x,
+                y + trailLen,
+            )
+            trailGrad.addColorStop(
+                0,
+                color +
+                    Math.floor(alpha * 120)
+                        .toString(16)
+                        .padStart(2, "0"),
+            )
+            trailGrad.addColorStop(1, color + "00")
+            ctx.beginPath()
+            ctx.moveTo(p.x, y)
+            ctx.lineTo(p.x, y + trailLen)
+            ctx.strokeStyle = trailGrad
+            ctx.lineWidth = 1.5
+            ctx.stroke()
+            ctx.restore()
+        })
+        requestAnimationFrame(animGlowPulses)
+    }
+    animGlowPulses()
+
+    // ── Badge position (above AI block) ──────────────────────────────────
+    function updateBadgePosition() {
+        const badge = document.getElementById("top-badge")
+        const aiBlock = document.querySelectorAll(".block")[2]
+        if (!badge || !aiBlock) {
+            requestAnimationFrame(updateBadgePosition)
+            return
+        }
+        const rect = aiBlock.getBoundingClientRect()
+        badge.style.top = rect.top + rect.height * 0.2 + "px"
+        requestAnimationFrame(updateBadgePosition)
+    }
+    requestAnimationFrame(updateBadgePosition)
+
+    // ── Loop 2 logo SVG paths ──────────────────────────────────────────────
+    const loop2Logos = {
+        "ic-logo-1": `<path fill-rule="evenodd" clip-rule="evenodd" d="M56.0989 19.5812C60.7896 22.8088 64.4093 27.3615 66.4932 32.6585C68.5808 37.9519 69.0347 43.7499 67.8003 49.3047C66.5659 54.8595 63.7013 59.9205 59.5697 63.8379C59.0869 64.3062 58.5241 64.6874 57.9069 64.9561C57.2897 65.2284 56.629 65.3881 55.9573 65.4245C55.2857 65.4644 54.6104 65.3845 53.9678 65.1848C53.3252 64.9888 52.7225 64.6802 52.1852 64.2699C50.4352 62.9666 48.4892 61.9536 46.4198 61.2711C44.3468 60.5849 42.1829 60.2364 40.001 60.2364C37.819 60.2364 35.6515 60.5849 33.5821 61.2711C31.5127 61.9536 29.5631 62.9666 27.8131 64.2699C27.2831 64.6766 26.6876 64.9888 26.0487 65.1885C25.4097 65.3881 24.7417 65.4717 24.0736 65.4353C23.4056 65.4027 22.7485 65.2502 22.1349 64.9852C21.5213 64.7201 20.9586 64.3498 20.4721 63.8887C16.3115 59.9568 13.4252 54.8667 12.1908 49.2757C10.9564 43.6846 11.432 37.8539 13.5559 32.5387C15.6797 27.2199 19.3503 22.6636 24.0954 19.4578C28.8406 16.252 34.4389 14.542 40.168 14.5565C45.8607 14.6037 51.4082 16.3573 56.0989 19.5812ZM45.5049 56.3952C47.2548 55.6981 48.845 54.6525 50.1775 53.3238C51.5099 51.9913 52.5555 50.4048 53.2526 48.6548C53.9496 46.9085 54.2836 45.0352 54.2328 43.1545C54.2328 39.3823 52.7334 35.7663 50.0649 33.0978C47.3964 30.4294 43.7768 28.9299 40.001 28.9299C36.2252 28.9299 32.6055 30.4294 29.937 33.0978C27.2685 35.7663 25.7691 39.3823 25.7691 43.1545C25.7183 45.0352 26.0523 46.9085 26.7494 48.6548C27.4464 50.4048 28.492 51.9913 29.8245 53.3238C31.1569 54.6525 32.7471 55.6981 34.4934 56.3952C36.2433 57.0923 38.1167 57.4263 40.001 57.3755C41.8816 57.4263 43.755 57.0923 45.5049 56.3952Z" fill="#62D84E"/>`,
+        "ic-logo-2": `<path d="M33.9956 11.9136C43.4176 11.9269 52.8515 11.9056 62.2735 11.903C63.9429 11.8551 65.4714 12.5494 66.5821 13.7786C67.178 15.444 67.5798 17.164 67.5731 18.9412C67.5186 27.2298 67.5279 35.5198 67.5345 43.8084C67.5186 46.2148 67.7939 48.9231 66.4384 51.0514C65.5671 52.4575 64.1052 53.0401 62.5289 53.2743C59.3616 53.7239 56.1478 53.2104 52.9393 53.5603C52.5722 56.8805 53.0418 60.2393 52.6972 63.5422C52.5176 65.4791 51.2539 67.0767 49.4967 67.8562C48.2064 68.4348 46.6194 68.4561 45.2294 68.4667C38.4186 68.4042 31.6079 68.4827 24.7971 68.4694C21.7629 68.5239 18.8417 68.2645 15.8248 68.7288C13.288 68.1595 11.0054 65.5855 11.278 62.8878C11.2914 52.7847 11.2993 42.6537 11.2953 32.5494C11.2754 31.0449 11.8301 29.5737 12.8956 28.5042C14.0848 27.4174 15.6984 26.9544 17.2853 26.9478C20.1799 26.9066 23.0785 27.0196 25.9757 26.9278C26.0675 23.8111 25.9145 20.6851 26.0169 17.5697C26.1087 15.5744 26.9055 13.6402 28.7479 12.6692C30.416 11.6742 32.136 11.9508 33.9956 11.9136Z" fill="#87B74B"/>
+<path d="M66.5821 13.7786C67.6263 14.9611 68.3486 16.2794 68.2848 17.9063C68.2808 28.0239 68.2808 38.1416 68.2768 48.258C68.3859 51.0847 65.764 53.7305 62.9652 53.813C59.8419 53.9394 56.7065 53.7545 53.5792 53.8768C53.4195 57.1093 53.6377 60.355 53.4874 63.5822C53.3623 66.3889 50.8283 68.9736 47.9749 68.8991C37.9796 68.8711 27.9817 68.8844 17.9904 68.8951C17.2654 68.8884 16.5391 68.8445 15.8248 68.7288C18.8417 68.2645 21.7629 68.5239 24.7971 68.4694C31.6079 68.4827 38.4186 68.4042 45.2294 68.4667C46.6194 68.4561 48.2064 68.4348 49.4967 67.8562C51.2539 67.0767 52.5176 65.4791 52.6972 63.5422C53.0418 60.2393 52.5722 56.8805 52.9393 53.5603C56.1478 53.2104 59.3616 53.7239 62.5289 53.2743C64.1052 53.0401 65.5671 52.4575 66.4384 51.0514C67.7939 48.9231 67.5186 46.2148 67.5345 43.8084C67.5279 35.5198 67.5186 27.2298 67.5731 18.9412C67.5798 17.164 67.178 15.444 66.5821 13.7786Z" fill="#686465"/>
+<path d="M36.3621 19.4014C43.2952 19.4294 50.2283 19.4294 57.1628 19.4054C58.0913 19.452 59.073 19.3535 59.7873 20.0626C60.6014 20.7769 60.4551 21.6934 60.503 22.6738C60.4524 29.9381 60.5136 37.2357 60.475 44.4921C60.483 45.688 59.9376 46.4263 58.763 46.6684C56.7704 46.8865 54.7272 46.699 52.7212 46.7495C50.4372 46.808 48.0361 46.5486 45.8053 46.9743C45.7508 51.1459 45.8705 55.3321 45.7814 59.5037C45.792 60.5213 45.2027 61.3899 44.1918 61.6174C43.081 61.7877 41.9237 61.7238 40.8024 61.7331C35.3538 61.7265 29.9052 61.7265 24.4566 61.7305C23.0944 61.7198 21.7123 61.805 20.3568 61.6759C19.4509 61.6108 18.5278 60.7568 18.4945 59.8296C18.3548 58.4741 18.44 57.0893 18.4333 55.7272C18.436 50.6191 18.4426 45.5111 18.4293 40.403C18.436 39.0542 18.3442 37.6707 18.5038 36.3299C18.698 35.0795 19.8327 34.409 21.0352 34.433C25.0392 34.3505 29.0538 34.542 33.0551 34.3678C33.1509 30.3598 33.0591 26.3412 33.0831 22.3306C33.1203 21.4792 33.0964 20.7157 33.7668 20.0865C34.4865 19.3708 35.4229 19.4453 36.3621 19.4014Z" fill="white"/>
+<path d="M42.1446 25.2105C45.2227 25.2451 48.2982 25.2518 51.3763 25.2145C52.4392 25.2557 53.4741 25.0988 54.3148 25.8823C55.1289 26.5527 55.2592 27.4546 55.2552 28.4563C55.2486 31.6475 55.2207 34.8387 55.2619 38.0325C55.2419 38.9318 55.3138 40.0824 54.8469 40.8832C54.3015 41.7266 53.3278 41.8875 52.3979 41.9274C48.499 41.9993 44.5869 41.8051 40.6906 41.9926C40.531 44.9763 40.6534 47.972 40.6294 50.9597C40.6015 52.3418 40.7651 53.8196 40.4831 55.1778C40.0468 56.4761 38.6807 56.959 37.4143 56.9417C34.2271 56.963 31.0399 56.9018 27.8486 56.9563C26.7313 56.9217 25.4888 57.072 24.6242 56.2167C23.7449 55.3321 23.6704 54.2107 23.6571 53.0295C23.6744 50.1762 23.697 47.3255 23.6531 44.4722C23.6664 43.243 23.5853 42.0605 24.4606 41.0801C25.1895 40.2633 26.1353 40.2287 27.1609 40.2048C30.0076 40.1982 32.8609 40.2554 35.7089 40.2327C36.5762 40.2287 37.4116 40.0518 38.255 39.8616C38.4226 35.9547 38.255 32.0319 38.3095 28.1224C38.3335 27.3429 38.4638 26.6179 39.0598 26.0619C39.9417 25.1799 40.9833 25.2318 42.1446 25.2105Z" fill="#F6C43F"/>`,
+        "ic-logo-3": `<path d="M49.9076 29.651L54.8624 24.6962L55.1926 22.6099C46.1636 14.3999 31.811 15.3309 23.6718 24.5524C21.4109 27.1136 19.7337 30.3067 18.8392 33.604L20.6138 33.354L30.5231 31.7199L31.2882 30.9375C35.6961 26.0965 43.1491 25.4453 48.2386 29.5642L49.9076 29.651Z" fill="#EA4335"/>
+<path d="M61.9206 33.4583C60.7817 29.2644 58.4436 25.494 55.1926 22.6099L48.2386 29.5642C51.175 31.9635 52.8478 35.578 52.7761 39.3692V40.6036C56.1941 40.6036 58.9653 43.3746 58.9653 46.7926C58.9653 50.2108 56.1941 52.9123 52.7761 52.9123H40.3806L39.1636 54.2335V61.6569L40.3806 62.8216H52.7761C61.6668 62.8908 68.9303 55.8093 68.9995 46.9186C69.0414 41.5296 66.3844 36.4776 61.9206 33.4583Z" fill="#4285F4"/>
+<path d="M28.0024 62.8217L40.3806 62.8216V52.9123L28.0024 52.9122C27.1204 52.9119 26.2663 52.7225 25.4643 52.356L23.7082 52.8948L18.7187 57.8496L18.2841 59.536C21.0822 61.6487 24.4962 62.8368 28.0024 62.8217Z" fill="#34A853"/>
+<path d="M28.0024 30.6768C19.1115 30.7298 11.9473 37.9803 12.0003 46.871C12.0299 51.8358 14.3486 56.5094 18.2841 59.536L25.4643 52.356C22.3491 50.9486 20.9649 47.2825 22.3723 44.1675C23.7795 41.0525 27.4457 39.6683 30.5605 41.0755C31.9332 41.6956 33.0324 42.7951 33.6525 44.1675L40.8327 36.9875C37.7777 32.9937 33.0306 30.6587 28.0024 30.6768Z" fill="#FBBC05"/>`,
+        "ic-logo-4": `<path d="M30.5022 13.1458H47.369L29.8596 65.0243C29.6797 65.5574 29.337 66.0206 28.88 66.3488C28.423 66.6769 27.8745 66.8535 27.3119 66.8536H14.1853C13.7591 66.8537 13.3389 66.7522 12.9596 66.5576C12.5803 66.3631 12.2527 66.081 12.0041 65.7347C11.7554 65.3885 11.5928 64.988 11.5296 64.5664C11.4665 64.1448 11.5046 63.7142 11.6409 63.3103L27.9538 14.9751C28.1337 14.4418 28.4764 13.9783 28.9336 13.65C29.3907 13.3218 29.9394 13.1458 30.5022 13.1458Z" fill="url(#paint0_az)"/>
+<path d="M55.0121 47.9424H28.2654C28.0168 47.9421 27.7738 48.0168 27.5681 48.1565C27.3625 48.2963 27.2037 48.4948 27.1125 48.7261C27.0212 48.9575 27.0018 49.2109 27.0567 49.4534C27.1115 49.696 27.2382 49.9164 27.4201 50.0859L44.6069 66.1275C45.1073 66.5942 45.7662 66.8538 46.4505 66.8536H61.5955L55.0121 47.9424Z" fill="#0078D4"/>
+<path d="M30.5022 13.1458C29.9332 13.1436 29.3785 13.3234 28.9189 13.6589C28.4594 13.9944 28.1192 14.4681 27.948 15.0107L11.661 63.2662C11.5155 63.6716 11.4699 64.1061 11.5278 64.5329C11.5858 64.9596 11.7457 65.3662 11.9941 65.7181C12.2424 66.07 12.5718 66.3569 12.9545 66.5545C13.3371 66.7522 13.7618 66.8548 14.1925 66.8536H27.6578C28.1593 66.764 28.6281 66.5429 29.0161 66.2128C29.4042 65.8828 29.6978 65.4557 29.8667 64.9751L33.1147 55.4029L44.7164 66.224C45.2025 66.6261 45.8124 66.8485 46.4433 66.8536H61.532L54.9143 47.9424L35.6229 47.9469L47.4299 13.1458L30.5022 13.1458Z" fill="url(#paint1_az)"/>
+<path d="M52.0453 14.9725C51.8657 14.4401 51.5235 13.9774 51.0671 13.6497C50.6106 13.3219 50.0628 13.1457 49.5009 13.1458H30.703C31.2649 13.1458 31.8127 13.3221 32.2691 13.6498C32.7256 13.9775 33.0678 14.4401 33.2475 14.9725L49.5611 63.3096C49.6975 63.7136 49.7357 64.1443 49.6726 64.566C49.6095 64.9877 49.4469 65.3883 49.1982 65.7347C48.9496 66.0811 48.622 66.3633 48.2427 66.558C47.8633 66.7527 47.443 66.8542 47.0166 66.8543H65.8151C66.2415 66.8541 66.6617 66.7525 67.0409 66.5578C67.4202 66.3631 67.7477 66.0808 67.9963 65.7345C68.2449 65.3881 68.4074 64.9875 68.4705 64.5658C68.5335 64.1442 68.4953 63.7136 68.3589 63.3096L52.0453 14.9725Z" fill="url(#paint2_az)"/>
+<defs>
+<linearGradient id="paint0_az" x1="51.4656" y1="17.1263" x2="39.713" y2="72.3005" gradientUnits="userSpaceOnUse"><stop stop-color="#114A8B"/><stop offset="1" stop-color="#0669BC"/></linearGradient>
+<linearGradient id="paint1_az" x1="46.3417" y1="41.2421" x2="41.8667" y2="42.9638" gradientUnits="userSpaceOnUse"><stop stop-opacity="0.3"/><stop offset="0.071" stop-opacity="0.2"/><stop offset="0.321" stop-opacity="0.1"/><stop offset="0.623" stop-opacity="0.05"/><stop offset="1" stop-opacity="0"/></linearGradient>
+<linearGradient id="paint2_az" x1="39.893" y1="15.6164" x2="59.1209" y2="66.8432" gradientUnits="userSpaceOnUse"><stop stop-color="#3CCBF4"/><stop offset="1" stop-color="#2892DF"/></linearGradient>
+</defs>`,
+        "dt-logo-1": `<path d="M63.6654 34.9706L40.1649 48.2925L15.1975 34.1024L14.0299 34.7311V45.0294L40.1949 59.938L63.6954 46.6161V52.0945L40.1949 65.4165L15.1975 51.2264L14.0299 51.855V53.5914L40.1949 68.5L66.4496 53.5914V43.2931L65.282 42.6644L40.1649 56.8545L16.7542 43.5326V38.1439L40.1649 51.3761L66.4196 36.4674V26.3188L65.0725 25.6003L40.1649 39.7006L18.0116 27.0972L40.1649 14.5835L58.4564 24.8818L60.1029 24.0137V22.7563L40.1649 11.5L14 26.3487V27.9354L40.1649 42.844L63.6654 29.5221V34.9706Z" fill="#FF3621"/>`,
+        "dt-logo-2": `<path fill-rule="evenodd" clip-rule="evenodd" d="M55.0135 50.9888L54.7543 50.4365L49.0829 39.6844C48.8914 39.3245 48.9154 39.1107 49.1684 38.8043L58.1409 28.2668C58.2451 28.143 58.3404 28.0111 58.3805 27.792L55.7608 28.477L44.8803 31.3683C44.5428 31.4592 44.3895 31.3594 44.2203 31.0806L38.0412 20.7872C37.9316 20.5878 37.7777 20.4163 37.5914 20.2857L37.0926 23.0327L35.3681 32.7392L35.1899 33.7876C35.1605 34.1305 34.9895 34.2455 34.6875 34.3399L21.8786 38.3874C21.6657 38.4476 21.4698 38.5568 21.3068 38.7063L31.8443 42.8901L31.5361 43.1324L24.9793 47.3706C24.8724 47.4538 24.7436 47.5039 24.6086 47.5148C24.4736 47.5258 24.3383 47.497 24.2195 47.4321L16.3836 43.9403C15.2114 43.4264 14.1558 42.7209 13.3355 41.717C11.4792 39.4465 11.8452 36.8616 14.3188 35.2912C15.1285 34.7746 16.0478 34.3871 16.9644 34.0887L29.5462 30.0919C29.8891 29.9823 30.0601 29.8247 30.126 29.4434L31.8416 19.7388C32.1534 18.0098 32.3199 16.2266 33.1608 14.6517C33.4841 14.0522 33.8716 13.4456 34.3321 12.9352C35.9987 11.0852 38.3245 11.0148 40.0863 12.7758C40.6814 13.3708 41.1998 14.0718 41.6345 14.7916L47.3762 24.3323C47.6007 24.7091 47.8047 24.7866 48.2198 24.6753L62.2837 20.9395C63.2502 20.6838 64.2282 20.5903 65.2196 20.7685C67.3788 21.1729 68.3239 22.8243 67.5926 24.9033C67.2603 25.8457 66.6858 26.6572 66.0507 27.4152L56.2338 38.9513C55.9657 39.2648 55.9594 39.4911 56.1456 39.842L61.9907 50.9229C62.4565 51.8074 62.8128 52.7249 62.8217 53.7394C62.8449 56.0491 61.1561 57.9393 58.8615 58.2751C57.5761 58.464 56.3817 58.1896 55.1774 57.8173L46.3527 55.1335C46.0802 55.0524 45.976 54.9446 45.9279 54.6516L44.8634 48.4484C44.8536 48.3923 44.8705 48.3299 44.8786 48.2034L55.0055 50.9968" fill="#E25A1C"/>
+<path d="M31.8371 42.8919L33.705 43.7061L31.6287 60.241L42.9759 47.6637L44.8892 48.2008L47.2453 55.3633L44.1829 54.2837L36.2597 62.8375C36.2597 62.8375 32.7163 66.5056 30.7959 65.8874C28.8754 65.2692 27.2543 63.5572 27.0743 60.4966C26.8944 57.436 26.0838 48.6996 26.0838 48.6996L22.2117 45.908L31.8371 42.8919Z" fill="#E25A1C"/>
+<path d="M26.0829 48.7014C26.0829 48.7014 24.3727 67.6119 27.7041 68.2417C31.0355 68.8714 27.3442 68.1517 27.3442 68.1517C27.3442 68.1517 29.2353 70.3135 36.7086 62.2986L44.1829 54.2837L29.2344 63.1092C29.5943 62.6585 31.1254 47.3501 31.1254 47.3501L26.0829 48.7014Z" fill="#E25A1C"/>`,
+        "dt-logo-3": `<path fill-rule="evenodd" clip-rule="evenodd" d="M24.9413 36.6557V44.1696C26.1257 46.2113 27.806 47.9211 29.8268 49.1408V36.6557H24.9413Z" fill="#AECBFA"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M33.9694 29.7418V51.255C35.0209 51.3892 36.0808 51.4465 37.1407 51.4264C38.0921 51.486 39.0463 51.486 39.9977 51.4264V29.7418H33.9694Z" fill="#669DF6"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M44.6832 39.5984V48.9979C46.7148 47.7021 48.3856 45.9134 49.54 43.7982V39.5984H44.6832Z" fill="#AECBFA"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M56.3968 52.3406L52.3399 56.3975C52.2259 56.5093 52.1353 56.6426 52.0734 56.7898C52.0116 56.937 51.9797 57.095 51.9797 57.2546C51.9797 57.4143 52.0116 57.5723 52.0734 57.7195C52.1353 57.8667 52.2259 58 52.3399 58.1117L62.4536 68.2255C62.6782 68.4471 62.981 68.5713 63.2965 68.5713C63.6119 68.5713 63.9147 68.4471 64.1393 68.2255L68.2248 64.14C68.4464 63.9154 68.5706 63.6127 68.5706 63.2972C68.5706 62.9817 68.4464 62.6789 68.2248 62.4544L58.111 52.3406C57.9993 52.2266 57.8659 52.136 57.7188 52.0742C57.5716 52.0123 57.4136 51.9805 57.2539 51.9805C57.0943 51.9805 56.9362 52.0123 56.7891 52.0742C56.6419 52.136 56.5085 52.2266 56.3968 52.3406Z" fill="#4285F4"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M37.1407 11.4285C32.0551 11.4285 27.0838 12.9365 22.8553 15.7619C18.6269 18.5873 15.3312 22.6031 13.385 27.3015C11.4389 31.9999 10.9297 37.1699 11.9218 42.1578C12.914 47.1456 15.3629 51.7272 18.9589 55.3232C22.5549 58.9192 27.1365 61.3681 32.1243 62.3603C37.1122 63.3524 42.2822 62.8432 46.9806 60.8971C51.679 58.9509 55.6948 55.6552 58.5202 51.4268C61.3456 47.1983 62.8536 42.2269 62.8536 37.1414C62.8536 33.7647 62.1885 30.4211 60.8963 27.3015C59.6042 24.1819 57.7101 21.3473 55.3225 18.9596C52.9348 16.5719 50.1002 14.6779 46.9806 13.3857C43.861 12.0936 40.5174 11.4285 37.1407 11.4285ZM37.1407 56.2547C33.3685 56.249 29.6826 55.1257 26.5486 53.0264C23.4145 50.9272 20.9728 47.9463 19.5318 44.4602C18.0909 40.9741 17.7154 37.1392 18.4527 33.4397C19.19 29.7403 21.007 26.3424 23.6743 23.6751C26.3417 21.0077 29.7396 19.1907 33.439 18.4534C37.1384 17.7161 40.9734 18.0916 44.4595 19.5326C47.9456 20.9735 50.9265 23.4152 53.0257 26.5493C55.1249 29.6834 56.2483 33.3692 56.254 37.1414C56.2577 39.6525 55.7659 42.1396 54.8067 44.4602C53.8475 46.7808 52.4398 48.8893 50.6642 50.6649C48.8886 52.4405 46.7801 53.8482 44.4595 54.8074C42.1388 55.7666 39.6517 56.2585 37.1407 56.2547Z" fill="#669DF6"/>`,
+        "dt-logo-4": `<path d="M47.8206 39.9999H53.5349C53.9813 39.9999 54.4277 39.6428 54.4277 39.107C54.4277 39.0178 54.4277 38.8392 54.3384 38.7499L44.517 11.9642C44.3384 11.6963 44.0706 11.4285 43.7135 11.4285H37.9992C37.5527 11.4285 37.1063 11.7856 37.1063 12.3213C37.1063 12.4106 37.1063 12.4999 37.1956 12.5892L47.1063 39.5535C47.1956 39.8213 47.4634 39.9999 47.8206 39.9999Z" fill="#0073FF"/>
+<path d="M46.8385 68.5713H52.5527C52.9992 68.5713 53.4456 68.2142 53.4456 67.6785C53.4456 67.5892 53.4456 67.4999 53.3563 67.4106L32.9992 11.9642C32.9099 11.6963 32.5527 11.4285 32.1956 11.4285H26.4813C26.0349 11.4285 25.5884 11.7856 25.5884 12.3213C25.5884 12.4106 25.5884 12.4999 25.6777 12.5892L46.0349 68.0356C46.1242 68.3928 46.4813 68.5713 46.8385 68.5713Z" fill="#0073FF"/>
+<path d="M35.4992 68.5713H41.2135C41.6599 68.5713 42.017 68.2142 42.1063 67.7678C42.1063 67.6785 42.1063 67.4999 42.017 67.4106L32.1063 40.5356C32.017 40.1785 31.6599 39.9999 31.3027 39.9999H25.4992C25.0527 39.9999 24.6956 40.4463 24.6956 40.8928C24.6956 40.982 24.6956 41.0713 24.7849 41.1606L34.6063 68.0356C34.8742 68.3928 35.142 68.5713 35.4992 68.5713Z" fill="#0073FF"/>
+<path d="M48.5349 12.5892L53.1777 25.1785C53.267 25.5356 53.6242 25.7142 53.9813 25.7142H59.6063C60.0527 25.7142 60.4992 25.357 60.4992 24.8213C60.4992 24.732 60.4992 24.6428 60.4099 24.5535L55.767 11.9642C55.6777 11.6963 55.4099 11.4285 55.0527 11.4285H49.3385C48.892 11.4285 48.4456 11.7856 48.4456 12.3213C48.4456 12.4106 48.4456 12.4999 48.5349 12.5892Z" fill="#0073FF"/>
+<path d="M24.9634 68.5713H30.6777C31.1242 68.5713 31.5706 68.2142 31.5706 67.6785C31.5706 67.5892 31.5706 67.4999 31.4813 67.4106L26.8384 54.8213C26.7492 54.4642 26.392 54.2856 26.0349 54.2856H20.3206C19.8742 54.2856 19.4277 54.6428 19.4277 55.1785C19.4277 55.2678 19.4277 55.357 19.517 55.4463L24.1599 68.0356C24.2492 68.3928 24.6063 68.5713 24.9634 68.5713Z" fill="#0073FF"/>`,
+        "ai-logo-1": `<path d="M68.1077 46.4208C67.6889 45.9179 67.102 45.5839 66.4558 45.4805C65.8097 45.3771 65.1479 45.5114 64.5931 45.8584L39.9911 63.9233V64.6965C40.3461 64.6545 40.7059 64.6881 41.0469 64.7952C41.388 64.9023 41.7024 65.0804 41.9696 65.3178C42.2368 65.5552 42.4507 65.8465 42.5972 66.1726C42.7436 66.4986 42.8193 66.852 42.8193 67.2094C42.8193 67.5669 42.7436 67.9202 42.5972 68.2463C42.4507 68.5723 42.2368 68.8637 41.9696 69.1011C41.7024 69.3385 41.388 69.5166 41.0469 69.6237C40.7059 69.7308 40.3461 69.7644 39.9911 69.7224C40.5619 69.7249 41.1176 69.5397 41.5727 69.1952L67.6156 49.9705C68.1231 49.545 68.4544 48.9463 68.5453 48.2904C68.6362 47.6345 68.4802 46.9682 68.1077 46.4208Z" fill="#669DF6"/>
+<path d="M39.9911 69.7224C39.3759 69.6495 38.8087 69.3534 38.3972 68.8902C37.9857 68.4271 37.7584 67.829 37.7584 67.2094C37.7584 66.5899 37.9857 65.9918 38.3972 65.5287C38.8087 65.0655 39.3759 64.7694 39.9911 64.6965V63.9233L15.3892 45.8584C14.8366 45.5039 14.1729 45.3652 13.5246 45.4689C12.8763 45.5727 12.2889 45.9115 11.8746 46.4208C11.5041 46.9683 11.356 47.6365 11.4604 48.2893C11.5649 48.9422 11.914 49.5307 12.4369 49.9353L38.4799 69.16C38.9241 69.4996 39.4671 69.6847 40.0263 69.6872L39.9911 69.7224Z" fill="#AECBFA"/>
+<path d="M39.9911 62.0606C38.9693 62.0606 37.9705 62.3636 37.1208 62.9313C36.2712 63.499 35.609 64.3059 35.218 65.2499C34.827 66.1939 34.7247 67.2327 34.924 68.2349C35.1234 69.2371 35.6154 70.1577 36.3379 70.8802C37.0605 71.6028 37.981 72.0948 38.9832 72.2942C39.9854 72.4935 41.0242 72.3912 41.9682 72.0001C42.9123 71.6091 43.7192 70.9469 44.2869 70.0973C44.8546 69.2477 45.1576 68.2488 45.1576 67.227C45.1576 65.8568 44.6132 64.5427 43.6443 63.5738C42.6755 62.6049 41.3614 62.0606 39.9911 62.0606Z" fill="#4285F4"/>
+<path d="M18.9037 19.0774C18.2075 19.0683 17.5423 18.7877 17.0499 18.2953C16.5576 17.803 16.2769 17.1378 16.2678 16.4415V9.83414C16.2247 9.46003 16.2612 9.08103 16.3748 8.72202C16.4885 8.363 16.6768 8.03207 16.9274 7.75095C17.1779 7.46983 17.4851 7.24488 17.8288 7.09084C18.1724 6.93681 18.5447 6.85718 18.9213 6.85718C19.2979 6.85718 19.6702 6.93681 20.0139 7.09084C20.3575 7.24488 20.6647 7.46983 20.9153 7.75095C21.1658 8.03207 21.3541 8.363 21.4678 8.72202C21.5815 9.08103 21.6179 9.46003 21.5748 9.83414V16.4415C21.5656 17.1438 21.2801 17.8142 20.7802 18.3076C20.2802 18.8009 19.6061 19.0775 18.9037 19.0774Z" fill="#AECBFA"/>
+<path d="M18.8335 42.4493C20.3086 42.4493 21.5045 41.2534 21.5045 39.7782C21.5045 38.3031 20.3086 37.1072 18.8335 37.1072C17.3583 37.1072 16.1624 38.3031 16.1624 39.7782C16.1624 41.2534 17.3583 42.4493 18.8335 42.4493Z" fill="#AECBFA"/>
+<path d="M18.8335 34.6821C20.3086 34.6821 21.5045 33.4862 21.5045 32.0111C21.5045 30.5359 20.3086 29.34 18.8335 29.34C17.3583 29.34 16.1624 30.5359 16.1624 32.0111C16.1624 33.4862 17.3583 34.6821 18.8335 34.6821Z" fill="#AECBFA"/>
+<path d="M18.8335 26.8798C20.3086 26.8798 21.5045 25.6839 21.5045 24.2087C21.5045 22.7335 20.3086 21.5376 18.8335 21.5376C17.3583 21.5376 16.1624 22.7335 16.1624 24.2087C16.1624 25.6839 17.3583 26.8798 18.8335 26.8798Z" fill="#AECBFA"/>
+<path d="M61.0785 26.8095C60.3762 26.8003 59.7058 26.5148 59.2125 26.0148C58.7191 25.5149 58.4426 24.8408 58.4426 24.1384V17.531C58.4426 16.8319 58.7203 16.1615 59.2147 15.6672C59.709 15.1728 60.3795 14.8951 61.0785 14.8951C61.7776 14.8951 62.4481 15.1728 62.9424 15.6672C63.4368 16.1615 63.7145 16.8319 63.7145 17.531V24.1384C63.7191 24.4875 63.6544 24.8341 63.524 25.1579C63.3936 25.4818 63.2002 25.7766 62.955 26.0251C62.7097 26.2736 62.4176 26.4709 62.0955 26.6055C61.7733 26.7402 61.4277 26.8095 61.0785 26.8095Z" fill="#4285F4"/>
+<path d="M61.1488 42.4845C62.624 42.4845 63.8199 41.2886 63.8199 39.8134C63.8199 38.3382 62.624 37.1423 61.1488 37.1423C59.6736 37.1423 58.4778 38.3382 58.4778 39.8134C58.4778 41.2886 59.6736 42.4845 61.1488 42.4845Z" fill="#4285F4"/>
+<path d="M61.1488 34.5767C62.624 34.5767 63.8199 33.3808 63.8199 31.9056C63.8199 30.4304 62.624 29.2345 61.1488 29.2345C59.6736 29.2345 58.4778 30.4304 58.4778 31.9056C58.4778 33.3808 59.6736 34.5767 61.1488 34.5767Z" fill="#4285F4"/>
+<path d="M61.1488 12.5052C62.624 12.5052 63.8199 11.3093 63.8199 9.83414C63.8199 8.35895 62.624 7.16307 61.1488 7.16307C59.6736 7.16307 58.4778 8.35895 58.4778 9.83414C58.4778 11.3093 59.6736 12.5052 61.1488 12.5052Z" fill="#4285F4"/>
+<path d="M39.9911 50.3219C39.2949 50.3128 38.6297 50.0322 38.1373 49.5398C37.645 49.0475 37.3643 48.3823 37.3552 47.686V40.9732C37.4303 40.3221 37.7421 39.7213 38.2314 39.2851C38.7207 38.849 39.3533 38.608 40.0087 38.608C40.6642 38.608 41.2967 38.849 41.786 39.2851C42.2753 39.7213 42.5872 40.3221 42.6622 40.9732V47.6157C42.6669 47.9694 42.6012 48.3206 42.4691 48.6487C42.3369 48.9768 42.1409 49.2754 41.8924 49.5272C41.6439 49.779 41.3479 49.9789 41.0215 50.1153C40.6951 50.2517 40.3449 50.322 39.9911 50.3219Z" fill="#669DF6"/>
+<path d="M39.9911 58.0891C41.4663 58.0891 42.6622 56.8933 42.6622 55.4181C42.6622 53.9429 41.4663 52.747 39.9911 52.747C38.516 52.747 37.3201 53.9429 37.3201 55.4181C37.3201 56.8933 38.516 58.0891 39.9911 58.0891Z" fill="#669DF6"/>
+<path d="M39.9911 35.9122C41.4663 35.9122 42.6622 34.7163 42.6622 33.2412C42.6622 31.766 41.4663 30.5701 39.9911 30.5701C38.516 30.5701 37.3201 31.766 37.3201 33.2412C37.3201 34.7163 38.516 35.9122 39.9911 35.9122Z" fill="#669DF6"/>
+<path d="M39.9911 28.1099C41.4663 28.1099 42.6622 26.914 42.6622 25.4388C42.6622 23.9636 41.4663 22.7677 39.9911 22.7677C38.516 22.7677 37.3201 23.9636 37.3201 25.4388C37.3201 26.914 38.516 28.1099 39.9911 28.1099Z" fill="#669DF6"/>
+<path d="M50.5348 34.647C49.8386 34.6379 49.1734 34.3572 48.681 33.8649C48.1887 33.3725 47.908 32.7073 47.8989 32.0111V25.4037C47.8558 25.0296 47.8923 24.6506 48.0059 24.2915C48.1196 23.9325 48.3079 23.6016 48.5585 23.3205C48.809 23.0394 49.1162 22.8144 49.4599 22.6604C49.8035 22.5063 50.1758 22.4267 50.5524 22.4267C50.929 22.4267 51.3013 22.5063 51.645 22.6604C51.9886 22.8144 52.2958 23.0394 52.5464 23.3205C52.7969 23.6016 52.9852 23.9325 53.0989 24.2915C53.2126 24.6506 53.249 25.0296 53.2059 25.4037V32.0111C53.1967 32.7134 52.9112 33.3838 52.4113 33.8771C51.9113 34.3705 51.2372 34.647 50.5348 34.647Z" fill="#4285F4"/>
+<path d="M50.57 20.2724C52.0452 20.2724 53.2411 19.0765 53.2411 17.6013C53.2411 16.1261 52.0452 14.9303 50.57 14.9303C49.0948 14.9303 47.8989 16.1261 47.8989 17.6013C47.8989 19.0765 49.0948 20.2724 50.57 20.2724Z" fill="#4285F4"/>
+<path d="M50.57 50.1462C52.0452 50.1462 53.2411 48.9503 53.2411 47.4751C53.2411 45.9999 52.0452 44.8041 50.57 44.8041C49.0948 44.8041 47.8989 45.9999 47.8989 47.4751C47.8989 48.9503 49.0948 50.1462 50.57 50.1462Z" fill="#4285F4"/>
+<path d="M50.57 42.3439C52.0452 42.3439 53.2411 41.148 53.2411 39.6728C53.2411 38.1976 52.0452 37.0017 50.57 37.0017C49.0948 37.0017 47.8989 38.1976 47.8989 39.6728C47.8989 41.148 49.0948 42.3439 50.57 42.3439Z" fill="#4285F4"/>
+<path d="M29.4123 50.1462C30.8875 50.1462 32.0834 48.9503 32.0834 47.4751C32.0834 45.9999 30.8875 44.8041 29.4123 44.8041C27.9371 44.8041 26.7412 45.9999 26.7412 47.4751C26.7412 48.9503 27.9371 50.1462 29.4123 50.1462Z" fill="#AECBFA"/>
+<path d="M29.4123 28.1099C30.8875 28.1099 32.0834 26.914 32.0834 25.4388C32.0834 23.9636 30.8875 22.7677 29.4123 22.7677C27.9371 22.7677 26.7412 23.9636 26.7412 25.4388C26.7412 26.914 27.9371 28.1099 29.4123 28.1099Z" fill="#AECBFA"/>
+<path d="M29.4123 20.2724C30.8875 20.2724 32.0834 19.0765 32.0834 17.6013C32.0834 16.1261 30.8875 14.9303 29.4123 14.9303C27.9371 14.9303 26.7412 16.1261 26.7412 17.6013C26.7412 19.0765 27.9371 20.2724 29.4123 20.2724Z" fill="#AECBFA"/>
+<path d="M29.4474 42.3439C28.7569 42.3444 28.093 42.0775 27.595 41.5992C27.097 41.1208 26.8036 40.4682 26.7764 39.7782V33.1006C26.7764 32.4015 27.0541 31.731 27.5484 31.2367C28.0428 30.7424 28.7132 30.4646 29.4123 30.4646C30.1114 30.4646 30.7818 30.7424 31.2762 31.2367C31.7705 31.731 32.0482 32.4015 32.0482 33.1006V39.7782C32.0301 40.459 31.7492 41.1064 31.2644 41.5847C30.7796 42.063 30.1284 42.335 29.4474 42.3439Z" fill="#AECBFA"/>`,
+        "ai-logo-2": `<path d="M39.8381 61.2839C45.8076 61.2839 51.5326 58.9125 55.7537 54.6914C59.9748 50.4703 62.3462 44.7453 62.3462 38.7758C62.3462 32.8062 59.9748 27.0812 55.7537 22.8601C51.5326 18.639 45.8076 16.2676 39.8381 16.2676C33.8685 16.2676 28.1435 18.639 23.9224 22.8601C19.7013 27.0812 17.3299 32.8062 17.3299 38.7758C17.3299 44.7453 19.7013 50.4703 23.9224 54.6914C28.1435 58.9125 33.8685 61.2839 39.8381 61.2839Z" fill="#FFD21E"/>
+<path d="M62.3462 38.7758C62.3462 32.8062 59.9748 27.0812 55.7537 22.8601C51.5326 18.639 45.8076 16.2676 39.8381 16.2676C33.8685 16.2676 28.1435 18.639 23.9224 22.8601C19.7013 27.0812 17.3299 32.8062 17.3299 38.7758C17.3299 44.7453 19.7013 50.4703 23.9224 54.6914C28.1435 58.9125 33.8685 61.2839 39.8381 61.2839C45.8076 61.2839 51.5326 58.9125 55.7537 54.6914C59.9748 50.4703 62.3462 44.7453 62.3462 38.7758ZM14.7391 38.7758C14.7391 35.4797 15.3883 32.2159 16.6496 29.1708C17.9109 26.1256 19.7597 23.3587 22.0904 21.0281C24.421 18.6974 27.1879 16.8487 30.2331 15.5873C33.2782 14.326 36.542 13.6768 39.8381 13.6768C43.1341 13.6768 46.3979 14.326 49.443 15.5873C52.4882 16.8487 55.2551 18.6974 57.5858 21.0281C59.9164 23.3587 61.7652 26.1256 63.0265 29.1708C64.2879 32.2159 64.9371 35.4797 64.9371 38.7758C64.9371 45.4324 62.2927 51.8165 57.5858 56.5235C52.8788 61.2304 46.4947 63.8748 39.8381 63.8748C33.1814 63.8748 26.7974 61.2304 22.0904 56.5235C17.3834 51.8165 14.7391 45.4324 14.7391 38.7758Z" fill="#FF9D0B"/>
+<path d="M47.1508 32.6549C47.9799 32.9398 48.3037 34.6369 49.1393 34.1964C49.7051 33.896 50.1691 33.4346 50.4726 32.8705C50.7761 32.3064 50.9055 31.6649 50.8445 31.0273C50.7834 30.3896 50.5346 29.7844 50.1295 29.2881C49.7245 28.7919 49.1814 28.4269 48.5689 28.2393C47.9563 28.0518 47.302 28.0501 46.6885 28.2344C46.075 28.4188 45.53 28.781 45.1224 29.2751C44.7147 29.7692 44.4628 30.3732 44.3984 31.0105C44.3341 31.6479 44.4601 32.29 44.7607 32.8556C45.1558 33.6005 46.4124 32.3893 47.1573 32.6484L47.1508 32.6549ZM31.8971 32.6549C31.068 32.9398 30.7377 34.6369 29.9086 34.1964C29.3428 33.896 28.8788 33.4346 28.5753 32.8705C28.2718 32.3064 28.1423 31.6649 28.2034 31.0273C28.2645 30.3896 28.5133 29.7844 28.9183 29.2881C29.3234 28.7919 29.8665 28.4269 30.479 28.2393C31.0915 28.0518 31.7459 28.0501 32.3594 28.2344C32.9728 28.4188 33.5178 28.781 33.9255 29.2751C34.3331 29.7692 34.585 30.3732 34.6494 31.0105C34.7138 31.6479 34.5877 32.29 34.2871 32.8556C33.892 33.6005 32.629 32.3893 31.8906 32.6484L31.8971 32.6549Z" fill="#3A3B45"/>
+<path d="M39.6761 48.1936C46.0432 48.1936 48.0965 42.5196 48.0965 39.6048C48.0965 38.0892 47.0795 38.5685 45.4473 39.3717C43.9381 40.1165 41.9108 41.1464 39.6826 41.1464C35.0255 41.1464 31.2623 36.6901 31.2623 39.6048C31.2623 42.5196 33.3091 48.1936 39.6826 48.1936H39.6761Z" fill="#FF323D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34.7988 46.7103C35.1406 46.0158 35.6218 45.3991 36.2124 44.8987C36.8031 44.3983 37.4905 44.025 38.2317 43.8021C38.4908 43.7243 38.7564 44.1713 39.0349 44.6311C39.294 45.0716 39.566 45.5185 39.8381 45.5185C40.1295 45.5185 40.421 45.0781 40.6995 44.6441C40.991 44.1907 41.276 43.7502 41.5545 43.8344C42.946 44.2762 44.1087 45.2459 44.7931 46.5354C47.2091 44.6311 48.0965 41.5221 48.0965 39.6048C48.0965 38.0892 47.0795 38.5685 45.4473 39.3717L45.3566 39.417C43.8604 40.1619 41.8654 41.1464 39.6761 41.1464C37.4869 41.1464 35.4984 40.1619 33.9957 39.417C32.3116 38.5815 31.2558 38.0568 31.2558 39.6048C31.2558 41.5804 32.2015 44.8254 34.7988 46.7103Z" fill="#3A3B45"/>
+<path d="M55.0594 35.6991C55.6177 35.6991 56.1531 35.4773 56.5479 35.0826C56.9427 34.6878 57.1645 34.1523 57.1645 33.594C57.1645 33.0357 56.9427 32.5003 56.5479 32.1055C56.1531 31.7107 55.6177 31.489 55.0594 31.489C54.5011 31.489 53.9657 31.7107 53.5709 32.1055C53.1761 32.5003 52.9543 33.0357 52.9543 33.594C52.9543 34.1523 53.1761 34.6878 53.5709 35.0826C53.9657 35.4773 54.5011 35.6991 55.0594 35.6991ZM24.9406 35.6991C25.4989 35.6991 26.0343 35.4773 26.4291 35.0826C26.8239 34.6878 27.0457 34.1523 27.0457 33.594C27.0457 33.0357 26.8239 32.5003 26.4291 32.1055C26.0343 31.7107 25.4989 31.489 24.9406 31.489C24.3823 31.489 23.8469 31.7107 23.4521 32.1055C23.0573 32.5003 22.8355 33.0357 22.8355 33.594C22.8355 34.1523 23.0573 34.6878 23.4521 35.0826C23.8469 35.4773 24.3823 35.6991 24.9406 35.6991Z" fill="#FF9D0B"/>
+<path d="M34.2612 61.407C36.0425 58.7902 35.9129 56.8276 33.471 54.3857C31.0226 51.9438 29.5977 48.362 29.5977 48.362C29.5977 48.362 29.0665 46.2893 27.8553 46.4836C26.6441 46.6779 25.7567 49.774 28.2958 51.6718C30.8283 53.5696 27.7905 54.8586 26.8125 53.0774C25.8409 51.2961 23.1723 46.7168 21.7862 45.8359C20.4066 44.9615 19.435 45.4473 19.7589 47.2609C20.0827 49.068 25.8668 53.4466 25.3033 54.3857C24.7398 55.3379 22.7578 53.2781 22.7578 53.2781C22.7578 53.2781 16.5591 47.6365 15.2054 49.1069C13.8582 50.5772 16.2353 51.8078 19.6099 53.8546C22.9974 55.9014 23.263 56.4455 22.7837 57.2227C22.2979 58 14.8297 51.6977 14.1302 54.3728C13.4307 57.0349 21.7538 57.8057 21.2421 59.6517C20.724 61.4977 15.3738 56.167 14.2857 58.2397C13.1845 60.3188 21.8316 62.7607 21.9028 62.7801C24.688 63.5056 31.7805 65.0407 34.2612 61.407Z" fill="#FFD21E"/>
+<path d="M45.7452 61.407C43.964 58.7902 44.0871 56.8276 46.5355 54.3857C48.9773 51.9438 50.4023 48.362 50.4023 48.362C50.4023 48.362 50.9335 46.2893 52.1512 46.4836C53.3559 46.6779 54.2433 49.774 51.7107 51.6718C49.1717 53.5696 52.2159 54.8586 53.1875 53.0774C54.1656 51.2961 56.8342 46.7168 58.2138 45.8359C59.5934 44.9615 60.5715 45.4473 60.2411 47.2609C59.9173 49.068 54.1397 53.4466 54.7032 54.3857C55.2602 55.3379 57.2422 53.2781 57.2422 53.2781C57.2422 53.2781 63.4473 47.6365 64.7946 49.1069C66.1418 50.5772 63.7712 51.8078 60.3901 53.8546C57.0026 55.9014 56.7435 56.4455 57.2163 57.2227C57.7021 58 65.1703 51.6977 65.8698 54.3728C66.5693 57.0349 58.2527 57.8057 58.7643 59.6517C59.2825 61.4977 64.6262 56.167 65.7208 58.2397C66.8155 60.3188 58.1749 62.7607 58.1037 62.7801C55.312 63.5056 48.2195 65.0407 45.7452 61.407Z" fill="#FFD21E"/>`,
+        "ai-logo-3": `<g transform="translate(0, 9) scale(1.26)"><path d="M56.4019 3.52098C55.7981 3.22505 55.5383 3.78898 55.1853 4.07525C55.0644 4.1676 54.9621 4.28757 54.8603 4.39833C53.9778 5.34088 52.9466 5.96004 51.5997 5.8861C49.6307 5.77533 47.949 6.39434 46.4629 7.90037C46.1471 6.04319 45.0975 4.93389 43.4999 4.22283C42.6639 3.85327 41.8187 3.4834 41.2333 2.67953C40.8247 2.10685 40.7131 1.46913 40.5088 0.840766C40.3789 0.462147 40.2485 0.0738706 39.8119 0.00898176C39.3383 -0.0649613 39.1522 0.332218 38.9667 0.665264C38.2235 2.0237 37.9356 3.52052 37.9637 5.03575C38.0289 8.44574 39.4685 11.162 42.3296 13.0936C42.6547 13.3154 42.7381 13.5371 42.6363 13.8605C42.4411 14.526 42.2089 15.1726 42.0046 15.8381C41.8745 16.2632 41.6791 16.3555 41.2241 16.1708C39.6544 15.515 38.2979 14.5444 37.0996 13.3711C35.0653 11.4027 33.2262 9.23119 30.9317 7.5308C30.4007 7.1381 29.8553 6.76517 29.2968 6.41275C26.956 4.13968 29.6034 2.27285 30.2164 2.05132C30.8573 1.82013 30.4394 1.02562 28.3677 1.03483C26.2962 1.04403 24.4012 1.73699 21.9862 2.66112C21.6331 2.79995 21.2617 2.90151 20.8807 2.98436C18.6885 2.56847 16.4127 2.47612 14.0346 2.74397C9.55716 3.24271 5.98118 5.35899 3.35243 8.97209C0.194307 13.3159 -0.549047 18.25 0.361359 23.397C1.31809 28.821 4.08613 33.312 8.34057 36.8236C12.7529 40.4638 17.8341 42.2475 23.6302 41.9056C27.1506 41.7025 31.0708 41.2313 35.4923 37.4886C36.607 38.0429 37.7773 38.2649 39.7188 38.4312C41.2144 38.57 42.6542 38.3572 43.769 38.1265C45.5154 37.7569 45.3946 36.1397 44.7628 35.8442C39.6449 33.4604 40.7684 34.4305 39.7468 33.6451C42.3476 30.5681 46.2678 27.3709 47.8004 17.0121C47.9211 16.19 47.8186 15.6725 47.8004 15.007C47.7912 14.6008 47.8838 14.4436 48.3484 14.3972C49.6302 14.2492 50.8749 13.8985 52.0175 13.2698C55.3336 11.4587 56.6714 8.48331 56.9873 4.91654C57.0336 4.37147 56.9781 3.80724 56.4019 3.52098ZM27.504 35.6218C22.5435 31.7227 20.1378 30.4379 19.144 30.4934C18.2151 30.549 18.3822 31.6116 18.5865 32.3046C18.8 32.9885 19.0791 33.4596 19.469 34.0602C19.7384 34.4577 19.9243 35.0488 19.1998 35.4927C17.6022 36.4812 14.8246 35.16 14.6944 35.0951C11.4619 33.1916 8.75873 30.6783 6.85431 27.241C5.01524 23.9326 3.94684 20.3847 3.77059 16.5959C3.72411 15.6813 3.99362 15.3574 4.90373 15.1915C6.10191 14.9695 7.33736 14.9231 8.53569 15.0986C13.5981 15.8381 17.908 18.1019 21.5216 21.6871C23.5839 23.729 25.1444 26.1688 26.7516 28.5527C28.4608 31.0845 30.3 33.4964 32.6408 35.4739C33.4676 36.1668 34.1269 36.6936 34.7588 37.0819C32.8544 37.2942 29.6774 37.3406 27.504 35.6218ZM29.9033 20.1512C29.9819 19.8327 30.2686 19.5992 30.6158 19.5992C30.7015 19.5994 30.7864 19.615 30.8665 19.6452C30.9688 19.6824 31.0616 19.7379 31.136 19.8207C31.2659 19.9504 31.3403 20.1351 31.3403 20.329C31.3403 20.7357 31.0153 21.0589 30.6066 21.0589C30.4341 21.0605 30.2669 20.9998 30.1355 20.888C30.0042 20.7762 29.9176 20.6207 29.8916 20.4502C29.8756 20.3507 29.8795 20.2491 29.9033 20.1512ZM37.0272 24.2128C36.6339 24.3631 36.2425 24.4811 35.8641 24.4965C35.1581 24.5333 34.3872 24.2469 33.9694 23.8958C33.3193 23.3507 32.8548 23.046 32.6597 22.0938C32.5761 21.6871 32.6224 21.0589 32.6968 20.6986C32.864 19.9223 32.6781 19.4233 32.1303 18.9705C31.6845 18.601 31.1176 18.4994 30.4954 18.4994C30.2632 18.4994 30.0496 18.3979 29.8916 18.3147C29.6315 18.1855 29.418 17.862 29.6223 17.4645C29.6875 17.3354 30.0033 17.021 30.0777 16.9658C30.9228 16.4852 31.8984 16.6422 32.7991 17.0026C33.6351 17.3446 34.267 17.9728 35.1772 18.8598C36.106 19.9315 36.2732 20.2274 36.8029 21.0313C37.2211 21.6595 37.6018 22.3066 37.862 23.0456C37.9943 23.432 37.8727 23.7609 37.5087 23.9928C37.3607 24.0871 37.1904 24.1503 37.0272 24.2128Z" fill="#4D6BFE"/></g>`,
+        "ai-logo-4": `<path d="M58.4894 11.5V28.771H64.9375V53.3475H57.9669V68.5L41.254 53.7892V68.3836H38.6629V53.7726L21.931 68.5V53.1456H15.0625V28.5715H21.912V11.5L38.6629 26.9232V11.9512H41.2516V27.365L58.4894 11.5ZM41.254 32.9795V50.3621L55.3758 62.7929V45.795L41.254 32.9795ZM38.6439 32.7895L24.5221 45.6098V62.7929L38.6439 50.3621V32.7919V32.7895ZM57.9669 50.792H62.3464V31.3289H43.4675L57.9669 44.4864V50.792ZM36.6346 31.127H17.6512V50.5901H21.9262V44.4721L36.6322 31.1246L36.6346 31.127ZM24.5031 17.3805V28.5667H36.6513L24.5031 17.3805ZM55.8983 17.3805L43.7501 28.5667H55.8983V17.3805Z" fill="#22B8CD"/>`,
+    }
+
+    // Store original loop 1 logos
+    const loop1Logos = {}
+
+    function captureLoop1Logos() {
+        Object.keys(loop2Logos).forEach((id) => {
+            const el = document.getElementById(id)
+            if (el) loop1Logos[id] = el.innerHTML
+        })
+    }
+
+    function swapLogos(toLoop2) {
+        Object.keys(loop2Logos).forEach((id) => {
+            const el = document.getElementById(id)
+            if (!el) return
+            el.innerHTML = toLoop2 ? loop2Logos[id] : loop1Logos[id] || ""
+            // Restore inactive state
+            el.classList.remove("logo-active")
+            el.classList.add("logo-inactive")
+            el.style.opacity = "0.5"
+        })
+        // Adjust positions for loop 2 specific logos
+        const ic3 = document.getElementById("ic-logo-3")
+        const ic4 = document.getElementById("ic-logo-4")
+        if (ic3)
+            ic3.setAttribute(
+                "transform",
+                toLoop2
+                    ? "translate(498,147) skewY(-22) scale(0.87)"
+                    : "translate(378,137) skewY(-22) scale(0.87)",
+            )
+        if (ic4)
+            ic4.setAttribute(
+                "transform",
+                toLoop2
+                    ? "translate(580,157) skewY(-22) scale(0.87) translate(-218,-59)"
+                    : "translate(520,137) skewY(-22) scale(0.87) translate(-218,-59)",
+            )
+    }
+
+    let currentLoop = 1
+    function switchLoopLogos() {
+        currentLoop = currentLoop === 1 ? 2 : 1
+        swapLogos(currentLoop === 2)
+    }
+
+    // ── Sequencer ──────────────────────────────────────────────────────────
+    const PHASE = 5000
+    const TRANS = 500
+    let dashedInterval = null
+
+    function startDashedLoop(block, color, goUp) {
+        clearInterval(dashedInterval)
+        spawnDashedLines(block, color, goUp)
+        dashedInterval = setInterval(
+            () => spawnDashedLines(block, color, goUp),
+            600,
+        )
+    }
+    function stopDashedLoop() {
+        clearInterval(dashedInterval)
+        dashedInterval = null
+    }
+
+    function runPhase(phase) {
+        stopDashedLoop()
+        clearDashedLines()
+
+        const allLogos = [infraLogos, dataLogos, aiLogos]
+
+        // Reset all glows
+        ;[blockInfra, blockData, blockAI].forEach((b) =>
+            setBlockGlow(b, false, ""),
+        )
+
+        // On restart (phase 0), reset everything and switch loops
+        if (phase === 0) {
+            switchLoopLogos()
+            // Reset all logos to inactive state
+            ;[...infraLogos, ...dataLogos, ...aiLogos].forEach((id) => {
+                const el = document.getElementById(id)
+                if (!el) return
+                el.classList.remove("logo-active")
+                el.classList.add("logo-inactive")
+                el.style.opacity = "0.5"
+            })
+            ;[0, 1, 2].forEach((i) => setLabelIdle(i))
+            // Reset corner lines
+            document
+                .querySelectorAll('[id^="corner-lines-"]')
+                .forEach((g) => g.setAttribute("opacity", "0.25"))
+        }
+
+        setTimeout(() => {
+            const blockList = [blockInfra, blockData, blockAI]
+            const colorList = [colors.infra, colors.data, colors.ai]
+            const block = blockList[phase]
+            const color = colorList[phase]
+
+            setBlockGlow(block, true, color)
+            fadeLogos(allLogos[phase], true)
+            setLabelRunning(phase, color)
+
+            // Deactivate lines when next phase starts
+            if (phase === 1) deactivateInfraDataLines()
+            if (phase === 2) deactivateDataAILines()
+
+            // At 78% → switch to done
+            setTimeout(() => {
+                setLabelDone(phase)
+                // Start dashed lines after done
+                // corner lines pulse handled by animateCornerLines in setLabelDone
+            }, PHASE * 0.78)
+        }, TRANS)
+
+        setTimeout(() => runPhase((phase + 1) % 3), PHASE + TRANS)
+    }
+
+    // Reset all to idle at start
+    ;[0, 1, 2].forEach((i) => setLabelIdle(i))
+    captureLoop1Logos()
+    setTimeout(() => setBlockGlow(blockAI, false, ""), 100)
+    runPhase(0)
+
+    // ── Particules lueur AI ─────────────────────────────────────────────────
+    ;(function () {
+        const COLORS = ["#8A2EF2", "#a050f8", "#C08EF9", "#d4aaff", "#ffffff"]
+        function rand(min, max) {
+            return min + Math.random() * (max - min)
+        }
+
+        function initParticles(canvasId, count) {
+            const canvas = document.getElementById(canvasId)
+            if (!canvas) return
+            const ctx = canvas.getContext("2d")
+            const W = canvas.width,
+                H = canvas.height
+
+            class Particle {
+                constructor() {
+                    this.reset(true)
+                }
+                reset(init) {
+                    this.x = rand(20, W - 20)
+                    this.y = init ? rand(0, H) : H - 30 + rand(0, 10)
+                    this.vy = rand(0.3, 1.1)
+                    this.size = rand(0.8, 2.2)
+                    this.alpha = rand(0.3, 0.9)
+                    this.color =
+                        COLORS[Math.floor(Math.random() * COLORS.length)]
+                    this.life = 0
+                    this.maxLife = rand(60, 180)
+                }
+                update() {
+                    this.y -= this.vy
+                    this.life++
+                    const t = this.life / this.maxLife
+                    this.opacity =
+                        t < 0.2 ? t / 0.2 : t > 0.75 ? 1 - (t - 0.75) / 0.25 : 1
+                    if (this.y < -5 || this.life >= this.maxLife)
+                        this.reset(false)
+                }
+                draw() {
+                    ctx.save()
+                    ctx.globalAlpha = this.alpha * this.opacity
+                    ctx.fillStyle = this.color
+                    ctx.shadowColor = this.color
+                    ctx.shadowBlur = 4
+                    ctx.beginPath()
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+                    ctx.fill()
+                    ctx.restore()
+                }
+            }
+
+            const particles = Array.from(
+                { length: count },
+                () => new Particle(),
+            )
+            function loop() {
+                ctx.clearRect(0, 0, W, H)
+                particles.forEach((p) => {
+                    p.update()
+                    p.draw()
+                })
+                requestAnimationFrame(loop)
+            }
+            loop()
+        }
+
+        initParticles("glow-particles", 22)
+        initParticles("glow-particles-b", 22)
+        initParticles("glow-particles-c", 22)
+    })()
+</script>
