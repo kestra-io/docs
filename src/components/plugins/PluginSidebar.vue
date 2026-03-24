@@ -91,23 +91,32 @@
         slugify,
         isEntryAPluginElementPredicate,
         type PluginElement,
-        type Plugin,
     } from "@kestra-io/ui-libs"
 
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import PluginElements from "~/components/plugins/PluginElements.vue"
 
+    interface SimplePlugin {
+        subGroup?: string
+        title: string
+        [key: string]: PluginElement[] | string | undefined
+    }
+
     const props = defineProps<{
-        pluginWrapper?: Plugin
-        pluginsWithoutDeprecated: Plugin[]
+        pluginWrapper?: SimplePlugin
+        pluginsWithoutDeprecated: SimplePlugin[]
         pluginName: string
         title: string
         routeParts: string[]
     }>()
 
+    /**
+     * Groups plugin elements by category (task, trigger, blueprints, ...).
+     * @param subGroup The subgroup containing plugin elements.
+     */
     const groupPluginElements = (
-        subGroup: Plugin,
+        subGroup: SimplePlugin,
     ): Record<string, PluginElement[]> =>
         Object.fromEntries(
             Object.entries(subGroup)
@@ -126,15 +135,18 @@
         props.pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined),
     )
 
+    /**
+     * Plugin elements of the root plugin
+     */
     const groupedDirectElements = computed(() =>
         props.pluginWrapper ? groupPluginElements(props.pluginWrapper) : {},
     )
 
     const isSubGroupOpen = (subGroup: { title: string }) =>
         props.routeParts.length >= 2 &&
-        slugify(subGroupName(subGroup as any)) === props.routeParts[1]
+        slugify(subGroupName(subGroup)) === props.routeParts[1]
 
-    const navigateToSubgroup = (subGroup: Plugin) =>
+    const navigateToSubgroup = (subGroup: { title: string }) =>
         `/plugins/${props.pluginName}/${slugify(subGroupName(subGroup))}`
 </script>
 
