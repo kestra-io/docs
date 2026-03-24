@@ -3,12 +3,10 @@ export const prerender = false
 import Layout from "~/components/layout.astro"
 import PluginSidebar from "~/components/plugins/PluginSidebar.vue"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
-import NavToc from "~/components/docs/NavToc.vue"
 import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
 import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
 import { $fetchApi } from "~/utils/fetch"
-import { API_URL } from "astro:env/client"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
     filterPluginsWithoutDeprecated,
@@ -20,14 +18,12 @@ import {
 } from "@kestra-io/ui-libs"
 import {
     formatElementName,
-    formatElementType,
     getBlueprintsHeading,
     getPluginTitle,
 } from "~/utils/pluginUtils"
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import { getIcon } from "~/utils/plugins/getPluginIcon"
-import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import PluginsSubgroupIndex from "~/components/plugins/PluginsSubgroupIndex.astro"
@@ -80,57 +76,22 @@ const pluginName = splitRouteSlug[0]
 const maybeSubGroup = splitRouteSlug[1]
 const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup
 
-const githubReleaseRepo = (() => {
-    const name = pluginName ?? ""
-    switch (true) {
-        // because core plugin is part of kestra repo
-        case name === "core":
-            return "kestra"
-        // because plugin-jdbc is the parent for many subgroups in same repo.
-        case name.startsWith("plugin-jdbc-") || name === "plugin-jdbc":
-            return "plugin-jdbc"
-        case name.startsWith("plugin-script-") || name === "plugin-script":
-            return "plugin-scripts"
-        case name.startsWith("plugin-debezium-") || name === "plugin-debezium":
-            return "plugin-debezium"
-        case name.startsWith("plugin-transform-") ||
-            name === "plugin-transform":
-            return "plugin-transform"
-        default:
-            return name
-    }
-})()
-
 const cachingConfig: RequestInit = {
     cf: {
         cacheTtl: 60 * 60, // 1 hour
         cacheEverything: true,
     },
 }
-const isEePlugin = githubReleaseRepo.includes("plugin-ee")
 
 // Batch 1: fetch github releases, artifacts, and all plugins in parallel
 const [
-    githubVersions,
-    artifactsData,
     allPlugins,
     allPluginMetadata,
     subgroups,
     { countByPlugins: blueprintCounts },
     originalIcons,
     elementIcons,
-    // for similar plugins, we want to display information that's similar
-    pluginsInformation,
 ] = await Promise.all([
-    isEePlugin
-        ? Promise.resolve({ versions: [] as any[] })
-        : retrieveRepoReleases(githubReleaseRepo),
-    isEePlugin
-        ? Promise.resolve({})
-        : $fetchApi("/plugins/artifacts", cachingConfig).catch((e) => {
-              console.error("Artifacts fetch failed", e)
-              return {}
-          }),
     $fetchApi<Plugin[]>(`/plugins/subgroups`, cachingConfig),
     $fetchApi<PluginMetadata[]>(`/plugins/metadata`, cachingConfig),
     $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`, cachingConfig),
@@ -143,63 +104,8 @@ const [
     }),
     $fetchApi(`/plugins/${pluginName}/icons/subgroups`, cachingConfig),
     $fetchApi(`/plugins/${pluginName}/icons`, cachingConfig),
-    $fetchApi(`/plugins/pluginsInformation`, cachingConfig),
 ])
 
-if (isEePlugin) {
-    try {
-        const eeData = await $fetchApi<{
-            results: {
-                version: string
-                kestraVersion: string
-                releaseDate: string | null
-            }[]
-            total: number
-        }>(
-            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
-        )
-
-        githubVersions.versions = eeData.results.map((r) => ({
-            version: r.version,
-            publishedAt: r.releaseDate,
-            minCoreCompatibilityVersion: r.kestraVersion,
-            releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
-        }))
-    } catch (e) {
-        console.error("EE releases fetch failed", e)
-    }
-} else {
-    try {
-        const { artifacts = {} } = artifactsData as {
-            artifacts?: Record<string, any[]>
-        }
-        const normalizeRepoUrl = (url?: string) => {
-            if (!url) return undefined
-            return url
-                .replace(/^git@github\.com:/, "https://github.com/")
-                .replace(/\.git$/, "")
-        }
-
-        const repoUrl = normalizeRepoUrl(
-            `https://github.com/kestra-io/${githubReleaseRepo}`,
-        )
-        githubVersions.versions?.forEach((v: any) => {
-            v.minCoreCompatibilityVersion = (
-                Object.values(artifacts).flat() as any[]
-            ).find(
-                (a) =>
-                    a.version === v.version &&
-                    normalizeRepoUrl(a.repository) === repoUrl,
-            )?.minCoreCompatibilityVersion
-        })
-    } catch (e) {
-        console.error("Artifacts annotation failed", e)
-    }
-}
-
-const githubReleasesUrl = isEePlugin
-    ? undefined
-    : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 
@@ -595,7 +501,6 @@ const ogImage =
                 currentPluginCategories?.length > 0 && (
                     <SimilarPlugins
                         {allPlugins}
-                        pluginsData={pluginsInformation.byPlugin}
                         categories={currentPluginCategories}
                         {pluginName}
                     />
@@ -603,22 +508,19 @@ const ogImage =
             }
         </article>
         <PluginsNavToc
-            pluginName={pluginName}
-            pluginType={pluginType}
-            page={page}
-            rootPlugin={rootPlugin}
-            subGroup={subGroup}
-            currentSubgroupPlugin={currentSubgroupPlugin}
-            pluginsWithoutDeprecated={pluginsWithoutDeprecated}
-            pluginType={pluginType}
-            blueprintsSectionHeading={blueprintsSectionHeading}
-            relatedBlogs={relatedBlogs}
-            blueprintCounts={blueprintCounts}
-            githubVersions={githubVersions}
-            githubReleasesUrl={githubReleasesUrl}
-            currentPluginCategories={currentPluginCategories}
-            currentPluginMetadata={currentPluginMetadata}
-            currentPluginVideos={currentPluginVideos}
+            {pluginName}
+            {pluginType}
+            {page}
+            {rootPlugin}
+            {subGroup}
+            {pluginsWithoutDeprecated}
+            {blueprintsSectionHeading}
+            {relatedBlogs}
+            {blueprintCounts}
+            {currentSubgroupPlugin}
+            {currentPluginCategories}
+            {currentPluginMetadata}
+            {currentPluginVideos}
             server:defer
         />
     </div>

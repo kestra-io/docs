@@ -6,9 +6,17 @@ import {
     type Plugin,
     type PluginMetadata,
 } from "@kestra-io/ui-libs"
-import type { ReleaseInfo } from "../../pages/api/github-releases"
 import NavToc, { type TocLink } from "../docs/NavToc.vue"
 import { formatElementType } from "~/utils/pluginUtils"
+import { $fetchApi } from "~/utils/fetch"
+import { API_URL } from "astro:env/client"
+
+const cachingConfig: RequestInit = {
+    cf: {
+        cacheTtl: 60 * 60, // 1 hour
+        cacheEverything: true,
+    },
+}
 
 interface Props {
     page?: {
@@ -30,8 +38,6 @@ interface Props {
     relatedBlogs?: { data: any }[]
     blueprintCounts?: Record<string, number>
     blueprintsSectionHeading?: { id: string; text: string }
-    githubVersions?: { versions: ReleaseInfo[] }
-    githubReleasesUrl?: string
     currentPluginCategories?: string[]
     currentPluginMetadata?: PluginMetadata[]
     currentPluginVideos?: string[]
@@ -48,8 +54,6 @@ const {
     blueprintsSectionHeading,
     relatedBlogs,
     blueprintCounts,
-    githubVersions,
-    githubReleasesUrl,
     currentPluginCategories,
     currentPluginMetadata,
     currentPluginVideos,
@@ -170,6 +174,93 @@ function makeTOC() {
 }
 
 const tocLinks = makeTOC()
+
+const githubReleaseRepo = (() => {
+    const name = pluginName ?? ""
+    switch (true) {
+        // because core plugin is part of kestra repo
+        case name === "core":
+            return "kestra"
+        // because plugin-jdbc is the parent for many subgroups in same repo.
+        case name.startsWith("plugin-jdbc-") || name === "plugin-jdbc":
+            return "plugin-jdbc"
+        case name.startsWith("plugin-script-") || name === "plugin-script":
+            return "plugin-scripts"
+        case name.startsWith("plugin-debezium-") || name === "plugin-debezium":
+            return "plugin-debezium"
+        case name.startsWith("plugin-transform-") ||
+            name === "plugin-transform":
+            return "plugin-transform"
+        default:
+            return name
+    }
+})()
+
+const isEePlugin = githubReleaseRepo.includes("plugin-ee")
+
+const githubReleasesUrl = isEePlugin
+    ? undefined
+    : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
+
+const githubVersions: { versions: any[] } = { versions: [] }
+
+const artifactsData = await (isEePlugin
+    ? Promise.resolve({})
+    : $fetchApi("/plugins/artifacts", cachingConfig).catch((e) => {
+          console.error("Artifacts fetch failed", e)
+          return {}
+      }))
+
+if (isEePlugin) {
+    try {
+        const eeData = await $fetchApi<{
+            results: {
+                version: string
+                kestraVersion: string
+                releaseDate: string | null
+            }[]
+            total: number
+        }>(
+            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
+        )
+
+        githubVersions.versions = eeData.results.map((r) => ({
+            version: r.version,
+            publishedAt: r.releaseDate,
+            minCoreCompatibilityVersion: r.kestraVersion,
+            releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
+        }))
+    } catch (e) {
+        console.error("EE releases fetch failed", e)
+    }
+} else {
+    try {
+        const { artifacts = {} } = artifactsData as {
+            artifacts?: Record<string, any[]>
+        }
+        const normalizeRepoUrl = (url?: string) => {
+            if (!url) return undefined
+            return url
+                .replace(/^git@github\.com:/, "https://github.com/")
+                .replace(/\.git$/, "")
+        }
+
+        const repoUrl = normalizeRepoUrl(
+            `https://github.com/kestra-io/${githubReleaseRepo}`,
+        )
+        githubVersions.versions?.forEach((v: any) => {
+            v.minCoreCompatibilityVersion = (
+                Object.values(artifacts).flat() as any[]
+            ).find(
+                (a) =>
+                    a.version === v.version &&
+                    normalizeRepoUrl(a.repository) === repoUrl,
+            )?.minCoreCompatibilityVersion
+        })
+    } catch (e) {
+        console.error("Artifacts annotation failed", e)
+    }
+}
 ---
 
 <NavToc
