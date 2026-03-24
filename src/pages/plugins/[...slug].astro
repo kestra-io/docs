@@ -134,9 +134,15 @@ const [
 if (isEePlugin) {
     try {
         const eeData = await $fetchApiCached<{
-            results: { version: string; kestraVersion: string; releaseDate: string | null }[]
+            results: {
+                version: string
+                kestraVersion: string
+                releaseDate: string | null
+            }[]
             total: number
-        }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
+        }>(
+            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
+        )
 
         githubVersions.versions = eeData.results.map((r) => ({
             version: r.version,
@@ -665,8 +671,6 @@ if (!pluginType && !subGroup) {
 } else {
     ogImage = `/meta/plugins/${pluginType}.svg`
 }
-
-console.log("test", pluginType)
 ---
 
 <Layout title={headingTitle} description={headingDescription} image={ogImage}>
