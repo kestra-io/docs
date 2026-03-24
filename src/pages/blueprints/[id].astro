@@ -21,7 +21,7 @@ try {
     return Astro.redirect("/404")
 }
 
-const [pageData, graph, tags] = await data
+const [pageData, graph, tags] = data
 
 let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
 
