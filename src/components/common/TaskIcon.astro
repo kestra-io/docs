@@ -1,25 +1,14 @@
 ---
-<<<<<<< feat/home-page-refresh
-import { fetchPluginIcon } from "~/utils/pluginIcon"
-const { cls, class: className, ...rest } = Astro.props
+import { fetchPluginIconCached } from "~/utils/pluginIcon"
+const { cls } = Astro.props
 
-const IconStr = await fetchPluginIcon(cls)
+const IconStr = await fetchPluginIconCached(cls, Astro.locals.runtime)
 ---
 
 <div
-    class:list={["icon-wrapper", className]}
-    data-tooltip={cls.split(".").pop()}
-    set:html={IconStr}
-    {...rest}
-=======
-const { cls } = Astro.props
----
-
-<img
     class="icon-wrapper"
     data-tooltip={cls.split(".").pop()}
-    src={`/icons/${cls}.svg`}
->>>>>>> main
+    set:html={IconStr}
 />
 
 <style lang="scss">
