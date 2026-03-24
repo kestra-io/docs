@@ -15,7 +15,6 @@ import {
     isEntryAPluginElementPredicate,
     slugify,
     subGroupName,
-    type JSONSchema,
     type Plugin,
     type PluginMetadata,
 } from "@kestra-io/ui-libs"
@@ -703,6 +702,7 @@ const ogImage =
                     : subGroup}
                 pluginType={pluginType}
                 customId={blueprintsSectionHeading?.id}
+                server:defer
             />
 
             {
