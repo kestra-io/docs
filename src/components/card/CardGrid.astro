@@ -31,7 +31,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 <span class="title-text"><Fragment set:html={title} /></span>
                 <slot />
             </h2>
-            <p set:html={subtitle} data-usal="fade-l" class="subtitle" />
+            <p set:html={subtitle} data-usal="fade-l" class:list={["subtitle", { "align-left": align === "left" }]} />
         </div>
 
         <div class="cards-grid">
@@ -106,6 +106,12 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                     margin: 0.5rem auto;
                     text-align: center;
                     font-size: $font-size-lg;
+                }
+
+                &.align-left {
+                    text-align: left;
+                    margin-left: 0;
+                    margin-right: auto;
                 }
             }
 
