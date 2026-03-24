@@ -10,6 +10,7 @@
         :metadata="currentPluginMetadata"
         capitalize
         is-plugin-page
+        data-allow-mismatch
         class="right-sidebar"
     />
 </template>
