@@ -36,6 +36,7 @@ import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
+import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -134,9 +135,15 @@ const [
 if (isEePlugin) {
     try {
         const eeData = await $fetchApi<{
-            results: { version: string; kestraVersion: string; releaseDate: string | null }[]
+            results: {
+                version: string
+                kestraVersion: string
+                releaseDate: string | null
+            }[]
             total: number
-        }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
+        }>(
+            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
+        )
 
         githubVersions.versions = eeData.results.map((r) => ({
             version: r.version,
@@ -324,7 +331,7 @@ const { currentPageIcon, subGroupsIcons } = await getIcon(
     subGroupWrapper?.subGroup,
 )
 
-const blogs = await getCollection("blogs")
+const blogs = await loadBlogPostsMetadata()
 
 const relatedBlogs = blogs
     .filter((b) => b.data.plugins?.includes(pluginName))
