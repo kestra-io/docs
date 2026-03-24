@@ -72,12 +72,6 @@ interface PluginPage {
     stem?: string
 }
 
-interface PluginPageWithToc extends PluginPage {
-    body: {
-        toc: Required<Required<PluginPage["body"]>["toc"]>
-    } & PluginPage["body"]
-}
-
 /**
  * extracted from the route, this is the Root plugin name
  */
@@ -239,8 +233,6 @@ try {
     // do nothing if plugin not found
 }
 
-// Batch 2: fetch remaining data in parallel
-
 const sidebarPluginData = generateSidebarPluginData(
     subgroups,
     allPluginMetadata,
@@ -249,9 +241,7 @@ const sidebarPluginData = generateSidebarPluginData(
 const page: PluginPage | null = isSubgroupIndex ? sidebarPluginData : null
 
 const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
-    isSubgroupIndex
-        ? (page?.body?.plugins ?? [])
-        : (sidebarPluginData?.body?.plugins ?? []),
+    sidebarPluginData.body?.plugins ?? [],
 )
 
 const toElementKey = (title?: string): string | undefined => {
@@ -497,6 +487,7 @@ const currentPluginCategories = (() => {
 })()
 
 function makeTOC() {
+    if (!page) return []
     const pluginToc = (() => {
         if (!rootPlugin) return []
 
@@ -533,12 +524,12 @@ function makeTOC() {
         return result
     })()
 
-    const baseTocLinks = !isSubgroupIndex
-        ? (page?.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
+    const baseTocLinks = isSubgroupIndex
+        ? page?.body?.toc
+            ? []
+            : pluginToc
+        : (page?.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
           [])
-        : page?.body?.toc
-          ? []
-          : pluginToc
 
     const hasBlueprints = !isSubgroupIndex
         ? blueprintCounts?.[pluginType] > 0
@@ -590,23 +581,7 @@ function makeTOC() {
     return tocLinks
 }
 
-const pageWithToc: PluginPageWithToc = page
-    ? {
-          ...page,
-          body: {
-              ...page.body,
-              toc: {
-                  links: makeTOC(),
-              },
-          },
-      }
-    : {
-          body: {
-              toc: {
-                  links: [],
-              },
-          },
-      }
+const tocLinks = makeTOC()
 
 // if no content to show, redirect to parent until /plugins
 if (
@@ -742,10 +717,10 @@ const ogImage =
             }
         </article>
         <NavToc
-            links={pageWithToc.body.toc?.links}
-            editLink={pageWithToc.editLink}
-            extension={pageWithToc.extension}
-            stem={pageWithToc.stem}
+            links={tocLinks}
+            editLink={page?.editLink}
+            extension={page?.extension}
+            stem={page?.stem}
             version={githubVersions}
             releasesUrl={githubReleasesUrl}
             categories={currentPluginCategories}
