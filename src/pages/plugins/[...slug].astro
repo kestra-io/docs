@@ -226,7 +226,7 @@ const [subgroups, { countByPlugins: blueprintCounts }] = await Promise.all([
 ])
 
 const sidebarPluginData = generateSidebarPluginData(
-    subgroups,
+    allPlugins.filter(r => r.name === pluginName),
     allPluginMetadata,
 )
 
