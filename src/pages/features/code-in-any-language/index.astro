@@ -1,5 +1,5 @@
 ---
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "@kestra-io/ui-libs"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 
@@ -18,7 +18,7 @@ import visualsImg from "~/assets/landing/features/code-in-any-lang/Visuals.svg"
 import anyLanguage1 from "~/assets/landing/features/code-in-any-lang/any-language-1.webp"
 import anyLanguage2 from "~/assets/landing/features/code-in-any-lang/any-language-2.webp"
 
-const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 
 const title = "Language Agnostic Orchestration"

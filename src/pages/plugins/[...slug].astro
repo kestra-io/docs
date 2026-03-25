@@ -11,7 +11,7 @@ import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
 import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { API_URL } from "astro:env/client"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
@@ -121,22 +121,28 @@ const [
         ? Promise.resolve({ versions: [] as any[] })
         : retrieveRepoReleases(githubReleaseRepo),
     !isEePlugin
-        ? $fetchApi("/plugins/artifacts").catch((e) => {
+        ? $fetchApiCached("/plugins/artifacts").catch((e) => {
               console.error("Artifacts fetch failed", e)
               return {}
           })
         : Promise.resolve({}),
-    $fetchApi<Plugin[]>(`/plugins/subgroups`),
-    $fetchApi<PluginMetadata[]>(`/plugins/metadata`),
-    $fetchApi(`/plugins/pluginsInformation`),
+    $fetchApiCached<Plugin[]>(`/plugins/subgroups`),
+    $fetchApiCached<PluginMetadata[]>(`/plugins/metadata`),
+    $fetchApiCached(`/plugins/pluginsInformation`),
 ])
 
 if (isEePlugin) {
     try {
-        const eeData = await $fetchApi<{
-            results: { version: string; kestraVersion: string; releaseDate: string | null }[]
+        const eeData = await $fetchApiCached<{
+            results: {
+                version: string
+                kestraVersion: string
+                releaseDate: string | null
+            }[]
             total: number
-        }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
+        }>(
+            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
+        )
 
         githubVersions.versions = eeData.results.map((r) => ({
             version: r.version,
@@ -213,8 +219,8 @@ try {
 
 // Batch 2: fetch remaining data in parallel
 const [subgroups, { countByPlugins: blueprintCounts }] = await Promise.all([
-    $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`),
-    $fetchApi<{ countByPlugins: Record<string, number> }>(
+    $fetchApiCached<Plugin[]>(`/plugins/${pluginName}/subgroups`),
+    $fetchApiCached<{ countByPlugins: Record<string, number> }>(
         `/blueprints/countByPlugins`,
     ),
 ])
@@ -226,7 +232,7 @@ const sidebarPluginData = generateSidebarPluginData(
 
 async function makePagePluginDefinition() {
     try {
-        const pageData = await $fetchApi<{
+        const pageData = await $fetchApiCached<{
             markdown: string
             schema: JSONSchema & {
                 properties: {

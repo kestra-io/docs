@@ -4,6 +4,7 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
+    "types": ["@cloudflare/workers-types"],
     "paths": {
       "~/assets/*": ["./src/assets/*"],
       "~/composables/*": ["./src/composables/*"],

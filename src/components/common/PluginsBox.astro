@@ -2,11 +2,11 @@
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import GradientCard from "~/components/card/GradientCard.vue"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { type PluginMetadata } from "@kestra-io/ui-libs"
 
 const totalPlugins = await fetchTotalPluginsCount()
-const pluginMetadata = await $fetchApi<PluginMetadata[]>("/plugins/metadata")
+const pluginMetadata = await $fetchApiCached<PluginMetadata[]>("/plugins/metadata")
 
 const filteredPlugins = pluginMetadata
     .filter(

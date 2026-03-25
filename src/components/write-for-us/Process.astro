@@ -1,0 +1,211 @@
+---
+import { Image } from "astro:assets";
+import sendIcon from "./assets/send.svg";
+import eyeCheckIcon from "./assets/eye-check-outline.svg";
+import formTextboxIcon from "./assets/form-textbox.svg";
+import earthArrowIcon from "./assets/earth-arrow-up.svg";
+import shareIcon from "./assets/share.svg";
+
+const items = [
+    {
+        title: "Submit a Draft",
+        description:
+            "Fill out the submission form with your draft and background information.",
+        icon: sendIcon,
+    },
+    {
+        title: "Draft Review",
+        description:
+            "Our team reviews each submission to ensure it aligns with our content standards and " +
+            "audience interests.",
+        icon: eyeCheckIcon,
+    },
+    {
+        title: "Editing Process",
+        description:
+            "We may suggest edits to enhance your article. Collaboration is typically done " +
+            "asynchronously to respect different time zones and schedules.",
+        icon: formTextboxIcon,
+    },
+    {
+        title: "Publish and Promote",
+        description:
+            "Once finalized, we'll publish your article on our blog and promote it across our platforms.",
+        icon: earthArrowIcon,
+    },
+    {
+        title: "Share with Your Network",
+        description:
+            "Feel free to share your published work with your personal and professional networks.",
+        icon: shareIcon,
+    },
+]
+---
+
+<section class="process">
+    <div class="container d-flex flex-column align-items-center">
+        <h2>The Process</h2>
+        <div class="cards-container">
+            {
+                items.map((item, index) => (
+                    <>
+                        <div class="card-row">
+                            <div class={`process-icon ${index % 2 === 1 ? "visible" : ""}`}>
+                                <Image src={item.icon} alt="" />
+                            </div>
+                            <div class="process-card">
+                                <div class="title-row">
+                                    <h2>{`0${index + 1}`}</h2>
+                                    <h3>{item.title}</h3>
+                                </div>
+                                <p>{item.description}</p>
+                            </div>
+                            <div class={`process-icon ${index % 2 === 0 ? "visible" : ""}`}>
+                                <Image src={item.icon} alt="" />
+                            </div>
+                        </div>
+                        {index < items.length - 1 && (
+                            <div class="arrow">
+                                <svg
+                                    width="16"
+                                    height="47"
+                                    viewBox="0 0 16 47"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M8 0V46M8 46L1 39M8 46L15 39"
+                                        stroke="var(--ks-content-color-highlight-inverse)"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </div>
+                        )}
+                    </>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .process {
+        position: relative;
+        padding: 7.5rem 0;
+        overflow: hidden;
+        text-align: center;
+        color: var(--ks-content-primary-inverse);
+        background-color: var(--ks-background-primary-inverse);
+        background-image:
+            url("~/assets/use-cases/retail/ellipse.svg"),
+            url("~/assets/use-cases/retail/grid.svg");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: auto;
+
+        @include media-breakpoint-down(lg) {
+            padding: 4rem 1rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            transform: rotate(180deg);
+            pointer-events: none;
+            background-image: inherit;
+            background-repeat: inherit;
+            background-position: inherit;
+            background-size: inherit;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+
+            .arrow {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 47px;
+            }
+        }
+
+        .card-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+
+            .process-icon {
+                display: none;
+
+                @include media-breakpoint-up(md) {
+                    display: block;
+                    flex-shrink: 0;
+                    width: 80px;
+                    visibility: hidden;
+
+                    &.visible {
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+
+        .process-card {
+            z-index: 1;
+            max-width: 540px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border: 1px solid var(--ks-border-primary-inverse);
+            border-radius: 8px;
+            background: var(--ks-background-primary-inverse);
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light-inverse);
+
+            @include media-breakpoint-up(lg) {
+                padding: 32px 64px;
+            }
+
+            .title-row {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                h2 {
+                    margin-bottom: 0;
+                    color: var(--ks-content-color-highlight-inverse);
+                }
+
+                h3 {
+                    margin-bottom: 0;
+                    text-align: left;
+                    color: var(--ks-content-primary-inverse);
+
+                    @include media-breakpoint-down(sm) {
+                        font-size: 1.25rem;
+                    }
+                }
+            }
+
+            p {
+                margin-bottom: 0;
+                text-align: left;
+                color: var(--ks-content-secondary-inverse);
+                font-size: $font-size-sm;
+
+                @include media-breakpoint-up(md) {
+                    font-size: $font-size-lg;
+                }
+            }
+        }
+    }
+</style>
+

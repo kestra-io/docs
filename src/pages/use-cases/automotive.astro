@@ -1,35 +1,81 @@
 ---
 import Layout from "~/components/layout.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import CustomerStory from "~/components/use-cases/CustomerStory.vue"
-import BusinessStats from "~/components/layout/BusinessStats.astro"
-import Unlock from "~/components/use-cases/Unlock.vue"
-import HeaderBox from "~/components/common/HeaderBox.vue"
-import Cards from "~/components/use-cases/Cards.astro"
-import Quadis from "./assets/quadis.svg?raw"
-import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
-import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
-import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
-import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
-import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
+import Car from "~/assets/use-cases/automotive/car.svg"
+import heroFront from "~/assets/use-cases/automotive/hero-front.svg"
+import Quadis from "~/assets/use-cases/automotive/quadis.svg?raw"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
-const TITLE = "Kestra for Automotive"
-const DESCRIPTION =
+import Link from "~/components/common/Link.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Unlock from "~/components/use-cases/Unlock.vue"
+import CardGrid from "~/components/card/CardGrid.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+
+const title = "Kestra for Automotive"
+const description =
     "Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
 
-const COMPANY_INFO = {
-    personName: "Ruben Boniz Martinez",
-    personRole: "Team Lead",
-    logo: optimizeSvgIcon(Quadis, "quadis-logo"),
-    logoAlt: "Quadis",
-}
+const ITEMS = [
+    {
+        icon: "mdi:leak",
+        title: "Predictive Maintenance",
+        description:
+            "Orchestrate telemetry from vehicles, production lines, and IoT sensors. Trigger automated diagnostics and maintenance workflows based on real-time data to reduce downtime and prevent costly failures.",
+    },
+    {
+        icon: "mdi:hub-outline",
+        title: "Supply Chain Report Automation",
+        description:
+            "Automate supplier evaluations, shipment tracking, and performance reporting. Orchestrate workflows across multiple partners with built-in monitoring and retries.",
+    },
+    {
+        icon: "mdi:checkbox-multiple-marked-circle-outline",
+        title: "Quality Control Automation",
+        description:
+            "Integrate production-line information, testing systems, and analytics platforms. Automatically trigger alerts, defect analysis, and compliance documentation.",
+    },
+    {
+        icon: "mdi:stack-overflow",
+        title: "Inventory Management",
+        description:
+            "Synchronize inventory across manufacturers, warehouses, and dealerships. Automate stock updates, demand forecasting workflows, and reporting pipelines.",
+    },
+    {
+        icon: "mdi:bell-ring",
+        title: "Delivery Alerting",
+        description:
+            "Automate delivery notifications and logistics workflows by integrating CRM, ERP, and transport systems. Ensure real-time updates from factory to customer pickup.",
+    },
+]
+
+const quotes = [
+    {
+        quote: "We're convinced to have chosen the right tool. The support and communication are great, it's easy to adapt to any tool and for any people to understand",
+        author: "Rubén Boniz Martinez - Senior Engineering Manager",
+        smallLogoSvg: optimizeSvgIcon(Quadis, "quadis-logo"),
+        kpis: [
+            {
+                name: "Downtime",
+                value: "ZERO",
+            },
+            {
+                name: "cost reduction of processing",
+                value: "50%",
+            },
+            {
+                name: "datasets orchestrated",
+                value: "+250",
+            },
+        ],
+    },
+]
 
 const UNLOCK_CONTENT = {
     leftContent: [
         {
-            title: "Plugin Ecosystem",
+            title: "Event-Driven Orchestration",
             description:
                 "Capabilities for real-time data processing and decision-making, critical for time-sensitive automotive operations.",
         },
@@ -43,7 +89,7 @@ const UNLOCK_CONTENT = {
         {
             title: "Real-Time Processing",
             description:
-                "Extensive plugin support for various data sources and destinations, allowing seamless integration with existing automotive systems.",
+                "React instantly to production events, shipment updates, or IoT triggers with real-time workflow execution.",
         },
         {
             title: "Quick to Learn, Easy to Master",
@@ -52,124 +98,48 @@ const UNLOCK_CONTENT = {
         },
     ],
 }
-
-const CARDS_DATA = [
-    {
-        icon: RefreshAuto,
-        cardInfo: {
-            title: "Automotive Data Management",
-            description:
-                "Automates the integration and management of vehicle data from various sources, ensuring that records are always updated and accurate.",
-        },
-    },
-    {
-        icon: CommentQuoteOutline,
-        cardInfo: {
-            title: "Supply Chain Optimization",
-            description:
-                "Process large volumes of supply chain data quickly and accurately. Kestra automates logistics workflows and data analysis, significantly cutting down processing times and minimizing errors.",
-        },
-    },
-    {
-        icon: ChartBellCurve,
-        cardInfo: {
-            title: "Regulatory Compliance",
-            description:
-                "Automate the generation of compliance reports, access logs, and data usage reports. Ensure compliance with automotive standards reducing the risk of breaches and improving data governance.",
-        },
-    },
-    {
-        icon: FileChartOutline,
-        cardInfo: {
-            title: "Predictive Maintenance",
-            description:
-                "Integrates your workflows with machine learning models and analytics platforms to utilize vehicle data for predictive maintenance.",
-        },
-    },
-    {
-        icon: ImageFilterCenterFocus,
-        cardInfo: {
-            title: "Streamlined Data Management",
-            description:
-                "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.",
-        },
-    },
-]
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <div class="automotive-use-case">
-        <DetailsHero
-            class="red"
-            client:load
-            title="Drive Orchestration<br> for <span>Automotive</span><br>Suppliers"
-            description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly."
-            image={{
-                src: "/landing/usecases/automotive/header-hero.svg",
-                alt: "Kestra Automotive",
-            }}
-        />
-        <Cards
-            class="red"
-            title="Use Cases in <span>Automotive</span>"
-            cards={CARDS_DATA}
-        />
-        <CustomerStory
-            client:visible
-            class="red"
-            title="Quadis trust Kestra for Its<br> Business Critical<br> Operations"
-            description="Quadis, the largest car retailer in Spain, relies on Kestra to streamline its daily operations, from financial reporting to car delivery alerting. Kestra will support their new data lake architecture, enhancing data analytics, internal web scraping, and resource optimization using AWS services."
-            image={{
-                src: "/landing/usecases/automotive/visual.svg",
-                alt: "Quadis",
-            }}
-            logo={{
-                src: Quadis,
-                alt: "Quadis",
-                width: "208px",
-            }}
-            href="/blogs/2024-06-13-quadis"
-        />
-        <div class="red">
-            <BusinessStats
-                items={[
-                    {
-                        type: "stat",
-                        icon: { src: ArrowUp },
-                        value: "500%",
-                        label: "In workflow delivery",
-                    },
-                    {
-                        type: "quote",
-                        text: "“Kestra plugin and <br> it’s easy for anyone to understand”",
-                    },
-                    {
-                        type: "author",
-                        name: COMPANY_INFO.personName,
-                        role: COMPANY_INFO.personRole,
-                        logo: {
-                            src: COMPANY_INFO.logo,
-                            alt: COMPANY_INFO.logoAlt,
-                        },
-                        class: "align-items-start",
-                    },
-                ]}
-            />
-        </div>
-        <Unlock
-            client:visible
-            class="red"
-            title="Automotive Ecosystem"
-            description="Kestra empowers data engineers, software engineers, and platform engineers in the automotive industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
-            logo={{
-                src: "/landing/usecases/automotive/car-hatchback.svg",
-                alt: "car hatchback",
-            }}
-            strokeColor="#E3262F"
-            content={UNLOCK_CONTENT}
-        />
-        <div class="enterprise-edition">
-            <HeaderBox client:visible />
-        </div>
-    </div>
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Orchestrate Your <br /> Automotive Ecosystem <br /> with Kestra"
+        description="Build, run, and scale event-driven workflows across manufacturing, supply chain, dealerships, and connected vehicles, all from a unified control plane."
+        image={heroFront}
+    >
+        <Link
+            slot="cta"
+            href="/docs/quickstart#start-kestra"
+            class="btn btn-primary"
+        >
+            Get Started
+        </Link>
+    </TopHero>
+
+    <CardGrid title="Use Cases in Automotive" items={ITEMS} />
+
+    <Quotes {quotes} />
+
+    <Unlock
+        client:visible
+        title="Automotive Ecosystem"
+        description="Kestra empowers engineers in the automotive industry to orchestrate complex operations across factories, suppliers, logistics, and dealerships. From IoT sensor ingestion to ERP integrations, Kestra ensures real-time visibility, reliability, and scalability."
+        logo={{
+            src: Car.src,
+            alt: "car",
+        }}
+        content={UNLOCK_CONTENT}
+    />
+
+    <PluginsBlock />
+
+    <SeeHow
+        cta={{
+            text: "Talk to sales",
+            href: "/demo",
+        }}
+    >
+        <Fragment slot="title"> Scale With Kestra Enterprise Edition </Fragment>
+        Replace legacy schedulers, brittle scripts, and disconnected automation tools
+        with a unified orchestration platform.
+    </SeeHow>
 </Layout>
