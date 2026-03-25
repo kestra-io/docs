@@ -159,7 +159,10 @@ export default defineConfig({
                 context: "client",
                 access: "public",
                 optional: false,
-                default: "https://api.kestra.io/v1",
+                default:
+                    process.env.NODE_ENV === "development"
+                        ? "https://develop.api.internal.kestra.io/v1"
+                        : "https://api.kestra.io/v1",
             }),
             GTM_ID: envField.string({
                 context: "client",

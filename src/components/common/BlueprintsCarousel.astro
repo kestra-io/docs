@@ -5,12 +5,14 @@ import { $fetchApiCached } from "~/utils/fetch"
 
 const { blueprints } = Astro.props
 
-const tags = await $fetchApiCached<BlueprintTag[]>("/blueprints/versions/latest/tags")
+const tags = await $fetchApiCached<BlueprintTag[]>(
+    "/blueprints/versions/latest/tags",
+)
 ---
 
 <Carousel client:load>
     {
-        blueprints.map((blueprint: Blueprint) => (
+        blueprints?.map((blueprint: Blueprint) => (
             <BlueprintCard
                 blueprint={blueprint}
                 tags={tags}
