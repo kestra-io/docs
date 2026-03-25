@@ -122,14 +122,14 @@ const [
         ? Promise.resolve({ versions: [] as any[] })
         : retrieveRepoReleases(githubReleaseRepo),
     !isEePlugin
-        ? $fetchApiCached("/plugins/artifacts").catch((e) => {
+        ? $fetchApiCached(`/plugins/artifacts/${githubReleaseRepo}`).catch((e) => {
               console.error("Artifacts fetch failed", e)
               return {}
           })
         : Promise.resolve({}),
     $fetchApiCached<Plugin[]>(`/plugins/subgroups`),
-    $fetchApiCached<PluginMetadata[]>(`/plugins/metadata`),
-    $fetchApiCached(`/plugins/pluginsInformation`),
+    $fetchApiCached<PluginMetadata[]>(`/plugins/metadata?icons=false`),
+    $fetchApiCached(`/plugins/pluginsInformation/${githubReleaseRepo}?icons=false`),
 ])
 
 if (isEePlugin) {
@@ -156,9 +156,7 @@ if (isEePlugin) {
     }
 } else {
     try {
-        const { artifacts = {} } = artifactsData as {
-            artifacts?: Record<string, any[]>
-        }
+
         const normalizeRepoUrl = (url?: string) => {
             if (!url) return undefined
             return url
@@ -169,9 +167,10 @@ if (isEePlugin) {
         const repoUrl = normalizeRepoUrl(
             `https://github.com/kestra-io/${githubReleaseRepo}`,
         )
+
         githubVersions.versions?.forEach((v: any) => {
             v.minCoreCompatibilityVersion = (
-                Object.values(artifacts).flat() as any[]
+                Object.values(artifactsData).flat() as any[]
             ).find(
                 (a) =>
                     a.version === v.version &&
@@ -240,7 +239,7 @@ async function makePagePluginDefinition() {
                     $deprecated?: "true" | "false"
                 }
             }
-        }>(`/plugins/definitions/${pluginType}`)
+        }>(`/plugins/definitions/${pluginType}?markdown=false`)
         const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
         const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
 
