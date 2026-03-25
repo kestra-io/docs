@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="46" viewBox="0 0 200 46" fill="none">
+  <!-- VMware wordmark (dark) -->
+  <text x="0" y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="400" letter-spacing="0.5" fill="currentColor">VMware</text>
+  <!-- Aria in VMware green -->
+  <text x="0" y="40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#00B135">Aria Automation</text>
+</svg>
