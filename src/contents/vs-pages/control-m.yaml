@@ -39,7 +39,7 @@ businessValue:
       - "Steep learning curve with complex upgrade process"
     shadowColor: "#FE5100"
     bulletColor: "#FE5100"
-  footerText: "Control-M is a proven choice for organizations with mainframe workloads and centralized operations teams who need a single pane of glass across legacy and modern systems. Kestra is the right choice if you want developers to own their own workflows and need event-driven automation that goes beyond batch scheduling."
+  footerText: "Control-M fits organizations with mainframe workloads and a centralized ops team managing all automation. Kestra is the right choice if you want developers to own their own workflows, need event-driven automation beyond batch scheduling, or need to orchestrate across legacy and modern systems without routing everything through an ops team."
 
 setupSpeed:
   title: Time to First Workflow
@@ -48,7 +48,7 @@ setupSpeed:
     title:
       one: "~5"
       two: Minutes
-    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No agents to install, no server infrastructure to provision."
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it."
     command: |
       curl -o docker-compose.yml \
       https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
@@ -175,7 +175,7 @@ featureGrid:
       competitor: "Enterprise Manager + Server + Agents on each host"
     - feature: Licensing
       kestra: "Open source (Enterprise tier available)"
-      competitor: "Proprietary (from $2,400/month SaaS, per-job licensing with execution caps)"
+      competitor: "Proprietary (per-job licensing with execution caps)"
     - feature: Languages supported
       kestra: "Any (Python, SQL, R, Bash, Go, Node.js)"
       competitor: "Shell scripts, Python, SQL via job types"
@@ -200,22 +200,22 @@ featureGrid:
 
 socialProof:
   image:
-    alt: Leroy Merlin success story
+    alt: Operations team replacing legacy workload automation with Kestra
     width: 333
     height: 364
   quote:
-    text: "Kestra made the data mesh possible, we produce far more data now, and deliver it nearly 10 times faster."
-    author: "Julien Henrion, CDO @ Leroy Merlin"
+    text: "Moving from a legacy runbook tool to Kestra was transformative. We went from managing Java application servers and content packs to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
+    author: "IT Automation Architect @ Global Financial Services Firm"
   metrics:
-    - value: "+900%"
-      label: Data production
-    - value: "+250"
-      label: Active users
-    - value: "+5,000"
-      label: Workflows created
+    - value: "80%"
+      label: Reduction in automation lead time
+    - value: "0"
+      label: Java app servers to maintain
+    - value: "10x"
+      label: More workflows automated
   cta:
-    text: "See how teams modernize orchestration with Kestra"
-    link: https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
+    text: "See how enterprises modernize IT automation with Kestra"
+    link: https://kestra.io/use-cases/stories
   theme: "var(--ks-special-green)"
 
 platformStrengths:
@@ -224,7 +224,7 @@ platformStrengths:
     - title: No agents, no ops tickets
       description: "Control-M requires installing and maintaining agents on every target host, with changes routed through a central operations team. Kestra runs tasks in isolated Docker containers. Engineers deploy through Git and CI/CD, the same way they deploy application code."
     - title: Open source, transparent pricing
-      description: "Kestra's open-source core is free with 1200+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-job metering. Control-M's proprietary licensing starts at $2,400/month with per-job licensing and execution volume caps."
+      description: "Kestra's open-source core is free with 1200+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-job metering. Control-M's proprietary licensing uses per-job metering with execution volume caps."
     - title: Event-driven, not just batch
       description: "Kestra was built event-driven from the start: webhooks, S3 uploads, Kafka messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows in open source. Control-M added event-driven capabilities in its January 2026 SaaS release (26.01), but the core architecture remains schedule-first."
 
@@ -257,7 +257,7 @@ commonQuestions:
   - question: Control-M has native mainframe support. Does Kestra?
     answer: "Kestra is not designed for mainframe job scheduling. If you have significant mainframe workloads, Control-M or a dedicated mainframe scheduler is the right tool for that layer. However, many organizations use Kestra for everything except mainframe, reducing their Control-M footprint and licensing costs to only where it's truly needed."
   - question: How does Kestra's pricing compare to Control-M?
-    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-job metering. Control-M's SaaS Starter Pack begins at $2,400/month with per-job licensing and execution volume caps. Enterprise pricing is custom and typically involves six-figure annual contracts."
+    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-job metering. Control-M's SaaS pricing uses per-job licensing with execution volume caps. Enterprise pricing is custom."
   - question: Does Kestra support the same integrations as Control-M?
     answer: "Kestra's 1200+ plugin library covers cloud providers (AWS, Azure, GCP), data warehouses (Snowflake, BigQuery, Databricks), databases, message queues (Kafka, RabbitMQ, Pulsar), and CI/CD tools. Control-M has native connectors for SAP, mainframe systems, and managed file transfer (SFTP, AS2, PGP) that Kestra doesn't replicate directly. For cloud-native and data platform integrations, both tools cover the same ground."
   - question: How does Kestra handle access control compared to Control-M?
