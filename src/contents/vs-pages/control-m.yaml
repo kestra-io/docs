@@ -4,7 +4,7 @@ competitorName: Control-M
 
 intro:
   title: "Kestra vs. Control-M: Modern Orchestration Without the Legacy Tax"
-  description: "Control-M centralizes batch workload scheduling behind an ops team. Kestra lets any engineer build and ship workflows in YAML — no agents, no per-job licensing, no tickets."
+  description: "Control-M centralizes batch workload scheduling behind an ops team. Kestra lets any engineer build and ship workflows in YAML. No per-job licensing, no tickets."
 
 philosophy:
   mainTitle: Two Eras of Orchestration
@@ -39,7 +39,7 @@ businessValue:
       - "Steep learning curve with complex upgrade process"
     shadowColor: "#FE5100"
     bulletColor: "#FE5100"
-  footerText: "Control-M is a proven choice for organizations with mainframe workloads and centralized operations teams who need a single pane of glass across legacy and modern systems. Kestra is the right choice if you want developers to own their own workflows, need event-driven automation beyond batch scheduling, or want open-source orchestration without per-job licensing costs."
+  footerText: "Control-M is a proven choice for organizations with mainframe workloads and centralized operations teams who need a single pane of glass across legacy and modern systems. Kestra is the right choice if you want developers to own their own workflows and need event-driven automation that goes beyond batch scheduling."
 
 setupSpeed:
   title: Time to First Workflow
@@ -95,10 +95,8 @@ easeOfUse:
         - id: request_approval
           type: io.kestra.plugin.core.flow.Pause
           onResume:
-            form:
-              fields:
-                - id: approved_by
-                  type: STRING
+            - id: approved_by
+              type: STRING
 
         - id: provision
           type: io.kestra.plugin.terraform.cli.TerraformCLI
@@ -115,11 +113,12 @@ easeOfUse:
               -i "{{ outputs.provision.vars.ip }}"
 
         - id: close_ticket
-          type: io.kestra.plugin.servicenow.table.Update
-          table: change_request
-          id: "{{ trigger.body.sys_id }}"
-          data:
-            state: resolved
+          type: io.kestra.plugin.core.http.Request
+          uri: "https://instance.service-now.com/api/now/table/change_request/{{ trigger.body.sys_id }}"
+          method: PATCH
+          headers:
+            Content-Type: "application/json"
+          body: '{"state": "resolved"}'
     lang: yaml
   competitor:
     title: "Control-M: JSON definitions managed by ops"
@@ -170,7 +169,7 @@ featureGrid:
       competitor: "GUI or JSON (Jobs-as-Code)"
     - feature: Architecture
       kestra: Event-driven at core
-      competitor: "Schedule-first (event-driven features added in January 2026 SaaS release)"
+      competitor: "Schedule-first (event-driven features added in recent SaaS release)"
     - feature: Deployment model
       kestra: "Single Docker Compose (self-hosted or Kestra Cloud)"
       competitor: "Enterprise Manager + Server + Agents on each host"
@@ -237,7 +236,7 @@ decisionGuide:
       - "You want developers to build and ship workflows themselves, not file tickets with a central automation team."
       - "You need event-driven orchestration that reacts to real-time events, not just cron and batch schedules."
       - "You need to coordinate existing pipelines (ODI, Informatica, custom ETL) alongside new workflows without rewriting business logic."
-      - "Open-source foundations and transparent pricing matter. No per-job fees, no proprietary lock-in."
+      - "Open source and transparent pricing matter. No per-job fees, no proprietary lock-in."
       - "Non-engineers need to trigger and monitor workflows without learning a new tool."
   competitor:
     title: Choose Control-M When
@@ -264,7 +263,7 @@ commonQuestions:
   - question: How does Kestra handle access control compared to Control-M?
     answer: "Kestra provides namespace isolation with RBAC, SSO/SAML, audit logs for every execution, and secrets management integration with AWS Secrets Manager, HashiCorp Vault, and Azure Key Vault. Control-M offers role-based access through its Enterprise Manager, but multi-tenancy requires complex configuration across servers and agents. Kestra's governance model is built into the platform rather than layered across distributed components."
   - question: Control-M has Jobs-as-Code. How is that different from Kestra's YAML workflows?
-    answer: "Control-M's Jobs-as-Code lets you define jobs in JSON and deploy them through the Automation API with CI/CD integration. Kestra's YAML workflows serve a similar purpose but with key differences. YAML is more readable than Control-M's nested JSON. Kestra workflows are self-contained (tasks, triggers, schedules, and retries in one file) while Control-M jobs reference external server and agent configurations. Kestra workflows run anywhere Docker runs, while Control-M jobs require the full server and agent infrastructure."
+    answer: "Control-M's Jobs-as-Code lets you define jobs in JSON and deploy them through the Automation API with CI/CD integration. Kestra's YAML workflows serve a similar purpose but with key differences. YAML is more readable than Control-M's nested JSON, and a Kestra workflow is self-contained: tasks, triggers, schedules, and retries live in one file rather than referencing external server and agent configurations. That also means Kestra workflows run anywhere Docker runs, with no server or agent infrastructure required."
   - question: We use Control-M for managed file transfer. What's the Kestra equivalent?
     answer: "Kestra handles file transfers through plugins for S3, GCS, Azure Blob, SFTP, and HTTP. For organizations that need enterprise MFT features like AS2, PGP encryption, or FTP over SSL with compliance audit trails, Control-M's native MFT module is purpose-built for that. Many teams keep Control-M for regulated file transfers while using Kestra for everything else."
   - question: How does Kestra's event-driven architecture compare to Control-M's?
@@ -272,4 +271,4 @@ commonQuestions:
   - question: Control-M launches our ETL tools (Informatica, ODI, DataStage, etc.). Can Kestra do the same?
     answer: "Yes. Many Control-M deployments exist primarily to trigger and sequence external ETL tools. Kestra replaces that orchestration layer without touching the underlying logic. Wrap existing load plans or jobs inside Kestra's Script or Command tasks, coordinate them alongside new workflows in a single DAG, and add event-driven triggers that Control-M's batch scheduler can't provide. You migrate the orchestration, not the ETL."
   - question: Can we replace Control-M with IaC tools like Ansible or Terraform instead of an orchestrator like Kestra?
-    answer: "Teams sometimes reach for config management or IaC tools as a Control-M replacement because they're already in the stack. These tools excel at provisioning and deployment, but they lack workflow orchestration fundamentals: event-driven triggers, DAG-based dependency management, retries with backoff, real-time execution monitoring, and cross-job observability. The result is usually cron jobs wrapped around playbooks with no visibility into failures. Kestra is purpose-built for orchestration and can call Ansible playbooks or Terraform plans as tasks within a workflow, so each tool stays in its lane."
+    answer: "Teams sometimes reach for config management or IaC tools as a Control-M replacement because they're already in the stack. These tools excel at provisioning and deployment, but they lack workflow orchestration fundamentals: event-driven triggers, DAG-based dependency management, retries with backoff, real-time execution monitoring, and cross-job observability. The result is usually cron jobs wrapped around playbooks with no visibility into failures. Kestra is purpose-built for orchestration and can call Ansible playbooks or Terraform plans as tasks within a workflow. Ansible provisions, Terraform plans, Kestra coordinates."
