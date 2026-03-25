@@ -61,7 +61,7 @@ const plugins = await Promise.all(
         {
             plugins.map((plugin) => (
                 <a href={plugin.link}>
-                    <TaskIcon cls={plugin.group} />
+                    <TaskIcon cls={plugin.group} class="plugin-icon" />
                 </a>
             ))
         }
@@ -126,13 +126,13 @@ const plugins = await Promise.all(
             }
         }
 
-        :global(svg) {
+        .plugin-icon {
             width: 60px;
             height: 60px;
             transition: transform 0.2s;
         }
 
-        a:hover :global(svg) {
+        a:hover .plugin-icon {
             transform: scale(1.1);
         }
     }
