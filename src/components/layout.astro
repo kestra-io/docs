@@ -12,7 +12,6 @@ import LayoutFooter from "~/components/layout/Footer.vue"
 import LayoutFixed from "~/components/layout/Fixed.vue"
 import Announce from "~/components/layout/Announce.vue"
 // import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
-import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
 import { getCollection } from "astro:content"
 
@@ -48,7 +47,6 @@ const description =
     props.description ??
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
-const slackMembers = await fetchSlackMembers()
 
 const query = new URLSearchParams(
     currentUrl.searchParams
@@ -214,7 +212,7 @@ const hasAnnounce = annonces.length > 0
         <LayoutFooter transition:persist client:visible>
             {/* <ThemeSwitcher slot="theme-switcher" /> */}
         </LayoutFooter>
-        <LayoutFixed client:load transition:persist online={slackMembers} />
+        <LayoutFixed client:only="vue" transition:persist />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>
