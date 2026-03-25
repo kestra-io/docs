@@ -81,32 +81,45 @@ easeOfUse:
     title: "Kestra: Any engineer, any language"
     description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Engineers deploy through Git, same as application code."
     code: |
-      id: erp_data_sync
-      namespace: operations.production
+      id: server_provision
+      namespace: infra.ops
+
+      inputs:
+        - id: vm_name
+          type: STRING
+        - id: environment
+          type: SELECT
+          values: [dev, staging, prod]
 
       tasks:
-        - id: extract
-          type: io.kestra.plugin.scripts.python.Script
-          script: |
-            # Your existing extraction logic, unchanged
-            result = {"records": 5000, "status": "ok"}
+        - id: request_approval
+          type: io.kestra.plugin.core.flow.Pause
+          onResume:
+            form:
+              fields:
+                - id: approved_by
+                  type: STRING
 
-        - id: transform
-          type: io.kestra.plugin.dbt.cli.DbtCLI
+        - id: provision
+          type: io.kestra.plugin.terraform.cli.TerraformCLI
           commands:
-            - dbt run --select staging
+            - terraform apply -auto-approve
+          env:
+            TF_VAR_vm_name: "{{ inputs.vm_name }}"
+            TF_VAR_env: "{{ inputs.environment }}"
 
-        - id: load_to_warehouse
-          type: io.kestra.plugin.jdbc.snowflake.Query
-          url: jdbc:snowflake://account.snowflakecomputing.com
-          sql: CALL load_staging_to_prod();
+        - id: configure
+          type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          commands:
+            - ansible-playbook configure.yml
+              -i "{{ outputs.provision.vars.ip }}"
 
-      triggers:
-        - id: on_file_arrival
-          type: io.kestra.plugin.aws.s3.Trigger
-          bucket: incoming-data
-          prefix: erp/
-          action: NONE
+        - id: close_ticket
+          type: io.kestra.plugin.servicenow.table.Update
+          table: change_request
+          id: "{{ trigger.body.sys_id }}"
+          data:
+            state: resolved
     lang: yaml
   competitor:
     title: "Control-M: JSON definitions managed by ops"
@@ -114,26 +127,28 @@ easeOfUse:
     shadowColor: "#FE5100"
     code: |
       {
-        "ERPDataSync": {
+        "ServerProvision": {
           "Type": "Folder",
-          "Application": "ERP",
-          "SubApplication": "DataSync",
+          "Application": "Infra",
+          "SubApplication": "Provisioning",
           "Defaults": {
             "Host": "prod-agent-01",
-            "RunAs": "etl_user"
+            "RunAs": "infra_user"
           },
-          "Extract": {
-            "Type": "Job:Script",
-            "FileName": "extract.py",
-            "FilePath": "/opt/scripts/erp"
-          },
-          "Transform": {
+          "RunTerraform": {
             "Type": "Job:Command",
-            "Command": "dbt run --select staging"
+            "Command": "terraform apply -auto-approve",
+            "Host": "terraform-agent"
           },
-          "LoadToWarehouse": {
-            "Type": "Job:Database:EmbeddedQuery",
-            "Query": "CALL load_staging_to_prod();"
+          "ConfigureServer": {
+            "Type": "Job:Command",
+            "Command": "ansible-playbook configure.yml",
+            "Host": "ansible-agent"
+          },
+          "CloseTicket": {
+            "Type": "Job:Script",
+            "FileName": "close_ticket.py",
+            "FilePath": "/opt/scripts/servicenow"
           }
         }
       }
