@@ -5,13 +5,16 @@ import Alternation from "~/components/features/shared/Alternation.astro"
 import Section from "~/components/layout/Section.vue"
 import Enterprise from "~/components/use-cases/Enterprise.vue"
 import Cards from "~/components/use-cases/Cards.astro"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import AlertCircle from "vue-material-design-icons/AlertCircle.vue"
 import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue"
 import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue"
 import Cogs from "vue-material-design-icons/Cogs.vue"
 import TimerCogOutline from "vue-material-design-icons/TimerCogOutline.vue"
+import continuousIntegration from "~/assets/use-cases/capabilities/continuous-integration.svg"
+import provisioningDeployment from "~/assets/use-cases/capabilities/provisioning-deployment.svg"
+import infrastructureMonitoring from "~/assets/use-cases/capabilities/infrastructure-monitoring.svg"
 
 const TITLE = "Disaster Recovery with Kestra"
 const DESCRIPTION =
@@ -22,9 +25,9 @@ const MAIN_CONTENT = [
         title: "Automated Backup",
         image: {
             src: "/landing/usecases/disaster-recovery/automated-backup.svg",
-            alt: "Automated Backup",
             width: 568,
             height: 420,
+            alt: "Automated Backup",
         },
         description:
             "Kestra enables automated backup processes, ensuring that your data is regularly and securely backed up. This minimizes data loss and facilitates quick recovery in the event of a disaster.",
@@ -45,9 +48,9 @@ const MAIN_CONTENT = [
         title: "Leverage API Integrations",
         image: {
             src: "/landing/usecases/disaster-recovery/leverage-integrations.svg",
-            alt: "Leverage API Integrations",
             width: 568,
             height: 420,
+            alt: "Leverage API Integrations",
         },
         description:
             "Kestra integrates with various APIs, enabling you to automate and manage disaster recovery processes efficiently. Utilize API capabilities to trigger backups, initiate failover procedures, and streamline recovery workflows.",
@@ -72,9 +75,9 @@ const MAIN_CONTENT = [
         title: "Automated Failover and Restoration",
         image: {
             src: "/landing/usecases/databases/quick-recovery.svg",
-            alt: "Automated Failover and Restoration",
             width: 604,
             height: 477,
+            alt: "Automated Failover and Restoration",
         },
         description:
             "Kestra's automation capabilities enable you to set up workflows that automatically trigger failover and restoration processes, reducing downtime and ensuring business continuity.",
@@ -98,13 +101,28 @@ const MAIN_CONTENT = [
 ]
 
 const CAPABILITIES = [
-    "Continuous Integration/Continuous Deployment (CI/CD)",
-    "Provisioning and Deployment",
-    "Infrastructure Monitoring",
+    {
+        title: "Continuous Integration/Continuous Deployment (CI/CD)",
+        description:
+            "Streamline your CI/CD pipelines by integrating with tools like GitHub Actions and Jenkins.",
+        image: continuousIntegration,
+        pageHref: "/use-cases/ci-cd",
+    },
+    {
+        title: "Provisioning and Deployment",
+        description:
+            "Automate the setup and deployment of infrastructure components, reducing manual effort and errors.",
+        image: provisioningDeployment,
+        pageHref: "/use-cases/provisioning-and-deployment",
+    },
+    {
+        title: "Infrastructure Monitoring",
+        description:
+            "Automate monitoring and alerting processes, ensuring your infrastructure is always performing optimally.",
+        image: infrastructureMonitoring,
+        pageHref: "/use-cases/monitoring",
+    },
 ]
-
-const CHALLENGES_TITLE =
-    "<span class='highlight'>Key Benefits</span> of Using Kestra for<br/> Disaster Recovery"
 
 const CARDS_DATA = [
     {
@@ -157,7 +175,6 @@ const CARDS_DATA = [
         description="Automate disaster recovery processes, secure your data, and ensure business continuity."
         image={{
             src: "/landing/usecases/disaster-recovery/header-hero.svg",
-            alt: "Devops Monitoring",
         }}
     />
 
@@ -175,10 +192,12 @@ const CARDS_DATA = [
         client:visible
     />
 
-    <Cards title={CHALLENGES_TITLE} cards={CARDS_DATA} />
+    <Cards
+        title="<span class='highlight'>Key Benefits</span> of Using Kestra for<br/> Disaster Recovery"
+        cards={CARDS_DATA}
+    />
 
     <Capabilities
-        client:visible
         title="for Platform Orchestration"
         capabilities={CAPABILITIES}
     />
