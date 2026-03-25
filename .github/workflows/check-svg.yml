@@ -8,6 +8,9 @@ on:
     paths:
       - "**.svg"
 
+permissions:
+  contents: read
+
 jobs:
   check-svg-no-embedded-images:
     name: No embedded images in SVGs
