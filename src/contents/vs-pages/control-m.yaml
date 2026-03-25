@@ -200,7 +200,7 @@ featureGrid:
 
 socialProof:
   image:
-    alt: Operations team replacing legacy workload automation with Kestra
+    alt: Enterprise IT team modernizing with Kestra
     width: 333
     height: 364
   quote:
@@ -245,7 +245,8 @@ decisionGuide:
       - "A centralized operations team manages all automation and you want a single pane of glass."
       - "You need native managed file transfer with SFTP, AS2, and PGP encryption."
       - "Your organization is already invested in the BMC ecosystem and Control-M is the standard."
-      - "Regulatory requirements demand a Gartner Magic Quadrant Leader in workload automation."
+      - "You need native SAP job scheduling (BW process chains, ABAP jobs) tightly integrated with your batch workloads."
+
     shadowColor: "#FE5100"
     bulletColor: "#FE5100"
 
