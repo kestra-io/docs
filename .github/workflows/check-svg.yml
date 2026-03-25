@@ -1,0 +1,25 @@
+name: Check SVG files
+
+on:
+  push:
+    paths:
+      - "**.svg"
+  pull_request:
+    paths:
+      - "**.svg"
+
+jobs:
+  check-svg-no-embedded-images:
+    name: No embedded images in SVGs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check for embedded images in SVG files
+        run: |
+          if grep -rl 'data:image/' --include='*.svg' .; then
+            echo "❌ SVG files contain embedded images (data:image/...). Please extract them as separate files."
+            exit 1
+          fi
+          echo "✅ No embedded images found in SVG files."
