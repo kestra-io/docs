@@ -147,11 +147,15 @@ const activeQuote = ref(0)
                 margin: 0;
                 color: var(--ks-content-primary);
                 font-weight: normal;
-                font-size: 2rem;
+                font-size: $h1-font-size;
                 line-height: 1.3;
                 display: inline;
                 padding: 0;
                 margin: 0;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 1.5rem;
+                }
 
                 &::before,
                 &::after {

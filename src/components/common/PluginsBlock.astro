@@ -14,7 +14,7 @@ const metadata = await $fetchApiCached<PluginMetadata[]>("/plugins/metadata")
 const excluded =
     /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
 
-const iconsStash = await $fetchApi<{
+const iconsStash = await $fetchApiCached<{
     [group: string]: { name: string; icon: string }
 }>("/plugins/icons")
 
