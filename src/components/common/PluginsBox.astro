@@ -1,12 +1,13 @@
 ---
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-import { fetchPluginIcon } from "~/utils/pluginIcon"
 import GradientCard from "~/components/card/GradientCard.vue"
 import { $fetchApiCached } from "~/utils/fetch"
 import { type PluginMetadata } from "@kestra-io/ui-libs"
+import TaskIcon from "./TaskIcon.astro"
 
 const totalPlugins = await fetchTotalPluginsCount()
-const pluginMetadata = await $fetchApiCached<PluginMetadata[]>("/plugins/metadata")
+const pluginMetadata =
+    await $fetchApiCached<PluginMetadata[]>("/plugins/metadata")
 
 const filteredPlugins = pluginMetadata
     .filter(
@@ -24,7 +25,6 @@ const filteredPlugins = pluginMetadata
 
 const plugins = await Promise.all(
     filteredPlugins.map(async (plugin) => {
-        const icon = await fetchPluginIcon(plugin.group)
         return {
             title: plugin.title,
             name: plugin.name,
@@ -34,7 +34,7 @@ const plugins = await Promise.all(
                 (`plugin-${plugin.name}` != plugin.artifactId
                     ? "/" + plugin.name
                     : ""),
-            icon,
+            group: plugin.group,
         }
     }),
 )
@@ -59,7 +59,9 @@ const plugins = await Promise.all(
     <div class="plugin-logos-grid">
         {
             plugins.map((plugin) => (
-                <a href={plugin.link} set:html={plugin.icon} />
+                <a href={plugin.link}>
+                    <TaskIcon cls={plugin.group} class="plugin-icon" />
+                </a>
             ))
         }
     </div>
@@ -123,13 +125,13 @@ const plugins = await Promise.all(
             }
         }
 
-        :global(svg) {
+        .plugin-icon {
             width: 60px;
             height: 60px;
             transition: transform 0.2s;
         }
 
-        a:hover :global(svg) {
+        a:hover .plugin-icon {
             transform: scale(1.1);
         }
     }
