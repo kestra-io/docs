@@ -151,6 +151,10 @@ const activeQuote = ref(0)
                 line-height: 1.3;
                 font-size: $h1-font-size;
 
+                @include media-breakpoint-down(md) {
+                    font-size: 1.75rem;
+                }
+
                 .quote-content {
                     display: inline;
                     padding: 0;
