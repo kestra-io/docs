@@ -38,9 +38,9 @@ const activeQuote = ref(0)
         <div class="content">
             <img v-if="quotes[activeQuote].bigLogoSrc" :src="quotes[activeQuote].bigLogoSrc" class="big-logo" />
             <div class="text" :class="{'text-center': !quotes[activeQuote].bigLogoSrc}">
-                <h1 class="quote-title" data-usal="fade-r">
+                <div class="quote-title" data-usal="fade-r">
                     <blockquote class="quote-content">{{ quotes[activeQuote].quote }}</blockquote>
-                </h1>
+                </div>
                 <p v-html="quotes[activeQuote].author" data-usal="fade-l"/>
                 <div class="small-logo" v-if="quotes.length === 1" v-html="quotes[activeQuote].smallLogoSvg" />
             </div>
@@ -149,6 +149,11 @@ const activeQuote = ref(0)
                 color: var(--ks-content-primary);
                 font-weight: normal;
                 line-height: 1.3;
+                font-size: $h1-font-size;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 1.75rem;
+                }
 
                 .quote-content {
                     display: inline;

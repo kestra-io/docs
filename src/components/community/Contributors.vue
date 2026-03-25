@@ -29,10 +29,7 @@
                     </a>
                 </template>
             </div>
-            <div
-                v-if="contributors && moreCount > 0"
-                class="text-center mt-4"
-            >
+            <div v-if="contributors && moreCount > 0" class="text-center mt-4">
                 <button
                     v-if="!isExpanded"
                     type="button"
@@ -57,11 +54,11 @@
 </template>
 
 <script>
-    import { useApi } from "~/composables/useApi.ts"
+    import { $fetchApiCached } from "~/utils/fetch.ts"
 
     export default {
         setup() {
-            return { useApi }
+            return {}
         },
         data() {
             return {
@@ -83,13 +80,17 @@
                 )
                 if (hasContribField) {
                     return [...this.contributors].sort(
-                        (a, b) => (b.contributions || 0) - (a.contributions || 0),
+                        (a, b) =>
+                            (b.contributions || 0) - (a.contributions || 0),
                     )
                 }
                 return this.contributorsRand || []
             },
             regularContributors() {
-                return (this.sortedByContributions || []).slice(0, this.regularCount)
+                return (this.sortedByContributions || []).slice(
+                    0,
+                    this.regularCount,
+                )
             },
             displayedContributors() {
                 if (this.isExpanded) {
@@ -99,16 +100,20 @@
             },
             moreCount() {
                 const total = this.contributors ? this.contributors.length : 0
-                const shown = this.regularContributors ? this.regularContributors.length : 0
+                const shown = this.regularContributors
+                    ? this.regularContributors.length
+                    : 0
                 const remaining = total - shown
                 return remaining > 0 ? remaining : 0
             },
         },
         async created() {
             try {
-                const { data } = await this.useApi().get("/communities/github/contributors")
+                const { data } = await $fetchApiCached("/communities/github/contributors")
                 this.contributors = data
-                this.contributorsRand = this.contributors.toSorted(() => 0.5 - Math.random())
+                this.contributorsRand = this.contributors.toSorted(
+                    () => 0.5 - Math.random(),
+                )
             } catch (e) {
                 this.contributors = []
             }
@@ -131,8 +136,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     section {
         padding: 7.5rem $rem-1;
         background: var(--ks-background-secondary);

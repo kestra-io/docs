@@ -11,8 +11,9 @@
                 />
                 <h2>Kestra is built in the open</h2>
                 <p>
-                    Inspire and get inspired. Join our community of maintainers and <br
-                    /> contributors and help us improve our open-source product.
+                    Inspire and get inspired. Join our community of maintainers
+                    and <br />
+                    contributors and help us improve our open-source product.
                 </p>
             </div>
 
@@ -37,37 +38,35 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, computed } from "vue";
-    import CommunityGradient from "~/components/community/assets/CommunityGradient.vue";
-    import NoGapGrid from "~/components/common/NoGapGrid.vue";
-    import Link from "~/components/common/Link.vue";
-    import contributorsImg from "~/components/community/assets/contributors.png";
+    import { ref, onMounted, computed } from "vue"
+    import CommunityGradient from "~/components/community/assets/CommunityGradient.vue"
+    import NoGapGrid from "~/components/common/NoGapGrid.vue"
+    import Link from "~/components/common/Link.vue"
+    import contributorsImg from "~/components/community/assets/contributors.png"
 
-    import StarOutline from "vue-material-design-icons/StarOutline.vue";
-    import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue";
-    import BugCheckOutline from "vue-material-design-icons/BugCheckOutline.vue";
-    import SourcePull from "vue-material-design-icons/SourcePull.vue";
-    import SourceCommit from "vue-material-design-icons/SourceCommit.vue";
-    import AccountSupervisorCircle from "vue-material-design-icons/AccountSupervisorCircle.vue";
+    import StarOutline from "vue-material-design-icons/StarOutline.vue"
+    import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue"
+    import BugCheckOutline from "vue-material-design-icons/BugCheckOutline.vue"
+    import SourcePull from "vue-material-design-icons/SourcePull.vue"
+    import SourceCommit from "vue-material-design-icons/SourceCommit.vue"
+    import AccountSupervisorCircle from "vue-material-design-icons/AccountSupervisorCircle.vue"
 
-    import { useApi } from "~/composables/useApi";
-    import { $fetch } from "~/utils/fetch";
+    import { $fetchApiCached, $fetchCached } from "~/utils/fetch"
 
     interface GitHubMetrics {
-        stars: number;
-        forks: number;
-        issues: number;
-        pullRequests: number;
-        commits: number;
-        contributors: number;
+        stars: number
+        forks: number
+        issues: number
+        pullRequests: number
+        commits: number
+        contributors: number
     }
 
     interface GitHubResponse {
-        stargazers: number;
-        forks: number;
+        stargazers: number
+        forks: number
     }
 
-    const api = useApi();
     const metrics = ref<GitHubMetrics>({
         stars: 0,
         forks: 0,
@@ -75,11 +74,11 @@
         pullRequests: 0,
         commits: 0,
         contributors: 0,
-    });
+    })
 
     const formatNumber = (num: number) => {
-        return new Intl.NumberFormat("en-US").format(num);
-    };
+        return new Intl.NumberFormat("en-US").format(num)
+    }
 
     const communityStats = computed(() => [
         {
@@ -112,18 +111,19 @@
             title: "Contributors",
             description: formatNumber(metrics.value.contributors),
         },
-    ]);
+    ])
 
     const fetchData = async () => {
         try {
-            const [github, githubMetrics, githubContributors] = await Promise.all([
-                $fetch<GitHubResponse>("/api/github"),
-                api.get("/communities/github/metrics"),
-                api.get("/communities/github/contributors"),
-            ]);
+            const [github, githubMetrics, githubContributors] =
+                await Promise.all([
+                    $fetchCached<GitHubResponse>("/api/github"),
+                    $fetchApiCached("/communities/github/metrics"),
+                    $fetchApiCached("/communities/github/contributors"),
+                ])
 
-            const mData = (githubMetrics as any).data;
-            const cData = (githubContributors as any).data;
+            const mData = (githubMetrics as any).data
+            const cData = (githubContributors as any).data
 
             metrics.value = {
                 stars: github.stargazers ?? 0,
@@ -131,20 +131,20 @@
                 issues: mData?.issues ?? 0,
                 pullRequests: mData?.pullRequests ?? 0,
                 commits: mData?.commits ?? 0,
-                contributors: Array.isArray(cData) ? cData.length : (github as any).contributors ?? 0,
-            };
+                contributors: Array.isArray(cData)
+                    ? cData.length
+                    : ((github as any).contributors ?? 0),
+            }
         } catch (error) {
-            console.error("Error fetching community metrics:", error);
+            console.error("Error fetching community metrics:", error)
             // fallback gracefully
         }
-    };
+    }
 
-    onMounted(fetchData);
+    onMounted(fetchData)
 </script>
 
 <style lang="scss" scoped>
-
-
     .community {
         position: relative;
         overflow: hidden;

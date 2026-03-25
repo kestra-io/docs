@@ -3,6 +3,7 @@ import Layout from "~/components/layout.astro"
 import heroFront from "~/assets/use-cases/healthcare/hero-front.webp"
 import HeartPulse from "~/assets/use-cases/healthcare/heart-pulse.svg"
 import SophiaGenetics from "~/assets/use-cases/healthcare/SophiaGenetics.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 import Link from "~/components/common/Link.astro"
 import Quotes from "~/components/common/Quotes.vue"
@@ -53,7 +54,7 @@ const quotes = [
     {
         quote: "Kestra strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines in the field of genomics.",
         author: "Yohann Nédélec - Tech Lead",
-        smallLogoSvg: SophiaGenetics,
+        smallLogoSvg: optimizeSvgIcon(SophiaGenetics, "sophia-genetics-logo"),
         kpis: [
             {
                 name: "Increased productivity",
