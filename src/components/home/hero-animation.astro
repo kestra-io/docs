@@ -1479,8 +1479,6 @@
 
     // ── Main render loop ───────────────────────────────────────────────────
     function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-
         dashedLines.forEach((l) => {
             l.progress = Math.min(1, l.progress + l.speed)
             const traveled = l.length * l.progress
@@ -1506,9 +1504,7 @@
         })
 
         dashedLines = dashedLines.filter((l) => l.progress < 1)
-        requestAnimationFrame(animate)
     }
-    animate()
 
     // ── Kestra run labels (always visible, state-driven) ─────────────────
     const ns = "http://www.w3.org/2000/svg"
@@ -2124,7 +2120,6 @@
     }
 
     function animGlowPulses() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
         glowPulses = [] // pulses disabled
         drawStaticCenterLines()
         glowPulses = glowPulses.filter((p) => p.progress < 1)
@@ -2201,23 +2196,26 @@
             ctx.stroke()
             ctx.restore()
         })
-        requestAnimationFrame(animGlowPulses)
     }
-    animGlowPulses()
 
     // ── Badge position (above AI block) ──────────────────────────────────
     function updateBadgePosition() {
         const badge = document.getElementById("top-badge")
         const aiBlock = document.querySelectorAll(".block")[2]
-        if (!badge || !aiBlock) {
-            requestAnimationFrame(updateBadgePosition)
-            return
-        }
+        if (!badge || !aiBlock) return
         const rect = aiBlock.getBoundingClientRect()
         badge.style.top = rect.top + rect.height * 0.2 + "px"
-        requestAnimationFrame(updateBadgePosition)
     }
-    requestAnimationFrame(updateBadgePosition)
+
+    // ── Unified main render loop ──────────────────────────────────────────
+    function mainLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        animate()
+        animGlowPulses()
+        updateBadgePosition()
+        requestAnimationFrame(mainLoop)
+    }
+    mainLoop()
 
     // ── Loop 2 logo SVG paths ──────────────────────────────────────────────
     const loop2Logos = {
@@ -2420,11 +2418,11 @@
             return min + Math.random() * (max - min)
         }
 
-        function initParticles(canvasId: string, count: number) {
+        function initParticles(canvasId: string, count: number): () => void {
             const canvas = document.getElementById(
                 canvasId,
             ) as HTMLCanvasElement | null
-            if (!canvas) return
+            if (!canvas) return () => {}
             const ctx = canvas.getContext("2d")!
             const W = canvas.width,
                 H = canvas.height
@@ -2479,19 +2477,24 @@
                 { length: count },
                 () => new Particle(),
             )
-            function loop() {
+            return function tick() {
                 ctx.clearRect(0, 0, W, H)
                 particles.forEach((p) => {
                     p.update()
                     p.draw()
                 })
-                requestAnimationFrame(loop)
             }
-            loop()
         }
 
-        initParticles("glow-particles", 22)
-        initParticles("glow-particles-b", 22)
-        initParticles("glow-particles-c", 22)
+        const particleTicks = [
+            initParticles("glow-particles", 22),
+            initParticles("glow-particles-b", 22),
+            initParticles("glow-particles-c", 22),
+        ]
+        function particleLoop() {
+            particleTicks.forEach((tick) => tick())
+            requestAnimationFrame(particleLoop)
+        }
+        particleLoop()
     })()
 </script>
