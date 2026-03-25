@@ -1,101 +1,150 @@
 ---
-import LanguageLayout from "~/components/features/shared/LanguageLayout.astro"
+import type { Plugin } from "@kestra-io/ui-libs"
+import { $fetchApiCached } from "~/utils/fetch"
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 
-const FEATURES = {
-    title: "Advanced <span>Python</span> Scripting with Kestra",
-    items: [
-        {
-            image: "/landing/features/language/sub-pages/icon-customize.svg",
-            title: "Customize at Runtime",
-            description:
-                "Add any Python package to your environment as your workflows demand, maintaining flexibility without pre-configurations.",
-        },
-        {
-            image: "/landing/features/language/sub-pages/icon-sync.svg",
-            title: "Import or Sync your Entire Project",
-            description:
-                "Sync your  Python project into Kestra. Enjoy comprehensive support for all your dependencies and modules.",
-        },
-        {
-            image: "/landing/features/language/sub-pages/icon-cloud.svg",
-            title: "Cloud-Agnostic Execution",
-            description:
-                "Deploy and execute your Python scripts on any cloud with Kestra’s Task Runners. Optimize for performance, cost, compliance.",
-        },
-    ],
-}
+import Layout from "~/components/layout.astro"
+import Link from "~/components/common/Link.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import Capability from "~/components/partners/Capability.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
 
-const POWER_DESC = [
-    "Python scripts are the backbone of many automations, data processing, and web applications. With Python, you can analyze massive datasets, or even build complex machine-learning models. Kestra, with its robust orchestration capabilities, unlocks Python’s potential by managing these scripts effectively.",
-    "Whether you are automating data ingestion, running nightly builds, or orchestrating complex workflows in real time, Kestra streamlines these processes, making it easier and faster to deliver results.",
-]
+import visualHero from "~/assets/landing/features/code-in-any-lang/python/python-hero.svg"
+import visualsImg from "~/assets/landing/features/code-in-any-lang/python/visuals.webp"
+import pythonSpecificImg from "~/assets/landing/features/code-in-any-lang/python/python-capabilities.svg"
+import anyLanguage1 from "~/assets/landing/features/code-in-any-lang/python/any-language-1.webp"
+import anyLanguage2 from "~/assets/landing/features/code-in-any-lang/python/any-language-2.webp"
+import anyLanguage3 from "~/assets/landing/features/code-in-any-lang/python/any-language-3.webp"
 
-const ORCHESTRATOR_DESC = [
-    "Integrate seamlessly with your existing Python scripts — no changes necessary. Unlike other platforms that require you to adjust your code to fit their environment, Kestra adapts to your code. Simply call your scripts as you have developed them, and Kestra handles the rest.",
-    "Maintain your focus on writing great code, not on adapting it to fit the orchestration tool. Whether your scripts are set up for data processing, automation, or any other task, integrating them into Kestra is as simple as defining your workflow.",
-]
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
+const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 
-const SCRIPTS = [
+const title = "Python Orchestration"
+const description =
+    "Add any Python package to your environment as your workflows demand, maintaining flexibility without pre-configurations."
+
+const MAIN_ITEMS = [
     {
-        title: "Embrace GitOps best practices for your Python scripts",
+        icon: "mdi:leak",
+        title: "Customize at Runtime",
         description:
-            "Kestra takes Python script orchestration to the next level by embracing Continuous Integration/Continuous Deployment (CI/CD) and GitOps principles. Manage your Python workflows with the same rigor as your application code: version control, automated testing, and consistent, repeatable deployment environments. Kestra  lets you define workflows in YAML, ensuring that your orchestration is as maintainable and scalable as your applications.",
-        source: "/landing/features/language/git-with-kestra.svg",
-        imgWidth: "520px",
-        imgHeight: "282px",
+            "Add any Python package to your environment as your workflows demand, maintaining flexibility without pre-configurations.",
     },
     {
-        title: "Integration with Docker, Seamless Environment Management",
+        icon: "mdi:hub-outline",
+        title: "Import or Sync your Entire Project",
         description:
-            "Managing environments for Python scripts doesn't have to be complicated. With Kestra’s Docker integration, each part of your Python workflow can be containerized, ensuring that they run in isolated and consistent settings. From Kestra's intuitive editor, you can control Docker containers, manage dependencies, and scale your scripts across multiple environments without ever leaving the platform. This integration simplifies environment inconsistencies and enhances reproducibility.",
-        source: "/landing/features/language/python/scripts/docker.svg",
-        imgWidth: "568px",
-        imgHeight: "420px",
+            "Sync your Python project into Kestra. Enjoy comprehensive support for all your dependencies and modules.",
+    },
+    {
+        icon: "mdi:checkbox-multiple-marked-circle-outline",
+        title: "Cloud-Agnostic Execution",
+        description:
+            "Deploy and execute your Python scripts on any cloud with Kestra’s Task Runners. Optimize for performance, cost, compliance.",
+    },
+]
+
+const SCRIPT_FEATURES = [
+    {
+        title: "Embrace GitOps for Your Python Workflows",
+        description:
+            "Manage Python workflows like application code — versioned, tested, and deployed through CI/CD. Define orchestration in YAML for consistent, repeatable, and scalable automation.",
+        image: anyLanguage1,
+    },
+    {
+        title: "Docker for Python Workflows",
+        description:
+            "Run each Python task in its own Docker container to ensure consistent dependencies and runtime behavior. Define the image and requirements in your workflow, and Kestra handles execution with no manual environment setup needed.",
+        image: anyLanguage2,
+        reverse: true,
     },
     {
         title: "Embedded Python Scripts for Simplicity",
         description:
-            "For simpler tasks that require quick, straightforward solutions, Kestra’s Python task feature allows you to embed Python scripts directly into your workflows. This is ideal for small-scale data formatting, quick calculations, or script-based alerts within larger workflows. By embedding scripts directly, Kestra reduces complexity and enhances execution speed, providing a streamlined approach to handle simpler, yet frequent tasks.",
-        source: "/landing/features/language/python/scripts/embedded-python.svg",
-        imgWidth: "556px",
-        imgHeight: "318px",
-        mask: "mask-1",
+            "Inline Python directly in your workflow for lightweight logic, data formatting, quick calculations, or simple alerts. Perfect for small, frequent tasks without adding extra complexity.",
+        image: anyLanguage3,
     },
 ]
-
-const FOOTER_LINKS = {
-    dark: { text: "Get started", href: "/docs/quickstart#start-kestra" },
-    purple: { text: "Talk to us", href: "/demo" },
-}
 ---
 
-<LanguageLayout
-    meta={{
-        title: "Python Orchestration",
-        description: FEATURES.items[0].description,
-    }}
-    header={{
-        title: "Python Scripts",
-        description:
-            "Build declaratively your workflows and seamlessly run all your Python Scripts",
-        source: "/landing/features/language/python/header.svg",
-    }}
-    features={FEATURES}
-    power={{
-        title: "with Python",
-        description: POWER_DESC,
-        source: "/landing/features/language/python/power.svg",
-    }}
-    scripts={{
-        title: "Python",
-        data: SCRIPTS,
-    }}
-    orchestrator={{
-        description: ORCHESTRATOR_DESC,
-        source: "/landing/features/language/python/scripts/python-puzzle.svg",
-    }}
-    footer={{
-        title: "Getting Started with Declarative Orchestration",
-        links: FOOTER_LINKS,
-    }}
-/>
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Orchestrate your Python Scripts"
+        description="Build declaratively your workflows and seamlessly run all your Python Scripts"
+        image={visualHero}
+    >
+        <Link
+            slot="cta"
+            href="/docs/quickstart#start-kestra"
+            class="btn btn-primary"
+        >
+            Get Started
+        </Link>
+    </TopHero>
+
+    <CardGrid
+        title="Advanced Python Scripting with Kestra"
+        items={MAIN_ITEMS}
+    />
+
+    <div class="gitops">
+        <Capability
+            capabilities={[
+                {
+                    image: pythonSpecificImg,
+                    alt: "Simple Yet Powerful",
+                    title: "<span class='highlight'>Power</span> Your Projects with Python",
+                    text: "Python scripts are the backbone of many automations, data processing, and web applications. With Python, you can analyze massive datasets, or even build complex machine-learning models. Kestra, with its robust orchestration capabilities, unlocks Python’s potential by managing these scripts effectively. <br /><br /> Whether you are automating data ingestion, running nightly builds, or orchestrating complex workflows in real time, Kestra streamlines these processes, making it easier and faster to deliver results.",
+                },
+            ]}
+        />
+    </div>
+
+    <SectionCard cards={SCRIPT_FEATURES}>
+        <Fragment slot="title">Orchestrating Python Scripts with Kestra</Fragment>
+    </SectionCard>
+
+    <div class="gitops">
+        <Capability
+            title="Let Your Orchestrator Adapt to <br class='d-none d-lg-block'> Your Code, Not the Reverse"
+            capabilities={[
+                {
+                    image: visualsImg,
+                    alt: "Simple Yet Powerful",
+                    title: "Zero Rewrite. Native Execution.",
+                    text: "Run your existing Python scripts exactly as they are. Kestra orchestrates around your code, it doesn’t force your code into a framework. Keep business logic independent. Keep orchestration declarative. Define the workflow, call your script, and let Kestra handle execution, retries, logging, and scaling.",
+                },
+            ]}
+        />
+    </div>
+
+    <PluginsBlock>
+        <Fragment slot="title">Platform Independent</Fragment>
+        <Fragment slot="description">
+            Select from {totalPlugins}+ integrations and swap tools when needed
+        </Fragment>
+    </PluginsBlock>
+
+    <SeeHow cta={{ text: "Talk to Sales", href: "/demo" }}>
+        <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
+        Replace legacy schedulers, brittle scripts, and disconnected automation tools
+        with a unified orchestration platform.
+    </SeeHow>
+</Layout>
+
+<style lang="scss">
+    .gitops {
+        :global(.powerful),
+        :global(.partner-capability),
+        :global(.feat) {
+            background: var(--ks-background-secondary) !important;
+        }
+
+        :global(hr) {
+            border: 1px solid var(--ks-border-secondary) !important;
+        }
+    }
+</style>

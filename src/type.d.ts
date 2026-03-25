@@ -65,6 +65,7 @@ interface PluginInformation {
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace
 type ENV = {
     ISR_CACHE: KVNamespace
+    ICON_CACHE: KVNamespace
 }
 
 type Runtime = import("@astrojs/cloudflare").Runtime<ENV>
@@ -75,8 +76,12 @@ declare namespace App {
     }
 }
 
+declare namespace App {
+    interface Locals extends Runtime {}
+}
+
 declare module "*.vue" {
-    import { DefineComponent } from "vue";
-    const component: DefineComponent<{}, {}, any>;
-    export default component;
+    import { DefineComponent } from "vue"
+    const component: DefineComponent<{}, {}, any>
+    export default component
 }

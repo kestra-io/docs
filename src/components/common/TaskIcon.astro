@@ -1,8 +1,8 @@
 ---
-import { fetchPluginIcon } from "~/utils/pluginIcon"
+import { fetchPluginIconCached } from "~/utils/pluginIcon"
 const { cls } = Astro.props
 
-const IconStr = await fetchPluginIcon(cls)
+const IconStr = await fetchPluginIconCached(cls, Astro.locals.runtime)
 ---
 
 <div

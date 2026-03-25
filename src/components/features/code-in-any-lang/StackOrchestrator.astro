@@ -1,0 +1,130 @@
+---
+import { Image } from "astro:assets"
+import pythonImg from "~/assets/landing/features/code-in-any-lang/python.webp"
+import rImg from "~/assets/landing/features/code-in-any-lang/r.webp"
+import juliaImg from "~/assets/landing/features/code-in-any-lang/julia.webp"
+
+interface Item {
+    src?: any
+    href?: string
+    title?: string
+    description?: string
+}
+
+interface Props {
+    title?: string
+    items?: Item[]
+}
+
+const {
+    title = "Language Agnostic Orchestration",
+    items = [
+        {
+            href: "/features/code-in-any-language/python",
+            src: pythonImg,
+            title: "Orchestrate your Python Scripts",
+            description:
+                "Dive deeper to discover how Kestra optimizes Python script execution across diverse environments.",
+        },
+        {
+            href: "/features/code-in-any-language/r",
+            src: rImg,
+            title: "Orchestrate your R Scripts",
+            description:
+                "Discover Kestra's powerful orchestration capabilities for R scripts, simplifying complex data analytics.",
+        },
+        {
+            href: "/features/code-in-any-language/julia",
+            src: juliaImg,
+            title: "Orchestrate your Julia Scripts",
+            description:
+                "Learn about Kestra’s support for Julia, optimizing high-performance numerical analysis and computational projects.",
+        },
+    ],
+} = Astro.props
+---
+
+<section class="stack-orchestrator">
+    <div class="container">
+        {title && <h2>{title}</h2>}
+        <div class="cards">
+            {
+                items.map((item) => (
+                    <a class="card" href={item.href}>
+                        {item.src && (
+                            <Image src={item.src} alt="Orchestration" />
+                        )}
+                        {item.title && <h6>{item.title}</h6>}
+                        {item.description && <p>{item.description}</p>}
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .stack-orchestrator {
+        width: 100%;
+        padding: 4rem 1rem;
+        background: var(--ks-background-body);
+        .container {
+            max-width: 1180px;
+            padding: 0 1rem;
+
+            h2 {
+                margin-bottom: 3rem;
+            }
+        }
+
+        .cards {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+
+            @include media-breakpoint-down(xl) {
+                flex-wrap: wrap;
+            }
+        }
+
+        .card {
+            width: 372px;
+            max-width: 100%;
+            min-height: 287px;
+            overflow: clip;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-decoration: none;
+            border: $block-border;
+            padding: 0.5rem;
+            transition: border-color 0.3s ease-in-out;
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+
+            &:hover {
+                border-color: var(--ks-border-active);
+            }
+
+            h6,
+            p {
+                color: var(--ks-content-primary);
+                margin-bottom: 0;
+            }
+
+            p {
+                font-size: $font-size-xs;
+                margin-bottom: 1rem;
+            }
+
+            img {
+                width: 372px;
+                max-width: 100%;
+                height: 209px;
+                border-radius: 8px;
+                border: 1px solid var(--ks-border-primary);
+                object-fit: cover;
+            }
+        }
+    }
+</style>

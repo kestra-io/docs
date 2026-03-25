@@ -5,7 +5,7 @@ import DetailsHero from "~/components/use-cases/DetailsHero.vue"
 import Blueprints from "~/components/common/BlueprintsRender.astro"
 import Capabilities from "~/components/use-cases/Capabilities.vue"
 import HeaderBox from "~/components/common/HeaderBox.vue"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 
 const TITLE = "Orchestrate your Infrastructure with Kestra"
 const DESCRIPTION =
@@ -13,7 +13,7 @@ const DESCRIPTION =
 
 const CHALLENGES_TITLE = `Orchestrate your <span class="highlight">Infrastructure</span><br/>with Kestra`
 
-const response = await $fetchApi<{ results: Blueprint[] }>(
+const response = await $fetchApiCached<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?page=1&size=20",
 )
 const blueprints = response.results
