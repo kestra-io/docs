@@ -32,7 +32,6 @@ import {
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
-import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
@@ -122,14 +121,18 @@ const [
         ? Promise.resolve({ versions: [] as any[] })
         : retrieveRepoReleases(githubReleaseRepo),
     !isEePlugin
-        ? $fetchApiCached(`/plugins/artifacts/${githubReleaseRepo}`).catch((e) => {
-              console.error("Artifacts fetch failed", e)
-              return {}
-          })
+        ? $fetchApiCached(`/plugins/artifacts/${githubReleaseRepo}`).catch(
+              (e) => {
+                  console.error("Artifacts fetch failed", e)
+                  return {}
+              },
+          )
         : Promise.resolve({}),
     $fetchApiCached<Plugin[]>(`/plugins/subgroups`),
     $fetchApiCached<PluginMetadata[]>(`/plugins/metadata?icons=false`),
-    $fetchApiCached(`/plugins/pluginsInformation/${githubReleaseRepo}?icons=false`),
+    $fetchApiCached(
+        `/plugins/pluginsInformation/${githubReleaseRepo}?icons=false`,
+    ),
 ])
 
 if (isEePlugin) {
@@ -156,7 +159,6 @@ if (isEePlugin) {
     }
 } else {
     try {
-
         const normalizeRepoUrl = (url?: string) => {
             if (!url) return undefined
             return url
@@ -324,12 +326,13 @@ const pluginsForDisplay = pluginsWithoutDeprecated.map((plugin) => {
 const subGroupWrapper = pluginsForDisplay.find(
     (p) => slugify(subGroupName(p)) === subGroup,
 )
-const { currentPageIcon, subGroupsIcons } = await getIcon(
-    pluginName,
-    pluginType,
-    page?.body.group,
-    subGroupWrapper?.subGroup,
-)
+
+const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
+const subGroupsIcons = page?.body?.plugins
+    ? Object.fromEntries(
+          page.body.plugins.map((p) => [p.group, `/icons/${p.group}.svg`]),
+      )
+    : {}
 
 const blogs = await loadBlogPostsMetadata()
 
