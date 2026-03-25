@@ -6,7 +6,7 @@ import PluginsIcon from "./assets/hero/plugin.svg"
 import LockInIcon from "./assets/hero/lock-in.svg"
 import SelfHostedIcon from "./assets/hero/self-hosted.svg"
 import CloudIcon from "./assets/hero/cloud.svg"
-import HeroAnimation from "~/components/common/animations/hero.astro"
+import HeroAnimation from "./assets/hero/animation.astro"
 ---
 
 <section aria-labelledby="hero">
@@ -70,11 +70,10 @@ import HeroAnimation from "~/components/common/animations/hero.astro"
     .hero-animation {
         position: absolute;
         right: 0;
-        top: 0;
+        top: 50px;
         z-index: 1;
         @include media-breakpoint-up(lg) {
             left: 50%;
-            overflow: hidden;
         }
     }
 
@@ -141,10 +140,5 @@ import HeroAnimation from "~/components/common/animations/hero.astro"
                 width: auto;
             }
         }
-    }
-
-    .hero-animation {
-        transform: scale(0.4);
-        transform-origin: 70% 0;
     }
 </style>

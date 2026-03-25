@@ -1,18 +1,4 @@
 <style>
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-    body {
-        background: #0a0a0a;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
     .stack-inner {
         width: 720px;
         height: 526px;
@@ -1751,14 +1737,14 @@
     Array.from(document.querySelectorAll(".block")).forEach((b, i) => {
         // Corner lines now drawn on canvas
         buildLabel(b, i)
-        labelGroups[i].g.setAttribute("opacity", "0")
+        labelGroups[i]?.g.setAttribute("opacity", "0")
     })
 
     // Spin loop
     function spinLoop(i: number) {
         if (!spinning[i]) return
         spinAngles[i] += 2.5
-        labelGroups[i].iconG.setAttribute(
+        labelGroups[i]?.iconG.setAttribute(
             "transform",
             `translate(-18,-12) scale(1.1) rotate(${spinAngles[i]}, 12, 12)`,
         )
