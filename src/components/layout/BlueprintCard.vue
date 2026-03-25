@@ -8,13 +8,19 @@
             <div class="icon" v-for="n in visibleTasks" :key="n">
                 <TaskIcon :cls="n" />
             </div>
-            <span v-if="extraCount > 0" class="extra-count">+{{ extraCount }}</span>
+            <span v-if="extraCount > 0" class="extra-count"
+                >+{{ extraCount }}</span
+            >
         </div>
         <div class="footer">
             <hr />
             <div class="bottom-row">
                 <div class="tag-list" v-if="tagsList.length">
-                    <span v-for="(tag, idx) in tagsList" :key="idx" class="category-tag">
+                    <span
+                        v-for="(tag, idx) in tagsList"
+                        :key="idx"
+                        class="category-tag"
+                    >
                         {{ tag }}
                     </span>
                 </div>
@@ -29,7 +35,12 @@
 
     const props = withDefaults(
         defineProps<{
-            blueprint: Blueprint
+            blueprint: {
+                id: string
+                title: string
+                includedTasks?: string[]
+                tags?: string[]
+            }
             tags?: Array<any>
             href: string
         }>(),
@@ -40,16 +51,17 @@
 
     const capitalizedTitle = computed(() =>
         props.blueprint?.title
-            ? props.blueprint.title.charAt(0).toUpperCase() + props.blueprint.title.slice(1)
+            ? props.blueprint.title.charAt(0).toUpperCase() +
+              props.blueprint.title.slice(1)
             : "",
     )
 
     const MAX_ICONS = 6
     const visibleTasks = computed(() =>
-        (props.blueprint.includedTasks ?? []).slice(0, MAX_ICONS)
+        (props.blueprint.includedTasks ?? []).slice(0, MAX_ICONS),
     )
     const extraCount = computed(() =>
-        Math.max(0, (props.blueprint.includedTasks ?? []).length - MAX_ICONS)
+        Math.max(0, (props.blueprint.includedTasks ?? []).length - MAX_ICONS),
     )
 
     const tagsList = computed(() => {
@@ -63,95 +75,93 @@
 </script>
 
 <style scoped lang="scss">
-
-
-.blueprint {
-    height: 188px;
-    border-radius: 12px;
-    border: 1px solid var(--ks-border-secondary);
-    padding: $rem-1 $rem-1 2px;
-    background: var(--ks-background-primary);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
-    transition: all 0.4s ease-out;
-    &:hover {
-        border-color: var(--ks-border-active);
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-        transform: scale(1.025);
-    }
-    .task-icons {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        margin-bottom: 1rem;
-        .icon {
-            border-radius: 4px;
-            border: $block-border;
-            width: 34px;
-            height: 34px;
-            display: grid;
-            place-items: center;
-            flex-shrink: 0;
-            background: $white;
-            :deep(.icon-wrapper) {
-                width: 24px;
-                height: 24px;
-            }
-        }
-        .extra-count {
-            flex-shrink: 0;
-            font-size: $font-size-xs;
-            font-weight: 600;
-            color: var(--ks-content-secondary);
-        }
-    }
-    .title {
-        color: var(--ks-content-primary);
-        font-size: $font-size-md;
-        font-weight: 700;
-        margin: 0 0 1rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        line-clamp: 2;
-        overflow: hidden;
-        line-height: normal;
-    }
-    hr {
-        border: $block-border;
-        margin: 0;
-    }
-    .footer {
-        margin-top: auto;
+    .blueprint {
+        height: 188px;
+        border-radius: 12px;
+        border: 1px solid var(--ks-border-secondary);
+        padding: $rem-1 $rem-1 2px;
+        background: var(--ks-background-primary);
         display: flex;
         flex-direction: column;
+        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+        transition: all 0.4s ease-out;
+        &:hover {
+            border-color: var(--ks-border-active);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            transform: scale(1.025);
+        }
+        .task-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            .icon {
+                border-radius: 4px;
+                border: $block-border;
+                width: 34px;
+                height: 34px;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+                background: $white;
+                :deep(.icon-wrapper) {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+            .extra-count {
+                flex-shrink: 0;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: var(--ks-content-secondary);
+            }
+        }
+        .title {
+            color: var(--ks-content-primary);
+            font-size: $font-size-md;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-clamp: 2;
+            overflow: hidden;
+            line-height: normal;
+        }
+        hr {
+            border: $block-border;
+            margin: 0;
+        }
+        .footer {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .bottom-row {
+            display: flex;
+            align-items: center;
+            gap: $rem-1;
+            color: var(--ks-background-secondary);
+            height: 45px;
+        }
+        .tag-list {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .category-tag {
+            background: var(--ks-background-tag-category);
+            color: var(--ks-content-tag-category);
+            padding: 0.125rem 0.5rem;
+            border-radius: 40px;
+            font-size: $font-size-xs;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
-    .bottom-row {
-        display: flex;
-        align-items: center;
-        gap: $rem-1;
-        color: var(--ks-background-secondary);
-        height: 45px;
-    }
-    .tag-list {
-        display: flex;
-        gap: 0.25rem;
-        align-items: center;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .category-tag {
-        background: var(--ks-background-tag-category);
-        color: var(--ks-content-tag-category);
-        padding: 0.125rem 0.5rem;
-        border-radius: 40px;
-        font-size: $font-size-xs;
-        font-weight: 500;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
 </style>

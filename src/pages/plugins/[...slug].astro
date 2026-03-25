@@ -25,7 +25,7 @@ import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigat
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { getCollection } from "astro:content"
-import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
+import { redirectAlias } from "~/utils/plugins/aliasMapping"
 import PluginsSubgroupIndex from "~/components/plugins/PluginsSubgroupIndex.astro"
 import PluginPageContent from "~/components/plugins/PluginPageContent.astro"
 import PluginsNavToc from "~/components/plugins/PluginsNavToc.vue"
@@ -92,8 +92,8 @@ const [
     originalIcons,
     elementIcons,
 ] = await Promise.all([
-    $fetchApi<Plugin[]>(`/plugins/subgroups`, cachingConfig),
-    $fetchApi<PluginMetadata[]>(`/plugins/metadata`, cachingConfig),
+    $fetchApi<Plugin[]>("/plugins/subgroups", cachingConfig),
+    $fetchApi<PluginMetadata[]>("/plugins/metadata", cachingConfig),
     $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`, cachingConfig),
     $fetchApi<{ countByPlugins: Record<string, number> }>(
         `/blueprints/countByPlugins`,
@@ -113,32 +113,26 @@ const pageNames = generatePageNames(navigation[0])
 
 const pluginType = (() => {
     const lastSegment = splitRouteSlug[splitRouteSlug.length - 1]
+    // subgroupIndex
     if (!lastSegment || !lastSegment.includes(".")) return undefined
 
-    const parts = lastSegment.replace(/.md$/, "").split(".")
-    return `${parts.slice(0, -1).join(".")}.${
-        pageNames?.[pathname] ?? parts[parts.length - 1]
-    }`
+    const rootLastSegment = lastSegment.replace(/.md$/, "")
+    // replaces the lower case plugin cls final part with the proper case
+    return pageNames?.[pathname]
+        ? `${rootLastSegment.split(".").slice(0, -1).join(".")}.${pageNames[pathname]}`
+        : rootLastSegment
 })()
 
-const isSubgroupIndex = pluginType === undefined
-
-// try to redirect if alias found
 try {
-    const aliasMapping = getAliasMapping(allPlugins)
-    const mappedUrl = redirectAlias(
-        aliasMapping,
-        pathname,
-        pageList,
-        pluginType,
-    )
-
-    if (mappedUrl && mappedUrl !== pathname) {
-        return Astro.redirect(mappedUrl, 301)
+    const realCls = redirectAlias(allPlugins, pathname, pageList, pluginType)
+    if (realCls) {
+        Astro.redirect(realCls, 301)
     }
 } catch {
-    // do nothing if plugin not found
+    // ignore alias redirection unsuccessful
 }
+
+const isSubgroupIndex = pluginType === undefined
 
 const sidebarPluginData = generateSidebarPluginData(
     subgroups,

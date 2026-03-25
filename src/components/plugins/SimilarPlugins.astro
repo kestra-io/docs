@@ -14,7 +14,7 @@ const props = Astro.props
 const { allPlugins, categories, pluginName } = props
 
 const pluginsData = await $fetchApi<{ byPlugin: Record<string, any> }>(
-    `/plugins/pluginsInformation`,
+    `/plugins/pluginsInformation?icons=false`,
 )
 
 const similarPlugins = filterPluginsWithoutDeprecated(allPlugins ?? [])
