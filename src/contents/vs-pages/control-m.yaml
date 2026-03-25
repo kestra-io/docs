@@ -4,7 +4,7 @@ competitorName: Control-M
 
 intro:
   title: "Kestra vs. Control-M: Modern Orchestration Without the Legacy Tax"
-  description: "Control-M manages enterprise batch workloads across mainframe and distributed systems. Kestra orchestrates everything from ETL to infrastructure provisioning to business automation, all in declarative YAML with open-source foundations and no per-job licensing. Existing scripts, ETL tools, and load plans work as-is inside Kestra's containerized tasks. The difference: Kestra lets any engineer ship workflows through Git instead of filing tickets with a central ops team."
+  description: "Control-M centralizes batch workload scheduling behind an ops team. Kestra lets any engineer build and ship workflows in YAML — no agents, no per-job licensing, no tickets."
 
 philosophy:
   mainTitle: Two Eras of Orchestration
@@ -20,7 +20,7 @@ philosophy:
     subCardText: '"How do we schedule and monitor batch jobs across our mainframe and distributed systems?"'
 
 businessValue:
-  mainTitle: "Central Bottleneck vs. Developer Self-Service"
+  mainTitle: "Developer Self-Service vs. Central Bottleneck"
   kestra:
     title: Self-Service Automation
     list:
@@ -35,7 +35,7 @@ businessValue:
       - "Batch workload scheduling across mainframe and distributed systems"
       - "Central ops team defines and manages jobs"
       - "Schedule-first architecture (event-driven features added in January 2026 SaaS release)"
-      - "Proprietary licensing starting at $2,400/month, per-job licensing with execution volume caps"
+      - "Proprietary per-job licensing with execution volume caps"
       - "Steep learning curve with complex upgrade process"
     shadowColor: "#FE5100"
     bulletColor: "#FE5100"
