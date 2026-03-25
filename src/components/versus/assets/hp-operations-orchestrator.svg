@@ -1,0 +1,8 @@
+<svg width="230" height="50" viewBox="0 0 230 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- HP icon: blue square with HP text -->
+  <rect x="0" y="5" width="36" height="36" rx="4" fill="#0096D6"/>
+  <text x="5" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="800" fill="white">HP</text>
+  <!-- HP OO text -->
+  <text x="45" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#0096D6">Operations</text>
+  <text x="45" y="41" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="#0096D6">Orchestrator</text>
+</svg>
