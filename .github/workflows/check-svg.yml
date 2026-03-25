@@ -4,9 +4,6 @@ on:
   push:
     paths:
       - "**.svg"
-  pull_request:
-    paths:
-      - "**.svg"
 
 permissions:
   contents: read
