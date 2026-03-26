@@ -7,6 +7,7 @@ const { title, description, image } = Astro.props
 
 <section class="head">
     <div class="background"></div>
+    <slot name="hero" />
     {
         (title || description || image) && (
             <div class="container">
@@ -50,6 +51,7 @@ const { title, description, image } = Astro.props
     }
     <slot />
 </section>
+
 
 <style lang="scss">
     section.head {
