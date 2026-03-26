@@ -32,6 +32,11 @@
     font-weight: 600;
     margin-left: 0.25rem;
     color: var(--ks-content-tag-category);
+
+    &.hiring {
+        background-color: var(--ks-background-alert-danger);
+        color: var(--ks-content-alert-danger);
+    }
 }
 
 nav {

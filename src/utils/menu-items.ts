@@ -17,7 +17,7 @@ import OpenSourceInitiative from "vue-material-design-icons/OpenSourceInitiative
 import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 import FormatQuoteCloseOutline from "vue-material-design-icons/FormatQuoteCloseOutline.vue"
 import BriefcaseOutline from "vue-material-design-icons/BriefcaseOutline.vue"
-import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
+import KestraIcon from "~/components/icons/KestraIcon.vue"
 import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
 import EmailOutline from "vue-material-design-icons/EmailOutline.vue"
 import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
@@ -147,15 +147,15 @@ export const menuItems: MenuItems = {
     company: {
         items: [
             {
+                icon: KestraIcon,
+                title: "About Us",
+                link: "/about-us"
+            },
+            {
                 icon: BriefcaseOutline,
                 title: "Careers",
                 link: "/careers",
                 tag: "Hiring!"
-            },
-            {
-                icon: InformationOutline,
-                title: "About Us",
-                link: "/about-us"
             },
             {
                 icon: HandshakeOutline,

@@ -119,6 +119,7 @@
                                             <strong
                                                 v-if="item.tag"
                                                 class="tag"
+                                                :class="{ hiring: item.tag === 'Hiring!' }"
                                                 >{{ item.tag }}</strong
                                             >
                                         </div>
@@ -281,7 +282,7 @@
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
-                                            <strong v-if="item.tag" class="tag">{{
+                                            <strong v-if="item.tag" class="tag" :class="{ hiring: item.tag === 'Hiring!' }">{{
                                                 item.tag
                                             }}</strong>
                                         </div>
@@ -380,6 +381,7 @@
                                                         <strong
                                                             v-if="item.tag"
                                                             class="tag"
+                                                            :class="{ hiring: item.tag === 'Hiring!' }"
                                                             >{{
                                                                 item.tag
                                                             }}</strong
@@ -497,7 +499,7 @@
                                                     <div class="same-row">
                                                         <component :is="item.icon" />
                                                         <span>{{ item.title }}</span>
-                                                        <strong v-if="item.tag" class="tag">{{
+                                                        <strong v-if="item.tag" class="tag" :class="{ hiring: item.tag === 'Hiring!' }">{{
                                                             item.tag
                                                         }}</strong>
                                                     </div>
@@ -529,7 +531,7 @@
                                                     <div class="same-row">
                                                         <component :is="item.icon" />
                                                         <span>{{ item.title }}</span>
-                                                        <strong v-if="item.tag" class="tag">{{
+                                                        <strong v-if="item.tag" class="tag" :class="{ hiring: item.tag === 'Hiring!' }">{{
                                                             item.tag
                                                         }}</strong>
                                                     </div>
