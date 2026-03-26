@@ -25,7 +25,7 @@ This will import all flows into your Enterprise Edition instance.
 
 ## Namespace files, KV store, and other resources
 
-Features such as **Namespace Files** and the **Key-Value Store** are not included in the flow export. If you rely on these, you will need to migrate them manually.
+**Namespace Files** and the **Key-Value Store** data are not included in the flow export. If you rely on these, you will need to migrate them manually.
 
 For **Namespace Files**, re-upload the files through the Enterprise Edition UI or use the [API](../../../api-reference/index.mdx). For the **KV Store**, recreate the entries in your new instance.
 
