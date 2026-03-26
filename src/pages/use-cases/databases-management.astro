@@ -5,13 +5,15 @@ import Alternation from "~/components/features/shared/Alternation.astro"
 import Section from "~/components/layout/Section.astro"
 import Enterprise from "~/components/use-cases/Enterprise.vue"
 import Cards from "~/components/use-cases/Cards.astro"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import ArchiveSync from "vue-material-design-icons/ArchiveSync.vue"
 import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue"
 import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue"
 import Cogs from "vue-material-design-icons/Cogs.vue"
 import TimerCogOutline from "vue-material-design-icons/TimerCogOutline.vue"
+import microserviceManagement from "~/assets/use-cases/capabilities/microservice-management.svg"
+import apiOrchestration from "~/assets/use-cases/capabilities/api-orchestration.svg"
 
 const TITLE = "Optimize your Databases Management"
 const DESCRIPTION =
@@ -22,9 +24,9 @@ const MAIN_CONTENT = [
         title: "Automated Database Migrations",
         image: {
             src: "/landing/usecases/databases/database-migrations.svg",
-            alt: "Automated Database Migrations",
             width: 568,
             height: 420,
+            alt: "Automated Database Migrations",
         },
         description:
             "Kestra enables you to automate database migrations, ensuring that schema changes are applied consistently across all environments.",
@@ -49,9 +51,9 @@ const MAIN_CONTENT = [
         title: "Ensure Data Protection",
         image: {
             src: "/landing/usecases/databases/ensure-protection.svg",
-            alt: "Ensure Data Protection",
             width: 568,
             height: 420,
+            alt: "Ensure Data Protection",
         },
         description:
             "Automate regular database backups with Kestra to safeguard your data against loss and ensure its availability when needed.",
@@ -82,9 +84,9 @@ const MAIN_CONTENT = [
         title: "Quick Recovery",
         image: {
             src: "/landing/usecases/databases/quick-recovery.svg",
-            alt: "Quick Recovery",
             width: 604,
             height: 477,
+            alt: "Quick Recovery",
         },
         description:
             "Implement automated restoration processes with Kestra to recover data swiftly in the event of a failure, minimizing downtime and data loss.",
@@ -113,7 +115,22 @@ const MAIN_CONTENT = [
     },
 ]
 
-const CAPABILITIES = ["Microservice Management", "API Orchestration"]
+const CAPABILITIES = [
+    {
+        title: "Microservice Management",
+        description:
+            "Simplify the orchestration of microservices, ensuring efficient communication and coordination.",
+        image: microserviceManagement,
+        pageHref: "/use-cases/microservices-orchestration",
+    },
+    {
+        title: "API Orchestration",
+        description:
+            "Manage and automate API deployments, scaling, and monitoring to ensure high availability and performance.",
+        image: apiOrchestration,
+        pageHref: "/use-cases/provisioning-and-deployment",
+    },
+]
 
 const CARDS_DATA = [
     {
@@ -166,7 +183,6 @@ const CARDS_DATA = [
         description="Automate  your database management tasks within the development pipeline using Kestra."
         image={{
             src: "/landing/usecases/databases/header-hero.svg",
-            alt: "Databases",
         }}
     />
 
@@ -179,18 +195,22 @@ const CARDS_DATA = [
         />
     </Alternation>
 
-    <Enterprise title="Orchestrate infrastructure components using Kestra" client:visible />
+    <Enterprise
+        title="Orchestrate infrastructure components using Kestra"
+        client:visible
+    />
 
-    <Cards title={"<span class='highlight'>Overcome Common</span> <br class='highlight'> Databases Management <span class='highlight'>Challenges</span>"} cards={CARDS_DATA} />
+    <Cards
+        title={"<span class='highlight'>Overcome Common</span> <br class='highlight'> Databases Management <span class='highlight'>Challenges</span>"}
+        cards={CARDS_DATA}
+    />
 
     <Capabilities
-        client:visible
         title="for Databases Management"
         capabilities={CAPABILITIES}
     />
 
     <FooterContact
-        client:visible
         title="Ready to take your Infrastructure to the next level?"
     />
 </Layout>

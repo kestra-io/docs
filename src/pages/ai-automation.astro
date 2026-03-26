@@ -1,5 +1,4 @@
 ---
-import { API_URL } from "astro:env/client"
 import Layout from "~/components/layout.astro"
 
 import Faq from "~/components/common/Faq.vue"
@@ -14,18 +13,15 @@ import AIPlugins from "~/components/ai-automation/AIPlugins.astro"
 import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
 
 import AppleLogo from "~/assets/teams/apple.svg?raw"
+import { $fetchApiCached } from "~/utils/fetch.ts"
 
 const title = "Stop writing glue code around your AI pipelines."
 const description =
     "Kestra orchestrates everything your LLM framework doesn't: data ingestion, scheduling, retries, human approvals, and outputs. Works alongside LangChain, LlamaIndex, and whatever else is already in your stack."
 
-const { results: blueprints } = await fetch(
-    `${API_URL}/blueprints/versions/latest?tags=AI&page=1&size=20`,
-).then((res) => res.json())
+const { results: blueprints } = await $fetchApiCached(`/blueprints/versions/latest?tags=AI&page=1&size=20`)
 
-const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
-    (res) => res.json(),
-)
+const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
 
 const items = [
     {

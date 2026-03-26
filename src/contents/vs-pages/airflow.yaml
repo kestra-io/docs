@@ -15,8 +15,8 @@ philosophy:
   competitor:
     title: Python DAG Execution Engine
     description: "A Python-based workflow engine where DAGs are executable programs. Workflows are Python code that the scheduler runs. Everything—scheduling, dependencies, retries—is defined in Python and tied to the Airflow runtime."
-    shadowColor: "#E8F5E9"
-    subCardBg: "#1b3a26"
+    shadowColor: "#00C7D4"
+    subCardBg: "var(--ks-background-blue-light)"
     subCardText: '"How do we schedule and monitor our Python data pipelines?"'
 
 businessValue:
@@ -37,8 +37,8 @@ businessValue:
       - "Data engineering scope"
       - "Limited multi-tenancy"
       - "Serves Python-native data teams"
-    shadowColor: "#E8F5E9"
-    bulletColor: "#4CAF50"
+    shadowColor: "#00C7D4"
+    bulletColor: "#00C7D4"
   footerText: "Airflow works well for Python-native teams invested in the Airflow ecosystem, especially with Airflow 3's improved event-driven features and Task SDK. Kestra is the right choice if you need multi-language teams to contribute in YAML, event-driven execution as a first-class primitive, or orchestration that spans data, infrastructure, and business workflows."
 
 setupSpeed:
@@ -62,7 +62,7 @@ setupSpeed:
       one: "~30"
       two: Minutes
     description: "The standalone command gets a dev instance running quickly, but on SQLite with no parallelism. Production requires installing providers, configuring the API server, DAG processor, metadata DB, and executor separately."
-    shadowColor: "#E8F5E9"
+    shadowColor: "#00C7D4"
     command: |
       pip install apache-airflow
       pip install apache-airflow-providers-standard
@@ -102,7 +102,7 @@ easeOfUse:
   competitor:
     title: "Airflow: Python knowledge required for workflow authoring"
     description: "DAG definitions, retry logic, and scheduling are all Python code. Airflow can run Bash and SQL via operators, but modifying orchestration logic requires Python. Non-Python contributors can view runs in the UI but can't author or edit workflows directly."
-    shadowColor: "#E8F5E9"
+    shadowColor: "#00C7D4"
     code: |
       from airflow import DAG
       from airflow.operators.python import PythonOperator
@@ -131,7 +131,7 @@ visualPreview:
     description: "Orchestrate across data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, and message queues."
   competitor:
     description: "Purpose-built for Python data pipeline scheduling. Airflow 3 adds event-driven Asset Watchers, but the core is schedule-driven. Infrastructure automation and business processes are possible via Python but not first-class use cases."
-    shadowColor: "#E8F5E9"
+    shadowColor: "#00C7D4"
 
 featureGrid:
   title: Kestra vs. Apache Airflow 3 at a Glance
@@ -211,8 +211,8 @@ decisionGuide:
       - "You're running on managed services (MWAA, Cloud Composer) and are locked into the Airflow ecosystem."
       - "Python-based DAG definitions and Airflow's scheduling model fit your team's workflow."
       - "You have significant custom operator libraries you'd need to rebuild elsewhere."
-    shadowColor: "#E8F5E9"
-    bulletColor: "#4CAF50"
+    shadowColor: "#00C7D4"
+    bulletColor: "#00C7D4"
 
 commonQuestions:
   - question: How hard is it to migrate from Airflow to Kestra?

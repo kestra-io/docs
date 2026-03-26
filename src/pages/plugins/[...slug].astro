@@ -11,7 +11,7 @@ import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
 import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { API_URL } from "astro:env/client"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
@@ -32,10 +32,10 @@ import {
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
-import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
+import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -121,22 +121,32 @@ const [
         ? Promise.resolve({ versions: [] as any[] })
         : retrieveRepoReleases(githubReleaseRepo),
     !isEePlugin
-        ? $fetchApi("/plugins/artifacts").catch((e) => {
-              console.error("Artifacts fetch failed", e)
-              return {}
-          })
+        ? $fetchApiCached(`/plugins/artifacts/${githubReleaseRepo}`).catch(
+              (e) => {
+                  console.error("Artifacts fetch failed", e)
+                  return {}
+              },
+          )
         : Promise.resolve({}),
-    $fetchApi<Plugin[]>(`/plugins/subgroups`),
-    $fetchApi<PluginMetadata[]>(`/plugins/metadata`),
-    $fetchApi(`/plugins/pluginsInformation`),
+    $fetchApiCached<Plugin[]>(`/plugins/subgroups`),
+    $fetchApiCached<PluginMetadata[]>(`/plugins/metadata?icons=false`),
+    $fetchApiCached(
+        `/plugins/pluginsInformation/${githubReleaseRepo}?icons=false`,
+    ),
 ])
 
 if (isEePlugin) {
     try {
-        const eeData = await $fetchApi<{
-            results: { version: string; kestraVersion: string; releaseDate: string | null }[]
+        const eeData = await $fetchApiCached<{
+            results: {
+                version: string
+                kestraVersion: string
+                releaseDate: string | null
+            }[]
             total: number
-        }>(`/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`)
+        }>(
+            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
+        )
 
         githubVersions.versions = eeData.results.map((r) => ({
             version: r.version,
@@ -149,9 +159,6 @@ if (isEePlugin) {
     }
 } else {
     try {
-        const { artifacts = {} } = artifactsData as {
-            artifacts?: Record<string, any[]>
-        }
         const normalizeRepoUrl = (url?: string) => {
             if (!url) return undefined
             return url
@@ -162,9 +169,10 @@ if (isEePlugin) {
         const repoUrl = normalizeRepoUrl(
             `https://github.com/kestra-io/${githubReleaseRepo}`,
         )
+
         githubVersions.versions?.forEach((v: any) => {
             v.minCoreCompatibilityVersion = (
-                Object.values(artifacts).flat() as any[]
+                Object.values(artifactsData).flat() as any[]
             ).find(
                 (a) =>
                     a.version === v.version &&
@@ -212,12 +220,13 @@ try {
 }
 
 // Batch 2: fetch remaining data in parallel
-const [subgroups, { countByPlugins: blueprintCounts }] = await Promise.all([
-    $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`),
-    $fetchApi<{ countByPlugins: Record<string, number> }>(
+const [{ countByPlugins: blueprintCounts }] = await Promise.all([
+    $fetchApiCached<{ countByPlugins: Record<string, number> }>(
         `/blueprints/countByPlugins`,
     ),
 ])
+
+const subgroups = allPlugins.filter(r => r.name === pluginName)
 
 const sidebarPluginData = generateSidebarPluginData(
     subgroups,
@@ -226,14 +235,14 @@ const sidebarPluginData = generateSidebarPluginData(
 
 async function makePagePluginDefinition() {
     try {
-        const pageData = await $fetchApi<{
+        const pageData = await $fetchApiCached<{
             markdown: string
             schema: JSONSchema & {
                 properties: {
                     $deprecated?: "true" | "false"
                 }
             }
-        }>(`/plugins/definitions/${pluginType}`)
+        }>(`/plugins/definitions/${pluginType}?markdown=false`)
         const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
         const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
 
@@ -317,14 +326,15 @@ const pluginsForDisplay = pluginsWithoutDeprecated.map((plugin) => {
 const subGroupWrapper = pluginsForDisplay.find(
     (p) => slugify(subGroupName(p)) === subGroup,
 )
-const { currentPageIcon, subGroupsIcons } = await getIcon(
-    pluginName,
-    pluginType,
-    page?.body.group,
-    subGroupWrapper?.subGroup,
-)
 
-const blogs = await getCollection("blogs")
+const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
+const subGroupsIcons = page?.body?.plugins
+    ? Object.fromEntries(
+          page.body.plugins.map((p) => [p.subGroup ?? p.group, `/icons/${p.subGroup ?? p.group}.svg`]),
+      )
+    : {}
+
+const blogs = await loadBlogPostsMetadata()
 
 const relatedBlogs = blogs
     .filter((b) => b.data.plugins?.includes(pluginName))
