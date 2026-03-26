@@ -1,4 +1,4 @@
-<style>
+<style lang="scss">
     .stack-inner {
         width: 720px;
         height: 526px;
@@ -96,6 +96,34 @@
     }
     .block:nth-child(3) svg g[id^="ai-logo"] {
         isolation: isolate;
+    }
+
+    .block svg {
+        overflow: visible;
+    }
+
+    @keyframes dash-march {
+        to {
+            stroke-dashoffset: -70;
+        }
+    }
+    :global(#corner-lines-0),
+    :global(#corner-lines-1),
+    :global(#corner-lines-2) {
+        :global(line) {
+            opacity: 0.25;
+            stroke-width: 1;
+            stroke-dasharray: 4 7;
+            stroke-dashoffset: 0;
+            transition:
+                stroke-width 0.3s ease,
+                opacity 0.3s ease;
+        }
+        &:global(.corner-lines-active line) {
+            opacity: 1;
+            stroke-width: 2;
+            animation: dash-march 4s linear infinite;
+        }
     }
 
     @keyframes kestra-pulse {
@@ -1250,20 +1278,7 @@
     </div>
 </div>
 
-<canvas
-    id="particles"
-    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;"
-></canvas>
 <script>
-    const canvas = document.getElementById("particles") as HTMLCanvasElement
-    const ctx = canvas.getContext("2d")!
-    function resizeCanvas() {
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-    }
-    resizeCanvas()
-    window.addEventListener("resize", resizeCanvas)
-
     const blocks = document.querySelectorAll(".block")
     const blockInfra = blocks[0]
     const blockData = blocks[1]
@@ -1430,83 +1445,6 @@
         })
     }
 
-    // ── Dashed lines going UPWARD from block corners ───────────────────────
-    // Isometric block has 4 corners: left, top, right, bottom
-    // We get their screen positions from getBoundingClientRect
-    // Lines animate upward (toward the block above)
-
-    let dashedLines: {
-        x: number
-        y: number
-        length: number
-        goUp: boolean
-        color: string
-        progress: number
-        speed: number
-    }[] = []
-
-    function getBlockCorners(block: Element) {
-        const r = block.getBoundingClientRect()
-        const w = r.width,
-            h = r.height
-        return [
-            { x: r.left + w * 0.083, y: r.top + h * 0.486 - 10 }, // left corner
-            { x: r.left + w * 0.917, y: r.top + h * 0.486 - 10 }, // right corner
-            { x: r.left + w * 0.5, y: r.top + h * 0.819 - 10 }, // bottom corner
-        ]
-    }
-
-    function spawnDashedLines(block: Element, color: string, goUp: boolean) {
-        const corners = getBlockCorners(block)
-        // Only use the 4 structural corners of the isometric shape
-        // direction: goUp=true → lines go UP (toward block above), goUp=false → DOWN
-        const length = 145
-        corners.forEach((corner) => {
-            dashedLines.push({
-                x: corner.x,
-                y: corner.y,
-                length,
-                goUp,
-                color,
-                progress: 0,
-                speed: 0.014,
-            })
-        })
-    }
-
-    function clearDashedLines() {
-        dashedLines = []
-    }
-
-    // ── Main render loop ───────────────────────────────────────────────────
-    function animate() {
-        dashedLines.forEach((l) => {
-            l.progress = Math.min(1, l.progress + l.speed)
-            const traveled = l.length * l.progress
-            const yEnd = l.goUp ? l.y - traveled : l.y + traveled
-            const alpha = l.progress > 0.75 ? (1 - l.progress) / 0.25 : 1
-
-            ctx.save()
-            ctx.setLineDash([5, 7])
-            ctx.lineDashOffset = -(Date.now() * 0.06)
-            ctx.strokeStyle =
-                l.color +
-                Math.floor(alpha * 220)
-                    .toString(16)
-                    .padStart(2, "0")
-            ctx.lineWidth = 1.5
-            ctx.shadowBlur = 10
-            ctx.shadowColor = l.color
-            ctx.beginPath()
-            ctx.moveTo(l.x, l.y)
-            ctx.lineTo(l.x, yEnd)
-            ctx.stroke()
-            ctx.restore()
-        })
-
-        dashedLines = dashedLines.filter((l) => l.progress < 1)
-    }
-
     // ── Kestra run labels (always visible, state-driven) ─────────────────
     const ns = "http://www.w3.org/2000/svg"
     const GRAY = "#dde0f0"
@@ -1564,50 +1502,56 @@
     }
 
     function buildCornerLines(block: Element, i: number) {
-        const svg = block.querySelector("svg")
-        // 3 corners: left(60,175), right(660,175), bottom(360,295)
-        // Lines go upward 145px from each corner
+        // Block CSS top offsets: Infra(0)=256, Data(1)=83, AI(2)=-90
+        const blockTops = [256, 83, -90]
+        // Isometric top-face corners, shifted inward for visual balance
         const corners = [
-            { x: 60, y: 175 },
-            { x: 660, y: 175 },
-            { x: 360, y: 295 },
+            { x: 90, y: 175 },
+            { x: 630, y: 175 },
+            { x: 360, y: 275 },
         ]
-        const colors_static = ["#ff9900", "#4090ff", "#2dff5c"]
+        const colors_static = [colors.infra, colors.data, colors.ai]
         const col = colors_static[i]
 
+        const svg = block.querySelector("svg")
         const g = document.createElementNS(ns, "g")
         g.setAttribute("id", "corner-lines-" + i)
         g.setAttribute("pointer-events", "none")
         g.setAttribute("opacity", "0.25") // subtle by default
 
-        // For Infra (i=0), add a center line going UP in data color to bridge the gap
-        if (i === 0) {
-            const bridgeLine = document.createElementNS(ns, "line")
-            bridgeLine.setAttribute("x1", "360")
-            bridgeLine.setAttribute("y1", "165") // top of Infra SVG area
-            bridgeLine.setAttribute("x2", "360")
-            bridgeLine.setAttribute("y2", "10")
-            bridgeLine.setAttribute("stroke", "#4090ff")
-            bridgeLine.setAttribute("stroke-width", "1.5")
-            bridgeLine.setAttribute("stroke-dasharray", "5 7")
-            bridgeLine.setAttribute("stroke-linecap", "round")
-            g.appendChild(bridgeLine)
+        if (i < 2) {
+            // Lines from this block going UP into the gap toward the block above.
+            // Hosted in this (lower) block's SVG so they follow its float animation.
+            const gap = blockTops[i] - blockTops[i + 1] // px gap to block above
+
+            corners.forEach((c) => {
+                const line = document.createElementNS(ns, "line")
+                line.setAttribute("x1", String(c.x))
+                line.setAttribute("y1", String(c.y))
+                line.setAttribute("x2", String(c.x))
+                line.setAttribute("y2", String(c.y - gap + 14)) // extend up into gap
+                line.setAttribute("stroke", col)
+                line.setAttribute("stroke-dasharray", "5 7")
+                line.setAttribute("stroke-linecap", "round")
+                g.appendChild(line)
+            })
+        } else {
+            // AI block (topmost) — lines extend upward into empty space
+            corners.forEach((c) => {
+                const line = document.createElementNS(ns, "line")
+                line.setAttribute("x1", String(c.x))
+                line.setAttribute("y1", String(c.y))
+                line.setAttribute("x2", String(c.x))
+                line.setAttribute("y2", String(c.y - 130))
+                line.setAttribute("stroke", col)
+                line.setAttribute("stroke-dasharray", "5 7")
+                line.setAttribute("stroke-linecap", "round")
+                g.appendChild(line)
+            })
         }
 
-        corners.forEach((c, ci) => {
-            const line = document.createElementNS(ns, "line")
-            line.setAttribute("x1", String(c.x))
-            line.setAttribute("y1", String(c.y - 10))
-            line.setAttribute("x2", String(c.x))
-            line.setAttribute("y2", String(c.y - 155))
-            line.setAttribute("stroke", col)
-            line.setAttribute("stroke-width", "1.5")
-            line.setAttribute("stroke-dasharray", "5 7")
-            line.setAttribute("stroke-linecap", "round")
-            g.appendChild(line)
-        })
-
-        svg!.insertBefore(g, svg!.querySelector("g[filter]") || svg!.lastChild)
+        // Append at end of SVG so lines render on top of block content
+        svg!.appendChild(g)
     }
 
     function buildLabel(block: Element, i: number) {
@@ -1732,7 +1676,7 @@
 
     // Init corner lines + labels
     Array.from(document.querySelectorAll(".block")).forEach((b, i) => {
-        // Corner lines now drawn on canvas
+        buildCornerLines(b, i)
         buildLabel(b, i)
         labelGroups[i]?.g.setAttribute("opacity", "0")
     })
@@ -1788,25 +1732,14 @@
     }
 
     function animateCornerLines(i: number) {
-        const blockList = Array.from(document.querySelectorAll(".block"))
-        const fromBlock = blockList[i]
-        const toBlock = blockList[i + 1]
-        if (!fromBlock || !toBlock) return
-        // Spawn 3 scan lines staggered
-        const colList = [colors.infra, colors.data, colors.ai]
-        const col = colList[i]
-        for (let w = 0; w < 3; w++) {
-            setTimeout(
-                () =>
-                    spawnGlowPulse(
-                        fromBlock,
-                        toBlock,
-                        colList[i],
-                        colList[i + 1],
-                    ),
-                w * 500,
-            )
-        }
+        // Brighten the SVG corner lines for this block and add marching animation
+        const g = document.getElementById("corner-lines-" + i)
+        if (!g) return
+        g.classList.add("corner-lines-active")
+        // Auto-deactivate after 2s
+        setTimeout(() => {
+            g.classList.remove("corner-lines-active")
+        }, 2000)
     }
 
     function setLabelDone(i: number) {
@@ -1864,9 +1797,6 @@
             l.timer.setAttribute("fill", GRAY)
             l.timer.setAttribute("opacity", "0.6")
         }
-        // Animate lines when data is sent
-        if (i === 0) activateInfraDataLines()
-        if (i === 1) activateDataAILines()
     }
 
     function setLabelIdle(i: number) {
@@ -1886,127 +1816,6 @@
         if (kg) kg.setAttribute("opacity", "0")
         l.iconG.setAttribute("opacity", "0")
         if (l.timer) l.timer.textContent = ""
-    }
-
-    let spinRAF = null // kept for compatibility
-
-    // ── Glow pulse traveling up dashed lines ──────────────────────────────
-    let glowPulses: {
-        x: number
-        yStart: number
-        yEnd: number
-        progress: number
-        speed: number
-        colorStart: string
-        colorEnd: string
-    }[] = []
-
-    function lerpColor(c1: string, c2: string, t: number) {
-        // Convert hex to HSL, interpolate in HSL space to avoid desaturated midpoints
-        function hexToHsl(hex: string): [number, number, number] {
-            let r = parseInt(hex.slice(1, 3), 16) / 255
-            let g = parseInt(hex.slice(3, 5), 16) / 255
-            let b = parseInt(hex.slice(5, 7), 16) / 255
-            const max = Math.max(r, g, b),
-                min = Math.min(r, g, b)
-            let h = 0,
-                s: number,
-                l = (max + min) / 2
-            if (max === min) {
-                h = s = 0
-            } else {
-                const d = max - min
-                s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-                switch (max) {
-                    case r:
-                        h = (g - b) / d + (g < b ? 6 : 0)
-                        break
-                    case g:
-                        h = (b - r) / d + 2
-                        break
-                    case b:
-                        h = (r - g) / d + 4
-                        break
-                }
-                h /= 6
-            }
-            return [h * 360, s * 100, l * 100]
-        }
-        function hslToHex(h: number, s: number, l: number) {
-            h /= 360
-            s /= 100
-            l /= 100
-            let r: number, g: number, b: number
-            if (s === 0) {
-                r = g = b = l
-            } else {
-                const q = l < 0.5 ? l * (1 + s) : l + s - l * s,
-                    p = 2 * l - q
-                const hue2rgb = (p: number, q: number, t: number) => {
-                    if (t < 0) t += 1
-                    if (t > 1) t -= 1
-                    if (t < 1 / 6) return p + (q - p) * 6 * t
-                    if (t < 1 / 2) return q
-                    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
-                    return p
-                }
-                r = hue2rgb(p, q, h + 1 / 3)
-                g = hue2rgb(p, q, h)
-                b = hue2rgb(p, q, h - 1 / 3)
-            }
-            return (
-                "#" +
-                [r, g, b]
-                    .map((v) =>
-                        Math.round(v * 255)
-                            .toString(16)
-                            .padStart(2, "0"),
-                    )
-                    .join("")
-            )
-        }
-        const [h1, s1, l1] = hexToHsl(c1)
-        const [h2, s2, l2] = hexToHsl(c2)
-        // Interpolate hue going the short way around
-        let dh = h2 - h1
-        if (dh > 180) dh -= 360
-        if (dh < -180) dh += 360
-        return hslToHex(h1 + dh * t, s1 + (s2 - s1) * t, l1 + (l2 - l1) * t)
-    }
-
-    function spawnGlowPulse(
-        fromBlock: Element,
-        toBlock: Element,
-        colorStart: string,
-        colorEnd: string,
-    ) {
-        const fromRect = fromBlock.getBoundingClientRect()
-        const toRect = toBlock.getBoundingClientRect()
-        const xs = [
-            fromRect.left + fromRect.width * 0.083,
-            fromRect.left + fromRect.width * 0.5,
-            fromRect.left + fromRect.width * 0.917,
-        ]
-        xs.forEach((x, xi) => {
-            const isCenterCol = xi === 1
-            glowPulses.push({
-                x,
-                yStart:
-                    fromRect.top +
-                    fromRect.height * (isCenterCol ? 0.819 : 0.486) -
-                    10 +
-                    (isCenterCol ? 50 : 0),
-                yEnd:
-                    toRect.top +
-                    toRect.height * (isCenterCol ? 0.819 : 0.486) -
-                    10 +
-                    (isCenterCol ? 100 : 0),
-                progress: 0,
-                speed: 0.012,
-                colorStart: colorStart || "#ff9900",
-                colorEnd: colorEnd || "#4090ff",
-            })
-        })
     }
 
     // Line animation state
@@ -2030,175 +1839,6 @@
         dataAILinesActive = false
     }
 
-    function drawStaticCenterLines() {
-        const blockList = Array.from(document.querySelectorAll(".block"))
-        const infra = blockList[0].getBoundingClientRect()
-        const data = blockList[1].getBoundingClientRect()
-
-        const yTop = data.bottom
-        const yBottom = infra.top
-
-        const centerX = infra.left + infra.width * 0.5
-        const xs = [centerX - 270, centerX, centerX + 270]
-        const offsets = [25, 73 + 55, 25]
-
-        const gapCenter = yTop + (yBottom - yTop) / 2
-        const lineHeight = 95
-        const yLineStart = gapCenter - lineHeight / 2
-        const yLineEnd = gapCenter + lineHeight / 2
-
-        if (infraDataLinesActive) infraDataLinesAnimOffset -= 0.5
-
-        xs.forEach((x, xi) => {
-            const offset = offsets[xi]
-            const yS = yLineStart + offset
-            const yE = yLineEnd + offset
-
-            ctx.save()
-            if (infraDataLinesActive) {
-                ctx.setLineDash([4, 6])
-                ctx.lineDashOffset = infraDataLinesAnimOffset
-                ctx.strokeStyle = "#ff9900ff"
-                ctx.lineWidth = 2
-                ctx.shadowBlur = 20
-                ctx.shadowColor = "#ff9900"
-            } else {
-                ctx.setLineDash([4, 6])
-                ctx.strokeStyle = "#ffffff44"
-                ctx.lineWidth = 1.2
-                ctx.shadowBlur = 0
-            }
-            ctx.beginPath()
-            ctx.moveTo(x, yS)
-            ctx.lineTo(x, yE)
-            ctx.stroke()
-            ctx.setLineDash([])
-            ctx.restore()
-        })
-
-        // Data → AI lines
-        const data2 = blockList[1].getBoundingClientRect()
-        const ai = blockList[2].getBoundingClientRect()
-
-        const yTop2 = ai.bottom
-        const yBottom2 = data2.top
-        const centerX2 = data2.left + data2.width * 0.5
-        const xs2 = [centerX2 - 270, centerX2, centerX2 + 270]
-        const offsets2 = [25, 73 + 55, 25]
-
-        const gapCenter2 = yTop2 + (yBottom2 - yTop2) / 2
-        const yLineStart2 = gapCenter2 - lineHeight / 2
-        const yLineEnd2 = gapCenter2 + lineHeight / 2
-
-        if (dataAILinesActive) dataAILinesAnimOffset -= 0.5
-
-        xs2.forEach((x, xi) => {
-            const offset = offsets2[xi]
-            const yS = yLineStart2 + offset
-            const yE = yLineEnd2 + offset
-
-            ctx.save()
-            if (dataAILinesActive) {
-                ctx.setLineDash([4, 6])
-                ctx.lineDashOffset = dataAILinesAnimOffset
-                ctx.strokeStyle = "#4090ffff"
-                ctx.lineWidth = 2
-                ctx.shadowBlur = 20
-                ctx.shadowColor = "#4090ff"
-            } else {
-                ctx.setLineDash([4, 6])
-                ctx.strokeStyle = "#ffffff44"
-                ctx.lineWidth = 1.2
-                ctx.shadowBlur = 0
-            }
-            ctx.beginPath()
-            ctx.moveTo(x, yS)
-            ctx.lineTo(x, yE)
-            ctx.stroke()
-            ctx.setLineDash([])
-            ctx.restore()
-        })
-    }
-
-    function animGlowPulses() {
-        glowPulses = [] // pulses disabled
-        drawStaticCenterLines()
-        glowPulses = glowPulses.filter((p) => p.progress < 1)
-        glowPulses.forEach((p) => {
-            p.progress = Math.min(1, p.progress + p.speed)
-            const t = p.progress
-            const y = p.yStart + (p.yEnd - p.yStart) * t
-            const alpha = t < 0.12 ? t / 0.12 : t > 0.82 ? (1 - t) / 0.18 : 1
-            const color = lerpColor(p.colorStart, p.colorEnd, t)
-
-            // Clip: don't draw above the destination block top
-            ctx.save()
-            ctx.beginPath()
-            ctx.rect(0, p.yEnd - 20, canvas.width, canvas.height)
-            ctx.clip()
-
-            // Glowing dot traveling up the line
-            const grad = ctx.createRadialGradient(p.x, y, 0, p.x, y, 8)
-            grad.addColorStop(
-                0,
-                color +
-                    Math.floor(alpha * 255)
-                        .toString(16)
-                        .padStart(2, "0"),
-            )
-            grad.addColorStop(
-                0.4,
-                color +
-                    Math.floor(alpha * 160)
-                        .toString(16)
-                        .padStart(2, "0"),
-            )
-            grad.addColorStop(1, color + "00")
-
-            ctx.beginPath()
-            ctx.arc(p.x, y, 8, 0, Math.PI * 2)
-            ctx.fillStyle = grad
-            ctx.fill()
-
-            // Bright core
-            ctx.beginPath()
-            ctx.arc(p.x, y, 1.5, 0, Math.PI * 2)
-            ctx.fillStyle =
-                "#ffffff" +
-                Math.floor(alpha * 255)
-                    .toString(16)
-                    .padStart(2, "0")
-            ctx.shadowBlur = 6
-            ctx.shadowColor = color
-            ctx.fill()
-            ctx.shadowBlur = 0
-
-            // Trail
-            const trailLen = 40
-            const trailGrad = ctx.createLinearGradient(
-                p.x,
-                y,
-                p.x,
-                y + trailLen,
-            )
-            trailGrad.addColorStop(
-                0,
-                color +
-                    Math.floor(alpha * 120)
-                        .toString(16)
-                        .padStart(2, "0"),
-            )
-            trailGrad.addColorStop(1, color + "00")
-            ctx.beginPath()
-            ctx.moveTo(p.x, y)
-            ctx.lineTo(p.x, y + trailLen)
-            ctx.strokeStyle = trailGrad
-            ctx.lineWidth = 1.5
-            ctx.stroke()
-            ctx.restore()
-        })
-    }
-
     // ── Badge position (above AI block) ──────────────────────────────────
     function updateBadgePosition() {
         const badge = document.getElementById("top-badge")
@@ -2210,9 +1850,6 @@
 
     // ── Unified main render loop ──────────────────────────────────────────
     function mainLoop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        animate()
-        animGlowPulses()
         updateBadgePosition()
         requestAnimationFrame(mainLoop)
     }
@@ -2337,25 +1974,8 @@
     // ── Sequencer ──────────────────────────────────────────────────────────
     const PHASE = 5000
     const TRANS = 500
-    let dashedInterval: ReturnType<typeof setInterval> | null = null
-
-    function startDashedLoop(block: Element, color: string, goUp: boolean) {
-        if (dashedInterval) clearInterval(dashedInterval)
-        spawnDashedLines(block, color, goUp)
-        dashedInterval = setInterval(
-            () => spawnDashedLines(block, color, goUp),
-            600,
-        )
-    }
-    function stopDashedLoop() {
-        if (dashedInterval) clearInterval(dashedInterval)
-        dashedInterval = null
-    }
 
     function runPhase(phase: number) {
-        stopDashedLoop()
-        clearDashedLines()
-
         const allLogos = [infraLogos, dataLogos, aiLogos]
 
         // Reset all glows
@@ -2376,9 +1996,9 @@
             })
             ;[0, 1, 2].forEach((i) => setLabelIdle(i))
             // Reset corner lines
-            document
-                .querySelectorAll('[id^="corner-lines-"]')
-                .forEach((g) => g.setAttribute("opacity", "0.25"))
+            document.querySelectorAll('[id^="corner-lines-"]').forEach((g) => {
+                g.classList.remove("corner-lines-active")
+            })
         }
 
         setTimeout(() => {
@@ -2391,15 +2011,10 @@
             fadeLogos(allLogos[phase], true)
             setLabelRunning(phase, color)
 
-            // Deactivate lines when next phase starts
-            if (phase === 1) deactivateInfraDataLines()
-            if (phase === 2) deactivateDataAILines()
-
             // At 78% → switch to done
             setTimeout(() => {
                 setLabelDone(phase)
-                // Start dashed lines after done
-                // corner lines pulse handled by animateCornerLines in setLabelDone
+                animateCornerLines(phase)
             }, PHASE * 0.78)
         }, TRANS)
 
