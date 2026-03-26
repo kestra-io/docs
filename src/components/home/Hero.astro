@@ -16,8 +16,9 @@ import AnimatedWord from "./AnimatedWord.vue"
         <h1 id="hero">
             One Platform to <AnimatedWord
                 words={["Run", "Control", "Govern"]}
-                client:idle>Run</AnimatedWord
-            ><br />
+                client:load
+            />
+            <br />
             <span class="gradient">All Your Workflows</span>
         </h1>
         <p>
@@ -106,7 +107,7 @@ import AnimatedWord from "./AnimatedWord.vue"
         }
         @include media-breakpoint-up(xl) {
             left: 50%;
-            transform: scale(0.7);
+            transform: scale(0.8);
         }
     }
 
