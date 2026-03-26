@@ -4,7 +4,6 @@
             <li class="page-item" role="button">
                 <a
                     class="page-link fw-bold arrow-button"
-
                     :href="getPageUrl(currentPage - 1)"
                     @click.prevent="changePage({ direction: 'previous' })"
                 >
@@ -24,22 +23,19 @@
                 <span
                     v-if="n === morePagesPlaceholder"
                     class="page-list-item page-link fw-bold"
-
                     >{{ n }}</span
                 >
                 <a
                     v-else
                     class="page-list-item page-link fw-bold"
-
                     :href="getPageUrl(n)"
                     @click.prevent="changePage({ pageNo: n })"
                     >{{ n }}</a
                 >
             </li>
-            <li class="page-item" @click="changePage({ direction: 'next' })" role="button">
+            <li class="page-item">
                 <a
                     class="page-link fw-bold arrow-button"
-
                     :href="getPageUrl(currentPage + 1)"
                     @click.prevent="changePage({ direction: 'next' })"
                 >
@@ -51,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed, useTemplateRef, watch } from "vue"
+    import { computed, watch } from "vue"
     import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
@@ -88,18 +84,28 @@
         },
     )
 
-    function changePage(event: { direction?: "previous" | "next"; pageNo?: number | "..." }) {
+    function changePage(event: {
+        direction?: "previous" | "next"
+        pageNo?: number | "..."
+    }) {
         const currentPage = props.currentPage
         if (event.direction === "previous" && currentPage > 1) {
             emit("update:currentPage", currentPage - 1)
-        } else if (event.direction === "next" && currentPage < props.totalPages) {
+        } else if (
+            event.direction === "next" &&
+            currentPage < props.totalPages
+        ) {
+            console.log("Emitting update:currentPage with", currentPage + 1)
             emit("update:currentPage", currentPage + 1)
         } else if (event.pageNo && event.pageNo !== morePagesPlaceholder) {
             emit("update:currentPage", event.pageNo)
         }
     }
 
-    function paginate(current_page: number, last_page: number): (number | "...")[] {
+    function paginate(
+        current_page: number,
+        last_page: number,
+    ): (number | "...")[] {
         const pages: (number | "...")[] = []
         for (let i = 1; i <= last_page; i++) {
             const offset = 1
@@ -110,18 +116,22 @@
                 i === last_page
             ) {
                 pages.push(i)
-            } else if (i === current_page - (offset + 1) || i === current_page + (offset + 1)) {
+            } else if (
+                i === current_page - (offset + 1) ||
+                i === current_page + (offset + 1)
+            ) {
                 pages.push(morePagesPlaceholder)
             }
         }
         return pages
     }
 
-    const pages = computed<(number | "...")[]>(() => paginate(props.currentPage, props.totalPages))
+    const pages = computed<(number | "...")[]>(() =>
+        paginate(props.currentPage, props.totalPages),
+    )
 </script>
 
 <style scoped lang="scss">
-
     .pagination {
         li {
             margin-right: 0.5rem;
