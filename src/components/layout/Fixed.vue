@@ -12,28 +12,24 @@
                 </a>
             </Transition>
             <div v-if="displaySlack && mounted" class="widget-chat">
-                <a
-                    href="https://kestra.io/slack"
-                    target="_blank"
+                <button
                     class="btn btn-sm btn-primary rounded"
+                    title="Ask Kestra AI"
+                    data-bs-toggle="modal"
+                    data-bs-target="#search-ai-modal"
                 >
-                    <Slack title="" />
-                    Slack
-                    <span v-if="online" class="online"
-                        >{{ onlineText }} members</span
-                    >
-                </a>
+                    <img :src="KSAIImg.src" alt="Kestra AI" width="25" height="25" />
+                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted, onUnmounted } from "vue"
+    import { ref, onMounted, onUnmounted } from "vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import Slack from "vue-material-design-icons/Slack.vue"
-    import axios from "axios"
-    import { API_URL } from "astro:env/client"
+    import KSAIImg from "../docs/assets/ks-ai.svg"
 
     const props = withDefaults(
         defineProps<{
@@ -46,7 +42,7 @@
 
     const yScroll = ref(0)
     const mounted = ref(false)
-    const online = ref(0)
+    
 
     const handleScroll = () => {
         yScroll.value = window.scrollY
@@ -59,16 +55,14 @@
         })
     }
 
-    onMounted(async () => {
+    onMounted(() => {
         mounted.value = true
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", handleScroll)
+            handleScroll()
         }
 
-        try {
-            const response = await axios.get(`${API_URL}/communities/slack`)
-            online.value = response.data.total
-        } catch (error) {}
+        // no external calls needed as removing slack!
     })
 
     onUnmounted(() => {
@@ -77,11 +71,7 @@
         }
     })
 
-    const onlineText = computed(() => {
-        return online.value === undefined
-            ? ""
-            : Intl.NumberFormat("en-US").format(online.value)
-    })
+    
 </script>
 
 <style lang="scss" scoped>
@@ -102,6 +92,19 @@
             a {
                 background-color: var(--ks-background-button-primary-hover);
                 border-color: var(--ks-border-active);
+            }
+            button {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 10px;
+                border-radius: 12px;
+                background-color: var(--ks-background-button-primary-hover);
+                border: 1px solid var(--ks-border-active);
+                box-shadow: 0 6px 18px rgba(11, 14, 22, 0.06);
+            }
+            img {
+                border-radius: 6px;
             }
         }
         span.online {
