@@ -57,46 +57,27 @@
             transform: translateY(-10px);
         }
     }
-    .ng {
-        animation: nG 3s ease-in-out infinite 0s;
+    .ng-glow,
+    .nb-glow,
+    .na-glow {
+        will-change: opacity;
     }
-    .nb {
-        animation: nB 3s ease-in-out infinite 0.4s;
+    .ng-glow {
+        animation: stroke-glow 3s ease-in-out infinite 0s;
     }
-    .na {
-        animation: nA 3s ease-in-out infinite 0.8s;
+    .nb-glow {
+        animation: stroke-glow 3s ease-in-out infinite 0.4s;
     }
-    @keyframes nG {
+    .na-glow {
+        animation: stroke-glow 3s ease-in-out infinite 0.8s;
+    }
+    @keyframes stroke-glow {
         0%,
         100% {
-            stroke: #2dff5c;
-            stroke-width: 1.6;
+            opacity: 0;
         }
         50% {
-            stroke: #90ffb8;
-            stroke-width: 2.8;
-        }
-    }
-    @keyframes nB {
-        0%,
-        100% {
-            stroke: #6060ff;
-            stroke-width: 1.6;
-        }
-        50% {
-            stroke: #a8a8ff;
-            stroke-width: 2.8;
-        }
-    }
-    @keyframes nA {
-        0%,
-        100% {
-            stroke: #ff9900;
-            stroke-width: 1.6;
-        }
-        50% {
-            stroke: #ffcc66;
-            stroke-width: 2.8;
+            opacity: 1;
         }
     }
 
@@ -122,12 +103,10 @@
         100% {
             opacity: 0.15;
             transform: scale(0.85);
-            filter: blur(0px);
         }
         40% {
             opacity: 1;
             transform: scale(1.2);
-            filter: drop-shadow(0 0 4px rgba(169, 80, 255, 0.9));
         }
         65% {
             opacity: 0.5;
@@ -143,7 +122,6 @@
         40% {
             opacity: 1;
             transform: scale(1.2);
-            filter: drop-shadow(0 0 4px rgba(246, 46, 118, 0.9));
         }
         65% {
             opacity: 0.5;
@@ -154,6 +132,7 @@
         opacity: 0.15;
         transform-box: fill-box;
         transform-origin: center;
+        will-change: transform, opacity;
         animation: kestra-pulse 1.6s ease-in-out infinite;
     }
     .kestra-anim path:nth-child(1) {
@@ -183,11 +162,9 @@
         0%,
         100% {
             opacity: 0.8;
-            filter: brightness(1);
         }
         50% {
             opacity: 1;
-            filter: brightness(1.4);
         }
     }
 </style>
@@ -237,6 +214,7 @@
   pointer-events: none;
   z-index: 1;
   background: radial-gradient(ellipse at center, rgba(138,46,242,0.45) 0%, rgba(138,46,242,0.2) 30%, rgba(138,46,242,0.05) 60%, transparent 75%);
+  will-change: transform, opacity;
   animation: bgGlowPulse 3.5s ease-in-out infinite;
 "
 >
@@ -369,9 +347,17 @@
                 <path d="M60,175 L360,55 L660,175 L360,295 Z" fill="url(#tC)"
                 ></path>
                 <path
-                    class="na"
                     d="M60,175 L360,55 L660,175 L360,295 Z"
-                    fill="none"></path>
+                    fill="none"
+                    stroke="#ff9900"
+                    stroke-width="1.6"></path>
+                <path
+                    class="na-glow"
+                    d="M60,175 L360,55 L660,175 L360,295 Z"
+                    fill="none"
+                    stroke="#ffcc66"
+                    stroke-width="2.8"
+                    opacity="0"></path>
                 <!-- Lueur + particules bloc Infra -->
                 <defs>
                     <filter
@@ -441,7 +427,7 @@
                 <g
                     transform="translate(306.5,-5)"
                     pointer-events="none"
-                    style="animation: glowPulse 2.5s ease-in-out infinite;"
+                    style="will-change: opacity; animation: glowPulse 2.5s ease-in-out infinite;"
                     filter="url(#glowBloomC)"
                 >
                     <path
@@ -645,9 +631,17 @@
                 <path d="M60,175 L360,55 L660,175 L360,295 Z" fill="url(#tB)"
                 ></path>
                 <path
-                    class="nb"
                     d="M60,175 L360,55 L660,175 L360,295 Z"
-                    fill="none"></path>
+                    fill="none"
+                    stroke="#6060ff"
+                    stroke-width="1.6"></path>
+                <path
+                    class="nb-glow"
+                    d="M60,175 L360,55 L660,175 L360,295 Z"
+                    fill="none"
+                    stroke="#a8a8ff"
+                    stroke-width="2.8"
+                    opacity="0"></path>
                 <!-- Lueur + particules bloc Data -->
                 <defs>
                     <filter
@@ -717,7 +711,7 @@
                 <g
                     transform="translate(306.5,-5)"
                     pointer-events="none"
-                    style="animation: glowPulse 2.5s ease-in-out infinite 0.8s;"
+                    style="will-change: opacity; animation: glowPulse 2.5s ease-in-out infinite 0.8s;"
                     filter="url(#glowBloomB)"
                 >
                     <path
@@ -1009,11 +1003,17 @@
                 <path d="M60,175 L360,55 L660,175 L360,295 Z" fill="url(#tA)"
                 ></path>
                 <path
-                    class="ng"
                     d="M60,175 L360,55 L660,175 L360,295 Z"
                     fill="none"
                     stroke="#2dff5c"
                     stroke-width="1.6"></path>
+                <path
+                    class="ng-glow"
+                    d="M60,175 L360,55 L660,175 L360,295 Z"
+                    fill="none"
+                    stroke="#90ffb8"
+                    stroke-width="2.8"
+                    opacity="0"></path>
                 <!-- Lueur face top bloc AI -->
                 <defs>
                     <filter
@@ -1084,7 +1084,7 @@
                     id="ai-glow-overlay"
                     transform="translate(306.5,-5)"
                     pointer-events="none"
-                    style="animation: glowPulse 2.5s ease-in-out infinite;"
+                    style="will-change: opacity; animation: glowPulse 2.5s ease-in-out infinite;"
                     filter="url(#glowBloomA)"
                 >
                     <path
@@ -1203,6 +1203,7 @@
     width: 107px;
     pointer-events: none;
     z-index: 0;
+    will-change: opacity;
     animation: glowPulse 2.5s ease-in-out infinite;
   "
     >
