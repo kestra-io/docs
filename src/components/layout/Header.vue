@@ -2,7 +2,7 @@
     <nav
         id="top-bar"
         ref="navbar"
-        class="navbar navbar-expand-lg fixed-top"
+        class="navbar navbar-expand-xl fixed-top"
         :class="{
             open: isOpen,
             scrolled: isScrolled || props.scrolled,
@@ -59,7 +59,7 @@
                 <a
                     @click="globalClick(true)"
                     href="#"
-                    class="btn btn-sm icon-button p-0 d-lg-none"
+                    class="btn btn-sm icon-button p-0 d-xl-none"
                     data-bs-toggle="modal"
                     data-bs-target="#search-modal"
                     title="Search"
@@ -67,7 +67,7 @@
                     <Magnify />
                 </a>
                 <button
-                    class="navbar-toggler d-flex d-lg-none align-items-center gap-2"
+                    class="navbar-toggler d-flex d-xl-none align-items-center gap-2"
                     @click="globalClick(isOpen)"
                     type="button"
                     aria-controls="main-header"
@@ -81,7 +81,7 @@
             </div>
 
             <div class="collapse navbar-collapse" id="main-header">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                <ul class="navbar-nav me-auto mb-2 mb-xl-0 ms-xl-3">
                     <li
                         class="nav-item dropdown"
                         @mouseover="mouseOver('product', $event)"
@@ -102,7 +102,7 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
-                        <div class="dropdown-menu d-lg-none">
+                        <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
                                     v-for="item in menuItems.product.items"
@@ -147,7 +147,7 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
-                        <div class="dropdown-menu d-lg-none">
+                        <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <p class="column-caption">Use-cases</p>
                                 <li
@@ -235,7 +235,7 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </a>
-                        <div class="dropdown-menu d-lg-none">
+                        <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li v-for="item in menuItems.resources.items" :key="item.link">
                                     <a
@@ -252,9 +252,47 @@
                             </ul>
                         </div>
                     </li>
+                    <li
+                        class="nav-item dropdown"
+                        @mouseover="mouseOver('company', $event)"
+                        @mouseleave="mouseOut('company')"
+                    >
+                        <a
+                            class="nav-link dropdown-toggle"
+                            :class="{ show: showMenuId === 'company' && showMenu }"
+                            href="#"
+                            role="button"
+                            :data-bs-toggle="isMobile ? 'dropdown' : undefined"
+                            aria-expanded="false"
+                        >
+                            Company
+                            <ChevronDown
+                                class="d-inline-block dropdown-chevron"
+                            />
+                        </a>
+                        <div class="dropdown-menu d-xl-none">
+                            <ul class="dropdown-column">
+                                <li v-for="item in menuItems.company.items" :key="item.link">
+                                    <a
+                                        class="dropdown-item"
+                                        :href="item.link"
+                                        @click="globalClick(true)"
+                                    >
+                                        <div class="item-row">
+                                            <component :is="item.icon" />
+                                            <span>{{ item.title }}</span>
+                                            <strong v-if="item.tag" class="tag">{{
+                                                item.tag
+                                            }}</strong>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
 
-                <ul class="navbar-nav mb-2 mb-lg-0 nav-button nav-footer">
+                <ul class="navbar-nav mb-2 mb-xl-0 nav-button nav-footer">
                     <li class="nav-item">
                         <GithubButton
                             :small="true"
@@ -262,7 +300,7 @@
                         />
                         <a
                             @click="globalClick(true)"
-                            class="d-none mb-1 btn btn-sm btn-secondary me-0 me-sm-2 d-lg-inline-block"
+                            class="d-none mb-1 btn btn-sm btn-secondary me-0 me-sm-2 d-xl-inline-block"
                             href="/demo"
                         >
                             <span> Book a demo </span>
@@ -276,7 +314,7 @@
                         </a>
                         <a
                             @click="globalClick(true)"
-                            class="d-lg-none d-sm-inline-block mb-1 btn btn-secondary btn-md"
+                            class="d-xl-none d-sm-inline-block mb-1 btn btn-secondary btn-md"
                             href="/demo"
                         >
                             <span> Book a demo </span>
@@ -284,7 +322,7 @@
                         <button
                             @click="globalClick(true)"
                             id="header-search-button"
-                            class="btn btn-sm d-none d-lg-inline-block icon-button"
+                            class="btn btn-sm d-none d-xl-inline-block icon-button"
                             data-bs-toggle="modal"
                             data-bs-target="#search-modal"
                             title="Search"
@@ -297,7 +335,7 @@
         </div>
 
         <div
-            class="d-lg-block d-none menu-container"
+            class="d-xl-block d-none menu-container"
             :style="{ opacity: showMenu || mouseoverMenu ? 100 : 0 }"
         >
             <div class="menu-shadow-container">
@@ -361,7 +399,7 @@
                         >
                             <div class="header-menu-content">
                                 <div class="row w-100 h-100 flex-nowrap" style="--bs-gutter-x: 10px;">
-                                    <div class="col-lg-4">
+                                    <div class="col-xl-4">
                                         <p class="solutions-col-heading">Use-cases</p>
                                         <ul>
                                             <li
@@ -387,7 +425,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-xl-4">
                                         <p class="solutions-col-heading">Users</p>
                                         <ul>
                                             <li
@@ -409,7 +447,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-xl-4">
                                         <p class="solutions-col-heading">Industries</p>
                                         <ul class="d-flex flex-column w-100 list-unstyled">
                                             <li
@@ -448,6 +486,38 @@
                                     <ul class="d-flex flex-column w-100">
                                         <li
                                             v-for="item in menuItems.resources.items"
+                                            :key="item.link"
+                                        >
+                                            <a
+                                                class="dropdown-item"
+                                                :href="item.link"
+                                                @click="globalClick(true)"
+                                            >
+                                                <div>
+                                                    <div class="same-row">
+                                                        <component :is="item.icon" />
+                                                        <span>{{ item.title }}</span>
+                                                        <strong v-if="item.tag" class="tag">{{
+                                                            item.tag
+                                                        }}</strong>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            @mouseleave="mouseLeaveMenu()"
+                            id="company"
+                            class="header-menu-card-section"
+                        >
+                            <div class="header-menu-content">
+                                <div class="header-menu-card-section-column">
+                                    <ul class="d-flex flex-column w-100">
+                                        <li
+                                            v-for="item in menuItems.company.items"
                                             :key="item.link"
                                         >
                                             <a
@@ -536,9 +606,9 @@
             getCollapseInstance()
         })
 
-        isMobile.value = window.innerWidth <= 991
+        isMobile.value = window.innerWidth <= 1199
         window.addEventListener("resize", () => {
-            isMobile.value = window.innerWidth <= 991
+            isMobile.value = window.innerWidth <= 1199
         })
 
         isScrolled.value = window.scrollY > 0
@@ -583,7 +653,7 @@
     }
 
     function mouseOver(id: string, event: MouseEvent) {
-        if (window.innerWidth <= 991) return
+        if (window.innerWidth <= 1199) return
 
         if (closeMenuTimeout.value) {
             clearTimeout(closeMenuTimeout.value)
@@ -613,7 +683,7 @@
     }
 
     function mouseOut(id: string) {
-        if (window.innerWidth > 991) {
+        if (window.innerWidth > 1199) {
             let menu = document.getElementById(id)
             if (menu) {
                 closeMenuTimeout.value = setTimeout(() => {
@@ -626,7 +696,7 @@
     }
 
     function globalClick(close?: boolean) {
-        if (window.innerWidth < 992) {
+        if (window.innerWidth < 1200) {
             const collapseInstance = getCollapseInstance()
             if (close === true) {
                 collapseInstance?.hide()

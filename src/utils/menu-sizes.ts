@@ -13,6 +13,10 @@ const menuSizes: Record<string, MenuSize> = {
         width: "285px",
         height: "260px"
     },
+    company: {
+        width: "305px",
+        height: "260px"
+    },
 }
 
 export function menuSize(name: string): MenuSize {

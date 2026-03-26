@@ -43,7 +43,7 @@ nav {
     color: var(--ks-content-primary);
     transition: background-color 250ms ease-in-out;
     z-index: 1030;
-    @include media-breakpoint-down(lg) {
+    @include media-breakpoint-down(xl) {
         padding: 0;
     }
 
@@ -56,7 +56,7 @@ nav {
             transition: background-color 250ms ease-in-out;
         }
 
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(xl) {
             @supports not (backdrop-filter: none) {
                 background-color: var(--ks-background-primary);
             }
@@ -64,7 +64,7 @@ nav {
     }
 
     &.open {
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(xl) {
             background-color: var(--ks-background-body);
         }
     }
@@ -76,7 +76,7 @@ nav {
             }
         }
 
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(xl) {
             padding: 0;
 
             .navbar-brand {
@@ -113,7 +113,7 @@ nav {
                 transition-duration: 1s;
                 z-index: 5;
 
-                @include media-breakpoint-down(lg) {
+                @include media-breakpoint-down(xl) {
                     left: 5%;
                     top: 110%;
                 }
@@ -144,14 +144,14 @@ nav {
         border-radius: $border-radius;
         transition: background-color 0.2s ease;
 
-        @include media-breakpoint-between(lg, xl) {
+        @include media-breakpoint-between(xl, xxl) {
             padding-left: 8px !important;
             gap: 2px;
         }
 
         &:hover,
         &.show {
-            @include media-breakpoint-up(lg) {
+            @include media-breakpoint-up(xl) {
                 background-color: var(--ks-background-tertiary);
                 border-color: var(--ks-border-primary);
             }
@@ -202,7 +202,7 @@ nav {
     .navbar-collapse {
         max-width: 100%;
 
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(xl) {
             max-height: calc(100vh - 4rem);
             min-height: calc(100vh - 4rem);
             overflow-y: auto;
@@ -226,7 +226,7 @@ nav {
                 padding: $rem-1 $rem-2;
             }
 
-            @include media-breakpoint-between(lg, xxl) {
+            @include media-breakpoint-between(xl, xxl) {
                 font-size: $font-size-md;
             }
 
@@ -243,7 +243,7 @@ nav {
                     }
                 }
 
-                @include media-breakpoint-down(lg) {
+                @include media-breakpoint-down(xl) {
                     display: flex;
                     justify-content: space-between;
                     border-radius: 0;
@@ -275,7 +275,7 @@ nav {
                 margin-top: 10px;
 
                 &.show {
-                    @include media-breakpoint-down(lg) {
+                    @include media-breakpoint-down(xl) {
                         border-radius: 0;
                         display: block;
                         border: none;
@@ -358,7 +358,7 @@ nav {
                 vertical-align: center;
             }
 
-            @include media-breakpoint-between(lg, xl) {
+            @include media-breakpoint-between(xl, xxl) {
                 .btn {
                     padding-inline: 0.5rem;
                     font-size: $font-size-sm;
@@ -381,7 +381,7 @@ nav {
     }
 
     .nav-footer {
-        @include media-breakpoint-down(lg) {
+        @include media-breakpoint-down(xl) {
             display: flex;
             width: 100%;
             padding: $rem-2 $rem-2 30%;

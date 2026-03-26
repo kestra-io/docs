@@ -16,6 +16,10 @@ import ShieldLockOutline from "vue-material-design-icons/ShieldLockOutline.vue"
 import OpenSourceInitiative from "vue-material-design-icons/OpenSourceInitiative.vue"
 import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 import FormatQuoteCloseOutline from "vue-material-design-icons/FormatQuoteCloseOutline.vue"
+import BriefcaseOutline from "vue-material-design-icons/BriefcaseOutline.vue"
+import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
+import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
+import EmailOutline from "vue-material-design-icons/EmailOutline.vue"
 import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
 
 interface MenuItem {
@@ -34,6 +38,7 @@ interface MenuItems {
         industry: MenuItem[]
     }
     resources: { items: MenuItem[] }
+    company: { items: MenuItem[] }
 }
 
 export const menuItems: MenuItems = {
@@ -136,6 +141,31 @@ export const menuItems: MenuItems = {
                 icon: FormatQuoteCloseOutline,
                 title: "Customer Stories",
                 link: "/use-cases/stories"
+            },
+        ],
+    },
+    company: {
+        items: [
+            {
+                icon: BriefcaseOutline,
+                title: "Careers",
+                link: "/careers",
+                tag: "Hiring!"
+            },
+            {
+                icon: InformationOutline,
+                title: "About Us",
+                link: "/about-us"
+            },
+            {
+                icon: HandshakeOutline,
+                title: "Partners",
+                link: "/partners"
+            },
+            {
+                icon: EmailOutline,
+                title: "Contact Us",
+                link: "/contact-us"
             },
         ],
     },
