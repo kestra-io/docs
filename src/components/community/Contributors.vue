@@ -109,7 +109,7 @@
         },
         async created() {
             try {
-                const { data } = await $fetchApiCached("/communities/github/contributors")
+                const data = await $fetchApiCached("/communities/github/contributors")
                 this.contributors = data
                 this.contributorsRand = this.contributors.toSorted(
                     () => 0.5 - Math.random(),
