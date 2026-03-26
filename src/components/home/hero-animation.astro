@@ -104,25 +104,26 @@
 
     @keyframes dash-march {
         to {
-            stroke-dashoffset: -70;
+            stroke-dashoffset: 180;
         }
     }
-    :global(#corner-lines-0),
-    :global(#corner-lines-1),
-    :global(#corner-lines-2) {
+    :global([id^="corner-lines-"]) {
         :global(line) {
-            opacity: 0.25;
+            opacity: 0.5;
             stroke-width: 1;
             stroke-dasharray: 4 7;
             stroke-dashoffset: 0;
             transition:
                 stroke-width 0.3s ease,
                 opacity 0.3s ease;
+            filter: grayscale(1);
         }
         &:global(.corner-lines-active line) {
-            opacity: 1;
+            opacity: 0.75;
             stroke-width: 2;
+            stroke-dasharray: 4 7;
             animation: dash-march 4s linear infinite;
+            filter: grayscale(0);
         }
     }
 
@@ -263,7 +264,7 @@
 </style>
 
 <div class="stack-inner">
-    <div class="block">
+    <div class="block" data-layer="infra">
         <svg
             width="720"
             height="360"
@@ -574,7 +575,7 @@
             </g>
         </svg>
     </div>
-    <div class="block">
+    <div class="block" data-layer="data">
         <svg
             width="720"
             height="360"
@@ -919,7 +920,7 @@
             </g>
         </svg>
     </div>
-    <div class="block">
+    <div class="block" data-layer="ai">
         <svg
             width="720"
             height="360"
@@ -1501,7 +1502,8 @@
         defs.appendChild(f)
     }
 
-    function buildCornerLines(block: Element, i: number) {
+    function buildCornerLines(block: Element, layer: string) {
+        if (layer === "ai") return
         // Block CSS top offsets: Infra(0)=256, Data(1)=83, AI(2)=-90
         const blockTops = [256, 83, -90]
         // Isometric top-face corners, shifted inward for visual balance
@@ -1510,45 +1512,29 @@
             { x: 630, y: 175 },
             { x: 360, y: 275 },
         ]
-        const colors_static = [colors.infra, colors.data, colors.ai]
-        const col = colors_static[i]
+        const col = colors[layer as keyof typeof colors]
 
         const svg = block.querySelector("svg")
         const g = document.createElementNS(ns, "g")
-        g.setAttribute("id", "corner-lines-" + i)
+        g.setAttribute("id", "corner-lines-" + layer)
         g.setAttribute("pointer-events", "none")
-        g.setAttribute("opacity", "0.25") // subtle by default
 
-        if (i < 2) {
-            // Lines from this block going UP into the gap toward the block above.
-            // Hosted in this (lower) block's SVG so they follow its float animation.
-            const gap = blockTops[i] - blockTops[i + 1] // px gap to block above
+        const blockIdx = layer === "infra" ? 0 : 1
 
-            corners.forEach((c) => {
-                const line = document.createElementNS(ns, "line")
-                line.setAttribute("x1", String(c.x))
-                line.setAttribute("y1", String(c.y))
-                line.setAttribute("x2", String(c.x))
-                line.setAttribute("y2", String(c.y - gap + 14)) // extend up into gap
-                line.setAttribute("stroke", col)
-                line.setAttribute("stroke-dasharray", "5 7")
-                line.setAttribute("stroke-linecap", "round")
-                g.appendChild(line)
-            })
-        } else {
-            // AI block (topmost) — lines extend upward into empty space
-            corners.forEach((c) => {
-                const line = document.createElementNS(ns, "line")
-                line.setAttribute("x1", String(c.x))
-                line.setAttribute("y1", String(c.y))
-                line.setAttribute("x2", String(c.x))
-                line.setAttribute("y2", String(c.y - 130))
-                line.setAttribute("stroke", col)
-                line.setAttribute("stroke-dasharray", "5 7")
-                line.setAttribute("stroke-linecap", "round")
-                g.appendChild(line)
-            })
-        }
+        // Lines from this block going UP into the gap toward the block above.
+        // Hosted in this (lower) block's SVG so they follow its float animation.
+        const gap = blockTops[blockIdx] - blockTops[blockIdx + 1] // px gap to block above
+
+        corners.forEach((c) => {
+            const line = document.createElementNS(ns, "line")
+            line.setAttribute("x1", String(c.x))
+            line.setAttribute("y1", String(c.y - 10))
+            line.setAttribute("x2", String(c.x))
+            line.setAttribute("y2", String(c.y - gap + 70)) // extend up into gap
+            line.setAttribute("stroke", col)
+            line.setAttribute("stroke-linecap", "round")
+            g.appendChild(line)
+        })
 
         // Append at end of SVG so lines render on top of block content
         svg!.appendChild(g)
@@ -1676,21 +1662,11 @@
 
     // Init corner lines + labels
     Array.from(document.querySelectorAll(".block")).forEach((b, i) => {
-        buildCornerLines(b, i)
+        const layer = b.getAttribute("data-layer") as string
+        buildCornerLines(b, layer)
         buildLabel(b, i)
         labelGroups[i]?.g.setAttribute("opacity", "0")
     })
-
-    // Spin loop
-    function spinLoop(i: number) {
-        if (!spinning[i]) return
-        spinAngles[i] += 2.5
-        labelGroups[i]?.iconG.setAttribute(
-            "transform",
-            `translate(-18,-12) scale(1.1) rotate(${spinAngles[i]}, 12, 12)`,
-        )
-        spinRAFs[i] = requestAnimationFrame(() => spinLoop(i))
-    }
 
     function setLabelRunning(i: number, color: string) {
         const l = labelGroups[i]
@@ -1731,9 +1707,9 @@
         }
     }
 
-    function animateCornerLines(i: number) {
+    function animateCornerLines(layer: string) {
         // Brighten the SVG corner lines for this block and add marching animation
-        const g = document.getElementById("corner-lines-" + i)
+        const g = document.getElementById("corner-lines-" + layer)
         if (!g) return
         g.classList.add("corner-lines-active")
         // Auto-deactivate after 2s
@@ -1816,27 +1792,6 @@
         if (kg) kg.setAttribute("opacity", "0")
         l.iconG.setAttribute("opacity", "0")
         if (l.timer) l.timer.textContent = ""
-    }
-
-    // Line animation state
-    let infraDataLinesActive = false
-    let infraDataLinesAnimOffset = 0
-    let dataAILinesActive = false
-    let dataAILinesAnimOffset = 0
-
-    function activateInfraDataLines() {
-        infraDataLinesActive = true
-        infraDataLinesAnimOffset = 0
-    }
-    function deactivateInfraDataLines() {
-        infraDataLinesActive = false
-    }
-    function activateDataAILines() {
-        dataAILinesActive = true
-        dataAILinesAnimOffset = 0
-    }
-    function deactivateDataAILines() {
-        dataAILinesActive = false
     }
 
     // ── Badge position (above AI block) ──────────────────────────────────
@@ -2002,6 +1957,7 @@
         }
 
         setTimeout(() => {
+            const phaseNames = ["infra", "data", "ai"]
             const blockList = [blockInfra, blockData, blockAI]
             const colorList = [colors.infra, colors.data, colors.ai]
             const block = blockList[phase]
@@ -2014,7 +1970,7 @@
             // At 78% → switch to done
             setTimeout(() => {
                 setLabelDone(phase)
-                animateCornerLines(phase)
+                animateCornerLines(phaseNames[phase])
             }, PHASE * 0.78)
         }, TRANS)
 
