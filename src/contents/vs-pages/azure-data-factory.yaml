@@ -20,7 +20,7 @@ philosophy:
     subCardText: '"How do I move and transform data across my Azure services without managing servers?"'
 
 businessValue:
-  mainTitle: "Universal Orchestration Runs Your Business.<br />Azure-Native ETL Handles One Cloud."
+  mainTitle: "Azure ETL Covers One Cloud.<br />Orchestration Runs the Business Beyond It."
   kestra:
     title: Universal Workflow Orchestration
     list:
@@ -146,7 +146,7 @@ visualPreview:
   kestra:
     description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes across any cloud or on-premises environment. Event-driven at its core, with native triggers for S3, Azure Blob, webhooks, Kafka, database changes, and API events."
   competitor:
-    description: "Pipelines follow four stages: Ingest data via Copy Activity, Transform using Mapping Data Flows or Databricks notebooks, Publish results to Azure sinks like Synapse or Data Lake, and Monitor pipeline runs from the Azure portal. Every stage runs on Azure-managed infrastructure."
+    description: "ADF is purpose-built for moving and transforming data within the Azure ecosystem. Connect a source, apply a transformation, publish to an Azure sink, all configured in the portal and executed on Azure-managed infrastructure. Cross-system orchestration beyond the Azure data estate requires custom code or an external tool."
     shadowColor: "#0078D4"
 
 featureGrid:

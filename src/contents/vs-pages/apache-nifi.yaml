@@ -20,7 +20,7 @@ philosophy:
     subCardText: '"How do I route and transform data in real time across my systems?"'
 
 businessValue:
-  mainTitle: "Workflow Orchestration Runs Your Business.<br />Data Flow Gets Data Moving."
+  mainTitle: "Data Flow Routes Data Between Systems.<br />Orchestration Runs the Business That Depends on Them."
   kestra:
     title: Universal Orchestration
     list:
@@ -39,7 +39,7 @@ businessValue:
       - "Limited support for non-data orchestration (infrastructure, business logic)"
     shadowColor: "#1A9FB9"
     bulletColor: "#0EACCC"
-  footerText: "Use Kestra when your workflows span data pipelines, infrastructure automation, AI workloads, and business processes — and your team needs Git-native workflows, CI/CD deployment, and governance across systems and clouds. NiFi is a strong fit when packet-level provenance tracking is a hard requirement, edge-to-cloud data collection via MiNiFi is critical, or your team needs a visual canvas for managing continuous, high-throughput data flows."
+  footerText: "Use Kestra when orchestration needs to extend beyond data routing into infrastructure, AI, and business processes, all managed in Git and deployed through CI/CD. NiFi is a strong fit when packet-level provenance tracking is a hard requirement, edge-to-cloud data collection via MiNiFi is critical, or your team needs a visual canvas for managing continuous, high-throughput data flows."
 
 setupSpeed:
   title: Time to First Workflow
