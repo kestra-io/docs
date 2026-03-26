@@ -1,17 +1,12 @@
 <template>
     <div class="container">
         <ul class="tabs">
-            <li
-                v-for="[slug, category] in categories"
-                :key="slug"
-            >
+            <li v-for="[slug, category] in categories" :key="slug">
                 <a
                     class="tab"
                     :class="{ active: modelValue === slug }"
-                    @click.prevent="
-                        $emit('update:modelValue', slug);
-                    "
-                    :href="`${rootHref}/${slug}`"
+                    @click.prevent="$emit('update:modelValue', slug)"
+                    :href="`${rootHref}${joiner}${slug}`"
                     role="presentation"
                 >
                     {{ category }}
@@ -22,14 +17,20 @@
 </template>
 
 <script setup lang="ts">
-    defineProps<{
-        modelValue: string
-        categories: Map<string, string>
-        rootHref: string
-    }>()
+    withDefaults(
+        defineProps<{
+            modelValue: string
+            categories: Map<string, string>
+            rootHref: string
+            joiner?: string
+        }>(),
+        {
+            joiner: "/",
+        },
+    )
 
     defineEmits<{
-        (e: 'update:modelValue', value: string): void
+        (e: "update:modelValue", value: string): void
     }>()
 </script>
 
@@ -67,7 +68,7 @@
             background: var(--ks-background-body);
             color: var(--ks-content-primary);
             border: $block-border;
-            box-shadow: 0 4px 10px #5E6ED429;
+            box-shadow: 0 4px 10px #5e6ed429;
         }
     }
 </style>
