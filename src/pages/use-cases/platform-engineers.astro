@@ -1,107 +1,140 @@
 ---
-import Layout from "~/components/layout.astro"
-import Cards from "~/components/use-cases/Cards.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Blueprints from "~/components/common/BlueprintsRender.astro"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
-import HeaderBox from "~/components/common/HeaderBox.vue"
 import { $fetchApiCached } from "~/utils/fetch"
 
-const TITLE = "Orchestrate your Infrastructure with Kestra"
-const DESCRIPTION =
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
+
+import heroFront from "~/assets/use-cases/platform/hero-front.svg"
+import continuousIntegration from "~/assets/use-cases/capabilities/continuous-integration.svg"
+import provisioningDeployment from "~/assets/use-cases/capabilities/provisioning-deployment.svg"
+import disasterRecovery from "~/assets/use-cases/capabilities/disaster-recovery.svg"
+import infrastructureMonitoring from "~/assets/use-cases/capabilities/infrastructure-monitoring.svg"
+
+const title = "Orchestrate your Infrastructure with Kestra"
+const description =
     "Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
 
-const CHALLENGES_TITLE = `Orchestrate your <span class="highlight">Infrastructure</span><br/>with Kestra`
-
 const response = await $fetchApiCached<{ results: Blueprint[] }>(
-    "/blueprints/versions/latest?page=1&size=20",
+    "/blueprints/versions/latest?tags=infrastructure&page=1&size=20",
 )
 const blueprints = response.results
 
-const CARDS_DATA = [
+const CAPABILITIES = [
+    {
+        title: "Continuous Integration/Continuous Deployment (CI/CD)",
+        description:
+            "Streamline your CI/CD pipelines by integrating with tools like GitHub Actions and Jenkins.",
+        image: continuousIntegration,
+        pageHref: "/use-cases/ci-cd",
+    },
+    {
+        title: "Provisioning and Deployment",
+        description:
+            "Automate the setup and deployment of infrastructure components, reducing manual effort and errors.",
+        image: provisioningDeployment,
+        pageHref: "/use-cases/provisioning-and-deployment",
+    },
+    {
+        title: "Disaster Recovery",
+        description:
+            "Automate backup and recovery processes to ensure your infrastructure can quickly recover from failures.",
+        image: disasterRecovery,
+        pageHref: "/use-cases/disaster-recovery",
+    },
+    {
+        title: "Infrastructure Monitoring",
+        description:
+            "Automate monitoring and alerting processes, ensuring your infrastructure is always performing optimally.",
+        image: infrastructureMonitoring,
+        pageHref: "/use-cases/monitoring",
+    },
+]
+
+const ITEMS = [
     {
         number: "01",
         title: "Comprehensive Integration",
         description:
-            "Kestra integrates with leading infrastructure tools like Docker, Kubernetes, Ansible, and Terraform, providing a unified orchestration platform.",
+            "Your Unified Infrastructure Control Plane. From Terraform to Python, manage every tool and script in a single, governed environment.",
     },
     {
         number: "02",
         title: "Scalability",
         description:
-            "Scale your infrastructure to meet growing demands without compromising performance or reliability.",
+            "Run tasks safely inside air-gapped networks, VPCs, and private data centers, or in the cloud of your choice.",
     },
     {
         number: "03",
         title: "Automate Infrastructure Tasks",
         description:
-            "Use Kestra to automate provisioning, deployment, and monitoring, ensuring smooth and efficient operations.",
+            "Automatically capture full run history, task logs, approvals, and evidence bundles for instant compliance.",
     },
     {
         number: "04",
         title: "Manage Docker and Kubernetes",
         description:
-            "Orchestrate containerized applications and services with ease, leveraging Docker and Kubernetes plugins.",
+            "Manage infrastructure directly from a self service catalog. Kestra provisions the server, syncs the records, and resolves the ticket request automatically.",
     },
     {
         number: "05",
         title: "Infrastructure as Code (IaC) with Ansible and Terraform",
         description:
-            "Integrate IaC tools to manage and version your infrastructure configurations seamlessly.",
+            "Reuse your existing scripts, Terraform modules, Ansible roles, alongside VMware, NetApp or any other tool your already use.",
     },
     {
         number: "06",
         title: "Scalable Workload Management",
         description:
-            "Kestra handles workload distribution and scaling, reducing the burden on your servers and improving performance.",
+            "Keep your scripts lightweight. Offload inputs, secrets, retries, and backoff logic to Kestra, so your code focuses purely on the business logic.",
     },
     {
         number: "07",
         title: "Event-Driven Workflows",
         description:
-            "Initiate workflows based on specific events such as system alerts, data changes, or scheduled times.",
+            "Manage cloud, IT, and OT automation from one platform. Execute tasks securely inside your VPCs or private networks securely on the edge.",
     },
     {
         number: "08",
         title: "Enhanced Security and Compliance",
         description:
-            "Maintain high standards of security and compliance with automated workflows that adhere to best practices.",
+            "Workflows live in your codebase, move through CI/CD pipelines, and can be instantly rolled back if a deployment fails.",
     },
-]
-
-const CAPABILITIES = [
-    "Continuous Integration/Continuous Deployment (CI/CD)",
-    "Provisioning and Deployment",
-    "Disaster Recovery",
-    "Infrastructure Monitoring",
 ]
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <DetailsHero
-        client:visible
-        title="Kestra for<br><span>Platform Engineers</span>"
-        description={DESCRIPTION}
-        image={{
-            src: "/landing/usecases/platform-engineers/header-hero.svg",
-            alt: "Kestra Infrastructure Workflows",
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Kestra for <br /> Platform Engineers"
+        {description}
+        image={heroFront}
+    />
+    <CardGrid
+        title="Built for the Way Infrastructure Teams Work"
+        subtitle="Kestra tackles the challenges platform engineers face by automating infrastructure orchestration, enhancing scalability, and ensuring seamless integrations."
+        items={ITEMS}
+    />
+
+    <BlueprintsGrid
+        title='Explore <span class="highlight">Infrastructure</span> blueprints'
+        {blueprints}
+        link={{
+            href: "/blueprints?tags=infrastructure",
+            text: "View more Infrastructure Blueprints",
         }}
     />
 
-    <Cards
-        title={CHALLENGES_TITLE}
-        description="Kestra tackles the challenges platform engineers face by automating infrastructure orchestration, enhancing scalability, and ensuring seamless integrations."
-        cards={CARDS_DATA}
-    />
-
-    <Blueprints blueprints={blueprints} />
-
     <Capabilities
-        client:load
         title="for Platform Orchestration"
         capabilities={CAPABILITIES}
     />
 
-    <HeaderBox client:load />
+    <SeeHow>
+        <Fragment slot="title"> Scale With Kestra Enterprise Edition </Fragment>
+        Built for Enterprises and SMBs, with strong governance, enterprise-grade security,
+        seamless scalability, and dedicated enterprise support backed by SLAs.
+    </SeeHow>
 </Layout>
-

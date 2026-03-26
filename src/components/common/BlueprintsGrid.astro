@@ -7,7 +7,7 @@ interface Props {
     title: string
     subtitle?: string
     blueprints: any[]
-    tags: any[]
+    tags?: any[]
     link: {
         href: string
         text: string
@@ -96,7 +96,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
             @media (min-width: 576px) and (max-width: 768px) {
                 max-width: 768px;
             }
-            
+
             .header {
                 width: 100%;
             }

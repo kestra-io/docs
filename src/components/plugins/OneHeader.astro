@@ -19,14 +19,14 @@ const { headingTitle, rootPlugin, currentPageIcon, headingDescription } =
     {
         currentPageIcon && (
             <div class="pageIcon">
-                <Image
+                <img
                     src={currentPageIcon}
-                    alt={headingTitle}
+                    aria-hidden="true"
                     width={80}
                     height={80}
                     class="blurred-bg"
                 />
-                <Image
+                <img
                     src={currentPageIcon}
                     alt={headingTitle}
                     width={80}
