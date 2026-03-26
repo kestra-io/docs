@@ -15,8 +15,8 @@ philosophy:
   competitor:
     title: Infrastructure Configuration Management
     description: "Agent-based platform that enforces desired state on managed nodes using Puppet DSL manifests. A Puppet Agent runs on every managed node, periodically pulling configurations from a Puppet Server and converging the node to the declared state. Strong at configuration drift detection and compliance enforcement."
-    shadowColor: "#FFAE1A"
-    subCardBg: "var(--ks-background-yellow-light)"
+    shadowColor: "#4c00ff"
+    subCardBg: "var(--ks-background-purple-light)"
     subCardText: '"How do we ensure every server in our fleet is configured exactly the way we declared, and stays that way?"'
 
 businessValue:
@@ -27,7 +27,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows in one platform"
       - "Event-driven triggers for webhooks, S3, Kafka, database changes, and API events"
       - "Any language: Python, SQL, R, Bash, Go, Node.js, and more"
-      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+      - "Open source with 1200+ plugins, transparent pricing, and a thriving community of contributors"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Infrastructure State Enforcement
@@ -37,8 +37,8 @@ businessValue:
       - "Puppet Forge ecosystem with thousands of community and supported modules"
       - "Compliance enforcement and audit reporting for regulated environments"
       - "Configuration drift detection and automatic remediation"
-    shadowColor: "#FFAE1A"
-    bulletColor: "#FFAE1A"
+    shadowColor: "#4c00ff"
+    bulletColor: "#4c00ff"
   footerText: "Puppet excels at ensuring infrastructure stays in a declared state through continuous enforcement. Kestra is purpose-built for orchestrating multi-step workflows that span systems, teams, and domains. Many organizations use both: Puppet to manage node configuration, and Kestra to orchestrate the broader workflows that coordinate provisioning, deployment, data pipelines, and business processes."
 
 setupSpeed:
@@ -62,7 +62,7 @@ setupSpeed:
       one: "Hours to"
       two: Days
     description: "Puppet Enterprise requires installing the Puppet Server (or PE monolithic install), deploying Puppet Agents on each managed node, writing Puppet DSL manifests, configuring node classification, and waiting for the first agent run to converge. The learning curve for Puppet DSL adds additional time before teams are productive."
-    shadowColor: "#FFAE1A"
+    shadowColor: "#4c00ff"
     command: |
       # 1. Download and install Puppet Enterprise (monolithic)
       curl -JLO https://pm.puppet.com/puppet-enterprise/latest/download
@@ -130,7 +130,7 @@ easeOfUse:
   competitor:
     title: "Puppet: DSL manifests for desired state"
     description: "Puppet uses its own declarative DSL to define the desired state of infrastructure. Manifests describe resources (packages, files, services) and their relationships. The DSL is powerful for configuration management but requires learning Puppet-specific syntax, resource types, and concepts like classes, modules, and Hiera data lookups."
-    shadowColor: "#FFAE1A"
+    shadowColor: "#4c00ff"
     code: |
       # site.pp - Puppet manifest for webserver role
       node 'web01.example.com' {
@@ -178,7 +178,7 @@ visualPreview:
     description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from a single open-source platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
   competitor:
     description: "Agent-based configuration management platform that enforces desired state across infrastructure. Puppet Forge module ecosystem for packages, services, files, and cloud resources. Now owned by Perforce, with Puppet Enterprise providing RBAC, orchestration, compliance reporting, and node management at scale."
-    shadowColor: "#FFAE1A"
+    shadowColor: "#4c00ff"
 
 featureGrid:
   title: Kestra vs. Puppet at a Glance
@@ -265,8 +265,8 @@ decisionGuide:
       - "You manage a large fleet of servers and need consistent package, file, and service configuration."
       - "Your team is already invested in the Puppet ecosystem with existing modules and Hiera data."
       - "You need continuous configuration enforcement, not just one-time provisioning."
-    shadowColor: "#FFAE1A"
-    bulletColor: "#FFAE1A"
+    shadowColor: "#4c00ff"
+    bulletColor: "#4c00ff"
 
 commonQuestions:
   - question: Is Kestra a replacement for Puppet?

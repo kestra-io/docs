@@ -27,7 +27,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows in one platform"
       - "Event-driven triggers: webhooks, S3 uploads, Kafka messages, database changes, API events"
       - "Declarative YAML readable by any engineer on day one"
-      - "Open source with 26k+ GitHub stars, transparent pricing, no per-node licensing"
+      - "Open source with 1200+ plugins, transparent pricing, and no per-node licensing"
       - "Self-service for non-engineers via Kestra Apps with approval gates"
   competitor:
     title: "Infrastructure Configuration Management"

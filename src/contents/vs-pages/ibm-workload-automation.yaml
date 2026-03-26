@@ -15,7 +15,7 @@ philosophy:
   competitor:
     title: Centralized Enterprise Job Scheduling
     description: "Enterprise batch scheduler built around a Master Domain Manager, Backup Domain Manager, and agents deployed on every target host. Jobs are defined through the Dynamic Workload Console or command line, scheduled through the engine, and executed by Fault-Tolerant or Dynamic Agents. Changes flow through the operations team."
-    shadowColor: "#0530AD"
+    shadowColor: "#1f70c1"
     subCardBg: "var(--ks-background-blue-light)"
     subCardText: '"How do we schedule and monitor batch jobs across our mainframe, distributed, and cloud systems from a single console?"'
 
@@ -27,7 +27,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows"
       - "Any engineer ships workflows in YAML through Git and CI/CD"
       - "Event-driven at core: react to real events, not just batch schedules"
-      - "Open source with 26k+ GitHub stars, no per-job licensing"
+      - "Open source with 1200+ plugins, no per-job licensing, and transparent pricing"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Centralized Batch Scheduling
@@ -37,8 +37,8 @@ businessValue:
       - "Schedule-first architecture with deep mainframe integration"
       - "Proprietary IBM licensing tied to processor value units (PVUs)"
       - "Complex multi-component installation requiring dedicated infrastructure team"
-    shadowColor: "#0530AD"
-    bulletColor: "#0530AD"
+    shadowColor: "#1f70c1"
+    bulletColor: "#1f70c1"
   footerText: "IBM Workload Automation fits organizations with z/OS mainframe workloads and deep investment in the IBM ecosystem. Kestra is the right choice if you want developers to own their own workflows, need event-driven automation beyond batch scheduling, or need to orchestrate across legacy and modern systems without routing everything through a centralized operations team."
 
 setupSpeed:
@@ -62,7 +62,7 @@ setupSpeed:
       one: "Weeks to"
       two: Months
     description: "Production deployment requires installing the Master Domain Manager (MDM), optionally a Backup Domain Manager (BDM), a supported database (Db2 or Oracle), and Fault-Tolerant or Dynamic Agents on every target host. Configuration involves network connectivity, security certificates, agent-engine pairing, and user role setup through the Dynamic Workload Console."
-    shadowColor: "#0530AD"
+    shadowColor: "#1f70c1"
     command: |
       # 1. Provision supported database (Db2 or Oracle)
       # 2. Install Master Domain Manager (MDM)
@@ -123,7 +123,7 @@ easeOfUse:
   competitor:
     title: "IBM WA: Job definitions in proprietary format"
     description: "Jobs are defined through the Dynamic Workload Console GUI or via the composer command-line interface using IBM's proprietary job definition language (JSDL). Job streams group related jobs with dependencies, time restrictions, and resource requirements. Modifying scheduling logic typically requires the operations team and familiarity with IBM-specific concepts like workstations, job streams, and scheduling plans."
-    shadowColor: "#0530AD"
+    shadowColor: "#1f70c1"
     code: |
       # IBM WA job stream definition (composer CLI syntax)
       # Requires Master Domain Manager running + agents installed
@@ -162,7 +162,7 @@ visualPreview:
     description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from a single open-source platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
   competitor:
     description: "Enterprise batch workload automation across z/OS mainframe, distributed, and cloud environments. Deep integration with the IBM ecosystem including MQ, Db2, and Cloud Pak for Business Automation. Agent-based architecture with proprietary IBM licensing tied to processor value units."
-    shadowColor: "#0530AD"
+    shadowColor: "#1f70c1"
 
 featureGrid:
   title: Kestra vs. IBM Workload Automation at a Glance
@@ -249,8 +249,8 @@ decisionGuide:
       - "A centralized operations team manages all automation and you need a single console across mainframe and distributed."
       - "You need JCL-based mainframe job scheduling tightly coupled with your batch processing."
       - "Regulatory requirements mandate IBM-certified infrastructure with IBM support contracts."
-    shadowColor: "#0530AD"
-    bulletColor: "#0530AD"
+    shadowColor: "#1f70c1"
+    bulletColor: "#1f70c1"
 
 commonQuestions:
   - question: How hard is it to migrate from IBM Workload Automation to Kestra?

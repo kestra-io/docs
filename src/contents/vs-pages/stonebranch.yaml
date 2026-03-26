@@ -27,7 +27,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows"
       - "Any engineer ships workflows in YAML through Git and CI/CD"
       - "Event-driven at core: react to real events, not just cron schedules"
-      - "Open source with 12k+ GitHub stars, no per-job licensing"
+      - "Open source with 1200+ plugins, no per-job licensing, and a thriving community of contributors"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Centralized Workload Automation

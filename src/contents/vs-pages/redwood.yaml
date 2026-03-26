@@ -27,7 +27,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows"
       - "Any engineer ships workflows in YAML through Git and CI/CD"
       - "Event-driven at core: react to real events, not just batch schedules"
-      - "Open source with 12k+ GitHub stars, no per-job licensing"
+      - "Open source with 1200+ plugins, no per-job licensing, and a thriving community of contributors"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Enterprise SaaS Scheduling
@@ -202,7 +202,7 @@ featureGrid:
       kestra: "Kestra Apps"
       competitor: "Monitoring dashboards, not self-service triggers"
     - feature: Open-source option
-      kestra: "12k+ GitHub stars, Apache 2.0"
+      kestra: "Open source (Apache 2.0), Enterprise tier available"
       competitor: "No open-source option"
     - feature: Finance close automation
       kestra: "Buildable with workflow orchestration"

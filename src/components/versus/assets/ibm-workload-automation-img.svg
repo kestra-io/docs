@@ -2,33 +2,33 @@
   <rect width="458" height="260" rx="8" fill="#1A1D2E"/>
   <rect x="0" y="0" width="458" height="38" rx="8" fill="#111320"/>
   <rect x="0" y="24" width="458" height="14" fill="#111320"/>
-  <rect x="16" y="10" width="50" height="18" rx="3" fill="#0530AD" opacity="0.9"/>
+  <rect x="16" y="10" width="50" height="18" rx="3" fill="#1f70c1" opacity="0.9"/>
   <text x="22" y="23" font-family="monospace" font-size="10" font-weight="bold" fill="white">IBM</text>
   <rect x="74" y="14" width="140" height="10" rx="2" fill="#2D3250"/>
   <rect x="0" y="38" width="70" height="222" fill="#0D0F1C"/>
-  <rect x="10" y="52" width="50" height="10" rx="2" fill="#0530AD" opacity="0.7"/>
+  <rect x="10" y="52" width="50" height="10" rx="2" fill="#1f70c1" opacity="0.7"/>
   <rect x="10" y="70" width="50" height="10" rx="2" fill="#2D3250"/>
   <rect x="10" y="88" width="50" height="10" rx="2" fill="#2D3250"/>
   <rect x="10" y="106" width="50" height="10" rx="2" fill="#2D3250"/>
   <!-- Job stream timeline -->
   <rect x="82" y="48" width="364" height="30" rx="3" fill="#161829"/>
-  <rect x="90" y="54" width="60" height="8" rx="2" fill="#0530AD" opacity="0.6"/>
+  <rect x="90" y="54" width="60" height="8" rx="2" fill="#1f70c1" opacity="0.6"/>
   <rect x="160" y="54" width="60" height="8" rx="2" fill="#2D3250"/>
   <rect x="230" y="54" width="60" height="8" rx="2" fill="#2D3250"/>
   <!-- Job chain visualization -->
   <rect x="82" y="86" width="364" height="130" rx="4" fill="#161829" stroke="#2D3250" stroke-width="1"/>
-  <rect x="100" y="100" width="70" height="32" rx="4" fill="#0530AD" opacity="0.8"/>
+  <rect x="100" y="100" width="70" height="32" rx="4" fill="#1f70c1" opacity="0.8"/>
   <rect x="108" y="110" width="54" height="10" rx="2" fill="white" opacity="0.6"/>
   <line x1="170" y1="116" x2="200" y2="116" stroke="#3D4466" stroke-width="2"/>
-  <rect x="200" y="100" width="70" height="32" rx="4" fill="#2D3250" stroke="#0530AD" stroke-width="1"/>
+  <rect x="200" y="100" width="70" height="32" rx="4" fill="#2D3250" stroke="#1f70c1" stroke-width="1"/>
   <rect x="208" y="110" width="54" height="10" rx="2" fill="#3D4466"/>
   <line x1="270" y1="116" x2="300" y2="116" stroke="#3D4466" stroke-width="2"/>
-  <rect x="300" y="100" width="70" height="32" rx="4" fill="#2D3250" stroke="#0530AD" stroke-width="1"/>
+  <rect x="300" y="100" width="70" height="32" rx="4" fill="#2D3250" stroke="#1f70c1" stroke-width="1"/>
   <rect x="308" y="110" width="54" height="10" rx="2" fill="#3D4466"/>
   <line x1="370" y1="116" x2="400" y2="116" stroke="#3D4466" stroke-width="2"/>
   <rect x="400" y="100" width="30" height="32" rx="4" fill="#48C774" opacity="0.5"/>
   <!-- Second row of jobs -->
-  <rect x="200" y="148" width="70" height="32" rx="4" fill="#2D3250" stroke="#0530AD" stroke-width="1"/>
+  <rect x="200" y="148" width="70" height="32" rx="4" fill="#2D3250" stroke="#1f70c1" stroke-width="1"/>
   <rect x="208" y="158" width="54" height="10" rx="2" fill="#3D4466"/>
   <line x1="235" y1="132" x2="235" y2="148" stroke="#3D4466" stroke-width="2"/>
   <!-- Status panel -->
