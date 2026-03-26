@@ -10,12 +10,6 @@
             </div>
         </div>
         <MDCParserAndRenderer v-if="content" :content="content" class="bd-markdown" />
-        <div v-if="story?.whatNext" class="info-ctn mt-6">
-            <div class="info-itm next w-100">
-                <h3 class="fst-italic fs-3">What's next</h3>
-                <p class="my-0">{{ story.whatNext }}</p>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -29,8 +23,6 @@
 </script>
 
 <style scoped lang="scss">
-
-
     .info-ctn {
         gap: 0.625rem;
         border-radius: 0.8125rem;
@@ -80,6 +72,16 @@
 
         p {
             margin-bottom: 1rem;
+        }
+
+        blockquote {
+            padding: 8px 8px 8px 33px;
+            background: var(--ks-background-secondary);
+            border-left: 4px solid var(--ks-border-active);
+
+            p {
+                margin-bottom: 0;
+            }
         }
     }
 </style>

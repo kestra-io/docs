@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro"
 import { getCollection, type CollectionEntry } from "astro:content"
 import StoryDetail from "~/components/stories/StoryDetail.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
 import Layout from "~/components/layout.astro"
 import { slugify } from "@kestra-io/ui-libs"
 
@@ -75,7 +76,14 @@ const content = story.content
 
 <Layout title={story.metaTitle} description={story.metaDescription}>
     <div class="main">
-        <StoryDetail client:load slug={slug} {story} {content} {related} />
+        <StoryDetail client:load slug={slugFull} {story} {content} {related}>
+            <SeeHow slot="change">
+                <Fragment slot="title"> Experience Kestra Today </Fragment>
+                What would change if your public-sector cloud automation ran through
+                a self-hosted orchestration control plane—built for governance, visibility,
+                and scale?
+            </SeeHow>
+        </StoryDetail>
     </div>
 </Layout>
 

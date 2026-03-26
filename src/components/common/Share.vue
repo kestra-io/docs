@@ -56,7 +56,7 @@
         align-items: center;
 
         a {
-            color: var(--ks-content-tertiary);
+            color: var(--ks-content-primary);
             transition: color 0.2s ease;
             display: flex;
             align-items: center;
