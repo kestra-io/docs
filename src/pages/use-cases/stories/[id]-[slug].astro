@@ -23,7 +23,7 @@ if (id) {
             const titleMatch = storyContent.match(/title:\s*(.+)/)
             if (titleMatch) {
                 // redirect to the correct slug
-                return Astro.rewrite(`/use-cases/stories/${id}`)
+                return Astro.redirect(`/use-cases/stories/${id}`)
             }
         }
     }
