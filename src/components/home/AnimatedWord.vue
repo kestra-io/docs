@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { watch, ref, useTemplateRef, nextTick } from "vue"
+    import { watch, ref, useTemplateRef, nextTick, computed } from "vue"
 
     const props = defineProps<{
         words: string[]
@@ -23,9 +23,9 @@
                 const span = document.createElement("span")
                 span.textContent = letter
                 span.style.opacity = "0"
-                span.style.transform = "translateY(-40px)"
+                span.style.transform = "translateY(-60px)"
                 span.style.transition =
-                    "opacity 0.5s ease-in-out, transform 0.5s ease-in-out"
+                    "opacity 0.1s ease-in-out, transform 0.3s ease-out"
                 return span
             })
 
@@ -45,7 +45,7 @@
                         span.style.transform = "translateY(0)"
                         span.style.opacity = "1"
                     },
-                    (index + 1) * 50,
+                    (index + 1) * 70,
                 )
             })
             // once all letters are visible, remove the old word and set the new word
@@ -54,7 +54,9 @@
                     if (word.value) {
                         word.value.style.transition = "none"
                         word.value.style.removeProperty("opacity")
-                        word.value.textContent = `${nextWord}`
+                        word.value.innerHTML = letters
+                            .map((span) => span.outerHTML)
+                            .join("")
                         letters.forEach((span) => {
                             span.remove()
                         })
@@ -64,15 +66,18 @@
                         }, 50)
                     }
                 },
-                50 * nextWord.length + 500,
+                50 * (nextWord.length + 1) + 300,
             )
         }
     })
+    const letters = computed(() => props.words[0].split(""))
 </script>
 
 <template>
     <span ref="word">
-        {{ words[0] }}
+        <span v-for="(letter, index) in letters" :key="letter + index">{{
+            letter
+        }}</span>
     </span>
 </template>
 
