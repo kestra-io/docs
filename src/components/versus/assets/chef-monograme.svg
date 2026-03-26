@@ -1,0 +1,5 @@
+<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="34" height="34" rx="5" fill="#5ce500"/>
+  <path d="M17 4l10 5.8a1.4 1.4 0 01.7 1.2v11.6a1.4 1.4 0 01-.7 1.2L17 29.6a1.4 1.4 0 01-1.4 0L5.6 23.8a1.4 1.4 0 01-.7-1.2V11a1.4 1.4 0 01.7-1.2L15.6 4a1.4 1.4 0 011.4 0z" fill="white" opacity="0.3"/>
+  <text x="10" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="800" fill="white">C</text>
+</svg>
