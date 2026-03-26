@@ -95,7 +95,6 @@
             event.direction === "next" &&
             currentPage < props.totalPages
         ) {
-            console.log("Emitting update:currentPage with", currentPage + 1)
             emit("update:currentPage", currentPage + 1)
         } else if (event.pageNo && event.pageNo !== morePagesPlaceholder) {
             emit("update:currentPage", event.pageNo)
