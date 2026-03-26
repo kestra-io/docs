@@ -330,7 +330,7 @@ const subGroupWrapper = pluginsForDisplay.find(
 const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
 const subGroupsIcons = page?.body?.plugins
     ? Object.fromEntries(
-          page.body.plugins.map((p) => [p.group, `/icons/${p.group}.svg`]),
+          page.body.plugins.map((p) => [p.subGroup ?? p.group, `/icons/${p.subGroup ?? p.group}.svg`]),
       )
     : {}
 
