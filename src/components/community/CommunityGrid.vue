@@ -51,7 +51,7 @@
     import SourceCommit from "vue-material-design-icons/SourceCommit.vue"
     import AccountSupervisorCircle from "vue-material-design-icons/AccountSupervisorCircle.vue"
 
-    import { $fetchApiCached, $fetchCached } from "~/utils/fetch"
+    import { $fetchApiCached } from "~/utils/fetch"
 
     interface GitHubMetrics {
         stars: number
@@ -60,11 +60,6 @@
         pullRequests: number
         commits: number
         contributors: number
-    }
-
-    interface GitHubResponse {
-        stargazers: number
-        forks: number
     }
 
     const metrics = ref<GitHubMetrics>({
@@ -115,29 +110,24 @@
 
     const fetchData = async () => {
         try {
-            const [github, githubMetrics, githubContributors] =
+            const [githubMetrics, githubContributors] =
                 await Promise.all([
-                    $fetchCached<GitHubResponse>("/api/github"),
-                    $fetchApiCached("/communities/github/metrics"),
-                    $fetchApiCached("/communities/github/contributors"),
+                    $fetchApiCached<GitHubMetrics>("/communities/github/metrics"),
+                    $fetchApiCached<any[]>("/communities/github/contributors"),
                 ])
 
-            const mData = (githubMetrics as any).data
-            const cData = (githubContributors as any).data
-
             metrics.value = {
-                stars: github.stargazers ?? 0,
-                forks: github.forks ?? 0,
-                issues: mData?.issues ?? 0,
-                pullRequests: mData?.pullRequests ?? 0,
-                commits: mData?.commits ?? 0,
-                contributors: Array.isArray(cData)
-                    ? cData.length
-                    : ((github as any).contributors ?? 0),
+                stars: githubMetrics.stars ?? 0,
+                forks: githubMetrics.forks ?? 0,
+                issues: githubMetrics.issues ?? 0,
+                pullRequests: githubMetrics.pullRequests ?? 0,
+                commits: githubMetrics.commits ?? 0,
+                contributors: Array.isArray(githubContributors)
+                    ? githubContributors.length
+                    : (githubMetrics.contributors ?? 0),
             }
         } catch (error) {
             console.error("Error fetching community metrics:", error)
-            // fallback gracefully
         }
     }
 
