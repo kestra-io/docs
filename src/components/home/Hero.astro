@@ -7,12 +7,16 @@ import LockInIcon from "./assets/hero/lock-in.svg"
 import SelfHostedIcon from "./assets/hero/self-hosted.svg"
 import CloudIcon from "./assets/hero/cloud.svg"
 import HeroAnimation from "./hero-animation.astro"
+import AnimatedWord from "./AnimatedWord.vue"
 ---
 
 <section aria-labelledby="hero">
     <div class="hero">
         <h1 id="hero">
-            One Platform to Run and Control
+            One Platform to <AnimatedWord
+                words={["Run", "Control", "Govern"]}
+                client:idle>Run</AnimatedWord
+            ><br />
             <span class="gradient">All Your Workflows</span>
         </h1>
         <p>
@@ -72,8 +76,13 @@ import HeroAnimation from "./hero-animation.astro"
         right: 0;
         top: 50px;
         z-index: 1;
-        @include media-breakpoint-up(lg) {
+        @include media-breakpoint-up(md) {
             left: 50%;
+            transform: scale(0.5) translateX(18%);
+        }
+        @include media-breakpoint-up(xl) {
+            left: 50%;
+            transform: scale(0.7);
         }
     }
 
