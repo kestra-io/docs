@@ -22,20 +22,24 @@ const stories = await Promise.all(
                         width: 500,
                     })
                 ).src,
-                logo: (
-                    await getImage({
-                        src: entry.data.logo,
-                        format: "webp",
-                        height: 60,
-                    })
-                ).src,
-                logoDark: (
-                    await getImage({
-                        src: entry.data.logoDark,
-                        format: "webp",
-                        height: 60,
-                    })
-                ).src,
+                logo: entry.data.logo
+                    ? (
+                          await getImage({
+                              src: entry.data.logo,
+                              format: "webp",
+                              height: 60,
+                          })
+                      ).src
+                    : "",
+                logoDark: entry.data.logoDark
+                    ? (
+                          await getImage({
+                              src: entry.data.logoDark,
+                              format: "webp",
+                              height: 60,
+                          })
+                      ).src
+                    : "",
             }
         }),
 )
