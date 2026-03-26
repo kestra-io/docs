@@ -11,6 +11,7 @@ import AnimatedWord from "./AnimatedWord.vue"
 ---
 
 <section aria-labelledby="hero">
+    <div class="mobile-bg"></div>
     <div class="hero">
         <h1 id="hero">
             One Platform to <AnimatedWord
@@ -69,6 +70,25 @@ import AnimatedWord from "./AnimatedWord.vue"
         overflow: hidden;
         position: relative;
         z-index: 2;
+        margin-top: 20vw;
+        @include media-breakpoint-up(md) {
+            padding-right: 18rem;
+            margin-top: 0;
+        }
+    }
+
+    .mobile-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("./assets/hero/bg-mobile.png") no-repeat center center;
+        background-size: cover;
+        z-index: 0;
+        @include media-breakpoint-up(md) {
+            display: none;
+        }
     }
 
     .hero-animation {
@@ -76,9 +96,13 @@ import AnimatedWord from "./AnimatedWord.vue"
         right: 0;
         top: 50px;
         z-index: 1;
+        display: none;
+
         @include media-breakpoint-up(md) {
+            display: block;
             left: 50%;
             transform: scale(0.5) translateX(18%);
+            width: auto;
         }
         @include media-breakpoint-up(xl) {
             left: 50%;
