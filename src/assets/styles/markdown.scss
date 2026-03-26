@@ -364,72 +364,6 @@
         }
     }
 
-    // Expressive code collapse (overrides for expressive-code-collapsible plugin)
-    .ec-collapse {
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-
-        .ec-collapse__gradient {
-            left: 2px;
-            right: 2px;
-            height: 140px;
-            background: var(--ks-background-input) !important;
-            -webkit-backdrop-filter: blur(2px);
-            backdrop-filter: blur(2px);
-            -webkit-mask-image: linear-gradient(to bottom, transparent, $black);
-            mask-image: linear-gradient(to bottom, transparent, $black);
-        }
-
-        .ec-collapse__toggle {
-            $svg-icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z' /></svg>";
-
-            position: relative !important;
-            left: auto !important;
-            bottom: auto !important;
-            transform: none !important;
-            justify-content: flex-start;
-            padding: 0.5rem 1rem;
-            background: var(--ks-background-secondary);
-            border: 1.5px solid var(--ks-border-secondary);
-            border-radius: 0 0 0.5rem 0.5rem;
-            color: var(--ks-content-primary);
-            font-size: $font-size-xs;
-            font-weight: 600;
-            margin: 0 !important;
-            width: 100%;
-            gap: 0.5rem;
-            z-index: 20;
-            transition: background 0.2s;
-
-            &:hover, &:focus-visible {
-                background: var(--ks-background-tertiary);
-                border-color: var(--ks-border-secondary);
-            }
-
-            .ec-collapse__icon {
-                order: -1;
-                color: var(--ks-content-tertiary);
-                width: 1.5rem;
-                height: 1.5rem;
-                background-color: currentColor;
-                -webkit-mask: url($svg-icon) no-repeat 50% 50%;
-                mask: url($svg-icon) no-repeat 50% 50%;
-                transform: none !important;
-
-                path {
-                    display: none;
-                }
-            }
-        }
-
-        &--expanded .ec-collapse__toggle {
-            margin: -4px 0 0 !important;
-            width: 100%;
-            border-radius: 0 0 0.5rem 0.5rem;
-        }
-    }
-
     // Generic Table
     table {
         width: 100%;
@@ -495,7 +429,6 @@
 
 // Expressive Code specifics
 .expressive-code {
-    border-radius: 0.5rem;
     :root.light main &, :root.dark main &{
          &:not(.light,.dark){
             #{--ec-frm-tooltipSuccessBg}: var(--ks-button-background-primary);
@@ -527,4 +460,3 @@
         }
     }
 }
-
