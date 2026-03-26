@@ -1,0 +1,705 @@
+[
+  {
+    "id": "job_a1b2c3d4-1001",
+    "title": "Senior Backend Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1001-4a2b-7c3d-9e4f-5601-post1",
+      "1002-4a2b-7c3d-9e4f-5602-post2"
+    ],
+    "customRequisitionId": "1",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1002",
+    "title": "Frontend Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_remote_01",
+    "jobPostingIds": [
+      "1003-4a2b-7c3d-9e4f-5603-post3"
+    ],
+    "customRequisitionId": "2",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_remote_01",
+      "name": "Remote (Europe)",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "",
+          "addressRegion": "",
+          "streetAddress": "",
+          "addressCountry": "",
+          "addressLocality": ""
+        }
+      },
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "parentLocationId": "loc_eu",
+      "type": "Remote"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1003",
+    "title": "Staff Platform Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1004-4a2b-7c3d-9e4f-5604-post4"
+    ],
+    "customRequisitionId": "3",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1004",
+    "title": "DevOps Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_remote_02",
+    "jobPostingIds": [
+      "1005-4a2b-7c3d-9e4f-5605-post5"
+    ],
+    "customRequisitionId": "4",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_remote_02",
+      "name": "Remote (Worldwide)",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "",
+          "addressRegion": "",
+          "streetAddress": "",
+          "addressCountry": "",
+          "addressLocality": ""
+        }
+      },
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "parentLocationId": "loc_global",
+      "type": "Remote"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1005",
+    "title": "Product Manager",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1006-4a2b-7c3d-9e4f-5606-post6",
+      "1007-4a2b-7c3d-9e4f-5607-post7"
+    ],
+    "customRequisitionId": "5",
+    "departmentId": "dept_product",
+    "department": {
+      "id": "dept_product",
+      "name": "Product",
+      "externalName": "Product"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1006",
+    "title": "Account Executive (Enterprise)",
+    "employmentType": "FullTime",
+    "locationId": "loc_nyc_01",
+    "jobPostingIds": [
+      "1008-4a2b-7c3d-9e4f-5608-post8"
+    ],
+    "customRequisitionId": "6",
+    "departmentId": "dept_sales",
+    "department": {
+      "id": "dept_sales",
+      "name": "Sales",
+      "externalName": "Sales"
+    },
+    "location": {
+      "id": "loc_nyc_01",
+      "name": "New York, NY",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "10001",
+          "addressRegion": "NY",
+          "streetAddress": "350 Fifth Avenue",
+          "addressCountry": "US",
+          "addressLocality": "New York"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_us",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1007",
+    "title": "Solutions Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_remote_02",
+    "jobPostingIds": [
+      "1009-4a2b-7c3d-9e4f-5609-post9"
+    ],
+    "customRequisitionId": "7",
+    "departmentId": "dept_sales",
+    "department": {
+      "id": "dept_sales",
+      "name": "Sales",
+      "externalName": "Sales"
+    },
+    "location": {
+      "id": "loc_remote_02",
+      "name": "Remote (Worldwide)",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "",
+          "addressRegion": "",
+          "streetAddress": "",
+          "addressCountry": "",
+          "addressLocality": ""
+        }
+      },
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "parentLocationId": "loc_global",
+      "type": "Remote"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1008",
+    "title": "Technical Writer",
+    "employmentType": "FullTime",
+    "locationId": "loc_remote_01",
+    "jobPostingIds": [
+      "1010-4a2b-7c3d-9e4f-5610-post10"
+    ],
+    "customRequisitionId": "8",
+    "departmentId": "dept_product",
+    "department": {
+      "id": "dept_product",
+      "name": "Product",
+      "externalName": "Product"
+    },
+    "location": {
+      "id": "loc_remote_01",
+      "name": "Remote (Europe)",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "",
+          "addressRegion": "",
+          "streetAddress": "",
+          "addressCountry": "",
+          "addressLocality": ""
+        }
+      },
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "parentLocationId": "loc_eu",
+      "type": "Remote"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1009",
+    "title": "Head of Marketing",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1011-4a2b-7c3d-9e4f-5611-post11"
+    ],
+    "customRequisitionId": "9",
+    "departmentId": "dept_marketing",
+    "department": {
+      "id": "dept_marketing",
+      "name": "Marketing",
+      "externalName": "Marketing"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1010",
+    "title": "Content Marketing Manager",
+    "employmentType": "FullTime",
+    "locationId": "loc_remote_01",
+    "jobPostingIds": [
+      "1012-4a2b-7c3d-9e4f-5612-post12"
+    ],
+    "customRequisitionId": "10",
+    "departmentId": "dept_marketing",
+    "department": {
+      "id": "dept_marketing",
+      "name": "Marketing",
+      "externalName": "Marketing"
+    },
+    "location": {
+      "id": "loc_remote_01",
+      "name": "Remote (Europe)",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "",
+          "addressRegion": "",
+          "streetAddress": "",
+          "addressCountry": "",
+          "addressLocality": ""
+        }
+      },
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "parentLocationId": "loc_eu",
+      "type": "Remote"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1011",
+    "title": "Developer Advocate",
+    "employmentType": "FullTime",
+    "locationId": "loc_remote_02",
+    "jobPostingIds": [
+      "1013-4a2b-7c3d-9e4f-5613-post13",
+      "1014-4a2b-7c3d-9e4f-5614-post14"
+    ],
+    "customRequisitionId": "11",
+    "departmentId": "dept_marketing",
+    "department": {
+      "id": "dept_marketing",
+      "name": "Marketing",
+      "externalName": "Marketing"
+    },
+    "location": {
+      "id": "loc_remote_02",
+      "name": "Remote (Worldwide)",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "",
+          "addressRegion": "",
+          "streetAddress": "",
+          "addressCountry": "",
+          "addressLocality": ""
+        }
+      },
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "parentLocationId": "loc_global",
+      "type": "Remote"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1012",
+    "title": "QA Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1015-4a2b-7c3d-9e4f-5615-post15"
+    ],
+    "customRequisitionId": "12",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1013",
+    "title": "Data Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_berlin_01",
+    "jobPostingIds": [
+      "1016-4a2b-7c3d-9e4f-5616-post16"
+    ],
+    "customRequisitionId": "13",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_berlin_01",
+      "name": "Berlin, Germany",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "10117",
+          "addressRegion": "Berlin",
+          "streetAddress": "Friedrichstraße 123",
+          "addressCountry": "DE",
+          "addressLocality": "Berlin"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1014",
+    "title": "Customer Success Manager",
+    "employmentType": "FullTime",
+    "locationId": "loc_nyc_01",
+    "jobPostingIds": [
+      "1017-4a2b-7c3d-9e4f-5617-post17"
+    ],
+    "customRequisitionId": "14",
+    "departmentId": "dept_cs",
+    "department": {
+      "id": "dept_cs",
+      "name": "Customer Success",
+      "externalName": "Customer Success"
+    },
+    "location": {
+      "id": "loc_nyc_01",
+      "name": "New York, NY",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "10001",
+          "addressRegion": "NY",
+          "streetAddress": "350 Fifth Avenue",
+          "addressCountry": "US",
+          "addressLocality": "New York"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_us",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1015",
+    "title": "Site Reliability Engineer",
+    "employmentType": "FullTime",
+    "locationId": "loc_remote_01",
+    "jobPostingIds": [
+      "1018-4a2b-7c3d-9e4f-5618-post18"
+    ],
+    "customRequisitionId": "15",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_remote_01",
+      "name": "Remote (Europe)",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "",
+          "addressRegion": "",
+          "streetAddress": "",
+          "addressCountry": "",
+          "addressLocality": ""
+        }
+      },
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "parentLocationId": "loc_eu",
+      "type": "Remote"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1016",
+    "title": "Finance Manager",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1019-4a2b-7c3d-9e4f-5619-post19"
+    ],
+    "customRequisitionId": "16",
+    "departmentId": "dept_finance",
+    "department": {
+      "id": "dept_finance",
+      "name": "Finance & Operations",
+      "externalName": "Finance & Operations"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1017",
+    "title": "Senior Product Designer",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1020-4a2b-7c3d-9e4f-5620-post20"
+    ],
+    "customRequisitionId": "17",
+    "departmentId": "dept_design",
+    "department": {
+      "id": "dept_design",
+      "name": "Design",
+      "externalName": "Design"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1018",
+    "title": "SDR (Sales Development Representative)",
+    "employmentType": "FullTime",
+    "locationId": "loc_london_01",
+    "jobPostingIds": [
+      "1021-4a2b-7c3d-9e4f-5621-post21"
+    ],
+    "customRequisitionId": "18",
+    "departmentId": "dept_sales",
+    "department": {
+      "id": "dept_sales",
+      "name": "Sales",
+      "externalName": "Sales"
+    },
+    "location": {
+      "id": "loc_london_01",
+      "name": "London, UK",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "EC2A 1NT",
+          "addressRegion": "England",
+          "streetAddress": "1 Finsbury Avenue",
+          "addressCountry": "GB",
+          "addressLocality": "London"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1019",
+    "title": "Software Engineer Intern",
+    "employmentType": "Intern",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1022-4a2b-7c3d-9e4f-5622-post22"
+    ],
+    "customRequisitionId": "19",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  },
+  {
+    "id": "job_a1b2c3d4-1020",
+    "title": "VP of Engineering",
+    "employmentType": "FullTime",
+    "locationId": "loc_paris_01",
+    "jobPostingIds": [
+      "1023-4a2b-7c3d-9e4f-5623-post23"
+    ],
+    "customRequisitionId": "20",
+    "departmentId": "dept_eng",
+    "department": {
+      "id": "dept_eng",
+      "name": "Engineering",
+      "externalName": "Engineering"
+    },
+    "location": {
+      "id": "loc_paris_01",
+      "name": "Paris, France",
+      "externalName": null,
+      "isArchived": false,
+      "address": {
+        "postalAddress": {
+          "postalCode": "75009",
+          "addressRegion": "Île-de-France",
+          "streetAddress": "12 Rue de Mogador",
+          "addressCountry": "FR",
+          "addressLocality": "Paris"
+        }
+      },
+      "isRemote": false,
+      "workplaceType": "Hybrid",
+      "parentLocationId": "loc_eu",
+      "type": "Office"
+    }
+  }
+]

@@ -18,7 +18,10 @@ export const fetchDepartment = async (): Promise<Department[]> => {
 }
 
 export const fetchJobs = async (): Promise<AshbyJob[]> => {
-    const departments = await fetchDepartment();
+    if (!ASHBY_APIKEY) {
+        return import("./mock-jobs.json").then((module) => module.default)
+    }
+    const departments = await fetchDepartment()
 
     const jobsList = await $fetch<{ results: AshbyJob[] }>(
         `https://api.ashbyhq.com/job.list`,
@@ -51,7 +54,14 @@ export const fetchJobs = async (): Promise<AshbyJob[]> => {
         })
 }
 
-export const fetchJob = async (jobPostingId: string): Promise<AshbyJobPosting> => {
+export const fetchJob = async (
+    jobPostingId: string,
+): Promise<AshbyJobPosting> => {
+    if (!ASHBY_APIKEY) {
+        return import("./mock-job-posting.json").then(
+            (module) => module.default,
+        )
+    }
     const job = await $fetch<{ results: AshbyJobPosting }>(
         `https://api.ashbyhq.com/jobPosting.info`,
         {
@@ -224,6 +234,7 @@ interface AshbyJobPosting {
     teamName: string
     teamNameHierarchy: string[]
     jobId: string
+    locationName: string
     locationIds: JobLocationIds
     linkedData: JobLinkedData
     publishedDate: string

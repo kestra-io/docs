@@ -2,8 +2,8 @@
     <div class="card " :class="number ? 'number-card' : ''" data-usal="zoomin">
         <component :is="href ? 'a' : 'div'" :href="href" class="card-link-wrapper">
             <div class="card-body">
-                <div class="d-flex gap-3 title-block">
-                    <span v-if="icon || $slots.icon" class="card-icon">
+                <div class="title-block">
+                    <span v-if="icon || $slots.icon" class="ks-card-icon">
                         <slot name="icon">
                             <component :is="icon" />
                         </slot>
@@ -52,9 +52,9 @@
                         <p class="number">{{ number }}</p>
                     </span>
                     <div v-if="cardInfo" class="card-info">
-                        <h4 v-if="cardInfo.title" class="card-title">
+                        <h3 v-if="cardInfo.title" class="card-title">
                             {{ cardInfo.title }}
-                        </h4>
+                        </h3>
                         <p v-if="cardInfo.description" class="card-text">
                             {{ cardInfo.description }}
                         </p>
@@ -64,8 +64,8 @@
                             v-html="cardInfo.descriptionHtml"
                         ></div>
                     </div>
-                    <h4 v-if="title" class="card-title">{{ title }}</h4>
-                    <h4 v-if="titleHtml" class="card-title" v-html="titleHtml"></h4>
+                    <h3 v-if="title" class="card-title">{{ title }}</h3>
+                    <h3 v-if="titleHtml" class="card-title" v-html="titleHtml"></h3>
                 </div>
                 <div v-if="bottomMenuBar && bottomMenuBar.length" class="bottom-menu">
                     <div
@@ -144,13 +144,7 @@
             padding: 2rem;
             background-color: var(--ks-background-input);
             @include media-breakpoint-down(lg) {
-                padding: 2rem 1rem;
-            }
-            @include media-breakpoint-down(md) {
-                padding: 2rem;
-            }
-            :deep(a) {
-                color: var(--ks-content-link);
+                padding: 1rem;
             }
         }
         .card-body {
@@ -165,7 +159,8 @@
             }
             .card-title {
                 font-weight: 500;
-                font-size: $font-size-xl;
+                font-size: $font-size-md;
+                margin: 0;
             }
             .card-text {
                 color: var(--ks-content-secondary);
@@ -184,41 +179,12 @@
                     text-align: start;
                 }
             }
-            .card-icon {
-                float: none;
-                border-radius: 8px;
-                background: transparent;
-                position: relative;
-                margin: 0;
-                width: calc($spacer * 3.75);
-                min-width: calc($spacer * 3.75);
-                height: calc($spacer * 3.75);
-                &::before {
-                    content: "";
-                    position: absolute;
-                    inset: 0;
-                    border-radius: inherit;
-                    padding: 1px;
-                    background: linear-gradient(
-                        90deg,
-                        rgba(176, 16, 251, 1) 0%,
-                        rgba(222, 151, 255, 1) 14%,
-                        rgba(162, 39, 219, 1) 28%,
-                        rgba(255, 255, 255, 0.4654236694677871) 50%,
-                        rgba(166, 16, 236, 0.8435749299719888) 72%
-                    );
-                    -webkit-mask:
-                        linear-gradient(#fff 0 0) content-box,
-                        linear-gradient(#fff 0 0);
-                    mask:
-                        linear-gradient(#fff 0 0) content-box,
-                        linear-gradient(#fff 0 0);
-                    -webkit-mask-composite: xor;
-                    mask-composite: exclude;
-                    pointer-events: none;
-                }
+            .ks-card-icon {
+                display: block;
+                margin-bottom: .5rem;
+                font-size: 24px;;
+
                 :deep(.material-design-icon) {
-                    filter: drop-shadow(2px 4px 4px rgba(186, 53, 249, 0.25));
                     svg path {
                         fill: url(#featureiconsgradient);
                     }
