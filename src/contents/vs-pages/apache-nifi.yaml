@@ -20,7 +20,7 @@ philosophy:
     subCardText: '"How do I route and transform data in real time across my systems?"'
 
 businessValue:
-  mainTitle: "Data Flow Gets Data Moving.<br />Workflow Orchestration Runs Your Business."
+  mainTitle: "Workflow Orchestration Runs Your Business.<br />Data Flow Gets Data Moving."
   kestra:
     title: Universal Orchestration
     list:
@@ -39,11 +39,11 @@ businessValue:
       - "Limited support for non-data orchestration (infrastructure, business logic)"
     shadowColor: "#1A9FB9"
     bulletColor: "#0EACCC"
-  footerText: "Apache NiFi is the right choice when your problem is real-time data routing: moving and transforming data streams, collecting from edge devices, or tracking data provenance across complex flows. Use Kestra when your workflows combine data pipelines with infrastructure automation, AI workloads, or business processes, and need Git-based versioning, CI/CD deployment, and team-level governance."
+  footerText: "Use Kestra when your workflows span data pipelines, infrastructure automation, AI workloads, and business processes — and your team needs Git-native workflows, CI/CD deployment, and governance across systems and clouds. NiFi is a strong fit when packet-level provenance tracking is a hard requirement, edge-to-cloud data collection via MiNiFi is critical, or your team needs a visual canvas for managing continuous, high-throughput data flows."
 
 setupSpeed:
   title: Time to First Workflow
-  subtitle: "NiFi's single Docker command gets you to a running instance, but production deployments require ZooKeeper or embedded clustering, SSL certificate configuration, and authorization policies. Kestra's Docker Compose includes everything production needs in one file."
+  subtitle: "NiFi's single Docker command gets you to a running instance, but production deployments require ZooKeeper or embedded clustering, SSL certificate configuration, and authorization policies. Kestra's Docker Compose bundles the database and UI in a single file — spin it up locally and run your first workflow in minutes."
   kestra:
     title:
       one: "~5"
@@ -78,7 +78,7 @@ setupSpeed:
     lang: sh
 
 easeOfUse:
-  title: Code You Can Version Control
+  title: "Code You Can Version Control vs. a Visual Canvas"
   kestra:
     title: "Kestra: Readable YAML, Git-native by default"
     description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow lives in a file you can commit, review, and deploy through CI/CD."
@@ -217,11 +217,11 @@ platformStrengths:
   title: Kestra Is Built for How Modern Teams Work
   features:
     - title: Git-native from day one
-      description: "NiFi flows live on a visual canvas. Getting them into version control requires NiFi Registry, and even then the diff is JSON, not readable code. Kestra workflows are YAML files: commit them, review them in pull requests, deploy them through CI/CD. Same process as application code."
+      description: "Kestra workflows are YAML files that live in your Git repository from day one. Commit them, review them in pull requests, and deploy through CI/CD — the same process as application code. Every change is a readable diff and every deployment is traceable."
     - title: Bring your own scripts, any language
-      description: "NiFi processing logic lives inside Java-based processors. Writing custom logic means either the ExecuteScript processor (with significant limitations) or building a custom processor in Java. Kestra runs Python, Bash, SQL, Go, and R in isolated Docker containers. Existing scripts work without modification."
+      description: "Kestra runs Python, Bash, SQL, Go, R, and Node.js in isolated Docker containers. Your existing scripts work without modification — no wrappers, no rewrites, no language constraints. Each task gets its own container so dependencies never conflict."
     - title: Orchestrate beyond data movement
-      description: "Data movement is one step in a larger workflow. After ingestion comes transformation, model training, infrastructure updates, approvals, and downstream notifications. Kestra coordinates all of it: one YAML workflow can ingest data, run a dbt model, provision a cloud resource, and notify a team, with retry logic and audit logs across every step."
+      description: "One YAML workflow can ingest data, run a dbt model, provision a cloud resource, and notify a team — with retry logic and audit logs across every step. Kestra coordinates the full lifecycle: data pipelines, infrastructure updates, model training, approvals, and downstream notifications in a single unified definition."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job
@@ -236,10 +236,10 @@ decisionGuide:
   competitor:
     title: Choose Apache NiFi When
     list:
-      - "Your primary problem is real-time data routing: ingesting from many sources, transforming in flight, and delivering to many destinations."
-      - "Data provenance matters. You need to track exactly where every data packet came from and where it went."
-      - "Edge data collection is a core use case. NiFi's MiNiFi agent handles edge-to-cloud data flows."
-      - "High-throughput streaming with continuous data transformation is the main workload, not scheduled batch workflows."
+      - "Packet-level data provenance is a compliance or audit requirement — you need to track exactly where every record came from, what transformed it, and where it went through the flow."
+      - "Edge-to-cloud data collection is central to your architecture. NiFi's MiNiFi agent runs on edge devices and streams data back to a central NiFi instance."
+      - "Non-engineering teams need to build and manage data flows visually without writing code or YAML."
+      - "Your workload is continuous, high-throughput data streaming that benefits from NiFi's built-in back-pressure and priority queuing at the processor level."
     shadowColor: "#1A9FB9"
     bulletColor: "#0EACCC"
 
