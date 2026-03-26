@@ -43,23 +43,6 @@
                                 required
                             />
                         </div>
-
-                        <div class="form-group checkbox-option">
-                            <input id="consent" type="checkbox" name="consent" required />
-                            <label for="consent">I agree to receive other communications from Kestra.</label>
-                        </div>
-
-                        <p class="privacy-note">
-                            You can unsubscribe from these communications at any time. For more information on how to
-                            unsubscribe, our privacy practices, and how we are committed to protecting and respecting
-                            your privacy, please review our <a href="/privacy-policy">Privacy Policy</a>.
-                        </p>
-
-                        <p class="consent-note">
-                            By clicking submit below, you consent to allow Kestra to store and process the personal
-                            information submitted above to provide you the content requested.
-                        </p>
-
                         <button type="submit" class="btn btn-primary mt-3 float-end px-6">Submit</button>
                     </form>
                 </div>
@@ -157,11 +140,6 @@
                     objectTypeId: "0-1",
                     name: "form_submission_identifier",
                     value: "Contact Us Form"
-                },
-                {
-                    objectTypeId: "0-1",
-                    name: "LEGAL_CONSENT.subscription_type_178282008",
-                    value: "true"
                 },
             ],
             context: {
