@@ -26,8 +26,8 @@
                     </div>
                     <small>{{ formatDate(releaseVersions[0]?.publishedAt) }}</small>
                     <a
-                        v-if="releasesUrl"
-                        :href="`${releasesUrl}/tag/v${releaseVersions[0]?.version}`"
+                        v-if="releasesUrl || releaseVersions[0]?.releaseNotesUrl"
+                        :href="releasesUrl ? `${releasesUrl}/tag/v${releaseVersions[0]?.version}` : releaseVersions[0]?.releaseNotesUrl"
                         target="_blank"
                         class="text-decoration-none"
                     >
@@ -56,8 +56,8 @@
                             <strong>{{ v?.version }}</strong>
                             <small>{{ formatDate(v?.publishedAt) }}</small>
                             <a
-                                v-if="releasesUrl"
-                                :href="`${releasesUrl}/tag/v${v?.version}`"
+                                v-if="releasesUrl || v?.releaseNotesUrl"
+                                :href="releasesUrl ? `${releasesUrl}/tag/v${v?.version}` : v?.releaseNotesUrl"
                                 target="_blank"
                                 class="text-decoration-none"
                             >

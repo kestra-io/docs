@@ -3,7 +3,6 @@ export const prerender = false
 import { slugify } from "@kestra-io/ui-libs"
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
-import { $fetchApi } from "~/utils/fetch.ts"
 import { sitemapResponse } from "~/utils/sitemap.ts"
 
 export const GET: APIRoute = async () => {

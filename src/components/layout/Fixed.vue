@@ -19,7 +19,9 @@
                 >
                     <Slack title="" />
                     Slack
-                    <span v-if="online" class="online">{{ onlineText }} members</span>
+                    <span v-if="online" class="online"
+                        >{{ onlineText }} members</span
+                    >
                 </a>
             </div>
         </div>
@@ -30,20 +32,21 @@
     import { ref, computed, onMounted, onUnmounted } from "vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
+    import axios from "axios"
+    import { API_URL } from "astro:env/client"
 
     const props = withDefaults(
         defineProps<{
             displaySlack?: boolean
-            online?: number
         }>(),
         {
             displaySlack: true,
-            online: 0,
         },
     )
 
     const yScroll = ref(0)
     const mounted = ref(false)
+    const online = ref(0)
 
     const handleScroll = () => {
         yScroll.value = window.scrollY
@@ -56,11 +59,16 @@
         })
     }
 
-    onMounted(() => {
+    onMounted(async () => {
         mounted.value = true
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", handleScroll)
         }
+
+        try {
+            const response = await axios.get(`${API_URL}/communities/slack`)
+            online.value = response.data.total
+        } catch (error) {}
     })
 
     onUnmounted(() => {
@@ -70,13 +78,13 @@
     })
 
     const onlineText = computed(() => {
-        return props.online === undefined ? "" : Intl.NumberFormat("en-US").format(props.online)
+        return online.value === undefined
+            ? ""
+            : Intl.NumberFormat("en-US").format(online.value)
     })
 </script>
 
 <style lang="scss" scoped>
-
-
     #fixed-container {
         position: fixed;
         z-index: 9999;

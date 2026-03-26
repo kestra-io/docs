@@ -30,7 +30,7 @@
     "@cloudflare/workers-types": "^4.20260305.1",
     "@gtm-support/vue-gtm": "^3.2.0",
     "@iconify-json/mdi": "^1.2.3",
-    "@kestra-io/ui-libs": "^0.0.287",
+    "@kestra-io/ui-libs": "^0.0.292",
     "@popperjs/core": "^2.11.8",
     "@rive-app/canvas": "^2.35.1",
     "@types/aos": "^3.0.7",

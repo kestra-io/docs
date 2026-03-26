@@ -43,7 +43,7 @@ const PLANS = [
         button: {
             text: "Request Free Trial",
             link: "/enterprise/free-trial",
-            class: "btn-secondary",
+            class: "request-trial",
         },
         footerNote:
             "Production orchestration with security and governance built in.",
@@ -349,6 +349,15 @@ const CLOUD_PLAN = {
             flex-shrink: 0;
             .btn {
                 width: 100%;
+            }
+
+            .request-trial {
+                border: 1px solid var(--ks-content-color-highlight);
+                color: var(--ks-content-color-highlight) !important;
+
+                &:hover {
+                    background: var(--ks-background-purple-light);
+                }
             }
         }
         .self-hosted-view {

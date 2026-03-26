@@ -11,7 +11,8 @@ import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
 import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
+import { API_URL } from "astro:env/client"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import {
     filterPluginsWithoutDeprecated,
@@ -31,10 +32,10 @@ import {
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
-import { getIcon } from "~/utils/plugins/getPluginIcon"
 import { retrieveRepoReleases } from "../api/github-releases"
 import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
+import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -106,11 +107,58 @@ const githubReleaseRepo = (() => {
     }
 })()
 
-const githubVersions = await retrieveRepoReleases(githubReleaseRepo)
+const isEePlugin = githubReleaseRepo.includes("plugin-ee")
 
-if (!githubReleaseRepo.includes("plugin-ee")) {
+// Batch 1: fetch github releases, artifacts, and all plugins in parallel
+const [
+    githubVersions,
+    artifactsData,
+    allPlugins,
+    allPluginMetadata,
+    pluginsInformation,
+] = await Promise.all([
+    isEePlugin
+        ? Promise.resolve({ versions: [] as any[] })
+        : retrieveRepoReleases(githubReleaseRepo),
+    !isEePlugin
+        ? $fetchApiCached(`/plugins/artifacts/${githubReleaseRepo}`).catch(
+              (e) => {
+                  console.error("Artifacts fetch failed", e)
+                  return {}
+              },
+          )
+        : Promise.resolve({}),
+    $fetchApiCached<Plugin[]>(`/plugins/subgroups`),
+    $fetchApiCached<PluginMetadata[]>(`/plugins/metadata?icons=false`),
+    $fetchApiCached(
+        `/plugins/pluginsInformation/${githubReleaseRepo}?icons=false`,
+    ),
+])
+
+if (isEePlugin) {
     try {
-        const { artifacts = {} } = await $fetchApi("/plugins/artifacts")
+        const eeData = await $fetchApiCached<{
+            results: {
+                version: string
+                kestraVersion: string
+                releaseDate: string | null
+            }[]
+            total: number
+        }>(
+            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
+        )
+
+        githubVersions.versions = eeData.results.map((r) => ({
+            version: r.version,
+            publishedAt: r.releaseDate,
+            minCoreCompatibilityVersion: r.kestraVersion,
+            releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
+        }))
+    } catch (e) {
+        console.error("EE releases fetch failed", e)
+    }
+} else {
+    try {
         const normalizeRepoUrl = (url?: string) => {
             if (!url) return undefined
             return url
@@ -121,9 +169,10 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
         const repoUrl = normalizeRepoUrl(
             `https://github.com/kestra-io/${githubReleaseRepo}`,
         )
+
         githubVersions.versions?.forEach((v: any) => {
             v.minCoreCompatibilityVersion = (
-                Object.values(artifacts).flat() as any[]
+                Object.values(artifactsData).flat() as any[]
             ).find(
                 (a) =>
                     a.version === v.version &&
@@ -131,15 +180,15 @@ if (!githubReleaseRepo.includes("plugin-ee")) {
             )?.minCoreCompatibilityVersion
         })
     } catch (e) {
-        console.error("Artifacts fetch failed", e)
+        console.error("Artifacts annotation failed", e)
     }
 }
 
-const githubReleasesUrl = `https://github.com/kestra-io/${githubReleaseRepo}/releases`
-
-const pluginsData = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
-const navigation = generateNavigationFromSubgroups(pluginsData)
-const aliasMapping = getAliasMapping(pluginsData)
+const githubReleasesUrl = isEePlugin
+    ? null
+    : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
+const navigation = generateNavigationFromSubgroups(allPlugins)
+const aliasMapping = getAliasMapping(allPlugins)
 
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
@@ -170,10 +219,15 @@ try {
     // do nothing if plugin not found
 }
 
-const allPluginMetadata = await $fetchApi<PluginMetadata[]>(`/plugins/metadata`)
-const pluginsInformation = await $fetchApi(`/plugins/pluginsInformation`)
+// Batch 2: fetch remaining data in parallel
+const [{ countByPlugins: blueprintCounts }] = await Promise.all([
+    $fetchApiCached<{ countByPlugins: Record<string, number> }>(
+        `/blueprints/countByPlugins`,
+    ),
+])
 
-const subgroups = await $fetchApi<Plugin[]>(`/plugins/${pluginName}/subgroups`)
+const subgroups = allPlugins.filter(r => r.name === pluginName)
+
 const sidebarPluginData = generateSidebarPluginData(
     subgroups,
     allPluginMetadata,
@@ -181,14 +235,14 @@ const sidebarPluginData = generateSidebarPluginData(
 
 async function makePagePluginDefinition() {
     try {
-        const pageData = await $fetchApi<{
+        const pageData = await $fetchApiCached<{
             markdown: string
             schema: JSONSchema & {
                 properties: {
                     $deprecated?: "true" | "false"
                 }
             }
-        }>(`/plugins/definitions/${pluginType}`)
+        }>(`/plugins/definitions/${pluginType}?markdown=false`)
         const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
         const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
 
@@ -272,20 +326,15 @@ const pluginsForDisplay = pluginsWithoutDeprecated.map((plugin) => {
 const subGroupWrapper = pluginsForDisplay.find(
     (p) => slugify(subGroupName(p)) === subGroup,
 )
-const { currentPageIcon, subGroupsIcons } = await getIcon(
-    pluginName,
-    pluginType,
-    page?.body.group,
-    subGroupWrapper?.subGroup,
-)
 
-const allPlugins = await $fetchApi<Plugin[]>(`/plugins/subgroups`)
+const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
+const subGroupsIcons = page?.body?.plugins
+    ? Object.fromEntries(
+          page.body.plugins.map((p) => [p.subGroup ?? p.group, `/icons/${p.subGroup ?? p.group}.svg`]),
+      )
+    : {}
 
-const { countByPlugins: blueprintCounts } = await $fetchApi<{
-    countByPlugins: Record<string, number>
-}>(`/blueprints/countByPlugins`)
-
-const blogs = await getCollection("blogs")
+const blogs = await loadBlogPostsMetadata()
 
 const relatedBlogs = blogs
     .filter((b) => b.data.plugins?.includes(pluginName))

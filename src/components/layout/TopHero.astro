@@ -7,6 +7,7 @@ const { title, description, image } = Astro.props
 
 <section class="head">
     <div class="background"></div>
+    <slot name="hero" />
     {
         (title || description || image) && (
             <div class="container">
@@ -18,13 +19,15 @@ const { title, description, image } = Astro.props
                                 <p data-usal="fade-l" set:html={description}></p>
                             )}
                             <div class="d-flex gap-3 flex-column flex-md-row" data-usal="zoomin">
-                                <Link
-                                    href="/docs/quickstart#start-kestra"
-                                    class="btn btn-primary"
-                                    data-usal="zoomin"
-                                >
-                                    Try for free
-                                </Link>
+                                <slot name="cta">
+                                    <Link
+                                        href="/docs/quickstart#start-kestra"
+                                        class="btn btn-primary"
+                                        data-usal="zoomin"
+                                    >
+                                        Try for free
+                                    </Link>
+                                </slot>
                                 <a
                                     href="/demo"
                                     class="btn btn-secondary"
@@ -48,6 +51,7 @@ const { title, description, image } = Astro.props
     }
     <slot />
 </section>
+
 
 <style lang="scss">
     section.head {
@@ -100,7 +104,7 @@ const { title, description, image } = Astro.props
                 gap: 10px;
 
                 @include media-breakpoint-up(lg) {
-                    max-width: 450px;
+                    max-width: 470px;
                 }
             }
             &.right {
