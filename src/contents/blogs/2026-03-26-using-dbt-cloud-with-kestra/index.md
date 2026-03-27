@@ -14,7 +14,7 @@ If your entire data pipeline is dbt models running on a schedule, dbt Cloud's bu
 
 dbt Cloud's scheduler was never designed to coordinate cross-tool pipelines. That's why their [documentation](https://docs.getdbt.com/docs/deploy/deployment-tools) dedicates a full page to external orchestrators that work with dbt Cloud, listing Kestra alongside other tools.
 
-Unlike most orchestrators on that list, Kestra is language-agnostic: it orchestrates across tools and runs tasks in whatever language you're already using, whether that's Python scripts, dbt, SQL, or Bash. It handles the full pipeline as a single workflow, with dbt Cloud running the transformation step. This means cross-stack lineage and failure handling that span the entire pipeline, not just the dbt layer.
+Unlike most orchestrators on that list, Kestra is [language-agnostic](/features/code-in-any-language): it orchestrates across tools and runs tasks in whatever language you're already using, whether that's Python scripts, dbt SQL, or Bash. It handles the full pipeline as a single workflow, with dbt Cloud running the transformation step. This means cross-stack lineage and failure handling that span the entire pipeline, not just the dbt layer.
 
 I'll cover what dbt Cloud's scheduler actually handles and where it stops, then show how to build a full ingestion-to-activation pipeline with Kestra and dbt Cloud working together.
 
