@@ -8,7 +8,7 @@ import "~/assets/styles/app.scss"
 import "~/assets/styles/theme.scss"
 import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
-import LayoutFooter from "~/components/layout/Footer.vue"
+import LayoutFooter from "~/components/layout/Footer.astro"
 import LayoutFixed from "~/components/layout/Fixed.vue"
 import Announce from "~/components/layout/Announce.vue"
 // import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
@@ -211,7 +211,7 @@ const hasAnnounce = annonces.length > 0
             <slot />
         </main>
 
-        <LayoutFooter transition:persist client:visible>
+        <LayoutFooter transition:persist>
             {/* <ThemeSwitcher slot="theme-switcher" /> */}
         </LayoutFooter>
         <LayoutFixed client:only="vue" transition:persist />
