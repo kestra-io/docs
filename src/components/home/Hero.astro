@@ -102,8 +102,11 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
     }
 
     .mobile-bg {
-        position: fixed;
+        position: absolute;
         top: 0;
+        @include media-breakpoint-down(sm) {
+            top: -5rem;
+        }
         left: 0;
         width: 100%;
         height: 100%;
@@ -137,7 +140,7 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
     .hero h1 {
         grid-area: 1/1/2/2;
         font-weight: 500;
-        font-size: 1.8rem;
+        font-size: 2rem;
         @include media-breakpoint-up(md) {
             font-size: 3.5rem;
             line-height: 3.9375rem;
