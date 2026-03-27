@@ -98,6 +98,10 @@
             margin-bottom: 7rem;
         }
 
+        .container {
+            padding-inline: 1rem;
+        }
+
         h2 {
             color: var(--ks-content-tertiary);
             font-family: $font-family-monospace;
@@ -135,6 +139,10 @@
 
                 .location-block span {
                     color: var(--ks-content-tertiary);
+
+                    @include media-breakpoint-down(md) {
+                        font-size: $font-size-sm;
+                    }
                 }
 
                 .arrow-block {
