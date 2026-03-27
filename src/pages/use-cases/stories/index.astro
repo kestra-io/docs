@@ -1,5 +1,4 @@
 ---
-export const prerender = false
 import { getCollection } from "astro:content"
 import StoriesList from "~/components/stories/StoriesList.vue"
 import Layout from "~/components/layout.astro"
@@ -9,16 +8,12 @@ const title = "Kestra's Customers Stories"
 const description =
     "Learn how we helped companies manage their critical operations."
 
-const currentPage = Number(Astro.url.searchParams.get("page") ?? 1)
-const itemsPerPage = Number(Astro.url.searchParams.get("size") ?? 25)
-
 const allEntries = (await getCollection("customerStories")).sort((a, b) =>
     parseInt(a.id) > parseInt(b.id) ? -1 : 1,
 )
 
 const totalStories = allEntries.length
-const start = (currentPage - 1) * itemsPerPage
-const stories = allEntries.slice(start, start + itemsPerPage).map((e) => ({
+const stories = allEntries.map((e) => ({
     id: e.id,
     ...e.data,
     heroImage: e.data.heroImage.src,
@@ -32,10 +27,9 @@ const stories = allEntries.slice(start, start + itemsPerPage).map((e) => ({
 <Layout title={title} description={description}>
     <div class="main">
         <StoriesList
-            client:load
-            fullPath={Astro.request.url}
             stories={stories}
             totalStories={totalStories}
+            client:idle
         />
         <FooterContact
             title="Getting started with Kestra"

@@ -1,5 +1,5 @@
 ---
-export const prerender = false
+import type { GetStaticPaths } from "astro"
 import Layout from "~/components/layout.astro"
 import TutorialsGrid from "~/components/videos/TutorialsGrid.vue"
 import { getCollection } from "astro:content"
@@ -7,13 +7,13 @@ import Tabs from "~/components/common/Tabs.vue"
 import Mesh from "~/components/layout/Mesh.vue"
 import Subscribe from "~/components/layout/Subscribe.vue"
 import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
+import { categories } from "~/components/videos/categories"
 
-const categories = new Map([
-    ["all", "All videos"],
-    ["deep-dive", "Deep Dive Tutorials"],
-    ["quick-start", "Quick Start Tutorials"],
-    ["feature-highlight", "Feature Highlight"],
-])
+export const getStaticPaths = (() => {
+    return Array.from(categories.keys()).map((key) => ({
+        params: { slug: key },
+    }))
+}) satisfies GetStaticPaths
 
 const { slug } = Astro.params
 
