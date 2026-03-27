@@ -1,0 +1,35 @@
+---
+import Header from "~/components/careers/Header.astro"
+interface Props {
+    title: string
+}
+const { title } = Astro.props
+---
+
+<Header>
+    <div class="breadcrumbs" data-usal="fade-l">
+        <a href="/">Home</a> &gt; <a class="last" href="/careers">
+            Open Roles
+        </a>
+    </div>
+    <h1 data-usal="fade-l">
+        {title}
+    </h1>
+</Header>
+
+<style lang="scss">
+    .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+        a {
+            color: var(--ks-content-secondary);
+        }
+
+        .last {
+            color: var(--ks-content-primary);
+        }
+    }
+</style>

@@ -131,6 +131,13 @@ const FOOTER_SECTIONS: Section[] = [
             { text: "Ansible Automation Platform", href: "/vs/ansible-automation-platform" },
             { text: "Rundeck", href: "/vs/rundeck" },
             { text: "HP Operations Orchestrator", href: "/vs/hp-operations-orchestrator" },
+            { text: "Control-M", href: "/vs/control-m" },
+            { text: "Redwood", href: "/vs/redwood" },
+            { text: "Stonebranch", href: "/vs/stonebranch" },
+            { text: "IBM Workload Automation", href: "/vs/ibm-workload-automation" },
+            { text: "Morpheus", href: "/vs/morpheus" },
+            { text: "Puppet", href: "/vs/puppet" },
+            { text: "Chef", href: "/vs/chef" },
         ]
     },
     {
