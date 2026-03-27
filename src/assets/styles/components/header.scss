@@ -166,6 +166,7 @@ nav {
             font-size: 18px;
             display: flex;
             align-items: center;
+            pointer-events: none;
             transition: transform 0.3s ease;
 
             :deep(.material-design-icon__svg) {
@@ -270,7 +271,7 @@ nav {
 
                 &.show {
                     .dropdown-chevron {
-                        transform: rotate(180deg);
+                        transform: rotate(180deg) translateY(-2px);
                     }
                 }
             }
