@@ -18,7 +18,7 @@ export default async function loadBlogPostsMetadata() {
                 // from the YAML-like frontmatter
                 const metadata = yaml.load(
                     metadataRaw,
-                ) as unknown as unknown as CollectionEntry<"blogs">["data"]
+                ) as CollectionEntry<"blogs">["data"]
                 return {
                     data: metadata,
                     id: generateId({ entry: filePath.slice(25) }),

@@ -1,0 +1,43 @@
+---
+import { slugify } from "@kestra-io/ui-libs"
+import type { GetStaticPaths } from "astro"
+import { getCollection } from "astro:content"
+
+export const getStaticPaths = (async () => {
+    const allEntries = await getCollection("customerStories")
+
+    return allEntries.map((entry) => ({
+        props: {
+            entry,
+            related: {
+                results: allEntries
+                    .filter((e) => e.id !== entry.id)
+                    .map((e) => ({
+                        id: e.id,
+                        ...e.data,
+                        heroImage: e.data.heroImage.src,
+                        featuredImage: e.data.featuredImage.src,
+                        logo: e.data.logo?.src,
+                        logoDark: e.data.logoDark?.src,
+                        content: e.body ?? "",
+                    }))
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3),
+                total: allEntries.length,
+            },
+        },
+        params: {
+            staticSlug: `${entry.id}-${slugify(entry.data.title)}`,
+        },
+    }))
+}) satisfies GetStaticPaths
+
+const { staticSlug } = Astro.params
+
+const id = staticSlug?.split("-")[0]
+
+// look in the file system in content/customerStories for the folder with the id
+if (id) {
+    return Astro.rewrite(`/use-cases/stories/${id}`)
+}
+---
