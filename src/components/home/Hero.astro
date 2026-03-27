@@ -9,7 +9,15 @@ import CloudIcon from "./assets/hero/cloud.svg"
 import HeroAnimation from "./hero-animation.astro"
 import AnimatedWord from "./AnimatedWord.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-import Logos from "~/components/enterprise/Logos.astro"
+import LogoBar from "./LogoBar.astro"
+import LogoCarousel from "~/components/common/LogoCarousel.astro"
+import JPMorganIcon from "./assets/companies/jpmorgan.svg"
+import TSystemIcon from "./assets/companies/t-system.svg"
+import BrainlabIcon from "./assets/companies/brainlab.svg"
+import BloombergIcon from "./assets/companies/bloomberg.svg"
+import FilaIcon from "./assets/companies/fila.svg"
+import AppleIcon from "./assets/companies/apple.svg"
+import ToyotaIcon from "./assets/companies/toyota.svg"
 ---
 
 <section aria-labelledby="hero">
@@ -41,8 +49,8 @@ import Logos from "~/components/enterprise/Logos.astro"
             <a href="/docs/quickstart" class="btn btn-lg btn-primary me-3 mb-2">
                 Get started with Open Source
             </a>
-            <a href="/pricing" class="btn btn-lg btn-secondary mb-2">
-                See all plans
+            <a href="/demo" class="btn btn-lg btn-secondary mb-2">
+                Book a Demo
             </a>
         </div>
         <a href="/pricing" class="compare">
@@ -52,7 +60,7 @@ import Logos from "~/components/enterprise/Logos.astro"
     <div class="hero-animation">
         <HeroAnimation />
     </div>
-    <Logos />
+    <LogoBar />
 </section>
 
 <style lang="scss">
@@ -208,6 +216,10 @@ import Logos from "~/components/enterprise/Logos.astro"
                 transform: translateX(3px);
             }
         }
+    }
+
+    :global(.logo-carousel .companies) {
+        gap: 2rem !important;
     }
 </style>
 

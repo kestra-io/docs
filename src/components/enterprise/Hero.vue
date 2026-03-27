@@ -21,7 +21,18 @@
                 </div>
             </div>
             <Dashboard />
-            <slot />
+            <div class="logos-wrap">
+                <div class="logos">
+                    <div
+                        v-for="(logo, index) in [...LogoList, ...LogoList]"
+                        :key="index"
+                        :class="{'d-sm-none': index >= LogoList.length}"
+                        class="logo-item"
+                    >
+                        <img :src="logo.src" :alt="logo.alt" />
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </template>
@@ -30,6 +41,15 @@
     import Link from '~/components/common/Link.vue';
     import Dashboard from '~/components/enterprise/Dashboard.vue';
 
+    const logos = import.meta.glob("/src/components/enterprise/assets/logos/*.svg", { eager: true });
+
+    const LogoList = [
+        "LM", "BHP", "ACXIOM", "ITZ",
+        "T-SYSTEM", "COE", "BATTELLE", "DATAPORT"
+    ].map(name => ({
+        src: (logos[`/src/components/enterprise/assets/logos/${name}.svg`] as any).default.src,
+        alt: name
+    }));
 </script>
 
 <style lang="scss" scoped>
@@ -104,6 +124,56 @@
                 }
             }
         }
+
+
+        .logos-wrap {
+            width: 100%;
+            overflow: hidden;
+            margin-top: 2rem;
+
+            .logos {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 0;
+
+                @include media-breakpoint-down(md) {
+                    gap: 2rem;
+
+                    img {
+                        width: 80%;
+                    }
+                }
+
+                @include media-breakpoint-down(sm) {
+                    flex-wrap: nowrap;
+                    justify-content: flex-start;
+                    width: max-content;
+                    animation: marquee 30s linear infinite;
+                    gap: 0;
+
+                    .logo-item {
+                        padding: 0 0.5rem;
+                        flex-shrink: 0;
+
+                        img {
+                            width: 100px;
+                        }
+                    }
+                }
+            }
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
     }
 </style>
-
