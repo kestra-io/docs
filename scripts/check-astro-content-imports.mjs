@@ -87,7 +87,7 @@ function extractScriptContent(filePath, raw) {
 
     if (filePath.endsWith(".vue")) {
         const blocks = []
-        const re = /<script(\s[^>]*)?>(\s*[\s\S]*?)<\/script\s*>/gi
+        const re = /<script(\s[^>]*)?>(\s*[\s\S]*?)<\/script[^>]*>/gi
         let m
         while ((m = re.exec(raw)) !== null) {
             blocks.push(m[2])
