@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets"
-import { Icon } from "astro-icon/components"
 import Link from "~/components/common/Link.astro"
 import Squared from "~/components/layout/Squared.vue"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 
 interface Props {
     title: string
@@ -26,11 +26,12 @@ const { title, description, cta, image, features } = Astro.props
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="banner-box left">
-                    <nav class="breadcrumb">
-                        <a href="/" class="tertiary">Home</a>
-                        <Icon name="mdi:chevron-right" class="tertiary" />
-                        <a class="fw-bold" href="/partners">Partners</a>
-                    </nav>
+                    <Breadcrumb
+                        items={[
+                            { label: "Home", href: "/" },
+                            { label: "Partners", href: "/partners" },
+                        ]}
+                    />
                     <h1>{title}</h1>
                     <p>{description}</p>
                     <Link href={cta.href} class="btn btn-primary">
@@ -95,22 +96,6 @@ const { title, description, cta, image, features } = Astro.props
             display: flex;
             flex-direction: column;
             gap: 10px;
-
-            .breadcrumb {
-                display: flex;
-                align-items: center;
-                font-size: $font-size-xs;
-                gap: 0.25rem;
-
-                a {
-                    color: var(--ks-content-primary);
-                    text-decoration: none;
-                }
-
-                .tertiary {
-                    color: var(--ks-content-tertiary);
-                }
-            }
 
             .btn {
                 width: fit-content;
