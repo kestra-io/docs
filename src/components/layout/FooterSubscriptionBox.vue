@@ -44,7 +44,9 @@
     .subscription-wrapper {
         display: flex;
         align-items: center;
-        gap: 3rem;
+        flex-wrap: wrap;
+        // set horizontal gap to 3rem and vertical gap to 1rem
+        gap: 1rem 3rem;
         > h4 {
             margin-bottom: 0;
             white-space: nowrap;
