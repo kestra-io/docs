@@ -33,6 +33,7 @@ import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigat
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
 import { retrieveRepoReleases } from "../api/github-releases"
+import { getCollection } from "astro:content"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 
@@ -225,7 +226,7 @@ const [{ countByPlugins: blueprintCounts }] = await Promise.all([
     ),
 ])
 
-const subgroups = allPlugins.filter((r) => r.name === pluginName)
+const subgroups = allPlugins.filter(r => r.name === pluginName)
 
 const sidebarPluginData = generateSidebarPluginData(
     subgroups,
@@ -329,10 +330,7 @@ const subGroupWrapper = pluginsForDisplay.find(
 const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
 const subGroupsIcons = page?.body?.plugins
     ? Object.fromEntries(
-          page.body.plugins.map((p) => [
-              p.subGroup ?? p.group,
-              `/icons/${p.subGroup ?? p.group}.svg`,
-          ]),
+          page.body.plugins.map((p) => [p.subGroup ?? p.group, `/icons/${p.subGroup ?? p.group}.svg`]),
       )
     : {}
 

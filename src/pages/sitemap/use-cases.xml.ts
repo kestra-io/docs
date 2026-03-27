@@ -1,3 +1,5 @@
+export const prerender = false
+
 import { slugify } from "@kestra-io/ui-libs"
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"

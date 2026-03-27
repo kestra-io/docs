@@ -1,23 +1,32 @@
 ---
-import type { GetStaticPaths } from "astro"
+export const prerender = false
 import Layout from "~/components/layout.astro"
+import FooterContact from "~/components/layout/FooterContact.astro"
 import TutorialsGrid from "~/components/videos/TutorialsGrid.vue"
 import { getCollection } from "astro:content"
 import Tabs from "~/components/common/Tabs.vue"
 import Mesh from "~/components/layout/Mesh.vue"
 import Subscribe from "~/components/layout/Subscribe.vue"
 import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
-import { categories } from "~/components/videos/categories"
 
-export const getStaticPaths = (() => {
-    return Array.from(categories.keys()).map((key) => ({
-        params: { slug: key },
-    }))
-}) satisfies GetStaticPaths
+const categories = new Map([
+    ["all", "All videos"],
+    ["deep-dive", "Deep Dive Tutorials"],
+    ["quick-start", "Quick Start Tutorials"],
+    ["feature-highlight", "Feature Highlight"],
+])
 
 const { slug } = Astro.params
 
 const currentCategory = slug ? (categories.get(slug) ?? "") : ""
+
+const PageURL = new URL(Astro.request.url)
+
+const itemsPerPageStr = PageURL.searchParams.get("size")
+const itemsPerPage = itemsPerPageStr ? parseInt(itemsPerPageStr) : 24
+
+const pageStr = PageURL.searchParams.get("page")
+const page = pageStr ? parseInt(pageStr) : 1
 
 const currentCategoryFilter = slug === "all" ? "" : currentCategory
 
@@ -32,13 +41,14 @@ const filteredVideos = currentCategoryFilter
     ? sortedVideos.filter((v) => v.data.category === currentCategoryFilter)
     : sortedVideos
 
-const tutorialVideo = {
-    results: filteredVideos.map((video) => ({
-        ...video.data,
-        publicationDate: video.data.publicationDate.toString(),
-    })),
-    total: filteredVideos.length,
-}
+const total = filteredVideos.length
+const start = (page - 1) * itemsPerPage
+const results = filteredVideos.slice(start, start + itemsPerPage).map((v) => ({
+    ...v.data,
+    publicationDate: v.data.publicationDate.toISOString(),
+}))
+
+const tutorialVideo = { results, total }
 
 const title = `Video Tutorials: ${currentCategory}`
 const description = `Get started with our Video Tutorials: ${currentCategory}`
@@ -60,9 +70,14 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
         />
         <div class="container">
             <TutorialsGrid
-                {tutorialVideo}
-                {currentCategory}
-                {categories}
+                currentUrl={Astro.request.url}
+                {...{
+                    tutorialVideo,
+                    page,
+                    itemsPerPage,
+                    currentCategory,
+                    categories,
+                }}
                 client:visible
             />
         </div>
