@@ -32,8 +32,6 @@
 </script>
 
 <style scoped lang="scss">
-
-
     .story-card {
         height: 434px;
         border-radius: 0.75rem;

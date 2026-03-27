@@ -51,13 +51,10 @@ On one side, demand for cloud services was increasing. On the other, execution h
 
 Script-based automation and CI pipelines could trigger actions, but they didn’t provide a clear answer to fundamental questions:
 
-Who triggered this?
-
-What exactly ran?
-
-How is progress tracked?
-
-Where is the audit trail?
+- Who triggered this?
+- What exactly ran?
+- How is progress tracked?
+- Where is the audit trail?
 
 Automation without visibility quickly becomes operational risk.
 
