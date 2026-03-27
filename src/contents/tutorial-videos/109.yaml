@@ -1,0 +1,19 @@
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "Airflow 2 reaching end of life on April 22, 2026 is forcing teams to
+  answer a bigger question than \"should we upgrade?\" The real decision is whether
+  to reaffirm the Airflow model with Airflow 3, or use this moment to rethink orchestration
+  more broadly. In this video, we look at why you should upgrade or migrate to another
+  tool like Kestra!\n\n🚀 Try Kestra for free: https://go.kestra.io/yt/try-kestra\n\
+  🔥 Try out the Migration Agent Skill: https://go.kestra.io/migration-skills\n\nTimestamps\n\
+  0:00 - The Problem\n0:52 - Current Situation\n1:45 - Do I need to upgrade?\n2:29
+  - What is our orchestration model?\n3:02 - Why to upgrade to Airflow 3\n4:15 - When
+  to migrate to another tool\n7:30 - Summary\n\nLike, and Subscribe for more quick
+  guides on using Kestra!\n\n----------\n\n📖 Read the documentation: https://go.kestra.io/docs\n\
+  ⭐ Start your journey with Kestra: https://go.kestra.io/github\n💬 Join the Kestra
+  Community: https://go.kestra.io/slack\n\nFor more information, visit Kestra's Website:
+  https://go.kestra.io/"
+category: "Deep Dive Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
+contentType: "Deep Dive Tutorials"
