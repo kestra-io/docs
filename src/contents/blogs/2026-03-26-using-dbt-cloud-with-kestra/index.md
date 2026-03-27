@@ -14,7 +14,7 @@ If your entire data pipeline is dbt models running on a schedule, dbt Cloud's bu
 
 dbt Cloud's scheduler was never designed to coordinate cross-tool pipelines. That's why their [documentation](https://docs.getdbt.com/docs/deploy/deployment-tools) dedicates a full page to external orchestrators that work with dbt Cloud, listing Kestra alongside other tools.
 
-Unlike most orchestrators on that list, Kestra is language-agnostic: it orchestrates across tools and runs tasks in whatever language you're already using, whether that's Python scripts, dbt SQL, or Bash. It handles the full pipeline as a single workflow, with dbt Cloud running the transformation step. This means cross-stack lineage and failure handling that span the entire pipeline, not just the dbt layer.
+Unlike most orchestrators on that list, Kestra is language-agnostic: it orchestrates across tools and runs tasks in whatever language you're already using, whether that's Python scripts, dbt, SQL, or Bash. It handles the full pipeline as a single workflow, with dbt Cloud running the transformation step. This means cross-stack lineage and failure handling that span the entire pipeline, not just the dbt layer.
 
 I'll cover what dbt Cloud's scheduler actually handles and where it stops, then show how to build a full ingestion-to-activation pipeline with Kestra and dbt Cloud working together.
 
@@ -95,7 +95,7 @@ triggers:
 
 In a multi-tool pipeline, dbt Labs' lineage view stops at each tool's boundary. dbt Cloud tracks your models, Airbyte tracks its syncs, Hightouch tracks its activations — and none of them know what the others are doing. When a dashboard shows stale data, you're jumping between three UIs trying to reconstruct what happened and in what order, because no single tool saw the whole thing.
 
-Kestra sees the whole pipeline because it ran all of it — Python scripts, dbt SQL, Bash, API calls, regardless of what tool or language each step uses. That means it tracks assets across the entire execution graph, not just within a single tool's boundary. Kestra's [Assets](../../docs/07.enterprise/02.governance/01.assets/index.md) record which S3 files fed the Airbyte sync, which dbt models the sync populated, which Hightouch syncs consumed those models, and which execution last touched each asset. When a dashboard shows stale data, you trace the problem from the dashboard back to the source file in one place, not across four tools.
+Kestra sees the whole pipeline because it ran all of it — Python scripts, dbt, SQL, Bash, API calls, regardless of what tool or language each step uses. That means it tracks assets across the entire execution graph, not just within a single tool's boundary. Kestra's [Assets](../../docs/07.enterprise/02.governance/01.assets/index.md) record which S3 files fed the Airbyte sync, which dbt models the sync populated, which Hightouch syncs consumed those models, and which execution last touched each asset. When a dashboard shows stale data, you trace the problem from the dashboard back to the source file in one place, not across four tools.
 
 Here's what that difference looks like. dbt Cloud's lineage view shows your models and nothing else:
 
@@ -117,7 +117,7 @@ Kestra handles failures at the workflow level because it orchestrates every step
 ```yaml
 errors:
   - id: slack_alert
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: |
       Pipeline failed at step: {{ taskrun.taskId }}
