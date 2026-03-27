@@ -76,7 +76,7 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
             padding-inline: 0;
             padding-top: 2rem;
             background:
-                url("./assets/hero/bg-grid.svg") no-repeat center bottom,
+                url("./assets/hero/bg-grid.svg") no-repeat 50% -100px,
                 url("./assets/hero/bg-desktop.svg") no-repeat center center /
                     cover;
         }
@@ -93,9 +93,7 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
         position: relative;
         z-index: 2;
         @include media-breakpoint-up(md) {
-            padding-top: 4rem;
-            padding-right: 18rem;
-            padding-bottom: 4rem;
+            padding: 3rem 18rem 3rem 5rem;
             margin-top: 0;
         }
         @include media-breakpoint-between(lg, xl) {
@@ -202,7 +200,7 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
     }
 
     .compare {
-        color: #CDC5FF;
+        color: #cdc5ff;
         text-decoration: none;
         display: flex;
         align-items: center;
@@ -222,4 +220,3 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
         gap: 2rem !important;
     }
 </style>
-
