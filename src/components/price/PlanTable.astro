@@ -12,7 +12,7 @@ const SECTIONS = getSections(totalPlugins)
 
 <section class="compare-plan" data-host="self-hosted" id="comparison-table">
     <div class="container">
-        <h2 data-usal="fade-r">See All Plans</h2>
+        <h2 data-usal="fade-r">See all features</h2>
 
         <div class="table-wrapper">
             <table class="plan-table">
@@ -45,7 +45,7 @@ const SECTIONS = getSections(totalPlugins)
                         SECTIONS.map((section) => (
                             <>
                                 <tr class="section-row">
-                                    <td colspan="5">{section.title}</td>
+                                    <td colspan="3">{section.title}</td>
                                 </tr>
                                 {section.rows.map((row) => (
                                     <tr class="feature-row">
