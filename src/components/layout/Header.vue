@@ -353,7 +353,6 @@
                 >
                     <div class="header-menu-card">
                         <div
-                            @mouseleave="mouseLeaveMenu()"
                             id="product"
                             class="header-menu-card-section"
                         >
@@ -395,7 +394,6 @@
                             </div>
                         </div>
                         <div
-                            @mouseleave="mouseLeaveMenu()"
                             id="solutions"
                             class="header-menu-card-section"
                         >
@@ -479,7 +477,6 @@
                             </div>
                         </div>
                         <div
-                            @mouseleave="mouseLeaveMenu()"
                             id="resources"
                             class="header-menu-card-section"
                         >
@@ -511,7 +508,6 @@
                             </div>
                         </div>
                         <div
-                            @mouseleave="mouseLeaveMenu()"
                             id="company"
                             class="header-menu-card-section"
                         >
@@ -665,6 +661,11 @@
         const menu = document.getElementById(id)
         if (!menu) return
 
+        if (showMenuId.value === id && showMenu.value) {
+            headerMenuPointerEvents.value = "auto"
+            return
+        }
+
         document.querySelectorAll(".header-menu-card-section").forEach((el) => {
             el.classList.remove("opacity-100", "z-1")
         })
@@ -692,7 +693,7 @@
                     headerMenuPointerEvents.value = "none"
                     showMenu.value = false
                     showMenuId.value = null
-                }, 100)
+                }, 150)
             }
         }
     }
@@ -762,3 +763,4 @@
         }
     }
 </style>
+
