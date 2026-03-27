@@ -304,7 +304,7 @@
                             class="d-none mb-1 btn btn-sm btn-secondary me-0 me-sm-2 d-xl-inline-block"
                             href="/demo"
                         >
-                            <span> Book a Demo</span>
+                            <span> Contact Sales</span>
                         </a>
                         <a
                             @click="globalClick(true)"

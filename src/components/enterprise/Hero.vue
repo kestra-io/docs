@@ -16,7 +16,7 @@
                     <Link
                         href="/demo"
                         text="Contact Sales"
-                        class="btn btn-prim‡ary"
+                        class="btn btn-primary"
                     />
                 </div>
             </div>
