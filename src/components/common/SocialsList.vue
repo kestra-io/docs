@@ -72,7 +72,7 @@
         {
             href: "https://web-cdn.bsky.app/profile/kestra.io",
             icon: BlueSky,
-            text: "BlueSky",
+            text: "Bluesky",
         },
         {
             href: "https://www.linkedin.com/company/kestra",
