@@ -86,6 +86,12 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
                 gap: 2rem;
                 margin-left: -14px;
             }
+            @include media-breakpoint-up(xl) {
+                gap: 3rem;
+            }
+            @include media-breakpoint-up(xxl) {
+                gap: 5rem;
+            }
 
             @include media-breakpoint-down(lg) {
                 width: max-content;
