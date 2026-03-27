@@ -8,13 +8,15 @@ import "~/assets/styles/app.scss"
 import "~/assets/styles/theme.scss"
 import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
-import LayoutFooter from "~/components/layout/Footer.vue"
+import LayoutFooter from "~/components/layout/Footer.astro"
 import LayoutFixed from "~/components/layout/Fixed.vue"
 import Announce from "~/components/layout/Announce.vue"
-// import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
-import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
+import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
-import { getCollection } from "astro:content"
+import annoncesData from "~/contents/annonces/annonces.yml?raw"
+import YAML from "yaml"
+
+const parsedAnnonces = YAML.parse(annoncesData ?? "[]")
 
 interface Props {
     title?: string
@@ -48,7 +50,6 @@ const description =
     props.description ??
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
-const slackMembers = await fetchSlackMembers()
 
 const query = new URLSearchParams(
     currentUrl.searchParams
@@ -72,9 +73,7 @@ const canonicalUrl = new URL(
 )
 
 const randomAiQuestions = getRandomAiQuestions()
-const annonces = (await getCollection("annonces"))
-    .map((a) => a.data)
-    .filter((a) => a.id !== 0)
+const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const hasAnnounce = annonces.length > 0
 ---
@@ -211,10 +210,10 @@ const hasAnnounce = annonces.length > 0
             <slot />
         </main>
 
-        <LayoutFooter transition:persist client:visible>
-            {/* <ThemeSwitcher slot="theme-switcher" /> */}
+        <LayoutFooter transition:persist>
+            <ThemeSwitcher slot="theme-switcher" />
         </LayoutFooter>
-        <LayoutFixed client:load transition:persist online={slackMembers} />
+        <LayoutFixed client:only="vue" transition:persist />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>

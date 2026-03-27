@@ -10,17 +10,17 @@
                 <div class="d-flex align-items-center gap-3 cta" data-usal="zoomin">
                     <Link
                         href="/pricing"
-                        text="Compare All Plans"
+                        text="See All Plans"
                         class="btn btn-secondary"
                     />
                     <Link
-                        href="/enterprise/free-trial"
-                        text="Request Free Trial"
+                        href="/demo"
+                        text="Contact Sales"
                         class="btn btn-primary"
                     />
                 </div>
             </div>
-
+            <Dashboard />
             <div class="logos-wrap">
                 <div class="logos">
                     <div
@@ -33,8 +33,6 @@
                     </div>
                 </div>
             </div>
-
-            <Dashboard />
         </div>
     </section>
 </template>
@@ -55,10 +53,8 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .hero {
-        padding-top: 15rem;
+        padding-top: 7.5rem;
         padding-bottom: 90px;
         background-color: #131316;
         margin: calc(-80px - var(--announce-height)) auto 0;
@@ -122,9 +118,9 @@
             }
 
             .cta {
+                padding-bottom: 0;
                 @include media-breakpoint-down(sm) {
                     flex-direction: column;
-                    padding-bottom: 0;
                 }
             }
         }
@@ -133,7 +129,7 @@
         .logos-wrap {
             width: 100%;
             overflow: hidden;
-            margin-top: 3rem;
+            margin-top: 2rem;
 
             .logos {
                 display: flex;

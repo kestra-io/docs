@@ -8,7 +8,7 @@
             <a :href="shareLinkedin" target="_blank" aria-label="Share on LinkedIn">
                 <LinkedIn class="icon" />
             </a>
-            <a :href="shareBluesky" target="_blank" aria-label="Share on BlueSky">
+            <a :href="shareBluesky" target="_blank" aria-label="Share on Bluesky">
                 <BlueSkyIcon class="icon" />
             </a>
         </div>
@@ -56,7 +56,7 @@
         align-items: center;
 
         a {
-            color: var(--ks-content-tertiary);
+            color: var(--ks-content-primary);
             transition: color 0.2s ease;
             display: flex;
             align-items: center;

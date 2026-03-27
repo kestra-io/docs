@@ -7,6 +7,7 @@ const { title, description, image } = Astro.props
 
 <section class="head">
     <div class="background"></div>
+    <slot name="hero" />
     {
         (title || description || image) && (
             <div class="container">
@@ -24,7 +25,7 @@ const { title, description, image } = Astro.props
                                         class="btn btn-primary"
                                         data-usal="zoomin"
                                     >
-                                        Try for free
+                                        Try for Free
                                     </Link>
                                 </slot>
                                 <a
@@ -32,7 +33,7 @@ const { title, description, image } = Astro.props
                                     class="btn btn-secondary"
                                     data-usal="zoomin"
                                 >
-                                    Book a demo
+                                    Contact Sales
                                 </a>
                             </div>
                         </div>
@@ -50,6 +51,7 @@ const { title, description, image } = Astro.props
     }
     <slot />
 </section>
+
 
 <style lang="scss">
     section.head {

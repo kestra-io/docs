@@ -1,0 +1,89 @@
+---
+import { Image } from "astro:assets"
+
+interface Props {
+    title: string
+    capabilities: {
+        title: string
+        description: string
+        image: ImageMetadata
+        pageHref: string
+    }[]
+}
+
+const { title, capabilities } = Astro.props
+---
+
+<section class="container-fluid">
+    <div class="container">
+        <div class="language-agnostic">
+            <h2 class="title" data-usal="fade-r">
+                <span class="highlight">Kestra's Capabilities</span>
+                {title}
+            </h2>
+            <div class="row d-flex">
+                {
+                    capabilities.map((item) => (
+                        <div class="col-12 col-md-6 col-lg-4 mb-4">
+                            <a class="page-item" href={item.pageHref}>
+                                <Image src={item.image} alt={item.title} />
+                                <h6 data-usal="fade-r">{item.title}</h6>
+                                <p data-usal="fade-l">{item.description}</p>
+                            </a>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .container-fluid {
+        background-color: var(--ks-background-body);
+        padding: $rem-4 $rem-1;
+
+        .language-agnostic {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .page-item {
+            height: 100%;
+            overflow: clip;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-decoration: none;
+            border: $block-border;
+            border-radius: $border-radius-lg;
+            padding: 0.5rem;
+            transition: border-color 0.3s ease-in-out;
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+
+            &:hover {
+                border-color: var(--ks-border-active);
+            }
+            h6,
+            p {
+                color: var(--ks-content-primary);
+                margin-bottom: 0;
+            }
+
+            p {
+                font-size: $font-size-xs;
+                margin-bottom: 1rem;
+            }
+
+            img {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 372 / 209;
+                border-radius: 8px;
+                border: $block-border;
+                object-fit: cover;
+            }
+        }
+    }
+</style>

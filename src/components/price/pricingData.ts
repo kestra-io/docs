@@ -33,15 +33,15 @@ export const PLANS: Plan[] = [
     {
         name: "Team",
         button: {
-            text: "Request Free Trial",
-            href: "/enterprise/free-trial",
+            text: "Contact Sales",
+            href: "/demo",
             class: "btn btn-secondary",
         },
     },
     {
         name: "Pro",
         button: {
-            text: "Contact us",
+            text: "Contact Sales",
             href: "/demo",
             class: "btn btn-secondary",
         },
@@ -49,7 +49,7 @@ export const PLANS: Plan[] = [
     {
         name: "Enterprise",
         button: {
-            text: "Contact us",
+            text: "Contact Sales",
             href: "/demo",
             class: "btn btn-primary",
         },

@@ -1,110 +1,206 @@
 ---
-import Layout from "~/components/layout.astro"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
-import CardGrid from "~/components/features/shared/CardGrid.astro"
-import EnterpriseSection from "~/components/home/EnterpriseSection.astro"
-import Section from "~/components/layout/Section.astro"
+import { API_URL } from "astro:env/client"
 
-const TITLE = "Use cases for Modern Data Orchestration"
-const DESCRIPTION =
+import Layout from "~/components/layout.astro"
+import Link from "~/components/common/Link.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import Stacked from "~/components/common/Stacked.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
+import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
+
+import softwareEngineersImg from "~/assets/use-cases/capabilities/continuous-integration.svg"
+import platformEngineersImg from "~/assets/use-cases/capabilities/provisioning-deployment.svg"
+import dataEngineersImg from "~/assets/use-cases/capabilities/infrastructure-monitoring.svg"
+
+const { results: blueprints } = await fetch(
+    `${API_URL}/blueprints/versions/latest?page=1&size=20`,
+).then((res) => res.json())
+
+const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
+    (res) => res.json(),
+)
+
+const title = "Use cases for Modern Data Orchestration"
+const description =
     "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
 
-const POSSIBILITIES_DATA = {
-    title: "Orchestration <span>Simplified</span>",
-    description:
-        "From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains.",
-    items: [
-        {
-            title: "Data Pipelines",
-            description:
-                "Say goodbye to delays in your pipeline as Kestra initiates workflows based on specific times or events, such as data arrivals or file uploads.",
-            number: "01",
-        },
-        {
-            title: "Machine Learning Model Deployment",
-            description:
-                "Efficiently manage and deploy your machine learning models at scale with Kestra's microservice orchestration capabilities.",
-            number: "02",
-        },
-        {
-            title: "ETL Processes",
-            description:
-                "Seamlessly move data between systems, prepare and clean it, and aggregate it into a consolidated data mart.",
-            number: "03",
-        },
-        {
-            title: "Event-Driven Automation at Scale",
-            description:
-                "React to events happening in your business and automate your critical microservices and operations.",
-            number: "04",
-        },
-        {
-            title: "Real-Time Data Processing with Change Data Capture",
-            description:
-                "Automatically detect changes in data sources and trigger workflows to process those changes.",
-            number: "05",
-        },
-        {
-            title: "Automated Reporting",
-            description:
-                "Configure Kestra to distribute reports via email or Slack, keeping your team informed.",
-            number: "06",
-        },
-        {
-            title: "Data Ingestion and Integration",
-            description:
-                "Easily collect data from various sources and integrate them into your workflows.",
-            number: "07",
-        },
-        {
-            title: "Infrastructure Orchestration",
-            description:
-                "Automate tasks such as provisioning, deployment, and monitoring of infrastructure resources.",
-            number: "08",
-        },
-        {
-            title: "End-to-End Data Orchestration",
-            description:
-                "Kestra empowers you to manage the entire data lifecycle from ingestion to reporting and automation.",
-            number: "09",
-        },
-    ],
-}
+const MAIN_ITEMS = [
+    {
+        number: "01",
+        title: "Data Pipelines",
+        description:
+            "Say goodbye to delays in your pipeline as Kestra initiates workflows based on specific times or events, such as data arrivals or file uploads.",
+    },
+    {
+        number: "02",
+        title: "Machine Learning Model Deployment",
+        description:
+            "Efficiently manage and deploy your machine learning models at scale with Kestra's microservice orchestration capabilities.",
+    },
+    {
+        number: "03",
+        title: "ETL Processes",
+        description:
+            "Seamlessly move data between systems, prepare and clean it, and aggregate it into a consolidated data mart.",
+    },
+    {
+        number: "04",
+        title: "Event-Driven Automation at Scale",
+        description:
+            "React to events happening in your business and automate your critical microservices and operations.",
+    },
+    {
+        number: "05",
+        title: "Real-Time Data Processing with Change Data Capture",
+        description:
+            "Automatically detect changes in data sources and trigger workflows to process those changes.",
+    },
+    {
+        number: "06",
+        title: "Automated Reporting",
+        description:
+            "Configure Kestra to distribute reports via email or Slack, keeping your team informed.",
+    },
+    {
+        number: "07",
+        title: "Data Ingestion and Integration",
+        description:
+            "Easily collect data from various sources and integrate them into your workflows.",
+    },
+    {
+        number: "08",
+        title: "Infrastructure Orchestration",
+        description:
+            "Automate tasks such as provisioning, deployment, and monitoring of infrastructure resources.",
+    },
+    {
+        number: "09",
+        title: "End-to-End Data Orchestration",
+        description:
+            "Kestra empowers you to manage the entire data lifecycle from ingestion to reporting and automation.",
+    },
+]
 
 const CAPABILITIES = [
-    "Change data capture",
-    "Modern Data Stack Integration",
-    "CI/CD for your Kestra Workflows",
+    {
+        title: "For Software Engineers",
+        pageHref: "/use-cases/software-engineers",
+        image: softwareEngineersImg,
+        description:
+            "Focus on core business logic while Kestra handles complex orchestration, retries, and error management.",
+    },
+    {
+        title: "For Platform Engineers",
+        pageHref: "/use-cases/platform-engineers",
+        image: platformEngineersImg,
+        description:
+            "Standardize infrastructure and deployment workflows across the organization with a centralized platform.",
+    },
+    {
+        title: "For Data Engineers",
+        pageHref: "/use-cases/data-engineers",
+        image: dataEngineersImg,
+        description:
+            "Build flexible, event-driven data pipelines that scale from batch processing to real-time ingestion.",
+    },
 ]
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <Section
-        subtitle="Use Cases"
-        class="container"
-        baseline="Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform."
-    />
+<Layout {title} {description} headerTheme="lightText">
+    <div class="hero-part">
+        <TopHero>
+            <Fragment slot="hero">
+                <div class="container">
+                    <div>
+                        <h1 data-usal="fade-r">
+                            One Orchestrator. Every Workflow.
+                        </h1>
+                        <p data-usal="fade-l">
+                            Harness the value of your data, unlock new insights,
+                            and drive informed decision-making using Kestra's
+                            automation platform
+                        </p>
+                    </div>
+                    <div
+                        class="d-flex gap-3 flex-column flex-sm-row"
+                        data-usal="zoomin"
+                    >
+                        <Link
+                            href="/docs/quickstart#start-kestra"
+                            class="btn btn-primary"
+                            data-usal="zoomin"
+                        >
+                            Try for Free
+                        </Link>
+                        <a
+                            href="/demo"
+                            class="btn btn-secondary"
+                            data-usal="zoomin"
+                        >
+                            Book a Demo
+                        </a>
+                    </div>
+                </div>
+            </Fragment>
+        </TopHero>
+    </div>
     <CardGrid
-        title={POSSIBILITIES_DATA.title}
-        description={POSSIBILITIES_DATA.description}
-        items={POSSIBILITIES_DATA.items}
+        title="Orchestration Across Your Stack"
+        subtitle="Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
+        items={MAIN_ITEMS}
     />
-    <Capabilities
-        title="for Modern Data Orchestration"
-        capabilities={CAPABILITIES}
-        client:visible
+
+    <Stacked>
+        <h2 slot="title" data-usal="fade-r">
+            Adopt Once. <br />
+            <span class="highlight">Standardize Everywhere.</span>
+        </h2>
+        <Fragment slot="description"></Fragment>
+    </Stacked>
+    <BlueprintsGrid
+        title="Explore Blueprints"
+        {blueprints}
+        {tags}
+        link={{
+            href: "/blueprints",
+            text: "View all blueprints",
+        }}
     />
-    <EnterpriseSection />
+    <Capabilities title=" - Find Out More" capabilities={CAPABILITIES} />
+    <CustomerQuotes />
+    <SeeHow>
+        <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
+        Built for Enterprises and SMBs, with strong governance, enterprise-grade security,
+        seamless scalability, and dedicated enterprise support backed by SLAs.
+    </SeeHow>
 </Layout>
 
 <style lang="scss">
-    .container {
-        background: url("/landing/usecases/header-bg.svg") no-repeat center;
-        background-size: 100% 100%;
+    .hero-part {
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: $rem-2;
+            padding: $rem-2 $rem-1;
 
-        :global(.subtitle p),
-        :global(.baseline) {
-            color: $white !important;
+            h1,
+            p {
+                color: $white;
+            }
+
+            @include media-breakpoint-up(lg) {
+                max-width: $container-max-width;
+
+                p {
+                    max-width: 590px;
+                    margin: 0 auto;
+                }
+            }
         }
     }
 </style>
