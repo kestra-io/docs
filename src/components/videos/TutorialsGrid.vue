@@ -47,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tutorials-list">
+                <div class="tutorials-list" v-if="mounted">
                     <div v-for="video in paginatedVideos" :key="video.title">
                         <VideosTutorialVideo
                             :video="video"
@@ -55,9 +55,17 @@
                         />
                     </div>
                 </div>
+                <div v-else class="tutorials-list">
+                    <div
+                        v-for="index in 12"
+                        :key="index"
+                        class="skeleton-video"
+                    ></div>
+                </div>
             </div>
         </div>
         <PaginationContainer
+            :key="mounted ? 'loaded' : 'loading'"
             :current-url="currentLocationHref ?? 'https://example.com'"
             :total-items="tutorialVideo?.total ?? 0"
             :show-total="false"
@@ -102,12 +110,14 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, nextTick, onMounted, ref, watch } from "vue"
+    import { computed, ref, watch } from "vue"
     import { useYoutube } from "~/utils/useYoutube"
     import Modal from "~/components/common/Modal.vue"
     import VideosTutorialVideo from "~/components/videos/TutorialVideo.vue"
     import PaginationContainer from "~/components/common/PaginationContainer.vue"
+    import { useMounted } from "@vueuse/core"
 
+    const mounted = useMounted()
     const currentLocationHref = ref(
         typeof window !== "undefined" ? window.location.href : undefined,
     )
@@ -220,14 +230,6 @@
             }))
     })
 
-    onMounted(() => {
-        setTimeout(() => {
-            if (typeof window !== "undefined") {
-                currentLocationHref.value = window.location.href
-            }
-        }, 100)
-    })
-
     watch(
         () => props.tutorialVideo,
         (newVal) => {
@@ -332,6 +334,12 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             row-gap: 3rem;
             column-gap: 1.5rem;
+            .skeleton-video {
+                width: 100%;
+                aspect-ratio: 4 / 3;
+                background-color: var(--ks-background-secondary);
+                border-radius: 0.5rem;
+            }
         }
     }
 </style>
