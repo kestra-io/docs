@@ -2,9 +2,13 @@
 import { $fetchApi } from "~/utils/fetch"
 import BlueprintsCarousel from "../common/BlueprintsCarousel.astro"
 
-const { results: blueprints } = await $fetchApi<{ results: Blueprint[] }>(
-    "/blueprints/versions/latest?page=1&size=20",
+const { results } = await $fetchApi<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?page=1&size=50",
 )
+
+const blueprints = results
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 20)
 ---
 
 <section aria-labelledby="blueprints">
