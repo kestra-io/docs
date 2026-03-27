@@ -202,15 +202,6 @@
                     <li class="nav-item">
                         <a
                             class="nav-link"
-                            href="/pricing"
-                            @click="globalClick(true)"
-                        >
-                            <span>Pricing</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link"
                             href="/plugins"
                             role="button"
                             @click="globalClick(true)"
@@ -291,6 +282,15 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="/pricing"
+                            @click="globalClick(true)"
+                        >
+                            <span>Pricing</span>
+                        </a>
+                    </li>
                 </ul>
 
                 <ul class="navbar-nav mb-2 mb-xl-0 nav-button nav-footer">
@@ -304,21 +304,21 @@
                             class="d-none mb-1 btn btn-sm btn-secondary me-0 me-sm-2 d-xl-inline-block"
                             href="/demo"
                         >
-                            <span> Book a demo </span>
+                            <span> Book a Demo</span>
                         </a>
                         <a
                             @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 btn btn-primary btn-sm get-started"
                             href="/docs/quickstart#start-kestra"
                         >
-                            <span> Get Started! </span>
+                            <span> Get Started </span>
                         </a>
                         <a
                             @click="globalClick(true)"
                             class="d-xl-none d-sm-inline-block mb-1 btn btn-secondary btn-md"
                             href="/demo"
                         >
-                            <span> Book a demo </span>
+                            <span> Book a Demo</span>
                         </a>
                         <button
                             @click="globalClick(true)"

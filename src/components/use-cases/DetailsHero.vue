@@ -69,12 +69,12 @@
                 type: Object,
                 default: () => ({
                     dark: {
-                        text: "Talk to Us",
+                        text: "Book a Demo",
                         href: "/demo",
                         target: "_self",
                     },
                     purple: {
-                        text: "Get started",
+                        text: "Get Started",
                         href: "/docs/getting-started/quickstart",
                         target: "_self",
                     },
