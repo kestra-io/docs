@@ -1,7 +1,6 @@
 ---
 import Layout from "~/components/layout.astro"
 import Hero from "~/components/home/Hero.astro"
-import LogoBar from "~/components/home/LogoBar.astro"
 import Comparison from "~/components/home/Comparison.astro"
 import Stacked from "~/components/common/Stacked.astro"
 import PlatformOverview from "~/components/home/PlatformOverview.astro"
@@ -16,7 +15,6 @@ import PluginsBlock from "~/components/common/PluginsBlock.astro"
 <Layout headerTheme="darkHeader">
     <div class="home-page">
         <Hero />
-        <LogoBar />
         <Comparison />
         <Stacked>
             <h2 slot="title" id="adopt">
@@ -93,3 +91,4 @@ import PluginsBlock from "~/components/common/PluginsBlock.astro"
         color: var(--ks-content-primary-inverse);
     }
 </style>
+

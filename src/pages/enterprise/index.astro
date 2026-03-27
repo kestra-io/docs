@@ -2,6 +2,7 @@
 import Layout from "~/components/layout.astro"
 
 import Hero from "~/components/enterprise/Hero.vue"
+import Logos from "~/components/enterprise/Logos.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import ScrollSpy from "~/components/enterprise/Scroll.vue"
 import Success from "~/components/enterprise/Success.astro"
@@ -39,7 +40,9 @@ const STATS = [
 ---
 
 <Layout {title} {description} headerTheme="lightText">
-    <Hero client:load />
+    <Hero client:load>
+        <Logos />
+    </Hero>
     <div class="enterprise">
         <ScrollSpy client:load />
     </div>
