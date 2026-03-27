@@ -126,6 +126,18 @@ const FOOTER_SECTIONS: Section[] = [
             { text: "Dagster vs Kestra", href: "/vs/dagster" },
             { text: "n8n vs Kestra", href: "/vs/n8n" },
             { text: "AWS Step Functions vs Kestra", href: "/vs/aws-step-functions" },
+            { text: "PagerDuty", href: "/vs/pagerduty" },
+            { text: "VMware Aria", href: "/vs/vmware-aria" },
+            { text: "Ansible Automation Platform", href: "/vs/ansible-automation-platform" },
+            { text: "Rundeck", href: "/vs/rundeck" },
+            { text: "HP Operations Orchestrator", href: "/vs/hp-operations-orchestrator" },
+            { text: "Control-M", href: "/vs/control-m" },
+            { text: "Redwood", href: "/vs/redwood" },
+            { text: "Stonebranch", href: "/vs/stonebranch" },
+            { text: "IBM Workload Automation", href: "/vs/ibm-workload-automation" },
+            { text: "Morpheus", href: "/vs/morpheus" },
+            { text: "Puppet", href: "/vs/puppet" },
+            { text: "Chef", href: "/vs/chef" },
         ]
     },
     {

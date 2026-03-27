@@ -2,28 +2,35 @@
     <section>
         <div class="background"></div>
         <div class="header-container">
-            <div class="header container d-flex flex-column align-items-center gap-2">
+            <div
+                class="header container d-flex flex-column align-items-center gap-2"
+            >
                 <h1 data-usal="fade-l">Customers Stories</h1>
                 <h5 data-usal="fade-l">
-                    Learn how we helped companies manage their critical operations.
+                    Learn how we helped companies manage their critical
+                    operations.
                 </h5>
             </div>
         </div>
         <div class="list-container container px-md-0">
             <div class="row mb-4">
-                <template v-for="(story, index) in stories" :key="index">
+                <template
+                    v-for="(story, index) in paginatedStories"
+                    :key="index"
+                >
                     <div class="col-12">
-                        <StoriesRowCard :story />
+                        <StoriesRowCard :story="story" />
                     </div>
                 </template>
             </div>
-            <div class="d-flex justify-content-between my-5 pagination-container">
+            <div
+                class="d-flex justify-content-between my-5 pagination-container"
+            >
                 <div class="items-per-page">
                     <select
                         class="form-select"
                         aria-label="Default select example"
                         v-model="itemsPerPage"
-                        @change="fetchPageData"
                     >
                         <option :value="10">10</option>
                         <option :value="25">25</option>
@@ -32,7 +39,7 @@
                 </div>
                 <CommonPagination
                     v-if="totalPages > 1"
-                    :current-url="fullPath"
+                    :current-url="currentLocationHref ?? 'http://example.com'"
                     :totalPages="totalPages"
                     v-model:current-page="currentPage"
                     @update:current-page="changePage"
@@ -47,9 +54,12 @@
     import StoriesRowCard from "~/components/stories/RowCard.vue"
     import CommonPagination from "~/components/common/Pagination.vue"
 
+    const currentLocationHref = ref(
+        typeof window !== "undefined" ? window.location.href : undefined,
+    )
+
     const props = withDefaults(
         defineProps<{
-            fullPath: string
             stories: Array<Story>
             totalStories?: number
         }>(),
@@ -60,26 +70,20 @@
     const emits = defineEmits(["fetchPageData"])
     const itemsPerPage = ref(25)
     const currentPage = ref(1)
+
+    const paginatedStories = computed(() => {
+        const start = (currentPage.value - 1) * itemsPerPage.value
+        return props.stories.slice(start, start + itemsPerPage.value)
+    })
     const totalPages = computed(() => {
         return Math.ceil(props.totalStories / itemsPerPage.value)
     })
     const changePage = () => {
-        // FIXME: find an astro friendly way to do this
         window.scrollTo(0, 0)
-        fetchPageData()
-    }
-
-    const fetchPageData = () => {
-        emits("fetchPageData", {
-            currentPage: currentPage.value,
-            itemsPerPage: itemsPerPage.value,
-        })
     }
 </script>
 
 <style scoped lang="scss">
-
-
     section {
         position: relative;
         width: 100%;
@@ -92,7 +96,9 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: var(--ks-background-body) url("/landing/usecases/header-bg.svg") no-repeat bottom / contain;
+            background: var(--ks-background-body)
+                url("/landing/usecases/header-bg.svg") no-repeat bottom /
+                contain;
             pointer-events: none;
         }
         .list-container {
@@ -102,7 +108,8 @@
             }
         }
         .header-container {
-            background: url("/landing/usecases/header-bg.svg") no-repeat bottom / cover;
+            background: url("/landing/usecases/header-bg.svg") no-repeat
+                bottom / cover;
             .header {
                 padding: calc($spacer * 2) $spacer;
             }

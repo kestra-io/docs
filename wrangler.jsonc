@@ -8,14 +8,50 @@
     "main": "@astrojs/cloudflare/entrypoints/server",
     "compatibility_date": "2026-03-01",
     "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+    "routes": [
+        {
+            "pattern": "kestra.io",
+            "custom_domain": true,
+        },
+        {
+            "pattern": "mta-sts.kestra.io",
+            "custom_domain": true,
+        },
+    ],
     "assets": {
         "binding": "ASSETS",
         "directory": "./dist",
+        "html_handling": "drop-trailing-slash",
     },
     "observability": {
         "enabled": true,
+        "traces": {
+            "enabled": true,
+        },
+        "logs": {
+            "invocation_logs": true,
+            "enabled": true,
+        },
     },
-
+    "upload_source_maps": true,
+    "logpush": true,
+    /**
+     * Smart Placement
+     * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+     */
+    // "placement": { "mode": "smart" },
+    /**
+     * Bindings
+     * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+     * databases, object storage, AI inference, real-time communication and more.
+     * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+     */
+    "kv_namespaces": [
+        {
+            "binding": "ICON_CACHE",
+            "id": "205cd288109e4728a1f0f85645cf3b98",
+        },
+    ],
     /**
      * Environment Variables
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
@@ -25,6 +61,12 @@
             "vars": {
                 "NO_IMAGE_OPTIM": "true",
             },
+            "kv_namespaces": [
+                {
+                    "binding": "ICON_CACHE",
+                    "id": "205cd288109e4728a1f0f85645cf3b98",
+                },
+            ],
         },
     },
     /**
@@ -32,7 +74,6 @@
      * https://developers.cloudflare.com/workers/configuration/secrets/
      */
     // "vars": {  "MY_VARIABLE": "production_value" }
-
     /**
      * Service Bindings (communicate between multiple Workers)
      * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings

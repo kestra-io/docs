@@ -1,0 +1,103 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#FFF8F0"/>
+<!-- Card 1: Schedule -->
+<g filter="url(#filter0_d_ctm)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#FF9800" shape-rendering="crispEdges"/>
+<!-- Calendar icon -->
+<rect x="53" y="109" width="28" height="24" rx="3" stroke="black" stroke-width="1.5" fill="none"/>
+<path d="M53 116H81" stroke="black" stroke-width="1.5"/>
+<path d="M60 106V112" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M74 106V112" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<rect x="58" y="120" width="4" height="4" rx="0.5" fill="black"/>
+<rect x="65" y="120" width="4" height="4" rx="0.5" fill="black"/>
+<rect x="72" y="120" width="4" height="4" rx="0.5" fill="black"/>
+<rect x="58" y="126" width="4" height="4" rx="0.5" fill="black"/>
+<rect x="65" y="126" width="4" height="4" rx="0.5" fill="black"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Schedule</text>
+</g>
+<!-- Card 2: Dispatch -->
+<g filter="url(#filter1_d_ctm)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#FF9800" shape-rendering="crispEdges"/>
+<!-- Server dispatching to agent nodes -->
+<rect x="157" y="112" width="12" height="18" rx="2" stroke="black" stroke-width="1.5" fill="none"/>
+<rect x="160" y="116" width="6" height="1.5" rx="0.5" fill="black"/>
+<rect x="160" y="119" width="6" height="1.5" rx="0.5" fill="black"/>
+<circle cx="163" cy="125" r="1.5" fill="black"/>
+<path d="M169 117L178 111" stroke="black" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M169 121L178 121" stroke="black" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M169 125L178 131" stroke="black" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="178" y="107" width="8" height="8" rx="2" stroke="black" stroke-width="1.2" fill="none"/>
+<rect x="178" y="117" width="8" height="8" rx="2" stroke="black" stroke-width="1.2" fill="none"/>
+<rect x="178" y="127" width="8" height="8" rx="2" stroke="black" stroke-width="1.2" fill="none"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Dispatch</text>
+</g>
+<!-- Card 3: Execute -->
+<g filter="url(#filter2_d_ctm)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#FF9800" shape-rendering="crispEdges"/>
+<!-- Terminal/command prompt icon -->
+<rect x="268" y="109" width="28" height="24" rx="3" stroke="black" stroke-width="1.5" fill="none"/>
+<path d="M273 118L279 122L273 126" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M281 127H291" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Execute</text>
+</g>
+<!-- Card 4: Report -->
+<g filter="url(#filter3_d_ctm)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#FF9800" shape-rendering="crispEdges"/>
+<!-- Dashboard with bar chart and trend line -->
+<rect x="377" y="109" width="28" height="24" rx="3" stroke="black" stroke-width="1.5" fill="none"/>
+<rect x="382" y="123" width="4" height="6" rx="0.5" fill="black"/>
+<rect x="389" y="118" width="4" height="11" rx="0.5" fill="black"/>
+<rect x="396" y="115" width="4" height="14" rx="0.5" fill="black"/>
+<path d="M384 117L391 114L398 112" stroke="black" stroke-width="1.2" stroke-linecap="round"/>
+<circle cx="384" cy="117" r="1.5" fill="black"/>
+<circle cx="391" cy="114" r="1.5" fill="black"/>
+<circle cx="398" cy="112" r="1.5" fill="black"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Report</text>
+</g>
+<!-- Arrows between cards -->
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="currentColor"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="currentColor"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="currentColor"/>
+<defs>
+<filter id="filter0_d_ctm" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.596 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_ctm"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_ctm" result="shape"/>
+</filter>
+<filter id="filter1_d_ctm" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.596 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_ctm"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_ctm" result="shape"/>
+</filter>
+<filter id="filter2_d_ctm" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.596 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_ctm"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_ctm" result="shape"/>
+</filter>
+<filter id="filter3_d_ctm" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.596 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_ctm"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_ctm" result="shape"/>
+</filter>
+</defs>
+</svg>

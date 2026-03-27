@@ -5,22 +5,43 @@ import Alternation from "~/components/features/shared/Alternation.astro"
 import Section from "~/components/layout/Section.vue"
 import Enterprise from "~/components/use-cases/Enterprise.vue"
 import Cards from "~/components/use-cases/Cards.astro"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import AlertCircle from "vue-material-design-icons/AlertCircle.vue"
 import ChartAreaspline from "vue-material-design-icons/ChartAreaspline.vue"
 import CloudRefreshVariant from "vue-material-design-icons/CloudRefreshVariant.vue"
 import Cogs from "vue-material-design-icons/Cogs.vue"
 import TimerCogOutline from "vue-material-design-icons/TimerCogOutline.vue"
+import continuousIntegration from "~/assets/use-cases/capabilities/continuous-integration.svg"
+import infrastructureMonitoring from "~/assets/use-cases/capabilities/infrastructure-monitoring.svg"
+import disasterRecovery from "~/assets/use-cases/capabilities/disaster-recovery.svg"
 
 const TITLE = "Simplify Provisioning and Deployment with Kestra"
 const DESCRIPTION =
     "Automate the setup and deployment of infrastructure components, reducing manual effort and errors."
 
 const CAPABILITIES = [
-    "Continuous Integration/Continuous Deployment (CI/CD)",
-    "Infrastructure Monitoring",
-    "Disaster Recovery",
+    {
+        title: "Continuous Integration/Continuous Deployment (CI/CD)",
+        description:
+            "Streamline your CI/CD pipelines by integrating with tools like GitHub Actions and Jenkins.",
+        image: continuousIntegration,
+        pageHref: "/use-cases/ci-cd",
+    },
+    {
+        title: "Infrastructure Monitoring",
+        description:
+            "Automate monitoring and alerting processes, ensuring your infrastructure is always performing optimally.",
+        image: infrastructureMonitoring,
+        pageHref: "/use-cases/monitoring",
+    },
+    {
+        title: "Disaster Recovery",
+        description:
+            "Automate backup and recovery processes to ensure your infrastructure can quickly recover from failures.",
+        image: disasterRecovery,
+        pageHref: "/use-cases/disaster-recovery",
+    },
 ]
 
 const MAIN_CONTENT = [
@@ -28,9 +49,9 @@ const MAIN_CONTENT = [
         title: "Infrastructure as Code",
         image: {
             src: "/landing/usecases/provisioning-and-deployment/infrastructure-code.svg",
-            alt: "Infrastructure as Code",
             width: 568,
             height: 420,
+            alt: "Infrastructure as Code",
         },
         description:
             "Kestra integrates with Terraform and Ansible, enabling platform engineers to define and manage infrastructure as code. This approach ensures that infrastructure setups are consistent, repeatable, and error-free.",
@@ -55,9 +76,9 @@ const MAIN_CONTENT = [
         title: "Containerized Deployments with Docker and Kubernetes",
         image: {
             src: "/landing/usecases/provisioning-and-deployment/docker-kubernetes.svg",
-            alt: "Docker and Kubernetes",
             width: 568,
             height: 420,
+            alt: "Containerized Deployments with Docker and Kubernetes",
         },
         description:
             "Kestra seamlessly integrates with Docker and Kubernetes, simplifying the deployment of containerized applications. This ensures that deployments are efficient, scalable, and reliable.",
@@ -82,9 +103,9 @@ const MAIN_CONTENT = [
         title: "Configuration Management and Compliance",
         image: {
             src: "/landing/usecases/databases/quick-recovery.svg",
-            alt: "Configuration Management and Compliance",
             width: 604,
             height: 477,
+            alt: "Configuration Management and Compliance",
         },
         description:
             "Maintain consistent configurations across all environments. Automate compliance checks and security audits as part of your deployment workflows.",
@@ -160,7 +181,6 @@ const CARDS_DATA = [
         description="Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
         image={{
             src: "/landing/usecases/provisioning-and-deployment/header-hero.svg",
-            alt: "Infrastructure Provisioning and Deployment",
         }}
     />
 
@@ -173,12 +193,14 @@ const CARDS_DATA = [
         />
     </Alternation>
 
-    <Enterprise title="Orchestrate infrastructure components using Kestra" client:visible />
+    <Enterprise
+        title="Orchestrate infrastructure components using Kestra"
+        client:visible
+    />
 
     <Cards title={CHALLENGES_TITLE} cards={CARDS_DATA} />
 
     <Capabilities
-        client:visible
         title="for Platform Orchestration"
         capabilities={CAPABILITIES}
     />
@@ -187,4 +209,3 @@ const CARDS_DATA = [
         title="Ready to take your Infrastructure to the next level ?"
     />
 </Layout>
-

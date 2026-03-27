@@ -91,7 +91,9 @@
                     >
                         <a
                             class="nav-link dropdown-toggle"
-                            :class="{ show: showMenuId === 'product' && showMenu }"
+                            :class="{
+                                show: showMenuId === 'product' && showMenu,
+                            }"
                             href="#"
                             role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
@@ -104,7 +106,10 @@
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
-                                <li v-for="item in menuItems.product.items" :key="item.link">
+                                <li
+                                    v-for="item in menuItems.product.items"
+                                    :key="item.link"
+                                >
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
@@ -113,9 +118,11 @@
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
-                                            <strong v-if="item.tag" class="tag">{{
-                                                item.tag
-                                            }}</strong>
+                                            <strong
+                                                v-if="item.tag"
+                                                class="tag"
+                                                >{{ item.tag }}</strong
+                                            >
                                         </div>
                                     </a>
                                 </li>
@@ -129,7 +136,9 @@
                     >
                         <a
                             class="nav-link dropdown-toggle"
-                            :class="{ show: showMenuId === 'solutions' && showMenu }"
+                            :class="{
+                                show: showMenuId === 'solutions' && showMenu,
+                            }"
                             href="#"
                             role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
@@ -144,7 +153,8 @@
                             <ul class="dropdown-column">
                                 <p class="column-caption">Capabilities</p>
                                 <li
-                                    v-for="item in menuItems.solutions.capabilities"
+                                    v-for="item in menuItems.solutions
+                                        .capabilities"
                                     :key="item.link"
                                 >
                                     <a
@@ -161,7 +171,10 @@
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">By Roles</p>
-                                <li v-for="item in menuItems.solutions.roles" :key="item.link">
+                                <li
+                                    v-for="item in menuItems.solutions.roles"
+                                    :key="item.link"
+                                >
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
@@ -176,7 +189,11 @@
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">By Industries</p>
-                                <li v-for="item in menuItems.solutions.industries" :key="item.link">
+                                <li
+                                    v-for="item in menuItems.solutions
+                                        .industries"
+                                    :key="item.link"
+                                >
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
@@ -191,7 +208,11 @@
                             </ul>
                             <ul class="dropdown-column">
                                 <p class="column-caption">Resources</p>
-                                <li v-for="item in menuItems.solutions.resources" :key="item.link">
+                                <li
+                                    v-for="item in menuItems.solutions
+                                        .resources"
+                                    :key="item.link"
+                                >
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
@@ -213,7 +234,9 @@
                     >
                         <a
                             class="nav-link dropdown-toggle"
-                            :class="{ show: showMenuId === 'resources' && showMenu }"
+                            :class="{
+                                show: showMenuId === 'resources' && showMenu,
+                            }"
                             href="#"
                             role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
@@ -226,7 +249,11 @@
                         </a>
                         <div class="dropdown-menu pb-1 d-lg-none">
                             <ul class="dropdown-column">
-                                <li v-for="item in menuItems.resources.mainItems" :key="item.link">
+                                <li
+                                    v-for="item in menuItems.resources
+                                        .mainItems"
+                                    :key="item.link"
+                                >
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
@@ -241,7 +268,8 @@
                             </ul>
                             <ul class="dropdown-column">
                                 <li
-                                    v-for="item in menuItems.resources.additionalItems"
+                                    v-for="item in menuItems.resources
+                                        .additionalItems"
                                     :key="item.link"
                                 >
                                     <a
@@ -353,9 +381,12 @@
                         >
                             <div class="header-menu-content">
                                 <div class="header-menu-card-section-column">
-                                    <ul class="d-flex flex-column w-100 gap-2 py-lg-0">
+                                    <ul
+                                        class="d-flex flex-column w-100 gap-2 py-lg-0"
+                                    >
                                         <li
-                                            v-for="item in menuItems.product.items"
+                                            v-for="item in menuItems.product
+                                                .items"
                                             :key="item.link"
                                         >
                                             <a
@@ -365,11 +396,19 @@
                                             >
                                                 <div>
                                                     <div class="same-row">
-                                                        <component :is="item.icon" />
-                                                        <span>{{ item.title }}</span>
-                                                        <strong v-if="item.tag" class="tag">{{
-                                                            item.tag
-                                                        }}</strong>
+                                                        <component
+                                                            :is="item.icon"
+                                                        />
+                                                        <span>{{
+                                                            item.title
+                                                        }}</span>
+                                                        <strong
+                                                            v-if="item.tag"
+                                                            class="tag"
+                                                            >{{
+                                                                item.tag
+                                                            }}</strong
+                                                        >
                                                     </div>
                                                     <p>
                                                         {{ item.description }}
@@ -388,13 +427,16 @@
                         >
                             <div class="header-menu-content">
                                 <div class="row m-0 w-100 pt-2 flex-nowrap">
-                                    <div class="col-lg-4 header-solution-column">
+                                    <div
+                                        class="col-lg-4 header-solution-column"
+                                    >
                                         <div class="menu-title">
                                             <p>Capabilities</p>
                                         </div>
                                         <ul>
                                             <li
-                                                v-for="item in menuItems.solutions.capabilities"
+                                                v-for="item in menuItems
+                                                    .solutions.capabilities"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -404,24 +446,33 @@
                                                 >
                                                     <div>
                                                         <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
+                                                            <component
+                                                                :is="item.icon"
+                                                            />
+                                                            <span>{{
+                                                                item.title
+                                                            }}</span>
                                                         </div>
                                                         <p>
-                                                            {{ item.description }}
+                                                            {{
+                                                                item.description
+                                                            }}
                                                         </p>
                                                     </div>
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-4 header-solution-column">
+                                    <div
+                                        class="col-lg-4 header-solution-column"
+                                    >
                                         <div class="menu-title">
                                             <p>By Roles</p>
                                         </div>
                                         <ul>
                                             <li
-                                                v-for="item in menuItems.solutions.roles"
+                                                v-for="item in menuItems
+                                                    .solutions.roles"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -431,8 +482,12 @@
                                                 >
                                                     <div>
                                                         <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
+                                                            <component
+                                                                :is="item.icon"
+                                                            />
+                                                            <span>{{
+                                                                item.title
+                                                            }}</span>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -443,7 +498,8 @@
                                         </div>
                                         <ul>
                                             <li
-                                                v-for="item in menuItems.solutions.industries"
+                                                v-for="item in menuItems
+                                                    .solutions.industries"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -453,21 +509,30 @@
                                                 >
                                                     <div>
                                                         <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
+                                                            <component
+                                                                :is="item.icon"
+                                                            />
+                                                            <span>{{
+                                                                item.title
+                                                            }}</span>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="col-lg-4 header-solution-column">
+                                    <div
+                                        class="col-lg-4 header-solution-column"
+                                    >
                                         <div class="menu-title">
                                             <p>Resources</p>
                                         </div>
-                                        <ul class="d-flex flex-column w-100 list-unstyled">
+                                        <ul
+                                            class="d-flex flex-column w-100 list-unstyled"
+                                        >
                                             <li
-                                                v-for="item in menuItems.solutions.resources"
+                                                v-for="item in menuItems
+                                                    .solutions.resources"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -477,8 +542,12 @@
                                                 >
                                                     <div>
                                                         <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
+                                                            <component
+                                                                :is="item.icon"
+                                                            />
+                                                            <span>{{
+                                                                item.title
+                                                            }}</span>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -498,7 +567,8 @@
                                     <div class="col-lg-6">
                                         <ul>
                                             <li
-                                                v-for="item in menuItems.resources.mainItems"
+                                                v-for="item in menuItems
+                                                    .resources.mainItems"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -508,11 +578,17 @@
                                                 >
                                                     <div>
                                                         <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
+                                                            <component
+                                                                :is="item.icon"
+                                                            />
+                                                            <span>{{
+                                                                item.title
+                                                            }}</span>
                                                         </div>
                                                         <p>
-                                                            {{ item.description }}
+                                                            {{
+                                                                item.description
+                                                            }}
                                                         </p>
                                                     </div>
                                                 </a>
@@ -522,7 +598,8 @@
                                     <div class="col-lg-6">
                                         <ul>
                                             <li
-                                                v-for="item in menuItems.resources.additionalItems"
+                                                v-for="item in menuItems
+                                                    .resources.additionalItems"
                                                 :key="item.link"
                                             >
                                                 <a
@@ -532,11 +609,17 @@
                                                 >
                                                     <div>
                                                         <div class="same-row">
-                                                            <component :is="item.icon" />
-                                                            <span>{{ item.title }}</span>
+                                                            <component
+                                                                :is="item.icon"
+                                                            />
+                                                            <span>{{
+                                                                item.title
+                                                            }}</span>
                                                         </div>
                                                         <p>
-                                                            {{ item.description }}
+                                                            {{
+                                                                item.description
+                                                            }}
                                                         </p>
                                                     </div>
                                                 </a>
@@ -598,7 +681,7 @@
     onMounted(() => {
         // Wait for bootstrap to be available
         nextTick(() => {
-            collapse = window.$bootstrap.Collapse
+            collapse = window.$bootstrap?.Collapse
                 ? new window.$bootstrap.Collapse("#main-header", {
                       toggle: false,
                   })
@@ -653,10 +736,12 @@
 
     function mouseOver(id: string) {
         if (window.innerWidth > 991) {
-            document.querySelectorAll(".header-menu-card-section").forEach((obj) => {
-                obj.classList.remove("opacity-100")
-                obj.classList.remove("z-1")
-            })
+            document
+                .querySelectorAll(".header-menu-card-section")
+                .forEach((obj) => {
+                    obj.classList.remove("opacity-100")
+                    obj.classList.remove("z-1")
+                })
             let menu = document.getElementById(id)
             if (menu) {
                 if (closeMenuTimeout.value) {
@@ -667,8 +752,14 @@
                 showMenu.value = true
                 showMenuId.value = id
                 headerMenuSize.value = menuSize(id, window.innerWidth).size
-                headerMenuTranslateX.value = menuSize(id, window.innerWidth).headerMenuTranslateX
-                headerArrowTranslateX.value = menuSize(id, window.innerWidth).headerArrowTranslateX
+                headerMenuTranslateX.value = menuSize(
+                    id,
+                    window.innerWidth,
+                ).headerMenuTranslateX
+                headerArrowTranslateX.value = menuSize(
+                    id,
+                    window.innerWidth,
+                ).headerArrowTranslateX
                 menu.classList.add("z-1")
                 menu.classList.add("opacity-100")
                 headerMenuPointerEvents.value = "auto"
@@ -717,7 +808,9 @@
             const element = document.querySelector(".nav-link.show")
             if (element) {
                 element.classList.remove("show")
-                ;(element.nextElementSibling as HTMLElement)?.classList.remove("show")
+                ;(element.nextElementSibling as HTMLElement)?.classList.remove(
+                    "show",
+                )
             }
         } else {
             document.body.style.overflow = "hidden"

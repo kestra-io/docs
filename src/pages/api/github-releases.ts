@@ -12,33 +12,10 @@ export interface ReleaseInfo {
     version: string
     publishedAt: string | null
     minCoreCompatibilityVersion?: string | null
-}
-
-const cache: { [key: string]: { data: any; expiry: number } } = {}
-
-async function getFromCache(keys: string[]) {
-    const cacheKey = keys.join(":")
-    const cachedEntry = cache[cacheKey]
-
-    if (cachedEntry && cachedEntry.expiry > Date.now()) {
-        return cachedEntry.data
-    }
-    return null
-}
-
-async function addToCache(data: any, keys: string[], ttl: number) {
-    const cacheKey = keys.join(":")
-    cache[cacheKey] = {
-        data,
-        expiry: Date.now() + ttl * 1000,
-    }
+    releaseNotesUrl?: string | null
 }
 
 export async function retrieveRepoReleases(repo: string) {
-    const cached = await getFromCache([repo])
-
-    if (cached) return cached
-
     const headers: Record<string, string> = { "User-Agent": "request" }
 
     const response = await fetch(
@@ -50,9 +27,7 @@ export async function retrieveRepoReleases(repo: string) {
 
     if (!response.ok) {
         if (response.status === 404) {
-            const result = { versions: [] }
-            await addToCache(result, [], 3600)
-            return result
+            return { versions: [] }
         }
         console.error(
             `GitHub API error for ${repo}: ${response.status} ${response.statusText}`,
@@ -81,10 +56,7 @@ export async function retrieveRepoReleases(repo: string) {
                       : 0
             })
 
-        const result = { versions }
-        await addToCache(result, [repo], 3600)
-
-        return result
+        return { versions }
     } catch (error) {
         console.error(`Error processing releases for ${repo}:`, error)
         return { versions: [] }
@@ -96,7 +68,7 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response(JSON.stringify(data), {
         headers: {
             "Content-Type": "application/json",
-            "Cache-Control": "max-age=86400",
+            "Cache-Control": "public, max-age=86400",
         },
     })
 }

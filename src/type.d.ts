@@ -62,12 +62,21 @@ interface PluginInformation {
     isEnterprise?: boolean
 }
 
+type KVNamespace = import("@cloudflare/workers-types").KVNamespace
+type ENV = {
+    ICON_CACHE: KVNamespace
+}
+
 type Runtime = import("@astrojs/cloudflare").Runtime<ENV>
 
 declare namespace App {
     interface Locals extends Runtime {
         // Add custom locals here
     }
+}
+
+declare namespace App {
+    interface Locals extends Runtime {}
 }
 
 declare module "*.vue" {

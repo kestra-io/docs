@@ -89,11 +89,6 @@ const { mainTitle, kestra, competitor } = Astro.props as Props
         .comparison-box {
             gap: $rem-2;
             width: 100%;
-            max-height: none;
-
-            @include media-breakpoint-up(lg) {
-                max-height: 380px;
-            }
 
             :global(.comparison-item) {
                 &.kestra {
@@ -118,7 +113,7 @@ const { mainTitle, kestra, competitor } = Astro.props as Props
 
                 .sub-card {
                     margin-top: auto;
-                    height: 68px;
+                    min-height: 68px;
                     padding: 10px 20px;
                     border-radius: 6px;
                     font-weight: 700;
