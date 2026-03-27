@@ -20,6 +20,7 @@ const navigationTree = {
         "No-Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
+        "Use Cases",
         "How-to Guides",
     ],
     "Scale with Kestra": [
@@ -67,7 +68,8 @@ export function getNavigationTree(
                               path: `/docs/${page.id}`,
                               children: recursivelyBuildChildren(page.id, docsPages),
                               hideSubMenus: Boolean(page.data.hideSubMenus),
-                              hideSidebar: Boolean(page.data.hideSidebar),
+                              hideSidebar:
+                                  title === "Use Cases" || Boolean(page.data.hideSidebar),
                           }
                         : undefined
                 })

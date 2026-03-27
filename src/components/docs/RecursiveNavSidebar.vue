@@ -157,7 +157,9 @@
     }
 
     const filteredChildren = computed(() => {
-        return (props.item.children ?? []).filter((r: any) => props.item.path !== r.path)
+        return (props.item.children ?? []).filter(
+            (r: any) => props.item.path !== r.path && !r.hideSidebar,
+        )
     })
 
     const isActiveOrExpanded = (item: NavigationItem) => {
