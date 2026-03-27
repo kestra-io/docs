@@ -17,8 +17,8 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
 ---
 
 <div class:list={["logo-carousel"]}>
-    <div class="companies-container w-100 overflow-hidden">
-        <div class="companies d-flex align-items-center justify-content-center">
+    <div class="companies-container">
+        <div class="companies">
             {
                 [...COMPANIES, ...COMPANIES].map((company, index) => (
                     <Image
@@ -56,6 +56,8 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
     }
 
     .companies-container {
+        width: 100%;
+        overflow: hidden;
         @include media-breakpoint-down(sm) {
             margin-top: 1rem;
             -webkit-mask-image: linear-gradient(
@@ -75,9 +77,13 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
         }
 
         .companies {
-            gap: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+
             @include media-breakpoint-up(sm) {
-                gap: 2px;
+                gap: 2rem;
                 margin-left: -14px;
             }
 
