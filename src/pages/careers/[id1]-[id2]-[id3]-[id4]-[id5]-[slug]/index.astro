@@ -49,7 +49,7 @@ const title = page.title
                 />
                 <Link
                     href={url + "/apply"}
-                    class="btn btn-animated btn-purple-animated apply-btn"
+                    class="btn btn-primary apply-btn"
                 >
                     Apply for this job
                 </Link>
@@ -61,15 +61,30 @@ const title = page.title
 <style lang="scss">
     .job-description {
         display: flex;
+        flex-direction: column-reverse;
         gap: 2rem;
         margin-bottom: 3rem;
+
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+        }
+
+        hr {
+            border-color: var(--ks-border-primary);
+        }
+
         .sidebar {
-            flex: 0 0 250px;
+            flex: 0 0 auto;
             align-self: flex-start;
-            position: sticky;
-            top: 4rem;
-            padding: 1.5rem;
+            position: relative;
+            padding: 1rem;
             border-radius: 8px;
+
+            @include media-breakpoint-up(md) {
+                flex: 0 0 250px;
+                position: sticky;
+                top: 4rem;
+            }
             h3 {
                 color: var(--ks-content-secondary);
                 font-size: 0.9rem;
@@ -86,11 +101,15 @@ const title = page.title
     }
     .apply-btn {
         margin-top: 3rem;
-        color: white;
     }
     article {
+        @include media-breakpoint-down(md) {
+            padding-inline: 1rem;
+        }
         :global(h3) {
-            margin-top: 3rem;
+            @include media-breakpoint-up(md) {
+                margin-top: 3rem;
+            }
             margin-bottom: 1rem;
         }
         :global(p) {

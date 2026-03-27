@@ -49,6 +49,9 @@ for (const position of positions) {
         background: url("~/assets/squared-grid.svg") no-repeat top center /
             1400px auto;
 
+        @include media-breakpoint-down(md) {
+            padding-inline: 1rem;
+        }
         .header {
             padding-top: 6rem;
             padding-bottom: 2rem;

@@ -121,6 +121,10 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 flex-direction: column;
                 align-items: center;
 
+                @include media-breakpoint-down(md) {
+                    text-align: center;
+                }
+
                 &.align-left {
                     align-items: flex-start;
 
