@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-        <Link href="/" text="Back to home" class="btn btn-primary" reversed />
+        <Link href="/" text="Back to Home" class="btn btn-primary" reversed />
         <img :src="errorImage.src" alt="Error" class="img-fluid" />
     </Squared>
 </template>

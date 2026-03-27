@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <Link href="/use-cases/stories" text="See all stories" class="read-link" />
+                <Link href="/use-cases/stories" text="See All Stories" class="read-link" />
             </div>
         </div>
     </section>

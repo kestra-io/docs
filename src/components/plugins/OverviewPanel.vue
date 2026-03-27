@@ -9,7 +9,7 @@
                 <p>
                     Plugins have a Min. Compatible Kestra Version i.e. a Kestra version from where
                     the corresponding plugin version is compatible.
-                    <a href="https://kestra.io/docs/releases" target="_blank"> Learn more </a>
+                    <a href="https://kestra.io/docs/releases" target="_blank"> Learn More</a>
                 </p>
             </div>
         </div>

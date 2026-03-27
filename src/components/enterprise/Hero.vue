@@ -14,9 +14,9 @@
                         class="btn btn-secondary"
                     />
                     <Link
-                        href="/enterprise/free-trial"
-                        text="Request Free Trial"
-                        class="btn btn-primary"
+                        href="/demo"
+                        text="Contact Sales"
+                        class="btn btn-prim‡ary"
                     />
                 </div>
             </div>

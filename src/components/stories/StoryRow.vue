@@ -21,7 +21,7 @@
                     <MDCParserAndRenderer :content="kpi" class="sr-kpi-body" />
                 </div>
             </div>
-            <Link :href="storyUrl" text="Read the story" class="sr-link" />
+            <Link :href="storyUrl" text="Read the Story" class="sr-link" />
         </div>
     </div>
 </template>

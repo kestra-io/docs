@@ -164,8 +164,8 @@ export const menuItems: MenuItems = {
             },
             {
                 icon: EmailOutline,
-                title: "Contact Sales",
-                link: "/demo"
+                title: "Contact us",
+                link: "/contact-us"
             },
         ],
     },
