@@ -76,7 +76,7 @@ const content = story.content
 
 <Layout title={story.metaTitle} description={story.metaDescription}>
     <div class="main">
-        <StoryDetail client:load slug={slugFull} {story} {content} {related}>
+        <StoryDetail client:load slug={slug} {story} {content} {related}>
             <SeeHow slot="change">
                 <Fragment slot="title"> Experience Kestra Today </Fragment>
                 What would change if your public-sector cloud automation ran through

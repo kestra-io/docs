@@ -13,7 +13,7 @@
         </div>
         <div class="sr-content">
             <h3>{{ story.title }}</h3>
-            <p>{{ story.quote }}</p>
+            <blockquote class="sr-quote">{{ story.quote }}</blockquote>
             <small>{{ story.quotePerson }}</small>
             <div class="sr-kpis" v-if="kpis.length">
                 <div class="sr-kpi" v-for="(kpi, i) in kpis" :key="i">
@@ -54,6 +54,7 @@
         text-decoration: none;
         color: inherit;
         cursor: pointer;
+
         @include media-breakpoint-down(lg) {
             flex-direction: column;
             padding-right: 0;
@@ -132,11 +133,14 @@
             padding: 0 1rem 1rem;
         }
 
-        h3, p, small {
+        h3,
+        p,
+        small {
             margin-bottom: 0;
         }
 
-        h3, p {
+        h3,
+        p {
             color: var(--ks-content-primary);
         }
 
@@ -146,6 +150,27 @@
 
         p {
             font-size: $font-size-md;
+        }
+
+        .sr-quote {
+            display: inline;
+            padding: 0;
+            margin: 0;
+
+            &::before,
+            &::after {
+                color: var(--ks-content-color-highlight);
+            }
+
+            &::before {
+                content: "“";
+                margin-right: 0.25rem;
+            }
+
+            &::after {
+                content: "”";
+                margin-left: 0.25rem;
+            }
         }
 
         .sr-link {
@@ -174,6 +199,7 @@
         }
 
         .sr-kpi-body {
+
             :deep(h5),
             :deep(p) {
                 display: inline;

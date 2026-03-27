@@ -1,7 +1,7 @@
 <template>
     <section class="list">
         <div class="list-container container px-md-0">
-            <div class="row mb-4">
+            <div class="row">
                 <template v-for="(story, index) in stories" :key="index">
                     <div class="col-12" :class="{ hidden: index >= visibleCount }">
                         <StoryRow :story />
@@ -40,7 +40,7 @@
         overflow: hidden;
         .list-container {
             .row {
-                gap: 2rem;
+                gap: 4rem;
                 align-items: center;
 
                 .hidden {
