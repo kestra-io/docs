@@ -46,13 +46,14 @@ export const getStaticPaths = (async () => {
             },
         },
         params: {
-            id: entry.id,
+            staticSlug: `${entry.id}-${slugify(entry.data.title)}`,
         },
     }))
 }) satisfies GetStaticPaths
 
 const { entry, related } = Astro.props
-const { id } = Astro.params
+const { staticSlug } = Astro.params
+const id = staticSlug?.split("-")[0]
 const slug = slugify(entry.data.title)
 
 if (!entry) {
