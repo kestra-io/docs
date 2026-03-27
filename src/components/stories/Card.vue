@@ -15,7 +15,7 @@
         <div class="bottom">
             <Link
                 :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`"
-                text="Read the story"
+                text="Read the Story"
             />
         </div>
     </div>

@@ -41,7 +41,7 @@
             />
         </div>
         <div class="block">
-            <Link href="/demo" text="Book a demo" class="btn btn-primary" />
+            <Link href="/demo" text="Book a Demo" class="btn btn-primary" />
         </div>
     </div>
 </template>
