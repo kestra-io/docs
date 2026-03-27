@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, ref, watch } from "vue"
+    import { computed, nextTick, onMounted, ref, watch } from "vue"
     import { useYoutube } from "~/utils/useYoutube"
     import Modal from "~/components/common/Modal.vue"
     import VideosTutorialVideo from "~/components/videos/TutorialVideo.vue"
@@ -218,6 +218,14 @@
                 iframeUrl: embedUrl(item.url),
                 youtubeUrl: item.url,
             }))
+    })
+
+    onMounted(() => {
+        setTimeout(() => {
+            if (typeof window !== "undefined") {
+                currentLocationHref.value = window.location.href
+            }
+        }, 100)
     })
 
     watch(

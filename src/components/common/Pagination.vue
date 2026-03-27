@@ -53,16 +53,15 @@
 
     const morePagesPlaceholder = "..." as const
 
-    const props = withDefaults(
-        defineProps<{
-            totalPages: number
-            currentUrl: string
-            currentPage?: number
-        }>(),
-        {
-            currentPage: 1,
-        },
-    )
+    const currentPage = defineModel("currentPage", {
+        type: Number,
+        default: 1,
+    })
+
+    const props = defineProps<{
+        totalPages: number
+        currentUrl: string
+    }>()
 
     function getPageUrl(page?: number) {
         if (page === undefined || page < 1 || page > props.totalPages) {
@@ -73,14 +72,10 @@
         return url.pathname + url.search
     }
 
-    const emit = defineEmits<{
-        (e: "update:currentPage", value: number): void
-    }>()
-
     watch(
         () => props.totalPages,
         () => {
-            emit("update:currentPage", 1)
+            currentPage.value = 1
         },
     )
 
@@ -88,16 +83,15 @@
         direction?: "previous" | "next"
         pageNo?: number | "..."
     }) {
-        const currentPage = props.currentPage
-        if (event.direction === "previous" && currentPage > 1) {
-            emit("update:currentPage", currentPage - 1)
+        if (event.direction === "previous" && currentPage.value > 1) {
+            currentPage.value-- // Decrement currentPage
         } else if (
             event.direction === "next" &&
-            currentPage < props.totalPages
+            currentPage.value < props.totalPages
         ) {
-            emit("update:currentPage", currentPage + 1)
+            currentPage.value++ // Increment currentPage
         } else if (event.pageNo && event.pageNo !== morePagesPlaceholder) {
-            emit("update:currentPage", event.pageNo)
+            currentPage.value = event.pageNo
         }
     }
 
@@ -126,7 +120,7 @@
     }
 
     const pages = computed<(number | "...")[]>(() =>
-        paginate(props.currentPage, props.totalPages),
+        paginate(currentPage.value, props.totalPages),
     )
 </script>
 
