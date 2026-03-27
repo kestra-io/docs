@@ -1,0 +1,45 @@
+---
+import { $fetchApi } from "~/utils/fetch"
+import BlueprintsCarousel from "../common/BlueprintsCarousel.astro"
+
+const { results: blueprints } = await $fetchApi<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?page=1&size=20",
+)
+---
+
+<section aria-labelledby="blueprints">
+    <div class="container">
+        <h2 id="blueprints">
+            <span>250+ Blueprints,</span> Ready to Build.
+        </h2>
+        <p>
+            Jump-start your workflows with a growing library of workflow
+            templates
+        </p>
+    </div>
+    <BlueprintsCarousel blueprints={blueprints} />
+</section>
+
+<style lang="scss">
+    section {
+        background-color: var(--ks-background-body);
+        color: var(--ks-content-primary);
+        text-align: left;
+        padding: 2rem 0;
+        @include media-breakpoint-up(md) {
+            padding: 4rem 1rem;
+        }
+    }
+    h2 {
+        font-size: 2rem;
+        margin-inline: 1rem;
+        span {
+            color: var(--ks-content-color-highlight);
+        }
+    }
+    p {
+        margin-bottom: 2rem;
+        margin-inline: 1rem;
+        color: var(--ks-content-secondary);
+    }
+</style>

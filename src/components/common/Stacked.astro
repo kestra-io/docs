@@ -87,7 +87,7 @@ const CARDS = [
 
     {
         CARDS.map((card) => (
-            <div class="stacked-card paused" data-usal="zoomin">
+            <div class="stacked-card" data-usal="zoomin">
                 <div class="badge" data-usal="zoomin">
                     <Icon name={card.badge.icon} />
                     <span>{card.badge.text}</span>
@@ -125,8 +125,8 @@ const CARDS = [
     const cards = document.querySelectorAll<HTMLElement>(".stacked-card")
     const visibilityMap = new Map<HTMLElement, boolean>()
 
-    function sendStateToIframe(card: HTMLElement) {
-        card.classList.toggle("paused", !visibilityMap.get(card))
+    function sendStateToAnim(card: HTMLElement, pauseAnimation?: boolean) {
+        card.classList.toggle("animation-paused", pauseAnimation)
     }
 
     const observer = new IntersectionObserver(
@@ -134,11 +134,24 @@ const CARDS = [
             for (const entry of entries) {
                 const card = entry.target as HTMLElement
                 visibilityMap.set(card, entry.isIntersecting)
-                sendStateToIframe(card)
+                sendStateToAnim(card, !visibilityMap.get(card))
             }
         },
         { threshold: 0.1 },
     )
+
+    // let the first 3 seconds of the animation play
+    // before pausing
+    setTimeout(() => {
+        cards.forEach((card) => {
+            // if the observer hasn't kicked in yet,
+            // use the pauseAnimation flag to control the animation state
+            // it means we are in the initial 3 seconds grace period where we want the animation to play
+            if (!visibilityMap.has(card)) {
+                sendStateToAnim(card, false)
+            }
+        })
+    }, 3000)
 
     for (const card of cards) {
         observer.observe(card)
@@ -184,7 +197,7 @@ const CARDS = [
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            &.paused :global(*) {
+            &.animation-paused :global(*) {
                 animation-play-state: paused !important;
             }
 

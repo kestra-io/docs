@@ -1,0 +1,30 @@
+---
+import Quotes from "~/components/common/Quotes.vue"
+import JPmorganChaseLogo from "./assets/companies/jpmorgan.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
+
+const quotes = [
+    {
+        quote: `We processed billions of rows and thousands of weekly API pulls in under 3 months. For the first time, our analysts aren't waiting for engineering—they’re building the workflows themselves.`,
+        author: "VP of Cybersecurity - <b>@jpmorgan Chase</b>",
+        smallLogoSvg: optimizeSvgIcon(JPmorganChaseLogo, "JPmorganChaseLogo"),
+        kpis: [
+            {
+                value: "Billions",
+                name: "of records processed securely",
+            },
+            {
+                value: "< 3 Months",
+                name: "to go from zero to full production",
+            },
+            {
+                value: "100+",
+                name: "users empowered to build workflows",
+            },
+        ],
+    },
+]
+---
+
+<Quotes quotes={quotes} />
+
