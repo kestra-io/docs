@@ -13,7 +13,10 @@ import LayoutFixed from "~/components/layout/Fixed.vue"
 import Announce from "~/components/layout/Announce.vue"
 // import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
-import { getCollection } from "astro:content"
+import annoncesData from "~/contents/annonces/annonces.yml?raw"
+import YAML from "yaml"
+
+const parsedAnnonces = YAML.parse(annoncesData ?? "[]")
 
 interface Props {
     title?: string
@@ -70,9 +73,7 @@ const canonicalUrl = new URL(
 )
 
 const randomAiQuestions = getRandomAiQuestions()
-const annonces = (await getCollection("annonces"))
-    .map((a) => a.data)
-    .filter((a) => a.id !== 0)
+const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const hasAnnounce = annonces.length > 0
 ---
