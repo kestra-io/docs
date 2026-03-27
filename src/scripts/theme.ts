@@ -1,39 +1,37 @@
-const applyTheme = (doc = document) => {
-    doc.documentElement.classList.add("dark");
-    doc.documentElement.classList.remove("light");
-};
-
-/*
-const getTheme = () => localStorage.getItem("theme") ?? "system";
+const getTheme = () => localStorage.getItem("theme") ?? "light";
 
 const isDark = (t: string) =>
     t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
 
-const applyTheme = (t: string) => {
+const applyTheme = (t: string = getTheme(), doc: Document = document) => {
     const dark = isDark(t);
-    document.documentElement.classList.toggle("dark", dark);
-    document.documentElement.classList.toggle("light", !dark);
-    document.querySelectorAll(".theme-switcher button")
-        .forEach(btn => btn.classList.toggle("active", btn.id === `theme-${t}`));
+    doc.documentElement.classList.toggle("dark", dark);
+    doc.documentElement.classList.toggle("light", !dark);
+    if (doc === document) {
+        doc.querySelectorAll(".theme-switcher button")
+            .forEach(btn => btn.classList.toggle("active", btn.id === `theme-${t}`));
+    }
 };
 
 document.addEventListener("click", ({ target }) => {
     const btn = (target as HTMLElement).closest(".theme-switcher button");
     if (!btn) return;
     const theme = btn.id.replace("theme-", "");
-    theme === "system"
-        ? localStorage.removeItem("theme")
-        : localStorage.setItem("theme", theme);
+    if (theme === "system") {
+        localStorage.removeItem("theme");
+    } else {
+        localStorage.setItem("theme", theme);
+    }
     applyTheme(theme);
 });
-*/
 
-document.addEventListener("astro:before-swap", (e: any) => {
-    applyTheme(e.newDocument);
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (getTheme() === "system") applyTheme("system");
 });
 
-["astro:page-load", "DOMContentLoaded"].forEach(e =>
-    document.addEventListener(e, () => applyTheme())
-);
-applyTheme();
+document.addEventListener("astro:before-swap", (e: any) => {
+    applyTheme(getTheme(), e.newDocument);
+});
 
+document.addEventListener("astro:page-load", () => applyTheme());
+applyTheme();
