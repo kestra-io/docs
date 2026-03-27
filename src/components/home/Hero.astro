@@ -57,7 +57,10 @@ import AnimatedWord from "./AnimatedWord.vue"
         position: relative;
         @include media-breakpoint-up(md) {
             padding-top: 2rem;
-            background: url("./assets/hero/bg-grid.svg") no-repeat center bottom;
+            background:
+                url("./assets/hero/bg-grid.svg") no-repeat center bottom,
+                url("./assets/hero/bg-desktop.svg") no-repeat center center /
+                    cover;
         }
     }
 
