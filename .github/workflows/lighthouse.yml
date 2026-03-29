@@ -1,0 +1,190 @@
+name: Lighthouse Benchmark
+
+# Runs after the Deploy workflow completes so the Cloudflare Workers preview
+# (or production) URL is guaranteed to be live before we start testing.
+on:
+  workflow_run:
+    workflows: ["Deploy"]
+    types: [completed]
+
+# pull-requests: write  — post / update the score comment on the PR
+# actions: read         — download baseline artifact from another workflow run
+permissions:
+  pull-requests: write
+  actions: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1 — run on PR previews
+  # ---------------------------------------------------------------------------
+  lighthouse-pr:
+    name: Lighthouse – PR Preview
+    if: |
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      startsWith(github.repository, 'kestra-io/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install Lighthouse
+        # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
+        run: npm install --no-save lighthouse chrome-launcher
+
+      - name: Compute preview URL
+        id: preview
+        run: |
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          SLUG="ks-$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')"
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          echo "url=https://${SLUG}-docs.kestra-io.workers.dev" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for preview to be reachable
+        run: |
+          URL="${{ steps.preview.outputs.url }}"
+          echo "Polling $URL (up to 2 min)…"
+          for i in $(seq 1 12); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+            if [ "$STATUS" = "200" ]; then
+              echo "Preview is ready (HTTP 200)."
+              exit 0
+            fi
+            echo "  Attempt $i/12: HTTP $STATUS — retrying in 10 s…"
+            sleep 10
+          done
+          echo "Warning: preview did not return 200 after 2 min; running Lighthouse anyway."
+
+      # Try to download the latest baseline artifact from main.
+      # If none exists yet (first run), this step is skipped silently.
+      - name: Download main branch baseline
+        id: baseline
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          workflow: lighthouse.yml
+          branch: main
+          name: lighthouse-baseline
+          path: baseline/
+
+      - name: Run Lighthouse benchmark
+        run: node scripts/lighthouse-benchmark.mjs
+        env:
+          BASE_URL: ${{ steps.preview.outputs.url }}
+          OUTPUT_FILE: lighthouse-results.json
+          # Only pass BASELINE_FILE when the download step succeeded.
+          BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
+          MARKDOWN_FILE: lighthouse-report.md
+
+      - name: Post or update PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('lighthouse-report.md', 'utf8');
+
+            // Resolve PR number: prefer the array attached to the workflow_run
+            // event (works for PRs from the same repo), fall back to API query.
+            const wfRun = context.payload.workflow_run;
+            let prNumber = wfRun.pull_requests?.[0]?.number ?? null;
+
+            if (!prNumber) {
+              const branch = wfRun.head_branch;
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: `${context.repo.owner}:${branch}`,
+                state: 'open',
+              });
+              prNumber = prs[0]?.number ?? null;
+            }
+
+            if (!prNumber) {
+              core.warning('No open PR found for this branch — skipping comment.');
+              return;
+            }
+
+            // Idempotent: find a previous comment by our HTML marker and update it.
+            const MARKER = '<!-- lighthouse-benchmark-comment -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+
+            const existing = comments.find(c => c.body?.includes(MARKER));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: report,
+              });
+              core.info(`Updated Lighthouse comment #${existing.id} on PR #${prNumber}`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: report,
+              });
+              core.info(`Created Lighthouse comment on PR #${prNumber}`);
+            }
+
+      - name: Upload PR results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-pr-results
+          path: lighthouse-results.json
+          retention-days: 30
+
+  # ---------------------------------------------------------------------------
+  # Job 2 — save a new baseline after every merge to main
+  # ---------------------------------------------------------------------------
+  lighthouse-baseline:
+    name: Lighthouse – Save Baseline (main)
+    if: |
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      startsWith(github.repository, 'kestra-io/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install Lighthouse
+        run: npm install --no-save lighthouse chrome-launcher
+
+      - name: Run Lighthouse against production
+        run: node scripts/lighthouse-benchmark.mjs
+        env:
+          BASE_URL: https://kestra.io
+          OUTPUT_FILE: lighthouse-results.json
+          MARKDOWN_FILE: lighthouse-report.md
+
+      # Uploaded with a fixed artifact name so dawidd6/action-download-artifact
+      # can always retrieve "the latest baseline from main" in the PR job above.
+      - name: Upload as baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-baseline
+          path: lighthouse-results.json
+          retention-days: 90
