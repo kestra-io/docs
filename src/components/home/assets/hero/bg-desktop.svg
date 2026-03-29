@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1720" height="888" viewBox="0 0 1720 888" xmlns="http://www.w3.org/2000/svg">
+    <filter id="filter1" x="0" y="0" width="1720" height="888" filterUnits="userSpaceOnUse"
+        primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feGaussianBlur stdDeviation="225" />
+    </filter>
+    <g id="Group" filter="url(#filter1)">
+        <linearGradient id="linearGradient1" x1="1999.695" y1="229.614139" x2="1713.065"
+            y2="726.071861" gradientUnits="userSpaceOnUse">
+            <stop offset="1e-05" stop-color="#1fa9ff" stop-opacity="1" />
+            <stop offset="1" stop-color="#4f3bfe" stop-opacity="1" />
+        </linearGradient>
+        <path id="Path" fill="url(#linearGradient1)" stroke="none"
+            d="M 1713.065063 726.071899 C 1579.623291 649.029236 1535.611694 475.438049 1614.762329 338.345032 C 1693.913086 201.251953 1866.253296 152.571533 1999.695068 229.614136 C 2133.136719 306.656738 2177.148438 480.247986 2097.997559 617.341003 C 2018.846924 754.434021 1846.506714 803.114502 1713.065063 726.071899 Z" />
+    </g>
+    <filter id="filter2" x="0" y="0" width="1720" height="888" filterUnits="userSpaceOnUse"
+        primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feGaussianBlur stdDeviation="225" />
+    </filter>
+    <g id="g1" filter="url(#filter2)">
+        <path id="path1" fill="#5926ff" stroke="none"
+            d="M 1143.265015 870.238831 C 1009.823303 793.196228 965.811707 619.60498 1044.962402 482.511963 C 1124.113159 345.418945 1296.453247 296.738525 1429.89502 373.781128 C 1563.33667 450.823761 1607.348389 624.414917 1528.197632 761.507935 C 1449.046997 898.601013 1276.706787 947.281433 1143.265015 870.238831 Z" />
+    </g>
+    <filter id="filter3" x="0" y="0" width="1720" height="888" filterUnits="userSpaceOnUse"
+        primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feGaussianBlur stdDeviation="32" />
+    </filter>
+    <g id="g2" filter="url(#filter3)">
+        <path id="path2" fill="#3f1faa" stroke="none"
+            d="M 1270.055054 773 C 1270.055054 803.04364 1224.658936 827.398804 1168.660034 827.398804 C 1112.661133 827.398804 1067.265015 803.04364 1067.265015 773 C 1067.265015 742.95636 1112.661133 718.601196 1168.660034 718.601196 C 1224.658936 718.601196 1270.055054 742.95636 1270.055054 773 Z" />
+    </g>
+</svg>

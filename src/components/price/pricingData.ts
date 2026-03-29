@@ -29,27 +29,11 @@ export interface SupportRow {
 }
 
 export const PLANS: Plan[] = [
-    { name: "Open source" },
-    {
-        name: "Team",
-        button: {
-            text: "Request Free Trial",
-            href: "/enterprise/free-trial",
-            class: "btn btn-secondary",
-        },
-    },
-    {
-        name: "Pro",
-        button: {
-            text: "Contact us",
-            href: "/demo",
-            class: "btn btn-secondary",
-        },
-    },
+    { name: "Open Source" },
     {
         name: "Enterprise",
         button: {
-            text: "Contact us",
+            text: "Contact Sales",
             href: "/demo",
             class: "btn btn-primary",
         },
@@ -62,7 +46,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Workflow Design & Execution",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Execute all your workflows as code or from the UI",
                     link: "/docs/workflow-components",
@@ -70,7 +54,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Task & Subflow Dependencies",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Visualize the relationship dependencies between your flows",
                     link: "/docs/ui/flows#dependencies",
@@ -78,7 +62,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Advanced Orchestration Patterns (Loops, Conditions)",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Wait for specific conditions to be met before proceeding",
                     link: "/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil",
@@ -86,7 +70,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Human-in-the-Loop Approvals",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Pause and resume workflow executions with custom inputs",
                     link: "/docs/use-cases/approval-processes#humantask-assign-specific-users-for-approval",
@@ -99,7 +83,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Flexible Scheduling",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "The Scheduler is a server component responsible for processing all triggers",
                     link: "/docs/architecture/server-components#scheduler",
@@ -107,7 +91,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Event-Driven Triggers",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Execute your workflow based on events",
                     link: "/docs/workflow-components/triggers",
@@ -115,7 +99,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Real-Time Processing",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Millisecond-latency event processing for business-critical workflows",
                     link: "/docs/workflow-components/triggers/realtime-trigger",
@@ -123,7 +107,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Flow-Level APIs",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Define service level agreements for workflow execution",
                     link: "/docs/workflow-components/sla",
@@ -136,7 +120,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Embedded Code Editor",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Built-in code editor to write and run your workflows",
                     link: "/docs/ui/flows",
@@ -144,7 +128,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Autocomplete & Validation",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Trigger autocompletion to list available tasks or properties of a given task",
                     link: "/docs/tutorial/fundamentals#autocompletion",
@@ -152,7 +136,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Git Integration & Versioning",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Advanced Git integration to sync all your Kestra objects incl. flows, apps, unit tests, dashboards and namespace files",
                     link: "/docs/version-control-cicd/git",
@@ -160,7 +144,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Live Execution Topology",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Visualize the structure of your flow",
                     link: "/docs/ui/flows#topology-view",
@@ -173,7 +157,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Multi-Cloud & On-Prem Deployment",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Install Kestra on any cloud or on-prem",
                     link: "/docs/installation",
@@ -181,7 +165,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Namespace File Management",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Store and manage custom code separately for each namespace",
                     link: "/docs/concepts/namespace-files",
@@ -189,7 +173,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Built-in Key-Value Store",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Key-value store to persist configuration and custom workflow execution data",
                     link: "/docs/concepts/kv-store",
@@ -202,7 +186,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: `${totalPlugins}+ Plugins`,
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: `Connect Kestra to ${totalPlugins}+ plugins`,
                     link: "/plugins",
@@ -210,7 +194,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Enterprise Plugins",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Access enterprise-grade integrations and features designed for secure, compliant, and large-scale orchestration across your stack.",
                     link: "/plugins",
@@ -218,7 +202,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Task Runners",
-                values: ["cross", "cross", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Offload compute-intensive tasks to remote environments",
                     link: "/docs/task-runners",
@@ -231,7 +215,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "AI Agents",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "Launch autonomous processes with an LLM, memory, and tools",
                     link: "/docs/ai-tools/ai-agents",
@@ -239,7 +223,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "AI Copilot (Gemini)",
-                values: ["check", "check", "check", "check"],
+                values: ["check", "check"],
                 description: {
                     text: "AI-Copilot generating workflow code based on a natural language prompt using Gemini models",
                     link: "/docs/ai-tools/ai-copilot",
@@ -247,7 +231,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "AI Copilot (Any LLM Cloud or Self-Hosted)",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "AI-Copilot with support for any LLM provider",
                     link: "/docs/ai-tools/ai-copilot",
@@ -260,7 +244,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Users Management",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Manage users inside Kestra UI",
                     link: "/docs/enterprise/auth/rbac",
@@ -268,7 +252,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Role-Based Access Control (RBAC)",
-                values: ["cross", "check", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Manage access to workflows and resources by assigning Roles to Users, Groups, and Service Accounts",
                     link: "/docs/enterprise/auth/rbac",
@@ -276,7 +260,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Fine-Grained RBAC",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Give users restricted access or full control over your Kestra instance",
                     link: "/docs/enterprise/auth/rbac#permissions",
@@ -284,7 +268,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "SSO (OIDC)",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Access multiple applications with one set of login credentials",
                     link: "/docs/enterprise/auth/sso",
@@ -292,7 +276,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Lightweight Directory Access Protocol (LDAP)",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Enable LDAP authentication in Kestra to streamline access using existing LDAP credentials",
                     link: "/docs/enterprise/auth/sso/ldap",
@@ -300,7 +284,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "System for Cross-domain Identity Management (SCIM)",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Sync users and groups from your Identity Provider to Kestra",
                     link: "/docs/enterprise/auth/scim",
@@ -308,7 +292,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Internal Secret Manager",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Configure secrets, plugin defaults, and variables that can be used within any flow in a given namespace",
                     link: "/docs/enterprise/governance/namespace-management#namespace-level-features",
@@ -316,7 +300,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "External Secret Manager (Vault, AWS Secrets Manager...)",
-                values: ["cross", "cross", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Store sensitive information securely.",
                     link: "/docs/enterprise/governance/secrets-manager",
@@ -324,7 +308,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Service Account",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Create applications with programmatic API access or create token for real users",
                     link: "/docs/enterprise/auth/service-accounts",
@@ -337,7 +321,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Namespaces, Variables",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Govern secrets, variables, and plugin defaults on a namespace level.",
                     link: "/docs/enterprise/governance/namespace-management",
@@ -345,7 +329,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "System Announcements",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Communicate planned maintenance or incidents with in-app banners",
                     link: "/docs/enterprise/instance/announcements",
@@ -353,7 +337,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Assets & Lineage",
-                values: ["cross", "cross", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Assets keeps a live inventory of resources that your workflows interact with",
                     link: "/docs/enterprise/governance/assets",
@@ -361,7 +345,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Audit Logs",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Record all activities made by all users on the resources created inside Kestra",
                     link: "/docs/enterprise/governance/audit-logs",
@@ -369,7 +353,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "External Log Aggregators",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Manage and distribute logs across your entire infrastructure",
                     link: "/docs/enterprise/governance/logshipper",
@@ -382,7 +366,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Plugin Versioning",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Use multiple versions of a plugin depending on your instance requirements and upgrade path",
                     link: "/docs/enterprise/instance/versioned-plugins",
@@ -390,7 +374,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Unit Tests",
-                values: ["cross", "cross", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Automated, isolated tests for your Kestra flows with fixtures and assertions to avoid regressions in production",
                     link: "/blogs/introducing-unit-tests",
@@ -398,7 +382,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "App & Workflow Catalog",
-                values: ["cross", "cross", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Browse and manage custom applications built with Kestra",
                     link: "/docs/enterprise/scalability/apps#app-catalog",
@@ -406,7 +390,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Custom Blueprints",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Your private internal App store of ready to use Kestra workflows",
                     link: "/docs/enterprise/governance/custom-blueprints",
@@ -419,7 +403,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         rows: [
             {
                 feature: "Backup & Restore",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Automated backup and restore for disaster recovery",
                     link: "/docs/administrator-guide/backup-and-restore",
@@ -427,7 +411,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Multi-Tenant",
-                values: ["cross", "cross", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Isolate multiple environments within a single Kestra instance",
                     link: "/docs/enterprise/governance/tenants",
@@ -435,7 +419,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Worker Groups",
-                values: ["cross", "cross", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "A set of workers that can be explicitly targeted for task execution or polling trigger evaluation",
                     link: "/docs/enterprise/scalability/worker-group",
@@ -443,7 +427,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Advanced Secret Manager Multiple by (Namespace/Tenant)",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Store sensitive information securely.",
                     link: "/docs/enterprise/governance/secrets-manager",
@@ -451,7 +435,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Cluster Health Monitoring",
-                values: ["cross", "check", "check", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Monitor cluster health and performance. Support for plugging in your own storage backend",
                     link: "/docs/administrator-guide/monitoring",
@@ -459,7 +443,7 @@ export const getSections = (totalPlugins: number): Section[] => [
             },
             {
                 feature: "Storage Isolation",
-                values: ["cross", "cross", "cross", "check"],
+                values: ["cross", "check"],
                 description: {
                     text: "Add extra security measures to your Kestra instance to isolate access",
                     link: "/docs/enterprise/governance/worker-isolation",

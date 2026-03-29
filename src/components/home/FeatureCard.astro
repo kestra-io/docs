@@ -1,0 +1,26 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  body: string;
+  stats: { value: string; label: string }[];
+  cta: { label: string; href: string };
+}
+const { eyebrow, title, body, stats, cta } = Astro.props;
+---
+<li>
+  <article>
+    <p>{eyebrow}</p>
+    <h3>{title}</h3>
+    <p>{body}</p>
+    <dl>
+      {stats.map(s => (
+        <div>
+          <dt>{s.label}</dt>
+          <dd>{s.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <a href={cta.href}>{cta.label} &rarr;</a>
+  </article>
+</li>

@@ -20,7 +20,7 @@
                         <p data-usal="fade-l">{{ item.description }}</p>
                         <Link
                             href="/pricing"
-                            text="Compare All Plans"
+                            text="See All Plans"
                             class="btn btn-primary"
                             data-usal="zoomin"
                         />
