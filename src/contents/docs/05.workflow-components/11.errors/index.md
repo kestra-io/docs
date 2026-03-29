@@ -68,7 +68,7 @@ Two kinds of error handlers can be defined:
 
 ## Global error handler
 
-This example shows a global error handler. The first task fails immediately, triggering the handler, which then logs the ID of the failed task using the `errorLogs()` function.
+This example shows a global error handler. The first task fails immediately, triggering the handler, which then logs the ID of the failed task using the `tasksWithState()` function.
 
 ```yaml
 id: errors
@@ -79,9 +79,9 @@ tasks:
     type: io.kestra.plugin.core.execution.Fail
 
 errors:
-  - id: 2nd
+  - id: error_handler
     type: io.kestra.plugin.core.log.Log
-    message: I'm failing {{ errorLogs()[0]['taskId'] }} # Because errorLogs() is an array, the first taskId to fail is retrieved.
+    message: I'm failing task '{{ tasksWithState('failed')[0]['taskId'] }}' # Because tasksWithState() returns an array, the first taskId to fail is retrieved.
     level: INFO
 ```
 
