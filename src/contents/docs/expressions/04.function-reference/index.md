@@ -153,7 +153,7 @@ Use it inside `ForEach` flows to avoid manual `taskrun.value` indexing:
 
 ### `errorLogs()`
 
-Useful for error notifications:
+Prints all error logs from the current execution:
 
 ```twig
 {{ errorLogs() }}
