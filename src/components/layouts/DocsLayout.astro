@@ -4,7 +4,7 @@ import Layout from "~/components/layout.astro"
 import { buildDocsNavigation } from "~/utils/buildDocsNavigation"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
-import Squared from "../layout/Squared.vue"
+import squaredGrid from "~/assets/squared-grid.svg"
 
 const navigation = await buildDocsNavigation()
 
@@ -24,7 +24,14 @@ const props = Astro.props as Props
 ---
 
 <Layout title={props.title} description={props.description} image={props.image}>
+    <link rel="preload" as="image" href={squaredGrid.src} />
     <div
+        style={{
+            backgroundImage: `url(${squaredGrid.src})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top center",
+            backgroundSize: "1400px auto",
+        }}
         class:list={[
             "container-fluid",
             "bd-gutter",
@@ -70,8 +77,7 @@ const props = Astro.props as Props
 
 <style lang="scss">
     .container-fluid {
-        background: var(--ks-background-body) url("~/assets/squared-grid.svg")
-            no-repeat top center / 1400px auto;
+        background-color: var(--ks-background-body);
         gap: calc($spacer * 4);
         padding-left: 1rem;
         padding-right: 1rem;
