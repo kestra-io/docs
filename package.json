@@ -53,6 +53,7 @@
     "eventsource-parser": "^3.0.6",
     "expressive-code-collapsible": "^0.1.0",
     "jose": "^6.2.0",
+    "lighthouse": "^12.8.2",
     "lodash": "^4.17.23",
     "lottie-web": "^5.13.0",
     "medium-zoom": "^1.1.0",
