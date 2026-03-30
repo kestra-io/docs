@@ -228,7 +228,7 @@ socialProof:
       label: More teams building automation
   cta:
     text: "See how enterprises modernize IT automation with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/22-scaling-big-data-operations
   theme: "var(--ks-special-green)"
 
 platformStrengths:

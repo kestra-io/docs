@@ -212,7 +212,7 @@ socialProof:
       label: More workflows automated
   cta:
     text: "See how ops teams modernize with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:

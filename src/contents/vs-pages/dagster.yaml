@@ -171,8 +171,8 @@ socialProof:
     - value: "+5000"
       label: Workflows Created
   cta:
-    text: "How much risk and cost are you still accepting today?"
-    link: https://kestra.io/blogs/2023-08-16-datamesh
+    text: "See how Leroy Merlin increased data production by 900% with Kestra"
+    link: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
   theme: "var(--ks-special-green)"
 
 platformStrengths:
