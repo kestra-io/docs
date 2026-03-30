@@ -1,4 +1,3 @@
-// oxlint-disable no-console
 // @ts-check
 /**
  * Lighthouse performance benchmark script for kestra.io docs.

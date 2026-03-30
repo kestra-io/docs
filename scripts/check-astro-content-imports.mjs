@@ -1,5 +1,4 @@
 // @ts-check
-// oxlint-disable no-console
 /**
  * Checks that no non-prerendered page (or any of its dependencies) imports
  * runtime values from "astro:content". Such imports cause Astro to bundle all
