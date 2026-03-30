@@ -198,11 +198,11 @@ const hasAnnounce = annonces.length > 0
             : undefined}
         class={hasAnnounce ? "has-annonces" : ""}
     >
-        <Header client:idle transition:persist />
-        <Search randomAiQuestions={randomAiQuestions} client:idle />
+        <Header client:load transition:persist />
+        <Search randomAiQuestions={randomAiQuestions} client:load />
         {
             hasAnnounce ? (
-                <Announce client:idle transition:persist content={annonces} />
+                <Announce client:load transition:persist content={annonces} />
             ) : (
                 ""
             )
@@ -214,7 +214,7 @@ const hasAnnounce = annonces.length > 0
         <LayoutFooter transition:persist>
             <ThemeSwitcher slot="theme-switcher" />
         </LayoutFooter>
-        <LayoutFixed client:idle transition:persist />
+        <LayoutFixed client:load transition:persist />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>

@@ -17,7 +17,7 @@ const releases = await fetchMajorReleases(150)
                 Stay up to date with the latest releases and updates
             </p>
             <ChangelogList
-                client:idle
+                client:load
                 {releases}
                 currentUrl={Astro.request.url}
             />
@@ -26,6 +26,7 @@ const releases = await fetchMajorReleases(150)
 
     <style lang="scss">
         section {
+            
             color: var(--ks-content-primary);
             .container {
                 padding: 3rem 1.25rem;

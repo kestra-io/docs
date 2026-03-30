@@ -76,13 +76,10 @@ const content = story.content
 
 <Layout title={story.metaTitle} description={story.metaDescription}>
     <div class="main">
-        <StoryDetail client:idle slug={slug} {story} {content} {related}>
+        <StoryDetail client:load slug={slug} {story} {content} {related}>
             <SeeHow slot="change">
                 <Fragment slot="title"> Experience Kestra Today </Fragment>
-                {
-                    entry.data.cta ??
-                        "What would change if your workflows ran on a unified orchestration platform—built for scale, reliability, and end-to-end automation?"
-                }
+                {entry.data.cta ?? "What would change if your workflows ran on a unified orchestration platform—built for scale, reliability, and end-to-end automation?"}
             </SeeHow>
         </StoryDetail>
     </div>

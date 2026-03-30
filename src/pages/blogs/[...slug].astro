@@ -106,9 +106,9 @@ const jsonLinkedData = {
         <TwoColumnStickyLayout>
             <div slot="sidebar" class="blog-sidebar">
                 <BlogDetails blog={post} avatars={Avatars} />
-                <BlogToc client:idle links={links} />
+                <BlogToc client:load links={links} />
                 <BlogSocials
-                    client:idle
+                    client:load
                     post={{ editUrl, title, url: Astro.url.href }}
                 />
             </div>
