@@ -175,10 +175,30 @@ const hasAnnounce = annonces.length > 0
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
-        <link rel="preload" as="style" href={uiLibsCssUrl} onload="this.onload=null;this.rel='stylesheet'" />
-        <link rel="preload" as="style" href={vendorCssUrl} onload="this.onload=null;this.rel='stylesheet'" />
-        <link rel="preload" as="style" href={appCssUrl} onload="this.onload=null;this.rel='stylesheet'" />
-        <link rel="preload" as="style" href={themeCssUrl} onload="this.onload=null;this.rel='stylesheet'" />
+        <link
+            rel="preload"
+            as="style"
+            href={uiLibsCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+            rel="preload"
+            as="style"
+            href={vendorCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+            rel="preload"
+            as="style"
+            href={appCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+            rel="preload"
+            as="style"
+            href={themeCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
         <noscript>
             <link rel="stylesheet" href={uiLibsCssUrl} />
             <link rel="stylesheet" href={vendorCssUrl} />
