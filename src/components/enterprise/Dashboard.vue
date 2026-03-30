@@ -113,6 +113,7 @@
 
     .dashboard {
         margin-top: 4rem;
+        min-height: 464px;
         border: 1px solid var(--ks-border-active);
         box-shadow: 0px 0px 20px 0px hsla(264, 76%, 67%, 1);
         background: var(--ks-background-primary);
@@ -139,9 +140,11 @@
             }
 
             &:first-child {
+                min-height: 352px;
             }
 
             &:last-child {
+                min-height: 112px;
                 border-bottom: none;
 
                 .dashboard-col {
