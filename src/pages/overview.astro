@@ -196,9 +196,9 @@ const WORKFLOW_SECTIONS = [
 ---
 
 <Layout {title} {description} headerTheme="lightText">
-    <Hero client:load />
+    <Hero client:idle />
     <StickySteps
-        client:load
+        client:idle
         data={{
             steps: WORKFLOW_STEPS,
             title: "Language-Agnostic Workflows",

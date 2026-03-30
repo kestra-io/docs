@@ -11,7 +11,7 @@ const description =
 
 <Layout title={title} description={description} headerTheme="lightText">
     <div class="livedemo">
-        <Header client:load />
+        <Header client:idle />
         <Features
             client:visible
             routePath={new URL(Astro.request.url).pathname}

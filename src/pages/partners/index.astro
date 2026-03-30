@@ -17,8 +17,8 @@ const DLTQuotes = [
     {
         quote: "Kestra and dlt share a vision of simplifying data pipeline creation. Thanks to Kestra's and dlt's declarative interface, you can deploy existing pipelines in seconds or build new ones in minutes, complete with self healing schemas and lineage to increase robustness and trust.",
         author: "Co-Founder @ <strong>dlthub</strong>",
-        smallLogoSvg: dltLogo
-    }
+        smallLogoSvg: dltLogo,
+    },
 ]
 ---
 
@@ -28,5 +28,5 @@ const DLTQuotes = [
     <PluginsBlock />
     <Quotes quotes={DLTQuotes} />
     <Reasons />
-    <BecomeAPartner routePath={Astro.url.pathname} client:load />
+    <BecomeAPartner routePath={Astro.url.pathname} client:idle />
 </Layout>

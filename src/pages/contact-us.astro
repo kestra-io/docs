@@ -9,6 +9,6 @@ const description =
 ---
 
 <Layout title={title} description={description}>
-    <Header routePath={Astro.url.pathname} client:load />
+    <Header routePath={Astro.url.pathname} client:idle />
     <Slack />
 </Layout>

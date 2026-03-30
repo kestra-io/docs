@@ -214,7 +214,7 @@ const hasAnnounce = annonces.length > 0
         <LayoutFooter transition:persist>
             <ThemeSwitcher slot="theme-switcher" />
         </LayoutFooter>
-        <LayoutFixed client:load transition:persist />
+        <LayoutFixed client:idle transition:persist />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>
