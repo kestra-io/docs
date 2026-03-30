@@ -89,5 +89,10 @@
     "astro-loading-indicator": {
       "astro": "$astro"
     }
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.60.1",
+    "@rollup/rollup-darwin-x64": "^4.60.1",
+    "@rollup/rollup-linux-x64-gnu": "^4.60.1"
   }
 }
