@@ -198,11 +198,11 @@ const hasAnnounce = annonces.length > 0
             : undefined}
         class={hasAnnounce ? "has-annonces" : ""}
     >
-        <Header client:load transition:persist />
-        <Search randomAiQuestions={randomAiQuestions} client:load />
+        <Header client:idle transition:persist />
+        <Search randomAiQuestions={randomAiQuestions} client:idle />
         {
             hasAnnounce ? (
-                <Announce client:load transition:persist content={annonces} />
+                <Announce client:idle transition:persist content={annonces} />
             ) : (
                 ""
             )
