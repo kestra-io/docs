@@ -1,4 +1,4 @@
-title: "Kestra vs. Apache Airflow: Orchestrate Your Stack, Not Just Your DAGs"
+title: "Apache Airflow vs Kestra for Data Pipeline Orchestration"
 description: "Compare Kestra vs Apache Airflow: Declarative YAML orchestration for any language vs. Python DAGs. See features, setup time, and migration considerations."
 competitorName: Airflow
 

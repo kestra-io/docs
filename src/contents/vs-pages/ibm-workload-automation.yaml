@@ -1,4 +1,4 @@
-title: "Kestra vs. IBM Workload Automation: Modern Orchestration vs. Legacy Enterprise Scheduling"
+title: "IBM Workload Automation vs Kestra for Enterprise Workload Scheduling"
 description: "Compare Kestra vs IBM Workload Automation (formerly Tivoli Workload Scheduler): Open-source, event-driven orchestration in YAML vs. agent-based enterprise job scheduling with proprietary licensing. See features, setup, and migration path."
 competitorName: IBM Workload Automation
 
