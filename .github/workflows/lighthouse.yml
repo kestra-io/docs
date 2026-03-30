@@ -42,8 +42,10 @@ jobs:
 
       - name: Compute preview URL
         id: preview
+        env:
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
-          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          BRANCH="$BRANCH"
           SLUG="ks-$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')"
           echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
           echo "url=https://${SLUG}-docs.kestra-io.workers.dev" >> "$GITHUB_OUTPUT"
