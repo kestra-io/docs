@@ -49,7 +49,7 @@ export default defineConfig({
         mdx(),
         icon(),
         purgecss({
-            safelist: [/^cm-/, /^cc-/],
+            safelist: [/^cm[-_]?/, /^cc-/],
             content: ["./src/**/*.{astro,vue}"],
         }),
     ],
