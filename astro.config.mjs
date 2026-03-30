@@ -125,12 +125,14 @@ export default defineConfig({
                 name: "Mona Sans",
                 weights: [300, 400, 500, 600, 700],
                 cssVariable: "--font-family-mona-sans",
+                display: "swap",
             },
             {
                 provider: fontProviders.google(),
                 name: "JetBrains Mono",
                 weights: [200, 300, 400, 500, 600, 700],
                 cssVariable: "--font-family-jetbrains-mono",
+                display: "swap",
             },
         ],
         svgo: {

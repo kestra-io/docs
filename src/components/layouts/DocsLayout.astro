@@ -5,6 +5,7 @@ import { buildDocsNavigation } from "~/utils/buildDocsNavigation"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import Squared from "../layout/Squared.vue"
+import squaredGridUrl from "~/assets/squared-grid.svg?url"
 
 const navigation = await buildDocsNavigation()
 
@@ -24,6 +25,7 @@ const props = Astro.props as Props
 ---
 
 <Layout title={props.title} description={props.description} image={props.image}>
+    <link slot="head" rel="preload" as="image" href={squaredGridUrl} fetchpriority="high" />
     <div
         class:list={[
             "container-fluid",
