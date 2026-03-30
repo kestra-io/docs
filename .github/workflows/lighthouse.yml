@@ -17,6 +17,8 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       startsWith(github.repository, 'kestra-io/')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
