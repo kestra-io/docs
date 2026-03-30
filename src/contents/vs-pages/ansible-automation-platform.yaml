@@ -207,7 +207,7 @@ socialProof:
       label: Audit trail coverage
   cta:
     text: "See how IT teams orchestrate with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:

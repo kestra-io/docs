@@ -193,7 +193,7 @@ socialProof:
       label: Workflows Created
   cta:
     text: "See how teams orchestrate at scale with Kestra"
-    link: https://kestra.io/blogs/2023-08-16-datamesh
+    link: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:

@@ -1,10 +1,10 @@
 ---
 title: Orchestrating Cybersecurity for 100+ Users and Billions of Rows
-description: In under 3 months, a global financial institution empowered 100+
+description: In under 3 months, JPMorgan Chase empowered 100+
   users, ran thousands of API pulls weekly, and processed billions of rows
   securely with Trino, dbt, and AWS thanks to Kestra.
-metaTitle: Global Bank Orchestrates Cybersecurity for 100+ Users and Billions of Rows
-metaDescription: In under 3 months, a global financial institution empowered
+metaTitle: "JPMorgan Chase & Kestra: Orchestrating Cybersecurity for 100+ Users and Billions of Rows"
+metaDescription: In under 3 months, JPMorgan Chase empowered
   100+ users, ran thousands of API pulls weekly, and processed billions of rows
   securely with Trino, dbt, and AWS thanks to Kestra.
 heroImage: ./hero.png
@@ -35,19 +35,19 @@ headquarter: New York City, USA
 solution: Helping power economic growth by creating opportunities for all
   through business and community investments, local collaborations and policy
   advocacy.
-companyName: Global Leading Banking Company
+companyName: JPMorgan Chase
 ---
 
-For a **global financial institution**, protecting customers against fraud and malicious activity is not simply an IT challenge; **it is the backbone of trust**. For one of the world’s largest and most influential banks, the stakes could not be higher. Every day, billions of transactions pass through its systems, and behind each one is the constant threat of cyberattacks, fraud, and data breaches.
+For **JPMorgan Chase**, protecting customers against fraud and malicious activity is not simply an IT challenge; **it is the backbone of trust**. As one of the world’s largest and most influential banks, the stakes could not be higher. Every day, billions of transactions pass through its systems, and behind each one is the constant threat of cyberattacks, fraud, and data breaches.
 
-Within this Global Leading Financial Company, the cybersecurity and technology division was given the responsibility to rethink how threat intelligence and fraud detection data were collected, enriched, analyzed, and disseminated across the enterprise. The mission was ambitious: **create a secure and scalable data orchestration environment** capable of supporting hundreds of users, dozens of external data sources, and multiple business-critical products, all under strict compliance rules and aggressive deadlines.
+Within JPMorgan Chase, the cybersecurity and technology division was given the responsibility to rethink how threat intelligence and fraud detection data were collected, enriched, analyzed, and disseminated across the enterprise. The mission was ambitious: **create a secure and scalable data orchestration environment** capable of supporting hundreds of users, dozens of external data sources, and multiple business-critical products, all under strict compliance rules and aggressive deadlines.
 
 > “We needed more than a workflow engine. We needed a backbone, something to move data seamlessly so our teams could focus on fighting fraud, not writing scripts.”, Cybersecurity Product Owner
 > 
 
 ## A Program in Motion
 
-The division counted more than **100 active users**, split between product owners, analysts, and engineers. Many were highly technical, but not all were comfortable writing Python or maintaining custom code bases. The company had made the directive clear: **the orchestration layer should not depend on Python**.
+The division counted more than **100 active users**, split between product owners, analysts, and engineers. Many were highly technical, but not all were comfortable writing Python or maintaining custom code bases. JPMorgan Chase had made the directive clear: **the orchestration layer should not depend on Python**.
 
 The teams wanted a **middle ground** between no-code drag-and-drop interfaces and heavy code-first frameworks. They needed something expressive enough for engineers, yet accessible to cybersecurity specialists who worked closer to the data.
 
@@ -63,7 +63,7 @@ Their stack was already sophisticated:
 - **dbt** for modeling and transformations.
 - **AWS** for infrastructure, with S3 as the storage layer.
 
-What was missing was the **glue**. The company needed something to orchestrate the ingestion of APIs, the transformation of data, and the dissemination of intelligence. And it had to be secure, resilient, and fast enough to handle thousands of workflows a week.
+What was missing was the **glue**. JPMorgan Chase needed something to orchestrate the ingestion of APIs, the transformation of data, and the dissemination of intelligence. And it had to be secure, resilient, and fast enough to handle thousands of workflows a week.
 
 ## The Challenge of Scale and Compliance
 
@@ -83,26 +83,26 @@ The scale was daunting:
 - **Billions of rows** processed in internal datasets.
 - **Hundreds of ingestion jobs per day**, each needing retries, monitoring, and low latency.
 
-And because this was a **highly regulated institution**, security was paramount:
+And because this is **JPMorgan Chase**, security was paramount:
 
 - Role-Based Access Control (RBAC) for over 100 users.
 - Integration with **AWS Secrets Manager** to protect credentials.
 - Full **auditability** of every workflow execution.
 
-They also mandated a **multi-cloud strategy**. AWS was the first step, but the system needed to be ready for the firm’s private cloud and even future deployments on GCP or Azure. Disaster recovery requirements were uncompromising: at least one **hot** environment running continuously, with multiple **warm** environments ready for failover.
+They also mandated a **multi-cloud strategy**. AWS was the first step, but the system needed to be ready for JPMorgan Chase’s private cloud and even future deployments on GCP or Azure. Disaster recovery requirements were uncompromising: at least one **hot** environment running continuously, with multiple **warm** environments ready for failover.
 
 > “If one pipeline breaks, the risk is measured in millions. Reliability wasn’t optional , it was the entire point.” , Engineering Lead
 > 
 
 ## Building the Orchestration Layer
 
-The teams had tried open-source orchestrators before. Some were too **code-heavy**, forcing every workflow into Python. Others were too **rigid**, limited to specific automation tasks. The company needed something in between: a **declarative, YAML-first approach** that remained extensible.
+The teams had tried open-source orchestrators before. Some were too **code-heavy**, forcing every workflow into Python. Others were too **rigid**, limited to specific automation tasks. JPMorgan Chase needed something in between: a **declarative, YAML-first approach** that remained extensible.
 
 That’s when **Kestra** entered the picture.
 
 For product owners and analysts, Kestra became the **“wizard behind the curtain”** , a system that handled ingestion, enrichment, analysis, and dissemination invisibly, without requiring Python. For engineers, it offered the flexibility to integrate with Trino, dbt, and internal APIs.
 
-The first alpha  mapped directly to the company’s milestones:
+The first alpha mapped directly to JPMorgan Chase’s milestones:
 
 - **Ingestion**: hourly API pulls, defined declaratively instead of scripted.
 - **Enrichment**: dbt transformations adding geolocation, categories, and context to raw feeds.
@@ -145,5 +145,5 @@ The team summarized it best:
 > “Pretty much all of our cyber automations and analytics jobs should eventually run through this platform. It’s not just a tool , it’s becoming part of how we work.”
 > 
 
-For one of the world’s largest financial institutions, Kestra is the backbone of cybersecurity data.
+For JPMorgan Chase, Kestra is the backbone of cybersecurity data.
 Fraud and threat detection decisions now run on reliable, compliant workflows that deliver intelligence at scale and on time.

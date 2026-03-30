@@ -234,7 +234,7 @@ socialProof:
       label: Faster workflow delivery
   cta:
     text: "See how enterprises modernize IT automation with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/30-building-a-government-grade-orchestration-control-plane-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:
