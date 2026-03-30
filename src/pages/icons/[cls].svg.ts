@@ -1,8 +1,7 @@
 // do not prerender icons there are too many of them and are updated frequently
-import { $fetchApiRawCached } from "~/utils/fetch.ts"
-
 export const prerender = false
 
+import { $fetchApiRawCached } from "~/utils/fetch.ts"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
 export async function GET({ params }: { params: { cls: string } }) {
