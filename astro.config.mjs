@@ -18,7 +18,7 @@ import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
-import playformInline from "@playform/inline";
+import playformInline from "@playform/inline"
 
 const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
@@ -35,15 +35,25 @@ export default defineConfig({
                 : "cloudflare",
     }),
     trailingSlash: "ignore",
-    integrations: [vue({
-        template: {
-            compilerOptions: {
-                isCustomElement: (tag) => tag === "rapi-doc",
+    integrations: [
+        vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: (tag) => tag === "rapi-doc",
+                },
             },
-        },
-        appEntrypoint: "./src/vue-setup.ts",
-        devtools: { launchEditor: "idea" },
-    }), expressiveCode(), mdx(), icon(), playformInline()],
+            appEntrypoint: "./src/vue-setup.ts",
+            devtools: { launchEditor: "idea" },
+        }),
+        expressiveCode(),
+        mdx(),
+        icon(),
+        playformInline({
+            Exclude: [
+                (File) => File.includes("/blogs/") || File.includes("/docs/"),
+            ],
+        }),
+    ],
     markdown: {
         remarkPlugins: [
             remarkClassname,
