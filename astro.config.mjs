@@ -48,7 +48,10 @@ export default defineConfig({
         expressiveCode(),
         mdx(),
         icon(),
-        purgecss(),
+        purgecss({
+            safelist: [/^cm-/, /^cc-/],
+            content: ["./src/**/*.{astro,vue}"],
+        }),
     ],
     markdown: {
         remarkPlugins: [
