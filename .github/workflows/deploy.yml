@@ -15,6 +15,7 @@ concurrency:
 
 permissions:
   pull-requests: write
+  actions: read  # download baseline artifact from lighthouse.yml
 
 jobs:
   truncate-url-slug:
@@ -96,3 +97,65 @@ jobs:
           template: |
             🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
+
+  lighthouse:
+    name: Lighthouse Benchmark
+    needs: [truncate-url-slug, deploy-workers]
+    if: ${{ github.event_name == 'pull_request' && startsWith(github.repository, 'kestra-io/') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install Lighthouse
+        # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
+        run: npm install --no-save lighthouse chrome-launcher
+
+      # Try to download the latest baseline artifact saved after a main-branch deploy.
+      # If none exists yet (first run after setup), this step is skipped silently.
+      - name: Download main branch baseline
+        id: baseline
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          workflow: lighthouse.yml
+          branch: main
+          name: lighthouse-baseline
+          path: baseline/
+
+      - name: Run Lighthouse benchmark
+        run: node scripts/lighthouse-benchmark.mjs
+        env:
+          BASE_URL: https://${{ needs.truncate-url-slug.outputs.slug }}-docs.kestra-io.workers.dev
+          OUTPUT_FILE: lighthouse-results.json
+          BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
+          MARKDOWN_FILE: lighthouse-report.md
+
+      - name: Read Lighthouse report
+        id: report
+        run: |
+          {
+            echo "content<<LIGHTHOUSE_REPORT_DELIMITER"
+            cat lighthouse-report.md
+            echo "LIGHTHOUSE_REPORT_DELIMITER"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        uses: meysam81/comment-pr@v1
+        with:
+          title: "## 🔦 Lighthouse Benchmark"
+          content: ${{ steps.report.outputs.content }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-pr-results
+          path: lighthouse-results.json
+          retention-days: 30

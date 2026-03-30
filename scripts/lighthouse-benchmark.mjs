@@ -331,9 +331,6 @@ function buildMarkdown(output, baseline) {
         : "No baseline available — scores will appear after the first merge to `main`"
 
     const lines = [
-        "<!-- lighthouse-benchmark-comment -->",
-        "## 🔦 Lighthouse Benchmark",
-        "",
         `> Tested: \`${output.baseUrl}\` on ${testedAt}  `,
         `> ${baselineInfo}`,
         "",
