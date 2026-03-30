@@ -1,0 +1,1556 @@
+[
+  {
+    "id": "advanced-scheduling",
+    "title": "Advanced Scheduling Automation, Run Tasks Only on Business Days by Country",
+    "metaDescription": "Advanced Scheduling Automation using Python. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 135
+  },
+  {
+    "id": "agent-text-summarizer",
+    "title": "Summarize Text with an AI Agent, Generate Multilingual Summaries in Short, Medium, or Long Format",
+    "metaDescription": "Summarize Text with an AI Agent using Google Gemini. Automate intelligent workflows without custom AI infrastructure. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "ai-add-tasks-deepseek",
+    "title": "Convert Natural Language Prompts to Structured Todoist Tasks with Deepseek AI",
+    "metaDescription": "Convert Natural Language Prompts to Structured Todoist Tasks with Deepseek AI. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 143
+  },
+  {
+    "id": "ai-agent-calling-flows",
+    "title": "Trigger the Right Automation with an AI Agent Based on User Intent",
+    "metaDescription": "Trigger the Right Automation with an AI Agent Based on User Intent using Google Gemini. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 152
+  },
+  {
+    "id": "ai-book-summary-perplexity",
+    "title": "Generate a book chapter summary using Perplexity AI and email it.",
+    "metaDescription": "Generate a book chapter summary using Perplexity AI and email it. Automate intelligent workflows without custom AI infrastructure. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "ai-check-weather-gemini",
+    "title": "Decide When to Take Action Using AI, Check Real-Time Weather and Trigger Automations",
+    "metaDescription": "Decide When to Take Action Using AI using Google Gemini and Slack. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 131
+  },
+  {
+    "id": "ai-daily-digest-email-anthropic",
+    "title": "Generate and Send a Personalized AI-Powered Daily Digest Email Every Morning",
+    "metaDescription": "Generate and Send a Personalized AI-Powered Daily Digest Email Every Morning using Anthropic. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 158
+  },
+  {
+    "id": "ai-gdpr-breach-notification",
+    "title": "Draft GDPR Breach Notifications for Supervisory Authorities and Data Subjects",
+    "metaDescription": "Draft GDPR Breach Notifications for Supervisory Authorities and Data Subjects using AI, HubSpot, and Python. Automate compliance workflows. Open-source.",
+    "char_count": 152
+  },
+  {
+    "id": "ai-gdpr-compliance-audit",
+    "title": "Run an AI-Powered GDPR Compliance Audit with Structured Findings and Executive Summary",
+    "metaDescription": "Run an AI-Powered GDPR Compliance Audit with Structured Findings using AI Agent. Automate compliance reviews without custom infrastructure. Open-source.",
+    "char_count": 152
+  },
+  {
+    "id": "ai-gdpr-dpa-reviewer",
+    "title": "Review Data Processing Agreements Against GDPR Article 28 Requirements",
+    "metaDescription": "Review Data Processing Agreements Against GDPR Article 28 using AI Agent, Python, and Slack. Automate compliance reviews. Open-source and ready to use.",
+    "char_count": 151
+  },
+  {
+    "id": "ai-gdpr-dpia-assistant",
+    "title": "Conduct a GDPR Data Protection Impact Assessment (DPIA) with RAG on Official Legal Texts",
+    "metaDescription": "Conduct a GDPR Data Protection Impact Assessment with RAG on official legal texts using Python. Automate compliance workflows. Open-source and ready to use.",
+    "char_count": 156
+  },
+  {
+    "id": "ai-gdpr-privacy-policy-analyzer",
+    "title": "Analyze Privacy Policies and Cookie Notices for GDPR and ePrivacy Compliance",
+    "metaDescription": "Analyze Privacy Policies and Cookie Notices for GDPR and ePrivacy Compliance using AI Agent. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 157
+  },
+  {
+    "id": "ai-learning-roadmap-n8n",
+    "title": "AI Learning Roadmap Generator with n8n",
+    "metaDescription": "AI Learning Roadmap Generator with n8n using Python. Automate intelligent workflows without custom AI infrastructure. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "ai-notion-summary-perplexity",
+    "title": "Generate a Daily AI News Summary and Publish It to Notion with Slack Alerts",
+    "metaDescription": "Generate a Daily AI News Summary and Publish It to Notion with Slack Alerts using Perplexity. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 158
+  },
+  {
+    "id": "ai-summarize-weekly-git-commits",
+    "title": "Summarize Weekly Git Commits with AI and Send a Development Report to Slack",
+    "metaDescription": "Summarize weekly Git commits with OpenAI and post a dev report to Slack. Keep teams aligned on code progress effortlessly. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "airbyte-cloud-dbt-cloud",
+    "title": "Build an ETL Pipeline with Airbyte Cloud and dbt Cloud for SaaS Analytics",
+    "metaDescription": "Build an ETL Pipeline with Airbyte Cloud and dbt Cloud for SaaS Analytics. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 136
+  },
+  {
+    "id": "airbyte-cloud-dbt",
+    "title": "Build an ETL Pipeline with Airbyte Cloud and dbt Core for SaaS Analytics",
+    "metaDescription": "Build an ETL Pipeline with Airbyte Cloud and dbt Core for SaaS Analytics using Git. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 145
+  },
+  {
+    "id": "airbyte-cloud-sync",
+    "title": "Run a Scheduled ETL Sync with Airbyte Cloud",
+    "metaDescription": "Run a Scheduled ETL Sync with Airbyte Cloud. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 132
+  },
+  {
+    "id": "airbyte-sync-parallel-with-dbt",
+    "title": "Build an ETL Pipeline with Parallel Airbyte Syncs and dbt Core Transformations",
+    "metaDescription": "Build an ETL Pipeline with Parallel Airbyte Syncs and dbt Core Transformations using Git. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 151
+  },
+  {
+    "id": "airbyte-sync-parallel",
+    "title": "Run Parallel ETL Ingestion with Airbyte to Sync Multiple Data Sources",
+    "metaDescription": "Run Parallel ETL Ingestion with Airbyte to Sync Multiple Data Sources. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 158
+  },
+  {
+    "id": "airflow-trigger-dag",
+    "title": "Trigger an Airflow DAG",
+    "metaDescription": "Trigger an Airflow DAG. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 111
+  },
+  {
+    "id": "ansible-config-drift",
+    "title": "Security & Compliance, Detect and Alert on Infrastructure Configuration Drift with Ansible",
+    "metaDescription": "Detect and Alert on Infrastructure Configuration Drift with Ansible. Automate security compliance and reduce manual toil. Open-source and ready to use.",
+    "char_count": 151
+  },
+  {
+    "id": "ansible-deploy-configuration",
+    "title": "Ansible Scalability, Deploy Configuration Files to Multiple Servers at Scale",
+    "metaDescription": "Ansible Scalability, Deploy Configuration Files to Multiple Servers at Scale. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "ansible-local-message",
+    "title": "Ansible 101, How to Orchestrate and Run a Simple Ansible Playbook",
+    "metaDescription": "Ansible 101, How to Orchestrate and Run a Simple Ansible Playbook. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "api-json-to-postgres",
+    "title": "Extract data, transform it, and load it in parallel to S3 and Postgres \u2014 in less than 7 seconds!",
+    "metaDescription": "Extract data using Python. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 114
+  },
+  {
+    "id": "api-python-sql",
+    "title": "Build an ETL Pipeline from a REST API Using Python, Polars, and DuckDB",
+    "metaDescription": "Build an ETL Pipeline from a REST API Using Python using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "apify-to-notion",
+    "title": "Run Apify actor and update Notion",
+    "metaDescription": "Run Apify actor and update Notion. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 122
+  },
+  {
+    "id": "argocd-app-management",
+    "title": "Manage an Argo CD Application with Sync Verification",
+    "metaDescription": "Manage an Argo CD Application with Sync Verification using Kubernetes. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 158
+  },
+  {
+    "id": "argocd-single-tenant-wave-rollout",
+    "title": "Single-tenant Argo CD rollout with waves, guarded sync strategy, and Status-based readiness gates",
+    "metaDescription": "Single-tenant Argo CD rollout with waves. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 132
+  },
+  {
+    "id": "audit-logs-csv-export",
+    "title": "Export Kestra audit logs as a CSV file and send out via Email.",
+    "metaDescription": "Export Kestra audit logs as a CSV file and send out via Email using Schedule. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 140
+  },
+  {
+    "id": "auditlogs-to-bigquery",
+    "title": "Stream kestra audit logs from a Kafka topic to BigQuery for analytics and troubleshooting",
+    "metaDescription": "Stream kestra audit logs from a Kafka topic to BigQuery for analytics and troubleshooting. Automate cloud operations without writing glue code.",
+    "char_count": 143
+  },
+  {
+    "id": "aws-batch-terraform-git",
+    "title": "High-Performance Computing, Run Parallel Python Workloads on AWS Batch with ECS Fargate",
+    "metaDescription": "High-Performance Computing using Git and Terraform. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 134
+  },
+  {
+    "id": "aws-event-bridge",
+    "title": "Publish Application and System Events to AWS EventBridge for Event-Driven Architectures",
+    "metaDescription": "Publish Application and System Events to AWS EventBridge for Event-Driven Architectures. Automate cloud operations without writing glue code.",
+    "char_count": 141
+  },
+  {
+    "id": "aws-kinesis-json",
+    "title": "Stream JSON and Application Events to AWS Kinesis Data Streams at Scale",
+    "metaDescription": "Stream JSON and Application Events to AWS Kinesis Data Streams at Scale. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "aws-lambda",
+    "title": "Microservice orchestration: invoke multiple AWS Lambda functions in parallel",
+    "metaDescription": "Microservice orchestration: invoke multiple AWS Lambda functions in parallel using Shell. Automate cloud operations without writing glue code.",
+    "char_count": 142
+  },
+  {
+    "id": "aws-log-shipper",
+    "title": "Automatically Ship Workflow and System Logs to AWS CloudWatch",
+    "metaDescription": "Automatically Ship Workflow and System Logs to AWS CloudWatch using Schedule. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "azure-blob-to-bigquery",
+    "title": "Automate Cross-Cloud ETL from Azure Blob Storage to BigQuery with dbt Cloud",
+    "metaDescription": "Automate Cross-Cloud ETL from Azure Blob Storage to BigQuery with dbt Cloud. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 138
+  },
+  {
+    "id": "build-aws-ecr-image",
+    "title": "AWS ECR CI/CD Build and Push Docker Images to AWS Elastic Container Registry",
+    "metaDescription": "AWS ECR CI/CD Build and Push Docker Images to AWS Elastic Container Registry. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "build-gcp-artifact-registry-image",
+    "title": "Google Cloud CI/CD, Build and Push Docker Images to Google Cloud Artifact Registry",
+    "metaDescription": "Google Cloud CI/CD. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 102
+  },
+  {
+    "id": "business-automation",
+    "title": "Getting started with Kestra \u2014 a Business Automation workflow example",
+    "metaDescription": "Getting started with Kestra \u2014 a Business Automation workflow example. Get up and running with Kestra in minutes. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "business-processes",
+    "title": "Getting started with Kestra \u2014 a Business Processes workflow example",
+    "metaDescription": "Getting started with Kestra \u2014 a Business Processes workflow example using Slack. Get up and running with Kestra in minutes. Open-source and ready to use.",
+    "char_count": 153
+  },
+  {
+    "id": "caching",
+    "title": "Cache a computationally expensive task in an ETL pipeline using the taskCache property",
+    "metaDescription": "Cache a computationally expensive task in an ETL pipeline using the taskCache property using DuckDB. Master Kestra workflow patterns.",
+    "char_count": 133
+  },
+  {
+    "id": "cassandra-to-bigquery",
+    "title": "Build an ETL Pipeline from Cassandra to BigQuery Using CSV Export",
+    "metaDescription": "Build an ETL Pipeline from Cassandra to BigQuery Using CSV Export. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "chat-with-your-data",
+    "title": "Build a Chat-With-Your-Data System Using Elasticsearch and OpenAI (RAG)",
+    "metaDescription": "Build a Chat-With-Your-Data System Using Elasticsearch and OpenAI (RAG). Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 137
+  },
+  {
+    "id": "ci-cd-for-kestra-flows",
+    "title": "CI/CD for Kestra, Deploy and Manage Flows from GitHub Using Webhooks",
+    "metaDescription": "CI/CD for Kestra using Shell. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 117
+  },
+  {
+    "id": "ci-cd-github-webhook",
+    "title": "CI/CD with GitHub Webhooks, Process Pull Request Events and Test Locally with JSON Payloads",
+    "metaDescription": "CI/CD with GitHub Webhooks using Python and Docker. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "cloudquery-aws",
+    "title": "Ingest AWS Resource Metadata into Postgres Using CloudQuery for Security and Governance Analysis",
+    "metaDescription": "Ingest AWS Resource Metadata into Postgres Using CloudQuery for Security and Governance Analysis. Automate cloud operations without writing glue code.",
+    "char_count": 150
+  },
+  {
+    "id": "cloudquery-sync-hn-to-parquet",
+    "title": "Data Ingestion Pipeline, Sync Hacker News Data to CSV Files Using CloudQuery",
+    "metaDescription": "Sync Hacker News Data to CSV Files Using CloudQuery on a Schedule. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "cloudquery-sync",
+    "title": "Schedule CloudQuery Data Ingestion into DuckDB for Analytics and Exploration",
+    "metaDescription": "Schedule CloudQuery Data Ingestion into DuckDB for Analytics and Exploration. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 139
+  },
+  {
+    "id": "copy-flows-to-new-tenant",
+    "title": "Multi-Tenant CI/CD, Promote Kestra Flows Across Environments and Tenants Automatically",
+    "metaDescription": "Multi-Tenant CI/CD using Schedule. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 125
+  },
+  {
+    "id": "copyin-postgres",
+    "title": "Bulk Load CSV Data into PostgreSQL Using COPY for Fast ETL Ingestion",
+    "metaDescription": "Bulk Load CSV Data into PostgreSQL Using COPY for Fast ETL Ingestion. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "couchbase-to-pandas",
+    "title": "Extract Data from Couchbase and Transform It with Pandas for Analytics",
+    "metaDescription": "Extract Data from Couchbase and Transform It with Pandas for Analytics using Python. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 146
+  },
+  {
+    "id": "create-github-issue-on-failure",
+    "title": "Automatically Create a GitHub Issue When a Workflow or Job Fails",
+    "metaDescription": "Automatically Create a GitHub Issue When a Workflow or Job Fails. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 156
+  },
+  {
+    "id": "create-hubspot-ticket-on-failure",
+    "title": "Create HubSpot Tickets Automatically for Incident Management",
+    "metaDescription": "Create HubSpot Tickets Automatically for Incident Management. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "create-jira-ticket-on-failure",
+    "title": "Create Jira Issues Automatically for Incident Management",
+    "metaDescription": "Create Jira Issues Automatically for Incident Management. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 148
+  },
+  {
+    "id": "create-linear-issue-on-failure",
+    "title": "Create Linear Issues Automatically for Incident Management",
+    "metaDescription": "Create Linear Issues Automatically for Incident Management. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "create-pagerduty-alert-on-failure",
+    "title": "Trigger PagerDuty Alerts Automatically for Incident Response",
+    "metaDescription": "Trigger PagerDuty Alerts Automatically for Incident Response. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "create-repository",
+    "title": "Create and Manage GitHub Repositories with Terraform for CI/CD Best Practices",
+    "metaDescription": "Create and Manage GitHub Repositories with Terraform for CI/CD Best Practices. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 140
+  },
+  {
+    "id": "create-vm-gcp-terraform",
+    "title": "Provision Google Cloud VMs with Terraform, IPAM, and Slack Notifications",
+    "metaDescription": "Provision Google Cloud VMs with Terraform using Python. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "create-zendesk-ticket-on-failure",
+    "title": "Create a ticket in Zendesk when a workflow fails",
+    "metaDescription": "Create a ticket in Zendesk when a workflow fails. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 140
+  },
+  {
+    "id": "csv-duckdb-slack",
+    "title": "Run scheduled sales analytics on CSV data with DuckDB and post results to Slack",
+    "metaDescription": "Run scheduled sales analytics on CSV data with DuckDB and post results to Slack. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "dagster-trigger-job",
+    "title": "Trigger a Dagster Job",
+    "metaDescription": "Trigger a Dagster Job. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 110
+  },
+  {
+    "id": "daily-shopify-stripe-summary",
+    "title": "Automate daily e-commerce reporting by syncing Shopify orders and Stripe balance to Notion and Slack",
+    "metaDescription": "Automate daily e-commerce reporting by syncing Shopify orders and Stripe balance to Notion and Slack. Automate this process reliably.",
+    "char_count": 133
+  },
+  {
+    "id": "data-engineering-pipeline",
+    "title": "Getting started with Kestra \u2014 a Data Engineering Pipeline example",
+    "metaDescription": "Getting started with Kestra \u2014 a Data Engineering Pipeline using Python and DuckDB. Get up and running with Kestra in minutes. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "data-pipeline-assets",
+    "title": "Build governed analytics assets with DuckDB using data lineage, staging, and mart layers",
+    "metaDescription": "Build governed analytics assets with DuckDB using data lineage. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "databricks-sql",
+    "title": "Query Databricks SQL and process lakehouse data with Python and Pandas",
+    "metaDescription": "Query Databricks SQL and process lakehouse data with Python and Pandas. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 159
+  },
+  {
+    "id": "datadog-log-shipper",
+    "title": "Ship Kestra execution logs to Datadog for centralized observability",
+    "metaDescription": "Ship Kestra execution logs to Datadog for centralized observability. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 159
+  },
+  {
+    "id": "datagen-mongodb",
+    "title": "Generate mock JSON data and send the file to MongoDB",
+    "metaDescription": "Generate mock JSON data and send the file to MongoDB. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 141
+  },
+  {
+    "id": "dbt-bigquery",
+    "title": "Run dbt transformations on Google BigQuery from Git for analytics ETL",
+    "metaDescription": "Run dbt transformations on Google BigQuery from Git for analytics ETL using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 145
+  },
+  {
+    "id": "dbt-duckdb",
+    "title": "Run dbt transformations on DuckDB from Git for local analytics and ELT",
+    "metaDescription": "Run dbt transformations on DuckDB from Git for local analytics and ELT using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 146
+  },
+  {
+    "id": "dbt-git-docker-duckdb",
+    "title": "Run dbt ELT pipelines with DuckDB from Git using Docker",
+    "metaDescription": "Run dbt ELT pipelines with DuckDB from Git using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "dbt-motherduck",
+    "title": "Run dbt ELT pipelines on MotherDuck from Git using Docker",
+    "metaDescription": "Run dbt ELT pipelines on MotherDuck from Git using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 146
+  },
+  {
+    "id": "dbt-postgres",
+    "title": "Run dbt ELT pipelines on Postgres from Git using Docker",
+    "metaDescription": "Run dbt ELT pipelines on Postgres from Git using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "dbt-redshift",
+    "title": "Run dbt models on Amazon Redshift directly from a Git repository",
+    "metaDescription": "Run dbt models on Amazon Redshift directly from a Git repository using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 140
+  },
+  {
+    "id": "dbt-snowflake",
+    "title": "Execute dbt transformations on Snowflake using a Git-based workflow",
+    "metaDescription": "Execute dbt transformations on Snowflake using a Git-based workflow using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "debezium-mysql-realtime-trigger",
+    "title": "Monitor MySQL DELETE events in real time with Debezium and send Slack alerts",
+    "metaDescription": "Monitor MySQL DELETE events in real time with Debezium and send Slack alerts. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 139
+  },
+  {
+    "id": "discord-alert",
+    "title": "Send a Discord message when a production workflow fails",
+    "metaDescription": "Send a Discord message when a production workflow fails. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "dlt-elt-chess-api-to-duckdb",
+    "title": "Run a scheduled ELT pipeline in Python: extract Chess.com API data and load it into DuckDB with dltHub",
+    "metaDescription": "Run a scheduled ELT pipeline in Python: extract Chess.com API data and load it into DuckDB with dltHub using Docker. Automate this process reliably.",
+    "char_count": 148
+  },
+  {
+    "id": "dlt-google-analytics-to-duckdb",
+    "title": "Build a Python ELT pipeline to extract Google Analytics data and load it into DuckDB with dlt",
+    "metaDescription": "Build a Python ELT pipeline to extract Google Analytics data and load it into DuckDB with dlt using Docker. Automate this process reliably.",
+    "char_count": 139
+  },
+  {
+    "id": "dlt-json-to-duckdb",
+    "title": "Build a Python pipeline to load JSON API data into DuckDB using dlt",
+    "metaDescription": "Build a Python pipeline to load JSON API data into DuckDB using dlt using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "dlt-pipedrive-to-bigquery",
+    "title": "Load Pipedrive CRM data into BigQuery with a scheduled dlt pipeline",
+    "metaDescription": "Load Pipedrive CRM data into BigQuery with a scheduled dlt pipeline using Python and Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "dlt-zendesk-to-duckdb",
+    "title": "Ingest Zendesk data into DuckDB using dlt",
+    "metaDescription": "Ingest Zendesk data into DuckDB using dlt using Python and Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "dlt-zendesk-to-weaviate",
+    "title": "Ingest Zendesk data into Weaviate using dlt",
+    "metaDescription": "Ingest Zendesk data into Weaviate using dlt using Python and Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 156
+  },
+  {
+    "id": "download-parquet-from-databricks",
+    "title": "Download a Parquet file from Databricks DBFS and process it with Python",
+    "metaDescription": "Download a Parquet file from Databricks DBFS and process it with Python using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "dremio-sql-python",
+    "title": "Query data from Dremio and process it in Polars with a Python script",
+    "metaDescription": "Query data from Dremio and process it in Polars with a Python script using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "druid-to-pandas",
+    "title": "Fetch data from Apache Druid and transform it in Python with Pandas",
+    "metaDescription": "Fetch data from Apache Druid and transform it in Python with Pandas. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 159
+  },
+  {
+    "id": "druid-to-redshift",
+    "title": "Query data from Druid and load it to Redshift",
+    "metaDescription": "Query data from Druid and load it to Redshift. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 129
+  },
+  {
+    "id": "duckdb-query",
+    "title": "Analyze salaries of data professionals using a SQL query in DuckDB, extract the results to a CSV file",
+    "metaDescription": "Analyze salaries of data professionals using a SQL query in DuckDB. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "dwh-and-analytics",
+    "title": "Getting started with Kestra \u2014 a Data Warehouse and Analytics workflow example",
+    "metaDescription": "Getting started with Kestra \u2014 a Data Warehouse and Analytics workflow example using Git, dbt, and Docker. Automate this process reliably.",
+    "char_count": 137
+  },
+  {
+    "id": "elastic-esql-query-to-python-pandas-dataframe",
+    "title": "Run Elastic ESQL query and read the data as a Pandas DataFrame",
+    "metaDescription": "Run Elastic ESQL query and read the data as a Pandas DataFrame using Elasticsearch and Python. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "elasticsearch",
+    "title": "Load and search data using Elasticsearch",
+    "metaDescription": "Load and search data using Elasticsearch. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 132
+  },
+  {
+    "id": "elt-notification-telegram",
+    "title": "Run a dbt job and Hightouch sync, send a Telegram message on workflow completion",
+    "metaDescription": "Run a dbt job and Hightouch sync using Git and Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "error-logs",
+    "title": "Error Handling & Observability, Send  Detailed Failure Context to Slack",
+    "metaDescription": "Error Handling & Observability. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 122
+  },
+  {
+    "id": "every-monday",
+    "title": "Run a flow on the first Monday of each month at 11 AM",
+    "metaDescription": "Run a flow on the first Monday of each month at 11 AM using Schedule. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "explain-error-with-llm",
+    "title": "Explain Workflow Failures with OpenAI and Send Insights to Slack",
+    "metaDescription": "Explain Workflow Failures with OpenAI and Send Insights to Slack using Python. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 143
+  },
+  {
+    "id": "extract-load-mysql",
+    "title": "Create table and load data to MySQL using SQL - using taskDefaults to eliminate boilerplate code",
+    "metaDescription": "Create table and load data to MySQL using SQL - using taskDefaults to eliminate boilerplate code. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 159
+  },
+  {
+    "id": "extract-load-postgres",
+    "title": "Run DDL queries and load data to Postgres",
+    "metaDescription": "Run DDL queries and load data to Postgres. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 133
+  },
+  {
+    "id": "failure-alert-discord",
+    "title": "Set up alerts for failed workflow executions using Discord",
+    "metaDescription": "Set up alerts for failed workflow executions using Discord. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "failure-alert-email",
+    "title": "Set up alerts for failed workflow executions using Email",
+    "metaDescription": "Set up alerts for failed workflow executions using Email. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 148
+  },
+  {
+    "id": "failure-alert-gmail",
+    "title": "Set up alerts for failed workflow executions using Gmail",
+    "metaDescription": "Set up alerts for failed workflow executions using Gmail. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 148
+  },
+  {
+    "id": "failure-alert-googlechat",
+    "title": "Send a Google Chat notification when a workflow fails",
+    "metaDescription": "Send a Google Chat notification when a workflow fails. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 145
+  },
+  {
+    "id": "failure-alert-sentry-1",
+    "title": "Set up alerts for failed workflow executions using Sentry",
+    "metaDescription": "Set up alerts for failed workflow executions using Sentry. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 149
+  },
+  {
+    "id": "failure-alert-sentry",
+    "title": "Send an alert to Sentry when any flow fails in the company namespace",
+    "metaDescription": "Send an alert to Sentry when any flow fails in the company namespace. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "failure-alert-slack",
+    "title": "Set up alerts for failed workflow executions using Slack",
+    "metaDescription": "Set up alerts for failed workflow executions using Slack. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 148
+  },
+  {
+    "id": "failure-alert-teams",
+    "title": "Set up alerts for failed workflow executions using Microsoft Teams",
+    "metaDescription": "Set up alerts for failed workflow executions using Microsoft Teams. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 158
+  },
+  {
+    "id": "failure-alert-twilio",
+    "title": "Send Twilio notification when a workflow fails",
+    "metaDescription": "Send Twilio notification when a workflow fails. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 138
+  },
+  {
+    "id": "failure-alert-zenduty",
+    "title": "Set up alerts for failed workflow executions using Zenduty",
+    "metaDescription": "Set up alerts for failed workflow executions using Zenduty. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "file-processing",
+    "title": "Download a ZIP file, unzip it, and convert it from CSV to Parquet",
+    "metaDescription": "Download a ZIP file, unzip it, and convert it from CSV to Parquet. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "fivetran-dbt-cloud",
+    "title": "Trigger multiple Fivetran syncs in parallel, then run a dbt Cloud job",
+    "metaDescription": "Trigger multiple Fivetran syncs in parallel, then run a dbt Cloud job. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 158
+  },
+  {
+    "id": "fivetran-sync-parallel-dbt-core",
+    "title": "Trigger multiple Fivetran syncs in parallel, then run a dbt job",
+    "metaDescription": "Trigger multiple Fivetran syncs in parallel using Git. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "flow-condition-executionflow",
+    "title": "Executes flow on flow trigger with ExecutionFlow condition",
+    "metaDescription": "Executes flow on flow trigger with ExecutionFlow condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "flow-condition-executionlabels",
+    "title": "Executes flow on flow trigger with ExecutionLabels condition",
+    "metaDescription": "Executes flow on flow trigger with ExecutionLabels condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "flow-condition-executionnamespace",
+    "title": "Executes flow on flow trigger with ExecutionNamespace condition",
+    "metaDescription": "Executes flow on flow trigger with ExecutionNamespace condition using Slack. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 139
+  },
+  {
+    "id": "flow-condition-executionstatus",
+    "title": "Executes flow on flow trigger with ExecutionStatus condition",
+    "metaDescription": "Executes flow on flow trigger with ExecutionStatus condition using Slack. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 136
+  },
+  {
+    "id": "flow-condition-hasretryattempt",
+    "title": "Executes flow on flow trigger with HasRetryAttempt condition",
+    "metaDescription": "Executes flow on flow trigger with HasRetryAttempt condition using Slack. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 136
+  },
+  {
+    "id": "flow-condition-not",
+    "title": "Executes flow on flow trigger with Not condition",
+    "metaDescription": "Executes flow on flow trigger with Not condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 140
+  },
+  {
+    "id": "flow-downstream",
+    "title": "Trigger a flow when other flows finish successfully",
+    "metaDescription": "Trigger a flow when other flows finish successfully. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "generate-pdf-with-gotenberg",
+    "title": "Generate PDF files from HTML, Markdown, Word or Excel using Gotenberg",
+    "metaDescription": "Generate PDF files from HTML using Shell. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 128
+  },
+  {
+    "id": "generate-seo-summary",
+    "title": "Generate an SEO summary of an article using HTTP REST API and OpenAI plugins",
+    "metaDescription": "Generate an SEO summary of an article using HTTP REST API and OpenAI plugins. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 142
+  },
+  {
+    "id": "get-all-namespaces",
+    "title": "Retrieve all namespaces from a Kestra instance via REST API",
+    "metaDescription": "Retrieve all namespaces from a Kestra instance via REST API. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 151
+  },
+  {
+    "id": "git-flows-files-kv-sync-from-gitlab",
+    "title": "Sync Flows, Files, and KV Stores from GitLab with GitOps Best Practices",
+    "metaDescription": "Sync Flows, Files, and KV Stores from GitLab with GitOps Best Practices. Automate GitOps workflows with zero manual effort. Open-source and ready to use.",
+    "char_count": 153
+  },
+  {
+    "id": "git-flows-files-kv-sync-to-gitlab",
+    "title": "Export All Kestra Namespaces to GitLab with Releases for GitOps Best Practices",
+    "metaDescription": "Export All Kestra Namespaces to GitLab with Releases for GitOps Best Practices. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "git-python",
+    "title": "Clone a GitHub repository and run a Python ETL script",
+    "metaDescription": "Clone a GitHub repository and run a Python ETL script using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "git-scripts",
+    "title": "Clone a GitHub repository and run a Shell script",
+    "metaDescription": "Clone a GitHub repository and run a Shell script using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "git-spark",
+    "title": "Clone a Git repository with PySpark code and run a Spark job using the Spark Submit CLI",
+    "metaDescription": "Clone a Git repository with PySpark code and run a Spark job using the Spark Submit CLI using Apache Spark. Automate this process reliably.",
+    "char_count": 139
+  },
+  {
+    "id": "git-terraform",
+    "title": "Deploy Terraform resources defined in a GitHub repository using S3 remote backend",
+    "metaDescription": "Deploy Terraform resources defined in a GitHub repository using S3 remote backend. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "github-push-and-create-pr",
+    "title": "Dev to Prod: Push Flows and Files to GitHub and Create a Pull Request to merge into `main`",
+    "metaDescription": "Dev to Prod: Push Flows and Files to GitHub and Create a Pull Request to merge into `main` using Slack. Automate this process reliably.",
+    "char_count": 135
+  },
+  {
+    "id": "github-search",
+    "title": "Search GitHub org and log most starred repo",
+    "metaDescription": "Search GitHub org and log most starred repo. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 131
+  },
+  {
+    "id": "gitlab-triage-stale-issues",
+    "title": "Triage Stale GitLab Issues and Create a Weekly Report",
+    "metaDescription": "Triage Stale GitLab Issues and Create a Weekly Report using Python. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "google-sheet-airtable-sync",
+    "title": "Sync Google Sheets article pitches into Airtable",
+    "metaDescription": "Sync Google Sheets article pitches into Airtable. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 136
+  },
+  {
+    "id": "gpu-modal",
+    "title": "GPU-accelerated Python script with Modal",
+    "metaDescription": "GPU-accelerated Python script with Modal using Git. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "graphql-query-github",
+    "title": "Query GitHub API with a GraphQL Query task",
+    "metaDescription": "Query GitHub API with a GraphQL Query task. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 130
+  },
+  {
+    "id": "gsheet-to-bigquery",
+    "title": "Read a Google Spreadsheet & Load it to BigQuery",
+    "metaDescription": "Read a Google Spreadsheet & Load it to BigQuery. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 136
+  },
+  {
+    "id": "hello-world",
+    "title": "Getting started with Kestra \u2014 a Hello World Example",
+    "metaDescription": "Getting started with Kestra \u2014 a Hello World Example using Shell. Get up and running with Kestra in minutes. Open-source and ready to use.",
+    "char_count": 137
+  },
+  {
+    "id": "http-check",
+    "title": "Monitor availability of an HTTP endpoint and send a Slack alert if a service is unhealthy",
+    "metaDescription": "Monitor availability of an HTTP endpoint and send a Slack alert if a service is unhealthy. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 153
+  },
+  {
+    "id": "hubspot-postgres-sync",
+    "title": "Sync new users from Postgres to HubSpot",
+    "metaDescription": "Sync new users from Postgres to HubSpot. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 127
+  },
+  {
+    "id": "hubspot-query-company",
+    "title": "Query and filter customer data from HubSpot",
+    "metaDescription": "Query and filter customer data from HubSpot. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 131
+  },
+  {
+    "id": "hubspot-to-bigquery",
+    "title": "Sync Hubspot CRM data to BigQuery on a schedule",
+    "metaDescription": "Sync Hubspot CRM data to BigQuery on a schedule using CloudQuery. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 153
+  },
+  {
+    "id": "huggingface_message_classification",
+    "title": "Use HuggingFace Inference API to classify customer message",
+    "metaDescription": "Use HuggingFace Inference API to classify customer message. Automate intelligent workflows without custom AI infrastructure. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "influxdb-load-query-data",
+    "title": "Load time series data into InfluxDB",
+    "metaDescription": "Load time series data into InfluxDB using DuckDB. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 137
+  },
+  {
+    "id": "infrastructure-assets",
+    "title": "Govern cloud infrastructure with Kestra Assets \u2014 automated S3 bucket provisioning by team",
+    "metaDescription": "Govern cloud infrastructure with Kestra Assets \u2014 automated S3 bucket provisioning by team. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 153
+  },
+  {
+    "id": "infrastructure-automation",
+    "title": "Getting started with Kestra \u2014 an Infrastructure Automation workflow example",
+    "metaDescription": "Getting started with Kestra \u2014 an Infrastructure Automation example using Terraform. Get up and running with Kestra in minutes. Open-source and ready to use.",
+    "char_count": 156
+  },
+  {
+    "id": "ingest-to-datalake-event-driven",
+    "title": "Event-driven data ingestion to AWS S3 data lake managed by Apache Iceberg, AWS Glue and Amazon Athena",
+    "metaDescription": "Event-driven data ingestion to AWS S3 data lake managed by Apache Iceberg using Git, Python, and Docker. Automate this process reliably.",
+    "char_count": 136
+  },
+  {
+    "id": "ingest-to-datalake-git",
+    "title": "Ingest data to AWS S3 with Git, Python, Apache Iceberg, AWS Glue and Amazon Athena",
+    "metaDescription": "Ingest data to AWS S3 with Git using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 132
+  },
+  {
+    "id": "ingest-to-datalake-inline-python",
+    "title": "Ingest data to AWS S3 with Python, Apache Iceberg, AWS Glue and Athena",
+    "metaDescription": "Ingest data to AWS S3 with Python using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 135
+  },
+  {
+    "id": "json-from-api-to-mongodb",
+    "title": "Scrape API in a Python task running in a Docker container and load the JSON document to a MongoDB collection",
+    "metaDescription": "Scrape API in a Python task running in a Docker container and load the JSON document to a MongoDB collection. Automate this process reliably.",
+    "char_count": 141
+  },
+  {
+    "id": "k8-pod-lifecycle",
+    "title": "Kubernetes Pod Lifecycle Management: Create, Inspect, and Cleanup",
+    "metaDescription": "Kubernetes Pod Lifecycle Management: Create, Inspect, and Cleanup. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "k8s-ai-incident-monitor",
+    "title": "Kubernetes AI-powered incident monitoring, analysis, and alerting",
+    "metaDescription": "Kubernetes AI-powered incident monitoring using Google Gemini and Python. Automate intelligent workflows without custom AI infrastructure.",
+    "char_count": 138
+  },
+  {
+    "id": "k8s-namespace-logs-and-events",
+    "title": "Fetch logs from all pods in a Kubernetes namespace",
+    "metaDescription": "Fetch logs from all pods in a Kubernetes namespace using Shell and Docker. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 137
+  },
+  {
+    "id": "kubernetes-script-runner",
+    "title": "Run a Python script in a Kubernetes pod",
+    "metaDescription": "Run a Python script in a Kubernetes pod. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 131
+  },
+  {
+    "id": "kv-store-purge",
+    "title": "Purge KV Store",
+    "metaDescription": "Purge KV Store using Schedule. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 121
+  },
+  {
+    "id": "listen-debezium",
+    "title": "Use Debezium to trigger a flow whenever new entries hit a Postgres database, then send notification to Slack and process data in Python",
+    "metaDescription": "Use Debezium to trigger a flow whenever new entries hit a Postgres database. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 138
+  },
+  {
+    "id": "load-multiple-csv-files-into-excel",
+    "title": "Load multiple CSV files from an HTTP API into Excel Sheets",
+    "metaDescription": "Load multiple CSV files from an HTTP API into Excel Sheets. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "load-pokemon",
+    "title": "Extract JSON data from an API and load it as a document to MongoDB",
+    "metaDescription": "Extract JSON data from an API and load it as a document to MongoDB. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "loguru",
+    "title": "Logging configuration in a Python script using Loguru",
+    "metaDescription": "Logging configuration in a Python script using Loguru using Docker. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 158
+  },
+  {
+    "id": "manage-aiven-resources-from-cli",
+    "title": "Manage Aiven resources from the CLI \u2014 start and stop services or databases on schedule",
+    "metaDescription": "Manage Aiven resources from the CLI \u2014 start and stop services or databases on schedule using Python and Docker. Master Kestra workflow patterns.",
+    "char_count": 144
+  },
+  {
+    "id": "microservices-and-apis",
+    "title": "Getting started with Kestra \u2014 a Microservices and APIs workflow example",
+    "metaDescription": "Getting started with Kestra \u2014 a Microservices and APIs workflow example using Slack. Get up and running with Kestra in minutes. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "monthly-sales-report",
+    "title": "Upload data to S3 in Python using boto3, transform it in a SQL query with DuckDB and send a CSV report via email every first day of the month",
+    "metaDescription": "Upload data to S3 in Python using boto3 using Docker. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 141
+  },
+  {
+    "id": "multi-cloud-deployment",
+    "title": "Multi-cloud deployment pipeline with Docker, ngrok, GCP Cloud Run, and Azure Container Apps",
+    "metaDescription": "Multi-cloud deployment pipeline with Docker using Git and Shell. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "namespace-sync-from-git",
+    "title": "Sync namespace resources between Git and Kestra at regular intervals",
+    "metaDescription": "Sync namespace resources between Git and Kestra at regular intervals. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "nutanix-safe-patching-workflow",
+    "title": "Nutanix safe patching with snapshot rollback",
+    "metaDescription": "Nutanix safe patching with snapshot rollback using Shell and Slack. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "on-demand-cluster-job",
+    "title": "Run a task on an on-demand Databricks cluster",
+    "metaDescription": "Run a task on an on-demand Databricks cluster. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 129
+  },
+  {
+    "id": "on-failure-alert",
+    "title": "Error handling: send Slack alert on failure",
+    "metaDescription": "Error handling: send Slack alert on failure using Shell. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "opa-policy-gate-ci",
+    "title": "Enforce CI/CD guardrails with OPA (Rego) policy gate",
+    "metaDescription": "Enforce CI/CD guardrails with OPA (Rego) policy gate. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 141
+  },
+  {
+    "id": "openai-dall-e-create-image",
+    "title": "Create an image using OpenAI's DALL-E",
+    "metaDescription": "Create an image using OpenAI's DALL-E. Automate intelligent workflows without custom AI infrastructure. Open-source and ready to use.",
+    "char_count": 133
+  },
+  {
+    "id": "opsgenie-notify-on-failure",
+    "title": "Send a notification via Opsgenie when a workflow fails",
+    "metaDescription": "Send a notification via Opsgenie when a workflow fails. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "orchestrate-zenml",
+    "title": "Run a ZenML flow from Kestra until its completion and stream logs in real-time",
+    "metaDescription": "Run a ZenML flow from Kestra until its completion and stream logs in real-time using Python. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "papermill-notebook",
+    "title": "Run a Papermill notebook",
+    "metaDescription": "Run a Papermill notebook using Python. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 126
+  },
+  {
+    "id": "parallel-files",
+    "title": "Process files in parallel",
+    "metaDescription": "Process files in parallel using Shell. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 129
+  },
+  {
+    "id": "parallel-python",
+    "title": "Add a parametrized Python script as a Namespace File and run it in parallel in Docker containers",
+    "metaDescription": "Add a parametrized Python script as a Namespace File and run it in parallel in Docker containers. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "parallel-subflows",
+    "title": "Run multiple subflows in parallel and wait for their completion - use taskDefaults to avoid boilerplate code",
+    "metaDescription": "Run multiple subflows in parallel and wait for their completion - use taskDefaults to avoid boilerplate code. Master Kestra workflow patterns.",
+    "char_count": 142
+  },
+  {
+    "id": "parametrized-flow-with-multiple-schedules",
+    "title": "Parametrized workflow with multiple schedules",
+    "metaDescription": "Parametrized workflow with multiple schedules. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 137
+  },
+  {
+    "id": "parquet-duckdb-to-excel",
+    "title": "Extract and transform a Parquet file using DuckDB and export it in Excel format",
+    "metaDescription": "Extract and transform a Parquet file using DuckDB and export it in Excel format. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "parse-pdf",
+    "title": "Download a PDF file and extract text from it using Apache Tika",
+    "metaDescription": "Download a PDF file and extract text from it using Apache Tika. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "parse-twitter-json-payload",
+    "title": "Check if a given key exists in a JSON REST API payload",
+    "metaDescription": "Check if a given key exists in a JSON REST API payload. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 146
+  },
+  {
+    "id": "pass-data-between-subflows",
+    "title": "Pass data between subflows \u2014 use outputs from the child flow in a parent flow",
+    "metaDescription": "Pass data between subflows \u2014 use outputs from the child flow in a parent flow. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 141
+  },
+  {
+    "id": "pass-data-between-tasks",
+    "title": "Pass data between Python script tasks and Shell tasks using Outputs",
+    "metaDescription": "Pass data between Python script tasks and Shell tasks using Outputs using Docker. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "pinot-to-bigquery",
+    "title": "Extract data from Apache Pinot into a CSV format and load it into BigQuery",
+    "metaDescription": "Extract data from Apache Pinot into a CSV format and load it into BigQuery. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 137
+  },
+  {
+    "id": "postgres-s3-python-git",
+    "title": "Extract data from an API and load it to Postgres using Python, Git and Docker (passing custom environment variables to the container)",
+    "metaDescription": "Extract data from an API and load it to Postgres using Python. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "postgres-s3-python-script",
+    "title": "Extract data from an API using Python, then load it to Postgres and S3",
+    "metaDescription": "Extract data from an API using Python, then load it to Postgres and S3. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 159
+  },
+  {
+    "id": "postgres-to-pandas-dataframes",
+    "title": "Extract multiple tables from Postgres using SQL queries and process those as Pandas dataframes on schedule",
+    "metaDescription": "Extract multiple Postgres tables via SQL and process them as Pandas dataframes on schedule using Python. Automate this process reliably. Open-source.",
+    "char_count": 149
+  },
+  {
+    "id": "prefect-to-resend-weekly",
+    "title": "Trigger Prefect flow weekly and send email notification",
+    "metaDescription": "Trigger Prefect flow weekly and send email notification using Resend. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "process-s3-file-if-changed",
+    "title": "Process a file from S3 only if it changed since the last execution",
+    "metaDescription": "Process a file from S3 only if it changed since the last execution using Python and Docker. Automate cloud operations without writing glue code.",
+    "char_count": 144
+  },
+  {
+    "id": "process-script-runner",
+    "title": "Run a Shell script as a subprocess on the Kestra host",
+    "metaDescription": "Run a Shell script as a subprocess on the Kestra host. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "produce-kafka-message",
+    "title": "Extract data from a REST API and send it to a Kafka topic using the Kafka producer task",
+    "metaDescription": "Extract data from a REST API and send it to a Kafka topic using the Kafka producer task. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "produce-to-rabbitmq",
+    "title": "Read a CSV file and load each row into RabbitMQ",
+    "metaDescription": "Read a CSV file and load each row into RabbitMQ. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 136
+  },
+  {
+    "id": "pulsar-realtime-trigger",
+    "title": "Use Pulsar Realtime Trigger to push events into MySQL",
+    "metaDescription": "Use Pulsar Realtime Trigger to push events into MySQL. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "purge-disk-space-interactively",
+    "title": "Interactively purge logs, executions, and internal storage files to free up disk space",
+    "metaDescription": "Purge logs, executions, and storage files interactively to free up disk space. Master Kestra workflow patterns with a ready-to-run example.",
+    "char_count": 139
+  },
+  {
+    "id": "purge",
+    "title": "Purge execution data including logs, metrics and outputs on a schedule",
+    "metaDescription": "Purge execution data \u2014 logs, metrics, and outputs \u2014 on a schedule. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "push-to-git",
+    "title": "Push code to Git at regular intervals",
+    "metaDescription": "Push code to Git at regular intervals. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 129
+  },
+  {
+    "id": "python-aws-ecr",
+    "title": "Pull a container image from Amazon ECR registry and run a Python script",
+    "metaDescription": "Pull a container image from Amazon ECR registry and run a Python script using AWS ECR and Docker. Automate cloud operations without writing glue code.",
+    "char_count": 150
+  },
+  {
+    "id": "python-csv-each-parallel",
+    "title": "Transform data from CSV files with Pandas in Python containers (in parallel)",
+    "metaDescription": "Transform data from CSV files with Pandas in Python containers (in parallel) using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "python-docker-artifact-registry-gcp",
+    "title": "Run Python script in a Docker container based on Google Artifact Registry container image",
+    "metaDescription": "Run Python script in a Docker container based on Google Artifact Registry container image. Automate cloud operations without writing glue code.",
+    "char_count": 143
+  },
+  {
+    "id": "python-generate-outputs",
+    "title": "Run a Python script and generate outputs, metrics and files specified with a variable",
+    "metaDescription": "Run a Python script and generate outputs. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 132
+  },
+  {
+    "id": "python-partitions-metrics",
+    "title": "Process partitions in parallel in Python, report outputs and metrics about number of rows and processing time for all partitioned files",
+    "metaDescription": "Process partitions in parallel in Python using Docker. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 145
+  },
+  {
+    "id": "python-subflow-component",
+    "title": "Create a Python subflow, acting like an abstracted component",
+    "metaDescription": "Create a Python subflow using Docker. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 128
+  },
+  {
+    "id": "query-clickhouse",
+    "title": "Ingest data to and query data from ClickHouse",
+    "metaDescription": "Ingest data to and query data from ClickHouse. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 134
+  },
+  {
+    "id": "react-to-sqs-trigger",
+    "title": "React to an SQS trigger",
+    "metaDescription": "React to an SQS trigger using Shell. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 119
+  },
+  {
+    "id": "redis-generate-mock-user-json",
+    "title": "Set a single mock user JSON in Redis",
+    "metaDescription": "Set a single mock user JSON in Redis. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 125
+  },
+  {
+    "id": "redis-key-value-store",
+    "title": "Store and retrieve JSON data using Redis",
+    "metaDescription": "Store and retrieve JSON data using Redis. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 129
+  },
+  {
+    "id": "redis-list-realtime-trigger",
+    "title": "Use Redis List Realtime Trigger to push events into Cassandra",
+    "metaDescription": "Use Redis List Realtime Trigger to push events into Cassandra. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "redis-list",
+    "title": "Add a list of strings to Redis",
+    "metaDescription": "Add a list of strings to Redis. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 119
+  },
+  {
+    "id": "redis-set-parallel",
+    "title": "Add multiple Redis keys in parallel from JSON input",
+    "metaDescription": "Add multiple Redis keys in parallel from JSON input. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "regex-input",
+    "title": "Parametrized flow with custom validators to ensure correct integer value range and Regex-based string pattern validation",
+    "metaDescription": "Parametrized flow with custom validators to ensure correct integer value range and Regex-based string pattern validation. Master Kestra workflow patterns.",
+    "char_count": 154
+  },
+  {
+    "id": "request-resources",
+    "title": "Use conditional inputs to request compute resources and wait for approval",
+    "metaDescription": "Use conditional inputs to request compute resources and wait for approval using Slack. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 149
+  },
+  {
+    "id": "retries",
+    "title": "Retry a failing task up to 4 times (allowing up to 5 attempts with up to 4 retries)",
+    "metaDescription": "Retry a failing task up to 4 times (allowing up to 5 attempts with up to 4 retries) using Shell. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 159
+  },
+  {
+    "id": "runif-task-attribute",
+    "title": "Run the task based on runIf condition",
+    "metaDescription": "Run the task based on runIf condition using Schedule. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "s3-dataset-assets",
+    "title": "Register S3 JSON files as governed datasets and curate them with DuckDB",
+    "metaDescription": "Register S3 JSON files as governed datasets and curate them with DuckDB. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "s3-map-over-objects",
+    "title": "List objects in an S3 bucket and process them in parallel",
+    "metaDescription": "List objects in an S3 bucket and process them in parallel. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 141
+  },
+  {
+    "id": "s3-parallel-uploads",
+    "title": "Download a zip file, unzip it and upload all files in parallel to AWS S3 - using pluginDefaults to avoid boilerplate code",
+    "metaDescription": "Download a zip file, unzip it, and upload all files in parallel to AWS S3. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "s3-trigger-duckdb",
+    "title": "Anomaly detection using DuckDB SQL query and S3 file event trigger, sending a CSV file attachment via email if anomalies are detected",
+    "metaDescription": "Anomaly detection using DuckDB SQL query and S3 file event trigger. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 150
+  },
+  {
+    "id": "s3-trigger-python",
+    "title": "Detect New Files in S3 and process them in Python",
+    "metaDescription": "Detect New Files in S3 and process them in Python using Docker. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 146
+  },
+  {
+    "id": "s3-trigger",
+    "title": "AWS S3 Event Trigger ",
+    "metaDescription": "AWS S3 Event Trigger. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 104
+  },
+  {
+    "id": "salesforce-postgres-sync",
+    "title": "Sync customer data from Postgres to Salesforce",
+    "metaDescription": "Sync customer data from Postgres to Salesforce. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 134
+  },
+  {
+    "id": "salesforce-query-company",
+    "title": "Query customer data from Salesforce",
+    "metaDescription": "Query customer data from Salesforce. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 123
+  },
+  {
+    "id": "scan-dynamodb-table",
+    "title": "Extract and process data from DynamoDB",
+    "metaDescription": "Extract and process data from DynamoDB using Shell. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 134
+  },
+  {
+    "id": "schedule-condition-datetimebetween",
+    "title": "Executes flow on schedule trigger with DateTimeBetween condition",
+    "metaDescription": "Executes flow on schedule trigger with DateTimeBetween condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 156
+  },
+  {
+    "id": "schedule-condition-dayweek",
+    "title": "Executes flow on schedule trigger with DayWeek condition",
+    "metaDescription": "Executes flow on schedule trigger with DayWeek condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 148
+  },
+  {
+    "id": "schedule-condition-dayweekinmonth",
+    "title": "Executes flow on schedule trigger with DayWeekInMonth condition",
+    "metaDescription": "Executes flow on schedule trigger with DayWeekInMonth condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "schedule-condition-not",
+    "title": "Executes flow on schedule trigger with Not condition",
+    "metaDescription": "Executes flow on schedule trigger with Not condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "schedule-condition-or",
+    "title": "Executes flow on schedule trigger with Or condition",
+    "metaDescription": "Executes flow on schedule trigger with Or condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "schedule-condition-publicholiday",
+    "title": "Executes flow on schedule trigger with PublicHoliday condition",
+    "metaDescription": "Executes flow on schedule trigger with PublicHoliday condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "schedule-condition-timebetween",
+    "title": "Executes flow on schedule trigger with TimeBetween condition",
+    "metaDescription": "Executes flow on schedule trigger with TimeBetween condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "schedule-condition-weekend",
+    "title": "Executes flow on schedule trigger with Weekend condition",
+    "metaDescription": "Executes flow on schedule trigger with Weekend condition. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 148
+  },
+  {
+    "id": "send-email-with-attachment",
+    "title": "Send an email and corresponding attachments with Resend",
+    "metaDescription": "Send an email and corresponding attachments with Resend. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "sendgrid-notify-on-failure",
+    "title": "Send a SendGrid email notification when a workflow fails",
+    "metaDescription": "Send a SendGrid email notification when a workflow fails. Never miss a critical failure with instant automated alerts. Open-source and ready to use.",
+    "char_count": 148
+  },
+  {
+    "id": "sensitive-data",
+    "title": "Extract data, mask sensitive columns using DuckDB and load it to BigQuery",
+    "metaDescription": "Extract data, mask sensitive columns using DuckDB and load it to BigQuery. Automate cloud operations without writing glue code. Open-source and ready to use.",
+    "char_count": 157
+  },
+  {
+    "id": "sentry-alert",
+    "title": "Send an alert to Sentry when a flow fails",
+    "metaDescription": "Send an alert to Sentry when a flow fails. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 130
+  },
+  {
+    "id": "shell-scripts",
+    "title": "Run Shell Scripts and Shell commands in a working directory using a Process Task Runner",
+    "metaDescription": "Run Shell Scripts and Shell commands in a working directory using a Process Task Runner. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 151
+  },
+  {
+    "id": "slack-failure-alert",
+    "title": "Failure notifications to Slack to monitor the health of production workflows",
+    "metaDescription": "Failure notifications to Slack to monitor the health of production workflows. Eliminate repetitive manual tasks. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "slack-project-channel",
+    "title": "Bootstrap a Project Slack Channel (Create, Invite, Welcome)",
+    "metaDescription": "Bootstrap a Project Slack Channel (Create, Invite, Welcome). Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 147
+  },
+  {
+    "id": "slack-weekly-standup-reminder",
+    "title": "Weekly Stand-up Reminder in Slack",
+    "metaDescription": "Weekly Stand-up Reminder in Slack. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 121
+  },
+  {
+    "id": "snowflake-query-trigger",
+    "title": "Event-driven workflow based on a Snowflake query condition",
+    "metaDescription": "Event-driven workflow based on a Snowflake query condition using Shell. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 159
+  },
+  {
+    "id": "snowflake-query",
+    "title": "Query data in Snowflake",
+    "metaDescription": "Query data in Snowflake. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 112
+  },
+  {
+    "id": "snowflake",
+    "title": "Snowflake ETL: load files to internal stage, copy from stage to a table and run analytical SQL queries ",
+    "metaDescription": "Snowflake ETL: load files to internal stage. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 132
+  },
+  {
+    "id": "splunk-log-shipper",
+    "title": "Ship Kestra logs to Splunk",
+    "metaDescription": "Ship Kestra logs to Splunk. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 118
+  },
+  {
+    "id": "sqlmesh",
+    "title": "Orchestrate SQLMesh and DuckDB engine",
+    "metaDescription": "Orchestrate SQLMesh and DuckDB engine using Git. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 136
+  },
+  {
+    "id": "surreal-db-slack",
+    "title": "CRUD operations in SurrealQL: run multiple SurrealDB queries and send the query results via Slack",
+    "metaDescription": "CRUD operations in SurrealQL: run multiple SurrealDB queries and send the query results via Slack. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "surreal-db",
+    "title": "Query SurrealDB and store the result as a downloadable artifact",
+    "metaDescription": "Query SurrealDB and store the result as a downloadable artifact. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 152
+  },
+  {
+    "id": "switch",
+    "title": "Switch tasks depending on a specific value",
+    "metaDescription": "Switch tasks depending on a specific value. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 134
+  },
+  {
+    "id": "sync-from-git",
+    "title": "Sync code from Git at regular intervals",
+    "metaDescription": "Sync code from Git at regular intervals. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 131
+  },
+  {
+    "id": "system-readonly-label",
+    "title": "Using system readOnly label to disable editing the flow from UI",
+    "metaDescription": "Using system readOnly label to disable editing the flow from UI. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "tcp-send-example",
+    "title": "Send a TCP message to a remote host for network checks and infrastructure automation",
+    "metaDescription": "Send a TCP message to a remote host for network checks and infrastructure automation using Shell. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "telegram-notify-on-failure",
+    "title": "Send a Telegram notification when a workflow fails",
+    "metaDescription": "Send a Telegram notification when a workflow fails. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "tenant-sync-from-git",
+    "title": "Sync tenant resources at regular intervals",
+    "metaDescription": "Sync tenant resources at regular intervals using Git. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 144
+  },
+  {
+    "id": "trigger-subflow",
+    "title": "Trigger a sub Flow",
+    "metaDescription": "Trigger a sub Flow. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 110
+  },
+  {
+    "id": "unreliable-flow",
+    "title": "Send an alert to Zenduty when a flow fails",
+    "metaDescription": "Send an alert to Zenduty when a flow fails using Shell. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 146
+  },
+  {
+    "id": "upload-to-s3",
+    "title": "Extract a CSV file via HTTP API and upload it to S3 by using scheduled date as a filename",
+    "metaDescription": "Extract a CSV file via HTTP API and upload it to S3 by using scheduled date as a filename. Automate cloud operations without writing glue code.",
+    "char_count": 143
+  },
+  {
+    "id": "vm-event-based-cleanup",
+    "title": "Event-driven VM cleanup from vCenter removal events",
+    "metaDescription": "Event-driven VM cleanup from vCenter removal events. Automate this process reliably and focus on what matters. Open-source and ready to use.",
+    "char_count": 140
+  },
+  {
+    "id": "wdir-pandas-python-outputs",
+    "title": "Pandas ETL - passing data between Python script tasks running in separate containers",
+    "metaDescription": "Pandas ETL - passing data between Python script tasks running in separate containers using Docker. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 160
+  },
+  {
+    "id": "weaviate-csv",
+    "title": "Extract data from a CSV file, load it in batch to Weaviate and query it with GraphQL",
+    "metaDescription": "Load CSV data in batch to Weaviate and query it with GraphQL. Automate intelligent workflows without custom AI infrastructure. Open-source and ready to use.",
+    "char_count": 156
+  },
+  {
+    "id": "weaviate-load-and-query",
+    "title": "Extract data from a REST API, load it to Weaviate and query it with GraphQL",
+    "metaDescription": "Load REST API data into Weaviate and query it with GraphQL. Automate intelligent workflows without custom AI infrastructure. Open-source and ready to use.",
+    "char_count": 154
+  },
+  {
+    "id": "weekly-confluence-recap",
+    "title": "Weekly recap of GitHub issues and Google Calendar meetings sent to Confluence",
+    "metaDescription": "Weekly recap of GitHub issues and Google Calendar meetings sent to Confluence using Slack. Eliminate repetitive manual tasks. Open-source and ready to use.",
+    "char_count": 155
+  },
+  {
+    "id": "weekly-notion-recap",
+    "title": "Weekly recap of GitHub issues and Google Calendar meetings sent to Notion",
+    "metaDescription": "Weekly recap of GitHub issues and Google Calendar meetings sent to Notion using Slack. Eliminate repetitive manual tasks. Open-source and ready to use.",
+    "char_count": 151
+  },
+  {
+    "id": "whatsapp-notify-on-failure",
+    "title": "Send a WhatsApp notification when a workflow fails",
+    "metaDescription": "Send a WhatsApp notification when a workflow fails. Master Kestra workflow patterns with a ready-to-run example. Open-source and ready to use.",
+    "char_count": 142
+  },
+  {
+    "id": "wikipedia-top10-python-pandas",
+    "title": "Use BigQuery and Python script running in Docker to analyze Wikipedia page views",
+    "metaDescription": "Use BigQuery and Python script running in Docker to analyze Wikipedia page views. Automate this process reliably. Open-source and ready to use.",
+    "char_count": 143
+  },
+  {
+    "id": "zapier-trigger-zap",
+    "title": "Trigger a Zapier Zap",
+    "metaDescription": "Trigger a Zapier Zap. Eliminate repetitive manual tasks and reclaim your time. Open-source and ready to use.",
+    "char_count": 108
+  },
+  {
+    "id": "zenduty-failure-alert",
+    "title": "Send an alert to Zenduty when any flow fails in the company namespace",
+    "metaDescription": "Send an alert to Zenduty when any flow fails in the company namespace. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 133
+  },
+  {
+    "id": "zip-to-parquet",
+    "title": "Convert a zipped CSV file to Parquet using a Python ETL workflow",
+    "metaDescription": "Convert a zipped CSV file to Parquet using a Python ETL workflow using Docker. Master Kestra workflow patterns. Open-source and ready to use.",
+    "char_count": 141
+  }
+]
