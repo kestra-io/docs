@@ -199,7 +199,7 @@ socialProof:
       label: Faster mean time to resolution
   cta:
     text: "See how ops teams automate incident response with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/26-orchestrating-cybersecurity-for-100+-users-and-billions-of-rows
   theme: "var(--ks-special-green)"
 
 platformStrengths:

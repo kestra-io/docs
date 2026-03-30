@@ -52,6 +52,7 @@
     "countries-list": "^3.3.0",
     "dayjs": "^1.11.19",
     "eventsource-parser": "^3.0.6",
+    "expressive-code-collapsible": "^0.1.0",
     "jose": "^6.2.0",
     "lodash": "^4.17.23",
     "lottie-web": "^5.13.0",

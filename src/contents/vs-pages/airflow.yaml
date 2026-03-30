@@ -181,7 +181,7 @@ socialProof:
       label: Pipeline failures
   cta:
     text: "See how teams orchestrate at scale with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
   theme: "var(--ks-special-green)"
 
 platformStrengths:

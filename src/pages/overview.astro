@@ -7,8 +7,12 @@ import StickySteps from "~/components/layout/StickySteps.vue"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import FeatureSections from "~/components/layout/FeatureSections.vue"
 
-import { usePluginsCount } from "~/composables/usePluginsCount"
-const { totalPlugins } = usePluginsCount()
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+import { $fetchApiCached } from "~/utils/fetch"
+import type { Plugin } from "@kestra-io/ui-libs"
+
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
+const totalPlugins = `${Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100}+`
 
 const title = "Kestra Platform Overview"
 const description =

@@ -201,7 +201,7 @@ socialProof:
       label: Audit coverage across all environments
   cta:
     text: "See how infrastructure teams automate with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:

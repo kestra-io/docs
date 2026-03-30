@@ -223,7 +223,7 @@ socialProof:
       label: More workflows automated
   cta:
     text: "See how enterprises modernize IT automation with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/28-governed-selfservice-cloud-automation-in-regulated-environments-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:
