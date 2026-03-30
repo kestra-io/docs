@@ -402,8 +402,7 @@ function buildMarkdown(output, baseline) {
 // ---------------------------------------------------------------------------
 
 async function main() {
-    // @ts-ignore
-    const { default: chromeLauncher } = await import("chrome-launcher")
+    const chromeLauncher = await import("chrome-launcher")
 
     console.log(`\nLighthouse Benchmark`)
     console.log(`Base URL : ${BASE_URL}`)
