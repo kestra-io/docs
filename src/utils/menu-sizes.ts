@@ -3,19 +3,19 @@ type MenuSize = { width: string; height: string }
 const menuSizes: Record<string, MenuSize> = {
     product:   {
         width: "305px",
-        height: "260px"
+        height: "228px"
     },
     solutions: {
         width: "782px",
-        height: "240px"
+        height: "208px"
     },
     resources: {
         width: "285px",
-        height: "260px"
+        height: "228px"
     },
     company: {
         width: "305px",
-        height: "260px"
+        height: "228px"
     },
 }
 

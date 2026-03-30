@@ -11,42 +11,28 @@
                     <ChevronUp />
                 </a>
             </Transition>
-            <div v-if="displaySlack && mounted" class="widget-chat">
-                <a
-                    href="https://kestra.io/slack"
-                    target="_blank"
-                    class="btn btn-sm btn-primary rounded"
+            <div class="widget-chat">
+                <button
+                    class="btn"
+                    title="Ask Kestra AI"
+                    data-bs-toggle="modal"
+                    data-bs-target="#search-ai-modal"
                 >
-                    <Slack title="" />
-                    Slack
-                    <span v-if="online" class="online"
-                        >{{ onlineText }} members</span
-                    >
-                </a>
+                    <img :src="AIGenImg.src" alt="Kestra AI" width="25" height="25" />
+                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted, onUnmounted } from "vue"
+    import { ref, onMounted, onUnmounted } from "vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import Slack from "vue-material-design-icons/Slack.vue"
-    import axios from "axios"
-    import { API_URL } from "astro:env/client"
+    import AIGenImg from "../docs/assets/ai-generate-lined.svg"
 
-    const props = withDefaults(
-        defineProps<{
-            displaySlack?: boolean
-        }>(),
-        {
-            displaySlack: true,
-        },
-    )
 
     const yScroll = ref(0)
-    const mounted = ref(false)
-    const online = ref(0)
 
     const handleScroll = () => {
         yScroll.value = window.scrollY
@@ -59,16 +45,11 @@
         })
     }
 
-    onMounted(async () => {
-        mounted.value = true
+    onMounted(() => {
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", handleScroll)
+            handleScroll()
         }
-
-        try {
-            const response = await axios.get(`${API_URL}/communities/slack`)
-            online.value = response.data.total
-        } catch (error) {}
     })
 
     onUnmounted(() => {
@@ -77,11 +58,7 @@
         }
     })
 
-    const onlineText = computed(() => {
-        return online.value === undefined
-            ? ""
-            : Intl.NumberFormat("en-US").format(online.value)
-    })
+    
 </script>
 
 <style lang="scss" scoped>
@@ -102,6 +79,23 @@
             a {
                 background-color: var(--ks-background-button-primary-hover);
                 border-color: var(--ks-border-active);
+            }
+            button {
+                display: inline-flex;
+                align-items: center;
+                width: 137px;
+                height: 36px;
+                padding: 8px 16px;
+                border-radius: 44px;
+                background: $white;
+                border: 1px solid var(--ks-border-active);
+                box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: $black;
+            }
+            img {
+                border-radius: 6px;
             }
         }
         span.online {

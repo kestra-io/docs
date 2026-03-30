@@ -185,6 +185,7 @@ const hasAnnounce = annonces.length > 0
         <script src="../scripts/cookieconsent.ts"></script>
         <script src="../scripts/zoom.js"></script>
         <script src="../scripts/theme.ts"></script>
+        <script src="../scripts/ec-collapsible.ts"></script>
     </head>
     <body
         data-header-theme={{
@@ -213,7 +214,7 @@ const hasAnnounce = annonces.length > 0
         <LayoutFooter transition:persist>
             <ThemeSwitcher slot="theme-switcher" />
         </LayoutFooter>
-        <LayoutFixed client:only="vue" transition:persist />
+        <LayoutFixed client:load transition:persist />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>

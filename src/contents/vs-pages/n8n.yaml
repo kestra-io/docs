@@ -1,4 +1,4 @@
-title: "Kestra vs. n8n: Orchestrate at Scale, Not Just Connect Apps"
+title: "n8n vs Kestra for Workflow Automation"
 description: "Compare Kestra vs n8n: Code-first universal orchestration in any language with YAML vs visual drag-and-drop app automation. See features, architecture, and use cases."
 competitorName: n8n
 
@@ -199,7 +199,7 @@ socialProof:
       label: Pipeline failures
   cta:
     text: "See how teams orchestrate at scale with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:
