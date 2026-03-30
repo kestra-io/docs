@@ -1,6 +1,7 @@
 ---
 import { $fetchApi } from "~/utils/fetch"
 import BlueprintsCarousel from "../common/BlueprintsCarousel.astro"
+import Link from "~/components/common/Link.astro"
 
 const { results } = await $fetchApi<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?page=1&size=50",
@@ -13,13 +14,24 @@ const blueprints = results
 
 <section aria-labelledby="blueprints">
     <div class="container">
-        <h2 id="blueprints">
-            <span>250+ Blueprints,</span> Ready to Build.
-        </h2>
-        <p>
-            Jump-start your workflows with a growing library of workflow
-            templates
-        </p>
+        <div class="content">
+            <div class="title-block">
+                <h2 id="blueprints">
+                    <span>250+ Blueprints,</span> Ready to Build.
+                </h2>
+                <p>
+                    Jump-start your workflows with a growing library of workflow
+                    templates
+                </p>
+            </div>
+            <Link
+                href="/blueprints"
+                class="btn btn-secondary"
+                data-usal="zoomin"
+            >
+                Explore Blueprints
+            </Link>
+        </div>
     </div>
     <BlueprintsCarousel blueprints={blueprints} />
 </section>
@@ -34,6 +46,22 @@ const blueprints = results
             padding: 4rem 1rem;
         }
     }
+    .content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .btn-secondary {
+            white-space: nowrap;
+        }
+    }
     h2 {
         font-size: 2rem;
         margin-inline: 1rem;
@@ -42,7 +70,7 @@ const blueprints = results
         }
     }
     p {
-        margin-bottom: 2rem;
+        margin-bottom: 0;
         margin-inline: 1rem;
         color: var(--ks-content-secondary);
     }
