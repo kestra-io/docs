@@ -177,7 +177,7 @@ const securityHeaders = defineMiddleware(async (context, next) => {
     )
         .filter(
             ([key]) =>
-                import.meta.env.DEV && key !== "upgrade-insecure-requests",
+                !import.meta.env.DEV || key !== "upgrade-insecure-requests",
         )
         .map(([key, value]) => {
             let line = key
