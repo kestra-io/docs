@@ -5,6 +5,8 @@ import { Icon } from "astro-icon/components"
 import cloudVisual from "~/components/cloud/assets/cloud.svg"
 import gradient1 from "~/components/cloud/assets/gradient-1.svg"
 import gradient2 from "~/components/cloud/assets/gradient-2.svg"
+import soc2Img from "~/components/layout/assets/soc2.png"
+import gdprImg from "~/components/layout/assets/gdpr.svg"
 
 import CloudForm from "~/components/cloud/Form.vue"
 
@@ -72,11 +74,11 @@ const FEATURES = [
 
             <div class="bottom-tiles" data-usal="fade-u">
                 <a href="/trust" target="_blank" class="tile">
-                    <img src="/soc2.png" alt="SOC 2" />
+                    <Image src={soc2Img} alt="SOC 2" />
                     <small>SOC 1 / SOC 2</small>
                 </a>
                 <a href="/trust" target="_blank" class="tile">
-                    <img src="/gdpr.svg" alt="GDPR" />
+                    <Image src={gdprImg} alt="GDPR" />
                     <small>RGPD</small>
                 </a>
             </div>
