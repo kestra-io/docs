@@ -2,10 +2,10 @@
 import { ClientRouter } from "astro:transitions"
 import LoadingIndicator from "astro-loading-indicator/component"
 import { Font } from "astro:assets"
-import "@kestra-io/ui-libs/style.css"
-import "~/assets/styles/vendor.scss"
-import "~/assets/styles/app.scss"
-import "~/assets/styles/theme.scss"
+import uiLibsCssUrl from "@kestra-io/ui-libs/style.css?url"
+import vendorCssUrl from "~/assets/styles/vendor.scss?url"
+import appCssUrl from "~/assets/styles/app.scss?url"
+import themeCssUrl from "~/assets/styles/theme.scss?url"
 import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
 import LayoutFooter from "~/components/layout/Footer.astro"
@@ -175,6 +175,37 @@ const hasAnnounce = annonces.length > 0
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
+        <link
+            rel="preload"
+            as="style"
+            href={uiLibsCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+            rel="preload"
+            as="style"
+            href={vendorCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+            rel="preload"
+            as="style"
+            href={appCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <link
+            rel="preload"
+            as="style"
+            href={themeCssUrl}
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <noscript>
+            <link rel="stylesheet" href={uiLibsCssUrl} />
+            <link rel="stylesheet" href={vendorCssUrl} />
+            <link rel="stylesheet" href={appCssUrl} />
+            <link rel="stylesheet" href={themeCssUrl} />
+        </noscript>
+
         <slot name="head" />
 
         <ClientRouter />
@@ -199,10 +230,10 @@ const hasAnnounce = annonces.length > 0
         class={hasAnnounce ? "has-annonces" : ""}
     >
         <Header client:load transition:persist />
-        <Search randomAiQuestions={randomAiQuestions} client:load />
+        <Search randomAiQuestions={randomAiQuestions} client:idle />
         {
             hasAnnounce ? (
-                <Announce client:load transition:persist content={annonces} />
+                <Announce transition:persist content={annonces} client:idle />
             ) : (
                 ""
             )

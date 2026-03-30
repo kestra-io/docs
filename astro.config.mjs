@@ -18,6 +18,8 @@ import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
+import playformInline from "@playform/inline"
+
 const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
 )
@@ -46,6 +48,11 @@ export default defineConfig({
         expressiveCode(),
         mdx(),
         icon(),
+        playformInline({
+            Exclude: [
+                (File) => File.includes("/blogs/") || File.includes("/docs/"),
+            ],
+        }),
     ],
     markdown: {
         remarkPlugins: [
@@ -125,12 +132,14 @@ export default defineConfig({
                 name: "Mona Sans",
                 weights: [300, 400, 500, 600, 700],
                 cssVariable: "--font-family-mona-sans",
+                display: "swap",
             },
             {
                 provider: fontProviders.google(),
                 name: "JetBrains Mono",
                 weights: [200, 300, 400, 500, 600, 700],
                 cssVariable: "--font-family-jetbrains-mono",
+                display: "swap",
             },
         ],
         svgo: {
