@@ -1,18 +1,18 @@
 ---
 import { Icon } from "astro-icon/components"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { type Plugin } from "@kestra-io/ui-libs"
 import { PLANS, getSections, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
 
-const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 const SECTIONS = getSections(totalPlugins)
 ---
 
 <section class="compare-plan" data-host="self-hosted" id="comparison-table">
     <div class="container">
-        <h2 data-usal="fade-r">Compare All Plans</h2>
+        <h2 data-usal="fade-r">See all features</h2>
 
         <div class="table-wrapper">
             <table class="plan-table">
@@ -45,7 +45,7 @@ const SECTIONS = getSections(totalPlugins)
                         SECTIONS.map((section) => (
                             <>
                                 <tr class="section-row">
-                                    <td colspan="5">{section.title}</td>
+                                    <td colspan="3">{section.title}</td>
                                 </tr>
                                 {section.rows.map((row) => (
                                     <tr class="feature-row">
@@ -75,7 +75,7 @@ const SECTIONS = getSections(totalPlugins)
                                                                         .link
                                                                 }
                                                             >
-                                                                Learn more
+                                                                Learn More
                                                             </a>
                                                         </span>
                                                     )}
@@ -108,9 +108,9 @@ const SECTIONS = getSections(totalPlugins)
         </div>
 
         <div class="support-plans-header">
-            <h2 id="support-plans" data-usal="fade-l">Support Plans</h2>
+            <h2 id="support-plans" data-usal="fade-l">Support</h2>
             <p data-usal="fade-r delay-10">
-                All paid tiers <strong>include</strong> Standard Support by default.
+                Enterprise Edition <strong>includes</strong> Standard Support by default.
             </p>
         </div>
 
@@ -156,7 +156,7 @@ const SECTIONS = getSections(totalPlugins)
 
         <div class="support-action">
             <a href="/demo" class="btn btn-primary" data-usal="zoomin"
-                >Contact us</a
+                >Contact Sales</a
             >
         </div>
     </div>

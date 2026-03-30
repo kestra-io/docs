@@ -4,6 +4,7 @@ import Layout from "~/components/layout.astro"
 import { buildDocsNavigation } from "~/utils/buildDocsNavigation"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
+import Squared from "../layout/Squared.vue"
 
 const navigation = await buildDocsNavigation()
 
@@ -56,7 +57,6 @@ const props = Astro.props as Props
                 />
                 <slot name="title" />
             </div>
-
             <slot name="headings" />
 
             <div class="layout-docs">
@@ -70,6 +70,8 @@ const props = Astro.props as Props
 
 <style lang="scss">
     .container-fluid {
+        background: var(--ks-background-body) url("~/assets/squared-grid.svg")
+            no-repeat top center / 1400px auto;
         gap: calc($spacer * 4);
         padding-left: 1rem;
         padding-right: 1rem;
@@ -140,28 +142,5 @@ const props = Astro.props as Props
     :global(.medium-zoom-image) {
         max-width: 100%;
         max-height: 100%;
-    }
-    .homepage {
-        .bd-content {
-            background:
-                radial-gradient(
-                        ellipse closest-side,
-                        color-mix(
-                                in srgb,
-                                var(--ks-content-color-highlight) 10%,
-                                transparent
-                            )
-                            0%,
-                        #ddc4ff00 100%
-                    )
-                    no-repeat,
-                url("~/components/docs/assets/homepage-bg.webp") no-repeat;
-            background-size:
-                500px 250px,
-                1261px 984px;
-            background-position:
-                top 110px right -30px,
-                top -200px right -350px;
-        }
     }
 </style>

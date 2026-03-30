@@ -1,6 +1,6 @@
 ---
 import RelatedBlueprintsVue from "~/components/plugins/RelatedBlueprints.vue"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 
 const props = Astro.props
 const {
@@ -24,7 +24,7 @@ const pluginIdentifier = (() => {
     return props.pluginWrapper?.group ?? props.pluginName
 })()
 
-const relatedBlueprints = await $fetchApi(
+const relatedBlueprints = await $fetchApiCached(
     `/blueprints/plugin/${pluginIdentifier}/version/latest`,
 )
 ---

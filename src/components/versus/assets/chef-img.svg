@@ -1,0 +1,45 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="458" height="260" rx="8" fill="#1A1D2E"/>
+  <rect x="0" y="0" width="458" height="38" rx="8" fill="#111320"/>
+  <rect x="0" y="24" width="458" height="14" fill="#111320"/>
+  <rect x="16" y="10" width="50" height="18" rx="3" fill="#5ce500" opacity="0.9"/>
+  <text x="22" y="23" font-family="monospace" font-size="9" font-weight="bold" fill="white">Chef</text>
+  <rect x="74" y="14" width="120" height="10" rx="2" fill="#2D3250"/>
+  <rect x="0" y="38" width="80" height="222" fill="#0D0F1C"/>
+  <rect x="10" y="52" width="60" height="10" rx="2" fill="#5ce500" opacity="0.7"/>
+  <rect x="10" y="70" width="60" height="10" rx="2" fill="#2D3250"/>
+  <rect x="10" y="88" width="60" height="10" rx="2" fill="#2D3250"/>
+  <rect x="10" y="106" width="60" height="10" rx="2" fill="#2D3250"/>
+  <!-- Compliance dashboard -->
+  <rect x="92" y="48" width="354" height="30" rx="3" fill="#161829"/>
+  <rect x="100" y="54" width="70" height="8" rx="2" fill="#5ce500" opacity="0.6"/>
+  <rect x="180" y="54" width="50" height="8" rx="2" fill="#2D3250"/>
+  <rect x="240" y="54" width="50" height="8" rx="2" fill="#2D3250"/>
+  <!-- Compliance status cards -->
+  <rect x="92" y="84" width="116" height="68" rx="4" fill="#161829" stroke="#2D3250" stroke-width="1"/>
+  <rect x="100" y="92" width="40" height="8" rx="2" fill="#48C774"/>
+  <text x="100" y="116" font-family="monospace" font-size="20" font-weight="bold" fill="#48C774">94%</text>
+  <rect x="100" y="128" width="80" height="6" rx="2" fill="#2D3250"/>
+  <rect x="100" y="128" width="75" height="6" rx="2" fill="#48C774" opacity="0.6"/>
+  <rect x="216" y="84" width="116" height="68" rx="4" fill="#161829" stroke="#2D3250" stroke-width="1"/>
+  <rect x="224" y="92" width="50" height="8" rx="2" fill="#FFAE1A"/>
+  <text x="224" y="116" font-family="monospace" font-size="20" font-weight="bold" fill="#FFAE1A">12</text>
+  <rect x="224" y="128" width="80" height="6" rx="2" fill="#2D3250"/>
+  <rect x="224" y="128" width="30" height="6" rx="2" fill="#FFAE1A" opacity="0.6"/>
+  <rect x="340" y="84" width="106" height="68" rx="4" fill="#161829" stroke="#2D3250" stroke-width="1"/>
+  <rect x="348" y="92" width="40" height="8" rx="2" fill="#E24650"/>
+  <text x="348" y="116" font-family="monospace" font-size="20" font-weight="bold" fill="#E24650">3</text>
+  <rect x="348" y="128" width="80" height="6" rx="2" fill="#2D3250"/>
+  <rect x="348" y="128" width="8" height="6" rx="2" fill="#E24650" opacity="0.6"/>
+  <!-- Node run list -->
+  <rect x="92" y="162" width="354" height="80" rx="4" fill="#161829" stroke="#2D3250" stroke-width="1"/>
+  <rect x="100" y="170" width="80" height="8" rx="2" fill="#5ce500" opacity="0.5"/>
+  <rect x="100" y="186" width="330" height="16" rx="2" fill="#1E2035"/>
+  <rect x="108" y="190" width="100" height="8" rx="2" fill="#2D3250"/>
+  <circle cx="350" cy="194" r="5" fill="#48C774"/>
+  <rect x="100" y="208" width="330" height="16" rx="2" fill="#0D0F1C"/>
+  <rect x="108" y="212" width="80" height="8" rx="2" fill="#2D3250"/>
+  <circle cx="350" cy="216" r="5" fill="#48C774"/>
+  <rect x="100" y="228" width="330" height="8" rx="2" fill="#1E2035"/>
+  <rect x="92" y="246" width="354" height="8" rx="2" fill="#0D0F1C"/>
+</svg>

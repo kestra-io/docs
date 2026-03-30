@@ -1,0 +1,141 @@
+<button
+    class="btn btn-lg btn-primary"
+    command="show-modal"
+    commandfor="sixty-seconds-modal"
+>
+    See Kestra in 60 seconds
+</button>
+<dialog id="sixty-seconds-modal" closedby="any">
+    <div class="modal-header">
+        <button
+            type="button"
+            class="btn-close"
+            commandfor="sixty-seconds-modal"
+            command="close"
+            aria-label="Close">X</button
+        >
+    </div>
+    <div class="modal-body">
+        <div class="video-container"></div>
+    </div>
+</dialog>
+
+<script>
+    const dialog = document.getElementById("sixty-seconds-modal")
+    const videoContainer = dialog?.querySelector(".video-container")
+    const buttonTrigger = document.querySelector(
+        'button[command="show-modal"][commandfor="sixty-seconds-modal"]',
+    )
+
+    buttonTrigger?.addEventListener("click", () => {
+        if (!videoContainer) return
+        const iframeOrig = videoContainer.querySelector("iframe")
+        if (!iframeOrig) {
+            const iframe = document.createElement("iframe")
+            iframe.width = "100%"
+            iframe.height = "100%"
+            iframe.src =
+                "https://www.youtube.com/embed/9tgQs0XgSVs?autoplay=1&enablejsapi=1"
+            iframe.title = "Kestra in 60 seconds"
+            iframe.allow =
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            iframe.allowFullscreen = true
+            videoContainer.appendChild(iframe)
+        } else {
+            controlVideo("playVideo", iframeOrig)
+        }
+    })
+
+    dialog?.addEventListener("close", () => {
+        const iframe = videoContainer?.querySelector("iframe")
+        if (iframe) {
+            controlVideo("stopVideo", iframe)
+        }
+    })
+
+    function controlVideo(
+        vidFunc: string,
+        iframe: HTMLIFrameElement | null = null,
+    ) {
+        iframe?.contentWindow?.postMessage(
+            '{"event":"command","func":"' + vidFunc + '","args":""}',
+            "*",
+        )
+    }
+</script>
+
+<style lang="scss">
+    dialog {
+        width: 95vw;
+        aspect-ratio: 16 / 11;
+        background: transparent;
+        border: none;
+
+        .btn-close {
+            border: none;
+            background: transparent;
+            padding: 0.5rem;
+            color: var(--ks-content-primary);
+        }
+        .video-container {
+            iframe {
+                margin-inline: auto;
+                display: none;
+            }
+        }
+    }
+
+    /* Open state of the dialog  */
+    dialog:open {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        font-size: 1.2rem;
+        padding: 0.3rem;
+
+        iframe {
+            display: block;
+        }
+    }
+
+    /* Closed state of the dialog   */
+    dialog {
+        opacity: 0;
+        transform: scale(0.5) translateY(-15%);
+        transition:
+            opacity 0.4s ease-out,
+            transform 0.4s ease-out,
+            overlay 0.4s ease-out allow-discrete,
+            display 0.4s ease-out allow-discrete;
+    }
+
+    /* Before open state  */
+    /* Needs to be after the previous dialog:open rule to take effect,
+        as the specificity is the same */
+    @starting-style {
+        dialog:open {
+            opacity: 0;
+            transform: scale(0.5) translateY(-15%);
+        }
+    }
+
+    /* Transition the :backdrop when the dialog modal is promoted to the top layer */
+    dialog::backdrop {
+        background-color: transparent;
+        transition:
+            display 0.4s allow-discrete,
+            overlay 0.4s allow-discrete,
+            background-color 0.4s;
+    }
+
+    dialog:open::backdrop {
+        background-color: rgb(0 0 0 / 80%);
+    }
+
+    /* This starting-style rule cannot be nested inside the above selector
+    because the nesting selector cannot represent pseudo-elements. */
+    @starting-style {
+        dialog:open::backdrop {
+            background-color: transparent;
+        }
+    }
+</style>

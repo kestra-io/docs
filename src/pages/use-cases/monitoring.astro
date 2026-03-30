@@ -5,22 +5,43 @@ import Alternation from "~/components/features/shared/Alternation.astro"
 import Section from "~/components/layout/Section.vue"
 import Enterprise from "~/components/use-cases/Enterprise.vue"
 import Cards from "~/components/use-cases/Cards.astro"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
 import AlertCircle from "vue-material-design-icons/AlertCircle.vue"
 import Cogs from "vue-material-design-icons/Cogs.vue"
 import MathLog from "vue-material-design-icons/MathLog.vue"
 import Speedometer from "vue-material-design-icons/Speedometer.vue"
 import ToyBrickPlus from "vue-material-design-icons/ToyBrickPlus.vue"
+import continuousIntegration from "~/assets/use-cases/capabilities/continuous-integration.svg"
+import provisioningDeployment from "~/assets/use-cases/capabilities/provisioning-deployment.svg"
+import disasterRecovery from "~/assets/use-cases/capabilities/disaster-recovery.svg"
 
 const TITLE = "Simplify Infrastructure Monitoring"
 const DESCRIPTION =
     "Automate infrastructure monitoring, implement alerting, and ensure optimal performance and reliability."
 
 const CAPABILITIES = [
-    "Continuous Integration/Continuous Deployment (CI/CD)",
-    "Provisioning and Deployment",
-    "Disaster Recovery",
+    {
+        title: "Continuous Integration/Continuous Deployment (CI/CD)",
+        description:
+            "Streamline your CI/CD pipelines by integrating with tools like GitHub Actions and Jenkins.",
+        image: continuousIntegration,
+        pageHref: "/use-cases/ci-cd",
+    },
+    {
+        title: "Provisioning and Deployment",
+        description:
+            "Automate the setup and deployment of infrastructure components, reducing manual effort and errors.",
+        image: provisioningDeployment,
+        pageHref: "/use-cases/provisioning-and-deployment",
+    },
+    {
+        title: "Disaster Recovery",
+        description:
+            "Automate backup and recovery processes to ensure your infrastructure can quickly recover from failures.",
+        image: disasterRecovery,
+        pageHref: "/use-cases/disaster-recovery",
+    },
 ]
 
 const MAIN_CONTENT = [
@@ -28,9 +49,9 @@ const MAIN_CONTENT = [
         title: "Quick Alerting",
         image: {
             src: "/landing/usecases/monitoring/quick-alerting.svg",
-            alt: "Quick Alerting",
             width: 568,
             height: 420,
+            alt: "Quick Alerting",
         },
         description:
             "Kestra enables alerting to help you maintain optimal performance and quickly address any issues that arise.",
@@ -47,9 +68,9 @@ const MAIN_CONTENT = [
         title: "Orchestrate your Monitoring Data",
         image: {
             src: "/landing/usecases/monitoring/monitoring-data.svg",
-            alt: "Docker and Kubernetes",
             width: 568,
             height: 420,
+            alt: "Orchestrate your Monitoring Data",
         },
         description:
             "Orchestrate your monitoring data efficiently to maintain optimal performance and quickly address any issues that arise.",
@@ -80,9 +101,9 @@ const MAIN_CONTENT = [
         title: "Automate Incident Response",
         image: {
             src: "/landing/usecases/monitoring/incident-response.svg",
-            alt: "Configuration Management and Compliance",
             width: 604,
             height: 477,
+            alt: "Automate Incident Response",
         },
         description:
             "Kestra's automation capabilities enable you to set up workflows that automatically respond to and remediate infrastructure issues, reducing the time to resolution and minimizing manual intervention.",
@@ -158,7 +179,6 @@ const CARDS_DATA = [
         description="Automate infrastructure monitoring, implement alerting, and ensure optimal performance and reliability."
         image={{
             src: "/landing/usecases/monitoring/header-hero.svg",
-            alt: "Infrastructure Monitoring",
         }}
     />
 
@@ -171,12 +191,14 @@ const CARDS_DATA = [
         />
     </Alternation>
 
-    <Enterprise title="Orchestrate infrastructure components using Kestra" client:visible />
+    <Enterprise
+        title="Orchestrate infrastructure components using Kestra"
+        client:visible
+    />
 
     <Cards title={CHALLENGES_TITLE} cards={CARDS_DATA} />
 
     <Capabilities
-        client:visible
         title="for Platform Orchestration"
         capabilities={CAPABILITIES}
     />
@@ -185,4 +207,3 @@ const CARDS_DATA = [
         title="Ready to take your Infrastructure to the next level ?"
     />
 </Layout>
-

@@ -3,6 +3,7 @@ import Layout from "~/components/layout.astro"
 import heroFront from "~/assets/use-cases/retail/hero-front.svg"
 import CartMinus from "~/assets/use-cases/retail/cart-minus.svg"
 import LeroyMerlin from "~/contents/customer-stories/14/logo.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 import Link from "~/components/common/Link.astro"
 import Quotes from "~/components/common/Quotes.vue"
@@ -53,7 +54,7 @@ const quotes = [
     {
         quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
         author: "Julien Henrion - Head of Data Engineering",
-        smallLogoSvg: LeroyMerlin,
+        smallLogoSvg: optimizeSvgIcon(LeroyMerlin, "leroy-merlin-logo"),
         kpis: [
             {
                 name: "In Data Production",
@@ -135,7 +136,7 @@ const UNLOCK_CONTENT = {
 
     <SeeHow
         cta={{
-            text: "Talk to sales",
+            text: "Contact Sales",
             href: "/demo",
         }}
     >

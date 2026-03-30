@@ -6,7 +6,7 @@
                 <li v-if="post.editUrl">
                     <a :href="post.editUrl" target="_blank">
                         <Github class="icon" />
-                        Edit this page
+                        Edit This Page
                     </a>
                 </li>
                 <li>

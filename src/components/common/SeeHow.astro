@@ -13,8 +13,12 @@ interface Props {
     imgSrc?: string | ImageMetadata
 }
 
-const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } =
-    Astro.props
+const {
+    imgSrc = seeHow,
+    cta = !Astro.slots.has("footer")
+        ? { text: "Book a Demo", href: "/demo" }
+        : undefined,
+} = Astro.props;
 ---
 
 <section class="px-3 see">
@@ -41,15 +45,19 @@ const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } =
                         <p data-usal="fade-l">
                             <slot />
                         </p>
-                        <Link
-                            href={cta.href}
-                            class="btn btn-primary"
-                            download={cta.download}
-                            data-usal="zoomin"
-                        >
-                            {cta.text}
-                        </Link>
-                        <slot name="footer" />
+                        <div class="d-flex flex-wrap gap-3 mt-4 flex-column flex-md-row">
+                            {cta && (
+                                <Link
+                                    href={cta.href}
+                                    class="btn btn-primary text-nowrap"
+                                    download={cta.download}
+                                    data-usal="zoomin"
+                                >
+                                    {cta.text}
+                                </Link>
+                            )}
+                            <slot name="footer" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,10 +102,14 @@ const { cta = { text: "Book a demo", href: "/demo" }, imgSrc = seeHow } =
                         }
 
                         .content {
-                            max-width: 338px;
+                            max-width: 450px;
 
                             h3 {
                                 line-height: 38px;
+                            }
+
+                            :global(.btn) {
+                                white-space: nowrap;
                             }
 
                             :global(a):not(.btn) {

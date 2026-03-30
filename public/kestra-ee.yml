@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.3
+  version: 1.3.6
 tags:
 - name: Flows
   description: Flows api
@@ -1323,6 +1323,42 @@ paths:
             application/json:
               schema:
                 type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/pebble/filters:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve the list of available Pebble expression filters.
+      operationId: getExpressionFilters
+      responses:
+        "200":
+          description: getExpressionFilters 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/pebble/functions:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve the list of available Pebble expression functions.
+      operationId: getExpressionFunctions
+      responses:
+        "200":
+          description: getExpressionFunctions 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -2757,7 +2793,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DashboardGenerationPrompt"
+              $ref: "#/components/schemas/AiController.DashboardGenerationPrompt"
         required: true
       responses:
         "200":
@@ -2783,7 +2819,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FlowGenerationPrompt"
+              $ref: "#/components/schemas/AiController.FlowGenerationPrompt"
         required: true
       responses:
         "200":
@@ -4924,6 +4960,14 @@ paths:
           type: integer
           format: int32
           default: 1
+      - name: source
+        in: query
+        description: Whether to include the flow source in the response
+        explode: false
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       - name: tenant
         in: path
         required: true
@@ -17099,6 +17143,22 @@ components:
           type: string
         isDefault:
           type: boolean
+    AiController.DashboardGenerationPrompt:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/DashboardGenerationPrompt"
+      - type: object
+        properties:
+          providerId:
+            type: string
+    AiController.FlowGenerationPrompt:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/FlowGenerationPrompt"
+      - type: object
+        properties:
+          providerId:
+            type: string
     ApiAuth:
       type: object
       properties:
@@ -18761,8 +18821,6 @@ components:
           type: string
         yaml:
           type: string
-        providerId:
-          type: string
     DependsOn:
       type: object
       properties:
@@ -19370,8 +19428,6 @@ components:
         userPrompt:
           type: string
         yaml:
-          type: string
-        providerId:
           type: string
         namespace:
           type: string

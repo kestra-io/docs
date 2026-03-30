@@ -39,11 +39,11 @@
         title,
         subtitle,
         dark = {
-            text: 'Talk to us',
+            text: 'Book a Demo',
             href: '/demo'
         },
         purple = {
-            text: 'Get started!',
+            text: 'Get Started',
             href: '/docs/quickstart#start-kestra'
         },
         animation = true

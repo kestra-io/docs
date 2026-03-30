@@ -67,8 +67,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .unlock {
         position: relative;
         overflow: hidden;

@@ -12,7 +12,7 @@
                     <li>Enterprise Support with SLA</li>
                 </ul>
                 <div class="cta">
-                    <a href="/demo" class="btn btn-lg btn-primary">Talk to Sales</a>
+                    <a href="/demo" class="btn btn-lg btn-primary">Contact Sales</a>
                     <a href="/enterprise" class="learn-more">Learn More
                         <ArrowRight />
                     </a>
