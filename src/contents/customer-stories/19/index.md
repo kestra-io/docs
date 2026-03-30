@@ -35,6 +35,7 @@ industry: Banking
 headquarter: Paris, France
 solution: CAGIP manage the whole infrastructure ecosystem for the Credit Agricole Group
 companyName: Crédit Agricole
+cta: "What would change if your bank's infrastructure scaled securely—automated across every team, with governance built into every workflow?"
 ---
 
 CAGIP is the central IT production provider for Crédit Agricole, one of Europe’s largest banking groups. Within the data team, the challenge was clear: keep up with the rising demand from internal entities while maintaining the group’s high standards for security, availability, and compliance.

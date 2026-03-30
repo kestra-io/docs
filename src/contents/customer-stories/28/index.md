@@ -31,6 +31,7 @@ industry: Enterprise Software (Regulated Industries)
 headquarter: Switzerland
 solution: Regulated Cloud Platform for Banking and Insurance Customers
 companyName: Software Provider Serving Regulated Industries
+cta: "What would change if your regulated-industry clients could self-serve cloud automation—with full governance and compliance built into every flow?"
 ---
 
 _Customer requested anonymity. Details have been generalized to protect confidentiality._

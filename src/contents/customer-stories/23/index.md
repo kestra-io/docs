@@ -34,6 +34,7 @@ headquarter: Ashburn, VA.
 solution: Foundation Data is a technology company that empowers automotive
   groups and dealerships to take control of their digital advertising.
 companyName: Foundation Data
+cta: "What would change if your advertising data pipelines delivered faster, at lower cost—boosting team productivity across every campaign?"
 ---
 
 ## About Foundation Data
