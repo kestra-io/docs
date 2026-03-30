@@ -8,20 +8,19 @@ import SelfHostedIcon from "./assets/hero/self-hosted.svg"
 import CloudIcon from "./assets/hero/cloud.svg"
 import HeroAnimation from "./hero-animation.astro"
 import AnimatedWord from "./AnimatedWord.vue"
-import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 import LogoBar from "./LogoBar.astro"
-import LogoCarousel from "~/components/common/LogoCarousel.astro"
-import JPMorganIcon from "./assets/companies/jpmorgan.svg"
-import TSystemIcon from "./assets/companies/t-system.svg"
-import BrainlabIcon from "./assets/companies/brainlab.svg"
-import BloombergIcon from "./assets/companies/bloomberg.svg"
-import FilaIcon from "./assets/companies/fila.svg"
-import AppleIcon from "./assets/companies/apple.svg"
-import ToyotaIcon from "./assets/companies/toyota.svg"
+import bgMobile from "./assets/hero/bg-mobile.png"
+import { getImage } from "astro:assets"
+
+const optimizedBg = await getImage({ src: bgMobile, format: "webp" })
 ---
 
 <section aria-labelledby="hero">
-    <div class="mobile-bg"></div>
+    <div
+        class="mobile-bg"
+        style={{ "--home-hero-background": `url(${optimizedBg.src})` }}
+    >
+    </div>
     <div class="hero">
         <h1 id="hero">
             One Platform <br class="d-lg-none" /> to <AnimatedWord
@@ -108,7 +107,7 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
         left: 0;
         width: 100%;
         height: 100%;
-        background: url("./assets/hero/bg-mobile.png") no-repeat center center;
+        background: var(--home-hero-background) no-repeat center center;
         background-size: cover;
         z-index: 0;
         @include media-breakpoint-up(md) {
