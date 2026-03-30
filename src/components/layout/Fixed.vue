@@ -11,14 +11,14 @@
                     <ChevronUp />
                 </a>
             </Transition>
-            <div v-if="displaySlack && mounted" class="widget-chat">
+            <div class="widget-chat">
                 <button
-                    class="btn btn-sm btn-primary rounded"
+                    class="btn"
                     title="Ask Kestra AI"
                     data-bs-toggle="modal"
                     data-bs-target="#search-ai-modal"
                 >
-                    <img :src="KSAIImg.src" alt="Kestra AI" width="25" height="25" />
+                    <img :src="AIGenImg.src" alt="Kestra AI" width="25" height="25" />
                     <span class="title d-none d-md-inline">Ask Kestra AI</span>
                 </button>
             </div>
@@ -29,20 +29,10 @@
 <script setup lang="ts">
     import { ref, onMounted, onUnmounted } from "vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import KSAIImg from "../docs/assets/ks-ai.svg"
+    import AIGenImg from "../docs/assets/ai-generate-lined.svg"
 
-    const props = withDefaults(
-        defineProps<{
-            displaySlack?: boolean
-        }>(),
-        {
-            displaySlack: true,
-        },
-    )
 
     const yScroll = ref(0)
-    const mounted = ref(false)
-    
 
     const handleScroll = () => {
         yScroll.value = window.scrollY
@@ -56,13 +46,10 @@
     }
 
     onMounted(() => {
-        mounted.value = true
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", handleScroll)
             handleScroll()
         }
-
-        // no external calls needed as removing slack!
     })
 
     onUnmounted(() => {
@@ -96,12 +83,16 @@
             button {
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
-                padding: 6px 10px;
-                border-radius: 12px;
-                background-color: var(--ks-background-button-primary-hover);
+                width: 137px;
+                height: 36px;
+                padding: 8px 16px;
+                border-radius: 44px;
+                background: $white;
                 border: 1px solid var(--ks-border-active);
-                box-shadow: 0 6px 18px rgba(11, 14, 22, 0.06);
+                box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: $black;
             }
             img {
                 border-radius: 6px;
