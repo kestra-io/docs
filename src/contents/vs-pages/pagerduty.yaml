@@ -1,4 +1,4 @@
-title: "Kestra vs. PagerDuty Process Automation: Beyond Runbooks"
+title: "PagerDuty Process Automation vs Kestra for Runbook Automation"
 description: "Compare Kestra vs PagerDuty Process Automation (formerly Rundeck): event-driven workflow orchestration vs. click-to-run runbook tools. See why SRE and platform teams replace PagerDuty PA with Kestra."
 competitorName: "PagerDuty PA"
 

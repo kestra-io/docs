@@ -1,4 +1,4 @@
-title: "Kestra vs. Dagster: Orchestrate Your Business, Not Just Your Pipelines"
+title: "Dagster vs Kestra for Data Pipeline Orchestration"
 description: "Compare Kestra vs Dagster: Universal workflow orchestration in any language with YAML vs Python-native data pipelines. See features, setup time, and use cases."
 competitorName: Dagster
 

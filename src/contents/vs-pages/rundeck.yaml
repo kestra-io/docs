@@ -1,4 +1,4 @@
-title: "Kestra vs. Rundeck: Modern Runbook Automation at Scale"
+title: "Rundeck vs Kestra for Runbook Automation"
 description: "Compare Kestra vs Rundeck: declarative YAML orchestration with event-driven triggers and self-service Apps vs SSH-based runbook automation. See why teams outgrowing Rundeck choose Kestra."
 competitorName: "Rundeck"
 

@@ -1,4 +1,4 @@
-title: "Kestra vs. Control-M: Modern Orchestration Without the Legacy Tax"
+title: "Control-M vs Kestra for Enterprise Job Scheduling"
 description: "Compare Kestra vs BMC Control-M: Open-source, developer-first orchestration in YAML vs. proprietary enterprise workload automation with per-job licensing. See features, setup, and migration path."
 competitorName: Control-M
 
