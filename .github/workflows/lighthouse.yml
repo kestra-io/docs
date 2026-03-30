@@ -10,7 +10,6 @@ on:
 # pull-requests: write  — post / update the score comment on the PR
 # actions: read         — download baseline artifact from another workflow run
 permissions:
-  pull-requests: write
   actions: read
 
 jobs:
@@ -24,12 +23,9 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       startsWith(github.repository, 'kestra-io/')
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout PR head
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Set up Node
         uses: actions/setup-node@v6
@@ -161,7 +157,6 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       startsWith(github.repository, 'kestra-io/')
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
