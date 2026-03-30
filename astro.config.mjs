@@ -18,7 +18,7 @@ import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
-import purgecss from "astro-purgecss";
+import purgecss from "astro-purgecss"
 
 const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
@@ -35,15 +35,21 @@ export default defineConfig({
                 : "cloudflare",
     }),
     trailingSlash: "ignore",
-    integrations: [vue({
-        template: {
-            compilerOptions: {
-                isCustomElement: (tag) => tag === "rapi-doc",
+    integrations: [
+        vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: (tag) => tag === "rapi-doc",
+                },
             },
-        },
-        appEntrypoint: "./src/vue-setup.ts",
-        devtools: { launchEditor: "idea" },
-    }), expressiveCode(), mdx(), icon(), purgecss()],
+            appEntrypoint: "./src/vue-setup.ts",
+            devtools: { launchEditor: "idea" },
+        }),
+        expressiveCode(),
+        mdx(),
+        icon(),
+        purgecss(),
+    ],
     markdown: {
         remarkPlugins: [
             remarkClassname,
