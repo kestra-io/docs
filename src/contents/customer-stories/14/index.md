@@ -34,6 +34,7 @@ industry: Retail
 headquarter: Villeneuve d'Ascq, France
 solution: Global home improvement and gardening retailer
 companyName: Leroy Merlin France
+cta: "What would change if your data mesh produced 9× more data—automating the pipelines that power your entire retail operation?"
 ---
 
 ## Modernizing Data Architecture

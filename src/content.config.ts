@@ -143,6 +143,7 @@ export const collections = {
                 headquarter: z.string(),
                 solution: z.string(),
                 companyName: z.string(),
+                cta: z.string().optional(),
             }),
     }),
     tutorialVideos: defineCollection({

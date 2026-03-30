@@ -79,9 +79,7 @@ const content = story.content
         <StoryDetail client:load slug={slug} {story} {content} {related}>
             <SeeHow slot="change">
                 <Fragment slot="title"> Experience Kestra Today </Fragment>
-                What would change if your public-sector cloud automation ran through
-                a self-hosted orchestration control plane—built for governance, visibility,
-                and scale?
+                {entry.data.cta ?? "What would change if your workflows ran on a unified orchestration platform—built for scale, reliability, and end-to-end automation?"}
             </SeeHow>
         </StoryDetail>
     </div>

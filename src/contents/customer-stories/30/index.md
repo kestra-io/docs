@@ -31,6 +31,7 @@ industry: Service Provider
 headquarter: Berlin - Germany
 solution: Build a government-grade cloud service portal
 companyName: Public-sector IT services provider
+cta: "What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane—built for governance, visibility, and scale?"
 ---
 
 ## The context
