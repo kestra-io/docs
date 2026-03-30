@@ -51,8 +51,9 @@ jobs:
           echo "url=https://${SLUG}-docs.kestra-io.workers.dev" >> "$GITHUB_OUTPUT"
 
       - name: Wait for preview to be reachable
+        env:
+          URL: ${{ steps.preview.outputs.url }}
         run: |
-          URL="${{ steps.preview.outputs.url }}"
           echo "Polling $URL (up to 2 min)…"
           for i in $(seq 1 12); do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
