@@ -823,8 +823,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../variable";
-
     @mixin dark-nav-content($color: $white) {
         a.nav-link:not(.btn),
         .nav-item a:not(.btn),
