@@ -1,8 +1,10 @@
 ---
 import { getCollection } from "astro:content"
-import StoriesList from "~/components/stories/StoriesList.vue"
+
 import Layout from "~/components/layout.astro"
-import FooterContact from "~/components/layout/FooterContact.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import StoriesList from "~/components/stories/StoriesList.vue"
+import StoryGallery from "~/components/stories/StoryGallery.astro"
 
 const title = "Kestra's Customers Stories"
 const description =
@@ -25,20 +27,16 @@ const stories = allEntries.map((e) => ({
 ---
 
 <Layout title={title} description={description}>
-    <div class="main">
+    <StoryGallery>
         <StoriesList
+            slot="stories"
             stories={stories}
             totalStories={totalStories}
             client:idle
         />
-        <FooterContact
-            title="Getting started with Kestra"
-            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            dark={{
-                text: "Get started",
-                href: "/docs/quickstart#start-kestra",
-            }}
-            purple={{ text: "Read the docs", href: "/docs" }}
-        />
-    </div>
+    </StoryGallery>
+    <SeeHow cta={{ text: "Get Started", href: "/docs/quickstart" }}>
+        <Fragment slot="title"> Getting started with Kestra </Fragment>
+        Start building with Kestra — Automate Everything Everywhere All at Once.
+    </SeeHow>
 </Layout>

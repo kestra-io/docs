@@ -3,8 +3,8 @@ const { id = "host-switcher" } = Astro.props as { id?: string };
 ---
 
 <div class="switcher" id={id}>
-    <button class="active" data-type="self-hosted">Self Hosted</button>
-    <button data-type="cloud-hosted">Cloud Hosted</button>
+    <button class="active" data-type="self-hosted">Kestra Enterprise Edition</button>
+    <button data-type="cloud-hosted">Kestra Cloud</button>
 </div>
 
 <script>
@@ -30,29 +30,28 @@ const { id = "host-switcher" } = Astro.props as { id?: string };
     .switcher {
         display: flex;
         margin: 0 auto 3rem;
-        background: var(--ks-background-tertiary);
-        padding: 0.25rem;
-        border-radius: 0.75rem;
-        gap: 2px;
-        max-width: 245px;
-        height: 50px;
+        gap: 2.5rem;
+        justify-content: center;
 
         button {
-            flex: 1;
             border: none;
             background: transparent;
-            padding-inline: 1rem;
-            border-radius: 0.5rem;
-            font-size: 14px;
-            font-weight: 700;
+            padding: 0.5rem 0;
+            font-size: 1.125rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--ks-content-primary);
+            color: var(--ks-content-tertiary);
             white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: var(--ks-content-primary);
+            }
 
             &.active {
-                background: var(--ks-content-primary);
-                color: var(--ks-content-primary-inverse);
+                color: var(--ks-content-primary);
+                border-bottom-color: var(--ks-content-primary);
             }
         }
     }

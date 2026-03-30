@@ -1,4 +1,4 @@
-title: "Kestra vs. Puppet: Workflow Orchestration vs. Configuration Management"
+title: "Puppet vs Kestra for Infrastructure Automation"
 description: "Compare Kestra vs Puppet by Perforce: Open-source workflow orchestration in YAML vs. agent-based configuration management with Puppet DSL. See features, setup, and when to use each tool."
 competitorName: Puppet
 
@@ -234,7 +234,7 @@ socialProof:
       label: Faster workflow delivery
   cta:
     text: "See how enterprises modernize IT automation with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/30-building-a-government-grade-orchestration-control-plane-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:

@@ -1,11 +1,12 @@
 ---
 import { Image } from "astro:assets"
-import FilaLogo from "~/assets/companies/fila.svg?raw"
+import FilaLogo from "./assets/fila.svg?raw"
 import AppleLogo from "~/assets/teams/apple.svg?raw"
 import AcxiomLogo from "~/assets/teams/acxiom.svg?raw"
 import BattelleLogo from "~/assets/teams/Battelle.svg?raw"
 import LorealLogo from "~/assets/teams/loreal.svg?raw"
 import TeamImage from "~/assets/teams/team.png"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 const CompanyLogos = [
     {
@@ -108,7 +109,10 @@ const CompanyLogos = [
                             CompanyLogos.map((logo) => (
                                 <div
                                     class="logo-item"
-                                    set:html={logo.src}
+                                    set:html={optimizeSvgIcon(
+                                        logo.src,
+                                        logo.alt.replace(/[^a-zA-Z0-9]/g, ""),
+                                    )}
                                     style={`width: ${logo.width}px; height: ${logo.height}px;`}
                                     aria-label={logo.alt}
                                     role="img"

@@ -1,8 +1,7 @@
 ---
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import Link from "~/components/common/Link.astro"
-import Carousel from "~/components/common/Carousel.vue"
-import { $fetchApi } from "~/utils/fetch"
+import Carousel from "~/components/common/Carousel.astro"
 
 interface Props {
     title: string
@@ -28,7 +27,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
         </div>
 
         <div class="blueprints-container d-md-none">
-            <Carousel client:load>
+            <Carousel>
                 {
                     displayBlueprints.map((blueprint) => (
                         <div class="card-wrapper">
@@ -97,7 +96,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
             @media (min-width: 576px) and (max-width: 768px) {
                 max-width: 768px;
             }
-            
+
             .header {
                 width: 100%;
             }

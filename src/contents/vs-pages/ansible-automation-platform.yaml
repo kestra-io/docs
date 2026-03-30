@@ -1,4 +1,4 @@
-title: "Kestra vs. Ansible Automation Platform (Tower): Orchestrate Your Playbooks, Not Just Run Them"
+title: "Ansible Automation Platform vs Kestra for IT Automation"
 description: "Compare Kestra vs Red Hat Ansible Automation Platform (formerly Ansible Tower / AWX + Automation Controller): full-lifecycle IT orchestration vs playbook execution management. See how Kestra complements and extends Ansible at scale."
 competitorName: "Ansible AAP"
 
@@ -207,7 +207,7 @@ socialProof:
       label: Audit trail coverage
   cta:
     text: "See how IT teams orchestrate with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:

@@ -31,6 +31,7 @@ industry: Service Provider
 headquarter: Berlin - Germany
 solution: Build a government-grade cloud service portal
 companyName: Public-sector IT services provider
+cta: "What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane—built for governance, visibility, and scale?"
 ---
 
 ## The context
@@ -51,13 +52,10 @@ On one side, demand for cloud services was increasing. On the other, execution h
 
 Script-based automation and CI pipelines could trigger actions, but they didn’t provide a clear answer to fundamental questions:
 
-Who triggered this?
-
-What exactly ran?
-
-How is progress tracked?
-
-Where is the audit trail?
+- Who triggered this?
+- What exactly ran?
+- How is progress tracked?
+- Where is the audit trail?
 
 Automation without visibility quickly becomes operational risk.
 
