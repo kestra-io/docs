@@ -1,4 +1,4 @@
-title: "Kestra vs. HP Operations Orchestrator: Replace Legacy Enterprise Runbook Automation"
+title: "HP Operations Orchestrator vs Kestra for Enterprise Runbook Automation"
 description: "Compare Kestra vs HP Operations Orchestrator (HP OO / Micro Focus / OpenText): cloud-native declarative orchestration vs legacy Java-based runbook automation. See why enterprises modernize with Kestra."
 competitorName: "HP Operations Orchestrator"
 
@@ -208,7 +208,7 @@ socialProof:
       label: More workflows automated
   cta:
     text: "See how enterprises modernize IT automation with Kestra"
-    link: https://kestra.io/use-cases/stories
+    link: /use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment
   theme: "var(--ks-special-green)"
 
 platformStrengths:

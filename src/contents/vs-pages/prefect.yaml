@@ -1,4 +1,4 @@
-title: "Kestra vs. Prefect: Orchestrate Everything, Not Just Python"
+title: "Prefect vs Kestra for Python Workflow Orchestration"
 description: "Compare Kestra vs. Prefect: Universal workflow orchestration in any language with declarative YAML versus Python-only orchestration. See features, setup time, and use cases."
 competitorName: Prefect
 
@@ -193,7 +193,7 @@ socialProof:
       label: Workflows Created
   cta:
     text: "See how teams orchestrate at scale with Kestra"
-    link: https://kestra.io/blogs/2023-08-16-datamesh
+    link: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
   theme: "var(--ks-special-green)"
 
 platformStrengths:

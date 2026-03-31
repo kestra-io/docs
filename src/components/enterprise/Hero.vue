@@ -10,7 +10,7 @@
                 <div class="d-flex align-items-center gap-3 cta" data-usal="zoomin">
                     <Link
                         href="/pricing"
-                        text="See All Plans"
+                        text="Pricing"
                         class="btn btn-secondary"
                     />
                     <Link

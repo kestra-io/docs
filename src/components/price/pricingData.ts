@@ -457,10 +457,6 @@ export const SUPPORT_PLANS = ["Standard", "Premium", "Platinum"]
 
 export const SUPPORT_ROWS: SupportRow[] = [
     {
-        feature: "Named Users",
-        values: ["3", "5", "10+"],
-    },
-    {
         feature: "Support Channels",
         values: ["Email", "Email + dedicated Teams/Slack", "Email + dedicated Teams/Slack"],
     },
