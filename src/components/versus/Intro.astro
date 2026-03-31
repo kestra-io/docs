@@ -98,6 +98,17 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
                 }
 
                 .badge {
+                    .monogram {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        :global(svg) {
+                            width: 38px;
+                            height: 38px;
+                        }
+                    }
+
                     span {
                         font-size: 1.5rem;
                         font-weight: 300;
