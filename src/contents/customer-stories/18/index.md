@@ -37,6 +37,7 @@ solution: Sopht is a French startup focused on Green ITOps. Their platform helps
   organizations automate decarbonization strategies and track their
   environmental and financial performance.
 companyName: Sopht
+cta: "What would change if your green IT platform scaled from 1,200 to 6,200 daily jobs—with 99.5% reliability built in?"
 ---
 
 This is the story of how **[Sopht](https://sopht.com/)**, a fast-growing Green ITOps startup, partnered with **[DataFlooder](https://www.dataflooder.com/)** to build a scalable, customer-isolated data platform — powered by Kestra.

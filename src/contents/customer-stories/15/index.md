@@ -36,6 +36,7 @@ industry: Education Management
 headquarter: Netherlands
 solution: Educational platform that offers network lessons focused on Cisco technologies
 companyName: ""
+cta: "What would change if you could automate your entire content and business workflow as a solo operator—without a dedicated engineering team?"
 ---
 
 ## NetworkLessons

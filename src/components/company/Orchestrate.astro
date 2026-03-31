@@ -84,8 +84,7 @@ const CompanyLogos = [
         <div class="container" data-usal="fade-u">
             <div class="content">
                 <h2 class="title" data-usal="fade-u delay-200">
-                    Trusted by
-                    <span class="gradient">Enterprises</span> Worldwide
+                    <span class="gradient">Trusted</span> by Enterprises Worldwide
                 </h2>
 
                 <p data-usal="fade-u delay-300">
@@ -259,6 +258,10 @@ const CompanyLogos = [
                         @include media-breakpoint-down(md) {
                             font-size: $h2-font-size;
                         }
+
+                        .highlight {
+                            color: #a796ff;
+                        }
                     }
 
                     .text {
@@ -356,6 +359,10 @@ const CompanyLogos = [
                     padding-top: 2rem;
                     margin: 0;
                     line-height: 1.2;
+                }
+
+                .gradient {
+                    color: var(--ks-content-color-highlight);
                 }
 
                 .text-primary,

@@ -35,6 +35,7 @@ headquarter: Nantes, France
 solution: Clever Cloud is an IT Automation platform to manage all the ops work
   while you focus on your business value
 companyName: ""
+cta: "What would change if your cloud data offloading ran at scale—processing terabytes reliably, every month, without manual intervention?"
 ---
 
 ## About Clever Cloud

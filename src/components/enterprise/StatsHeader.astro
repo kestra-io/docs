@@ -16,13 +16,11 @@ const { stats } = Astro.props
 
 <section class="stats-section">
     <div class="stats-header container">
-        <h2 data-usal="fade-l">
-            Unified Enterprise-Grade Orchestration Platform
-        </h2>
-        <p class="mb-0" data-usal="fade-r">
-            Achieve in Days What Once Took Weeks, with Complete Control at Every
-            Step
-        </p>
+        <h2 data-usal="fade-l">Enterprise Edition</h2>
+        <p data-usal="fade-r">Built for critical environments.</p>
+        <p data-usal="fade-r">SSO, RBAC, audit logs, multi-tenancy. Isolated workers and dedicated task runners.</p>
+        <p data-usal="fade-r">Hybrid environments, Cloud, On-Prem, Air-Gapped.</p>
+        <p class="mb-0" data-usal="fade-r">SLA-backed support and a dedicated customer success program.</p>
 
         {
             stats && stats.length > 0 && (
@@ -37,8 +35,8 @@ const { stats } = Astro.props
                 </div>
             )
         }
-        <Link href="/pricing" class="btn btn-primary" data-usal="zoomin">
-            See All Plans
+        <Link href="/demo" class="btn btn-primary" data-usal="zoomin">
+            Contact Sales
         </Link>
     </div>
 </section>

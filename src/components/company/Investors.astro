@@ -1,11 +1,17 @@
 ---
 import { Image } from "astro:assets"
+import rtpGlobal from "~/assets/teams/rtp-global-sm.svg?raw"
 import alven from "~/assets/teams/alven-sm.svg?raw"
 import isai from "~/assets/teams/isai-sm.svg?raw"
 import axeleo from "~/assets/teams/axeleo-sm.svg?raw"
 import TeamsImages from "~/utils/teamsImages"
 
 const investorsLogos = [
+    {
+        name: "RTP Global",
+        src: rtpGlobal,
+        link: "https://rtp.vc",
+    },
     {
         name: "Alven",
         src: alven,
@@ -76,15 +82,9 @@ const investorsProfiles = [
     <div class="title-section" data-usal="fade-u">
         <h2 class="title">Our investors</h2>
         <p class="subtitle">
-            Kestra is proudly backed by two strategic funding rounds: a
-            <strong>$3M Pre-seed</strong>
+            Kestra is backed by a <strong>$25M Series A</strong> round and a total of <strong>$36M in funding</strong>, supported by visionary investors and founders from leading technology companies.
             <br class="d-none d-lg-block" />
-            and an <strong>$8M Seed round</strong>, supported by visionary
-            leaders and founders
-            <br class="d-none d-lg-block" />
-            from industry-leading companies. These investments fuel Kestra's mission
-            to<br class="d-none d-lg-block" />
-            redefine orchestration.
+            These investments fuel Kestra's mission to redefine enterprise orchestration, helping organizations orchestrate complex workflows across data, infrastructure, AI, and applications.
         </p>
     </div>
 
@@ -187,7 +187,7 @@ const investorsProfiles = [
         border-radius: $border-radius-lg;
 
         @include media-breakpoint-up(xl) {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
         }
 
         .logo {

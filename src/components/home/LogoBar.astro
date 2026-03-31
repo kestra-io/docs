@@ -2,11 +2,11 @@
 import { Image } from "astro:assets"
 
 const COMPANIES = [
-    "brainlab",
+    "xiaomi",
     "bloomberg",
+    "toyota",
     "fila",
     "apple",
-    "toyota",
     "jpmorgan",
     "t-system",
 ]
@@ -20,19 +20,18 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
     <div class="companies-container">
         <div class="companies">
             {
-                [...COMPANIES, ...COMPANIES].map((company, index) => (
-                    <Image
-                        src={
-                            logos[
-                                `/src/components/home/assets/companies/${company}.svg`
-                            ].default
-                        }
-                        alt={company}
-                        class:list={[
-                            "company-logo",
-                            { "d-lg-none": index >= COMPANIES.length },
-                        ]}
-                    />
+                COMPANIES.map((company) => (
+                    <div class="logo-wrapper">
+                        <Image
+                            src={
+                                logos[
+                                    `/src/components/home/assets/companies/${company}.svg`
+                                ].default
+                            }
+                            alt={company}
+                            class="company-logo"
+                        />
+                    </div>
                 ))
             }
         </div>
@@ -60,20 +59,6 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
         overflow: hidden;
         @include media-breakpoint-down(sm) {
             margin-top: 1rem;
-            -webkit-mask-image: linear-gradient(
-                to right,
-                transparent,
-                black 10%,
-                black 90%,
-                transparent
-            );
-            mask-image: linear-gradient(
-                to right,
-                transparent,
-                black 10%,
-                black 90%,
-                transparent
-            );
         }
 
         .companies {
@@ -94,24 +79,34 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
             }
 
             @include media-breakpoint-down(lg) {
-                width: max-content;
-                animation: marquee 20s linear infinite;
-            }
-
-            .company-logo {
-                flex-shrink: 0;
-                object-fit: contain;
-                filter: brightness(0) invert(1);
+                flex-wrap: wrap;
+                gap: 0;
+                row-gap: 2rem;
+                margin-left: 0;
             }
         }
-    }
 
-    @keyframes marquee {
-        0% {
-            transform: translateX(0);
+        .logo-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            @include media-breakpoint-down(lg) {
+                width: 25%;
+                box-sizing: border-box;
+            }
         }
-        100% {
-            transform: translateX(-50%);
+
+        .company-logo {
+            flex-shrink: 0;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+
+            @include media-breakpoint-down(lg) {
+                width: auto;
+                height: 26px;
+                max-width: 80%;
+            }
         }
     }
 </style>
