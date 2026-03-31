@@ -1,54 +1,69 @@
----
-import TaskIcon from "~/components/common/TaskIcon.astro"
-import { capitalize } from "~/utils/plugins/pluginUtils"
-
-const { blueprint, tags = [], href } = Astro.props
-
-const MAX_ICONS = 6
-const allTasks = blueprint.includedTasks ?? []
-const visibleTasks = allTasks.slice(0, MAX_ICONS)
-const extraCount = Math.max(0, allTasks.length - MAX_ICONS)
-
-const capitalizedTitle = capitalize(blueprint?.title ?? "")
-
-const tagsList = tags?.length
-    ? tags
-          .filter((t: any) => blueprint.tags?.includes(t.id))
-          .map((t: any) => t.name)
-    : (blueprint.tags ?? [])
----
-
-<a href={href} class="blueprint">
-    <h6 class="title">
-        {capitalizedTitle}
-    </h6>
-    <div class="task-icons">
-        {
-            visibleTasks.map((cls: string) => (
-                <div class="icon">
-                    <TaskIcon cls={cls} />
-                </div>
-            ))
-        }
-        {extraCount > 0 && <span class="extra-count">+{extraCount}</span>}
-    </div>
-    <div class="footer">
-        <hr />
-        <div class="bottom-row">
-            {
-                tagsList.length > 0 && (
-                    <div class="tag-list">
-                        {tagsList.map((tag: string) => (
-                            <span class="category-tag">{tag}</span>
-                        ))}
-                    </div>
-                )
-            }
+<template>
+    <a :href="href" class="blueprint">
+        <h6 class="title">
+            {{ capitalizedTitle }}
+        </h6>
+        <div class="task-icons">
+            <div class="icon" v-for="n in visibleTasks" :key="n">
+                <TaskIcon :cls="n" />
+            </div>
+            <span v-if="extraCount > 0" class="extra-count">+{{ extraCount }}</span>
         </div>
-    </div>
-</a>
+        <div class="footer">
+            <hr />
+            <div class="bottom-row">
+                <div class="tag-list" v-if="tagsList.length">
+                    <span
+                        v-for="(tag, idx) in tagsList"
+                        :key="idx"
+                        class="category-tag"
+                    >
+                        {{ tag }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </a>
+</template>
 
-<style lang="scss">
+<script setup lang="ts">
+    import { computed } from "vue"
+    import TaskIcon from "~/components/common/TaskIcon.vue"
+    import type { BlueprintPreview } from "~/utils/plugins/types"
+    import { capitalize } from "~/utils/plugins/pluginUtils"
+
+    const props = withDefaults(
+        defineProps<{
+            blueprint: BlueprintPreview
+            tags?: Array<any>
+            href: string
+        }>(),
+        {
+            tags: () => [],
+        },
+    )
+
+    const capitalizedTitle = computed(() => capitalize(props.blueprint?.title ?? ""))
+
+    const MAX_ICONS = 6
+    const visibleTasks = computed(() =>
+        (props.blueprint.includedTasks ?? []).slice(0, MAX_ICONS)
+    )
+    const extraCount = computed(() =>
+        Math.max(0, (props.blueprint.includedTasks ?? []).length - MAX_ICONS)
+    )
+
+    const tagsList = computed(() => {
+        if (props.tags?.length) {
+            return props.tags
+                .filter((t: any) => props.blueprint.tags?.includes(t.id))
+                .map((t: any) => t.name)
+        }
+        return props.blueprint.tags ?? []
+    })
+</script>
+
+<style scoped lang="scss">
     .blueprint {
         height: 188px;
         border-radius: 12px;
@@ -59,42 +74,47 @@ const tagsList = tags?.length
         flex-direction: column;
         box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
         transition: all 0.4s ease-out;
-        scroll-snap-align: start;
-        scroll-margin-left: 1em;
-        @include media-breakpoint-up(md) {
-            scroll-margin-left: 2em;
-        }
+
         &:hover {
             border-color: var(--ks-border-active);
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
             transform: scale(1.025);
-            color: var(--ks-content-primary);
         }
+
         .task-icons {
             display: flex;
             gap: 0.5rem;
             align-items: center;
             margin-bottom: 1rem;
+
             .icon {
                 border-radius: 4px;
                 border: $block-border;
                 width: 34px;
                 height: 34px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                display: grid;
+                place-items: center;
                 flex-shrink: 0;
-                padding: 4px;
+                background: $white;
+
+                :deep(.icon-wrapper) {
+                    width: 24px;
+                    height: 24px;
+                }
             }
+
             .extra-count {
                 flex-shrink: 0;
-                font-size: $font-size-xs !important;
+                font-size: $font-size-xs;
                 font-weight: 600;
                 color: var(--ks-content-secondary);
             }
         }
+
         .title {
             color: var(--ks-content-primary);
+            font-size: $font-size-md;
+            font-weight: 700;
             margin: 0 0 1rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -103,15 +123,18 @@ const tagsList = tags?.length
             overflow: hidden;
             line-height: normal;
         }
+
         hr {
             border: $block-border;
             margin: 0;
         }
+
         .footer {
             margin-top: auto;
             display: flex;
             flex-direction: column;
         }
+
         .bottom-row {
             display: flex;
             align-items: center;
@@ -119,6 +142,7 @@ const tagsList = tags?.length
             color: var(--ks-background-secondary);
             height: 45px;
         }
+
         .tag-list {
             display: flex;
             gap: 0.25rem;
@@ -127,6 +151,7 @@ const tagsList = tags?.length
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+
         .category-tag {
             background: var(--ks-background-tag-category);
             color: var(--ks-content-tag-category);

@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-    import { ref, onMounted, onUnmounted } from "vue"
+    import { onMounted, onUnmounted, ref } from "vue"
     import { navigate } from "astro:transitions/client"
+
     import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
     import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
+
     import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
 
     const activeId = ref("")
@@ -11,18 +13,29 @@
         activeId.value = window.location.hash.substring(1).toLowerCase()
     }
 
-    const events = ["hashchange", "popstate"]
+    const handleHashLinkClick = (e: MouseEvent) => {
+        const anchor = (e.target as HTMLElement).closest('a[href^="#"]')
+        if (anchor) {
+            requestAnimationFrame(updateActiveId)
+        }
+    }
+
+    const events: [string, EventListener][] = [
+        ["hashchange", updateActiveId],
+        ["popstate", updateActiveId],
+        ["click", handleHashLinkClick as EventListener],
+    ]
 
     onMounted(() => {
         updateActiveId()
-        events.forEach((event) =>
-            window.addEventListener(event, updateActiveId),
+        events.forEach(([event, handler]) =>
+            window.addEventListener(event, handler),
         )
     })
 
     onUnmounted(() => {
-        events.forEach((event) =>
-            window.removeEventListener(event, updateActiveId),
+        events.forEach(([event, handler]) =>
+            window.removeEventListener(event, handler),
         )
     })
 
@@ -58,3 +71,23 @@
         </template>
     </PluginIndex>
 </template>
+
+<style lang="scss" scoped>
+    :deep(div.description) {
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+
+        h3 {
+            margin-top: 0 !important;
+        }
+    }
+
+    :deep(#how-to-use-this-plugin) {
+        margin-top: 2rem;
+    }
+
+    :deep(.icon-content) {
+        background: $white !important;
+    }
+</style>
