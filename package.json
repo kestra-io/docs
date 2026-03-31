@@ -47,7 +47,7 @@
     "astro-icon": "^1.1.5",
     "astro-loading-indicator": "^0.7.1",
     "astro-purgecss": "^5.5.0",
-    "axios": "^1.13.6",
+    "axios": "1.13.6",
     "bootstrap": "^5.3.8",
     "countries-list": "^3.3.0",
     "dayjs": "^1.11.19",
@@ -82,6 +82,9 @@
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel": "^0.17.0",
     "wrangler": "^4.71.0"
+  },
+  "overrides": {
+    "axios": "1.13.6"
   },
   "engines": {
     "node": ">= 14",
