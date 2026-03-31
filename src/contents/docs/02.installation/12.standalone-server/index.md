@@ -15,9 +15,7 @@ Make sure that you have [Java](https://adoptium.net/en-GB/temurin/releases) inst
 
 The latest JAR can be downloaded [via Kestra API](https://api.kestra.io/v1/versions/download).
 
-This is an executable JAR:
-- For Linux & MacOS, run it with `./kestra-VERSION <command>`.
-- For Windows, rename the file `./kestra-VERSION` to `./kestra-VERSION.bat`, and run it from `CMD`.
+This is an executable JAR. For Linux & MacOS, run it with `./kestra-VERSION <command>`.
 
 For example, to launch Kestra:
 - In local mode (with an H2 local file database), you run `./kestra-VERSION server local`.
@@ -92,19 +90,4 @@ docker rm $id
 
 ## Installation on Windows
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/Pyr0AKLFfBc?si=sdgYcOftlDoq5_Cs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
----
-
-Below are the steps to launch a Standalone Kestra server on Windows:
-
-1. Install [Java JRE 21](https://adoptium.net/temurin/releases/?os=windows&version=21) -- use the `x64` version in the MSI format.
-2. Go to the [Releases](https://github.com/kestra-io/kestra/releases) page on the main Kestra repository.
-3. Select the desired version and download the binary from the `Assets` section.
-4. Rename the downloaded file to `kestra.bat`.
-5. Install the plugins you need from the [following list](https://github.com/kestra-io/kestra/blob/develop/.plugins) using the command `kestra.bat plugins install io.kestra.plugin:plugin-script-powershell:LATEST io.kestra.plugin:plugin-script-python:LATEST` or copy the plugins from a Docker container to your local machine, as described in the section above.
-6. Start the server using the command `kestra.bat server local`.
-
-You can also use [Docker Compose](../03.docker-compose/index.md) through WSL 2.
+For Windows-specific installation steps including plugin installation and configuration, see the [Windows installation guide](../13.windows/index.md).
