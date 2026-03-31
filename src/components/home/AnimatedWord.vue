@@ -36,6 +36,8 @@
         vertical-align: bottom;
         height: 1.2em;
         position: relative;
+        // force a fixed width to prevent layout shift; adjust as needed based on longest word
+        width: 200px;
     }
 
     .word {
@@ -64,4 +66,3 @@
         transform: translateY(-100%);
     }
 </style>
-
