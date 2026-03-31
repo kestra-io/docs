@@ -36,7 +36,7 @@
     }
 
     onMounted(() => {
-        interval = setInterval(rotateWord, 3000)
+        interval = setInterval(rotateWord, 2000)
     })
 
     onUnmounted(() => {
