@@ -8,6 +8,7 @@
         position: absolute;
         width: 720px;
         left: 0;
+        will-change: transform;
     }
     .block:nth-child(1) {
         top: 256px;
@@ -84,12 +85,14 @@
     /* Kestra pulse animation */
     .logo-inactive {
         filter: grayscale(1) brightness(0.7);
+        will-change: filter;
         transition:
             filter 0.6s ease,
             opacity 0.6s ease;
     }
     .logo-active {
         filter: grayscale(0) brightness(1);
+        will-change: filter;
         transition:
             filter 0.6s ease,
             opacity 0.6s ease;
@@ -109,21 +112,19 @@
     }
     :global([id^="corner-lines-"]) {
         :global(line) {
-            opacity: 0.5;
+            opacity: 0.3;
             stroke-width: 1;
             stroke-dasharray: 4 7;
             stroke-dashoffset: 0;
             transition:
                 stroke-width 0.3s ease,
                 opacity 0.3s ease;
-            filter: grayscale(1);
         }
         &:global(.corner-lines-active line) {
             opacity: 0.75;
             stroke-width: 2;
             stroke-dasharray: 4 7;
             animation: dash-march 4s linear infinite;
-            filter: grayscale(0);
         }
     }
 
@@ -243,7 +244,7 @@
   pointer-events: none;
   z-index: 1;
   background: radial-gradient(ellipse at center, rgba(138,46,242,0.45) 0%, rgba(138,46,242,0.2) 30%, rgba(138,46,242,0.05) 60%, transparent 75%);
-  will-change: transform, opacity;
+  will-change: opacity;
   animation: bgGlowPulse 3.5s ease-in-out infinite;
 "
 >
@@ -254,11 +255,9 @@
         0%,
         100% {
             opacity: 0.7;
-            transform: translate(-50%, -50%) scale(1);
         }
         50% {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1.08);
         }
     }
 </style>
@@ -389,33 +388,6 @@
                     opacity="0"></path>
                 <!-- Lueur + particules bloc Infra -->
                 <defs>
-                    <filter
-                        id="glowBloomC"
-                        x="-60%"
-                        y="-60%"
-                        width="220%"
-                        height="220%"
-                    >
-                        <feGaussianBlur
-                            in="SourceGraphic"
-                            stdDeviation="8"
-                            result="blur1"></feGaussianBlur>
-                        <feGaussianBlur
-                            in="SourceGraphic"
-                            stdDeviation="3"
-                            result="blur2"></feGaussianBlur>
-                        <feColorMatrix
-                            in="blur1"
-                            type="matrix"
-                            values="1 0 0 0 0.3  0 0 1 0 0  0 0 1 0 0.6  0 0 0 2.5 0"
-                            result="colored"></feColorMatrix>
-                        <feMerge
-                            ><feMergeNode in="colored"
-                            ></feMergeNode><feMergeNode in="blur2"
-                            ></feMergeNode><feMergeNode in="SourceGraphic"
-                            ></feMergeNode></feMerge
-                        >
-                    </filter>
                     <linearGradient
                         id="glowC0"
                         x1="53.0258"
@@ -456,8 +428,7 @@
                 <g
                     transform="translate(306.5,-5)"
                     pointer-events="none"
-                    style="will-change: opacity; animation: glowPulse 2.5s ease-in-out infinite;"
-                    filter="url(#glowBloomC)"
+                    style="will-change: opacity;"
                 >
                     <path
                         d="M52.8244 209.684L0 188.716V0H106.052V188.716L52.8244 209.684Z"
@@ -501,13 +472,13 @@
                 >
 
                 <!--
-      Logos sur la face avant gauche du bloc Infra.
-      Face avant : A(60,175) D(360,295) D'(360,337) A'(60,217)
-      Centre vertical face = y≈196 à x=60, y≈276 à x=360
-      On place les logos en ligne horizontale au centre de la face,
-      avec skewY(22) pour coller au plan incliné.
-      4 logos espacés régulièrement entre x=90 et x=330.
-    -->
+                    Logos sur la face avant gauche du bloc Infra.
+                    Face avant : A(60,175) D(360,295) D'(360,337) A'(60,217)
+                    Centre vertical face = y≈196 à x=60, y≈276 à x=360
+                    On place les logos en ligne horizontale au centre de la face,
+                    avec skewY(22) pour coller au plan incliné.
+                    4 logos espacés régulièrement entre x=90 et x=330.
+                -->
 
                 <!-- GCP — face avant, 1er logo -->
                 <g
@@ -740,7 +711,7 @@
                 <g
                     transform="translate(306.5,-5)"
                     pointer-events="none"
-                    style="will-change: opacity; animation: glowPulse 2.5s ease-in-out infinite 0.8s;"
+                    style="will-change: opacity; "
                     filter="url(#glowBloomB)"
                 >
                     <path
@@ -1113,7 +1084,7 @@
                     id="ai-glow-overlay"
                     transform="translate(306.5,-5)"
                     pointer-events="none"
-                    style="will-change: opacity; animation: glowPulse 2.5s ease-in-out infinite;"
+                    style="will-change: opacity; "
                     filter="url(#glowBloomA)"
                 >
                     <path
@@ -1225,16 +1196,15 @@
     <!-- Prolongement lueur violette sous le bloc Infra -->
     <div
         style="
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -130px;
-    width: 107px;
-    pointer-events: none;
-    z-index: 0;
-    will-change: opacity;
-    animation: glowPulse 2.5s ease-in-out infinite;
-  "
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -130px;
+            width: 107px;
+            pointer-events: none;
+            z-index: 0;
+            will-change: opacity;
+        "
     >
         <svg
             width="107"
