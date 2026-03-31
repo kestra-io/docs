@@ -785,16 +785,8 @@
         :deep(svg) {
             width: 16px;
             height: 16px;
-            filter: brightness(0) invert(1);
-        }
-
-        &.slack-icon--dark :deep(svg) {
             filter: brightness(0);
         }
-    }
-
-    a:hover .slack-icon--hover :deep(svg) {
-        filter: brightness(0) invert(1);
     }
 </style>
 
