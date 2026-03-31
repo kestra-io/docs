@@ -295,6 +295,14 @@
 
                 <ul class="navbar-nav mb-2 mb-xl-0 nav-button nav-footer">
                     <li class="nav-item">
+                        <a
+                            @click="globalClick(true)"
+                            href="https://kestra.io/slack"
+                            target="_blank"
+                            class="d-none d-xl-inline-flex mb-1 align-items-center me-3 slack-link"
+                        >
+                            <span class="slack-icon" :class="{ 'slack-icon--dark': isScrolled || props.scrolled || isOpen }" v-html="SlackIcon" />
+                        </a>
                         <GithubButton
                             :small="true"
                             class="d-block d-sm-inline-block mb-1"
@@ -305,6 +313,15 @@
                             href="/demo"
                         >
                             <span> Contact Sales</span>
+                        </a>
+                        <a
+                            @click="globalClick(true)"
+                            href="https://kestra.io/slack"
+                            target="_blank"
+                            class="d-xl-none d-flex justify-content-center mb-1 btn btn-sm btn-outline-dark align-items-center gap-2"
+                        >
+                            <span class="slack-icon slack-icon--dark slack-icon--hover" v-html="SlackIcon" />
+                            <span>Join us on Slack</span>
                         </a>
                         <a
                             @click="globalClick(true)"
@@ -556,6 +573,7 @@
     import { menuItems } from "~/utils/menu-items"
     import LogoBlack from "~/assets/logo-black.svg?raw"
     import LogoWhite from "~/assets/logo-white.svg?raw"
+    import SlackIcon from "~/assets/socials/slack.svg?raw"
 
     const props = defineProps<{
         scrolled?: boolean
@@ -761,6 +779,22 @@
             width: 180px;
             height: auto;
         }
+    }
+
+    .slack-icon {
+        :deep(svg) {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) invert(1);
+        }
+
+        &.slack-icon--dark :deep(svg) {
+            filter: brightness(0);
+        }
+    }
+
+    a:hover .slack-icon--hover :deep(svg) {
+        filter: brightness(0) invert(1);
     }
 </style>
 
