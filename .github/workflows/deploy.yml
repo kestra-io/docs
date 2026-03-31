@@ -15,7 +15,7 @@ concurrency:
 
 permissions:
   pull-requests: write
-  actions: read  # download baseline artifact from lighthouse.yml
+  actions: read # download baseline artifact from lighthouse.yml
 
 jobs:
   truncate-url-slug:
@@ -123,7 +123,6 @@ jobs:
         run: npm run build
         env:
           NO_IMAGE_OPTIM: "true"
-          PREVIEW: "true"
 
       - name: Start local dev server
         # wrangler dev serves the built Workers bundle locally via Miniflare —
