@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <div class="bd-content">
@@ -11,13 +12,16 @@
 
         :global(.gradient-overlay),
         :global(.more-btn) {
-            background: linear-gradient(transparent, var(--ks-background-primary));
+            background: linear-gradient(
+                transparent,
+                var(--ks-background-primary)
+            );
         }
 
         :global(.element-card),
         :global(.plugin) {
             background-color: var(--ks-background-primary) !important;
-            border-color: var(--ks-border-primary) !important;
+            border-color: var(--ks-border-secondary) !important;
             box-shadow: 2px 3px 16px 0px var(--ks-shadows-light) !important;
             &:hover {
                 border-color: var(--ks-border-active) !important;

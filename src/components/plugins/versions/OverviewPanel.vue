@@ -151,15 +151,16 @@
         @include media-breakpoint-up(lg) {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
         }
 
         .info-icon {
-            color: var(--ks-content-secondary);
+            color: var(--ks-content-tertiary);
             font-size: $font-size-lg;
             cursor: pointer;
             transition: color 0.2s ease;
-            margin-top: -0.5rem;
+            display: block;
+            margin-top: -4px;
 
             &:hover {
                 color: var(--ks-content-link-hover);

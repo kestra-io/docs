@@ -99,7 +99,7 @@
             }
 
             > .collapse-button:not(.collapsed) {
-                color: var(--ks-content-link);
+                color: var(--ks-content-primary);
                 margin-bottom: 1rem;
             }
 
@@ -107,6 +107,10 @@
                 color: var(--ks-content-primary);
                 background: var(--ks-background-body);
                 border: $block-border;
+
+                > * {
+                    padding: 1rem;
+                }
 
                 .property-description p {
                     margin-bottom: 0 !important;
@@ -130,14 +134,17 @@
 
         :deep(.section-properties > .collapse-button > span) {
             color: var(--ks-content-property) !important;
+            font-size: $font-size-sm !important;
         }
 
         :deep(.section-outputs > .collapse-button > span) {
             color: var(--ks-content-output) !important;
+            font-size: $font-size-sm !important;
         }
 
         :deep(.section-metrics > .collapse-button > span) {
             color: color-palette.$base-orange-400 !important;
+            font-size: $font-size-sm !important;
         }
     }
 
@@ -158,6 +165,7 @@
         &[class*="section-"] summary.collapse-button span:not(.type-box),
         summary.collapse-button span:not(.type-box) {
             color: var(--ks-content-color-highlight) !important;
+            font-size: $font-size-xs !important;
         }
     }
 
@@ -167,5 +175,7 @@
         font-weight: 600;
         font-size: $font-size-xs;
         text-transform: lowercase;
+        border: none;
+        font-family: $font-family-sans-serif;
     }
 </style>
