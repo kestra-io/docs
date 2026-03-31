@@ -124,3 +124,109 @@ These outputs can then be passed on as notifications or system messages to exter
 ### Plugin defaults
 
 Each task using the AI Agent requires the `provider` property. To avoid repetition and simplify the flow building experience, first consider using [Kestra's AI Copilot](../ai-copilot/index.md), next consider using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md) to ensure consistency and remove repetition. Additionally, for your provider API key, make sure to secure it either through the [Key-Value Store](../../06.concepts/05.kv-store/index.md) or as a [Secret](../../06.concepts/04.secret/index.md) if using [Kestra Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).
+
+## Agent tools
+
+The AI Agent can be extended with **tools** — capabilities the LLM can choose to invoke at runtime to complete its task. Tools are listed under the `tools` property of an `AIAgent` task.
+
+### Skills
+
+The [**Skill**](/plugins/plugin-ai/tool/skill) tool lets you attach structured instructions to an agent that it can activate on demand. Rather than including all instructions in the system message, skills let you define discrete, reusable knowledge blocks — each with a name, a description the LLM uses to decide when to activate it, and the actual instruction content.
+
+This is useful when an agent has multiple possible modes of operation, such as translating text, reviewing code, or formatting data, where you want the LLM to select and apply the right instructions based on context rather than always receiving all instructions at once.
+
+Each skill requires:
+- `name` — a unique identifier for the skill
+- `description` — explains to the LLM when to activate the skill
+- `content` or `contentUri` — the instruction content, either inline or loaded from Kestra internal storage
+
+#### Inline skill content
+
+The simplest way to define a skill is with inline `content`:
+
+```yaml
+id: agent_with_skills
+namespace: company.ai
+
+tasks:
+  - id: agent
+    type: io.kestra.plugin.ai.agent.AIAgent
+    prompt: Translate the following text to French - "Hello, how are you today?"
+    provider:
+      type: io.kestra.plugin.ai.provider.GoogleGemini
+      modelName: gemini-2.5-flash
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
+    tools:
+      - type: io.kestra.plugin.ai.tool.Skill
+        skills:
+          - name: translation_expert
+            description: Expert translator for multiple languages
+            content: |
+              You are an expert translator. When translating text:
+              1. Preserve the original meaning and tone
+              2. Use natural phrasing in the target language
+              3. Keep proper nouns unchanged
+```
+
+#### Loading skill content from storage
+
+For longer or reusable instructions, store the skill content as a file in Kestra internal storage and reference it with `contentUri`. This is especially useful when skill content is generated or updated by an earlier task in the same flow:
+
+```yaml
+id: agent_with_skill_from_storage
+namespace: company.ai
+
+tasks:
+  - id: write_instructions
+    type: io.kestra.plugin.core.storage.Write
+    content: |
+      You are a senior code reviewer. When reviewing code:
+      1. Check for security vulnerabilities
+      2. Ensure proper error handling
+      3. Verify naming conventions are followed
+      4. Flag any code duplication
+
+  - id: agent
+    type: io.kestra.plugin.ai.agent.AIAgent
+    prompt: Review this Python function - "def add(a, b): return a + b"
+    provider:
+      type: io.kestra.plugin.ai.provider.GoogleGemini
+      modelName: gemini-2.5-flash
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
+    tools:
+      - type: io.kestra.plugin.ai.tool.Skill
+        skills:
+          - name: code_review_expert
+            description: Expert code reviewer with strict guidelines
+            contentUri: "{{ outputs.write_instructions.uri }}"
+```
+
+A single `Skill` tool can define multiple skills. Each skill must have a unique name. `content` and `contentUri` are mutually exclusive — exactly one must be set per skill. For more details on all available properties, refer to the [Skill plugin documentation](/plugins/plugin-ai/tool/skill).
+
+### Kestra-native tools
+
+- [**KestraFlow**](/plugins/plugin-ai/tool/kestraflow) — triggers a Kestra flow as a tool, either with a predefined namespace and flow ID or dynamically based on the agent's prompt.
+- [**KestraTask**](/plugins/plugin-ai/tool/kestratask) — exposes one or more Kestra runnable tasks as tools, letting the agent supply values for properties left unset.
+
+### Web search
+
+- [**TavilyWebSearch**](/plugins/plugin-ai/tool/tavilywebsearch) — gives the agent access to live web results via the Tavily search API.
+- [**GoogleCustomWebSearch**](/plugins/plugin-ai/tool/googlecustomwebsearch) — gives the agent access to live web results via a Google Custom Search Engine.
+
+### Code execution
+
+- [**CodeExecution**](/plugins/plugin-ai/tool/codeexecution) — lets the agent write and run JavaScript snippets in a Judge0 sandbox (via RapidAPI).
+
+### Nested agents
+
+- [**AIAgent**](/plugins/plugin-ai/tool/aiagent) — wraps another AI agent as a callable tool so a parent agent can delegate sub-tasks to a specialized child agent.
+- [**A2AClient**](/plugins/plugin-ai/tool/a2aclient) — forwards prompts to a remote AI agent over the Agent-to-Agent (A2A) protocol and returns its response.
+
+### MCP clients
+
+Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server to expose its tools:
+
+- [**DockerMcpClient**](/plugins/plugin-ai/tool/dockermcpclient) — runs an MCP server inside a Docker container.
+- [**SseMcpClient**](/plugins/plugin-ai/tool/ssemcpclient) — connects to a remote MCP server over Server-Sent Events (SSE).
+- [**StdioMcpClient**](/plugins/plugin-ai/tool/stdiomcpclient) — spawns a local MCP server process and communicates over stdio.
+- [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/streamablehttpmcpclient) — connects to an MCP server over HTTP streaming.
