@@ -50,7 +50,10 @@ export default defineConfig({
         icon(),
         purgecss({
             safelist: [/^cm[-_]?/, /^cc-/],
-            content: ["./src/**/*.{astro,vue}"],
+            content: [
+                "./src/**/*.{astro,vue,md,mdx}",
+                "node_modules/@kestra-io/ui-libs/**/*.{astro,vue}",
+            ],
         }),
     ],
     markdown: {
