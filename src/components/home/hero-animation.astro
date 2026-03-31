@@ -1931,10 +1931,10 @@
             fadeLogos(allLogos[phase], true)
             setLabelRunning(phase, color)
 
-            // At 78% → switch to done
+            // At 78% → switch to done; delay corner lines until checkmark is fully visible (300ms delay + 400ms transition)
             setTimeout(() => {
                 setLabelDone(phase)
-                animateCornerLines(phaseNames[phase])
+                setTimeout(() => animateCornerLines(phaseNames[phase]), 700)
             }, PHASE * 0.78)
         }, TRANS)
 
