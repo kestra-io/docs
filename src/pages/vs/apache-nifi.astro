@@ -22,11 +22,12 @@ import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import nifiImg from "~/components/versus/assets/apache-nifi-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui.webp"
+import heroUI from "~/components/versus/assets/nifi_hero.webp"
 import heroBg from "~/components/versus/assets/hero_bg.webp"
 
 const entry = await getEntry("vsPages", "apache-nifi")
-if (!entry) throw new Error("Could not find vsPages/apache-nifi collection entry")
+if (!entry)
+    throw new Error("Could not find vsPages/apache-nifi collection entry")
 
 const {
     title,
@@ -126,6 +127,7 @@ const {
         <Fragment slot="title">
             Getting Started with Declarative Orchestration
         </Fragment>
-        See how Kestra can simplify your workflows—and scale beyond real-time data flow routing.
+        See how Kestra can simplify your workflows—and scale beyond real-time data
+        flow routing.
     </SeeHow>
 </Layout>
