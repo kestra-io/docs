@@ -24,7 +24,7 @@ const {
 } = Astro.props
 ---
 
-<div class={`connect connect--${vertical}`}>
+<div class="connect" data-vertical={vertical}>
     <div class="connect__row">
         <div class="connect__panel connect__panel--left">
             <div
@@ -88,33 +88,34 @@ const {
             z-index: 1;
         }
 
-        &--infrastructure::before {
+        &[data-vertical="infrastructure"]::before {
+            // purgecss ignore current
             background-image: url("~/assets/landing/infrastructure/connect.svg");
         }
 
-        &--data::before {
+        &[data-vertical="data"]::before {
+            // purgecss ignore current
             background-image: url("~/assets/landing/data/connect-data.svg");
         }
 
-        &--ai {
-            &::after {
-                content: "";
-                position: absolute;
-                width: 473px;
-                height: 457px;
-                background: radial-gradient(
-                    circle,
-                    #57f795 20%,
-                    #07411e 60%,
-                    transparent 100%
-                );
-                filter: blur(120px);
-                opacity: 1;
-                z-index: 0;
-                pointer-events: none;
-                top: -200px;
-                right: -200px;
-            }
+        &[data-vertical="ai"]::after {
+            // purgecss ignore current
+            content: "";
+            position: absolute;
+            width: 473px;
+            height: 457px;
+            background: radial-gradient(
+                circle,
+                #57f795 20%,
+                #07411e 60%,
+                transparent 100%
+            );
+            filter: blur(120px);
+            opacity: 1;
+            z-index: 0;
+            pointer-events: none;
+            top: -200px;
+            right: -200px;
         }
 
         &__row {
