@@ -1,89 +1,90 @@
 <script lang="ts" setup>
-    import { watch, ref, useTemplateRef, nextTick, computed } from "vue"
+    import { ref, computed, onMounted, onUnmounted, useTemplateRef, nextTick } from "vue"
 
     const props = defineProps<{
         words: string[]
     }>()
+
     const wordIndex = ref(0)
+    const animating = ref(false)
+    const noTransition = ref(false)
+    let interval: ReturnType<typeof setInterval> | null = null
 
-    setInterval(() => {
-        wordIndex.value = (wordIndex.value + 1) % props.words.length
-    }, 3000)
+    const currentWord = computed(() => props.words[wordIndex.value])
+    const nextIndex = computed(
+        () => (wordIndex.value + 1) % props.words.length,
+    )
+    const nextWord = computed(() => props.words[nextIndex.value])
 
-    const word = useTemplateRef<HTMLSpanElement | null>("word")
+    const inner = useTemplateRef<HTMLSpanElement>("inner")
 
-    watch(wordIndex, async () => {
-        if (word.value) {
-            // fade out the current word
-            word.value.style.opacity = "0"
-            // then create a span for each letter of the next word
-            // and add it to the DOM before the word.value
-            const nextWord = props.words[wordIndex.value]
-            const letters = nextWord.split("").map((letter) => {
-                const span = document.createElement("span")
-                span.textContent = letter
-                span.style.opacity = "0"
-                span.style.transform = "translateY(-60px)"
-                span.style.transition =
-                    "opacity 0.1s ease-in-out, transform 0.3s ease-out"
-                return span
-            })
+    function onSlideEnd() {
+        if (!animating.value) return
+        noTransition.value = true
+        wordIndex.value = nextIndex.value
+        animating.value = false
+        nextTick(() => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            inner.value?.offsetHeight
+            noTransition.value = false
+        })
+    }
 
-            // add the letters to an absolute positioned span
-            const spanWrapper = document.createElement("span")
-            spanWrapper.style.position = "absolute"
-            letters.forEach((span) => {
-                spanWrapper.appendChild(span)
-            })
+    function rotateWord() {
+        if (animating.value) return
+        animating.value = true
+    }
 
-            word.value?.parentNode?.insertBefore(spanWrapper, word.value)
-
-            // slide down each letter one by one with a delay of 50ms
-            letters.forEach((span, index) => {
-                setTimeout(
-                    () => {
-                        span.style.transform = "translateY(0)"
-                        span.style.opacity = "1"
-                    },
-                    (index + 1) * 70,
-                )
-            })
-            // once all letters are visible, remove the old word and set the new word
-            setTimeout(
-                () => {
-                    if (word.value) {
-                        word.value.style.transition = "none"
-                        word.value.style.removeProperty("opacity")
-                        word.value.innerHTML = letters
-                            .map((span) => span.outerHTML)
-                            .join("")
-                        letters.forEach((span) => {
-                            span.remove()
-                        })
-                        word.value.style.position = ""
-                        setTimeout(() => {
-                            word.value?.style.removeProperty("transition")
-                        }, 50)
-                    }
-                },
-                50 * (nextWord.length + 1) + 300,
-            )
-        }
+    onMounted(() => {
+        interval = setInterval(rotateWord, 3000)
     })
-    const letters = computed(() => props.words[0].split(""))
+
+    onUnmounted(() => {
+        if (interval) clearInterval(interval)
+    })
 </script>
 
 <template>
-    <span ref="word">
-        <span v-for="(letter, index) in letters" :key="letter + index">{{
-            letter
-        }}</span>
+    <span class="animated-word">
+        <span
+            ref="inner"
+            class="word-inner"
+            :class="{ animating, 'no-transition': noTransition }"
+            @transitionend="onSlideEnd"
+        >
+            <span class="word">{{ currentWord }}</span>
+            <span class="word">{{ nextWord }}</span>
+        </span>
     </span>
 </template>
 
-<style lang="scss">
-    span {
+<style lang="scss" scoped>
+    .animated-word {
         display: inline-block;
-        transition: opacity 0.5s ease-in-out;
+        overflow: hidden;
+        vertical-align: bottom;
+        height: 1.2em;
+
+        .word-inner {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+            &.no-transition {
+                transition: none;
+            }
+
+            &.animating {
+                transform: translateY(-50%);
+            }
+        }
+
+        .word {
+            display: block;
+            height: 1.2em;
+            line-height: 1.2em;
+            white-space: nowrap;
+        }
     }
 </style>
+
