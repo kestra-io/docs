@@ -1,42 +1,17 @@
 <script lang="ts" setup>
-    import { ref, computed, onMounted, onUnmounted, useTemplateRef, nextTick } from "vue"
+    import { ref, onMounted, onUnmounted } from "vue"
 
     const props = defineProps<{
         words: string[]
     }>()
 
     const wordIndex = ref(0)
-    const animating = ref(false)
-    const noTransition = ref(false)
     let interval: ReturnType<typeof setInterval> | null = null
 
-    const currentWord = computed(() => props.words[wordIndex.value])
-    const nextIndex = computed(
-        () => (wordIndex.value + 1) % props.words.length,
-    )
-    const nextWord = computed(() => props.words[nextIndex.value])
-
-    const inner = useTemplateRef<HTMLSpanElement>("inner")
-
-    function onSlideEnd() {
-        if (!animating.value) return
-        noTransition.value = true
-        wordIndex.value = nextIndex.value
-        animating.value = false
-        nextTick(() => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            inner.value?.offsetHeight
-            noTransition.value = false
-        })
-    }
-
-    function rotateWord() {
-        if (animating.value) return
-        animating.value = true
-    }
-
     onMounted(() => {
-        interval = setInterval(rotateWord, 3000)
+        interval = setInterval(() => {
+            wordIndex.value = (wordIndex.value + 1) % props.words.length
+        }, 3000)
     })
 
     onUnmounted(() => {
@@ -46,15 +21,11 @@
 
 <template>
     <span class="animated-word">
-        <span
-            ref="inner"
-            class="word-inner"
-            :class="{ animating, 'no-transition': noTransition }"
-            @transitionend="onSlideEnd"
-        >
-            <span class="word">{{ currentWord }}</span>
-            <span class="word">{{ nextWord }}</span>
-        </span>
+        <Transition name="slide">
+            <span class="word" :key="wordIndex">{{
+                props.words[wordIndex]
+            }}</span>
+        </Transition>
     </span>
 </template>
 
@@ -64,27 +35,33 @@
         overflow: hidden;
         vertical-align: bottom;
         height: 1.2em;
+        position: relative;
+    }
 
-        .word-inner {
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .word {
+        display: block;
+        height: 1.2em;
+        line-height: 1.2em;
+        white-space: nowrap;
+    }
 
-            &.no-transition {
-                transition: none;
-            }
+    .slide-enter-active,
+    .slide-leave-active {
+        transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
-            &.animating {
-                transform: translateY(-50%);
-            }
-        }
+    .slide-leave-active {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
-        .word {
-            display: block;
-            height: 1.2em;
-            line-height: 1.2em;
-            white-space: nowrap;
-        }
+    .slide-enter-from {
+        transform: translateY(100%);
+    }
+
+    .slide-leave-to {
+        transform: translateY(-100%);
     }
 </style>
 
