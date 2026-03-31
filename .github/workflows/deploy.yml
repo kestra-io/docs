@@ -143,6 +143,7 @@ jobs:
           {
             echo "content<<LIGHTHOUSE_REPORT_DELIMITER"
             cat lighthouse-report.md
+            printf '\n'
             echo "LIGHTHOUSE_REPORT_DELIMITER"
           } >> "$GITHUB_OUTPUT"
 
