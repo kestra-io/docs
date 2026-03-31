@@ -18,8 +18,9 @@ import { buildPluginPageProps } from "~/utils/plugins/buildPluginPageProps"
 import { resolveGithubReleaseRepo } from "~/utils/plugins/resolveGithubRepo"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
-import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
+import { generateSubgroupPluginData } from "~/utils/plugins/generateSubgroupPluginData"
 import {
+    fetchArborescence,
     fetchInitialPluginData,
     fetchPageDefinition,
     fetchSecondaryData,
@@ -75,17 +76,21 @@ try {
     // do nothing if plugin not found
 }
 
-const sidebarPluginData = generateSidebarPluginData(
+const subgroupPluginData = generateSubgroupPluginData(
     allPlugins.filter((r) => r.name === pluginName),
     allPluginMetadata,
 )
 
-const [page, { blueprintCounts, relatedBlogs }] = await Promise.all([
-    pluginType
-        ? fetchPageDefinition(pluginType)
-        : Promise.resolve(sidebarPluginData),
-    fetchSecondaryData(pluginName),
-])
+const [page, { blueprintCounts, relatedBlogs }, arborescencePlugins] =
+    await Promise.all([
+        pluginType
+            ? fetchPageDefinition(pluginType)
+            : Promise.resolve(subgroupPluginData),
+        fetchSecondaryData(pluginName),
+        fetchArborescence(
+            allPlugins.find((p) => p.name === pluginName)?.group ?? "",
+        ).catch(() => undefined),
+    ])
 
 const {
     pluginsWithoutDeprecated,
@@ -119,7 +124,8 @@ const {
     blueprintCounts,
     relatedBlogs,
     page,
-    sidebarPluginData,
+    subgroupPluginData,
+    arborescencePlugins,
 })
 
 if (

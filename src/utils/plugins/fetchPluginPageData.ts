@@ -5,7 +5,7 @@ import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
 import { retrieveRepoReleases } from "../../pages/api/github-releases"
-import type { PluginPage } from "./types"
+import type { Arborescence, PluginPage } from "./types"
 
 const EE_RELEASES_PAGE_SIZE = 100
 
@@ -84,6 +84,30 @@ export async function fetchPageDefinition(pluginType: string): Promise<PluginPag
     } catch {
         return null
     }
+}
+
+export async function fetchArborescence(group: string): Promise<Plugin[]> {
+    const { name, title, subGroups } = await $fetchApiCached<Arborescence>(
+        `/plugins/arborescence/${group}`,
+    )
+
+    const toElements = (obj: Record<string, any>) =>
+        Object.fromEntries(
+            Object.entries(obj)
+                .filter(([, v]) => Array.isArray(v))
+                .map(([k, v]) => [k, v.map((cls: string) => ({ cls }))]),
+        )
+
+    const root = { name, title, group } as Plugin
+    if (!subGroups?.length) return [root]
+
+    return [
+        root,
+        ...subGroups.map((sub) => ({
+            name, title: sub.title, group, subGroup: sub.name,
+            ...toElements(sub),
+        }) as Plugin),
+    ]
 }
 
 export async function fetchSecondaryData(pluginName: string) {
