@@ -36,7 +36,7 @@
     }
 
     onMounted(() => {
-        interval = setInterval(rotateWord, 2000)
+        interval = setInterval(rotateWord, 3000)
     })
 
     onUnmounted(() => {
@@ -68,7 +68,7 @@
         .word-inner {
             display: flex;
             flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
             &.no-transition {
                 transition: none;
