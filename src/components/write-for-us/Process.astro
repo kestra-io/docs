@@ -50,7 +50,7 @@ const items = [
                 items.map((item, index) => (
                     <>
                         <div class="card-row">
-                            <div class:list={['process-icon', index % 2 === 1 ? "visible" : ""]}>
+                            <div class={`process-icon ${index % 2 === 1 ? "visible" : ""}`}>
                                 <Image src={item.icon} alt="" />
                             </div>
                             <div class="process-card">
@@ -60,7 +60,7 @@ const items = [
                                 </div>
                                 <p>{item.description}</p>
                             </div>
-                            <div class:list={['process-icon', index % 2 === 0 ? "visible" : ""]}>
+                            <div class={`process-icon ${index % 2 === 0 ? "visible" : ""}`}>
                                 <Image src={item.icon} alt="" />
                             </div>
                         </div>

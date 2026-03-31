@@ -63,7 +63,7 @@ const lifeCards = [
             {
                 lifeCards.map((card, index) => (
                     <article
-                        class:list={['card', card.type, card.variant || ""]}
+                        class={`card ${card.type} ${card.variant || ""}`}
                         data-usal={`zoomin delay-${index * 100} ease-in-out`}
                     >
                         {card.type === "image-card" && card.image ? (
@@ -81,7 +81,7 @@ const lifeCards = [
                                 {card.button && (
                                     <a
                                         href={card.button.href}
-                                        class:list={['btn', 'btn-sm', card.button.variant, 'cta']}
+                                        class={`btn btn-sm ${card.button.variant} cta`}
                                     >
                                         {card.button.text}
                                     </a>
@@ -147,7 +147,6 @@ const lifeCards = [
 
                     &.image-card {
                         .img {
-                            // purgecss ignore current
                             width: 100%;
                             height: 100%;
                             object-fit: cover;
@@ -156,27 +155,23 @@ const lifeCards = [
 
                     &.text-card {
                         .content {
-                            // purgecss ignore current
                             padding: $rem-2;
                             height: 100%;
                             position: relative;
                             background: var(--ks-background-primary-inverse);
 
                             .heading {
-                                // purgecss ignore current
                                 color: var(--ks-content-primary-inverse);
                                 margin-bottom: $rem-1;
                             }
 
                             .desc {
-                                // purgecss ignore current
                                 color: var(--ks-content-primary-inverse);
                                 line-height: 1.6;
                                 margin: 0;
                             }
 
                             .cta {
-                                // purgecss ignore current
                                 position: absolute;
                                 bottom: $rem-2;
                                 left: $rem-2;
