@@ -17,7 +17,7 @@ With growing urgency, every enterprise now racing to put AI into production face
 
 Orchestration has just reached its tipping point. And over the past year, Kestra has demonstrated, across more than 30,000 organizations worldwide — from fast-growing tech companies to Fortune 500 giants — that **a single, unified orchestration layer spanning infrastructure, data, and AI is not just a cleaner architectural choice. It's the only approach that holds at enterprise scale.**
 
-Today, we're announcing a **$25 million Series A** led by [RTP Global](https://rtp.vc/), with continued support from [Alven](https://www.alven.co/), [ISAI](https://isai.vc/), and [Axeleo](https://axeleo.com/).
+Today, we're announcing a **$25 million Series A** led by [RTP Global](https://rtp.vc/), with continued support from [Alven](https://www.alven.co/), [ISAI](https://isai.vc/), and [Axeleo](https://www.axc.vc/).
 
 But the round is not the story. It's the signal that **orchestration just became its own infrastructure category**, and the window to define it is now.
 
