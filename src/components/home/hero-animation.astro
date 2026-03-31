@@ -1979,7 +1979,7 @@
                 reset(init: boolean) {
                     this.x = rand(20, W - 20)
                     this.y = init ? rand(0, H) : H - 30 + rand(0, 10)
-                    this.vy = rand(0.3, 1.1)
+                    this.vy = rand(1.0, 2.5)
                     this.size = rand(0.8, 2.2)
                     this.alpha = rand(0.3, 0.9)
                     this.color =
@@ -2022,7 +2022,7 @@
 
         const particleTicks = [
             initParticles("glow-particles", 14),
-            initParticles("glow-particles-b", 14),
+            initParticles("glow-particles-b", 30),
             initParticles("glow-particles-c", 14),
         ]
         let frame = 0
