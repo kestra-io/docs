@@ -53,11 +53,14 @@ const WORKFLOW_STEPS = [
             <div class="steps-list">
                 {
                     WORKFLOW_STEPS.map((step, index) => (
-                        <div class={`step-block step-${index}`}>
+                        <div class="step-block">
                             <div class="step-content">
+                                {/* eslint-disable-next-line no-restricted-syntax */}
                                 <span class={`step-label label-${step.id}`}>
                                     {step.label}
                                 </span>
+                                {/* rules disabled but selectors protected against purgecss */}
+                                {/* eslint-disable-next-line no-restricted-syntax */}
                                 <div class={`step-card card-${step.id}`}>
                                     <div class="items-list">
                                         {step.items.map((item) => {
@@ -74,19 +77,22 @@ const WORKFLOW_STEPS = [
                             </div>
 
                             {index < 3 && (
-                                <div class={`workflow-arrow arrow-${index}`}>
-                                    <div class="line" />
-                                    <Icon
-                                        name="mdi:play"
-                                        class="head"
-                                        width={16}
-                                        height={16}
-                                    />
-                                    <div class="icon-box">
-                                        <KestraMonogram />
-                                        <Icon name="mdi:cog" class="cog" />
+                                <>
+                                    {/* eslint-disable-next-line no-restricted-syntax */}
+                                    <div class={`workflow-arrow arrow-${index}`}>
+                                        <div class="line" />
+                                        <Icon
+                                            name="mdi:play"
+                                            class="head"
+                                            width={16}
+                                            height={16}
+                                        />
+                                        <div class="icon-box">
+                                            <KestraMonogram />
+                                            <Icon name="mdi:cog" class="cog" />
+                                        </div>
                                     </div>
-                                </div>
+                                </>
                             )}
                         </div>
                     ))
@@ -214,6 +220,7 @@ const WORKFLOW_STEPS = [
 
             @each $id, $colors in $steps {
                 &.card-#{$id} {
+                    /* purgecss ignore current */
                     background: map-get($colors, "bg");
                     border: 1px solid map-get($colors, "border");
                 }
@@ -257,6 +264,7 @@ const WORKFLOW_STEPS = [
 
             @each $id, $colors in $steps {
                 &.label-#{$id} {
+                    /* purgecss ignore current */
                     color: map-get($colors, "label");
                 }
             }
@@ -337,6 +345,7 @@ const WORKFLOW_STEPS = [
             @include media-breakpoint-between(sm, xl) {
                 &.arrow-0,
                 &.arrow-1 {
+                    /* purgecss ignore current */
                     position: absolute;
                     top: calc(100% + 4px);
                     left: 50%;
@@ -345,11 +354,13 @@ const WORKFLOW_STEPS = [
                     transform: translateX(-50%);
 
                     .line {
+                        /* purgecss ignore current */
                         width: 1.5px;
                         height: 100%;
                     }
 
                     .head {
+                        /* purgecss ignore current */
                         bottom: -5px;
                         left: 50%;
                         transform: translateX(-50%) rotate(90deg);
@@ -357,6 +368,7 @@ const WORKFLOW_STEPS = [
                 }
 
                 &.arrow-2 {
+                    /* purgecss ignore current */
                     display: none;
                 }
             }
