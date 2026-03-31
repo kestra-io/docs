@@ -7,7 +7,6 @@
  * - Components: Alerts, collapsible sections, video containers, and tables.
  * - Utilities: Layout adjustments and specific overrides for markdown-generated content.
  */
-@import "variable";
 
 @mixin markdown-styles {
     #{--bs-heading-color}: var(--ks-content-primary);
