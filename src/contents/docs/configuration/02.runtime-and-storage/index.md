@@ -368,6 +368,26 @@ kestra:
 
 If `service-account` is omitted, Kestra falls back to default GCP credentials, which is usually the right choice on GKE or GCE.
 
+### Cloudflare R2
+
+Use R2 as an S3-compatible object storage backend:
+
+```yaml
+kestra:
+  storage:
+    type: cloudflare
+    cloudflare:
+      bucket: "<your-r2-bucket-name>"
+      accountId: "<your-cloudflare-account-id>"
+      accessKeyId: "{{ secret('CLOUDFLARE_R2_ACCESS_KEY') }}"
+      secretAccessKey: "{{ secret('CLOUDFLARE_R2_SECRET_KEY') }}"
+```
+
+Optional settings:
+- `path`: Prefix applied to all stored objects  
+- `jurisdiction`: Restricts the bucket to a specific region (e.g. EU) and updates the endpoint accordingly  
+- `endpointOverride`: Custom endpoint, typically used for testing with S3-compatible services  
+
 ## Server, environment, and JVM settings
 
 These settings shape how the instance presents itself and how the Java process behaves at runtime. They are less about feature enablement and more about making the deployment fit its environment.
