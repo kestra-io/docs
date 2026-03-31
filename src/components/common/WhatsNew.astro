@@ -10,7 +10,7 @@ const recentBlogs = await Promise.all(
         .slice(0, 4)
         .map(async (blog) => ({
             path: `/blogs/${blog.id}`,
-            image: blog.data.image,
+            image: blog.data.image ? { src: blog.data.image.src } : undefined,
             title: blog.data.title,
             date: blog.data.date.toISOString(),
             category: blog.data.category,
@@ -19,3 +19,4 @@ const recentBlogs = await Promise.all(
 ---
 
 <BlogList posts={recentBlogs} title="What's New in Kestra" />
+

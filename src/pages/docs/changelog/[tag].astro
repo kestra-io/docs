@@ -48,7 +48,7 @@ const isMajor = version.split(".").pop() === "0"
                     >
                         <h1 class="p-0">{release.name || release.tag_name}</h1>
                         <span
-                            class:list={['badge', isMajor ? "badge-major" : "badge-minor"]}
+                            class={`badge ${isMajor ? "badge-major" : "badge-minor"}`}
                             >{isMajor ? "Major" : "Minor"}</span
                         >
                     </div>

@@ -3,7 +3,7 @@ const { cls, class: className, ...rest } = Astro.props
 ---
 
 <img
-    class:list={['icon-wrapper', className || undefined]}
+    class={`icon-wrapper ${className || ""}`}
     data-tooltip={cls.split(".").pop()}
     data-theme-responsive
     src={`/icons/${cls}.svg`}

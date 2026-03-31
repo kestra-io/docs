@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets"
 import WithLogo from "~/components/layout/WithLogo.astro"
+import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 import CORE_IMAGE from "~/assets/layout/started/core.svg"
 import CLOUD_IMAGE from "~/assets/layout/started/cloud.svg"
 import ENTERPRISE_IMAGE from "~/assets/layout/started/enterprise-logo.png"
@@ -57,7 +58,7 @@ const PLANS = [
         <div class="cards-wrapper">
             {
                 PLANS.map((plan) => (
-                    <div class:list={['plan-card', plan.slug === "enterprise" ? "enterprise" : undefined]}>
+                    <div class={`plan-card ${plan.slug}`}>
                         <div class="card-content">
                             <div class="image">
                                 {plan.slug === "enterprise" && (
@@ -82,7 +83,7 @@ const PLANS = [
                         <div class="card-footer">
                             <a
                                 href={plan.button.href}
-                                class:list={['btn', plan.button.variant]}
+                                class={`btn ${plan.button.variant}`}
                                 data-usal="zoomin"
                             >
                                 {plan.button.text}
