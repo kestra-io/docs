@@ -103,7 +103,6 @@ jobs:
     # Runs after the deployment so we only benchmark PRs that build successfully.
     # We do NOT test the preview URL (it's behind a private network) — instead we
     # build the site locally and serve it with `wrangler dev`.
-    needs: [deploy-workers]
     if: ${{ github.event_name == 'pull_request' && startsWith(github.repository, 'kestra-io/') }}
     runs-on: ubuntu-latest
 
