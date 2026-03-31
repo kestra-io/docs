@@ -232,7 +232,6 @@ export default defineConfig({
                 "url",
                 "path",
                 "stream",
-                "svgo",
             ],
         },
     },
