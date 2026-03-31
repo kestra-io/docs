@@ -124,6 +124,10 @@ jobs:
         env:
           NO_IMAGE_OPTIM: "true"
 
+      - name: Install Lighthouse
+        # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
+        run: npm install --no-save lighthouse chrome-launcher
+
       - name: Start local dev server
         # wrangler dev serves the built Workers bundle locally via Miniflare —
         # no Cloudflare credentials required, no network access needed.
