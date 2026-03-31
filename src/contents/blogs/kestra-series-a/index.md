@@ -61,9 +61,8 @@ In 2025, organizations executed **more than 2 billion workflows** on Kestra, up 
 
 That growth didn't come from a top-down mandate. Engineers choose Kestra because it works where complexity is real. Enterprises expand it once its value becomes mission-critical. The great infrastructure platforms don't win from the boardroom down. **They win from the terminal up.** And once they've won there, the business case follows: faster delivery, fewer tools to manage, standardized operations, and real cost savings that decision-makers can measure.
 
-**Ready to take control of your orchestration?** Whether you want to discuss your orchestration strategy, see a tailored demo, or launch an Enterprise POC with our experts, we're here to help you move fast and build right.
-
-> [**Book a demo with our team**](https://kestra.io/demo)
+>**Ready to take control of your orchestration?** Whether you want to discuss your orchestration strategy, see a tailored demo, or launch an Enterprise POC with our experts, we're here to help you move fast and build right.
+> <br> [**Book a demo with our team**](https://kestra.io/demo)
 
 ## What's next
 
@@ -71,9 +70,9 @@ That growth didn't come from a top-down mandate. Engineers choose Kestra because
 
 This Series A gives us the ability to move faster on what we've already been building.
 
-One principle drives everything in Kestra 2.0: **your orchestration layer should adapt to your infrastructure, not the other way around.** Deploy across regions, inside segregated networks, deep in customer environments — keeping execution inside your perimeter while we manage the rest. No architectural compromises. No forced trade-offs between control and simplicity. And because teams running data pipelines, AI systems, and infrastructure have fundamentally different needs, we're introducing dedicated experiences for each, built around how those teams actually work, not a one-size-fits-all console.
+One principle drives everything in **Kestra 2.0**: **your orchestration layer should adapt to your infrastructure, not the other way around.** Deploy across regions, inside segregated networks, deep in customer environments — keeping execution inside your perimeter while we manage the rest. No architectural compromises. No forced trade-offs between control and simplicity. And because teams running data pipelines, AI systems, and infrastructure have fundamentally different needs, we're introducing dedicated experiences for each, built around how those teams actually work, not a one-size-fits-all console.
 
-Alongside Kestra 2.0, we're architecting [Kestra Cloud](/cloud), a fully managed, usage-based platform. We're building it for teams that want Kestra's power without the self-hosting overhead.
+Alongside **Kestra 2.0**, we're architecting [**Kestra Cloud**](/cloud), a fully managed, usage-based platform. We're building it for teams that want Kestra's power without the self-hosting overhead.
 
 The category is forming now. We're building to lead it.
 
@@ -83,7 +82,9 @@ There's a narrow window to define a new infrastructure category. It closes once 
 
 The companies that understand this first — that **coordination is infrastructure, not a feature you bolt on** — will build faster, govern better, and scale AI on a foundation that actually holds. The ones that don't will keep managing the debt of a thousand fragmented scripts, one incident at a time.
 
-Building Kestra has been an exercise in persistence. Great technology companies are built through conviction held across market cycles, through technological shifts that force constant adaptation, through years of rigorous execution when no one was watching. Orchestration wasn't the talk of the industry when we started. Now it's central to every serious conversation about AI in production. **We were early. We stayed the course. And the results prove it was the right bet.**
+Building Kestra has been an exercise in persistence. Great technology companies are built through conviction held across market cycles, through technological shifts that force constant adaptation, through years of rigorous execution when no one was watching. Orchestration wasn't the talk of the industry when we started. Now it's central to every serious conversation about AI in production. 
+
+**We were early. We stayed the course. And the results prove it was the right bet.**
 
 The future is coordinated.
 
