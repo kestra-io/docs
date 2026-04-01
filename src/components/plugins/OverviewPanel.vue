@@ -244,7 +244,7 @@
             font-size: 10px !important;
         }
         .core-ver {
-            color: color-palette.$base-white;
+            color: var(--ks-content-primary);
             font-weight: 600;
             font-size: 10px;
         }

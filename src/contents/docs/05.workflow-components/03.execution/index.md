@@ -389,6 +389,20 @@ Finally, click the **Send** button to trigger the flow execution. You should get
 
 ---
 
+## Execute a flow via kestractl
+
+You can trigger and inspect executions from the command line using [kestractl](../../kestra-cli/kestractl/index.md).
+
+```bash
+# Run a flow and wait for completion
+kestractl executions run prod nightly-refresh --wait
+
+# Run a flow and get the result as JSON
+kestractl executions run prod nightly-refresh --wait --output json
+```
+
+---
+
 ## Execute a flow from Python
 
 You can also execute a flow using the [kestra pip package](https://github.com/kestra-io/libs). This is useful when you want to trigger a flow execution from a Python application without crafting the HTTP request manually, as shown earlier.

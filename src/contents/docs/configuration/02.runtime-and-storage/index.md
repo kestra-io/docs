@@ -120,9 +120,31 @@ Kestra uses HikariCP for datasource pooling. Common options include:
 | --- | --- | --- |
 | `maximum-pool-size` | Maximum number of open connections | `10` |
 | `minimum-idle` | Minimum number of idle connections | `10` |
-| `connection-timeout` | Max wait for a connection | `30000` ms |
-| `idle-timeout` | Max idle time | `600000` ms |
-| `max-lifetime` | Max connection lifetime | `1800000` ms |
+| `connection-timeout` | Max wait for a connection (ms) | `30000` |
+| `idle-timeout` | Max idle time (ms) | `600000` |
+| `max-lifetime` | Max connection lifetime (ms) | `1800000` |
+
+:::collapse{title="Full HikariCP property reference"}
+| Property | Type | Description | Default |
+| --- | --- | --- | --- |
+| `url` | String | JDBC connection string | — |
+| `username` | String | Database username | — |
+| `password` | String | Database password | — |
+| `catalog` | String | Default catalog | driver default |
+| `schema` | String | Default schema | driver default |
+| `transaction-isolation` | String | Default transaction isolation level | driver default |
+| `pool-name` | String | Pool name | `HikariPool-<generated>` |
+| `maximum-pool-size` | Int | Maximum number of open connections | `10` |
+| `minimum-idle` | Long | Minimum number of idle connections | `10` |
+| `connection-timeout` | Long | Max time to wait for a connection (ms) | `30000` |
+| `idle-timeout` | Long | Max time a connection can be idle (ms) | `600000` |
+| `max-lifetime` | Long | Max connection lifetime (ms) | `1800000` |
+| `validation-timeout` | Long | Max time to validate a connection (ms) | `5000` |
+| `initialization-fail-timeout` | Long | Timeout for pool initialization failure (ms) | `1` |
+| `leak-detection-threshold` | Long | Threshold before a connection leak is reported (ms) | `0` |
+| `connection-init-sql` | String | SQL executed on each new connection | `null` |
+| `connection-test-query` | String | Query used to validate connections | `null` |
+:::
 
 Example:
 
@@ -435,7 +457,13 @@ kestra:
 
 `env-vars-prefix` controls which environment variables become available in expressions under `envs.*`. For example, `ENV_MY_VARIABLE` becomes `{{ envs.my_variable }}`.
 
-Use `globals` for values that need to be available in every flow, `recursive-rendering` only when you intentionally want pre-0.14 recursive behavior, and `cache-enabled` when you need to trade CPU for correctness while debugging template changes.
+Use `globals` for values that need to be available in every flow, `recursive-rendering` only when you intentionally want pre-0.14 recursive behavior, and `cache-enabled` when you need to trade CPU for correctness while debugging template changes. Set `cache-size` to limit the number of cached templates (default `1000`):
+
+```yaml
+kestra:
+  variables:
+    cache-size: 1000
+```
 
 ## Optional runtime features
 
