@@ -38,7 +38,8 @@ export default defineConfig({
     ],
 
     webServer: {
-        command: "DISABLE_USAL=true DISABLE_GITHUB=true npm run dev",
+        command:
+            "NO_IMAGE_OPTIM=true DISABLE_USAL=true DISABLE_GITHUB=true npm run preview",
         url: "http://localhost:4321",
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,
