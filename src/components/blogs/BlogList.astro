@@ -9,7 +9,7 @@ const { blogs, externalNews, videos, category } = Astro.props
 
 <section>
     <div class="container">
-        <BlogGrid client:load blogs={blogs} slug={category} />
+        <BlogGrid client:idle blogs={blogs} slug={category} />
 
         <div class="community-section">
             <h2>Latest Community News</h2>

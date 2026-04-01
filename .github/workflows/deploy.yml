@@ -15,6 +15,7 @@ concurrency:
 
 permissions:
   pull-requests: write
+  actions: read # download baseline artifact from lighthouse.yml
 
 jobs:
   truncate-url-slug:
@@ -96,3 +97,95 @@ jobs:
           template: |
             🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
+
+  lighthouse:
+    name: Lighthouse Benchmark
+    # Runs after the deployment so we only benchmark PRs that build successfully.
+    # We do NOT test the preview URL (it's behind a private network) — instead we
+    # build the site locally and serve it with `wrangler dev`.
+    if: ${{ github.event_name == 'pull_request' && startsWith(github.repository, 'kestra-io/') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
+        env:
+          NO_IMAGE_OPTIM: "true"
+
+      - name: Install Lighthouse
+        # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
+        run: npm install --no-save lighthouse chrome-launcher
+
+      - name: Start local dev server
+        # wrangler dev serves the built Workers bundle locally via Miniflare —
+        # no Cloudflare credentials required, no network access needed.
+        run: npx wrangler dev --local &
+
+      - name: Wait for dev server to be ready
+        run: |
+          echo "Waiting for http://localhost:8787…"
+          for i in $(seq 1 24); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8787 || true)
+            if [ "$STATUS" = "200" ]; then
+              echo "Server is ready (HTTP 200)."
+              exit 0
+            fi
+            echo "  Attempt $i/24: HTTP $STATUS — retrying in 5 s…"
+            sleep 5
+          done
+          echo "Warning: server did not return 200 after 2 min; running Lighthouse anyway."
+
+      # Try to download the latest baseline artifact saved after a main-branch deploy.
+      # If none exists yet (first run after setup), this step is skipped silently.
+      - name: Download main branch baseline
+        id: baseline
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          workflow: lighthouse.yml
+          branch: main
+          name: lighthouse-baseline
+          path: baseline/
+
+      - name: Run Lighthouse benchmark
+        run: node scripts/lighthouse-benchmark.mjs
+        env:
+          BASE_URL: http://localhost:8787
+          OUTPUT_FILE: lighthouse-results.json
+          BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
+          MARKDOWN_FILE: lighthouse-report.md
+
+      - name: Read Lighthouse report
+        id: report
+        run: |
+          {
+            echo "content<<LIGHTHOUSE_REPORT_DELIMITER"
+            cat lighthouse-report.md
+            printf '\n'
+            echo "LIGHTHOUSE_REPORT_DELIMITER"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        uses: meysam81/comment-pr@v1
+        with:
+          title: "## 🔦 Lighthouse Benchmark"
+          content: ${{ steps.report.outputs.content }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-pr-results
+          path: lighthouse-results.json
+          retention-days: 30

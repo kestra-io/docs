@@ -166,6 +166,8 @@ Examples:
 {% endfor %}
 ```
 
+Inside a `for` loop, Pebble provides a `loop` object with properties such as `loop.index`, `loop.first`, `loop.last`, and `loop.length`. For the full table and examples, see [Operators, Tags, and Tests](../05.operators-tags-tests/index.md#for).
+
 ```twig
 {% if category == "news" %}
   {{ news }}
