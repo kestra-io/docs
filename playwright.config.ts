@@ -15,7 +15,7 @@ export default defineConfig({
     },
 
     use: {
-        baseURL: "http://localhost:4321",
+        baseURL: "http://localhost:8787",
         trace: "on-first-retry",
     },
 
@@ -40,8 +40,8 @@ export default defineConfig({
     webServer: {
         command:
             "NO_IMAGE_OPTIM=true DISABLE_USAL=true DISABLE_GITHUB=true npm run preview",
-        url: "http://localhost:4321",
+        url: "http://localhost:8787",
         reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
+        timeout: 200_000,
     },
 })
