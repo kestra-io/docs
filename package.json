@@ -46,7 +46,7 @@
     "astro-expressive-code": "^0.41.7",
     "astro-icon": "^1.1.5",
     "astro-loading-indicator": "^0.7.1",
-    "axios": "^1.13.6",
+    "axios": "1.13.6",
     "bootstrap": "^5.3.8",
     "countries-list": "^3.3.0",
     "dayjs": "^1.11.19",
@@ -57,8 +57,8 @@
     "lottie-web": "^5.13.0",
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.12.3",
-    "oxfmt": "^0.36.0",
-    "oxlint": "^1.51.0",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
     "posthog-js": "^1.359.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
@@ -80,6 +80,9 @@
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel": "^0.17.0",
     "wrangler": "^4.71.0"
+  },
+  "overrides": {
+    "axios": "1.13.6"
   },
   "engines": {
     "node": ">= 14",
