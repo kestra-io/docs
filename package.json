@@ -19,7 +19,9 @@
     "workers:build-deploy": "npm run workers:build && npm run workers:deploy",
     "cf-typegen": "wrangler types",
     "lint": "oxlint . --fix",
-    "format": "oxfmt . --write && prettier --write **/*.astro"
+    "format": "oxfmt . --write && prettier --write **/*.astro",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
@@ -80,6 +82,9 @@
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel": "^0.17.0",
     "wrangler": "^4.71.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
   },
   "overrides": {
     "axios": "1.13.6"
