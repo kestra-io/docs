@@ -153,18 +153,18 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
 
     h1 {
         color: $white;
-        font-size: 4.5rem;
-        font-weight: 700;
+        font-size: 3.5rem;
+        font-weight: 500;
         line-height: 1.1;
         letter-spacing: -0.02em;
         margin: 0;
 
-        @include media-breakpoint-down(lg) {
-            font-size: 3.5rem;
-        }
-
         @include media-breakpoint-down(md) {
             font-size: 2.5rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            font-size: 2rem;
         }
     }
 

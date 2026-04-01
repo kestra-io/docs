@@ -148,19 +148,12 @@ const PLATFORMS = [
         }
 
         .platforms-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 0.75rem;
             max-width: 760px;
             margin: 0 auto 2rem;
-
-            @include media-breakpoint-up(sm) {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            @include media-breakpoint-up(md) {
-                grid-template-columns: repeat(6, 1fr);
-            }
         }
 
         .platform-card {
@@ -169,6 +162,16 @@ const PLATFORMS = [
             align-items: center;
             gap: 0.6rem;
             padding: 1rem 0.5rem;
+            // 3 per row mobile → 4 at sm → 6 at md
+            flex: 0 0 calc((100% - 2 * 0.75rem) / 3);
+
+            @include media-breakpoint-up(sm) {
+                flex: 0 0 calc((100% - 3 * 0.75rem) / 4);
+            }
+
+            @include media-breakpoint-up(md) {
+                flex: 0 0 calc((100% - 5 * 0.75rem) / 6);
+            }
             border: 1px solid var(--ks-border-secondary);
             border-radius: 0.625rem;
             background: var(--ks-background-primary);
