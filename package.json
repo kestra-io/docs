@@ -27,12 +27,12 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/vue": "^5.1.4",
-    "@cloudflare/workers-types": "^4.20260305.1",
+    "@cloudflare/workers-types": "^4.20260401.1",
     "@gtm-support/vue-gtm": "^3.2.0",
     "@iconify-json/mdi": "^1.2.3",
     "@kestra-io/ui-libs": "^0.0.292",
     "@popperjs/core": "^2.11.8",
-    "@rive-app/canvas": "^2.35.1",
+    "@rive-app/canvas": "^2.36.0",
     "@types/aos": "^3.0.7",
     "@types/bootstrap": "^5.2.10",
     "@types/js-yaml": "^4.0.9",
@@ -56,10 +56,10 @@
     "lodash": "^4.17.23",
     "lottie-web": "^5.13.0",
     "medium-zoom": "^1.1.0",
-    "mermaid": "^11.12.3",
-    "oxfmt": "^0.42.0",
-    "oxlint": "^1.57.0",
-    "posthog-js": "^1.359.0",
+    "mermaid": "^11.14.0",
+    "oxfmt": "^0.43.0",
+    "oxlint": "^1.58.0",
+    "posthog-js": "^1.364.4",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
@@ -79,7 +79,7 @@
     "vue": "^3.5.29",
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel": "^0.17.0",
-    "wrangler": "^4.71.0"
+    "wrangler": "^4.79.0"
   },
   "overrides": {
     "axios": "1.13.6"
