@@ -55,7 +55,7 @@
             <div class="link-section">
                 <h4>Request a plugin</h4>
                 <a href="https://kestra.io/slack" target="_blank" class="link">
-                    Ask on slack <OpenInNew />
+                    Ask on Slack <OpenInNew />
                 </a>
             </div>
 

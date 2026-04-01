@@ -156,6 +156,11 @@
 
         .def-property {
             border-color: var(--ks-border-primary) !important;
+            padding: 1rem !important;
+        }
+
+        .collapse-button {
+            padding: 1rem !important;
         }
 
         @include section-colors("properties", var(--ks-content-property));
@@ -177,5 +182,10 @@
         text-transform: lowercase;
         border: none;
         font-family: $font-family-sans-serif;
+    }
+
+    :deep(.code-block #copied-tooltip) {
+        background: var(--ks-background-secondary) !important;
+        color: var(--ks-content-primary) !important;
     }
 </style>

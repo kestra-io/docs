@@ -7,7 +7,7 @@
         <template #top-bar>
             <h1>Connect anything to everything</h1>
             <p>
-                Extend Kestra with {{ props.totalPluginCount }} plugins and integrations
+                Extend Kestra with {{ props.totalPluginCount }} plugins
             </p>
             <div class="search-input">
                 <Magnify class="search-icon" />
@@ -70,7 +70,7 @@
                 class="alert alert-warning mb-0"
                 role="alert"
             >
-                No results found for the current search
+                No result found for the current search
             </div>
         </div>
 
@@ -82,6 +82,7 @@
                 ({ page, size }) => {
                     currentPage = page
                     itemsPerPage = size
+                    scrollToTop()
                 }
             "
         />
@@ -90,6 +91,7 @@
 
 <script setup lang="ts">
     import { computed, ref, watch, onMounted } from "vue"
+    import { useWindowScroll } from "@vueuse/core"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import type { CardPlugin } from "~/utils/plugins/pruneForClient"
 
@@ -175,6 +177,12 @@
         activeCategory.value = params.get("category") ?? ""
         sortBy.value = params.get("sort") ?? "A-Z"
     })
+
+    const { y } = useWindowScroll({ behavior: "smooth" })
+
+    function scrollToTop() {
+        y.value = 0
+    }
 
     watch([searchQuery, activeCategory, sortBy], ([q, cat, sort]) => {
         currentPage.value = 1
@@ -268,3 +276,4 @@
         padding-inline: 8px;
     }
 </style>
+
