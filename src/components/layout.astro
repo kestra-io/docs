@@ -176,6 +176,29 @@ const hasAnnounce = isHomepage && annonces.length > 0
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
+        <!-- Organization schema: injected on every page -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://kestra.io/#organization",
+            "name": "Kestra Technologies",
+            "url": "https://kestra.io",
+            "logo": "https://kestra.io/logo.svg",
+            "description": "Kestra is the open-source orchestration platform for data, AI, and infrastructure workflows. Event-driven, language-agnostic, and built for enterprise scale.",
+            "foundingDate": "2021",
+            "sameAs": [
+                "https://github.com/kestra-io/kestra",
+                "https://www.linkedin.com/company/kestra",
+                "https://x.com/kestra_io",
+                "https://hub.docker.com/r/kestra/kestra"
+            ],
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "sales",
+                "url": "https://kestra.io/demo"
+            }
+        })} />
+
         <slot name="head" />
 
         <ClientRouter />
