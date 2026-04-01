@@ -1,6 +1,6 @@
 <template>
     <nav v-if="pluginWrapper || pluginsWithoutDeprecated.length > 0" class="plugin-sidebar">
-        <div class="search" data-modal-toggle data-modal-target="#search-modal" title="Search">
+        <div class="search" @click="showSearch = true" role="button" title="Search">
             <div class="input-group">
                 <div class="input-icon">
                     <span class="input-group-text"><Magnify /></span>
@@ -73,6 +73,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import PluginElements from "~/components/plugins/PluginElements.vue"
+    import { showSearch } from "~/composables/useSearchModal"
 
     const props = defineProps<{
         pluginWrapper: Plugin | undefined

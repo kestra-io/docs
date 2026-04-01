@@ -1,172 +1,158 @@
 <template>
-    <div
-        v-on="{
-            'modal:shown': focusSearch,
-            'modal:hidden': onHiddenSearch,
-        }"
-        class="modal modal-xl fade"
-        id="search-modal"
-        tabindex="-1"
-        ref="modal"
-        aria-labelledby="search-modal"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog d-flex w-100 mx-auto">
-            <div class="modal-content">
-                <div class="modal-body row ">
-                    <div class="search">
-                        <label class="visually-hidden" for="search-input">Search</label>
-                        <div class="input-group">
-                            <span class="input-group-text"
-                                ><Magnify v-if="!loading" /><MagnifyExpand v-if="loading"
-                            /></span>
-                            <input
-                                type="text"
-                                class="form-control form-control-lg"
-                                id="search-input"
-                                @input="(event) => search(event.target.value)"
-                                autocomplete="off"
-                                placeholder="Search Kestra.io"
-                            />
-                            <div class="align-items-center d-flex input-group-append">
-                                <button
-                                    class="btn btn-sm btn-primary"
-                                    title="Ask Kestra AI"
-                                    data-modal-toggle
-                                    data-modal-target="#search-ai-modal"
-                                >
-                                    <img
-                                        :src="KSAIImg.src"
-                                        alt="Kestra AI"
-                                        width="30"
-                                        height="30"
-                                    />
-                                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
-                                    <span class="title d-md-none">Ask AI</span>
-                                </button>
-                                <span class="esc">ESC</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden p-0" role="tablist">
-                        <button
-                            class="facet"
-                            :class="{
-                                'facet-active': selectedFacet === undefined,
-                            }"
-                            role="tab"
-                            @click="() => selectFacet(undefined)"
-                        >
-                            <span>All</span>
-                            <span>({{ allSum }})</span>
-                        </button>
-                        <button
-                            class="facet"
-                            v-for="(result, key, index) in searchFacets"
-                            @click="() => selectFacet(key)"
-                            :class="{ 'facet-active': selectedFacet === key }"
-                            role="tab"
-                            :key="index"
-                        >
-                            <span>{{
-                                key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()
-                            }}</span>
-                            <span>({{ result }})</span>
-                        </button>
-                    </div>
-                    <div :class="{ loading: loading }">
-                        <div class="d-flex justify-content-center mt-5 mb-5" v-if="initialLoad === false">
-                            <div class="spinner-border" role="status">
-
-                            </div>
-                        </div>
-
-                        <div class="row" v-else-if="searchResults && searchResults.length === 0">
-                            <div
-                                class="col-12 not-found-content d-flex flex-column justify-content-center "
+    <Modal v-model:show="showSearch" class="search-dialog">
+        <div id="search-modal">
+            <div class="modal-body row">
+                <div class="search">
+                    <label class="visually-hidden" for="search-input">Search</label>
+                    <div class="input-group">
+                        <span class="input-group-text"
+                            ><Magnify v-if="!loading" /><MagnifyExpand v-if="loading"
+                        /></span>
+                        <input
+                            type="text"
+                            class="form-control form-control-lg"
+                            id="search-input"
+                            @input="(event) => search(event.target.value)"
+                            autocomplete="off"
+                            placeholder="Search Kestra.io"
+                        />
+                        <div class="align-items-center d-flex input-group-append">
+                            <button
+                                class="btn btn-sm btn-primary"
+                                title="Ask Kestra AI"
+                                @click="openAiDialog"
                             >
                                 <img
-                                    src="/search/emoticon-dead-icon.svg"
-                                    alt="emoticon icon"
-                                    class="mx-auto"
+                                    :src="KSAIImg.src"
+                                    alt="Kestra AI"
+                                    width="30"
+                                    height="30"
                                 />
-                                <p class="text-center mt-3">
-                                    No results found for the current search
-                                </p>
-                            </div>
+                                <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                                <span class="title d-md-none">Ask AI</span>
+                            </button>
+                            <span class="esc">ESC</span>
                         </div>
-                        <div class="row search-results" v-else>
-                            <div class="search-result col-12 col-md-6">
-                                <div
-                                    v-for="(result, index) in searchResults"
-                                    @mouseover="() => onItemMouseOver(result, index)"
+                    </div>
+                </div>
+                <div class="facets overflow-x-auto overflow-y-hidden p-0" role="tablist">
+                    <button
+                        class="facet"
+                        :class="{
+                            'facet-active': selectedFacet === undefined,
+                        }"
+                        role="tab"
+                        @click="() => selectFacet(undefined)"
+                    >
+                        <span>All</span>
+                        <span>({{ allSum }})</span>
+                    </button>
+                    <button
+                        class="facet"
+                        v-for="(result, key, index) in searchFacets"
+                        @click="() => selectFacet(key)"
+                        :class="{ 'facet-active': selectedFacet === key }"
+                        role="tab"
+                        :key="index"
+                    >
+                        <span>{{
+                            key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()
+                        }}</span>
+                        <span>({{ result }})</span>
+                    </button>
+                </div>
+                <div :class="{ loading: loading }">
+                    <div class="d-flex justify-content-center mt-5 mb-5" v-if="initialLoad === false">
+                        <div class="spinner-border" role="status">
+
+                        </div>
+                    </div>
+
+                    <div class="row" v-else-if="searchResults && searchResults.length === 0">
+                        <div
+                            class="col-12 not-found-content d-flex flex-column justify-content-center "
+                        >
+                            <img
+                                src="/search/emoticon-dead-icon.svg"
+                                alt="emoticon icon"
+                                class="mx-auto"
+                            />
+                            <p class="text-center mt-3">
+                                No results found for the current search
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row search-results" v-else>
+                        <div class="search-result col-12 col-md-6">
+                            <div
+                                v-for="(result, index) in searchResults"
+                                @mouseover="() => onItemMouseOver(result, index)"
+                            >
+                                <a
+                                    :href="'/' + result.url"
+                                    :class="{
+                                        active: index === selectedIndex,
+                                    }"
+                                    @click="close"
                                 >
-                                    <a
-                                        :href="'/' + result.url"
-                                        :class="{
-                                            active: index === selectedIndex,
-                                        }"
-                                        @click="close"
-                                    >
-                                        <div class="result">
-                                            <div class="w-100">
-                                                <span class="type">{{
-                                                    result.type.charAt(0).toUpperCase() +
-                                                    result.type.slice(1).toLowerCase()
-                                                }}</span>
-                                                <h5
-                                                    v-if="result.highlightTitle"
-                                                    v-html="result.highlightTitle"
-                                                ></h5>
-                                                <h5 v-else>
-                                                    {{ result.title }}
-                                                </h5>
-                                                <div class="slug">
-                                                    <span
-                                                        :class="{
-                                                            first: index === 0,
-                                                        }"
-                                                        v-for="(item, index) in breadcrumb(
-                                                            result.url,
-                                                        )"
-                                                        :key="item"
-                                                    >
-                                                        {{ item }}
-                                                    </span>
-                                                </div>
+                                    <div class="result">
+                                        <div class="w-100">
+                                            <span class="type">{{
+                                                result.type.charAt(0).toUpperCase() +
+                                                result.type.slice(1).toLowerCase()
+                                            }}</span>
+                                            <h5
+                                                v-if="result.highlightTitle"
+                                                v-html="result.highlightTitle"
+                                            ></h5>
+                                            <h5 v-else>
+                                                {{ result.title }}
+                                            </h5>
+                                            <div class="slug">
+                                                <span
+                                                    :class="{
+                                                        first: index === 0,
+                                                    }"
+                                                    v-for="(item, index) in breadcrumb(
+                                                        result.url,
+                                                    )"
+                                                    :key="item"
+                                                >
+                                                    {{ item }}
+                                                </span>
                                             </div>
                                         </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="search-detail p-3 col-6 d-none d-md-flex">
-                                <div class="rounded-3 w-100" v-if="selectedItem">
-                                    <div>
-                                        <span class="type">{{
-                                            selectedItem.type.charAt(0).toUpperCase() +
-                                            selectedItem.type.slice(1).toLowerCase()
-                                        }}</span>
-                                        <h5>
-                                            {{ selectedItem.title }}
-                                        </h5>
-                                        <div class="slug">
-                                            <span
-                                                :class="{ first: index === 0 }"
-                                                v-for="(item, index) in breadcrumb(
-                                                    selectedItem.url,
-                                                )"
-                                                :key="item"
-                                            >
-                                                {{ item }}
-                                            </span>
-                                        </div>
-                                        <p
-                                            v-for="(highlight, index) in selectedItem.highlights"
-                                            :key="index"
-                                            v-html="highlight"
-                                            class="extract"
-                                        />
                                     </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="search-detail p-3 col-6 d-none d-md-flex">
+                            <div class="rounded-3 w-100" v-if="selectedItem">
+                                <div>
+                                    <span class="type">{{
+                                        selectedItem.type.charAt(0).toUpperCase() +
+                                        selectedItem.type.slice(1).toLowerCase()
+                                    }}</span>
+                                    <h5>
+                                        {{ selectedItem.title }}
+                                    </h5>
+                                    <div class="slug">
+                                        <span
+                                            :class="{ first: index === 0 }"
+                                            v-for="(item, index) in breadcrumb(
+                                                selectedItem.url,
+                                            )"
+                                            :key="item"
+                                        >
+                                            {{ item }}
+                                        </span>
+                                    </div>
+                                    <p
+                                        v-for="(highlight, index) in selectedItem.highlights"
+                                        :key="index"
+                                        v-html="highlight"
+                                        class="extract"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -174,48 +160,62 @@
                 </div>
             </div>
         </div>
-    </div>
+    </Modal>
 
-    <div
-        v-on="{
-            'modal:shown': focusSearchAi,
-            'modal:hidden': onHiddenAi,
-        }"
-        class="modal modal-xl fade"
-        id="search-ai-modal"
-        tabindex="-2"
-        ref="ai-modal"
-        aria-labelledby="search-ai-modal"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog d-flex w-100 mx-auto">
-            <div class="modal-content">
-                <div class="modal-body row ">
-                    <Suspense>
-                        <AiChatDialog :randomAiQuestions @close="closeAiDialog" @backToSearch="backToSearch" />
-                    </Suspense>
-                </div>
+    <Modal v-model:show="showAiChat" class="search-ai-dialog">
+        <div id="search-ai-modal">
+            <div class="modal-body row">
+                <Suspense>
+                    <AiChatDialog :randomAiQuestions @close="closeAiDialog" @backToSearch="backToSearch" />
+                </Suspense>
             </div>
         </div>
-    </div>
+    </Modal>
 </template>
 
 <script setup>
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import MagnifyExpand from "vue-material-design-icons/MagnifyExpand.vue"
     import AiChatDialog from "~/components/ai/AiChatDialog.vue"
+    import Modal from "~/components/common/Modal.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
+    import { watch, nextTick, onUnmounted } from "vue"
+    import { showSearch, showAiChat } from "~/composables/useSearchModal"
+
+    // Focus the search input when the search modal opens
+    watch(showSearch, (val) => {
+        if (val) {
+            nextTick(() => {
+                const input = document.querySelector("#search-input")
+                if (input) {
+                    input.value = ""
+                    input.focus()
+                }
+            })
+        }
+    })
+
+    // Focus the AI chat input when the AI modal opens
+    watch(showAiChat, (val) => {
+        if (val) {
+            nextTick(() => {
+                document.querySelector("#ai-chat-input")?.focus()
+            })
+        }
+    })
+
+    // Reset modal state on unmount (e.g. Astro page navigation)
+    onUnmounted(() => {
+        showSearch.value = false
+        showAiChat.value = false
+    })
 </script>
 
 <script>
     import axios from "axios"
-    import PostOutline from "vue-material-design-icons/PostOutline.vue"
-    import TextBoxOutline from "vue-material-design-icons/TextBoxOutline.vue"
-    import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue"
-    import PowerPlugOutline from "vue-material-design-icons/PowerPlugOutline.vue"
-    import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import posthog from "posthog-js"
     import { API_URL } from "astro:env/client"
+    import { showSearch, showAiChat } from "~/composables/useSearchModal"
 
     export default {
         props: {
@@ -252,25 +252,6 @@
             },
         },
         methods: {
-            focusSearch() {
-                document.querySelector("#search-input").value = ""
-                document.querySelector("#search-input").focus()
-                if (window.location.pathname.startsWith("/plugins")) {
-                    this.selectedFacet = "PLUGINS"
-                } else {
-                    this.selectedFacet = undefined
-                }
-                this.search()
-            },
-            onHiddenSearch() {
-                this.selectedIndex = null
-                this.selectedItem = null
-            },
-            focusSearchAi() {
-                document.querySelector("#ai-chat-input").value = ""
-                document.querySelector("#ai-chat-input").focus()
-            },
-            onHiddenAi() {},
             search(value) {
                 if (this.cancelToken !== undefined) {
                     this.cancelToken.cancel("cancel all")
@@ -359,9 +340,14 @@
             },
             handleKeyboard(e) {
                 if (e.key === "k" && e.ctrlKey) {
-                    e.preventDefault() // present "Save Page" from getting triggered.
-
-                    document.getElementById("header-search-button").click()
+                    e.preventDefault()
+                    showSearch.value = true
+                    if (window.location.pathname.startsWith("/plugins")) {
+                        this.selectedFacet = "PLUGINS"
+                    } else {
+                        this.selectedFacet = undefined
+                    }
+                    this.search()
                 }
 
                 if (e.key === "ArrowUp") {
@@ -378,14 +364,6 @@
                     this.selectedItem = this.searchResults[this.selectedIndex]
                     this.handleSearchScroll()
                 }
-
-                // if (e.key === "ArrowLeft" && this.searchFacets) {
-                //     this.handleFacetsKeys(false);
-                // }
-                //
-                // if (e.key === "ArrowRight" && this.searchFacets) {
-                //     this.handleFacetsKeys(true);
-                // }
 
                 if (
                     e.key === "Enter" &&
@@ -432,42 +410,19 @@
 
                 this.search(this.searchValue)
             },
-            iconByType(type) {
-                switch (type) {
-                    case "JOBS":
-                        return BullhornOutline
-                    case "BLOGS":
-                        return PostOutline
-                    case "PLUGINS":
-                        return PowerPlugOutline
-                    case "BLUEPRINTS":
-                        return ContentCopy
-                    default:
-                        return TextBoxOutline
-                }
-            },
             close() {
-                if (this.$refs.modal) {
-                    const modal = window.$modal.Modal.getInstance(this.$refs.modal)
-                    if (modal) {
-                        modal.hide()
-                    }
-                }
+                showSearch.value = false
             },
-            openDialog() {
-                this.close()
-                this.showAiDialog = true
+            openAiDialog() {
+                showSearch.value = false
+                showAiChat.value = true
             },
             closeAiDialog() {
-                this.showAiDialog = false
+                showAiChat.value = false
             },
             backToSearch() {
-                this.showAiDialog = false
-
-                if (this.$refs.modal) {
-                    const searchModal = window.$modal.Modal.getOrCreateInstance(this.$refs.modal)
-                    searchModal.show()
-                }
+                showAiChat.value = false
+                showSearch.value = true
             },
         },
     }
@@ -475,6 +430,18 @@
 
 <style lang="scss">
 
+
+    dialog.search-dialog,
+    dialog.search-ai-dialog {
+        width: 90vw;
+        max-width: 900px;
+
+        .modal-content {
+            width: 100%;
+            max-width: none;
+            overflow: visible;
+        }
+    }
 
     #search-modal {
         .not-found-content {

@@ -21,8 +21,6 @@ interface Blueprint {
 interface Window {
     dataLayer: Array<any>
     astroClientConfig: { slug: string }
-    $modal: { Modal: any }
-    $collapse: { Collapse: any }
     __hsUserToken: string
     _hsq: Array<any>
 }

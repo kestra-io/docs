@@ -2,13 +2,11 @@
     <aside class="bd-sidebar scroller">
         <div>
             <button
-                ref="menuToggleBtn"
                 class="btn d-lg-none mt-2"
                 type="button"
-                data-collapse-toggle
-                data-collapse-target="#docs-menu"
-                aria-expanded="false"
-                aria-controls="tocContents"
+                @click="docsMenuOpen = !docsMenuOpen"
+                :aria-expanded="docsMenuOpen"
+                aria-controls="docs-menu"
             >
                 <Menu /> Documentation Menu
             </button>
@@ -16,8 +14,7 @@
                 <button
                     class="ai-button"
                     title="Ask Kestra AI"
-                    data-modal-toggle
-                    data-modal-target="#search-ai-modal"
+                    @click="showAiChat = true"
                 >
                     <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
                     Ask Kestra AI
@@ -25,8 +22,8 @@
             </div>
             <div
                 class="search"
-                data-modal-toggle
-                data-modal-target="#search-modal"
+                @click="showSearch = true"
+                role="button"
                 title="Search"
             >
                 <div class="input-group">
@@ -42,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="collapse bd-menu-collapse" id="docs-menu">
+            <div :class="['collapse', 'bd-menu-collapse', { show: docsMenuOpen }]" id="docs-menu">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <ul class="list-unstyled mb-0">
                         <RecursiveNavSidebar
@@ -72,6 +69,7 @@
     } from "~/components/docs/RecursiveNavSidebar.vue"
     import KSAIImg from "./assets/ks-ai.svg"
     import { activeSlug } from "~/utils/store"
+    import { showSearch, showAiChat } from "~/composables/useSearchModal"
 
     const props = defineProps({
         type: {
@@ -96,15 +94,11 @@
         "/docs/terraform/resources",
     ]
 
-    const menuToggleBtn = ref<HTMLButtonElement | null>(null)
+    const docsMenuOpen = ref(false)
 
     const closeSidebar = () => {
-        if (
-            window.innerWidth < 992 &&
-            menuToggleBtn.value &&
-            menuToggleBtn.value.getAttribute("aria-expanded") === "true"
-        ) {
-            menuToggleBtn.value.click()
+        if (window.innerWidth < 992 && docsMenuOpen.value) {
+            docsMenuOpen.value = false
         }
     }
 

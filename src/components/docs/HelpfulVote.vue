@@ -18,14 +18,7 @@
             <p>Thank you for your feedback! 👍</p>
         </div>
 
-        <div
-            ref="modalRef"
-            class="modal fade"
-            id="feedbackModal"
-            tabindex="-1"
-            aria-labelledby="feedbackModalLabel"
-            aria-hidden="true"
-        >
+        <Modal v-model:show="showModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -74,34 +67,31 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </Modal>
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted } from "vue"
+    import { ref, watch } from "vue"
     import posthog from "posthog-js"
     import Close from "vue-material-design-icons/Close.vue"
     import ThumbUpOutline from "vue-material-design-icons/ThumbUpOutline.vue"
     import ThumbDownOutline from "vue-material-design-icons/ThumbDownOutline.vue"
+    import Modal from "~/components/common/Modal.vue"
 
     const comment = ref("")
-    const modalRef = ref(null)
     const feedbackText = ref("")
     const isSubmitted = ref(false)
     const showThankYou = ref(false)
     const currentRating = ref(null)
+    const showModal = ref(false)
 
-    let bootstrapModal = null
-
-    onMounted(() => {
-        if (modalRef.value && window.$modal?.Modal) {
-            bootstrapModal = new window.$modal.Modal(modalRef.value)
-            modalRef.value.addEventListener("modal:hidden", () => {
-                comment.value = ""
-                currentRating.value = null
-                isSubmitted.value = false
-            })
+    // Reset form state when the modal is dismissed
+    watch(showModal, (val) => {
+        if (!val) {
+            comment.value = ""
+            currentRating.value = null
+            isSubmitted.value = false
         }
     })
 
@@ -114,11 +104,11 @@
         isSubmitted.value = false
         showThankYou.value = false
         posthog.capture("helpful", { positive: currentRating.value })
-        bootstrapModal?.show()
+        showModal.value = true
     }
 
     const closeModal = () => {
-        bootstrapModal?.hide()
+        showModal.value = false
         showThankYou.value = true
         setTimeout(() => {
             showThankYou.value = false
@@ -168,7 +158,7 @@
         }
     }
 
-    .modal-content {
+    :deep(.modal-content) {
         background-color: var(--ks-background-box);
         border: 1px solid var(--ks-dialog-border);
         color: var(--ks-content-primary);
@@ -211,7 +201,7 @@
         font-weight: 600;
     }
 
-    .form-control {
+    :deep(.form-control) {
         background-color: var(--ks-background-body);
         border: 1px solid var(--ks-border-primary);
         color: var(--ks-content-primary);

@@ -10,8 +10,6 @@
                     class="btn toc-toggle d-lg-none"
                     :class="{ collapsed: !tableOfContentsExpanded }"
                     type="button"
-                    data-collapse-toggle
-                    data-collapse-target="#tocContents"
                     :aria-expanded="tableOfContentsExpanded"
                     aria-controls="tocContents"
                     @click="tableOfContentsExpanded = !tableOfContentsExpanded"
@@ -31,7 +29,7 @@
                     :metadata="props.metadata"
                 />
 
-                <div class="collapse bd-toc-collapse" id="tocContents">
+                <div :class="['collapse', 'bd-toc-collapse', { show: tableOfContentsExpanded }]">
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
@@ -211,7 +209,6 @@
 
     const closeToc = () => {
         tableOfContentsExpanded.value = false
-        document.getElementById("tocContents")?.classList.remove("show")
     }
 
     const handleScroll = throttle(() => {

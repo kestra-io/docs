@@ -36,8 +36,7 @@
                         <button
                             class="ai-button"
                             title="Ask AI"
-                            data-modal-toggle
-                            data-modal-target="#search-ai-modal"
+                            @click="showAiChat = true"
                         >
                             <img :src="KSAIImg.src" alt="Kestra AI" width="28" height="28" />
                             Ask AI
@@ -73,6 +72,7 @@
     import { useMediaQuery } from "@vueuse/core"
     import { formatCategoryName } from "~/utils/pluginUtils"
     import KSAIImg from "../docs/assets/ks-ai.svg"
+    import { showAiChat } from "~/composables/useSearchModal"
 
     const isMobile = useMediaQuery("(max-width: 991px)")
     const isSmallScreen = useMediaQuery("(max-width: 575px)")

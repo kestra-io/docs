@@ -57,11 +57,9 @@
 
             <div class="nav-items d-flex align-items-center">
                 <a
-                    @click="globalClick(true)"
+                    @click="openSearch"
                     href="#"
                     class="btn btn-sm icon-button p-0 d-xl-none"
-                    data-modal-toggle
-                    data-modal-target="#search-modal"
                     title="Search"
                 >
                     <Magnify />
@@ -80,7 +78,7 @@
                 </button>
             </div>
 
-            <div class="collapse navbar-collapse" id="main-header">
+            <div :class="['collapse', 'navbar-collapse', { show: isOpen }]" id="main-header">
                 <ul class="navbar-nav me-auto mb-2 mb-xl-0 ms-xl-3">
                     <li
                         class="nav-item dropdown"
@@ -338,11 +336,9 @@
                             <span> Book a Demo</span>
                         </a>
                         <button
-                            @click="globalClick(true)"
+                            @click="showSearch = true"
                             id="header-search-button"
                             class="btn btn-sm d-none d-xl-inline-block icon-button"
-                            data-modal-toggle
-                            data-modal-target="#search-modal"
                             title="Search"
                         >
                             <Magnify />
@@ -574,6 +570,7 @@
     import LogoBlack from "~/assets/logo-black.svg?raw"
     import LogoWhite from "~/assets/logo-white.svg?raw"
     import SlackIcon from "~/assets/socials/slack.svg?raw"
+    import { showSearch } from "~/composables/useSearchModal"
 
     const props = defineProps<{
         scrolled?: boolean
@@ -596,31 +593,12 @@
     const isScrolled = ref(false)
     const closeMenuTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
-    interface CollapseInstance {
-        hide: () => void
-        show: () => void
-        toggle: () => void
-    }
-
-    let collapse: CollapseInstance | undefined = undefined
-
-    function getCollapseInstance(): CollapseInstance | undefined {
-        if (!collapse) {
-            const CustomCollapse = window.$collapse?.Collapse
-            if (CustomCollapse) {
-                const el = document.getElementById("main-header")
-                if (el) {
-                    collapse = CustomCollapse.getOrCreateInstance(el, { toggle: false })
-                }
-            }
-        }
-        return collapse
+    function openSearch() {
+        globalClick(true) // close mobile nav if open
+        showSearch.value = true
     }
 
     onMounted(() => {
-        nextTick(() => {
-            getCollapseInstance()
-        })
 
         isMobile.value = window.innerWidth <= 1199
         window.addEventListener("resize", () => {
@@ -718,15 +696,11 @@
 
     function globalClick(close?: boolean) {
         if (window.innerWidth < 1200) {
-            const collapseInstance = getCollapseInstance()
             if (close === true) {
-                collapseInstance?.hide()
                 isOpen.value = false
             } else if (close === false) {
-                collapseInstance?.show()
                 isOpen.value = true
             } else {
-                collapseInstance?.toggle()
                 isOpen.value = !isOpen.value
             }
             return

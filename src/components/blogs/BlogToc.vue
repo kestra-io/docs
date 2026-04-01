@@ -4,8 +4,6 @@
             class="btn toggle d-lg-none"
             :class="{ collapsed: !tableOfContentsExpanded }"
             type="button"
-            data-collapse-toggle
-            data-collapse-target="#tocContents"
             :aria-expanded="tableOfContentsExpanded"
             aria-controls="tocContents"
             @click="tableOfContentsExpanded = !tableOfContentsExpanded"
@@ -17,7 +15,7 @@
             </span>
         </button>
 
-        <div class="collapse bd-toc-collapse" id="tocContents">
+        <div :class="['collapse', 'bd-toc-collapse', { show: tableOfContentsExpanded }]">
             <h6 class="title d-none d-lg-block">Table of contents</h6>
             <nav id="nav-toc">
                 <ul class="list">

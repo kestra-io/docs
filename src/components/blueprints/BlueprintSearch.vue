@@ -19,8 +19,7 @@
                 <button
                     class="btn btn-sm btn-primary"
                     title="Ask Kestra AI"
-                    data-modal-toggle
-                    data-modal-target="#search-ai-modal"
+                    @click="showAiChat = true"
                 >
                     <img
                         :src="KSAIImg.src"
@@ -41,6 +40,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
+    import { showAiChat } from "~/composables/useSearchModal"
 
     const props = defineProps<{
         q?: string
