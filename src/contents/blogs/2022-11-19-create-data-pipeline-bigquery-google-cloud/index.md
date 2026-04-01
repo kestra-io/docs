@@ -5,6 +5,7 @@ date: 2023-06-28T10:00:00
 category: Solutions
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.png
