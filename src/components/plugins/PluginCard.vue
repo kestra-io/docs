@@ -208,14 +208,10 @@
         justify-content: space-between;
         align-items: center;
         .enterprise-badge {
-            border: 1px solid var(--ks-border-alert-warning);
-            gap: 4px;
-            min-height: 20px;
             border-radius: 40px;
-            border-width: 1px;
             font-size: $font-size-xs;
-            color: var(--ks-content-alert-warning);
-            cursor: default;
+            background: var(--ks-background-tag-EE);
+            color: var(--ks-content-tag-EE);
             padding: 0.15rem 0.5rem;
             font-weight: 600;
         }
