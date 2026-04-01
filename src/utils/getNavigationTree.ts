@@ -68,8 +68,7 @@ export function getNavigationTree(
                               path: `/docs/${page.id}`,
                               children: recursivelyBuildChildren(page.id, docsPages),
                               hideSubMenus: Boolean(page.data.hideSubMenus),
-                              hideSidebar:
-                                  title === "Use Cases" || Boolean(page.data.hideSidebar),
+                              hideSidebar: Boolean(page.data.hideSidebar),
                           }
                         : undefined
                 })
