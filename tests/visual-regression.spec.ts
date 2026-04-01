@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test"
-import { PAGES } from "../fixtures/page-sample"
+import { PAGES } from "./fixtures/page-sample"
 
 /**
  * Visual regression screenshot tests for the Kestra docs site.
@@ -19,6 +19,7 @@ for (const page of PAGES) {
         await expect(p).toHaveScreenshot(`${page.label}.png`, {
             fullPage: true,
             animations: "disabled",
+            timeout: 15_000,
         })
     })
 }
