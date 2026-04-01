@@ -74,14 +74,16 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 8rem 0 5rem;
+        // Pull the dark bg up to cover the white body strip under the fixed header
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
+        padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 0 5rem;
 
         @include media-breakpoint-down(lg) {
-            padding: 7rem 0 4rem;
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 4rem) 0 4rem;
         }
 
         @include media-breakpoint-down(md) {
-            padding: 6rem 1rem 3rem;
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 3rem;
         }
     }
 
