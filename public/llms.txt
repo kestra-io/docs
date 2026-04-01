@@ -15,6 +15,21 @@ First-time setup, local installation, your first flow, and the fastest path to u
 - [Why Kestra](https://kestra.io/docs/why-kestra): Product positioning and core platform value
 - [Open Source vs. Enterprise Edition](https://kestra.io/docs/oss-vs-paid): Compare OSS, Enterprise, and hosted capabilities
 
+## User Interface
+
+Navigate the Kestra web UI available by default on port 8080, covering all main sections for managing and monitoring workflows.
+
+- [User Interface](https://kestra.io/docs/ui): Overview of the Kestra UI and its main navigation sections including Flows, Executions, Logs, and Administration pages
+- [Dashboard](https://kestra.io/docs/ui/dashboard): Monitor workflows with visualizations, execution metrics, and custom charts
+- [Flows](https://kestra.io/docs/ui/flows): Browse, edit, and execute workflows using the code editor, topology view, and version history tools
+- [Executions](https://kestra.io/docs/ui/executions): Inspect and manage flow runs, track status, view logs, and analyze outputs via Gantt and Topology views
+- [Logs](https://kestra.io/docs/ui/logs): Search and filter real-time task logs by level, namespace, or execution ID
+- [Namespaces](https://kestra.io/docs/ui/namespaces): Manage namespace resources including flows, files, KV store entries, and dependencies
+- [Blueprints](https://kestra.io/docs/ui/blueprints): Discover and use pre-built workflow templates from within the UI
+- [Settings](https://kestra.io/docs/ui/settings): Customize themes, editor preferences, time zones, and other UI defaults
+- [Bookmarks](https://kestra.io/docs/ui/bookmarks): Star frequently used pages for quick navigation
+- [Playground](https://kestra.io/docs/ui/playground): Build and test tasks iteratively without creating full executions
+
 ## Build Workflows
 
 Core authoring concepts for flows, tasks, triggers, variables, expressions, namespace assets, and execution behavior.
