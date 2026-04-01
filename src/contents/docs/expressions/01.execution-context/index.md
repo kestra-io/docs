@@ -30,6 +30,12 @@ To inspect the full runtime context, use `{{ printContext() }}` in the Debug Exp
 ![printContext](../printContext.png)
 :::
 
+The Debug Expression console is available in the Kestra UI under **Executions → Logs → Debug Expression**. Enter any expression and evaluate it against the live execution context without modifying the flow.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/SPGmXSJN3VE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Default execution context variables
 
 | Parameter | Description |
@@ -155,7 +161,20 @@ tasks:
 
 `credential()` returns the short-lived token only. The credential itself is managed in the Kestra UI.
 
-Use namespace variables in Enterprise Edition with `namespace.*`. If a namespace variable itself contains Pebble, evaluate it with `render()`:
+Use namespace variables in Enterprise Edition with `namespace.*`. To set them up:
+
+1. Open the Kestra UI and navigate to **Namespaces**.
+2. Select the namespace where the flow runs.
+3. Open the **Variables** tab.
+4. Add a key-value pair such as `github.token` with the desired value.
+
+Reference namespace variables in expressions using dot notation:
+
+```yaml
+format: "{{ namespace.github.token }}"
+```
+
+If a namespace variable itself contains Pebble, evaluate it with `render()`:
 
 ```yaml
 format: "{{ render(namespace.github.token) }}"
