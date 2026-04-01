@@ -45,26 +45,17 @@ const ITEMS = [
     title='Built Different. <span class="highlight">On Purpose.</span>'
     subtitle="Kestra was designed from scratch for teams that need orchestration without the overhead."
     items={ITEMS}
-/>
-
-<div class="diff-cta" data-usal="fade-up">
-    <p>Want to see Kestra with your actual use case?</p>
-    <a href="/demo" class="btn btn-primary btn-lg">Book a Demo</a>
-</div>
+>
+    <div slot="cta" data-usal="fade-up">
+        <p class="cta-text">Want to see Kestra with your actual use case?</p>
+        <a href="/demo" class="btn btn-primary btn-lg">Book a Demo</a>
+    </div>
+</CardGrid>
 
 <style lang="scss">
-    .diff-cta {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        padding: 2.5rem 1rem 4rem;
-        text-align: center;
-
-        p {
-            color: var(--ks-content-secondary);
-            font-size: $font-size-md;
-            margin: 0;
-        }
+    .cta-text {
+        color: var(--ks-content-secondary);
+        font-size: $font-size-md;
+        margin: 0 0 1rem;
     }
 </style>
