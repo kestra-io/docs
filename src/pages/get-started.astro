@@ -21,9 +21,17 @@ const description =
 ---
 
 <style>
-    /* Cover the main { padding-top: 67px } gap with the hero dark color */
+    /*
+     * Paint only the header-height gap at the top of main dark so no white
+     * strip shows between the fixed header and the dark hero background.
+     * background-color stays transparent so light mode body shows elsewhere.
+     */
     :global(main) {
-        background-color: #0e0e10;
+        background-image: linear-gradient(
+            to bottom,
+            #0e0e10 calc(var(--top-bar-height, 67px) + var(--announce-height, 0px)),
+            transparent calc(var(--top-bar-height, 67px) + var(--announce-height, 0px))
+        );
     }
 </style>
 
