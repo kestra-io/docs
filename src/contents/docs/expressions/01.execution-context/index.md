@@ -27,7 +27,6 @@ The execution context usually includes:
 
 :::alert{type="info"}
 To inspect the full runtime context, use `{{ printContext() }}` in the Debug Expression console.
-![printContext](../printContext.png)
 :::
 
 The Debug Expression console is available in the Kestra UI under **Executions → Logs → Debug Expression**. Enter any expression and evaluate it against the live execution context without modifying the flow.
