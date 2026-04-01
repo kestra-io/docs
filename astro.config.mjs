@@ -33,11 +33,6 @@ export default defineConfig({
                 ? "passthrough"
                 : "cloudflare",
     }),
-    session: {
-        driver: {
-            entrypoint: "unstorage/drivers/null",
-        },
-    },
     trailingSlash: "ignore",
     integrations: [
         vue({
