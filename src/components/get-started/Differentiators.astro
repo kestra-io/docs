@@ -1,7 +1,7 @@
 ---
-import { Icon } from "astro-icon/components"
+import CardGrid from "~/components/card/CardGrid.astro"
 
-const FEATURES = [
+const ITEMS = [
     {
         icon: "mdi:file-document-outline",
         title: "Declarative YAML",
@@ -41,139 +41,30 @@ const FEATURES = [
 ]
 ---
 
-<section class="differentiators">
-    <div class="container">
-        <p class="overline" data-usal="fade-r">Why Kestra</p>
-        <h2 data-usal="fade-l">
-            Built Different. <span class="highlight">On Purpose.</span>
-        </h2>
-        <p class="lead" data-usal="fade-r">
-            Not another Airflow clone. Kestra was designed from scratch for teams that need
-            orchestration without the overhead.
-        </p>
+<CardGrid
+    title='Built Different. <span class="highlight">On Purpose.</span>'
+    subtitle="Kestra was designed from scratch for teams that need orchestration without the overhead."
+    items={ITEMS}
+/>
 
-        <div class="features-grid" data-usal="fade-up">
-            {
-                FEATURES.map((feature) => (
-                    <div class="feature-item" data-usal="fade-up">
-                        <div class="icon-wrapper">
-                            <Icon name={feature.icon} />
-                        </div>
-                        <h5>{feature.title}</h5>
-                        <p>{feature.description}</p>
-                    </div>
-                ))
-            }
-        </div>
-
-        <div class="section-cta" data-usal="fade-up">
-            <p>Want to see Kestra with your actual use case?</p>
-            <a href="/demo" class="btn btn-primary btn-lg">Book a Demo</a>
-        </div>
-    </div>
-</section>
+<div class="diff-cta" data-usal="fade-up">
+    <p>Want to see Kestra with your actual use case?</p>
+    <a href="/demo" class="btn btn-primary btn-lg">Book a Demo</a>
+</div>
 
 <style lang="scss">
-    .differentiators {
-        padding: $rem-4 0;
-        background-color: var(--ks-background-primary);
-        border-top: $block-border;
-        border-bottom: $block-border;
+    .diff-cta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem 4rem;
+        text-align: center;
 
-        @include media-breakpoint-down(lg) {
-            padding: $spacer * 2 0.75rem;
-        }
-
-        .container {
-            text-align: center;
-        }
-
-        .overline {
-            font-size: $font-size-sm;
-            text-transform: uppercase;
+        p {
             color: var(--ks-content-secondary);
-            font-family: var(--bs-font-monospace);
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.75rem;
-        }
-
-        h2 {
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-
-        .lead {
-            color: var(--ks-content-secondary);
-            font-size: $font-size-lg;
-            max-width: 600px;
-            margin: 0 auto 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.5rem 1rem;
-
-            @include media-breakpoint-up(md) {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            @include media-breakpoint-up(lg) {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .section-cta {
-            margin-top: 3rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-
-            p {
-                color: var(--ks-content-secondary);
-                font-size: $font-size-md;
-                margin: 0;
-            }
-        }
-
-        .feature-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 1rem 0.75rem;
-
-            .icon-wrapper {
-                width: 44px;
-                height: 44px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 10px;
-                background: var(--ks-background-secondary);
-                border: $block-border;
-                margin-bottom: 0.75rem;
-
-                :global(svg) {
-                    font-size: 1.25rem;
-                    color: var(--ks-content-link);
-                }
-            }
-
-            h5 {
-                font-weight: 600;
-                margin-bottom: 0.35rem;
-                font-size: $font-size-md;
-            }
-
-            p {
-                color: var(--ks-content-secondary);
-                font-size: $font-size-sm;
-                margin-bottom: 0;
-                max-width: 280px;
-            }
+            font-size: $font-size-md;
+            margin: 0;
         }
     }
 </style>
