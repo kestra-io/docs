@@ -97,3 +97,7 @@ updates:
             "prettier",
             "prettier-*",
           ]
+    ignore:
+      # Temporarily ignore all axios updates due to recent supply chain vulnerability, see https://github.com/axios/axios/issues/10604
+      - dependency-name: "axios"
+        versions: ["*"]
