@@ -1,8 +1,8 @@
 <template>
     <div
         v-on="{
-            'shown.bs.modal': focusSearch,
-            'hidden.bs.modal': onHiddenSearch,
+            'modal:shown': focusSearch,
+            'modal:hidden': onHiddenSearch,
         }"
         class="modal modal-xl fade"
         id="search-modal"
@@ -32,8 +32,8 @@
                                 <button
                                     class="btn btn-sm btn-primary"
                                     title="Ask Kestra AI"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#search-ai-modal"
+                                    data-modal-toggle
+                                    data-modal-target="#search-ai-modal"
                                 >
                                     <img
                                         :src="KSAIImg.src"
@@ -178,8 +178,8 @@
 
     <div
         v-on="{
-            'shown.bs.modal': focusSearchAi,
-            'hidden.bs.modal': onHiddenAi,
+            'modal:shown': focusSearchAi,
+            'modal:hidden': onHiddenAi,
         }"
         class="modal modal-xl fade"
         id="search-ai-modal"
@@ -448,7 +448,7 @@
             },
             close() {
                 if (this.$refs.modal) {
-                    const modal = window.$bootstrap.Modal.getInstance(this.$refs.modal)
+                    const modal = window.$modal.Modal.getInstance(this.$refs.modal)
                     if (modal) {
                         modal.hide()
                     }
@@ -465,7 +465,7 @@
                 this.showAiDialog = false
 
                 if (this.$refs.modal) {
-                    const searchModal = new window.$bootstrap.Modal(this.$refs.modal)
+                    const searchModal = window.$modal.Modal.getOrCreateInstance(this.$refs.modal)
                     searchModal.show()
                 }
             },

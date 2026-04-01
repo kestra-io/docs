@@ -60,8 +60,8 @@
                     @click="globalClick(true)"
                     href="#"
                     class="btn btn-sm icon-button p-0 d-xl-none"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-modal"
+                    data-modal-toggle
+                    data-modal-target="#search-modal"
                     title="Search"
                 >
                     <Magnify />
@@ -341,8 +341,8 @@
                             @click="globalClick(true)"
                             id="header-search-button"
                             class="btn btn-sm d-none d-xl-inline-block icon-button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#search-modal"
+                            data-modal-toggle
+                            data-modal-target="#search-modal"
                             title="Search"
                         >
                             <Magnify />
@@ -596,21 +596,21 @@
     const isScrolled = ref(false)
     const closeMenuTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
-    interface Collapse {
+    interface CollapseInstance {
         hide: () => void
         show: () => void
         toggle: () => void
     }
 
-    let collapse: Collapse | undefined = undefined
+    let collapse: CollapseInstance | undefined = undefined
 
-    function getCollapseInstance(): Collapse | undefined {
+    function getCollapseInstance(): CollapseInstance | undefined {
         if (!collapse) {
-            const BootstrapCollapse = window.$bootstrap?.Collapse
-            if (BootstrapCollapse) {
+            const CustomCollapse = window.$collapse?.Collapse
+            if (CustomCollapse) {
                 const el = document.getElementById("main-header")
                 if (el) {
-                    collapse = BootstrapCollapse.getOrCreateInstance(el, { toggle: false })
+                    collapse = CustomCollapse.getOrCreateInstance(el, { toggle: false })
                 }
             }
         }

@@ -15,8 +15,8 @@
                 <button
                     class="btn"
                     title="Ask Kestra AI"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-ai-modal"
+                    data-modal-toggle
+                    data-modal-target="#search-ai-modal"
                 >
                     <img :src="AIGenImg.src" alt="Kestra AI" width="25" height="25" />
                     <span class="title d-none d-md-inline">Ask Kestra AI</span>

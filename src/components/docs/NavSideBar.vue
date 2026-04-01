@@ -5,8 +5,8 @@
                 ref="menuToggleBtn"
                 class="btn d-lg-none mt-2"
                 type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#docs-menu"
+                data-collapse-toggle
+                data-collapse-target="#docs-menu"
                 aria-expanded="false"
                 aria-controls="tocContents"
             >
@@ -16,8 +16,8 @@
                 <button
                     class="ai-button"
                     title="Ask Kestra AI"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-ai-modal"
+                    data-modal-toggle
+                    data-modal-target="#search-ai-modal"
                 >
                     <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
                     Ask Kestra AI
@@ -25,8 +25,8 @@
             </div>
             <div
                 class="search"
-                data-bs-toggle="modal"
-                data-bs-target="#search-modal"
+                data-modal-toggle
+                data-modal-target="#search-modal"
                 title="Search"
             >
                 <div class="input-group">

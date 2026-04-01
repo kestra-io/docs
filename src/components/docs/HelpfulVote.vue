@@ -95,9 +95,9 @@
     let bootstrapModal = null
 
     onMounted(() => {
-        if (modalRef.value && window.$bootstrap?.Modal) {
-            bootstrapModal = new window.$bootstrap.Modal(modalRef.value)
-            modalRef.value.addEventListener("hidden.bs.modal", () => {
+        if (modalRef.value && window.$modal?.Modal) {
+            bootstrapModal = new window.$modal.Modal(modalRef.value)
+            modalRef.value.addEventListener("modal:hidden", () => {
                 comment.value = ""
                 currentRating.value = null
                 isSubmitted.value = false

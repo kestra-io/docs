@@ -36,8 +36,8 @@
                         <button
                             class="ai-button"
                             title="Ask AI"
-                            data-bs-toggle="modal"
-                            data-bs-target="#search-ai-modal"
+                            data-modal-toggle
+                            data-modal-target="#search-ai-modal"
                         >
                             <img :src="KSAIImg.src" alt="Kestra AI" width="28" height="28" />
                             Ask AI

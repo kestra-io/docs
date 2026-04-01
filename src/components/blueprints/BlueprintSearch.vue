@@ -19,8 +19,8 @@
                 <button
                     class="btn btn-sm btn-primary"
                     title="Ask Kestra AI"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-ai-modal"
+                    data-modal-toggle
+                    data-modal-target="#search-ai-modal"
                 >
                     <img
                         :src="KSAIImg.src"

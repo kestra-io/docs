@@ -10,10 +10,8 @@
                 <div class="card task">
                     <div class="body">
                         <div
-                            class="icon-wrapper kestra-icon"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Kestra"
+                            class="icon-wrapper kestra-icon css-tooltip"
+                            aria-label="Kestra"
                         >
                             <img
                                 src="/landing/usecases/stories/monograme-kestra.svg"
@@ -114,6 +112,31 @@
             width: fit-content;
             
         }
+        .css-tooltip {
+            position: relative;
+
+            &::after {
+                content: attr(aria-label);
+                position: absolute;
+                bottom: calc(100% + 6px);
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.75);
+                color: #fff;
+                font-size: 0.75rem;
+                white-space: nowrap;
+                padding: 2px 6px;
+                border-radius: 4px;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.15s ease;
+            }
+
+            &:hover::after {
+                opacity: 1;
+            }
+        }
+
         .card {
             border: none;
             background-color: transparent;

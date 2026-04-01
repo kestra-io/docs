@@ -10,8 +10,8 @@
                     class="btn toc-toggle d-lg-none"
                     :class="{ collapsed: !tableOfContentsExpanded }"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#tocContents"
+                    data-collapse-toggle
+                    data-collapse-target="#tocContents"
                     :aria-expanded="tableOfContentsExpanded"
                     aria-controls="tocContents"
                     @click="tableOfContentsExpanded = !tableOfContentsExpanded"
