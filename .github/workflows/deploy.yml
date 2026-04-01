@@ -101,6 +101,7 @@ jobs:
   lighthouse:
     name: Lighthouse Benchmark
     if: ${{ startsWith(github.repository, 'kestra-io/') }}
+    needs: truncate-url-slug
     runs-on: ubuntu-latest
 
     steps:
@@ -159,6 +160,7 @@ jobs:
         run: node scripts/lighthouse-benchmark.mjs
         env:
           BASE_URL: http://localhost:8787
+          BASE_URL_OUTPUT: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
           OUTPUT_FILE: lighthouse-results.json
           BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
           MARKDOWN_FILE: lighthouse-report.md
