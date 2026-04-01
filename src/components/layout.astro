@@ -15,6 +15,7 @@ import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
 import annoncesData from "~/contents/annonces/annonces.yml?raw"
 import YAML from "yaml"
+import { DISABLE_USAL } from "astro:env/server"
 
 const parsedAnnonces = YAML.parse(annoncesData ?? "[]")
 
@@ -79,7 +80,7 @@ const isHomepage = Astro.url.pathname === "/"
 const hasAnnounce = isHomepage && annonces.length > 0
 ---
 
-<html lang="en">
+<html lang="en" class:list={{ "no-animation": DISABLE_USAL }}>
     <head>
         <script is:inline>
             ;(function () {

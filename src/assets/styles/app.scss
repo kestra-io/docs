@@ -805,6 +805,12 @@ small.agree {
     }
 }
 
+html.no-animation [data-usal] {
+    opacity: 1 !important;
+    transform: translate(0) scale(1) !important;
+    pointer-events: auto !important;
+}
+
 .highlight {
     color: var(--ks-content-color-highlight);
 }

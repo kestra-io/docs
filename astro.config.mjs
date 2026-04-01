@@ -183,7 +183,7 @@ export default defineConfig({
                 optional: true,
             }),
             DISABLE_USAL: envField.boolean({
-                context: "client",
+                context: "server",
                 access: "public",
                 optional: true,
                 default: false,

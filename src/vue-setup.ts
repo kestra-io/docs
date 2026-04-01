@@ -2,7 +2,7 @@ import type { App } from "vue"
 import { defineComponent, h } from "vue"
 import { createGtm } from "@gtm-support/vue-gtm"
 import { USALPlugin } from "@usal/vue"
-import { GTM_ID, DISABLE_USAL } from "astro:env/client"
+import { GTM_ID } from "astro:env/client"
 
 export default (app: App) => {
     app.use(
@@ -27,15 +27,13 @@ export default (app: App) => {
         }),
     )
 
-    if (!DISABLE_USAL) {
-        app.use(USALPlugin, {
-            defaults: {
-                duration: 200,
-                threshold: 0.1,
-            },
-            once: true,
-        })
-    }
+    app.use(USALPlugin, {
+        defaults: {
+            duration: 200,
+            threshold: 0.1,
+        },
+        once: true,
+    })
 
     app.component(
         "NuxtImg",
