@@ -171,8 +171,11 @@ kestra:
   retries:
     attempts: 5
     delay: 1s
+    max-delay: ~
     multiplier: 2.0
 ```
+
+`max-delay` caps the maximum backoff interval. It is undefined by default, which means the delay grows without bound according to the multiplier.
 
 :::alert{type="warning"}
 These retries do not apply to tasks. For task-level retries across many plugins, use plugin defaults.

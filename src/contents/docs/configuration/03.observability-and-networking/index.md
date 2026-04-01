@@ -57,7 +57,7 @@ logger:
     org.apache.kafka: DEBUG
 ```
 
-You can also suppress execution-scoped logs:
+You can also suppress execution-scoped logs globally:
 
 ```yaml
 logger:
@@ -65,6 +65,18 @@ logger:
     execution: 'OFF'
     task: 'OFF'
     trigger: 'OFF'
+```
+
+Or scope suppression to a specific flow, task, or trigger by appending the flow ID and optionally the task or trigger ID:
+
+```yaml
+logger:
+  levels:
+    execution.hello-world: 'OFF'
+    task.hello-world: 'OFF'
+    trigger.hello-world: 'OFF'
+    task.hello-world.log: 'OFF'
+    trigger.hello-world.schedule: 'OFF'
 ```
 
 Micronaut access logging is configured separately:
@@ -83,7 +95,39 @@ micronaut:
           - /prometheus
 ```
 
-If you need structured platform-specific logging, use `logback.xml` patterns tailored to your target platform such as GCP or ECS.
+Kestra uses [Logback](https://logback.qos.ch/) for logging. To use a custom `logback.xml`, pass it via `JAVA_OPTS`:
+
+```shell
+export JAVA_OPTS="-Dlogback.configurationFile=file:/path/to/logback.xml"
+```
+
+GCP structured logging:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+  <include resource="logback/base.xml" />
+  <include resource="logback/gcp.xml" />
+  <root level="WARN">
+    <appender-ref ref="CONSOLE_JSON_OUT" />
+    <appender-ref ref="CONSOLE_JSON_ERR" />
+  </root>
+</configuration>
+```
+
+ECS format:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+  <include resource="logback/base.xml" />
+  <include resource="logback/ecs.xml" />
+  <root level="WARN">
+    <appender-ref ref="CONSOLE_ECS_OUT" />
+    <appender-ref ref="CONSOLE_ECS_ERR" />
+  </root>
+</configuration>
+```
 
 ## Metrics and telemetry exports
 
@@ -107,7 +151,13 @@ kestra:
       - environment
 ```
 
-This creates tags such as `label_country` and uses `__none__` when a configured label key is missing, which keeps the metric tag set stable.
+This creates a tag named `label_<key>` for each configured label. When an execution does not have a configured label key, the tag value is set to `__none__`, which keeps the set of tag keys stable and avoids metric series fragmentation.
+
+For example, with `country` and `environment` configured, an execution that has `country=Germany` but no `environment` label produces:
+
+```
+kestra_executions_total{flow_id="my-flow",namespace_id="default",state="SUCCESS",label_country="Germany",label_environment="__none__"} 1
+```
 
 For traces, metrics, and logs exported through OpenTelemetry, use the dedicated [OpenTelemetry guide](../../10.administrator-guide/open-telemetry/index.md).
 

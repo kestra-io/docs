@@ -34,7 +34,11 @@ kestra:
 
 Kestra validates the license on startup. The `fingerprint` is also required for versioned plugins.
 
-EE Java security lets you restrict filesystem access and thread creation:
+EE Java security lets you restrict filesystem access and thread creation. Three controls are available:
+
+- `forbidden-paths` — disallows read/write on listed filesystem paths
+- `authorized-class-prefix` — limits which classes are allowed to create threads
+- `forbidden-class-prefix` — blocks specific classes from creating threads
 
 ```yaml
 kestra:
@@ -46,6 +50,17 @@ kestra:
       authorized-class-prefix:
         - io.kestra.plugin.core
         - io.kestra.plugin.gcp
+```
+
+Use `forbidden-class-prefix` when you want to block a specific plugin family from spawning threads rather than maintaining an allowlist:
+
+```yaml
+kestra:
+  ee:
+    java-security:
+      enabled: true
+      forbidden-class-prefix:
+        - io.kestra.plugin.scripts
 ```
 
 Use EE Java security carefully. It is a platform hardening feature, so the goal is to narrow what plugin code is allowed to touch, not to tune routine runtime behavior.

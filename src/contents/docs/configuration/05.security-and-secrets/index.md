@@ -270,7 +270,13 @@ kestra:
     delete-files-on-start: true
 ```
 
-Liveness and heartbeat settings also belong here:
+Liveness and heartbeat settings also belong here. The parameter constraints below affect cluster stability:
+
+- `timeout` — must match across **all Executors**
+- `initial-delay` — must match across **all Executors**
+- `heartbeat-interval` — must be strictly less than `timeout`
+
+Recommended settings for JDBC-backed (OSS) deployments:
 
 ```yaml
 kestra:
@@ -283,7 +289,19 @@ kestra:
       heartbeat-interval: 3s
 ```
 
-Use the OSS-style settings above for JDBC-backed deployments. In Kafka-based EE deployments, `timeout` and `initial-delay` are commonly increased to `1m`.
+Recommended settings for Kafka-based (EE) deployments:
+
+```yaml
+kestra:
+  server:
+    liveness:
+      timeout: 1m
+      initial-delay: 1m
+```
+
+:::alert{type="warning"}
+Worker liveness in Kafka mode is handled by Kafka's protocol guarantees, so you only need to set `timeout` and `initial-delay` for the EE stack.
+:::
 
 Heartbeat and restart behavior also belong here:
 
