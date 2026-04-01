@@ -176,13 +176,12 @@ const dockerCommandWindows = `docker run --pull=always -it -p 8080:8080 --user=r
         }
 
         h2 {
-            font-weight: 500;
             margin-bottom: 2.5rem;
         }
 
         .steps-card {
             text-align: left;
-            border: $block-border;
+            border: 1px solid var(--ks-border-secondary);
             border-radius: $border-radius-lg;
             background: var(--ks-background-primary);
             overflow: hidden;
@@ -192,7 +191,7 @@ const dockerCommandWindows = `docker run --pull=always -it -p 8080:8080 --user=r
             display: flex;
             justify-content: center;
             gap: 0;
-            border-bottom: $block-border;
+            border-bottom: 1px solid var(--ks-border-secondary);
             background: var(--ks-background-secondary);
 
             .os-tab {
@@ -229,7 +228,7 @@ const dockerCommandWindows = `docker run --pull=always -it -p 8080:8080 --user=r
             padding: 1.5rem 2rem;
 
             & + .step {
-                border-top: $block-border;
+                border-top: 1px solid var(--ks-border-secondary);
             }
 
             .step-header {
@@ -281,7 +280,7 @@ const dockerCommandWindows = `docker run --pull=always -it -p 8080:8080 --user=r
                         padding: 0.1rem 0.35rem;
                         border-radius: 4px;
                         background: var(--ks-background-secondary);
-                        border: $block-border;
+                        border: 1px solid var(--ks-border-secondary);
                     }
 
                     a {

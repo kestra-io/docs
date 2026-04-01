@@ -94,7 +94,6 @@ const ENTERPRISE_FEATURES = [
         }
 
         h2 {
-            font-weight: 500;
             margin-bottom: 1rem;
             color: var(--ks-content-primary-inverse);
         }
@@ -126,7 +125,7 @@ const ENTERPRISE_FEATURES = [
         }
 
         .edition-card {
-            background: hsla(0, 0%, 100%, 0.04);
+            background: var(--ks-background-secondary-inverse);
             border: 1px solid var(--ks-border-primary-inverse);
             border-radius: 0.75rem;
             padding: 2rem;
@@ -135,8 +134,7 @@ const ENTERPRISE_FEATURES = [
             flex-direction: column;
 
             &.enterprise {
-                background: hsla(0, 0%, 100%, 0.07);
-                border-color: rgba(113, 139, 254, 0.4);
+                border-color: var(--ks-border-secondary-inverse);
             }
         }
 
@@ -166,8 +164,8 @@ const ENTERPRISE_FEATURES = [
         }
 
         .edition-title {
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: $font-size-lg;
+            font-weight: 600;
             color: var(--ks-content-primary-inverse);
             margin: 0 0 0.4rem;
             line-height: 1.3;
@@ -218,7 +216,7 @@ const ENTERPRISE_FEATURES = [
                 :global(.icon) {
                     font-size: 1.1rem;
                     flex-shrink: 0;
-                    color: #718bfe;
+                    color: var(--ks-content-link-inverse);
                 }
             }
         }
