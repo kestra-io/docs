@@ -228,15 +228,35 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
     }
 
     // ── Terminal ──────────────────────────────────────────────
+    @property --neon-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes neon-trace {
+        to { --neon-angle: 360deg; }
+    }
+
     .hero-command-wrapper {
+        --neon-angle: 0deg;
         border-radius: 8px;
-        background: linear-gradient(135deg, #8c4bff, #e8e0f6);
+        // Mostly dim border with a small bright arc travelling around
+        background: conic-gradient(
+            from var(--neon-angle),
+            rgba(140, 75, 255, 0.12) 0deg,
+            rgba(140, 75, 255, 0.12) 320deg,
+            #8c4bff                  340deg,
+            #e8e0f6                  350deg,
+            #8c4bff                  360deg
+        );
         padding: 1px;
         box-shadow:
             0 1.214px 10.321px 0 rgba(110, 0, 216, 0.20) inset,
             -6.667px -7.143px 31.334px 3.333px rgba(117, 39, 215, 0.70);
         width: 100%;
         max-width: 640px;
+        animation: neon-trace 4s linear infinite;
 
         @include media-breakpoint-down(md) {
             max-width: 100%;
@@ -244,7 +264,7 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
     }
 
     .hero-command {
-        background: rgba(10, 10, 14, 0.92);
+        background: #0a0a0e;
         border-radius: 7px;
         overflow: hidden;
         backdrop-filter: blur(12px);
