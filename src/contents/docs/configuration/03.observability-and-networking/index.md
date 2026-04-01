@@ -194,6 +194,8 @@ micronaut:
     read-idle-timeout: 60m
     write-idle-timeout: 60m
     idle-timeout: 60m
+    netty:
+      max-chunk-size: 10MB
 ```
 
 Reverse proxy support:

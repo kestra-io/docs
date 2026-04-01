@@ -180,6 +180,70 @@ kestra:
 
 Use client properties for transport and auth, `defaults` for cluster-wide topic behavior, and `topics.*.properties` only when one topic needs behavior that differs from the rest.
 
+Full SSL client configuration with keystores:
+
+```yaml
+kestra:
+  kafka:
+    client:
+      properties:
+        bootstrap.servers: "host:port"
+        security.protocol: "SSL"
+        ssl.endpoint.identification.algorithm: ""
+        ssl.key.password: "<your-password>"
+        ssl.keystore.location: "/etc/ssl/private/keystore.p12"
+        ssl.keystore.password: "<your-password>"
+        ssl.keystore.type: "PKCS12"
+        ssl.truststore.location: "/etc/ssl/private/truststore.jks"
+        ssl.truststore.password: "<your-password>"
+  queue:
+    type: kafka
+```
+
+Consumer, producer, and stream defaults:
+
+```yaml
+kestra:
+  kafka:
+    defaults:
+      consumer:
+        properties:
+          isolation.level: "read_committed"
+          auto.offset.reset: "earliest"
+          enable.auto.commit: "false"
+      producer:
+        properties:
+          acks: "all"
+          compression.type: "lz4"
+          max.request.size: "10485760"
+      stream:
+        properties:
+          processing.guarantee: "exactly_once"
+          replication.factor: "${kestra.kafka.defaults.topic.replication-factor}"
+          acks: "all"
+          compression.type: "lz4"
+          max.request.size: "10485760"
+          state.dir: "/tmp/kafka-streams"
+```
+
+Client loggers for debugging message flow:
+
+```yaml
+kestra:
+  kafka:
+    client:
+      loggers:
+        - level: INFO
+          type: PRODUCER
+          topic-regexp: "kestra_(executions|workertaskresult)"
+          key-regexp: .*parallel.*
+          value-regexp: .*parallel.*
+```
+
+:::alert{type="warning"}
+Client loggers have a heavy performance impact. Use them only for short-lived debugging sessions.
+:::
+
 Shared-cluster deployments often also need prefixes or dedicated topic names to avoid collisions with other tenants or environments.
 
 To reject oversized Kafka messages early:

@@ -151,6 +151,10 @@ kestra:
       default-version: LATEST
 ```
 
+- `remote-storage-enabled`: store managed plugins in internal storage rather than on local disk
+- `auto-reload-enabled` / `auto-reload-interval`: check for updated plugins on a fixed interval
+- `default-version`: controls which plugin version is selected when no explicit version is pinned; accepts `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or a specific version string
+
 ## Execution behavior
 
 These settings affect how the platform behaves around tasks and executions globally. Use them for platform-wide operational defaults, not for flow-specific logic.

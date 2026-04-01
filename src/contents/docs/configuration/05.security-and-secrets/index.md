@@ -86,7 +86,11 @@ kestra:
 
 `isolation` is the key control to understand here: it limits which Kestra services are allowed to resolve secrets, which is useful when you want workers or executors to have narrower access than the whole platform.
 
+The Azure service principal referenced in the base structure above must have the following Key Vault access policy permissions: `Get`, `List`, `Set`, `Delete`, `Recover`, `Backup`, `Restore`, `Purge`.
+
 Representative backend examples:
+
+AWS Secrets Manager requires the following IAM permissions: `CreateSecret`, `DeleteSecret`, `DescribeSecret`, `GetSecretValue`, `ListSecrets`, `PutSecretValue`, `RestoreSecret`, `TagResource`, `UpdateSecret`.
 
 ```yaml
 kestra:
@@ -99,6 +103,8 @@ kestra:
       region: us-east-1
 ```
 
+Google Secret Manager requires the `roles/secretmanager.admin` role. Omit `service-account` to fall back to `GOOGLE_APPLICATION_CREDENTIALS` or the environment's default credentials:
+
 ```yaml
 kestra:
   secret:
@@ -109,6 +115,8 @@ kestra:
         <service-account JSON>
 ```
 
+Elasticsearch secrets are additionally encrypted with AES. The key must be at least 32 characters:
+
 ```yaml
 kestra:
   secret:
@@ -117,7 +125,48 @@ kestra:
       secret: "a-secure-32-character-minimum-key"
 ```
 
-Supported Vault auth methods include Userpass, Token, and AppRole. JDBC-backed secrets, secret tags, and secret caching are covered below.
+HashiCorp Vault (KV v2) supports Userpass, Token, and AppRole authentication.
+
+Userpass:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      password:
+        user: john
+        password: foo
+```
+
+Token:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      token:
+        token: your-secret-token
+```
+
+AppRole:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      app-role:
+        path: approle
+        role-id: your-role-id
+        secret-id: your-secret-id
+```
+
+JDBC-backed secrets, secret tags, and secret caching are covered below.
 
 ### JDBC secret backend
 
@@ -239,6 +288,10 @@ kestra:
         FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
       tenant-id: staging
 ```
+
+:::alert{type="info"}
+Place `default-role` under `kestra.security`, not `micronaut.security`.
+:::
 
 ### Invitation expiration and password rules
 
