@@ -1,4 +1,4 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test"
 
 export default defineConfig({
     testDir: "./tests",
@@ -22,7 +22,10 @@ export default defineConfig({
     projects: [
         {
             name: "desktop",
-            use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 720 } },
+            use: {
+                ...devices["Desktop Chrome"],
+                viewport: { width: 1280, height: 720 },
+            },
         },
         {
             name: "tablet",
@@ -35,9 +38,9 @@ export default defineConfig({
     ],
 
     webServer: {
-        command: "npm run dev",
+        command: "DISABLE_USAL=true DISABLE_GITHUB=true npm run dev",
         url: "http://localhost:4321",
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,
     },
-});
+})
