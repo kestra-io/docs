@@ -1,0 +1,42 @@
+---
+import Layout from "~/components/layout.astro"
+import Hero from "~/components/get-started/Hero.astro"
+import SetupSteps from "~/components/get-started/SetupSteps.astro"
+import RunAnywhere from "~/components/get-started/RunAnywhere.astro"
+import DemoPreview from "~/components/get-started/DemoPreview.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Differentiators from "~/components/get-started/Differentiators.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
+import GoFurther from "~/components/get-started/GoFurther.astro"
+import Testimonial from "~/components/home/Testimonial.astro"
+
+import { $fetchApiCached } from "~/utils/fetch"
+
+const { results: blueprints } = await $fetchApiCached(`/blueprints/versions/latest?page=1&size=6`)
+const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
+
+const title = "Get Started with Kestra"
+const description =
+    "Run your first workflow in 2 minutes. Kestra is the open-source orchestration platform for data, AI, and infrastructure workflows."
+---
+
+<Layout {title} {description} headerTheme="darkHeader">
+    <Hero />
+    <SetupSteps />
+    <DemoPreview />
+    <RunAnywhere />
+    <Differentiators />
+    <BlueprintsGrid
+        title='Start From <span class="highlight">250+ Blueprints</span>'
+        subtitle="Production-ready workflow templates for data, AI, and infrastructure. Copy, customize, deploy."
+        {blueprints}
+        {tags}
+        link={{ href: "/blueprints", text: "Browse all blueprints" }}
+    />
+    <GoFurther />
+    <Testimonial />
+    <SeeHow>
+        <Fragment slot="title">Ready to Scale? Talk to Our Team.</Fragment>
+        Whether you're evaluating Kestra for your team or already running in production — we'll help you get the most out of it.
+    </SeeHow>
+</Layout>

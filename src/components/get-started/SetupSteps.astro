@@ -1,0 +1,301 @@
+---
+import { Icon } from "astro-icon/components"
+import Snippets from "~/components/common/Snippets.astro"
+import Link from "~/components/common/Link.astro"
+
+const dockerCommandUnix = `docker run --pull=always -it -p 8080:8080 --user=root \\
+  --name kestra --restart=always \\
+  -v kestra_data:/app/storage \\
+  -v /var/run/docker.sock:/var/run/docker.sock \\
+  -v /tmp:/tmp \\
+  kestra/kestra:latest server local`
+
+const dockerCommandWindows = `docker run --pull=always -it -p 8080:8080 --user=root ^
+  --name kestra --restart=always ^
+  -v kestra_data:/app/storage ^
+  -v /var/run/docker.sock:/var/run/docker.sock ^
+  -v /tmp:/tmp ^
+  kestra/kestra:latest server local`
+---
+
+<section class="setup-steps">
+    <div class="container">
+        <p class="overline" data-usal="fade-r">Setup Instructions</p>
+        <h2 data-usal="fade-l">
+            Up and Running in <span class="highlight">3 Steps</span>
+        </h2>
+
+        <div class="steps-card" data-usal="fade-up">
+            <div class="os-tabs" role="tablist">
+                <button class="os-tab active" data-os="mac" role="tab" aria-selected="true">
+                    <Icon name="mdi:apple" />
+                    <span>macOS</span>
+                </button>
+                <button class="os-tab" data-os="windows" role="tab" aria-selected="false">
+                    <Icon name="mdi:microsoft-windows" />
+                    <span>Windows</span>
+                </button>
+                <button class="os-tab" data-os="linux" role="tab" aria-selected="false">
+                    <Icon name="mdi:linux" />
+                    <span>Linux</span>
+                </button>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <span class="step-number">Step 1</span>
+                    <span class="step-separator">-</span>
+                    <h4>Start Kestra</h4>
+                </div>
+                <div class="step-body">
+                    <p class="prereq prereq-mac prereq-linux">
+                        Requires <a href="https://docs.docker.com/get-docker/" target="_blank" rel="noopener">Docker Desktop</a>.
+                    </p>
+                    <p class="prereq prereq-windows" style="display: none;">
+                        Requires <a href="https://docs.docker.com/get-docker/" target="_blank" rel="noopener">Docker Desktop</a> with <a href="https://docs.docker.com/desktop/wsl/" target="_blank" rel="noopener">WSL</a> enabled. Run this in WSL or PowerShell.
+                    </p>
+                    <div class="code-mac code-linux">
+                        <Snippets code={dockerCommandUnix} lang="bash" />
+                    </div>
+                    <div class="code-windows" style="display: none;">
+                        <Snippets code={dockerCommandWindows} lang="bash" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <span class="step-number">Step 2</span>
+                    <span class="step-separator">-</span>
+                    <h4>Open the UI</h4>
+                </div>
+                <div class="step-body">
+                    <p>
+                        Navigate to <a href="http://localhost:8080" target="_blank"><code>http://localhost:8080</code></a> in your browser.
+                        Create your user and take the product tour.
+                    </p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <span class="step-number">Step 3</span>
+                    <span class="step-separator">-</span>
+                    <h4>Build Your First Workflow</h4>
+                </div>
+                <div class="step-body">
+                    <p>
+                        Use the built-in editor to create a YAML flow, or pick from
+                        <a href="/blueprints">250+ Blueprints</a> to start instantly.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="setup-footer" data-usal="fade-up">
+            <Link href="/docs/quickstart" class="btn btn-secondary btn-md">
+                Full quickstart guide
+            </Link>
+        </div>
+    </div>
+</section>
+
+<script>
+    const initOsTabs = () => {
+        const tabs = document.querySelectorAll<HTMLElement>(".os-tab")
+        const card = document.querySelector<HTMLElement>(".steps-card")
+        if (!card) return
+
+        // Auto-detect OS
+        const ua = navigator.userAgent.toLowerCase()
+        let detectedOs = "mac"
+        if (ua.includes("win")) detectedOs = "windows"
+        else if (ua.includes("linux")) detectedOs = "linux"
+
+        const switchOs = (os: string) => {
+            tabs.forEach((t) => {
+                const isActive = t.dataset.os === os
+                t.classList.toggle("active", isActive)
+                t.setAttribute("aria-selected", String(isActive))
+            })
+
+            // Toggle code blocks
+            card.querySelectorAll<HTMLElement>(".code-mac, .code-linux").forEach(
+                (el) => (el.style.display = os === "windows" ? "none" : "block"),
+            )
+            card.querySelectorAll<HTMLElement>(".code-windows").forEach(
+                (el) => (el.style.display = os === "windows" ? "block" : "none"),
+            )
+
+            // Toggle prereqs
+            card.querySelectorAll<HTMLElement>(".prereq-mac, .prereq-linux").forEach(
+                (el) => (el.style.display = os === "windows" ? "none" : "block"),
+            )
+            card.querySelectorAll<HTMLElement>(".prereq-windows").forEach(
+                (el) => (el.style.display = os === "windows" ? "block" : "none"),
+            )
+        }
+
+        // Set initial OS
+        switchOs(detectedOs)
+
+        tabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                const os = tab.dataset.os
+                if (os) switchOs(os)
+            })
+        })
+    }
+
+    initOsTabs()
+    document.addEventListener("astro:after-swap", initOsTabs)
+</script>
+
+<style lang="scss">
+    .setup-steps {
+        padding: $rem-4 0;
+        background-color: var(--ks-background-body);
+
+        @include media-breakpoint-down(lg) {
+            padding: $spacer * 2 0.75rem;
+        }
+
+        .container {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .overline {
+            font-size: $font-size-sm;
+            text-transform: uppercase;
+            color: var(--ks-content-secondary);
+            font-family: var(--bs-font-monospace);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        h2 {
+            font-weight: 500;
+            margin-bottom: 2.5rem;
+        }
+
+        .steps-card {
+            text-align: left;
+            border: $block-border;
+            border-radius: $border-radius-lg;
+            background: var(--ks-background-primary);
+            overflow: hidden;
+        }
+
+        .os-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            border-bottom: $block-border;
+            background: var(--ks-background-secondary);
+
+            .os-tab {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                background: none;
+                border: none;
+                border-bottom: 2px solid transparent;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                :global(svg) {
+                    font-size: 1.25rem;
+                }
+
+                &:hover {
+                    color: var(--ks-content-primary);
+                }
+
+                &.active {
+                    color: var(--ks-content-primary);
+                    border-bottom-color: var(--ks-content-link);
+                    background: var(--ks-background-primary);
+                }
+            }
+        }
+
+        .step {
+            padding: 1.5rem 2rem;
+
+            & + .step {
+                border-top: $block-border;
+            }
+
+            .step-header {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+
+                .step-number {
+                    font-family: var(--bs-font-monospace);
+                    font-size: $font-size-sm;
+                    font-weight: 600;
+                    color: var(--ks-content-link);
+                }
+
+                .step-separator {
+                    color: var(--ks-content-secondary);
+                }
+
+                h4 {
+                    font-weight: 600;
+                    font-size: $font-size-md;
+                    margin: 0;
+                }
+            }
+
+            .step-body {
+                .prereq {
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-secondary);
+                    margin-bottom: 0.75rem;
+
+                    a {
+                        color: var(--ks-content-link);
+                        &:hover {
+                            color: var(--ks-content-secondary);
+                        }
+                    }
+                }
+
+                p {
+                    color: var(--ks-content-secondary);
+                    font-size: $font-size-sm;
+                    margin: 0;
+
+                    code {
+                        font-family: var(--bs-font-monospace);
+                        font-size: $font-size-sm;
+                        padding: 0.1rem 0.35rem;
+                        border-radius: 4px;
+                        background: var(--ks-background-secondary);
+                        border: $block-border;
+                    }
+
+                    a {
+                        color: var(--ks-content-link);
+                        &:hover {
+                            color: var(--ks-content-secondary);
+                        }
+                    }
+                }
+            }
+        }
+
+        .setup-footer {
+            margin-top: 2rem;
+        }
+    }
+</style>
