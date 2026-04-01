@@ -20,6 +20,7 @@ const navigationTree = {
         "No-Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
+        "Use Cases",
         "How-to Guides",
     ],
     "Scale with Kestra": [
