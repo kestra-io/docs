@@ -24,9 +24,8 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import nifiImg from "~/components/versus/assets/apache-nifi-img.svg"
 import heroUI from "~/components/versus/assets/nifi_hero.webp"
 
-const entry = await getEntry("vsPages", "apache-nifi")
-if (!entry)
-    throw new Error("Could not find vsPages/apache-nifi collection entry")
+const entry = await getEntry("vs", "apache-nifi")
+if (!entry) throw new Error("Could not find vs/apache-nifi collection entry")
 
 const {
     title,

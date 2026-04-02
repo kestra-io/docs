@@ -24,8 +24,8 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/pagerduty-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_pagerduty.webp"
 
-const entry = await getEntry("vsPages", "pagerduty")
-if (!entry) throw new Error("Could not find vsPages/pagerduty collection entry")
+const entry = await getEntry("vs", "pagerduty")
+if (!entry) throw new Error("Could not find vs/pagerduty collection entry")
 
 const {
     title,
@@ -124,6 +124,7 @@ const {
         <Fragment slot="title">
             Getting Started with Modern Incident Orchestration
         </Fragment>
-        See how Kestra replaces runbook tools with end-to-end incident automation—from alert to resolution.
+        See how Kestra replaces runbook tools with end-to-end incident automation—from
+        alert to resolution.
     </SeeHow>
 </Layout>
