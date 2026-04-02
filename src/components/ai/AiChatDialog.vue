@@ -12,7 +12,7 @@
             </div>
 
             <div v-if="!messages.length && randomAiQuestions.length" class="examples">
-                <h6>EXAMPLE QUESTIONS</h6>
+                <p class="text-overline">EXAMPLE QUESTIONS</p>
                 <div class="cards">
                     <div
                         v-for="question in randomAiQuestions"
@@ -62,7 +62,7 @@
                                 v-if="message.role === 'assistant' && message.sources?.length"
                                 class="sources"
                             >
-                                <h6>SOURCES</h6>
+                                <p class="label-small">SOURCES</p>
                                 <div class="items">
                                     <a
                                         v-for="source in message.sources"

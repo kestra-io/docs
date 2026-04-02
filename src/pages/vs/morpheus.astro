@@ -23,10 +23,9 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/morpheus-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_morpheus.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "morpheus")
-if (!entry) throw new Error("Could not find vsPages/morpheus collection entry")
+const entry = await getEntry("vs", "morpheus")
+if (!entry) throw new Error("Could not find vs/morpheus collection entry")
 
 const {
     title,
@@ -55,7 +54,6 @@ const {
             monogram: competitorMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}
@@ -126,6 +124,7 @@ const {
         <Fragment slot="title">
             Getting Started with Declarative Orchestration
         </Fragment>
-        See how Kestra can simplify your workflows—beyond cloud management into true orchestration.
+        See how Kestra can simplify your workflows—beyond cloud management into true
+        orchestration.
     </SeeHow>
 </Layout>

@@ -46,7 +46,7 @@ The first screen shows the main configuration of your instance. It displays:
 - which `internal storage` backend is configured (e.g., S3, GCS, Azure Blob Storage, MinIO, or local storage)
 - which `secret` backend is configured (e.g., Vault, AWS Secrets Manager, Elasticsearch, or not set up yet)
 
-![setup_page1.png](./setup_page1.png)
+![Instance configuration validation screen](./setup_page1.png)
 
 This step asks you to confirm whether your configuration is valid. If not, you can correct the configuration, restart the instance, and start the setup from scratch.
 
@@ -60,17 +60,17 @@ If you choose to create a tenant, you will be asked to input the Tenant ID and T
 
 If you enabled a default tenant, you can skip this step.
 
-![setup_page2.png](./setup_page2.png)
+![Create first tenant form with ID and name fields](./setup_page2.png)
 
 
 ## Step 3: Create your first user
 
 Now that you have your instance configured, you will create your first user. This user will have a [Superadmin](../../03.auth/rbac/index.md#super-admin) role for the instance and will be able to manage tenants, users, and roles.
 
-![setup_page3.png](./setup_page3.png)
+![Create first Superadmin user form](./setup_page3.png)
 
 ## Step 4: Start Kestra UI
 
 Once your tenant and user are configured, Kestra will launch the UI and log you into your new tenant as the first user.
 
-![setup_page4.png](./setup_page4.png)
+![Kestra UI launched after completing setup](./setup_page4.png)
