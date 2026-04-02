@@ -229,25 +229,26 @@ const faqItems = [
 
                 window.__vsCarouselTimer = setInterval(function() {
                     items[current].classList.remove('active')
-                    current = (current + 1) % total
-                    items[current].classList.add('active')
-                    updateHeroName(items[current])
+                    heroName.style.opacity = '0'
+                    heroName.style.transition = 'opacity 0.2s ease'
+                    setTimeout(function() {
+                        current = (current + 1) % total
+                        items[current].classList.add('active')
+                        updateHeroName(items[current])
+                        heroName.style.opacity = '1'
+                    }, 200)
                 }, 2000)
             }
         }
 
-        // Run on initial load
+        if (!window.__vsInitDone) {
+            window.__vsInitDone = true
+            document.addEventListener('astro:page-load', init)
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) init()
+            })
+        }
         init()
-
-        // Re-run on Astro page transitions
-        document.addEventListener('astro:page-load', init)
-
-        // Keep running when tab becomes visible again
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && !window.__vsCarouselTimer) {
-                init()
-            }
-        })
     })()
 </script>
 
