@@ -1,6 +1,8 @@
 title: "Chef vs Kestra for Infrastructure Automation"
 description: "Compare Kestra vs Chef Enterprise Automation Stack (Progress Software): event-driven workflow orchestration vs. agent-based configuration management. See features, setup, and when each tool fits."
 competitorName: Chef
+category: Infrastructure Automation
+shortDescription: "Agent-based Ruby configuration management vs. event-driven workflow orchestration in declarative YAML."
 
 intro:
   title: "Kestra vs. Chef: Workflow Orchestration vs. Configuration Automation"

@@ -30,7 +30,7 @@ if (!entry)
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -47,7 +47,7 @@ const {
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} description={shortDescription} headerTheme="lightText">
     <Intro
         {...intro}
         competitor={{
