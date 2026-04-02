@@ -5,6 +5,7 @@ date: 2026-01-21T13:00:00
 category: Solutions
 authors:
   - name: "Faizan Qazi"
+    linkedin: https://www.linkedin.com/in/caxefaizan/
     image: fqazi
     role: Solution Engineer
 

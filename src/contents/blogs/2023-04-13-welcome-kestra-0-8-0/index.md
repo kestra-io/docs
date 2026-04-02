@@ -5,6 +5,7 @@ date: 2023-04-13T17:00:00
 category: News & Product Updates
 author:
   name: Loïc Mathieu
+  linkedin: https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/
   image: "lmathieu"
   twitter: "@loicmathieu"
 image: ./main.png

@@ -5,6 +5,7 @@ date: 2023-10-05T10:00:00
 category: News & Product Updates
 author:
   name: Emmanuel Darras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   image: "edarras"
 image: ./main.jpg
 ---

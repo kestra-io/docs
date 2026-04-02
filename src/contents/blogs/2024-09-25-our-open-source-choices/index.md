@@ -5,6 +5,7 @@ date: 2024-09-25T18:00:00
 category: Company News
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   role: "CTO & Co-Founder"
 image: ./main.jpg

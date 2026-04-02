@@ -5,6 +5,7 @@ date: 2024-04-05T10:00:00
 category: Solutions
 author:
   name: Will Russell
+  linkedin: https://www.linkedin.com/in/wrussell1999/
   image: "wrussell"
 image: ./main.png
 ---
