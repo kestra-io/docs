@@ -1,6 +1,5 @@
 @import "variable";
 
-// ─── Bootstrap (to be removed in final PR) ───────────────
 @import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/type";
@@ -21,15 +20,6 @@
 @import "bootstrap/scss/helpers";
 @import "bootstrap/scss/utilities";
 @import "bootstrap/scss/utilities/api";
-
-// ─── Local replacements (coexist with Bootstrap during migration) ──
-@import "mixins";
-@import "reset";
-@import "grid";
-@import "buttons";
-@import "forms";
-@import "card";
-@import "components";
 
 @import "vue-material-design-icons/styles.css";
 @import "vanilla-cookieconsent/dist/cookieconsent.css";
