@@ -4,7 +4,7 @@
             <div class="outer">
                 <div class="inner text-center">
                     <div class="d-flex flex-column align-items-center gap-2">
-                        <img :src="logo" alt="Newsletter" />
+                        <img :src="logo" alt="Newsletter" width="109" height="108" />
                         <h3 class="title">Get Kestra updates to your inbox</h3>
                         <p class="description">Stay up to date with the latest features and changes to Kestra</p>
                     </div>

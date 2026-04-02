@@ -3,7 +3,7 @@
         <div class="plugin">
             <div class="top-row">
                 <div class="icon-content">
-                    <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" />
+                    <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" width="45" height="45" />
                 </div>
                 <div class="content">
                     <div class="title-row">

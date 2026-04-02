@@ -26,8 +26,8 @@
             >
                 <div class="download-logos" @click.stop>
                     <img
-                        width="24px"
-                        height="24px"
+                        width="24"
+                        height="24"
                         loading="lazy"
                         format="webp"
                         class="close-icon"
@@ -37,8 +37,8 @@
                     />
                     <p class="title">Looking for our logo?</p>
                     <img
-                        width="236px"
-                        height="123px"
+                        width="236"
+                        height="123"
                         loading="lazy"
                         format="webp"
                         class="img-fluid"

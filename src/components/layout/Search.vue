@@ -89,6 +89,8 @@
                                     src="/search/emoticon-dead-icon.svg"
                                     alt="emoticon icon"
                                     class="mx-auto"
+                                    width="21"
+                                    height="21"
                                 />
                                 <p class="text-center mt-3">
                                     No results found for the current search

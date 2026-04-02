@@ -1,5 +1,5 @@
 ---
-const { cls, class: className, ...rest } = Astro.props
+const { cls, class: className, width = 32, height = 32, ...rest } = Astro.props
 ---
 
 <img
@@ -8,6 +8,8 @@ const { cls, class: className, ...rest } = Astro.props
     data-theme-responsive
     src={`/icons/${cls}.svg`}
     alt={cls.split(".").pop() + " icon"}
+    width={width}
+    height={height}
     {...rest}
 />
 

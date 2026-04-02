@@ -13,11 +13,15 @@
                     <img
                         :src="getThumbnailUrl(video.youtubeUrl || video.url) || '/logo.png'"
                         :alt="video.title"
+                        width="1280"
+                        height="720"
                     />
                     <img
                         class="play-icon"
                         src="/landing/tutorial-videos/youtube-icon.svg"
                         alt="Play"
+                        width="83"
+                        height="89"
                     />
                 </div>
                 <div class="content">

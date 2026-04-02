@@ -4,7 +4,7 @@
         <div class="content scroller" id="contentContainer" ref="contentContainer">
             <div v-if="!messages.length" class="message welcome">
                 <div class="avatar">
-                    <img src="/icon-simple.svg" alt="Kestra AI" />
+                    <img src="/icon-simple.svg" alt="Kestra AI" width="28" height="28" />
                 </div>
                 <div class="bubble">
                     <p>Hi! I'm your Kestra AI assistant.<br />Ask me anything about workflows.</p>
@@ -35,8 +35,8 @@
                                 <img
                                     src="/icon-simple.svg"
                                     alt="Kestra AI"
-                                    width="28px"
-                                    height="44px"
+                                    width="28"
+                                    height="28"
                                 />
                             </div>
                         </div>
