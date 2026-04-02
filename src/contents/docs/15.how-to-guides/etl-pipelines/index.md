@@ -11,7 +11,7 @@ Build ETL pipelines in Kestra using DuckDB, Python and Task Runners.
 This tutorial demonstrates building different ETL pipelines in Kestra.
 
 :::alert{type="info"}
-We have used AWS access key and secret key in the example workflows below. To know more about these keys and how to get one, you can refer [this](https://aws.amazon.com/blogs/security/wheres-my-secret-access-key/) page. Once we have these, we can store them in the [KV Store](../../06.concepts/05.kv-store/index.md) or as [Secrets](../../06.concepts/04.secret/index.md).
+We have used AWS access key and secret key in the example workflows below. To know more about these keys and how to get one, you can refer to the [AWS guide on secret access keys](https://aws.amazon.com/blogs/security/wheres-my-secret-access-key/). Once we have these, we can store them in the [KV Store](../../06.concepts/05.kv-store/index.md) or as [Secrets](../../06.concepts/04.secret/index.md).
 :::
 
 ## Using DuckDB

@@ -11,7 +11,7 @@ Set up Keycloak SSO to manage authentication for users.
 
 If you don't have a Keycloak server already running, you can use a managed service like [Cloud IAM](https://app.cloud-iam.com).
 
-You can follow the steps described [here](https://documentation.cloud-iam.com/get-started/complete-tutorial.html) to deploy a managed Keycloak cluster for free.
+You can follow the [Cloud IAM getting started tutorial](https://documentation.cloud-iam.com/get-started/complete-tutorial.html) to deploy a managed Keycloak cluster for free.
 
 ## Configure Keycloak client
 

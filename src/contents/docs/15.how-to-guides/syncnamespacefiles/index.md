@@ -143,4 +143,4 @@ Once we've done this, we can press save and test it by committing something to o
 
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 
-If you also want to sync your flows, check out our guide on how to set that up [here](../syncflows/index.md)!
+If you also want to sync your flows, check out our [guide on syncing flows](../syncflows/index.md)!
