@@ -39,10 +39,10 @@ errors:
 
 Here is the output of the `fail` task before the change:
 
-![log.png](./stderr-log-level1.png)
+![Script task stderr output logged at WARNING level before 0.21.0](./stderr-log-level1.png)
 
 ## After 0.21.0
 
 Here is the output of the `fail` task after the change:
 
-![log2.png](./stderr-log-level2.png)
+![Script task stderr output logged at ERROR level after 0.21.0](./stderr-log-level2.png)
