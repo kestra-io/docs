@@ -5,6 +5,11 @@
         :class="{ plugin: isPluginPage }"
     >
         <div>
+            <button class="copy-markdown-btn d-none d-lg-flex" @click="copyAsMarkdown">
+                <ContentCopy class="copy-icon" />
+                <span>{{ copyButtonText }}</span>
+            </button>
+
             <template v-if="links?.length" class="bd-contents-list">
                 <button
                     class="btn toc-toggle d-lg-none"
@@ -90,6 +95,7 @@
     import { useEventListener, useScroll } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+    import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
     import OverviewPanel from "~/components/plugins/OverviewPanel.vue"
     import type { PluginMetadata } from "@kestra-io/ui-libs"
@@ -135,6 +141,16 @@
             metadata: () => []
         }
     )
+
+    const copyButtonText = ref("Copy as Markdown")
+    const copyAsMarkdown = async () => {
+        const mdUrl = window.location.pathname + ".md"
+        const response = await fetch(mdUrl)
+        const text = await response.text()
+        await navigator.clipboard.writeText(text)
+        copyButtonText.value = "Copied!"
+        setTimeout(() => (copyButtonText.value = "Copy as Markdown"), 2000)
+    }
 
     const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined)
     const tableOfContentsExpanded = ref(false)
@@ -243,6 +259,35 @@
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
 
+
+    .copy-markdown-btn {
+        align-items: center;
+        gap: 0.4rem;
+        width: calc(100% - 1.5rem);
+        margin: 1rem 0.75rem 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--ks-content-tertiary);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
+
+        &:hover {
+            color: var(--ks-content-link);
+            border-color: var(--ks-content-link);
+        }
+
+        .copy-icon {
+            flex-shrink: 0;
+            :deep(svg) {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
 
     .bd-toc {
         @include media-breakpoint-down(lg) {
