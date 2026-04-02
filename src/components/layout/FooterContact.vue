@@ -44,7 +44,7 @@
         },
         purple = {
             text: 'Get Started',
-            href: '/docs/quickstart#start-kestra'
+            href: '/get-started'
         },
         animation = true
     } = defineProps<{

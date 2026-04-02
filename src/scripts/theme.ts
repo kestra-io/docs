@@ -17,11 +17,7 @@ document.addEventListener("click", ({ target }) => {
     const btn = (target as HTMLElement).closest(".theme-switcher button");
     if (!btn) return;
     const theme = btn.id.replace("theme-", "");
-    if (theme === "system") {
-        localStorage.removeItem("theme");
-    } else {
-        localStorage.setItem("theme", theme);
-    }
+    localStorage.setItem("theme", theme);
     applyTheme(theme);
 });
 

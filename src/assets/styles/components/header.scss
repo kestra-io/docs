@@ -450,6 +450,10 @@ nav {
             }
 
             @include dark-nav-content;
+
+            .slack-link .slack-icon :deep(svg) {
+                filter: brightness(0) invert(1);
+            }
         }
 
         html.dark body[data-header-theme="light"] &:not(.scrolled):not(.open) {
@@ -480,10 +484,18 @@ nav {
             }
 
             @include dark-nav-content;
+
+            .slack-link .slack-icon :deep(svg) {
+                filter: brightness(0) invert(1);
+            }
         }
 
         html.dark & {
             @include dark-nav-content;
+
+            .slack-link .slack-icon :deep(svg) {
+                filter: brightness(0) invert(1);
+            }
         }
     }
 
