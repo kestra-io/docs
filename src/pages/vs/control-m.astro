@@ -23,10 +23,9 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import controlMImg from "~/components/versus/assets/control-m-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_control_m.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "control-m")
-if (!entry) throw new Error("Could not find vsPages/control-m collection entry")
+const entry = await getEntry("vs", "control-m")
+if (!entry) throw new Error("Could not find vs/control-m collection entry")
 
 const {
     title,
@@ -55,7 +54,6 @@ const {
             monogram: controlMMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}

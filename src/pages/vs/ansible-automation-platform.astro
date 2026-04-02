@@ -23,10 +23,12 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/ansible-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_ansible.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "ansible-automation-platform")
-if (!entry) throw new Error("Could not find vsPages/ansible-automation-platform collection entry")
+const entry = await getEntry("vs", "ansible-automation-platform")
+if (!entry)
+    throw new Error(
+        "Could not find vs/ansible-automation-platform collection entry",
+    )
 
 const {
     title,
@@ -55,7 +57,6 @@ const {
             monogram: competitorMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}

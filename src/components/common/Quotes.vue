@@ -66,6 +66,7 @@ const activeQuote = ref(0)
 <style lang="scss" scoped>
 
 .wrapper {
+    max-width: 100%;
     background: linear-gradient(
         var(--ks-background-purple-light),
         var(--ks-background-purple-light)),
@@ -77,9 +78,16 @@ const activeQuote = ref(0)
         justify-content: center;
         border-bottom: 1px solid var(--ks-border-secondary);
         margin: 0 auto;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
 
-        @include media-breakpoint-down(sm) {
-            gap: 1rem;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        @include media-breakpoint-down(md) {
+            justify-content: flex-start;
         }
 
         .tab {
@@ -96,6 +104,7 @@ const activeQuote = ref(0)
 
             :deep(svg) {
                 height: 1.5rem;
+                max-width: 100%;
                 transition: color 0.3s ease;
 
                 * {
@@ -108,6 +117,13 @@ const activeQuote = ref(0)
                 background-color: var(--ks-background-purple-hover);
                 border-bottom: 1px solid var(--ks-border-active);
                 margin-bottom: -1px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .tab {
+                flex: 0 0 30% !important;
+                max-width: 30% !important;
             }
         }
     }

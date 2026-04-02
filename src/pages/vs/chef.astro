@@ -23,10 +23,9 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/chef-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_chef.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "chef")
-if (!entry) throw new Error("Could not find vsPages/chef collection entry")
+const entry = await getEntry("vs", "chef")
+if (!entry) throw new Error("Could not find vs/chef collection entry")
 
 const {
     title,
@@ -55,7 +54,6 @@ const {
             monogram: competitorMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}
@@ -126,6 +124,7 @@ const {
         <Fragment slot="title">
             From Configuration Management to Workflow Orchestration
         </Fragment>
-        See how Kestra can orchestrate your infrastructure automation—including Chef—in declarative YAML workflows.
+        See how Kestra can orchestrate your infrastructure automation—including Chef—in
+        declarative YAML workflows.
     </SeeHow>
 </Layout>

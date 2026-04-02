@@ -1,0 +1,233 @@
+---
+import WithLogo from "~/components/layout/WithLogo.astro"
+import { Icon } from "astro-icon/components"
+
+const CLOUD_FEATURES = [
+    { text: "Everything in Open Source", icon: "mdi:check-bold", bold: true },
+    { text: "Fully Managed Platform — zero ops", icon: "mdi:plus-circle-outline" },
+    { text: "Automatic Scaling", icon: "mdi:plus-circle-outline" },
+    { text: "SOC 2 Type II Certified", icon: "mdi:plus-circle-outline" },
+    { text: "Built-in Security & Governance", icon: "mdi:plus-circle-outline" },
+    { text: "Fast Onboarding, Pay-as-you-scale", icon: "mdi:plus-circle-outline" },
+]
+
+const ENTERPRISE_FEATURES = [
+    { text: "Everything in Open Source", icon: "mdi:check-bold", bold: true },
+    { text: "SSO / SAML & Fine-Grained RBAC", icon: "mdi:plus-circle-outline" },
+    { text: "Audit Logs & Multi-Tenancy", icon: "mdi:plus-circle-outline" },
+    { text: "Air-Gapped & On-Prem Deployment", icon: "mdi:plus-circle-outline" },
+    { text: "Dedicated Customer Success Program", icon: "mdi:plus-circle-outline" },
+    { text: "SLA-Backed Enterprise Support", icon: "mdi:plus-circle-outline" },
+]
+---
+
+<WithLogo>
+    <div class="container go-further">
+        <p class="overline" data-usal="fade-r">Go Further</p>
+        <h2 data-usal="fade-l">Ready for <span class="gradient">Production?</span></h2>
+        <p class="subtitle" data-usal="fade-r">
+            You're running locally. Now scale it — managed or self-hosted, your choice.
+        </p>
+
+        <div class="cards-wrapper">
+            <!-- Cloud -->
+            <div class="edition-card" data-usal="fade-up">
+                <div class="edition-header">
+                    <span class="badge cloud-badge">Kestra Cloud</span>
+                    <h3 class="edition-title">Fully managed. Zero maintenance.</h3>
+                    <p class="edition-desc">Deploy instantly, scale automatically, pay only for what you use.</p>
+                </div>
+                <div class="divider"></div>
+                <ul class="features">
+                    {CLOUD_FEATURES.map((f) => (
+                        <li class={f.bold ? "bold" : ""}>
+                            <Icon name={f.icon} class="icon" />
+                            <span>{f.text}</span>
+                        </li>
+                    ))}
+                </ul>
+                <div class="divider"></div>
+                <div class="card-footer">
+                    <a href="/cloud" class="btn btn-primary">Request Access</a>
+                </div>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="edition-card enterprise" data-usal="fade-up">
+                <div class="edition-header">
+                    <span class="badge enterprise-badge">Enterprise Edition</span>
+                    <h3 class="edition-title">Self-host with enterprise governance.</h3>
+                    <p class="edition-desc">Critical environments, compliance requirements, air-gapped or hybrid.</p>
+                </div>
+                <div class="divider"></div>
+                <ul class="features">
+                    {ENTERPRISE_FEATURES.map((f) => (
+                        <li class={f.bold ? "bold" : ""}>
+                            <Icon name={f.icon} class="icon" />
+                            <span>{f.text}</span>
+                        </li>
+                    ))}
+                </ul>
+                <div class="divider"></div>
+                <div class="card-footer">
+                    <a href="/demo" class="btn btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</WithLogo>
+
+<style lang="scss">
+    .go-further {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+
+        .overline {
+            font-size: $font-size-sm;
+            text-transform: uppercase;
+            font-family: var(--bs-font-monospace);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            color: var(--ks-content-tertiary-inverse);
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            color: var(--ks-content-primary-inverse);
+        }
+
+        .gradient {
+            background: linear-gradient(90deg, var(--ks-content-link-inverse), var(--ks-content-color-highlight-inverse));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--ks-content-primary-inverse);
+            font-size: $font-size-lg;
+            line-height: 1.6;
+            max-width: 560px;
+            margin: 0 auto 3rem;
+        }
+
+        .cards-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+
+            @include media-breakpoint-up(lg) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .edition-card {
+            background: var(--ks-background-secondary-inverse);
+            border: 1px solid var(--ks-border-primary-inverse);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+
+            &.enterprise {
+                border-color: var(--ks-border-secondary-inverse);
+            }
+        }
+
+        .edition-header {
+            margin-bottom: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .cloud-badge {
+            background: rgba(113, 139, 254, 0.15);
+            color: var(--ks-content-link-inverse);
+            border: 1px solid rgba(113, 139, 254, 0.3);
+        }
+
+        .enterprise-badge {
+            background: rgba(159, 79, 237, 0.15);
+            color: var(--ks-content-color-highlight-inverse);
+            border: 1px solid rgba(159, 79, 237, 0.3);
+        }
+
+        .edition-title {
+            font-size: $font-size-lg;
+            font-weight: 600;
+            color: var(--ks-content-primary-inverse);
+            margin: 0 0 0.4rem;
+            line-height: 1.3;
+        }
+
+        .edition-desc {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary-inverse);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--ks-border-primary-inverse);
+            margin: 1.25rem 0;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                font-size: $font-size-sm;
+                color: var(--ks-content-secondary-inverse);
+                padding: 0.35rem 0;
+
+                &.bold {
+                    font-weight: 600;
+                    color: var(--ks-content-primary-inverse);
+                    background: rgba(113, 139, 254, 0.08);
+                    border: 1px solid rgba(113, 139, 254, 0.2);
+                    border-radius: 6px;
+                    padding: 0.45rem 0.75rem;
+                    margin-bottom: 0.25rem;
+                }
+
+                :global(.icon) {
+                    font-size: 1.1rem;
+                    flex-shrink: 0;
+                    color: var(--ks-content-link-inverse);
+                }
+            }
+        }
+
+        .card-footer {
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+
+</style>
