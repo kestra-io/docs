@@ -14,18 +14,18 @@ import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 
-import competitorLogo from "~/components/versus/assets/ansible.svg?raw"
-import competitorMonogram from "~/components/versus/assets/ansible-monograme.svg?raw"
-import hcImage from "~/components/versus/assets/hc.png"
+import broadcomLogo from "~/components/versus/assets/broadcom.svg?raw"
+import broadcomMonogram from "~/components/versus/assets/broadcom-monograme.svg?raw"
+import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
-import competitorImg from "~/components/versus/assets/ansible-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_ansible.webp"
+import broadcomImg from "~/components/versus/assets/broadcom-img.svg"
+import heroUI from "~/components/versus/assets/broadcom_hero_ui.webp"
 
-const entry = await getEntry("vsPages", "ansible-automation-platform")
-if (!entry) throw new Error("Could not find vsPages/ansible-automation-platform collection entry")
+const entry = await getEntry("vsPages", "broadcom")
+if (!entry) throw new Error("Could not find vsPages/broadcom collection entry")
 
 const {
     title,
@@ -51,7 +51,7 @@ const {
         {...intro}
         competitor={{
             name: competitorName,
-            monogram: competitorMonogram,
+            monogram: broadcomMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
     />
@@ -59,28 +59,28 @@ const {
         {...philosophy}
         competitor={{
             ...philosophy.competitor,
-            logo: competitorLogo,
+            logo: broadcomLogo,
         }}
     />
     <BusinessValue
         {...businessValue}
         competitor={{
             ...businessValue.competitor,
-            logo: competitorLogo,
+            logo: broadcomLogo,
         }}
     />
     <SetupSpeed
         {...setupSpeed}
         competitor={{
             ...setupSpeed.competitor,
-            logo: competitorLogo,
+            logo: broadcomLogo,
         }}
     />
     <EaseOfUse
         {...easeOfUse}
         competitor={{
             ...easeOfUse.competitor,
-            logo: competitorLogo,
+            logo: broadcomLogo,
         }}
     />
     <VisualPreview
@@ -91,19 +91,19 @@ const {
         }}
         competitor={{
             ...visualPreview.competitor,
-            logo: competitorLogo,
-            linkImg: competitorImg,
+            logo: broadcomLogo,
+            linkImg: broadcomImg,
         }}
     />
     <FeatureGrid
         featureGrid={{
             ...featureGrid,
-            competitorLogo: competitorLogo,
+            competitorLogo: broadcomLogo,
         }}
     />
     <SocialProof
         {...socialProof}
-        image={{ ...socialProof.image, src: hcImage }}
+        image={{ ...socialProof.image, src: lmfrImage }}
     />
     <PlatformStrengths
         {...platformStrengths}
@@ -116,14 +116,15 @@ const {
         {...decisionGuide}
         competitor={{
             ...decisionGuide.competitor,
-            logo: competitorLogo,
+            logo: broadcomLogo,
         }}
     />
     <Faq items={commonQuestions} client:visible />
     <SeeHow>
         <Fragment slot="title">
-            Getting Started with Ansible Orchestration
+            Modernize Beyond Legacy Batch Scheduling
         </Fragment>
-        See how Kestra extends Ansible into full IT lifecycle orchestration.
+        See how Kestra replaces centralized job schedulers with developer-friendly,
+        event-driven orchestration.
     </SeeHow>
 </Layout>

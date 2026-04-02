@@ -14,18 +14,21 @@ import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 
-import competitorLogo from "~/components/versus/assets/ansible.svg?raw"
-import competitorMonogram from "~/components/versus/assets/ansible-monograme.svg?raw"
-import hcImage from "~/components/versus/assets/hc.png"
+import awsStepFunctionsLogo from "~/components/versus/assets/aws-step-functions.svg?raw"
+import awsStepFunctionsMonogram from "~/components/versus/assets/aws-step-functions-monograme.svg?raw"
+import acxiomImage from "~/components/versus/assets/acxiom.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
-import competitorImg from "~/components/versus/assets/ansible-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_ansible.webp"
+import awsStepFunctionsImg from "~/components/versus/assets/aws-step-functions-img.svg"
+import heroUI from "~/components/versus/assets/step_hero_ui.webp"
 
-const entry = await getEntry("vsPages", "ansible-automation-platform")
-if (!entry) throw new Error("Could not find vsPages/ansible-automation-platform collection entry")
+const entry = await getEntry("vsPages", "aws-step-functions")
+if (!entry)
+    throw new Error(
+        "Could not find vsPages/aws-step-functions collection entry",
+    )
 
 const {
     title,
@@ -51,7 +54,7 @@ const {
         {...intro}
         competitor={{
             name: competitorName,
-            monogram: competitorMonogram,
+            monogram: awsStepFunctionsMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
     />
@@ -59,28 +62,28 @@ const {
         {...philosophy}
         competitor={{
             ...philosophy.competitor,
-            logo: competitorLogo,
+            logo: awsStepFunctionsLogo,
         }}
     />
     <BusinessValue
         {...businessValue}
         competitor={{
             ...businessValue.competitor,
-            logo: competitorLogo,
+            logo: awsStepFunctionsLogo,
         }}
     />
     <SetupSpeed
         {...setupSpeed}
         competitor={{
             ...setupSpeed.competitor,
-            logo: competitorLogo,
+            logo: awsStepFunctionsLogo,
         }}
     />
     <EaseOfUse
         {...easeOfUse}
         competitor={{
             ...easeOfUse.competitor,
-            logo: competitorLogo,
+            logo: awsStepFunctionsLogo,
         }}
     />
     <VisualPreview
@@ -91,19 +94,19 @@ const {
         }}
         competitor={{
             ...visualPreview.competitor,
-            logo: competitorLogo,
-            linkImg: competitorImg,
+            logo: awsStepFunctionsLogo,
+            linkImg: awsStepFunctionsImg,
         }}
     />
     <FeatureGrid
         featureGrid={{
             ...featureGrid,
-            competitorLogo: competitorLogo,
+            competitorLogo: awsStepFunctionsLogo,
         }}
     />
     <SocialProof
         {...socialProof}
-        image={{ ...socialProof.image, src: hcImage }}
+        image={{ ...socialProof.image, src: acxiomImage }}
     />
     <PlatformStrengths
         {...platformStrengths}
@@ -116,14 +119,15 @@ const {
         {...decisionGuide}
         competitor={{
             ...decisionGuide.competitor,
-            logo: competitorLogo,
+            logo: awsStepFunctionsLogo,
         }}
     />
     <Faq items={commonQuestions} client:visible />
     <SeeHow>
         <Fragment slot="title">
-            Getting Started with Ansible Orchestration
+            Getting Started with Multi-Cloud Orchestration
         </Fragment>
-        See how Kestra extends Ansible into full IT lifecycle orchestration.
+        See how Kestra can orchestrate workflows across any cloud, any language, and
+        your entire stack.
     </SeeHow>
 </Layout>
