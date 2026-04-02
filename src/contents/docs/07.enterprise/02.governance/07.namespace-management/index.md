@@ -306,10 +306,7 @@ kestra_password = "your-kestra-password"
 ```
 
 ## Allowed Namespaces
-When you navigate to any Namespace and go to the Edit tab, you can explicitly configure which Namespaces are allowed to access flows and other resources related to that Namespace. By default, all Namespaces are allowed:
 
-![allowed-namespaces](./allowed-namespaces.png)
+When you navigate to any Namespace and go to the **Edit** tab, you can explicitly configure which Namespaces are allowed to access flows and other resources related to that Namespace. 
 
-However, you can restrict that access if you want only specific Namespaces (or no Namespace at all) to trigger its corresponding resources.
-
-![allowed-namespaces-2](./allowed-namespaces-2.png)
+By default, **all Namespaces** are allowed. To restrict access, **select specific Namespaces** — access automatically extends to each selected namespace's children.
