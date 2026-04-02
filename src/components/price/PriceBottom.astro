@@ -1,6 +1,6 @@
 ---
 import SeeHow from "~/components/common/SeeHow.astro"
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 
 const SELF_HOSTED_FAQ = [
     {
@@ -57,11 +57,11 @@ const CLOUD_HOSTED_FAQ = [
 </div>
 
 <div class="price-faq" data-host="self-hosted" data-usal="fade-u delay-20">
-    <Faq items={SELF_HOSTED_FAQ} client:visible />
+    <Faq items={SELF_HOSTED_FAQ} />
 </div>
 
 <div class="price-faq d-none" data-host="cloud-hosted" data-usal="fade-u delay-20">
-    <Faq items={CLOUD_HOSTED_FAQ} client:visible />
+    <Faq items={CLOUD_HOSTED_FAQ} />
 </div>
 
 <style lang="scss">

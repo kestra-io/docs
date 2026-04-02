@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content"
 import Layout from "~/components/layout.astro"
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import kestraIcon from "~/components/versus/assets/ks-icon.svg?raw"
 import vsBadgeSvg from "~/components/versus/assets/vs-badge.svg?raw"
@@ -155,7 +155,6 @@ const faqItems = [
     <Faq
         items={faqItems}
         title="Frequently Asked Questions"
-        client:visible
     />
 </Layout>
 

@@ -1,6 +1,6 @@
 ---
 import Layout from "~/components/layout.astro"
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import CardGrid from "~/components/card/CardGrid.astro"
 
@@ -67,7 +67,7 @@ const FAQS = [
         />
         <WriteSection />
         <Process />
-        <Faq items={FAQS} client:visible />
+        <Faq items={FAQS} />
         <SeeHow imgSrc={seeHowImg}>
             <Fragment slot="title">Start Writing For Kestra</Fragment>
             Ready to share your technical knowledge? Join our community of writers

@@ -3,7 +3,7 @@ export const prerender = false
 
 import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import BlueprintLists from "~/components/blueprints/BlueprintLists.vue"
 import BlueprintSearch from "~/components/blueprints/BlueprintSearch.vue"
@@ -111,7 +111,7 @@ const description = "Get started with our library of workflows ready to use"
             }
         </div>
     </BlueprintLists>
-    <Faq items={ITEMS} client:visible />
+    <Faq items={ITEMS} />
 </Layout>
 
 <style lang="scss">

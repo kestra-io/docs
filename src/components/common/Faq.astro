@@ -1,0 +1,37 @@
+---
+import FaqVue from "~/components/common/Faq.vue"
+
+interface FaqItem {
+    question: string
+    answer: string
+}
+
+interface Props {
+    items: FaqItem[]
+    title?: string
+    subtitle?: string
+    showHeader?: boolean
+}
+
+const { items, ...rest } = Astro.props
+
+function stripHtml(html: string): string {
+    return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim()
+}
+
+const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+            "@type": "Answer",
+            text: stripHtml(item.answer),
+        },
+    })),
+}
+---
+
+{items.length > 0 && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+<FaqVue {items} {...rest} client:visible />

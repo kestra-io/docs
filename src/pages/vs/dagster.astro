@@ -12,7 +12,7 @@ import SocialProof from "~/components/common/SocialProof.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 
 import dagsterLogo from "~/components/versus/assets/dagster.svg?raw"
 import dagsterMonogram from "~/components/versus/assets/dagster-monograme.svg?raw"
@@ -119,7 +119,7 @@ const {
             logo: dagsterLogo,
         }}
     />
-    <Faq items={commonQuestions} client:visible />
+    <Faq items={commonQuestions} />
     <SeeHow>
         <Fragment slot="title">
             Getting Started with Declarative Orchestration

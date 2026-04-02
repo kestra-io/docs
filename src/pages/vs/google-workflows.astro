@@ -12,7 +12,7 @@ import SocialProof from "~/components/common/SocialProof.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 
 import googleWorkflowsLogo from "~/components/versus/assets/google-workflows.svg?raw"
 import googleWorkflowsMonogram from "~/components/versus/assets/google-workflows-monograme.svg?raw"
@@ -120,7 +120,7 @@ const {
             logo: googleWorkflowsLogo,
         }}
     />
-    <Faq items={commonQuestions} client:visible />
+    <Faq items={commonQuestions} />
     <SeeHow>
         <Fragment slot="title">
             Orchestrate Beyond GCP Service Coordination

@@ -12,7 +12,7 @@ import SocialProof from "~/components/common/SocialProof.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 
 import awsStepFunctionsLogo from "~/components/versus/assets/aws-step-functions.svg?raw"
 import awsStepFunctionsMonogram from "~/components/versus/assets/aws-step-functions-monograme.svg?raw"
@@ -120,7 +120,7 @@ const {
             logo: awsStepFunctionsLogo,
         }}
     />
-    <Faq items={commonQuestions} client:visible />
+    <Faq items={commonQuestions} />
     <SeeHow>
         <Fragment slot="title">
             Getting Started with Multi-Cloud Orchestration

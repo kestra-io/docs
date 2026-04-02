@@ -1,7 +1,7 @@
 ---
 import Layout from "~/components/layout.astro"
 
-import Faq from "~/components/common/Faq.vue"
+import Faq from "~/components/common/Faq.astro"
 import Intro from "~/components/data/Intro.astro"
 import Solves from "~/components/data/Solves.astro"
 import Actual from "~/components/data/Actual.astro"
@@ -91,7 +91,7 @@ const items = [
         </Fragment>
         Join 500+ data teams who’ve modernized their orchestration with Kestra.
     </SeeHow>
-    <Faq {items} client:visible />
+    <Faq {items} />
 </Layout>
 
 <style lang="scss">
