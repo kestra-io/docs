@@ -1,16 +1,31 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
-import { sitemapResponse } from "~/utils/sitemap.ts"
+import { sitemapResponse, formatLastMod } from "~/utils/sitemap.ts"
+import fs from "fs"
+import path from "path"
 
 export const GET: APIRoute = async () => {
     const allBlogPosts = await getCollection("docs")
-    const urls = allBlogPosts.map(
-        (content) => {
-            const page = content.id.replace("<index>", "")
+    const urls = allBlogPosts.map((content) => {
+        const page = content.id.replace("<index>", "")
+        const updatedField = (content.data as any).updated ?? (content.data as any).updatedAt ?? null
 
-            return `https://kestra.io/docs${page ? "/" + page : ""}`
-        },
-    )
+        let lastmod = formatLastMod(updatedField)
+        if (!lastmod && (content as any).filePath) {
+            try {
+                const fp = path.isAbsolute((content as any).filePath) ? (content as any).filePath : path.join(process.cwd(), (content as any).filePath)
+                const stat = fs.statSync(fp)
+                lastmod = formatLastMod(stat.mtime)
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        return {
+            loc: `https://kestra.io/docs${page ? "/" + page : ""}`,
+            lastmod,
+        }
+    })
 
     return sitemapResponse(urls)
 }

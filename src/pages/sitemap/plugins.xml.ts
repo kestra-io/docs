@@ -1,5 +1,7 @@
+export const prerender = false
+
 import type { APIRoute } from "astro"
-import { sitemapResponse } from "~/utils/sitemap.ts"
+import { sitemapResponse, formatLastMod } from "~/utils/sitemap.ts"
 import {
     isEntryAPluginElementPredicate,
     subGroupName,
@@ -25,7 +27,9 @@ export const GET: APIRoute = async () => {
             urls.push(`/plugins/${pluginName}/${slugify(subGroupName(plugin))}`)
         }
 
-        return urls.concat(
+        const pluginUpdated = (plugin as any).updatedAt ?? (plugin as any).updated ?? null
+
+        const pluginUrls = urls.concat(
             Object.entries(plugin)
                 .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
                 .map(([_, value]) => value as PluginElement[])
@@ -37,9 +41,20 @@ export const GET: APIRoute = async () => {
                     }).filter(url => url !== null)
                 }),
         )
+
+        // Attach plugin-level updatedAt to top-level plugin pages where possible
+        return pluginUrls.map((u) => ({ loc: u as string, lastmod: formatLastMod(pluginUpdated) }))
+    })
+    // allPages now is array of objects or arrays; flatten and unique by loc
+    const flat = ([] as any[]).concat(...allPages)
+    const mapByLoc: Record<string, { loc: string; lastmod?: string | null }> = {}
+    flat.forEach((p) => {
+        const loc = typeof p === "string" ? p : p.loc
+        const lastmod = typeof p === "string" ? null : p.lastmod
+        mapByLoc[loc] = mapByLoc[loc] || { loc, lastmod }
     })
 
-    const urls = [...new Set(allPages)].map((e) => `https://kestra.io${e}`)
+    const urls = Object.values(mapByLoc).map((e) => ({ loc: `https://kestra.io${e.loc}`, lastmod: e.lastmod }))
 
     return sitemapResponse(urls)
 }
