@@ -24,11 +24,9 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import awsStepFunctionsImg from "~/components/versus/assets/aws-step-functions-img.svg"
 import heroUI from "~/components/versus/assets/step_hero_ui.webp"
 
-const entry = await getEntry("vsPages", "aws-step-functions")
+const entry = await getEntry("vs", "aws-step-functions")
 if (!entry)
-    throw new Error(
-        "Could not find vsPages/aws-step-functions collection entry",
-    )
+    throw new Error("Could not find vs/aws-step-functions collection entry")
 
 const {
     title,

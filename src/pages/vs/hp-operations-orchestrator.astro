@@ -24,8 +24,11 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/hp-operations-orchestrator-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_hpoo.webp"
 
-const entry = await getEntry("vsPages", "hp-operations-orchestrator")
-if (!entry) throw new Error("Could not find vsPages/hp-operations-orchestrator collection entry")
+const entry = await getEntry("vs", "hp-operations-orchestrator")
+if (!entry)
+    throw new Error(
+        "Could not find vs/hp-operations-orchestrator collection entry",
+    )
 
 const {
     title,
@@ -124,6 +127,7 @@ const {
         <Fragment slot="title">
             Modernizing Legacy IT Automation with Kestra
         </Fragment>
-        See how enterprises replace HP OO and other legacy runbook tools with Kestra's declarative platform.
+        See how enterprises replace HP OO and other legacy runbook tools with Kestra's
+        declarative platform.
     </SeeHow>
 </Layout>

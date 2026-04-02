@@ -24,8 +24,8 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/rundeck-full-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_rundeck.webp"
 
-const entry = await getEntry("vsPages", "rundeck")
-if (!entry) throw new Error("Could not find vsPages/rundeck collection entry")
+const entry = await getEntry("vs", "rundeck")
+if (!entry) throw new Error("Could not find vs/rundeck collection entry")
 
 const {
     title,
@@ -124,6 +124,7 @@ const {
         <Fragment slot="title">
             Getting Started with Modern Runbook Orchestration
         </Fragment>
-        See how Kestra modernizes operational runbooks with declarative YAML and event-driven triggers.
+        See how Kestra modernizes operational runbooks with declarative YAML and event-driven
+        triggers.
     </SeeHow>
 </Layout>

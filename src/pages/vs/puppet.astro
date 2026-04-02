@@ -24,8 +24,8 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/puppet-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_puppet.webp"
 
-const entry = await getEntry("vsPages", "puppet")
-if (!entry) throw new Error("Could not find vsPages/puppet collection entry")
+const entry = await getEntry("vs", "puppet")
+if (!entry) throw new Error("Could not find vs/puppet collection entry")
 
 const {
     title,
@@ -124,6 +124,7 @@ const {
         <Fragment slot="title">
             From Configuration Management to Workflow Orchestration
         </Fragment>
-        See how Kestra can orchestrate your infrastructure automation—including Puppet—in declarative YAML workflows.
+        See how Kestra can orchestrate your infrastructure automation—including Puppet—in
+        declarative YAML workflows.
     </SeeHow>
 </Layout>

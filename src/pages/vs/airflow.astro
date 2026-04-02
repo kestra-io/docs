@@ -24,8 +24,8 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import airflowImg from "~/components/versus/assets/airflow-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_airflow.webp"
 
-const entry = await getEntry("vsPages", "airflow")
-if (!entry) throw new Error("Could not find vsPages/airflow collection entry")
+const entry = await getEntry("vs", "airflow")
+if (!entry) throw new Error("Could not find vs/airflow collection entry")
 
 const {
     title,
