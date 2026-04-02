@@ -41,6 +41,8 @@ Install both skills by following the instructions at [kestra.io/docs/ai-tools/ag
 
 You also need `kestractl` installed and pointed at a running Kestra instance:
 
+:::collapse{title="Configure kestractl"}
+
 ```bash
 kestractl config add local http://localhost:8080 ""
 kestractl config use local
@@ -49,9 +51,13 @@ kestractl config use local
 kestractl flows list --namespace company.analytics
 ```
 
+:::
+
 ## The Pipeline We're Migrating
 
 The source DAG — `dummyjson_products_pipeline.py` — fetches product data from [dummyjson.com](https://dummyjson.com), runs pandas analytics, and produces JSON output artifacts. It has two stages of parallelism:
+
+:::collapse{title="DAG topology"}
 
 ```
 fetch_all_products ──┬──> compute_category_stats ──────┐
@@ -61,7 +67,11 @@ fetch_all_products ──┬──> compute_category_stats ──────┐
 fetch_categories ────┘ (also feeds review_sentiment)
 ```
 
+:::
+
 The DAG uses the `@task` decorator pattern, with all business logic embedded directly in the DAG file:
+
+:::collapse{title="Airflow DAG: dummyjson_products_pipeline.py"}
 
 ```python
 default_args = {
@@ -116,6 +126,8 @@ with DAG(
     build_executive_summary(cat_stats, brand_stats, price_tiers, review_sentiment)
 ```
 
+:::
+
 Everything lives in one Python file. The task functions return Python objects that Airflow serializes via XCom.
 
 ## Step-by-Step: Migrating the DAG
@@ -124,15 +136,21 @@ Everything lives in one Python file. The task functions return Python objects th
 
 If you don't have a local Airflow instance already running, just ask Claude Code:
 
+:::collapse{title="Claude Code prompt: spin up Airflow"}
+
 ```
 Install Airflow and run it on port 28080
 ```
+
+:::
 
 Claude will create a virtual environment, install Airflow, initialize the database, and run `airflow standalone`. You'll have a working Airflow UI at `http://localhost:28080` in a few minutes.
 
 ### 2. Prompt Claude to Migrate
 
 Open Claude Code in your project directory and give it a specific migration prompt:
+
+:::collapse{title="Claude Code migration prompt"}
 
 ```
 Using the kestra-flow skill, migrate my Airflow DAG at
@@ -147,6 +165,8 @@ Requirements:
 - Output results to the kestra-migrate/ directory
 ```
 
+:::
+
 What happens under the hood:
 
 1. Claude reads the entire DAG file — tasks, dependencies, XCom wiring, schedule, retries
@@ -155,6 +175,8 @@ What happens under the hood:
 4. Each `@task` function is extracted into its own Python script — XCom returns become file writes, XCom inputs become file reads
 
 The output:
+
+:::collapse{title="Generated file structure"}
 
 ```
 kestra-migrate/
@@ -169,11 +191,14 @@ kestra-migrate/
     └── build_executive_summary.py
 ```
 
+:::
+
 ### 3. What the Extraction Looks Like
 
 The key transformation is how XCom data passing becomes file I/O. In Airflow, `fetch_all_products` returns a Python list that Airflow serializes to the metadata database. In the extracted namespace file, it writes a JSON file to disk instead:
 
-**Before (embedded in DAG):**
+:::collapse{title="Before: fetch_all_products (Airflow @task)"}
+
 ```python
 @task()
 def fetch_all_products() -> list[dict]:
@@ -182,7 +207,10 @@ def fetch_all_products() -> list[dict]:
     return all_products  # serialized via XCom
 ```
 
-**After (standalone namespace file):**
+:::
+
+:::collapse{title="After: fetch_all_products (namespace file)"}
+
 ```python
 import json, requests
 
@@ -204,7 +232,11 @@ print(f"Fetched {len(all_products)} products")
 json.dump(all_products, open("products.json", "w"), indent=2)  # written to disk
 ```
 
+:::
+
 Similarly, `compute_category_stats` — which in Airflow received products via XCom — now reads `products.json` from disk:
+
+:::collapse{title="After: compute_category_stats (namespace file)"}
 
 ```python
 import json, pandas as pd
@@ -217,7 +249,11 @@ cat_stats = df.groupby("category").agg(...).round(2)
 json.dump(result, open("category_stats.json", "w"), indent=2, default=str)  # written to disk
 ```
 
+:::
+
 The Kestra flow connects these files explicitly through `outputFiles` and `inputFiles`:
+
+:::collapse{title="Kestra flow: dummyjson_products_pipeline.yaml"}
 
 ```yaml
 id: dummyjson_products_pipeline
@@ -357,11 +393,15 @@ triggers:
     cron: "@daily"
 ```
 
+:::
+
 Notice how `compute_category_review_sentiment` receives both `products.json` from `fetch_all_products` and `categories.json` from `fetch_categories` — the same multi-input dependency that the Airflow DAG expressed via function parameters is now explicit in `inputFiles`.
 
 ### 4. Deploy Namespace Files
 
 Namespace files let your flows reference scripts stored in Kestra's file storage — separate from the flow YAML itself. Upload the extracted scripts:
+
+:::collapse{title="Deploy namespace files with kestractl"}
 
 ```bash
 for f in kestra-migrate/scripts/*.py; do
@@ -374,11 +414,15 @@ done
 kestractl nsfiles list company.analytics --path scripts/ --recursive
 ```
 
+:::
+
 Or ask Claude to handle this for you — it will use the `kestra-ops` skill and run the right `kestractl` commands.
 
 ### 5. Validate and Deploy the Flow
 
 Always validate before deploying:
+
+:::collapse{title="Validate the flow"}
 
 ```bash
 kestractl flows validate kestra-migrate/flow.yaml
@@ -390,13 +434,21 @@ FILE                       STATUS  CONSTRAINTS  WARNINGS
 kestra-migrate/flow.yaml   OK      -            -
 ```
 
+:::
+
 If validation fails, paste the error back to Claude:
+
+:::collapse{title="Claude Code prompt: fix a validation error"}
 
 ```
 The flow validation failed with this error: <paste error>. Fix the flow YAML.
 ```
 
+:::
+
 The `kestra-flow` skill will re-fetch the schema and correct the YAML. Then deploy:
+
+:::collapse{title="Deploy the flow"}
 
 ```bash
 # First time
@@ -406,18 +458,24 @@ kestractl flows create kestra-migrate/flow.yaml
 kestractl flows create kestra-migrate/flow.yaml --override
 ```
 
+:::
+
 Open the Kestra UI to confirm the topology view shows three stages — fetch, analytics fan-out, and executive summary — then trigger a test execution.
 
 ## Common Translation Patterns
 
 ### Scheduling
 
-**Airflow:**
+:::collapse{title="Airflow scheduling"}
+
 ```python
 dag = DAG("my_dag", schedule="@daily", ...)
 ```
 
-**Kestra:**
+:::
+
+:::collapse{title="Kestra scheduling"}
+
 ```yaml
 triggers:
   - id: daily
@@ -425,16 +483,22 @@ triggers:
     cron: "@daily"
 ```
 
+:::
+
 Kestra supports multiple triggers per flow — combine a schedule with a webhook to make the same flow runnable both on a schedule and via API call.
 
 ### Retries
 
-**Airflow:**
+:::collapse{title="Airflow retries"}
+
 ```python
 default_args = {"retries": 2, "retry_delay": timedelta(seconds=30)}
 ```
 
-**Kestra** (per task):
+:::
+
+:::collapse{title="Kestra retries (per task)"}
+
 ```yaml
 - id: my_task
   type: io.kestra.plugin.scripts.python.Commands
@@ -444,16 +508,22 @@ default_args = {"retries": 2, "retry_delay": timedelta(seconds=30)}
     interval: PT30S
 ```
 
+:::
+
 ### Conditional branching
 
-**Airflow:**
+:::collapse{title="Airflow conditional branching"}
+
 ```python
 @task.branch
 def choose_branch(**kwargs):
     return "task_a" if condition else "task_b"
 ```
 
-**Kestra:**
+:::
+
+:::collapse{title="Kestra conditional branching"}
+
 ```yaml
 - id: choose_branch
   type: io.kestra.plugin.core.flow.If
@@ -465,6 +535,8 @@ def choose_branch(**kwargs):
     - id: task_b
       type: ...
 ```
+
+:::
 
 ## Concept Mapping Reference
 
