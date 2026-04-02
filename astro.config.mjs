@@ -26,7 +26,6 @@ const __dirname = path.dirname(
 export default defineConfig({
     site: "https://kestra.io",
     adapter: cloudflare({
-        sessions: false,
         prerenderEnvironment: "node",
         // only use cloudflare images in production
         imageService:
