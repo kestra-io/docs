@@ -15,7 +15,7 @@ This guide demonstrates how to use the Kestra Python SDK to create and execute f
 Before starting, make sure your Kestra instance is running and accessible via the `KESTRA_HOST` environment variable.
 You can store credentials in an `.env` file:
 
-```
+```bash
 KESTRA_HOST=http://localhost:8080
 KESTRA_USERNAME=admin@kestra.io
 KESTRA_PASSWORD=Admin1234

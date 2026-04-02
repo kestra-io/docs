@@ -39,7 +39,7 @@ To avoid errors during the `podman machine init` (`Error: exec: "qemu-img": exec
 
 Then, you may also have to edit the `~/.config/containers/containers.conf` file and add replace `/path/to/bin` with the result of `dirname $(which gvproxy)`:
 
-```
+```toml
 [engine]
 helper_binaries_dir = ["/path/to/bin"]
 ```

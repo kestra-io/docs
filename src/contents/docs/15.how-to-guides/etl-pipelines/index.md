@@ -431,7 +431,7 @@ Next, we will create two files `stg_orders.sql` and `stg_products.sql` which wil
 
 **stg_orders.sql**
 
-```
+```sql
 {{ config(materialized="view") }}
 
 select order_id,
@@ -446,7 +446,7 @@ from {{ source('ecommerce', 'orders') }}
 
 **stg_products.sql**
 
-```
+```sql
 {{ config(materialized="view") }}
 
 select
@@ -459,7 +459,7 @@ from {{ source('ecommerce', 'products') }}
 
 Next, we will create `detailed_orders.sql` which will create the `detailed_orders` table. This model will join the `stg_orders` and `stg_products` view based on `product_id`. The contents of `detailed_orders.sql` file will be as follows:
 
-```
+```sql
 {{ config(materialized="table") }}
 
 select
@@ -479,7 +479,7 @@ on o.product_id = p.product_id
 
 Next, we will create `order_per_product.sql` which will create the `order_per_product` table. This model demonstrates aggregation performed on `detailed_orders` table. The contents of `order_per_product.sql` file will be as follows:
 
-```
+```sql
 {{ config(materialized="table") }}
 
 select
