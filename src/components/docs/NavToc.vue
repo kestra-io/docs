@@ -5,10 +5,18 @@
         :class="{ plugin: isPluginPage }"
     >
         <div>
-            <button class="copy-markdown-btn d-none d-lg-flex" @click="copyAsMarkdown">
-                <ContentCopy class="copy-icon" />
-                <span>{{ copyButtonText }}</span>
-            </button>
+            <a
+                v-if="!isPluginPage && markdownBody"
+                role="button"
+                class="copy-md"
+                :class="{ copied: isCopied }"
+                @click.prevent="copyPageContent"
+            >
+                <div class="copy-md-content">
+                    <component :is="isCopied ? Check : ContentCopy" class="copy-icon" />
+                    <span class="copy-text">{{ isCopied ? 'Copied!' : 'Copy as Markdown' }}</span>
+                </div>
+            </a>
 
             <template v-if="links?.length" class="bd-contents-list">
                 <button
@@ -92,10 +100,11 @@
 
 <script setup lang="ts">
     import { nextTick, ref, onUnmounted } from "vue"
-    import { useEventListener, useScroll } from "@vueuse/core"
+    import { useClipboard, useEventListener, useScroll } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
+    import Check from "vue-material-design-icons/Check.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
     import OverviewPanel from "~/components/plugins/OverviewPanel.vue"
     import type { PluginMetadata } from "@kestra-io/ui-libs"
@@ -131,6 +140,7 @@
             categories?: string[],
             metadata?: PluginMetadata[],
             isPluginPage?: boolean,
+            markdownBody?: string,
             class?: string
         }>(),
         {
@@ -254,6 +264,9 @@
 
     useEventListener("scroll", handleScroll)
     onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))
+
+    const { copy, copied: isCopied } = useClipboard()
+    const copyPageContent = () => props.markdownBody && copy(props.markdownBody.trim())
 </script>
 
 <style lang="scss" scoped>
@@ -423,6 +436,28 @@
             line-height: 1.875rem;
             font-weight: 600;
             padding-top: 0;
+        }
+
+        .copy-md {
+            display: flex;
+            padding: 1.25rem 0;
+            @include media-breakpoint-up(lg) {
+                padding: 1.25rem;
+            }
+            cursor: pointer;
+            color: var(--ks-content-primary);
+            &:hover, &.copied {
+                color: var(--ks-content-link);
+            }
+            .copy-md-content {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                border: $block-border;
+                padding: 0.35rem $rem-1;
+                border-radius: 0.25rem;
+                font-size: $font-size-xs;
+            }
         }
         hr {
             border-color: var(--bs-gray-600);
