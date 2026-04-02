@@ -14,18 +14,19 @@ import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 
-import competitorLogo from "~/components/versus/assets/ansible.svg?raw"
-import competitorMonogram from "~/components/versus/assets/ansible-monograme.svg?raw"
-import hcImage from "~/components/versus/assets/hc.png"
+import googleWorkflowsLogo from "~/components/versus/assets/google-workflows.svg?raw"
+import googleWorkflowsMonogram from "~/components/versus/assets/google-workflows-monograme.svg?raw"
+import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
-import competitorImg from "~/components/versus/assets/ansible-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_ansible.webp"
+import googleWorkflowsImg from "~/components/versus/assets/google-workflows-img.svg"
+import heroUI from "~/components/versus/assets/google_workflows_hero_ui.webp"
 
-const entry = await getEntry("vsPages", "ansible-automation-platform")
-if (!entry) throw new Error("Could not find vsPages/ansible-automation-platform collection entry")
+const entry = await getEntry("vsPages", "google-workflows")
+if (!entry)
+    throw new Error("Could not find vsPages/google-workflows collection entry")
 
 const {
     title,
@@ -51,7 +52,7 @@ const {
         {...intro}
         competitor={{
             name: competitorName,
-            monogram: competitorMonogram,
+            monogram: googleWorkflowsMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
     />
@@ -59,28 +60,28 @@ const {
         {...philosophy}
         competitor={{
             ...philosophy.competitor,
-            logo: competitorLogo,
+            logo: googleWorkflowsLogo,
         }}
     />
     <BusinessValue
         {...businessValue}
         competitor={{
             ...businessValue.competitor,
-            logo: competitorLogo,
+            logo: googleWorkflowsLogo,
         }}
     />
     <SetupSpeed
         {...setupSpeed}
         competitor={{
             ...setupSpeed.competitor,
-            logo: competitorLogo,
+            logo: googleWorkflowsLogo,
         }}
     />
     <EaseOfUse
         {...easeOfUse}
         competitor={{
             ...easeOfUse.competitor,
-            logo: competitorLogo,
+            logo: googleWorkflowsLogo,
         }}
     />
     <VisualPreview
@@ -91,19 +92,19 @@ const {
         }}
         competitor={{
             ...visualPreview.competitor,
-            logo: competitorLogo,
-            linkImg: competitorImg,
+            logo: googleWorkflowsLogo,
+            linkImg: googleWorkflowsImg,
         }}
     />
     <FeatureGrid
         featureGrid={{
             ...featureGrid,
-            competitorLogo: competitorLogo,
+            competitorLogo: googleWorkflowsLogo,
         }}
     />
     <SocialProof
         {...socialProof}
-        image={{ ...socialProof.image, src: hcImage }}
+        image={{ ...socialProof.image, src: lmfrImage }}
     />
     <PlatformStrengths
         {...platformStrengths}
@@ -116,14 +117,15 @@ const {
         {...decisionGuide}
         competitor={{
             ...decisionGuide.competitor,
-            logo: competitorLogo,
+            logo: googleWorkflowsLogo,
         }}
     />
     <Faq items={commonQuestions} client:visible />
     <SeeHow>
         <Fragment slot="title">
-            Getting Started with Ansible Orchestration
+            Orchestrate Beyond GCP Service Coordination
         </Fragment>
-        See how Kestra extends Ansible into full IT lifecycle orchestration.
+        See how Kestra runs code directly, connects to 1200+ plugins, and works across
+        every cloud — without Cloud Functions.
     </SeeHow>
 </Layout>

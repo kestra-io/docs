@@ -23,7 +23,6 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import airflowImg from "~/components/versus/assets/airflow-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_airflow.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
 const entry = await getEntry("vsPages", "airflow")
 if (!entry) throw new Error("Could not find vsPages/airflow collection entry")
@@ -55,7 +54,6 @@ const {
             monogram: airflowMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}
