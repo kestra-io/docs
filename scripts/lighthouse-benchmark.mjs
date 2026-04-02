@@ -17,7 +17,7 @@
  */
 
 import { writeFileSync, readFileSync, existsSync } from "node:fs"
-import { PAGES } from "../tests/fixtures/page-sample"
+import { PAGES } from "../tests/fixtures/page-sample.mjs"
 
 // ---------------------------------------------------------------------------
 // Config

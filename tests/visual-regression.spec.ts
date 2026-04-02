@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test"
-import { PAGES } from "./fixtures/page-sample"
+import { PAGES } from "./fixtures/page-sample.mjs"
 
 /**
  * Visual regression screenshot tests for the Kestra docs site.
