@@ -24,8 +24,11 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/ansible-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_ansible.webp"
 
-const entry = await getEntry("vsPages", "ansible-automation-platform")
-if (!entry) throw new Error("Could not find vsPages/ansible-automation-platform collection entry")
+const entry = await getEntry("vs", "ansible-automation-platform")
+if (!entry)
+    throw new Error(
+        "Could not find vs/ansible-automation-platform collection entry",
+    )
 
 const {
     title,

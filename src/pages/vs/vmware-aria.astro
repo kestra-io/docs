@@ -24,8 +24,8 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/vmware-aria-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_vmware-aria.webp"
 
-const entry = await getEntry("vsPages", "vmware-aria")
-if (!entry) throw new Error("Could not find vsPages/vmware-aria collection entry")
+const entry = await getEntry("vs", "vmware-aria")
+if (!entry) throw new Error("Could not find vs/vmware-aria collection entry")
 
 const {
     title,
@@ -124,6 +124,7 @@ const {
         <Fragment slot="title">
             Getting Started with Modern Infrastructure Orchestration
         </Fragment>
-        See how Kestra replaces VMware Aria Automation with declarative YAML workflows across any cloud.
+        See how Kestra replaces VMware Aria Automation with declarative YAML workflows
+        across any cloud.
     </SeeHow>
 </Layout>
