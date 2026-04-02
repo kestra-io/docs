@@ -24,8 +24,11 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/ibm-workload-automation-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_ibm.webp"
 
-const entry = await getEntry("vsPages", "ibm-workload-automation")
-if (!entry) throw new Error("Could not find vsPages/ibm-workload-automation collection entry")
+const entry = await getEntry("vs", "ibm-workload-automation")
+if (!entry)
+    throw new Error(
+        "Could not find vs/ibm-workload-automation collection entry",
+    )
 
 const {
     title,
@@ -124,6 +127,7 @@ const {
         <Fragment slot="title">
             Getting Started with Declarative Orchestration
         </Fragment>
-        See how Kestra can simplify your workflows—and scale beyond legacy enterprise scheduling.
+        See how Kestra can simplify your workflows—and scale beyond legacy enterprise
+        scheduling.
     </SeeHow>
 </Layout>
