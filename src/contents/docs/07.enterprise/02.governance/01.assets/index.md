@@ -598,7 +598,7 @@ The `assets()` Pebble function allows you to query and retrieve assets dynamical
 
 ### Function signature
 
-```
+```plaintext
 assets(type: string, namespace: string, metadata: map)
 ```
 

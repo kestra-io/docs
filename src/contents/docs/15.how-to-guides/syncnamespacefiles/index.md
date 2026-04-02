@@ -131,7 +131,7 @@ To setup this webhook, go to the Settings for your GitHub repository and head to
 
 For the Payload URL, your URL will follow the following format:
 
-```
+```plaintext
 https://{your_hostname}/api/v1/main/executions/webhook/system/sync_files_from_git/abcdefg
 ```
 
