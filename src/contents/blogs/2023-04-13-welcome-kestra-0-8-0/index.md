@@ -22,7 +22,7 @@ This new release feature the first iteration of our low-code editor. The previou
 
 ### Task documentation in the editor
 
-Each task has exhaustive documentation in the [plugin documentation](/plugins/) section of our website, but when you create a flow from the UI, switching from the editor to the plugin documentation site is not very convenient.
+Each task has exhaustive documentation in the [plugin documentation](/plugins) section of our website, but when you create a flow from the UI, switching from the editor to the plugin documentation site is not very convenient.
 
 To limit context switching, we added a contextual panel in the flow editor displaying the current task documentation. So now you can keep your flow at hand while developing and still be close to the documentation.
 
@@ -71,7 +71,7 @@ We wrote a new page about flow [tasks](../../docs/05.workflow-components/01.task
 
 We created a [tutorial](../../docs/03.tutorial/index.mdx) to discover the most important features one needs to know to write efficient data pipelines with Kestra.
 
-And we also improved the quality of the [plugin documentation](/plugins/), we hope to find some time to improve it more in the upcoming weeks as we know that plugin documentation is sometimes sparse.
+And we also improved the quality of the [plugin documentation](/plugins), we hope to find some time to improve it more in the upcoming weeks as we know that plugin documentation is sometimes sparse.
 
 
 ## Plugins
