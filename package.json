@@ -18,7 +18,7 @@
     "workers:deploy-dryrun": "wrangler deploy --dry-run",
     "workers:build-deploy": "npm run workers:build && npm run workers:deploy",
     "cf-typegen": "wrangler types",
-    "lint": "oxlint . --fix",
+    "lint": "oxlint --config ./oxlint.config.mjs --fix",
     "format": "oxfmt . --write && prettier --write **/*.astro",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots"

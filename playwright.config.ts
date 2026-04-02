@@ -39,7 +39,7 @@ export default defineConfig({
 
     webServer: {
         command:
-            "NO_IMAGE_OPTIM=true DISABLE_USAL=true DISABLE_GITHUB=true PREVIEW=true npm run preview",
+            "NO_IMAGE_OPTIM=true DISABLE_USAL=true DISABLE_GITHUB=true PREVIEW=true NO_RANDOM_ORDER=true npm run preview",
         url: "http://localhost:8787",
         reuseExistingServer: !process.env.CI,
         timeout: 200_000,

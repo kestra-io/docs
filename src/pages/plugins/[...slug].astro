@@ -219,11 +219,10 @@ try {
 }
 
 // Batch 2: fetch remaining data in parallel
-const [{ countByPlugins: blueprintCounts }] = await Promise.all([
+const { countByPlugins: blueprintCounts } = await
     $fetchApiCached<{ countByPlugins: Record<string, number> }>(
         `/blueprints/countByPlugins`,
-    ),
-])
+    )
 
 const subgroups = allPlugins.filter((r) => r.name === pluginName)
 

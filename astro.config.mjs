@@ -194,6 +194,12 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            NO_RANDOM_ORDER: envField.boolean({
+                context: "client",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
         },
     },
     // require for "/t" url
