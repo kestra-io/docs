@@ -12,6 +12,7 @@ import LayoutFooter from "~/components/layout/Footer.astro"
 import LayoutFixed from "~/components/layout/Fixed.vue"
 import Announce from "~/components/layout/Announce.vue"
 import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
+import BreadcrumbList from "~/components/common/BreadcrumbList.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
 import annoncesData from "~/contents/annonces/annonces.yml?raw"
 import YAML from "yaml"
@@ -144,6 +145,7 @@ const hasAnnounce = isHomepage && annonces.length > 0
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
+        <BreadcrumbList url={currentUrl} pageTitle={props.title} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />
