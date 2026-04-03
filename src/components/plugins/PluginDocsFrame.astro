@@ -1,0 +1,52 @@
+---
+
+---
+
+<div class="bd-content">
+    <slot />
+</div>
+
+<style lang="scss">
+    .bd-content {
+        max-width: 100%;
+
+        :global(.gradient-overlay),
+        :global(.more-btn) {
+            background: linear-gradient(
+                transparent,
+                var(--ks-background-primary)
+            );
+        }
+
+        :global(.element-card),
+        :global(.plugin) {
+            background-color: var(--ks-background-primary) !important;
+            border-color: var(--ks-border-secondary) !important;
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light) !important;
+            &:hover {
+                border-color: var(--ks-border-active) !important;
+            }
+            &:global(.is-active) {
+                border-color: var(--ks-content-link) !important;
+            }
+            :global(h6) {
+                color: var(--ks-content-primary);
+            }
+            :global(.plugin-info) {
+                background-color: transparent;
+                border: $block-border;
+                :global(.plugin-class) {
+                    color: var(--ks-content-link) !important;
+                }
+            }
+            :global(.description) {
+                text-transform: none;
+            }
+        }
+
+        :global(code) {
+            border: none !important;
+            background-color: transparent !important;
+        }
+    }
+</style>
