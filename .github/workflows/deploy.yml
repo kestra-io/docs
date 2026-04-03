@@ -60,6 +60,10 @@ jobs:
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
         run: npm run lint
 
+      - name: check for purgecss classes
+        if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
+        run: npx eslint --ext .astro,.vue src/
+
       - name: Check usage of collection in SSR pages
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
         run: node scripts/check-astro-content-imports.mjs

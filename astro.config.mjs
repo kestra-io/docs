@@ -18,6 +18,8 @@ import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
+import purgecss from "astro-purgecss"
+
 const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
 )
@@ -46,6 +48,13 @@ export default defineConfig({
         expressiveCode(),
         mdx(),
         icon(),
+        purgecss({
+            safelist: [/^cm[-_]?/, /^cc-/],
+            content: [
+                "./src/**/*.{astro,vue,md,mdx}",
+                "node_modules/@kestra-io/ui-libs/**/*.{astro,vue}",
+            ],
+        }),
     ],
     markdown: {
         remarkPlugins: [
