@@ -5,6 +5,7 @@ date: 2025-01-24T13:00:00
 category: Solutions
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: ageller
   role: Product Lead
 image: ./main.png

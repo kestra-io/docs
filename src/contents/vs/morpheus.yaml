@@ -1,6 +1,8 @@
 title: "HPE Morpheus vs Kestra for Hybrid Cloud Management"
 description: "Compare Kestra vs HPE Morpheus: open-source declarative workflow orchestration in YAML vs. proprietary hybrid cloud management platform. See features, setup, and when to choose each."
 competitorName: HPE Morpheus
+category: Infrastructure Automation
+shortDescription: "Proprietary hybrid cloud management platform vs. open-source declarative workflow orchestration."
 
 intro:
   title: "Kestra vs. HPE Morpheus: Declarative Orchestration vs. Hybrid Cloud Management"

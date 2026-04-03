@@ -5,6 +5,7 @@ date: 2023-05-05T12:00:00
 category: Solutions
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg
@@ -102,7 +103,7 @@ This code snippet demonstrates how Kestra uses YAML to manage data pipelines. It
 
 ## Broadening the Data Pipeline Possibilities with Kestra ##
 
-Kestra's flexibility and versatility, underlined by its extensive [range of plugins](/plugins/), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
+Kestra's flexibility and versatility, underlined by its extensive [range of plugins](/plugins), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
 
 Kestra's Debezium plugins include connectors for Postgres and MySQL, PostgreSQL, Oracle, SQL Server, and more. The ongoing development aims to continually improve and expand the product's capabilities.
 

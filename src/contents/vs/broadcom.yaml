@@ -1,6 +1,8 @@
 title: "Kestra vs. Broadcom Dollar Universe: Modern Orchestration vs. Legacy Workload Automation"
 description: "Compare Kestra vs Broadcom Dollar Universe: declarative YAML workflow orchestration vs proprietary UPROC-based enterprise workload automation. See features, setup time, and use cases."
 competitorName: Broadcom Dollar Universe
+category: Infrastructure Automation
+shortDescription: "Proprietary UPROC-based enterprise workload automation vs. modern declarative YAML orchestration."
 
 intro:
   title: "Kestra vs. Broadcom Dollar Universe: Modern Orchestration vs. Legacy Workload Automation"

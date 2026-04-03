@@ -14,22 +14,22 @@ import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 
-import competitorLogo from "~/components/versus/assets/vmware-aria.svg?raw"
-import competitorMonogram from "~/components/versus/assets/vmware-aria-monograme.svg?raw"
+import competitorLogo from "~/components/versus/assets/vmware-cloud-foundation.svg?raw"
+import competitorMonogram from "~/components/versus/assets/vmware-cloud-foundation-monograme.svg?raw"
 import industryImage from "~/components/versus/assets/industry.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
-import competitorImg from "~/components/versus/assets/vmware-aria-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_vmware-aria.webp"
+import competitorImg from "~/components/versus/assets/vmware-cloud-foundation-img.svg"
+import heroUI from "~/components/versus/assets/hero_ui_vmware-cloud-foundation.webp"
 
-const entry = await getEntry("vs", "vmware-aria")
-if (!entry) throw new Error("Could not find vs/vmware-aria collection entry")
+const entry = await getEntry("vs", "vmware-cloud-foundation")
+if (!entry) throw new Error("Could not find vs/vmware-cloud-foundation collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -46,7 +46,7 @@ const {
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} description={shortDescription} headerTheme="lightText">
     <Intro
         {...intro}
         competitor={{

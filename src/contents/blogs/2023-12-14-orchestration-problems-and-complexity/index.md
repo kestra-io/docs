@@ -5,6 +5,7 @@ date: 2023-12-14T11:30:00
 category: Solutions
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: "ageller"
 image: ./main.png
 ---
@@ -58,7 +59,7 @@ To solve silos without creating new ones, Kestra meets users where they are.
 
 To meet users where they are and remove the need for new silos, Kestra integrates with tools you already know and love. Because each plugin is a single binary file, there’s no package dependency hell, even without relying on Docker (_Docker is supported but not required_). These integrations reduce the complexity of orchestration, and in combination with blueprints, they enable hundreds of use cases out of the box.
 
-Thanks to the open-source contributions, the list of supported plugins keeps growing with every new release. You can check the [list of supported plugins](/plugins/) to see if your favorite tool is already supported. If not, you can [build your own](../../docs/plugin-developer-guide/index.mdx) in minutes.
+Thanks to the open-source contributions, the list of supported plugins keeps growing with every new release. You can check the [list of supported plugins](/plugins) to see if your favorite tool is already supported. If not, you can [build your own](../../docs/plugin-developer-guide/index.mdx) in minutes.
 
 ![ui](./ui.png)
 
