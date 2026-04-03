@@ -29,7 +29,7 @@ if (!entry) throw new Error("Could not find vs/stonebranch collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -46,7 +46,7 @@ const {
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} description={shortDescription} headerTheme="lightText">
     <Intro
         {...intro}
         competitor={{
