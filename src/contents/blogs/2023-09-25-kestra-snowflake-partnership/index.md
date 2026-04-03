@@ -5,6 +5,7 @@ date: 2023-09-25T17:00:00
 category: Company News
 author:
   name: Martin-Pierre Roset
+  linkedin: https://www.linkedin.com/in/martin-pierre-roset/
   image: "mproset"
 image: ./main.jpg
 ---

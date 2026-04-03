@@ -1,6 +1,8 @@
 title: "Kestra vs. AWS Step Functions: Any Cloud, Any Language, Any Workflow"
 description: "Compare Kestra vs AWS Step Functions: multi-cloud workflow orchestration in any language vs AWS-native state machine automation. See features, setup time, and use cases."
 competitorName: AWS Step Functions
+category: Data Orchestration
+shortDescription: "AWS-native state machine automation vs. multi-cloud workflow orchestration in any language."
 
 intro:
   title: "Kestra vs. AWS Step Functions: Any Cloud, Any Language, Any Workflow"

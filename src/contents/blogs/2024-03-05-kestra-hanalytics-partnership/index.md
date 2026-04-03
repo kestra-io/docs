@@ -5,6 +5,7 @@ date: 2024-03-05T12:00:00
 category: Company News
 author:
   name: Quentin Sinig
+  linkedin: https://www.linkedin.com/in/quentinsinig/
   image: "qsinig"
 image: ./main.jpg
 ---

@@ -12,6 +12,7 @@ import LayoutFooter from "~/components/layout/Footer.astro"
 import LayoutFixed from "~/components/layout/Fixed.vue"
 import Announce from "~/components/layout/Announce.vue"
 import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
+import BreadcrumbList from "~/components/common/BreadcrumbList.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
 import annoncesData from "~/contents/annonces/annonces.yml?raw"
 import YAML from "yaml"
@@ -78,6 +79,28 @@ const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
 const hasAnnounce = isHomepage && annonces.length > 0
+
+const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://kestra.io/#organization",
+    "name": "Kestra Technologies",
+    "url": "https://kestra.io",
+    "logo": "https://kestra.io/logo.svg",
+    "description": "Kestra is the open-source orchestration platform for data, AI, and infrastructure workflows. Event-driven, language-agnostic, and built for enterprise scale.",
+    "foundingDate": "2021",
+    "sameAs": [
+        "https://github.com/kestra-io/kestra",
+        "https://www.linkedin.com/company/kestra",
+        "https://x.com/kestra_io",
+        "https://hub.docker.com/r/kestra/kestra"
+    ],
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "url": "https://kestra.io/demo"
+    }
+}
 ---
 
 <html lang="en" class:list={{ "no-animation": DISABLE_USAL }}>
@@ -145,6 +168,7 @@ const hasAnnounce = isHomepage && annonces.length > 0
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
+        <BreadcrumbList url={currentUrl} pageTitle={props.title} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />
@@ -181,6 +205,8 @@ const hasAnnounce = isHomepage && annonces.length > 0
         <link rel="dns-prefetch" href="https://perf-eu1.hsforms.com" />
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
+
+        <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
 
         <slot name="head" />
 

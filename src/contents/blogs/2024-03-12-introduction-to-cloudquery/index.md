@@ -5,6 +5,7 @@ date: 2024-03-13T16:15:00
 category: Solutions
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: "ageller"
 image: ./main.png
 ---
