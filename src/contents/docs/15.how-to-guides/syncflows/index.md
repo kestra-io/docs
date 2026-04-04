@@ -158,7 +158,7 @@ To setup this webhook, go to the Settings for your GitHub repository and head to
 
 For the Payload URL, your URL will follow the following format:
 
-```
+```plaintext
 https://{your_hostname}/api/v1/main/executions/webhook/system/sync_flows_from_git/abcdefg
 ```
 
@@ -170,7 +170,7 @@ Once we've done this, we can press save and test it by committing something to o
 
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 
-If you also want to sync your files, check out our guide on how to set that up [here](../syncnamespacefiles/index.md)!
+If you also want to sync your files, check out our [guide on syncing namespace files](../syncnamespacefiles/index.md)!
 
 ## Extra notes
 

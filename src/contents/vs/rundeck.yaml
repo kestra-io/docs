@@ -1,0 +1,262 @@
+title: "Rundeck vs Kestra for Runbook Automation"
+description: "Compare Kestra vs Rundeck: declarative YAML orchestration with event-driven triggers and self-service Apps vs SSH-based runbook automation. See why teams outgrowing Rundeck choose Kestra."
+competitorName: "Rundeck"
+category: Infrastructure Automation
+shortDescription: "SSH-based runbook automation vs. declarative YAML orchestration with event-driven triggers."
+
+intro:
+  title: "Kestra vs. Rundeck: Beyond Runbook Automation"
+  description: "Rundeck gives ops teams self-service access to scripts and Ansible playbooks via a clean UI with RBAC. Kestra takes that foundation further—adding declarative YAML orchestration, event-driven triggers, complex multi-step workflows, and self-service Apps with dynamic forms—without losing the simplicity ops teams depend on."
+
+philosophy:
+  mainTitle: "Runbook Execution Tool vs. Full Orchestration Platform"
+  kestra:
+    title: "Orchestration as Code: Beyond Runbooks"
+    description: "Define every workflow in YAML that lives in Git. Run scripts, Ansible playbooks, Terraform, and REST APIs as coordinated steps with conditions, parallelism, and retries. Trigger workflows from events, webhooks, or schedules. Self-service Apps give ops teams dynamic forms and inline approvals—without a separate portal."
+    subCardText: '"How do I build runbooks that chain tools, respond to events, and scale across teams?"'
+  competitor:
+    title: "Self-Service Runbook Automation"
+    description: "Rundeck (open-source, now part of PagerDuty as Process Automation) provides a web UI for giving operations teams self-service access to scripts and Ansible playbooks with fine-grained ACLs. It excels at SSH-based job execution with inventory management—but lacks native IaC support, complex multi-step orchestration, and Git-native workflow management."
+    shadowColor: "#FF9900"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I give my ops team click-to-run access to scripts and playbooks with proper access controls?"'
+
+businessValue:
+  mainTitle: "Runbook Click-to-Run vs.<br />Full Operational Orchestration"
+  kestra:
+    title: "Production-Grade IT Orchestration"
+    list:
+      - "Runbooks, provisioning, and incident response in one platform"
+      - "Dynamic self-service Apps with API-backed forms and approval gates"
+      - "Event-driven triggers—respond to alerts, tickets, queues, and schedules"
+      - "Full audit trail, artifact storage, and evidence logging"
+      - "Scales with Kafka-powered workers for high-volume parallel execution"
+  competitor:
+    title: "Runbook Click-to-Run"
+    list:
+      - "Self-service access to scripts and Ansible playbooks via UI"
+      - "SSH-based execution on remote nodes"
+      - "~120 plugins (fewer cloud-native integrations)"
+      - "No native version control (Enterprise tier required)"
+      - "Limited multi-step orchestration beyond sequential job chaining"
+    shadowColor: "#FF9900"
+    bulletColor: "#FF9900"
+  footerText: "Rundeck is a solid choice for teams that need to give ops engineers click-to-run script access with RBAC—and it's trusted for that use case. The limits appear when you need workflows that chain multiple tools, respond to events rather than just manual triggers, or must scale to thousands of concurrent executions. Organizations like Mercy Health and the Austrian Ministry of Defense moved from Rundeck to Kestra specifically for better HA, Windows/PowerShell support, approval workflows, and observable execution logs."
+
+setupSpeed:
+  title: "Time to First Runbook Workflow"
+  subtitle: "Both start with Docker. Kestra's first workflow is production-shaped YAML you can commit and review. Rundeck's first job is configured in the UI with limited version control until you add Git Source Control (Enterprise or plugin)."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, run it, pick a Blueprint for your use case—Ansible patching, VM lifecycle, incident response—and run it. Your first workflow is YAML you can immediately put in Git."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick an Operations Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~20"
+      two: Minutes
+    description: "Rundeck starts quickly with Docker but job definitions are created in the UI by default. To get version control, you need to configure the Git Source Control plugin (OSS) or use the Enterprise SCM integration. Production HA requires additional database and cluster configuration."
+    shadowColor: "#FF9900"
+    command: |
+      docker run -d \
+        --name rundeck \
+        -p 4440:4440 \
+        rundeck/rundeck:latest
+
+      # Open localhost:4440
+      # Create jobs via UI
+      # Configure nodes, ACLs, credentials manually
+      # Version control: add Git SCM plugin separately
+    lang: sh
+
+easeOfUse:
+  title: "Declarative YAML vs. UI-First Job Definitions"
+  kestra:
+    title: "Kestra: Orchestration as Reviewable Code"
+    description: "Write workflows in YAML that read like documentation. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> drafts them for you. Workflows go through Git and CI/CD—no hidden configuration state. Add approvals, secrets, retries, and event triggers as YAML constructs."
+    code: |
+      id: server_patching_runbook
+      namespace: ops.runbooks
+
+      inputs:
+        - id: target_hosts
+          type: STRING
+          description: "Comma-separated list of hosts to patch"
+        - id: patch_type
+          type: SELECT
+          values: [security, full]
+
+      tasks:
+        - id: request_approval
+          type: io.kestra.plugin.core.flow.Pause
+          onResume:
+            form:
+              fields:
+                - id: approved_by
+                  type: STRING
+
+        - id: run_patch
+          type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          commands:
+            - ansible-playbook patch.yml
+              -i "{{ inputs.target_hosts }}"
+              -e "type={{ inputs.patch_type }}"
+
+        - id: verify
+          type: io.kestra.plugin.scripts.shell.Commands
+          commands:
+            - ./verify_patch.sh "{{ inputs.target_hosts }}"
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Patching complete: {{ inputs.target_hosts }}"
+    lang: yaml
+  competitor:
+    title: "Rundeck: UI-configured jobs, YAML export only"
+    description: "Rundeck jobs are created via the UI with step-by-step configuration. They can be exported as YAML or XML for backup, but the primary authoring model is the browser. Workflow steps are largely sequential with limited conditional logic."
+    shadowColor: "#FF9900"
+    code: |
+      # Rundeck job exported as YAML (read-only, not authored this way)
+      - id: server-patching
+        name: Server Patching
+        description: "Patch specified servers"
+        loglevel: INFO
+        sequence:
+          keepgoing: false
+          strategy: node-first
+          commands:
+            - type: job
+              jobref:
+                name: run-ansible-playbook
+                args: "-e hosts=${option.hosts}"
+            - type: command
+              exec: ./verify_patch.sh ${option.hosts}
+        options:
+          - name: hosts
+            description: Target hosts
+            required: true
+        # No native approval gate
+        # No multi-tool chaining with data passing
+        # No event-driven triggers (webhook support is basic)
+    lang: yaml
+
+visualPreview:
+  mainTitle: "Modern Orchestration UI vs. Traditional Runbook Interface"
+  kestra:
+    description: "Live DAG topology view, real-time execution logs, artifact storage, and a built-in code editor with embedded documentation. Workflows that span multiple tools and environments show every step's state, output, and timing."
+  competitor:
+    description: "Rundeck provides a clean, functional UI for job scheduling and log viewing. It excels at giving ops teams access to scripts with RBAC—but the interface is designed for single-tool jobs rather than multi-step cross-tool orchestration, and log visibility is limited for complex workflows."
+    shadowColor: "#FF9900"
+
+featureGrid:
+  title: "Kestra vs. Rundeck at a Glance"
+  tableData:
+    - feature: Workflow definition
+      kestra: Declarative YAML (code-first, Git-native, CI/CD deployable)
+      competitor: UI-configured jobs (YAML/XML export for backup, not primary authoring)
+    - feature: Orchestration model
+      kestra: Event-driven DAGs with complex dependencies, parallelism, conditions
+      competitor: Sequential job steps with basic linear chaining
+    - feature: Ansible integration
+      kestra: Ansible as a step in multi-tool workflows with data passing
+      competitor: Ansible plugin runs playbooks as standalone jobs
+    - feature: Plugin ecosystem
+      kestra: 1,200+ plugins (cloud, data, DevOps, AI, ITSM)
+      competitor: ~120 plugins (scripts, nodes, fewer cloud-native)
+    - feature: Scalability
+      kestra: Horizontally scalable via Kafka + worker groups
+      competitor: Server clustering for HA; limited for massive parallel workloads
+    - feature: Architecture
+      kestra: "Cloud-native microservices (Kubernetes, Docker ready)"
+      competitor: Monolithic Java server (agentless SSH execution)
+    - feature: Multi-tenancy
+      kestra: Native namespace isolation with per-namespace RBAC
+      competitor: Projects + ACLs (no true namespace isolation)
+    - feature: API design
+      kestra: API-first with full REST API for all operations
+      competitor: REST API available but not fully featured (no job versioning via API)
+    - feature: Self-service Apps
+      kestra: Built-in dynamic forms with API-backed fields and approval gates
+      competitor: Job options (basic form inputs on job execution)
+    - feature: Version control
+      kestra: "Native (Git, CI/CD, Terraform provider)"
+      competitor: Git SCM plugin (OSS) or Enterprise SCM integration
+    - feature: Windows / PowerShell
+      kestra: First-class Windows worker support with PowerShell tasks
+      competitor: Limited Windows support; SSH-centric architecture
+    - feature: Event-driven triggers
+      kestra: Webhooks, schedules, file detection, message queues, polling
+      competitor: Webhooks and schedules (basic, no queue-based triggers)
+
+socialProof:
+  image:
+    alt: Operations team replacing Rundeck with Kestra
+    width: 333
+    height: 364
+  quote:
+    text: "We replaced Rundeck after dealing with job queue throttling, Docker instability, and no approval flows. Kestra gave us HA, Windows worker support, CyberArk integration, and inline approvals—in one platform."
+    author: "IT Automation Lead @ Private Healthcare"
+  metrics:
+    - value: "0"
+      label: Dropped jobs since migration
+    - value: "100%"
+      label: HA uptime achieved
+    - value: "3x"
+      label: More workflows automated
+  cta:
+    text: "See how ops teams modernize with Kestra"
+    link: /use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra
+  theme: "var(--ks-special-green)"
+
+platformStrengths:
+  title: "Kestra Solves What Rundeck Cannot"
+  features:
+    - title: "Windows & PowerShell as First-Class Citizens"
+      description: "Kestra workers run natively on Windows with full PowerShell task support. No SSH workarounds, no Cygwin hacks. If your runbooks include Windows servers, Kestra handles them the same way it handles Linux—with the same YAML, retries, and audit trail."
+    - title: "Inline Approvals Without a Separate Tool"
+      description: "Add human approval gates directly in your YAML workflow as Pause tasks with dynamic forms. Approvers get notified via Slack, email, or your ITSM—and their decision is logged with a timestamp. No separate approval workflow tool required."
+    - title: "Event-Driven from the Ground Up"
+      description: "Trigger any workflow from a webhook, a ServiceNow ticket, a Kafka message, a file appearing on S3, or a schedule. Kestra's event-driven architecture means runbooks respond to real events—not just manual button clicks. This is how you reduce MTTR without adding oncall burden."
+
+decisionGuide:
+  mainTitle: "When to Choose Kestra vs. Rundeck"
+  kestra:
+    title: "Choose Kestra When"
+    list:
+      - "You need reliable HA with no dropped jobs and proper queue management."
+      - "Workflows span Ansible, Terraform, PowerShell, and cloud APIs in one flow."
+      - "Windows server automation and PowerShell are part of your runbook stack."
+      - "Approval workflows, dynamic forms, and audit trails are required."
+      - "Event-driven automation (from alerts, tickets, queues) is a priority."
+  competitor:
+    title: "Rundeck Works Well When"
+    list:
+      - "Your automation is primarily SSH-based script execution on Linux nodes."
+      - "Self-service access to simple scripts with RBAC is the main requirement."
+      - "You're running a small fleet and don't need multi-tenant namespace isolation."
+      - "PagerDuty on-call integration is already central to your incident workflow."
+    shadowColor: "#FF9900"
+    bulletColor: "#FF9900"
+
+commonQuestions:
+  - question: "What is Rundeck and how does it differ from Kestra?"
+    answer: "Rundeck is an open-source runbook automation tool (now maintained as PagerDuty Process Automation OSS) that gives operations teams self-service access to scripts and Ansible playbooks via a web UI with fine-grained ACLs and SSH-based execution. Kestra is a broader orchestration platform: it covers everything Rundeck does for runbook automation and adds declarative YAML workflows, event-driven triggers, complex multi-step orchestration, 1,200+ plugins, and native Windows/PowerShell support. Where Rundeck treats each job as a standalone click-to-run action, Kestra coordinates jobs as steps in larger workflows with data passing, conditions, and parallelism."
+  - question: "Can I migrate my existing Rundeck jobs to Kestra?"
+    answer: "Yes. Rundeck jobs export as YAML or XML, and most of the step definitions map directly to Kestra task types. Shell command steps become io.kestra.plugin.scripts.shell.Commands tasks; Ansible steps become io.kestra.plugin.ansible.cli.AnsibleCLI tasks; notification steps become Slack or email plugin tasks. The Kestra team and community have documented migration patterns. Your existing node inventory and credentials can be referenced via Kestra's secrets manager and input parameters."
+  - question: "Does Kestra support Rundeck's ACL/RBAC model?"
+    answer: "Yes, with more granularity. Kestra uses namespaces as the isolation boundary, with per-namespace RBAC that controls who can view, execute, create, or administer workflows. This gives platform teams more control than Rundeck's project + ACL model—especially in multi-tenant environments where different teams share infrastructure but need isolated workflows."
+  - question: "How does Kestra handle the high-availability issues that affect Rundeck?"
+    answer: "Kestra's Kafka-powered queue ensures that no execution is dropped even if a worker fails. Workers pick up queued tasks automatically after restart, and retries are configurable at the task level. This directly addresses the queue throttling and dropped job issues that Rundeck users (including Mercy Health) experience at scale. Kestra also supports multiple worker groups with dedicated queues for priority workloads."
+  - question: "Can Kestra run on-premises and air-gapped like Rundeck?"
+    answer: "Yes. Kestra is fully self-hosted with no external dependencies. It runs on-premises, in air-gapped environments, on Kubernetes, or on Docker. Internal Postgres and S3-compatible storage (MinIO) are used for state and artifacts. Organizations like the Austrian Ministry of Defense run Kestra in fully offline environments—which was a key reason they migrated from Rundeck."
+  - question: "Is Kestra open-source like Rundeck?"
+    answer: "Yes. Kestra is Apache 2.0 licensed—truly open-source with no usage restrictions. Rundeck OSS is also open-source (Apache 2.0), but the enterprise features (SSO, advanced audit, clustering) require a PagerDuty Process Automation subscription. Kestra's Enterprise Edition adds governance, multi-tenancy, and enterprise secrets management on top of the open-source core."

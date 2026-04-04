@@ -78,7 +78,12 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
         <HelpfulVote client:visible />
     </div>
     <Fragment slot="headings">
-        <NavToc links={headingsProcessed} client:visible {editUrl} />
+        <NavToc
+            links={headingsProcessed}
+            client:visible
+            {editUrl}
+            markdownBody={doc.body}
+        />
     </Fragment>
 </LayoutDocs>
 

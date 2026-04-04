@@ -1,0 +1,237 @@
+title: "Kestra vs. Broadcom Dollar Universe: Modern Orchestration vs. Legacy Workload Automation"
+description: "Compare Kestra vs Broadcom Dollar Universe: declarative YAML workflow orchestration vs proprietary UPROC-based enterprise workload automation. See features, setup time, and use cases."
+competitorName: Broadcom Dollar Universe
+category: Infrastructure Automation
+shortDescription: "Proprietary UPROC-based enterprise workload automation vs. modern declarative YAML orchestration."
+
+intro:
+  title: "Kestra vs. Broadcom Dollar Universe: Modern Orchestration vs. Legacy Workload Automation"
+  description: "Broadcom Dollar Universe has managed enterprise batch workloads in large organizations for decades, especially across European financial services, telecom, and manufacturing. Kestra is what organizations choose when they need event-driven orchestration, developer self-service, and workflows that live in Git rather than a proprietary GUI."
+
+philosophy:
+  mainTitle: Two Generations of Automation
+  kestra:
+    title: "Modern Orchestration: Declarative, Developer-Owned"
+    description: "Open-source orchestration platform built on declarative YAML and an API-first architecture. Every workflow is a version-controlled file, deployable through CI/CD, and runnable by any team without waiting on a central operations group. React to events in real time or run on schedule in the same platform."
+    subCardText: '"How do I let my teams automate their own workflows without creating a ticketing bottleneck?"'
+  competitor:
+    title: Centralized Enterprise Workload Scheduling
+    description: "Enterprise workload automation platform organized around UPROCs (units of processing), Sessions, and Units. Jobs are defined and managed through a central GUI or CLI, deployed via agents on each target host, and operated by a dedicated automation team. A proven platform for large-scale overnight batch runs in regulated industries."
+    shadowColor: "#FFE0E0"
+    subCardBg: "var(--ks-background-red-light)"
+    subCardText: '"How do I reliably run and monitor complex batch job chains across our server estate?"'
+
+businessValue:
+  mainTitle: "Batch Scheduling Manages What You Have.<br />Workflow Orchestration Builds What Comes Next."
+  kestra:
+    title: Business-critical Workflows
+    list:
+      - React to events as they happen, not on the next scheduled window
+      - Developer self-service with namespace isolation and RBAC
+      - Version-controlled workflows in Git, reviewed in pull requests
+      - "Cross-functional: data pipelines + infrastructure + business processes"
+      - No agent installation on target hosts
+  competitor:
+    title: Enterprise Batch Workload Management
+    list:
+      - Large-scale overnight batch job chains
+      - Central automation team manages all UPROC definitions
+      - Proprietary terminology (UPROC, SESS, UNIT) and tooling
+      - Agent required on every target execution host
+      - Enterprise-only licensing with high total cost of ownership
+    shadowColor: "#FFE0E0"
+    bulletColor: "#CC0000"
+  footerText: "Broadcom Dollar Universe is a strong choice if your organization has a large, established batch workload estate managed by a trained central team, particularly in regulated European industries where Dollar Universe is already the standard. For organizations moving toward event-driven pipelines, GitOps deployment practices, or developer self-service automation, Kestra provides a faster modernization path without proprietary tooling lock-in."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Broadcom Dollar Universe requires server installation, a supported database backend, license server configuration, agent deployment to every target host, and familiarization with its UPROC/Session/Unit terminology before you can define and run your first job."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No agents to deploy, no proprietary terminology to learn."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~2"
+      two: Days
+    description: "Requires Dollar Universe server setup, database backend configuration, license server activation, agent installation and registration on each target host, and training on UPROC/Session/Unit concepts before the first job runs."
+    shadowColor: "#FFE0E0"
+    command: |
+      # 1. Install Dollar Universe server (UNIXws) and configure database
+      # 2. Activate license and configure license server
+
+      # 3. Install and register agent on each target host
+      ./du_agent_setup.sh --server du-server.corp:8080 --unit PROD_UNIX_01
+
+      # 4. Define a UPROC (unit of processing) via CLI
+      uspuni ADD UPROC=DAILY_ETL \
+        UNIT=PROD_UNIX_01 \
+        CMD="python /etl/daily_report.py" \
+        SESS=BATCH_NIGHTLY \
+        SCAL=WORKDAYS
+    lang: sh
+
+easeOfUse:
+  title: Workflows Your Whole Team Can Read
+  kestra:
+    title: "Kestra: Version-Controlled Workflows Anyone Can Read"
+    description: "YAML is readable on day 1. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows from a prompt, or start from our library of Blueprints. Every change goes through a pull request. No proprietary CLI syntax, no central team dependency."
+    code: |
+      id: daily_etl
+      namespace: finance
+
+      triggers:
+        - id: nightly
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 22 * * 1-5"
+
+      tasks:
+        - id: run_etl
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            import pandas as pd
+            df = pd.read_sql("SELECT * FROM transactions", con=db_engine)
+            df.to_csv("/tmp/daily_report.csv")
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Nightly ETL complete"
+    lang: yaml
+  competitor:
+    title: "Broadcom Dollar Universe: UPROC Definitions in a Proprietary CLI"
+    description: "Jobs are defined as UPROCs using Dollar Universe's own CLI (uspuni) or through the UniViewer GUI. There is no native Git integration. Changes go through the central automation team. UPROCs, Sessions, and Units are platform-specific concepts with no portable equivalent outside Dollar Universe."
+    shadowColor: "#FFE0E0"
+    code: |
+      # Define UPROC via uspuni CLI
+      uspuni ADD UPROC=DAILY_ETL \
+        UNIT=PROD_UNIX_01 \
+        SESS=BATCH_NIGHTLY \
+        CMD="python /etl/daily_report.py" \
+        SCAL=WORKDAYS \
+        STARTTM=2200 \
+        RETRY=3
+
+      # Define successor UPROC for notification
+      uspuni ADD UPROC=NOTIFY_SLACK \
+        UNIT=PROD_UNIX_01 \
+        SESS=BATCH_NIGHTLY \
+        CMD="/scripts/notify_slack.sh 'Nightly ETL complete'" \
+        PRED=DAILY_ETL \
+        PREDC=OK
+    lang: sh
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, and business processes across any cloud or on-premises environment. Every execution is logged, traceable, and replayable directly from the UI."
+  competitor:
+    description: "Built for large-scale batch workload management in enterprise environments. Reliable for nightly job chains, file-based dependencies, and cross-platform scheduling. The central team operates the platform; individual developers interact through change requests or the GUI."
+    shadowColor: "#FFE0E0"
+
+featureGrid:
+  title: Kestra vs Broadcom Dollar Universe at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Enterprise batch workload scheduling
+    - feature: Workflow definition
+      kestra: Declarative YAML (Git-native)
+      competitor: UPROC via uspuni CLI or UniViewer GUI (proprietary)
+    - feature: Languages supported
+      kestra: "Agnostic (Python, SQL, R, Bash, Node.js & more)"
+      competitor: Any language via shell command on target host
+    - feature: Architecture
+      kestra: Event-driven, API-first
+      competitor: Schedule-driven, agent-based
+    - feature: Agent deployment
+      kestra: No agents required
+      competitor: Agent required on every target host
+    - feature: Developer self-service
+      kestra: "✓ Kestra Apps"
+      competitor: Central automation team only
+    - feature: Git and CI/CD integration
+      kestra: "✓ Native support"
+      competitor: Not available
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Open source
+      kestra: "✓ Apache 2.0"
+      competitor: Proprietary (Broadcom enterprise license)
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Native namespace isolation"
+      competitor: Available but centrally managed
+
+socialProof:
+  image:
+    alt: Success story
+    width: 333
+    height: 364
+  quote:
+    text: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture."
+    author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
+  metrics:
+    - value: "+900%"
+      label: In data production
+    - value: "+250"
+      label: Active users
+    - value: "+5,000"
+      label: Workflows created
+  cta:
+    text: "See how Leroy Merlin scaled to 5,000 workflows without a central bottleneck"
+    link: https://kestra.io/blogs/2023-08-16-datamesh
+  theme: "var(--ks-special-green)"
+
+platformStrengths:
+  title: Kestra Is Built for How Modern Teams Work
+  features:
+    - title: Workflows in Git, not a proprietary GUI
+      description: "Define workflows in YAML, commit to Git, review in pull requests, deploy through CI/CD. No UPROC to export, no change request to submit. Rollback is a git revert."
+    - title: No agents, no host registration
+      description: "Kestra executes tasks in isolated containers on its own workers. Add a new server or cloud environment without touching scheduler config or running an agent installer. Worker groups target namespaces, so routing production jobs to production infrastructure is a YAML field, not an agent configuration."
+    - title: Every team owns their automation
+      description: "Kestra's namespace isolation gives each team its own workspace with RBAC guardrails. A finance team and a data engineering team each manage their own workflows independently. The platform team sets policies without becoming the bottleneck for every job change."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your teams submit change requests to a central automation team for every job change. Self-service is the goal."
+      - "You need event-driven triggers: file arrivals, webhook calls, API events, not just calendar-based batch windows."
+      - "Workflows need to live in Git, go through pull request review, and deploy like the rest of your software."
+      - "You're modernizing legacy batch workloads to modern data pipelines, dbt models, or cloud-native jobs."
+      - "Open-source licensing and predictable pricing matter more than an existing enterprise support contract."
+  competitor:
+    title: Choose Broadcom Dollar Universe When
+    list:
+      - "Your organization runs large-scale batch workloads in a regulated European industry and Dollar Universe is already the certified standard."
+      - "You have a trained central automation team managing thousands of UPROCs and changing platforms would be high-risk and disruptive."
+      - "Cross-platform batch scheduling across mainframe, Unix, Linux, and Windows is a core requirement with existing certified connectors."
+      - "Long-term Broadcom enterprise support contracts and compliance certifications are organizational requirements."
+    shadowColor: "#FFE0E0"
+    bulletColor: "#CC0000"
+
+commonQuestions:
+  - question: How do I migrate from Broadcom Dollar Universe to Kestra?
+    answer: "Migration is incremental. Run Kestra alongside Dollar Universe: new workloads go to Kestra while existing UPROCs stay on Dollar Universe until teams are ready to move them. Translate each UPROC to a Kestra Script task, UPROC dependencies (PRED/PREDC) to task ordering, and Session/Unit groupings to Kestra namespaces. Most organizations migrate by team or by workload category over several months, with both platforms running in parallel throughout."
+  - question: Does Kestra support the same scheduling and dependency features as Dollar Universe?
+    answer: "Yes. Kestra supports cron-based scheduling, calendar-based triggers, file-arrival triggers, and explicit task dependencies within a flow. You can chain workflows using subflow tasks, pass outputs between steps, and configure retry policies per task. All of it is defined in YAML files that live in Git, rather than in a proprietary CLI or GUI managed by a central team."
+  - question: Can Kestra run in the same on-premises environments Dollar Universe covers today?
+    answer: "Yes. Kestra deploys on any infrastructure running Docker or Kubernetes, including on-premises data centers and air-gapped environments. For air-gapped deployments, Kestra supports fully offline installation with a private container registry. Deploy Kestra workers into specific server environments and assign them to namespaces: a workflow in the 'finance-prod' namespace runs only on finance production workers, with no agent installer required on the target hosts."
+  - question: What about enterprise features like RBAC, audit logs, and compliance?
+    answer: "Kestra Enterprise includes RBAC with namespace isolation, full execution audit logs for every task run, SSO via SAML and OIDC (compatible with Entra ID, Okta, and LDAP), and secrets management integration with HashiCorp Vault, AWS Secrets Manager, and Azure Key Vault. For regulated industries with SOC 2 Type II or GDPR requirements, Kestra Cloud is SOC 2 Type II certified and GDPR compliant."
+  - question: How does Kestra handle the large job volumes Dollar Universe manages in production?
+    answer: "Kestra scales horizontally by adding worker nodes. FILA runs 2.5 million monthly executions across 2,000+ workflows. Leroy Merlin manages 5,000+ workflows with 250+ active users. The architecture runs on Java with PostgreSQL or Kafka for state storage, and distributed execution handles high-concurrency workloads. For very large batch estates, Kestra Enterprise includes execution concurrency controls and worker group routing to prevent resource contention."
+  - question: Is there a Dollar Universe migration guide or professional services support?
+    answer: "Documentation, Blueprints, and community support cover the standard migration patterns from legacy schedulers, including parallel deployment and incremental cutover by team or workload type. For large-scale enterprise migrations, Kestra's professional services team can assist with namespace design, worker topology, and UPROC-to-flow translation. Contact the Kestra team to discuss your specific workload estate."

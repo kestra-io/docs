@@ -5,6 +5,7 @@ date: 2023-04-21T11:00:00
 category: Company News
 author:
   name: Nicolas Callens
+  linkedin: https://www.linkedin.com/in/todobai/
   image: "ncallens"
 image: ./main.png
 ---

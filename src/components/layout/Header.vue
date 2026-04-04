@@ -326,7 +326,7 @@
                         <a
                             @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 btn btn-primary btn-sm get-started"
-                            href="/docs/quickstart#start-kestra"
+                            href="/get-started"
                         >
                             <span> Get Started </span>
                         </a>

@@ -1,0 +1,349 @@
+---
+import { Icon } from "astro-icon/components"
+
+const TAGS = [
+    { label: "Declarative", icon: "mdi:xml" },
+    { label: "Any Language", icon: "mdi:code-tags" },
+    { label: "1200+ Plugins", icon: "mdi:puzzle-outline" },
+    { label: "API-First", icon: "mdi:api" },
+    { label: "No Lock-in", icon: "mdi:lock-open-outline" },
+    { label: "Self-Hosted", icon: "mdi:server-network-outline" },
+    { label: "Cloud", icon: "mdi:cloud-check-outline" },
+]
+
+const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run</span> <span class="t-flag">--pull=always</span> <span class="t-flag">-it</span> <span class="t-flag">-p</span> <span class="t-val">8080:8080</span> <span class="t-flag">--user=root</span> <span class="t-bs">\\</span>
+  <span class="t-flag">--name</span> <span class="t-val">kestra</span> <span class="t-flag">--restart=always</span> <span class="t-bs">\\</span>
+  <span class="t-flag">-v</span> <span class="t-val">kestra_data:/app/storage</span> <span class="t-bs">\\</span>
+  <span class="t-flag">-v</span> <span class="t-val">/var/run/docker.sock:/var/run/docker.sock</span> <span class="t-bs">\\</span>
+  <span class="t-val">kestra/kestra:latest</span> <span class="t-sub">server local</span>`
+---
+
+<section class="hero-section">
+    <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
+    <img src="/hero-bg-effects.svg" alt="" class="hero-bg-effects" aria-hidden="true" />
+
+    <div class="hero-inner">
+        <div class="text-form" data-usal="fade-r">
+            <div class="title-block">
+                <h1>
+                    Stop Writing Glue Code.<br />
+                    <span class="gradient">Start Orchestrating.</span>
+                </h1>
+                <p class="subtitle">
+                    One YAML file. Any language. 1200+ integrations.<br />
+                    Your first workflow runs in under 2 minutes.
+                </p>
+            </div>
+
+            <div class="tags" data-usal="fade-l">
+                {TAGS.map((tag) => (
+                    <span class="tag">
+                        <Icon name={tag.icon} class="tag-icon" />
+                        {tag.label}
+                    </span>
+                ))}
+            </div>
+        </div>
+
+        <div class="hero-command-wrapper" data-usal="fade-up">
+            <div class="hero-command">
+                <div class="command-label">
+                    <img src="/icon-simple.svg" alt="Kestra" width="20" height="20" style="width:20px;height:20px;flex-shrink:0" />
+                    <span class="command-hint">Run this. That's it.</span>
+                    <button class="copy-btn" title="Copy command" onclick={`navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always -it -p 8080:8080 --user=root \\\n  --name kestra --restart=always \\\n  -v kestra_data:/app/storage \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  kestra/kestra:latest server local`)})`}>
+                        <Icon name="mdi:content-copy" />
+                    </button>
+                </div>
+                <pre class="command-code"><code set:html={dockerCommand} /></pre>
+            </div>
+        </div>
+
+        <div class="hero-ctas" data-usal="zoomin">
+            <a href="/docs/tutorial" class="btn btn-primary btn-lg">Read the docs</a>
+            <a href="/demo" class="btn btn-secondary btn-lg">Book a Demo</a>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(236deg, #1a1a1f 5.66%, #0e0e10 32.08%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        // Pull the dark bg up to cover the white body strip under the fixed header
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
+        padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 0 5rem;
+
+        @include media-breakpoint-down(lg) {
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 4rem) 0 4rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 3rem;
+        }
+    }
+
+    .hero-bg-grid {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1720px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+    }
+
+    .hero-bg-effects {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1720px;
+        height: auto;
+        pointer-events: none;
+        z-index: 1;
+        mix-blend-mode: screen;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 64px;
+        width: 100%;
+        color: $white;
+
+        @include media-breakpoint-down(md) {
+            gap: 40px;
+        }
+    }
+
+    // ── Text Form ─────────────────────────────────────────────
+    .text-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        width: 100%;
+        max-width: 1320px;
+        padding: 0 1.5rem;
+
+        @include media-breakpoint-down(md) {
+            gap: 28px;
+        }
+    }
+
+    .title-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        color: $white;
+        font-size: 3.5rem;
+        font-weight: 500;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin: 0;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2.5rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            font-size: 2rem;
+        }
+    }
+
+    .gradient {
+        background: linear-gradient(90deg, #718bfe, #c6d1ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .subtitle {
+        color: $white;
+        font-size: $font-size-lg;
+        line-height: 1.6;
+        margin: 0;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            font-size: $font-size-md;
+            br { display: none; }
+        }
+    }
+
+    // ── Tags ──────────────────────────────────────────────────
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.7);
+        font-size: $font-size-xs;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: rgba(113, 139, 254, 0.4);
+            background: rgba(113, 139, 254, 0.08);
+            color: $white;
+
+            :global(.tag-icon) {
+                color: #a0b0ff;
+            }
+        }
+
+        :global(.tag-icon) {
+            width: 12px;
+            height: 12px;
+            color: #718bfe;
+            flex-shrink: 0;
+        }
+    }
+
+    // ── Terminal ──────────────────────────────────────────────
+    @property --neon-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes neon-trace {
+        to { --neon-angle: 360deg; }
+    }
+
+    .hero-command-wrapper {
+        --neon-angle: 0deg;
+        border-radius: 8px;
+        // Mostly dim border with a small bright arc travelling around
+        background: conic-gradient(
+            from var(--neon-angle),
+            rgba(140, 75, 255, 0.12) 0deg,
+            rgba(140, 75, 255, 0.12) 320deg,
+            #8c4bff                  340deg,
+            #e8e0f6                  350deg,
+            #8c4bff                  360deg
+        );
+        padding: 1px;
+        box-shadow:
+            0 1.214px 10.321px 0 rgba(110, 0, 216, 0.20) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(117, 39, 215, 0.70);
+        width: 100%;
+        max-width: 640px;
+        animation: neon-trace 4s linear infinite;
+
+        @include media-breakpoint-down(md) {
+            max-width: 100%;
+        }
+    }
+
+    .hero-command {
+        background: #0a0a0e;
+        border-radius: 7px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+
+        .command-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+
+            .kestra-icon {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+            }
+
+            .command-hint {
+                font-family: var(--bs-font-monospace);
+                font-size: $font-size-sm;
+                color: $white;
+                font-weight: 500;
+                flex: 1;
+            }
+
+            .copy-btn {
+                background: none;
+                border: none;
+                padding: 4px;
+                cursor: pointer;
+                color: rgba(255, 255, 255, 0.4);
+                display: flex;
+                align-items: center;
+                transition: color 0.2s;
+                border-radius: 4px;
+
+                &:hover { color: rgba(255, 255, 255, 0.8); }
+
+                :global(svg) {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+
+        .command-code {
+            margin: 0;
+            padding: 20px 24px;
+            background: transparent;
+            overflow-x: auto;
+
+            code {
+                font-family: var(--bs-font-monospace);
+                font-size: $font-size-sm;
+                line-height: 1.8;
+                white-space: pre;
+
+                :global(.t-cmd) { color: #e95d00; }
+                :global(.t-sub) { color: #1c94f9; }
+                :global(.t-flag) { color: #6db3f2; }
+                :global(.t-val) { color: #718bfe; }
+                :global(.t-bs) { color: rgba(255, 255, 255, 0.25); }
+            }
+        }
+    }
+
+    // ── CTAs ──────────────────────────────────────────────────
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            width: 100%;
+            padding: 0 1rem;
+        }
+    }
+</style>

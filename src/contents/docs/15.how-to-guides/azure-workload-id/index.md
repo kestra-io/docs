@@ -210,7 +210,7 @@ Should you be unable to upgrade at this time, here is a workaround:
 - Navigate to file `templates/_helpers.tpl`
 - In the section `kestra.selectorsLabels`, add the required label to the list, e.g.:
 
-```
+```yaml
 {{- define "kestra.selectorsLabels" -}}
 app.kubernetes.io/name: {{ include "kestra.name" . }}
 app.kubernetes.io/component: {{ .Component }}

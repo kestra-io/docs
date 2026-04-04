@@ -13,7 +13,7 @@ Starting with Kestra 1.0, certain keywords are reserved and **cannot be used as 
 
 **Reserved keywords:**
 
-```
+```plaintext
 pause
 resume
 force-run
