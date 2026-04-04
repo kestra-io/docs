@@ -1,0 +1,19 @@
+---
+import PluginsMDCRender from "./PluginsMDCRender.vue"
+import PluginDocsFrame from "./PluginDocsFrame.astro"
+
+interface Props {
+    schema: any
+    pluginType: string
+}
+
+const { schema, pluginType } = Astro.props
+---
+
+<PluginDocsFrame>
+    <PluginsMDCRender
+        {schema}
+        {pluginType}
+        client:idle
+    />
+</PluginDocsFrame>
