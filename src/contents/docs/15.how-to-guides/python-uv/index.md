@@ -96,4 +96,4 @@ RUN pip install uv
 CMD ["server", "standalone"]
 ```
 
-Learn more about configuring a custom Docker image for Kestra [here](../../14.best-practices/4.managing-pip-dependencies/index.md#installing-pip-package-dependencies-at-server-startup).
+Learn more about [installing pip package dependencies at server startup](../../14.best-practices/4.managing-pip-dependencies/index.md#installing-pip-package-dependencies-at-server-startup).

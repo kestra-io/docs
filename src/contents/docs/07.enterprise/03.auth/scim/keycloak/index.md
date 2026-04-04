@@ -43,7 +43,7 @@ The steps above will generate a SCIM endpoint URL and a Secret Token that you wi
 
 The endpoint should look as follows:
 
-```
+```plaintext
 https://<your_kestra_host>/api/v1/<your_tenant>/integrations/integration_id/scim/v2
 ```
 

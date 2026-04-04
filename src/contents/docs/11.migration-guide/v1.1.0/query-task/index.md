@@ -21,7 +21,7 @@ To execute multiple statements:
 ### Impact
 
 Workflows containing multiple SQL statements in one `Query` task will fail with the following error:
-```
+```plaintext
 Query task supports only a single SQL statement. Use the Queries task to run multiple statements.
 ```
 
