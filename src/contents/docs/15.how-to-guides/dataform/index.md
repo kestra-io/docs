@@ -162,7 +162,7 @@ Most often, the `database` is same as the GCP project ID.
 
 Let us now create a folder `definitions`. In this folder create a file `orders.sqlx`. This file will define the `orders` table as the source table. The contents of the `orders.sqlx` file will be:
 
-```
+```javascript
 config {
   type: "declaration",
   database: "<database>",
@@ -174,7 +174,7 @@ config {
 
 Next, we will create the `stg_orders.sqlx` file under the `definitions` folder. This file will define the `stg_orders` view that we want to generate using Dataform. The file contents will be:
 
-```
+```javascript
 config {
   type: "view",  // Specify whether this model will create a table or a view
   schema: "ecommerce",

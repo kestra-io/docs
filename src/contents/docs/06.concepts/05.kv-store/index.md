@@ -146,7 +146,7 @@ The easiest way to retrieve a value by key is to use the `{{ kv('YOUR_KEY'') }}`
 
 Below is the full syntax of that function:
 
-```
+```twig
 {{ kv(key='your_key_name', namespace='your_namespace_name', errorOnMissing=false) }}
 ```
 

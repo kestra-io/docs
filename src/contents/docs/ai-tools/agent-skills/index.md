@@ -39,7 +39,7 @@ Generate, modify, or debug Kestra Flow YAML grounded in the live flow schema —
 
 **Example prompt:**
 
-```text
+```plaintext
 Use kestra-flow to write a flow that polls a REST API every 30 minutes and stores the result in KV store.
 ```
 
@@ -62,7 +62,7 @@ Operate Kestra using `kestractl` for flow, execution, namespace, and namespace-f
 
 **Example prompt:**
 
-```text
+```plaintext
 Use kestra-ops to validate and deploy all flows in ./flows to prod.namespace with fail-fast enabled.
 ```
 
@@ -102,7 +102,7 @@ Repeat for any other skill you need (e.g. `kestra-flow`). Adjust the target dire
 
 Ask your agent to create a flow that polls an API on a schedule and persists the result:
 
-```text
+```plaintext
 Use kestra-flow to write a flow in namespace company.data that fetches
 https://api.example.com/metrics every 30 minutes and stores the response
 in KV store under the key "latest_metrics".
@@ -114,7 +114,7 @@ The agent will fetch the live schema, generate valid YAML with a `Schedule` trig
 
 Ask your agent to validate local flow files and deploy them:
 
-```text
+```plaintext
 Use kestra-ops to validate all flows in ./flows, then deploy them to
 prod.pipelines namespace with --override and --fail-fast.
 ```
@@ -125,7 +125,7 @@ The agent will run `kestractl flows validate ./flows/`, confirm results, and the
 
 Ask your agent to trigger an execution and summarize the outcome:
 
-```text
+```plaintext
 Use kestra-ops to run nightly-refresh in analytics.jobs namespace,
 wait for completion, and report the execution status.
 ```

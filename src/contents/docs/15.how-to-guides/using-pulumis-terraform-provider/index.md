@@ -52,7 +52,7 @@ Follow these steps to set up your environment and begin managing Kestra resource
 6. Create and Fill .env File
 - Create a .env file based on a .env.local template. This file will hold your Kestra secrets and provider URL.
 
-```
+```bash
 ## Kestra secrets
 ## API Token is required (Enterprise-only),
 ## or Username AND Password are required

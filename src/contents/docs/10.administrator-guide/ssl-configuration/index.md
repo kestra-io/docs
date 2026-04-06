@@ -369,7 +369,7 @@ kubectl get certificate kestra-tls -w
 ```
 
 Expected output:
-```
+```plaintext
 NAME        READY   SECRET      AGE
 kestra-tls  True    kestra-tls  5m
 ```

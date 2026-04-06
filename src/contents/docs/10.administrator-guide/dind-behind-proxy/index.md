@@ -18,7 +18,7 @@ If your environment uses a proxy that intercepts HTTPS traffic (such as an MITM 
 
 Without this, you'll see errors like:
 
-```text
+```plaintext
 x509: certificate signed by unknown authority
 ```
 

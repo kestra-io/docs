@@ -26,7 +26,7 @@ Below we will cover the creation of a single Terraform module and a subflow, and
 
 ## Code structure
 
-```
+```plaintext
 .
 └── environment/
     ├── development
@@ -58,7 +58,7 @@ Let's create a module that will define a Kestra flow that will sync data from Ai
 
 ## Tree structure of a Terraform module
 
-```
+```plaintext
 .
 └── airbyte_sync/
     ├── main.tf
