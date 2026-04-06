@@ -33,6 +33,19 @@ Follow these baseline rules for every pull request.
 Ensure properties are declared and validated consistently.
 
 - Prefer the `Property<T>` carrier type; use `@PluginProperty(dynamic = true)` only when dynamic rendering is required.
+- **Every property must declare a group** via `@PluginProperty(group = "...")`. Use the standard groups below; introduce a custom group (e.g. `"logging"`, `"schema registry"`) only when none of the standard ones fit.
+
+  | Group | What belongs here |
+  |---|---|
+  | `"main"` | Required properties and primary-intent properties (sql, query, prompt, commands, script, action, …) |
+  | `"connection"` | Endpoint, account, and authentication properties |
+  | `"source"` | Input origin and source location |
+  | `"processing"` | Filtering, selection, and data-shaping options |
+  | `"execution"` | Runner/runtime/environment controls |
+  | `"destination"` | Output destination and write target |
+  | `"reliability"` | Retries, failure handling, safety and consistency knobs |
+  | `"advanced"` | Expert-level or rarely-changed options |
+
 - Mandatory properties must be annotated with `@NotNull` and checked during the rendering.
 - You can model a JSON thanks to a simple `Property<Map<String, Object>>`.
 
