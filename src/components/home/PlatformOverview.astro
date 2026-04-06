@@ -5,7 +5,6 @@ import agent from "./assets/overview/agent.png"
 import code from "./assets/overview/code.png"
 import eventDriven from "./assets/overview/event-driven.png"
 import governance from "./assets/overview/governance.png"
-import { $fetchApi } from "~/utils/fetch"
 import { API_URL } from "astro:env/client"
 
 const images = [
@@ -46,7 +45,7 @@ const images = [
 
 const pluginsDisplayed = [
     "dbt.cli.DbtCLI",
-    "airbyte.connections.Sync",
+    "ansible.cli.AnsibleCLI",
     "gcp.cli.GCloudCLI",
     "servicenow.Get",
 ]
