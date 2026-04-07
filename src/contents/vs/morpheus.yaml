@@ -4,6 +4,10 @@ competitorName: HPE Morpheus
 category: Infrastructure Automation
 shortDescription: "Proprietary hybrid cloud management platform vs. open-source declarative workflow orchestration."
 
+brandColor:
+  color: "#01a982"
+  gradient: "linear-gradient(90deg, #3DB5E6, #D8292F)"
+
 intro:
   title: "Kestra vs. HPE Morpheus: Declarative Orchestration vs. Hybrid Cloud Management"
   description: "HPE Morpheus is a hybrid cloud management platform that centralizes provisioning, monitoring, and cost governance behind a self-service portal. Kestra is an open-source orchestration engine that lets any engineer define, version, and deploy workflows in YAML. Different tools, different jobs."

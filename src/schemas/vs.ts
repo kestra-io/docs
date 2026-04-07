@@ -38,6 +38,10 @@ export const vsSchema = z.object({
     competitorName: z.string(),
     category: z.enum(["Data Orchestration", "Infrastructure Automation"]),
     shortDescription: z.string(),
+    brandColor: z.object({
+        color: z.string(),
+        gradient: z.string().optional(),
+    }),
     intro: z.object({ title: z.string(), description: z.string() }),
     philosophy: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide }),
     businessValue: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide, footerText: z.string().optional() }),

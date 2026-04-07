@@ -4,6 +4,9 @@ competitorName: Redwood
 category: Infrastructure Automation
 shortDescription: "SaaS-first enterprise workload automation with SAP focus vs. open-source orchestration in YAML."
 
+brandColor:
+  color: "#e24650"
+
 intro:
   title: "Kestra vs. Redwood RunMyJobs: Open-Source Orchestration vs. SaaS Workload Automation"
   description: "Redwood RunMyJobs is a SaaS-first platform that automates enterprise workloads, especially SAP environments. Kestra gives any engineer the power to build, deploy, and monitor workflows in YAML through Git. No vendor lock-in, no per-job metering."

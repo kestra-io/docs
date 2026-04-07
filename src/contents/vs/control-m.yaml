@@ -4,6 +4,9 @@ competitorName: Control-M
 category: Infrastructure Automation
 shortDescription: "Proprietary enterprise job scheduling vs. open-source, developer-first orchestration in YAML."
 
+brandColor:
+  color: "#00b2a9"
+
 intro:
   title: "Kestra vs. Control-M: Modern Orchestration Without the Legacy Tax"
   description: "Control-M centralizes batch workload scheduling behind an ops team. Kestra lets any engineer build and ship workflows in YAML. No per-job licensing, no tickets."

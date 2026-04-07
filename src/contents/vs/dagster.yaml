@@ -4,6 +4,10 @@ competitorName: Dagster
 category: Data Orchestration
 shortDescription: "Python-native data asset pipelines vs. universal workflow orchestration in any language with YAML."
 
+brandColor:
+  color: "#4f44e0"
+  gradient: "linear-gradient(90deg, #DEDEFC, #C9C6FA, #163B36)"
+
 intro:
   title: "Kestra vs. Dagster: Orchestrate Your Business, Not Just Your Pipelines"
   description: "Dagster builds data pipelines for Python teams. Kestra automates business workflows. One optimizes your data team. The other transforms how your company operates."

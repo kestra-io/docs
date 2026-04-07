@@ -4,6 +4,9 @@ competitorName: "Ansible AAP"
 category: Infrastructure Automation
 shortDescription: "Playbook execution management vs. full-lifecycle IT orchestration with approvals and audit trails."
 
+brandColor:
+  color: "#ee0000"
+
 intro:
   title: "Kestra vs. Ansible Automation Platform: From Playbook Runner to Full Orchestrator"
   description: "Ansible Automation Platform (formerly Ansible Tower) excels at executing playbooks and managing Ansible inventory at scale. Kestra takes that further—orchestrating Ansible as one step in multi-tool workflows that span Terraform, PowerShell, ServiceNow, and cloud APIs, with approvals, audit trails, and self-service Apps built in."

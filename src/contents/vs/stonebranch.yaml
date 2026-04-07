@@ -4,6 +4,9 @@ competitorName: Stonebranch
 category: Infrastructure Automation
 shortDescription: "Proprietary agent-based workload automation vs. open-source, developer-first orchestration."
 
+brandColor:
+  color: "#156de0"
+
 intro:
   title: "Kestra vs. Stonebranch UAC: Open Orchestration vs. Enterprise Workload Automation"
   description: "Stonebranch Universal Automation Center centralizes workload automation behind agents and a Universal Controller. Kestra lets any engineer build and ship workflows in YAML. No agents, no proprietary licensing, no vendor lock-in."

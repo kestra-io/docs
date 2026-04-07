@@ -4,6 +4,9 @@ competitorName: "Rundeck"
 category: Infrastructure Automation
 shortDescription: "SSH-based runbook automation vs. declarative YAML orchestration with event-driven triggers."
 
+brandColor:
+  color: "#f73f39"
+
 intro:
   title: "Kestra vs. Rundeck: Beyond Runbook Automation"
   description: "Rundeck gives ops teams self-service access to scripts and Ansible playbooks via a clean UI with RBAC. Kestra takes that foundation further—adding declarative YAML orchestration, event-driven triggers, complex multi-step workflows, and self-service Apps with dynamic forms—without losing the simplicity ops teams depend on."

@@ -4,6 +4,9 @@ competitorName: Prefect
 category: Data Orchestration
 shortDescription: "Python-only workflow orchestration vs. universal declarative orchestration in any language with YAML."
 
+brandColor:
+  color: "#2d6df6"
+
 intro:
   title: "Kestra vs. Prefect: Orchestrate Everything, Not Just Python"
   description: "Prefect orchestrates Python workflows for data engineering teams. Kestra orchestrates workflows across your entire stack, in any language. One serves Python-native teams. The other orchestrates data pipelines, infrastructure, and business processes across languages and teams."

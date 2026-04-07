@@ -4,6 +4,9 @@ competitorName: Broadcom Dollar Universe
 category: Infrastructure Automation
 shortDescription: "Proprietary UPROC-based enterprise workload automation vs. modern declarative YAML orchestration."
 
+brandColor:
+  color: "#cc092f"
+
 intro:
   title: "Kestra vs. Broadcom Dollar Universe: Modern Orchestration vs. Legacy Workload Automation"
   description: "Broadcom Dollar Universe has managed enterprise batch workloads in large organizations for decades, especially across European financial services, telecom, and manufacturing. Kestra is what organizations choose when they need event-driven orchestration, developer self-service, and workflows that live in Git rather than a proprietary GUI."
