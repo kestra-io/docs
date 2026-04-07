@@ -37,7 +37,7 @@ Kestra follows a “start simple and grow as needed” philosophy. You can sched
 
 ### 1. Focus on Business Logic, Not Plumbing
 
-With Kestra, flows are written in simple YAML. You can use one of over 500 built-in plugins or create tasks in any language — Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
+With Kestra, flows are written in simple YAML. You can use one of over 1,200 built-in plugins or create tasks in any language — Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
 
 ### 2. Simple by Default, Complex When Needed
 

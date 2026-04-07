@@ -356,7 +356,7 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 Example: If your structure is
 
-```
+```plaintext
 base-path/
   main/
   tenant1/
@@ -372,7 +372,7 @@ You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
 
 The result should be:
 
-```
+```plaintext
 base-path/
   main/
     foo/

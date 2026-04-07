@@ -335,7 +335,7 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 For example:
 
-```
+```plaintext
 base-path/
   main/
   foo/

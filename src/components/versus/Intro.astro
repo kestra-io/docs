@@ -14,10 +14,9 @@ interface Props {
         src: any
         alt: string
     }
-    bgImg?: string
 }
 
-const { title, description, competitor, image, bgImg } = Astro.props as Props
+const { title, description, competitor, image } = Astro.props as Props
 ---
 
 <section
@@ -68,7 +67,7 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
     <div class="background"></div>
 </section>
 
-<style lang="scss" define:vars={{ bgImg: `url("${bgImg}")` }}>
+<style lang="scss">
     section {
         @include media-breakpoint-up(xxl) {
             min-height: 650px;
@@ -81,7 +80,8 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
         .background {
             position: fixed;
             inset: 0;
-            background: var(--bgImg) top center / cover no-repeat;
+            background: url("~/components/versus/assets/hero_bg.webp") top
+                center / cover no-repeat;
             z-index: -1;
             pointer-events: none;
         }

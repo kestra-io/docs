@@ -305,7 +305,7 @@ services:
 
 By default, the Docker Compose template uses the latest image for PostgreSQL. However, if you initialized your Kestra database on an older version of PostgreSQL, you might encounter the following error:
 
-```
+```plaintext
 The data directory was initialized by PostgreSQL version 16, which is not compatible with this version 17.0 (Debian 17.0-1.pgdg120+1).
 ```
 

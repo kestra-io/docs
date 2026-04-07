@@ -5,6 +5,7 @@ date: 2025-06-18T16:30:00
 category: News & Products Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: ageller
   role: Product Lead
 image: ./main.png

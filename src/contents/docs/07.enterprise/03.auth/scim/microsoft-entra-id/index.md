@@ -39,7 +39,7 @@ The above steps will generate a SCIM endpoint URL and a Secret Token that you wi
 
 The endpoint should look as follows:
 
-```
+```plaintext
 https://<your_kestra_host>/api/v1/<your_tenant>/integrations/integration_id/scim/v2
 ```
 
@@ -107,7 +107,7 @@ Kestra adheres to the [SCIM 2.0 specification (RFC 7643)](https://datatracker.ie
 
 Kestra exposes SCIM resource schemas via its `/Schemas` endpoint exposed via the SCIM URL. This allows Microsoft Entra ID to discover the required attributes automatically.
 
-```text
+```plaintext
 GET /api/v1/<tenant>/integrations/<integration_id>/scim/v2/Schemas
 ```
 

@@ -5,6 +5,7 @@ date: 2023-03-02T18:00:00
 category: News & Product Updates
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg

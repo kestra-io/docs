@@ -327,6 +327,12 @@
             "rootAlias": "grey/800"
           },
           {
+            "name": "ks/background-tag-EE",
+            "value": "#fdfabf",
+            "var": "",
+            "rootAlias": ""
+          },
+          {
             "name": "ks/background-tag-category",
             "value": "#f1efff",
             "var": "primary/100",
@@ -505,6 +511,12 @@
             "value": "#cccbce",
             "var": "grey/200",
             "rootAlias": "grey/200"
+          },
+          {
+            "name": "ks/content-tag-EE",
+            "value": "#dd5f00",
+            "var": "orange/base",
+            "rootAlias": "orange/base"
           },
           {
             "name": "ks/content-tag-category",
@@ -1081,6 +1093,12 @@
             "rootAlias": "grey/50"
           },
           {
+            "name": "ks/background-tag-EE",
+            "value": "#fdfabf33",
+            "var": "",
+            "rootAlias": ""
+          },
+          {
             "name": "ks/background-tag-category",
             "value": "#a796ff",
             "var": "primary/300",
@@ -1259,6 +1277,12 @@
             "value": "#3b3a41",
             "var": "grey/600",
             "rootAlias": "grey/600"
+          },
+          {
+            "name": "ks/content-tag-EE",
+            "value": "#fff870",
+            "var": "",
+            "rootAlias": ""
           },
           {
             "name": "ks/content-tag-category",
