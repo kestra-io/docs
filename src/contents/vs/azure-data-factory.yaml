@@ -192,25 +192,17 @@ featureGrid:
       kestra: "Namespace isolation + RBAC out-of-box"
       competitor: "Resource group isolation with Azure RBAC"
 
-socialProof:
-  image:
-    alt: Leroy Merlin success story
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
+testimonials:
+  - quote: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
     author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
-  metrics:
-    - value: "+900%"
-      label: Data production
-    - value: "+250"
-      label: Active users
-    - value: "+5,000"
-      label: Workflows created
-  cta:
-    text: "See how teams modernize data orchestration with Kestra"
-    link: https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "+900%"
+        name: "Data production"
+      - value: "+250"
+        name: "Active users"
+      - value: "+5,000"
+        name: "Workflows created"
+    storyLink: "https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Work

@@ -190,25 +190,17 @@ featureGrid:
       kestra: "Self-hosted, Kestra Cloud, or air-gapped"
       competitor: Google Cloud managed only
 
-socialProof:
-  image:
-    alt: Success story
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture."
+testimonials:
+  - quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture."
     author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
-  metrics:
-    - value: "+900%"
-      label: In data production
-    - value: "+250"
-      label: Active users
-    - value: "+5,000"
-      label: Workflows created
-  cta:
-    text: "See how Leroy Merlin scaled to 5,000 workflows on open architecture"
-    link: https://kestra.io/blogs/2023-08-16-datamesh
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "+900%"
+        name: "In data production"
+      - value: "+250"
+        name: "Active users"
+      - value: "+5,000"
+        name: "Workflows created"
+    storyLink: "/blogs/2023-08-16-datamesh"
 
 platformStrengths:
   title: Kestra Is Built for What Engineering Teams Actually Orchestrate
