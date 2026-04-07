@@ -20,8 +20,8 @@
                         class="play-icon"
                         src="/landing/tutorial-videos/youtube-icon.svg"
                         alt="Play"
-                        width="83"
-                        height="89"
+                        width="70"
+                        height="51"
                     />
                 </div>
                 <div class="content">
