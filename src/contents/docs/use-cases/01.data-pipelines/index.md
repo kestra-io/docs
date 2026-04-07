@@ -24,7 +24,7 @@ Kestra's data orchestration capabilities include:
 ## Why Use Kestra for Data Orchestration?
 
 1. **Simple Declarative Syntax** – Define each data pipeline in a self-contained, portable YAML configuration that includes tasks, triggers, dependencies and infrastructure requirements.
-2. **Extensible Integrations** – Connect to over 600 services via [pre-built plugins](https://kestra.io/plugins). Thanks to plugins, you can avoid writing custom code for boilerplate tasks like file downloads, SQL queries, or REST API calls.
+2. **Extensible Integrations** – Connect to over 1200 services via [pre-built plugins](https://kestra.io/plugins). Thanks to plugins, you can avoid writing custom code for boilerplate tasks like file downloads, SQL queries, or REST API calls.
 3. **Execution Control** – Set retries, timeouts, SLAs, and concurrency limits.
 4. **Zero Code Changes** – Run existing Python/R/SQL scripts as-is (no rewrites needed); specify dependencies via YAML configuration.
 5. **State Management** – Pass data of any size between tasks (_files, variables, query results_) or between workflows (_using KV Store_) thanks to [internal storage](../../08.architecture/data-components/index.md#internal-storage).
