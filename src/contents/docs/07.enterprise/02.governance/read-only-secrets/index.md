@@ -101,7 +101,7 @@ With [Vault](../secrets-manager/index.md#vault-configuration), secrets are store
 
 Here’s an example directory structure of a Vault secret engine used with Kestra:
 
-```
+```plaintext
 secret/
   ├── app1/
   │   ├── db/ <-- SECRET

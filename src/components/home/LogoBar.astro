@@ -1,0 +1,112 @@
+---
+import { Image } from "astro:assets"
+
+const COMPANIES = [
+    "xiaomi",
+    "bloomberg",
+    "toyota",
+    "fila",
+    "apple",
+    "jpmorgan",
+    "t-system",
+]
+const logos = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/components/home/assets/companies/*.svg",
+    { eager: true },
+)
+---
+
+<div class:list={["logo-carousel"]}>
+    <div class="companies-container">
+        <div class="companies">
+            {
+                COMPANIES.map((company) => (
+                    <div class="logo-wrapper">
+                        <Image
+                            src={
+                                logos[
+                                    `/src/components/home/assets/companies/${company}.svg`
+                                ].default
+                            }
+                            alt={company}
+                            class="company-logo"
+                        />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    .logo-carousel {
+        display: flex;
+        flex-direction: column;
+        margin: 1rem 0;
+    }
+
+    span {
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        color: var(--ks-content-primary);
+        @include media-breakpoint-up(lg) {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .companies-container {
+        width: 100%;
+        overflow: hidden;
+        @include media-breakpoint-down(sm) {
+            margin-top: 1rem;
+        }
+
+        .companies {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+
+            @include media-breakpoint-up(sm) {
+                gap: 2rem;
+                margin-left: -14px;
+            }
+            @include media-breakpoint-up(xl) {
+                gap: 3rem;
+            }
+            @include media-breakpoint-up(xxl) {
+                gap: 5rem;
+            }
+
+            @include media-breakpoint-down(lg) {
+                flex-wrap: wrap;
+                gap: 0;
+                row-gap: 2rem;
+                margin-left: 0;
+            }
+        }
+
+        .logo-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            @include media-breakpoint-down(lg) {
+                width: 25%;
+                box-sizing: border-box;
+            }
+        }
+
+        .company-logo {
+            flex-shrink: 0;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+
+            @include media-breakpoint-down(lg) {
+                width: auto;
+                height: 26px;
+                max-width: 80%;
+            }
+        }
+    }
+</style>

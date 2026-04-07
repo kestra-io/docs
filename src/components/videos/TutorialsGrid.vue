@@ -10,7 +10,15 @@
                             :src="featuredVideo.iframeUrl"
                             :title="featuredVideo.title"
                             frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allow="
+                                accelerometer;
+                                autoplay;
+                                clipboard-write;
+                                encrypted-media;
+                                gyroscope;
+                                picture-in-picture;
+                                web-share;
+                            "
                             referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen
                         />
@@ -18,32 +26,48 @@
                     <div>
                         <div class="info-block">
                             <div class="content">
-                                <p class="category">{{ featuredVideo.category }}</p>
-                                <h3 class="title">{{ featuredVideo.title }}</h3>
-                                <p v-if="featuredVideo.publicationDate" class="video-info">
-                                    {{ formatDate(featuredVideo.publicationDate) }}
+                                <p class="category">
+                                    {{ featuredVideo.category }}
                                 </p>
-                                <p class="canal-name">{{ featuredVideo.author }}</p>
+                                <h3 class="title">{{ featuredVideo.title }}</h3>
+                                <p
+                                    v-if="featuredVideo.publicationDate"
+                                    class="video-info"
+                                >
+                                    {{
+                                        formatDate(
+                                            featuredVideo.publicationDate,
+                                        )
+                                    }}
+                                </p>
+                                <p class="canal-name">
+                                    {{ featuredVideo.author }}
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tutorials-list">
-                    <div
-                        v-for="video in videos"
-                        :key="video.title"
-                    >
+                <div class="tutorials-list" v-if="mounted">
+                    <div v-for="video in paginatedVideos" :key="video.title">
                         <VideosTutorialVideo
                             :video="video"
                             @click="openVideoModal(video)"
                         />
                     </div>
                 </div>
+                <div v-else class="tutorials-list">
+                    <div
+                        v-for="index in 12"
+                        :key="index"
+                        class="skeleton-video"
+                    ></div>
+                </div>
             </div>
         </div>
         <PaginationContainer
-            :current-url="currentUrl"
-            :total-items="totalItems"
+            :key="mounted ? 'loaded' : 'loading'"
+            :current-url="currentLocationHref ?? 'https://example.com'"
+            :total-items="tutorialVideo?.total ?? 0"
             :show-total="false"
             @update="onPaginationUpdate"
         />
@@ -51,7 +75,13 @@
 
     <Modal v-model:show="videoVisible" class="video-modal">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal">
+            <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                @click="closeModal"
+            >
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -62,7 +92,15 @@
                     :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
                     :title="visibleVideoData.title"
                     frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                        web-share;
+                    "
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen
                 />
@@ -72,12 +110,23 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, watch } from "vue"
-    import { navigate } from "astro:transitions/client"
+    import { computed, ref, watch } from "vue"
     import { useYoutube } from "~/utils/useYoutube"
     import Modal from "~/components/common/Modal.vue"
     import VideosTutorialVideo from "~/components/videos/TutorialVideo.vue"
     import PaginationContainer from "~/components/common/PaginationContainer.vue"
+    import { useMounted } from "@vueuse/core"
+
+    const mounted = useMounted()
+    const currentLocationHref = ref(
+        typeof window !== "undefined" ? window.location.href : undefined,
+    )
+
+    const urlObject = computed(() => {
+        return currentLocationHref.value
+            ? new URL(currentLocationHref.value)
+            : ({} as URL)
+    })
 
     interface VideoData {
         title: string
@@ -97,16 +146,11 @@
 
     const props = withDefaults(
         defineProps<{
-            currentUrl: string
             categories: Map<string, string>
-            page?: number
-            itemsPerPage?: number
             currentCategory?: string
             tutorialVideo?: TutorialVideoResponse
         }>(),
         {
-            page: 1,
-            itemsPerPage: 24,
             currentCategory: "All videos",
             tutorialVideo: undefined,
         },
@@ -114,11 +158,9 @@
 
     const { extractVideoId } = useYoutube()
 
-    const videos = ref<VideoData[]>([])
     const featuredVideo = ref<VideoData | null>(null)
     const videoVisible = ref(false)
     const visibleVideoData = ref<VideoData>({} as VideoData)
-    const totalItems = ref(0)
 
     function formatDate(dateString: string): string {
         try {
@@ -137,24 +179,6 @@
         return videoId ? `https://www.youtube.com/embed/${videoId}` : ""
     }
 
-    function setVideos(data: VideoData[], total: number): void {
-        const videoData = data.map((item) => ({
-            ...item,
-            iframeUrl: embedUrl(item.url),
-            youtubeUrl: item.url,
-        }))
-
-        if (props.currentCategory === "All videos") {
-            featuredVideo.value = videoData.find((item) => item.isFeatured) || null
-            videos.value = videoData.filter((video) => !video.isFeatured)
-        } else {
-            featuredVideo.value = null
-            videos.value = [...videoData]
-        }
-
-        totalItems.value = total
-    }
-
     function closeModal(): void {
         videoVisible.value = false
         visibleVideoData.value = {} as VideoData
@@ -165,25 +189,51 @@
         visibleVideoData.value = video
     }
 
-    const onPaginationUpdate = (payload: { size: number; page: number }) => {
-        if (typeof window === "undefined") return
-
-        if (payload.size === props.itemsPerPage && payload.page === props.page) {
+    function onPaginationUpdate(payload: { size: number; page: number }) {
+        if (
+            payload.page === currentPage.value &&
+            payload.size === itemsPerPage.value
+        ) {
             return
         }
 
-        const newUrl = new URL(window.location.href)
-        newUrl.searchParams.set("size", payload.size.toString())
-        newUrl.searchParams.set("page", payload.page.toString())
+        // force calculation of browserLocation to take new page into account
+        // force calculation of browserLocation to take new page into account
+        const newUrl = new URL(
+            currentLocationHref.value ?? "https://example.com",
+        )
 
-        navigate(newUrl.pathname + newUrl.search)
+        newUrl.searchParams.set("page", payload.page.toString())
+        newUrl.searchParams.set("size", payload.size.toString())
+        currentLocationHref.value = newUrl.href
+        window.scrollTo(0, 0)
     }
+
+    const itemsPerPage = computed(() => {
+        const sizeParam = urlObject.value.searchParams?.get("size")
+        return sizeParam ? parseInt(sizeParam) : 24
+    })
+
+    const currentPage = computed(() => {
+        const pageParam = urlObject.value.searchParams?.get("page")
+        return pageParam ? parseInt(pageParam) : 1
+    })
+
+    const paginatedVideos = computed(() => {
+        const start = (currentPage.value - 1) * itemsPerPage.value
+        return props.tutorialVideo?.results
+            .slice(start, start + itemsPerPage.value)
+            .map((item) => ({
+                ...item,
+                iframeUrl: embedUrl(item.url),
+                youtubeUrl: item.url,
+            }))
+    })
 
     watch(
         () => props.tutorialVideo,
         (newVal) => {
             if (newVal?.total !== undefined) {
-                setVideos(newVal.results, newVal.total)
                 if (typeof window !== "undefined") {
                     window.scrollTo(0, 0)
                 }
@@ -227,7 +277,7 @@
         }
     }
 
-    .tab-content{
+    .tab-content {
         margin: 0;
     }
 
@@ -284,6 +334,12 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             row-gap: 3rem;
             column-gap: 1.5rem;
+            .skeleton-video {
+                width: 100%;
+                aspect-ratio: 4 / 3;
+                background-color: var(--ks-background-secondary);
+                border-radius: 0.5rem;
+            }
         }
     }
 </style>

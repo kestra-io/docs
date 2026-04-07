@@ -33,6 +33,7 @@ industry: Retail
 headquarter: Paris, France
 solution: High Quality Pets Nutrition
 companyName: ""
+cta: "What would change if your ETL processes triggered automatically from a single command—no manual pipeline runs, just results?"
 ---
 
 ## About Reglo

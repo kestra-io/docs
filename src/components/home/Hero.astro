@@ -1,0 +1,219 @@
+---
+import DeclarativeIcon from "./assets/hero/declarative.svg"
+import AnyLangIcon from "./assets/hero/any-lang.svg"
+import ApiFirstIcon from "./assets/hero/api-first.svg"
+import PluginsIcon from "./assets/hero/plugin.svg"
+import LockInIcon from "./assets/hero/lock-in.svg"
+import SelfHostedIcon from "./assets/hero/self-hosted.svg"
+import CloudIcon from "./assets/hero/cloud.svg"
+import HeroAnimation from "./hero-animation.astro"
+import AnimatedWord from "./AnimatedWord.vue"
+import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+import LogoBar from "./LogoBar.astro"
+import LogoCarousel from "~/components/common/LogoCarousel.astro"
+import JPMorganIcon from "./assets/companies/jpmorgan.svg"
+import TSystemIcon from "./assets/companies/t-system.svg"
+import XiaomiIcon from "./assets/companies/xiaomi.svg"
+import BloombergIcon from "./assets/companies/bloomberg.svg"
+import FilaIcon from "./assets/companies/fila.svg"
+import AppleIcon from "./assets/companies/apple.svg"
+import ToyotaIcon from "./assets/companies/toyota.svg"
+---
+
+<section aria-labelledby="hero">
+    <div class="mobile-bg"></div>
+    <div class="hero">
+        <h1 id="hero">
+            One Platform <br class="d-lg-none" /> to <AnimatedWord
+                words={["Run", "Control", "Govern"]}
+                client:load
+            />
+            <br />
+            <span class="gradient">All Your Workflows</span>
+        </h1>
+        <p>
+            Kestra is the open-source orchestration platform for data, AI, and
+            infrastructure workflows. Event-driven, language-agnostic, and built
+            for enterprise scale.
+        </p>
+        <div class="tags">
+            <span><DeclarativeIcon />Declarative</span>
+            <span><AnyLangIcon />Any Language</span>
+            <span><ApiFirstIcon />API-First</span>
+            <span><PluginsIcon />1200+ Plugins</span>
+            <span><LockInIcon />No Lock-in</span>
+            <span><SelfHostedIcon />Self-Hosted</span>
+            <span><CloudIcon />Cloud</span>
+        </div>
+        <div class="buttons">
+            <a href="/get-started" class="btn btn-lg btn-primary me-3 mb-2">
+                Get Started with Open Source
+            </a>
+            <a href="/demo" class="btn btn-lg btn-secondary mb-2">
+                Book a Demo
+            </a>
+        </div>
+    </div>
+    <div class="hero-animation">
+        <HeroAnimation />
+    </div>
+    <LogoBar />
+</section>
+
+<style lang="scss">
+    @use "~/assets/styles/variable" as *;
+
+    section {
+        padding-top: 0;
+        padding-bottom: 3rem;
+        padding-inline: 1rem;
+        position: relative;
+        clip-path: inset(0);
+        margin-top: -2px;
+        @include media-breakpoint-up(md) {
+            padding-inline: 0;
+            padding-top: 2rem;
+            background:
+                url("./assets/hero/bg-grid.svg") no-repeat 50% -100px,
+                url("./assets/hero/bg-desktop.svg") no-repeat center center /
+                    cover;
+        }
+    }
+
+    .hero {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 15rem 2rem 0;
+        margin-inline: auto;
+        max-width: 1400px;
+        overflow: hidden;
+        position: relative;
+        z-index: 2;
+        @include media-breakpoint-up(md) {
+            padding: 3rem 18rem 3rem 5rem;
+            margin-top: 0;
+        }
+        @include media-breakpoint-between(lg, xl) {
+            padding-right: 25rem;
+        }
+    }
+
+    .mobile-bg {
+        position: absolute;
+        top: 0;
+        @include media-breakpoint-down(sm) {
+            top: -5rem;
+        }
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("./assets/hero/bg-mobile.png") no-repeat center center;
+        background-size: cover;
+        z-index: 0;
+        @include media-breakpoint-up(md) {
+            display: none;
+        }
+    }
+
+    .hero-animation {
+        position: absolute;
+        right: 2rem;
+        top: 50px;
+        z-index: 1;
+        display: none;
+
+        @include media-breakpoint-up(md) {
+            display: block;
+            left: 50%;
+            transform: scale(0.5) translateX(18%);
+            width: auto;
+        }
+        @include media-breakpoint-up(xl) {
+            left: 50%;
+            transform: scale(0.8);
+        }
+    }
+
+    .hero h1 {
+        grid-area: 1/1/2/2;
+        font-weight: 500;
+        font-size: 2rem;
+        @include media-breakpoint-up(md) {
+            font-size: 3.5rem;
+            line-height: 3.9375rem;
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    .gradient {
+        background: linear-gradient(90deg, #718bfe, #c6d1ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+        grid-area: 2/1/3/2;
+        color: var(--hp-color-dark-secondary);
+        @include media-breakpoint-up(md) {
+            font-size: $font-size-lg;
+        }
+    }
+
+    .tags {
+        display: none;
+        @include media-breakpoint-up(md) {
+            grid-area: 3/1/4/2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            max-width: 730px;
+        }
+    }
+
+    .tags span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 0.7rem;
+        border-radius: 9999px;
+        color: var(--hp-color-dark-tertiary);
+        font-size: $font-size-xs;
+        svg {
+            color: #718bfe;
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    .buttons {
+        grid-area: 4/1/5/2;
+        a {
+            width: 100%;
+        }
+        @include media-breakpoint-up(md) {
+            margin-top: 3rem;
+            a {
+                width: auto;
+            }
+        }
+    }
+
+    .compare {
+        color: #cdc5ff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-weight: 500;
+        :global(svg) {
+            transition: transform 0.2s ease-in-out;
+        }
+        &:hover {
+            :global(svg) {
+                transform: translateX(3px);
+            }
+        }
+    }
+</style>

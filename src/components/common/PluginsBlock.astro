@@ -15,13 +15,19 @@ const excluded =
 
 const plugins = metadata
     .filter((p) => p.artifactId && !excluded.test(p.artifactId))
-    .map((p) => ({
-        ...p,
-        link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
-    }))
     .sort(() => 0.5 - Math.random())
+    .slice(0, 80)
+    .map((p) => {
+        return {
+            ...p,
+            link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
+        }
+    })
 
-const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
+const rows = [
+    plugins.slice(0, plugins.length / 2),
+    plugins.slice(plugins.length / 2),
+]
 ---
 
 <section class="plugins">
@@ -45,8 +51,12 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
                 </p>
             </div>
             <slot name="cta">
-                <Link href="/plugins" class="btn btn-secondary" data-usal="zoomin">
-                    See all plugins
+                <Link
+                    href="/plugins"
+                    class="btn btn-secondary"
+                    data-usal="zoomin"
+                >
+                    See All Plugins
                 </Link>
             </slot>
         </div>
@@ -57,12 +67,11 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
             rows.map((items) => (
                 <div class="carousel-row">
                     <div class="carousel-track">
-                        {[...items, ...items]
-                            .map((plugin) => (
-                                <a href={plugin.link} class="plugin-logo">
-                                    <TaskIcon cls={plugin.group} />
-                                </a>
-                            ))}
+                        {[...items, ...items].map((plugin) => (
+                            <a href={plugin.link} class="plugin-logo">
+                                <TaskIcon cls={plugin.group} />
+                            </a>
+                        ))}
                     </div>
                 </div>
             ))
@@ -76,6 +85,7 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
         display: flex;
         flex-direction: column;
         gap: 4.5rem;
+        color: var(--ks-content-primary);
         background: linear-gradient(
             180deg,
             var(--ks-background-secondary) 0%,
@@ -167,6 +177,11 @@ const rows = [plugins.splice(0, 20), plugins.splice(0, 20)]
                 @include media-breakpoint-down(sm) {
                     width: 65px;
                     height: 65px;
+                }
+
+                :global(svg) {
+                    width: 100%;
+                    height: 100%;
                 }
 
                 &:hover {

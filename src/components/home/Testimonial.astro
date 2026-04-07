@@ -1,0 +1,139 @@
+---
+import Quotes from "~/components/common/Quotes.vue"
+import jpmorganLogo from "./assets/companies/jpmorgan.svg?raw"
+import bhpLogo from "~/components/enterprise/assets/fortune500.svg?raw"
+import pharmacyLogo from "~/contents/customer-stories/29/logo.svg?raw"
+import appleLogo from "~/assets/landing/data/apple.svg?raw"
+import filaLogo from "~/contents/customer-stories/17/logo.svg?raw"
+import leroyMerlinLogo from "~/contents/customer-stories/14/logo.svg?raw"
+
+const quotes = [
+    {
+        quote: `We processed billions of rows and thousands of weekly API pulls in under 3 months. For the first time, our analysts aren't waiting for engineering—they're building the workflows themselves.`,
+        author: "VP of Cybersecurity - <b>@jpmorgan Chase</b>",
+        smallLogoSvg: jpmorganLogo,
+        kpis: [
+            {
+                value: "Billions",
+                name: "of records processed securely",
+            },
+            {
+                value: "< 3 Months",
+                name: "to go from zero to full production",
+            },
+            {
+                value: "100+",
+                name: "users empowered to build workflows",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/26-orchestrating-cybersecurity-for-100-users-and-billions-of-rows",
+    },
+    {
+        quote: `We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!`,
+        author: "Principal Hosting",
+        smallLogoSvg: bhpLogo,
+        kpis: [
+            {
+                value: "4+1",
+                name: "Isolated automation platforms",
+            },
+            {
+                value: "30×",
+                name: "faster time to deliver",
+            },
+            {
+                value: "–90%",
+                name: "In licensing cost VS Aria Automation",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-ot-with-kestra",
+    },
+    {
+        quote: `Stability was the turning point. With Kestra, our most critical flows finally run the way they should.`,
+        author: "Infrastructure Lead",
+        smallLogoSvg: pharmacyLogo,
+        kpis: [
+            {
+                value: "400+",
+                name: "Pharmacies rely on Kestra workflows",
+            },
+            {
+                value: "50+",
+                name: "Critical workflows modernized",
+            },
+            {
+                value: "30+ Years",
+                name: "Old platform, replaced in months",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/29-modernizing-mission-critical-workflows-in-a-highly-regulated-environment",
+    },
+    {
+        quote: `Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.`,
+        author: "Senior Engineering Manager, ML team @ Apple",
+        smallLogoSvg: appleLogo,
+        kpis: [
+            {
+                value: "200",
+                name: "engineers onboarded",
+            },
+            {
+                value: "2x",
+                name: "faster workflow creation",
+            },
+            {
+                value: "0",
+                name: "pipeline failures",
+            },
+        ],
+        storyLink: "/use-cases/stories",
+    },
+    {
+        quote: `Kestra has changed how we handle data orchestration. Instead of spending days fixing issues, we now have full visibility and control. As we scale, having a system that grows with us is invaluable.`,
+        author: "John Kim — IT Lead",
+        smallLogoSvg: filaLogo,
+        kpis: [
+            {
+                value: "2.5 Million",
+                name: "Monthly Executions",
+            },
+            {
+                value: "2000+",
+                name: "Workflows",
+            },
+            {
+                value: "25+",
+                name: "Engineers working with Kestra",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated",
+    },
+    {
+        quote: `Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.`,
+        author: "Julien Henrion — Head of Data Engineering",
+        smallLogoSvg: leroyMerlinLogo,
+        kpis: [
+            {
+                value: "+900%",
+                name: "In Data Production",
+            },
+            {
+                value: "+250",
+                name: "active users",
+            },
+            {
+                value: "+5000",
+                name: "workflows Created",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900",
+    },
+]
+---
+
+<Quotes quotes={quotes} client:load />

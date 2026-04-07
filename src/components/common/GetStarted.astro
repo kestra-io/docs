@@ -13,19 +13,23 @@ const PLANS = [
         description: "Self-host on Docker or Kubernetes. Free Forever",
         image: CORE_IMAGE,
         button: {
-            text: "Get started",
-            href: "https://kestra.io/docs/getting-started/quickstart",
+            text: "Get Started",
+            href: "/get-started",
             variant: "btn-secondary",
         },
     },
     {
         slug: "enterprise",
-        name: "Enterprise",
-        description:
-            "SSO, RBAC, audit logs, multi-tenancy, built for critical environments.",
+        name: "Enterprise Edition",
+        description: [
+            "Built for critical environments.",
+            "SSO, RBAC, audit logs, multi-tenancy. Isolated workers and dedicated task runners.",
+            "Hybrid environments: Cloud, On-Prem, Air-Gapped.",
+            "SLA-backed support and a dedicated customer success program.",
+        ],
         image: ENTERPRISE_IMAGE,
         button: {
-            text: "Learn more",
+            text: "Learn More",
             href: "/enterprise",
             variant: "btn-primary",
         },
@@ -37,7 +41,7 @@ const PLANS = [
             "Managed platform, production-ready, scalable. Fastest time to value.",
         image: CLOUD_IMAGE,
         button: {
-            text: "Request access",
+            text: "Request Access",
             href: "/cloud",
             variant: "btn-secondary",
         },
@@ -69,9 +73,12 @@ const PLANS = [
                             <h4 class="plan-name" data-usal="fade-r">
                                 {plan.name}
                             </h4>
-                            <p class="plan-description" data-usal="fade-l">
-                                {plan.description}
-                            </p>
+                            <div class="plan-description" data-usal="fade-l">
+                                {Array.isArray(plan.description)
+                                    ? plan.description.map((line) => <p>{line}</p>)
+                                    : <p>{plan.description}</p>
+                                }
+                            </div>
                         </div>
                         <div class="card-footer">
                             <a
@@ -86,12 +93,6 @@ const PLANS = [
                 ))
             }
         </div>
-
-        <h6 class="compare" data-usal="fade-u">
-            <a href="/pricing">
-                Compare all plans <ArrowRight class="icon" />
-            </a>
-        </h6>
     </div>
 </WithLogo>
 
@@ -174,7 +175,8 @@ const PLANS = [
 
             &.enterprise {
                 width: 465px;
-                height: 666px;
+                min-height: 666px;
+                height: auto;
                 z-index: 2;
                 border-radius: 0.625rem;
             }
@@ -207,6 +209,15 @@ const PLANS = [
 
         .plan-description {
             color: var(--ks-content-secondary-inverse);
+        }
+    }
+
+    .plan-card.enterprise .plan-description p {
+        margin-bottom: 0.35rem;
+        font-size: 0.875rem;
+
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 

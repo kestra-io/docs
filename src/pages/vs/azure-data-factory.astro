@@ -1,0 +1,130 @@
+---
+import { getEntry } from "astro:content"
+import Layout from "~/components/layout.astro"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import SocialProof from "~/components/common/SocialProof.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+
+import adfLogo from "~/components/versus/assets/azure-data-factory.svg?raw"
+import adfMonogram from "~/components/versus/assets/azure-data-factory-monograme.svg?raw"
+import lmfrImage from "~/components/versus/assets/lmfr.png"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import adfImg from "~/components/versus/assets/azure-data-factory-img.svg"
+import heroUI from "~/components/versus/assets/adf_hero.webp"
+
+const entry = await getEntry("vs", "azure-data-factory")
+if (!entry)
+    throw new Error("Could not find vs/azure-data-factory collection entry")
+
+const {
+    title,
+    shortDescription,
+    competitorName,
+
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    socialProof,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+} = entry.data
+---
+
+<Layout {title} description={shortDescription} headerTheme="lightText">
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: adfMonogram,
+        }}
+        image={{ src: heroUI, alt: "kestra ui" }}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: adfLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: adfLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: adfLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: adfLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: adfLogo,
+            linkImg: adfImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo: adfLogo,
+        }}
+    />
+    <SocialProof
+        {...socialProof}
+        image={{ ...socialProof.image, src: lmfrImage }}
+    />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: adfLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">
+            Getting Started with Declarative Orchestration
+        </Fragment>
+        See how Kestra can simplify your workflows—and scale beyond legacy ETL pipelines.
+    </SeeHow>
+</Layout>

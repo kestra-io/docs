@@ -17,7 +17,7 @@ Each Prometheus metric is described with its purpose and the type of data it rep
 
 Example output from the Prometheus endpoint:
 
-```text
+```plaintext
 ## HELP executor_active_threads The approximate number of threads that are actively executing tasks
 ## TYPE executor_active_threads gauge
 executor_active_threads 4

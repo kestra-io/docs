@@ -50,7 +50,7 @@ if (pageData.tags && pageData.tags.length > 0) {
     }
 }
 
-const title = pageData.title
+const title = pageData.metaTitle || pageData.title
 const description = pageData.metaDescription
 ---
 
@@ -75,8 +75,8 @@ const description = pageData.metaDescription
     }
     <SeeHow
         cta={{
-            text: "Get started",
-            href: "/docs/quickstart#start-kestra",
+            text: "Get Started",
+            href: "/get-started",
         }}
     >
         <Fragment slot="title">New to Kestra?</Fragment>

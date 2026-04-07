@@ -32,6 +32,7 @@ industry: Heavy Industry
 headquarter: Australia
 solution: Global leader in heavy industry across the globe
 companyName: Fortune 500 Company
+cta: "What would change if your hybrid cloud automation ran securely across every OT domain—isolated by design, auditable by default?"
 ---
 
 A Fortune 500 industrial company was running critical hybrid cloud automations on a legacy orchestrator that was becoming *too expensive*, *too opaque to develop on*, and, most importantly, *too risky to keep spanning multiple OT domains*.

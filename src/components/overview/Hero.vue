@@ -14,9 +14,9 @@
                 </div>
 
                 <div class="buttons">
-                    <a href="/demo" class="btn btn-secondary mb-2" target="_blank" data-usal="zoomin"> Talk to us </a>
-                    <a href="/docs/quickstart#start-kestra" class="btn btn-primary ms-3 mb-2" data-usal="zoomin">
-                        Get Started!
+                    <a href="/demo" class="btn btn-secondary mb-2" target="_blank" data-usal="zoomin"> Book a Demo </a>
+                    <a href="/get-started" class="btn btn-primary ms-3 mb-2" data-usal="zoomin">
+                        Get Started
                     </a>
                 </div>
             </div>

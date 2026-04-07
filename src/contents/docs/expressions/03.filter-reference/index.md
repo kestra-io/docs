@@ -125,80 +125,303 @@ Use a pattern like this when the payload already arrives as JSON input and you w
 
 ## Numbers and collections
 
-These filters are the everyday cleanup tools for expression values. Use them when you already have the right data, but need to reformat it, count it, sort it, or coerce it into the type another task expects.
+These filters are the everyday cleanup tools for expression values. Use them when you already have the right data but need to reformat it, count it, sort it, or coerce it into the type another task expects.
 
-### Common numeric filters
+### `abs`
 
-- `abs` for absolute values
-- `number` for parsing strings into numeric types
-- `numberFormat` for decimal formatting
-
-Examples:
+Returns the absolute value of a number:
 
 ```twig
 {{ -7 | abs }}
-{{ "12.3" | number }}
-{{ "9223372036854775807" | number('BIGDECIMAL') | className }}
-{{ 3.141592653 | numberFormat("#.##") }}
+{# output: 7 #}
 ```
 
-The `number` filter supports `INT`, `FLOAT`, `LONG`, `DOUBLE`, `BIGDECIMAL`, and `BIGINTEGER`.
+### `number`
 
-### Common collection filters
+Parses a string into a numeric type. Supports `INT`, `FLOAT`, `LONG`, `DOUBLE`, `BIGDECIMAL`, and `BIGINTEGER`. When no type is specified, the type is inferred:
 
-- `chunk`, `distinct`, `first`, `last`, `length`
-- `join`, `split`
-- `merge`, `sort`, `rsort`, `reverse`
-- `slice`
-- `keys`, `values`
+```twig
+{{ "12.3" | number | className }}
+{# output: java.lang.Float #}
+{{ "9223372036854775807" | number('BIGDECIMAL') | className }}
+{# output: java.math.BigDecimal #}
+```
 
-Examples:
+Use `BIGDECIMAL` or `BIGINTEGER` when values exceed standard long or double precision.
+
+### `className`
+
+Returns the Java class name of an object. Useful for debugging type inference when combined with `number`:
+
+```twig
+{{ "12.3" | number | className }}
+{# output: java.lang.Float #}
+```
+
+### `numberFormat`
+
+Formats a number using a Java `DecimalFormat` pattern:
+
+```twig
+{{ 3.141592653 | numberFormat("#.##") }}
+{# output: 3.14 #}
+```
+
+### `first` and `last`
+
+Returns the first or last element of a collection, or the first or last character of a string:
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | first }}
+{# output: apple #}
+{{ ['apple', 'banana', 'cherry'] | last }}
+{# output: cherry #}
+{{ 'Kestra' | first }}
+{# output: K #}
+{{ 'Kestra' | last }}
+{# output: a #}
+```
+
+### `length`
+
+Returns the number of elements in a collection, or the number of characters in a string:
+
+```twig
+{{ ['apple', 'banana'] | length }}
+{# output: 2 #}
+{{ 'Kestra' | length }}
+{# output: 6 #}
+```
+
+### `join`
+
+Concatenates a collection into a single string with an optional delimiter:
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | join(', ') }}
+{# output: apple, banana, cherry #}
+```
+
+### `split`
+
+Splits a string into a list using a delimiter. The delimiter is a regex, so escape special characters:
+
+```twig
+{{ 'apple,banana,cherry' | split(',') }}
+{# output: ['apple', 'banana', 'cherry'] #}
+{{ 'a.b.c' | split('\\.') }}
+```
+
+The optional `limit` argument controls how many splits are performed:
+
+- **Positive**: limits the array size; the last entry contains the remaining content
+- **Zero**: no limit; trailing empty strings are discarded
+- **Negative**: no limit; trailing empty strings are included
+
+```twig
+{{ 'apple,banana,cherry,grape' | split(',', 2) }}
+{# output: ['apple', 'banana,cherry,grape'] #}
+```
+
+### `sort` and `rsort`
+
+Sort a collection in ascending or descending order:
+
+```twig
+{{ [3, 1, 2] | sort }}
+{# output: [1, 2, 3] #}
+{{ [3, 1, 2] | rsort }}
+{# output: [3, 2, 1] #}
+```
+
+### `reverse`
+
+Reverses the order of a collection:
+
+```twig
+{{ [1, 2, 3] | reverse }}
+{# output: [3, 2, 1] #}
+```
+
+### `chunk`
+
+Splits a collection into groups of a specified size:
 
 ```twig
 {{ [1, 2, 3, 4, 5] | chunk(2) }}
-{{ ['apple', 'banana'] | first }}
-{{ ['apple', 'banana'] | join(', ') }}
-{{ {'foo': 'bar', 'baz': 'qux'} | keys }}
-{{ {'foo': 'bar', 'baz': 'qux'} | values }}
-{{ [3, 1, 2] | sort }}
-{{ [3, 1, 2] | rsort }}
+{# output: [[1, 2], [3, 4], [5]] #}
+```
+
+### `distinct`
+
+Returns only unique values from a collection:
+
+```twig
+{{ [1, 2, 2, 3, 1] | distinct }}
+{# output: [1, 2, 3] #}
+```
+
+### `slice`
+
+Extracts a portion of a collection or string using `fromIndex` (inclusive) and `toIndex` (exclusive):
+
+```twig
 {{ ['apple', 'banana', 'cherry'] | slice(1, 2) }}
-{{ 'apple,banana,cherry' | split(',') }}
+{# output: [banana] #}
+{{ 'Kestra' | slice(1, 3) }}
+{# output: es #}
+```
+
+### `merge`
+
+Merges two collections into one:
+
+```twig
+{{ [1, 2] | merge([3, 4]) }}
+{# output: [1, 2, 3, 4] #}
+```
+
+### `keys` and `values`
+
+Return the keys or values of a map:
+
+```twig
+{{ {'foo': 'bar', 'baz': 'qux'} | keys }}
+{# output: [foo, baz] #}
+{{ {'foo': 'bar', 'baz': 'qux'} | values }}
+{# output: [bar, qux] #}
 ```
 
 ## String filters
 
 String filters are where most small presentation fixes happen. They are usually the right tool for display formatting, filename shaping, templated messages, and API-compatible encodings.
 
-Common string filters include:
+### Case and whitespace
 
-- `abbreviate`
-- `default`
-- `lower`, `upper`, `title`, `capitalize`
-- `replace`
-- `trim`
-- `startsWith`
-- `slugify`
-- `substringAfter`, `substringBefore`, and their `Last` variants
-- `base64encode`, `base64decode`
-- `sha256`
-- `urlencode`, `urldecode`
-- `string`
-- `escapeChar`
-
-Examples:
+`lower`, `upper`, `title`, and `capitalize` normalize casing. `trim` removes leading and trailing whitespace.
 
 ```twig
-{{ "this is a long sentence." | abbreviate(7) }}
-{{ user.phoneNumber | default("No phone number") }}
-{{ "LOUD TEXT" | lower }}
-{{ "article title" | title }}
+{{ "LOUD TEXT" | lower }}           {# loud text #}
+{{ "quiet text" | upper }}          {# QUIET TEXT #}
+{{ "article title" | title }}       {# Article Title #}
+{{ "hello world" | capitalize }}    {# Hello world #}
+{{ "  padded  " | trim }}           {# padded #}
+```
+
+### `abbreviate`
+
+Truncates a string to a maximum length and appends an ellipsis. The length argument includes the ellipsis:
+
+```twig
+{{ "this is a long sentence." | abbreviate(7) }}    {# this... #}
+```
+
+Useful when you need to keep log messages or notification subjects within a character limit.
+
+### `replace`
+
+Substitutes one or more substrings using a map. Pass `regexp=true` to use regex patterns in the keys:
+
+```twig
 {{ "I like %this% and %that%." | replace({'%this%': foo, '%that%': "bar"}) }}
-{{ "Hello World!" | slugify }}
-{{ "a.b.c" | substringBeforeLast(".") }}
+```
+
+### `substringBefore`, `substringAfter`, and their `Last` variants
+
+Extract the portion of a string before or after a delimiter. The `Last` variants match the final occurrence:
+
+```twig
+{{ "a.b.c" | substringBefore(".") }}       {# a #}
+{{ "a.b.c" | substringAfter(".") }}        {# b.c #}
+{{ "a.b.c" | substringBeforeLast(".") }}   {# a.b #}
+{{ "a.b.c" | substringAfterLast(".") }}    {# c #}
+```
+
+These are particularly useful for extracting file extensions, path segments, or identifier prefixes from task output values.
+
+### `slugify`
+
+Converts a string into a URL-safe slug:
+
+```twig
+{{ "Hello World!" | slugify }}    {# hello-world #}
+```
+
+### `default`
+
+Returns a fallback value when the expression is null or empty:
+
+```twig
+{{ user.phoneNumber | default("No phone number") }}
+```
+
+### `startsWith`
+
+Returns `true` if the string begins with the given prefix:
+
+```twig
+{{ "kestra://file.csv" | startsWith("kestra://") }}    {# true #}
+```
+
+### Encoding and hashing
+
+`base64encode` and `base64decode` handle Base64 encoding. `urlencode` and `urldecode` percent-encode strings for use in URLs. `sha256` produces a hex-encoded SHA-256 hash.
+
+```twig
+{{ "test" | base64encode }}
+{# output: dGVzdA== #}
 {{ "dGVzdA==" | base64decode }}
-{{ "test" | sha256 }}
+{# output: test #}
 {{ "The string ü@foo-bar" | urlencode }}
+{# output: The+string+%C3%BC%40foo-bar #}
+{{ "The+string+%C3%BC%40foo-bar" | urldecode }}
+{# output: The string ü@foo-bar #}
+{{ "test" | sha256 }}
+{# output: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08 #}
+```
+
+### `string`
+
+Coerces any value to its string representation:
+
+```twig
+{{ 42 | string }}
+```
+
+Use this when chaining filters that expect string input on a value that may arrive as a number or boolean.
+
+### `escapeChar`
+
+Escapes special characters in a string. The `type` argument controls which style of escaping is applied: `single`, `double`, or `shell`:
+
+```twig
+{{ "Can't be here" | escapeChar('single') }}
+{# output: Can\'t be here #}
+```
+
+### Worked string filter example
+
+This flow builds a sanitized filename and a display-safe summary from a raw input title:
+
+```yaml
+id: string_filter_example
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: "  Quarterly Report: Q1 2025 (FINAL)  "
+
+tasks:
+  - id: format_output
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Trimmed: {{ inputs.title | trim }}"
+      - "Normalized: {{ inputs.title | trim | lower }}"
+      - "Slug (for filename): {{ inputs.title | trim | slugify }}"
+      - "Abbreviated (for subject line): {{ inputs.title | trim | abbreviate(30) }}"
+      - "Prefix check: {{ inputs.title | trim | startsWith('Quarterly') }}"
+      - "After colon: {{ inputs.title | trim | substringAfter(':') | trim }}"
 ```
 
 ## Temporal filters
@@ -238,18 +461,34 @@ Supported arguments include:
 
 ### `dateAdd`
 
+Adds or subtracts time from a date. Arguments:
+
+- `amount`: integer specifying how much to add or subtract
+- `unit`: time unit such as `DAYS`, `HOURS`, `MONTHS`, or `YEARS`
+
 ```twig
 {{ now() | dateAdd(-1, 'DAYS') }}
 ```
 
 ### Timestamp helpers
 
-- `timestamp`
-- `timestampMilli`
-- `timestampMicro`
-- `timestampNano`
+Convert a date to a Unix timestamp at a specific precision:
 
-These are useful for integrations that require Unix timestamps with specific precision.
+- `timestamp` — seconds
+- `timestampMilli` — milliseconds
+- `timestampMicro` — microseconds
+- `timestampNano` — nanoseconds
+
+:::alert{type="warning"}
+`timestampMicro` previously returned a nanosecond-precision value due to a bug. If you are migrating an older flow, verify the precision your downstream system expects.
+:::
+
+All timestamp filters accept the same arguments as the `date` filter: `existingFormat` and `timeZone`.
+
+```twig
+{{ now() | timestamp(timeZone="Europe/Paris") }}
+{{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
+```
 
 Supported date formats include standard Java `DateTimeFormatter` patterns and shortcuts such as `iso`, `sql`, `iso_date_time`, and `iso_zoned_date_time`.
 

@@ -65,6 +65,11 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 ))
             }
         </div>
+        {Astro.slots.has('cta') && (
+            <div class="cta-slot">
+                <slot name="cta" />
+            </div>
+        )}
     </div>
 </section>
 
@@ -121,6 +126,10 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 flex-direction: column;
                 align-items: center;
 
+                @include media-breakpoint-down(md) {
+                    text-align: center;
+                }
+
                 &.align-left {
                     align-items: flex-start;
 
@@ -135,7 +144,16 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 }
             }
 
-            .cards-grid {
+            .cta-slot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .cards-grid {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 1rem;

@@ -2,14 +2,17 @@
 const { cls, class: className, ...rest } = Astro.props
 ---
 
-<img
-    class={`icon-wrapper ${className || ""}`}
+<div
+    class:list={["icon-wrapper", className ?? ""]}
     data-tooltip={cls.split(".").pop()}
-    data-theme-responsive
-    src={`/icons/${cls}.svg`}
-    alt={cls.split(".").pop() + " icon"}
-    {...rest}
-/>
+>
+    <img
+        data-theme-responsive
+        src={`/icons/${cls}.svg`}
+        alt={cls.split(".").pop() + " icon"}
+        {...rest}
+    />
+</div>
 
 <style lang="scss">
     .icon-wrapper {

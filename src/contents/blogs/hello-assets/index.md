@@ -5,6 +5,7 @@ date: 2026-01-20T13:00:00
 category: Solutions
 authors:
   - name: "Emmanuel Darras"
+    linkedin: https://www.linkedin.com/in/emmanuel-darras/
     image: edarras
     role: CEO & Co-Founder
 image: ./main.jpg

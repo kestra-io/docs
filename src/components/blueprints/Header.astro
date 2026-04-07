@@ -1,7 +1,7 @@
 ---
-import { Icon } from "astro-icon/components"
 import Squared from "~/components/layout/Squared.vue"
 import TaskIcon from "~/components/common/TaskIcon.astro"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 
 const { page, tags: allTags = [] } = Astro.props
 
@@ -14,11 +14,12 @@ const tags = allTags
     <Squared client:load>
         <div class="wrapper">
             <div class="left">
-                <nav class="breadcrumb">
-                    <a href="/" class="tertiary">Home</a>
-                    <Icon name="mdi:chevron-right" class="tertiary" />
-                    <a class="fw-bold" href="/blueprints">Blueprints</a>
-                </nav>
+                <Breadcrumb
+                    items={[
+                        { label: "Home", href: "/" },
+                        { label: "Blueprints", href: "/blueprints" },
+                    ]}
+                />
 
                 {
                     page.includedTasks?.length > 0 && (
@@ -83,26 +84,6 @@ const tags = allTags
 
             @include media-breakpoint-up(xl) {
                 max-width: 891px;
-            }
-
-            .breadcrumb {
-                display: flex;
-                align-items: center;
-                font-size: $font-size-xs;
-                gap: 0.25rem;
-
-                a {
-                    color: var(--ks-content-primary);
-                    text-decoration: none;
-
-                    &.tertiary {
-                        color: var(--ks-content-tertiary);
-                    }
-                }
-
-                .tertiary {
-                    color: var(--ks-content-tertiary);
-                }
             }
 
             .tasks {

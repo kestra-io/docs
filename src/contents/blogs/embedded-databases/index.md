@@ -5,6 +5,7 @@ date: 2025-01-14T16:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
+  linkedin: https://www.linkedin.com/in/martin-pierre-roset/
   image: mproset
 image: ./main.jpg
 ---

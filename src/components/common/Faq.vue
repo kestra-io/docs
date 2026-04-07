@@ -7,7 +7,7 @@
                 <slot name="description">
                     <p data-usal="fade-l delay-10">
                         Find answers to your questions right here, and don't hesitate to
-                        <a href="/demo">Contact us</a> if you couldn't find what you're looking for.
+                        <a href="/demo">Contact Us</a> if you couldn't find what you're looking for.
                     </p>
                 </slot>
             </div>

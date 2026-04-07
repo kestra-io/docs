@@ -1,0 +1,86 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#EEF2FF"/>
+<!-- Card 1: Trigger -->
+<g filter="url(#filter0_d_gw)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#4285F4" shape-rendering="crispEdges"/>
+<!-- Cloud Scheduler clock icon -->
+<circle cx="67" cy="121" r="11" stroke="currentColor" stroke-width="1.5" fill="none"/>
+<path d="M67 121V113" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M67 121L73 121" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<circle cx="67" cy="121" r="1.5" fill="currentColor"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Trigger</text>
+</g>
+<!-- Card 2: Steps -->
+<g filter="url(#filter1_d_gw)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#4285F4" shape-rendering="crispEdges"/>
+<!-- YAML/DSL steps: code file icon -->
+<path d="M169 109H183C184.1 109 185 109.9 185 111V133C185 134.1 184.1 135 183 135H169C167.9 135 167 134.1 167 133V111C167 109.9 167.9 109 169 109ZM171 115H181V117H171V115ZM171 119H181V121H171V119ZM171 123H178V125H171V123Z" fill="currentColor"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Steps</text>
+</g>
+<!-- Card 3: HTTP -->
+<g filter="url(#filter2_d_gw)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#4285F4" shape-rendering="crispEdges"/>
+<!-- HTTP/network globe icon -->
+<circle cx="282" cy="121" r="11" stroke="currentColor" stroke-width="1.5" fill="none"/>
+<path d="M282 110C282 110 278 115 278 121C278 127 282 132 282 132" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M282 110C282 110 286 115 286 121C286 127 282 132 282 132" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M271 121H293" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M272 116H292" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M272 126H292" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">HTTP</text>
+</g>
+<!-- Card 4: Return -->
+<g filter="url(#filter3_d_gw)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#4285F4" shape-rendering="crispEdges"/>
+<!-- Return/result: checkmark in circle -->
+<circle cx="391" cy="121" r="11" stroke="currentColor" stroke-width="1.5" fill="none"/>
+<path d="M384 121L389 126L398 115" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Return</text>
+</g>
+<!-- Arrows between cards -->
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="currentColor"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="currentColor"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="currentColor"/>
+<defs>
+<filter id="filter0_d_gw" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.259 0 0 0 0 0.522 0 0 0 0 0.957 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_gw"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_gw" result="shape"/>
+</filter>
+<filter id="filter1_d_gw" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.259 0 0 0 0 0.522 0 0 0 0 0.957 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_gw"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_gw" result="shape"/>
+</filter>
+<filter id="filter2_d_gw" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.259 0 0 0 0 0.522 0 0 0 0 0.957 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_gw"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_gw" result="shape"/>
+</filter>
+<filter id="filter3_d_gw" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.259 0 0 0 0 0.522 0 0 0 0 0.957 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_gw"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_gw" result="shape"/>
+</filter>
+</defs>
+</svg>

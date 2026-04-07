@@ -15,7 +15,7 @@
         <div class="bottom">
             <Link
                 :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`"
-                text="Read the story"
+                text="Read the Story"
             />
         </div>
     </div>
@@ -32,8 +32,6 @@
 </script>
 
 <style scoped lang="scss">
-
-
     .story-card {
         height: 434px;
         border-radius: 0.75rem;

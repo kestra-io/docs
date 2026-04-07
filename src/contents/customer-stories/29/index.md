@@ -30,6 +30,7 @@ industry: Healthcare
 headquarter: Sweden
 solution: Pharmacy Retail
 companyName: Pharmacy Retailer
+cta: "What would change if your mission-critical healthcare workflows ran reliably—meeting compliance requirements without the operational overhead?"
 ---
 
 ## The context
