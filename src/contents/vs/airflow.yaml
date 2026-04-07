@@ -172,7 +172,7 @@ socialProof:
     width: 333
     height: 364
   quote:
-    text: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
+    text: "We switched from Airflow to Kestra because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
     author: "Senior Engineering Manager @ Apple (ML team)"
   metrics:
     - value: "200"
