@@ -4,6 +4,10 @@ competitorName: AWS Step Functions
 category: Data Orchestration
 shortDescription: "AWS-native state machine automation vs. multi-cloud workflow orchestration in any language."
 
+brandColor:
+  color: "#FF4F8B"
+  gradient: "linear-gradient(90deg, #FF4F8B, #B0084D)"
+
 intro:
   title: "Kestra vs. AWS Step Functions: Any Cloud, Any Language, Any Workflow"
   description: "AWS Step Functions is reliable inside the AWS ecosystem. Kestra covers the rest: data pipelines, infrastructure, and business processes across any cloud, any language, and any team."

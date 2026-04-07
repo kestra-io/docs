@@ -4,6 +4,9 @@ competitorName: "HP Operations Orchestrator"
 category: Infrastructure Automation
 shortDescription: "Legacy Java-based runbook automation vs. cloud-native declarative orchestration in YAML."
 
+brandColor:
+  color: "#0096d6"
+
 intro:
   title: "Kestra vs. HP Operations Orchestrator: Modernize Legacy IT Automation"
   description: "HP Operations Orchestrator (now under OpenText after Micro Focus) is an enterprise runbook tool used in large organizations for decades. Kestra offers a modern alternative—declarative YAML, cloud-native architecture, self-service Apps, and Git-native governance—without the licensing complexity and maintenance overhead of HP OO."

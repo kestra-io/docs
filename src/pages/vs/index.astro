@@ -19,49 +19,17 @@ for (const [path, svg] of Object.entries(monogramModules)) {
     monogramMap[filename] = svg
 }
 
-const idToMonogramKey: Record<string, string> = {
-    "ansible-automation-platform": "ansible",
-    "rundeck": "rundeck-full",
-}
-
-const brandColors: Record<string, { color: string; gradient?: string }> = {
-    "airflow": { color: "#017cee", gradient: "linear-gradient(90deg, #00C812, #04A3FF, #DF1F00, #00DAFF)" },
-    "ansible-automation-platform": { color: "#ee0000" },
-    "apache-nifi": { color: "#728e9b", gradient: "linear-gradient(90deg, #728e9b, #b9c6cd)" },
-    "aws-step-functions": { color: "#FF4F8B", gradient: "linear-gradient(90deg, #FF4F8B, #B0084D)" },
-    "azure-data-factory": { color: "#0078d4", gradient: "linear-gradient(90deg, #0078d4, #50e6ff, #f710a3)" },
-    "broadcom": { color: "#cc092f" },
-    "chef": { color: "#5ce500" },
-    "control-m": { color: "#00b2a9" },
-    "dagster": { color: "#4f44e0", gradient: "linear-gradient(90deg, #DEDEFC, #C9C6FA, #163B36)" },
-    "google-workflows": { color: "#4285f4", gradient: "linear-gradient(90deg, #4285f4, #669df6, #aecbfa)" },
-    "hp-operations-orchestrator": { color: "#0096d6" },
-    "ibm-workload-automation": { color: "#1f70c1" },
-    "morpheus": { color: "#01a982", gradient: "linear-gradient(90deg, #3DB5E6, #D8292F)" },
-    "n8n": { color: "#ea4b71" },
-    "pagerduty": { color: "#06ac38" },
-    "prefect": { color: "#2d6df6" },
-    "puppet": { color: "#4c00ff" },
-    "redwood": { color: "#e24650" },
-    "rundeck": { color: "#f73f39" },
-    "stonebranch": { color: "#156de0" },
-    "vmware-cloud-foundation": { color: "#87B74B", gradient: "linear-gradient(90deg, #87B74B, #F6C43F, #686465)" },
-}
-
 const entries = vsEntries
     .sort((a, b) => a.data.competitorName.localeCompare(b.data.competitorName))
-    .map((entry) => {
-        const monogramKey = idToMonogramKey[entry.id] ?? entry.id
-        return {
-            path: `/vs/${entry.id}`,
-            competitorName: entry.data.competitorName,
-            category: entry.data.category,
-            monogram: monogramMap[monogramKey] ?? "",
-            shortDescription: entry.data.shortDescription,
-            color: (brandColors[entry.id] ?? { color: "#8465ff" }).color,
-            gradient: (brandColors[entry.id] ?? {}).gradient ?? "",
-        }
-    })
+    .map((entry) => ({
+        path: `/vs/${entry.id}`,
+        competitorName: entry.data.competitorName,
+        category: entry.data.category,
+        monogram: monogramMap[entry.id] ?? "",
+        shortDescription: entry.data.shortDescription,
+        color: entry.data.brandColor.color,
+        gradient: entry.data.brandColor.gradient ?? "",
+    }))
 
 const faqItems = [
     {

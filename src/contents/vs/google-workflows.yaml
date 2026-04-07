@@ -4,6 +4,10 @@ competitorName: Google Workflows
 category: Data Orchestration
 shortDescription: "GCP serverless HTTP service coordination vs. multi-cloud orchestration with 600+ plugins."
 
+brandColor:
+  color: "#4285f4"
+  gradient: "linear-gradient(90deg, #4285f4, #669df6, #aecbfa)"
+
 intro:
   title: "Kestra vs. Google Workflows: Full Orchestration vs. GCP Service Coordination"
   description: "Google Workflows is a clean, serverless way to coordinate Google Cloud services through HTTP calls. Kestra is what teams reach for when they need to run code directly, orchestrate across clouds, or build data pipelines that go beyond chaining API requests."

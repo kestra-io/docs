@@ -4,6 +4,10 @@ competitorName: Azure Data Factory
 category: Data Orchestration
 shortDescription: "Managed Azure ETL service vs. open-source, multi-cloud workflow orchestration in YAML."
 
+brandColor:
+  color: "#0078d4"
+  gradient: "linear-gradient(90deg, #0078d4, #50e6ff, #f710a3)"
+
 intro:
   title: "Kestra vs. Azure Data Factory: Open Orchestration vs. Azure-Native ETL"
   description: "Azure Data Factory is Microsoft's managed ETL service. Kestra is open-source workflow orchestration for any cloud, any language, and use cases beyond data movement. One is built to integrate data inside Azure. The other orchestrates what your entire engineering team ships."

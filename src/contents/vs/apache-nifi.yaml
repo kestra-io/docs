@@ -4,6 +4,10 @@ competitorName: Apache NiFi
 category: Data Orchestration
 shortDescription: "Visual drag-and-drop data flow routing vs. declarative YAML orchestration for any workload."
 
+brandColor:
+  color: "#728e9b"
+  gradient: "linear-gradient(90deg, #728e9b, #b9c6cd)"
+
 intro:
   title: "Kestra vs. Apache NiFi: Workflow Orchestration Beyond Data Flow"
   description: "Apache NiFi excels at real-time data routing and transformation with a visual canvas. Kestra orchestrates workflows across data pipelines, infrastructure, and AI workloads in declarative YAML. One moves data between systems. The other coordinates everything your business runs on."
