@@ -131,4 +131,4 @@ And the team shipped it to production in the two months they had — because Kes
 
 **What would change if your developers could request a fully provisioned, deployed, and validated environment with one click — instead of spending days assembling it by hand?**
 
-→ [Discover how Kestra powers infrastructure orchestration in production.](https://kestra.io/demo)
+→ [Discover how Kestra powers infrastructure orchestration in production.](https://kestra.io/infra-automation)
