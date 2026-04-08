@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -13,7 +13,6 @@ import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
-import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 
 import competitorLogo from "~/components/versus/assets/redwood.svg?raw"
 import competitorMonogram from "~/components/versus/assets/redwood-monograme.svg?raw"
@@ -46,7 +45,7 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
@@ -118,7 +117,6 @@ const {
             logo: competitorLogo,
         }}
     />
-    <SchemaFAQ items={commonQuestions} slot="head" />
     <Faq items={commonQuestions} client:visible />
     <SeeHow>
         <Fragment slot="title">
@@ -127,4 +125,4 @@ const {
         See how Kestra can simplify your workflows—and scale beyond legacy workload
         automation.
     </SeeHow>
-</Layout>
+</VsLayout>
