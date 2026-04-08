@@ -9,7 +9,7 @@ logo: ./logo.svg
 logoDark: ./logo-dark.svg
 tasks:
   - io.kestra.plugin.scripts.shell.Commands
-  - io.kestra.plugin.kubernetes.kubectl.CLI
+  - io.kestra.plugin.core.flow.Subflow
   - io.kestra.plugin.core.http.Request
   - io.kestra.plugin.core.flow.Parallel
 kpi1: |-
