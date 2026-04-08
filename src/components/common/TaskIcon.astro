@@ -2,16 +2,19 @@
 const { cls, class: className, width = 32, height = 32, ...rest } = Astro.props
 ---
 
-<img
-    class={`icon-wrapper ${className || ""}`}
+<div
+    class:list={["icon-wrapper", className ?? ""]}
     data-tooltip={cls.split(".").pop()}
-    data-theme-responsive
-    src={`/icons/${cls}.svg`}
-    alt={cls.split(".").pop() + " icon"}
-    width={width}
-    height={height}
-    {...rest}
-/>
+>
+    <img
+        data-theme-responsive
+        src={`/icons/${cls}.svg`}
+        alt={cls.split(".").pop() + " icon"}
+        width={width}
+        height={height}
+        {...rest}
+    />
+</div>
 
 <style lang="scss">
     .icon-wrapper {
