@@ -1,3 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" width="200" height="50">
-  <text x="10" y="36" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#3A3A6A" letter-spacing="2">amdocs</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="120" viewBox="-295 -62 182 160">
+<g>
+	<linearGradient id="g1" gradientUnits="userSpaceOnUse" x1="64.9314" y1="-269.0154" x2="268.4523" y2="-269.0154" gradientTransform="matrix(1 0 0 -1 -354.5996 -251.23)">
+		<stop offset="0.0173" style="stop-color:#FDB515"/>
+		<stop offset="0.1046" style="stop-color:#FCA91D"/>
+		<stop offset="0.2628" style="stop-color:#F98932"/>
+		<stop offset="0.4741" style="stop-color:#F45454"/>
+		<stop offset="0.7279" style="stop-color:#ED0D83"/>
+		<stop offset="0.7715" style="stop-color:#EC008C"/>
+	</linearGradient>
+	<path fill="url(#g1)" d="M-179.847-58.955h-90.1l8.88,30.688h81.22c8.468,0,15.35,6.887,15.35,15.35v15.35h-76.721 c-25.389,0-46.043,20.655-46.043,46.045c0,25.388,20.654,46.049,46.043,46.049h61.371c25.389,0,46.044-20.661,46.044-46.049 V17.782V2.432v-15.35C-133.803-38.3-154.458-58.955-179.847-58.955z M-164.497,48.477c0,8.463-6.887,15.349-15.35,15.349h-61.371 c-8.462,0-15.349-6.886-15.349-15.349c0-8.464,6.887-15.351,15.349-15.351h76.721V48.477z"/>
+	<polygon fill="#EC008C" points="-89.884,2.438 -117.859,2.438 -117.859,33.127 -80.998,33.127"/>
+</g>
 </svg>
