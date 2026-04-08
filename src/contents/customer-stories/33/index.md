@@ -1,8 +1,8 @@
 ---
 title: Amdocs Delivers Integration Environments as a Service with Kestra
-description: How Amdocs' CTO foundation team uses Kestra to orchestrate end-to-end environment provisioning, deployment, and automated validation at scale.
+description: How Amdocs' Foundation team uses Kestra to orchestrate end-to-end environment provisioning, deployment, and automated validation at scale.
 metaTitle: Amdocs Delivers Integration Environments as a Service with Kestra
-metaDescription: How Amdocs' CTO foundation team uses Kestra to orchestrate end-to-end environment provisioning, deployment, and automated validation at scale.
+metaDescription: How Amdocs' Foundation team uses Kestra to orchestrate end-to-end environment provisioning, deployment, and automated validation at scale.
 heroImage: ./hero.png
 featuredImage: ./hero.png
 logo: ./logo.svg
@@ -23,9 +23,9 @@ kpi3: |-
   From evaluation to production
 quote: From a technical point of view, Kestra sits at the first place.
 quotePerson: Alex Lernerman
-quotePersonTitle: CTO Foundation Delivery Team
+quotePersonTitle: DevOps Engineer, Amdocs
 industry: Telecom & Technology Services
-headquarter: Ra'anana, Israel
+headquarter: Chesterfield, Missouri, United States
 solution: Infrastructure Orchestration & Environment-as-a-Service
 companyName: Amdocs
 cta: "What would change if your developers could request a fully provisioned, deployed, and validated environment with one click — instead of spending days assembling it by hand?"
@@ -33,9 +33,9 @@ cta: "What would change if your developers could request a fully provisioned, de
 
 ## The context: environments are the product
 
-Amdocs' CTO foundation delivery team needed an orchestration backbone for a platform initiative: **deliver fully provisioned, deployed, and validated integration environments as a service** to developers and testers.
+Amdocs' Foundation delivery team needed an orchestration backbone for a platform initiative: **deliver fully provisioned, deployed, and validated integration environments as a service** to developers and testers.
 
-They were building an internal capability spanning **VM provisioning, Kubernetes deployments, application installation and updates, integrations, and automated testing** — with a hard calendar constraint: they needed an orchestrator that could go into production in two months.
+They were building an internal capability spanning **VM provisioning, application installation and updates, integrations, and automated testing** — with a hard calendar constraint: they needed an orchestrator that could go into production in two months.
 
 Their users don't want to spend days assembling integration environments by hand, chasing dependencies, and figuring out which steps failed. They want something simpler: click a button, get an environment that's already built, deployed, updated, and validated — so they can focus on their actual work.
 
@@ -103,17 +103,21 @@ That prevents orchestration from becoming brittle: the workflow model stays stab
 
 The team framed this use case as a "foundation." Today it's environment creation. Tomorrow it's broader processes, more complexity, more end-to-end control. Kestra's architecture around **tasks and plugins** makes it natural to extend capabilities over time without turning the orchestrator into a monolith.
 
-## What they run with Kestra: environment delivery, end to end
+## What they run with Kestra: a central flow manager across products
 
-Amdocs uses Kestra as the flow manager across their infrastructure automation. In practice, their workflows orchestrate a full delivery chain.
+Amdocs uses Kestra as a central flow manager across multiple products within their infrastructure. In practice, their workflows orchestrate a full delivery chain.
 
-### Environment provisioning and cloning
+### Multi-product flow management
 
-The workflow starts by creating or cloning an environment. The number of VMs and the structure are driven by the request itself. A single flow pattern covers simple environments and complex topologies alike.
+Kestra serves as the orchestration engine for running multiple workflows across different scenarios and products. A single platform governs all of them.
 
-### Application lifecycle on top of infrastructure
+### Dynamic flows that scale with the workload
 
-Provisioning is only the beginning. On top of the environment, they orchestrate application installation and updates — again parameter-driven — so deployments adapt to different configurations without duplicating logic.
+The flows automatically adjust the number of execution trees based on input parameters. When creating or cloning environments, the flow structure adapts to handle anywhere from a single VM to complex multi-VM environments — without duplicating logic or maintaining separate workflow definitions.
+
+### Application lifecycle management
+
+On top of environment provisioning, they orchestrate application installation and updates. These operations are driven by input parameters, allowing for flexible deployment configurations across products.
 
 ### Automated validation before hand-off
 
@@ -127,7 +131,7 @@ After Kestra, the team treats environment delivery as a governed, repeatable pro
 
 And the team shipped it to production in the two months they had — because Kestra didn't require them to slow down their infrastructure roadmap to adopt an orchestrator.
 
-> A big thank you to [Alex Lernerman](https://www.linkedin.com/in/alex-lernerman/) from the Amdocs CTO Foundation Delivery Team for sharing his story with us.
+> A big thank you to [Alex Lernerman](https://www.linkedin.com/in/alexler/) from the Amdocs Foundation Delivery Team for sharing his story with us.
 
 **What would change if your developers could request a fully provisioned, deployed, and validated environment with one click — instead of spending days assembling it by hand?**
 
