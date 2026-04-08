@@ -187,25 +187,17 @@ featureGrid:
       kestra: "Early access"
       competitor: "Available (Azure Frankfurt)"
 
-socialProof:
-  image:
-    alt: Apple ML team success story
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
+testimonials:
+  - quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
     author: "Senior Engineering Manager @ Apple (ML team)"
-  metrics:
-    - value: "200"
-      label: Engineers onboarded
-    - value: "2x"
-      label: Faster workflow creation
-    - value: "0"
-      label: Pipeline failures
-  cta:
-    text: "See how teams orchestrate at scale with Kestra"
-    link: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "200"
+        name: "Engineers onboarded"
+      - value: "2x"
+        name: "Faster workflow creation"
+      - value: "0"
+        name: "Pipeline failures"
+    storyLink: "/use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Actually Work
