@@ -14,6 +14,10 @@ Kestra takes a different approach: declarative YAML flows, file-based data passi
 
 The migration itself used to require deep knowledge of both platforms. Now, with AI coding agents and Kestra's dedicated agent skills, you can migrate a DAG in minutes rather than hours. This post walks through a real migration — a DummyJSON products analytics pipeline — to show exactly what the process looks like.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/5JL6gVtI6FE" title="Migrating from Airflow to Kestra with AI Coding Agents" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## What Changes When You Move from Airflow to Kestra
 
 Before touching any code, it helps to internalize the key conceptual shifts:
