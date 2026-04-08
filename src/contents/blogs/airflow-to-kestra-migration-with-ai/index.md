@@ -69,6 +69,8 @@ fetch_categories ────┘ (also feeds review_sentiment)
 
 :::
 
+![Airflow DAG topology for the dummyjson_products_pipeline, showing the task dependencies and Python code side by side](./airflow_dag.png)
+
 The DAG uses the `@task` decorator pattern, with all business logic embedded directly in the DAG file:
 
 :::collapse{title="Airflow DAG: dummyjson_products_pipeline.py"}
@@ -395,6 +397,8 @@ triggers:
 
 :::
 
+![Kestra flow topology for dummyjson_products_pipeline, showing the three-stage parallel execution graph in the Kestra UI](./kestra_flow.png)
+
 Notice how `compute_category_review_sentiment` receives both `products.json` from `fetch_all_products` and `categories.json` from `fetch_categories` — the same multi-input dependency that the Airflow DAG expressed via function parameters is now explicit in `inputFiles`.
 
 ### 4. Deploy Namespace Files
@@ -569,5 +573,7 @@ For teams with large DAG catalogs, this approach scales. You can migrate DAGs on
 2. Install `kestractl`: [kestra.io/docs/kestra-cli/kestractl](https://kestra.io/docs/kestra-cli/kestractl)
 3. Spin up a local Kestra instance or connect to your existing environment
 4. Pick a simple DAG to start — a 3-5 task sequential pipeline is a good first candidate
+
+If you prefer a standalone migration tool, the [kestra-io/migration-skills](https://github.com/kestra-io/migration-skills) repository on GitHub provides a dedicated `/migrate-airflow-kestra` skill you can install directly into Claude Code. It handles the full migration workflow — DAG parsing, namespace file extraction, flow validation, and deployment — as a single command.
 
 The migration from Airflow to Kestra doesn't have to be a months-long project. With the right tooling, a single DAG goes from Python to validated, deployed Kestra flow in under an hour.
