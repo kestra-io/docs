@@ -316,22 +316,6 @@ export const getSections = (totalPlugins: number): Section[] => [
         title: "Infrastructure & Scalability",
         rows: [
             {
-                feature: "High Availability",
-                values: ["cross", "check"],
-                description: {
-                    text: "Fault-tolerant architecture designed for production-grade reliability",
-                    link: "/docs/enterprise/overview/enterprise-edition",
-                },
-            },
-            {
-                feature: "High Concurrency",
-                values: ["cross", "check"],
-                description: {
-                    text: "Scale to thousands of concurrent executions with enterprise-grade performance",
-                    link: "/docs/enterprise/overview/enterprise-edition",
-                },
-            },
-            {
                 feature: "Backup & Restore",
                 values: ["cross", "check"],
                 description: {
