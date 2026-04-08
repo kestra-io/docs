@@ -210,7 +210,7 @@ testimonials:
         name: "HA uptime achieved"
       - value: "3x"
         name: "More workflows automated"
-    storyLink: "/use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    storyLink: "/use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment"
 
 platformStrengths:
   title: "Kestra Solves What Rundeck Cannot"

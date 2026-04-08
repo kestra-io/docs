@@ -185,7 +185,7 @@ testimonials:
         name: "Active users"
       - value: "+5,000"
         name: "Workflows created"
-    storyLink: "/blogs/2023-08-16-datamesh"
+    storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work
