@@ -69,7 +69,6 @@ etl_pipeline()
 ```
 
 The Python version requires decorator patterns, operator overloading (`>>`), framework-specific imports, and the implicit convention that calling `etl_pipeline()` at module scope registers it with the scheduler. None of that serves the goal, which is: run extract, then load, on a schedule. It serves the framework.
-draf
 When Python is your orchestration language, your task code runs inside the framework's execution environment. The framework owns imports and controls execution context. If you want to run a Bash script or a Node.js function, you go through the framework's abstractions for it. The orchestration layer and the execution layer share a runtime, which means changing one touches the other.
 
 YAML severs that connection: the workflow definition is pure configuration, and tasks are external processes the orchestrator invokes and monitors without owning. Your Python script, R model, or Java service runs in its own container, exactly as it was written. The orchestrator coordinates execution without participating in it.
@@ -80,7 +79,7 @@ Asset-centric models tried to fix this from the inside. Instead of "run task A, 
 
 ### some kind of visual would be cool here
 
-A task graph says "do this, then do that;" an asset graph says "this thing should exist and be fresh." The latter is more aligned with what the business actually cares about, which is not whether extract.py ran at 6am but whether the revenue table is current.
+A task graph says "do this, then do that;" an asset graph says "this thing should exist and be fresh." The latter is more aligned with what the business actually cares about, which is not whether `extract.py` ran at 6am but whether the revenue table is current.
 
 This has now become common across the category, from newer frameworks to incumbents like Airflow, which added Assets in version 3.0. But every implementation made the same tradeoff: assets are still defined in Python. An asset definition is a Python function decorated to be both a compute function and a data contract. The orchestration metadata (what this asset is, what it depends on, how to materialize it) lives in the same object as the execution logic. They can't be separated because they're expressed in the same language. 
 
@@ -110,7 +109,7 @@ The lineage graph builds automatically as workflows execute, tracking which reso
 
 ## Infrastructure and analytics already went declarative
 
-Infrastructure went through the same shift a decade ago. Terraform and Kubernetes proved that declarative configuration handles heterogeneous systems better than imperative code. You don't write a program that provisions a VM, attaches a disk, and configures networking in sequence. You declare the desired state and let the system reconcile. The infrastructure-as-code movement converged on declarative formats (e.g., HCL, YAML) for the same reason orchestration is converging now: the coordination layer benefits from being separate from the execution layer.
+Infrastructure went through the same shift a decade ago. Terraform and Kubernetes proved that declarative configuration handles heterogeneous systems better than imperative code. You don't write a program that provisions a VM, attaches a disk, and configures networking in sequence. You declare the desired state and let the system reconcile. The infrastructure-as-code (IaC) movement converged on declarative formats (e.g., HCL, YAML) for the same reason orchestration is converging now: the coordination layer benefits from being separate from the execution layer.
 
 At the transformation layer, dbt made the same bet. Analytics engineers write SQL, YAML handles the metadata: dependencies, tests, documentation, scheduling. The execution layer (SQL) and the orchestration layer (YAML) are explicitly separate, and that separation is why dbt could be adopted by analytics engineers who had no interest in learning a new programming framework. 
 
