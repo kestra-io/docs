@@ -1,0 +1,244 @@
+title: "Kestra vs. Temporal: Orchestration for Every Team, Not Just Every Engineer"
+description: "Compare Kestra vs Temporal: declarative YAML workflow orchestration vs durable execution through code. See use cases, setup time, and which architecture fits your team."
+competitorName: Temporal
+category: Infrastructure Automation
+shortDescription: "Code-first durable execution for engineers vs. declarative YAML orchestration for every team."
+
+brandColor:
+  color: "#444CE7"
+
+intro:
+  title: "Kestra vs. Temporal: Orchestration for Every Team, Not Just Every Engineer"
+  description: "Temporal is a durable execution platform built for engineers who want to express long-running, stateful workflows in code. Kestra is a declarative orchestration platform built for teams who want to schedule, trigger, and monitor workflows in YAML, without writing SDK code or managing workflow state by hand."
+
+philosophy:
+  mainTitle: Two Models for Building Workflows
+  kestra:
+    title: "Declarative Orchestration: Configuration Drives Execution"
+    description: "YAML describes what should run, when, and in what order. Business logic lives in your existing Python, SQL, Bash, or dbt scripts. Kestra handles scheduling, retries, dependencies, and observability as first-class YAML primitives. Non-engineers can read, trigger, and monitor any workflow without touching code."
+    subCardText: '"How do we schedule and monitor data pipelines, infrastructure jobs, and business workflows without writing orchestration code?"'
+  competitor:
+    title: Durable Execution Through Code
+    description: "Temporal workflows are code: Go, Java, Python, TypeScript, or Ruby functions decorated with durability guarantees. The Temporal server persists state at every step, so workflows survive crashes and resume exactly where they left off. This makes Temporal exceptionally strong for long-running stateful processes, compensation patterns, and distributed application logic that must be expressed in a programming language."
+    shadowColor: "#E8E4FD"
+    subCardBg: "var(--ks-background-purple-light)"
+    subCardText: '"How do we build long-running, stateful workflows in code that survive infrastructure failures without writing retry logic everywhere?"'
+
+businessValue:
+  mainTitle: "Durable Application Workflows vs. Declarative Team Orchestration"
+  kestra:
+    title: Orchestration for the Whole Team
+    list:
+      - "Data pipelines, infrastructure automation, business processes, AI workflows"
+      - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly, no SDK)"
+      - "Event-driven at core: file arrivals, Kafka, webhooks, schedules"
+      - "Self-service for non-engineers via Kestra Apps"
+      - "1200+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
+  competitor:
+    title: Durable Workflow Execution for Engineers
+    list:
+      - "Long-running, stateful workflows that survive infrastructure failures"
+      - "Workflow-as-code in Go, Java, Python, TypeScript, Ruby, C#, PHP"
+      - "Built-in saga patterns and compensating transactions"
+      - "Strong fit for microservices orchestration and distributed application logic"
+      - "No native data pipeline tooling or YAML interface"
+    shadowColor: "#E8E4FD"
+    bulletColor: "#7A5AF8"
+  footerText: "Temporal is the right choice when you need long-running stateful workflows expressed in code, durable execution across infrastructure failures, or saga/compensation patterns in a distributed system. Kestra is the right choice for data pipelines, ETL orchestration, infrastructure automation, and any workflow that benefits from declarative YAML and participation from non-engineering teams."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Temporal also offers Temporal Cloud, a fully managed SaaS option. This comparison uses their self-hosted local development path—the same deployment model as Kestra's local setup—which requires installing the Temporal CLI, starting a development server, and writing Workflow and Activity code before anything runs."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No SDK to install, no workflow code to write before you can see anything execute."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~45"
+      two: Minutes
+    description: "Install the Temporal CLI, start a local development server, choose a language SDK, set up your project structure, write Workflow and Activity definitions in code, then register and run the worker. Each step requires language-specific tooling."
+    shadowColor: "#E8E4FD"
+    command: |
+      # Install Temporal CLI
+      brew install temporal
+
+      # Start local dev server
+      temporal server start-dev
+
+      # In another terminal: set up your SDK project
+      pip install temporalio
+
+      # Write Workflow + Activity code, register worker,
+      # then trigger execution via CLI or SDK client...
+    lang: sh
+
+easeOfUse:
+  title: Workflows Your Whole Team Can Understand
+  kestra:
+    title: "Kestra: Readable without an SDK"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Any team member can read the YAML and understand what a workflow does, no SDK knowledge required."
+    code: |
+      id: daily_etl
+      namespace: data.production
+
+      tasks:
+        - id: extract
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            # Your existing extraction logic, unchanged
+            result = {"records": 1000}
+
+        - id: transform
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select staging
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "ETL complete: {{ outputs.extract.vars.result.records }} records processed"
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 0 * * *"
+    lang: yaml
+  competitor:
+    title: "Temporal: Workflow logic lives in application code"
+    description: "Temporal workflows are Python (or Go, Java, TypeScript) classes decorated with durability primitives. Activities handle individual tasks; Workflows coordinate them. The code is clean and testable, but authoring and modifying workflows requires SDK knowledge. Non-engineers can view execution history in the Temporal Web UI but cannot modify workflow logic."
+    shadowColor: "#E8E4FD"
+    code: |
+      import asyncio
+      from datetime import timedelta
+      from temporalio import activity, workflow
+      from temporalio.client import Client
+      from temporalio.worker import Worker
+
+      @activity.defn
+      async def extract_data() -> dict:
+          # extraction logic
+          return {"records": 1000}
+
+      @activity.defn
+      async def run_dbt_transform() -> None:
+          import subprocess
+          subprocess.run(["dbt", "run", "--select", "staging"], check=True)
+
+      @workflow.defn
+      class DailyETLWorkflow:
+          @workflow.run
+          async def run(self) -> None:
+              result = await workflow.execute_activity(
+                  extract_data,
+                  schedule_to_close_timeout=timedelta(minutes=10),
+              )
+              await workflow.execute_activity(
+                  run_dbt_transform,
+                  schedule_to_close_timeout=timedelta(minutes=30),
+              )
+    lang: python
+
+visualPreview:
+  mainTitle: Two Platforms, Two Jobs to Be Done
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from one platform. Event-driven at its core, with native triggers for file arrivals, Kafka, webhooks, and schedules, all defined in YAML alongside the workflow logic."
+  competitor:
+    description: "A durable execution engine for long-running stateful workflows expressed in code. Strong for saga patterns, distributed application logic, and workflows that need to survive infrastructure failures across days or weeks. Not designed for data pipeline orchestration or participation from non-engineers."
+    shadowColor: "#E8E4FD"
+
+featureGrid:
+  title: Kestra vs. Temporal at a Glance
+  tableData:
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: Code (Go, Java, Python, TypeScript, Ruby, C#, PHP)
+    - feature: Primary use case
+      kestra: "Data pipelines, infrastructure automation, business workflows"
+      competitor: "Long-running stateful workflows and distributed application logic"
+    - feature: Data pipeline tooling
+      kestra: "✓ Native support (dbt, Airbyte, Spark, Snowflake, 1200+ plugins)"
+      competitor: "No native data pipeline plugins"
+    - feature: Event-driven triggers
+      kestra: "✓ Native (schedules, file arrivals, Kafka, webhooks)"
+      competitor: "Signals and timers within workflow code; no YAML trigger primitives"
+    - feature: Durable execution
+      kestra: "Retries, timeouts, and failure handling in YAML"
+      competitor: "✓ Automatic state persistence and deterministic replay"
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: "No self-service interface"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: "Possible through workflow code, not a primary use case"
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation + RBAC out-of-box"
+      competitor: "Namespace isolation available; RBAC via Temporal Cloud"
+    - feature: Managed cloud option
+      kestra: Kestra Cloud
+      competitor: Temporal Cloud
+
+testimonials:
+  - quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
+    author: "Senior Engineering Manager @ Apple (ML team)"
+    kpis:
+      - value: "200"
+        name: Engineers onboarded
+      - value: "2x"
+        name: Faster workflow creation
+      - value: "0"
+        name: Pipeline failures
+    storyLink: "/use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra"
+
+platformStrengths:
+  title: Kestra Is Built for the Workflows That Run Your Business
+  features:
+    - title: Data pipeline tooling out of the box
+      description: "Kestra ships with native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and 1200+ more. Run a dbt model, trigger an Airbyte sync, or load to Snowflake in a YAML task with no extra SDK to install. Every integration is a pre-built task type, not custom code your team writes and maintains."
+    - title: Workflows non-engineers can participate in
+      description: "A Kestra workflow is a YAML file that any team member can read and understand. Kestra Apps let business users trigger workflows, fill in parameters, and monitor results without engineering involvement. RBAC and namespace isolation keep business-user workflows separate from engineering infrastructure without restricting access to either."
+    - title: Scheduling and event triggers as first-class primitives
+      description: "Kestra's trigger system covers cron schedules, file arrivals in S3 or GCS, Kafka message consumption, webhook callbacks, and database row changes, all defined in YAML alongside the workflow. Triggers, tasks, and retry logic live in one file with no separate scheduling API or external coordinator required."
+
+decisionGuide:
+  mainTitle: Two Tools for Different Problems
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You're orchestrating data pipelines, ETL workflows, dbt models, or infrastructure automation."
+      - "Your team includes data engineers, analysts, and ops who shouldn't need to learn an SDK to modify a workflow."
+      - "You want scheduling, event triggers, and monitoring defined declaratively alongside the workflow logic."
+      - "Non-engineers need to trigger or monitor workflows without writing code."
+      - "You need 1200+ pre-built integrations without writing and maintaining custom Activities."
+  competitor:
+    title: Choose Temporal When
+    list:
+      - "You're building long-running, stateful workflows (days to weeks) that must survive infrastructure failures."
+      - "Your team is building distributed systems and needs saga patterns, compensating transactions, or exact-once execution guarantees."
+      - "Workflows are core application logic owned by engineers, written and tested in Go, Java, Python, or TypeScript."
+      - "You need deterministic replay for debugging complex distributed failures."
+    shadowColor: "#E8E4FD"
+    bulletColor: "#7A5AF8"
+
+commonQuestions:
+  - question: Can Kestra replace Temporal for long-running workflows?
+    answer: "For most data and infrastructure workflows, yes. Kestra handles retries, timeouts, failure handling, and multi-step dependencies across any duration in YAML. For workflows that need deterministic replay, exact-once distributed state persistence, or compensation patterns built into application code, Temporal is purpose-built for those requirements. The distinction is between orchestrating external scripts and tools (Kestra's strength) versus building durable stateful logic inside application code (Temporal's strength)."
+  - question: Does Kestra support the same languages as Temporal's SDKs?
+    answer: "Kestra runs tasks in any language without an SDK. Python scripts, Go binaries, Bash commands, SQL queries, and R notebooks execute in isolated containers with no framework wrappers. Temporal's SDKs (Go, Java, Python, TypeScript, Ruby, C#, PHP) are required to author workflow and activity logic. Kestra's approach keeps your business logic portable; Temporal's approach gives you deeper durability guarantees inside the workflow execution model."
+  - question: How does Kestra handle failures and retries?
+    answer: "Kestra supports per-task retry policies with configurable attempt counts, backoff strategies, and retry conditions, all declared in YAML. Failed tasks can be restarted from the point of failure without re-running upstream tasks. For multi-step workflows, Kestra tracks execution state across restarts. Temporal's durability model goes further: it persists the full workflow history and replays it deterministically, which is stronger for workflows with complex branching state."
+  - question: Does Kestra have data pipeline integrations that Temporal lacks?
+    answer: "Yes. Kestra ships with 1200+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. These are YAML task types, not code you write. Temporal has no native data pipeline plugins; integrating with data tools requires writing and maintaining custom Activities in your SDK language."
+  - question: Can Kestra and Temporal coexist in the same stack?
+    answer: "Yes, and it's a reasonable pattern. Teams use Kestra to orchestrate data pipelines, infrastructure jobs, and business processes in YAML, while Temporal handles the application-layer workflows that need durable stateful execution. Kestra can trigger Temporal workflows via HTTP or SDK calls from a Script task, so the two platforms compose cleanly."
+  - question: How does Kestra handle scheduling compared to Temporal?
+    answer: "Kestra schedules are YAML triggers defined alongside the workflow: cron expressions, file arrival events, Kafka message consumption, webhook callbacks. They're visible in the UI, versioned with the workflow, and editable without deploying code. Temporal's Schedules are managed via a separate API and are decoupled from the workflow definition, which means modifying a schedule is a separate operation from modifying the workflow itself."
