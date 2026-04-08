@@ -81,13 +81,13 @@ Asset-centric models tried to fix this from the inside. Instead of "run task A, 
 
 A task graph says "do this, then do that;" an asset graph says "this thing should exist and be fresh." The latter is more aligned with what the business actually cares about, which is not whether `extract.py` ran at 6am but whether the revenue table is current.
 
-This has now become common across the category, from newer frameworks to incumbents like Airflow, which added Assets in version 3.0. But every implementation made the same tradeoff: assets are still defined in Python. An asset definition is a Python function decorated to be both a compute function and a data contract. The orchestration metadata (what this asset is, what it depends on, how to materialize it) lives in the same object as the execution logic. They can't be separated because they're expressed in the same language. 
+This has now become common across the category, from newer frameworks to incumbents like [Airflow](/vs/airflow), which added Assets in version 3.0. But every implementation made the same tradeoff: assets are still defined in Python. An asset definition is a Python function decorated to be both a compute function and a data contract. The orchestration metadata (what this asset is, what it depends on, how to materialize it) lives in the same object as the execution logic. They can't be separated because they're expressed in the same language. 
 
 Every implementation reached for declarative thinking but stayed in Python. The result is Python code that's trying not to be Python code: decorators that suppress function behavior, return types that are really metadata annotations, and import structures that exist for the framework's dependency resolution rather than for the code's execution.
 
-The asset model also runs into a scope problem. It works well when the thing being orchestrated is a table that should exist and be fresh. It's less natural for infrastructure provisioning, API coordination, file processing, or business process automation, where "materializable asset" doesn't map cleanly. As orchestration scope expands beyond data pipelines (and [it is rapidly expanding, thanks to AI](https://kestra.io/blogs/2026-03-05-data-engineering-trends-2026)), the asset abstraction starts to strain.
+The asset model also runs into a scope problem. It works well when the thing being orchestrated is a table that should exist and be fresh. It's less natural for infrastructure provisioning, API coordination, file processing, or business process automation, where "materializable asset" doesn't map cleanly. As orchestration scope expands beyond data pipelines (and [it is rapidly expanding, thanks to AI](../2026-03-05-data-eng-trends-2026/index.md)), the asset abstraction starts to strain.
 
-YAML-first orchestration already handles asset-like semantics without these constraints. Kestra's [assets](https://kestra.io/docs/enterprise/governance/assets) let you declare inputs and outputs directly on each task:
+YAML-first orchestration already handles asset-like semantics without these constraints. Kestra's [assets](../../docs/07.enterprise/02.governance/01.assets/index.md) let you declare inputs and outputs directly on each task:
 
 ```yaml
 tasks:
@@ -111,7 +111,7 @@ The lineage graph builds automatically as workflows execute, tracking which reso
 
 Infrastructure went through the same shift a decade ago. Terraform and Kubernetes proved that declarative configuration handles heterogeneous systems better than imperative code. You don't write a program that provisions a VM, attaches a disk, and configures networking in sequence. You declare the desired state and let the system reconcile. The infrastructure-as-code (IaC) movement converged on declarative formats (e.g., HCL, YAML) for the same reason orchestration is converging now: the coordination layer benefits from being separate from the execution layer.
 
-At the transformation layer, dbt made the same bet. Analytics engineers write SQL, YAML handles the metadata: dependencies, tests, documentation, scheduling. The execution layer (SQL) and the orchestration layer (YAML) are explicitly separate, and that separation is why dbt could be adopted by analytics engineers who had no interest in learning a new programming framework. 
+At the transformation layer, [dbt](/plugins/plugin-dbt) made the same bet. Analytics engineers write SQL, YAML handles the metadata: dependencies, tests, documentation, scheduling. The execution layer (SQL) and the orchestration layer (YAML) are explicitly separate, and that separation is why dbt could be adopted by analytics engineers who had no interest in learning a new programming framework. 
 
 When a domain matures past the point where one team writes all the code, separating the coordination layer from the execution layer is what makes the ecosystem scale. Declarative configuration wins because it's the natural format for that coordination layer: readable by people who didn't write it, parseable without a runtime, and decoupled from whatever executes underneath.
 
@@ -182,13 +182,16 @@ If you're following the argument but rusty on YAML syntax, here's the minimum yo
 
 The most common parse errors: tabs instead of spaces, missing space after colon, and unquoted special characters (`:`, `#`, `{`, `}`). YAML 1.1 also parses `NO`, `yes`, `on`, and `off` as booleans, so country codes and feature flags need quotes.
 
-For a complete reference, including boolean edge cases and Kestra-specific patterns, see the [YAML basics guide](https://kestra.io/blogs/2024-10-16-yaml-for-kestra-beginners).
+For a complete reference, including boolean edge cases and Kestra-specific patterns, see the [YAML basics guide](../2023-11-27-yaml-crashcourse/index.md).
 
 ## Where to go from here
 
 The best way to pressure-test this argument is to read a few real workflows. If the separation of orchestration and execution is real, it should be obvious in the YAML.
 
-- **Try it live.** [Install Kestra](https://kestra.io/docs/getting-started) (one Docker command), open the editor, and paste any example from this post. The visual editor shows the DAG topology updating as you type.
-- **Browse Blueprints.** Kestra's [200+ Blueprints](/blueprints) are production-ready workflow templates. Pick one close to your use case, read the YAML, modify it.
+- **Browse real workflows.** Kestra's [260+ Blueprints](/blueprints) are production-ready workflow templates written in YAML. A few worth reading to see the orchestration/execution separation in practice:
+  - *ETL:* [Getting started: data engineering pipeline](/blueprints/data-engineering-pipeline) (download → Python → DuckDB, the simplest end-to-end example), [REST API to DuckDB with Python and Polars](/blueprints/api-python-sql) (Python runs as an external process; the separation is explicit), [extract, transform, and load in parallel to S3 and Postgres](/blueprints/api-json-to-postgres) (adds parallelism)
+  - *Beyond ETL:* [dbt pipeline on Postgres from Git](/blueprints/dbt-postgres) (YAML handles scheduling and Git sync; SQL handles transformation), [governed analytics assets with DuckDB](/blueprints/data-pipeline-assets) (raw → staging → mart layers with built-in lineage tracking), [real-time MySQL monitoring with Debezium](/blueprints/debezium-mysql-realtime-trigger) (event-driven trigger rather than a cron schedule)
 - **Use agent-skills.** Point your AI coding assistant at the [kestra-flow skill](https://github.com/kestra-io/agent-skills) and describe what you want to build.
 - **Explore the plugin library.** Every Kestra [plugin](/plugins) follows the same YAML structure: a `type` field, an `id`, and configuration properties. Once you know the syntax, every plugin works the same way.
+
+- **Try it live.** [Install Kestra](../../docs/01.quickstart/index.md) (one Docker command), open the editor, and paste any example from this post. The visual editor shows the DAG topology updating as you type.
