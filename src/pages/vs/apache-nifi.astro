@@ -13,6 +13,7 @@ import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 
 import nifiLogo from "~/components/versus/assets/apache-nifi.svg?raw"
 import nifiMonogram from "~/components/versus/assets/apache-nifi-monograme.svg?raw"
@@ -117,6 +118,7 @@ const {
             logo: nifiLogo,
         }}
     />
+    <SchemaFAQ items={commonQuestions} slot="head" />
     <Faq items={commonQuestions} client:visible />
     <SeeHow>
         <Fragment slot="title">
