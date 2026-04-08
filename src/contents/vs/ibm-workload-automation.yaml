@@ -206,25 +206,17 @@ featureGrid:
       kestra: "Minutes (Docker Compose)"
       competitor: "Weeks to months (multi-component install)"
 
-socialProof:
-  image:
-    alt: Enterprise IT team modernizing with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "Moving from a legacy runbook tool to Kestra was transformative. We went from managing Java application servers and content packs to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
+testimonials:
+  - quote: "Moving from a legacy runbook tool to Kestra was transformative. We went from managing Java application servers and content packs to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
     author: "IT Automation Architect @ Global Financial Services Firm"
-  metrics:
-    - value: "80%"
-      label: Reduction in automation lead time
-    - value: "0"
-      label: Java app servers to maintain
-    - value: "10x"
-      label: More workflows automated
-  cta:
-    text: "See how enterprises modernize IT automation with Kestra"
-    link: /use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "80%"
+        name: "Reduction in automation lead time"
+      - value: "0"
+        name: "Java app servers to maintain"
+      - value: "10x"
+        name: "More workflows automated"
+    storyLink: "/use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work
