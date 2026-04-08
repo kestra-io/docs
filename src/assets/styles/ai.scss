@@ -95,7 +95,7 @@
             margin-bottom: 1.5rem;
         }
 
-        h6 {
+        p.text-overline {
             color: var(--ks-content-tertiary);
             font-size: 0.75rem;
             font-weight: 600;
@@ -256,7 +256,7 @@
                 padding-top: 1rem;
                 border-top: $block-border;
 
-                h6 {
+                p.label-small {
                     color: var(--ks-content-tertiary);
                     font-size: 0.75rem;
                     font-weight: 600;

@@ -5,6 +5,7 @@ date: 2026-01-27T13:00:00
 category: Solutions
 author:
   name: Elliot Gunn
+  linkedin: https://www.linkedin.com/in/elliotgunn/
   image: egunn
   role: Product Marketing Manager
 image: ./main.png

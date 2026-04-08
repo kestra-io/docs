@@ -1,6 +1,6 @@
 ---
 export const prerender = false
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Header from "~/components/blueprints/Header.astro"
 import Detail from "~/components/blueprints/Detail.vue"
@@ -12,13 +12,13 @@ const { id } = Astro.params
 let pageData: Blueprint
 
 try {
-    pageData = await $fetchApi<Blueprint>(`/blueprints/${id}/versions/latest`)
+    pageData = await $fetchApiCached<Blueprint>(`/blueprints/${id}/versions/latest`)
 } catch (e) {
     return Astro.redirect("/404")
 }
 
-const graph = await $fetchApi(`/blueprints/${id}/versions/latest/graph`)
-const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+const graph = await $fetchApiCached(`/blueprints/${id}/versions/latest/graph`)
+const tags = await $fetchApiCached<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
 
 let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
 
@@ -29,7 +29,7 @@ if (pageData.tags && pageData.tags.length > 0) {
         const tag = tags.find((t) => t.id === tagId)
         if (!tag) continue
 
-        const data = await $fetchApi<{ results: Blueprint[] }>(
+        const data = await $fetchApiCached<{ results: Blueprint[] }>(
             `/blueprints/versions/latest?tags=${tagId}&size=10`,
         )
 
@@ -50,7 +50,7 @@ if (pageData.tags && pageData.tags.length > 0) {
     }
 }
 
-const title = pageData.title
+const title = pageData.metaTitle || pageData.title
 const description = pageData.metaDescription
 ---
 
@@ -75,8 +75,8 @@ const description = pageData.metaDescription
     }
     <SeeHow
         cta={{
-            text: "Get started",
-            href: "/docs/quickstart#start-kestra",
+            text: "Get Started",
+            href: "/get-started",
         }}
     >
         <Fragment slot="title">New to Kestra?</Fragment>

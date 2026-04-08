@@ -35,6 +35,7 @@ industry: Investment and Banking
 headquarter: Paris, France
 solution: "Solution for real-esrate investment "
 companyName: ""
+cta: "What would change if your marketing data pipelines ran automatically—keeping every campaign fed with fresh, accurate data?"
 ---
 
 ## About Valorissimo

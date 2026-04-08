@@ -1,7 +1,7 @@
 import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
 import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs"
 import { computed, ref, type Ref } from "vue"
-import { API_URL } from "astro:env/client"
+import { $fetchApiCached } from "~/utils/fetch.ts"
 
 export function calculateTotalPlugins(plugins: Plugin[]): number {
     const classes = new Set<string>()
@@ -23,11 +23,7 @@ export function usePluginsCount(pluginsRef?: Ref<Plugin[]>) {
     if (!plugins) {
         plugins = ref<Plugin[]>([])
         // Fetch plugins data if not available
-        fetch(`${API_URL}/plugins/subgroups`)
-            .then((r) => {
-                status.value = r.status === 200 ? "success" : "error"
-                return r.json()
-            })
+        $fetchApiCached(`/plugins/subgroups`)
             .then((data) => {
                 if (plugins) {
                     plugins.value = data as unknown as Plugin[]

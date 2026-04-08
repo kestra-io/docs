@@ -7,11 +7,13 @@ icon: /src/contents/docs/icons/expression.svg
 
 import ChildCard from "~/components/docs/ChildCard.astro"
 
-Use this page when you need to understand what expressions are available, how Pebble syntax works, or which filter or function to use.
+Use expressions to dynamically set values in flows using `{{ ... }}` syntax backed by the Pebble templating engine.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Find the right expressions doc
-
-The old Expressions page tried to cover execution context variables, Pebble syntax, filters, functions, operators, tags, tests, and troubleshooting all in one place. This prototype splits those concerns into smaller pages organized by user intent.
 
 - Start with [Execution Context Variables](./01.execution-context/index.md) if you need to know what values are available in flows.
 - Go to [Pebble Syntax](./02.pebble-syntax/index.md) if you need help writing expressions.

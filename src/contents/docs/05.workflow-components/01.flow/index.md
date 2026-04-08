@@ -193,7 +193,7 @@ Templates are lists of tasks that can be shared between flows. You can define a 
 
 Flows are stored in a serialized format directly **in the Kestra backend database**.
 
-The easiest way to add new flows is to add them directly from the Kestra UI. You can also use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
+The easiest way to add new flows is to add them directly from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
 
 To see how flows are represented in a file structure, you can leverage the `_flows` directory in the [Namespace Files](../../06.concepts/02.namespace-files/index.md) editor.
 

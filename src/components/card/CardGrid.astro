@@ -31,7 +31,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 <span class="title-text"><Fragment set:html={title} /></span>
                 <slot />
             </h2>
-            <p set:html={subtitle} data-usal="fade-l" class="subtitle" />
+            <p set:html={subtitle} data-usal="fade-l" class:list={["subtitle", { "align-left": align === "left" }]} />
         </div>
 
         <div class="cards-grid">
@@ -65,6 +65,11 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 ))
             }
         </div>
+        {Astro.slots.has('cta') && (
+            <div class="cta-slot">
+                <slot name="cta" />
+            </div>
+        )}
     </div>
 </section>
 
@@ -107,6 +112,12 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                     text-align: center;
                     font-size: $font-size-lg;
                 }
+
+                &.align-left {
+                    text-align: left;
+                    margin-left: 0;
+                    margin-right: auto;
+                }
             }
 
             .head {
@@ -114,6 +125,10 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+
+                @include media-breakpoint-down(md) {
+                    text-align: center;
+                }
 
                 &.align-left {
                     align-items: flex-start;
@@ -129,7 +144,16 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 }
             }
 
-            .cards-grid {
+            .cta-slot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .cards-grid {
                 display: flex;
                 flex-wrap: wrap;
                 gap: 1rem;
@@ -176,8 +200,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                     }
 
                     .title {
-                        font-weight: 700;
-                        line-height: 28px;
+                        line-height: 24px;
                         margin: 0;
                         color: var(--ks-content-primary);
                     }
@@ -188,6 +211,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                         line-height: 22px;
                         margin: 0;
                         color: var(--ks-content-primary);
+                        text-align: left;
 
                         :global(a) {
                             color: var(--ks-content-link) !important;

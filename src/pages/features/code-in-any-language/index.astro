@@ -1,5 +1,5 @@
 ---
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "@kestra-io/ui-libs"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 
@@ -9,7 +9,7 @@ import CardGrid from "~/components/card/CardGrid.astro"
 import Powerful from "~/components/features/declarative/Powerful.astro"
 import SectionCard from "~/components/layout/SectionCard.astro"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
-import StackOrchestrator from "~/components/features/code-in-any-lang/StackOrchestrator.astro"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Link from "~/components/common/Link.astro"
 
@@ -17,8 +17,11 @@ import visualHero from "~/assets/landing/features/code-in-any-lang/any-lang-hero
 import visualsImg from "~/assets/landing/features/code-in-any-lang/Visuals.svg"
 import anyLanguage1 from "~/assets/landing/features/code-in-any-lang/any-language-1.webp"
 import anyLanguage2 from "~/assets/landing/features/code-in-any-lang/any-language-2.webp"
+import pythonImg from "~/assets/landing/features/code-in-any-lang/python.webp"
+import rImg from "~/assets/landing/features/code-in-any-lang/r.webp"
+import juliaImg from "~/assets/landing/features/code-in-any-lang/julia.webp"
 
-const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 
 const title = "Language Agnostic Orchestration"
@@ -94,6 +97,30 @@ const SCRIPT_FEATURES = [
         reverse: true,
     },
 ]
+
+const CAPABILITIES = [
+    {
+        title: "Orchestrate your Python Scripts",
+        description:
+            "Dive deeper to discover how Kestra optimizes Python script execution across diverse environments.",
+        image: pythonImg,
+        pageHref: "/features/code-in-any-language/python",
+    },
+    {
+        title: "Orchestrate your R Scripts",
+        description:
+            "Discover Kestra's powerful orchestration capabilities for R scripts, simplifying complex data analytics.",
+        image: rImg,
+        pageHref: "/features/code-in-any-language/r",
+    },
+    {
+        title: "Orchestrate your Julia Scripts",
+        description:
+            "Learn about Kestra's support for Julia, optimizing high-performance numerical analysis and computational projects.",
+        image: juliaImg,
+        pageHref: "/features/code-in-any-language/julia",
+    },
+]
 ---
 
 <Layout {title} {description} headerTheme="lightText">
@@ -104,7 +131,7 @@ const SCRIPT_FEATURES = [
     >
         <Link
             slot="cta"
-            href="/docs/quickstart#start-kestra"
+            href="/get-started"
             class="btn btn-primary"
         >
             Get Started
@@ -126,7 +153,7 @@ const SCRIPT_FEATURES = [
                 href="/docs/version-control-cicd/git"
                 class="btn btn-primary"
             >
-                Learn more
+                Learn More
             </Link>
         </Powerful>
     </div>
@@ -139,8 +166,8 @@ const SCRIPT_FEATURES = [
             Select from {totalPlugins}+ integrations and swap tools when needed
         </Fragment>
     </PluginsBlock>
-    <StackOrchestrator />
-    <SeeHow cta={{ text: "Talk to Sales", href: "/demo" }}>
+    <Capabilities title="Language Agnostic Orchestration" capabilities={CAPABILITIES} />
+    <SeeHow cta={{ text: "Contact Sales", href: "/demo" }}>
         <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
         Replace legacy schedulers, brittle scripts, and disconnected automation tools
         with a unified orchestration platform.

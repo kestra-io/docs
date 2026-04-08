@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets"
+import soc2Img from "./assets/soc2.png"
+import gdprImg from "./assets/gdpr.svg"
+---
+
+<div class="certifications">
+    <a
+        href="https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604"
+        title="SOC 2"
+        target="_blank"
+    >
+        <Image src={soc2Img} alt="SOC 2" height="46" />
+    </a>
+    <a
+        href="https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604"
+        title="GDPR"
+        target="_blank"
+    >
+        <Image src={gdprImg} alt="GDPR" height="46" />
+    </a>
+</div>
+
+<style lang="scss" scoped>
+    .certifications {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+</style>

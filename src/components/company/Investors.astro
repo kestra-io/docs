@@ -1,11 +1,17 @@
 ---
 import { Image } from "astro:assets"
-import alven from "~/assets/teams/alven-sm.svg?raw"
-import isai from "~/assets/teams/isai-sm.svg?raw"
-import axeleo from "~/assets/teams/axeleo-sm.svg?raw"
+import rtpGlobal from "~/assets/teams/rtpglobal.svg?raw"
+import alven from "~/assets/teams/alven-new.svg?raw"
+import isai from "~/assets/teams/isai-new.svg?raw"
+import axeleo from "~/assets/teams/axeleo-new.svg?raw"
 import TeamsImages from "~/utils/teamsImages"
 
 const investorsLogos = [
+    {
+        name: "RTP Global",
+        src: rtpGlobal,
+        link: "https://rtp.vc",
+    },
     {
         name: "Alven",
         src: alven,
@@ -19,7 +25,7 @@ const investorsLogos = [
     {
         name: "Axeleo Capital",
         src: axeleo,
-        link: "https://www.axc.vc/",
+        link: "https://www.axc.vc",
     },
 ]
 
@@ -76,25 +82,21 @@ const investorsProfiles = [
     <div class="title-section" data-usal="fade-u">
         <h2 class="title">Our investors</h2>
         <p class="subtitle">
-            Kestra is proudly backed by two strategic funding rounds: a
-            <strong>$3M Pre-seed</strong>
+            Kestra is backed by a <strong>$25M Series A</strong> round and a total
+            of <strong>$36M in funding</strong>, supported by visionary
+            investors and founders from leading technology companies.
             <br class="d-none d-lg-block" />
-            and an <strong>$8M Seed round</strong>, supported by visionary
-            leaders and founders
-            <br class="d-none d-lg-block" />
-            from industry-leading companies. These investments fuel Kestra's mission
-            to<br class="d-none d-lg-block" />
-            redefine orchestration.
+            <br />
+            These investments fuel Kestra's mission to redefine enterprise orchestration,
+            helping organizations orchestrate complex workflows across data, infrastructure,
+            AI, and applications.
         </p>
     </div>
 
-    <div class="logos" data-usal="fade-u delay-200">
+    <div class="investors">
         {
-            investorsLogos.map((logo, index) => (
-                <div
-                    class="logo"
-                    data-usal={`zoomin delay-${300 + index * 100}`}
-                >
+            investorsLogos.map((logo) => (
+                <div class="investor-item">
                     <a
                         href={logo.link}
                         target="_blank"
@@ -145,7 +147,7 @@ const investorsProfiles = [
     }
 
     .title-section {
-        max-width: 1140px;
+        max-width: 824px;
         margin: 0 auto;
         text-align: center;
         margin-bottom: 4rem;
@@ -159,7 +161,7 @@ const investorsProfiles = [
         }
 
         .subtitle {
-            font-size: 18px;
+            font-size: $font-size-lg;
             line-height: 26px;
             color: var(--ks-content-primary);
             margin: 0;
@@ -176,40 +178,38 @@ const investorsProfiles = [
         }
     }
 
-    .logos {
-        width: 1140px;
-        max-width: 100%;
+    .investors {
+        width: 100%;
+        min-height: 150px;
+        border-radius: 8px;
+        background: var(--ks-border-primary);
+        border: 1px solid var(--ks-border-primary);
+        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
         margin: 0 auto 4rem;
+        max-width: 1140px;
         display: grid;
-        grid-template-columns: 1fr;
-        border: $block-border;
-        background-color: var(--ks-background-card);
-        border-radius: $border-radius-lg;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1px;
+        overflow: hidden;
 
-        @include media-breakpoint-up(xl) {
-            grid-template-columns: repeat(3, 1fr);
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        .logo {
-            padding: 2rem;
-            height: 150px;
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .investor-item {
+            background: var(--ks-background-primary);
+            height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-bottom: $block-border;
-
-            @include media-breakpoint-up(xl) {
-                border-bottom: none;
-                border-right: $block-border;
-            }
-
-            &:last-child {
-                border: none;
-            }
+            padding: 2rem;
 
             .logo-image {
-                width: 120px;
+                width: 140px;
                 object-fit: contain;
 
                 :global(.dark) & {
@@ -217,16 +217,14 @@ const investorsProfiles = [
                 }
             }
 
-            :global(.dark) & {
-                color: $black;
-            }
-
             .logo-link {
-                display: inline-block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 transition: transform 0.3s ease-in-out;
 
                 &:hover {
-                    transform: scale(1.1);
+                    transform: scale(1.05);
                 }
             }
         }

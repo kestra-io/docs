@@ -116,12 +116,11 @@
 </script>
 
 <style lang="scss" scoped>
-
     section {
         position: relative;
         width: 100%;
         background: #131316 url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
-        margin-top: calc(-2rem - var(--announce-height));
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
         @include media-breakpoint-up(lg) {
             background-position: center top 30rem;
         }

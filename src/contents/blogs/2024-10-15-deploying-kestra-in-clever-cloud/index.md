@@ -5,6 +5,7 @@ date: 2024-10-15T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
+  linkedin: https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/
   role: Lead Software Engineer
   image: lmathieu
 image: ./main.jpg

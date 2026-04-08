@@ -1,0 +1,128 @@
+---
+import { getEntry } from "astro:content"
+import Layout from "~/components/layout.astro"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+
+import broadcomLogo from "~/components/versus/assets/broadcom.svg?raw"
+import broadcomMonogram from "~/components/versus/assets/broadcom-monograme.svg?raw"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import broadcomImg from "~/components/versus/assets/broadcom-img.svg"
+import heroUI from "~/components/versus/assets/broadcom_hero_ui.webp"
+
+const entry = await getEntry("vs", "broadcom")
+if (!entry) throw new Error("Could not find vs/broadcom collection entry")
+
+const {
+    title,
+    shortDescription,
+    competitorName,
+
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    testimonials,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+} = entry.data
+---
+
+<Layout {title} description={shortDescription} headerTheme="lightText">
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: broadcomMonogram,
+        }}
+        image={{ src: heroUI, alt: "kestra ui" }}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: broadcomLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: broadcomLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: broadcomLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: broadcomLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: broadcomLogo,
+            linkImg: broadcomImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo: broadcomLogo,
+        }}
+    />
+    <VsTestimonial
+        quotes={testimonials}
+    />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: broadcomLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">
+            Modernize Beyond Legacy Batch Scheduling
+        </Fragment>
+        See how Kestra replaces centralized job schedulers with developer-friendly,
+        event-driven orchestration.
+    </SeeHow>
+</Layout>

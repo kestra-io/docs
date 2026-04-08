@@ -1,28 +1,76 @@
 ---
 import Layout from "~/components/layout.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Cards from "~/components/use-cases/Cards.astro"
-import BusinessStats from "~/components/layout/BusinessStats.astro"
-import Unlock from "~/components/use-cases/Unlock.vue"
-import HeaderBox from "~/components/common/HeaderBox.vue"
-import SophiaGenetics from "~/assets/companies/sophia-genetics.svg?raw"
-import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
-import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
-import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
-import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
-import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
+import heroFront from "~/assets/use-cases/healthcare/hero-front.webp"
+import HeartPulse from "~/assets/use-cases/healthcare/heart-pulse.svg"
+import SophiaGenetics from "~/assets/use-cases/healthcare/SophiaGenetics.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
-const TITLE = "Kestra for Healthcare"
-const DESCRIPTION =
+import Link from "~/components/common/Link.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import TopHero from "~/components/layout/TopHero.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Unlock from "~/components/use-cases/Unlock.vue"
+import CardGrid from "~/components/card/CardGrid.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+
+const title = "Kestra for Healthcare"
+const description =
     "Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
 
-const COMPANY_INFO = {
-    personName: "Yohann Nédélec",
-    personRole: "Tech Lead",
-    logo: SophiaGenetics,
-    logoAlt: "Sophia Genetics",
-}
+const ITEMS = [
+    {
+        icon: "mdi:clipboard-pulse-outline",
+        title: "Healthcare Data Management",
+        description:
+            "Integrate patient records, laboratory systems, and analytics platforms into automated workflows to maintain accurate, real-time data.",
+    },
+    {
+        icon: "mdi:dna",
+        title: "Genomic Data Processing",
+        description:
+            "Automate sequencing workflows and large-scale genomic data analysis. Parallelize tasks and manage dependencies declaratively.",
+    },
+    {
+        icon: "mdi:shield-check",
+        title: "Regulatory Compliance",
+        description:
+            "Automate compliance reporting, access logs, and audit trails to meet healthcare regulatory standards.",
+    },
+    {
+        icon: "mdi:head-snowflake-outline",
+        title: "Predictive Analytics",
+        description:
+            "Integrate ML models into data workflows to support diagnosis support systems and patient risk prediction.",
+    },
+    {
+        icon: "mdi:lan-connect",
+        title: "Secure Research Collaboration",
+        description:
+            "Coordinate workflows between researchers, data scientists, and IT teams with centralized monitoring and version control.",
+    },
+]
+
+const quotes = [
+    {
+        quote: "Kestra strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines in the field of genomics.",
+        author: "Yohann Nédélec - Tech Lead",
+        smallLogoSvg: optimizeSvgIcon(SophiaGenetics, "sophia-genetics-logo"),
+        kpis: [
+            {
+                name: "Increased productivity",
+                value: "200%",
+            },
+            {
+                name: "Reduction of Azure Batch processing costs",
+                value: "50%",
+            },
+            {
+                name: "faster processing of large datasets",
+                value: "85%",
+            },
+        ],
+    },
+]
 
 const UNLOCK_CONTENT = {
     leftContent: [
@@ -50,101 +98,49 @@ const UNLOCK_CONTENT = {
         },
     ],
 }
-
-const CHALLENGES_TITLE = `<span class="highlight">Key Benefits</span> of Using Kestra for<br/> Healthcare Workflows`
-
-const CARDS_DATA = [
-    {
-        icon: RefreshAuto,
-        cardInfo: {
-            title: "Healthcare Data Management",
-            description:
-                "Automates the integration and management of patient data from various sources, ensuring that records are always updated and accurate.",
-        },
-    },
-    {
-        icon: CommentQuoteOutline,
-        cardInfo: {
-            title: "Genomic Data Processing",
-            description:
-                "Process large volumes of genomic data quickly and accurately. Kestra automates sequencing workflows and data analysis, significantly cutting down processing times and minimizing errors.",
-        },
-    },
-    {
-        icon: ChartBellCurve,
-        cardInfo: {
-            title: "Regulatory Compliance",
-            description:
-                "Automate the generation of compliance reports, access logs, and data usage reports. Ensure compliance with regulatory standards reducing the risk of breaches and improving data governance.",
-        },
-    },
-    {
-        icon: FileChartOutline,
-        cardInfo: {
-            title: "Predictive Analytics",
-            description:
-                "Integrates your workflows with machine learning models and analytics platforms to utilize patient data for predictive analytics.",
-        },
-    },
-    {
-        icon: ImageFilterCenterFocus,
-        cardInfo: {
-            title: "Streamlined Data Management",
-            description:
-                "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.",
-        },
-    },
-]
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <DetailsHero
-        client:load
-        title="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
-        description={DESCRIPTION}
-        image={{
-            src: "/landing/usecases/healthcare/header-hero.svg",
-            alt: "Healthcare Workflows",
-        }}
-    />
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Transform Healthcare <br /> with Automated <br /> Workflows"
+        description="Orchestrate patient data, research pipelines, and compliance processes with secure, scalable automation that run in the most restricted environments"
+        image={heroFront}
+    >
+        <Link
+            slot="cta"
+            href="/get-started"
+            class="btn btn-primary"
+        >
+            Get Started
+        </Link>
+    </TopHero>
 
-    <Cards title={CHALLENGES_TITLE} cards={CARDS_DATA} />
+    <CardGrid title="Use Cases in Healthcare" items={ITEMS} />
 
-    <BusinessStats
-        items={[
-            {
-                type: "stat",
-                icon: { src: ArrowUp },
-                value: "200%",
-                label: "Increased productivity",
-            },
-            {
-                type: "quote",
-                text: "“Kestra strong observability, ease of development,<br> and flexibility make it a versatile solution for<br> managing data pipelines in the field of genomics.”",
-            },
-            {
-                type: "author",
-                name: COMPANY_INFO.personName,
-                role: COMPANY_INFO.personRole,
-                logo: { src: COMPANY_INFO.logo, alt: COMPANY_INFO.logoAlt },
-                class: "align-items-start",
-            },
-        ]}
-    />
+    <Quotes {quotes} />
 
     <Unlock
         client:visible
-        title="Healthcare Ecosystem"
-        description="Kestra empowers data engineers, software engineers, and platform engineers in the healthcare industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
+        title="Healthcare"
+        description="Kestra prioritizes security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations."
         logo={{
-            src: "/landing/usecases/healthcare/heart-pulse.svg",
+            src: HeartPulse.src,
             alt: "heart pulse",
         }}
-        strokeColor="#3991FF"
         content={UNLOCK_CONTENT}
     />
 
-    <div class="enterprise-edition">
-        <HeaderBox client:visible />
-    </div>
+    <PluginsBlock />
+
+    <SeeHow
+        cta={{
+            text: "Contact Sales",
+            href: "/demo",
+        }}
+    >
+        <Fragment slot="title"> Secure and Compliant Data Handling </Fragment>
+        Kestra prioritizes security and compliance, ensuring all information is handled
+        according to the highest standards for trust and reliability in your healthcare
+        operations.
+    </SeeHow>
 </Layout>

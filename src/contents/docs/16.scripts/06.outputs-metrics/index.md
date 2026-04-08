@@ -53,7 +53,7 @@ If using the [Enterprise or Cloud Edition](../../07.enterprise/index.mdx), you c
 
 Here is the representation of a `metrics` object. It's a **list of dictionaries**:
 
-```text
+```plaintext
 "metrics": [
     {
         "name": "myMetric", // mandatory, the name of the metrics

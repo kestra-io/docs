@@ -5,6 +5,7 @@ date: 2022-02-01T10:00:00
 category: News & Product Updates
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg
@@ -34,6 +35,7 @@ Kestra started in 2019 with this [initial commit](https://github.com/kestra-io/k
 To provide a bit of a background: I was working for Leroy Merlin as a consultant. We needed to build a new cloud-based data platform from scratch (destination: mostly Google Cloud Platform). We tried a [lot of things](../2022-02-22-leroy-merlin-usage-kestra/index.md) and failed with some of our attempts. The **biggest setback was the orchestration** software that we tried to deliver with Apache Airflow: a lot of instability (tasks that failed simply due to the Airflow scheduler), performance issues (unable to handle a light workload), and a lack of features (scaling, data processing). After many tests (Google Composer, Open source Airflow on Kubernetes), the decision was final: **Airflow was rejected by Leroy Merlin**.
 
 I did some research on the orchestrator ecosystem; most are **proprietary and license based** (far from my mindset), some are open source (at this time, only Apache Airflow seemed to be active — and it was rejected). I was really surprised by this discovery and faced this challenge from a co-worker:
+
 > If you think Airflow is bad, do better!
 
 It was decided: I set myself the task of producing a proof of concept for our own open-source workflow management system. It took a lot of time to build this software, and the task seemed to be never ending; but I continued to work on it for several months by:
@@ -87,7 +89,7 @@ jq -r '.name' /tmp/query.json
 
 Kestra avoids the rigmarole of installing the software on the system, handling dependencies and conflicts, dealing with Python, etc. — just install a plugin (a simple jar) and speak directly with your database.
 
-We have a [number of plugins](/plugins/) and the process of [developing your own](../../docs/plugin-developer-guide/index.mdx) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/contact-us) if you require help or support).
+We have a [number of plugins](/plugins) and the process of [developing your own](../../docs/plugin-developer-guide/index.mdx) is very simple. We also hope that a community will help us to maintain new plugins/connectors ([contact us](/contact-us) if you require help or support).
 
 ## First Public Release *and* Production Ready!
 First public release doesn't mean that Kestra is not production ready. In fact, it has been **used in production since August 2020 at Leroy Merlin** — take a deeper look at the [case study](../2022-02-22-leroy-merlin-usage-kestra/index.md) if you want more detail. Here are some figures to give a picture of Kestra’s credentials:

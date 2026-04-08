@@ -4,6 +4,13 @@ $bd-gutter-x: 3rem;
 
 .bd-content {
     @include markdown-styles;
+
+    a[target="_blank"]::after,
+    a[href^="https://"]::after,
+    a[href^="http://"]::after {
+        display: none;
+        content: none;
+    }
 }
 
 .bd-markdown {

@@ -1,219 +1,149 @@
 ---
 import Layout from "~/components/layout.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Cards from "~/components/use-cases/Cards.astro"
-import CustomerStory from "~/components/use-cases/CustomerStory.vue"
-import FeaturePlugins from "~/components/layout/FeaturePlugins.astro"
-import RetailOps from "~/components/use-cases/retail/RetailOps.vue"
-import FooterContact from "~/components/layout/FooterContact.astro"
-import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
-import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
-import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
-import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
-import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import LeroyMerlin from "~/assets/companies/leroy-merlin.svg?raw"
+import heroFront from "~/assets/use-cases/retail/hero-front.svg"
+import CartMinus from "~/assets/use-cases/retail/cart-minus.svg"
+import LeroyMerlin from "~/contents/customer-stories/14/logo.svg?raw"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
-const HEADER = {
-    title: "Kestra for Retail and Consuming goods",
-    tag: 'Orchestrate Your <br /><span class="text-gradient">Retail Ecosystem</span><br />with Kestra',
-    description:
-        "From data pipelines to complex integrations, Kestra empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales as you grow.",
-    cta: [
-        {
-            text: "Talk to us",
-            href: "/demo",
-            style: "btn btn-dark",
-        },
-        {
-            text: "Get started",
-            href: "/docs",
-            style: "btn-animated btn-purple-animated btn",
-        },
-    ],
-    image: {
-        href: "/retail/header.svg",
-        alt: "Header",
-        style: "image-retail",
-        width: "542px",
-        height: "598px",
-    },
-}
+import Link from "~/components/common/Link.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Unlock from "~/components/use-cases/Unlock.vue"
+import CardGrid from "~/components/card/CardGrid.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
 
-const SOLUTIONS = [
+const title = "Kestra for Retail and Consuming goods"
+const description =
+    "From data pipelines to complex integrations, Kestra empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales as you grow."
+
+const ITEMS = [
     {
-        icon: RefreshAuto,
+        icon: "mdi:stack-overflow",
         title: "Automated Inventory Management",
         description:
             "Eliminate manual tracking to use Kestra to automate your inventory management system.",
     },
     {
-        icon: CommentQuoteOutline,
+        icon: "mdi:star-circle-outline",
         title: "Enhanced Customer Experience",
         description:
-            "Use Kestra to collect, analyze, and use customer feedback. Automate the delivery of personalized promotions and recommendations based on customer data.",
+            "Orchestrate customer data across CRM, analytics, and marketing tools. Trigger personalized promotions and loyalty workflows automatically.",
     },
     {
-        icon: ChartBellCurve,
+        icon: "mdi:shield-check",
         title: "Compliance and Reporting",
         description:
-            "Automate the reporting processes, ensuring that all data compiles with retail standards and regulations. Ideal for generating automated end-of-day sales reports, inventory counts, and more.",
+            "Automate end-of-day reports, sales reconciliation, and regulatory reporting processes with built-in scheduling and monitoring.",
     },
     {
-        icon: FileChartOutline,
-        title: "Report Automation for Supply Chain",
+        icon: "mdi:truck-delivery-outline",
+        title: "Delivery & Fulfillment Orchestration",
         description:
-            "Automate supplier evaluation and order placement, ensuring a smooth and efficient supply chain operation.",
+            "Integrate e-commerce systems, payment providers, logistics platforms, and warehouse systems to streamline order processing.",
     },
     {
-        icon: ImageFilterCenterFocus,
-        title: "Streamlined Data Management",
+        icon: "mdi:head-snowflake-outline",
+        title: "Predictive Analytics",
         description:
-            "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.",
+            "Integrate machine learning models into workflows to forecast demand, optimize pricing, and improve operational efficiency.",
     },
 ]
 
-const SOLUTIONS_TITLE = "Use Cases in <span class='highlight'>Retail</span>"
+const quotes = [
+    {
+        quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+        author: "Julien Henrion - Head of Data Engineering",
+        smallLogoSvg: optimizeSvgIcon(LeroyMerlin, "leroy-merlin-logo"),
+        kpis: [
+            {
+                name: "In Data Production",
+                value: "+900%",
+            },
+            {
+                name: "active users",
+                value: "+250",
+            },
+            {
+                name: "workflows Created",
+                value: "+5000",
+            },
+        ],
+        storyLink:
+            "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent",
+    },
+]
 
-const LEROY = {
-    logo: {
-        alt: "Leroy Logo",
-        src: LeroyMerlin,
-        subtitle: "Customer Success",
-        width: "127px",
-        height: "76px",
-    },
-    alt: "Leroy",
-    title:
-        "Leroy Merlin France enabling data mesh architecture and 900% increase in productivity with Kestra",
-    description:
-        "Leroy Merlin France transformed data infrastructure by adopting Kestra, enabling a data mesh architecture and achieving a remarkable 900% boost in productivity. The shift empowered hundreds of data practitioners to create high-quality, scalable analytics, fundamentally changing how data is managed and valued across the organization.",
-    cta: {
-        text: "Read the story",
-        href: "/blogs/2023-08-16-datamesh",
-        style: "btn-dark",
-    },
-    image: {
-        href: "/retail/architecture.svg",
-        alt: "leroy architecture",
-        width: "722px",
-        height: "594px",
-    },
-}
-
-const OPS = {
-    title: "End-To-End Solution for Managing Complex Retail Operations",
-    description:
-        "Powers your business-critical retail applications, streamlines inventory, optimizes supply chain and much more. By breaking own organizational silos. Kestra fosters a collaborative environment for better operational efficiency.",
-    items: [
+const UNLOCK_CONTENT = {
+    leftContent: [
         {
-            title: "YAML-Based Workflows",
-            text: "Build, maintain and scale, your workflows with Kestra's YAML-based interface.",
-            icon: "/retail/solutions/Icon1.svg",
+            title: "Event-Driven Operations",
+            description:
+                "React instantly to new orders, stock updates, or customer actions.",
         },
         {
-            title: "Full CI/CD Integration",
-            text: "From Terraform to GitHub Actions, Kestra provides complete control over deployment and resource management.",
-            icon: "/retail/solutions/Icon2.svg",
+            title: "Centralized Workflow Control Plane",
+            description:
+                "Break down silos between systems and teams with unified orchestration.",
+        },
+    ],
+    rightContent: [
+        {
+            title: "Observability & Monitoring",
+            description:
+                "Track every execution with logs, metrics, retries, and alerting.",
         },
         {
-            title: "Language Agnostic",
-            text: "Kestra's language-agnostic capabilities let you integrate various languages. Customize workflows to align with your unique retail business logic.",
-            icon: "/retail/solutions/Icon3.svg",
-        },
-        {
-            title: "Event-Driven Orchestration",
-            text: "Kestra's event-driven capabilities ensure that your retail operations react in real time.",
-            icon: "/retail/solutions/Icon4.svg",
-        },
-        {
-            title: "Developer Centric Platform",
-            text: "API-first design with robust, scalable, cloud-native architecture makes Kestra the go-to platform for software engineers in the retail industry.",
-            icon: "/retail/solutions/Icon5.svg",
-        },
-        {
-            title: "User-Friendly Interface",
-            text: "Engineered to be intuitive for both developers and business professionals. Kestra facilitates quick and efficient workflow development.",
-            icon: "/retail/solutions/Icon6.svg",
+            title: "Quick to Learn, Easy to Master",
+            description:
+                "Kestra’s intuitive interface and comprehensive documentation make it easy for retailers to quickly build and deploy powerful workflows.",
         },
     ],
 }
-
-const PLUGINS = {
-    title: "Connect Your",
-    highlight: "Entire Stack",
-    description: "with Dedicated Plugins"
-}
-
-const FOOTER = {
-    title: "Getting Started",
-    cta: [
-        {
-            text: "Read the docs",
-            href: "/docs",
-            style: "btn-dark",
-        },
-        {
-            text: "Get started",
-            href: "/docs/quickstart#start-kestra",
-            style: "btn-animated btn-purple-animated",
-        },
-    ],
-}
-
-const TITLE = HEADER.title
-const DESCRIPTION = HEADER.description
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-        <DetailsHero
-            client:load
-            title={HEADER.tag}
-            description={HEADER.description}
-            image={{
-                src: HEADER.image.href,
-                alt: HEADER.image.alt,
-                width: HEADER.image.width,
-                height: HEADER.image.height,
-                class: HEADER.image.style,
-            }}
-            actions={{
-                dark: HEADER.cta[0],
-                purple: HEADER.cta[1],
-            }}
-        />
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Orchestrate Your <br /> Retail Ecosystem <br /> with Kestra"
+        description="Automate inventory, supply chain, customer data, and analytics workflows with a scalable, event-driven orchestration platform."
+        image={heroFront}
+    >
+        <Link
+            slot="cta"
+            href="/get-started"
+            class="btn btn-primary"
+        >
+            Get Started
+        </Link>
+    </TopHero>
 
-        <Cards title={SOLUTIONS_TITLE} cards={SOLUTIONS} />
+    <CardGrid title="Use Cases in Retail" items={ITEMS} />
 
-        <CustomerStory
-            client:visible
-            class="retail"
-            title={LEROY.title}
-            description={LEROY.description}
-            image={{
-                src: LEROY.image.href,
-                alt: LEROY.image.alt,
-            }}
-            logo={{
-                src: LEROY.logo.src,
-                alt: LEROY.logo.alt,
-                width: LEROY.logo.width,
-            }}
-            href={LEROY.cta.href}
-        />
+    <Quotes {quotes} />
 
-        <RetailOps
-            title={OPS.title}
-            description={OPS.description}
-            items={OPS.items}
-            client:visible
-        />
+    <Unlock
+        client:visible
+        title="Retail Ecosystem"
+        description="From inventory management to personalized customer engagement, Kestra empowers retail teams to orchestrate workflows across stores, warehouses, e-commerce platforms, and suppliers, in real time."
+        logo={{
+            src: CartMinus.src,
+            alt: "retail basket",
+        }}
+        content={UNLOCK_CONTENT}
+    />
 
-        <FeaturePlugins content={PLUGINS} />
+    <PluginsBlock />
 
-        <FooterContact
-            title={FOOTER.title}
-            dark={FOOTER.cta[0]}
-            purple={FOOTER.cta[1]}
-        />
+    <SeeHow
+        cta={{
+            text: "Contact Sales",
+            href: "/demo",
+        }}
+    >
+        <Fragment slot="title">
+            End-To-End Solution for Managing Complex Retail Operations
+        </Fragment>
+        Replace Cron jobs, legacy schedulers, and manual scripts with a modern orchestration
+        platform built for scale.
+    </SeeHow>
 </Layout>
-

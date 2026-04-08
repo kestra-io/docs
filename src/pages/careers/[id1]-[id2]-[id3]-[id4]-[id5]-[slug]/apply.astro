@@ -2,14 +2,13 @@
 export const prerender = false
 import Layout from "~/components/layout.astro"
 import FooterContact from "~/components/layout/FooterContact.astro"
-import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
-import Header from "~/components/careers/Header.astro"
 import { type AshbyJobPosting, fetchJob } from "~/utils/careers.ts"
+import HeaderDetails from "~/components/careers/HeaderDetails.astro"
 
 const { id1, id2, id3, id4, id5 } = Astro.params
 const { url } = Astro.request
 
-const uid = [id1, id2, id3, id4, id5].join("-");
+const uid = [id1, id2, id3, id4, id5].join("-")
 
 if (!uid) {
     return Astro.redirect("/careers")
@@ -28,19 +27,18 @@ const title = page.title
 ---
 
 <Layout title={title}>
-    <Header fullPath="/careers">
-        <h1 data-usal="fade-l">
-            {page.title}
-        </h1>
-        <h4 data-usal="fade-l">
-            <span class="department-tag">{page.departmentName}</span>
-            <MapMarkerOutline /> Remote
-        </h4>
-    </Header>
+    <HeaderDetails title={page.title} />
 
     <section>
         <div class="container">
-            <div id="ashby_embed" class="application-form-embed-container" data-jid={uid} data-tab="application" data-noChrome="true"></div>
+            <div
+                id="ashby_embed"
+                data-uid={uid}
+                class="application-form-embed-container"
+                data-tab="application"
+                data-noChrome="true"
+            >
+            </div>
         </div>
     </section>
 
@@ -48,7 +46,7 @@ const title = page.title
         title="See all open positions"
         purple={{
             text: "Careers page",
-            href: "/careers"
+            href: "/careers",
         }}
         dark={null}
     />
@@ -58,11 +56,30 @@ const title = page.title
     window.__Ashby = {
         settings: {
             autoScroll: false,
-        }
+            autoLoad: true,
+            verboseLogging: false,
+        },
     }
+
+    function init() {
+        const jobPostingId = document.getElementById("ashby_embed").dataset.uid
+
+        window.__Ashby.iFrame().load({
+            jobPostingId
+        });
+    }
+
+    document.addEventListener('astro:page-load', init);
 </script>
 
-<script is:inline src="https://jobs.ashbyhq.com/kestra/embed?version=2"></script>
+<script is:inline id="ashby-script" src="https://jobs.ashbyhq.com/kestra/embed?version=2"></script>
+
+
+<script is:inline>
+
+
+</script>
+
 
 <style lang="scss" scoped>
     #ashby_embed {

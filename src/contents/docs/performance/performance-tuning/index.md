@@ -104,13 +104,14 @@ kestra:
 
 You can also set those properties on a topic basis.
 
-We also configure the number of threads used by Kafka Stream (`num.stream.threads`). In Kafka Stream default, it uses only one processing thread, we configure it by default to the number of available CPU cores for better resource utilization.
-However, if you process a lot of big executions, this can incur an increase in memory usage, in this case you can lower it.
-On the opposite, you can increase it for better resource utilization if you process a high number of small executions.
+You can also configure the number of threads used by Kafka Stream (`num.stream.threads`) which is one by default.
+You can increase it for better resource utilization if you process a high number of small executions.
+However, if you process a lot of big executions, increasing it can incur an increase in memory usage; careful benchmarking should be done before increasing it.
 
 ```yaml
 kestra:
   kafka:
-  executor:
-    stream-threads: 2 # Default 0 which means the number of available CPU cores
+    stream:
+      properties:
+        num.stream.threads: 4 # Default to 1
 ```

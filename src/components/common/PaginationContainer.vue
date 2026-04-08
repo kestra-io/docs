@@ -20,11 +20,21 @@
     const localCurrentUrl = ref(props.currentUrl)
 
     const urlParams = computed(() => {
-        return new URL(localCurrentUrl.value).searchParams
+        try {
+            return new URL(localCurrentUrl.value).searchParams
+        } catch (e) {
+            console.error(
+                "Invalid URL provided to PaginationContainer:",
+                localCurrentUrl.value,
+            )
+            return new URLSearchParams()
+        }
     })
 
     const size = computed(() => {
-        return parseInt(urlParams.value.get("size") ?? props.defaultSize.toString())
+        return parseInt(
+            urlParams.value.get("size") ?? props.defaultSize.toString(),
+        )
     })
 
     const page = computed(() => {
@@ -47,6 +57,8 @@
     watch(
         [itemsPerPage, currentPage],
         ([newSize, newPage]) => {
+            emit("update", { size: newSize, page: newPage })
+
             // Skip the initial mount — don't overwrite the URL on hydration
             if (!isInitialized) {
                 isInitialized = true
@@ -55,6 +67,7 @@
 
             // Update URL without navigation
             if (typeof window === "undefined") return
+
             const newUrl = new URL(window.location.href)
             const params = newUrl.searchParams
             if (newSize === props.defaultSize) {
@@ -69,7 +82,6 @@
             }
             localCurrentUrl.value = newUrl.toString()
 
-            emit("update", { size: newSize, page: newPage })
             window.history.pushState({}, "", newUrl.toString())
         },
         { immediate: true },
@@ -88,7 +100,11 @@
 <template>
     <div class="d-flex justify-content-between my-5 pagination-container">
         <div class="items-per-page">
-            <select v-if="totalPages > 1" class="form-select " v-model="itemsPerPage">
+            <select
+                v-if="totalPages > 1"
+                class="form-select"
+                v-model="itemsPerPage"
+            >
                 <option
                     v-for="option in sizeOptions"
                     :key="option"
@@ -114,7 +130,6 @@
 </template>
 
 <style scoped lang="scss">
-
     .pagination-container {
         margin-top: 39px;
         .form-select {

@@ -1,6 +1,6 @@
 ---
 import type { Plugin } from "@kestra-io/ui-libs"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 
 import Layout from "~/components/layout.astro"
@@ -19,7 +19,7 @@ import anyLanguage1 from "~/assets/landing/features/code-in-any-lang/python/any-
 import anyLanguage2 from "~/assets/landing/features/code-in-any-lang/r/any-language-2.webp"
 import anyLanguage3 from "~/assets/landing/features/code-in-any-lang/r/any-language-3.webp"
 
-const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 
 const title = "R Orchestration"
@@ -78,7 +78,7 @@ const SCRIPT_FEATURES = [
     >
         <Link
             slot="cta"
-            href="/docs/quickstart#start-kestra"
+            href="/get-started"
             class="btn btn-primary"
         >
             Get Started
@@ -128,7 +128,7 @@ const SCRIPT_FEATURES = [
         </Fragment>
     </PluginsBlock>
 
-    <SeeHow cta={{ text: "Talk to Sales", href: "/demo" }}>
+    <SeeHow cta={{ text: "Contact Sales", href: "/demo" }}>
         <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
         Replace legacy schedulers, brittle scripts, and disconnected automation tools
         with a unified orchestration platform.

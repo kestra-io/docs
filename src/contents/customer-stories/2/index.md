@@ -32,6 +32,7 @@ industry: Consulting and Integrations
 headquarter: Villeneuve d'Ascq, France
 solution: Geospatial Data
 companyName: ""
+cta: "What would change if your geospatial data operations were fully orchestrated—automated end-to-end, without the integration complexity?"
 ---
 
 ## About Loxcia

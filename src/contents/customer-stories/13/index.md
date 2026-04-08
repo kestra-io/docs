@@ -35,6 +35,7 @@ headquarter: Paris, France
 solution: Gorgias is the leading AI customer experience platform for ecommerce
   stores. Trusted by over 15000 merchants worldwide.
 companyName: Gorgias
+cta: "What would change if your CI/CD pipelines and data workflows were unified in a single orchestration platform—shipping faster with full visibility?"
 ---
 
 ## About Gorgias

@@ -1,0 +1,138 @@
+---
+
+---
+
+<section class="write-section">
+    <div class="container-xl">
+        <div class="left-content">
+            <h2>What is the Write for Kestra Program ?</h2>
+            <p>
+                Kestra, at its core, is a platform that empowers tech
+                professionals with advanced orchestration and scheduling
+                solutions. We're looking for writers who can share practical
+                insights, showcase new trends, and provide step-by-step
+                tutorials relevant to our community.
+            </p>
+            <h4>We're interested in:</h4>
+            <ul>
+                <li>
+                    <strong>Technical Insights:</strong> Articles that delve into
+                    orchestration, automation, and workflow optimization.
+                </li>
+                <li>
+                    <strong>Tech Trends:</strong> Updates on new technologies, plugins
+                    or features in the field of software development.
+                </li>
+                <li>
+                    <strong>Tutorials:</strong> Practical guides on using Kestra,
+                    from basic setup to advanced workflow configurations.
+                </li>
+                <li>
+                    <strong>External Content:</strong> Do you want to share more about
+                    your experience of Kestra on your blog, Medium, or other content
+                    platforms? We empower you to share your content across all of
+                    your favorite platforms!
+                </li>
+            </ul>
+        </div>
+        <div class="right-content">
+            <div class="inner-content">
+                <h4>Participation Requirements</h4>
+                <p>
+                    We welcome submissions to anyone with a background in
+                    software engineering, data engineering, or related fields.
+                    Familiarity with Kestra and experience in creating engaging,
+                    technical content are a plus.
+                </p>
+                <a
+                    href="https://share-eu1.hsforms.com/1HWgyBQh8RP6pEZVFW51rOAg7f8j"
+                    class="btn btn-primary">Apply</a
+                >
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .write-section {
+        padding: 120px 1rem;
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-down(lg) {
+            padding: 60px 0;
+        }
+
+        .container-xl {
+            max-width: 1350px;
+            display: flex;
+            align-items: center;
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0 1rem;
+            }
+
+            .left-content {
+                flex: 1;
+                padding: 0 100px;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                @include media-breakpoint-down(xxl) {
+                    padding-right: 40px;
+                    padding-left: 0;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    padding: 0 0 40px;
+                }
+
+                ul {
+                    padding-left: 1.25rem;
+                    margin: 0;
+
+                    li {
+                        margin-bottom: 0.25rem;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+
+            .right-content {
+                border-radius: 13px;
+                padding: 6px;
+                border: 1px solid var(--ks-border-primary);
+                width: 100%;
+
+                @include media-breakpoint-up(lg) {
+                    flex: 0 0 484px;
+                }
+
+                .inner-content {
+                    background: var(--ks-background-secondary);
+                    border-radius: $border-radius-lg;
+                    padding: 4rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+
+                    @include media-breakpoint-down(xxl) {
+                        padding: 2rem;
+                    }
+
+                    .btn {
+                        width: fit-content;
+                        min-width: 160px;
+                    }
+                }
+            }
+        }
+    }
+</style>

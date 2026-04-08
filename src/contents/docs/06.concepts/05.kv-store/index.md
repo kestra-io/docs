@@ -69,6 +69,7 @@ Here is a list of the different ways to manage KV pairs:
 4. **Kestra's Terraform provider**: use the `kestra_kv` resource to create, read, and delete KV pairs.
 5. **Pebble function**: use the `kv()` function to retrieve a value by key in a flow.
 6. **GitHub Actions**: create, read, and delete KV pairs in your CI/CD pipeline.
+7. **kestractl**: use `kestractl kv` to list, set, update, get, and delete KV pairs from the command line. See the [kestractl docs](../../kestra-cli/kestractl/index.md) for setup.
 
 The sections below provide detailed instructions on how to create and manage KV pairs using each of these methods.
 
@@ -145,7 +146,7 @@ The easiest way to retrieve a value by key is to use the `{{ kv('YOUR_KEY'') }}`
 
 Below is the full syntax of that function:
 
-```
+```twig
 {{ kv(key='your_key_name', namespace='your_namespace_name', errorOnMissing=false) }}
 ```
 

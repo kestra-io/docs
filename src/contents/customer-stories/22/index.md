@@ -38,6 +38,7 @@ solution: Acxiom is a global leader in customer intelligence, identity
   management, and AI-driven marketing solutions. It serves top-tier brands while
   strictly adhering to global privacy regulations.
 companyName: Acxiom
+cta: "What would change if your big data operations scaled without limits—processing billions of records across your marketing intelligence platform?"
 ---
 
 ## No More Legacy Constraints

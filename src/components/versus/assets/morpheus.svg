@@ -1,0 +1,10 @@
+<svg width="185" height="50" viewBox="0 0 185 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0 8)">
+    <rect width="34" height="34" rx="5" fill="#01A982"/>
+    <rect x="5" y="10" width="24" height="3" fill="white"/>
+    <rect x="5" y="15.5" width="24" height="3" fill="white"/>
+    <rect x="5" y="21" width="24" height="3" fill="white"/>
+  </g>
+  <text x="42" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="0.5" fill="#01A982">HPE</text>
+  <text x="42" y="40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="700" fill="currentColor">Morpheus</text>
+</svg>

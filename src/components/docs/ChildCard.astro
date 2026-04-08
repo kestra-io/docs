@@ -63,7 +63,7 @@ const children = await Promise.all(
                     : "")
 
             return {
-                title: doc.data.title,
+                title: doc.data.sidebarTitle ?? doc.data.title,
                 description,
                 path: `/docs/${doc.id}`,
                 release: doc.data.release,
@@ -120,7 +120,7 @@ const children = await Promise.all(
             align-items: start;
             @include media-breakpoint-up(md) {
                 gap: 0.5rem;
-                grid-template-rows: 1.5rem 1fr;
+                grid-template-rows: auto 1fr;
                 padding: 1.5rem;
             }
             .ks-card-title {
@@ -131,6 +131,7 @@ const children = await Promise.all(
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
+                    padding: 0.15em 0;
                 }
             }
 
