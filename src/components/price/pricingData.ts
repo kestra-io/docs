@@ -189,10 +189,10 @@ export const getSections = (totalPlugins: number): Section[] => [
         title: "Secrets & Security",
         rows: [
             {
-                feature: "Secret Manager (Internal & External)",
+                feature: "Secrets (Internal, External & Read-Only)",
                 values: ["cross", "check"],
                 description: {
-                    text: "Manage secrets with built-in storage or external providers like Vault, AWS Secrets Manager, and more",
+                    text: "Manage secrets with built-in storage, external providers like Vault and AWS Secrets Manager, or read-only immutable backends for enhanced security compliance",
                     link: "/docs/enterprise/governance/secrets-manager",
                 },
             },
@@ -202,14 +202,6 @@ export const getSections = (totalPlugins: number): Section[] => [
                 description: {
                     text: "Scope secrets, plugin defaults, and variables to specific namespaces or tenants",
                     link: "/docs/enterprise/governance/namespace-management#namespace-level-features",
-                },
-            },
-            {
-                feature: "Read-Only Secrets",
-                values: ["cross", "check"],
-                description: {
-                    text: "Immutable secret backends for enhanced security compliance",
-                    link: "/docs/enterprise/governance/read-only-secrets",
                 },
             },
             {
