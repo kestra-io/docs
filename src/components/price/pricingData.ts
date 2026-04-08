@@ -189,7 +189,7 @@ export const getSections = (totalPlugins: number): Section[] => [
         title: "Secrets & Security",
         rows: [
             {
-                feature: "Secrets (Internal, External & Read-Only)",
+                feature: "Secrets Manager (Internal, External & Read-Only)",
                 values: ["cross", "check"],
                 description: {
                     text: "Manage secrets with built-in storage, external providers like Vault and AWS Secrets Manager, or read-only immutable backends for enhanced security compliance",
