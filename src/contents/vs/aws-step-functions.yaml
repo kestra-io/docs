@@ -201,7 +201,7 @@ testimonials:
         name: "Customers on multi-tenant platform"
       - value: "0"
         name: "Pipeline rewrites required"
-    storyLink: "https://kestra.io/use-cases/stories"
+    storyLink: "/use-cases/stories/22-scaling-big-data-operations"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Engineering Teams Work

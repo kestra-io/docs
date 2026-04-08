@@ -54,7 +54,7 @@
 
         <div v-if="activeItem.kpis" class="kpis">
             <div v-for="kpi in activeItem.kpis" :key="kpi.name" class="kpi">
-                <h1>{{ kpi.value }}</h1>
+                <span class="kpi-value">{{ kpi.value }}</span>
                 <span>{{ kpi.name }}</span>
             </div>
         </div>
@@ -362,6 +362,12 @@
             flex-direction: column;
             align-items: center;
             flex: 1;
+
+            .kpi-value {
+                font-size: 2.5rem;
+                font-weight: 700;
+                line-height: 1.2;
+            }
 
             span {
                 font-size: $font-size-md;

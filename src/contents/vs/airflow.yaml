@@ -180,7 +180,7 @@ testimonials:
         name: "Faster workflow creation"
       - value: "0"
         name: "Pipeline failures"
-    storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
+    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Data Teams Actually Work
