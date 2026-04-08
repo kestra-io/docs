@@ -116,7 +116,7 @@ When a large number of business users access the Kestra UI — for example to tr
 
 ### Estimating concurrent users
 
-Not all registered users are active at the same time. A common rule of thumb for internal tools is a **10:1 to 100:1 ratio** between total users and concurrent users:
+Not all registered users are active at the same time. A common rule of thumb for internal tools is a 10 per 1 to 100 per 1 ratio between total users and concurrent users:
 
 | Total users | Estimated concurrent users |
 |-------------|---------------------------|
