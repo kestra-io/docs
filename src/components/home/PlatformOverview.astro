@@ -5,7 +5,6 @@ import agent from "./assets/overview/agent.png"
 import code from "./assets/overview/code.png"
 import eventDriven from "./assets/overview/event-driven.png"
 import governance from "./assets/overview/governance.png"
-import { $fetchApi } from "~/utils/fetch"
 import { API_URL } from "astro:env/client"
 
 const images = [
@@ -46,7 +45,7 @@ const images = [
 
 const pluginsDisplayed = [
     "dbt.cli.DbtCLI",
-    "airbyte.connections.Sync",
+    "ansible.cli.AnsibleCLI",
     "gcp.cli.GCloudCLI",
     "servicenow.Get",
 ]
@@ -313,6 +312,12 @@ const pluginIcons = await Promise.all(
         position: relative;
         margin: 2rem auto 0;
         max-width: 1150px;
+        figure {
+            padding-inline: 1.5rem;
+            @include media-breakpoint-up(md) {
+                padding-inline: 0;
+            }
+        }
         @include media-breakpoint-up(md) {
             height: 700px;
         }
@@ -320,13 +325,13 @@ const pluginIcons = await Promise.all(
 
     .stack-image {
         max-width: none;
-        width: 100vw;
-        margin-top: 6rem;
+        width: 100%;
+        margin-top: 2rem;
         border: 1px solid var(--hp-border-secondary);
-        border-radius: 0.5rem;
+        border-radius: 1rem;
+        box-shadow: -2px 2px 0 0 var(--hp-border-secondary);
         @include media-breakpoint-up(md) {
             margin-top: 0;
-            border-radius: 1rem;
             position: absolute;
             z-index: 1;
             left: 52%;

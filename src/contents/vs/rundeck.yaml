@@ -4,6 +4,9 @@ competitorName: "Rundeck"
 category: Infrastructure Automation
 shortDescription: "SSH-based runbook automation vs. declarative YAML orchestration with event-driven triggers."
 
+brandColor:
+  color: "#f73f39"
+
 intro:
   title: "Kestra vs. Rundeck: Beyond Runbook Automation"
   description: "Rundeck gives ops teams self-service access to scripts and Ansible playbooks via a clean UI with RBAC. Kestra takes that foundation further—adding declarative YAML orchestration, event-driven triggers, complex multi-step workflows, and self-service Apps with dynamic forms—without losing the simplicity ops teams depend on."
@@ -197,25 +200,17 @@ featureGrid:
       kestra: Webhooks, schedules, file detection, message queues, polling
       competitor: Webhooks and schedules (basic, no queue-based triggers)
 
-socialProof:
-  image:
-    alt: Operations team replacing Rundeck with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "We replaced Rundeck after dealing with job queue throttling, Docker instability, and no approval flows. Kestra gave us HA, Windows worker support, CyberArk integration, and inline approvals—in one platform."
+testimonials:
+  - quote: "We replaced Rundeck after dealing with job queue throttling, Docker instability, and no approval flows. Kestra gave us HA, Windows worker support, CyberArk integration, and inline approvals—in one platform."
     author: "IT Automation Lead @ Private Healthcare"
-  metrics:
-    - value: "0"
-      label: Dropped jobs since migration
-    - value: "100%"
-      label: HA uptime achieved
-    - value: "3x"
-      label: More workflows automated
-  cta:
-    text: "See how ops teams modernize with Kestra"
-    link: /use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "0"
+        name: "Dropped jobs since migration"
+      - value: "100%"
+        name: "HA uptime achieved"
+      - value: "3x"
+        name: "More workflows automated"
+    storyLink: "/use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra"
 
 platformStrengths:
   title: "Kestra Solves What Rundeck Cannot"

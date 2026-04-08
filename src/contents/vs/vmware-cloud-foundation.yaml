@@ -3,6 +3,9 @@ description: "Compare Kestra vs VMware Aria Automation (vRA/vRO): declarative YA
 competitorName: "VMware Aria Automation"
 category: Infrastructure Automation
 shortDescription: "vSphere-coupled JavaScript vRO workflows vs. cloud-agnostic declarative YAML orchestration."
+brandColor:
+  color: "#87B74B"
+  gradient: "linear-gradient(90deg, #87B74B, #F6C43F, #686465)"
 
 intro:
   title: "Kestra vs. VMware Aria Automation: Beyond the vSphere Portal"
@@ -186,25 +189,17 @@ featureGrid:
       kestra: Flat instance + worker-based pricing
       competitor: Per-user + per-VM (Broadcom); costs increasing post-acquisition
 
-socialProof:
-  image:
-    alt: Enterprise platform engineering team replacing VMware Aria
-    width: 333
-    height: 364
-  quote:
-    text: "We replaced VMware Aria Automation because debugging vRO workflows was a nightmare—ambiguous errors, JavaScript everywhere, and no way to version-control our provisioning logic. Kestra gave us declarative YAML workflows in Git, clear logs, and multi-cloud support we couldn't get from vRA."
+testimonials:
+  - quote: "We replaced VMware Aria Automation because debugging vRO workflows was a nightmare—ambiguous errors, JavaScript everywhere, and no way to version-control our provisioning logic. Kestra gave us declarative YAML workflows in Git, clear logs, and multi-cloud support we couldn't get from vRA."
     author: "Platform Engineering Lead @ BHP"
-  metrics:
-    - value: "60%"
-      label: Reduction in provisioning time
-    - value: "1"
-      label: Platform instead of vRA + vRO + separate tools
-    - value: "100%"
-      label: Audit coverage across all environments
-  cta:
-    text: "See how infrastructure teams automate with Kestra"
-    link: /use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "60%"
+        name: "Reduction in provisioning time"
+      - value: "1"
+        name: "Platform instead of vRA + vRO + separate tools"
+      - value: "100%"
+        name: "Audit coverage across all environments"
+    storyLink: "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
 
 platformStrengths:
   title: "Kestra Is Built for the Full Infrastructure Lifecycle"

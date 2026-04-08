@@ -1,0 +1,9 @@
+title: "I Migrated an Airflow DAG in 2 Minutes using this Claude Skill"
+description: "Learn how to migrate Airflow 2 DAGs to Kestra using a new agent skill
+  that automatically converts Python business logic into declarative YAML and deployable
+  Kestra flows."
+category: "Quick Start Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=5JL6gVtI6FE"
+publicationDate: "2026-04-03T00:00:00.000"
+contentType: "Quick Start Tutorials"
