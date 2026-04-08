@@ -74,14 +74,12 @@
 
     // Blockquote
     blockquote {
-        border-left: 4px solid var(--ks-content-link);
-        padding: 0.75rem 1.25rem;
-        margin: 1.5rem 0;
-        background-color: var(--ks-background-secondary);
-        border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+        padding: 8px 8px 8px 33px;
+        background: var(--ks-background-secondary);
+        border-left: 4px solid var(--ks-border-active);
 
         p {
-            margin-bottom: 0;
+            margin-bottom: 0 !important;
         }
     }
 
@@ -174,7 +172,7 @@
 
         #copied-tooltip {
             border-radius: $border-radius;
-            background: var(--ks-content-secondary);
+            background: var(--ks-background-secondary);
             padding: 4px 8px;
             font-size: $font-size-xs;
             margin-right: $popper-margin;

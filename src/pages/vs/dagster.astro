@@ -23,14 +23,13 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import dagsterImg from "~/components/versus/assets/dagster-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "dagster")
-if (!entry) throw new Error("Could not find vsPages/dagster collection entry")
+const entry = await getEntry("vs", "dagster")
+if (!entry) throw new Error("Could not find vs/dagster collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -47,7 +46,7 @@ const {
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} description={shortDescription} headerTheme="lightText">
     <Intro
         {...intro}
         competitor={{
@@ -55,7 +54,6 @@ const {
             monogram: dagsterMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}
@@ -124,9 +122,8 @@ const {
     <Faq items={commonQuestions} client:visible />
     <SeeHow>
         <Fragment slot="title">
-            Getting Started with  Declarative Orchestration
+            Getting Started with Declarative Orchestration
         </Fragment>
         See how Kestra can simplify your data pipelines—and scale beyond them.
     </SeeHow>
 </Layout>
-

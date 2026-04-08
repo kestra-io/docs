@@ -73,15 +73,5 @@
         p {
             margin-bottom: 1rem;
         }
-
-        blockquote {
-            padding: 8px 8px 8px 33px;
-            background: var(--ks-background-secondary);
-            border-left: 4px solid var(--ks-border-active);
-
-            p {
-                margin-bottom: 0;
-            }
-        }
     }
 </style>

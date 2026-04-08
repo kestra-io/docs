@@ -30,7 +30,7 @@ When synced with Git, this nested structure maps directly to nested directories 
 
 ## Example namespace structure
 
-```text
+```plaintext
 mycompany
 ├── mycompany.marketing
 │   ├── mycompany.marketing.projectA

@@ -5,6 +5,7 @@ date: 2024-11-05T13:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: "bpimpaud"
 image: ./main.jpg
 ---

@@ -23,17 +23,14 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import adfImg from "~/components/versus/assets/azure-data-factory-img.svg"
 import heroUI from "~/components/versus/assets/adf_hero.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "azure-data-factory")
+const entry = await getEntry("vs", "azure-data-factory")
 if (!entry)
-    throw new Error(
-        "Could not find vsPages/azure-data-factory collection entry",
-    )
+    throw new Error("Could not find vs/azure-data-factory collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -50,7 +47,7 @@ const {
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} description={shortDescription} headerTheme="lightText">
     <Intro
         {...intro}
         competitor={{
@@ -58,7 +55,6 @@ const {
             monogram: adfMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}

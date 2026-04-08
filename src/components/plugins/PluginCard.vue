@@ -1,58 +1,7 @@
-<template>
-    <a :href="href">
-        <div class="plugin">
-            <div class="top-row">
-                <div class="icon-content">
-                    <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" width="45" height="45" />
-                </div>
-                <div class="content">
-                    <div class="title-row">
-                        <h6>
-                            {{ props.plugin.title?.replace(/\s*\(EE\)\s*$/i, "") }}
-                        </h6>
-                        <span
-                            v-if="props.plugin.isEnterprise"
-                            class="enterprise-badge"
-                            >Enterprise</span
-                        >
-                    </div>
-                    <p v-if="props.plugin.description" class="description">
-                        {{ props.plugin.description }}
-                    </p>
-                </div>
-            </div>
-            <div v-if="props.plugin.categories?.length" class="categories">
-                <span
-                    v-for="category in props.plugin.categories"
-                    :key="category"
-                    class="category-tag"
-                >
-                    {{ formatCategoryName(category) }}
-                </span>
-            </div>
-            <div class="footer">
-                <hr />
-                <div class="bottom-row">
-                    <div class="left">
-                        <p v-if="props.plugin.elementCounts">
-                            {{ props.plugin.elementCounts }} <span>Tasks</span>
-                        </p>
-                        <p v-if="props.plugin.blueprints">
-                            {{ props.plugin.blueprints }}
-                            <span>Blueprints</span>
-                        </p>
-                    </div>
-                    <ChevronRight />
-                </div>
-            </div>
-        </div>
-    </a>
-</template>
-
 <script setup lang="ts">
     import { computed } from "vue"
-    import { formatCategoryName } from "~/utils/pluginUtils"
     import { slugify } from "@kestra-io/ui-libs"
+    import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
     const props = defineProps<{
@@ -75,9 +24,60 @@
     })
 </script>
 
+<template>
+    <a :href="href">
+        <div class="plugin">
+            <div class="top-row">
+                <div class="icon-content">
+                    <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" width="45" height="45" />
+                </div>
+                <div class="content">
+                    <div class="title-row">
+                        <h6>
+                            {{ props.plugin.title?.replace(/\s*\(EE\)\s*$/i, "") }}
+                        </h6>
+                        <span
+                            v-if="props.plugin.isEnterprise"
+                            class="enterprise-badge"
+                        >
+                            Enterprise
+                        </span>
+                    </div>
+                    <p v-if="props.plugin.description" class="description">
+                        {{ props.plugin.description }}
+                    </p>
+                </div>
+            </div>
+            <div v-if="props.plugin.categories?.length" class="categories">
+                <span
+                    v-for="category in props.plugin.categories"
+                    :key="category"
+                    class="category-tag"
+                >
+                    {{ formatCategoryName(category) }}
+                </span>
+            </div>
+            <div class="footer">
+                <hr />
+                <div class="bottom-row">
+                    <div class="left">
+                        <p v-if="props.plugin.elementCounts">
+                            {{ props.plugin.elementCounts }} <span>tasks</span>
+                        </p>
+                        <p v-if="props.plugin.blueprints">
+                            {{ props.plugin.blueprints }}
+                            <span>blueprints</span>
+                        </p>
+                    </div>
+                    <ChevronRight />
+                </div>
+            </div>
+        </div>
+    </a>
+</template>
+
 <style scoped lang="scss">
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
 
     .plugin {
         height: 188px;
@@ -93,8 +93,7 @@
         transition: 0.4s ease-out;
         &:hover {
             border-color: var(--ks-border-active);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-            transform: scale(1.025);
+            transform: scale(1.01);
         }
         .top-row {
             display: flex;
@@ -105,9 +104,9 @@
         .icon-content {
             width: 60px;
             height: 60px;
-            background: color-palette.$base-gray-50;
+            background: $white;
             border-radius: 8px;
-            border: 1px solid color-palette.$base-gray-100;
+            border: $block-border;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -129,6 +128,7 @@
             font-size: $font-size-md;
             font-weight: 700;
             margin: 0;
+            margin-right: 1rem;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -208,16 +208,12 @@
         justify-content: space-between;
         align-items: center;
         .enterprise-badge {
-            background: #130025;
-            border: 1px solid color-palette.$base-yellow-700;
-            gap: 4px;
-            min-height: 20px;
             border-radius: 40px;
-            border-width: 1px;
-            font-size: 12px;
-            color: color-palette.$base-yellow-100;
-            cursor: default;
+            font-size: $font-size-xs;
+            background: var(--ks-background-tag-EE);
+            color: var(--ks-content-tag-EE);
             padding: 0.15rem 0.5rem;
+            font-weight: 600;
         }
     }
 </style>
