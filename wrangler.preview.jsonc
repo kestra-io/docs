@@ -1,0 +1,27 @@
+/**
+ * Wrangler config used exclusively for PR preview deployments.
+ * No routes or custom domains — only workers.dev is used.
+ * Used via: wrangler deploy --config wrangler.preview.jsonc --name <slug>-docs
+ */
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "main": "@astrojs/cloudflare/entrypoints/server",
+    "compatibility_date": "2026-03-01",
+    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+    "workers_dev": true,
+    "assets": {
+        "binding": "ASSETS",
+        "directory": "./dist",
+        "html_handling": "drop-trailing-slash",
+    },
+    "kv_namespaces": [
+        {
+            "binding": "ICON_CACHE",
+            "id": "205cd288109e4728a1f0f85645cf3b98",
+        },
+        {
+            "binding": "docs-session",
+            "id": "7697469604b64c6899be1721cc799e02",
+        },
+    ],
+}

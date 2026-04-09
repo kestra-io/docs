@@ -62,8 +62,6 @@
      */
     "env": {
         "preview": {
-            // Override production routes so preview workers don't inherit kestra.io custom domains
-            "routes": [],
             "vars": {
                 "NO_IMAGE_OPTIM": "true",
             },
