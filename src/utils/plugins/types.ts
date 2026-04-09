@@ -25,6 +25,13 @@ export interface PluginPageWithToc extends PluginPage {
     } & PluginPage["body"]
 }
 
+export interface Arborescence {
+    name: string
+    group: string
+    title: string
+    subGroups: Array<{ name: string; title: string; [k: string]: string | string[] }>
+}
+
 export interface BlueprintPreview {
     id: number
     title: string
