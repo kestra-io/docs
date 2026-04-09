@@ -311,6 +311,31 @@ kestra:
 * **runAs**: User context to run API calls as (e.g. domain\\username).
 * **folderId**: Secrets Safe folder ID where Kestra secrets are stored.
 
+## Delinea Secret Server Configuration
+
+Kestra integrates with [Delinea Secret Server](https://delinea.com/products/secret-server) as an external secrets backend. Secrets are stored securely in Delinea Secret Server, and Kestra workers retrieve them at runtime and keep them only in memory.
+
+```yaml
+kestra:
+  secret:
+    type: delinea
+    delinea:
+      address: https://your-delinea-instance.secretservercloud.com
+      username: YOUR_USERNAME
+      password: YOUR_PASSWORD
+      folderId: YOUR_FOLDER_ID
+      secretTemplateId: YOUR_TEMPLATE_ID
+```
+
+**Configuration properties:**
+
+  - **address**: The base URL of your Delinea Secret Server instance.
+  - **username**: Username used to authenticate to Delinea Secret Server.
+  - **password**: Password used to authenticate to Delinea Secret Server.
+  - **domain**: Optional. Active Directory domain for on-premise deployments using domain accounts.
+  - **folderId**: The folder ID in Delinea Secret Server where Kestra secrets are stored. Required for write operations.
+  - **secretTemplateId**: The secret template ID used when creating new secrets. Required for write operations.
+
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
 Kestra also supports internal secret backend. For the JDBC backend (H2, PostgreSQL, or MySQL), the following configuration allows you to set secret backend:

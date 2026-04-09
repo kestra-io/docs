@@ -213,7 +213,7 @@ testimonials:
         name: "Java app servers to maintain"
       - value: "10x"
         name: "More workflows automated"
-    storyLink: "/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated"
+    storyLink: "/use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work
