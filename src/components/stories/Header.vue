@@ -3,7 +3,15 @@
         <div class="container">
             <div class="top">
                 <div class="left">
-                    <Breadcrumb :items="[{ label: 'Home', href: '/' }, { label: 'Customer Stories', href: '/use-cases/stories' }]" />
+                    <Breadcrumb
+                        :items="[
+                            { label: 'Home', href: '/' },
+                            {
+                                label: 'Customer Stories',
+                                href: '/use-cases/stories',
+                            },
+                        ]"
+                    />
                     <h1 v-if="title">{{ title }}</h1>
                     <p class="baseline">{{ metaDescription }}</p>
                 </div>
@@ -16,14 +24,24 @@
                             :alt="metaDescription"
                         />
                         <div v-if="logo" class="logo-wrapper">
-                            <img height="56" loading="lazy" :src="logoDark" :alt="logo" class="logo-dark"/>
+                            <img
+                                height="56"
+                                loading="lazy"
+                                :src="logoDark"
+                                :alt="logo"
+                                class="logo-dark"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="bottom">
-                <div v-for="(kpi, index) in kpis" :key="index" class="kpi-section">
+                <div
+                    v-for="(kpi, index) in kpis"
+                    :key="index"
+                    class="kpi-section"
+                >
                     <MDCParserAndRenderer v-if="kpi" :content="kpi" />
                 </div>
             </div>
@@ -54,7 +72,8 @@
 <style scoped lang="scss">
     .header {
         position: relative;
-        background: var(--ks-background-secondary) url("./assets/grid.svg") no-repeat center / cover;
+        background: var(--ks-background-secondary) url("./assets/grid.svg")
+            no-repeat center / cover;
         border-top: $block-border;
         border-bottom: $block-border;
 
@@ -223,4 +242,3 @@
         }
     }
 </style>
-

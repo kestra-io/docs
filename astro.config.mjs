@@ -26,6 +26,8 @@ const __dirname = path.dirname(
 export default defineConfig({
     site: "https://kestra.io",
     adapter: cloudflare({
+        sessionKVBindingName: "docs-session",
+        prerenderEnvironment: "node",
         // only use cloudflare images in production
         imageService:
             process.env.NO_IMAGE_OPTIM === "true"
@@ -41,7 +43,6 @@ export default defineConfig({
                 },
             },
             appEntrypoint: "./src/vue-setup.ts",
-            devtools: { launchEditor: "idea" },
         }),
         expressiveCode(),
         mdx(),
@@ -118,21 +119,21 @@ export default defineConfig({
     image: {
         layout: "constrained",
     },
+    fonts: [
+        {
+            provider: fontProviders.google(),
+            name: "Mona Sans",
+            weights: [300, 400, 500, 600, 700],
+            cssVariable: "--font-family-mona-sans",
+        },
+        {
+            provider: fontProviders.google(),
+            name: "JetBrains Mono",
+            weights: [200, 300, 400, 500, 600, 700],
+            cssVariable: "--font-family-jetbrains-mono",
+        },
+    ],
     experimental: {
-        fonts: [
-            {
-                provider: fontProviders.google(),
-                name: "Mona Sans",
-                weights: [300, 400, 500, 600, 700],
-                cssVariable: "--font-family-mona-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "JetBrains Mono",
-                weights: [200, 300, 400, 500, 600, 700],
-                cssVariable: "--font-family-jetbrains-mono",
-            },
-        ],
         svgo: {
             plugins: [
                 {
@@ -204,7 +205,6 @@ export default defineConfig({
                     __dirname,
                     "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
                 ),
-                "~": path.resolve("./src"),
             },
         },
         css: {

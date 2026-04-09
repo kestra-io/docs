@@ -257,11 +257,23 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
     return response
 })
 
+const feedsContentType = defineMiddleware(async (context, next) => {
+    if (context.url.pathname !== "/api/feeds") {
+        return next()
+    }
+
+    const response = (await next()).clone()
+    response.headers.set("content-type", "application/json")
+
+    return response
+})
+
 export const onRequest = sequence(
     logger,
     cloudflareJwt,
     noIndex,
     incomingRedirect,
     securityHeaders,
+    feedsContentType,
     notFoundRedirect,
 )
