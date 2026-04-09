@@ -1,0 +1,226 @@
+title: "Kestra vs. Pipedream: Orchestration vs. Integration"
+description: "Compare Kestra vs Pipedream: Full-stack workflow orchestration with declarative YAML vs. serverless API integration with JavaScript. See features, deployment options, and use cases."
+competitorName: Pipedream
+category: Infrastructure Automation
+shortDescription: "Serverless API integration and event-driven automation vs. universal YAML orchestration at production scale."
+
+brandColor:
+  color: "#34D399"
+
+intro:
+  title: "Kestra vs. Pipedream: Orchestration vs. Integration"
+  description: "Pipedream is a cloud-based integration platform built around event triggers and serverless code steps. Kestra is a workflow orchestration platform for teams that need data pipelines, infrastructure automation, and business processes running at production scale—self-hosted or in the cloud."
+
+philosophy:
+  mainTitle: Two Platforms, Two Scope Levels
+  kestra:
+    title: "Universal Orchestration: Pipelines, Infrastructure & Workflows"
+    description: "Declarative YAML orchestration platform built for engineering teams. Run data pipelines, infrastructure automation, and business workflows at scale, in any language, self-hosted or on Kestra Cloud, with GitOps and full audit trails."
+    subCardText: '"How do I build reliable, scalable workflows my whole team can operate?"'
+  competitor:
+    title: API Integration and Event-Driven Automation
+    description: "Serverless integration platform for connecting APIs and services. Define workflows as JavaScript or Python steps, triggered by webhooks, schedules, or app events. Best for lightweight automation and API glue between SaaS tools."
+    shadowColor: "#C8F2D5"
+    subCardBg: "#edfdf8"
+    subCardText: '"How do I connect these APIs and automate this event quickly?"'
+
+businessValue:
+  mainTitle: "Integration Connects Apps.<br />Orchestration Runs Your Business."
+  kestra:
+    title: Production-Grade Workflow Orchestration
+    list:
+      - Automate data pipelines, infrastructure, and business processes in one platform
+      - Self-hosted or cloud, with full data residency control
+      - GitOps-native version control, CI/CD, and Terraform for all workflows
+      - RBAC, audit logs, and multi-tenancy for enterprise compliance
+      - Handles 100,000+ concurrent tasks without per-execution billing
+  competitor:
+    title: API Integration and Automation
+    list:
+      - Connects 2,700+ pre-built app integrations
+      - Serverless execution in JavaScript or Python
+      - Cloud-only, fully managed infrastructure
+      - Free tier limited to 3 workflows and 100 credits per day
+      - Acquired by Workday in 2024
+    shadowColor: "#C8F2D5"
+    bulletColor: "#3EAA5F"
+  footerText: "For teams connecting SaaS apps and routing webhooks without managing infrastructure, Pipedream covers the basics. When you need production data pipelines, self-hosting for compliance, or workflows that span data, infrastructure, and operations, Kestra is built for that scope."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Pipedream is a cloud-only platform—there is no self-hosted or local install option. This comparison uses their cloud onboarding path: sign up, connect apps via OAuth, and write workflow steps in the browser."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready—database and config included. Open the UI, pick a Blueprint, run it. No cloud account required, no vendor lock-in."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~15"
+      two: Minutes
+    description: "Sign up at pipedream.com, connect your apps via OAuth, and write workflow steps in JavaScript or Python. No infrastructure to manage, but all workflows run on Pipedream's cloud only."
+    shadowColor: "#C8F2D5"
+    command: |
+      # Sign up at pipedream.com
+      # Connect your first app via OAuth
+      # Write step logic in JavaScript:
+
+      export default defineComponent({
+        async run({ steps, $ }) {
+          return { status: "connected" }
+        }
+      })
+    lang: javascript
+
+easeOfUse:
+  title: Readable by Your Whole Team, Not Just Developers
+  kestra:
+    title: "Kestra: Readable by your whole team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No special training required."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "Pipedream: JavaScript steps for every action"
+    description: "Each workflow step is a JavaScript or Python function. Pre-built app actions reduce boilerplate for common integrations, but complex logic requires writing and deploying code to Pipedream's cloud."
+    shadowColor: "#C8F2D5"
+    code: |
+      // Trigger: Daily schedule (0 8 * * *)
+
+      // Step 1: Run dbt (custom code step)
+      export default defineComponent({
+        async run({ steps, $ }) {
+          const { execSync } = require("child_process");
+          execSync("dbt run --select reporting");
+          return { status: "dbt complete" };
+        }
+      });
+
+      // Step 2: Slack notification
+      // Uses Pipedream's pre-built Slack action
+      // Configured via UI with message: "Daily report ready"
+    lang: javascript
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and customer workflows in one platform. Self-host with full control or use Kestra Cloud."
+  competitor:
+    description: "Connect SaaS apps and automate event-driven integrations in the cloud. Excellent for webhook routing and API glue, but not designed for heavy data pipelines or self-hosted deployments."
+    shadowColor: "#C8F2D5"
+
+featureGrid:
+  title: Kestra vs Pipedream at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: API integration and event-driven automation
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: JavaScript or Python code steps
+    - feature: Deployment model
+      kestra: Self-hosted or Kestra Cloud
+      competitor: Cloud-only (no self-hosting)
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: "JavaScript, Python, Bash, Go (within steps)"
+    - feature: Data pipeline support
+      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
+      competitor: Not designed for heavy data workloads
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Visual builder for simple automations
+    - feature: GitOps and CI/CD
+      kestra: "✓ Native Git sync, Terraform provider"
+      competitor: Basic version history
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Enterprise namespace isolation"
+      competitor: Team features on paid plans only
+    - feature: Open source
+      kestra: "✓ Open source (Apache 2.0)"
+      competitor: Closed source
+
+testimonials:
+  - quote: "We looked at Airflow and NiFi, but Kestra's architecture made the most sense for us in terms of scalability. The wide range of plugins and the ability to integrate with our systems was a key factor in our decision."
+    author: "John Kim, IT Lead @ FILA"
+    kpis:
+      - value: "2.5M"
+        name: Monthly executions
+      - value: "2,000+"
+        name: Active workflows
+      - value: "25+"
+        name: Engineers using Kestra
+    storyLink: "/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated"
+
+platformStrengths:
+  title: Kestra Is Built for Production at Every Layer
+  features:
+    - title: Self-hosted or cloud, your choice
+      description: "Run Kestra on your own infrastructure (Docker, Kubernetes, air-gapped) or use Kestra Cloud. You own the data, the deployment, and the cost model. No vendor lock-in from a SaaS acquisition."
+    - title: Orchestrate data, infrastructure, and operations
+      description: "Kestra is not limited to connecting SaaS apps. Run dbt models, Spark jobs, Terraform plans, and custom scripts in isolated containers, all from declarative YAML with no wrappers or decorators required."
+    - title: Built for engineering teams at scale
+      description: "GitOps sync, Terraform provider, RBAC, and audit logs make Kestra deployable like real infrastructure. Teams version control, review, and ship workflows with the same rigor as application code."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You need production data pipelines, ETL, or data warehouse orchestration, not just API connections."
+      - "Your team needs self-hosting for compliance, data residency, or cost predictability."
+      - "Workflows span multiple layers: data pipelines, infrastructure provisioning, and business processes."
+      - "You want GitOps, Terraform, and CI/CD for workflow deployment like any other infrastructure."
+      - "Non-engineers need to trigger and monitor workflows without writing code."
+  competitor:
+    title: Choose Pipedream When
+    list:
+      - "Your primary need is connecting SaaS apps and routing webhooks quickly."
+      - "You want a fully managed cloud service with no infrastructure responsibility."
+      - "Workflows are lightweight: event-driven, short-running, and API-focused."
+      - "Your team prefers writing JavaScript or Python over YAML configuration."
+      - "You are prototyping integrations and do not need data pipeline or infrastructure automation."
+    shadowColor: "#C8F2D5"
+    bulletColor: "#3EAA5F"
+
+commonQuestions:
+  - question: How do I migrate from Pipedream to Kestra?
+    answer: "Extract the business logic from your Pipedream JavaScript steps and run it directly as Script tasks in Kestra. Python and Shell scripts work as-is in isolated containers. Replace Pipedream's pre-built app actions with Kestra's plugin library, which covers Slack, HTTP, databases, cloud storage, and more. Define triggers (schedules, webhooks, file arrivals) in YAML, and you have the same workflow running with full version control and your choice of deployment target."
+  - question: Can Kestra handle webhook-driven automation like Pipedream?
+    answer: "Yes. Kestra has native webhook triggers that start workflows on HTTP events, plus event-driven triggers for Kafka, S3, database changes, and API polling. You can build the same webhook-to-action automations Pipedream is known for, with the added ability to chain those events into complex multi-step pipelines involving data transformation, infrastructure changes, or cross-team notifications."
+  - question: How does Kestra handle the 2,700+ app integrations Pipedream offers?
+    answer: "Kestra's 1,200+ plugins cover the most common integration targets: AWS, GCP, Azure, Slack, databases, data warehouses, dbt, Airbyte, and more. For apps not covered by a plugin, the HTTP plugin handles REST API calls to any endpoint, and Script tasks run arbitrary code in any language. Pipedream's pre-built actions reduce setup time for simple integrations. Kestra's approach gives you more control for workflows that go beyond API glue."
+  - question: What are the risks of Pipedream being acquired by Workday?
+    answer: "Pipedream was acquired by Workday in 2024. Platform acquisitions often bring pricing changes or product deprecations that don't fit the acquirer's roadmap. If you are building critical automation on Pipedream, start evaluating migration before that decision is made for you. Kestra's Apache 2.0 license means you can fork it, host it, and keep running it regardless of who owns Pipedream next year."
+  - question: Does Kestra require more setup than Pipedream?
+    answer: "Kestra takes about 5 minutes to run locally with Docker. Pipedream requires no infrastructure but binds you to their cloud. Kestra gives you self-hosting, Git sync, and full workflow portability. Pipedream gives you a faster start with managed infrastructure but no option to move off their platform. For teams that need GitOps, Terraform integration, and the ability to self-host, that's a straightforward trade."
+  - question: Can non-engineers use Kestra the way they use Pipedream's visual builder?
+    answer: "Yes. Kestra Apps let non-technical users trigger, monitor, and interact with workflows through a no-code interface without writing YAML or accessing the engineering UI. Kestra also has a visual flow editor that updates the DAG in real time as you type. RBAC and namespace isolation keep engineering and business-user workflows from stepping on each other."
