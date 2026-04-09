@@ -31,6 +31,7 @@ To add Copilot to your flow editor, add the following to your [Enterprise and Ad
 ```yaml
 kestra:
   ai:
+    enabled: true # set to false to disable AI Copilot entirely
     providers:
       - id: gemini
         display-name: Gemini - Private
@@ -50,6 +51,20 @@ kestra:
 :::alert{type="info"}
 Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
 :::
+
+### Disabling AI Copilot
+
+To fully disable the AI Copilot — including the built-in fallback to the `api.kestra.io` service — set `kestra.ai.enabled` to `false`:
+
+```yaml
+kestra:
+  ai:
+    enabled: false
+```
+
+When disabled, the Copilot UI will not appear and all AI endpoints will be deactivated. The property defaults to `true`.
+
+### Multiple providers
 
 When multiple providers are configured, users can switch models from a dropdown in the Copilot UI instead of relying only on the default.
 
