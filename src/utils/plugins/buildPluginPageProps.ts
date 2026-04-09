@@ -13,7 +13,6 @@ import {
     getBlueprintsHeading,
     getPluginTitle,
 } from "~/utils/plugins/pluginUtils"
-import { prunePluginsForSidebar } from "./pruneForClient"
 import type { PluginPage, PluginPageWithToc, TocLink } from "./types"
 
 const TOC_DEPTH = 2
@@ -32,7 +31,8 @@ interface BuildPluginPagePropsInput {
     relatedBlogs: any[]
 
     page: PluginPage | null
-    sidebarPluginData: PluginPage | null
+    subgroupPluginData: PluginPage | null
+    arborescencePlugins?: Plugin[]
 }
 
 export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
@@ -47,13 +47,14 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         blueprintCounts,
         relatedBlogs,
         page,
-        sidebarPluginData,
+        subgroupPluginData,
+        arborescencePlugins,
     } = input
 
     const subgroups = allPlugins.filter((r) => r.name === pluginName)
 
     const pluginsWithoutDeprecated: Plugin[] = filterPluginsWithoutDeprecated(
-        pluginType ? (sidebarPluginData?.body?.plugins ?? []) : (page?.body?.plugins ?? []),
+        pluginType ? (subgroupPluginData?.body?.plugins ?? []) : (page?.body?.plugins ?? []),
     )
 
     const subGroupWrapper = pluginsWithoutDeprecated.find(
@@ -279,8 +280,8 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         ? `/meta/plugins/group-${subgroups.find((r) => slugify(r.title) === subGroup)?.subGroup}.svg`
         : `/meta/plugins/${pluginType ?? pluginName}.svg`
 
-    const prunedRootPlugin = rootPlugin ? prunePluginsForSidebar([rootPlugin])[0] : undefined
-    const prunedPluginsWithoutDeprecated = prunePluginsForSidebar(pluginsWithoutDeprecated)
+    const prunedRootPlugin = arborescencePlugins?.find((p) => p.subGroup === undefined)
+    const prunedPluginsWithoutDeprecated = arborescencePlugins ?? []
 
     return {
         headingTitle,
@@ -295,7 +296,6 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         pageWithToc,
         currentPluginMetadata,
         currentPluginCategories,
-        sidebarPluginDataResult: sidebarPluginData,
 
         pluginsWithoutDeprecated,
         rootPlugin,
