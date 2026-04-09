@@ -262,10 +262,14 @@ const feedsContentType = defineMiddleware(async (context, next) => {
         return next()
     }
 
-    const response = (await next()).clone()
-    response.headers.set("content-type", "application/json")
-
-    return response
+    const response = await next()
+    const headers = new Headers(response.headers)
+    headers.set("content-type", "application/json")
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+    })
 })
 
 export const onRequest = sequence(
