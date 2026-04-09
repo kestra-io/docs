@@ -38,6 +38,10 @@ export const vsSchema = z.object({
     competitorName: z.string(),
     category: z.enum(["Data Orchestration", "Infrastructure Automation"]),
     shortDescription: z.string(),
+    brandColor: z.object({
+        color: z.string(),
+        gradient: z.string().optional(),
+    }),
     intro: z.object({ title: z.string(), description: z.string() }),
     philosophy: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide }),
     businessValue: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide, footerText: z.string().optional() }),
@@ -49,13 +53,14 @@ export const vsSchema = z.object({
         competitor: z.object({ description: z.string(), shadowColor: z.string().optional() }),
     }),
     featureGrid: z.object({ title: z.string(), tableData: z.array(featureRow) }),
-    socialProof: z.object({
-        image: z.object({ alt: z.string(), width: z.number().optional(), height: z.number().optional() }),
-        quote: z.object({ text: z.string(), author: z.string() }),
-        metrics: z.array(metric),
-        cta: z.object({ text: z.string().optional(), link: z.string() }),
-        theme: z.string().optional(),
-    }),
+    testimonials: z.array(
+        z.object({
+            quote: z.string(),
+            author: z.string(),
+            kpis: z.array(z.object({ name: z.string(), value: z.string() })),
+            storyLink: z.string().optional(),
+        })
+    ),
     platformStrengths: z.object({ title: z.string(), features: z.array(strengthItem) }),
     decisionGuide: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide }),
     commonQuestions: z.array(qaItem),

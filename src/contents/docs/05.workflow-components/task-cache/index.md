@@ -37,10 +37,12 @@ In the example below, the flow caches the outputs of a computationally expensive
 ```yaml
 id: caching
 namespace: company.team
+
 tasks:
   - id: transactions
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/csv/cache_demo/transactions.csv
+
   - id: products
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/csv/cache_demo/products.csv
@@ -48,6 +50,7 @@ tasks:
     taskCache:
       enabled: true
       ttl: PT24H
+
   - id: duckdb
     type: io.kestra.plugin.jdbc.duckdb.Query
     store: true

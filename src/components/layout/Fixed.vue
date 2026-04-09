@@ -2,14 +2,15 @@
     <div id="fixed-container">
         <div class="text-end">
             <Transition>
-                <a
-                    href="#"
+                <button
+                    type="button"
                     class="btn btn-sm btn-primary mb-2"
                     @click="backToTop"
                     v-if="yScroll > 200"
+                    aria-label="Scroll to top"
                 >
                     <ChevronUp />
-                </a>
+                </button>
             </Transition>
             <div class="widget-chat">
                 <button

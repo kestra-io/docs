@@ -4,6 +4,10 @@ competitorName: Azure Data Factory
 category: Data Orchestration
 shortDescription: "Managed Azure ETL service vs. open-source, multi-cloud workflow orchestration in YAML."
 
+brandColor:
+  color: "#0078d4"
+  gradient: "linear-gradient(90deg, #0078d4, #50e6ff, #f710a3)"
+
 intro:
   title: "Kestra vs. Azure Data Factory: Open Orchestration vs. Azure-Native ETL"
   description: "Azure Data Factory is Microsoft's managed ETL service. Kestra is open-source workflow orchestration for any cloud, any language, and use cases beyond data movement. One is built to integrate data inside Azure. The other orchestrates what your entire engineering team ships."
@@ -188,25 +192,17 @@ featureGrid:
       kestra: "Namespace isolation + RBAC out-of-box"
       competitor: "Resource group isolation with Azure RBAC"
 
-socialProof:
-  image:
-    alt: Leroy Merlin success story
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
+testimonials:
+  - quote: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
     author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
-  metrics:
-    - value: "+900%"
-      label: Data production
-    - value: "+250"
-      label: Active users
-    - value: "+5,000"
-      label: Workflows created
-  cta:
-    text: "See how teams modernize data orchestration with Kestra"
-    link: https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "+900%"
+        name: "Data production"
+      - value: "+250"
+        name: "Active users"
+      - value: "+5,000"
+        name: "Workflows created"
+    storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Work

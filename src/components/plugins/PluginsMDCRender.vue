@@ -160,7 +160,7 @@
         }
 
         .collapse-button {
-            padding: 1rem !important;
+            padding: 0.5rem 1rem !important;
         }
 
         @include section-colors("properties", var(--ks-content-property));

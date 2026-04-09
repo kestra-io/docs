@@ -4,6 +4,9 @@ competitorName: Chef
 category: Infrastructure Automation
 shortDescription: "Agent-based Ruby configuration management vs. event-driven workflow orchestration in declarative YAML."
 
+brandColor:
+  color: "#5ce500"
+
 intro:
   title: "Kestra vs. Chef: Workflow Orchestration vs. Configuration Automation"
   description: "Chef manages infrastructure state through Ruby cookbooks running on every node. Kestra orchestrates workflows across tools, teams, and systems in declarative YAML. One converges servers; the other coordinates everything around them."
@@ -208,25 +211,17 @@ featureGrid:
       kestra: "1200+ open-source plugins"
       competitor: "Chef Supermarket community cookbooks"
 
-socialProof:
-  image:
-    alt: Enterprise team modernizing with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "We replaced a patchwork of cron jobs and configuration scripts with Kestra workflows. Now every operation—from provisioning to compliance checks to notifications—runs in one auditable pipeline instead of scattered across tools."
+testimonials:
+  - quote: "We replaced a patchwork of cron jobs and configuration scripts with Kestra workflows. Now every operation—from provisioning to compliance checks to notifications—runs in one auditable pipeline instead of scattered across tools."
     author: "Platform Engineering Lead @ Global Manufacturing Company"
-  metrics:
-    - value: "75%"
-      label: Reduction in manual operations
-    - value: "0"
-      label: Agents to install and maintain
-    - value: "5x"
-      label: More workflows automated
-  cta:
-    text: "See how enterprises modernize IT automation with Kestra"
-    link: /use-cases/stories/28-governed-selfservice-cloud-automation-in-regulated-environments-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "75%"
+        name: "Reduction in manual operations"
+      - value: "0"
+        name: "Agents to install and maintain"
+      - value: "5x"
+        name: "More workflows automated"
+    storyLink: "/use-cases/stories/28-governed-selfservice-cloud-automation-in-regulated-environments-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

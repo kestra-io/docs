@@ -4,6 +4,9 @@ competitorName: "PagerDuty PA"
 category: Infrastructure Automation
 shortDescription: "Click-to-run runbook tools vs. event-driven multi-step orchestration with approvals and audit trails."
 
+brandColor:
+  color: "#06ac38"
+
 intro:
   title: "Kestra vs. PagerDuty Process Automation: Orchestration vs. Runbooks"
   description: "PagerDuty Process Automation (formerly Rundeck) makes it easy to give ops teams click-to-run access to scripts and Ansible playbooks. But when incidents demand multi-step remediation across cloud APIs, Kubernetes, and ITSM—Kestra's event-driven orchestration engine handles it all in declarative YAML, with approvals, retries, and full audit trails built in."
@@ -184,25 +187,17 @@ featureGrid:
       kestra: Flat instance + worker-based pricing
       competitor: Per-host pricing—costs compound as infrastructure scales
 
-socialProof:
-  image:
-    alt: SRE and platform engineering team
-    width: 333
-    height: 364
-  quote:
-    text: "We replaced Rundeck after it dropped jobs in HA mode and gave us no visibility. Kestra handles our entire incident automation pipeline—from PagerDuty alert to ITSM closure—with full audit trails and approval gates."
+testimonials:
+  - quote: "We replaced Rundeck after it dropped jobs in HA mode and gave us no visibility. Kestra handles our entire incident automation pipeline—from PagerDuty alert to ITSM closure—with full audit trails and approval gates."
     author: "SRE Lead @ Private Healthcare"
-  metrics:
-    - value: "100%"
-      label: Audit coverage for incident workflows
-    - value: "0"
-      label: Dropped jobs since migration
-    - value: "3x"
-      label: Faster mean time to resolution
-  cta:
-    text: "See how ops teams automate incident response with Kestra"
-    link: /use-cases/stories/26-orchestrating-cybersecurity-for-100+-users-and-billions-of-rows
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "100%"
+        name: "Audit coverage for incident workflows"
+      - value: "0"
+        name: "Dropped jobs since migration"
+      - value: "3x"
+        name: "Faster mean time to resolution"
+    storyLink: "/use-cases/stories/26-orchestrating-cybersecurity-for-100+-users-and-billions-of-rows"
 
 platformStrengths:
   title: "Kestra Is Built for the Full Incident Lifecycle"

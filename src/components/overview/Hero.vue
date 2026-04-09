@@ -96,11 +96,7 @@
                 max-width: 50rem;
             }
         }
-        .buttons {
-            .btn {
-                border-radius: 8px;
-            }
-        }
+        
         .video-responsive {
             width: 100%;
             max-width: 48.375rem;
