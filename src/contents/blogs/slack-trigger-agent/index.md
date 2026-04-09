@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: bpimpaud
+image: ./slack-agent-demo.png
 ---
 
 Slack is where your team already lives. It's the natural place to surface automation: ask a question in a channel, get an intelligent answer back within seconds. With Kestra's Slack Trigger and AI plugin, you can wire up that loop in a single declarative YAML flow — no custom bot server required, no long-polling daemon to keep alive.
@@ -34,17 +35,11 @@ Under **OAuth & Permissions**, add the following Bot Token Scopes:
 
 Once you install the app to your workspace, Slack generates a **Bot User OAuth Token** (starts with `xoxb-`). Copy it — this becomes your `BOT_TOKEN` secret in Kestra.
 
-:::info{title="Screenshot placeholder"}
-*[Add screenshot: OAuth & Permissions page showing Bot Token Scopes]*
-:::
-
 ### Signing Secret
 
 Under **Basic Information**, scroll to **App Credentials**. Copy the **Signing Secret** — this is what the Slack trigger uses to verify that incoming requests are genuinely from Slack.
 
-:::info{title="Screenshot placeholder"}
-*[Add screenshot: Basic Information page showing Signing Secret location]*
-:::
+![Slack Basic Information page showing App Credentials and Signing Secret](./slack-basic-information.png)
 
 Store both values as [Kestra Secrets](https://kestra.io/docs/concepts/secret):
 
@@ -71,9 +66,7 @@ The **webhook key** must contain only letters and digits — no special characte
 
 Under **Subscribe to bot events**, add `app_mention`. Slack will send a POST to your Kestra instance every time someone @mentions your bot.
 
-:::info{title="Screenshot placeholder"}
-*[Add screenshot: Event Subscriptions page showing app_mention event and Request URL]*
-:::
+![Slack Event Subscriptions page with Request URL verified and app_mention bot event enabled](./slack-event-subscriptions.png)
 
 ## Step 2 — The Base Flow: Mention → Gemini → Reply
 
@@ -113,6 +106,8 @@ Walk through the components:
 - **`io.kestra.plugin.slack.app.chats.Post`** — posts the response. Setting `timestamp` to `{{ trigger.body.ts }}` makes Kestra reply in the same message thread, keeping conversations tidy.
 
 Once you deploy this flow and configure your Slack App's Event Subscriptions URL, @mentioning your bot in any channel will trigger an execution and post Gemini's answer back within a few seconds.
+
+![Slack thread showing the bot responding to questions about capital cities](./slack-agent-demo.png)
 
 ## Step 3 — Extend with an Autonomous AI Agent
 
