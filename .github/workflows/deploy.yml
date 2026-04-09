@@ -42,7 +42,7 @@ jobs:
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
-      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}.docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
+      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
 
     steps:
       - name: Checkout
@@ -86,7 +86,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --preview-alias="${{ needs.truncate-url-slug.outputs.slug }}"
+          command: deploy --env preview --name "${{ needs.truncate-url-slug.outputs.slug }}-docs"
 
       - name: Add comment to PR
         if: ${{ startsWith(github.repository, 'kestra-io/')  && github.event_name == 'pull_request'}}
@@ -95,7 +95,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: "☁️ Cloudflare Worker Preview Deployed!"
           template: |
-            🔗 [${{ format('https://{0}.docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}.docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
+            🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
 
   lighthouse:
     name: Lighthouse Benchmark
