@@ -183,6 +183,24 @@ export default defineConfig({
                 access: "secret",
                 optional: true,
             }),
+            DISABLE_USAL: envField.boolean({
+                context: "server",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
+            DISABLE_GITHUB: envField.boolean({
+                context: "server",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
+            NO_RANDOM_ORDER: envField.boolean({
+                context: "client",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
         },
     },
     // require for "/t" url
