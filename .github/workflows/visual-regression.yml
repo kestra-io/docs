@@ -13,6 +13,7 @@ jobs:
   visual-check:
     name: Visual Check (Linux)
     runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.58.2-noble
     permissions:
       contents: read
       pull-requests: write
@@ -31,7 +32,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
 
       - name: Run visual tests
         run: npm run test:visual
