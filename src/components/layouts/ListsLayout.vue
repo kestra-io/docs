@@ -67,6 +67,7 @@
 <style lang="scss" scoped>
     section.lists {
         padding: 1.875rem 0.75rem;
+        border-bottom: 1px solid var(--ks-border-secondary);
 
         @include media-breakpoint-down(lg) {
             padding-inline: 1rem;
