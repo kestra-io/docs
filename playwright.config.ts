@@ -41,6 +41,6 @@ export default defineConfig({
         command: "npx wrangler dev --port 8787",
         url: "http://localhost:8787",
         reuseExistingServer: !process.env.CI,
-        timeout: 400_001,
+        timeout: 150_000,
     },
 })

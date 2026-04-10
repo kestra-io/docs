@@ -13,7 +13,6 @@ jobs:
   visual-check:
     name: Visual Check (Linux)
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.58.2-noble
     permissions:
       contents: read
       pull-requests: write
