@@ -1,5 +1,5 @@
 ---
-title: Using Pulumi's Terraform Provider to Integrate Kestra
+title: Integrate Kestra with Pulumi's Terraform Provider
 icon: /src/contents/docs/icons/pulumi.svg
 stage: Advanced
 topics:
@@ -9,8 +9,6 @@ description: Integrate Kestra infrastructure management into your Pulumi project
 ---
 
 Utilize Pulumi's Terraform Provider to manage Kestra infrastructure.
-
-## Using Pulumi's Terraform Provider to Integrate Kestra
 
 This post outlines the process of leveraging Pulumi's terraform-provider package to seamlessly integrate the Kestra Terraform provider into your Pulumi projects. This approach allows you to manage Kestra resources using the familiar Pulumi infrastructure-as-code workflow, even if the provider isn't officially published in the main Pulumi Registry.
 
@@ -54,7 +52,7 @@ Follow these steps to set up your environment and begin managing Kestra resource
 6. Create and Fill .env File
 - Create a .env file based on a .env.local template. This file will hold your Kestra secrets and provider URL.
 
-```
+```bash
 ## Kestra secrets
 ## API Token is required (Enterprise-only),
 ## or Username AND Password are required

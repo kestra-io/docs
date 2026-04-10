@@ -1,49 +1,35 @@
-import { $fetch } from "~/utils/fetch"
+import { $fetchCached } from "~/utils/fetch"
+import { DISABLE_GITHUB } from "astro:env/server"
 
-const cache: { [key: string]: { data: any; expiry: number } } = {}
-
-async function getFromCache(keys: string[]) {
-    const cacheKey = keys.join(":")
-    const cachedEntry = cache[cacheKey]
-
-    if (cachedEntry && cachedEntry.expiry > Date.now()) {
-        return cachedEntry.data
-    }
-    return null
-}
-
-async function addToCache(data: any, keys: string[], ttl: number) {
-    const cacheKey = keys.join(":")
-    cache[cacheKey] = {
-        data,
-        expiry: Date.now() + ttl * 1000,
-    }
+const defaultValues = {
+    stargazers: 0,
+    watchers: 0,
+    issues: 0,
+    forks: 0,
+    network: 0,
+    subscribers: 0,
+    size: 0,
+    contributors: 0,
 }
 
 export async function getValues() {
-    const cached = await getFromCache([])
-
-    if (cached) {
-        return cached
+    if (DISABLE_GITHUB) {
+        return defaultValues
     }
-
-    const contribCountRes = await fetch(
-        "https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1",
-        { headers: { "User-Agent": "request" } },
-    )
+    let contribCountRes: any
+    try {
+        contribCountRes = await $fetchCached(
+            "https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1",
+            { headers: { "User-Agent": "request" } },
+        )
+    } catch (error) {
+        console.error("Error fetching contributors count:", error)
+        return defaultValues
+    }
 
     if (!contribCountRes.ok) {
         if (contribCountRes.status === 404) {
-            return {
-                stargazers: 0,
-                watchers: 0,
-                issues: 0,
-                forks: 0,
-                network: 0,
-                subscribers: 0,
-                size: 0,
-                contributors: 0,
-            }
+            return defaultValues
         }
         // Handle other errors
         console.error(
@@ -54,14 +40,19 @@ export async function getValues() {
     }
 
     const contribStr =
-        contribCountRes.headers?.get("Link")?.match(/page=(\d+)>; rel="last"/)?.[1] || "0"
+        contribCountRes.headers
+            ?.get("Link")
+            ?.match(/page=(\d+)>; rel="last"/)?.[1] || "0"
 
     const contributors = parseInt(contribStr, 10)
     if (isNaN(contributors)) {
-        throw Error("Failed to parse contributors count" + contribCountRes.headers.get("Link"))
+        throw Error(
+            "Failed to parse contributors count" +
+                contribCountRes.headers.get("Link"),
+        )
     }
 
-    const result = await $fetch("https://api.github.com/repos/kestra-io/kestra", {
+    return await $fetchCached("https://api.github.com/repos/kestra-io/kestra", {
         headers: { "User-Agent": "request" },
     }).then((value) => {
         return {
@@ -75,10 +66,6 @@ export async function getValues() {
             contributors,
         }
     })
-
-    await addToCache(result, [], 300)
-
-    return result
 }
 
 export async function GET() {
@@ -86,7 +73,7 @@ export async function GET() {
     return new Response(JSON.stringify(data), {
         headers: {
             "Content-Type": "application/json",
-            "Cache-Control": "max-age=86400",
+            "Cache-Control": "public, max-age=86400",
         },
     })
 }

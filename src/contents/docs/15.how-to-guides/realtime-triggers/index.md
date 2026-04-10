@@ -1,5 +1,5 @@
 ---
-title: Realtime Triggers
+title: Use Realtime Triggers in Kestra
 icon: /src/contents/docs/icons/plugins.svg
 stage: Getting Started
 topics:
@@ -10,8 +10,6 @@ description: React to events instantly with Kestra's Realtime Triggers for Kafka
 
 How to React to events as they happen with millisecond latency.
 
-## Realtime Triggers
-
 As soon as you add a Realtime Trigger to your workflow, Kestra starts an always-on thread that listens to the external system for new events. When a new event occurs, Kestra starts a workflow execution to process the event.
 
 Let us understand how we can implement Realtime Trigger for some of the messaging systems.
@@ -20,7 +18,7 @@ Let us understand how we can implement Realtime Trigger for some of the messagin
 
 To setup Apache Kafka locally, follow the instructions mentioned in the [official documentation](https://kafka.apache.org/quickstart). Once Apache Kafka is installed, you can create the `logs` topic, and start producing data into the topic using the following commands:
 
-```
+```bash
 ## Create topic
 $ bin/kafka-topics.sh --create --topic logs --bootstrap-server localhost:9092
 
@@ -250,7 +248,7 @@ tasks:
     message: Hello there! I received {{ trigger.body }} from Azure EventHubs!
 triggers:
   - id: readFromEventHubs
-    type: "io.kestra.plugin.azure.eventhubs.RealtimeTrigger"
+    type: io.kestra.plugin.azure.eventhubs.RealtimeTrigger
     eventHubName: kestra
     namespace: kestra-namespace
     connectionString: "{{ secret('EVENTHUBS_CONNECTION') }}"

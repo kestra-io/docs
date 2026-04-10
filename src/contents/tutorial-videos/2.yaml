@@ -1,0 +1,7 @@
+title: "CI/CD with Terraform & Kestra | Hands On Demo"
+description: "GitHub repository used in this demo: https://github.com/anna-geller/kestra-ci-cd \nGitHub repository showing how to get started in a development environment and how to move to production using CI/CD: https://github.com/kestra-io/examples\nCI/CD documentation: https://kestra.io/docs/developer-guide/cicd"
+category: "Deep Dive Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=prL6gIoGeTw"
+publicationDate: "2023-06-09T00:00:00.000"
+contentType: "Deep Dive Tutorials"

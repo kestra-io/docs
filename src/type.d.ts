@@ -7,10 +7,12 @@ interface Blueprint {
     id: number
     title: string
     includedTasks: string[]
-    tags?: string[]
     namespace: string
     name: string
     description: string
+    metaTitle: string
+    metaDescription: string
+    flow: string
     tasks: Array<{ id: string; type: string }>
     tags: Array<string>
     createdAt: string
@@ -46,9 +48,7 @@ interface Story {
     content: string
     companyName: string
     featuredImage: string
-    whatNext?: string //TODO: in API
 }
-
 interface PluginInformation {
     name?: string
     subGroupTitle?: string
@@ -60,11 +60,12 @@ interface PluginInformation {
     categories?: string[]
     icon?: string
     subGroup?: string
+    isEnterprise?: boolean
 }
 
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace
 type ENV = {
-    ISR_CACHE: KVNamespace
+    ICON_CACHE: KVNamespace
 }
 
 type Runtime = import("@astrojs/cloudflare").Runtime<ENV>
@@ -73,4 +74,14 @@ declare namespace App {
     interface Locals extends Runtime {
         // Add custom locals here
     }
+}
+
+declare namespace App {
+    interface Locals extends Runtime {}
+}
+
+declare module "*.vue" {
+    import { DefineComponent } from "vue"
+    const component: DefineComponent<{}, {}, any>
+    export default component
 }

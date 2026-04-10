@@ -1,0 +1,36 @@
+---
+title: Kestra Expressions Guide – Pebble and Context Variables
+description: Learn how to work with Kestra expressions using the execution context, Pebble syntax, filters, functions, and operators.
+sidebarTitle: Expressions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Use expressions to dynamically set values in flows using `{{ ... }}` syntax backed by the Pebble templating engine.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+## Find the right expressions doc
+
+- Start with [Execution Context Variables](./01.execution-context/index.md) if you need to know what values are available in flows.
+- Go to [Pebble Syntax](./02.pebble-syntax/index.md) if you need help writing expressions.
+- Use [Filter Reference](./03.filter-reference/index.md) when you know you need a filter but are not sure which category it belongs to.
+- Use [Function Reference](./04.function-reference/index.md) for runtime helpers such as `render()`, `secret()`, `read()`, and `printContext()`.
+- Use [Operators, Tags, and Tests](./05.operators-tags-tests/index.md) for control flow and boolean logic.
+
+## Common tasks
+
+| If you need to... | Start here |
+| --- | --- |
+| Access `inputs`, `outputs`, `vars`, `trigger`, or `namespace` values | [Execution Context Variables](./01.execution-context/index.md) |
+| Format dates, parse JSON, or transform strings | [Filter Reference](./03.filter-reference/index.md) |
+| Render nested expressions or inspect the full context | [Function Reference](./04.function-reference/index.md) |
+| Write loops, conditions, fallbacks, and comparisons | [Pebble Syntax](./02.pebble-syntax/index.md) and [Operators, Tags, and Tests](./05.operators-tags-tests/index.md) |
+| Build or debug a multiline or nested expression | [Pebble Syntax](./02.pebble-syntax/index.md#multiline-json-bodies) and [Function Reference](./04.function-reference/index.md#render) |
+
+## Browse expressions docs
+
+<ChildCard />

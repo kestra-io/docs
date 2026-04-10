@@ -3,33 +3,62 @@ import { Image } from "astro:assets"
 
 import Link from "~/components/common/Link.astro"
 import seeHow from "~/assets/landing/see_how.svg"
+
+interface Props {
+    cta?: {
+        text: string
+        href: string
+        download?: string | boolean
+    }
+    imgSrc?: string | ImageMetadata
+}
+
+const {
+    imgSrc = seeHow,
+    cta = !Astro.slots.has("footer")
+        ? { text: "Book a Demo", href: "/demo" }
+        : undefined,
+} = Astro.props;
 ---
 
-<section class="bg-white border-bottom py-5 px-3">
-    <div class="see_how mx-auto w-100 border rounded-3 p-1">
+<section class="px-3 see">
+    <div class="see_how mx-auto w-100 rounded-3 p-1">
         <div class="inner mx-auto w-100">
             <div class="row g-0">
-                <div class="col-12 col-md-6 border rounded-3 overflow-hidden">
+                <div class="col-12 col-md-6 rounded-3 overflow-hidden">
                     <Image
-                        src={seeHow}
+                        src={imgSrc}
                         alt="See How"
                         class="w-100 h-100 object-fit-cover"
+                        {...typeof imgSrc === "string"
+                            ? { width: 600, height: 400 }
+                            : ({} as any)}
                     />
                 </div>
                 <div
-                    class="col-12 col-md-6 bg-light border rounded-3 d-flex align-items-center px-4 py-3 py-md-5"
+                    class="col-12 col-md-6 rounded-3 d-flex align-items-center px-4 py-3 py-md-5"
                 >
                     <div class="content">
-                        <h3 class="mb-3">
+                        <h3 class="mb-3" data-usal="fade-r">
                             <slot name="title" />
                         </h3>
-                        <p>
+                        <p data-usal="fade-l">
                             <slot />
                         </p>
-                        <Link href="/demo" class="btn btn-gradient text-white">
-                            Book a demo
-                        </Link>
-                    </div>  
+                        <div class="d-flex flex-wrap gap-3 mt-4 flex-column flex-md-row align-items-start align-items-md-center">
+                            {cta && (
+                                <Link
+                                    href={cta.href}
+                                    class="btn btn-primary text-nowrap"
+                                    download={cta.download}
+                                    data-usal="zoomin"
+                                >
+                                    {cta.text}
+                                </Link>
+                            )}
+                            <slot name="footer" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,17 +66,19 @@ import seeHow from "~/assets/landing/see_how.svg"
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
+        background-color: var(--ks-background-body);
+        padding: 70px $rem-1;
         .see_how {
             max-width: 1160px;
-            border-color: #f1f1f1 !important;
-
+            border: $block-border;
+            border-radius: $border-radius-lg;
+            background-color: var(--ks-background-secondary);
             .inner {
+                border: $block-border;
+                border-radius: $border-radius-lg;
                 .col-12 {
                     max-height: 400px;
-                    border-color: #f1f1f1 !important;
 
                     @include media-breakpoint-up(md) {
                         max-height: 600px;
@@ -62,7 +93,7 @@ import seeHow from "~/assets/landing/see_how.svg"
                     }
 
                     &:last-child {
-                        background-color: #f7f7f7 !important;
+                        background-color: var(--ks-background-secondary);
                         border-radius: 0 0 9px 9px !important;
 
                         @include media-breakpoint-up(md) {
@@ -71,10 +102,18 @@ import seeHow from "~/assets/landing/see_how.svg"
                         }
 
                         .content {
-                            max-width: 338px;
+                            max-width: 450px;
 
                             h3 {
                                 line-height: 38px;
+                            }
+
+                            :global(.btn) {
+                                white-space: nowrap;
+                            }
+
+                            :global(a):not(.btn) {
+                                color: var(--ks-content-link) !important;
                             }
                         }
                     }

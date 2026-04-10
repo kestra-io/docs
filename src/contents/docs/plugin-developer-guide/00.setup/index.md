@@ -20,7 +20,7 @@ That template will create a project hosting a group of plugins — we usually cr
 :::alert{type="warning"}
 Note that the Kestra plugin library **version** must align with your Kestra instance. You may encounter validation issues during flow creation (e.g., `Invalid bean` response with status 422) when some plugins are on an older version of the Kestra plugin library. In that case, you may want to update the file `plugin-yourplugin/gradle.properties` and set the `version` property to the correct Kestra version like below:
 
-```
+```properties
 version=0.20.0-SNAPSHOT
 kestraVersion=[0.20,)
 ```
@@ -33,7 +33,7 @@ Then rebuild and publish the plugin.
 ## Requirements
 
 Kestra plugins development requirements are:
-* [Java](https://java.com) 21 or later.
+* [Java](https://java.com) 25 or later.
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/) (or any other Java IDE, we provide only help for IntelliJ IDEA).
 * [Gradle](https://gradle.org/) (included most of the time with the IDE).
 

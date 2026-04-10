@@ -65,7 +65,7 @@ Note that to use the `file:///` scheme, you will need to bind-mount the host dir
 
 Keep in mind that if you see the following error:
 
-```
+```plaintext
 java.lang.SecurityException: The path /scripts/hello.py is not authorized. Only files inside the working directory are allowed by default, other paths must be allowed either globally inside the Kestra configuration using the `kestra.local-files.allowed-paths` property, or by plugin using the `allowed-paths` plugin configuration.`.
 ```
 
@@ -105,7 +105,7 @@ tasks:
 
 ### Namespace files as default FILE-type inputs
 
-One of the benefits of this protocol is that you can reference Namespace Files as default FILE-type inputs in your flows. See the example below, which reads a local file, `hello.txt,` from the `demo` namespace and logs its content.
+One of the benefits of this protocol is that you can reference Namespace Files as default FILE-type inputs in your flows. See the example below, which reads a local file, `hello.txt`, from the `demo` namespace and logs its content.
 
 ```yaml
 id: file_input

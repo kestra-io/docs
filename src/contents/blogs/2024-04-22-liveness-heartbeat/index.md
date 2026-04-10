@@ -5,6 +5,7 @@ date: 2024-04-22T17:00:00
 category: Engineering
 author:
   name: Florian Hussonnois
+  linkedin: https://www.linkedin.com/in/florian-hussonnois/
   image: "fhussonnois"
 image: ./main.jpg
 

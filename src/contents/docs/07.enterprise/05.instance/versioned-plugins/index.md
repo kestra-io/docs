@@ -64,7 +64,7 @@ kestra:
         url: https://registry.kestra.io/maven
 ```
 
-Refer to the [Plugins section](../../../configuration/index.md#plugins) in the Configuration guide for custom Maven repositories.
+Refer to the [Plugins and Execution](../../../configuration/04.plugins-and-execution/index.md) page in the Configuration guide for custom Maven repositories.
 
 With remote storage enabled, installed plugins are stored in a plugins repository in the `_plugins/repository` path. For example, the below paths show the storage for 0.19.0 and 0.20.0 versions of the Shell script plugin:
 
@@ -89,7 +89,7 @@ For locally stored plugins configured by the `localRepositoryPath` attribute, th
 
 ## Configuration for EE-specific plugins
 
-Some plugins are available only in the Enterprise Edition (EE) of Kestra. To install EE-specific plugins, you need to make sure that your [Kestra configuration](../../../configuration/index.md) has the `kestra.ee.license.fingerprint` property set (apart from the `kestra.ee.license.id` and `kestra.ee.license.key` properties). The `kestra.ee.license.fingerprint` property is used to verify that the EE license is valid and allows you to use EE-specific plugins.
+Some plugins are available only in the Enterprise Edition (EE) of Kestra. To install EE-specific plugins, you need to make sure that your [Enterprise and Advanced configuration](../../../configuration/06.enterprise-and-advanced/index.md) has the `kestra.ee.license.fingerprint` property set (apart from the `kestra.ee.license.id` and `kestra.ee.license.key` properties). The `kestra.ee.license.fingerprint` property is used to verify that the EE license is valid and allows you to use EE-specific plugins.
 
 ## Install versioned plugins
 
@@ -97,7 +97,7 @@ Versioned plugins can be installed from the Kestra UI as well as programmaticall
 
 ### From the UI
 
-Below is an video demonstration walking through each step from installation to application in a flow.
+Below is a video demonstration walking through each step from installation to application in a flow.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -140,7 +140,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 With API Token:
 
 ```bash
-curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install /
+curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 -H "Authorization: Bearer YOUR-API-TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
@@ -175,7 +175,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 
 ### From the CLI
 
-To install versioned plugins from the [Kestra CLI](../../../server-cli/index.md), you can use the following command:
+To install versioned plugins from the [Kestra CLI](../../../kestra-cli/kestra-server/index.md), you can use the following command:
 
 ```bash
 ./kestra plugins install --locally=false io.kestra.plugin:plugin-jdbc-duckdb:0.21.2
@@ -184,7 +184,7 @@ To install versioned plugins from the [Kestra CLI](../../../server-cli/index.md)
 The `--locally` flag specifies whether the plugin should be installed locally or according to your Kestra configuration, where remote storage can be enabled.
 
 - `--locally=true` installs the plugin locally.
-- `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured internal storage](../../../configuration/index.md#internal-storage) directly.
+- `--locally=false` checks if `remoteStorageEnabled` is enabled and then plugins are downloaded and pushed to the [configured runtime and storage backend](../../../configuration/02.runtime-and-storage/index.md) directly.
 
 ## `version` property in a Flow
 

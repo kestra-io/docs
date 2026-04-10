@@ -1,0 +1,289 @@
+---
+title: Kestra Observability and Networking Configuration
+description: Configure telemetry, logs, metrics, Micronaut settings, endpoints, SSL, CORS, and webserver behavior in Kestra.
+sidebarTitle: Observability and Networking
+icon: /src/contents/docs/icons/admin.svg
+---
+
+Use this page for operational visibility and network-facing configuration.
+
+## Observability
+
+Use this section when you need to understand what Kestra emits about itself, not when you are changing task behavior. The settings here are mostly for platform operators and anyone integrating Kestra with monitoring or logging systems.
+
+Configuration areas in this group include:
+
+- anonymous telemetry
+- logger settings
+- access logs and log formatting
+- metrics and label-based metrics
+- Micronaut HTTP settings
+
+These settings are useful when you need to tune visibility, log volume, request handling, or integration with monitoring platforms.
+
+Anonymous usage reporting is enabled by default. Disable or tune it with:
+
+```yaml
+kestra:
+  anonymous-usage-report:
+    enabled: false
+```
+
+```yaml
+kestra:
+  anonymous-usage-report:
+    initial-delay: 5m
+    fixed-delay: 1h
+```
+
+UI usage reporting is configured separately:
+
+```yaml
+kestra:
+  ui-anonymous-usage-report:
+    enabled: false
+```
+
+## Logs and access logging
+
+There are two different concerns here: application logs and HTTP access logs. Reach for `logger.levels` when you want to change verbosity inside Kestra, and Micronaut access logging when you want request-by-request HTTP visibility.
+
+Use `logger.levels` to adjust server log verbosity:
+
+```yaml
+logger:
+  levels:
+    io.kestra.core.runners: TRACE
+    org.apache.kafka: DEBUG
+```
+
+You can also suppress execution-scoped logs globally:
+
+```yaml
+logger:
+  levels:
+    execution: 'OFF'
+    task: 'OFF'
+    trigger: 'OFF'
+```
+
+Or scope suppression to a specific flow, task, or trigger by appending the flow ID and optionally the task or trigger ID:
+
+```yaml
+logger:
+  levels:
+    execution.hello-world: 'OFF'
+    task.hello-world: 'OFF'
+    trigger.hello-world: 'OFF'
+    task.hello-world.log: 'OFF'
+    trigger.hello-world.schedule: 'OFF'
+```
+
+Micronaut access logging is configured separately:
+
+```yaml
+micronaut:
+  server:
+    netty:
+      access-logger:
+        enabled: true
+        logger-name: io.kestra.webserver.access
+        log-format: "[Date: {}] [Duration: {} ms] [Method: {}] [Url: {}] [Status: {}] [Length: {}] [Ip: {}] [Port: {}]"
+        exclusions:
+          - /ui/.+
+          - /health
+          - /prometheus
+```
+
+Kestra uses [Logback](https://logback.qos.ch/) for logging. To use a custom `logback.xml`, pass it via `JAVA_OPTS`:
+
+```shell
+export JAVA_OPTS="-Dlogback.configurationFile=file:/path/to/logback.xml"
+```
+
+GCP structured logging:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+  <include resource="logback/base.xml" />
+  <include resource="logback/gcp.xml" />
+  <root level="WARN">
+    <appender-ref ref="CONSOLE_JSON_OUT" />
+    <appender-ref ref="CONSOLE_JSON_ERR" />
+  </root>
+</configuration>
+```
+
+ECS format:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+  <include resource="logback/base.xml" />
+  <include resource="logback/ecs.xml" />
+  <root level="WARN">
+    <appender-ref ref="CONSOLE_ECS_OUT" />
+    <appender-ref ref="CONSOLE_ECS_ERR" />
+  </root>
+</configuration>
+```
+
+## Metrics and telemetry exports
+
+These settings are usually enabled with restraint. Metrics are broadly useful, but label-based metrics should stay limited to a small set of low-cardinality dimensions or they become expensive to store and query.
+
+Set a metrics prefix:
+
+```yaml
+kestra:
+  metrics:
+    prefix: kestra
+```
+
+Add low-cardinality labels as metric tags:
+
+```yaml
+kestra:
+  metrics:
+    labels:
+      - country
+      - environment
+```
+
+This creates a tag named `label_<key>` for each configured label. When an execution does not have a configured label key, the tag value is set to `__none__`, which keeps the set of tag keys stable and avoids metric series fragmentation.
+
+For example, with `country` and `environment` configured, an execution that has `country=Germany` but no `environment` label produces:
+
+```plaintext
+kestra_executions_total{flow_id="my-flow",namespace_id="default",state="SUCCESS",label_country="Germany",label_environment="__none__"} 1
+```
+
+For traces, metrics, and logs exported through OpenTelemetry, use the dedicated [OpenTelemetry guide](../../10.administrator-guide/open-telemetry/index.md).
+
+## Network and HTTP settings
+
+This section matters when Kestra is exposed behind a load balancer, reverse proxy, ingress, or private network boundary. If requests are not arriving with the expected URL, protocol, size limit, or auth behavior, the fix is often here.
+
+Micronaut-backed settings cover:
+
+- server port
+- SSL
+- timeouts
+- upload size
+- base path
+- host resolution
+- CORS
+- management endpoints
+
+Common examples:
+
+```yaml
+micronaut:
+  server:
+    port: 8086
+```
+
+```yaml
+micronaut:
+  server:
+    max-request-size: 10GB
+    multipart:
+      max-file-size: 10GB
+      disk: true
+    read-idle-timeout: 60m
+    write-idle-timeout: 60m
+    idle-timeout: 60m
+    netty:
+      max-chunk-size: 10MB
+```
+
+Reverse proxy support:
+
+```yaml
+micronaut:
+  server:
+    context-path: "kestra-prd"
+    host-resolution:
+      host-header: Host
+      protocol-header: X-Forwarded-Proto
+```
+
+Enable CORS:
+
+```yaml
+micronaut:
+  server:
+    cors:
+      enabled: true
+```
+
+Secure or move management endpoints:
+
+```yaml
+endpoints:
+  all:
+    basic-auth:
+      username: your-user
+      password: your-password
+    port: 8084
+```
+
+SSL example:
+
+```yaml
+micronaut:
+  security:
+    x509:
+      enabled: true
+  ssl:
+    enabled: true
+  server:
+    ssl:
+      client-authentication: need
+      key-store:
+        path: classpath:ssl/keystore.p12
+        password: ${KEYSTORE_PASSWORD}
+        type: PKCS12
+      trust-store:
+        path: classpath:ssl/truststore.jks
+        password: ${TRUSTSTORE_PASSWORD}
+        type: JKS
+```
+
+## UI and webserver settings
+
+These settings are lighter-weight than the Micronaut server settings above. Use them when you are customizing the user-facing web experience rather than transport-level HTTP behavior.
+
+The webserver-related configuration also includes:
+
+- Google Analytics ID
+- additional HTML tags
+- mail server settings
+
+Examples:
+
+```yaml
+kestra:
+  webserver:
+    google-analytics-id: G-XXXXXXXXXX
+```
+
+```yaml
+kestra:
+  webserver:
+    html-head:
+      - "<script>/* custom tag */</script>"
+```
+
+Mail server settings are useful when you need platform emails for invitations and notifications.
+
+## Typical use cases
+
+Use this section when you need to:
+
+- expose Kestra behind a reverse proxy
+- enable HTTPS
+- adjust access log format for GCP or ECS
+- configure Prometheus-style metrics ingestion
+- change management endpoint behavior

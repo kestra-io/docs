@@ -1,14 +1,129 @@
 ---
+import { getEntry } from "astro:content"
 import Layout from "~/components/layout.astro"
-import Header from "~/components/vs/aws-step-functions/Header.vue"
-import Main from "~/components/vs/aws-step-functions/Main.vue"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
 
-const title = "Kestra Alternative to AWS Step Functions"
-const description =
-    "What are the differences between Kestra and AWS Step Functions"
+import awsStepFunctionsLogo from "~/components/versus/assets/aws-step-functions.svg?raw"
+import awsStepFunctionsMonogram from "~/components/versus/assets/aws-step-functions-monograme.svg?raw"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import awsStepFunctionsImg from "~/components/versus/assets/aws-step-functions-img.svg"
+import heroUI from "~/components/versus/assets/step_hero_ui.webp"
+
+const entry = await getEntry("vs", "aws-step-functions")
+if (!entry)
+    throw new Error("Could not find vs/aws-step-functions collection entry")
+
+const {
+    title,
+    shortDescription,
+    competitorName,
+
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    testimonials,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+} = entry.data
 ---
 
-<Layout title={title} description={description}>
-    <Header client:load />
-    <Main client:visible />
+<Layout {title} description={shortDescription} headerTheme="lightText">
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: awsStepFunctionsMonogram,
+        }}
+        image={{ src: heroUI, alt: "kestra ui" }}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: awsStepFunctionsLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: awsStepFunctionsLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: awsStepFunctionsLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: awsStepFunctionsLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: awsStepFunctionsLogo,
+            linkImg: awsStepFunctionsImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo: awsStepFunctionsLogo,
+        }}
+    />
+    <VsTestimonial
+        quotes={testimonials}
+    />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: awsStepFunctionsLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">
+            Getting Started with Multi-Cloud Orchestration
+        </Fragment>
+        See how Kestra can orchestrate workflows across any cloud, any language, and
+        your entire stack.
+    </SeeHow>
 </Layout>

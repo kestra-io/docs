@@ -5,6 +5,7 @@ date: 2025-06-18T16:30:00
 category: News & Products Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -161,7 +162,7 @@ tasks:
     condition: "{{ outputs.http_request.code != 200 }}"
     then:
       - id: server_unreachable_alert
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ inputs.slack_webhook_uri }}"
         payload: |
           {

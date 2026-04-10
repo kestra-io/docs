@@ -6,13 +6,11 @@ topics:
   - Integrations
 ---
 
-Learn step-by-step how to read data from a Google Sheet inside of a Kestra flow.
-
-## Connect Google Sheets to Kestra
+Learn step-by-step how to read data from a Google Sheet in a Kestra flow.
 
 You can use any Google Sheet for this tutorial. In case you do not have Google Sheet, you can:
 
-1. Download the data from [this link](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv) and save it locally as `orders.csv` file.
+1. Download the [orders CSV dataset](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv) and save it locally as `orders.csv` file.
 2. Create a new Google Sheet.
 3. Navigate to the `File` menu on the top, and select `Import` option.
 4. Navigate to the `Upload` tab, and click on the `Browse` button.
@@ -50,7 +48,7 @@ The new service account has been created. Let's add a key to the service account
   a. With Kestra EE, provide the secret key `GCP_SERVICE_ACCOUNT_JSON` and the file contents as the value.
   b. For docker-based Kestra instance, convert the JSON file's contents into base64 encoded format using `cat <private_key_file>.json | base64` and then provide the secret value as part of the environment file to the docker instance: `SECRET_GCP_SERVICE_ACCOUNT_JSON=<base64_encoded_value_for_json_file_contents>`.
 
-Detailed instructions on creating service account can also be found [here](../google-credentials/index.md).
+Detailed instructions on creating service account can also be found in the [Google credentials guide](../google-credentials/index.md).
 
 ![create_new_key](./create_new_key.png)
 
@@ -64,7 +62,7 @@ We will now provide access to the spreadsheet for the service account.
 
 Let us now enable the Google Sheets API in the GCP console.
 
-1. On the GCP console, search for `Google Sheets API` service, or directly navigate to one using [this link](https://console.cloud.google.com/marketplace/product/google/sheets.googleapis.com).
+1. On the GCP console, search for `Google Sheets API` service, or directly navigate to the [Google Sheets API page](https://console.cloud.google.com/marketplace/product/google/sheets.googleapis.com).
 2. Check whether the Google Sheets API is already enabled. If not, you will see an `Enable` button on the page. Click on the `Enable` button.
 
 ![enable_google_sheets_api](./enable_google_sheets_api.png)

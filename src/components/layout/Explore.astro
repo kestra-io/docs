@@ -16,31 +16,30 @@ interface Props {
     reversed?: boolean
 }
 
-const {
-    title,
-    description,
-    cta,
-    image,
-    reversed = false,
-} = Astro.props
+const { title, description, cta, image, reversed = false } = Astro.props
 ---
 
 <section class="section-prose-img">
     <div class:list={["container", { reversed }]}>
         <div class="left-div" data-usal="slide-r delay-0 duration-600 ease-out">
-            <h2 data-usal="fade-u delay-50 duration-500 ease-out" class="mb-0">{title}</h2>
+            <h2 data-usal="fade-u delay-50 duration-500 ease-out" class="mb-0">
+                {title}
+            </h2>
             <p data-usal="fade-u delay-100 duration-500 ease-out" class="mb-0">
                 {description}
             </p>
             <a
                 href={cta.href}
-                class="btn btn-primary btn-gradient tour-btn"
+                class="btn btn-primary tour-btn"
                 data-usal="zoomin duration-500 delay-150 ease-out"
             >
                 {cta.text}
             </a>
         </div>
-        <div class="right-div" data-usal="slide-l delay-25 duration-700 ease-out">
+        <div
+            class="right-div"
+            data-usal="slide-l delay-25 duration-700 ease-out"
+        >
             <Image
                 src={image.src}
                 alt="ui"
@@ -55,11 +54,9 @@ const {
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .section-prose-img {
         padding: 3rem 1rem 3rem;
-        background: #f4f4f4;
+        background: var(--ks-background-secondary);
 
         .container {
             display: flex;
@@ -75,7 +72,7 @@ const {
 
             @include media-breakpoint-down(lg) {
                 flex-direction: column;
-                
+
                 &.reversed {
                     flex-direction: column;
                 }
@@ -106,7 +103,7 @@ const {
             .right-div {
                 max-width: 656px;
                 border-radius: 0.5rem;
-                border: 1px solid #bfbfbf;
+                border: $block-border;
                 position: relative;
 
                 :global(img) {

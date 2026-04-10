@@ -236,7 +236,7 @@ When you open this flow in the editor, the JSON Schema will validate the structu
 
 The JSON Schema for Kestra flows is available at the following URL:
 
-```
+```plaintext
 https://your-kestra-instance.com/api/v1/main/schemas/flow.json
 ```
 

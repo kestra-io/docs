@@ -5,6 +5,7 @@ date: 2024-04-11T19:30:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: ageller
 image: ./main.png
 ---
@@ -169,7 +170,7 @@ Note how in this example, the `waitForCompletion` property is templated using Pe
 
 ### New pebble functions to process YAML
 
-Related to the templated task, there are [new Pebble functions](../../docs/expressions/index.md#yaml-filters) to process YAML including the `yaml` and `indent` functions that allow you to parse and load YAML strings into objects. Those objects can then be further transformed using Pebble templating.
+Related to the templated task, there are [new Pebble functions](../../docs/expressions/03.filter-reference/index.md#yaml-filters) to process YAML including the `yaml` and `indent` functions that allow you to parse and load YAML strings into objects. Those objects can then be further transformed using Pebble templating.
 
 Big thanks to [kriko](https://github.com/kriko) for [contributing this feature](https://github.com/kestra-io/kestra/pull/3283)!
 
@@ -208,7 +209,7 @@ The above flow will only be triggered after an execution:
 
 ## Improvements to the secret function
 
-The `secret()` function now returns `null` if the secret cannot be found. [This change](https://github.com/kestra-io/kestra/issues/3162) allows you to fall back to an environment variable if a secret is missing. To do that, you can use the `secret()` function in combination with the [null-coalescing](../../docs/expressions/index.md#null-coalescing-operator) operator as follows:
+The `secret()` function now returns `null` if the secret cannot be found. [This change](https://github.com/kestra-io/kestra/issues/3162) allows you to fall back to an environment variable if a secret is missing. To do that, you can use the `secret()` function in combination with the [null-coalescing](../../docs/expressions/05.operators-tags-tests/index.md#fallbacks-and-conditionals) operator as follows:
 
 ```yaml
 accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') ?? env.aws_access_key_id }}"
@@ -325,4 +326,3 @@ This post covered new features and enhancements added in Kestra 0.16.0. Which of
 If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
-

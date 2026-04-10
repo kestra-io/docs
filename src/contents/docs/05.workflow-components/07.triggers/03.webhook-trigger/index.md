@@ -14,7 +14,7 @@ A Webhook trigger generates a unique URL that lets external applications (such a
 Each webhook URL requires a secret `key` to secure it. This prevents unauthorized access and ensures only trusted systems can trigger your flow.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Webhook"
+type: io.kestra.plugin.core.trigger.Webhook
 ```
 
 A Webhook trigger enables triggering a flow from a webhook URL.
@@ -56,6 +56,24 @@ You can also copy the formed Webhook URL from the **Triggers** tab.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
+## Webhook response
+
+By default, a webhook trigger answers with JSON. When you need the caller to wait for a custom response (e.g., validation handshakes that require `text/plain`), enable `wait` and set the `responseContentType` to `text/plain`.
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: your-secret-key
+    wait: true
+    returnOutputs: true
+    responseContentType: text/plain   # optional, defaults to application/json
+```
+
+Behavior:
+- `wait: true` keeps the HTTP connection open until the flow finishes or hits the trigger’s timeout.
+- `returnOutputs: true` returns the flow outputs as the HTTP response body (JSON by default). Override with `responseContentType` for plaintext or other formats.
 
 ---
 

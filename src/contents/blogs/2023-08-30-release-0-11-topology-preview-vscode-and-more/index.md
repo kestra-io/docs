@@ -5,6 +5,7 @@ date: 2023-08-30T14:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: "ageller"
 image: ./main.png
 ---
@@ -253,7 +254,7 @@ We've also introduced additional CLI tasks to the following existing plugins:
 
 ### Google Cloud CLI
 
-Using the `gcloud` [CLI task](/plugins/plugin-gcp#cli), you can automate virtually any action that you can perform on Google Cloud Platform. Below is an example from the [blueprints catalog](/blueprints/gcloud-cli-flow) showing various ways of capturing relevant API responses from the CLI output.
+Using the `gcloud` [CLI task](/plugins/plugin-gcp#cli), you can automate virtually any action that you can perform on Google Cloud Platform. Below is an example from the [blueprints catalog](/blueprints) showing various ways of capturing relevant API responses from the CLI output.
 
 ```yaml
 id: gcloudCLI
@@ -272,7 +273,7 @@ tasks:
 
 ### AWS CLI
 
-AWS CLI is useful for automating tasks on Amazon Web Services. With the [AWS CLI task](/plugins/plugin-aws#cli), you can trigger any API call interacting with your AWS resources as part of your end-to-end workflow. Below is a simple example from the [blueprints catalog](/blueprints/awscli-list-ecs-clusters) listing AWS ECS clusters from the `AwsCLI` task.
+AWS CLI is useful for automating tasks on Amazon Web Services. With the [AWS CLI task](/plugins/plugin-aws#cli), you can trigger any API call interacting with your AWS resources as part of your end-to-end workflow. Below is a simple example from the [blueprints catalog](/blueprints) listing AWS ECS clusters from the `AwsCLI` task.
 
 ```yaml
 id: awsCLIlistECSclusters
@@ -291,7 +292,7 @@ tasks:
 
 ### Microsoft Azure CLI
 
-This release also introduces the `az` [CLI task](/plugins/plugin-azure#cli) to automate any Azure task from the Command Line, as shown in the following [blueprints example](/blueprints/azure-cli).
+This release also introduces the `az` [CLI task](/plugins/plugin-azure#cli) to automate any Azure task from the Command Line, as shown in the following [blueprints example](/blueprints).
 
 ```yaml
 id: azureCLI
@@ -332,7 +333,7 @@ tasks:
         - spark-submit --name Pi --master spark://localhost:7077 etl/spark_pi.py
 ```
 
-Similarly to `SparkCLI`, the new [DbtCLI task](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli) can be used to orchestrate any dbt command. Below is a [Blueprint example](/blueprints/limit-memory) running `dbt deps` and `dbt build` commands.
+Similarly to `SparkCLI`, the new [DbtCLI task](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli) can be used to orchestrate any dbt command. Below is a [Blueprint example](/blueprints) running `dbt deps` and `dbt build` commands.
 
 ```yaml
 id: dbtGitDockerDuckDB
@@ -387,10 +388,10 @@ Databricks is a unified data analytics platform that provides a collaborative wo
 
 - [Run a SQL query on Databricks, output the result to a CSV file and read that CSV file in a Python script with Pandas](/blueprints/databricks-sql) - this flow demonstrates how you can fetch data from Databricks using SQL and use that data in any downstream process e.g. in a custom Python script
 - [Run a task on an on-demand Databricks cluster](/blueprints/on-demand-cluster-job) - this flow will create a Databricks cluster, create a job, wait for its completion and in the end, it will delete the on-demand cluster even if the job doesn't complete successfully (to avoid paying for idle compute)
-- [Create a Spark job on a Databricks cluster and wait for its completion](/blueprints/start-job-on-existing-cluster) - this flow will start a job on an existing Databricks cluster and wait for its completion up to 5 hours; it uses the `CreateJob` API
-- [Execute a Spark/Python script on an existing Databricks cluster and wait for its completion](/blueprints/run-tasks-on-databricks) - this blueprint is similar to the previous one; however, it uses the `SubmitRun` API
+- [Create a Spark job on a Databricks cluster and wait for its completion](/plugins/plugin-databricks/cluster/io.kestra.plugin.databricks.cluster.createcluster) - this flow will start a job on an existing Databricks cluster and wait for its completion up to 5 hours; it uses the `CreateJob` API
+- [Execute a Spark/Python script on an existing Databricks cluster and wait for its completion](/plugins/plugin-databricks/job/io.kestra.plugin.databricks.job.submitrun) - this blueprint is similar to the previous one; however, it uses the `SubmitRun` API
 - [Download a Parquet file from Databricks and use it in a Python script](/blueprints/download-parquet-from-databricks) - this flow demonstrates how you can download a Parquet file from Databricks and use it in a Python script
-- [Upload a Parquet file to Databricks](/blueprints/upload-parquet-to-databricks) - similar to the previous example, but in reverse order.
+- [Upload a Parquet file to Databricks](/blueprints) - similar to the previous example, but in reverse order.
 
 
 ---
@@ -482,7 +483,7 @@ tasks:
 Templates are now marked as **deprecated**. Please use **subflows** instead. The [migration documentation](../../docs/11.migration-guide/v0.11.0/templates/index.md) explains why templates are being phased out and how to transition from templates to subflows.
 :::
 
-If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../../docs/configuration/index.md) option to still be able to use them:
+If you are using templates and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../../docs/configuration/index.mdx) option to still be able to use them:
 
 ```yaml
 kestra:
@@ -537,4 +538,3 @@ This post covered new features and enhancements added in Kestra 0.11.0. Which of
 If you have any questions, reach out via [Kestra Community Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the open-source community](/slack).
-

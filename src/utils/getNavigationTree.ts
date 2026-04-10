@@ -20,6 +20,7 @@ const navigationTree = {
         "No-Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
+        "Use Cases",
         "How-to Guides",
     ],
     "Scale with Kestra": [
@@ -30,11 +31,11 @@ const navigationTree = {
     ],
     "Manage Kestra": ["Administrator Guide", "Migration Guide", "Performance"],
     "Reference Docs": [
-        "Configuration",
         "Releases & LTS Policy",
+        "Configuration",
         "Expressions",
-        "API Reference",
         "Terraform Provider",
+        "API Reference",
         "Kestra CLI",
         "Glossary",
     ],

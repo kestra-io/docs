@@ -1,24 +1,32 @@
 ---
 import Layout from "~/components/layout.astro"
-import PartnersHeaders from "~/components/partners/Headers.vue"
-import Partners from "~/components/partners/Partners.vue"
-import PartnersIntegratesWith from "~/components/partners/IntegratesWith.vue"
-import PartnersBetterTogether from "~/components/partners/BetterTogether.vue"
-import PartnersPerksAndBenefits from "~/components/partners/PerksAndBenefits.vue"
-import PartnersBecomeAPartner from "~/components/partners/BecomeAPartner.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import Lists from "~/components/partners/Lists.astro"
+import Intro from "~/components/partners/Intro.astro"
+import Reasons from "~/components/partners/Reasons.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import BecomeAPartner from "~/components/partners/BecomeAPartner.vue"
 
 const title = "Kestra Partners"
 const description =
     "Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.Discover the team and values behind our mission to empower data-driven organizations worldwide"
+
+import dltLogo from "~/components/partners/assets/dltLogo.svg?raw"
+
+const DLTQuotes = [
+    {
+        quote: "Kestra and dlt share a vision of simplifying data pipeline creation. Thanks to Kestra's and dlt's declarative interface, you can deploy existing pipelines in seconds or build new ones in minutes, complete with self healing schemas and lineage to increase robustness and trust.",
+        author: "Co-Founder @ <strong>dlthub</strong>",
+        smallLogoSvg: dltLogo
+    }
+]
 ---
 
-<Layout title={title} description={description}>
-    <div>
-        <PartnersHeaders client:load />
-        <Partners client:visible />
-        <PartnersIntegratesWith client:visible />
-        <PartnersBetterTogether client:visible />
-        <PartnersPerksAndBenefits client:visible />
-        <PartnersBecomeAPartner client:only="vue" />
-    </div>
+<Layout {title} {description}>
+    <Intro />
+    <Lists />
+    <PluginsBlock />
+    <Quotes quotes={DLTQuotes} />
+    <Reasons />
+    <BecomeAPartner routePath={Astro.url.pathname} client:load />
 </Layout>

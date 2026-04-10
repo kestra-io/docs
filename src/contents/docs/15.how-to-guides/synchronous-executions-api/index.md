@@ -1,5 +1,5 @@
 ---
-title: Synchronous Executions API
+title: Use the Synchronous Executions API
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -7,8 +7,6 @@ topics:
 ---
 
 Manage the Executions API Synchronously.
-
-## Synchronous Executions API
 
 There are many use cases where you may want to trigger the flow and get the flow's output in the API's response. In other words, you want the Executions API to behave synchronously.
 
@@ -33,7 +31,7 @@ outputs:
 
 You invoke this flow using the Executions API as follows:
 
-```
+```bash
 curl -X POST  http://localhost:8080/api/v1/main/executions/company.team/myflow
 ```
 
@@ -69,7 +67,7 @@ By default, the Executions API is asynchronous. It will invoke the execution of 
 
 In order to wait for an execution to finish and return the outputs from the flow in the response, you can call the Executions API with the `wait=true` query parameter. This would make the API call synchronous, and you will receive all outputs in the response that are explicitly exposed in the flow. You can invoke the Executions API in a synchronous fashion as follows:
 
-```
+```bash
 curl -X POST 'http://localhost:8080e/api/v1/main/xecutions/company.team/myflow?wait=true'
 ```
 

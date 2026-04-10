@@ -1,19 +1,14 @@
-export const prerender = false
-
 import { slugify } from "@kestra-io/ui-libs"
 import type { APIRoute } from "astro"
-import { $fetchApi } from "~/utils/fetch.ts"
+import { getCollection } from "astro:content"
 import { sitemapResponse } from "~/utils/sitemap.ts"
 
 export const GET: APIRoute = async () => {
-    const data = await $fetchApi<{
-        results: Array<{ id: string; title?: string }>
-        total: number
-    }>("/customer-stories-v2?size=9999")
+    const allUseCases = await getCollection("customerStories")
 
-    const urls = data.results.map(
+    const urls = allUseCases.map(
         (story) =>
-            `https://kestra.io/use-cases/stories/${story.id}-${slugify(story.title ?? "--")}`,
+            `https://kestra.io/use-cases/stories/${story.id}-${slugify(story.data.title ?? "--")}`,
     )
 
     return sitemapResponse(urls)

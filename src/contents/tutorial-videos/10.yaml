@@ -1,0 +1,7 @@
+title: "How to Deploy Kestra to AWS EC2 VM with RDS and S3 Backend"
+description: "This video will walk you through deploying Kestra to an AWS EC2 VM with an RDS Postgres database and S3 storage backend."
+category: "Deep Dive Tutorials"
+author: "Michael Shoemaker"
+url: "https://www.youtube.com/watch?v=Ni37SKnJTaU"
+publicationDate: "2024-04-15T00:00:00.000"
+contentType: "Deep Dive"

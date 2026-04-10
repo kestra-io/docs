@@ -37,7 +37,7 @@ Kestra follows a “start simple and grow as needed” philosophy. You can sched
 
 ### 1. Focus on Business Logic, Not Plumbing
 
-With Kestra, flows are written in simple YAML. You can use one of over 500 built-in plugins or create tasks in any language — Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
+With Kestra, flows are written in simple YAML. You can use one of over 1,200 built-in plugins or create tasks in any language — Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
 
 ### 2. Simple by Default, Complex When Needed
 
@@ -114,13 +114,13 @@ Starting your first workflow in Kestra takes minutes. There’s no long setup th
 
 ### Rich Governance and Security
 
-Kestra Enterprise Edition has built-in features for:
+The Enterprise Edition scales Kestra to have enterprise-grade security, scalability, and governance features required by organizations managing complex workflows across multiple teams or environments:
 
-- **RBAC and SSO**: Control who can create, run, or view workflows.
-- **Audit Logs**: See exactly who changed what and when.
-- **Secrets Management**: Securely manage API tokens, passwords, and other sensitive data.
-- **Cluster Monitoring:** View the health of your infrastructure from the integrated Admin dashboard.
-- **Multi-Tenant Architecture**: Isolate different business units, teams or projects for security and clarity.
+- **Access & Identity**: SSO + RBAC with Audit Logs for full traceability, plus invitations/SCIM to manage users at scale.
+- **Secrets & Policy**: Bring your own secrets manager or use built-in storage, apply read-only secrets, and enforce allowed-plugin lists.
+- **Isolation & Control**: Multi-tenant architecture with worker isolation and dedicated worker groups; a kill switch for safe pauses and maintenance mode with in-product announcements for change comms.
+- **Change Safety**: Assets packaging for artifact lineage tracking, versioned plugins to pin dependencies, and flow unit tests to catch regressions before deploy.
+- **Operations Visibility**: Cluster monitoring from the Instance dashboard keeps runtime health transparent.
 
 ### Clear Visibility into Dependencies
 
@@ -169,4 +169,4 @@ Kestra’s goal is to remove the barriers that keep orchestration locked away in
 
 If you’re tired of the old trade-offs — heavy code frameworks vs. limited no-code apps — Kestra stands ready to help. Get started by installing our forever-free open-source edition. You get to keep your favorite languages, empower non-technical teams, and orchestrate everything from small daily tasks to multi-stage, event-driven pipelines.
 
-If you have questions or want to see how Kestra fits into your environment, [Talk to us](https://kestra.io/demo) or [join our Slack community](http://kestra.io/slack). We’re happy to discuss your specific use case and help you succeed in your orchestration and automation journey.
+If you have questions or want to see how Kestra fits into your environment, [Book a Demo](https://kestra.io/demo) or [join our Slack community](http://kestra.io/slack). We’re happy to discuss your specific use case and help you succeed in your orchestration and automation journey.

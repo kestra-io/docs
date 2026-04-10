@@ -63,9 +63,8 @@ labels:
 inputs:
   - id: my-value
     type: STRING
-    required: false
     defaults: "default value"
-    description: This input is optional.
+    description: This input is has a default value.
 
 variables:
   first: "1"
@@ -194,7 +193,7 @@ Templates are lists of tasks that can be shared between flows. You can define a 
 
 Flows are stored in a serialized format directly **in the Kestra backend database**.
 
-The easiest way to add new flows is to add them directly from the Kestra UI. You can also use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
+The easiest way to add new flows is to add them directly from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
 
 To see how flows are represented in a file structure, you can leverage the `_flows` directory in the [Namespace Files](../../06.concepts/02.namespace-files/index.md) editor.
 
@@ -208,7 +207,7 @@ To pre-load flows from a directory when Kestra starts (so they’re available im
 
 Point this to a directory of YAML flow definitions; Kestra will load them at startup and place them in the namespaces declared in each file.
 
-For more information about the Kestra server CLI, check the [Server CLI Reference](../../server-cli/index.md) section.
+For more information about the Kestra server CLI, check the [Server CLI Reference](../../kestra-cli/kestra-server/index.md) section.
 
 ### Can I sync a local flows directory to be continuously loaded into Kestra?
 

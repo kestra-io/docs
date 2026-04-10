@@ -1,5 +1,5 @@
 ---
-title: Notion Webhook Integration
+title: Integrate Notion Webhooks with Kestra
 icon: /src/contents/docs/icons/notion.svg
 stage: Getting Started
 topics:
@@ -9,8 +9,6 @@ description: Automate Notion database updates and send Slack notifications by tr
 ---
 
 Use Notion webhooks to trigger Kestra flows when pages or databases are updated in your Notion workspace.
-
-## Notion Webhook Integration
 
 This guide shows you how to create a workflow that responds to Notion database changes, retrieves page details, and sends notifications to Slack when new tasks are assigned.
 
@@ -62,7 +60,7 @@ tasks:
     pageId: "{{ trigger.body.entity.id }}"
 
   - id: send_slack_alert
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "New task titled {{ outputs.get_notion_page_details | jq('.properties.Button.title[0].text.content') | first }} assigned to {{ outputs.get_notion_page_details | jq('.properties.Assignee.multi_select[0].name') | first }} on the Product team Notion board! Link: {{ outputs.get_notion_page_details.url }}"
 
@@ -99,7 +97,7 @@ For more details, see the [Notion Webhooks API documentation](https://developers
 
 Your Kestra webhook URL follows this pattern:
 
-```
+```plaintext
 http://your-kestra-host:8080/api/v1/main/executions/webhook/{namespace}/{flow_id}/{key}
 ```
 
@@ -109,7 +107,7 @@ For this example:
 - **Key**: `my-notion-product-alert-key`
 
 Complete URL:
-```
+```plaintext
 http://your-kestra-host:8080/api/v1/main/executions/webhook/company.team/notion-webhook/my-notion-product-alert-key
 ```
 
@@ -169,7 +167,7 @@ tasks:
     condition: "{{ outputs.get_notion_page_details | jq('.properties.Status.select.name') | first == 'In Progress' }}"
     then:
       - id: send_slack_alert
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         messageText: "Task moved to In Progress: {{ outputs.get_notion_page_details | jq('.properties.Title.title[0].text.content') | first }}"
 ```
@@ -185,12 +183,12 @@ tasks:
     condition: "{{ outputs.get_notion_page_details | jq('.properties.Project.select.name') | first == 'Product' }}"
     then:
       - id: product_team_notification
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('PRODUCT_SLACK_WEBHOOK_URL') }}"
         messageText: "New product task assigned!"
     else:
       - id: general_notification
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('GENERAL_SLACK_WEBHOOK_URL') }}"
         messageText: "New task assigned!"
 ```

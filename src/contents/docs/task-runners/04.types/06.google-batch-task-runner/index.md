@@ -15,9 +15,9 @@ The Google Batch task runner deploys a container for each task on a specified Go
 
 To launch tasks on Google Cloud Batch, you should understand three main concepts:
 
-1. **Machine type** — A required property that defines the compute machine type where the task will be deployed. If no `reservation` is specified, a new compute instance will be created for each batch, which can add up to a minute of startup latency.
-2. **Reservation** — An optional property that lets you reserve virtual machines in advance to avoid the delay of provisioning new instances for every task.
-3. **Network interfaces** — Optional; if not specified, the runner will use the default network interface.
+1. **Machine type** — a required property that defines the compute machine type where the task will be deployed. If no `reservation` is specified, a new compute instance will be created for each batch, which can add up to a minute of startup latency.
+2. **Reservation** — an optional property that lets you reserve virtual machines in advance to avoid the delay of provisioning new instances for every task.
+3. **Network interfaces** — optional; if not specified, the runner will use the default network interface.
 
 ## How the Google Batch task runner works
 

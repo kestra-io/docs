@@ -11,8 +11,6 @@ description: Automatically sync your flows from a Git repository to Kestra using
 
 Sync flows from a Git Repository to Kestra with the SyncFlows Task.
 
-## Sync Flows from a Git Repository
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/YbIuqYWLrpA?si=4g11iHE4qm0VdKMv" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -71,17 +69,17 @@ tasks:
     dryRun: false
 ```
 
-You should see the same flows from the earlier log now inside of Kestra:
+You should see the same flows from the earlier log now in Kestra:
 
 ![git2.png](./git2.png)
 
-We can also see a full list inside of the Outputs tab too:
+We can also see a full list in the Outputs tab too:
 
 ![git3.png](./git3.png)
 
 ## Sync all flows including child namespaces
 
-On top of that, we can also sync all the flows inside of child namespaces too. In our repository, we have a sub folder called `tutorial` with more flows in it. We can sync those as well by adding the `includeChildNamespaces` property and setting it to `true`.
+On top of that, we can also sync all the flows in child namespaces too. In our repository, we have a sub folder called `tutorial` with more flows in it. We can sync those as well by adding the `includeChildNamespaces` property and setting it to `true`.
 
 ```yaml
 id: sync_flows_from_git
@@ -160,7 +158,7 @@ To setup this webhook, go to the Settings for your GitHub repository and head to
 
 For the Payload URL, your URL will follow the following format:
 
-```
+```plaintext
 https://{your_hostname}/api/v1/main/executions/webhook/system/sync_flows_from_git/abcdefg
 ```
 
@@ -172,7 +170,7 @@ Once we've done this, we can press save and test it by committing something to o
 
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 
-If you also want to sync your files, check out our guide on how to set that up [here](../syncnamespacefiles/index.md)!
+If you also want to sync your files, check out our [guide on syncing namespace files](../syncnamespacefiles/index.md)!
 
 ## Extra notes
 

@@ -1,9 +1,9 @@
 ---
+import { Image } from "astro:assets"
+
 export interface BlogPost {
     path: string
-    image?: {
-        src: string
-    }
+    image?: ImageMetadata
     title: string
     date: string
     category?: string
@@ -16,37 +16,47 @@ interface Props {
     headingId?: string
 }
 
-const { posts, title, headingId } = Astro.props;
+const { posts, title, headingId } = Astro.props
 
 const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",
-});
+})
 ---
 
 <div>
     <h2 id={headingId}>{title}</h2>
     <div class="list-of-posts">
-        {posts.map((post, index) => (
-            <>
-                {index > 0 && <hr />}
-                <a href={post.path} class="post-card">
-                    {post.image && <img src={post.image.src} class="card-img-left" alt={post.title} />}
-                    <div class="card-body">
-                        <div class="card-details">
-                            <span class="card-category">{post.category}</span>
-                            <span class="card-date">{dateTimeFormat.format(new Date(post.date))}</span>
+        {
+            posts.map((post, index) => (
+                <>
+                    {index > 0 && <hr />}
+                    <a href={post.path} class="post-card">
+                        {post.image && (
+                            <Image
+                                src={post.image}
+                                class="card-img-left"
+                                alt={post.title}
+                            />
+                        )}
+                        <div class="card-body">
+                            <div class="card-details">
+                                <span class="card-category">
+                                    {post.category}
+                                </span>
+                                <span class="card-date">
+                                    {dateTimeFormat.format(new Date(post.date))}
+                                </span>
+                            </div>
+                            <p class="card-title">{post.title}</p>
                         </div>
-                        <p class="card-title">{post.title}</p>
-                    </div>
-                </a>
-            </>
-        ))}
+                    </a>
+                </>
+            ))
+        }
     </div>
 </div>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     h2 {
         font-size: 1.25rem;
         padding: 0;
@@ -58,7 +68,7 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
         hr {
             width: 100%;
             border: none;
-            border-top: 1px solid var(--kestra-io-token-color-border-secondary);
+            border-top: $block-border;
             margin: 0;
         }
 
@@ -66,12 +76,16 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
             display: flex;
             gap: 1rem;
             align-items: start;
-            padding: 0.5rem 0;
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            // compensate the padding to get alignment with title
+            margin-left: -0.5rem;
 
             &:hover {
-                background-image: radial-gradient(circle, rgba($primary, 0.3) 0%, #13172500 30%);
-                background-position: -280px center;
-                background-repeat: no-repeat;
+                background-color: var(--ks-background-secondary);
+                .card-title {
+                    color: var(--ks-content-secondary);
+                }
             }
 
             .card-img-left {
@@ -79,7 +93,7 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                 height: 70px;
                 object-fit: cover;
                 border-radius: 0.25rem;
-                border: 1px solid $black-3;
+                border: 1px solid var(--ks-border-secondary);
             }
 
             .card-body {
@@ -90,12 +104,12 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                     font-size: $font-size-xs;
 
                     .card-category {
-                        color: $purple-36;
+                        color: var(--ks-content-link);
                         margin-right: 1rem;
                     }
 
                     .card-date {
-                        color: $white-3;
+                        color: var(--ks-content-tertiary);
                     }
                 }
 

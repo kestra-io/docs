@@ -5,6 +5,7 @@ date: 2026-01-06T13:00:00
 category: Solutions
 author:
   name: Rok Grabnar
+  linkedin: https://www.linkedin.com/in/rok-grabnar-a5050790/
   image: rgrabnar
   role: Analytics Engineer
 image: ./main.png
@@ -130,7 +131,7 @@ namespace: monitors
 
 tasks:
   - id: data
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ render(namespace.slack.webhook) }}"
     channel: "#data-alerts"
     username: "Kestra Monitor"
@@ -139,7 +140,7 @@ tasks:
     runIf: "{{ trigger.namespace | startsWith('data') }}"
 
   - id: product
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ render(namespace.slack.webhook) }}"
     channel: "#product-alerts"
     username: "Kestra Monitor"

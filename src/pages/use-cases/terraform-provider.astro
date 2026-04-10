@@ -1,36 +1,118 @@
 ---
 import Layout from "~/components/layout.astro"
-import TerraformHeader from "~/components/use-cases/terraform-provider/Header.vue"
-import TerraformOverview from "~/components/use-cases/terraform-provider/Overview.vue"
-import TerraformUseCases from "~/components/use-cases/terraform-provider/UseCases.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import LifecycleLayout from "~/components/layout/Lifecycle.astro"
+
+import visualHero from "~/assets/use-cases/terraform-provider/terraform-hero.webp"
+import nativeExecution1 from "~/assets/use-cases/terraform-provider/native-execution-1.webp"
+import nativeExecution2 from "~/assets/use-cases/terraform-provider/native-execution-2.webp"
 
 const title =
     "Kestra Terraform Provider: Deploy All Your Workflows in a CI/CD Process"
 const description =
     "Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations."
+
+const MAIN_ITEMS = [
+    {
+        icon: "mdi:rocket-launch-outline",
+        title: "Simplified Deployment",
+        description:
+            "You can manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations.",
+    },
+    {
+        icon: "mdi:camera-control",
+        title: "Centralized Management",
+        description:
+            "The Terraform Provider allows you to manage your Kestra resources in code, along with other infrastructure components, all from a single platform.",
+    },
+    {
+        icon: "mdi:file-code-outline",
+        title: "Infrastructure as Code",
+        description:
+            "By using Terraform, you benefit from the Infrastructure as Code (IaC) best practices, making it easier to version control, collaborate, and maintain your Kestra configurations.",
+    },
+    {
+        icon: "mdi:connection",
+        title: "API-First Approach",
+        description:
+            "The provider is built on top of Kestra's API, allowing you to programmatically manage all resources, from workflows, namespaces, and secrets, to user management.",
+    },
+]
+
+const FEATURES = [
+    {
+        title: "Declarative Configuration",
+        description:
+            "Terraform uses its HashiCorp Configuration Language (HCL), while Kestra flows are defined in YAML. This alignment in declarative interfaces ensures not only a smooth transition but also makes it easy to use both technologies together.",
+        image: nativeExecution1,
+    },
+    {
+        title: "Modularity in the Infrastructure Management",
+        description:
+            "Kestra's Terraform provider is designed to easily manage all resources using Terraform. This includes, among others, flows, namespace, and user management, as well as secrets. Check the list of available resources in our documentation.",
+        image: nativeExecution2,
+        reverse: true,
+    },
+]
+
+const BENEFITS_CARDS = [
+    {
+        title: "Reliable Deployments with Infrastructure as Code",
+        description:
+            "Combine Kestra's orchestration capabilities with Terraform's infrastructure-as-code model. Provision resources in minutes for consistent, reproducible, and scalable workflows.",
+        link: {
+            href: "/docs/terraform",
+            text: "Learn More",
+        },
+    },
+    {
+        title: "Version Control and Rollback",
+        description:
+            "Incorporating version control systems such as Git is a recommended standard. It enables rollbacks and comprehensive auditing. Terraform additionally helps you version control not only your code but also your infrastructure configuration.",
+    },
+]
+
 ---
 
-<Layout title={title} description={description}>
-    <div class="main bg-dark-4">
-        <TerraformHeader client:load />
-        <TerraformOverview client:visible />
-        <TerraformUseCases client:visible />
-        <LayoutFooterContact
-            client:visible
-            subtitle="Integration between Kestra and Terraform is simple. Add the Kestra provider to your Terraform configuration file to get started."
-            darkButtonText="YouTube playlist"
-            darkButtonHref="https://www.youtube.com/watch?v=tiHa3zucS_Q&list=PLEK3H8YwZn1olYeQ7qbGdY5XQySKCNLUr&ab_channel=Kestra"
-            purpleButtonText="Documentation"
-            purpleButtonHref="/docs/terraform"
-        />
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Deploy All Your Workflows With our Terraform Provider"
+        description="Manage and deploy Kestra workflows directly within your existing Terraform environment, eliminating the need for separate configurations."
+        image={visualHero}
+    />
+    <CardGrid title="Key Features" items={MAIN_ITEMS} />
+    <div class="feat-section">
+        <SectionCard cards={FEATURES} />
     </div>
+    <LifecycleLayout
+        title="<span class='highlight'>Benefits</span> of the Integration"
+        cards={BENEFITS_CARDS}
+    />
+    <PluginsBlock>
+        <Fragment slot="title">
+            Connect Your Entire Tech Stack <br class="d-none d-lg-block" />
+            with Dedicated Plugins
+        </Fragment>
+        <Fragment slot="description">
+            Integrate with your existing technology landscape using Kestra's
+            robust plugin architecture. From databases and cloud services to
+            custom applications, plugins enable you to connect, schedule, and
+            automate your entire tech stack.
+        </Fragment>
+    </PluginsBlock>
+
+    <SeeHow>
+        <Fragment slot="title">Integration between Kestra and Terraform is simple.</Fragment>
+        Add the Kestra provider to your Terraform configuration file to get started.
+    </SeeHow>
 </Layout>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
-    .main {
-        color: $white;
+    .feat-section :global(.section-card) {
+        border-top: $block-border;
     }
 </style>

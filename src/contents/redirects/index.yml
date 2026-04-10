@@ -1,0 +1,10 @@
+- regexp: "/sitemap.xml"
+  to: "/sitemap/index.xml"
+- regexp: "/slack(.*)"
+  to: https://api.kestra.io/v1/communities/slack/redirect
+- regexp: "/terms-and-services"
+  to: "/enterprise-license-agreement"
+- regexp: "/blog"
+  to: "/blogs"
+- regexp: "/changelog"
+  to: "/docs/changelog"

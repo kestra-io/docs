@@ -53,6 +53,7 @@ inputs:
     defaults: 100
     displayName: "An integer input"
 
+
   - id: list_of_int
     type: ARRAY
     itemType: INT
@@ -84,6 +85,7 @@ inputs:
       - VALUE_1
       - VALUE_2
       - VALUE_3
+    required: true
 
   - id: instant
     type: DATETIME
@@ -168,11 +170,11 @@ Here is the list of supported data types:
 - `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2042-12-03`.
 - `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
 - `DURATION`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
-- `FILE`: Either a file uploaded at execution time as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="files"; filename="<input-id>"` (where `<input-id>` is the input name), or a default file referenced via the universal file protocol using `nsfile:///path/to/file` (namespace file) or `file:///path/to/file` (local file from an allowed path). `FILE` type inputs also have the `allowedFileExtensions` property to control which types of files can be uploaded.
+- `FILE`: Either a file uploaded at execution time as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="<input-id>"; filename="<file-name>"` (where `<input-id>` is the input name and `<file-name>` is the original filename of the file being uploaded), or a default file referenced via the universal file protocol using `nsfile:///path/to/file` (namespace file) or `file:///path/to/file` (local file from an allowed path). `FILE` type inputs also have the `allowedFileExtensions` property to control which types of files can be uploaded.
 - `JSON`: Must be a valid JSON string and will be converted to a typed form.
 - `YAML`: Must be a valid YAML string.
 - `URI`: Must be a valid URI and will be kept as a string.
-- `SECRET`: Encrypted string stored in the database. It is decrypted at runtime and can be used in all tasks. The value of a `SECRET` input is masked in the UI and in the execution context. Note that you need to set the [encryption key](../../configuration/index.md#encryption) in your [Kestra configuration](../../configuration/index.md) before using it.
+- `SECRET`: Encrypted string stored in the database. It is decrypted at runtime and can be used in all tasks. The value of a `SECRET` input is masked in the UI and in the execution context. Note that you need to set the [encryption key](../../configuration/05.security-and-secrets/index.md) in your [Kestra configuration](../../configuration/index.mdx) before using it.
 - `ARRAY`: Must be a valid JSON array or a YAML list. The `itemType` property is required to ensure validation of the type of the array items.
 
 All `FILE` inputs are automatically uploaded to Kestra's [internal storage](../../08.architecture/data-components/index.md#internal-storage) and accessible to all tasks. After the upload, the input variable will contain a fully qualified URL of the form `kestra:///.../.../` that will be automatically managed by Kestra and can be used as-is within any task.
@@ -215,14 +217,14 @@ namespace: company.team
 inputs:
   - id: age
     type: INT
-    defaults: 42
+    prefill: 42
     required: false
     min: 18
     max: 64
 
   - id: user
     type: STRING
-    defaults: student
+    prefill: student
     required: false
     validator: ^student(\d+)?$
 

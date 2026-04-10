@@ -5,6 +5,7 @@ date: 2025-10-01T15:00:00
 category: News & Product Updates
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: bpimpaud
 image: ./main.jpg
 ---

@@ -24,6 +24,20 @@ To help track where files are stored, the task runner creates a unique folder fo
 
 Because Cloud Run environments are ephemeral, tasks run in the root directory instead of the working directory. Therefore, use the `{{ workingDir }}` Pebble expression or the `WORKING_DIR` environment variable to access your input or namespace files.
 
+## Minimum permissions required
+
+The service account used by Kestra must be able to create Cloud Run jobs, view logs, and access the Cloud Storage bucket used for staging files.
+
+Grant the following IAM roles to the Kestra service account:
+
+- **Cloud Run Developer**
+- **Logs Viewer**
+- **Storage Admin** if you use `inputFiles`, `outputFiles`, or `namespaceFiles` with a `bucket`
+
+If Cloud Run jobs execute as the Compute Engine default service account, also grant the Kestra service account the **Service Account User** role on that service account.
+
+These are the minimum roles required to create and monitor Cloud Run jobs with the task runner.
+
 :::alert{type="warning"}
 ### Note on termination behavior
 - If the Kestra Worker running this task is terminated, the Cloud Run job continues to run until completion. This prevents interruptions due to Worker crashes.

@@ -11,7 +11,7 @@ This reference maps each RBAC Permission and Action to the Enterprise API endpoi
 
 ## How to read this page
 - Endpoints are grouped by Permission and CRUD Action.
-- Notes labeled "any action" mean the endpoint only checks that the Permission exists on the role.
+- Endpoints marked with "any action" are accessible to any user who has the permission, regardless of which CRUD action (CREATE, READ, UPDATE, or DELETE) is assigned.
 - Some endpoints require multiple permissions; notes call out additional checks.
 - Namespace bindings apply to the namespace and all child namespaces.
 

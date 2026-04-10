@@ -18,6 +18,10 @@ Integrate external secrets managers in a read-only mode.
 When integrating an external [secrets manager](../secrets-manager/index.md) with Kestra, you may want to ensure that those secrets cannot be modified within Kestra, maintaining immutability.
 Currently, read-only secrets can be configured for [AWS Secret Manager](../secrets-manager/index.md#aws-secrets-manager-configuration), [Azure Key Vault](../secrets-manager/index.md#azure-key-vault-configuration), [Google Secret Manager](../secrets-manager/index.md#google-secret-manager-configuration), and [Vault](../secrets-manager/index.md#vault-configuration).
 
+:::alert{type="info"}
+Need short-lived tokens while keeping secrets immutable? Use a [Credential](../../03.auth/credentials/index.md); it mints tokens from your read-only secrets and surfaces them at runtime via `credential()`.
+:::
+
 ## Configure read-only secrets
 
 Read-only secrets can be configured globally in the configuration file as well as enabled from the UI at the [Tenant](../tenants/index.md) and the [Namespace](../../../05.workflow-components/02.namespace/index.md) level.
@@ -97,7 +101,7 @@ With [Vault](../secrets-manager/index.md#vault-configuration), secrets are store
 
 Here’s an example directory structure of a Vault secret engine used with Kestra:
 
-```
+```plaintext
 secret/
   ├── app1/
   │   ├── db/ <-- SECRET
@@ -115,7 +119,7 @@ secret/
 - `db`, `api`, and `config`: These are the secret names visible in the Kestra UI. `api` could be the Vault Secret that contains all API Keys for an application's external services.
 - `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `keys`, `API_TOKEN`: These are the `subkey` key value pairs that can be used in a Kestra flow.
 
-To configure access to secrets under `app1`, use the following [Kestra configuration](../../../configuration/index.md) with the added property `secret-path-prefix`:
+To configure access to secrets under `app1`, use the following [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) with the added property `secret-path-prefix`:
 
 ```yaml
 address: https://my-vault:8200/

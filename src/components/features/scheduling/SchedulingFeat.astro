@@ -1,0 +1,217 @@
+---
+import { Icon } from "astro-icon/components"
+import SectionCard from "~/components/layout/SectionCard.astro"
+
+import centralizedControl from "~/assets/landing/features/scheduling/centralized_control.webp"
+import eventDriven from "~/assets/landing/features/scheduling/event_driven.webp"
+import everythingAsCode from "~/assets/landing/features/scheduling/everything_as_code.webp"
+
+const FEATURES = [
+    {
+        title: "Centralized Control",
+        description:
+            "Kestra serves as a unified platform that allows you to automate and schedule tasks across a wide range of business-critical systems. From CRM and ERP to Big Data and Business Intelligence, Kestra ensures that all your systems work together seamlessly, requiring minimal human intervention.",
+        image: centralizedControl,
+    },
+    {
+        title: "Event-Driven Workflows Without Spaghetti Code",
+        description:
+            "Whether you're looking to trigger flows based on the results of other flows, file detection from various sources like SFTP or Google Cloud Storage, or even the outcomes of SQL queries, Kestra offers a versatile set of triggers to meet all your automation needs.",
+        image: eventDriven,
+        reverse: true,
+    },
+    {
+        title: "Everything as Code",
+        description:
+            "Manage your resources programmatically, ensuring reproducibility, version control, and seamless collaboration.",
+        image: everythingAsCode,
+    },
+]
+---
+
+<section class="scheduling-feat">
+    <div class="container">
+        <div class="diagram-wrapper">
+            <div class="icon-box">
+                <svg
+                    class="icon"
+                    viewBox="0 0 39 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M9.556 16.8097L3.65322e-05 10.6206V8.09545L9.556 1.90636V5.19896L2.99556 9.30852V9.40754L9.556 13.5171V16.8097ZM13.8044 21.5382L21.9493 0.000114927H24.9943L16.8495 21.5382H13.8044ZM29.2427 16.8097V13.5171L35.8032 9.40754V9.30852L29.2427 5.19896V1.90636L38.7987 8.09545V10.6206L29.2427 16.8097Z"
+                        fill="currentColor"></path>
+                </svg>
+            </div>
+            <div class="arrow"></div>
+            <div class="icon-box">
+                <Icon name="mdi:calendar-clock" class="icon" />
+            </div>
+            <div class="arrow"></div>
+            <div class="sync-box">
+                <svg
+                    class="sync-icon"
+                    viewBox="0 0 110 109"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <g filter="url(#filter0_d_25313_12582)">
+                        <path
+                            d="M67.9339 59.1057V66.79H79.1444C73.8281 75.9726 63.8889 82.1584 52.5243 82.1584C38.1934 82.1584 26.1354 72.3226 22.7068 59.1057H14.7708C18.3536 76.6258 33.8787 89.8427 52.5243 89.8427C65.1216 89.8427 76.3321 83.7721 83.3435 74.4358V82.1584H91.0483V59.1057H67.9339Z"
+                            fill="currentColor"></path>
+                        <path
+                            d="M37.1144 43.737V36.0527H25.9039C31.2202 26.8701 41.1594 20.6842 52.524 20.6842C66.8549 20.6842 78.9129 30.5201 82.3415 43.737H90.2774C86.6947 26.2169 71.1695 13 52.524 13C39.9266 13 28.7162 19.0706 21.7048 28.4069V20.6842H14V43.737H37.1144Z"
+                            fill="currentColor"></path>
+                    </g>
+                    <defs>
+                        <filter
+                            id="filter0_d_25313_12582"
+                            x="0"
+                            y="0"
+                            width="109.048"
+                            height="108.843"
+                            filterUnits="userSpaceOnUse"
+                            color-interpolation-filters="sRGB"
+                        >
+                            <feFlood
+                                flood-opacity="0"
+                                result="BackgroundImageFix"></feFlood>
+                            <feColorMatrix
+                                in="SourceAlpha"
+                                type="matrix"
+                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                result="hardAlpha"></feColorMatrix>
+                            <feOffset dx="2" dy="3"></feOffset>
+                            <feGaussianBlur stdDeviation="8"></feGaussianBlur>
+                            <feComposite in2="hardAlpha" operator="out"
+                            ></feComposite>
+                            <feColorMatrix
+                                type="matrix"
+                                values="0 0 0 0 0.224831 0 0 0 0 0.32277 0 0 0 0 0.947134 0 0 0 0.1 0"
+                            ></feColorMatrix>
+                            <feBlend
+                                mode="normal"
+                                in2="BackgroundImageFix"
+                                result="effect1_dropShadow_25313_12582"
+                            ></feBlend>
+                            <feBlend
+                                mode="normal"
+                                in="SourceGraphic"
+                                in2="effect1_dropShadow_25313_12582"
+                                result="shape"></feBlend>
+                        </filter>
+                    </defs>
+                </svg>
+                <Icon name="mdi:settings" class="cogs-icon" />
+                <Icon name="mdi:settings" class="cogs-icon" />
+            </div>
+        </div>
+        <h2>Build, Schedule, and Automate All Your Workflows</h2>
+        <p>
+            Kestra simplifies your scheduling and automation tasks through its
+            declarative language, making workflow management straightforward.
+            Build to meet the high standards of software engineers, it's
+            designed to be user-friendly for both engineers and business
+            stakeholders.
+        </p>
+        <SectionCard cards={FEATURES} />
+    </div>
+</section>
+
+<style lang="scss">
+    .scheduling-feat {
+        background-color: var(--ks-background-body);
+        padding-bottom: 4rem;
+
+        .container {
+            padding-top: 3rem;
+            margin: 0 auto;
+
+            .diagram-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.25rem;
+                margin: 2rem 0;
+
+                .icon-box {
+                    width: 77px;
+                    height: 72px;
+                    background: var(--ks-background-primary);
+                    border: 1px solid var(--ks-border-primary);
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0px 4px 12px var(--ks-shadows-light);
+
+                    .icon {
+                        width: 36px;
+                        height: 36px;
+                        color: var(--ks-content-primary);
+                    }
+                }
+
+                .arrow {
+                    width: 52px;
+                    height: 2px;
+                    background-color: var(--bs-primary);
+                    position: relative;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        right: -2px;
+                        top: -4px;
+                        border-top: 5px solid transparent;
+                        border-bottom: 5px solid transparent;
+                        border-left: 6px solid var(--bs-primary);
+                    }
+                }
+
+                .sync-box {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+
+                    .sync-icon {
+                        width: 110px;
+                        height: 110px;
+                        color: var(--ks-content-color-highlight);
+                    }
+
+                    .cogs-icon {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        color: var(--ks-content-primary);
+
+                        &:nth-of-type(2) {
+                            width: 1.5rem;
+                            height: 1.5rem;
+                            transform: translate(-80%, -20%) rotate(-10deg);
+                        }
+
+                        &:nth-of-type(3) {
+                            width: 1.5rem;
+                            height: 1.5rem;
+                            transform: translate(-20%, -80%) rotate(20deg);
+                        }
+                    }
+                }
+            }
+
+            h2,
+            p {
+                text-align: center;
+                margin: 1rem auto;
+            }
+
+            p {
+                max-width: $container-max-width;
+            }
+        }
+    }
+</style>

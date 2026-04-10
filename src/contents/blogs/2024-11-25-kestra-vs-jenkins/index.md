@@ -5,6 +5,7 @@ date: 2024-11-25T18:00:00
 category: Solutions
 author:
   name: Will Russell
+  linkedin: https://www.linkedin.com/in/wrussell1999/
   image: "wrussell"
 image: ./main.jpg
 ---
@@ -111,7 +112,7 @@ tasks:
           - pytest demos/jenkins-vs-kestra/1-tests
 
   - id: slack
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
 
@@ -293,7 +294,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{ trigger.executionId }}"

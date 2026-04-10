@@ -103,7 +103,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{secret('SLACK_WEBHOOK')}}"
     messageText: "SLA breached for flow `{{trigger.namespace}}.{{trigger.flowId}}` with ID `{{trigger.executionId}}`"
 

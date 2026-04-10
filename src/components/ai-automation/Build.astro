@@ -1,0 +1,498 @@
+---
+import Link from "~/components/common/Link.astro"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import Snippets from "~/components/common/Snippets.vue"
+
+const TABS = [
+    {
+        name: "RAG pipeline",
+        title: "Search your own data with Elasticsearch and OpenAI.",
+        description:
+            "Retrieve relevant documents, build context, generate grounded answers. No hallucinations, no glue code.",
+        code: `
+id: chat-with-your-data
+namespace: company.team
+
+inputs:
+  - id: question
+    type: STRING
+    defaults: How do I join the course after it has started?
+  - id: select_a_zoomcamp
+    type: SELECT
+    defaults: data-engineering-zoomcamp
+    values:
+      - data-engineering-zoomcamp
+      - machine-learning-zoomcamp
+      - data-science-zoomcamp
+
+tasks:
+  - id: search
+    type: io.kestra.plugin.elasticsearch.Search
+    connection:
+      hosts:
+        - http://localhost:9200/
+    indexes:
+      - course_questions
+    request:
+      size: 5
+      query:
+        bool:
+          must:
+            multi_match:
+              query: "{{ inputs.question }}"
+              fields:
+                - question
+                - text
+                - section
+              type: best_fields
+          filter:
+            term:
+              course: "{{ inputs.select_a_zoomcamp }}"
+
+  - id: context_template
+    type: io.kestra.plugin.core.debug.Return
+    format: |
+      {% for row in outputs.search.rows %}
+        Section: {{ row.section }}
+        Question: {{ row.question }}
+        Text: {{ row.text }}
+      {% endfor %}
+
+  - id: generate_response
+    type: io.kestra.plugin.openai.ChatCompletion
+    apiKey: sk-proj-your-OpenAI-API-KEY
+    model: gpt-4o
+    maxTokens: 500
+    prompt: |
+      You're a course teaching assistant. 
+
+      Answer the user QUESTION based on CONTEXT - the documents retrieved from
+      our FAQ database. 
+
+      Only use the facts from the CONTEXT. 
+
+      If the CONTEXT doesn't contain the answer, return "NONE".
+      QUESTION: {{ inputs.question }}
+      CONTEXT: {{ outputs.context_template.value }}
+
+  - id: log_output
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.generate_response.choices | jq('.[].message.content') |
+      first }}"
+`,
+        plugins: [
+            { cls: "io.kestra.plugin.elasticsearch.Search" },
+            { cls: "io.kestra.plugin.core.debug.Return" },
+            { cls: "io.kestra.plugin.openai.ChatCompletion" },
+            { cls: "io.kestra.plugin.core.log.Log" },
+        ],
+        href: "/blueprints/chat-with-your-data",
+    },
+    {
+        name: "Content automation",
+        title: "Classify customer messages with HuggingFace Inference API.",
+        description:
+            "Fetch from Postgres, classify with an ML model, write the result back. The fetch-process-store pattern in three tasks.",
+        code: `
+id: huggingface_message_classification
+namespace: blueprint
+
+inputs:
+  - id: message_id
+    type: STRING
+
+tasks:
+  - id: retrieve_data
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: SELECT user_id, message FROM customer.message WHERE message_id = '{{
+      inputs.message_id }}'
+    fetchType: FETCH_ONE
+
+  - id: classification
+    type: io.kestra.plugin.huggingface.Inference
+    model: facebook/bart-large-mnli
+    apiKey: "{{ secret('HUGGINGFACE_API_KEY') }}"
+    inputs: "{{ json(outputs.retrieve_data.row).message }}"
+    parameters:
+      candidate_labels:
+        - "support"
+        - "warranty"
+        - "upsell"
+        - "help"
+
+  - id: insert_category
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: UPDATE customer.message SET category = '{{
+      json(outputs.classification.output).labels[0] }}' WHERE message_id = '{{
+      inputs.message_id }}'
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: jdbc:postgresql://"{{secret('POSTGRES_HOST')}}"
+      username: "{{secret('POSTGRES_USERNAME')}}"
+      password: "{{secret('POSTGRES_PASSWORD')}}"
+`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.huggingface.Inference" },
+        ],
+        href: "/blueprints/huggingface_message_classification",
+    },
+    {
+        name: "AI agents",
+        title: "Chain AI agents for multilingual text summarization.",
+        description:
+            "Configurable length and language, strict output constraints, chained agents for post-processing.",
+        code: `
+id: agent-text-summarizer
+namespace: company.ai
+
+inputs:
+  - id: summary_length
+    displayName: Summary Length
+    type: SELECT
+    defaults: medium
+    values:
+      - short
+      - medium
+      - long
+
+  - id: language
+    displayName: Language ISO code
+    type: SELECT
+    defaults: en
+    values:
+      - en
+      - fr
+      - de
+      - es
+      - it
+      - ru
+      - ja
+
+  - id: text
+    type: STRING
+    displayName: Text to summarize
+    defaults: |
+      Kestra is an open-source orchestration platform that:
+      - Allows you to define workflows declaratively in YAML
+      - Allows non-developers to automate tasks with a no-code interface
+      - Keeps everything versioned and governed, so it stays secure and auditable
+      - Extends easily for custom use cases through plugins and custom scripts.
+      Kestra follows a "start simple and grow as needed" philosophy. You can schedule a basic workflow in a few minutes, then later add Python scripts, Docker containers, or complicated branching logic if the situation calls for it.
+
+tasks:
+  - id: multilingual_agent
+    type: io.kestra.plugin.ai.agent.AIAgent
+    systemMessage: |
+      You are a precise technical assistant.
+      Produce a {{ inputs.summary_length }} summary in {{ inputs.language }}.
+      Keep it factual, remove fluff, and avoid marketing language.
+      If the input is empty or non-text, return a one-sentence explanation.
+      Output format:
+      - 1-2 sentences for 'short'
+      - 2-5 sentences for 'medium'
+      - Up to 5 paragraphs for 'long'
+    prompt: |
+      Summarize the following content: {{ inputs.text }}
+
+  - id: english_brevity
+    type: io.kestra.plugin.ai.agent.AIAgent
+    prompt: Generate exactly 1 sentence English summary of "{{
+      outputs.multilingual_agent.textOutput }}"
+
+pluginDefaults:
+  - type: io.kestra.plugin.ai.agent.AIAgent
+    values:
+      provider:
+        type: io.kestra.plugin.ai.provider.GoogleGemini
+        modelName: gemini-2.5-flash
+        apiKey: "{{ kv('GEMINI_API_KEY') }}"
+        configuration:
+          logRequests: true
+          logResponses: true
+          responseFormat:
+            type: TEXT
+`,
+        plugins: [
+            { cls: "io.kestra.plugin.ai.agent.AIAgent" },
+            { cls: "io.kestra.plugin.ai.provider.GoogleGemini" },
+        ],
+        href: "/blueprints/agent-text-summarizer",
+    },
+]
+---
+
+<section class="build">
+    <div class="container">
+        <h2>What engineers <span class="highlight">build</span> with Kestra</h2>
+        <div class="wrapper">
+            <div class="inner">
+                <div class="header row g-0">
+                    {
+                        TABS.map((tab, idx) => (
+                            <div
+                                class:list={[
+                                    "col-4 header-tab",
+                                    {
+                                        active: idx === 0,
+                                        "middle-part":
+                                            idx > 0 && idx < TABS.length - 1,
+                                    },
+                                ]}
+                                data-tab-target={idx}
+                            >
+                                {tab.name}
+                            </div>
+                        ))
+                    }
+                </div>
+
+                {
+                    TABS.map((tab, idx) => (
+                        <div
+                            class:list={["content", { active: idx === 0 }]}
+                            data-tab-content={idx}
+                        >
+                            <div class="panel panel-1">
+                                <Snippets
+                                    client:idle
+                                    code={tab.code}
+                                    lang="yaml"
+                                />
+                            </div>
+                            <div class="panel panel-2">
+                                <h3 data-usal="fade-r">{tab.title}</h3>
+                                <p data-usal="fade-l">{tab.description}</p>
+                                <div class="plugins" data-usal="zoomin">
+                                    {tab.plugins.map((plugin) => (
+                                        <div class="plugin-icon">
+                                            <TaskIcon cls={plugin.cls} />
+                                        </div>
+                                    ))}
+                                </div>
+                                <Link
+                                    class="goto"
+                                    href={tab.href}
+                                    data-usal="fade-r"
+                                >
+                                    See the Full Agent Blueprint
+                                </Link>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .build {
+        padding: 5.625rem 0;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: $rem-2;
+                padding-inline: $rem-1;
+
+                @include media-breakpoint-up(xl) {
+                    padding-inline: 0;
+                }
+            }
+
+            .wrapper {
+                border: 1px solid var(--ks-border-primary);
+                box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+                border-radius: 13px;
+
+                @include media-breakpoint-down(xl) {
+                    border-radius: 0;
+                }
+
+                .inner {
+                    border-radius: $rem-1;
+                    background: var(--ks-background-primary-inverse);
+                    overflow: clip;
+
+                    @include media-breakpoint-down(xxl) {
+                        border-radius: 0;
+                    }
+
+                    .header {
+                        border-bottom: 1px solid
+                            var(--ks-border-secondary-inverse);
+
+                        & > div {
+                            padding: 1.1875rem $rem-2;
+                            font-size: $font-size-md;
+                            color: var(--ks-content-secondary-inverse);
+                            text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition:
+                                background-color 0.2s,
+                                color 0.2s,
+                                border-color 0.2s;
+                            
+                                @include media-breakpoint-down(sm) {
+                                    font-size: $font-size-sm;
+                                }
+
+                            &.active {
+                                background: var(
+                                    --ks-background-secondary-inverse
+                                );
+                                border-bottom: 1px solid var(--ks-border-active);
+                                color: var(--ks-content-primary-inverse);
+                                font-weight: 600;
+                            }
+                        }
+
+                        & .middle-part {
+                            border-left: 1px solid
+                                var(--ks-border-primary-inverse);
+                            border-right: 1px solid
+                                var(--ks-border-primary-inverse);
+                        }
+                    }
+
+                    .content {
+                        display: none;
+                        flex-direction: row;
+                        gap: $rem-2;
+                        padding: $rem-2;
+                        justify-content: center;
+
+                        &.active {
+                            display: flex;
+                        }
+
+                        @include media-breakpoint-down(xl) {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        @include media-breakpoint-down(sm) {
+                            padding: $rem-2 $rem-1;
+                        }
+
+                        .panel {
+                            border-radius: 0.5rem;
+                            flex-shrink: 0;
+
+                            &.panel-1 {
+                                width: 39.4375rem;
+
+                                @include media-breakpoint-down(xl) {
+                                    width: 100%;
+                                }
+
+                                :global(.code-card) {
+                                    border: 1px solid
+                                        var(--ks-border-secondary-inverse);
+                                    background: var(--ks-background-input);
+                                    height: 100%;
+
+                                    :global(.code-inner) {
+                                        transition: max-height 0.3s ease;
+                                    }
+
+                                    :global(.mdc-renderer pre) {
+                                        padding: 0 1rem 1rem 1rem;
+                                    }
+
+                                    &:global(:not(.is-expanded)) {
+                                        :global(.code-inner) {
+                                            max-height: 27.9375rem !important;
+                                        }
+                                    }
+                                }
+                            }
+
+                            &.panel-2 {
+                                position: relative;
+                                padding-top: $rem-2;
+                                color: var(--ks-content-primary-inverse);
+                                width: 27.5625rem;
+
+                                @include media-breakpoint-down(xl) {
+                                    width: 100%;
+                                    padding-top: 0;
+                                }
+
+                                p {
+                                    font-size: $font-size-lg;
+                                    margin-top: $rem-1;
+                                    margin-bottom: $rem-2;
+                                }
+
+                                .plugins {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    flex-wrap: wrap;
+
+                                    .plugin-icon {
+                                        width: 2.125rem;
+                                        height: 2.125rem;
+                                        padding: 0.375rem;
+                                        background: $white;
+                                        border: $block-border;
+                                        border-radius: $border-radius;
+                                    }
+                                }
+                                .goto {
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    color: var(--ks-content-link-inverse);
+
+                                    @include media-breakpoint-down(xl) {
+                                        position: relative;
+                                        margin-top: $rem-3;
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(".build .inner")) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(
+                    ".header-tab",
+                ) as HTMLElement
+                const target =
+                    tab &&
+                    (container as Element).querySelector(
+                        `[data-tab-content="${tab.dataset.tabTarget}"]`,
+                    )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(
+                    ".header-tab, .content",
+                )) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+    })
+</script>

@@ -12,7 +12,7 @@ Schedule flows using cron expressions.
 The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Schedule"
+type: io.kestra.plugin.core.trigger.Schedule
 ```
 
 Kestra can trigger flows on a defined schedule. If you need to wait for another system to be ready and no event mechanism is available, you can configure one or more time-based schedules for your flow.
@@ -28,11 +28,11 @@ To avoid unexpected differences, keep your Kestra server and database timezones 
 ## Cron extension
 
 Kestra supports the following cron extensions instead of writing a cron expression:
-- `@yearly` and `@annually` - runs yearly on 1st January at 00:00
-- `@monthly` - runs monthly on the 1st at 00:00
-- `@weekly` - runs weekly on Sunday at 00:00
-- `@daily` and `@midnight` - runs at 00:00 every day
-- `@midnight` - runs at 00:00 every day
+- `@yearly` and `@annually` - runs yearly on 1st January at `00:00`
+- `@monthly` - runs monthly on the 1st at `00:00`
+- `@weekly` - runs weekly on Sunday at `00:00`
+- `@daily` and `@midnight` - runs at `00:00` every day
+- `@midnight` - runs at `00:00` every day
 - `@hourly` - runs every hour, on the hour
 
 ## Examples
@@ -69,6 +69,21 @@ triggers:
     cron: "@daily"
     timezone: America/New_York
 ```
+
+Schedule that runs on the last day of month:
+
+The Schedule trigger also supports `L` in the day-of-month field to represent the last day of the month.
+
+For example:
+
+```yaml
+triggers:
+  - id: month_end
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 12 L * *"
+```
+
+This runs at `12:00` on the last day of every month, including shorter months like February.
 
 :::alert{type="warning"}
 Schedules cannot **overlap**, meaning concurrent schedule executions are not allowed. If the previous schedule is not ended when the next one must start, the scheduler will wait until the end of the previous one. The same applies during backfills.
@@ -249,7 +264,7 @@ namespace: system
 tasks:
   - id: send_alert
     runIf: "{{ trigger.data }}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://kestra.io/api/mock
     messageText: The following Schedule triggers seem unhealthy {{ trigger.data }}
 

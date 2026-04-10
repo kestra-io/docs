@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5 pt-5">
+    <div class="container my-5 pt-5">
         <div class="row mt-5">
             <div class="col-md-12 col-lg-7">
                 <h2>
@@ -228,9 +228,11 @@
             position: relative;
             padding: 60px 40px 0 40px;
             border-radius: 16px;
-            background-color: white;
+            background-color: var(--ks-background-artwork);
+            border: 1px solid #202124;
             label:not(.form-check-label) {
                 font-weight: 600;
+                color: #fff;
             }
             &::after {
                 @media (min-width: 992px) {

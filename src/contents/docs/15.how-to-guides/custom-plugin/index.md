@@ -10,8 +10,6 @@ description: Learn how to build, package, and test a custom Kestra plugin in Jav
 
 Build your own Custom Plugin for Kestra.
 
-## Build a Custom Plugin for Kestra
-
 In this tutorial, we will be building a custom plugin in Kestra.
 
 ## Use-case for Custom Plugin
@@ -258,7 +256,7 @@ To build your plugin, execute the `./gradlew shadowJar` command from the plugin 
 
 The resulting JAR file will be generated in the `build/libs` directory.
 
-To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../server-cli/index.md#plugin-commands).
+To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../kestra-cli/kestra-server/index.md#plugin-commands).
 
 ## Writing unit tests
 
@@ -401,7 +399,7 @@ Now that the plugin is developed and tested, its time to see the plugin in actio
 
 Add this `Dockerfile` to the root of your plugin project:
 
-```
+```dockerfile
 FROM kestra/kestra:develop
 
 COPY build/libs/* /app/plugins/

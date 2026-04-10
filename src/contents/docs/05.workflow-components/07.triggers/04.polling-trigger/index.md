@@ -56,7 +56,7 @@ id: salesforce_contact_trigger
 namespace: company.sales
 tasks:
   - id: notify_sales_manager
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "New contact created"
 

@@ -92,12 +92,9 @@ const newsItems = [
 </div>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-    $white-color: #f0f0f0;
-
     .container {
         max-width: 100%;
-        background-color: $white;
+        background-color: var(--ks-background-body);
         padding: 5rem 1rem;
 
         @include media-breakpoint-up(sm) {
@@ -140,17 +137,17 @@ const newsItems = [
 
         @media (max-width: 767px) {
             &:not(:first-child) {
-                border-top: 1px solid $white-color;
+                border-top: 1px solid var(--ks-border-primary);
             }
         }
 
         @media (min-width: 768px) and (max-width: 1199px) {
             &:nth-child(odd) {
-                border-right: 1px solid $white-color;
+                border-right: 1px solid var(--ks-border-primary);
             }
 
             &:not(:first-child):not(:nth-child(2)) {
-                border-top: 1px solid $white-color;
+                border-top: 1px solid var(--ks-border-primary);
             }
         }
 
@@ -158,13 +155,13 @@ const newsItems = [
             &:nth-child(1),
             &:nth-child(2),
             &:nth-child(3) {
-                border-bottom: 1px solid $white-color;
+                border-bottom: 1px solid var(--ks-border-primary);
             }
 
             &:nth-child(2),
             &:nth-child(5) {
-                border-left: 1px solid $white-color;
-                border-right: 1px solid $white-color;
+                border-left: 1px solid var(--ks-border-primary);
+                border-right: 1px solid var(--ks-border-primary);
             }
         }
 
@@ -200,7 +197,7 @@ const newsItems = [
             font-size: $font-size-md;
             line-height: 1.4;
             margin: 0;
-            color: $black-10;
+            color: var(--ks-content-tertiary);
         }
     }
 
@@ -223,15 +220,16 @@ const newsItems = [
     }
 
     .card-category {
-        color: $black-2;
+        color: var(--ks-content-primary);
         font-size: $font-size-sm;
+
         line-height: 1.4;
     }
 
     .card-title {
         font-size: $font-size-lg;
         font-weight: 600;
-        color: $black-2;
+        color: var(--ks-content-primary);
         line-height: 1.4;
     }
 </style>

@@ -15,9 +15,9 @@ The table below lists the software requirements for Kestra.
 
 ### Java Runtime
 
-| Kestra Edition | Required version | Note                             |
-|----------------|------------------|----------------------------------|
-| Open Source / Enterprise | >= 21 and < 22 | Default: Java 21 (Eclipse Temurin) |
+| Kestra Edition | Required version | Note |
+|----------------|------------------|------|
+| Open Source / Enterprise | Runtime JDK 25; source/target 21 | Default: Java 25 (Eclipse Temurin); compiled with `--release 21` |
 
 ### Queue and Repository
 
@@ -34,6 +34,10 @@ Kestra Enterprise Edition (EE) provides two options:
 | Enterprise        | **Apache Kafka**         | >=3                       |                |
 | Enterprise        | **Elasticsearch**        | >=7                       |                |
 | Enterprise        | **Opensearch**           | >=2                       |                |
+
+:::alert{type="warning"}
+MySQL deployments must have the **time zone tables loaded**. If the time zone data is missing, the scheduler can misfire or skip runs. Follow the MySQL guide to install time zone information to avoid deployment issues: [Time Zone Support → Load the Time Zone Tables](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation).
+:::
 
 ### Internal Storage
 

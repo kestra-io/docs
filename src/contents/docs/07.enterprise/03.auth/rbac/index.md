@@ -40,7 +40,7 @@ e.g., `CREATE`). The **Role** itself does not grant any permissions. Through the
 
 This Binding grants the permissions defined by that Role to the User, Service Account, or Group. Select any IAM entity (User, Group, etc.), and assign the desired Role. There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces; make sure to test their access with the [Impersonate](../rbac/index.md#impersonate) feature.
 
-Once a Role has been created, you can assign that Role to Users and Groups. Optionally, when you assign the Role to an entity (User, Group, or Service Account), you can specify the Binding to a specific Namespace(s). A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a User assigned to a Role specifying the `prod` namespace automatically grants access to the `prod.engineering` namespace as well. Note that you can [configure a default role](../../../configuration/index.md#default-role) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](../sso/index.md).
+Once a Role has been created, you can assign that Role to Users and Groups. Optionally, when you assign the Role to an entity (User, Group, or Service Account), you can specify the Binding to a specific Namespace(s). A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a User assigned to a Role specifying the `prod` namespace automatically grants access to the `prod.engineering` namespace as well. Note that you can [configure a default role](../../../configuration/05.security-and-secrets/index.md) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](../sso/index.md).
 
 ## Impersonate
 
@@ -80,6 +80,8 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 - `TENANT_ACCESS`
 - `INVITATION`
 - `GROUP_MEMBERSHIP`
+- `CREDENTIALS`
+- `AI_COPILOT`
 
 :::alert{type="warning"}
 The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/v0.24.0/endpoint-changes/index.md#rbac-updates)
@@ -143,7 +145,7 @@ This interface invites you to create your first User which will be automatically
 
 ### Through the CLI
 
-To create a User with a Superadmin privilege from the [CLI](../../../server-cli/index.md), use the `--superadmin` option:
+To create a User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the `--superadmin` option:
 
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --superadmin
@@ -173,7 +175,7 @@ kestra:
         - <optional>
 ```
 
-For more details, check the [Enterprise Edition Configuration](../../../configuration/index.md#super-admin) page.
+For more details, check the [Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) page.
 
 ## Grant/Revoke Super Admin permissions
 
@@ -189,7 +191,7 @@ You can grant or revoke the Superadmin privilege using the switch in the User Ed
 
 ### Through the CLI
 
-To set an existing User with a Superadmin privilege from the [CLI](../../../server-cli/index.md), use the dedicated command:
+To set an existing User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the dedicated command:
 
 ```bash
 ## Set a user as Super Admin

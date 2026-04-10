@@ -33,6 +33,7 @@ export default {
         "https://*.hsappstatic.net",
         "https://www.google.com/recaptcha/",
         "https://www.gstatic.com/recaptcha/",
+        "https://jobs.ashbyhq.com/",
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
@@ -55,7 +56,7 @@ export default {
         "https://*.githubusercontent.com/",
     ],
     // forms
-    "form-action": ["'self'", "https://*.hsforms.com"],
+    "form-action": ["'self'", "https://*.hsforms.com", "https://*.hsforms.net"],
     // iframes
     "frame-src": [
         "'self'",
@@ -67,6 +68,9 @@ export default {
         "https://*.arcade.software",
         "https://*.hubspot.com",
         "https://*.hsforms.com",
+        "https://*.hsforms.net",
+        "http://*.hsforms.net",
+        "https://jobs.ashbyhq.com/",
     ],
     "connect-src": [
         "'self'",
@@ -92,6 +96,7 @@ export default {
         "https://*.g.doubleclick.com",
         "https://*.ipify.org",
         "https://*.github.com",
+        "https://jobs.ashbyhq.com/",
     ],
     // workers
     "worker-src": ["'self'", "blob:"],

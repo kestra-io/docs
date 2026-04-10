@@ -109,7 +109,7 @@ securityContext:
 
 If you see errors like:
 
-```text
+```plaintext
 java.io.IOException: com.sun.jna.LastErrorException: [111] Connection refused
 ```
 
@@ -183,7 +183,7 @@ kestra:
       path: /home/kestra/tmp
 ```
 
-Volume example:
+Example volume configuration:
 
 ```yaml
 volumes:

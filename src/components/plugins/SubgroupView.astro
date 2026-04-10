@@ -1,0 +1,93 @@
+---
+import type { Plugin, PluginMetadata } from "@kestra-io/ui-libs"
+import { slugify, subGroupName } from "@kestra-io/ui-libs"
+
+import BlogList from "~/components/common/BlogList.astro"
+import PluginVideos from "~/components/plugins/PluginVideos.astro"
+import PluginDocsFrame from "./PluginDocsFrame.astro"
+import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
+import RelatedBlueprints from "~/components/plugins/blueprints/RelatedBlueprints.astro"
+
+interface Props {
+    pluginsWithoutDeprecated: Plugin[]
+    subGroupsIcons: Record<string, string>
+    pluginName: string
+    subGroup: string | undefined
+    pathname: string
+    subgroupBlueprintCounts: Record<string, number>
+    metadataMap: Record<string, PluginMetadata>
+    elementTitle: Record<string, { title: string | undefined }>
+    currentPluginVideos: string[]
+    rootPlugin: Plugin | undefined
+    currentSubgroupPlugin: Plugin | undefined
+    pluginType: string | undefined
+    blueprintsSectionHeading: { id: string } | undefined
+    relatedBlogs: any[]
+}
+
+const {
+    pluginsWithoutDeprecated,
+    subGroupsIcons,
+    pluginName,
+    subGroup,
+    pathname,
+    subgroupBlueprintCounts,
+    metadataMap,
+    elementTitle,
+    currentPluginVideos,
+    rootPlugin,
+    currentSubgroupPlugin,
+    pluginType,
+    blueprintsSectionHeading,
+    relatedBlogs,
+} = Astro.props
+---
+
+<PluginDocsFrame>
+    <PluginsIndexWrapper
+        plugins={pluginsWithoutDeprecated}
+        icons={subGroupsIcons}
+        {pluginName}
+        {subGroup}
+        routePath={pathname}
+        {subgroupBlueprintCounts}
+        {metadataMap}
+        schemas={elementTitle}
+        client:idle
+    />
+</PluginDocsFrame>
+
+{currentPluginVideos?.length > 0 && <PluginVideos videos={currentPluginVideos} />}
+
+{
+    pluginType == undefined && (
+        <RelatedBlueprints
+            {pluginName}
+            pluginWrapper={rootPlugin}
+            {currentSubgroupPlugin}
+            subGroupName={
+                currentSubgroupPlugin
+                    ? slugify(subGroupName(currentSubgroupPlugin))
+                    : subGroup
+            }
+            {pluginType}
+            customId={blueprintsSectionHeading?.id}
+        />
+    )
+}
+
+{
+    subGroup === undefined && relatedBlogs.length > 0 && (
+        <div class="related-blogs">
+            <BlogList
+                posts={relatedBlogs.map((p) => ({
+                    ...p.data,
+                    path: `/blogs/${p.id}`,
+                    date: p.data.date.toISOString(),
+                }))}
+                title="Latest Blog Posts"
+                headingId="latest-blog-posts"
+            />
+        </div>
+    )
+}

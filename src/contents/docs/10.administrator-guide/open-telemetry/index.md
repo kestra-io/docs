@@ -27,9 +27,12 @@ Starting with version 0.21, Kestra supports all three kinds of telemetry data th
 Exporting trace data in Kestra is currently a Beta feature.
 :::
 
-The first step is to enable distributed traces inside the [Kestra configuration](../../configuration/index.md) file:
+The first step is to enable distributed traces inside the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
 
 ```yaml
+micronaut:
+  otel:
+    enabled: true
 kestra:
   traces:
     root: DEFAULT  # Enable traces inside Kestra flow executions
@@ -121,7 +124,7 @@ kestra:
 
 ## Metrics
 
-To send metrics to an OpenTelemetry-compatible collector, add the following parameters to your [Kestra configuration](../../configuration/index.md) file:
+To send metrics to an OpenTelemetry-compatible collector, add the following parameters to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
 
 ```yaml
 micronaut:
