@@ -65,4 +65,6 @@ If your data engineering manager needs to see the architectural tradeoffs and a 
     <iframe src="https://www.youtube.com/embed/cI_mzTNYiQo" title="Airflow 2 EOL: Upgrade or Migrate? Architectural Tradeoffs and Live DAG Migration Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+---
+
 Either way, make the decision deliberately. EOL is a rare moment when the status quo actually costs you something. Use it.
