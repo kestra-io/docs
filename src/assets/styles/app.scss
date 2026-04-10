@@ -393,16 +393,7 @@ blockquote.blockquote {
 
     &.card-centered {
         text-align: center;
-        background: url("/landing/shadow.svg") no-repeat center center;
         justify-content: center;
-
-        @include media-breakpoint-down(xl) {
-            background-size: contain;
-        }
-
-        @include media-breakpoint-down(lg) {
-            background: none;
-        }
 
         .card-title {
             font-size: $font-size-lg;
