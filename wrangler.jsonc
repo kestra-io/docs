@@ -8,6 +8,7 @@
     "main": "@astrojs/cloudflare/entrypoints/server",
     "compatibility_date": "2026-03-01",
     "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+    "preview_urls": true,
     "routes": [
         {
             "pattern": "kestra.io",
