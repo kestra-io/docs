@@ -42,7 +42,7 @@ jobs:
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
-      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}.docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
+      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
 
     steps:
       - name: Checkout
@@ -95,7 +95,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: "☁️ Cloudflare Worker Preview Deployed!"
           template: |
-            🔗 [${{ format('https://{0}.docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}.docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
+            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
 
   lighthouse:
     name: Lighthouse Benchmark
