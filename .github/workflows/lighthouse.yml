@@ -21,7 +21,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node
         uses: actions/setup-node@v6
@@ -42,7 +42,7 @@ jobs:
       # Fixed artifact name so dawidd6/action-download-artifact can always
       # fetch "the latest baseline from main" in deploy.yml's lighthouse job.
       - name: Upload as baseline artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-baseline-prod
           path: lighthouse-results-prod.json

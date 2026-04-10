@@ -100,13 +100,13 @@ jobs:
 
   lighthouse:
     name: Lighthouse Benchmark
-    if: ${{ startsWith(github.repository, 'kestra-io/') }}
+    if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request' }}
     needs: truncate-url-slug
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node
         uses: actions/setup-node@v6
@@ -183,7 +183,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload results as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-results
           path: lighthouse-results.json
