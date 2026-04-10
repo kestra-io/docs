@@ -38,8 +38,7 @@ export default defineConfig({
     ],
 
     webServer: {
-        command:
-            "NO_IMAGE_OPTIM=true DISABLE_USAL=true DISABLE_GITHUB=true PREVIEW=true NO_RANDOM_ORDER=true npm run preview",
+        command: "npm run wrangler dev --port 8787",
         url: "http://localhost:8787",
         reuseExistingServer: !process.env.CI,
         timeout: 400_001,
