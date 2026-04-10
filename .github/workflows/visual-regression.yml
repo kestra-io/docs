@@ -30,6 +30,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build the site
+        run: npm run build
+        env:
+          NO_IMAGE_OPTIM: "true"
+          DISABLE_USAL: "true"
+          DISABLE_GITHUB: "true"
+          PREVIEW: "true"
+          NO_RANDOM_ORDER: "true"
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
@@ -67,7 +76,7 @@ jobs:
                 ? `Playwright report artifact: ${artifactUrl}`
                 : "Open this workflow run and download the visual-regression-report artifact from the Artifacts section.",
               "",
-              "To accept the updated visuals, click Accept, select the PR branch, set `update_snapshots=true`, and run the workflow.",
+              "To accept the updated visuals, click Accept, select the PR branch, and run the workflow.",
               "",
               `[Accept](${workflowUrl})`,
             ].join("\n");
