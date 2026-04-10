@@ -1,0 +1,272 @@
+---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+import define from "./assets/define.png"
+import simplified from "./assets/simplified.png"
+import interactive from "./assets/interactive.png"
+import think from "./assets/think.png"
+import langs from "./assets/langs.png"
+import reusable from "./assets/reusable.png"
+import flexible from "./assets/flexible.png"
+import longrunning from "./assets/longrunning.png"
+import ondemand from "./assets/ondemand.png"
+import full from "./assets/full.png"
+import timeline from "./assets/timeline.png"
+import output from "./assets/output.png"
+
+interface Feature {
+    id: string
+    title: string
+    description: string
+    image?: ImageMetadata
+}
+
+interface Section {
+    id: string
+    title: string
+    description: string
+    mainFeature: Feature
+    subFeatures: Feature[]
+}
+
+const WORKFLOW_SECTIONS: Section[] = [
+    {
+        id: "definition",
+        title: "Define Workflows Your Way",
+        description:
+            "Whether you prefer YAML, or a visual approach, you have everything you need to rapidly outline and orchestrate every step.",
+        mainFeature: {
+            id: "main-def",
+            title: "Everything As Code and From the UI",
+            description:
+                "Create workflows both from the interface or version control. Navigate between code and visual to fit your preferred workflow.",
+            image: define,
+        },
+        subFeatures: [
+            {
+                id: "simplified",
+                title: "Simplified Workflow Definition",
+                description:
+                    "Use simple declarative YAML syntax to define complex workflows without boilerplate code or custom wrappers.",
+                image: simplified,
+            },
+            {
+                id: "interactive",
+                title: "Interactive Topology View",
+                description:
+                    "Visualize workflow logic via a graphical representation of your workflow structure and dependencies between tasks.",
+                image: interactive,
+            },
+        ],
+    },
+    {
+        id: "dynamic",
+        title: "Workflows That Think for Themselves",
+        description:
+            "Create workflows that adapt to business logic, handle errors gracefully, and scale based on your dynamic requirements.",
+        mainFeature: {
+            id: "main-dyn",
+            title: "Dynamic Control Flow",
+            description:
+                "Implement conditional logic, retry mechanisms, or parallel flows. Your workflows can adapt in real-time based on data and business logic.",
+            image: think,
+        },
+        subFeatures: [
+            {
+                id: "langs",
+                title: "Native Scripting Across Languages",
+                description:
+                    "Execute scripts in Python, R, Node.js, Shell and more without needing Docker or additional dependencies.",
+                image: langs,
+            },
+            {
+                id: "reusable",
+                title: "Reusable Logic with Subflows",
+                description:
+                    "Build modular workflows with subflows that can be reused across multiple workflows and teams.",
+                image: reusable,
+            },
+        ],
+    },
+    {
+        id: "execution",
+        title: "Flexible Execution, Built for Scale",
+        description:
+            "From force-triggered jobs to long-running, complex, resilient, event-driven orchestrations. Fit any scale from development servers.",
+        mainFeature: {
+            id: "main-exe",
+            title: "Event Driven Orchestration",
+            description:
+                "Schedule executions, react to real-time events, or call workflows through API and webhooks. Get results when they are needed with monitoring.",
+            image: flexible,
+        },
+        subFeatures: [
+            {
+                id: "longrunning",
+                title: "Long Running & Resilient Executions",
+                description:
+                    "Handle long-running processes with pause/resume capabilities, retries, and failure recovery mechanisms.",
+                image: longrunning,
+            },
+            {
+                id: "ondemand",
+                title: "On-Demand & At-First Execution",
+                description:
+                    "Execute workflows manually, via API calls, or trigger them based on external events and system changes.",
+                image: ondemand,
+            },
+        ],
+    },
+    {
+        id: "observability",
+        title: "Full Observability, Built In",
+        description:
+            "From historical data to logs and execution statuses with Kestra gives you the visibility to optimize at scale.",
+        mainFeature: {
+            id: "main-obs",
+            title: "Intuitive Visibility",
+            description:
+                "Complete visibility over all workflows, executions and metrics via dedicated interface including real-time monitoring.",
+            image: full,
+        },
+        subFeatures: [
+            {
+                id: "timeline",
+                title: "Execution Timeline & Logs",
+                description:
+                    "Track every step of your workflow execution with detailed logs and timeline views for debugging and optimization.",
+                image: timeline,
+            },
+            {
+                id: "output",
+                title: "Outputs and Metrics Visualization",
+                description:
+                    "Visualize workflow outputs, performance metrics, and system health with built-in charts and dashboards.",
+                image: output,
+            },
+        ],
+    },
+]
+---
+
+<section class="feature-sections">
+    <div class="container">
+        {
+            WORKFLOW_SECTIONS.map((section) => (
+                <div class="section-block">
+                    <header class="section-header" data-usal="fade-up duration-500 delay-50">
+                        <h2>{section.title}</h2>
+                        <p class="fs-5">{section.description}</p>
+                    </header>
+
+                    <div class="features">
+                        <div class="feature-card main" data-usal="fade-up duration-500 delay-70">
+                            <div class="feature-image">
+                                {section.mainFeature.image && (
+                                    <Image
+                                        src={section.mainFeature.image}
+                                        alt={section.mainFeature.title}
+                                        width="1076"
+                                        height="608"
+                                    />
+                                )}
+                            </div>
+                            <div class="feature-content">
+                                <h4>{section.mainFeature.title}</h4>
+                                <p>{section.mainFeature.description}</p>
+                            </div>
+                        </div>
+
+                        <div class="sub-features">
+                            {section.subFeatures.map((subFeature, index) => (
+                                <div
+                                    class="feature-card sub"
+                                    data-usal={`fade-up duration-500 delay-${70 + index * 100}`}
+                                >
+                                    <div class="feature-image">
+                                        {subFeature.image && (
+                                            <Image
+                                                src={subFeature.image}
+                                                alt={subFeature.title}
+                                                width="490"
+                                                height="277"
+                                            />
+                                        )}
+                                    </div>
+                                    <div class="feature-content">
+                                        <h4>{subFeature.title}</h4>
+                                        <p>{subFeature.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .feature-sections {
+        padding: 4rem 0;
+        color: var(--ks-content-primary);
+
+        .section-block {
+            margin-bottom: 5rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .features {
+            .feature-card {
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                border-radius: 1rem;
+                background: var(--ks-background-primary);
+                border: 1px solid var(--ks-border-primary);
+                color: var(--ks-content-primary);
+
+                .feature-image img {
+                    width: 100%;
+                    height: auto;
+                    border-radius: 0.5rem;
+                    object-fit: cover;
+                }
+
+                &.main {
+                    margin-bottom: 2rem;
+                }
+            }
+
+            .sub-features {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .features .sub-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            padding: 3rem 0;
+
+            .feature-card {
+                padding: 1.25rem;
+            }
+        }
+    }
+</style>

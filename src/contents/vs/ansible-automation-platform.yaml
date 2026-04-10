@@ -4,6 +4,9 @@ competitorName: "Ansible AAP"
 category: Infrastructure Automation
 shortDescription: "Playbook execution management vs. full-lifecycle IT orchestration with approvals and audit trails."
 
+brandColor:
+  color: "#ee0000"
+
 intro:
   title: "Kestra vs. Ansible Automation Platform: From Playbook Runner to Full Orchestrator"
   description: "Ansible Automation Platform (formerly Ansible Tower) excels at executing playbooks and managing Ansible inventory at scale. Kestra takes that further—orchestrating Ansible as one step in multi-tool workflows that span Terraform, PowerShell, ServiceNow, and cloud APIs, with approvals, audit trails, and self-service Apps built in."
@@ -192,25 +195,17 @@ featureGrid:
       kestra: Apache 2.0
       competitor: "AAP is subscription-only; Ansible Engine is GPL"
 
-socialProof:
-  image:
-    alt: IT operations team automating with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra gave us the orchestration layer we were missing. We kept our Ansible playbooks and added Terraform, approvals, and ServiceNow integration—all in one workflow. The team was up and running in a day."
+testimonials:
+  - quote: "Kestra gave us the orchestration layer we were missing. We kept our Ansible playbooks and added Terraform, approvals, and ServiceNow integration—all in one workflow. The team was up and running in a day."
     author: "Infrastructure Automation Lead @ Enterprise Healthcare"
-  metrics:
-    - value: "70%"
-      label: Fewer manual approvals
-    - value: "3x"
-      label: Faster incident remediation
-    - value: "100%"
-      label: Audit trail coverage
-  cta:
-    text: "See how IT teams orchestrate with Kestra"
-    link: /use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "70%"
+        name: "Fewer manual approvals"
+      - value: "3x"
+        name: "Faster incident remediation"
+      - value: "100%"
+        name: "Audit trail coverage"
+    storyLink: "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
 
 platformStrengths:
   title: "Kestra Extends What Ansible Does Best"

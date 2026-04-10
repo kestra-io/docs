@@ -4,6 +4,10 @@ competitorName: Apache NiFi
 category: Data Orchestration
 shortDescription: "Visual drag-and-drop data flow routing vs. declarative YAML orchestration for any workload."
 
+brandColor:
+  color: "#728e9b"
+  gradient: "linear-gradient(90deg, #728e9b, #b9c6cd)"
+
 intro:
   title: "Kestra vs. Apache NiFi: Workflow Orchestration Beyond Data Flow"
   description: "Apache NiFi excels at real-time data routing and transformation with a visual canvas. Kestra orchestrates workflows across data pipelines, infrastructure, and AI workloads in declarative YAML. One moves data between systems. The other coordinates everything your business runs on."
@@ -195,25 +199,17 @@ featureGrid:
       kestra: "Execution logs and topology view per workflow"
       competitor: "✓ Built-in lineage for every data packet"
 
-socialProof:
-  image:
-    alt: FILA success story
-    width: 333
-    height: 364
-  quote:
-    text: "We looked at Airflow and NiFi, but Kestra's architecture made the most sense for us in terms of scalability. The wide range of plugins and the ability to integrate with our systems was a key factor in our decision."
+testimonials:
+  - quote: "We looked at Airflow and NiFi, but Kestra's architecture made the most sense for us in terms of scalability. The wide range of plugins and the ability to integrate with our systems was a key factor in our decision."
     author: "John Kim, IT Lead @ FILA"
-  metrics:
-    - value: "2.5M"
-      label: Monthly executions
-    - value: "2,000+"
-      label: Active workflows
-    - value: "25+"
-      label: Engineers using Kestra
-  cta:
-    text: "See how FILA replaced Airflow and NiFi with Kestra"
-    link: https://kestra.io/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "2.5M"
+        name: "Monthly executions"
+      - value: "2,000+"
+        name: "Active workflows"
+      - value: "25+"
+        name: "Engineers using Kestra"
+    storyLink: "/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

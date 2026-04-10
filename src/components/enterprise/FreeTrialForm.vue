@@ -119,7 +119,7 @@
             <div class="col-lg-6 column right-column">
                 <div class="right-content">
                     <p class="quote">
-                        “We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.”
+                        “We switched from Airflow to Kestra because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.”
                     </p>
                     <span class="attribution">Senior Engineering Manager @Apple</span>
                     <img :src="appleLogo.src" alt="Apple" class="company-logo" />

@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="mesh">
         <div class="container">
             <slot />
         </div>
@@ -16,4 +16,3 @@
         }
     }
 </style>
-

@@ -4,6 +4,10 @@ competitorName: AWS Step Functions
 category: Data Orchestration
 shortDescription: "AWS-native state machine automation vs. multi-cloud workflow orchestration in any language."
 
+brandColor:
+  color: "#FF4F8B"
+  gradient: "linear-gradient(90deg, #FF4F8B, #B0084D)"
+
 intro:
   title: "Kestra vs. AWS Step Functions: Any Cloud, Any Language, Any Workflow"
   description: "AWS Step Functions is reliable inside the AWS ecosystem. Kestra covers the rest: data pipelines, infrastructure, and business processes across any cloud, any language, and any team."
@@ -187,25 +191,17 @@ featureGrid:
       kestra: "✓ Apache 2.0"
       competitor: Proprietary AWS service
 
-socialProof:
-  image:
-    alt: Success story
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently."
+testimonials:
+  - quote: "Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently."
     author: "Director of Engineering @ Acxiom"
-  metrics:
-    - value: "120+"
-      label: Engineers empowered
-    - value: "50+"
-      label: Customers on multi-tenant platform
-    - value: "0"
-      label: Pipeline rewrites required
-  cta:
-    text: "See how Acxiom scaled to 120+ engineers without rewriting pipelines"
-    link: https://kestra.io/use-cases/stories
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "120+"
+        name: "Engineers empowered"
+      - value: "50+"
+        name: "Customers on multi-tenant platform"
+      - value: "0"
+        name: "Pipeline rewrites required"
+    storyLink: "/use-cases/stories/22-scaling-big-data-operations"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Engineering Teams Work

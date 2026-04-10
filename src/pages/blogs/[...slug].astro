@@ -6,6 +6,7 @@ import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue
 import BlogDetails from "~/components/blogs/BlogDetails.vue"
 import BlogToc from "~/components/blogs/BlogToc.vue"
 import BlogSocials from "~/components/blogs/BlogSocials.vue"
+import BlogMobileHeader from "~/components/blogs/BlogMobileHeader.vue"
 import { default as Avatars } from "~/utils/teamsImages"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Mesh from "~/components/layout/Mesh.vue"
@@ -90,42 +91,57 @@ const jsonLinkedData = {
                 set:html={JSON.stringify(jsonLinkedData)}
             />
         </Fragment>
-        <Mesh client:visible>
-            <div
-                class="row d-flex justify-content-between align-items-center header-content"
-            >
-                <div class="header-left">
-                    <a href="/blogs" class="header-breadcrumb"
-                        >Blog<ChevronRight class="fs-5" /></a
-                    >
-                    <h1 class="header-title">{page.title}</h1>
+        <div class="hero-blog">
+            <Mesh client:visible>
+                <div
+                    class="row d-flex justify-content-between align-items-center header-content"
+                >
+                    <div class="header-left">
+                        <a href="/blogs" class="header-breadcrumb">
+                            Blog
+                            <ChevronRight class="fs-5" />
+                        </a>
+                        <h1 class="header-title">{page.title}</h1>
+                    </div>
+                    {
+                        page.image && (
+                            <div class="header-image-container">
+                                <Image
+                                    class="header-image"
+                                    src={page.image}
+                                    alt={page.title}
+                                    width={590}
+                                    height={332}
+                                />
+                            </div>
+                        )
+                    }
+                    <BlogMobileHeader
+                        blog={post}
+                        avatars={Avatars}
+                    />
                 </div>
-                {
-                    page.image && (
-                        <div class="header-image-container">
-                            <Image
-                                class="header-image"
-                                src={page.image}
-                                alt={page.title}
-                                width={590}
-                                height={332}
-                            />
-                        </div>
-                    )
-                }
-            </div>
-        </Mesh>
+            </Mesh>
+        </div>
         <TwoColumnStickyLayout>
             <div slot="sidebar" class="blog-sidebar">
                 <BlogDetails blog={post} avatars={Avatars} />
                 <BlogToc client:load links={links} />
+                <div class="socials-desktop">
+                    <BlogSocials
+                        client:load
+                        post={{ editUrl, title, url: Astro.url.href }}
+                    />
+                </div>
+            </div>
+            <div class="bd-content">
+                <Content />
+            </div>
+            <div class="socials-mobile">
                 <BlogSocials
                     client:load
                     post={{ editUrl, title, url: Astro.url.href }}
                 />
-            </div>
-            <div class="bd-content">
-                <Content />
             </div>
         </TwoColumnStickyLayout>
         <SubscribeToNewsletter client:visible />
@@ -133,6 +149,12 @@ const jsonLinkedData = {
 </Layout>
 
 <style lang="scss">
+    .hero-blog :global(.mesh) {
+        @include media-breakpoint-down(md) {
+            padding-bottom: 1rem;
+        }
+    }
+
     .blog-sidebar {
         display: flex;
         flex-direction: column;
@@ -192,5 +214,19 @@ const jsonLinkedData = {
         object-fit: cover;
         border-radius: 8px;
         display: block;
+    }
+
+    .socials-desktop {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .socials-mobile {
+        display: none;
+        @include media-breakpoint-down(md) {
+            display: block;
+            margin-top: 4rem;
+        }
     }
 </style>

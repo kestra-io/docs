@@ -1,38 +1,40 @@
 <template>
-    <div class="details">
-        <h6>Authors</h6>
-        <div class="authors">
-            <div
-                v-for="author in authorsList"
-                :key="author.name"
-                class="author d-flex align-items-center gap-3"
-            >
-                <NuxtImg
-                    loading="lazy"
-                    v-bind="avatars[`${author.image}-sm.png`]"
-                    class="rounded-circle"
-                    width="48"
-                    height="48"
-                    :alt="author.name"
-                />
-                <div>
-                    <p class="name">{{ author.name }}</p>
-                    <p v-if="author.role" class="role">{{ author.role }}</p>
+    <div class="blog-wrap">
+        <div class="details">
+            <h6>Authors</h6>
+            <div class="authors">
+                <div
+                    v-for="author in authorsList"
+                    :key="author.name"
+                    class="author d-flex align-items-center gap-3"
+                >
+                    <NuxtImg
+                        loading="lazy"
+                        v-bind="avatars[`${author.image}-sm.png`]"
+                        class="rounded-circle"
+                        width="48"
+                        height="48"
+                        :alt="author.name"
+                    />
+                    <div>
+                        <p class="name">{{ author.name }}</p>
+                        <p v-if="author.role" class="role">{{ author.role }}</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div>
-        <h6>Category</h6>
-        <small class="metadata">
-            <span>{{ blog.data.category }}</span>
-        </small>
-    </div>
-    <div>
-        <h6>Last Updated</h6>
-        <small class="metadata">
-            {{ date }}
-        </small>
+        <div>
+            <h6>Category</h6>
+            <small class="metadata">
+                <span>{{ blog.data.category }}</span>
+            </small>
+        </div>
+        <div>
+            <h6>Last Updated</h6>
+            <small class="metadata">
+                {{ date }}
+            </small>
+        </div>
     </div>
 </template>
 
@@ -61,6 +63,13 @@
 
 <style lang="scss" scoped>
 
+    .blog-wrap {
+        display: contents;
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
 
     .details {
         margin: 0 !important;
