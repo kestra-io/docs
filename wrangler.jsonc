@@ -23,6 +23,7 @@
         "binding": "ASSETS",
         "directory": "./dist",
         "html_handling": "drop-trailing-slash",
+        "run_worker_first": true,
     },
     "observability": {
         "enabled": true,
