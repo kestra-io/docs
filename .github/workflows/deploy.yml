@@ -96,6 +96,7 @@ jobs:
           title: "☁️ Cloudflare Worker Preview Deployed!"
           template: |
             🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
+            🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
 
   lighthouse:
     name: Lighthouse Benchmark
