@@ -77,8 +77,6 @@ YAML severs that connection: the workflow definition is pure configuration, and 
 
 Asset-centric models tried to fix this from the inside. Instead of "run task A, then task B," you define the data assets (tables, models, datasets) that should exist and let the framework figure out what needs to run to produce them. The dependency graph comes from the assets rather than being manually declared.
 
-### some kind of visual would be cool here
-
 A task graph says "do this, then do that;" an asset graph says "this thing should exist and be fresh." The latter is more aligned with what the business actually cares about, which is not whether `extract.py` ran at 6am but whether the revenue table is current.
 
 This has now become common across the category, from newer frameworks to incumbents like [Airflow](/vs/airflow), which added Assets in version 3.0. But every implementation made the same tradeoff: assets are still defined in Python. An asset definition is a Python function decorated to be both a compute function and a data contract. The orchestration metadata (what this asset is, what it depends on, how to materialize it) lives in the same object as the execution logic. They can't be separated because they're expressed in the same language. 
