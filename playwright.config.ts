@@ -27,21 +27,20 @@ export default defineConfig({
                 viewport: { width: 1280, height: 720 },
             },
         },
-        {
-            name: "tablet",
-            use: { ...devices["iPad (gen 7)"] },
-        },
-        {
-            name: "mobile",
-            use: { ...devices["iPhone 13"] },
-        },
+        // {
+        //     name: "tablet",
+        //     use: { ...devices["iPad (gen 7)"] },
+        // },
+        // {
+        //     name: "mobile",
+        //     use: { ...devices["iPhone 13"] },
+        // },
     ],
 
     webServer: {
-        command:
-            "NO_IMAGE_OPTIM=true DISABLE_USAL=true DISABLE_GITHUB=true PREVIEW=true NO_RANDOM_ORDER=true npm run preview",
+        command: "npx wrangler dev --port 8787",
         url: "http://localhost:8787",
         reuseExistingServer: !process.env.CI,
-        timeout: 400_000,
+        timeout: 400_001,
     },
 })

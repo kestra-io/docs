@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -33,6 +34,9 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Build the site
+        run: NO_IMAGE_OPTIM=true DISABLE_USAL=true DISABLE_GITHUB=true PREVIEW=true NO_RANDOM_ORDER=true npm run build
+
       - name: Regenerate Linux snapshots
         run: npm run test:visual:update
 
@@ -43,17 +47,39 @@ jobs:
           path: tests/visual-regression.spec.ts-snapshots/
           retention-days: 14
 
-      - name: Commit updated Linux snapshots
+      - name: Check for Linux snapshot changes
+        id: snapshot_changes
+        run: |
+          SNAPSHOT_CHANGES="$(git status --porcelain --untracked-files=all -- tests/visual-regression.spec.ts-snapshots)"
+          if [[ -n "$SNAPSHOT_CHANGES" ]]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Detected Linux snapshot changes:"
+            printf '%s\n' "$SNAPSHOT_CHANGES"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No Linux snapshot changes to commit."
+          fi
+
+      - name: Commit and push updated Linux snapshots
+        if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name != 'main'
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          if git diff --quiet -- tests/visual-regression.spec.ts-snapshots; then
-            echo "No Linux snapshot changes to commit."
-            exit 0
-          fi
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add tests/visual-regression.spec.ts-snapshots
           git commit -m "test(visual): refresh linux snapshots"
           git push origin "HEAD:${BRANCH_NAME}"
+
+      - name: Create PR with updated Linux snapshots
+        if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name == 'main'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/update-linux-snapshots-${{ github.run_id }}
+          base: main
+          commit-message: "test(visual): refresh linux snapshots"
+          title: "test(visual): refresh linux snapshots"
+          body: |
+            Automated update of Linux visual regression snapshots.
+          add-paths: |
+            tests/visual-regression.spec.ts-snapshots
