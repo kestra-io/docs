@@ -16,7 +16,7 @@ export type CardPlugin = {
 }
 
 export function prunePluginsForCards(
-    plugins: Plugin[],
+    plugins: Plugin[], 
     pluginsData: Record<string, any>
 ): CardPlugin[] {
     return plugins.map(p => {
@@ -39,6 +39,33 @@ export function prunePluginsForCards(
     })
 }
 
+/**
+ * Strip heavy fields (descriptions, aliases, manifest) from plugins
+ * before sending to client-side components that only need navigation data.
+ */
+export function prunePluginsForSidebar(plugins: Plugin[]): Plugin[] {
+    return plugins.map((p) => {
+        const pruned: Record<string, any> = {
+            name: p.name,
+            title: p.title,
+            group: p.group,
+            subGroup: p.subGroup,
+            categories: p.categories,
+        }
+
+        for (const [key, value] of Object.entries(p)) {
+            if (isEntryAPluginElementPredicate(key, value)) {
+                pruned[key] = (value as PluginElement[]).map((el) => ({
+                    cls: el.cls,
+                    deprecated: el.deprecated,
+                }))
+            }
+        }
+
+        return pruned as Plugin
+    })
+}
+
 export function calculateTotalPluginCount(plugins: Plugin[]): string {
     const classes = new Set<string>()
     for (const plugin of plugins) {
@@ -51,4 +78,3 @@ export function calculateTotalPluginCount(plugins: Plugin[]): string {
     const rounded = Math.floor(classes.size / 100) * 100
     return `${rounded}+`
 }
-
