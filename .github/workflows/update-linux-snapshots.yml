@@ -1,0 +1,59 @@
+name: Update Linux Visual Snapshots
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-linux-snapshots:
+    name: Update Linux Snapshots
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Regenerate Linux snapshots
+        run: npm run test:visual:update
+
+      - name: Upload Linux snapshots artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-snapshots-linux
+          path: tests/visual-regression.spec.ts-snapshots/
+          retention-days: 14
+
+      - name: Commit updated Linux snapshots
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          if git diff --quiet -- tests/visual-regression.spec.ts-snapshots; then
+            echo "No Linux snapshot changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/visual-regression.spec.ts-snapshots
+          git commit -m "test(visual): refresh linux snapshots"
+          git push origin "HEAD:${BRANCH_NAME}"

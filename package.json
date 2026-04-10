@@ -21,7 +21,7 @@
     "lint": "oxlint --fix",
     "format": "oxfmt . --write && prettier --write **/*.astro",
     "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots"
+    "test:visual:update": "playwright test --update-snapshots --browser=chromium"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.8",
