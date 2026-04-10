@@ -1,4 +1,3 @@
-/* oxlint-disable no-console */
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import contentSecurityPolicyConfig from "../content-security-policy.config"
@@ -257,11 +256,27 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
     return response
 })
 
+const feedsContentType = defineMiddleware(async (context, next) => {
+    if (context.url.pathname !== "/api/feeds") {
+        return next()
+    }
+
+    const response = await next()
+    const headers = new Headers(response.headers)
+    headers.set("content-type", "application/json")
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+    })
+})
+
 export const onRequest = sequence(
     logger,
     cloudflareJwt,
     noIndex,
     incomingRedirect,
     securityHeaders,
+    feedsContentType,
     notFoundRedirect,
 )

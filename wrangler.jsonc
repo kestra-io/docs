@@ -5,8 +5,10 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
     "name": "docs",
-    "compatibility_date": "2025-02-04",
-    "main": "./dist/_worker.js/index.js",
+    "main": "@astrojs/cloudflare/entrypoints/server",
+    "compatibility_date": "2026-03-01",
+    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+    "preview_urls": true,
     "routes": [
         {
             "pattern": "kestra.io",
@@ -21,11 +23,12 @@
         "binding": "ASSETS",
         "directory": "./dist",
         "html_handling": "drop-trailing-slash",
+        "run_worker_first": [
+            "/*.html", // Run worker for HTML pages only
+            "/", // And the root
+        ],
+        // JS/CSS/images still served directly — fast and free
     },
-    "keep_vars": true,
-    "preview_urls": true,
-    "minify": true,
-    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
     "observability": {
         "enabled": true,
         "traces": {
@@ -54,6 +57,10 @@
             "binding": "ICON_CACHE",
             "id": "205cd288109e4728a1f0f85645cf3b98",
         },
+        {
+            "binding": "docs-session",
+            "id": "7697469604b64c6899be1721cc799e02",
+        },
     ],
     /**
      * Environment Variables
@@ -68,6 +75,10 @@
                 {
                     "binding": "ICON_CACHE",
                     "id": "205cd288109e4728a1f0f85645cf3b98",
+                },
+                {
+                    "binding": "docs-session",
+                    "id": "7697469604b64c6899be1721cc799e02",
                 },
             ],
         },
