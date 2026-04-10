@@ -100,7 +100,7 @@ jobs:
 
   lighthouse:
     name: Lighthouse Benchmark
-    if: ${{ startsWith(github.repository, 'kestra-io/') }}
+    if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request' }}
     needs: truncate-url-slug
     runs-on: ubuntu-latest
 
