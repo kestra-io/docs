@@ -10,42 +10,42 @@ author:
 image: ./main.png
 ---
 
-Apache Airflow 2 reaches end of life in April 2026. For most teams, the default response is to upgrade to Airflow 3 and move on. But Airflow's own [open issue tracker](https://github.com/apache/airflow/issues?q=is%3Aissue+is%3Aopen+airflow+3+upgrade) tells a different story: DAGs not deactivating after migration, auth failures on fresh installs, broken task dependencies from changed behavior. The upgrade that looks straightforward on paper has already produced real friction in practice.
+Apache Airflow 2 reaches end of life in April 2026. For most teams, the default response is to upgrade to Airflow 3 and move on. Airflow's own [open issue tracker](https://github.com/apache/airflow/issues?q=is%3Aissue+is%3Aopen+airflow+3+upgrade) hints at a different outcome: DAGs not deactivating after migration, auth failures on fresh installs, broken task dependencies from changed behavior. The upgrade that looks straightforward on paper has already produced real friction in practice.
 
 That challenge gets amplified for teams with years of accumulated DAGs that have their own workarounds and undocumented assumptions. No official migration guide will account for any of that. 
 
-That's the situation EOL drops you into. I'll cover what it actually means, then explain why the upgrade-by-default is worth pausing on before you commit several engineering weeks, or more likely months, to it.
+That's the situation EOL will drop you into. I'll cover what it actually means, then explain why the upgrade-by-default is worth pausing on before you commit several engineering weeks, or more likely months, to it.
 
-## End of life means you're on your own
+## End of life after April 22, 2026
 
-Apache Airflow 2 reaches end of life in April 2026. No more security patches. No more bug fixes. No more provider updates for the 2.x line. If a vulnerability surfaces in a dependency, you'll be on your own.
+After April 22, no more security patches, bug fixes, or provider updates for the 2.x line. If a vulnerability surfaces in a dependency, you'll be on your own.
 
-For most teams, the security posture alone forces action. Running unsupported software in a production data environment isn't a risk most organizations will accept for long, especially those with compliance requirements. The question is what you do with it.
+Running unsupported software in a production data environment isn't a risk most organizations will accept for long, especially those with compliance requirements. So the question becomes: should you upgrade or look elsewhere? 
 
 ## What the Airflow 3 upgrade actually costs
 
-[Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) is not a drop-in upgrade. The official migration guide lists several required changes:
+[Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) is not a drop-in upgrade. The official migration guide lists several breaking changes:
 
 - **SubDAGs are gone.** If you used SubDAGs for modular pipeline logic, you need to replace them with Task Groups or dynamic task mapping. SubDAGs were already deprecated in Airflow 2.x, but if you never got around to removing them, now you have to.
 - **Deprecated context variables are removed.** Several execution context variables that still worked in Airflow 2.x are gone in Airflow 3. Any DAG that references them will break.
 - **Provider packages have changed.** The standard operators moved from `apache-airflow` to `apache-airflow-providers-standard`. Your import statements need updating.
 - **The webserver is now two services.** Airflow 3 splits the old webserver into an API server and a DAG processor. Your deployment configuration changes.
 
-None of these are insurmountable. But they're also not trivial. Every change is Airflow-specific work: knowledge you're investing back into the Airflow ecosystem rather than into something transferable.
+These aren't trivial changes. Each one is Airflow-specific work: knowledge you're investing back into the Airflow ecosystem rather than into something transferable.
 
 ## The window that EOL opens
 
 Orchestration decisions tend to calcify. Teams pick a tool, build around it, train people on it, and then live with it for years because the migration cost or perceived risk is always too high to justify.
 
-EOL breaks that calculus. Doing nothing has a real cost now: security exposure, no vendor support, no provider updates. The Airflow 3 migration isn't free either. But switching costs are lower right now than they will be after teams spend several weeks on Airflow-specific work and lock themselves in for another decade.
+EOL is an opportunity to reconsider that decision. Switching costs are lower right now than they will be after teams spend several weeks on Airflow-specific work and lock themselves in for another decade.
 
-Most teams will upgrade without seriously evaluating alternatives. That's the right call for some of them. It's worth asking the question before committing several engineering weeks to Airflow-specific work that won't transfer anywhere else.
+Many teams will upgrade without seriously evaluating alternatives because that could genuinely be the right call for some of them. But it's worth asking the question before committing several engineering weeks to Airflow-specific work that won't transfer anywhere else.
 
 If you want a broader view of what's available at this crossroads, we've covered [enterprise Airflow alternatives](../2026-01-18-enterprise-airflow-alternatives/index.md) in a separate post.
 
 ## The alternative lift is comparable, not smaller
 
-We built Kestra as a different approach to orchestration. Kestra is [declarative](/features/declarative-data-orchestration) and [language-agnostic](/features/code-in-any-language). Workflows are YAML. Your existing Python scripts, SQL queries, and Shell commands run unchanged inside tasks, in isolated containers, without any framework wrappers. The orchestration layer changes; your code doesn't.
+At this point teams generally go one of two directions: stay in the Airflow ecosystem with a managed offering like MWAA or Astronomer, or look at what declarative alternatives look like for data engineering. For Python-native teams, Dagster and Prefect often come up since they're modern upgrades from Airflow, but both are still Python-first, which means the same constraint on who can own workflows carries over. Kestra is a different kind of bet: [declarative](/features/declarative-data-orchestration) workflows defined in YAML, with your existing Python scripts, SQL queries, and Shell commands running unchanged inside tasks, in isolated containers, without framework wrappers. The orchestration layer changes; your code doesn't.
 
 ![Data engineering pipeline example in Kestra](./kestra-data-eng-pipeline-ui.png)
 
@@ -59,7 +59,7 @@ If you've been frustrated by the Python-only constraint, or your workflows span 
 
 For a detailed feature comparison, the [Kestra vs. Airflow](/vs/airflow) page covers the differences across architecture, deployment, and language support.
 
-If you want to see the architectural tradeoffs and a live DAG-to-YAML migration demo before committing either way, we covered exactly this decision in a recent webinar:
+If your data engineering manager needs to see the architectural tradeoffs and a live DAG-to-YAML migration demo before committing to a direction, send them this link to our recent talk where we covered exactly this decision:
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/cI_mzTNYiQo" title="Airflow 2 EOL: Upgrade or Migrate? Architectural Tradeoffs and Live DAG Migration Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
