@@ -50,11 +50,14 @@ jobs:
       - name: Check for Linux snapshot changes
         id: snapshot_changes
         run: |
-          if git diff --quiet -- tests/visual-regression.spec.ts-snapshots; then
+          SNAPSHOT_CHANGES="$(git status --porcelain --untracked-files=all -- tests/visual-regression.spec.ts-snapshots)"
+          if [[ -n "$SNAPSHOT_CHANGES" ]]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Detected Linux snapshot changes:"
+            printf '%s\n' "$SNAPSHOT_CHANGES"
+          else
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
             echo "No Linux snapshot changes to commit."
-          else
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit and push updated Linux snapshots
