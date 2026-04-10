@@ -16,7 +16,7 @@ export type CardPlugin = {
 }
 
 export function prunePluginsForCards(
-    plugins: Plugin[], 
+    plugins: Plugin[],
     pluginsData: Record<string, any>
 ): CardPlugin[] {
     return plugins.map(p => {
@@ -51,3 +51,4 @@ export function calculateTotalPluginCount(plugins: Plugin[]): string {
     const rounded = Math.floor(classes.size / 100) * 100
     return `${rounded}+`
 }
+

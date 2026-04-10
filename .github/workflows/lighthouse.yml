@@ -36,13 +36,20 @@ jobs:
         run: node scripts/lighthouse-benchmark.mjs
         env:
           BASE_URL: https://kestra.io
-          OUTPUT_FILE: lighthouse-results.json
+          OUTPUT_FILE: lighthouse-results-prod.json
+          MARKDOWN_FILE: lighthouse-report-prod.md
 
       # Fixed artifact name so dawidd6/action-download-artifact can always
       # fetch "the latest baseline from main" in deploy.yml's lighthouse job.
       - name: Upload as baseline artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-baseline
-          path: lighthouse-results.json
-          retention-days: 90
+          name: lighthouse-baseline-prod
+          path: lighthouse-results-prod.json
+          retention-days: 30
+
+      - name: Update commit comment
+        uses: peter-evans/commit-comment@v4
+        with:
+          body-path: lighthouse-report-prod.md
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -8,7 +8,7 @@ import SetupSpeed from "~/components/versus/SetupSpeed.astro"
 import EaseOfUse from "~/components/versus/EaseOfUse.astro"
 import VisualPreview from "~/components/versus/VisualPreview.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
-import SocialProof from "~/components/common/SocialProof.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -16,7 +16,6 @@ import Faq from "~/components/common/Faq.vue"
 
 import competitorLogo from "~/components/versus/assets/stonebranch.svg?raw"
 import competitorMonogram from "~/components/versus/assets/stonebranch-monograme.svg?raw"
-import industryImage from "~/components/versus/assets/industry.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
@@ -29,7 +28,7 @@ if (!entry) throw new Error("Could not find vs/stonebranch collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -39,14 +38,14 @@ const {
     easeOfUse,
     visualPreview,
     featureGrid,
-    socialProof,
+    testimonials,
     platformStrengths,
     decisionGuide,
     commonQuestions,
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} description={shortDescription} headerTheme="lightText">
     <Intro
         {...intro}
         competitor={{
@@ -101,9 +100,8 @@ const {
             competitorLogo: competitorLogo,
         }}
     />
-    <SocialProof
-        {...socialProof}
-        image={{ ...socialProof.image, src: industryImage }}
+    <VsTestimonial
+        quotes={testimonials}
     />
     <PlatformStrengths
         {...platformStrengths}

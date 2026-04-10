@@ -497,7 +497,7 @@ curl -X GET 'http://localhost:8080/api/v1/main/namespaces/company.team/files?pat
 
 which returns:
 
-```
+```plaintext
 Hello, World!
 ```
 

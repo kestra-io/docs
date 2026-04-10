@@ -64,9 +64,54 @@ initContainers:
 You can remove it after successful run (it has to be only executed once).
 :::
 
+Migrating some tables can take a long time, you can use `--exludes=table1,table2` to exclude some tables from the migration and update them manually.
+
 ### Kafka Queue Handling
 
 If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
+
+To start fresh, we strongly recommend using a new Kafka cluster for your queues.
+
+### Elasticsearch repository handling
+
+if your repository is Elasticsearch, it probably means your instance stores a large amount of execution data so we stronly recommand to exclude executions, logs and metrics from the migration and update them manually.
+
+```shell
+kestra migrate default-tenant \
+    --tenant-id=tenant \
+    --tenant-name="Tenant Name" \
+    --excludes=executions,logs,metrics \
+    [--dry-run]
+```
+
+After the migration, you can use the following Kibana style query to migrate asynchronously the excluded indices, note that it can take a long time.
+
+```
+POST /kestra_executions/_update_by_query?wait_for_completion=false
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {"exists": {"field": "tenantId"}}
+      ]
+    }
+  },
+  "script": {
+    "source": "ctx._source.tenantId = 'tenant'",
+    "lang": "painless"
+  }
+}
+```
+
+You should adapt the index name to match your configuration, if you're using aliases you can use an index wildcard, for ex `kestra-executions-*`.
+
+Do it for each excluded index, it returns a task identifier that you can use to check the status of the query task.
+
+You can use the following Kibana style query to get the status of the migration query:
+
+```
+GET /_tasks/<taskId>
+```
 
 ## Internal storage migration guide from `defaultTenant` to a tenant
 
@@ -356,7 +401,7 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 Example: If your structure is
 
-```
+```plaintext
 base-path/
   main/
   tenant1/
@@ -372,7 +417,7 @@ You need to move `foo/` and `bar/` into `main/` or your target tenant directory.
 
 The result should be:
 
-```
+```plaintext
 base-path/
   main/
     foo/

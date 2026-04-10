@@ -48,6 +48,7 @@ export const collections = {
                         name: z.string(),
                         image: z.string(),
                         twitter: z.string().optional(),
+                        linkedin: z.string().optional(),
                         role: z.string().nullable().optional(),
                     })
                     .optional(),
@@ -57,6 +58,7 @@ export const collections = {
                             name: z.string(),
                             image: z.string(),
                             twitter: z.string().optional(),
+                            linkedin: z.string().optional(),
                             role: z.string().nullable().optional(),
                         }),
                     )

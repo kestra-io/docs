@@ -1,6 +1,12 @@
 title: "Apache Airflow vs Kestra for Data Pipeline Orchestration"
 description: "Compare Kestra vs Apache Airflow: Declarative YAML orchestration for any language vs. Python DAGs. See features, setup time, and migration considerations."
 competitorName: Airflow
+category: Data Orchestration
+shortDescription: "Python-first DAG scheduling vs. universal YAML orchestration for any language and stack."
+
+brandColor:
+  color: "#017cee"
+  gradient: "linear-gradient(90deg, #00C812, #04A3FF, #DF1F00, #00DAFF)"
 
 intro:
   title: "Kestra vs. Apache Airflow: Orchestrate Your Stack, Not Just Your DAGs"
@@ -164,25 +170,17 @@ featureGrid:
       kestra: "✓ Native support"
       competitor: "Possible via Python operators, not a primary use case"
 
-socialProof:
-  image:
-    alt: Apple ML team success story
-    width: 333
-    height: 364
-  quote:
-    text: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
+testimonials:
+  - quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
     author: "Senior Engineering Manager @ Apple (ML team)"
-  metrics:
-    - value: "200"
-      label: Engineers onboarded
-    - value: "2x"
-      label: Faster workflow creation
-    - value: "0"
-      label: Pipeline failures
-  cta:
-    text: "See how teams orchestrate at scale with Kestra"
-    link: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "200"
+        name: "Engineers onboarded"
+      - value: "2x"
+        name: "Faster workflow creation"
+      - value: "0"
+        name: "Pipeline failures"
+    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Data Teams Actually Work

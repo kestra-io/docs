@@ -100,10 +100,8 @@ jobs:
 
   lighthouse:
     name: Lighthouse Benchmark
-    # Runs after the deployment so we only benchmark PRs that build successfully.
-    # We do NOT test the preview URL (it's behind a private network) — instead we
-    # build the site locally and serve it with `wrangler dev`.
-    if: ${{ github.event_name == 'pull_request' && startsWith(github.repository, 'kestra-io/') }}
+    if: ${{ startsWith(github.repository, 'kestra-io/') }}
+    needs: truncate-url-slug
     runs-on: ubuntu-latest
 
     steps:
@@ -162,6 +160,7 @@ jobs:
         run: node scripts/lighthouse-benchmark.mjs
         env:
           BASE_URL: http://localhost:8787
+          BASE_URL_OUTPUT: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
           OUTPUT_FILE: lighthouse-results.json
           BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
           MARKDOWN_FILE: lighthouse-report.md
@@ -186,6 +185,6 @@ jobs:
       - name: Upload results as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-pr-results
+          name: lighthouse-results
           path: lighthouse-results.json
           retention-days: 30

@@ -1,6 +1,11 @@
 title: "HP Operations Orchestrator vs Kestra for Enterprise Runbook Automation"
 description: "Compare Kestra vs HP Operations Orchestrator (HP OO / Micro Focus / OpenText): cloud-native declarative orchestration vs legacy Java-based runbook automation. See why enterprises modernize with Kestra."
 competitorName: "HP Operations Orchestrator"
+category: Infrastructure Automation
+shortDescription: "Legacy Java-based runbook automation vs. cloud-native declarative orchestration in YAML."
+
+brandColor:
+  color: "#0096d6"
 
 intro:
   title: "Kestra vs. HP Operations Orchestrator: Modernize Legacy IT Automation"
@@ -191,25 +196,17 @@ featureGrid:
       kestra: Apache 2.0 (open-source core)
       competitor: Proprietary enterprise software (no open-source option)
 
-socialProof:
-  image:
-    alt: Enterprise IT team modernizing with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "Moving from a legacy runbook tool to Kestra was transformative. We went from managing Java application servers and content packs to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
+testimonials:
+  - quote: "Moving from a legacy runbook tool to Kestra was transformative. We went from managing Java application servers and content packs to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
     author: "IT Automation Architect @ Global Financial Services Firm"
-  metrics:
-    - value: "80%"
-      label: Reduction in automation lead time
-    - value: "0"
-      label: Java app servers to maintain
-    - value: "10x"
-      label: More workflows automated
-  cta:
-    text: "See how enterprises modernize IT automation with Kestra"
-    link: /use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "80%"
+        name: "Reduction in automation lead time"
+      - value: "0"
+        name: "Java app servers to maintain"
+      - value: "10x"
+        name: "More workflows automated"
+    storyLink: "/use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment"
 
 platformStrengths:
   title: "Kestra Is What HP OO Would Be If Built Today"

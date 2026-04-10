@@ -1,6 +1,4 @@
 ---
-import { formatPluginName } from "~/utils/pluginUtils"
-
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
@@ -13,7 +11,7 @@ import Versus from "~/components/layout/Versus.astro"
 import Arcade from "~/components/infrastructure/Arcade.astro"
 import Architecture from "~/components/infrastructure/Architecture.astro"
 import Built from "~/components/infrastructure/Built.astro"
-import Connect from "~/components/infrastructure/Connect.astro"
+import InfraPlugins from "~/components/infrastructure/InfraPlugins.astro"
 import Intro from "~/components/infrastructure/Intro.astro"
 import Govern from "~/components/infrastructure/Govern.astro"
 import Operation from "~/components/infrastructure/Operation.astro"
@@ -26,18 +24,11 @@ const title =
 const description =
     "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
 
-const { results: blueprints } = await $fetchApiCached(`/blueprints/versions/latest?tags=infrastructure&page=1&size=20`)
+const { results: blueprints } = await $fetchApiCached(
+    `/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
+)
 
-const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`);
-
-const plugins = Object.entries(
-    (await import.meta.glob("/src/contents/docs/icons/plugins/*.svg", {
-        eager: true,
-    })) as Record<string, { default: { src: string } }>,
-).map(([key, mod]) => ({
-    name: formatPluginName(key.split("/").pop()?.replace(".svg", "") ?? ""),
-    logo: mod.default,
-}))
+const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
 
 const VERSUS_CONTENT = {
     title: 'Infrastructure Teams Deserve <br class="d-none d-lg-block"> a Better Way to Operate',
@@ -88,7 +79,6 @@ const LIFECYCLE_CARDS = [
         },
     },
 ]
-
 ---
 
 <Layout {title} {description} headerTheme="lightText">
@@ -124,11 +114,11 @@ const LIFECYCLE_CARDS = [
             {blueprints}
             {tags}
             link={{
-                href: "/blueprints?tags=infrastructure",
+                href: "/blueprints?tags=Infrastructure",
                 text: "View more Infrastructure blueprints",
             }}
         />
-        <Connect {plugins} />
+        <InfraPlugins />
         <Built />
         <SeeHow>
             <Fragment slot="title">

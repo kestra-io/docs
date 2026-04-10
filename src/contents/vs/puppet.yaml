@@ -1,6 +1,11 @@
 title: "Puppet vs Kestra for Infrastructure Automation"
 description: "Compare Kestra vs Puppet by Perforce: Open-source workflow orchestration in YAML vs. agent-based configuration management with Puppet DSL. See features, setup, and when to use each tool."
 competitorName: Puppet
+category: Infrastructure Automation
+shortDescription: "Agent-based configuration management with DSL vs. declarative workflow orchestration in YAML."
+
+brandColor:
+  color: "#4c00ff"
 
 intro:
   title: "Kestra vs. Puppet: Workflow Orchestration vs. Configuration Management"
@@ -217,25 +222,17 @@ featureGrid:
       kestra: "Minutes (Docker Compose)"
       competitor: "Hours to days (Server + Agent deployment)"
 
-socialProof:
-  image:
-    alt: Enterprise team modernizing with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "We needed something that could orchestrate across our entire stack, not just manage server configs. Kestra gave us a single platform for data pipelines, infrastructure operations, and business workflows. Our teams went from writing custom scripts to shipping production workflows in days."
+testimonials:
+  - quote: "We needed something that could orchestrate across our entire stack, not just manage server configs. Kestra gave us a single platform for data pipelines, infrastructure operations, and business workflows. Our teams went from writing custom scripts to shipping production workflows in days."
     author: "Platform Engineering Lead @ Fortune 500 Technology Company"
-  metrics:
-    - value: "70%"
-      label: Reduction in custom glue code
-    - value: "1200+"
-      label: Plugins available out of the box
-    - value: "5x"
-      label: Faster workflow delivery
-  cta:
-    text: "See how enterprises modernize IT automation with Kestra"
-    link: /use-cases/stories/30-building-a-government-grade-orchestration-control-plane-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "70%"
+        name: "Reduction in custom glue code"
+      - value: "1200+"
+        name: "Plugins available out of the box"
+      - value: "5x"
+        name: "Faster workflow delivery"
+    storyLink: "/use-cases/stories/30-building-a-government-grade-orchestration-control-plane-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

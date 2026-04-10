@@ -1,6 +1,11 @@
 title: "n8n vs Kestra for Workflow Automation"
 description: "Compare Kestra vs n8n: Code-first universal orchestration in any language with YAML vs visual drag-and-drop app automation. See features, architecture, and use cases."
 competitorName: n8n
+category: Data Orchestration
+shortDescription: "Visual low-code app automation vs. code-first universal orchestration at enterprise scale."
+
+brandColor:
+  color: "#ea4b71"
 
 intro:
   title: "Kestra vs. n8n: Orchestrate at Scale, Not Just Connect Apps"
@@ -182,25 +187,17 @@ featureGrid:
       kestra: "Early access"
       competitor: "Available (Azure Frankfurt)"
 
-socialProof:
-  image:
-    alt: Apple ML team success story
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
+testimonials:
+  - quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
     author: "Senior Engineering Manager @ Apple (ML team)"
-  metrics:
-    - value: "200"
-      label: Engineers onboarded
-    - value: "2x"
-      label: Faster workflow creation
-    - value: "0"
-      label: Pipeline failures
-  cta:
-    text: "See how teams orchestrate at scale with Kestra"
-    link: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "200"
+        name: "Engineers onboarded"
+      - value: "2x"
+        name: "Faster workflow creation"
+      - value: "0"
+        name: "Pipeline failures"
+    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Actually Work

@@ -1,6 +1,12 @@
 title: "HPE Morpheus vs Kestra for Hybrid Cloud Management"
 description: "Compare Kestra vs HPE Morpheus: open-source declarative workflow orchestration in YAML vs. proprietary hybrid cloud management platform. See features, setup, and when to choose each."
 competitorName: HPE Morpheus
+category: Infrastructure Automation
+shortDescription: "Proprietary hybrid cloud management platform vs. open-source declarative workflow orchestration."
+
+brandColor:
+  color: "#01a982"
+  gradient: "linear-gradient(90deg, #3DB5E6, #D8292F)"
 
 intro:
   title: "Kestra vs. HPE Morpheus: Declarative Orchestration vs. Hybrid Cloud Management"
@@ -205,25 +211,17 @@ featureGrid:
       kestra: "Not a primary use case"
       competitor: "Automatic import and management of existing cloud resources"
 
-socialProof:
-  image:
-    alt: Enterprise team modernizing with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "We needed orchestration that went beyond provisioning VMs. With Kestra, our teams build workflows that span data ingestion, infrastructure operations, and business processes — all in YAML, all in Git, all visible. It replaced three separate tools."
+testimonials:
+  - quote: "We needed orchestration that went beyond provisioning VMs. With Kestra, our teams build workflows that span data ingestion, infrastructure operations, and business processes — all in YAML, all in Git, all visible. It replaced three separate tools."
     author: "Head of Platform Engineering @ Enterprise SaaS Company"
-  metrics:
-    - value: "3x"
-      label: Faster workflow delivery
-    - value: "1"
-      label: Platform for data, infra, and business workflows
-    - value: "70%"
-      label: Reduction in manual operations
-  cta:
-    text: "See how enterprises modernize IT automation with Kestra"
-    link: /use-cases/stories/28-governed-selfservice-cloud-automation-in-regulated-environments-with-kestra
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "3x"
+        name: "Faster workflow delivery"
+      - value: "1"
+        name: "Platform for data, infra, and business workflows"
+      - value: "70%"
+        name: "Reduction in manual operations"
+    storyLink: "/use-cases/stories/28-governed-selfservice-cloud-automation-in-regulated-environments-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work
