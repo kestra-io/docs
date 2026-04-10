@@ -27,14 +27,14 @@ export default defineConfig({
                 viewport: { width: 1280, height: 720 },
             },
         },
-        {
-            name: "tablet",
-            use: { ...devices["iPad (gen 7)"] },
-        },
-        {
-            name: "mobile",
-            use: { ...devices["iPhone 13"] },
-        },
+        // {
+        //     name: "tablet",
+        //     use: { ...devices["iPad (gen 7)"] },
+        // },
+        // {
+        //     name: "mobile",
+        //     use: { ...devices["iPhone 13"] },
+        // },
     ],
 
     webServer: {
