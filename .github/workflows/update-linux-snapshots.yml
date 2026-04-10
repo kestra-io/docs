@@ -37,7 +37,7 @@ jobs:
         run: npm run test:visual:update
 
       - name: Upload Linux snapshots artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: visual-snapshots-linux
           path: tests/visual-regression.spec.ts-snapshots/
