@@ -1,4 +1,3 @@
-/* oxlint-disable no-console */
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
