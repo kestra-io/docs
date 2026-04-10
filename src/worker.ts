@@ -12,7 +12,8 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
         return next()
     }
 
-    const response = (await next()).clone()
+    const nextResponse = await next()
+    const response = new Response(nextResponse.body, nextResponse)
 
     const localhost: string[] = []
     if (import.meta.env.DEV) {
@@ -76,7 +77,8 @@ const noIndex = defineCFMiddleware(async (url, next) => {
 
     // Check if the request is coming from the .workers.dev domain or others
     if (url.host !== "kestra.io") {
-        const response = (await next()).clone()
+        const nextResponse = await next()
+        const response = new Response(nextResponse.body, nextResponse)
 
         response.headers.set("X-Robots-Tag", "noindex, nofollow")
 
