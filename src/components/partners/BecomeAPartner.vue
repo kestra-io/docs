@@ -79,19 +79,6 @@
                                         >
                                     </label>
                                     <textarea
-                                await $fetch(HUBSPOT_URL, {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify(hubspotData),
-                                })
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify(hubspotData),
-                                })
                                         :id="f.id"
                                         class="form-control"
                                         :name="f.id"
