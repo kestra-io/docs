@@ -79,6 +79,7 @@
                                         >
                                     </label>
                                     <textarea
+                                        v-if="f.type === 'textarea'"
                                         :id="f.id"
                                         class="form-control"
                                         :name="f.id"
