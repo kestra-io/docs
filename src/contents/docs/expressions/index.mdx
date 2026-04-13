@@ -19,7 +19,8 @@ Use expressions to dynamically set values in flows using `{{ ... }}` syntax back
 | Format dates, parse JSON, or transform strings | [Filter Reference](#filter-reference) |
 | Render nested expressions or inspect the full context | [Function Reference](#function-reference) |
 | Write loops, conditions, fallbacks, and comparisons | [Pebble Syntax](#pebble-syntax) and [Operators, Tags, and Tests](#operators-tags-and-tests) |
-| Build or debug a multiline or nested expression | [Pebble Syntax](#multiline-json-bodies) and [Function Reference](#render) |
+| Build or debug a multiline or nested expression | [Multiline JSON bodies](#multiline-json-bodies) and [`render()`](#render) |
+| Access secrets or credentials at runtime | [Secrets and Files](#secrets-and-file-access) |
 
 ## Execution Context Variables
 
@@ -334,20 +335,6 @@ Filters, functions, and macros can accept named arguments:
 ```twig
 {{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
 ```
-
-#### Macros
-
-Macros are reusable template snippets:
-
-```twig
-{% macro input(type="text", name, value="") %}
-  type: "{{ type }}", name: "{{ name }}", value: "{{ value }}"
-{% endmacro %}
-
-{{ input(name="country") }}
-```
-
-Macros only access their local arguments.
 
 ### Control flow and fallbacks
 
@@ -972,6 +959,13 @@ Use `indent` when the first line is already in place and only following lines ne
 | Offset a date | `dateAdd` |
 | Split or join text | `split`, `join` |
 | Normalize casing | `lower`, `upper`, `title`, `capitalize` |
+| Convert a value to a string | `string` |
+| Sort a collection | `sort`, `rsort` |
+| Count items in a collection | `length` |
+| Get unique values | `distinct` |
+| Encode or decode Base64 | `base64encode`, `base64decode` |
+| Hash a string | `sha256` |
+| Convert to a number | `number` |
 | Render YAML in a templated task | `yaml`, `indent`, `nindent` |
 
 ## Function Reference
@@ -1199,16 +1193,6 @@ These helpers are usually used in operational flows rather than day-to-day templ
 
 Use it sparingly. It is convenient for dynamic dropdowns and lightweight lookups, but task-level HTTP calls are usually easier to observe and retry.
 
-#### `isIn()`
-
-Use `isIn()` for conditions where one value must be tested against a short allowlist:
-
-```twig
-{{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}
-```
-
-That reads more clearly than chaining multiple equality checks in `runIf`, SLAs, or alert conditions.
-
 #### `appLink()`
 
 Enterprise Edition's `appLink()` builds links back to Kestra Apps:
@@ -1313,6 +1297,14 @@ To check for multiple items at once, pass a list on the right-hand side:
 
 ```twig
 {{ inputs.mainString contains inputs.subString }}
+```
+
+#### `isIn`
+
+Use `isIn` to test whether a value matches any item in a list. It reads more clearly than chaining multiple equality checks in `runIf`, SLAs, or alert conditions:
+
+```twig
+{{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}
 ```
 
 #### Math and concatenation
