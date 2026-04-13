@@ -1000,7 +1000,7 @@ These functions bridge expressions to external or stored data. Use them when the
 - `secret()` reads a secret from Kestra's secret backend
 - `credential()` reads a short-lived token from a managed EE credential
 - `read()` reads the contents of a namespace file or internal-storage file
-- `fileURI()` resolves a namespace file URI
+- `fileURI()` returns the internal URI of a namespace file without reading its contents — use this when a task parameter expects a URI rather than inline content
 
 Examples:
 
@@ -1011,7 +1011,7 @@ Examples:
 {{ fileURI('my_file.txt') }}
 ```
 
-`read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs.
+`read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs. Use `fileURI()` instead when you need to pass the file reference itself to a downstream task rather than embed the content inline.
 
 #### Data parsing helpers
 
@@ -1035,7 +1035,7 @@ This group is more situational, but it becomes valuable in complex flows where y
 
 - `errorLogs()` for error summaries in alerts
 - `currentEachOutput()` for simpler access to sibling outputs inside `ForEach`
-- `tasksWithState()` to inspect tasks by state
+- `tasksWithState()` returns a list of task run objects matching the given state — useful for building conditional logic or failure summaries based on task outcomes
 - `appLink()` in Enterprise Edition to generate Kestra App URLs
 
 #### Utility helpers
@@ -1153,6 +1153,27 @@ Equivalent to `render(expression, recursive=false)`:
 {{ renderOnce(namespace.github.token) }}
 ```
 
+#### `printContext()`
+
+Outputs the full execution context as a string. Use it in the Debug Expression console to inspect every variable available at that point in the execution:
+
+```twig
+{{ printContext() }}
+```
+
+This is the fastest way to discover the exact key names and structure of `inputs`, `outputs`, `trigger`, and other context variables when an expression is not resolving as expected.
+
+#### `fromJson()`
+
+Parses a JSON string into an object so you can access its fields with dot or bracket notation:
+
+```twig
+{{ fromJson(outputs.myTask.value).name }}
+{{ fromJson('[1, 2, 3]')[0] }}
+```
+
+Use `fromJson()` when a task output arrives as a serialized JSON string rather than a structured object. To go the other direction, use the `toJson` filter.
+
 #### Numeric and generation helpers
 
 ```twig
@@ -1180,7 +1201,12 @@ These helpers are usually used in operational flows rather than day-to-day templ
 {{ fileSize(outputs.download.uri) }}
 {{ fileExists(outputs.download.uri) }}
 {{ fileEmpty(outputs.download.uri) }}
-{{ tasksWithState('failed') }}
+```
+
+`tasksWithState()` returns a list of task run objects matching the given state. Use it in error handlers or notifications to report which tasks failed:
+
+```twig
+{{ tasksWithState('FAILED') }}
 ```
 
 #### `http()`
@@ -1244,6 +1270,16 @@ Supported comparison operators:
 - `>`
 - `<=`
 - `>=`
+
+```twig
+{% if execution.state == "SUCCESS" %}
+  Flow completed successfully.
+{% endif %}
+
+{% if taskrun.attemptsCount >= 3 %}
+  Max retries reached.
+{% endif %}
+```
 
 #### Logic and boolean checks
 
