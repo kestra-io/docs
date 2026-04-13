@@ -221,6 +221,7 @@ export default defineConfig({
                 // This plugin wraps every debug source file with a local CJS
                 // shim so the globals are defined, then re-exports as ESM.
                 name: "cjs-debug-shim",
+                apply: "serve",
                 enforce: "pre",
                 transform(code, id) {
                     if (
