@@ -31,10 +31,10 @@ To limit context switching, we added a contextual panel in the flow editor displ
 
 ### Improved EachSequential and EachParallel value definition
 
-[EachSequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachSequential.html) and [EachParallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.EachParallel.html) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
+[EachSequential](/plugins/core/flow/io.kestra.plugin.core.flow.eachsequential) and [EachParallel](/plugins/core/flow/io.kestra.plugin.core.flow.eachparallel) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
 
 :::alert{type="info"}
-Now use [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) or [ForEachItem](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEachItem).
+Now use [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) or [ForEachItem](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem).
 :::
 
 ## Task metrics
@@ -56,11 +56,11 @@ We also added a new [Fetch](/plugins/core/tasks/log/io.kestra.plugin.core.log.Fe
 
 ### Fail task
 
-We added a [Fail](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Fail.html) task that can fail an execution unconditionally or with a condition. It allows, for example, to fail based on some switch value or on some condition on a flow input.
+We added a [Fail](/plugins/core/execution/io.kestra.plugin.core.execution.fail) task that can fail an execution unconditionally or with a condition. It allows, for example, to fail based on some switch value or on some condition on a flow input.
 
 ### If task
 
-We added an [If](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If.html) task that can be used to process a set of tasks conditionally.
+We added an [If](/plugins/core/flow/io.kestra.plugin.core.flow.if) task that can be used to process a set of tasks conditionally.
 
 ## Documentation
 
@@ -86,7 +86,7 @@ We made changes to the way triggers of type [Flow](../../docs/05.workflow-compon
 
 ## Some other goodies
 
-The [Pause](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Pause.html) task has a new `timeout` property that can be used instead of a delay. At timeout, the Pause task will fail whereas at delay expiration it ends in success.
+The [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task has a new `timeout` property that can be used instead of a delay. At timeout, the Pause task will fail whereas at delay expiration it ends in success.
 Flow executions have a new variable `originalId`, this identifier will not change between replays so can be used to uniquely identify a flow execution.
 Flows can now be executed at a revision, this allows the execution of an old version of a flow.
 If you use [helper functions](../../docs/version-control-cicd/cicd/04.helpers/index.md) in your CI/CD, there is a new flow expand command that allows expanding the definition of a flow by including the external files from the helpers.
