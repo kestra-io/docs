@@ -3,7 +3,7 @@
         <div class="container">
             <div class="enterprise">
                 <div class="text-center pb-3">
-                    <img src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg" />
+                    <img src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg" alt="" />
                 </div>
                 <div class="heading mx-auto">
                     <h2 class="title text-center">
