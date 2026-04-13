@@ -1247,11 +1247,6 @@ tasks:
       - "API key: {{ secret('MY_API_KEY') }}"
       - "Config value: {{ render(namespace.my_config) }}"
 
-  - id: check_file
-    type: io.kestra.plugin.core.log.Log
-    message: |
-      File exists: {{ fileExists(outputs.log_context.uri) }}
-      File size: {{ fileSize(outputs.log_context.uri) }} bytes
 ```
 
 ## Operators, Tags, and Tests
