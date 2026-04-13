@@ -280,8 +280,24 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         ? `/meta/plugins/group-${subgroups.find((r) => slugify(r.title) === subGroup)?.subGroup}.svg`
         : `/meta/plugins/${pluginType ?? pluginName}.svg`
 
+    // Build a canonical title map from allPlugins (source of truth for URL slugs).
+    // The /plugins/subgroups API and the /plugins/arborescence API are separate endpoints
+    // that can return different `title` values for the same subgroup. Since
+    // subGroupHref() and getElementHref() both use slugify(subGroupName(plugin)) — which
+    // reads plugin.title — a title mismatch causes the sidebar to generate non-canonical
+    // URLs that trigger 301 redirects instead of serving the page directly.
+    const canonicalTitleBySubGroup = new Map(
+        allPlugins
+            .filter((p) => p.subGroup !== undefined)
+            .map((p) => [p.subGroup!, p.title]),
+    )
+
     const prunedRootPlugin = arborescencePlugins?.find((p) => p.subGroup === undefined)
-    const prunedPluginsWithoutDeprecated = arborescencePlugins ?? []
+    const prunedPluginsWithoutDeprecated = (arborescencePlugins ?? []).map((p) => {
+        if (!p.subGroup) return p
+        const canonicalTitle = canonicalTitleBySubGroup.get(p.subGroup)
+        return canonicalTitle !== undefined ? { ...p, title: canonicalTitle } : p
+    })
 
     return {
         headingTitle,
