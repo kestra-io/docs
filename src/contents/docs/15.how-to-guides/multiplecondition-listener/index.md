@@ -93,12 +93,9 @@ tasks:
 triggers:
   - id: multiple_listen_flow
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - SUCCESS
+    when: "{{ trigger.executionStatus == 'SUCCESS' }}"
+    multipleConditions:
       - id: multiple
-        type: io.kestra.plugin.core.condition.MultipleCondition
         window: P1D
         windowAdvance: P0D
         conditions:
@@ -123,7 +120,7 @@ triggers:
 
 
     - The `multiple_listen_flow` trigger listens for both `multiplecondition_flow_a` and `multiplecondition_flow_b`.
-    - Execution Status Condition: Ensures that only successful executions (status `SUCCESS`) are considered.
+    - The `when` expression ensures that only successful executions (status `SUCCESS`) are considered.
     - MultipleCondition: This condition checks that both `flow_a` and `flow_b` have successfully completed within the last 24 hours (`P1D`).
 
 3. Window:

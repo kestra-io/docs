@@ -232,11 +232,7 @@ triggers:
     backfill:
       start: 2023-11-11T00:00:00Z
     cron: "0 11 * * MON" # at 11:00 every Monday
-    conditions: # only first Monday of the month
-      - type: io.kestra.plugin.core.condition.DayWeekInMonth
-        date: "{{ trigger.date }}"
-        dayOfWeek: "MONDAY"
-        dayInMonth: "FIRST"
+    when: "{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}" # only first Monday of the month
 ```
 
 

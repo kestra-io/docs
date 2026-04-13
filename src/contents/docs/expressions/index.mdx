@@ -1451,7 +1451,7 @@ To check for multiple items at once, pass a list on the right-hand side:
 
 #### `isIn`
 
-Use `isIn` to test whether a value matches any item in a list. It reads more clearly than chaining multiple equality checks in `runIf`, SLAs, or alert conditions:
+Use `isIn` to test whether a value matches any item in a list. It reads more clearly than chaining multiple equality checks in `when`, SLAs, or alert conditions:
 
 ```twig
 {{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}

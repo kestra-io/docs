@@ -144,14 +144,7 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.team
-        prefix: true
+    when: "{{ trigger.executionStatus in ['FAILED', 'WARNING'] and trigger.namespace startsWith 'company.team' }}"
 ```
 
 Adding this flow ensures you receive a Slack alert for any flow failure in the `company.team` namespace.

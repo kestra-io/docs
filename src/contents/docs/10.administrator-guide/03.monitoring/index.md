@@ -51,14 +51,7 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.analytics
-        prefix: true
+    when: "{{ trigger.executionStatus in ['FAILED', 'WARNING'] and trigger.namespace startsWith 'company.analytics' }}"
 ```
 
 Adding this single flow will ensure that you receive a Slack alert on any flow failure in the `company.analytics` namespace. Here is an example alert notification:
@@ -66,7 +59,7 @@ Adding this single flow will ensure that you receive a Slack alert on any flow f
 ![alert notification](../../03.tutorial/06.errors/alert-notification.png)
 
 :::alert{type="warning"}
-Note that if you want this alert to be sent on failure across multiple namespaces, you will need to add an `OrCondition` to the `conditions` list. See the example below:
+Note that if you want this alert to be sent on failure across multiple namespaces, combine conditions using `or` in the `when` Pebble expression. See the example below:
 ```yaml
 id: alert
 namespace: company.system
@@ -81,53 +74,11 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.Or
-        conditions:
-          - type: io.kestra.plugin.core.condition.ExecutionNamespace
-            namespace: company.product
-            prefix: true
-          - type: io.kestra.plugin.core.condition.ExecutionFlow
-            flowId: cleanup
-            namespace: company.system
+    when: "{{ trigger.executionStatus in ['FAILED', 'WARNING'] and (trigger.namespace startsWith 'company.product' or (trigger.flowId == 'cleanup' and trigger.namespace == 'company.system')) }}"
 ```
 :::
 
-The example above works correctly. However, if you list the conditions without using `OrCondition`, no alerts will be sent because Kestra will try to match all conditions simultaneously. Since there’s no overlap between them, the conditions cancel each other out. See the example below:
-
-```yaml
-id: bad_example
-namespace: company.monitoring
-description: This example will not work
-
-tasks:
-  - id: send
-    type: io.kestra.plugin.slack.notifications.SlackExecution
-    url: "{{ secret('SLACK_WEBHOOK') }}"
-    channel: "#general"
-    executionId: "{{trigger.executionId}}"
-
-triggers:
-  - id: listen
-    type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.product
-        prefix: true
-      - type: io.kestra.plugin.core.condition.ExecutionFlow
-        flowId: cleanup
-        namespace: company.system
-```
-
-Here, there's no overlap between the two conditions. The first condition will only match executions in the `company.product` namespace, while the second condition will only match executions from the `cleanup` flow in the `company.system` namespace. If you want to match executions from the `cleanup` flow in the `company.system` namespace **or** any execution in the `product` namespace, make sure to add the `OrCondition`.
+The example above works correctly because `or` is used explicitly in the Pebble expression. If you combine two conditions with `and` where only one can ever be true at a time, no alerts will be sent. For example, a flow execution can only belong to one namespace at a time, so requiring it to match two different namespace prefixes simultaneously will never fire. Make sure to use `or` for alternatives and `and` only for conditions that can both be true at the same time.
 
 ## Monitoring
 
