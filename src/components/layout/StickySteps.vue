@@ -32,8 +32,6 @@
                     </div>
                 </div>
             </div>
-
-            <FooterContact v-if="data.footerSubtitle" :subtitle="data.footerSubtitle" />
         </div>
     </section>
 </template>
@@ -47,8 +45,6 @@
         useScrollLock,
     } from "@vueuse/core"
     
-    import FooterContact from "~/components/layout/FooterContact.vue"
-
     interface Step {
         id: string;
         label: string;
@@ -65,7 +61,6 @@
             steps: Step[];
             title?: string;
             subheading?: string;
-            footerSubtitle?: string;
         }
     }>()
 
@@ -165,10 +160,7 @@
                 font-weight: 600;
                 color: var(--ks-content-primary);
                 &.subheading {
-                    background: linear-gradient(89.89deg, #9f79f3 37.64%, #658af9 63.06%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
+                    color: var(--ks-content-color-highlight);
                 }
             }
         }

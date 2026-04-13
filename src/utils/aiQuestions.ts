@@ -1,3 +1,5 @@
+import { randomSortFunction } from "./random"
+
 export const allQuestions = [
     "How to add secrets?",
     "How to configure my internal storage?",
@@ -18,4 +20,4 @@ export const allQuestions = [
 ]
 
 export const getRandomAiQuestions = () =>
-    [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 3)
+    [...allQuestions].sort(randomSortFunction).slice(0, 3)

@@ -1,0 +1,88 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#FFF8EE"/>
+<g filter="url(#filter0_d_mwaa)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#FF9900" shape-rendering="crispEdges"/>
+<!-- Clock icon: Schedule -->
+<circle cx="67" cy="121" r="11" stroke="black" stroke-width="1.5" fill="none"/>
+<path d="M67 121V113" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M67 121L73 121" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<circle cx="67" cy="121" r="1.5" fill="currentColor"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Schedule</text>
+</g>
+<g filter="url(#filter1_d_mwaa)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#FF9900" shape-rendering="crispEdges"/>
+<!-- Network/graph icon: DAG -->
+<circle cx="174" cy="114" r="3" fill="currentColor"/>
+<circle cx="167" cy="126" r="3" fill="currentColor"/>
+<circle cx="181" cy="126" r="3" fill="currentColor"/>
+<line x1="174" y1="117" x2="169" y2="123" stroke="currentColor" stroke-width="1.5"/>
+<line x1="174" y1="117" x2="179" y2="123" stroke="currentColor" stroke-width="1.5"/>
+<line x1="170" y1="126" x2="178" y2="126" stroke="currentColor" stroke-width="1.5"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">DAG</text>
+</g>
+<g filter="url(#filter2_d_mwaa)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#FF9900" shape-rendering="crispEdges"/>
+<!-- Server icon: Worker -->
+<rect x="273" y="111" width="18" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="273" y="118" width="18" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="273" y="125" width="18" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<circle cx="287" cy="113.5" r="1.5" fill="currentColor"/>
+<circle cx="287" cy="120.5" r="1.5" fill="currentColor"/>
+<circle cx="287" cy="127.5" r="1.5" fill="currentColor"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Worker</text>
+</g>
+<g filter="url(#filter3_d_mwaa)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#FF9900" shape-rendering="crispEdges"/>
+<!-- Bucket/cylinder icon: S3 -->
+<ellipse cx="390.5" cy="112" rx="9" ry="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<line x1="381.5" y1="112" x2="381.5" y2="129" stroke="currentColor" stroke-width="1.5"/>
+<line x1="399.5" y1="112" x2="399.5" y2="129" stroke="currentColor" stroke-width="1.5"/>
+<ellipse cx="390.5" cy="129" rx="9" ry="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">S3</text>
+</g>
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="currentColor"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="currentColor"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="currentColor"/>
+<defs>
+<filter id="filter0_d_mwaa" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.600 0 0 0 0 0.0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_mwaa"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_mwaa" result="shape"/>
+</filter>
+<filter id="filter1_d_mwaa" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.600 0 0 0 0 0.0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_mwaa"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_mwaa" result="shape"/>
+</filter>
+<filter id="filter2_d_mwaa" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.600 0 0 0 0 0.0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_mwaa"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_mwaa" result="shape"/>
+</filter>
+<filter id="filter3_d_mwaa" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.600 0 0 0 0 0.0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_mwaa"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_mwaa" result="shape"/>
+</filter>
+</defs>
+</svg>

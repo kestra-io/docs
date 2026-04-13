@@ -6,6 +6,7 @@ import Link from "~/components/common/Link.astro"
 import TaskIcon from "~/components/common/TaskIcon.astro"
 
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import { randomSortFunction } from "~/utils/random"
 
 const totalPlugins = await fetchTotalPluginsCount()
 const metadata = await $fetchApiCached<PluginMetadata[]>("/plugins/metadata")
@@ -15,7 +16,7 @@ const excluded =
 
 const plugins = metadata
     .filter((p) => p.artifactId && !excluded.test(p.artifactId))
-    .sort(() => 0.5 - Math.random())
+    .sort(randomSortFunction)
     .slice(0, 80)
     .map((p) => {
         return {

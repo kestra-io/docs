@@ -5,7 +5,7 @@
             <p class="sub">{{ block.value }}</p>
         </div>
         <div class="block">
-            <p class="title mb-2">Data Stack</p>
+            <p class="title mb-2">Stack</p>
             <div class="d-flex flex-column gap-2 justify-content-start">
                 <div class="card task">
                     <div class="body">

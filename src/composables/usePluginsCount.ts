@@ -19,16 +19,14 @@ export function calculateTotalPlugins(plugins: Plugin[]): number {
 
 export function usePluginsCount(pluginsRef?: Ref<Plugin[]>) {
     let plugins = pluginsRef
-    const status = ref<string>("")
     if (!plugins) {
         plugins = ref<Plugin[]>([])
         // Fetch plugins data if not available
-        $fetchApiCached(`/plugins/subgroups`)
-            .then((data) => {
-                if (plugins) {
-                    plugins.value = data as unknown as Plugin[]
-                }
-            })
+        $fetchApiCached(`/plugins/subgroups`).then((data) => {
+            if (plugins) {
+                plugins.value = data as unknown as Plugin[]
+            }
+        })
     }
 
     const totalPlugins = computed(() => {
