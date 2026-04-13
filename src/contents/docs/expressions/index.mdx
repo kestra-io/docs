@@ -77,6 +77,7 @@ The Debug Expression console is available in the Kestra UI under **Executions â†
 | `{{ parent.outputs }}` | Outputs of the nearest parent task run |
 | `{{ parents }}` | List of parent task runs |
 | `{{ labels }}` | Execution labels accessible by key |
+| `{{ trace.parent }}` | W3C `traceparent` header for the current execution; only populated when [OpenTelemetry tracing is enabled](../10.administrator-guide/open-telemetry/index.md#traces) |
 
 Example:
 
