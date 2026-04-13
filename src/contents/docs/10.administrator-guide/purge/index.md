@@ -11,7 +11,7 @@ Use purge tasks to remove old executions, logs, and key-value pairs, helping red
 
 To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
 - `PurgeExecutions`: deletes execution records
-- `PurgeLogs`: removes logs in bulk. By default removes both execution logs and non-execution logs (e.g. trigger logs). Use `purgeExecutionLogs` and `purgeNonExecutionLogs` to purge each type independently.
+- `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently
 - `PurgeKV`: deletes expired keys globally for a specific namespace
 
 Together, these replace the legacy `io.kestra.plugin.core.storage.Purge` task with a **faster and more reliable process (~10x faster)**.
@@ -47,7 +47,7 @@ triggers:
 
 ### Selectively purge execution or trigger logs
 
-By default, `PurgeLogs` removes all log types. Set `purgeExecutionLogs` or `purgeNonExecutionLogs` to `false` to restrict which logs are deleted. This is useful when you want to retain execution logs for failed runs for debugging while still clearing trigger logs.
+Both `purgeExecutionLogs` and `purgeNonExecutionLogs` default to `true`. Set either to `false` to exclude that log type — for example, to retain execution logs for debugging while still clearing trigger logs.
 
 Purge only trigger (non-execution) logs:
 
@@ -60,7 +60,6 @@ tasks:
     type: io.kestra.plugin.core.log.PurgeLogs
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
     purgeExecutionLogs: false
-    purgeNonExecutionLogs: true
 
 triggers:
   - id: daily
@@ -78,7 +77,6 @@ tasks:
   - id: purge_logs
     type: io.kestra.plugin.core.log.PurgeLogs
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
-    purgeExecutionLogs: true
     purgeNonExecutionLogs: false
 
 triggers:
@@ -88,6 +86,26 @@ triggers:
 ```
 
 The task outputs `executionLogsCount` and `nonExecutionLogsCount` alongside the existing `count` (total), so you can log or alert on how many of each type were removed.
+
+### Control deletion batch size
+
+By default, `PurgeLogs` deletes all matching rows in a single transaction. Use `batchSize` to split the deletion into smaller batches — useful when purging a large volume of logs to limit transaction size:
+
+```yaml
+id: purge-logs-batched
+namespace: company.myteam
+
+tasks:
+  - id: purge_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
+    batchSize: 1000
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+```
 
 ## Purge Key-value pairs
 

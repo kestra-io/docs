@@ -66,6 +66,7 @@ Best practice:
 
 - set separate retention periods for executions and logs if your teams use them differently
 - use `purgeExecutionLogs: false` to retain execution logs for failed workflow debugging while still purging trigger logs, or `purgeNonExecutionLogs: false` to do the reverse
+- set `batchSize` on `PurgeLogs` when purging large volumes of logs to limit the number of rows deleted per transaction
 - avoid deleting recent data that is still useful for troubleshooting failed workflows
 - run purge flows on a schedule instead of waiting for storage pressure
 
