@@ -649,6 +649,15 @@ Merges two collections into one:
 {# output: [1, 2, 3, 4] #}
 ```
 
+#### `flatten`
+
+Removes one level of nesting from a collection:
+
+```twig
+{{ [[1, 2], [3, 4], [5]] | flatten }}
+{# output: [1, 2, 3, 4, 5] #}
+```
+
 #### `keys` and `values`
 
 Return the keys or values of a map:
@@ -731,9 +740,17 @@ Returns `true` if the string begins with the given prefix:
 {{ "kestra://file.csv" | startsWith("kestra://") }}    {# true #}
 ```
 
+#### `endsWith`
+
+Returns `true` if the string ends with the given suffix:
+
+```twig
+{{ "report.csv" | endsWith(".csv") }}    {# true #}
+```
+
 #### Encoding and hashing
 
-`base64encode` and `base64decode` handle Base64 encoding. `urlencode` and `urldecode` percent-encode strings for use in URLs. `sha256` produces a hex-encoded SHA-256 hash.
+`base64encode` and `base64decode` handle Base64 encoding. `urlencode` and `urldecode` percent-encode strings for use in URLs. `sha1`, `sha512`, and `md5` produce hex-encoded hashes of the corresponding algorithms.
 
 ```twig
 {{ "test" | base64encode }}
@@ -744,8 +761,9 @@ Returns `true` if the string begins with the given prefix:
 {# output: The+string+%C3%BC%40foo-bar #}
 {{ "The+string+%C3%BC%40foo-bar" | urldecode }}
 {# output: The string ü@foo-bar #}
-{{ "test" | sha256 }}
-{# output: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08 #}
+{{ "test" | sha1 }}
+{{ "test" | sha512 }}
+{{ "test" | md5 }}
 ```
 
 #### `string`
@@ -765,6 +783,21 @@ Escapes special characters in a string. The `type` argument controls which style
 ```twig
 {{ "Can't be here" | escapeChar('single') }}
 {# output: Can\'t be here #}
+```
+
+#### Regex filters
+
+`regexMatch(regex)` returns `true` if the input contains a substring matching the pattern. `regexReplace(regex, replacement)` replaces all matching substrings. `regexExtract(regex, group)` returns the first match or a specific capture group (`group` defaults to `0`; returns `null` if no match):
+
+```twig
+{{ "hello world" | regexMatch("w[a-z]+") }}
+{# output: true #}
+{{ "2024-01-15" | regexReplace("(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1") }}
+{# output: 15/01/2024 #}
+{{ "order-12345-done" | regexExtract("\\d+") }}
+{# output: 12345 #}
+{{ "2024-01-15" | regexExtract("(\\d{4})-(\\d{2})-(\\d{2})", 1) }}
+{# output: 2024 #}
 ```
 
 #### Worked string filter example
@@ -964,7 +997,7 @@ Use `indent` when the first line is already in place and only following lines ne
 | Count items in a collection | `length` |
 | Get unique values | `distinct` |
 | Encode or decode Base64 | `base64encode`, `base64decode` |
-| Hash a string | `sha256` |
+| Hash a string | `sha1`, `sha512`, `md5` |
 | Convert to a number | `number` |
 | Render YAML in a templated task | `yaml`, `indent`, `nindent` |
 
@@ -1001,6 +1034,8 @@ These functions bridge expressions to external or stored data. Use them when the
 - `credential()` reads a short-lived token from a managed EE credential
 - `read()` reads the contents of a namespace file or internal-storage file
 - `fileURI()` returns the internal URI of a namespace file without reading its contents — use this when a task parameter expects a URI rather than inline content
+- `kv(key, namespace, errorOnMissing)` reads a value from the KV store; `namespace` defaults to the flow's namespace and `errorOnMissing` defaults to `true`
+- `encrypt(key, plaintext)` and `decrypt(key, encrypted)` encrypt and decrypt values using Kestra's encryption service
 
 Examples:
 
@@ -1009,6 +1044,10 @@ Examples:
 {{ credential('my_oauth') }}
 {{ read('subdir/file.txt') }}
 {{ fileURI('my_file.txt') }}
+{{ kv('MY_KEY') }}
+{{ kv('MY_KEY', 'other.namespace', false) }}
+{{ encrypt('MY_SECRET_KEY', inputs.sensitiveValue) }}
+{{ decrypt('MY_SECRET_KEY', outputs.encryptTask.value) }}
 ```
 
 `read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs. Use `fileURI()` instead when you need to pass the file reference itself to a downstream task rather than embed the content inline.
@@ -1036,6 +1075,8 @@ This group is more situational, but it becomes valuable in complex flows where y
 - `errorLogs()` for error summaries in alerts
 - `currentEachOutput()` for simpler access to sibling outputs inside `ForEach`
 - `tasksWithState()` returns a list of task run objects matching the given state — useful for building conditional logic or failure summaries based on task outcomes
+- `iterationOutput(taskId, iteration)` retrieves the output of a specific iteration from a previous task; both arguments are optional and default to the current task and previous iteration
+- `parentOutput(index)` retrieves the output of a parent task; `index` is optional and defaults to the direct parent
 - `appLink()` in Enterprise Edition to generate Kestra App URLs
 
 #### Utility helpers
@@ -1044,13 +1085,28 @@ This group is more situational, but it becomes valuable in complex flows where y
 - `max(a, b, ...)` — returns the largest of its arguments
 - `min(a, b, ...)` — returns the smallest of its arguments
 - `range(start, end)` or `range(start, end, step)` — generates a list of integers up to and including `end`; the step defaults to 1
-- `uuid()` — generates a UUID in URL-safe base62 encoding; useful for unique identifiers in task inputs
+- `uuid()` — generates a UUID in URL-safe base62 encoding
+- `id()` — generates a short unique ID using Kestra's internal ID utility
+- `ksuid()` — generates a K-Sortable Unique Identifier (timestamp-prefixed, base62-encoded); useful when sort order by creation time matters
+- `nanoId(length, alphabet)` — generates a NanoID; `length` defaults to 21 and `alphabet` defaults to alphanumeric plus `-_`
 - `randomInt(min, max)` — generates a random integer; the upper bound is **excluded**
 - `randomPort()` — picks an available local port; useful in test or dev container flows
 - `http(uri, ...)` — fetches a remote payload directly from an expression
 - `fileSize(uri)` — returns the size in bytes of a file from internal storage
 - `fileExists(uri)` — returns `true` if the file exists
-- `fileEmpty(uri)` — returns `true` if the file has no content
+- `isFileEmpty(uri)` — returns `true` if the file has no content
+
+#### Date and calendar helpers
+
+Use these functions when you need to make scheduling or routing decisions based on the calendar.
+
+- `isWeekend(date)` — returns `true` if the date falls on Saturday or Sunday
+- `isPublicHoliday(date, countryCode, subDivision)` — returns `true` if the date is a public holiday; `countryCode` is an ISO 3166-1 alpha-2 code and `subDivision` (optional) is an ISO 3166-2 code
+- `isDayWeekInMonth(date, dayOfWeek, position)` — returns `true` if the date is the Nth occurrence of the given weekday in its month; `position` accepts `FIRST`, `SECOND`, `THIRD`, `FOURTH`, or `LAST`
+- `dayOfWeek(date)` — returns the uppercase day name such as `MONDAY`
+- `dayOfMonth(date)` — returns the day of the month as an integer (1–31)
+- `monthOfYear(date)` — returns the month as an integer (1–12)
+- `hourOfDay(date)` — returns the hour as an integer (0–23)
 
 #### Template inheritance helpers
 
@@ -1188,6 +1244,10 @@ Use `fromJson()` when a task output arrives as a serialized JSON string rather t
 {{ range(0, 6, 2) }}
 {# output: [0, 2, 4, 6] #}
 {{ uuid() }}
+{{ id() }}
+{{ ksuid() }}
+{{ nanoId() }}
+{{ nanoId(length=10) }}
 {{ randomInt(1, 10) }}
 {# generates a random integer from 1 to 9 (10 is excluded) #}
 ```
@@ -1200,7 +1260,7 @@ These helpers are usually used in operational flows rather than day-to-day templ
 {{ randomPort() }}
 {{ fileSize(outputs.download.uri) }}
 {{ fileExists(outputs.download.uri) }}
-{{ fileEmpty(outputs.download.uri) }}
+{{ isFileEmpty(outputs.download.uri) }}
 ```
 
 `tasksWithState()` returns a list of task run objects matching the given state. Use it in error handlers or notifications to report which tasks failed:
@@ -1229,6 +1289,65 @@ Enterprise Edition's `appLink()` builds links back to Kestra Apps:
 ```
 
 Use it in notifications when you want recipients to jump directly into the related app rather than the generic flow UI.
+
+#### `kv()`
+
+Reads a value from the KV store by key. The namespace defaults to the flow's namespace; set `errorOnMissing` to `false` to return `null` instead of throwing when the key is absent:
+
+```twig
+{{ kv('MY_KEY') }}
+{{ kv('MY_KEY', 'other.namespace') }}
+{{ kv('OPTIONAL_KEY', namespace, false) }}
+```
+
+#### `encrypt()` and `decrypt()`
+
+Encrypt and decrypt string values using Kestra's encryption service. Both require a `key` argument that identifies which encryption key to use:
+
+```twig
+{{ encrypt('MY_ENCRYPTION_KEY', inputs.sensitiveValue) }}
+{{ decrypt('MY_ENCRYPTION_KEY', outputs.encryptTask.value) }}
+```
+
+#### `iterationOutput()`
+
+Retrieves the output of a specific iteration from a previous task. Both arguments are optional — `taskId` defaults to the current task and `iteration` defaults to the previous iteration:
+
+```twig
+{{ iterationOutput(outputs.myTask).value }}
+{{ iterationOutput(outputs.myTask, 2).value }}
+```
+
+#### `parentOutput()`
+
+Retrieves the output of a parent task. The optional `index` argument specifies which ancestor to target; omitting it returns the direct parent's output:
+
+```twig
+{{ parentOutput() }}
+{{ parentOutput(1) }}
+```
+
+#### Date and calendar helpers
+
+Use these functions when you need to make scheduling or routing decisions based on the calendar — for example, skipping runs on weekends or public holidays.
+
+`isWeekend(date)` returns `true` if the date falls on Saturday or Sunday. `isPublicHoliday(date, countryCode, subDivision)` checks against a country's public holiday calendar; `subDivision` is optional and accepts ISO 3166-2 codes. `isDayWeekInMonth(date, dayOfWeek, position)` returns `true` if the date is the Nth occurrence of a weekday in its month; `position` accepts `FIRST`, `SECOND`, `THIRD`, `FOURTH`, or `LAST`.
+
+```twig
+{{ isWeekend(trigger.date) }}
+{{ isPublicHoliday(trigger.date, 'US') }}
+{{ isPublicHoliday(trigger.date, 'DE', 'DE-BY') }}
+{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}
+```
+
+`dayOfWeek(date)` returns the uppercase day name (e.g. `MONDAY`). `dayOfMonth(date)`, `monthOfYear(date)`, and `hourOfDay(date)` return the corresponding integer component:
+
+```twig
+{{ dayOfWeek(trigger.date) }}
+{{ dayOfMonth(trigger.date) }}
+{{ monthOfYear(trigger.date) }}
+{{ hourOfDay(execution.startDate) }}
+```
 
 ### Worked example
 
