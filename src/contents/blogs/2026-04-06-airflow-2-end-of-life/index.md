@@ -80,7 +80,7 @@ At this point teams generally go one of two directions: stay in the Airflow ecos
 
 The migration lift is comparable to upgrading to Airflow 3. The outcome is different: instead of Airflow DAGs written in Python, you have YAML that any team member can read and modify, with tasks that run in any language. Same weeks of work; different decade ahead of you.
 
-### Upgrade vs. switch: a side-by-side comparison
+### Upgrade vs. switch: A side-by-side comparison
 
 | | **Upgrade to Airflow 3** | **Migrate to Kestra** |
 |---|---|---|
@@ -126,4 +126,4 @@ It depends on your team and workloads. If you're a Python-native data engineerin
 ### How long does a typical Airflow migration take?
 Both upgrading to Airflow 3 and migrating to an alternative typically take **4 to 8 weeks** for a mid-size deployment (50-200 DAGs), depending on the number of custom operators, undocumented workarounds, and integration complexity. The [airflow-to-kestra-migration](https://github.com/kestra-io/airflow-to-kestra-migration) repository provides a concrete reference for what a DAG-to-YAML conversion looks like.
 
-Either way, make the decision deliberately. EOL is a rare moment when the status quo actually costs you something. Use it.
+EOL is a rare moment when the status quo actually costs you something. Use this opportunity to make the decision deliberately.
