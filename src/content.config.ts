@@ -66,6 +66,7 @@ export const collections = {
                 image: image().optional(),
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
+                schema: z.record(z.unknown()).optional(),
             }),
     }),
     legal: defineCollection({
