@@ -1,13 +1,13 @@
 ---
 title: "Performance Upgrades for Enterprise in Kestra 1.3"
 description: "Kestra 1.3 improves MySQL query efficiency, reduces memory usage in flow trigger processing, and delivers smaller execution-path optimizations."
-date: 2026-01-19T13:00:00
+date: 2026-04-13T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
   image: lmathieu
   role: Lead Developer
-image: ./main.jpg
+image: ./kestra-1-3-perf.png
 ---
 
 In [Kestra 1.2](../performance-improvements-1-2/index.md), we continued our work to make Kestra faster and more scalable for large namespaces and highly parallel workflows. With Kestra 1.3, we focused on a different set of hot paths: improving MySQL query efficiency on the `flows` table, reducing memory usage during flow trigger processing, and refining internal execution paths.
