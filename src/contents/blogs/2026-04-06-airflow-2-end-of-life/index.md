@@ -16,7 +16,7 @@ schema:
       name: "When does Airflow 2 reach end of life?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "Apache Airflow 2 reaches end of life on April 22, 2026. After this date, no security patches, bug fixes, or provider updates will be released for the 2.x line. Astronomer offers extended Airflow 2 support through April 2027 for Astro customers."
+        text: "Apache Airflow 2 reaches end of life on April 22, 2026. After this date, no security patches, bug fixes, or provider updates will be released for the 2.x line."
     - "@type": "Question"
       name: "Is it safe to keep running Airflow 2 after EOL?"
       acceptedAnswer:
@@ -112,7 +112,7 @@ If your data engineering manager needs to see the architectural tradeoffs and a 
 ## Frequently asked questions
 
 ### When does Airflow 2 reach end of life?
-Apache Airflow 2 reaches end of life on **April 22, 2026**. After this date, no security patches, bug fixes, or provider updates will be released for the 2.x line. If you're running Airflow on [Astronomer's Astro platform](https://www.astronomer.io/), they offer extended Airflow 2 support through April 2027, giving managed customers an extra year to plan their migration.
+Apache Airflow 2 reaches end of life on **April 22, 2026**. After this date, no security patches, bug fixes, or provider updates will be released for the 2.x line.
 
 ### Is it safe to keep running Airflow 2 after EOL?
 Running unsupported software in production introduces security and compliance risks. Any CVEs discovered in Airflow 2 or its dependencies after EOL won't receive patches. Organizations with compliance requirements — SOC 2, HIPAA, PCI-DSS — will likely need to migrate to a supported version or platform to maintain their certification.
