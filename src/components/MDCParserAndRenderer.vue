@@ -17,7 +17,7 @@
         if (!props.content) {
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
-        docContent.value = await marked.parse(props.content)
+        docContent.value = await marked.parse(props.content, { async: true })
     }
 
     onMounted(async () => {
