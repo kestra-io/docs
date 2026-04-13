@@ -311,10 +311,11 @@
 
                     &:hover {
                         text-decoration: underline;
+                        text-decoration-skip-ink: none;
+                        text-underline-position: under;
                     }
                 }
             }
         }
     }
 </style>
-
