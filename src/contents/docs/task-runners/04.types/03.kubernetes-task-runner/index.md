@@ -137,11 +137,21 @@ taskRunner:
 
 ## Specifying resource requests
 
-Some tasks may require more resources than others. You can specify CPU and memory requests and limits in the `resources` property of the task runner.
+Use the `resources` property to set CPU and memory requests and limits on the main task container. Both `cpu` and `memory` accept static values or Pebble expressions, so you can drive them from flow inputs at runtime.
+
+The following example sizes the pod dynamically based on inputs:
 
 ```yaml
 id: kubernetes_resources
 namespace: company.team
+
+inputs:
+  - id: cpu_count
+    type: INT
+    defaults: 2
+  - id: memory_per_cpu
+    type: INT
+    defaults: 4
 
 tasks:
   - id: python_script
@@ -158,11 +168,11 @@ tasks:
         clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
       resources:
         request:
-          cpu: "500m"
-          memory: "128Mi"
+          cpu: "{{ inputs.cpu_count }}"
+          memory: "{{ inputs.cpu_count * inputs.memory_per_cpu }}Gi"
         limit:
-          cpu: "1"
-          memory: "512Mi"
+          cpu: "{{ inputs.cpu_count }}"
+          memory: "{{ inputs.cpu_count * inputs.memory_per_cpu }}Gi"
     outputFiles:
       - "*.json"
     script: |
