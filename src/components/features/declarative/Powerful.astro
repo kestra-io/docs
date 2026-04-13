@@ -1,0 +1,147 @@
+---
+import { Icon } from "astro-icon/components"
+import Link from "~/components/common/Link.astro"
+import Capability from "~/components/partners/Capability.astro"
+
+import visualsImgSrc from "~/assets/landing/features/declarative/code.svg"
+
+const FEATURES_DEFAULT = [
+    {
+        icon: "mdi:calculator-variant-outline",
+        title: "Faster Development Cycles",
+        description:
+            "Update configuration instead of rewriting orchestration logic. Changes are explicit and easy to review.",
+    },
+    {
+        icon: "mdi:lan",
+        title: "Reduced Complexity",
+        description:
+            "Eliminate custom wrappers and glue code. Each flow contains everything required to run.",
+    },
+    {
+        icon: "mdi:google-circles-extended",
+        title: "Enhanced Collaboration",
+        description:
+            "Readable, structured definitions make workflows accessible to both engineers and cross-functional teams.",
+    },
+]
+
+const { 
+    title = "Simple Yet <span class='highlight'>Powerful</span>", 
+    text = "In just a few lines, you define parallel execution over a dynamic list. No boilerplate orchestration code. No hidden control flow. The workflow definition is the execution contract. Declarative YAML lowers the barrier to entry while remaining powerful enough for production systems. New contributors can understand and modify workflows quickly, and teams can evolve them without refactoring procedural logic",
+    image = visualsImgSrc,
+    features = FEATURES_DEFAULT
+} = Astro.props
+---
+
+<section class="powerful">
+    <div class="container">
+        <Capability
+            capabilities={[
+                {
+                    image: image,
+                    alt: "Simple Yet Powerful",
+                    title: title,
+                    text: text,
+                },
+            ]}
+        />
+        <hr />
+        <div class="feat">
+            <div class="row g-0">
+                {
+                    features.map((item: any, index: number) => (
+                        <div class:list={["col-12", features.length === 2 ? "col-lg-6" : "col-lg-4"]}>
+                            <div
+                                class:list={[
+                                    "feat-item",
+                                    { first: index === 0 },
+                                    { last: index === features.length - 1 },
+                                ]}
+                            >
+                                <div>
+                                    <div class="title-container">
+                                        <Icon
+                                            name={item.icon}
+                                            class="feat-icon"
+                                        />
+                                        <div class="title">{item.title}</div>
+                                    </div>
+                                    <div class="text">{item.description}</div>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+        <div class="cta-container">
+            <slot name="button">
+                <Link href="/demo" class="btn btn-primary">
+                    Book a Demo
+                </Link>
+            </slot>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .powerful {
+        background-color: var(--ks-background-body);
+        padding-bottom: 4rem;
+        margin-top: -2rem;
+
+        :global(h3) {
+            font-size: $h2-font-size;
+        }
+        hr {
+            border: 1px solid var(--ks-border-primary);
+            margin: 2rem 0;
+        }
+
+        .feat {
+            background: var(--ks-background-primary);
+
+            .row {
+                align-items: stretch;
+            }
+
+            .feat-item {
+                display: flex;
+                align-items: center;
+                padding: 1.5rem;
+                height: 100%;
+
+                .title-container {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 8px;
+
+                    .feat-icon {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                        color: var(--ks-content-link);
+                    }
+
+                    .title {
+                        font-weight: 600;
+                        font-size: $font-size-md;
+                        color: var(--ks-content-primary);
+                    }
+                }
+
+                .text {
+                    font-size: $font-size-md;
+                    color: var(--ks-content-secondary);
+                }
+            }
+        }
+
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+    }
+</style>

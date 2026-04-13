@@ -5,6 +5,7 @@ date: 2024-08-07T11:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: ageller
 image: ./main.png
 ---
@@ -106,13 +107,13 @@ Our SCIM integration allows you to automate the provisioning and de-provisioning
 
 ![scim](./scim.jpeg)
 
-At the time of this release, we have tested and [documented](../../docs/07.enterprise/03.auth/scim/index.mdx) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo/).
+At the time of this release, we have tested and [documented](../../docs/07.enterprise/03.auth/scim/index.mdx) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo).
 
 ---
 
 ## SQL Server Backend (Preview) 🛠️
 
-Based on requests from several Enterprise customers, we've added SQL Server as a backend database option for [Kestra EE](/enterprise/). This feature is currently in preview, and we are looking for feedback from early adopters of this backend.
+Based on requests from several Enterprise customers, we've added SQL Server as a backend database option for [Kestra EE](/enterprise). This feature is currently in preview, and we are looking for feedback from early adopters of this backend.
 
 Until we remove the `preview` label, we recommend using SQL Server in development/staging environments only and PostgreSQL for production JDBC-based deployments.
 
@@ -259,7 +260,7 @@ Here are the main enhancements to Task Runners added in this release:
 Task Runners in Kestra 0.18.0 offer more resilient file handling and more stability when recovering from failure in remote compute environments.
 
 :::alert{type="info"}
-Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../../docs/07.enterprise/index.mdx) license or a [Kestra Cloud account](/cloud/). If you are interested in trying them out, please [reach out](/demo/).
+Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../../docs/07.enterprise/index.mdx) license or a [Kestra Cloud account](/cloud). If you are interested in trying them out, please [reach out](/demo).
 :::
 
 Read more about Task Runners in our [Documentation](../../docs/task-runners/index.mdx).

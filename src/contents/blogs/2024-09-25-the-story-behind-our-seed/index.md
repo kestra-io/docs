@@ -5,6 +5,7 @@ date: 2024-09-25T14:00:00
 category: Company News
 author:
   name: Emmanuel Darras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   image: "edarras"
   role: "CEO & Co-Founder"
 image: ./main.jpg

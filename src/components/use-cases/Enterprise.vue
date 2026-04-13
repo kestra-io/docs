@@ -14,8 +14,8 @@
                     </h6>
                 </div>
                 <div class="text-center rounded">
-                    <a class="btn btn-primary mx-2 mt-2" href="/docs/quickstart#start-kestra">
-                        Get started
+                    <a class="btn btn-primary mx-2 mt-2" href="/get-started">
+                        Get Started
                     </a>
                 </div>
             </div>

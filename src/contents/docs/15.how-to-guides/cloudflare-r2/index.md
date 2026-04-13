@@ -41,7 +41,7 @@ Be sure to save these credentials securely.
 
 Cloudflare R2 provides a static S3-compatible endpoint:
 
-```
+```plaintext
 https://<ACCOUNT_ID>.r2.cloudflarestorage.com
 ```
 

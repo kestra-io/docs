@@ -170,7 +170,7 @@ sources:
 
 Lastly, we will create `stg_orders.sql` which will materialize the `stg_orders` view for the `orders` table.
 
-```
+```sql
 {{ config(materialized="view") }}
 
 select order_id,

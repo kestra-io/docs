@@ -5,6 +5,7 @@ date: 2023-06-28T10:00:00
 category: Solutions
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.png
@@ -187,8 +188,8 @@ tasks:
       basic.auth.user.info: <USERNAME:PASSWORD>
     keyDeserializer: STRING
     valueDeserializer: AVRO
-  - id: "storage_write"
-    type: "io.kestra.plugin.gcp.bigquery.StorageWrite"
+  - id: storage_write
+    type: io.kestra.plugin.gcp.bigquery.StorageWrite
     bufferSize: 100
     from: "{{ outputs.transform.uri }}"
     destinationTable: "kestra-dev.ETL_demo.transactions_logs"

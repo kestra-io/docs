@@ -1,0 +1,249 @@
+title: "Kestra vs. Azure Data Factory: Open Orchestration vs. Azure-Native ETL"
+description: "Compare Kestra vs Azure Data Factory: Open-source, multi-cloud workflow orchestration in YAML vs. managed cloud ETL on Azure. See features, pricing, setup, and use cases."
+competitorName: Azure Data Factory
+category: Data Orchestration
+shortDescription: "Managed Azure ETL service vs. open-source, multi-cloud workflow orchestration in YAML."
+
+brandColor:
+  color: "#0078d4"
+  gradient: "linear-gradient(90deg, #0078d4, #50e6ff, #f710a3)"
+
+intro:
+  title: "Kestra vs. Azure Data Factory: Open Orchestration vs. Azure-Native ETL"
+  description: "Azure Data Factory is Microsoft's managed ETL service. Kestra is open-source workflow orchestration for any cloud, any language, and use cases beyond data movement. One is built to integrate data inside Azure. The other orchestrates what your entire engineering team ships."
+
+philosophy:
+  mainTitle: Managed Cloud ETL vs. Universal Orchestration
+  kestra:
+    title: "Open-Source Orchestration for Any Stack"
+    description: "Declarative YAML workflows versioned in Git, executed in isolated containers, deployed through CI/CD. Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes across AWS, Azure, GCP, or on-premises without vendor lock-in."
+    subCardText: '"How do I orchestrate workflows across clouds and teams without committing to one vendor?"'
+  competitor:
+    title: Azure-Native Managed ETL
+    description: "Fully managed data integration service built into the Azure ecosystem. Author pipelines visually in the Azure portal, connect natively to Azure data services, and scale ETL without managing infrastructure. Pricing is consumption-based per activity run."
+    shadowColor: "#0078D4"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I move and transform data across my Azure services without managing servers?"'
+
+businessValue:
+  mainTitle: "Azure ETL Covers One Cloud.<br />Orchestration Runs the Business Beyond It."
+  kestra:
+    title: Universal Workflow Orchestration
+    list:
+      - "Data pipelines, infrastructure automation, AI workloads, and business processes"
+      - "Multi-cloud and on-premises: AWS, Azure, GCP, or hybrid"
+      - "YAML-first: Git-native, CI/CD-ready, reviewable by any engineer"
+      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+      - "Self-service for non-engineers via Kestra Apps"
+  competitor:
+    title: Azure-Native Data Integration
+    list:
+      - "Data movement and transformation across Azure data services"
+      - "Azure-first: native connectors for Synapse, Data Lake, and SQL Database"
+      - "Visual pipeline authoring in the Azure portal (JSON ARM templates for code)"
+      - "Consumption-based pricing per activity run and data integration unit"
+      - "No open-source version"
+    shadowColor: "#0078D4"
+    bulletColor: "#2B7EC1"
+  footerText: "Use Kestra when your workflows span clouds, go beyond data movement, and need to live in Git with engineers deploying through CI/CD rather than a cloud portal. Azure Data Factory is the right fit when your data estate lives entirely in Azure and you want a fully managed ETL service with no infrastructure to operate."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "ADF requires an Azure subscription, a resource group, a Data Factory instance, linked service credentials for each data source, and dataset definitions before your first pipeline runs. Kestra runs with two commands and no cloud account required."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready. Database and config included. Open the UI, pick a Blueprint, run it. No Azure account, no resource groups, no linked service setup."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: Hours to
+      two: Days
+    description: "Requires an Azure subscription, creating a resource group, provisioning a Data Factory instance, configuring linked services for each data source, and defining datasets before the first pipeline runs. The portal is well-designed, but standing up production infrastructure takes time."
+    shadowColor: "#0078D4"
+    command: |
+      # 1. Create Azure subscription (or use existing)
+      # 2. Create resource group in Azure portal
+      # 3. Provision Data Factory instance
+      # 4. Configure Linked Services (credentials per data source)
+      # 5. Define Datasets (schema and format per source/sink)
+      # 6. Author pipeline in visual designer or JSON editor
+      # 7. Create triggers (schedule or storage event)
+
+      # Or deploy via ARM/Bicep:
+      az deployment group create \
+        --resource-group my-rg \
+        --template-file adf-template.json
+    lang: sh
+
+easeOfUse:
+  title: Workflows Engineers Can Own End to End
+  kestra:
+    title: "Kestra: YAML that lives in Git"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow is a file in your repository, reviewed in pull requests, deployed the same way as application code."
+    code: |
+      id: daily_etl
+      namespace: data.etl
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 6 * * *"
+
+      tasks:
+        - id: extract
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            import pandas as pd, sqlalchemy
+            engine = sqlalchemy.create_engine("{{ secret('SOURCE_DB_URL') }}")
+            df = pd.read_sql("SELECT * FROM orders WHERE date = CURRENT_DATE - 1", engine)
+            df.to_parquet('orders.parquet')
+
+        - id: transform
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select staging.orders
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily ETL complete"
+    lang: yaml
+  competitor:
+    title: "ADF: JSON pipeline definitions in the Azure portal"
+    description: "ADF pipelines are authored in the Azure portal visual designer or as JSON. Version control requires connecting to Azure DevOps or GitHub, exporting pipeline definitions, and committing JSON files manually. The JSON schema is verbose and Azure-specific."
+    shadowColor: "#0078D4"
+    code: |
+      {
+        "name": "DailyETLPipeline",
+        "properties": {
+          "activities": [
+            {
+              "name": "ExtractOrders",
+              "type": "Copy",
+              "inputs": [{ "referenceName": "SourceDataset", "type": "DatasetReference" }],
+              "outputs": [{ "referenceName": "StagingDataset", "type": "DatasetReference" }],
+              "typeProperties": {
+                "source": { "type": "AzureSqlSource", "sqlReaderQuery": "SELECT * FROM orders" },
+                "sink": { "type": "ParquetSink" }
+              }
+            },
+            {
+              "name": "RunDbtTransform",
+              "type": "DatabricksNotebook",
+              "dependsOn": [{ "activity": "ExtractOrders", "dependencyConditions": ["Succeeded"] }],
+              "typeProperties": { "notebookPath": "/transforms/staging_orders" }
+            }
+          ]
+        }
+      }
+    lang: json
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes across any cloud or on-premises environment. Event-driven at its core, with native triggers for S3, Azure Blob, webhooks, Kafka, database changes, and API events."
+  competitor:
+    description: "ADF is purpose-built for moving and transforming data within the Azure ecosystem. Connect a source, apply a transformation, publish to an Azure sink, all configured in the portal and executed on Azure-managed infrastructure. Cross-system orchestration beyond the Azure data estate requires custom code or an external tool."
+    shadowColor: "#0078D4"
+
+featureGrid:
+  title: Kestra vs. Azure Data Factory at a Glance
+  tableData:
+    - feature: Deployment model
+      kestra: "Self-hosted (Docker, Kubernetes) or Kestra Cloud"
+      competitor: "Azure-managed SaaS (Azure subscription required)"
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: "Visual designer or JSON (ARM templates)"
+    - feature: Version control
+      kestra: "Native Git and CI/CD"
+      competitor: "Requires Azure DevOps or GitHub integration"
+    - feature: Cloud support
+      kestra: "Multi-cloud and on-premises"
+      competitor: "Azure-primary (connects to other clouds as sources/sinks)"
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, Bash, Go, R, Node.js)"
+      competitor: "Mapping Data Flows (Spark-based), Databricks notebooks, SSIS packages"
+    - feature: Open source
+      kestra: "✓ Apache 2.0"
+      competitor: "No open-source version"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Monitoring UI only
+    - feature: Pricing model
+      kestra: "Free open-source core (Enterprise tier available)"
+      competitor: "Consumption-based per activity run and DIU hour"
+    - feature: Air-gapped deployment
+      kestra: "✓ Supported"
+      competitor: "Not available (Azure-managed only)"
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation + RBAC out-of-box"
+      competitor: "Resource group isolation with Azure RBAC"
+
+testimonials:
+  - quote: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
+    author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: "Data production"
+      - value: "+250"
+        name: "Active users"
+      - value: "+5,000"
+        name: "Workflows created"
+    storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
+
+platformStrengths:
+  title: Kestra Is Built for How Engineering Teams Work
+  features:
+    - title: No Azure subscription required
+      description: "Kestra runs anywhere Docker runs: AWS, GCP, Azure, on-premises, or a laptop. Multi-cloud teams get one orchestration layer without being tied to a single vendor's pricing, regional footprint, or subscription model. Your workflows deploy identically across environments."
+    - title: YAML that engineers can own
+      description: "Kestra workflows are YAML files from day one: they live in your repository, go through code review, and deploy through CI/CD the same way as application code. Every change is a readable diff and every deployment is traceable — no portal required."
+    - title: Orchestrate beyond data movement
+      description: "Kestra handles the full lifecycle: ingesting data, running transformations, triggering infrastructure provisioning, coordinating model training, waiting for approvals, and notifying downstream teams — all from a single YAML definition with shared observability and retry logic across every step."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your team works across multiple clouds or on-premises and needs one orchestration layer without Azure lock-in."
+      - "Workflows go beyond data movement: infrastructure automation, AI workloads, and business processes need to run from the same platform."
+      - "Engineers need to own their workflows through Git, pull requests, and CI/CD, not the Azure portal."
+      - "Cost predictability matters. ADF's per-activity pricing compounds quickly at high execution volumes."
+      - "Open source and air-gapped deployment are requirements."
+  competitor:
+    title: Choose Azure Data Factory When
+    list:
+      - "Your data estate is Azure-native and you want managed ETL with no infrastructure to operate."
+      - "Deep out-of-the-box integration with Synapse, Azure Data Lake, or SQL Data Warehouse is a priority."
+      - "Your data team is already invested in the Azure portal and prefers visual pipeline authoring."
+      - "SSIS lift-and-shift is on your roadmap. ADF has a built-in SSIS Integration Runtime."
+    shadowColor: "#0078D4"
+    bulletColor: "#2B7EC1"
+
+commonQuestions:
+  - question: How is Kestra different from Azure Data Factory?
+    answer: "Azure Data Factory is a managed ETL service for moving and transforming data within the Azure ecosystem. Kestra is an open-source workflow orchestration platform that runs on any cloud or on-premises, handles use cases beyond data movement (infrastructure, AI, business processes), and defines workflows in declarative YAML that lives in Git. ADF is Azure-managed with consumption-based pricing. Kestra is open source, self-hosted or managed, and not tied to one cloud provider."
+  - question: Can Kestra connect to Azure services?
+    answer: "Yes. Kestra has plugins for Azure Blob Storage, Azure Data Lake, Azure SQL Database, Azure Service Bus, and Azure Key Vault. Pipelines that run in ADF today can be rebuilt in Kestra with the same connectivity but without the Azure subscription dependency. Teams running hybrid architectures use Kestra to orchestrate across Azure, AWS, and on-premises from a single workflow definition."
+  - question: How does Kestra handle version control compared to ADF?
+    answer: "Kestra workflows are YAML files that live in your Git repository from day one, go through pull requests, and deploy through CI/CD. ADF pipelines are authored in the Azure portal. Getting them into version control requires connecting to Azure DevOps or GitHub, then exporting JSON definitions. Even with that integration, the JSON is verbose and hard to review. Kestra's YAML is designed to be read and modified by any engineer on the team."
+  - question: How do the pricing models compare?
+    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1200+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. ADF charges per activity run, per data integration unit (DIU) hour for data flows, and per pipeline execution. At high execution volumes those per-activity costs compound quickly, and teams running thousands of pipelines daily often find Kestra's self-hosted model significantly cheaper."
+  - question: Can Kestra and ADF run side by side during a migration?
+    answer: "Yes. A common approach is routing new workflows through Kestra while existing ADF pipelines continue running. Kestra can trigger on the same events that feed ADF today (Azure Blob Storage writes, Service Bus messages, schedules) and operate in parallel. Start with net-new orchestration in Kestra, migrate existing pipelines incrementally, and decommission ADF once the transition is complete."
+  - question: Does Kestra support SSIS packages like ADF?
+    answer: "Kestra does not have native SSIS package execution support. If SSIS lift-and-shift is a primary requirement and you want Azure-managed infrastructure, ADF's SSIS Integration Runtime is purpose-built for that transition. For teams that have moved past SSIS and need to orchestrate modern data stacks alongside infrastructure and AI workflows, Kestra handles all of it without requiring an Azure subscription."

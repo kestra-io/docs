@@ -5,6 +5,7 @@ date: 2026-01-06T13:00:00
 category: Solutions
 author:
   name: Rok Grabnar
+  linkedin: https://www.linkedin.com/in/rok-grabnar-a5050790/
   image: rgrabnar
   role: Analytics Engineer
 image: ./main.png

@@ -5,6 +5,7 @@ date: 2023-10-11T11:30:00
 category: Solutions
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: "ageller"
 image: ./main.png
 ---
@@ -78,7 +79,7 @@ When commercial no-code tools don't cut it, you'll likely "just" write a script.
 [Stitch](https://www.stitchdata.com/) tried to solve that problem by building a universal data ingestion **standard** called [Singer spec](https://hub.meltano.com/singer/spec/). That spec aimed to improve standardization and community collaboration to avoid reinventing the wheel across companies.
 
 :::alert{type="info"}
-To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](/blueprints/postgres-to-bigquery) and the [Singer plugin documentation](/plugins/plugin-singer).
+To see how you can orchestrate Singer with [kestra](https://github.com/kestra-io/kestra), check the following [blueprint example](/plugins/plugin-ai/memory/io.kestra.plugin.ai.memory.postgresql) and the [Singer plugin documentation](/plugins).
 :::
 
 A typical [Singer](https://www.singer.io/) project consists of **taps**, **targets**, and a **JSON-based communication format** between them. Many connectors have been written using that specification. However, they were often developed by consulting firms in one-off projects, shifting the responsibility for long-term maintenance and continuous development to the end user. As a result, the quality of those connectors varies greatly, and many claim that some Singer connectors are not production-ready.

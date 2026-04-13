@@ -1,0 +1,160 @@
+---
+import { Image } from "astro:assets"
+import Link from "~/components/common/Link.astro"
+import Squared from "~/components/layout/Squared.vue"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
+
+interface Props {
+    title: string
+    description: string
+    cta: {
+        text: string
+        href: string
+    }
+    image: any
+    features: {
+        title: string
+        text: string
+    }[]
+}
+
+const { title, description, cta, image, features } = Astro.props
+---
+
+<Squared>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="banner-box left">
+                    <Breadcrumb
+                        items={[
+                            { label: "Home", href: "/" },
+                            { label: "Partners", href: "/partners" },
+                        ]}
+                    />
+                    <h1>{title}</h1>
+                    <p>{description}</p>
+                    <Link href={cta.href} class="btn btn-primary">
+                        {cta.text}
+                    </Link>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="banner-box right">
+                    <Image src={image} alt={title} width={548} height={390} />
+                </div>
+            </div>
+        </div>
+        <div class="feat">
+            <div class="row g-0">
+                {
+                    features.map((item, index) => (
+                        <div class="col-12 col-lg-4">
+                            <div
+                                class:list={[
+                                    "feat-item",
+                                    { first: index === 0 },
+                                    { last: index === features.length - 1 },
+                                ]}
+                            >
+                                <div>
+                                    <div class="title">{item.title}</div>
+                                    <div class="text">{item.text}</div>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</Squared>
+
+<style lang="scss">
+    :global(section.squared) {
+        padding: 2rem 1rem 4rem !important;
+    }
+    .container > .row {
+        align-items: center;
+
+        @include media-breakpoint-up(lg) {
+            flex-wrap: nowrap;
+        }
+
+        @include media-breakpoint-down(lg) {
+            gap: 20px;
+        }
+    }
+    .banner-box {
+        margin: 0 auto;
+
+        @include media-breakpoint-up(lg) {
+            max-width: 548px;
+        }
+
+        &.left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .btn {
+                width: fit-content;
+            }
+        }
+
+        &.right {
+            height: 390px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .feat {
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 8px;
+        overflow: hidden;
+
+        .row {
+            align-items: stretch;
+        }
+
+        .feat-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            height: 100%;
+
+            .title {
+                font-weight: 600;
+                font-size: $font-size-md;
+                color: var(--ks-content-primary);
+                margin-bottom: 4px;
+            }
+
+            .text {
+                font-size: $font-size-sm;
+                color: var(--ks-content-secondary);
+            }
+
+            @include media-breakpoint-up(lg) {
+                &:not(.last) {
+                    border-right: 1px solid var(--ks-border-primary);
+                }
+            }
+
+            @include media-breakpoint-down(lg) {
+                &:not(.last) {
+                    border-bottom: 1px solid var(--ks-border-primary);
+                }
+            }
+        }
+    }
+</style>

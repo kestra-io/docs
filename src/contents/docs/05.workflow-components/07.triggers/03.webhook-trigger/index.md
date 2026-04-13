@@ -14,7 +14,7 @@ A Webhook trigger generates a unique URL that lets external applications (such a
 Each webhook URL requires a secret `key` to secure it. This prevents unauthorized access and ensures only trusted systems can trigger your flow.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Webhook"
+type: io.kestra.plugin.core.trigger.Webhook
 ```
 
 A Webhook trigger enables triggering a flow from a webhook URL.

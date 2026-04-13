@@ -1,0 +1,251 @@
+---
+import Socials from "~/components/layout/Socials.astro"
+import FooterSubscriptionBox from "~/components/layout/FooterSubscriptionBox.vue"
+import Certifications from "./Certifications.astro"
+
+interface Link {
+    text: string
+    href: string
+    external?: boolean
+    badge?: string
+}
+
+interface Section {
+    title: string
+    links: Link[]
+}
+
+const FOOTER_SECTIONS: Section[] = [
+    {
+        title: "Get Started",
+        links: [
+            { text: "Getting Started", href: "/get-started" },
+            { text: "Documentation", href: "/docs" },
+            { text: "Blueprints", href: "/blueprints" },
+            { text: "Plugins", href: "/plugins" },
+            { text: "FAQs", href: "/faq" },
+        ],
+    },
+    {
+        title: "Learn",
+        links: [
+            { text: "Blogs", href: "/blogs" },
+            { text: "Videos", href: "/tutorial-videos" },
+            {
+                text: "Administrator Guide",
+                href: "/docs/administrator-guide",
+            },
+            { text: "Release Notes", href: "/docs/changelog" },
+            { text: "API Reference", href: "/docs/api-reference" },
+        ],
+    },
+    {
+        title: "Compare",
+        links: [
+            { text: "View All Comparisons", href: "/vs" },
+            { text: "Airflow vs Kestra", href: "/vs/airflow" },
+            { text: "n8n vs Kestra", href: "/vs/n8n" },
+            { text: "Control-M vs Kestra", href: "/vs/control-m" },
+            { text: "Rundeck vs Kestra", href: "/vs/rundeck" },
+        ],
+    },
+    {
+        title: "Community",
+        links: [
+            { text: "Community Overview", href: "/community" },
+            {
+                text: "Slack",
+                href: "https://kestra.io/slack",
+                external: true,
+            },
+            {
+                text: "GitHub",
+                href: "https://github.com/kestra-io/kestra",
+                external: true,
+            },
+            { text: "Write for Us", href: "/write-for-us" },
+        ],
+    },
+    {
+        title: "Company",
+        links: [
+            { text: "About Us", href: "/about-us" },
+            { text: "Partners", href: "/partners" },
+            { text: "Careers", href: "/careers", badge: "Hiring!" },
+            { text: "Contact", href: "/contact-us" },
+        ],
+    },
+]
+---
+
+<footer>
+    <div class="container-xl py-4 py-md-5 px-4 px-md-3">
+        <div class="newsletter-section">
+            <FooterSubscriptionBox client:visible />
+            <Certifications />
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-3 mb-3">
+                <a href="/">
+                    <img height="60" alt="Kestra's logo" class="logo" />
+                </a>
+                <p class="mt-2">
+                    Open Source Declarative <br />
+                    Orchestration Platform
+                </p>
+                <Socials class="mt-4 socials" />
+                <div class="mt-3">
+                    <slot name="theme-switcher" />
+                </div>
+            </div>
+            <div class="col-lg-9 mb-3">
+                <div class="row justify-content-between">
+                    {
+                        FOOTER_SECTIONS.map((section) => (
+                            <div class="col-6 col-lg-auto mb-3">
+                                <h5>{section.title}</h5>
+                                <ul class="list-unstyled">
+                                    {section.links.map((link) => (
+                                        <li class="mb-2">
+                                            <a
+                                                href={link.href}
+                                                target={
+                                                    link.external
+                                                        ? "_blank"
+                                                        : undefined
+                                                }
+                                            >
+                                                {link.text}
+                                                {link.badge && (
+                                                    <span class="badge">
+                                                        {link.badge}
+                                                    </span>
+                                                )}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-xl bottom py-3">
+        <div class="d-flex d-100">
+            <div class="flex-grow-1">
+                <p class="mb-0 d-none d-md-inline">
+                    © {new Date().getFullYear()}
+                    <a href="/">Kestra Technologies</a>. Developed with
+                    <span class="text-danger">♥</span> on 🌎.
+                </p>
+            </div>
+            <div class="text-end">
+                <p class="mb-0">
+                    <a href="/privacy-policy">Privacy Policy</a>
+                    <a href="/cookie-policy">Cookie Policy</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style lang="scss">
+    footer {
+        position: relative;
+        z-index: 20;
+        font-size: var(--bs-font-size-sm);
+        background-color: var(--ks-background-body);
+        border-top: 1px solid var(--ks-border-primary);
+
+        .newsletter-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--ks-border-primary);
+        }
+
+        .container-xl {
+            position: relative;
+            z-index: 2;
+            &.bottom {
+                border-top: 1px solid var(--ks-border-primary);
+                color: var(--ks-content-tertiary);
+
+                p {
+                    font-weight: normal;
+                    font-size: $font-size-xs;
+                    margin-bottom: 0;
+                }
+                a {
+                    font-size: $font-size-xs;
+                    font-weight: normal;
+                }
+                .text-end a:first-child {
+                    margin-right: 1rem;
+                }
+            }
+        }
+        a {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-xs;
+            &:hover {
+                color: var(--ks-content-link-hover);
+            }
+        }
+        h5 {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: $font-size-xs;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: $font-size-xs;
+            font-weight: 600;
+            &.mt-4 {
+                max-width: 184px;
+                margin-top: 26px;
+            }
+        }
+
+        .logo {
+            content: url("~/assets/logo-white.svg");
+            width: 180px;
+            height: 60px;
+            display: block;
+            :global(html.light) & {
+                content: url("~/assets/logo-black.svg");
+            }
+        }
+
+        .socials {
+            font-size: calc($font-size-base * 1.4);
+            :global(a) {
+                color: var(--ks-content-secondary);
+                font-size: 1.25rem;
+            }
+        }
+        li:hover a {
+            color: var(--ks-content-link-hover);
+        }
+        :global(.text-success) {
+            color: var(--ks-content-alert-success);
+        }
+        .text-danger {
+            color: var(--ks-content-alert-danger);
+        }
+
+        .badge {
+            background-color: var(--ks-background-alert-danger);
+            color: var(--ks-content-alert-danger);
+            font-size: $font-size-xs;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 40px;
+        }
+    }
+</style>

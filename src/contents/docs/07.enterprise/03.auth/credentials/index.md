@@ -116,7 +116,7 @@ In the Credentials UI, create a new credential with the following values:
 
 For Google service accounts, the scope must be included in the JWT claims. If you need multiple scopes, provide them as a single space-delimited string in the `scope` claim, for example:
 
-```text
+```plaintext
 https://www.googleapis.com/auth/cloud-platform.read-only https://www.googleapis.com/auth/bigquery.readonly
 ```
 

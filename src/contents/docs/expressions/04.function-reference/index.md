@@ -76,14 +76,17 @@ This group is more situational, but it becomes valuable in complex flows where y
 
 ### Utility helpers
 
-- `max()`, `min()`
-- `now()`
-- `range()`
-- `uuid()`
-- `randomInt()`
-- `randomPort()`
-- `http()`
-- `fileSize()`, `fileExists()`, `fileEmpty()`
+- `now()` — returns the current datetime; accepts a `timeZone` argument: `now(timeZone="Europe/Paris")`
+- `max(a, b, ...)` — returns the largest of its arguments
+- `min(a, b, ...)` — returns the smallest of its arguments
+- `range(start, end)` or `range(start, end, step)` — generates a list of integers up to and including `end`; the step defaults to 1
+- `uuid()` — generates a UUID in URL-safe base62 encoding; useful for unique identifiers in task inputs
+- `randomInt(min, max)` — generates a random integer; the upper bound is **excluded**
+- `randomPort()` — picks an available local port; useful in test or dev container flows
+- `http(uri, ...)` — fetches a remote payload directly from an expression
+- `fileSize(uri)` — returns the size in bytes of a file from internal storage
+- `fileExists(uri)` — returns `true` if the file exists
+- `fileEmpty(uri)` — returns `true` if the file has no content
 
 ### Template inheritance helpers
 
@@ -172,7 +175,7 @@ Guard the first iteration explicitly, because there is no previous iteration to 
 
 ### `errorLogs()`
 
-Useful for error notifications:
+Prints all error logs from the current execution:
 
 ```twig
 {{ errorLogs() }}
@@ -207,12 +210,19 @@ Equivalent to `render(expression, recursive=false)`:
 ### Numeric and generation helpers
 
 ```twig
-{{ max(user.score, highscore) }}
-{{ min(user.score, lowScore) }}
+{{ max(5, 10, 15) }}
+{# output: 15 #}
+{{ min(5, 10, 15) }}
+{# output: 5 #}
 {{ now() }}
-{{ range(0, 8, 2) }}
+{{ now(timeZone="Europe/Paris") }}
+{{ range(0, 3) }}
+{# output: [0, 1, 2, 3] #}
+{{ range(0, 6, 2) }}
+{# output: [0, 2, 4, 6] #}
 {{ uuid() }}
 {{ randomInt(1, 10) }}
+{# generates a random integer from 1 to 9 (10 is excluded) #}
 ```
 
 ### File and runtime helpers
@@ -257,6 +267,30 @@ Enterprise Edition's `appLink()` builds links back to Kestra Apps:
 ```
 
 Use it in notifications when you want recipients to jump directly into the related app rather than the generic flow UI.
+
+## Worked example
+
+This flow uses several runtime functions together: `now()` for a timestamp, `uuid()` for a unique run identifier, `secret()` for a credential, and `render()` to evaluate a namespace variable containing Pebble:
+
+```yaml
+id: function_reference_example
+namespace: company.team
+
+tasks:
+  - id: log_context
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Run ID: {{ uuid() }}"
+      - "Started at: {{ now() | date('yyyy-MM-dd HH:mm:ss') }}"
+      - "API key: {{ secret('MY_API_KEY') }}"
+      - "Config value: {{ render(namespace.my_config) }}"
+
+  - id: check_file
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      File exists: {{ fileExists(outputs.log_context.uri) }}
+      File size: {{ fileSize(outputs.log_context.uri) }} bytes
+```
 
 ## Related pages
 

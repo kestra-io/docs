@@ -1,0 +1,31 @@
+---
+import Squared from "~/components/layout/Squared.vue"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
+---
+
+<Squared>
+    <div class="header">
+        <Breadcrumb items={[{ label: "Home", href: "/" }]} />
+        <h1 data-usal="fade-l">Customers Stories</h1>
+    </div>
+</Squared>
+
+<section class="stories">
+    <div class="container">
+        <slot name="stories" />
+    </div>
+</section>
+
+<style lang="scss">
+    .header {
+        width: 100%;
+    }
+
+    .stories {
+        background: var(--ks-background-body);
+
+        .container {
+            max-width: 1180px;
+        }
+    }
+</style>

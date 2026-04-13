@@ -1,0 +1,34 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="458" height="260" rx="8" fill="#1A1D2E"/>
+  <rect x="0" y="0" width="458" height="38" rx="8" fill="#111320"/>
+  <rect x="0" y="24" width="458" height="14" fill="#111320"/>
+  <rect x="16" y="10" width="70" height="18" rx="3" fill="#156de0" opacity="0.9"/>
+  <text x="20" y="23" font-family="monospace" font-size="9" font-weight="bold" fill="white">Stonebranch</text>
+  <rect x="94" y="14" width="120" height="10" rx="2" fill="#2D3250"/>
+  <rect x="0" y="38" width="80" height="222" fill="#0D0F1C"/>
+  <rect x="10" y="52" width="60" height="10" rx="2" fill="#156de0" opacity="0.7"/>
+  <rect x="10" y="70" width="60" height="10" rx="2" fill="#2D3250"/>
+  <rect x="10" y="88" width="60" height="10" rx="2" fill="#2D3250"/>
+  <rect x="10" y="106" width="60" height="10" rx="2" fill="#2D3250"/>
+  <!-- Workflow graph area -->
+  <rect x="92" y="48" width="354" height="170" rx="4" fill="#161829" stroke="#2D3250" stroke-width="1"/>
+  <rect x="110" y="68" width="80" height="36" rx="4" fill="#156de0" opacity="0.8"/>
+  <rect x="123" y="80" width="54" height="10" rx="2" fill="white" opacity="0.6"/>
+  <line x1="190" y1="86" x2="220" y2="76" stroke="#3D4466" stroke-width="2"/>
+  <line x1="190" y1="86" x2="220" y2="96" stroke="#3D4466" stroke-width="2"/>
+  <rect x="220" y="58" width="80" height="36" rx="4" fill="#2D3250" stroke="#156de0" stroke-width="1"/>
+  <rect x="233" y="70" width="54" height="10" rx="2" fill="#3D4466"/>
+  <rect x="220" y="108" width="80" height="36" rx="4" fill="#2D3250" stroke="#156de0" stroke-width="1"/>
+  <rect x="233" y="120" width="54" height="10" rx="2" fill="#3D4466"/>
+  <line x1="300" y1="76" x2="340" y2="86" stroke="#3D4466" stroke-width="2"/>
+  <line x1="300" y1="126" x2="340" y2="116" stroke="#3D4466" stroke-width="2"/>
+  <rect x="340" y="88" width="80" height="36" rx="4" fill="#2D3250" stroke="#156de0" stroke-width="1"/>
+  <rect x="353" y="100" width="54" height="10" rx="2" fill="#3D4466"/>
+  <rect x="110" y="158" width="70" height="30" rx="4" fill="#2D3250" stroke="#156de0" stroke-width="1"/>
+  <rect x="120" y="167" width="50" height="10" rx="2" fill="#3D4466"/>
+  <!-- Status bar -->
+  <rect x="92" y="224" width="354" height="26" rx="4" fill="#0D0F1C"/>
+  <circle cx="108" cy="237" r="6" fill="#48C774"/>
+  <rect x="122" y="232" width="100" height="10" rx="2" fill="#2D3250"/>
+  <rect x="340" y="232" width="80" height="10" rx="2" fill="#2D3250"/>
+</svg>

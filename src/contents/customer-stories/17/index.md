@@ -38,6 +38,7 @@ headquarter: Seoul, South Korea
 solution: Fila has evolved into a global sportswear brand, known for its
   high-quality and stylish clothing and accessories.
 companyName: Fila
+cta: "What would change if your ERP processes were fully automated—transforming months of manual work into streamlined, end-to-end flows?"
 ---
 
 FILA is a world-renowned sportswear brand with a legacy spanning over a century. Founded in Italy in 1911 and now headquartered in South Korea, FILA has become a global leader in athletic and lifestyle apparel, footwear, and accessories. With a presence in over 70 countries, the brand is known for blending performance and style, serving professional athletes, casual wearers, and fashion-forward consumers.

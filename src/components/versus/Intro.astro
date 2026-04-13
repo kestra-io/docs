@@ -14,10 +14,9 @@ interface Props {
         src: any
         alt: string
     }
-    bgImg?: string
 }
 
-const { title, description, competitor, image, bgImg } = Astro.props as Props
+const { title, description, competitor, image } = Astro.props as Props
 ---
 
 <section
@@ -40,13 +39,13 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
             </p>
             <div class="d-flex gap-3 mb-lg-0 mb-4 flex-column flex-md-row">
                 <Link
-                    href="/docs/quickstart#start-kestra"
+                    href="/get-started"
                     class="btn btn-primary text-white"
                 >
-                    Try for free - 26k GitHub stars
+                    Try for Free - 26k GitHub Stars
                 </Link>
                 <Link href="/demo" class="btn btn-secondary">
-                    Book a demo
+                    Book a Demo
                 </Link>
             </div>
         </div>
@@ -68,7 +67,7 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
     <div class="background"></div>
 </section>
 
-<style lang="scss" define:vars={{ bgImg: `url("${bgImg}")` }}>
+<style lang="scss">
     section {
         @include media-breakpoint-up(xxl) {
             min-height: 650px;
@@ -81,7 +80,8 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
         .background {
             position: fixed;
             inset: 0;
-            background: var(--bgImg) top center / cover no-repeat;
+            background: url("~/components/versus/assets/hero_bg.webp") top
+                center / cover no-repeat;
             z-index: -1;
             pointer-events: none;
         }
@@ -98,6 +98,17 @@ const { title, description, competitor, image, bgImg } = Astro.props as Props
                 }
 
                 .badge {
+                    .monogram {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        :global(svg) {
+                            width: 38px;
+                            height: 38px;
+                        }
+                    }
+
                     span {
                         font-size: 1.5rem;
                         font-weight: 300;

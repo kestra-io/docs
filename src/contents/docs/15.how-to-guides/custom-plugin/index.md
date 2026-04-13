@@ -399,7 +399,7 @@ Now that the plugin is developed and tested, its time to see the plugin in actio
 
 Add this `Dockerfile` to the root of your plugin project:
 
-```
+```dockerfile
 FROM kestra/kestra:develop
 
 COPY build/libs/* /app/plugins/

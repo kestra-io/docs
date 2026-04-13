@@ -20,7 +20,7 @@ Note: we created the repo [kestra-flows-template](https://github.com/kestra-io/k
 
 ## Code structure
 
-```
+```plaintext
 .
 └── environment/
     ├── development

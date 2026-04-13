@@ -285,6 +285,12 @@
             "rootAlias": "grey/white"
           },
           {
+            "name": "ks/background-orange-light",
+            "value": "#ffeae0",
+            "var": "",
+            "rootAlias": ""
+          },
+          {
             "name": "ks/background-primary",
             "value": "#ffffff",
             "var": "grey/white",
@@ -319,6 +325,12 @@
             "value": "#0e0e10",
             "var": "grey/800",
             "rootAlias": "grey/800"
+          },
+          {
+            "name": "ks/background-tag-EE",
+            "value": "#fdfabf",
+            "var": "",
+            "rootAlias": ""
           },
           {
             "name": "ks/background-tag-category",
@@ -499,6 +511,12 @@
             "value": "#cccbce",
             "var": "grey/200",
             "rootAlias": "grey/200"
+          },
+          {
+            "name": "ks/content-tag-EE",
+            "value": "#dd5f00",
+            "var": "orange/base",
+            "rootAlias": "orange/base"
           },
           {
             "name": "ks/content-tag-category",
@@ -931,7 +949,7 @@
             "rootAlias": ""
           },
           {
-            "name": "ks/Color-gradient-1-inverse 2",
+            "name": "ks/Color-gradient-1-inverse-2",
             "value": "#e9e5fe",
             "var": "",
             "rootAlias": ""
@@ -1033,6 +1051,12 @@
             "rootAlias": "grey/800"
           },
           {
+            "name": "ks/background-orange-light",
+            "value": "#503325",
+            "var": "",
+            "rootAlias": ""
+          },
+          {
             "name": "ks/background-primary",
             "value": "#1c1c20",
             "var": "grey/700",
@@ -1067,6 +1091,12 @@
             "value": "#f7f7f7",
             "var": "grey/50",
             "rootAlias": "grey/50"
+          },
+          {
+            "name": "ks/background-tag-EE",
+            "value": "#fdfabf33",
+            "var": "",
+            "rootAlias": ""
           },
           {
             "name": "ks/background-tag-category",
@@ -1247,6 +1277,12 @@
             "value": "#3b3a41",
             "var": "grey/600",
             "rootAlias": "grey/600"
+          },
+          {
+            "name": "ks/content-tag-EE",
+            "value": "#fff870",
+            "var": "",
+            "rootAlias": ""
           },
           {
             "name": "ks/content-tag-category",

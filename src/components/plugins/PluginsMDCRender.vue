@@ -1,129 +1,35 @@
 <template>
-    <div class="bd-content">
-        <PluginIndex
-            v-if="pluginType === undefined"
-            :icons
-            :plugins
-            :plugin-name
-            :sub-group
-            :route-path
-            :subgroup-blueprint-counts
-            :metadata-map
-            :schemas
-            @navigate="navigateTo($event)"
-            :active-id="activeId"
+    <Suspense>
+        <SchemaToHtmlV2
+            class="plugin-schema"
+            :schema
+            :plugin-type
+            :props-initially-expanded="true"
         >
-            <template v-slot:markdown="{ content }">
-                <MDCParserAndRenderer :content class="long" />
+            <template #markdown="{ content }">
+                <MDCParserAndRenderer v-if="content" :content="content" />
             </template>
-        </PluginIndex>
-        <Suspense v-else>
-            <SchemaToHtmlV2
-                v-if="page.body.jsonSchema"
-                class="plugin-schema"
-                :schema="page.body.jsonSchema"
-                :plugin-type="pluginType ?? ''"
-                :props-initially-expanded="true"
-            >
-                <template #markdown="{ content }">
-                    <MDCParserAndRenderer v-if="content" :content="content" />
-                </template>
-            </SchemaToHtmlV2>
-        </Suspense>
-    </div>
+        </SchemaToHtmlV2>
+    </Suspense>
 </template>
 
 <script lang="ts" setup>
-    import { ref, onMounted, onUnmounted } from "vue"
-    import { SchemaToHtmlV2, type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
-    import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import { SchemaToHtmlV2, type JSONSchema } from "@kestra-io/ui-libs"
+    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
 
-    const props = withDefaults(
-        defineProps<{
-            page: any
-            routePath: string
-            pluginType?: string
-            icons?: Record<string, string>
-            plugins?: Plugin[]
-            pluginName: string
-            subGroup?: string
-            subgroupBlueprintCounts?: Record<string, number>
-            metadataMap?: Record<string, PluginMetadata>
-            schemas?: Record<string, { title?: string }>
-        }>(),
-        {
-            icons: () => ({}),
-            plugins: () => [],
-            pluginName: undefined,
-            subGroup: undefined,
-        },
-    )
-
-    const activeId = ref("")
-
-    const updateActiveId = () => {
-        activeId.value = window.location.hash.substring(1).toLowerCase()
-    }
-
-    const events = ['hashchange', 'popstate']
-
-    onMounted(() => {
-        updateActiveId()
-        events.forEach(event => window.addEventListener(event, updateActiveId))
-    })
-
-    onUnmounted(() => {
-        events.forEach(event => window.removeEventListener(event, updateActiveId))
-    })
-
-    function navigateTo(url: string) {
-        window.location.assign(url)
-    }
+    defineProps<{
+        schema: JSONSchema
+        pluginType: string
+    }>()
 </script>
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
 
-
-    .bd-content {
-        margin: 0 auto;
-        padding: 2rem 0;
-        @include media-breakpoint-up(lg) {
-            max-width: 100%;
-        }
-        :deep(code) {
-            border: none !important;
-            background-color: transparent !important;
-        }
-        :deep(.plugin) {
-            background-color: var(--ks-background-primary) !important;
-            box-shadow: none !important;
-            border-color: var(--ks-border-primary);
-            &:hover {
-                border-color: var(--ks-border-active) !important;
-            }
-            h6 {
-                color: var(--ks-content-primary);
-            }
-        }
-        :deep(.element-card) {
-            background-color: var(--ks-background-primary) !important;
-            border-color: var(--ks-border-primary) !important;
-            box-shadow: none !important;
-            &:hover {
-                border-color: var(--ks-border-active) !important;
-            }
-            h6 {
-                color: var(--ks-content-primary);
-            }
-            .plugin-info {
-                background-color: transparent;
-                border: $block-border;
-                .plugin-class {
-                    color: var(--ks-content-link) !important;
-                }
-            }
+    @mixin section-colors($section, $color) {
+        &.section-#{$section} .collapse-button span:not(.type-box),
+        &.section-#{$section} .prop-key {
+            color: $color !important;
         }
     }
 
@@ -133,77 +39,112 @@
             border-top: calc(2 * var(--bs-border-width)) solid var(--ks-background-primary);
             margin: 0 !important;
         }
+
         :deep(article) {
             display: flex;
             flex-direction: column;
             gap: var(--spacer);
         }
+
         :deep(.code-block) {
-            background-color: var(--kestra-io-token-color-background-secondary);
+            background-color: var(--ks-background-input);
             border: $block-border;
             margin-top: $rem-1;
         }
+
         :deep(.language),
         :deep(.copy) {
             color: var(--ks-content-secondary) !important;
         }
+
         :deep(#copied-tooltip) {
             background: var(--ks-content-secondary);
             color: var(--ks-content-primary);
         }
+
         :deep(.markdown) {
             display: flex;
             flex-direction: column;
             min-width: 100%;
         }
+
         :deep(.property .collapse-button) {
             background-color: var(--ks-background-secondary);
             border: $block-border;
         }
+
         :deep(.plugin-section) {
             border-color: var(--ks-border-primary);
+
             p {
                 &:not(.doc-alert p) {
                     margin-bottom: 0;
                 }
-                & > code {
+
+                > code {
                     background-color: var(--ks-background-secondary) !important;
                     border: none;
                 }
             }
+
             .border,
             .property:not(:first-child) {
                 border: none !important;
             }
+
             .collapse-button {
-                font-size: var(--font-size-lg);
+                font-size: $h4-font-size;
                 line-height: 1.5rem;
                 color: var(--ks-content-primary);
             }
-            > .collapse-button {
-                &:not(.collapsed) {
-                    color: var(--ks-content-link);
-                    margin-bottom: 1rem;
-                }
+
+            > .collapse-button:not(.collapsed) {
+                color: var(--ks-content-primary);
+                margin-bottom: 1rem;
             }
+
             .property-detail {
                 color: var(--ks-content-primary);
                 background: var(--ks-background-body);
                 border: $block-border;
+
+                > * {
+                    padding: 1rem;
+                }
+
                 .property-description p {
                     margin-bottom: 0 !important;
                 }
+
                 > *:not(:first-child) {
                     border-top: var(--bs-border-width) var(--bs-border-style) var(--ks-border-primary);
                 }
+
                 .border:not(.type-box) {
                     border-color: var(--ks-border-primary) !important;
                     background-color: var(--ks-background-function) !important;
+                    padding: 2px 8px !important;
                 }
             }
+
             .me-3 {
                 display: none !important;
             }
+        }
+
+        :deep(.section-properties > .collapse-button > span) {
+            color: var(--ks-content-property) !important;
+            font-size: $font-size-sm !important;
+        }
+
+        :deep(.section-outputs > .collapse-button > span) {
+            color: var(--ks-content-output) !important;
+            font-size: $font-size-sm !important;
+        }
+
+        :deep(.section-metrics > .collapse-button > span) {
+            color: color-palette.$base-orange-400 !important;
+            font-size: $font-size-sm !important;
         }
     }
 
@@ -212,25 +153,39 @@
             background-color: transparent !important;
             border-color: var(--ks-border-primary) !important;
         }
+
         .def-property {
             border-color: var(--ks-border-primary) !important;
+            padding: 1rem !important;
         }
-        .collapse-button span:not(.type-box) {
+
+        .collapse-button {
+            padding: 0.5rem 1rem !important;
+        }
+
+        @include section-colors("properties", var(--ks-content-property));
+        @include section-colors("outputs", var(--ks-content-output));
+        @include section-colors("metrics", color-palette.$base-orange-400);
+
+        &[class*="section-"] summary.collapse-button span:not(.type-box),
+        summary.collapse-button span:not(.type-box) {
             color: var(--ks-content-color-highlight) !important;
+            font-size: $font-size-xs !important;
         }
     }
 
-    :deep(.plugin .description) {
-        text-transform: none !important;
+    :deep(.type-box) {
+        background: var(--ks-background-tag-category);
+        color: var(--ks-content-tag-category) !important;
+        font-weight: 600;
+        font-size: $font-size-xs;
+        text-transform: lowercase;
+        border: none;
+        font-family: $font-family-sans-serif;
     }
 
-    :deep(div.description) {
-        border-color: var(--ks-border-primary) !important;
-        margin: 0 -2rem !important;
-        padding: 2rem !important;
-    }
-
-    :deep(.gradient-overlay), :deep(.more-btn) {
-        background: linear-gradient(transparent, var(--ks-background-body));
+    :deep(.code-block #copied-tooltip) {
+        background: var(--ks-background-secondary) !important;
+        color: var(--ks-content-primary) !important;
     }
 </style>

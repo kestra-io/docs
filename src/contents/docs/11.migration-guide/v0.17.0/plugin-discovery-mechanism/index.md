@@ -34,7 +34,7 @@ However, Micronaut is still required to use the utility classes provided by Kest
 
 Kestra requires a new annotation processor to be configured in the `build.gradle` file of your project (or `pom.xml` for Maven).
 
-```
+```groovy
 annotationProcessor group: "io.kestra", name: "processor", version: kestraVersion
 ```
 

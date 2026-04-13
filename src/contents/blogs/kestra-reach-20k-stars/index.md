@@ -5,6 +5,7 @@ date: 2025-07-24T13:00:00
 category: News & Product Updates
 author:
  name: Emmanuel Darras
+ linkedin: https://www.linkedin.com/in/emmanuel-darras/
  image: edarras
  role: CEO & Co-Founder
 image: ./main.jpg

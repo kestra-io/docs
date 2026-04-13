@@ -343,7 +343,7 @@ The diagnostics report captured looks like the following (macOS):
 
 And the machine information outputs the follwing for local macOS machine:
 
-```text
+```plaintext
 TASK [Show basic system summary] *************************************************************************************************************************************
 ok: [localhost] => {
     "msg": [

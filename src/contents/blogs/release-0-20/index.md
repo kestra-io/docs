@@ -5,6 +5,7 @@ date: 2024-12-03T17:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -197,7 +198,7 @@ triggers:
 :::
 
 
-Check the [Flow trigger docs](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md) and [plugin examples](/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
+Check the [Flow trigger docs](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md) and [plugin examples](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
 
 ## Task conditions with `runIf`
 

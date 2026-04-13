@@ -1,7 +1,7 @@
 ---
 export const prerender = false
 
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
@@ -14,13 +14,16 @@ const q = Astro.url.searchParams.get("q") ?? undefined
 const sort = Astro.url.searchParams.get("sort") ?? "A-Z"
 const tagsSelected = Astro.url.searchParams.get("tags") ?? undefined
 
-const tags = await $fetchApi<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+const tags = await $fetchApiCached<BlueprintTag[]>(
+    `/blueprints/versions/latest/tags`,
+)
 
 const tagsForFilter = tagsSelected
-    ? tags.find((tag) => tag.name === tagsSelected)?.id
+    ? tags.find((tag) => tag.name.toLowerCase() === tagsSelected.toLowerCase())
+          ?.id
     : undefined
 
-const { results: blueprintsData = [], total = 0 } = (await $fetchApi<{
+const { results: blueprintsData = [], total = 0 } = (await $fetchApiCached<{
     results: Blueprint[]
     total: number
 }>(
@@ -69,7 +72,7 @@ const title = "Blueprints"
 const description = "Get started with our library of workflows ready to use"
 ---
 
-<Layout title={title} description={description}>
+<Layout {title} {description}>
     <BlueprintLists
         {q}
         {tags}
@@ -102,7 +105,8 @@ const description = "Get started with our library of workflows ready to use"
                             <span class="highlight">{q}</span>
                         </h4>
                         <p>
-                            Try searching for a different term or choose a different category
+                            Try searching for a different term or choose a
+                            different category
                         </p>
                     </div>
                 )

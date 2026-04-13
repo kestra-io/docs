@@ -1,10 +1,32 @@
-/* oxlint-disable no-console */
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import contentSecurityPolicyConfig from "../content-security-policy.config"
-// import {middlewareISRCache} from "./utils/middlewareISRCache";
 import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
-import { getCollection } from "astro:content"
+import YAML from "yaml"
+
+const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
+    eager: true,
+    import: "default",
+    query: "?raw",
+})
+
+const redirectCollection: {
+    id: string
+    data: {
+        regexp: string
+        to: string
+    }
+}[] = []
+
+for (const path in redirectFileCollection) {
+    const id = path.split("/").slice(-1)[0].split(".")[0]
+    const data = redirectFileCollection[path] as string
+
+    redirectCollection.push({
+        id,
+        data: YAML.parse(data),
+    })
+}
 
 const sendRedirect = (redirectUrl: string) => {
     return new Response("", {
@@ -33,7 +55,9 @@ const logger = defineMiddleware(async (context, next) => {
         method: context.request.method,
         url: context.request.url,
         status: response.status,
-        ip: !context.isPrerendered ? context.request.headers.get("x-real-ip") : null,
+        ip: !context.isPrerendered
+            ? context.request.headers.get("x-real-ip")
+            : null,
         length: response.headers.get("content-length"),
         route: context.routePattern,
         routeParams: context.params,
@@ -124,9 +148,11 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     }
 
     // Double query string is invalid redirect without query string (historical reason, but can happen with some bots)
-    const doubleQuery = context.url.search.match(/\?/g)?.length;
+    const doubleQuery = context.url.search.match(/\?/g)?.length
     if (doubleQuery !== undefined && doubleQuery > 1) {
-        return sendRedirect(context.url.pathname + "?" + context.url.search.split("?")[1])
+        return sendRedirect(
+            context.url.pathname + "?" + context.url.search.split("?")[1],
+        )
     }
 
     return next()
@@ -148,7 +174,10 @@ const securityHeaders = defineMiddleware(async (context, next) => {
     const contentSecurityPolicy: string = Object.entries(
         contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
     )
-        .filter(([key]) => import.meta.env.DEV && key !== "upgrade-insecure-requests")
+        .filter(
+            ([key]) =>
+                import.meta.env.DEV && key !== "upgrade-insecure-requests",
+        )
         .map(([key, value]) => {
             let line = key
 
@@ -164,7 +193,10 @@ const securityHeaders = defineMiddleware(async (context, next) => {
         })
         .join("; ")
 
-    response.headers.set("x-frame-options", import.meta.env.DEV ? "SAMEORIGIN" : "DENY")
+    response.headers.set(
+        "x-frame-options",
+        import.meta.env.DEV ? "SAMEORIGIN" : "DENY",
+    )
     response.headers.set("x-content-type-options", "nosniff")
     response.headers.set("x-download-options", "nosniff")
     response.headers.set(
@@ -201,19 +233,19 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
     }
 
     const originalUrl = new URL(context.url)
-    const split = originalUrl.pathname.split("/");
+    const split = originalUrl.pathname.split("/")
 
-    const allEntries = (await getCollection("redirects"))
+    const allEntries = redirectCollection
         .filter((item) => item.id === (split.length > 2 ? split[1] : "index"))
         .flatMap((item) => item.data)
         .map((item) => {
-            const regexp = new RegExp(item.regexp);
+            const regexp = new RegExp(item.regexp)
             const match = originalUrl.pathname.match(regexp)
             if (match) {
                 return originalUrl.pathname.replace(regexp, item.to)
             }
 
-            return null;
+            return null
         })
         .filter((item) => item !== null)
 
@@ -224,12 +256,27 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
     return response
 })
 
+const feedsContentType = defineMiddleware(async (context, next) => {
+    if (context.url.pathname !== "/api/feeds") {
+        return next()
+    }
+
+    const response = await next()
+    const headers = new Headers(response.headers)
+    headers.set("content-type", "application/json")
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+    })
+})
+
 export const onRequest = sequence(
     logger,
     cloudflareJwt,
     noIndex,
     incomingRedirect,
     securityHeaders,
+    feedsContentType,
     notFoundRedirect,
-    // middlewareISRCache,
 )

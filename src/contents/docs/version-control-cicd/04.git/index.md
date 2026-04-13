@@ -188,7 +188,7 @@ Use this pattern to push to a feature branch and open a pull request for review.
 
 The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a repository at runtime so you can orchestrate code managed elsewhere, for example:
 - dbt projects via the [dbt CLI task](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli)
-- Infrastructure deployments via [Terraform CLI](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli) or [Ansible CLI](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli)
+- Infrastructure deployments via [Terraform CLI](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli), [OpenTofu CLI](/plugins/plugin-opentofu/cli/io.kestra.plugin.opentofu.cli.opentofucli), [Terragrunt CLI](/plugins/plugin-terragrunt/cli/io.kestra.plugin.terragrunt.cli.terragruntcli), or [Ansible CLI](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli)
 - Docker builds via the [Docker Build task](/plugins/plugin-docker/io.kestra.plugin.docker.build)
 
 ## Git SyncBlueprints and PushBlueprints

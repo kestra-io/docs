@@ -18,7 +18,7 @@ Let us understand how we can implement Realtime Trigger for some of the messagin
 
 To setup Apache Kafka locally, follow the instructions mentioned in the [official documentation](https://kafka.apache.org/quickstart). Once Apache Kafka is installed, you can create the `logs` topic, and start producing data into the topic using the following commands:
 
-```
+```bash
 ## Create topic
 $ bin/kafka-topics.sh --create --topic logs --bootstrap-server localhost:9092
 
@@ -248,7 +248,7 @@ tasks:
     message: Hello there! I received {{ trigger.body }} from Azure EventHubs!
 triggers:
   - id: readFromEventHubs
-    type: "io.kestra.plugin.azure.eventhubs.RealtimeTrigger"
+    type: io.kestra.plugin.azure.eventhubs.RealtimeTrigger
     eventHubName: kestra
     namespace: kestra-namespace
     connectionString: "{{ secret('EVENTHUBS_CONNECTION') }}"

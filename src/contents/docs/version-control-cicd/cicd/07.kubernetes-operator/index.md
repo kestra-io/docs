@@ -64,7 +64,7 @@ Then run `helm install` or `helm upgrade` to roll out the changes to your cluste
 
 If everything goes well, you will see a `kestra-operator` pod running.
 
-```text
+```plaintext
 kubectl get po
 NAME                                 READY   STATUS    RESTARTS        AGE
 kestra-operator-7d7bdbd846-pzpl2     1/1     Running   0               158m

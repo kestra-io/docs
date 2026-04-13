@@ -32,10 +32,37 @@ export function prunePluginsForCards(
             categories: info.categories ?? p.categories,
             description: (p.subGroup?.startsWith(p.group) ? info.description : groupInfo?.description) ?? p.description,
             className: info.className,
-            elementCounts: info.elementCounts ?? groupInfo?.elementCounts,
-            blueprints: info.blueprints ?? groupInfo?.blueprints,
+            elementCounts: info.elementCounts,
+            blueprints: info.blueprints,
             isEnterprise: p.group?.includes('.ee.') ?? false,
         }
+    })
+}
+
+/**
+ * Strip heavy fields (descriptions, aliases, manifest) from plugins
+ * before sending to client-side components that only need navigation data.
+ */
+export function prunePluginsForSidebar(plugins: Plugin[]): Plugin[] {
+    return plugins.map((p) => {
+        const pruned: Record<string, any> = {
+            name: p.name,
+            title: p.title,
+            group: p.group,
+            subGroup: p.subGroup,
+            categories: p.categories,
+        }
+
+        for (const [key, value] of Object.entries(p)) {
+            if (isEntryAPluginElementPredicate(key, value)) {
+                pruned[key] = (value as PluginElement[]).map((el) => ({
+                    cls: el.cls,
+                    deprecated: el.deprecated,
+                }))
+            }
+        }
+
+        return pruned as Plugin
     })
 }
 

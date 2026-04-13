@@ -42,8 +42,22 @@ const isExpandable = lineCount > 12
                 btn.addEventListener("click", () => {
                     const text = btn.querySelector(".text")
                     const lines = btn.getAttribute("data-lines")
+                    const isExpanded = card.classList.toggle("is-expanded")
+
+                    const ecCollapse = card.querySelector(".ec-collapse")
+                    if (ecCollapse) {
+                        ecCollapse.classList.toggle(
+                            "ec-collapse--expanded",
+                            isExpanded,
+                        )
+                        ecCollapse.classList.toggle(
+                            "ec-collapse--collapsed",
+                            !isExpanded,
+                        )
+                    }
+
                     if (text) {
-                        text.textContent = card.classList.toggle("is-expanded")
+                        text.textContent = isExpanded
                             ? "See less"
                             : `See all ${lines} lines`
                     }
@@ -84,6 +98,17 @@ const isExpandable = lineCount > 12
             :global(.expressive-code) {
                 --ec-brdCol: transparent !important;
                 margin-bottom: 0;
+            }
+
+            :global(.ec-collapse__toggle),
+            :global(.ec-collapse__header-toggle),
+            :global(.ec-collapse__gradient) {
+                display: none !important;
+            }
+
+            :global(.ec-collapse) {
+                display: flex !important;
+                flex-direction: column !important;
             }
 
             :global(pre) {
