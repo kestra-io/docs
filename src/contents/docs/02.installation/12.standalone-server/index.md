@@ -90,4 +90,61 @@ docker rm $id
 
 ## Installation on Windows
 
-For Windows-specific installation steps including plugin installation and configuration, see the [Windows installation guide](../13.windows/index.md).
+For comprehensive Windows-specific installation steps including plugin installation, see the [Windows installation guide](../13.windows/index.md). See below for a basic configuration example.
+
+### Configuration
+
+Kestra is configured via a YAML file passed with `--config` (or `-c`). If no flag is provided, Kestra looks for `%USERPROFILE%\.kestra\config.yaml` by default.
+
+A minimal configuration for local testing:
+
+```yaml
+kestra:
+  repository:
+    type: memory
+  storage:
+    type: local
+    local:
+      base-path: "C:\\kestra\\storage"
+  queue:
+    type: memory
+```
+
+For a production setup or Enterprise installation, your configuration requires at minimum:
+
+```yaml
+kestra:
+  encryption:
+    secret-key: "<base64-encoded-32-char-key>"  # generate with: openssl rand -base64 32
+  secret:
+    type: jdbc
+    jdbc:
+      secret: "<your-jdbc-secret-key>"
+  repository:
+    type: postgres
+  queue:
+    type: postgres
+  storage:
+    type: s3
+    s3:
+      endpoint: "<your-s3-endpoint>"
+      access-key: "<your-aws-access-key-id>"
+      secret-key: "<your-aws-secret-access-key>"
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+  ee:
+    license:
+      id: "<your-license-id>"
+      fingerprint: "<your-license-fingerprint>"
+      key: |
+        <your-license-key>
+
+datasources:
+  postgres:
+    url: jdbc:postgresql://<host>:<port>/<db>
+    driver-class-name: org.postgresql.Driver
+    username: "<username>"
+    password: "<password>"
+```
+
+For the full list of configuration options, see the [Configuration guide](../../configuration/index.mdx).
