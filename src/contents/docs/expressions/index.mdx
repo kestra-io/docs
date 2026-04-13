@@ -5,32 +5,1719 @@ sidebarTitle: Expressions
 icon: /src/contents/docs/icons/expression.svg
 ---
 
-import ChildCard from "~/components/docs/ChildCard.astro"
-
 Use expressions to dynamically set values in flows using `{{ ... }}` syntax backed by the Pebble templating engine.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Find the right expressions doc
-
-- Start with [Execution Context Variables](./01.execution-context/index.md) if you need to know what values are available in flows.
-- Go to [Pebble Syntax](./02.pebble-syntax/index.md) if you need help writing expressions.
-- Use [Filter Reference](./03.filter-reference/index.md) when you know you need a filter but are not sure which category it belongs to.
-- Use [Function Reference](./04.function-reference/index.md) for runtime helpers such as `render()`, `secret()`, `read()`, and `printContext()`.
-- Use [Operators, Tags, and Tests](./05.operators-tags-tests/index.md) for control flow and boolean logic.
-
 ## Common tasks
 
 | If you need to... | Start here |
 | --- | --- |
-| Access `inputs`, `outputs`, `vars`, `trigger`, or `namespace` values | [Execution Context Variables](./01.execution-context/index.md) |
-| Format dates, parse JSON, or transform strings | [Filter Reference](./03.filter-reference/index.md) |
-| Render nested expressions or inspect the full context | [Function Reference](./04.function-reference/index.md) |
-| Write loops, conditions, fallbacks, and comparisons | [Pebble Syntax](./02.pebble-syntax/index.md) and [Operators, Tags, and Tests](./05.operators-tags-tests/index.md) |
-| Build or debug a multiline or nested expression | [Pebble Syntax](./02.pebble-syntax/index.md#multiline-json-bodies) and [Function Reference](./04.function-reference/index.md#render) |
+| Access `inputs`, `outputs`, `vars`, `trigger`, or `namespace` values | [Execution Context Variables](#execution-context-variables) |
+| Access secrets or credentials at runtime | [Secrets and file access](#secrets-and-file-access) |
+| Format dates, parse JSON, or transform strings | [Filter Reference](#filter-reference) |
+| Render nested expressions or inspect the full context | [Function Reference](#function-reference) |
+| Write loops, conditions, fallbacks, and comparisons | [Pebble Syntax](#pebble-syntax) and [Operators, Tags, and Tests](#operators-tags-and-tests) |
+| Build or debug a multiline or nested expression | [Multiline JSON bodies](#multiline-json-bodies) and [`render()`](#render) |
 
-## Browse expressions docs
+## Execution Context Variables
 
-<ChildCard />
+Use this section to find out what data is available inside `{{ ... }}` at runtime — including flow metadata, inputs, outputs, trigger values, secrets, and namespace variables.
+
+### Understand the execution context
+
+Kestra expressions combine the [Pebble templating engine](../../06.concepts/06.pebble/index.md) with the execution context to dynamically render flow properties.
+
+The execution context usually includes:
+
+- `flow`
+- `execution`
+- `inputs`
+- `outputs`
+- `labels`
+- `tasks`
+- `trigger` when the flow was started by a trigger
+- `vars` when the flow defines variables
+- `namespace` in Enterprise Edition when namespace variables are configured
+- `envs` for environment variables
+- `globals` for global configuration values
+
+:::alert{type="info"}
+To inspect the full runtime context, use `{{ printContext() }}` in the Debug Expression console.
+:::
+
+The Debug Expression console is available in the Kestra UI under **Executions → Logs → Debug Expression**. Enter any expression and evaluate it against the live execution context without modifying the flow.
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/SPGmXSJN3VE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+### Default execution context variables
+
+| Parameter | Description |
+| --- | --- |
+| `{{ flow.id }}` | Identifier of the flow |
+| `{{ flow.namespace }}` | Namespace of the flow |
+| `{{ flow.tenantId }}` | Tenant identifier in Enterprise Edition |
+| `{{ flow.revision }}` | Flow revision number |
+| `{{ execution.id }}` | Unique execution identifier |
+| `{{ execution.startDate }}` | Start date of the execution |
+| `{{ execution.state }}` | Current execution state |
+| `{{ execution.originalId }}` | Original execution ID preserved across replays |
+| `{{ task.id }}` | Current task identifier |
+| `{{ task.type }}` | Fully qualified class name of the current task |
+| `{{ taskrun.id }}` | Current task run identifier |
+| `{{ taskrun.startDate }}` | Start date of the current task run |
+| `{{ taskrun.attemptsCount }}` | Retry and restart attempt count |
+| `{{ taskrun.parentId }}` | Parent task run identifier for nested tasks |
+| `{{ taskrun.value }}` | Current loop or flowable value |
+| `{{ parent.taskrun.value }}` | Value of the nearest parent task run |
+| `{{ parent.outputs }}` | Outputs of the nearest parent task run |
+| `{{ parents }}` | List of parent task runs |
+| `{{ labels }}` | Execution labels accessible by key |
+
+Example:
+
+```yaml
+id: expressions
+namespace: company.team
+
+tasks:
+  - id: debug_expressions
+    type: io.kestra.plugin.core.debug.Return
+    format: |
+      taskId: {{ task.id }}
+      date: {{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}
+```
+
+### Trigger variables
+
+When the execution is started by a `Schedule` trigger:
+
+| Parameter | Description |
+| --- | --- |
+| `{{ trigger.date }}` | Date of the current schedule |
+| `{{ trigger.next }}` | Date of the next schedule |
+| `{{ trigger.previous }}` | Date of the previous schedule |
+
+When the execution is started by a `Flow` trigger:
+
+| Parameter | Description |
+| --- | --- |
+| `{{ trigger.executionId }}` | ID of the triggering execution |
+| `{{ trigger.namespace }}` | Namespace of the triggering flow |
+| `{{ trigger.flowId }}` | ID of the triggering flow |
+| `{{ trigger.flowRevision }}` | Revision of the triggering flow |
+
+### Environment and global variables
+
+Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the [runtime and storage configuration](../../configuration/02.runtime-and-storage/index.md).
+
+- reference `ENV_FOO` as `{{ envs.foo }}`
+- reference the configured environment name as `{{ kestra.environment }}`
+- reference the configured Kestra URL as `{{ kestra.url }}`
+- reference global variables from configuration as `{{ globals.foo }}`
+
+### Flow variables and inputs
+
+Use flow-level variables with `vars.*`:
+
+```yaml
+id: flow_variables
+namespace: company.team
+
+variables:
+  my_variable: "my_value"
+
+tasks:
+  - id: print_variable
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ vars.my_variable }}"
+```
+
+Use inputs with `inputs.*`:
+
+```yaml
+id: render_inputs
+namespace: company.team
+
+inputs:
+  - id: myInput
+    type: STRING
+
+tasks:
+  - id: myTask
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ inputs.myInput }}"
+```
+
+### Secrets, credentials, namespace variables, and outputs
+
+Use `secret()` to inject secret values at runtime:
+
+```yaml
+tasks:
+  - id: myTask
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ secret('MY_SECRET') }}"
+```
+
+Use `credential()` in Enterprise Edition to inject a short-lived token from a managed [Credential](../../07.enterprise/03.auth/credentials/index.md):
+
+```yaml
+tasks:
+  - id: request
+    type: io.kestra.plugin.core.http.Request
+    method: GET
+    uri: https://api.example.com/v1/ping
+    auth:
+      type: BEARER
+      token: "{{ credential('my_oauth') }}"
+```
+
+`credential()` returns the short-lived token only. The credential itself is managed in the Kestra UI.
+
+Use namespace variables in Enterprise Edition with `namespace.*`. To set them up:
+
+1. Open the Kestra UI and navigate to **Namespaces**.
+2. Select the namespace where the flow runs.
+3. Open the **Variables** tab.
+4. Add a key-value pair such as `github.token` with the desired value.
+
+Reference namespace variables in expressions using dot notation:
+
+```yaml
+format: "{{ namespace.github.token }}"
+```
+
+If a namespace variable itself contains Pebble, evaluate it with `render()`:
+
+```yaml
+format: "{{ render(namespace.github.token) }}"
+```
+
+Use outputs with `outputs.taskId.attribute`:
+
+```yaml
+message: |
+  First: {{ outputs.first.value }}
+  Second: {{ outputs['second-task'].value }}
+```
+
+:::alert{type="info"}
+If a task ID or output key contains a hyphen, use bracket notation such as `outputs['second-task']`. To avoid that, prefer `camelCase` or `snake_case`.
+:::
+
+## Pebble Syntax
+
+Use this section when you need help writing expressions — delimiters, attribute access, nested rendering, control flow, and fallback patterns.
+
+### Pebble basics
+
+Pebble templates use two primary delimiters:
+
+- `{{ ... }}` to output the result of an expression
+- `{% ... %}` to control template flow with tags such as `if`, `for`, or `set`
+
+Examples:
+
+```twig
+{{ flow.id }}
+{% if inputs.region == "eu" %}Europe{% endif %}
+```
+
+To escape Pebble syntax literally, use the `raw` tag described in [Operators, Tags, and Tests](#raw).
+
+### Accessing values
+
+Use dot notation for standard property access:
+
+```twig
+{{ foo.bar }}
+```
+
+Use bracket notation for special characters or indexed access:
+
+```twig
+{{ foo['foo-bar'] }}
+{{ items[0] }}
+```
+
+:::alert{type="warning"}
+If a task ID, output key, or attribute contains a hyphen, use bracket notation. To avoid that, prefer `camelCase` or `snake_case`.
+:::
+
+### Parsing nested expressions
+
+Kestra renders expressions once by default. If a variable contains Pebble that should be evaluated later, use `render()`:
+
+```yaml
+variables:
+  trigger_or_yesterday: "{{ trigger.date ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
+  input_or_yesterday: "{{ inputs.mydate ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
+
+tasks:
+  - id: yesterday
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ render(vars.trigger_or_yesterday) }}"
+
+  - id: input_or_yesterday
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ render(vars.input_or_yesterday) }}"
+```
+
+This pattern is especially useful with namespace variables, composed flow variables, and fallback logic based on trigger context.
+
+#### Multiline JSON bodies
+
+When an HTTP request body contains multiline user input, avoid partial string interpolation. Instead, build the whole payload as a single Pebble expression so JSON escaping happens correctly.
+
+```yaml
+id: multiline_input_passed_to_json_body
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: This is my title
+  - id: message
+    type: STRING
+    defaults: |-
+      This is my long
+      multiline message.
+  - id: priority
+    type: INT
+    defaults: 5
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.http.Request
+    uri: https://kestra.io/api/mock
+    method: POST
+    body: |
+      {{ {
+        "title": inputs.title,
+        "message": inputs.message,
+        "priority": inputs.priority
+      } | toJson }}
+```
+
+### Common syntax patterns
+
+#### Comments
+
+Use Pebble comments with `{# ... #}`:
+
+```twig
+{# This is a comment #}
+{{ "Visible content" }}
+```
+
+In YAML, continue to use `#` for comments outside the expression itself.
+
+#### Literals and collections
+
+Pebble supports:
+
+- strings: `"Hello World"`
+- numbers such as `100 + 10l * 2.5`
+- booleans: `true`, `false`
+- null: `null`
+- lists: `["apple", "banana"]`
+- maps: `{"apple":"red", "banana":"yellow"}`
+
+#### Named arguments
+
+Filters, functions, and macros can accept named arguments:
+
+```twig
+{{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
+```
+
+### Control flow and fallbacks
+
+Common patterns:
+
+- `if` and `elseif` for branching
+- `for` for iteration
+- `??` for fallback values
+- `? :` for ternary expressions
+
+Examples:
+
+```twig
+{{ inputs.mydate ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}
+```
+
+```twig
+{% for article in articles %}
+  {{ article.title }}
+{% else %}
+  No articles available.
+{% endfor %}
+```
+
+Inside a `for` loop, Pebble provides a `loop` object with properties such as `loop.index`, `loop.first`, `loop.last`, and `loop.length`. For the full table and examples, see [Operators, Tags, and Tests](#for).
+
+```twig
+{% if category == "news" %}
+  {{ news }}
+{% elseif category == "sports" %}
+  {{ sports }}
+{% else %}
+  Select a category
+{% endif %}
+```
+
+## Filter Reference
+
+Use filters when you need to transform a value with the pipe syntax: `{{ value | filterName(...) }}`.
+
+### Common filter categories
+
+- JSON and structured data
+- numbers and collections
+- strings
+- dates and timestamps
+- YAML formatting
+
+### JSON and structured data
+
+Use these filters when the value you already have is structured and you need to reshape it, serialize it, or extract one field from a larger payload. They are especially common when working with task outputs and API responses.
+
+#### `toJson`
+
+Convert an object into JSON:
+
+```twig
+{{ [1, 2, 3] | toJson }}
+{{ true | toJson }}
+{{ "foo" | toJson }}
+```
+
+#### `toIon`
+
+Convert an object into Ion:
+
+```twig
+{{ myObject | toIon }}
+```
+
+#### `jq`
+
+Apply a JQ expression to a value. The result is always an array, so combine it with `first` when appropriate:
+
+```twig
+{{ outputs | jq('.task1.value') | first }}
+```
+
+Examples:
+
+```twig
+{{ [1, 2, 3] | jq('.') }}
+{{ [1, 2, 3] | jq('.[0]') | first }}
+```
+
+Example flow using `jq` inside a `ForEach`:
+
+```yaml
+id: jq_with_foreach
+namespace: company.team
+
+tasks:
+  - id: generate
+    type: io.kestra.plugin.core.debug.Return
+    format: |
+      [
+        {"name": "alpha", "value": 1},
+        {"name": "bravo", "value": 2}
+      ]
+
+  - id: foreach
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ fromJson(outputs.generate.value) }}"
+    tasks:
+      - id: log_filtered
+        type: io.kestra.plugin.core.log.Log
+        message: |
+          Name: {{ fromJson(taskrun.value).name }}
+          Doubled value: {{ fromJson(taskrun.value) | jq('.value * 2') | first }}
+```
+
+The practical rule with `jq` is that it is great for extracting or transforming a small part of a larger payload, but it is usually overkill when plain dot access already gets you the value you need.
+
+#### Worked JSON payload example
+
+This larger example is useful when you need to mix accessors, math, collection helpers, and JSON-aware filters in one expression flow:
+
+```yaml
+id: json_payload_example
+namespace: company.team
+
+inputs:
+  - id: payload
+    type: JSON
+    defaults: |-
+      {
+        "name": "John Doe",
+        "score": {
+          "English": 72,
+          "Maths": 88,
+          "French": 95,
+          "Spanish": 85,
+          "Science": 91
+        },
+        "address": {
+          "city": "Paris",
+          "country": "France"
+        },
+        "graduation_years": [2020, 2021, 2022, 2023]
+      }
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Student name: {{ inputs.payload.name }}"
+      - "Score in languages: {{ inputs.payload.score.English + inputs.payload.score.French + inputs.payload.score.Spanish }}"
+      - "Total subjects: {{ inputs.payload.score | length }}"
+      - "Total score: {{ inputs.payload.score | values | jq('reduce .[] as $num (0; .+$num)') | first }}"
+      - "Complete address: {{ inputs.payload.address.city }}, {{ inputs.payload.address.country | upper }}"
+      - "Started college in: {{ inputs.payload.graduation_years | first }}"
+      - "Completed college in: {{ inputs.payload.graduation_years | last }}"
+```
+
+Use a pattern like this when the payload already arrives as JSON input and you want to keep the manipulation inside expressions instead of adding a preprocessing task.
+
+### Numbers and collections
+
+These filters are the everyday cleanup tools for expression values. Use them when you already have the right data but need to reformat it, count it, sort it, or coerce it into the type another task expects.
+
+#### `abs`
+
+Returns the absolute value of a number:
+
+```twig
+{{ -7 | abs }}
+{# output: 7 #}
+```
+
+#### `number`
+
+Parses a string into a numeric type. Supports `INT`, `FLOAT`, `LONG`, `DOUBLE`, `BIGDECIMAL`, and `BIGINTEGER`. When no type is specified, the type is inferred:
+
+```twig
+{{ "12.3" | number | className }}
+{# output: java.lang.Float #}
+{{ "9223372036854775807" | number('BIGDECIMAL') | className }}
+{# output: java.math.BigDecimal #}
+```
+
+Use `BIGDECIMAL` or `BIGINTEGER` when values exceed standard long or double precision.
+
+#### `className`
+
+Returns the Java class name of an object. Useful for debugging type inference when combined with `number`:
+
+```twig
+{{ "12.3" | number | className }}
+{# output: java.lang.Float #}
+```
+
+#### `numberFormat`
+
+Formats a number using a Java `DecimalFormat` pattern:
+
+```twig
+{{ 3.141592653 | numberFormat("#.##") }}
+{# output: 3.14 #}
+```
+
+#### `first` and `last`
+
+Returns the first or last element of a collection, or the first or last character of a string:
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | first }}
+{# output: apple #}
+{{ ['apple', 'banana', 'cherry'] | last }}
+{# output: cherry #}
+{{ 'Kestra' | first }}
+{# output: K #}
+{{ 'Kestra' | last }}
+{# output: a #}
+```
+
+#### `length`
+
+Returns the number of elements in a collection, or the number of characters in a string:
+
+```twig
+{{ ['apple', 'banana'] | length }}
+{# output: 2 #}
+{{ 'Kestra' | length }}
+{# output: 6 #}
+```
+
+#### `join`
+
+Concatenates a collection into a single string with an optional delimiter:
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | join(', ') }}
+{# output: apple, banana, cherry #}
+```
+
+#### `split`
+
+Splits a string into a list using a delimiter. The delimiter is a regex, so escape special characters:
+
+```twig
+{{ 'apple,banana,cherry' | split(',') }}
+{# output: ['apple', 'banana', 'cherry'] #}
+{{ 'a.b.c' | split('\\.') }}
+```
+
+The optional `limit` argument controls how many splits are performed:
+
+- **Positive**: limits the array size; the last entry contains the remaining content
+- **Zero**: no limit; trailing empty strings are discarded
+- **Negative**: no limit; trailing empty strings are included
+
+```twig
+{{ 'apple,banana,cherry,grape' | split(',', 2) }}
+{# output: ['apple', 'banana,cherry,grape'] #}
+```
+
+#### `sort` and `rsort`
+
+Sort a collection in ascending or descending order:
+
+```twig
+{{ [3, 1, 2] | sort }}
+{# output: [1, 2, 3] #}
+{{ [3, 1, 2] | rsort }}
+{# output: [3, 2, 1] #}
+```
+
+#### `reverse`
+
+Reverses the order of a collection:
+
+```twig
+{{ [1, 2, 3] | reverse }}
+{# output: [3, 2, 1] #}
+```
+
+#### `chunk`
+
+Splits a collection into groups of a specified size:
+
+```twig
+{{ [1, 2, 3, 4, 5] | chunk(2) }}
+{# output: [[1, 2], [3, 4], [5]] #}
+```
+
+#### `distinct`
+
+Returns only unique values from a collection:
+
+```twig
+{{ [1, 2, 2, 3, 1] | distinct }}
+{# output: [1, 2, 3] #}
+```
+
+#### `slice`
+
+Extracts a portion of a collection or string using `fromIndex` (inclusive) and `toIndex` (exclusive):
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | slice(1, 2) }}
+{# output: [banana] #}
+{{ 'Kestra' | slice(1, 3) }}
+{# output: es #}
+```
+
+#### `merge`
+
+Merges two collections into one:
+
+```twig
+{{ [1, 2] | merge([3, 4]) }}
+{# output: [1, 2, 3, 4] #}
+```
+
+#### `flatten`
+
+Removes one level of nesting from a collection:
+
+```twig
+{{ [[1, 2], [3, 4], [5]] | flatten }}
+{# output: [1, 2, 3, 4, 5] #}
+```
+
+#### `keys` and `values`
+
+Return the keys or values of a map:
+
+```twig
+{{ {'foo': 'bar', 'baz': 'qux'} | keys }}
+{# output: [foo, baz] #}
+{{ {'foo': 'bar', 'baz': 'qux'} | values }}
+{# output: [bar, qux] #}
+```
+
+### String filters
+
+String filters are where most small presentation fixes happen. They are usually the right tool for display formatting, filename shaping, templated messages, and API-compatible encodings.
+
+#### Case and whitespace
+
+`lower`, `upper`, `title`, and `capitalize` normalize casing. `trim` removes leading and trailing whitespace.
+
+```twig
+{{ "LOUD TEXT" | lower }}           {# loud text #}
+{{ "quiet text" | upper }}          {# QUIET TEXT #}
+{{ "article title" | title }}       {# Article Title #}
+{{ "hello world" | capitalize }}    {# Hello world #}
+{{ "  padded  " | trim }}           {# padded #}
+```
+
+#### `abbreviate`
+
+Truncates a string to a maximum length and appends an ellipsis. The length argument includes the ellipsis:
+
+```twig
+{{ "this is a long sentence." | abbreviate(7) }}    {# this... #}
+```
+
+Useful when you need to keep log messages or notification subjects within a character limit.
+
+#### `replace`
+
+Substitutes one or more substrings using a map. Pass `regexp=true` to use regex patterns in the keys:
+
+```twig
+{{ "I like %this% and %that%." | replace({'%this%': foo, '%that%': "bar"}) }}
+```
+
+#### `substringBefore`, `substringAfter`, and their `Last` variants
+
+Extract the portion of a string before or after a delimiter. The `Last` variants match the final occurrence:
+
+```twig
+{{ "a.b.c" | substringBefore(".") }}       {# a #}
+{{ "a.b.c" | substringAfter(".") }}        {# b.c #}
+{{ "a.b.c" | substringBeforeLast(".") }}   {# a.b #}
+{{ "a.b.c" | substringAfterLast(".") }}    {# c #}
+```
+
+These are particularly useful for extracting file extensions, path segments, or identifier prefixes from task output values.
+
+#### `slugify`
+
+Converts a string into a URL-safe slug:
+
+```twig
+{{ "Hello World!" | slugify }}    {# hello-world #}
+```
+
+#### `default`
+
+Returns a fallback value when the expression is null or empty:
+
+```twig
+{{ user.phoneNumber | default("No phone number") }}
+```
+
+#### `startsWith`
+
+Returns `true` if the string begins with the given prefix:
+
+```twig
+{{ "kestra://file.csv" | startsWith("kestra://") }}    {# true #}
+```
+
+#### `endsWith`
+
+Returns `true` if the string ends with the given suffix:
+
+```twig
+{{ "report.csv" | endsWith(".csv") }}    {# true #}
+```
+
+#### Encoding and hashing
+
+`base64encode` and `base64decode` handle Base64 encoding. `urlencode` and `urldecode` percent-encode strings for use in URLs. `sha1`, `sha512`, and `md5` produce hex-encoded hashes of the corresponding algorithms.
+
+```twig
+{{ "test" | base64encode }}
+{# output: dGVzdA== #}
+{{ "dGVzdA==" | base64decode }}
+{# output: test #}
+{{ "The string ü@foo-bar" | urlencode }}
+{# output: The+string+%C3%BC%40foo-bar #}
+{{ "The+string+%C3%BC%40foo-bar" | urldecode }}
+{# output: The string ü@foo-bar #}
+{{ "test" | sha1 }}
+{{ "test" | sha512 }}
+{{ "test" | md5 }}
+```
+
+#### `string`
+
+Coerces any value to its string representation:
+
+```twig
+{{ 42 | string }}
+```
+
+Use this when chaining filters that expect string input on a value that may arrive as a number or boolean.
+
+#### `escapeChar`
+
+Escapes special characters in a string. The `type` argument controls which style of escaping is applied: `single`, `double`, or `shell`:
+
+```twig
+{{ "Can't be here" | escapeChar('single') }}
+{# output: Can\'t be here #}
+```
+
+#### Regex filters
+
+`regexMatch(regex)` returns `true` if the input contains a substring matching the pattern. `regexReplace(regex, replacement)` replaces all matching substrings. `regexExtract(regex, group)` returns the first match or a specific capture group (`group` defaults to `0`; returns `null` if no match):
+
+```twig
+{{ "hello world" | regexMatch("w[a-z]+") }}
+{# output: true #}
+{{ "2024-01-15" | regexReplace("(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1") }}
+{# output: 15/01/2024 #}
+{{ "order-12345-done" | regexExtract("\\d+") }}
+{# output: 12345 #}
+{{ "2024-01-15" | regexExtract("(\\d{4})-(\\d{2})-(\\d{2})", 1) }}
+{# output: 2024 #}
+```
+
+#### Worked string filter example
+
+This flow builds a sanitized filename and a display-safe summary from a raw input title:
+
+```yaml
+id: string_filter_example
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: "  Quarterly Report: Q1 2025 (FINAL)  "
+
+tasks:
+  - id: format_output
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Trimmed: {{ inputs.title | trim }}"
+      - "Normalized: {{ inputs.title | trim | lower }}"
+      - "Slug (for filename): {{ inputs.title | trim | slugify }}"
+      - "Abbreviated (for subject line): {{ inputs.title | trim | abbreviate(30) }}"
+      - "Prefix check: {{ inputs.title | trim | startsWith('Quarterly') }}"
+      - "After colon: {{ inputs.title | trim | substringAfter(':') | trim }}"
+```
+
+### Temporal filters
+
+These are the most common filters in scheduled flows and integrations. Reach for them whenever a downstream system expects a specific date format or timestamp precision rather than Kestra's native datetime value.
+
+Use temporal filters to format dates or convert them to timestamps.
+
+#### `date`
+
+```twig
+{{ execution.startDate | date("yyyy-MM-dd") }}
+```
+
+You can also provide existing and target formats with named arguments:
+
+```twig
+{{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
+```
+
+When you are formatting an already parsed datetime, only `format` is usually needed. Use `existingFormat` when the source is still a plain string.
+
+#### Time zones
+
+Specify a target time zone when downstream systems require a local representation rather than UTC:
+
+```twig
+{{ now() | date("yyyy-MM-dd'T'HH:mm:ssX", timeZone="UTC") }}
+```
+
+Supported arguments include:
+
+- `format`
+- `existingFormat`
+- `timeZone`
+- `locale`
+
+#### `dateAdd`
+
+Adds or subtracts time from a date. Arguments:
+
+- `amount`: integer specifying how much to add or subtract
+- `unit`: time unit such as `DAYS`, `HOURS`, `MONTHS`, or `YEARS`
+
+```twig
+{{ now() | dateAdd(-1, 'DAYS') }}
+```
+
+#### Timestamp helpers
+
+Convert a date to a Unix timestamp at a specific precision:
+
+- `timestamp` — seconds
+- `timestampMilli` — milliseconds
+- `timestampMicro` — microseconds
+- `timestampNano` — nanoseconds
+
+:::alert{type="warning"}
+`timestampMicro` previously returned a nanosecond-precision value due to a bug. If you are migrating an older flow, verify the precision your downstream system expects.
+:::
+
+All timestamp filters accept the same arguments as the `date` filter: `existingFormat` and `timeZone`.
+
+```twig
+{{ now() | timestamp(timeZone="Europe/Paris") }}
+{{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
+```
+
+Supported date formats include standard Java `DateTimeFormatter` patterns and shortcuts such as `iso`, `sql`, `iso_date_time`, and `iso_zoned_date_time`.
+
+#### Temporal worked example
+
+```yaml
+id: temporal_dates
+namespace: company.team
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Present timestamp: {{ now() }}"
+      - "Formatted timestamp: {{ now() | date('yyyy-MM-dd') }}"
+      - "Previous day: {{ now() | dateAdd(-1, 'DAYS') }}"
+      - "Next day: {{ now() | dateAdd(1, 'DAYS') }}"
+      - "Timezone (seconds): {{ now() | timestamp(timeZone='Asia/Kolkata') }}"
+      - "Timezone (microseconds): {{ now() | timestampMicro(timeZone='Asia/Kolkata') }}"
+      - "Timezone (milliseconds): {{ now() | timestampMilli(timeZone='Asia/Kolkata') }}"
+      - "Timezone (nanoseconds): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
+```
+
+This kind of example is a good sanity check when you are validating timestamp precision before sending values to an external API.
+
+### YAML filters
+
+Use YAML filters when you are generating configuration or manifest-style text inside a task. They are less common in simple flows, but very useful in templated Kubernetes, Docker, or config-management patterns.
+
+#### `yaml`
+
+Parse YAML into an object:
+
+```twig
+{{ "foo: bar" | yaml }}
+```
+
+This is especially useful in templated tasks where the source data starts as text but later expressions need object-style access.
+
+##### Example: using `yaml` in a templated task
+
+```yaml
+id: yaml_filter_example
+namespace: company.team
+
+tasks:
+  - id: yaml_filter
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      {{ "foo: bar" | yaml }}
+      {{ {"key": "value"} | yaml }}
+```
+
+#### `indent` and `nindent`
+
+Useful when generating templated YAML or embedding structured content:
+
+```twig
+{{ labels | yaml | indent(4) }}
+{{ variables.yaml_data | yaml | nindent(4) }}
+```
+
+##### Example with `indent` and `nindent`
+
+```yaml
+id: templated_task_example
+namespace: company.team
+
+labels:
+  example: test
+
+variables:
+  yaml_data: |
+    key1: value1
+    key2: value2
+
+tasks:
+  - id: yaml_with_indent
+    type: io.kestra.plugin.core.templating.TemplatedTask
+    spec: |
+      id: example-task
+      type: io.kestra.plugin.core.log.Log
+      message: |
+        Metadata:
+        {{ labels | yaml | indent(4) }}
+
+        Variables:
+        {{ variables.yaml_data | yaml | nindent(4) }}
+```
+
+Use `indent` when the first line is already in place and only following lines need alignment. Use `nindent` when you need to start a fresh indented block on the next line.
+
+### Choosing the right filter quickly
+
+| If you need to... | Use |
+| --- | --- |
+| Parse or transform JSON payloads | `toJson`, `jq`, `first` |
+| Provide a fallback string or value | `default` |
+| Format a date | `date` |
+| Offset a date | `dateAdd` |
+| Split or join text | `split`, `join` |
+| Normalize casing | `lower`, `upper`, `title`, `capitalize` |
+| Convert a value to a string | `string` |
+| Sort a collection | `sort`, `rsort` |
+| Count items in a collection | `length` |
+| Get unique values | `distinct` |
+| Encode or decode Base64 | `base64encode`, `base64decode` |
+| Hash a string | `sha1`, `sha512`, `md5` |
+| Convert to a number | `number` |
+| Render YAML in a templated task | `yaml`, `indent`, `nindent` |
+
+## Function Reference
+
+Use functions when you need to generate or retrieve a value dynamically with syntax such as `{{ functionName(...) }}`.
+
+### Common function groups
+
+Functions are best thought of as helpers that either fetch something, compute something, or force evaluation behavior that plain variables and filters cannot provide on their own.
+
+#### Rendering and debugging
+
+This group matters when expressions stop behaving the way you expect. `render()` and `printContext()` are often the quickest way to understand whether a value is missing, nested, or still just a string.
+
+- `render()` evaluates nested Pebble expressions
+- `renderOnce()` renders a value only once
+- `printContext()` outputs the full available context for debugging
+
+Examples:
+
+```twig
+{{ render("{{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}") }}
+{{ printContext() }}
+```
+
+`renderOnce()` is the safer choice when you need one extra evaluation pass but do not want recursive expansion to keep walking nested Pebble content.
+
+#### Secrets and file access
+
+These functions bridge expressions to external or stored data. Use them when the value is not already present in the execution context and must be resolved at runtime.
+
+- `secret()` reads a secret from Kestra's secret backend
+- `credential()` reads a short-lived token from a managed EE credential
+- `read()` reads the contents of a namespace file or internal-storage file
+- `fileURI()` returns the internal URI of a namespace file without reading its contents — use this when a task parameter expects a URI rather than inline content
+- `kv(key, namespace, errorOnMissing)` reads a value from the KV store; `namespace` defaults to the flow's namespace and `errorOnMissing` defaults to `true`
+- `encrypt(key, plaintext)` and `decrypt(key, encrypted)` encrypt and decrypt values using Kestra's encryption service
+
+Examples:
+
+```twig
+{{ secret('GITHUB_ACCESS_TOKEN') }}
+{{ credential('my_oauth') }}
+{{ read('subdir/file.txt') }}
+{{ fileURI('my_file.txt') }}
+{{ kv('MY_KEY') }}
+{{ kv('MY_KEY', 'other.namespace', false) }}
+{{ encrypt('MY_SECRET_KEY', inputs.sensitiveValue) }}
+{{ decrypt('MY_SECRET_KEY', outputs.encryptTask.value) }}
+```
+
+`read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs. Use `fileURI()` instead when you need to pass the file reference itself to a downstream task rather than embed the content inline.
+
+#### Data parsing helpers
+
+These helpers are most useful when a task output is still a serialized string and you want to treat it like structured data in later expressions.
+
+- `fromJson()`
+- `fromIon()`
+- `yaml()`
+
+Examples:
+
+```twig
+{{ fromJson('[1, 2, 3]')[0] }}
+{{ fromIon(read(outputs.serialize.uri)).someField }}
+{{ yaml('foo: [666, 1, 2]').foo[0] }}
+```
+
+#### Execution and workflow helpers
+
+This group is more situational, but it becomes valuable in complex flows where you need to inspect sibling results, build links back into Kestra, or summarize failures.
+
+- `errorLogs()` for error summaries in alerts
+- `currentEachOutput()` for simpler access to sibling outputs inside `ForEach`
+- `tasksWithState()` returns a list of task run objects matching the given state — useful for building conditional logic or failure summaries based on task outcomes
+- `iterationOutput(taskId, iteration)` retrieves the output of a specific iteration from a previous task; both arguments are optional and default to the current task and previous iteration
+- `parentOutput(index)` retrieves the output of a parent task; `index` is optional and defaults to the direct parent
+- `appLink()` in Enterprise Edition to generate Kestra App URLs
+
+#### Utility helpers
+
+- `now()` — returns the current datetime; accepts a `timeZone` argument: `now(timeZone="Europe/Paris")`
+- `max(a, b, ...)` — returns the largest of its arguments
+- `min(a, b, ...)` — returns the smallest of its arguments
+- `range(start, end)` or `range(start, end, step)` — generates a list of integers up to and including `end`; the step defaults to 1
+- `uuid()` — generates a UUID in URL-safe base62 encoding
+- `id()` — generates a short unique ID using Kestra's internal ID utility
+- `ksuid()` — generates a K-Sortable Unique Identifier (timestamp-prefixed, base62-encoded); useful when sort order by creation time matters
+- `nanoId(length, alphabet)` — generates a NanoID; `length` defaults to 21 and `alphabet` defaults to alphanumeric plus `-_`
+- `randomInt(min, max)` — generates a random integer; the upper bound is **excluded**
+- `randomPort()` — picks an available local port; useful in test or dev container flows
+- `http(uri, ...)` — fetches a remote payload directly from an expression
+- `fileSize(uri)` — returns the size in bytes of a file from internal storage
+- `fileExists(uri)` — returns `true` if the file exists
+- `isFileEmpty(uri)` — returns `true` if the file has no content
+
+#### Date and calendar helpers
+
+Use these functions when you need to make scheduling or routing decisions based on the calendar.
+
+- `isWeekend(date)` — returns `true` if the date falls on Saturday or Sunday
+- `isPublicHoliday(date, countryCode, subDivision)` — returns `true` if the date is a public holiday; `countryCode` is an ISO 3166-1 alpha-2 code and `subDivision` (optional) is an ISO 3166-2 code
+- `isDayWeekInMonth(date, dayOfWeek, position)` — returns `true` if the date is the Nth occurrence of the given weekday in its month; `position` accepts `FIRST`, `SECOND`, `THIRD`, `FOURTH`, or `LAST`
+- `dayOfWeek(date)` — returns the uppercase day name such as `MONDAY`
+- `dayOfMonth(date)` — returns the day of the month as an integer (1–31)
+- `monthOfYear(date)` — returns the month as an integer (1–12)
+- `hourOfDay(date)` — returns the hour as an integer (0–23)
+
+#### Template inheritance helpers
+
+These are less common than runtime-oriented helpers, but they matter when you are using Pebble blocks and template inheritance directly.
+
+##### `block()`
+
+`block()` renders the contents of a named block multiple times. It is different from the Pebble `block` tag, which declares the block:
+
+```twig
+{% block "post" %}content{% endblock %}
+
+{{ block("post") }}
+```
+
+##### `parent()`
+
+Use `parent()` inside an overriding block to include the original block content from the parent template:
+
+```twig
+{% extends "parent.peb" %}
+
+{% block "content" %}
+child content
+{{ parent() }}
+{% endblock %}
+```
+
+### Common function patterns
+
+The functions below are the ones most likely to shape a real flow. This section focuses on the practical cases where they change how you write expressions, not just what they do in isolation.
+
+#### `render()`
+
+Use `render()` when a variable itself contains Pebble and must be evaluated:
+
+```twig
+{{ render(namespace.github.token) }}
+```
+
+Without `render()`, namespace or flow variables that contain Pebble are treated as plain strings.
+
+#### `secret()`
+
+Use `secret()` for sensitive values:
+
+```twig
+{{ secret('API_KEY') }}
+```
+
+#### `credential()`
+
+In Enterprise Edition, use `credential()` to inject a short-lived token from a managed credential:
+
+```twig
+{{ credential('my_oauth') }}
+```
+
+`credential()` returns the token only, while the credential definition itself is managed in the Kestra UI.
+
+#### `currentEachOutput()`
+
+Use it inside `ForEach` flows to avoid manual `taskrun.value` indexing:
+
+```twig
+{{ currentEachOutput(outputs.make_data).values.data }}
+```
+
+#### `errorLogs()`
+
+Prints all error logs from the current execution:
+
+```twig
+{{ errorLogs() }}
+```
+
+It is most useful in `errors` blocks, where you need a compact summary of what failed without manually traversing task state objects.
+
+#### `fromIon()`
+
+Use `fromIon()` when a previous task or serializer produces Ion rather than JSON:
+
+```twig
+{{ fromIon(read(outputs.serialize.uri)).someField }}
+```
+
+#### `read()`
+
+`read()` is the simplest way to turn a file URI back into inline content for a later expression:
+
+```twig
+{{ read(outputs.someTask.uri) }}
+```
+
+#### `renderOnce()`
+
+Equivalent to `render(expression, recursive=false)`:
+
+```twig
+{{ renderOnce(namespace.github.token) }}
+```
+
+#### `printContext()`
+
+Outputs the full execution context as a string. Use it in the Debug Expression console to inspect every variable available at that point in the execution:
+
+```twig
+{{ printContext() }}
+```
+
+This is the fastest way to discover the exact key names and structure of `inputs`, `outputs`, `trigger`, and other context variables when an expression is not resolving as expected.
+
+#### `fromJson()`
+
+Parses a JSON string into an object so you can access its fields with dot or bracket notation:
+
+```twig
+{{ fromJson(outputs.myTask.value).name }}
+{{ fromJson('[1, 2, 3]')[0] }}
+```
+
+Use `fromJson()` when a task output arrives as a serialized JSON string rather than a structured object. To go the other direction, use the `toJson` filter.
+
+#### Numeric and generation helpers
+
+```twig
+{{ max(5, 10, 15) }}
+{# output: 15 #}
+{{ min(5, 10, 15) }}
+{# output: 5 #}
+{{ now() }}
+{{ now(timeZone="Europe/Paris") }}
+{{ range(0, 3) }}
+{# output: [0, 1, 2, 3] #}
+{{ range(0, 6, 2) }}
+{# output: [0, 2, 4, 6] #}
+{{ uuid() }}
+{{ id() }}
+{{ ksuid() }}
+{{ nanoId() }}
+{{ nanoId(length=10) }}
+{{ randomInt(1, 10) }}
+{# generates a random integer from 1 to 9 (10 is excluded) #}
+```
+
+#### File and runtime helpers
+
+These helpers are usually used in operational flows rather than day-to-day templating:
+
+```twig
+{{ randomPort() }}
+{{ fileSize(outputs.download.uri) }}
+{{ fileExists(outputs.download.uri) }}
+{{ isFileEmpty(outputs.download.uri) }}
+```
+
+`tasksWithState()` returns a list of task run objects matching the given state. Use it in error handlers or notifications to report which tasks failed:
+
+```twig
+{{ tasksWithState('FAILED') }}
+```
+
+#### `http()`
+
+`http()` lets an expression fetch a remote payload directly:
+
+```twig
+{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}
+```
+
+Use it sparingly. It is convenient for dynamic dropdowns and lightweight lookups, but task-level HTTP calls are usually easier to observe and retry.
+
+#### `appLink()`
+
+Enterprise Edition's `appLink()` builds links back to Kestra Apps:
+
+```twig
+{{ appLink(appId='com.example.my-app') }}
+{{ appLink(baseUrl=true) }}
+```
+
+Use it in notifications when you want recipients to jump directly into the related app rather than the generic flow UI.
+
+#### `kv()`
+
+Reads a value from the KV store by key. The namespace defaults to the flow's namespace; set `errorOnMissing` to `false` to return `null` instead of throwing when the key is absent:
+
+```twig
+{{ kv('MY_KEY') }}
+{{ kv('MY_KEY', 'other.namespace') }}
+{{ kv('OPTIONAL_KEY', namespace, false) }}
+```
+
+#### `encrypt()` and `decrypt()`
+
+Encrypt and decrypt string values using Kestra's encryption service. Both require a `key` argument that identifies which encryption key to use:
+
+```twig
+{{ encrypt('MY_ENCRYPTION_KEY', inputs.sensitiveValue) }}
+{{ decrypt('MY_ENCRYPTION_KEY', outputs.encryptTask.value) }}
+```
+
+#### `iterationOutput()`
+
+Retrieves the output of a specific iteration from a previous task. Both arguments are optional — `taskId` defaults to the current task and `iteration` defaults to the previous iteration:
+
+```twig
+{{ iterationOutput(outputs.myTask).value }}
+{{ iterationOutput(outputs.myTask, 2).value }}
+```
+
+#### `parentOutput()`
+
+Retrieves the output of a parent task. The optional `index` argument specifies which ancestor to target; omitting it returns the direct parent's output:
+
+```twig
+{{ parentOutput() }}
+{{ parentOutput(1) }}
+```
+
+#### Date and calendar helpers
+
+Use these functions when you need to make scheduling or routing decisions based on the calendar — for example, skipping runs on weekends or public holidays.
+
+`isWeekend(date)` returns `true` if the date falls on Saturday or Sunday. `isPublicHoliday(date, countryCode, subDivision)` checks against a country's public holiday calendar; `subDivision` is optional and accepts ISO 3166-2 codes. `isDayWeekInMonth(date, dayOfWeek, position)` returns `true` if the date is the Nth occurrence of a weekday in its month; `position` accepts `FIRST`, `SECOND`, `THIRD`, `FOURTH`, or `LAST`.
+
+```twig
+{{ isWeekend(trigger.date) }}
+{{ isPublicHoliday(trigger.date, 'US') }}
+{{ isPublicHoliday(trigger.date, 'DE', 'DE-BY') }}
+{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}
+```
+
+`dayOfWeek(date)` returns the uppercase day name (e.g. `MONDAY`). `dayOfMonth(date)`, `monthOfYear(date)`, and `hourOfDay(date)` return the corresponding integer component:
+
+```twig
+{{ dayOfWeek(trigger.date) }}
+{{ dayOfMonth(trigger.date) }}
+{{ monthOfYear(trigger.date) }}
+{{ hourOfDay(execution.startDate) }}
+```
+
+### Worked example
+
+This flow uses several runtime functions together: `now()` for a timestamp, `uuid()` for a unique run identifier, `secret()` for a credential, and `render()` to evaluate a namespace variable containing Pebble:
+
+```yaml
+id: function_reference_example
+namespace: company.team
+
+tasks:
+  - id: log_context
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Run ID: {{ uuid() }}"
+      - "Started at: {{ now() | date('yyyy-MM-dd HH:mm:ss') }}"
+      - "API key: {{ secret('MY_API_KEY') }}"
+      - "Config value: {{ render(namespace.my_config) }}"
+
+```
+
+## Operators, Tags, and Tests
+
+Use this section for the control-flow side of Pebble — comparisons, logic operators, fallbacks, loop and conditional tags, and type tests.
+
+### Operators
+
+#### Comparisons
+
+Supported comparison operators:
+
+- `==`
+- `!=`
+- `<`
+- `>`
+- `<=`
+- `>=`
+
+```twig
+{% if execution.state == "SUCCESS" %}
+  Flow completed successfully.
+{% endif %}
+
+{% if taskrun.attemptsCount >= 3 %}
+  Max retries reached.
+{% endif %}
+```
+
+#### Logic and boolean checks
+
+Use:
+
+- `and`
+- `or`
+- `not`
+- `is`
+- `contains`
+
+Use parentheses to group expressions and make precedence explicit:
+
+```twig
+{% if 2 is even and 3 is odd %}
+  ...
+{% endif %}
+
+{% if (3 is not even) and (2 is odd or 3 is even) %}
+  ...
+{% endif %}
+```
+
+#### `contains`
+
+Checks whether an item exists within a list, string, map, or array:
+
+```twig
+{% if ["apple", "pear", "banana"] contains "apple" %}
+  ...
+{% endif %}
+```
+
+For maps, `contains` checks for a matching key:
+
+```twig
+{% if {"apple": "red", "banana": "yellow"} contains "banana" %}
+  ...
+{% endif %}
+```
+
+To check for multiple items at once, pass a list on the right-hand side:
+
+```twig
+{% if ["apple", "pear", "banana", "peach"] contains ["apple", "peach"] %}
+  ...
+{% endif %}
+```
+
+`contains` also works inline in output expressions:
+
+```twig
+{{ inputs.mainString contains inputs.subString }}
+```
+
+#### `isIn`
+
+Use `isIn` to test whether a value matches any item in a list. It reads more clearly than chaining multiple equality checks in `runIf`, SLAs, or alert conditions:
+
+```twig
+{{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}
+```
+
+#### Math and concatenation
+
+Use:
+
+- `+`, `-`, `*`, `/`, `%`
+- `~` for string concatenation
+
+Example:
+
+```twig
+{{ "apple" ~ "pear" ~ "banana" }}
+{{ 2 + 2 / (10 % 3) * (8 - 1) }}
+```
+
+#### Fallbacks and conditionals
+
+Use:
+
+- `??` for null-coalescing: returns the first non-null value
+- `???` for undefined-coalescing: returns the right-hand side only when the left is undefined (not just null)
+- `? :` for ternary expressions
+
+Examples:
+
+```twig
+{{ foo ?? bar ?? "default" }}     {# first non-null value #}
+{{ foo ??? "default" }}           {# only if foo is undefined #}
+{{ foo == null ? bar : baz }}
+{{ foo ?? bar ?? raise }}         {# raises an exception if all are undefined #}
+```
+
+For detailed null vs undefined behavior, see the [Handling null and undefined values](../../15.how-to-guides/null-values/index.md) guide.
+
+#### Operator precedence
+
+Pebble operators are evaluated in this order:
+
+1. `.`
+2. `|`
+3. `%`, `/`, `*`
+4. `-`, `+`
+5. `==`, `!=`, `>`, `<`, `>=`, `<=`
+6. `is`, `is not`
+7. `and`
+8. `or`
+
+### Tags
+
+Pebble tags are enclosed in `{% %}` and control template flow.
+
+#### `set`
+
+Defines a variable in the template context:
+
+```twig
+{% set header = "Welcome Page" %}
+{{ header }}
+{# output: Welcome Page #}
+```
+
+#### `if`
+
+Evaluates conditional logic. Use `elseif` and `else` for multiple branches:
+
+```twig
+{% if users is empty %}
+  No users available.
+{% elseif users.length == 1 %}
+  One user found.
+{% else %}
+  Multiple users found.
+{% endif %}
+```
+
+#### `for`
+
+Iterates over arrays, maps, or any `java.lang.Iterable`.
+
+**Iterating over a list:**
+
+```twig
+{% for user in users %}
+  {{ user.name }} lives in {{ user.city }}.
+{% else %}
+  No users found.
+{% endfor %}
+```
+
+The `else` block runs when the collection is empty.
+
+**Iterating over a map:**
+
+```twig
+{% for entry in map %}
+  {{ entry.key }}: {{ entry.value }}
+{% endfor %}
+```
+
+**Loop special variables:**
+
+Inside any `for` loop, Pebble provides a `loop` object with these properties:
+
+| Variable | Description |
+| --- | --- |
+| `loop.index` | Zero-based index of the current iteration |
+| `loop.length` | Total number of items in the iterable |
+| `loop.first` | `true` on the first iteration |
+| `loop.last` | `true` on the last iteration |
+| `loop.revindex` | Number of iterations remaining |
+
+Example:
+
+```twig
+{% for user in users %}
+  {{ loop.index }}: {{ user.name }}{% if loop.last %} (last){% endif %}
+{% endfor %}
+```
+
+#### `filter`
+
+Applies a filter to a block of content. Filters can be chained:
+
+```twig
+{% filter upper %}
+  hello
+{% endfilter %}
+{# output: HELLO #}
+
+{% filter lower | title %}
+  hello world
+{% endfilter %}
+{# output: Hello World #}
+```
+
+#### `raw`
+
+Prevents Pebble from parsing its content — useful when you need to output literal `{{ }}` syntax:
+
+```twig
+{% raw %}{{ user.name }}{% endraw %}
+{# output: {{ user.name }} #}
+```
+
+#### `macro`
+
+Defines a reusable template snippet. Macros only have access to their own arguments by default:
+
+```twig
+{% macro input(type="text", name, value="") %}
+  type: "{{ type }}", name: "{{ name }}", value: "{{ value }}"
+{% endmacro %}
+
+{{ input(name="country") }}
+{# output: type: "text", name: "country", value: "" #}
+```
+
+To access variables from the outer template context, pass `_context` explicitly:
+
+```twig
+{% set foo = "bar" %}
+
+{% macro display(_context) %}
+  {{ _context.foo }}
+{% endmacro %}
+
+{{ display(_context) }}
+{# output: bar #}
+```
+
+#### `block`
+
+Defines a named, reusable template block. Use the `block()` function to render the block elsewhere:
+
+```twig
+{% block "header" %}
+  Introduction
+{% endblock %}
+
+{{ block("header") }}
+```
+
+### Tests
+
+Tests are used with `is` and `is not` to perform type and value checks.
+
+#### `defined`
+
+Checks whether a variable exists in the context (regardless of its value):
+
+```twig
+{% if missing is not defined %}
+  Variable is not defined.
+{% endif %}
+```
+
+#### `empty`
+
+Returns `true` when a variable is null, an empty string, an empty collection, or an empty map:
+
+```twig
+{% if user.email is empty %}
+  No email on record.
+{% endif %}
+```
+
+#### `null`
+
+Checks whether a variable is null:
+
+```twig
+{% if user.email is null %}
+  ...
+{% endif %}
+
+{% if name is not null %}
+  ...
+{% endif %}
+```
+
+#### `even` and `odd`
+
+Check whether an integer is even or odd:
+
+```twig
+{% if 2 is even %}
+  ...
+{% endif %}
+
+{% if 3 is odd %}
+  ...
+{% endif %}
+```
+
+#### `iterable`
+
+Returns `true` when a variable implements `java.lang.Iterable`. Use this to guard a `for` loop when the collection may not always be present:
+
+```twig
+{% if users is iterable %}
+  {% for user in users %}
+    {{ user.name }}
+  {% endfor %}
+{% endif %}
+```
+
+#### `json`
+
+Returns `true` when a variable is a valid JSON string:
+
+```twig
+{% if '{"test": 1}' is json %}
+  ...
+{% endif %}
+```
+
+#### `map`
+
+Returns `true` when a variable is a map:
+
+```twig
+{% if {"apple": "red", "banana": "yellow"} is map %}
+  ...
+{% endif %}
+```
