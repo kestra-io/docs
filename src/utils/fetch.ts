@@ -86,7 +86,7 @@ export async function $fetchApiCached<T = any>(
     return await $fetchApi<T>(url, cachingConfig)
 }
 
-export async function $fetchApiRawCached<T = any>(
+export async function $fetchApiRawCached(
     url: string,
     init: RequestInit = {},
 ): Promise<Response> {

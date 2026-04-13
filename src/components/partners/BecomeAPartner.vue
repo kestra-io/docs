@@ -243,13 +243,7 @@
             form.reportValidity()
             message.value = "Invalid form: Please review the fields."
             return
-                await $fetch(HUBSPOT_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(hubspotData),
-                })
+        }
 
         const formData = new FormData(form)
         const data = Object.fromEntries(formData.entries()) as Record<
