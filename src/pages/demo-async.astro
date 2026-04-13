@@ -1,0 +1,140 @@
+---
+import Layout from "~/components/layout.astro"
+import UseCaseSelector from "~/components/demo-async/UseCaseSelector.vue"
+import WhatYoullSee from "~/components/demo-async/WhatYoullSee.astro"
+import GetStarted from "~/components/common/GetStarted.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import AppleLogo from "~/components/demo/assets/logos/apple.svg?raw"
+
+const title = "Get a Dedicated Demo"
+const description =
+    "Pick your use case and get a personalized Loom walkthrough of Kestra — built for your exact workflow."
+
+const quotes = [
+    {
+        quote: "We switched from Airflow to Kestra because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale.",
+        author: 'Senior Engineering Manager @ <strong>Apple</strong> (ML team)',
+        smallLogoSvg: AppleLogo,
+    },
+]
+---
+
+<Layout title={title} description={description}>
+    <!-- HERO -->
+    <section class="hero-async">
+        <div class="hero-content">
+            <h1 data-usal="fade-l">
+                Get a Loom.<br />
+                <span class="gradient">Built for your workflow.</span>
+            </h1>
+            <p class="subtitle" data-usal="fade-r">
+                Pick what you're orchestrating. We'll record a dedicated walkthrough
+                showing how Kestra handles it — real UI, real data, your use case.
+            </p>
+        </div>
+    </section>
+
+    <!-- USE CASE CAROUSEL -->
+    <section id="use-case-selector" class="selector-section">
+        <UseCaseSelector client:load />
+    </section>
+
+    <!-- WHAT YOU'LL SEE -->
+    <WhatYoullSee />
+
+    <!-- TESTIMONIAL -->
+    <Quotes quotes={quotes} />
+
+    <!-- GET STARTED -->
+    <GetStarted />
+</Layout>
+
+<style lang="scss">
+    /* ========================================
+       HERO
+       ======================================== */
+    .hero-async {
+        padding: calc($spacer * 6) 0 calc($spacer * 2);
+        text-align: center;
+
+        --background-grid-cell-size: 72px;
+        --background-grid-line-color: var(--ks-border-primary);
+        background-image: radial-gradient(
+                farthest-corner at top center,
+                transparent 0.5%,
+                var(--ks-background-primary) 40%
+            ),
+            linear-gradient(
+                to right,
+                transparent
+                    calc(var(--background-grid-cell-size) / 2 - 1px),
+                var(--background-grid-line-color)
+                    calc(var(--background-grid-cell-size) / 2 - 1px),
+                var(--background-grid-line-color)
+                    calc(var(--background-grid-cell-size) / 2),
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--background-grid-line-color) 1px,
+                transparent 1px
+            );
+        background-size:
+            150% 100%,
+            var(--background-grid-cell-size) var(--background-grid-cell-size),
+            var(--background-grid-cell-size) var(--background-grid-cell-size);
+        background-repeat: no-repeat, repeat, repeat;
+
+        @include media-breakpoint-down(md) {
+            padding: calc($spacer * 4) 0 calc($spacer * 1);
+        }
+    }
+
+    .hero-content {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+    .hero-async h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+
+        .gradient {
+            background: linear-gradient(90deg, #718bfe, #c6d1ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @include media-breakpoint-down(md) {
+            font-size: 2.5rem;
+        }
+
+        @include media-breakpoint-down(sm) {
+            font-size: 2rem;
+        }
+    }
+
+    .hero-async .subtitle {
+        font-size: 1.25rem;
+        color: var(--ks-content-secondary);
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.6;
+
+        @include media-breakpoint-down(sm) {
+            font-size: $font-size-md;
+        }
+    }
+
+    /* ========================================
+       USE CASE SELECTOR SECTION
+       ======================================== */
+    .selector-section {
+        padding: calc($spacer * 2) 0 calc($spacer * 2);
+        scroll-margin-top: 5rem;
+    }
+</style>
