@@ -170,7 +170,7 @@ Note how in this example, the `waitForCompletion` property is templated using Pe
 
 ### New pebble functions to process YAML
 
-Related to the templated task, there are [new Pebble functions](../../docs/expressions/03.filter-reference/index.md#yaml-filters) to process YAML including the `yaml` and `indent` functions that allow you to parse and load YAML strings into objects. Those objects can then be further transformed using Pebble templating.
+Related to the templated task, there are [new Pebble functions](../../docs/expressions/index.mdx#yaml-filters) to process YAML including the `yaml` and `indent` functions that allow you to parse and load YAML strings into objects. Those objects can then be further transformed using Pebble templating.
 
 Big thanks to [kriko](https://github.com/kriko) for [contributing this feature](https://github.com/kestra-io/kestra/pull/3283)!
 
@@ -209,7 +209,7 @@ The above flow will only be triggered after an execution:
 
 ## Improvements to the secret function
 
-The `secret()` function now returns `null` if the secret cannot be found. [This change](https://github.com/kestra-io/kestra/issues/3162) allows you to fall back to an environment variable if a secret is missing. To do that, you can use the `secret()` function in combination with the [null-coalescing](../../docs/expressions/05.operators-tags-tests/index.md#fallbacks-and-conditionals) operator as follows:
+The `secret()` function now returns `null` if the secret cannot be found. [This change](https://github.com/kestra-io/kestra/issues/3162) allows you to fall back to an environment variable if a secret is missing. To do that, you can use the `secret()` function in combination with the [null-coalescing](../../docs/expressions/index.mdx#fallbacks-and-conditionals) operator as follows:
 
 ```yaml
 accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') ?? env.aws_access_key_id }}"
