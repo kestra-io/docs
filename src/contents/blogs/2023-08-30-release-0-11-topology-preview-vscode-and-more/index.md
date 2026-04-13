@@ -5,6 +5,7 @@ date: 2023-08-30T14:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: "ageller"
 image: ./main.png
 ---

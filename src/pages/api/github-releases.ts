@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro"
+import { DISABLE_GITHUB } from "astro:env/server"
 
 export const prerender = false
 
@@ -16,6 +17,9 @@ export interface ReleaseInfo {
 }
 
 export async function retrieveRepoReleases(repo: string) {
+    if (DISABLE_GITHUB) {
+        return { versions: [] }
+    }
     const headers: Record<string, string> = { "User-Agent": "request" }
 
     const response = await fetch(

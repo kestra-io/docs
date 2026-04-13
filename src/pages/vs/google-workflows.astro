@@ -8,7 +8,7 @@ import SetupSpeed from "~/components/versus/SetupSpeed.astro"
 import EaseOfUse from "~/components/versus/EaseOfUse.astro"
 import VisualPreview from "~/components/versus/VisualPreview.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
-import SocialProof from "~/components/common/SocialProof.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -16,7 +16,6 @@ import Faq from "~/components/common/Faq.vue"
 
 import googleWorkflowsLogo from "~/components/versus/assets/google-workflows.svg?raw"
 import googleWorkflowsMonogram from "~/components/versus/assets/google-workflows-monograme.svg?raw"
-import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
@@ -24,13 +23,13 @@ import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import googleWorkflowsImg from "~/components/versus/assets/google-workflows-img.svg"
 import heroUI from "~/components/versus/assets/google_workflows_hero_ui.webp"
 
-const entry = await getEntry("vsPages", "google-workflows")
+const entry = await getEntry("vs", "google-workflows")
 if (!entry)
-    throw new Error("Could not find vsPages/google-workflows collection entry")
+    throw new Error("Could not find vs/google-workflows collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -40,14 +39,14 @@ const {
     easeOfUse,
     visualPreview,
     featureGrid,
-    socialProof,
+    testimonials,
     platformStrengths,
     decisionGuide,
     commonQuestions,
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} description={shortDescription} headerTheme="lightText">
     <Intro
         {...intro}
         competitor={{
@@ -102,9 +101,8 @@ const {
             competitorLogo: googleWorkflowsLogo,
         }}
     />
-    <SocialProof
-        {...socialProof}
-        image={{ ...socialProof.image, src: lmfrImage }}
+    <VsTestimonial
+        quotes={testimonials}
     />
     <PlatformStrengths
         {...platformStrengths}

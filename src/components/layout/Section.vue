@@ -62,14 +62,6 @@
         width: 100%;
         &.with-shadow {
             text-align: center;
-            background: url("/landing/shadow2.svg") no-repeat bottom center;
-            @include media-breakpoint-down(lg) {
-                background-size: contain;
-                background-position: center center;
-            }
-            @include media-breakpoint-down(md) {
-                background: none;
-            }
         }
         div.subtitle {
             text-align: center;

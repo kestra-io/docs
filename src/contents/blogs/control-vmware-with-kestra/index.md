@@ -5,6 +5,7 @@ date: 2026-03-10T13:00:00
 category: Solutions
 author:
   name: François Delbrayelle
+  linkedin: https://www.linkedin.com/in/fdelbrayelle/
   image: fdelbrayelle
   role: 
 image: ./control-vmware-with-kestra.jpg

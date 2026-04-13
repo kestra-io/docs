@@ -54,7 +54,7 @@ common:
 
 Auto mode reads `resources.limits.cpu`, supports values such as `"250m"`, `"1"`, or `"1.5"`, converts them to an integer CPU count (minimum 1), and injects:
 
-```text
+```plaintext
 -XX:ActiveProcessorCount=<computed value>
 ```
 
