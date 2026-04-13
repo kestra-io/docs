@@ -12,14 +12,8 @@ Disallow: ${disabled ? "*" : "/slack"}
 ${disabled ? "" : `# Block the /blueprints pagination bug (critical - 501 errors)
 Disallow: /blueprints?*clid=*
 Disallow: /blueprints?*size=*
-# Build assets (keep images indexable)
-Allow: /_astro/*.jpg
-Allow: /_astro/*.jpeg
-Allow: /_astro/*.png
-Allow: /_astro/*.webp
-Allow: /_astro/*.svg
-Allow: /_astro/*.gif
-Disallow: /_astro/
+# Build assets — CSS, JS, fonts accessible pour le rendu
+Allow: /_astro/
 Disallow: /_nuxt/
 Disallow: /__nuxt_content/
 # Cloudflare image optimization (keep indexable)
