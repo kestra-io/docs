@@ -43,6 +43,12 @@ Executor server exclusive:
 * `kestra_executor_execution_message_process_seconds_max` (gauge): Maximum observed duration of a single execution message processed by the Executor.
 * `kestra_executor_execution_started_count_total` (counter): The total number of executions started by the Executor.
 * `kestra_executor_flowable_execution_count_total` (counter): The total number of flowable tasks executed by the Executor
+* `kestra_executor_loop_delay_duration_seconds` (summary): Execution delay loop duration inside the Executor.
+* `kestra_executor_loop_delay_duration_seconds_max` (gauge): Maximum observed execution delay loop duration inside the Executor.
+* `kestra_executor_loop_sla_duration_seconds` (summary): SLA monitor loop duration inside the Executor.
+* `kestra_executor_loop_sla_duration_seconds_max` (gauge): Maximum observed SLA monitor loop duration inside the Executor.
+* `kestra_executor_processing_flow_trigger_duration_seconds` (summary): Flow trigger processing duration inside the Executor.
+* `kestra_executor_processing_flow_trigger_duration_seconds_max` (gauge): Maximum observed flow trigger processing duration inside the Executor.
 * `kestra_executor_taskrun_created_count_total` (counter): The total number of tasks created by the Executor.
 * `kestra_executor_taskrun_ended_count_total` (counter): he total number of tasks ended by the Executor.
 * `kestra_executor_taskrun_ended_duration_seconds` (summary): Task duration inside the Executor.
