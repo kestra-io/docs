@@ -28,7 +28,7 @@ const timedSide = z.object({
 })
 
 const qaItem = z.object({ question: z.string(), answer: z.string() })
-const metric = z.object({ value: z.string(), label: z.string() })
+const _metric = z.object({ value: z.string(), label: z.string() })
 const featureRow = z.object({ feature: z.string(), kestra: z.string(), competitor: z.string() })
 const strengthItem = z.object({ title: z.string(), description: z.string() })
 

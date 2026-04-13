@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import"],
+  "rules": {
+      "no-unused-vars": "error",
+      "no-console": ["error", { "allow": ["warn", "error"] }],
+  },
+  "env": {
+      "builtin": true,
+  },
+  "overrides": [
+      {
+          "files": ["scripts/*.mjs", "src/middleware.ts"],
+          "rules": {
+              "no-console": "off",
+          },
+      },
+      {
+          "files": ["src/components/common/animations/*.astro"],
+          "rules": {
+              "no-unused-expressions": "off",
+          },
+      },
+  ],
+}

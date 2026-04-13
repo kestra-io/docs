@@ -17,15 +17,7 @@
         <div class="sidebar-content">
             <h3 v-if="pluginWrapper" class="plugin-title">{{ title }}</h3>
 
-            <PluginElements
-                v-if="isSingleFlatPlugin"
-                :grouped-elements="groupPluginElements(subGroupWrappers[0])"
-                :plugin-name="pluginName"
-                :show-line="true"
-                :route-parts="routeParts"
-            />
-
-            <div v-else-if="subGroupWrappers.length > 0" class="subgroups-list">
+            <div v-if="subGroupWrappers.length > 0" class="subgroups-list">
                 <details
                     v-for="sub in subGroupWrappers"
                     :key="sub.subGroup"
@@ -112,11 +104,6 @@
 
     const groupedDirectElements = computed(() =>
         pluginWrapper ? groupPluginElements(pluginWrapper) : {},
-    )
-
-    const isSingleFlatPlugin = computed(() =>
-        subGroupWrappers.value.length === 1 &&
-        Object.keys(groupedDirectElements.value).length === 0,
     )
 
     const groupPluginElements = (plugin: Plugin): Record<string, PluginElement[]> =>
@@ -324,10 +311,11 @@
 
                     &:hover {
                         text-decoration: underline;
+                        text-decoration-skip-ink: none;
+                        text-underline-position: under;
                     }
                 }
             }
         }
     }
 </style>
-

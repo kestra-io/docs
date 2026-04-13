@@ -65,7 +65,6 @@ interface PluginInformation {
 
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace
 type ENV = {
-    ISR_CACHE: KVNamespace
     ICON_CACHE: KVNamespace
 }
 

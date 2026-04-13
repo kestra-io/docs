@@ -64,7 +64,7 @@ initContainers:
 You can remove it after successful run (it has to be only executed once).
 :::
 
-Migrating some tables can take a long time, you can use `--exludes=table1,table2` to exclude some tables from the migration and update them manually.
+Migrating some tables can take a long time, you can use `--excludes=table1,table2` to exclude some tables from the migration and update them manually.
 
 ### Kafka Queue Handling
 
@@ -74,7 +74,7 @@ To start fresh, we strongly recommend using a new Kafka cluster for your queues.
 
 ### Elasticsearch repository handling
 
-if your repository is Elasticsearch, it probably means your instance stores a large amount of execution data so we stronly recommand to exclude executions, logs and metrics from the migration and update them manually.
+If your repository is Elasticsearch, it probably means your instance stores a large amount of execution data so we strongly recommend to exclude executions, logs, and metrics from the migration and update them manually.
 
 ```shell
 kestra migrate default-tenant \
