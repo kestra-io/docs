@@ -180,9 +180,11 @@ const rows = [
                     height: 65px;
                 }
 
-                :global(svg) {
+                :global(svg),
+                :global(img) {
                     width: 100%;
                     height: 100%;
+                    object-fit: contain;
                 }
 
                 &:hover {
