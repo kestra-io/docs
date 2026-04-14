@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content"
+import { defineCollection } from "astro:content"
+import { z } from "astro/zod"
 import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
 import { vsSchema } from "./schemas/vs"
@@ -66,6 +67,7 @@ export const collections = {
                 image: image().optional(),
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
+                schema: z.record(z.string(), z.unknown()).optional(),
             }),
     }),
     legal: defineCollection({
@@ -188,3 +190,4 @@ export const collections = {
             }),
     }),
 }
+
