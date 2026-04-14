@@ -84,4 +84,4 @@ Now that you've seen how to loop over a list of values using `ForEach`, you can 
 - Using dynamic input values instead of hardcoded lists.
 - Logging or processing additional data from each iteration.
 
-For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) task documentation.
+For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task documentation.
