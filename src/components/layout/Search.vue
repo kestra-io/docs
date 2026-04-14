@@ -326,17 +326,18 @@
                 this.loading = true
 
                 this.searchValue = value
-                return $fetchApi("/search", {
-                    params: {
-                        q: value,
-                        type: this.selectedFacet,
-                    },
+                const params = new URLSearchParams()
+                params.append("q", value)
+                if (this.selectedFacet) {
+                    params.append("type", this.selectedFacet)
+                }
+                return $fetchApi(`/search?${params.toString()}`, {
                     signal: this.abortController.signal,
                 })
                     .then((response) => {
                         this.initialLoad = true
-                        if (response?.data?.results?.length) {
-                            this.searchResults = response.data.results.map(
+                        if (response?.results?.length) {
+                            this.searchResults = response.results.map(
                                 (result) => {
                                     const searchTerm = value
                                         ?.trim()
@@ -360,16 +361,14 @@
                             this.resetData()
                         }
 
-                        if (response?.data.facets) {
-                            this.searchFacets = this.sortFacet(
-                                response.data.facets,
-                            )
+                        if (response?.facets) {
+                            this.searchFacets = this.sortFacet(response.facets)
                         }
 
                         posthog.capture("search", {
                             text: value,
                             type: this.selectedFacet,
-                            resultsCount: response?.data?.results?.length || 0,
+                            resultsCount: response?.results?.length || 0,
                         })
                     })
                     .catch((e) => {
