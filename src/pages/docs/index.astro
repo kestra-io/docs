@@ -14,7 +14,7 @@ const editUrl = doc.filePath
     : undefined
 ---
 
-<LayoutDocs activeStem="/docs" isHomePage>
+<LayoutDocs activeStem="/docs" isHomePage title="Kestra Docs: Your Infinitely-Scalable Orchestration Platform" description={doc.data?.description}>
     <h1 slot="title" class="py-0 title">{doc.data?.title}</h1>
 
     <NavToc
