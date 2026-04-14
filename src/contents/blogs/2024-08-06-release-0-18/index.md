@@ -273,7 +273,7 @@ Read more about Task Runners in our [Documentation](../../docs/task-runners/inde
 
 A new `ForEach` core task has been [introduced](https://github.com/kestra-io/kestra/issues/2137) to unify and simplify parallel and sequential task executions, replacing (_in a non-breaking way_) the `EachParallel` and `EachSequential` tasks. Those old tasks are deprecated but you can still use them — take as much time as you need to migrate.
 
-Check the [core plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) to learn more.
+Check the [core plugin documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) to learn more.
 
 ### New `SELECT` and `MULTISELECT` input types
 

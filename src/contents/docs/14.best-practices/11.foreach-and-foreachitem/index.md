@@ -280,4 +280,4 @@ Use `ForEach` for orchestration over a relatively small list of values.
 
 Use `ForEachItem` for data processing over file-backed items or batches, especially when you need scale, restartability, or subflow isolation.
 
-For API details, see the [ForEach plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach), the [ForEachItem plugin documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEachItem), and the [Outputs documentation](../../05.workflow-components/06.outputs/index.md).
+For API details, see the [ForEach plugin documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach), the [ForEachItem plugin documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem), and the [Outputs documentation](../../05.workflow-components/06.outputs/index.md).

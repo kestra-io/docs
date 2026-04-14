@@ -19,7 +19,7 @@ This release also makes Kestra easier to use for Command Line enthusiasts. We've
 
 The [Databricks](/plugins/plugin-databricks) and [AWS Athena](/plugins/plugin-aws#athena) integrations help orchestrate and manage **data lake(house)s**, and the script plugin now also supports **[Julia](/plugins/plugin-script-julia)**.
 
-This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle) and [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
+This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer) and [Microsoft SQL Server](/plugins/plugin-singer), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
 
 Lastly, we've introduced several performance, documentation, and usability enhancements.
 
@@ -425,8 +425,8 @@ tasks:
 ### New Singer Taps: Oracle and Microsoft SQL Server
 
 We've extended the existing Singer plugin to support the following new taps:
-- [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver)
-- [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle).
+- [Microsoft SQL Server](/plugins/plugin-singer)
+- [Oracle](/plugins/plugin-singer).
 
 
 ### MotherDuck integration

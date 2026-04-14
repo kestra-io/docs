@@ -81,7 +81,7 @@ The open-source version supports only Google Gemini models. Enterprise Edition u
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-In the above demo, we want to create a flow that uses a [Python script](/plugins/tasks/io.kestra.plugin.scripts.python.Script) to fetch New York City weather data. To get started, open the Copilot and write a prompt. For example:
+In the above demo, we want to create a flow that uses a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) to fetch New York City weather data. To get started, open the Copilot and write a prompt. For example:
 
 ```txt
 Create a flow with a Python script that fetches weather data for New York City
