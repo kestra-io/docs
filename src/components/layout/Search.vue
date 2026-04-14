@@ -278,7 +278,7 @@
                 loading: true,
                 showAiDialog: false,
                 initialLoad: false,
-                abortController: new AbortController(),
+                abortController: undefined,
             }
         },
         mounted() {
@@ -319,7 +319,10 @@
             onHiddenAi() {},
             search(value) {
                 // https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-                this.abortController.abort()
+                if (this.abortController) {
+                    this.abortController.abort("Search restarted")
+                }
+                this.abortController = new AbortController()
                 this.loading = true
 
                 this.searchValue = value
@@ -373,6 +376,10 @@
                         if (e.code !== "ERR_CANCELED") {
                             this.resetData()
                         }
+                    })
+                    .finally(() => {
+                        this.abortController = undefined
+                        this.loading = false
                     })
             },
             sortFacet(facets) {
