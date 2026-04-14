@@ -26,6 +26,8 @@ const __dirname = path.dirname(
 export default defineConfig({
     site: "https://kestra.io",
     adapter: cloudflare({
+        sessionKVBindingName: "docs-session",
+        prerenderEnvironment: "node",
         // only use cloudflare images in production
         imageService:
             process.env.NO_IMAGE_OPTIM === "true"
@@ -41,7 +43,6 @@ export default defineConfig({
                 },
             },
             appEntrypoint: "./src/vue-setup.ts",
-            devtools: { launchEditor: "idea" },
         }),
         expressiveCode(),
         mdx(),
@@ -118,21 +119,21 @@ export default defineConfig({
     image: {
         layout: "constrained",
     },
+    fonts: [
+        {
+            provider: fontProviders.google(),
+            name: "Mona Sans",
+            weights: [300, 400, 500, 600, 700],
+            cssVariable: "--font-family-mona-sans",
+        },
+        {
+            provider: fontProviders.google(),
+            name: "JetBrains Mono",
+            weights: [200, 300, 400, 500, 600, 700],
+            cssVariable: "--font-family-jetbrains-mono",
+        },
+    ],
     experimental: {
-        fonts: [
-            {
-                provider: fontProviders.google(),
-                name: "Mona Sans",
-                weights: [300, 400, 500, 600, 700],
-                cssVariable: "--font-family-mona-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "JetBrains Mono",
-                weights: [200, 300, 400, 500, 600, 700],
-                cssVariable: "--font-family-jetbrains-mono",
-            },
-        ],
         svgo: {
             plugins: [
                 {
@@ -182,6 +183,24 @@ export default defineConfig({
                 access: "secret",
                 optional: true,
             }),
+            DISABLE_USAL: envField.boolean({
+                context: "server",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
+            DISABLE_GITHUB: envField.boolean({
+                context: "server",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
+            NO_RANDOM_ORDER: envField.boolean({
+                context: "client",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
         },
     },
     // require for "/t" url
@@ -194,6 +213,56 @@ export default defineConfig({
             "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
     },
     vite: {
+        plugins: [
+            {
+                // debug has no `exports` field in package.json and its source
+                // files use CJS globals (`module`, `exports`) which are not
+                // available in an ESM context (Vite 8 / Cloudflare worker env).
+                // This plugin wraps every debug source file with a local CJS
+                // shim so the globals are defined, then re-exports as ESM.
+                name: "cjs-debug-shim",
+                apply: "serve",
+                enforce: "pre",
+                transform(code, id) {
+                    if (
+                        /node_modules\/debug\/src\//.test(id) ||
+                        /node_modules\/ms\//.test(id)
+                    ) {
+                        // Convert every require('x') call to a named ESM
+                        // import so that `require` itself is never accessed
+                        // at runtime (CJS globals are unavailable in the
+                        // Cloudflare worker environment / Vite 8 ESM context).
+                        const deps = new Map()
+                        let depIndex = 0
+                        const transformed = code.replace(
+                            /\brequire\((['"])([^'"]+)\1\)/g,
+                            (_, _q, dep) => {
+                                if (!deps.has(dep)) {
+                                    deps.set(dep, `__cjs_dep_${depIndex++}`)
+                                }
+                                return deps.get(dep)
+                            },
+                        )
+                        const imports = [...deps.entries()]
+                            .map(
+                                ([dep, name]) =>
+                                    `import ${name} from '${dep}';`,
+                            )
+                            .join("\n")
+                        return {
+                            code: [
+                                imports,
+                                "var module = { exports: {} };",
+                                "var exports = module.exports;",
+                                transformed,
+                                "export default module.exports;",
+                            ].join("\n"),
+                            map: null,
+                        }
+                    }
+                },
+            },
+        ],
         resolve: {
             alias: {
                 "#mdc-imports": path.resolve(
@@ -204,7 +273,6 @@ export default defineConfig({
                     __dirname,
                     "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
                 ),
-                "~": path.resolve("./src"),
             },
         },
         css: {

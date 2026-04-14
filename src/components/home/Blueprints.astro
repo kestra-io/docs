@@ -2,13 +2,15 @@
 import { $fetchApi } from "~/utils/fetch"
 import BlueprintsCarousel from "../common/BlueprintsCarousel.astro"
 import Link from "~/components/common/Link.astro"
+import { NO_RANDOM_ORDER } from "astro:env/client"
+import { randomSortFunction } from "~/utils/random"
 
 const { results } = await $fetchApi<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?page=1&size=50",
 )
 
 const blueprints = results
-    .sort(() => Math.random() - 0.5)
+    .sort(randomSortFunction)
     .slice(0, 20)
 ---
 
