@@ -192,6 +192,35 @@ npm run build -- --outDir ../src/main/resources/plugin-ui
 
 The build output goes directly into the plugin's resource directory, where it will be picked up by the JAR packaging step. See the [Gradle integration](#gradle-integration) section for how to automate this.
 
+### Testing in Kestra UI
+
+To see your component running inside a real Kestra instance:
+
+1. Build the UI module:
+
+```bash
+cd ui
+npm run build -- --outDir ../src/main/resources/plugin-ui
+```
+
+2. Package the plugin as a JAR:
+
+```bash
+./gradlew shadowJar
+```
+
+3. Copy the JAR from `build/libs/` into your local Kestra plugins folder. Make sure there is **only one version** of the plugin JAR in that folder — remove any older versions first to avoid conflicts.
+
+4. Restart both the Kestra backend and frontend.
+
+5. Hard-reload the Kestra UI in your browser to bypass the cache:
+   - **Chrome / Firefox**: `Ctrl + Shift + R` (Linux/Windows) or `Cmd + Shift + R` (macOS)
+   - **Alternative**: `Ctrl + F5`
+
+:::alert{type="info"}
+The browser caches Module Federation bundles aggressively. A hard reload (`Ctrl + Shift + R`) is required after each UI build to ensure the browser fetches the latest version of your component.
+:::
+
 ## Gradle integration
 
 Add the [Node Gradle plugin](https://github.com/node-gradle/gradle-node-plugin) to your `build.gradle` and wire the UI build into the plugin packaging lifecycle:
