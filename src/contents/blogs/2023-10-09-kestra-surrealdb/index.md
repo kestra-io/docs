@@ -5,6 +5,7 @@ date: 2023-10-09T08:00:00
 category: Solutions
 author:
   name: Dario Radecic
+  linkedin: ""
   image: "dradecic"
 image: ./main.jpg
 ---

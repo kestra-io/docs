@@ -5,6 +5,7 @@ date: 2024-01-08T08:00:00
 category: Solutions
 author:
   name: Kevin Fleming
+  linkedin: ""
   image: "kfleming"
 image: ./main.jpg
 ---

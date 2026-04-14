@@ -5,6 +5,7 @@ date: 2024-04-04T10:00:00
 category: Solutions
 author:
   name: Shruti Mantri
+  linkedin: https://www.linkedin.com/in/shruti-mantri-88527a67/
   image: "smantri"
 image: ./main.jpg
 ---

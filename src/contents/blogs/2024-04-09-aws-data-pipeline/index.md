@@ -5,6 +5,7 @@ date: 2024-04-09T10:00:00
 category: Solutions
 author:
   name: Shruti Mantri
+  linkedin: https://www.linkedin.com/in/shruti-mantri-88527a67/
   image: "smantri"
 image: ./main.jpg
 ---
@@ -59,6 +60,7 @@ tasks:
     item:
       id: "{{ read(outputs.json.uri) | jq('.product_id') | first | number }}"
       name: "{{ read(outputs.json.uri) | jq('.product_name') | first }}"
+      linkedin: ""
       category: "{{ read(outputs.json.uri) | jq('.product_category') | first }}"
       brand: "{{ read(outputs.json.uri) | jq('.brand') | first }}"
 ```

@@ -49,7 +49,7 @@ export const collections = {
                         name: z.string(),
                         image: z.string(),
                         twitter: z.string().optional(),
-                        linkedin: z.string().optional(),
+                        linkedin: z.string(),
                         role: z.string().nullable().optional(),
                     })
                     .optional(),
@@ -59,7 +59,7 @@ export const collections = {
                             name: z.string(),
                             image: z.string(),
                             twitter: z.string().optional(),
-                            linkedin: z.string().optional(),
+                            linkedin: z.string(),
                             role: z.string().nullable().optional(),
                         }),
                     )

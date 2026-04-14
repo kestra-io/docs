@@ -5,6 +5,7 @@ date: 2026-01-26T13:00:00
 category: Solutions
 author: 
   name: "Parham Parvizi"
+  linkedin: https://www.linkedin.com/in/xdatanomad/
   image: pparvizi
   role: Solutions Engineer
 image: ./main.png

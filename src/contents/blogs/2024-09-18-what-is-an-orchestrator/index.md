@@ -5,6 +5,7 @@ date: 2024-09-17T15:00:00
 category: Solutions
 author:
   name: Federico Trotta
+  linkedin: https://www.linkedin.com/in/federico-trotta/
   image: "ftrotta"
 image: ./main.jpg
 ---
@@ -141,6 +142,7 @@ The `analyze_csv.yml` could be something like that:
 
 ```yaml
 name: Analyze CSV with Python
+linkedin: ""
 
 on:
   workflow_dispatch:

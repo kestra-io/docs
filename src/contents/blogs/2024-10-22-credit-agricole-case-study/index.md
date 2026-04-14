@@ -5,6 +5,7 @@ date:  2024-10-22T17:00:00
 category: Solutions
 author:
   name: Julien Legrand
+  linkedin: ""
   image: jlegrand
   role: Data & AI Product Owner
 image: ./main.jpg

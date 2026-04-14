@@ -5,6 +5,7 @@ date: 2026-04-01T10:00:00
 category: Engineering
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: ldehon
   role: CTO & Co-founder
 image: ./main.png

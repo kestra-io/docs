@@ -5,6 +5,7 @@ date: 2026-04-06T09:00:00
 category: Solutions
 author:
   name: Elliot Gunn
+  linkedin: https://www.linkedin.com/in/elliotgunn/
   image: egunn
   role: Product Marketing Manager
 image: ./main.png
@@ -14,26 +15,31 @@ schema:
   mainEntity:
     - "@type": "Question"
       name: "When does Airflow 2 reach end of life?"
+      linkedin: ""
       acceptedAnswer:
         "@type": "Answer"
         text: "Apache Airflow 2 reaches end of life on April 22, 2026. After this date, no security patches, bug fixes, or provider updates will be released for the 2.x line."
     - "@type": "Question"
       name: "Is it safe to keep running Airflow 2 after EOL?"
+      linkedin: ""
       acceptedAnswer:
         "@type": "Answer"
         text: "Running unsupported software in production introduces security and compliance risks. Any CVEs discovered in Airflow 2 or its dependencies after EOL won't receive patches. Organizations with compliance requirements (SOC 2, HIPAA, PCI-DSS) will likely need to migrate to a supported version or platform."
     - "@type": "Question"
       name: "What are the main breaking changes in Airflow 3?"
+      linkedin: ""
       acceptedAnswer:
         "@type": "Answer"
         text: "The biggest breaking changes include: SubDAGs removed entirely (must convert to Task Groups), deprecated context variables removed (execution_date, prev_ds, next_ds), provider packages moved from apache-airflow to apache-airflow-providers-standard, and the webserver split into an API server and DAG processor."
     - "@type": "Question"
       name: "Should I upgrade to Airflow 3 or switch to a different platform?"
+      linkedin: ""
       acceptedAnswer:
         "@type": "Answer"
         text: "If your team is Python-native and invested in the Airflow ecosystem, upgrading to Airflow 3 is probably the right call. If you've been constrained by Airflow's Python-only model or need to orchestrate beyond data pipelines, the EOL window is a natural point to evaluate declarative alternatives like Kestra."
     - "@type": "Question"
       name: "How long does a typical Airflow migration take?"
+      linkedin: ""
       acceptedAnswer:
         "@type": "Answer"
         text: "Both upgrading to Airflow 3 and migrating to an alternative typically take 4 to 8 weeks for a mid-size deployment (50-200 DAGs), depending on the number of custom operators, undocumented workarounds, and integration complexity."

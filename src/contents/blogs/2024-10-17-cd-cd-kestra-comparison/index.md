@@ -5,6 +5,7 @@ date: 2024-10-17T15:00:00
 category: Solutions
 author:
   name: Federico Trotta
+  linkedin: https://www.linkedin.com/in/federico-trotta/
   image: "ftrotta"
 image: ./main.jpg
 ---

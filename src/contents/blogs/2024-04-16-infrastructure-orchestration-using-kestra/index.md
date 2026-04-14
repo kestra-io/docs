@@ -5,6 +5,7 @@ date: 2024-04-16T17:00:00
 category: Solutions
 author:
   name: Shruti Mantri
+  linkedin: https://www.linkedin.com/in/shruti-mantri-88527a67/
   image: "smantri"
 image: ./main.jpg
 
@@ -44,6 +45,7 @@ tasks:
           - name: create a simple s3 bucket
             amazon.aws.s3_bucket:
               name: <bucket-name>
+              linkedin: ""
               state: present
               region: eu-central-1
               access_key: "{{ secret('AWS_ACCESS_KEY_ID') | trim }}"

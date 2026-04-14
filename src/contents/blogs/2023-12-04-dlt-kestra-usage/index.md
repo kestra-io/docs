@@ -5,6 +5,7 @@ date: 2023-12-04T13:00:00
 category: Solutions
 author:
   name: Anuun Chinbat
+  linkedin: ""
   image: "achinbat"
 image: ./main.jpg
 ---
