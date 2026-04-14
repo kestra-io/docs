@@ -176,11 +176,11 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Comment on PR
-        uses: meysam81/comment-pr@v1
+        uses: kestra-io/actions/actions/comment-update@main
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           title: "## 🔦 Lighthouse Benchmark"
-          content: ${{ steps.report.outputs.content }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          template: ${{ steps.report.outputs.content }}
 
       - name: Upload results as artifact
         uses: actions/upload-artifact@v7

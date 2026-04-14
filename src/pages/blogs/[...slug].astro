@@ -90,6 +90,12 @@ const jsonLinkedData = {
                 type="application/ld+json"
                 set:html={JSON.stringify(jsonLinkedData)}
             />
+            {page.schema && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(page.schema)}
+                />
+            )}
         </Fragment>
         <div class="hero-blog">
             <Mesh client:visible>
