@@ -49,10 +49,29 @@ Before each execution, Kestra prepares a working directory on the worker host. T
 
 **Input files** declared with `inputFiles` and **namespace files** are copied into the working directory before the process starts. **Output files** declared with `outputFiles` must be written to the working directory to be captured by Kestra.
 
-The following example passes an input file, processes it, and captures the result:
+Because the Process runner sets the process working directory to Kestra's working directory, **relative paths work without needing the `{{workingDir}}` prefix** in commands.
+
+The following self-contained example writes a file and captures it as an output:
 
 ```yaml
-id: process_with_files
+id: process_output_file
+namespace: company.team
+
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    outputFiles:
+      - out.txt
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - echo "Hello from Process runner" > out.txt
+```
+
+You can also pass an input file into the task and capture a transformed result. The input file is placed in the working directory under the key name you specify in `inputFiles`:
+
+```yaml
+id: process_input_output_files
 namespace: company.team
 
 inputs:
@@ -69,7 +88,7 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     commands:
-      - cp {{workingDir}}/data.txt {{workingDir}}/out.txt
+      - cp data.txt out.txt
 ```
 
 ## Installing dependencies with beforeCommands
