@@ -1,5 +1,5 @@
 import { handle } from '@astrojs/cloudflare/handler';
-import contentSecurityPolicyConfig from "../content-security-policy.config"
+import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
