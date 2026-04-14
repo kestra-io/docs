@@ -17,7 +17,7 @@ type: io.kestra.plugin.core.trigger.Flow
 
 Kestra can automatically start a flow as soon as another flow ends. This allows you to create dependencies between flows, even when those flows are owned by different teams.
 
-Check the [Flow trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow) documentation for the list of all properties.
+Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
 ## Preconditions
 

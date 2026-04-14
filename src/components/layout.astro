@@ -33,6 +33,8 @@ interface Props {
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
+    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
+    canonical?: string
 }
 
 const props = Astro.props
@@ -69,10 +71,13 @@ const query = new URLSearchParams(
 const currentUrlNoQS = new URL(
     currentUrl.toString().replace(currentUrl.search, ""),
 )
-const canonicalUrl = new URL(
-    currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
-    Astro.site,
-)
+const canonicalUrl = props.canonical
+    ? new URL(props.canonical, Astro.site)
+    : new URL(
+          currentUrlNoQS.toString() +
+              (query.size > 0 ? "?" + query.toString() : ""),
+          Astro.site,
+      )
 
 const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
@@ -168,7 +173,7 @@ const organizationSchema = {
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
-        <BreadcrumbList url={currentUrl} pageTitle={props.title} />
+        <BreadcrumbList url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl} pageTitle={props.title} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />
