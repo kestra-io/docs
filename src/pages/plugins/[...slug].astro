@@ -88,6 +88,7 @@ const [page, { blueprintCounts, relatedBlogs }] = await Promise.all([
 ])
 
 const {
+    effectiveSubGroup,
     pluginsWithoutDeprecated,
     rootPlugin,
     rootPluginTitle,
@@ -126,7 +127,7 @@ if (
     page === null ||
     !pluginsWithoutDeprecated.some(
         (p: any) =>
-            subGroup === undefined || slugify(subGroupName(p)) === subGroup,
+            effectiveSubGroup === undefined || slugify(subGroupName(p)) === effectiveSubGroup,
     )
 ) {
     console.warn("Redirecting due to no content")
@@ -178,7 +179,7 @@ if (
                         {pluginsWithoutDeprecated}
                         {subGroupsIcons}
                         {pluginName}
-                        {subGroup}
+                        subGroup={effectiveSubGroup}
                         {pathname}
                         {subgroupBlueprintCounts}
                         {metadataMap}
