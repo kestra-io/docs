@@ -1,6 +1,5 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
-import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
 import YAML from "yaml"
 
 const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
@@ -179,7 +178,6 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
 export const onRequest = sequence(
     logger,
-    cloudflareJwt,
     incomingRedirect,
     notFoundRedirect,
 )

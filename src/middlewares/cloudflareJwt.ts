@@ -1,7 +1,7 @@
 import { jwtVerify, createRemoteJWKSet } from "jose"
 import { CLOUDFLARE_TEAM_DOMAIN } from "astro:env/server"
 import { CLOUDFLARE_POLICY_AUD } from "astro:env/server"
-import { defineMiddleware } from "astro:middleware"
+import { defineCFMiddleware } from "../worker.types"
 
 const sendError = (body: string): Response => {
     return new Response(body, {
@@ -10,8 +10,7 @@ const sendError = (body: string): Response => {
     })
 }
 
-const fetch = async (
-    request: Request,
+const fetchCFJwt = async (
     jwtAssertionToken: string | null,
 ): Promise<Response | null> => {
     // Verify the POLICY_AUD environment variable is set
@@ -72,15 +71,14 @@ const fetch = async (
     }
 }
 
-export default defineMiddleware(async (context, next) => {
+export const cloudflareJwtMiddleware = defineCFMiddleware(async (url, next, request) => {
     // only apply to preview
-    if (!context.url.host.endsWith("-docs.kestra-io.workers.dev")) {
+    if (!url.host.endsWith("-docs.kestra-io.workers.dev")) {
         return next()
     }
 
-    const response = await fetch(
-        context.request,
-        context.request.headers.get("cf-access-jwt-assertion"),
+    const response = await fetchCFJwt(
+        request.headers.get("cf-access-jwt-assertion"),
     )
 
     if (response) {

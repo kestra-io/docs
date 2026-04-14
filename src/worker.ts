@@ -1,10 +1,6 @@
 import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../content-security-policy.config"
-
-type CFMiddleware = (url: URL, next: () => Promise<Response>) => Promise<Response>
-function defineCFMiddleware(fn: CFMiddleware): CFMiddleware {
-    return fn
-}
+import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -102,7 +98,7 @@ export default {
         }
 
         for (const middleware of middlewares) {
-            response = await middleware(new URL(request.url), next)
+            response = await middleware(new URL(request.url), next, request)
         }
         return await next()
     },
