@@ -86,9 +86,9 @@ const METRIC_DEFS = [
 ]
 
 // Score delta significance threshold (points).
-const SCORE_THRESHOLD = 3
+const SCORE_THRESHOLD = 10
 // Metric delta significance threshold (fraction of baseline value).
-const METRIC_THRESHOLD = 0.1
+const METRIC_THRESHOLD = 0.3
 
 // ---------------------------------------------------------------------------
 // Types (JSDoc)
@@ -242,8 +242,8 @@ function extractResults(lhr) {
 function scoreDelta(current, baseline) {
     if (baseline == null) return ""
     const delta = Math.round(current - baseline)
-    if (delta >= SCORE_THRESHOLD) return ` ▲ +${delta}`
-    if (delta <= -SCORE_THRESHOLD) return ` ▼ ${delta}`
+    if (delta >= SCORE_THRESHOLD) return ` 🟢 +${delta}`
+    if (delta <= -SCORE_THRESHOLD) return ` 🔻 ${delta}`
     return ""
 }
 
@@ -257,8 +257,8 @@ function scoreDelta(current, baseline) {
 function metricDelta(current, baseline) {
     if (baseline == null || baseline === 0) return ""
     const pctChange = (current - baseline) / baseline
-    if (pctChange <= -METRIC_THRESHOLD) return " ▲" // lower = better
-    if (pctChange >= METRIC_THRESHOLD) return " ▼" // higher = worse
+    if (pctChange <= -METRIC_THRESHOLD) return " 🟢" // lower = better
+    if (pctChange >= METRIC_THRESHOLD) return " 🔻" // higher = worse
     return ""
 }
 
@@ -353,7 +353,7 @@ function buildMarkdown(output, baseline) {
         "",
         "<details><summary>Legend</summary>",
         "",
-        "▲ improved &nbsp;·&nbsp; ▼ regressed &nbsp;·&nbsp; (blank) no significant change  ",
+        "🟢 improved &nbsp;·&nbsp; 🔻 regressed &nbsp;·&nbsp; (blank) no significant change  ",
         `Score threshold: ±${SCORE_THRESHOLD} pts &nbsp;·&nbsp; Metric threshold: ±${METRIC_THRESHOLD * 100}% of baseline`,
         "",
         "</details>",
