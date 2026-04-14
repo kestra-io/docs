@@ -1,7 +1,7 @@
 import { jwtVerify, createRemoteJWKSet } from "jose"
 import { CLOUDFLARE_TEAM_DOMAIN } from "astro:env/server"
 import { CLOUDFLARE_POLICY_AUD } from "astro:env/server"
-import { defineCFMiddleware } from "../worker.types"
+import { defineCFMiddleware } from "./worker.types"
 
 const sendError = (body: string): Response => {
     return new Response(body, {
