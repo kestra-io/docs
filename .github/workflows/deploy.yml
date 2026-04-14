@@ -79,6 +79,11 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
 
+      - name: Notify IndexNow (Bing/Yandex)
+        if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref == 'refs/heads/main' }}
+        run: node scripts/indexnow.mjs
+        continue-on-error: true
+
       - name: Deploy Preview Worker
         id: preview-deploy
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' }}
