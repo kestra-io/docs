@@ -90,7 +90,7 @@ You can even set labels for multiple executions at once from the UI. This featur
 
 ## Set labels based on flow inputs and task outputs
 
-You have the ability to set execution labels from a dedicated [Labels task](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Labels). This task provides a dynamic way to label your flows, helping with observability, debugging, and monitoring of failures.
+You have the ability to set execution labels from a dedicated [Labels task](/plugins/core/execution/io.kestra.plugin.core.execution.labels). This task provides a dynamic way to label your flows, helping with observability, debugging, and monitoring of failures.
 
 This task lets you set custom execution labels based on flow inputs, task outputs, or other dynamic workflow data. There are two ways to set labels in this task:
 

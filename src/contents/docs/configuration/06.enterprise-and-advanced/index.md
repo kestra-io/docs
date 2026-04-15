@@ -278,11 +278,14 @@ This page also includes:
 
 ### AI Copilot
 
+Set `kestra.ai.enabled` to `false` to fully disable the AI Copilot, including the built-in fallback to `api.kestra.io`. Defaults to `true`.
+
 Enterprise Edition supports multiple providers in one configuration, which is useful when teams need both a default internal model and a fallback external model:
 
 ```yaml
 kestra:
   ai:
+    enabled: true # set to false to disable AI Copilot entirely
     providers:
       - id: gemini
         display-name: Gemini - Private
