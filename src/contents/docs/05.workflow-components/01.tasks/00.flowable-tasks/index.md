@@ -197,7 +197,7 @@ tasks:
             - sleep {{ parent.taskrun.value }}
 ```
 
-For more information on handling outputs generated from `ForEach`, check out this [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md).
+For more information on handling outputs generated from `ForEach`, check out the [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md) and the [Best Practices for ForEach and ForEachItem](../../../14.best-practices/11.foreach-and-foreachitem/index.md) guide, including how to access [sibling task outputs correctly](../../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach) inside the loop.
 
 For processing items, or forwarding processing to a subflow, [ForEachItem](#foreachitem) is better suited.
 

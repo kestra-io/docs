@@ -363,6 +363,8 @@ You can also use the `currentEachOutput` function to access the current tree tas
 Accessing sibling task outputs is impossible on [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) as it runs tasks in parallel.
 :::
 
+For more examples and guidance on accessing sibling outputs inside `ForEach`, including how to read them both inside and outside the loop, see [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach).
+
 ## Outputs preview
 
 Kestra provides a preview option for output files stored in internal storage. The following flow demonstrates this feature:
