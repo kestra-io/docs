@@ -11,7 +11,7 @@ const menuSizes: Record<string, MenuSize> = {
     },
     resources: {
         width: "285px",
-        height: "228px"
+        height: "272px"
     },
     company: {
         width: "305px",

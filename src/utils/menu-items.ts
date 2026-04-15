@@ -21,6 +21,7 @@ import KestraIcon from "~/components/icons/KestraIcon.vue"
 import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
 import EmailOutline from "vue-material-design-icons/EmailOutline.vue"
 import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
+import School from "vue-material-design-icons/School.vue"
 
 interface MenuItem {
     icon: Component
@@ -141,6 +142,11 @@ export const menuItems: MenuItems = {
                 icon: FormatQuoteCloseOutline,
                 title: "Customer Stories",
                 link: "/use-cases/stories"
+            },
+            {
+                icon: School,
+                title: "Courses",
+                link: "https://academy.kestra.io"
             },
         ],
     },
