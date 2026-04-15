@@ -50,6 +50,10 @@ const { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
         isEePlugin,
     )
 
+if (subGroup && allPlugins.filter((p) => p.name === pluginName && p.subGroup).length === 1) {
+    return Astro.redirect(`/plugins/${[pluginName, ...splitRouteSlug.slice(2)].join("/")}`, 301)
+}
+
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 const pageList = recursivePages(navigation[0])
