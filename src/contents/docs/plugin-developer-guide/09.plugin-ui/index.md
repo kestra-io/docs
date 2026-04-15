@@ -5,7 +5,7 @@ icon: /src/contents/docs/icons/dev.svg
 description: Learn how to build custom Vue.js UI components for your Kestra plugin, from scaffolding to Gradle integration, using Module Federation and the artifact-sdk.
 ---
 
-Kestra's plugin system is not limited to backend logic. Plugins can also ship custom frontend components that are loaded directly into the Kestra UI at runtime — without any changes to Kestra core.
+Plugins can ship custom Vue.js frontend components that load directly into the Kestra UI at runtime, without any changes to Kestra core.
 
 This lets you build domain-specific experiences: visualize a query plan in the topology view, render log output in a structured panel, or display task metadata in a rich card. The core UI stays lean; each plugin brings exactly the UI it needs.
 
@@ -33,7 +33,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. The SDK currently defines two slots:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. The SDK defines two slots:
 
 ### `topology-details`
 
@@ -114,7 +114,7 @@ ui/
     └── QueryRunQueryTopologyDetails.stories.ts
 ```
 
-The component file is the only thing you need to edit. The rest of the scaffolding is boilerplate that wires up the local dev server, Storybook, and the production build.
+The component file is the only file you need to edit. The rest of the scaffolding is boilerplate that wires up the local dev server, Storybook, and the production build.
 
 ## Configuring the exposed components
 
@@ -190,7 +190,7 @@ A starter story is generated alongside the component. Add story variants for pre
 npm run build -- --outDir ../src/main/resources/plugin-ui
 ```
 
-The build output goes directly into the plugin's resource directory, where it will be picked up by the JAR packaging step. See the [Gradle integration](#gradle-integration) section for how to automate this.
+The build output goes directly into the plugin's resource directory, where it will be picked up by the JAR packaging step. See [Gradle integration](#gradle-integration) to automate this.
 
 ### Testing in Kestra UI
 
