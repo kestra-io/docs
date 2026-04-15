@@ -6,14 +6,7 @@ import heroBg from "./assets/hero-bg.jpg"
 ---
 
 <section class="hero">
-    <!-- Grid pattern behind everything -->
     <div class="hero-grid" aria-hidden="true"></div>
-
-    <!--
-        50/50 split: no Bootstrap container — direct flex on .hero-inner.
-        .hero-left  = transparent (shows grid), contains text.
-        .hero-right = solid dark gradient panel.
-    -->
     <div class="hero-split">
         <div class="hero-left">
             <div class="hero-left-content">
@@ -51,13 +44,9 @@ import heroBg from "./assets/hero-bg.jpg"
             </div>
         </div>
 
-        <!-- RIGHT: dark panel with book (absolute) + form (in-flow) -->
         <div class="hero-right" style={`background-image: url(${heroBg.src})`}>
-            <!-- Purple top-left + cyan bottom-right glow -->
             <div class="hero-right-flare" aria-hidden="true"></div>
-
             <div class="hero-right-content">
-                <!-- Book floats at the left edge, straddling the boundary -->
                 <div class="book-wrap" aria-hidden="true" data-usal="zoomin">
                     <Image
                         src={bookMockup}
@@ -66,8 +55,6 @@ import heroBg from "./assets/hero-bg.jpg"
                         class="book-img"
                     />
                 </div>
-
-                <!-- Form card — only in-flow child, fills the right portion -->
                 <div class="form-wrapper" data-usal="fade-l">
                     <DownloadForm client:load />
                 </div>
@@ -77,17 +64,14 @@ import heroBg from "./assets/hero-bg.jpg"
 </section>
 
 <style lang="scss">
-    /* ─── Outer shell ─────────────────────────────────────────────────────── */
     .hero {
         position: relative;
         overflow: hidden;
-        /* Override the global .hero { padding-top/bottom } rule */
         padding: 0;
         color: var(--ks-content-primary);
         background-color: var(--ks-background-body);
     }
 
-    /* ─── 72 px grid — full section, both halves ─────────────────────────── */
     .hero-grid {
         --grid-cell: 72px;
         --grid-line: var(--ks-border-primary);
@@ -108,7 +92,6 @@ import heroBg from "./assets/hero-bg.jpg"
         background-repeat: repeat;
     }
 
-    /* ─── 50 / 50 split container ────────────────────────────────────────── */
     .hero-split {
         position: relative;
         z-index: 1;
@@ -121,18 +104,15 @@ import heroBg from "./assets/hero-bg.jpg"
         }
     }
 
-    /* ─── LEFT half: transparent, container-like padding ────────────────── */
     .hero-left {
         display: flex;
         align-items: center;
         padding: 4rem 1.5rem 3rem;
 
         @include media-breakpoint-up(lg) {
-            /* Exact half — flex-basis not flex-grow so background stays correct */
             width: 50%;
             flex: 0 0 50%;
             padding: 5rem 4rem 6rem;
-            /* Align text toward the center line */
             justify-content: flex-end;
         }
     }
@@ -208,7 +188,6 @@ import heroBg from "./assets/hero-bg.jpg"
         }
     }
 
-    /* ─── RIGHT half: JPG background panel ──────────────────────────────── */
     .hero-right {
         position: relative;
         background-color: #0d0520;
@@ -219,17 +198,14 @@ import heroBg from "./assets/hero-bg.jpg"
         @include media-breakpoint-up(lg) {
             width: 50%;
             flex: 0 0 50%;
-            /* Allow the book to overhang leftward */
             overflow: visible;
         }
     }
 
-    /* No more flare overlay — background comes from the JPG */
     .hero-right-flare {
         display: none;
     }
 
-    /* ─── Content inside right panel ─────────────────────────────────────── */
     .hero-right-content {
         position: relative;
         z-index: 1;
@@ -240,9 +216,6 @@ import heroBg from "./assets/hero-bg.jpg"
         padding: 2.5rem 1.5rem;
 
         @include media-breakpoint-up(lg) {
-            /* Full-height; left-padding reserves space for the book overlay.
-               align-items: center keeps form card horizontally centred in
-               the remaining space (not stretched to full content-area width). */
             min-height: 100%;
             align-items: center;
             justify-content: center;
@@ -251,25 +224,23 @@ import heroBg from "./assets/hero-bg.jpg"
         }
     }
 
-    /* Book — hidden on mobile, absolute at the left edge on desktop */
     .book-wrap {
         display: none;
 
         @include media-breakpoint-up(lg) {
             display: block;
             position: absolute;
-            /* Straddle the boundary: book bleeds ~120px into the left panel */
-            left: -8rem;
+            left: -10rem;
             top: 50%;
             transform: translateY(-50%);
-            max-width: 320px;
+            max-width: 400px;
             margin: 0;
             z-index: 2;
         }
 
         @include media-breakpoint-up(xl) {
-            left: -9rem;
-            max-width: 360px;
+            left: -11rem;
+            max-width: 440px;
         }
 
         .book-img {
@@ -282,7 +253,6 @@ import heroBg from "./assets/hero-bg.jpg"
         }
     }
 
-    /* Form card */
     .form-wrapper {
         width: 100%;
         max-width: 100%;

@@ -14,9 +14,7 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="firstname">
-                        First name <span class="required">*</span>
-                    </label>
+                    <label for="firstname">First name</label>
                     <input
                         name="firstname"
                         type="text"
@@ -27,9 +25,7 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="lastname">
-                        Last name <span class="required">*</span>
-                    </label>
+                    <label for="lastname">Last name</label>
                     <input
                         name="lastname"
                         type="text"
@@ -40,9 +36,7 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="email">
-                        Company email <span class="required">*</span>
-                    </label>
+                    <label for="email">Company email</label>
                     <input
                         name="email"
                         type="email"
@@ -53,9 +47,7 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="jobtitle">
-                        Job title <span class="required">*</span>
-                    </label>
+                    <label for="jobtitle">Job title</label>
                     <input
                         name="jobtitle"
                         type="text"
@@ -241,9 +233,6 @@
             margin-bottom: 0.375rem;
             color: var(--ks-content-primary);
 
-            .required {
-                color: var(--ks-content-alert-danger);
-            }
         }
 
         .alert-danger {
