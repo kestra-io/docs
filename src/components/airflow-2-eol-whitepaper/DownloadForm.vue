@@ -1,7 +1,7 @@
 <template>
     <div class="download-form-container">
         <div v-if="!submitted" class="download-form">
-            <h3 class="form-title">Download the free guide</h3>
+            <h3 class="form-title">Download the Free Guide</h3>
 
             <form
                 class="row"
