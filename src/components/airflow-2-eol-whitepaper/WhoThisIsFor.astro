@@ -1,6 +1,4 @@
 ---
-import Section from "~/components/layout/Section.astro"
-
 const personas = [
     {
         tag: "Data leaders",
@@ -23,35 +21,51 @@ const personas = [
 ]
 ---
 
-<Section class="who-this-is-for" title="Who this is for">
-    <div class="cards">
-        {
-            personas.map((p) => (
-                <div class="persona-card" data-usal="zoomin">
-                    <div class={`persona-tag persona-tag--${p.tagColor}`}>
-                        {p.tag}
+<section class="who-this-is-for">
+    <div class="container">
+        <h2 data-usal="fade-r">Who this is for</h2>
+        <div class="cards">
+            {
+                personas.map((p) => (
+                    <div class="persona-card" data-usal="zoomin">
+                        <div class={`persona-tag persona-tag--${p.tagColor}`}>
+                            {p.tag}
+                        </div>
+                        <p class="persona-description">{p.description}</p>
                     </div>
-                    <p class="persona-description">{p.description}</p>
-                </div>
-            ))
-        }
+                ))
+            }
+        </div>
     </div>
-</Section>
+</section>
 
 <style lang="scss">
     .who-this-is-for {
-        background-color: var(--ks-background-body);
-        border-bottom: none !important;
+        background: var(--ks-background-body);
+        padding: 4rem 0.75rem;
 
-        :global(h2) {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            color: var(--ks-content-primary);
+        @include media-breakpoint-up(lg) {
+            padding: 5rem 0.75rem;
+        }
+    }
 
-            @include media-breakpoint-up(md) {
-                font-size: 2.25rem;
-            }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-align: center;
+        color: var(--ks-content-primary);
+        margin: 0;
+
+        @include media-breakpoint-up(md) {
+            font-size: 2.25rem;
         }
     }
 
@@ -59,8 +73,7 @@ const personas = [
         display: grid;
         grid-template-columns: 1fr;
         gap: 1.5rem;
-        max-width: 1200px;
-        margin: 0 auto;
+        width: 100%;
 
         @include media-breakpoint-up(md) {
             grid-template-columns: repeat(3, 1fr);
