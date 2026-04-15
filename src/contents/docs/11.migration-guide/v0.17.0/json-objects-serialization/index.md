@@ -14,8 +14,8 @@ Kestra 0.17 migrates away from the previously used `NON_DEFAULT` JSON serializat
 
 There are three main cases where Pebble expressions might be affected:
 
-1) [Operators, Tags, and Tests](../../../expressions/05.operators-tags-tests/index.md)
-2) [Pebble Syntax](../../../expressions/02.pebble-syntax/index.md)
+1) [Operators, Tags, and Tests](../../../expressions/index.mdx#operators-tags-and-tests)
+2) [Pebble Syntax](../../../expressions/index.mdx#pebble-syntax)
 3) [Conditions in Pebble](../../../06.concepts/06.pebble/index.md#using-conditions-in-pebble)
 
 ## 0.16

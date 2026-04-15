@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -8,7 +8,7 @@ import SetupSpeed from "~/components/versus/SetupSpeed.astro"
 import EaseOfUse from "~/components/versus/EaseOfUse.astro"
 import VisualPreview from "~/components/versus/VisualPreview.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
-import SocialProof from "~/components/common/SocialProof.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -16,21 +16,19 @@ import Faq from "~/components/common/Faq.vue"
 
 import competitorLogo from "~/components/versus/assets/puppet.svg?raw"
 import competitorMonogram from "~/components/versus/assets/puppet-monograme.svg?raw"
-import industryImage from "~/components/versus/assets/industry.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/puppet-img.svg"
 import heroUI from "~/components/versus/assets/hero_ui_puppet.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "puppet")
-if (!entry) throw new Error("Could not find vsPages/puppet collection entry")
+const entry = await getEntry("vs", "puppet")
+if (!entry) throw new Error("Could not find vs/puppet collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -40,14 +38,14 @@ const {
     easeOfUse,
     visualPreview,
     featureGrid,
-    socialProof,
+    testimonials,
     platformStrengths,
     decisionGuide,
     commonQuestions,
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
@@ -55,7 +53,6 @@ const {
             monogram: competitorMonogram,
         }}
         image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}
@@ -103,9 +100,8 @@ const {
             competitorLogo: competitorLogo,
         }}
     />
-    <SocialProof
-        {...socialProof}
-        image={{ ...socialProof.image, src: industryImage }}
+    <VsTestimonial
+        quotes={testimonials}
     />
     <PlatformStrengths
         {...platformStrengths}
@@ -126,6 +122,7 @@ const {
         <Fragment slot="title">
             From Configuration Management to Workflow Orchestration
         </Fragment>
-        See how Kestra can orchestrate your infrastructure automation—including Puppet—in declarative YAML workflows.
+        See how Kestra can orchestrate your infrastructure automation—including Puppet—in
+        declarative YAML workflows.
     </SeeHow>
-</Layout>
+</VsLayout>

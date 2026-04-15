@@ -5,6 +5,7 @@ date: 2022-03-14T10:00:00
 category: News & Product Updates
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg
@@ -119,7 +120,7 @@ We have made an evolutionary improvement on our [Singer plugins](/plugins/plugin
 
 Previously, plugins had a single target task that incorporated a tap to load from one source to a single destination. Now we have 2 different tasks that allow you to download one time from a tap and send the same result to multiple destinations.
 
-Here is an example of loading [GitHub](/plugins/plugin-singer/taps/io.kestra.plugin.singer.taps.github) from a repository to a [BigQuery Dataset](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.adswervebigquery):
+Here is an example of loading [GitHub](/plugins/plugin-singer) from a repository to a [BigQuery Dataset](/plugins/plugin-singer):
 
 ```yaml
 tasks:
@@ -172,7 +173,7 @@ You can still use Kestra's internal storage with any singer taps and use the dat
 
 ```
 
-We also added another singer destination [Oracle](/plugins/plugin-singer/taps/io.kestra.plugin.singer.taps.pipelinewiseoracle).
+We also added another singer destination [Oracle](/plugins/plugin-singer).
 
 
 ## GCP

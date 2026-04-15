@@ -5,6 +5,7 @@ date: 2025-09-04T13:00:00
 category: News & Product Updates
 author:
  name: Ludovic Dehon
+ linkedin: https://www.linkedin.com/in/ludovic-dehon/
  image: ldehon
  role: CTO & Co-Founder
 image: ./main.jpg

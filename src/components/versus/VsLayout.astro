@@ -1,0 +1,25 @@
+---
+import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+
+interface FaqItem {
+    question: string
+    answer: string
+}
+
+interface Props {
+    title?: string
+    description?: string
+    image?: string
+    headerTheme?: "lightText" | "darkText" | "darkHeader"
+    headerBg?: string
+    commonQuestions?: FaqItem[]
+}
+
+const { commonQuestions = [], ...layoutProps } = Astro.props
+---
+
+<Layout {...layoutProps}>
+    <SchemaFAQ items={commonQuestions} slot="head" />
+    <slot />
+</Layout>

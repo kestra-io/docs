@@ -5,6 +5,7 @@ date: 2024-03-08T12:00:00
 category: Engineering
 author:
   name: Loïc Mathieu
+  linkedin: https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/
   image: "lmathieu"
 image: ./main.jpg
 ---

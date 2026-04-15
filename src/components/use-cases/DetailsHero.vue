@@ -75,7 +75,7 @@
                     },
                     purple: {
                         text: "Get Started",
-                        href: "/docs/getting-started/quickstart",
+                        href: "/get-started",
                         target: "_self",
                     },
                 }),

@@ -63,14 +63,14 @@ Speaking of CI/CD, note that Kestra currently supports authenticating with eithe
 
 1. Use the `--api-token=mytoken` CLI property to allow authenticating with a service account token:
 
-```
+```bash
 ./kestra namespace files update prod scripts . \
 --server=https://demo.kestra.io --api-token yourtoken
 ```
 
 2. Use the `--user user_email:password` flag to the CLI to allow authenticating with a Basic Authentication access:
 
-```
+```bash
 ./kestra namespace files update prod scripts . \
 --server=https://demo.kestra.io --user=rick.astely@kestra.io:password42
 ```

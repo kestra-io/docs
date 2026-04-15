@@ -1,0 +1,263 @@
+title: "Kestra vs. Snowflake Tasks: Universal Orchestration vs. Warehouse-Native Scheduling"
+description: "Compare Kestra vs Snowflake Tasks: Open-source, multi-cloud workflow orchestration in YAML vs. SQL-based task scheduling inside Snowflake. See features, pricing, setup, and use cases."
+competitorName: Snowflake Tasks
+category: Data Orchestration
+shortDescription: "SQL-based task scheduling inside Snowflake vs. universal YAML orchestration across any cloud and stack."
+
+brandColor:
+  color: "#29B5E8"
+
+intro:
+  title: "Kestra vs. Snowflake Tasks: Universal Orchestration vs. Warehouse-Native Scheduling"
+  description: "Snowflake Tasks is the native scheduling layer inside the Snowflake data warehouse. Kestra is open-source workflow orchestration for any cloud, any language, and use cases far beyond SQL transformations. One runs SQL on a schedule inside Snowflake. The other orchestrates everything your engineering team builds."
+
+philosophy:
+  mainTitle: Warehouse-Native SQL Scheduling vs. Universal Orchestration
+  kestra:
+    title: "Open-Source Orchestration for Any Stack"
+    description: "Declarative YAML workflows versioned in Git, executed in isolated containers, deployed through CI/CD. Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes across AWS, Azure, GCP, or on-premises without vendor lock-in."
+    subCardText: '"How do I coordinate workflows across every system my team touches without being locked into one platform?"'
+  competitor:
+    title: Snowflake-Native SQL Task Scheduling
+    description: "Server-side objects that execute SQL statements, stored procedures, or Snowpark Container Services tasks on a schedule or as part of a task tree. Run transformations inside Snowflake without external orchestration. Pricing is Snowflake credit consumption on a virtual warehouse."
+    shadowColor: "#29B5E8"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I schedule my SQL transformations and stored procedures without leaving Snowflake?"'
+
+businessValue:
+  mainTitle: "Warehouse Scheduling Handles What's Inside Snowflake.<br />Universal Orchestration Runs Your Business."
+  kestra:
+    title: Universal Workflow Orchestration
+    list:
+      - "Data pipelines, infrastructure automation, AI workloads, and business processes"
+      - "Multi-cloud and on-premises: AWS, Azure, GCP, or hybrid"
+      - "YAML-first: Git-native, CI/CD-ready, reviewable by any engineer"
+      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+      - "Self-service for non-engineers via Kestra Apps"
+  competitor:
+    title: Snowflake SQL Task Scheduling
+    list:
+      - "SQL statements, stored procedures, and Snowpark tasks inside Snowflake"
+      - "Snowflake-only: tasks run on Snowflake virtual warehouses"
+      - "DDL-based task definitions (CREATE TASK) with Snowflake-specific syntax"
+      - "Snowflake credit consumption per task execution on a virtual warehouse"
+      - "No open-source version"
+    shadowColor: "#29B5E8"
+    bulletColor: "#1A8FB5"
+  footerText: "Snowflake Tasks is the right choice if every step of your workflow is a SQL transformation or stored procedure that runs inside Snowflake and you want scheduling with no external tools. Use Kestra when your workflows pull data from outside Snowflake, push results to downstream systems, coordinate infrastructure, or need to live in Git with standard CI/CD tooling."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Snowflake Tasks is part of Snowflake's cloud data platform—there is no local install option. This comparison reflects what's required to get a Snowflake account, provision a virtual warehouse, and define your first task using Snowflake's DDL syntax."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready. Database and config included. Open the UI, pick a Blueprint, run it. No cloud account, no warehouse credits, no DDL syntax to learn."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: Hours to
+      two: Days
+    description: "Requires an active Snowflake account, a virtual warehouse to run tasks against, and task definitions written using Snowflake's CREATE TASK DDL syntax. Scheduling, dependencies, error handling, and alerting are all managed through Snowflake SQL objects, which means operational logic lives inside the warehouse rather than in code your team can review."
+    shadowColor: "#29B5E8"
+    command: |
+      -- 1. Create or select a Snowflake account
+      -- 2. Provision a virtual warehouse
+      -- 3. Define a root task with a schedule:
+      CREATE OR REPLACE TASK daily_ingest
+        WAREHOUSE = COMPUTE_WH
+        SCHEDULE = 'USING CRON 0 6 * * * UTC'
+      AS
+        CALL ingest_orders();
+
+      -- 4. Define child tasks with dependencies:
+      CREATE OR REPLACE TASK transform_orders
+        WAREHOUSE = COMPUTE_WH
+        AFTER daily_ingest
+      AS
+        CALL transform_orders_proc();
+
+      -- 5. Resume all tasks (suspended by default):
+      ALTER TASK transform_orders RESUME;
+      ALTER TASK daily_ingest RESUME;
+    lang: sql
+
+easeOfUse:
+  title: Workflows Engineers Can Own End to End
+  kestra:
+    title: "Kestra: YAML that lives in Git"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow is a file in your repository, reviewed in pull requests, deployed the same way as application code."
+    code: |
+      id: daily_etl
+      namespace: data.warehouse
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 6 * * *"
+
+      tasks:
+        - id: ingest
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            import pandas as pd, sqlalchemy
+            engine = sqlalchemy.create_engine("{{ secret('SOURCE_DB_URL') }}")
+            df = pd.read_sql("SELECT * FROM orders WHERE date = CURRENT_DATE - 1", engine)
+            df.to_parquet('orders.parquet')
+
+        - id: load_to_snowflake
+          type: io.kestra.plugin.jdbc.snowflake.Upload
+          url: "{{ secret('SNOWFLAKE_URL') }}"
+          from: orders.parquet
+          tableName: raw.orders
+
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select marts.orders
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily ETL complete"
+    lang: yaml
+  competitor:
+    title: "Snowflake Tasks: SQL DDL objects managed inside the warehouse"
+    description: "Tasks are defined using Snowflake's CREATE TASK DDL syntax inside the warehouse. There is no workflow file to commit to Git. Version control requires exporting task definitions and storing them separately. Task logic, scheduling, and dependency graphs all live as SQL objects inside Snowflake, making them invisible to standard code review workflows."
+    shadowColor: "#29B5E8"
+    code: |
+      -- Root task: ingestion
+      CREATE OR REPLACE TASK daily_ingest
+        WAREHOUSE = COMPUTE_WH
+        SCHEDULE = 'USING CRON 0 6 * * * UTC'
+      AS
+        CALL ingest_orders_proc();
+
+      -- Child task: transformation
+      CREATE OR REPLACE TASK transform_orders
+        WAREHOUSE = COMPUTE_WH
+        AFTER daily_ingest
+      AS
+        CALL transform_orders_proc();
+
+      -- Child task: notification (via external function or Snowflake Alerts)
+      CREATE OR REPLACE TASK notify_team
+        WAREHOUSE = COMPUTE_WH
+        AFTER transform_orders
+      AS
+        CALL notify_slack_proc();
+
+      -- Tasks are suspended by default, must be explicitly resumed
+      ALTER TASK transform_orders RESUME;
+      ALTER TASK notify_team RESUME;
+      ALTER TASK daily_ingest RESUME;
+    lang: sql
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes across any cloud or on-premises environment. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. Query Snowflake as one step in a broader workflow."
+  competitor:
+    description: "Tasks form a tree rooted at a single scheduled or stream-triggered root task. Each task runs a SQL statement or stored procedure when its predecessor completes. Monitoring and history are visible in the Snowflake UI via TASK_HISTORY and CURRENT_TASK_GRAPHS. All execution happens inside the Snowflake warehouse."
+    shadowColor: "#29B5E8"
+
+featureGrid:
+  title: Kestra vs. Snowflake Tasks at a Glance
+  tableData:
+    - feature: Deployment model
+      kestra: "Self-hosted (Docker, Kubernetes) or Kestra Cloud"
+      competitor: "Snowflake-managed (requires Snowflake account)"
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: "CREATE TASK DDL (SQL syntax inside Snowflake)"
+    - feature: Version control
+      kestra: "Native Git and CI/CD"
+      competitor: "Manual export required; no native Git integration"
+    - feature: Cloud support
+      kestra: "Multi-cloud and on-premises"
+      competitor: "Snowflake-only (runs on Snowflake's cloud infrastructure)"
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, Bash, Go, R, Node.js)"
+      competitor: "SQL and Snowpark (Python, Java, Scala in stored procedures)"
+    - feature: Open source
+      kestra: "✓ Apache 2.0"
+      competitor: "No open-source version"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Not available
+    - feature: Pricing model
+      kestra: "Free open-source core (Enterprise tier available)"
+      competitor: "Snowflake credit consumption per task execution"
+    - feature: Air-gapped deployment
+      kestra: "✓ Supported"
+      competitor: "Not available (Snowflake-managed only)"
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation + RBAC out-of-box"
+      competitor: "Snowflake role-based access control within one account"
+
+testimonials:
+  - quote: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
+    author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: Data production
+      - value: "+250"
+        name: Active users
+      - value: "+5,000"
+        name: Workflows created
+    storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
+
+platformStrengths:
+  title: Kestra Is Built for How Engineering Teams Work
+  features:
+    - title: Orchestrate beyond the warehouse
+      description: "Kestra handles the full pipeline from source ingestion through warehouse transformations to downstream delivery. Trigger infrastructure changes after a load completes, coordinate downstream teams, and send results to external services — all from one YAML file. Snowflake queries become one step in a workflow that spans every system your team operates."
+    - title: Workflows your team can review in Git
+      description: "Kestra workflows are YAML files from day one: they go through pull requests, get reviewed alongside application code, and deploy through the same CI/CD pipeline your team already runs. Git sync, a Terraform provider, and native CI/CD hooks give your team a single standard for how workflows are versioned, reviewed, and shipped."
+    - title: Language-agnostic execution
+      description: "Kestra is language-agnostic: run Python, Bash, R, SQL, Node.js, or any containerized workload. Tasks execute in isolated containers on your own infrastructure, with no dependency on a specific cloud platform's runtime. Bring existing scripts and orchestrate them without rewriting or wrapping anything."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Workflows span systems beyond Snowflake: source ingestion, infrastructure automation, downstream APIs, and business processes need to run from the same platform."
+      - "Engineers need to own workflows through Git, pull requests, and CI/CD, not CREATE TASK DDL inside the warehouse."
+      - "Your team works across clouds or on-premises and needs orchestration without a Snowflake account dependency."
+      - "Cost predictability matters. Snowflake credit consumption compounds across high-frequency task schedules."
+      - "Open source and air-gapped deployment are requirements."
+  competitor:
+    title: Choose Snowflake Tasks When
+    list:
+      - "Every step in your workflow is a SQL transformation or stored procedure that runs entirely inside Snowflake."
+      - "You want scheduling with no external orchestrator to provision or operate."
+      - "Your team is already deep in Snowflake and wants task coordination that requires zero context switching."
+      - "Simple task trees with Snowflake Streams for change-data-capture triggering cover your use cases."
+    shadowColor: "#29B5E8"
+    bulletColor: "#1A8FB5"
+
+commonQuestions:
+  - question: How do I migrate from Snowflake Tasks to Kestra?
+    answer: "Export your existing CREATE TASK definitions and rebuild the scheduling logic as a Kestra YAML workflow, with each stored procedure call becoming a Kestra task. The SQL itself stays in Snowflake; Kestra replaces the scheduling and dependency management layer. Start with net-new cross-system workflows in Kestra while leaving existing task trees running, then port SQL-only task trees incrementally. Because Kestra can react to the same schedules and Snowflake Stream events that currently drive your tasks, the transition can happen gradually with no hard cutover."
+  - question: Can Kestra run Snowflake queries and stored procedures?
+    answer: "Yes. Kestra has plugins for Snowflake that run queries, execute stored procedures, upload files via Snowflake's PUT command, and monitor execution status. Those Snowflake steps sit inside a larger workflow that also pulls from upstream sources, triggers downstream systems, runs infrastructure automation, and notifies teams, all wired together in one YAML file rather than spread across SQL objects inside the warehouse."
+  - question: How does Kestra handle version control compared to Snowflake Tasks?
+    answer: "Kestra workflows are YAML files in your Git repository from day one. They go through pull requests and deploy through CI/CD. Snowflake Tasks are DDL objects that live inside the warehouse. Getting them into version control requires manually exporting CREATE TASK statements and storing them as SQL files separately, with no standard format and no native CI/CD integration. The result is that task definitions often drift from what's actually running inside Snowflake."
+  - question: How do the pricing models compare?
+    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1200+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. Snowflake Tasks consume Snowflake credits each time a task runs against a virtual warehouse. For high-frequency schedules or complex task trees with many child tasks, credit consumption adds up quickly and compounds with your existing Snowflake spend."
+  - question: Can Kestra and Snowflake Tasks run side by side?
+    answer: "Yes. Leave existing Snowflake Tasks in place and route new cross-system workflows through Kestra. Kestra can react to the same schedules and stream events that feed Snowflake Tasks today and operate alongside them. Start with net-new orchestration in Kestra, migrate incrementally, and keep Snowflake Tasks for the SQL-only task trees that are already stable."
+  - question: What about dbt with Snowflake?
+    answer: "Kestra has a dbt plugin that runs dbt commands against any supported warehouse, including Snowflake. Route the full pipeline through Kestra: ingest raw data from source systems, load it into Snowflake, trigger dbt for transformations, run data quality checks, and notify downstream consumers. Snowflake Tasks can call dbt via Snowpark stored procedures, but coordinating external systems and multi-step pipelines requires building custom logic inside the warehouse, logic that then lives outside your normal code review process."

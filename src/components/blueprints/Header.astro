@@ -36,11 +36,7 @@ const tags = allTags
                 }
 
                 <h1 class="title mb-0">{page.title}</h1>
-                {/* TODO: short description needed */}
-                <!-- <MDCParserAndRenderer
-                    content={page.shortDescription}
-                    class="description bd-markdown mb-0"
-                /> -->
+                <p class="description">{page.metaDescription}</p>
             </div>
 
             <div class="right">
@@ -100,6 +96,13 @@ const tags = allTags
                     border: $block-border;
                     background-color: var(--ks-background-primary);
                 }
+            }
+
+            .description {
+                @include media-breakpoint-up(lg) {
+                    font-size: $font-size-lg;
+                }
+                margin-bottom: 0;
             }
         }
 

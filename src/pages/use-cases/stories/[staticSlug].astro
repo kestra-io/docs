@@ -5,6 +5,8 @@ import StoryDetail from "~/components/stories/StoryDetail.vue"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Layout from "~/components/layout.astro"
 import { slugify } from "@kestra-io/ui-libs"
+import { NO_RANDOM_ORDER } from "astro:env/client"
+import { randomSortFunction } from "~/utils/random"
 
 interface Props {
     entry: CollectionEntry<"customerStories">
@@ -41,7 +43,7 @@ export const getStaticPaths = (async () => {
                         logoDark: e.data.logoDark?.src,
                         content: e.body ?? "",
                     }))
-                    .sort(() => Math.random() - 0.5)
+                    .sort(randomSortFunction)
                     .slice(0, 3),
                 total: allEntries.length,
             },

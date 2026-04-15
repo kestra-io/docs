@@ -1,6 +1,6 @@
 import posthog from "posthog-js"
 import identify from "~/utils/identify.js"
-import axios from "axios"
+import { $fetch } from "~/utils/fetch"
 import { useGtm } from "@gtm-support/vue-gtm"
 
 const hubSpotUrl =
@@ -13,7 +13,7 @@ export default function ({ newsletter, valid, message }, e) {
 
     const form = newsletter.value
 
-    if(typeof window === "undefined") return
+    if (typeof window === "undefined") return
 
     if (!form.checkValidity()) {
         valid.value = false
@@ -45,16 +45,23 @@ export default function ({ newsletter, valid, message }, e) {
 
         identify(form.email.value)
 
-        axios.post(hubSpotUrl, formData).then((response) => {
-            if (response.status !== 200) {
-                message.value = response.data.message
-                valid.value = false
-            } else {
+        $fetch(hubSpotUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        })
+            .then((response) => {
                 valid.value = true
-                message.value = response.data.inlineMessage
+                message.value = response.inlineMessage || ""
                 form.reset()
                 form.classList.remove("was-validated")
-            }
-        })
+            })
+            .catch((error) => {
+                valid.value = false
+                message.value =
+                    error?.response?.data?.message || "Form submission error"
+            })
     }
 }

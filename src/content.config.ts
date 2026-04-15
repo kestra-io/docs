@@ -1,7 +1,8 @@
-import { defineCollection, z } from "astro:content"
+import { defineCollection } from "astro:content"
+import { z } from "astro/zod"
 import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
-import { vsPagesSchema } from "./schemas/vsPages"
+import { vsSchema } from "./schemas/vs"
 
 export const collections = {
     docs: defineCollection({
@@ -48,6 +49,7 @@ export const collections = {
                         name: z.string(),
                         image: z.string(),
                         twitter: z.string().optional(),
+                        linkedin: z.string().optional(),
                         role: z.string().nullable().optional(),
                     })
                     .optional(),
@@ -57,6 +59,7 @@ export const collections = {
                             name: z.string(),
                             image: z.string(),
                             twitter: z.string().optional(),
+                            linkedin: z.string().optional(),
                             role: z.string().nullable().optional(),
                         }),
                     )
@@ -64,6 +67,7 @@ export const collections = {
                 image: image().optional(),
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
+                schema: z.record(z.string(), z.unknown()).optional(),
             }),
     }),
     legal: defineCollection({
@@ -80,24 +84,10 @@ export const collections = {
     }),
     vs: defineCollection({
         loader: glob({
-            pattern: "./*.md{,x}",
-            base: "./src/contents/vs",
-            generateId,
-        }),
-        schema: z.object({
-            title: z.string(),
-            headerTitle: z.string().optional(),
-            description: z.string().optional(),
-            competitorName: z.string(),
-            logo: z.string(),
-        }),
-    }),
-    vsPages: defineCollection({
-        loader: glob({
             pattern: "./*.{yaml,yml}",
-            base: "./src/contents/vs-pages",
+            base: "./src/contents/vs",
         }),
-        schema: vsPagesSchema,
+        schema: vsSchema,
     }),
     externalBlogs: defineCollection({
         loader: glob({
@@ -200,3 +190,4 @@ export const collections = {
             }),
     }),
 }
+

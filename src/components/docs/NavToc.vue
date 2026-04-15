@@ -2,9 +2,21 @@
     <div
         id="nav-toc-global"
         class="bd-toc d-lg-flex justify-content-end"
-        :class="{ plugin: isPluginPage }"
     >
         <div>
+            <a
+                v-if="markdownBody"
+                role="button"
+                class="copy-md"
+                :class="{ copied: isCopied }"
+                @click.prevent="copyPageContent"
+            >
+                <div class="copy-md-content">
+                    <component :is="isCopied ? Check : ContentCopy" class="copy-icon" />
+                    <span class="copy-text">{{ isCopied ? 'Copied!' : 'Copy as Markdown' }}</span>
+                </div>
+            </a>
+
             <template v-if="links?.length" class="bd-contents-list">
                 <button
                     class="btn toc-toggle d-lg-none"
@@ -22,14 +34,6 @@
                         <ChevronDown class="chev-icon" v-else />
                     </span>
                 </button>
-
-                <OverviewPanel
-                    v-show="isPluginPage"
-                    :version
-                    :releasesUrl
-                    :categories
-                    :metadata="props.metadata"
-                />
 
                 <div class="collapse bd-toc-collapse" id="tocContents">
                     <slot name="header"></slot>
@@ -87,29 +91,18 @@
 
 <script setup lang="ts">
     import { nextTick, ref, onUnmounted } from "vue"
-    import { useEventListener, useScroll } from "@vueuse/core"
+    import { useClipboard, useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+    import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
+    import Check from "vue-material-design-icons/Check.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
-    import OverviewPanel from "~/components/plugins/OverviewPanel.vue"
-    import type { PluginMetadata } from "@kestra-io/ui-libs"
-    import type { ReleaseInfo } from "../../pages/api/github-releases"
 
     export interface TocLink {
         id: string
         depth: number
         text: string
         children?: TocLink[]
-    }
-
-    const throttle = (fn: Function, delay: number) => {
-        let lastCall = 0;
-        return (...args: any[]) => {
-            const now = Date.now();
-            if (now - lastCall < delay) return;
-            lastCall = now;
-            return fn(...args);
-        }
     }
 
     const props = withDefaults(
@@ -120,19 +113,12 @@
             stem?: string,
             editUrl?: string,
             capitalize?: boolean,
-            version?: { versions?: ReleaseInfo[] } | null,
-            releasesUrl?: string | null,
-            categories?: string[],
-            metadata?: PluginMetadata[],
-            isPluginPage?: boolean,
-            class?: string
+            class?: string,
+            markdownBody?: string,
+
         }>(),
         {
             links: () => [],
-            version: null,
-            releasesUrl: null,
-            categories: () => [],
-            metadata: () => []
         }
     )
 
@@ -214,7 +200,7 @@
         document.getElementById("tocContents")?.classList.remove("show")
     }
 
-    const handleScroll = throttle(() => {
+    const handleScroll = useThrottleFn(() => {
         if (isManualScrolling.value || scrollY.value === 0) {
             if (scrollY.value === 0) activeLinkId.value = ""
             return
@@ -238,11 +224,13 @@
 
     useEventListener("scroll", handleScroll)
     onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))
+
+    const { copy, copied: isCopied } = useClipboard()
+    const copyPageContent = () => props.markdownBody && copy(props.markdownBody.trim())
 </script>
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
 
     .bd-toc {
         @include media-breakpoint-down(lg) {
@@ -255,17 +243,12 @@
             max-height: 100%;
             min-width: 250px;
             z-index: 10;
-            &:not(.plugin) {
-                border: 0;
-                border-left-width: 1px;
-                border-style: solid;
-                border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
-                html.light & {
-                    border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
-                }
-            }
-            &.plugin {
-                border-left: $block-border;
+            border: 0;
+            border-left-width: 1px;
+            border-style: solid;
+            border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
+            html.light & {
+                border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
             }
         }
         &::-webkit-scrollbar {
@@ -279,11 +262,6 @@
                 width: 100%;
                 overflow-x: hidden;
                 overflow-y: auto;
-            }
-        }
-        &.plugin > div {
-            @include media-breakpoint-up(lg) {
-                top: var(--announce-height);
             }
         }
         nav {
@@ -378,6 +356,28 @@
             line-height: 1.875rem;
             font-weight: 600;
             padding-top: 0;
+        }
+
+        .copy-md {
+            display: flex;
+            padding: 1.25rem 0;
+            @include media-breakpoint-up(lg) {
+                padding: 1.25rem;
+            }
+            cursor: pointer;
+            color: var(--ks-content-primary);
+            &:hover, &.copied {
+                color: var(--ks-content-link);
+            }
+            .copy-md-content {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                border: $block-border;
+                padding: 0.35rem $rem-1;
+                border-radius: 0.25rem;
+                font-size: $font-size-xs;
+            }
         }
         hr {
             border-color: var(--bs-gray-600);

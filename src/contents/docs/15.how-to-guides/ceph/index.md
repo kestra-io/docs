@@ -110,7 +110,7 @@ sudo cephadm shell -- ceph orch ps
 
 Look for a line like:
 
-```
+```plaintext
 rgw.default.kestra.xxxxxx  kestra  *:80  running (...)
 ```
 

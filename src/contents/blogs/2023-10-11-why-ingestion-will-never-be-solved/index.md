@@ -5,6 +5,7 @@ date: 2023-10-11T11:30:00
 category: Solutions
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
   image: "ageller"
 image: ./main.png
 ---
@@ -87,7 +88,7 @@ Especially after Stitch was [acquired](https://www.talend.com/about-us/press-rel
 
 ### Open-source connector ecosystems
 
-[Airbyte](https://airbyte.com/), [CloudQuery](https://www.cloudquery.io/), and [dltHub]([dltHub](https://dlthub.com/)) learned from [Singer](https://www.singer.io/) and took a different approach. Instead of building a standard, all of them implemented their own **framework** and **platform** for building connectors using a pluggable system. This means that the open-source community can contribute to the connectors, and the platform vendor can ensure that those contributions are maintained and kept up-to-date.
+[Airbyte](https://airbyte.com/), [CloudQuery](https://www.cloudquery.io/), and [dltHub](https://dlthub.com/) learned from [Singer](https://www.singer.io/) and took a different approach. Instead of building a standard, all of them implemented their own **framework** and **platform** for building connectors using a pluggable system. This means that the open-source community can contribute to the connectors, and the platform vendor can ensure that those contributions are maintained and kept up-to-date.
 
 The pluggable architecture is a great way to maintain a **community of contributors**, but it also comes with many tradeoffs:
 - Are all plugins maintained in a monorepo or in separate repositories?
