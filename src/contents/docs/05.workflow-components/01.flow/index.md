@@ -1,5 +1,6 @@
 ---
 title: Flows in Kestra – Define Orchestration Units
+h1: "Understand Flows: The Core Units of Kestra Orchestration"
 description: Understand Kestra Flows, the fundamental units of orchestration. Learn to define tasks, inputs, outputs, and logic to automate your business processes.
 sidebarTitle: Flow
 icon: /src/contents/docs/icons/flow.svg
