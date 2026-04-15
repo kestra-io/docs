@@ -1,0 +1,297 @@
+---
+import { Image } from "astro:assets"
+import DownloadForm from "./DownloadForm.vue"
+import bookMockup from "./assets/book-mockup.png"
+import heroBg from "./assets/hero-bg.jpg"
+---
+
+<section class="hero">
+    <!-- Grid pattern behind everything -->
+    <div class="hero-grid" aria-hidden="true"></div>
+
+    <!--
+        50/50 split: no Bootstrap container — direct flex on .hero-inner.
+        .hero-left  = transparent (shows grid), contains text.
+        .hero-right = solid dark gradient panel.
+    -->
+    <div class="hero-split">
+        <div class="hero-left">
+            <div class="hero-left-content">
+                <h1 data-usal="fade-r">
+                    Airflow 2 is No Longer Maintained. Reaffirm or
+                    <span class="highlight">Rethink</span> Your Orchestration
+                    Model?
+                </h1>
+                <p class="subtitle" data-usal="fade-r">
+                    Airflow 2 reaches end-of-life on April 22, 2026. Before you
+                    commit to upgrading, it's worth taking an important look at
+                    Airflow 3. The right architecture for the next five years is
+                    not the moment that it looks like a vendor upgrade.
+                </p>
+
+                <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
+                <ul class="inside-list" data-usal="fade-l">
+                    <li>
+                        Exactly what changed in Airflow 3 and what stayed the
+                        same — so you can see the two approaches
+                    </li>
+                    <li>
+                        Where the Airflow 3 modernization fixed cracks and
+                        where it didn't
+                    </li>
+                    <li>
+                        How cloud, data sources, and declarative orchestration
+                        will fit in your story
+                    </li>
+                    <li>
+                        How to upgrade incrementally so you don't have to bring
+                        everything to a boil all at once
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- RIGHT: dark panel with book (absolute) + form (in-flow) -->
+        <div class="hero-right" style={`background-image: url(${heroBg.src})`}>
+            <!-- Purple top-left + cyan bottom-right glow -->
+            <div class="hero-right-flare" aria-hidden="true"></div>
+
+            <div class="hero-right-content">
+                <!-- Book floats at the left edge, straddling the boundary -->
+                <div class="book-wrap" aria-hidden="true" data-usal="zoomin">
+                    <Image
+                        src={bookMockup}
+                        alt=""
+                        loading="eager"
+                        class="book-img"
+                    />
+                </div>
+
+                <!-- Form card — only in-flow child, fills the right portion -->
+                <div class="form-wrapper" data-usal="fade-l">
+                    <DownloadForm client:load />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    /* ─── Outer shell ─────────────────────────────────────────────────────── */
+    .hero {
+        position: relative;
+        overflow: hidden;
+        /* Override the global .hero { padding-top/bottom } rule */
+        padding: 0;
+        color: var(--ks-content-primary);
+        background-color: var(--ks-background-body);
+    }
+
+    /* ─── 72 px grid — full section, both halves ─────────────────────────── */
+    .hero-grid {
+        --grid-cell: 72px;
+        --grid-line: var(--ks-border-primary);
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(
+                to right,
+                transparent calc(var(--grid-cell) / 2 - 1px),
+                var(--grid-line) calc(var(--grid-cell) / 2 - 1px),
+                var(--grid-line) calc(var(--grid-cell) / 2),
+                transparent 1px
+            ),
+            linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+        background-size: var(--grid-cell) var(--grid-cell);
+        background-repeat: repeat;
+    }
+
+    /* ─── 50 / 50 split container ────────────────────────────────────────── */
+    .hero-split {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            min-height: 680px;
+        }
+    }
+
+    /* ─── LEFT half: transparent, container-like padding ────────────────── */
+    .hero-left {
+        display: flex;
+        align-items: center;
+        padding: 4rem 1.5rem 3rem;
+
+        @include media-breakpoint-up(lg) {
+            /* Exact half — flex-basis not flex-grow so background stays correct */
+            width: 50%;
+            flex: 0 0 50%;
+            padding: 5rem 4rem 6rem;
+            /* Align text toward the center line */
+            justify-content: flex-end;
+        }
+    }
+
+    .hero-left-content {
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            max-width: 540px;
+        }
+    }
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 1.15;
+        margin: 0 0 1.25rem;
+
+        @include media-breakpoint-up(md) {
+            font-size: 2.375rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            font-size: 2.625rem;
+        }
+
+        .highlight {
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
+    .subtitle {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+        margin: 0 0 2rem;
+    }
+
+    .inside-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin: 0 0 0.875rem;
+        color: var(--ks-content-primary);
+        opacity: 0.6;
+    }
+
+    .inside-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.4em;
+                width: 1.125rem;
+                height: 1.125rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Ccircle cx='10' cy='10' r='9' stroke='%239F4FED' stroke-width='1.5'/%3E%3Cpath d='M6 10l2.5 2.5L14 7.5' stroke='%239F4FED' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-size: contain;
+            }
+        }
+    }
+
+    /* ─── RIGHT half: JPG background panel ──────────────────────────────── */
+    .hero-right {
+        position: relative;
+        background-color: #0d0520;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+
+        @include media-breakpoint-up(lg) {
+            width: 50%;
+            flex: 0 0 50%;
+            /* Allow the book to overhang leftward */
+            overflow: visible;
+        }
+    }
+
+    /* No more flare overlay — background comes from the JPG */
+    .hero-right-flare {
+        display: none;
+    }
+
+    /* ─── Content inside right panel ─────────────────────────────────────── */
+    .hero-right-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        padding: 3rem 2rem;
+
+        @include media-breakpoint-up(lg) {
+            /* Full-height; left-padding reserves space for the book overlay.
+               align-items: center keeps form card horizontally centred in
+               the remaining space (not stretched to full content-area width). */
+            min-height: 100%;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 3rem 4rem 11rem;
+            gap: 0;
+        }
+    }
+
+    /* Book — normal flow on mobile, absolute at the left edge on desktop */
+    .book-wrap {
+        width: 100%;
+        max-width: 260px;
+        margin: 0 auto;
+
+        @include media-breakpoint-up(lg) {
+            position: absolute;
+            /* Straddle the boundary: book bleeds ~120px into the left panel */
+            left: -8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 320px;
+            margin: 0;
+            z-index: 2;
+        }
+
+        @include media-breakpoint-up(xl) {
+            left: -9rem;
+            max-width: 360px;
+        }
+
+        .book-img {
+            display: block;
+            width: 100%;
+            height: auto;
+            filter:
+                drop-shadow(0 28px 48px rgba(0, 0, 0, 0.55))
+                drop-shadow(-10px 12px 24px rgba(88, 31, 211, 0.3));
+        }
+    }
+
+    /* Form card — the only in-flow child on desktop */
+    .form-wrapper {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+
+        @include media-breakpoint-up(lg) {
+            max-width: 420px;
+            margin: 0;
+        }
+    }
+</style>
