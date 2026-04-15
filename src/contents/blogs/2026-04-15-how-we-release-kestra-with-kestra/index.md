@@ -7,7 +7,7 @@ author:
   name: Roman Acevedo
   image: racevedo
   role: Software Engineer
-image: ./main.png
+image: ./main.png TODO
 ---
 
 Every Tuesday, we ship bug fixes across multiple maintained versions at once — [LTS](https://kestra.io/blogs/introducing-lts), latest, and sometimes older releases. At peak, that's four parallel releases on the same day.
@@ -52,7 +52,7 @@ Nothing fancy:
 - a **start_release** shell task installing and using [GH CLI](https://cli.github.com/) to trigger a GitHub workflow
 - and a **poll_release_status** LoopUntil task checking this workflow job every 5 minutes, with a maximal timeout of 6 hours
 
-![img_3.png](img_3.png)
+![release-oss_flow.png](release-oss_flow.png)
 
 ```yaml
 id: release-oss
@@ -121,7 +121,7 @@ orchestrating with core Kestra tasks:
 
 Retry logic for flaky tests lives in a dedicated [subflow](https://kestra.io/docs/workflow-components/subflows) that the main flow calls per version. When a test fails, the subflow retries without any input from me. I don't have to watch for it.
 
-![img_2.png](img_2.png)
+![first_iteration.png](first_iteration.png)
 ```yaml
 id: release-oss-and-ee
 namespace: kestra.engineering.release
@@ -164,8 +164,7 @@ I could now quickly visually check 80% of my release process in Kestra by just l
 
 Anyone on the team can run, modify, or debug the flow without a handoff. It doesn't depend on me being around to explain it.
 
-![img_4.png](img_4.png)
-
+![execution_history.png](execution_history.png)
 
 ### Final Flow
 > Before I describe the full flow, I should address the obvious concern: if Kestra's infrastructure is down, doesn't using Kestra to run your releases mean you can't fix it?
@@ -180,7 +179,7 @@ I didn't initially include it in the Flow because it didn't seem that useful. Bu
 I added a new **docker-publish** Flow, almost identical to **release-oss**, and used the same Parallel + SubFlow pattern, to finally have the full release orchestrated by Kestra.
 
 
-![img_5.png](img_5.png)
+![full_final_flow.png](full_final_flow.png)
 ```yaml
 id: release-oss-and-ee
 namespace: kestra.engineering.release
@@ -247,10 +246,12 @@ tasks:
 Before, release days meant trying to not get lost between all the GitHub workflows for each release and staying on standby, so getting anything else done was basically impossible. Now I start a release in a few clicks and get back to work. The flow handles the intermediate state.
 
 
-![img_7.png](img_7.png)
+![execution_run.png](execution_run.png)
 
 It also made us realise that what we thought was a quick fire-and-forget manual process could become a 4-hour waiting game when transient network errors or flaky test failures stacked up.
 I was genuinely surprised by how long the whole process took once I saw the final duration in one of the first executions of that Flow.
+
+Another bonus: we could start releases from our restaurant table on our phones at lunchtime.
 
 ## YAML makes adoption easy
 
