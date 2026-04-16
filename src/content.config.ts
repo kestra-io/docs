@@ -36,7 +36,7 @@ export const collections = {
         loader: glob({
             pattern: "./**/*.md{,x}",
             base: "./src/contents/blogs",
-            generateId,
+            generateId: (opts) => generateId(opts).toLowerCase(),
         }),
         schema: ({ image }) =>
             z.object({
