@@ -15,7 +15,7 @@ import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
     return blogsPages.map((post) => ({
-        params: { slug: post.id },
+        params: { slug: post.id.toLowerCase() },
         props: post,
     }))
 }
