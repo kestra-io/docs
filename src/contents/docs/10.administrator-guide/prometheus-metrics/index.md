@@ -96,6 +96,7 @@ Various Kestra-specific database queries:
 For each internal queue:
 
 * `kestra_queue_big_message_count_total` (counter): Big messages in the queue.
+* `kestra_queue_message_lag_count` (gauge): Total number of messages in the queue that are not yet consumed.
 * `kestra_queue_poll_size` (gauge): Size of a poll to the queue (message batch size).
 * `kestra_queue_produce_count_total` (counter): Total number of produced messages.
 * `kestra_queue_receive_duration_seconds` (summary): Queue duration to receive and consume a batch of messages.

@@ -1,5 +1,6 @@
 ---
 title: Flows in Kestra – Define Orchestration Units
+h1: Understand Flows: The Core Units of Kestra Orchestration
 description: Understand Kestra Flows, the fundamental units of orchestration. Learn to define tasks, inputs, outputs, and logic to automate your business processes.
 sidebarTitle: Flow
 icon: /src/contents/docs/icons/flow.svg
@@ -120,7 +121,7 @@ By default, Kestra only includes a few Runnable Tasks. However, many of them are
 
 ### Flowable Task
 
-[Flowable Tasks](../01.tasks/00.flowable-tasks/index.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch) decides the next task to run based on some inputs.
+[Flowable Tasks](../01.tasks/00.flowable-tasks/index.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](/plugins/core/flow/io.kestra.plugin.core.flow.switch) decides the next task to run based on some inputs.
 
 A Flowable Task is handled by an executor and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation.
 

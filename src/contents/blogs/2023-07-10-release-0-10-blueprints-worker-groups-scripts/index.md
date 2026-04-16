@@ -6,6 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+    medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -171,7 +172,7 @@ The workflow below demonstrates a simple use case where there are:
 
 ![dag](./dag.png)
 
-Here is a workflow example that uses the [new DAG task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag):
+Here is a workflow example that uses the [new DAG task](/plugins/core/flow/io.kestra.plugin.core.flow.dag):
 
 ```yaml
 id: magicDAG

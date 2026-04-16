@@ -1,5 +1,6 @@
 ---
 title: Configure Alerts in Kestra
+h1: Set Up Workflow Failure Alerts via Slack and PagerDuty
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
