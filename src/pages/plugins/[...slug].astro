@@ -50,6 +50,10 @@ const { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
         isEePlugin,
     )
 
+if (subGroup && allPlugins.filter((p) => p.name === pluginName && p.subGroup).length === 1) {
+    return Astro.redirect(`/plugins/${[pluginName, ...splitRouteSlug.slice(2)].join("/")}`, 301)
+}
+
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 const pageList = recursivePages(navigation[0])
@@ -88,6 +92,7 @@ const [page, { blueprintCounts, relatedBlogs }] = await Promise.all([
 ])
 
 const {
+    effectiveSubGroup,
     pluginsWithoutDeprecated,
     rootPlugin,
     rootPluginTitle,
@@ -126,7 +131,7 @@ if (
     page === null ||
     !pluginsWithoutDeprecated.some(
         (p: any) =>
-            subGroup === undefined || slugify(subGroupName(p)) === subGroup,
+            effectiveSubGroup === undefined || slugify(subGroupName(p)) === effectiveSubGroup,
     )
 ) {
     console.warn("Redirecting due to no content")
@@ -178,7 +183,7 @@ if (
                         {pluginsWithoutDeprecated}
                         {subGroupsIcons}
                         {pluginName}
-                        {subGroup}
+                        subGroup={effectiveSubGroup}
                         {pathname}
                         {subgroupBlueprintCounts}
                         {metadataMap}

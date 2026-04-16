@@ -302,7 +302,7 @@ It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` i
 
 Sometimes it is useful to access outputs from other tasks in the same task tree, known as sibling tasks.
 
-If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id` is the identifier of the sibling task, as you would outside of the task tree.
+If the task tree is static, for example when using the [Sequential](/plugins/core/flow/io.kestra.plugin.core.flow.sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id` is the identifier of the sibling task, as you would outside of the task tree.
 
 For example:
 
@@ -329,7 +329,7 @@ tasks:
     message: "{{ outputs.second.values.data }}"
 ```
 
-If the task tree is dynamic, for example when using the [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) task, you need to use `{{ outputs.task_id[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the ForEach task.
+If the task tree is dynamic, for example when using the [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task, you need to use `{{ outputs.task_id[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the ForEach task.
 
 For example:
 
@@ -386,8 +386,10 @@ tasks:
 `iterationOutput()` defaults to the current task and the previous iteration, so `{{ iterationOutput() }}` is equivalent to reading the current task's output from `taskrun.iteration - 1`.
 
 :::alert{type="warning"}
-Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) as it runs tasks in parallel.
+Accessing sibling task outputs is impossible on [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) as it runs tasks in parallel.
 :::
+
+For more examples and guidance on accessing sibling outputs inside `ForEach`, including how to read them both inside and outside the loop, see [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach).
 
 ## Outputs preview
 

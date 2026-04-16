@@ -19,7 +19,7 @@ Kestra can trigger flows on a defined schedule. If you need to wait for another 
 
 Kestra can automatically handle [backfills](../../../06.concepts/08.backfill/index.md) to recover missed executions.
 
-Check the [Schedule task](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule) documentation for the list of the task properties and outputs.
+Check the [Schedule task](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule) documentation for the list of the task properties and outputs.
 
 :::alert{type="warning"}
 To avoid unexpected differences, keep your Kestra server and database timezones aligned. If this isn’t possible, account for timezone implications such as Daylight Saving Time or regional variations.
@@ -236,7 +236,7 @@ triggers:
 
 ## Detect stuck Schedule Triggers
 
-Kestra has a plugin, [ScheduleMonitor](/plugins/plugin-kestra/triggers/io.kestra.plugin.kestra.triggers.ScheduleMonitor), for detecting stuck or misconfigured Schedule Triggers. It checks periodically and can run at the Tenant level, for a specific Namespace, or for a single Flow.
+Kestra has a plugin, [ScheduleMonitor](/plugins/plugin-kestra/kestra-triggers/io.kestra.plugin.kestra.triggers.schedulemonitor), for detecting stuck or misconfigured Schedule Triggers. It checks periodically and can run at the Tenant level, for a specific Namespace, or for a single Flow.
 
 For example, set this up as a [System Flow](../../../06.concepts/system-flows/index.md) and send an alert if any Schedule Triggers come back showing an issue:
 
