@@ -46,7 +46,7 @@ Consider **Gorgias**, which [chose Kestra](/use-cases/stories/13-gorgias-using-d
 
 One of the standout features of Kestra is how it [**unifies Everything-as-Code with a user-friendly UI**](../2023-12-14-orchestration-problems-and-complexity/index.md). Users can start building workflows from the embedded editor in the UI, test them, and iterate quickly. Once everything works as expected, you can easily push the underlying workflow code to Git and promote it to staging and production environments. This iterative approach helps teams move faster without being locked into a specific deployment model.
 
-For **Leroy Merlin France**, [combining Kestra’s user-friendly UI](/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) with its Everything-as-Code approach made it possible to use the UI for development, and integrate Terraform and GitHub Actions for production deployments. This helped Leroy Merlin to scale their operations and enable hundreds of end users to work together across development and production environments without friction.
+For **Leroy Merlin France**, [combining Kestra’s user-friendly UI](/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent) with its Everything-as-Code approach made it possible to use the UI for development, and integrate Terraform and GitHub Actions for production deployments. This helped Leroy Merlin to scale their operations and enable hundreds of end users to work together across development and production environments without friction.
 
 ### Lower Barrier to Entry
 
