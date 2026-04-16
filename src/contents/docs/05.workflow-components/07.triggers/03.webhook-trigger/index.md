@@ -85,7 +85,7 @@ If your flow uses trigger variables (such as `{{ trigger.body }})`, you can test
 
 ---
 
-See the [Webhook trigger plugin documentation](/plugins/core/triggers/io.kestra.plugin.core.trigger.Webhook) for a full list of properties and outputs.
+See the [Webhook trigger plugin documentation](/plugins/core/trigger/io.kestra.plugin.core.trigger.webhook) for a full list of properties and outputs.
 
 ### Return flow outputs in the webhook response
 

@@ -130,9 +130,10 @@ When configuring the secret manager using the UI, either under Namespace or Tena
 
 ![GCP Secret Manager Configuration via UI](./gcp-secret-configuration.png)
 
-## Vault configuration
+## HashiCorp Vault configuration
 
-Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you are considering alternative Vault secrets engines, please note the following:
+Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you are considering alternative HashiCorp Vault secrets engines, please note the following:
+
 - The [Vault's database secrets engine](https://developer.hashicorp.com/vault/docs/secrets/databases), often referred to as "dynamic secrets", is not supported as we need long-term secret storage.
 - The [Vault Secrets Operator on Kubernetes](https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator) creates a Kubernetes secret which is compatible with Kestra with some additional steps. If you are interested about this option, [reach out to us](/demo) and we can advise how you can set this up.
 
@@ -310,6 +311,31 @@ kestra:
 * **apiKey**: API key used to authenticate with BeyondTrust.
 * **runAs**: User context to run API calls as (e.g. domain\\username).
 * **folderId**: Secrets Safe folder ID where Kestra secrets are stored.
+
+## Delinea Secret Server Configuration
+
+Kestra integrates with [Delinea Secret Server](https://delinea.com/products/secret-server) as an external secrets backend. Secrets are stored securely in Delinea Secret Server, and Kestra workers retrieve them at runtime and keep them only in memory.
+
+```yaml
+kestra:
+  secret:
+    type: delinea
+    delinea:
+      address: https://your-delinea-instance.secretservercloud.com
+      username: YOUR_USERNAME
+      password: YOUR_PASSWORD
+      folderId: YOUR_FOLDER_ID
+      secretTemplateId: YOUR_TEMPLATE_ID
+```
+
+**Configuration properties:**
+
+  - **address**: The base URL of your Delinea Secret Server instance.
+  - **username**: Username used to authenticate to Delinea Secret Server.
+  - **password**: Password used to authenticate to Delinea Secret Server.
+  - **domain**: Optional. Active Directory domain for on-premise deployments using domain accounts.
+  - **folderId**: The folder ID in Delinea Secret Server where Kestra secrets are stored. Required for write operations.
+  - **secretTemplateId**: The secret template ID used when creating new secrets. Required for write operations.
 
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 

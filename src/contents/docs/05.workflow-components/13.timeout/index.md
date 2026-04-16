@@ -1,7 +1,7 @@
 ---
 title: Task Timeouts in Kestra – Limit Run Duration
 description: Control task duration with Timeouts in Kestra. Prevent hanging processes and manage costs by setting maximum execution times for your tasks.
-sidebarTitle: Task timeout
+sidebarTitle: Task Timeout
 icon: /src/contents/docs/icons/flow.svg
 ---
 
