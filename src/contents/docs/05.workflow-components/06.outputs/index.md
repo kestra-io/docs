@@ -325,7 +325,7 @@ tasks:
           data: "{{ outputs.first.values.data }}"
 
   - id: log_siblings
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.second.values.data }}"
 ```
 
@@ -353,7 +353,7 @@ tasks:
           data: "{{ outputs.first[taskrun.value].values.data }}"
 
   - id: log_output_from_foreach
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.second['value 1'].values.data }}"
 ```
 
