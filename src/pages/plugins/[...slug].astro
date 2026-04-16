@@ -18,9 +18,8 @@ import { buildPluginPageProps } from "~/utils/plugins/buildPluginPageProps"
 import { resolveGithubReleaseRepo } from "~/utils/plugins/resolveGithubRepo"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
-import { generateSubgroupPluginData } from "~/utils/plugins/generateSubgroupPluginData"
+import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import {
-    fetchArborescence,
     fetchInitialPluginData,
     fetchPageDefinition,
     fetchSecondaryData,
@@ -51,6 +50,10 @@ const { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
         isEePlugin,
     )
 
+if (subGroup && allPlugins.filter((p) => p.name === pluginName && p.subGroup).length === 1) {
+    return Astro.redirect(`/plugins/${[pluginName, ...splitRouteSlug.slice(2)].join("/")}`, 301)
+}
+
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 const pageList = recursivePages(navigation[0])
@@ -76,23 +79,20 @@ try {
     // do nothing if plugin not found
 }
 
-const subgroupPluginData = generateSubgroupPluginData(
+const sidebarPluginData = generateSidebarPluginData(
     allPlugins.filter((r) => r.name === pluginName),
     allPluginMetadata,
 )
 
-const [page, { blueprintCounts, relatedBlogs }, arborescencePlugins] =
-    await Promise.all([
-        pluginType
-            ? fetchPageDefinition(pluginType)
-            : Promise.resolve(subgroupPluginData),
-        fetchSecondaryData(pluginName),
-        fetchArborescence(
-            allPlugins.find((p) => p.name === pluginName)?.group ?? "",
-        ).catch(() => undefined),
-    ])
+const [page, { blueprintCounts, relatedBlogs }] = await Promise.all([
+    pluginType
+        ? fetchPageDefinition(pluginType)
+        : Promise.resolve(sidebarPluginData),
+    fetchSecondaryData(pluginName),
+])
 
 const {
+    effectiveSubGroup,
     pluginsWithoutDeprecated,
     rootPlugin,
     rootPluginTitle,
@@ -124,15 +124,14 @@ const {
     blueprintCounts,
     relatedBlogs,
     page,
-    subgroupPluginData,
-    arborescencePlugins,
+    sidebarPluginData,
 })
 
 if (
     page === null ||
     !pluginsWithoutDeprecated.some(
         (p: any) =>
-            subGroup === undefined || slugify(subGroupName(p)) === subGroup,
+            effectiveSubGroup === undefined || slugify(subGroupName(p)) === effectiveSubGroup,
     )
 ) {
     console.warn("Redirecting due to no content")
@@ -184,7 +183,7 @@ if (
                         {pluginsWithoutDeprecated}
                         {subGroupsIcons}
                         {pluginName}
-                        {subGroup}
+                        subGroup={effectiveSubGroup}
                         {pathname}
                         {subgroupBlueprintCounts}
                         {metadataMap}

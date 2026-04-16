@@ -2,22 +2,31 @@
     <div class="column-container">
         <div class="left-column">
             <div class="form-container">
-                <h1 class="form-title">Apply for Your Free<br />30-Day Kestra Cloud Trial</h1>
+                <h1 class="form-title">
+                    Apply for Your Free<br />30-Day Kestra Cloud Trial
+                </h1>
 
                 <p class="form-description">
-                    Get early access to Kestra Cloud with 0 setup, 0 cost, and full orchestration
-                    power. Fill out this short form to tell us more about your use case and request
-                    your invite.
+                    Get early access to Kestra Cloud with 0 setup, 0 cost, and
+                    full orchestration power. Fill out this short form to tell
+                    us more about your use case and request your invite.
                 </p>
                 <div v-if="valid" v-html="validMessage" class="success" />
-                <form v-else @submit="onSubmit" ref="cloud-form" novalidate data-usal="fade-l">
+                <form
+                    v-else
+                    @submit="onSubmit"
+                    ref="cloud-form"
+                    novalidate
+                    data-usal="fade-l"
+                >
                     <div v-if="message" class="alert alert-danger mt-3 mb-0">
                         {{ message }}
                     </div>
 
                     <div class="form-group">
                         <label for="firstname"
-                            ><span class="required-field">*</span> First Name</label
+                            ><span class="required-field">*</span> First
+                            Name</label
                         >
                         <input
                             type="text"
@@ -30,7 +39,8 @@
 
                     <div class="form-group">
                         <label for="lastname"
-                            ><span class="required-field">*</span> Last Name</label
+                            ><span class="required-field">*</span> Last
+                            Name</label
                         >
                         <input
                             type="text"
@@ -43,14 +53,22 @@
 
                     <div class="form-group">
                         <label for="email"
-                            ><span class="required-field">*</span> Company Mail</label
+                            ><span class="required-field">*</span> Company
+                            Mail</label
                         >
-                        <input type="email" class="form-control" name="email" id="email" required />
+                        <input
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            id="email"
+                            required
+                        />
                     </div>
 
                     <div class="form-group">
                         <label for="company"
-                            ><span class="required-field">*</span> Company Name</label
+                            ><span class="required-field">*</span> Company
+                            Name</label
                         >
                         <input
                             type="text"
@@ -63,8 +81,8 @@
 
                     <div class="form-group">
                         <label
-                            ><span class="required-field">*</span> When would you like to start your
-                            free trial?</label
+                            ><span class="required-field">*</span> When would
+                            you like to start your free trial?</label
                         >
                         <div class="radio-options">
                             <div class="radio-option">
@@ -113,8 +131,8 @@
 
                     <div class="form-group">
                         <label
-                            ><span class="required-field">*</span> Expected Production
-                            Timeline</label
+                            ><span class="required-field">*</span> Expected
+                            Production Timeline</label
                         >
                         <div class="radio-options">
                             <div class="radio-option">
@@ -136,7 +154,9 @@
                                     name="production"
                                     required
                                 />
-                                <label for="within1month-timeline">Within 1 month</label>
+                                <label for="within1month-timeline"
+                                    >Within 1 month</label
+                                >
                             </div>
                             <div class="radio-option">
                                 <input
@@ -146,7 +166,9 @@
                                     name="production"
                                     required
                                 />
-                                <label for="within3months">Within 3 months</label>
+                                <label for="within3months"
+                                    >Within 3 months</label
+                                >
                             </div>
                             <div class="radio-option">
                                 <input
@@ -156,15 +178,17 @@
                                     name="production"
                                     required
                                 />
-                                <label for="within6months">Within 6 months</label>
+                                <label for="within6months"
+                                    >Within 6 months</label
+                                >
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label
-                            ><span class="required-field">*</span> How many users will need
-                            access?</label
+                            ><span class="required-field">*</span> How many
+                            users will need access?</label
                         >
                         <div class="radio-options">
                             <div class="radio-option">
@@ -210,7 +234,9 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    <button type="submit" class="btn btn-primary w-100">
+                        Submit
+                    </button>
                 </form>
             </div>
         </div>
@@ -219,17 +245,21 @@
             <div class="box"></div>
             <div class="testimonial">
                 <p class="testimonial-quote">
-                    “Kestra Cloud has been a pivotal part of giving us flexibility and scalability
-                    we need to pull off complex processes we do at Foundation Direct.”
+                    “Kestra Cloud has been a pivotal part of giving us
+                    flexibility and scalability we need to pull off complex
+                    processes we do at Foundation Direct.”
                 </p>
                 <p class="testimonial-author">
                     <strong>
-                        Michael Heidner - SVP of Analytics and Business Intelligence & Kestra Cloud
-                        Early Adopter
+                        Michael Heidner - SVP of Analytics and Business
+                        Intelligence & Kestra Cloud Early Adopter
                     </strong>
                 </p>
                 <div class="testimonial-logo">
-                    <img src="./images/foundation.svg?url" alt="Foundation Direct logo" />
+                    <img
+                        src="./images/foundation.svg?url"
+                        alt="Foundation Direct logo"
+                    />
                 </div>
             </div>
             <div class="flow-image" data-usal="fade-l">
@@ -241,11 +271,11 @@
 
 <script setup lang="ts">
     import { ref, useTemplateRef } from "vue"
-    import axios from "axios"
     import { getHubspotTracking } from "~/utils/hubspot.js"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
+    import { $fetch } from "~/utils/fetch"
 
     const props = defineProps<{
         routePath: string
@@ -290,7 +320,9 @@
                 },
             ])
 
-            let ip = await axios.get("https://api.ipify.org?format=json")
+            let ip = await $fetch<{ ip: string }>(
+                "https://api.ipify.org?format=json",
+            )
             const formData = {
                 fields: [
                     {
@@ -341,7 +373,7 @@
                 ],
                 context: {
                     hutk: getHubspotTracking(),
-                    ipAddress: ip.data.ip,
+                    ipAddress: ip.ip,
                     pageUri: props.routePath,
                     pageName: document.title,
                 },
@@ -357,8 +389,13 @@
 
             identify(form["email"].value)
 
-            axios
-                .post(hubSpotUrl, formData, {})
+            $fetch<{ inlineMessage?: string }>(hubSpotUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            })
                 .then(() => {
                     valid.value = true
                     validMessage.value =
@@ -372,9 +409,12 @@
                             (e: any) => e.errorType === "BLOCKED_EMAIL",
                         ).length > 0
                     ) {
-                        message.value = "Please use a professional email address"
+                        message.value =
+                            "Please use a professional email address"
                     } else {
-                        message.value = error.response?.data?.message || "Form submission error"
+                        message.value =
+                            error.response?.data?.message ||
+                            "Form submission error"
                     }
                 })
         }
@@ -382,8 +422,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .column-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -467,7 +505,8 @@
                         }
                         &:focus {
                             outline: 0;
-                            box-shadow: 0 0 0 2px rgba(var(--ks-border-active), 0.25);
+                            box-shadow: 0 0 0 2px
+                                rgba(var(--ks-border-active), 0.25);
                         }
                     }
                     label {
@@ -486,7 +525,8 @@
                 border-radius: $border-radius-lg;
                 font-weight: 600;
                 animation:
-                    successAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                    successAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+                        forwards,
                     glowEffect 2s ease-in-out infinite;
             }
             .alert-danger {
@@ -509,7 +549,8 @@
                 }
             }
             @keyframes glowEffect {
-                0%, 100% {
+                0%,
+                100% {
                     box-shadow: 0 0 15px rgba(76, 175, 80, 0.1);
                 }
                 50% {
@@ -518,14 +559,18 @@
             }
         }
         .right-column {
-            background: #151515 linear-gradient(to bottom, #151515 0%, rgba(21, 21, 21, 0) 50%) no-repeat center;
+            background: #151515
+                linear-gradient(to bottom, #151515 0%, rgba(21, 21, 21, 0) 50%)
+                no-repeat center;
             background-image:
                 linear-gradient(to bottom, #151515 0%, rgba(21, 21, 21, 0) 50%),
-                url("./images/gradient-1.svg"),
-                url("./images/gradient-2.png");
+                url("./images/gradient-1.svg"), url("./images/gradient-2.png");
             background-repeat: no-repeat;
             background-position: center, bottom, bottom;
-            background-size: 100%, 100% 70%, 100% 80%;
+            background-size:
+                100%,
+                100% 70%,
+                100% 80%;
             position: relative;
             overflow: hidden;
             color: var(--ks-content-primary);
@@ -541,7 +586,8 @@
                 height: 460px;
                 right: 0;
                 bottom: 0;
-                background: url("./images/box.png") no-repeat bottom right / contain;
+                background: url("./images/box.png") no-repeat bottom right /
+                    contain;
                 z-index: 0;
                 @media (max-width: 768px) {
                     width: 300px;
@@ -588,7 +634,8 @@
                     bottom: 0;
                     width: 202px;
                     height: 155px;
-                    background: url("./images/visual-cloud.png") no-repeat bottom right / contain;
+                    background: url("./images/visual-cloud.png") no-repeat
+                        bottom right / contain;
                     transform: translateY(20%);
                     z-index: 2;
                     @media (max-width: 768px) {

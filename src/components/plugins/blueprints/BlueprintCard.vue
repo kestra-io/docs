@@ -73,12 +73,11 @@
         display: flex;
         flex-direction: column;
         box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
-        transition: all 0.4s ease-out;
+        transition: transform 0.4s ease-out, border-color 0.4s ease-out;
 
         &:hover {
             border-color: var(--ks-border-active);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-            transform: scale(1.025);
+            transform: scale(1.01);
         }
 
         .task-icons {
@@ -165,3 +164,4 @@
         }
     }
 </style>
+
