@@ -28,7 +28,7 @@ Use this section to find out what data is available inside `{{ ... }}` at runtim
 
 ### Understand the execution context
 
-Kestra expressions combine the [Pebble templating engine](../../06.concepts/06.pebble/index.md) with the execution context to dynamically render flow properties.
+Kestra expressions combine the [Pebble templating engine](/docs/concepts/pebble) with the execution context to dynamically render flow properties.
 
 The execution context usually includes:
 
@@ -113,7 +113,7 @@ When the execution is started by a `Flow` trigger:
 
 ### Environment and global variables
 
-Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the [runtime and storage configuration](../../configuration/02.runtime-and-storage/index.md).
+Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the [runtime and storage configuration](/docs/configuration/runtime-and-storage).
 
 - reference `ENV_FOO` as `{{ envs.foo }}`
 - reference the configured environment name as `{{ kestra.environment }}`
@@ -164,7 +164,7 @@ tasks:
     format: "{{ secret('MY_SECRET') }}"
 ```
 
-Use `credential()` in Enterprise Edition to inject a short-lived token from a managed [Credential](../../07.enterprise/03.auth/credentials/index.md):
+Use `credential()` in Enterprise Edition to inject a short-lived token from a managed [Credential](/docs/enterprise/auth/credentials):
 
 ```yaml
 tasks:
@@ -1488,7 +1488,7 @@ Examples:
 {{ foo ?? bar ?? raise }}         {# raises an exception if all are undefined #}
 ```
 
-For detailed null vs undefined behavior, see the [Handling null and undefined values](../../15.how-to-guides/null-values/index.md) guide.
+For detailed null vs undefined behavior, see the [Handling null and undefined values](/docs/how-to-guides/null-values) guide.
 
 #### Operator precedence
 
