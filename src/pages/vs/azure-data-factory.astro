@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -46,7 +46,7 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
@@ -125,4 +125,4 @@ const {
         </Fragment>
         See how Kestra can simplify your workflows—and scale beyond legacy ETL pipelines.
     </SeeHow>
-</Layout>
+</VsLayout>
