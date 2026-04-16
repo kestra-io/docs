@@ -14,6 +14,7 @@ export const collections = {
         schema: () =>
             z.object({
                 title: z.string(),
+                h1: z.string().optional(),
                 sidebarTitle: z.string().optional(),
                 description: z.string().optional(),
                 icon: z.string().optional(),
@@ -50,6 +51,7 @@ export const collections = {
                         image: z.string(),
                         twitter: z.string().optional(),
                         linkedin: z.string().optional(),
+                        medium: z.string().optional(),
                         role: z.string().nullable().optional(),
                     })
                     .optional(),
@@ -60,6 +62,7 @@ export const collections = {
                             image: z.string(),
                             twitter: z.string().optional(),
                             linkedin: z.string().optional(),
+                            medium: z.string().optional(),
                             role: z.string().nullable().optional(),
                         }),
                     )

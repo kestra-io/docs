@@ -45,11 +45,14 @@ const staticImage = image
 
 const allAuthors = authors ?? (author ? [author] : [])
 
-const buildAuthor = (a: { name: string; linkedin?: string | null }) => ({
-    "@type": "Person",
-    name: a.name,
-    ...(a.linkedin ? { sameAs: a.linkedin } : {}),
-})
+const buildAuthor = (a: { name: string; linkedin?: string | null; medium?: string | null }) => {
+    const sameAs = [a.linkedin, a.medium].filter(Boolean)
+    return {
+        "@type": "Person",
+        name: a.name,
+        ...(sameAs.length > 0 ? { sameAs: sameAs.length === 1 ? sameAs[0] : sameAs } : {}),
+    }
+}
 
 const jsonLinkedData = {
     "@context": "https://schema.org",

@@ -15,7 +15,7 @@ const editUrl = doc.filePath
 ---
 
 <LayoutDocs activeStem="/docs" isHomePage>
-    <h1 slot="title" class="py-0 title">{doc.data?.title}</h1>
+    <h1 slot="title" class="py-0 title">{doc.data?.h1 ?? doc.data?.title}</h1>
 
     <NavToc
         client:visible
