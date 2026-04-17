@@ -23,6 +23,10 @@ This gradual migration is part of a well-known strategy called the [**Strangler 
 
 This approach avoids the risks and complexity of doing a full migration in one go. Instead of uprooting everything at once, you can orchestrate Airflow DAGs within **Kestra’s control plane** and **centralized UI**, gaining better visibility and scalability, while continuing to leverage what’s already working in Airflow.
 
+:::alert{type="info"}
+📘 **Airflow 2 is no longer maintained.** If you're evaluating whether to upgrade to Airflow 3 or migrate to Kestra, our free [Airflow 2 to Kestra migration guide](/resources/airflow-2-eol-whitepaper) breaks down both paths.
+:::
+
 ### Airflow Plugin: Migrate Without Disruption
 
 In response to many requests from users seeking support for easier migrations from Airflow, we've developed a **plugin** that lets you trigger and orchestrate Airflow DAGs directly from within Kestra. This makes it possible to **run Airflow jobs as part of your Kestra workflows**, giving you the flexibility to incorporate your existing DAGs into Kestra's broader orchestration capabilities.
