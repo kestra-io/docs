@@ -87,11 +87,11 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     const originalUrl = context.url.toString()
 
     // we don't want trailing slashes (but allow the root path '/')
-    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare
-    // manage with "html_handling": "drop-trailing-slash"
-    // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
-    //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
-    // }
+    // static pages are handled by Cloudflare's asset handler (drop-trailing-slash),
+    // this covers SSR (non-prerendered) pages that reach the worker
+    if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
+    }
 
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
