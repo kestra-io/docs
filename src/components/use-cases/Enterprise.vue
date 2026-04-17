@@ -1,9 +1,9 @@
 <template>
-    <div class="container-fluid">
+ <div class="container-fluid">
         <div class="container">
             <div class="enterprise">
                 <div class="text-center pb-3">
-                    <img src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg" width="163" height="163" alt="" />
+                    <img src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg" width="163" height="163" alt="Kestra monograme" />
                 </div>
                 <div class="heading mx-auto">
                     <h2 class="title text-center">
