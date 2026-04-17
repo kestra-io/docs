@@ -1,5 +1,6 @@
 ---
-title: Keycloak SCIM Provisioning
+title: Keycloak SCIM Provisioning in Kestra
+h1: Set Up Keycloak SCIM Provisioning for Identity Sync
 description: Configure SCIM provisioning with Keycloak. Synchronize users and groups from Keycloak to Kestra Enterprise for centralized identity management.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

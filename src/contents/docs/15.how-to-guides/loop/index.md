@@ -1,5 +1,6 @@
 ---
 title: Loop Over a List of Values
+h1: Iterate Over Lists with the ForEach Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

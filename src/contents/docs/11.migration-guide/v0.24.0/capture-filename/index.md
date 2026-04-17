@@ -1,5 +1,6 @@
 ---
-title: Capture filename on input type FILE
+title: "FILE Input API: Capture Filename on Upload (0.24.0)"
+h1: How to Capture the Filename When Uploading FILE-Type Inputs via API
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS", "EE"]

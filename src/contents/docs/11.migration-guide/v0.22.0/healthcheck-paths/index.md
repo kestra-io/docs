@@ -1,5 +1,6 @@
 ---
-title: Helm Chart Health Check Paths
+title: Helm Chart Health Check Path Changes in 0.22.0
+h1: Updated Kubernetes Health Check Paths in the Helm Chart
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]

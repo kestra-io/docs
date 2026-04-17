@@ -1,5 +1,6 @@
 ---
 title: Configure Monitoring with Grafana and Prometheus
+h1: Monitor Kestra with Prometheus Metrics and Grafana Dashboards
 icon: /src/contents/docs/icons/grafana.svg
 stage: Intermediate
 topics:

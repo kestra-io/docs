@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra with Docker Compose – PostgreSQL Backend
+title: Deploy Kestra with Docker Compose – PostgreSQL
+h1: Set Up Kestra Locally with Docker Compose and PostgreSQL
 sidebarTitle: Docker Compose
 icon: /src/contents/docs/icons/docker.svg
 description: Get started with Kestra quickly using Docker Compose with a PostgreSQL backend for a robust local or server deployment.

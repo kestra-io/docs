@@ -1,5 +1,6 @@
 ---
-title: Azure Batch Task Runner – Run Tasks on Azure Containers
+title: "Azure Batch Task Runner: Run Tasks on Azure Containers"
+h1: Offload Large-Scale Parallel Tasks to Azure Batch
 sidebarTitle: Azure Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"

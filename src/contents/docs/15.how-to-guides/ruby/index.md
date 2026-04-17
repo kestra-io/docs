@@ -1,5 +1,7 @@
 ---
 title: Run Ruby Inside Your Flows
+h1: Execute Ruby Scripts in Kestra Workflows
+description: Execute Ruby scripts in Kestra. Automate tasks with Ruby code, install gems at runtime, and pass outputs to downstream tasks for flexible scripting.
 icon: /src/contents/docs/icons/ruby.svg
 stage: Getting Started
 topics:

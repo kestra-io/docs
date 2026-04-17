@@ -1,5 +1,6 @@
 ---
-title: Required Basic Authentication
+title: Basic Authentication Now Required in Kestra OSS 0.24.0
+h1: Basic Authentication Is Now Mandatory for All OSS Instances
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS"]

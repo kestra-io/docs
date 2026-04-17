@@ -1,5 +1,6 @@
 ---
-title: Workflow Inputs in Kestra – Concepts and Usage
+title: "Workflow Inputs in Kestra: Declare and Pass Parameters"
+h1: Make Flows Dynamic with Typed Inputs and Runtime Parameters
 description: Make your Kestra flows dynamic with Inputs. Learn to declare typed inputs, validate values, and pass parameters at runtime for flexible workflow execution.
 icon: /src/contents/docs/icons/flow.svg
 sidebarTitle: Inputs

@@ -1,5 +1,6 @@
 ---
 title: Trigger a Flow on a Prometheus Alert
+h1: Auto-Trigger Kestra Flows from Prometheus Alerts
 icon: /src/contents/docs/icons/prometheus.svg
 stage: Intermediate
 topics:

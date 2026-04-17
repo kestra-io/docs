@@ -1,5 +1,6 @@
 ---
 title: Run Go Inside Your Flows
+h1: Execute Go Scripts in Kestra Flows Using the Go Plugin
 icon: /src/contents/docs/icons/golang.svg
 stage: Getting Started
 topics:

@@ -1,5 +1,6 @@
 ---
 title: Add Conditional Branching in Kestra
+h1: Direct Execution Paths Using the Switch Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

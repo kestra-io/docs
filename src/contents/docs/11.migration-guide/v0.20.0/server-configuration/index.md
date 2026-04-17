@@ -1,5 +1,6 @@
 ---
-title: Server configuration
+title: Server Configuration Changes in Kestra 0.20.0
+h1: "Update Server Config in 0.20.0: Mail Service and Secret Manager"
 description: Server Configuration updates in Kestra 0.20.0. Mail service config moved to `kestra.ee` and Secret Manager configuration is now mandatory.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0

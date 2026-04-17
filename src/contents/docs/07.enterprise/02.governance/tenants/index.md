@@ -1,5 +1,6 @@
 ---
-title: Multi-Tenancy in Kestra – Configure and Manage Tenants
+title: "Multi-Tenancy in Kestra: Configure Tenants"
+h1: Isolate Resources and Users Across Teams with Multi-Tenancy
 description: Enable Multi-Tenancy in Kestra Enterprise. Isolate resources, flows, and users across different teams or projects within a single Kestra instance.
 sidebarTitle: Tenants
 icon: /src/contents/docs/icons/admin.svg

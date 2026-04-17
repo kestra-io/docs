@@ -1,5 +1,6 @@
 ---
-title: Tutorial – Flowable Tasks in Kestra – Branch, Loop, Parallelize
+title: "Flowable Tasks in Kestra: Branch, Loop, Parallelize"
+h1: Master Branching, Looping & Parallel Execution with Flowable Tasks
 description: Master Kestra's Flowable tasks to control workflow logic. Learn how to implement branching, loops, and parallel execution for complex orchestration scenarios.
 sidebarTitle: Flowable tasks
 icon: /src/contents/docs/icons/tutorial.svg

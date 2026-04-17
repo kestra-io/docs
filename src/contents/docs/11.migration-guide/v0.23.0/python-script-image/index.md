@@ -1,5 +1,6 @@
 ---
-title: Python script tasks now use official python:3-13-slim image
+title: "Python Script Tasks Now Use python:3.13-slim Image"
+h1: Default Docker Image for Python Script Tasks Updated to 3.13-slim
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]

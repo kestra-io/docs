@@ -1,5 +1,6 @@
 ---
-title: Run Long-Running and Intensive Processes on Kubernetes
+title: Long-Running Tasks on Kubernetes in Kestra
+h1: Run Resource-Intensive Processes on Kubernetes Pods
 icon: /src/contents/docs/icons/kubernetes.svg
 stage: Advanced
 topics:

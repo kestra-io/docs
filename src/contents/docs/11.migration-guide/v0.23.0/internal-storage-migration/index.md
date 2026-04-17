@@ -1,5 +1,6 @@
 ---
-title: Internal Storage Migration Guide for S3 and GCS Users
+title: Internal Storage Path Migration for S3 and GCS (0.23.0)
+h1: Migrate S3 and GCS Internal Storage Paths in 0.23.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS","EE"]

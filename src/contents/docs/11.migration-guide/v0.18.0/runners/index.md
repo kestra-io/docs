@@ -1,5 +1,6 @@
 ---
-title: Deprecation of runner property in favor of taskRunner
+title: "runner Deprecated in Kestra 0.18.0: Use taskRunner"
+h1: Migrate from runner to the More Flexible taskRunner Property
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.18.0
 description: Guide to migrating from the deprecated runner property to the more flexible taskRunner property.

@@ -1,5 +1,6 @@
 ---
-title: Server Component Liveness in Kestra – Heartbeats and Recovery
+title: Server Heartbeats and Job Recovery in Kestra
+h1: How Kestra detects server failures and recovers stalled jobs
 sidebarTitle: Server Components Liveness
 icon: /src/contents/docs/icons/admin.svg
 description: Understand Kestra's server liveness mechanism, heartbeats, and how it handles component failures and recovery.
