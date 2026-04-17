@@ -1,0 +1,61 @@
+---
+import CardGrid from "~/components/card/CardGrid.astro"
+
+const items = [
+    {
+        title: "<span class='persona-tag persona-tag--green'>Data Engineers</span>",
+        description:
+            "You're on Airflow 2 and have to make a call: upgrade, migrate, or modernize. You want a clear, defensible framework before you commit budget and roadmap time.",
+    },
+    {
+        title: "<span class='persona-tag persona-tag--blue'>CTOs</span>",
+        description:
+            "You're balancing migration effort vs. platform debt. You need to understand how the switching cost compares to the ongoing cost of Airflow 2's operational quirks and the Airflow 3 upgrade.",
+    },
+    {
+        title: "<span class='persona-tag persona-tag--purple'>Platform Engineers</span>",
+        description:
+            "You'll live with the decision day-to-day. You want to know what actually changes in your deploy pipeline, observability stack, and on-call rotation — beyond the release notes.",
+    },
+]
+---
+
+<CardGrid title="Who this is for" {items} />
+
+<style lang="scss">
+    :global(.persona-tag) {
+        display: inline-flex;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        padding: 0.375rem 0.75rem;
+        border-radius: 999px;
+        line-height: 1;
+    }
+
+    :global(.persona-tag--green) {
+        background-color: rgba(34, 197, 94, 0.12);
+        color: #16a34a;
+
+        :global(html.dark) & {
+            color: #4ade80;
+        }
+    }
+
+    :global(.persona-tag--blue) {
+        background-color: rgba(59, 130, 246, 0.12);
+        color: #2563eb;
+
+        :global(html.dark) & {
+            color: #60a5fa;
+        }
+    }
+
+    :global(.persona-tag--purple) {
+        background-color: rgba(159, 79, 237, 0.12);
+        color: #7c3aed;
+
+        :global(html.dark) & {
+            color: #c084fc;
+        }
+    }
+</style>

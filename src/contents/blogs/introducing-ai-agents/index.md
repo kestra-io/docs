@@ -6,6 +6,7 @@ category: News & Product Updates
 authors:
   - name: Anna Geller
     linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+    medium: https://annageller.medium.com/
     image: ageller
     role: Product Lead
 image: ./main.jpg
@@ -107,7 +108,6 @@ tasks:
       - report.md
 ```
 
-
 ### 2. Multi-Agent Orchestration
 
 You're not limited to a single agent per flow. Since each AI Agent is just a Kestra task, you can easily define multiple agents in the same flow.
@@ -184,7 +184,6 @@ tasks:
     tools:
       - type: io.kestra.plugin.ai.tool.KestraFlow
 ```
-
 
 ## Supported LLM Providers
 
@@ -267,3 +266,4 @@ For a demo of AI Agents in action, check out the video below:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/osrS9mi5-eg?si=POI9pQyGefA0RhjQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
