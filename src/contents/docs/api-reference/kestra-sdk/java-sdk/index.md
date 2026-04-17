@@ -4,7 +4,8 @@ h1: Set Up the Kestra Java SDK and Build Workflows Programmatically
 sidebarTitle: Java SDK
 icon: /src/contents/docs/icons/api.svg
 release: 1.0.0
-description: Integrate Kestra with Java using the official SDK. Learn to set up the client, configure authentication, and programmatically create and execute workflows.---
+description: Integrate Kestra with Java using the official SDK. Learn to set up the client, configure authentication, and programmatically create and execute workflows.
+---
 Interact with Kestra's API via Java SDK.
 
 ## Use the Kestra Java SDK

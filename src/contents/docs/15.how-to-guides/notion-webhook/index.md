@@ -6,7 +6,8 @@ stage: Getting Started
 topics:
   - Integrations
   - Webhooks
-description: Automate Notion database updates and send Slack notifications by triggering Kestra flows via Notion webhooks.---
+description: Automate Notion database updates and send Slack notifications by triggering Kestra flows via Notion webhooks.
+---
 
 Use Notion webhooks to trigger Kestra flows when pages or databases are updated in your Notion workspace.
 

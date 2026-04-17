@@ -4,7 +4,8 @@ h1: Manage Kestra Resources Declaratively with the Kubernetes Operator
 sidebarTitle: Kubernetes Operator
 icon: /src/contents/docs/icons/dev.svg
 editions: ["EE"]
-description: Manage Kestra resources declaratively using the Kestra Kubernetes Operator for GitOps-style flow and configuration management.---
+description: Manage Kestra resources declaratively using the Kestra Kubernetes Operator for GitOps-style flow and configuration management.
+---
 
 How to use the Kestra Kubernetes Operator to provision and manage changes to Kestra resources, including flows, namespace files, and key-value store entries.
 

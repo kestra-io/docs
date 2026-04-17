@@ -4,7 +4,8 @@ h1: "Enterprise Service Account API: Non-Unique Names Across Tenants"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]
-description: Changes to the Service Account API in Enterprise Edition to support non-unique names across tenants.---
+description: Changes to the Service Account API in Enterprise Edition to support non-unique names across tenants.
+---
 
 
 ## Enterprise Edition API changes

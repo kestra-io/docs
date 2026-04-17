@@ -3,7 +3,8 @@ title: "Managing Environments in Kestra: Dev, Prod & Tenants"
 h1: Manage Kestra Instances, Tenants, and Namespaces Across Envs
 sidebarTitle: Manage Environments
 icon: /src/contents/docs/icons/best-practices.svg
-description: Best practices for managing Kestra environments, including separate instances for development and production, and using tenants.---
+description: Best practices for managing Kestra environments, including separate instances for development and production, and using tenants.
+---
 
 Kestra users can manage their environments with different levels of granularity. Kestra has three main concepts: instance, tenant, and namespace.
 

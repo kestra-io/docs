@@ -5,7 +5,8 @@ icon: /src/contents/docs/icons/golang.svg
 stage: Getting Started
 topics:
   - Scripting
-description: Run Go code directly within Kestra flows for high-performance scripting using the Go plugin or inline scripts.---
+description: Run Go code directly within Kestra flows for high-performance scripting using the Go plugin or inline scripts.
+---
 
 Run Go code directly inside your Flows and generate outputs.
 

@@ -3,7 +3,8 @@ title: "Listeners Deprecated in Kestra 0.12.0: Use Flow Triggers"
 h1: How to Migrate from Listeners to Flow Triggers in Kestra 0.12.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.12.0
-description: Information on the deprecation of Listeners in Kestra 0.12.0 and the transition to Flow triggers.---
+description: Information on the deprecation of Listeners in Kestra 0.12.0 and the transition to Flow triggers.
+---
 
 
 ## Deprecation of Listeners

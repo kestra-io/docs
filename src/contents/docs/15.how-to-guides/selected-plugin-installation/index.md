@@ -5,7 +5,8 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
-description: Learn how to install specific Kestra plugins in the open-source version for a lightweight build and faster startup using the -no-plugins Docker image.---
+description: Learn how to install specific Kestra plugins in the open-source version for a lightweight build and faster startup using the -no-plugins Docker image.
+---
 
 Install a selection of Kestra plugins in the open-source version.
 

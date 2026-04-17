@@ -6,7 +6,8 @@ stage: Getting Started
 topics:
   - Integrations
   - Best Practices
-description: Securely configure Google Service Accounts in Kestra to authenticate and access Google Cloud resources and Workspace apps.---
+description: Securely configure Google Service Accounts in Kestra to authenticate and access Google Cloud resources and Workspace apps.
+---
 
 Set Up a Google Service Account in Kestra.
 

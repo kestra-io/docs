@@ -6,7 +6,8 @@ stage: Advanced
 topics:
   - DevOps
   - Integrations
-description: Integrate Kestra infrastructure management into your Pulumi projects using Pulumi's Terraform Provider bridge.---
+description: Integrate Kestra infrastructure management into your Pulumi projects using Pulumi's Terraform Provider bridge.
+---
 
 Utilize Pulumi's Terraform Provider to manage Kestra infrastructure.
 

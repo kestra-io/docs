@@ -3,7 +3,8 @@ title: Inputs name Renamed to id in Kestra 0.15.0
 h1: "Flow Inputs: name Property Changed to id in Kestra 0.15.0"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
-description: Notice regarding the change of the name property to id for flow inputs in Kestra 0.15.0.---
+description: Notice regarding the change of the name property to id for flow inputs in Kestra 0.15.0.
+---
 
 
 ## Inputs `name` changed to `id`

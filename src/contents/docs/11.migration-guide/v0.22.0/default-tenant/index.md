@@ -4,7 +4,8 @@ h1: Deprecating the Default Tenant and Enabling Multi-Tenancy
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]
-description: Deprecation of the default tenant functionality and enablement of multi-tenancy by default in Enterprise Edition.---
+description: Deprecation of the default tenant functionality and enablement of multi-tenancy by default in Enterprise Edition.
+---
 
 
 ## Default Tenant & Multi-Tenancy

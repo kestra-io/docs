@@ -4,7 +4,8 @@ h1: Flow Trigger Now Reacts to Both SUCCESS and PAUSED States
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
-description: Details on the Flow trigger now reacting to the PAUSED state by default in Kestra 0.23.0.---
+description: Details on the Flow trigger now reacting to the PAUSED state by default in Kestra 0.23.0.
+---
 
 
 ## Flow trigger now also reacts to PAUSED state by default

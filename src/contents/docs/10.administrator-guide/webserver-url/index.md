@@ -3,7 +3,8 @@ title: Webserver URL, Reverse Proxy, and Forward Proxy Setup
 h1: Set the webserver base URL and configure forward/reverse proxies
 sidebarTitle: Webserver URL
 icon: /src/contents/docs/icons/admin.svg
-description: Configure the Kestra webserver URL and proxy settings to ensure correct link generation and access behind reverse proxies.---
+description: Configure the Kestra webserver URL and proxy settings to ensure correct link generation and access behind reverse proxies.
+---
 
 Configure the URL of your Kestra webserver.
 

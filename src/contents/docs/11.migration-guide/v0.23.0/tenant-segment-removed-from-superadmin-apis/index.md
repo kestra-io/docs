@@ -4,7 +4,8 @@ h1: Tenant Segment Removed from Superadmin API Routes in Enterprise Edition
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE", "Cloud"]
-description: Details on the removal of the tenant path segment from Superadmin API routes in Enterprise Edition.---
+description: Details on the removal of the tenant path segment from Superadmin API routes in Enterprise Edition.
+---
 
 
 ## Removal of tenant from Superadmin API routes

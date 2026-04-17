@@ -5,7 +5,8 @@ icon: /src/contents/docs/icons/perl.svg
 stage: Getting Started
 topics:
   - Scripting
-description: Execute Perl scripts inside Kestra workflows. Run automation and text-processing tasks with Perl, using Docker containers for clean dependency isolation.---
+description: Execute Perl scripts inside Kestra workflows. Run automation and text-processing tasks with Perl, using Docker containers for clean dependency isolation.
+---
 
 Run Perl code directly in your flows and generate outputs.
 

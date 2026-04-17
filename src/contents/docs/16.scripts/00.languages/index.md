@@ -3,7 +3,8 @@ title: Supported Programming Languages in Kestra
 h1: Which Languages Have Dedicated Kestra Script Plugins
 sidebarTitle: Programming Languages
 icon: /src/contents/docs/icons/dev.svg
-description: See which languages have dedicated Kestra script plugins and how to run other languages with Shell tasks and Docker.---
+description: See which languages have dedicated Kestra script plugins and how to run other languages with Shell tasks and Docker.
+---
 
 Kestra lets you run code in many languages inside your workflows.
 

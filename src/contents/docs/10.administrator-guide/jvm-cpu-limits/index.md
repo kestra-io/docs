@@ -4,7 +4,8 @@ h1: Prevent the JVM from exceeding CPU limits in Kubernetes
 sidebarTitle: JVM CPU Limits
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
-description: Configure the Kestra Helm chart to force the JVM to honor Kubernetes CPU limits, preventing pods from over-consuming resources.---
+description: Configure the Kestra Helm chart to force the JVM to honor Kubernetes CPU limits, preventing pods from over-consuming resources.
+---
 
 Force the JVM to match Kubernetes CPU limits through the Kestra Helm chart.
 

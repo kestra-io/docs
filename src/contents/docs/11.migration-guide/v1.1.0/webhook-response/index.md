@@ -4,7 +4,8 @@ h1: Webhook Execution API Now Returns a Generic Response Type
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
-description: Information on the change of the Webhook Execution API return type to a generic response.---
+description: Information on the change of the Webhook Execution API return type to a generic response.
+---
 
 
 ## Webhook Execution API Return Type Changed

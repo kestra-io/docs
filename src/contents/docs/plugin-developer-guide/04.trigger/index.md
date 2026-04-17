@@ -3,7 +3,8 @@ title: Develop a Kestra Trigger Plugin
 h1: How to Build Polling and Realtime Trigger Plugins for Kestra
 sidebarTitle: Develop a Trigger
 icon: /src/contents/docs/icons/dev.svg
-description: Learn how to develop custom Trigger plugins for Kestra, including Polling and Realtime triggers.---
+description: Learn how to develop custom Trigger plugins for Kestra, including Polling and Realtime triggers.
+---
 
 Here is how you can develop a [Trigger](../../05.workflow-components/07.triggers/index.mdx).
 

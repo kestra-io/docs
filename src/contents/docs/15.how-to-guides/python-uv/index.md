@@ -5,7 +5,8 @@ icon: /src/contents/docs/icons/python.svg
 stage: Intermediate
 topics:
   - Scripting
-description: Use uv in Kestra to manage Python dependencies and virtual environments for faster and more reliable script execution.---
+description: Use uv in Kestra to manage Python dependencies and virtual environments for faster and more reliable script execution.
+---
 
 Manage your Python Dependencies in Kestra using `uv`.
 

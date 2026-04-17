@@ -4,7 +4,8 @@ h1: Design and configure a fault-tolerant highly available cluster
 sidebarTitle: High Availability
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
-description: Design and configure Kestra for High Availability (HA) to ensure fault tolerance and continuous operation in production.---
+description: Design and configure Kestra for High Availability (HA) to ensure fault tolerance and continuous operation in production.
+---
 
 Kestra is designed for high availability and fault tolerance. This page explains how to configure your deployment to ensure continuous operation.
 

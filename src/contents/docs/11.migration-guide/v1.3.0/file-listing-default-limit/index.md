@@ -3,7 +3,8 @@ title: File-Listing Plugins Default to 25 Results in 1.3.0
 h1: File-Listing Plugins Now Cap Results at 25 by Default
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.3.0
-description: All plugins that list files now cap results at 25 by default to protect execution size and database load; set an explicit limit if you need more.---
+description: All plugins that list files now cap results at 25 by default to protect execution size and database load; set an explicit limit if you need more.
+---
 
 ## Context
 

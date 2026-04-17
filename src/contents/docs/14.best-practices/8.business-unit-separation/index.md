@@ -4,7 +4,8 @@ h1: Isolate Business Units Using Tenants and Namespaces
 sidebarTitle: Business Unit Separation
 icon: /src/contents/docs/icons/best-practices.svg
 editions: ["EE", "Cloud"]
-description: Strategies for isolating business units in Kestra Enterprise using Tenants and Namespaces for security and governance.---
+description: Strategies for isolating business units in Kestra Enterprise using Tenants and Namespaces for security and governance.
+---
 
 Kestra Enterprise provides two primary levels of isolation within an instance: tenants and namespaces.
 

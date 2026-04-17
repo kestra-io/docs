@@ -3,7 +3,8 @@ title: "Troubleshoot Kestra: Kubernetes, Docker, and Startup Issues"
 h1: Diagnose and resolve common Kestra deployment and runtime issues
 sidebarTitle: Troubleshooting
 icon: /src/contents/docs/icons/faq.svg
-description: Solutions for common Kestra issues, including pod restarts, unprocessable executions, and Docker-in-Docker problems.---
+description: Solutions for common Kestra issues, including pod restarts, unprocessable executions, and Docker-in-Docker problems.
+---
 
 Something doesn't work as expected? Check out these common issues and fixes.
 

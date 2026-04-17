@@ -4,7 +4,8 @@ h1: Replace BOOLEAN-Type Inputs with the New BOOL Toggle
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
-description: Deprecation of the BOOLEAN-type input in favor of the new BOOL-type toggle input.---
+description: Deprecation of the BOOLEAN-type input in favor of the new BOOL-type toggle input.
+---
 
 
 ## The BOOLEAN-type input is deprecated in favor of BOOL

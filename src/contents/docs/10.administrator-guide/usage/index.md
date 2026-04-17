@@ -3,7 +3,8 @@ title: "Anonymous Usage Reporting in Kestra: Enable or Disable"
 h1: Enable or disable anonymous usage data collection
 sidebarTitle: Usage
 icon: /src/contents/docs/icons/admin.svg
-description: Learn about anonymous usage reporting in Kestra and how to configure or disable data collection.---
+description: Learn about anonymous usage reporting in Kestra and how to configure or disable data collection.
+---
 
 Configuration options for the usage report.
 

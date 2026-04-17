@@ -4,7 +4,8 @@ h1: The Task Runs UI Page Has Been Removed from Enterprise Edition
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["EE"]
-description: Announcement of the removal of the Task Runs page from the Enterprise Edition UI.---
+description: Announcement of the removal of the Task Runs page from the Enterprise Edition UI.
+---
 
 
 ## Task Runs UI Page Removed

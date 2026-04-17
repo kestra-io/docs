@@ -3,7 +3,8 @@ title: "Releases & LTS Policy in Kestra: Cadence and Support"
 h1: Kestra Release Cadence, Versioning Strategy, and LTS Policy
 sidebarTitle: Releases & LTS Policy
 icon: /src/contents/docs/icons/admin.svg
-description: Information on Kestra's release cadence, versioning strategy, and Long-Term Support (LTS) policy.---
+description: Information on Kestra's release cadence, versioning strategy, and Long-Term Support (LTS) policy.
+---
 
 Track Kestra's long‑term support (LTS) releases alongside the fast cadence of feature releases.
 

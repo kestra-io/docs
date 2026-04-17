@@ -3,7 +3,8 @@ title: Deploy Kestra on DigitalOcean – Managed DB Setup
 h1: Install Kestra on a DigitalOcean Droplet with Managed DB and Spaces
 sidebarTitle: DigitalOcean Droplet with Managed Database
 icon: /src/contents/docs/icons/digitalocean.svg
-description: Install Kestra on a DigitalOcean Droplet with Managed Database and Spaces Object Storage for a cloud-native setup.---
+description: Install Kestra on a DigitalOcean Droplet with Managed Database and Spaces Object Storage for a cloud-native setup.
+---
 
 Install Kestra on DigitalOcean Droplet with DigitalOcean Database as a database backend.
 

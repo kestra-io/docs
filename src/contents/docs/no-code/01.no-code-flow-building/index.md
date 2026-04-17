@@ -3,7 +3,8 @@ title: "No Code Flow Building in Kestra: Skip the YAML"
 h1: Create and Edit Kestra Flows Visually with No Code
 sidebarTitle: No Code Flow Development
 icon: /src/contents/docs/icons/flow.svg
-description: Create and edit Kestra flows visually using the No Code flow builder, streamlining workflow development.---
+description: Create and edit Kestra flows visually using the No Code flow builder, streamlining workflow development.
+---
 
 Build flows without touching YAML.
 

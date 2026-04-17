@@ -4,7 +4,8 @@ h1: Input Default Values Now Support Dynamic Rendering in 1.0.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
-description: Details on the change to dynamic rendering for input default values in Kestra 1.0.0.---
+description: Details on the change to dynamic rendering for input default values in Kestra 1.0.0.
+---
 
 
 ## Input defaults are now dynamic

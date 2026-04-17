@@ -4,7 +4,8 @@ h1: Migrate from the LangChain4j Plugin to the New Plugin AI Package
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS", "EE"]
-description: Guide to migrating from the LangChain4j plugin to the new Plugin AI package in Kestra 0.24.0.---
+description: Guide to migrating from the LangChain4j plugin to the new Plugin AI package in Kestra 0.24.0.
+---
 
 
 

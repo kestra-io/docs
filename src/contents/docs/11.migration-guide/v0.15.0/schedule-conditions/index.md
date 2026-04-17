@@ -3,7 +3,8 @@ title: scheduleConditions Deprecated in Kestra 0.15.0
 h1: Migrate from scheduleConditions to conditions for Schedule Triggers
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
-description: Deprecation of the scheduleConditions property in favor of conditions for Schedule triggers in Kestra 0.15.0.---
+description: Deprecation of the scheduleConditions property in favor of conditions for Schedule triggers in Kestra 0.15.0.
+---
 
 
 ## Schedule Conditions: `scheduleConditions` deprecated for `conditions`

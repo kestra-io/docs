@@ -3,7 +3,8 @@ title: "Naming Conventions in Kestra: Flows and Namespaces"
 h1: Name Namespaces, Flows, and Tasks for a Scalable Hierarchy
 sidebarTitle: Naming Conventions
 icon: /src/contents/docs/icons/best-practices.svg
-description: Learn the best practices for naming namespaces, flows, tasks, and other identifiers in Kestra for a clean and scalable hierarchy.---
+description: Learn the best practices for naming namespaces, flows, tasks, and other identifiers in Kestra for a clean and scalable hierarchy.
+---
 
 Common naming conventions to keep your flows and tasks well-organized and consistent in Kestra.
 

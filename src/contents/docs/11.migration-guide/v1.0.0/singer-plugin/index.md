@@ -4,7 +4,8 @@ h1: Migrating Away from the Removed Singer Tap Plugin
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
-description: Guide to migrating from the removed Singer tap plugin to supported alternatives like Airbyte or dlt.---
+description: Guide to migrating from the removed Singer tap plugin to supported alternatives like Airbyte or dlt.
+---
 
 
 ## Singer Tap Plugin Removal

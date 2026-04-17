@@ -4,7 +4,8 @@ h1: Script Tasks No Longer Enter WARNING State When ERROR Logs Are Present
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
-description: Information on the removal of the WARNING state for script tasks when ERROR logs are present.---
+description: Information on the removal of the WARNING state for script tasks when ERROR logs are present.
+---
 
 
 ## No more WARNING state on script tasks when ERROR logs are present

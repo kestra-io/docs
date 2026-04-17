@@ -5,7 +5,8 @@ sidebarTitle: LTS Migration (1.0 → 1.3)
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.3.0
 editions: ["OSS", "EE"]
-description: Consolidated migration guide for users upgrading directly from Kestra 1.0 LTS to 1.3 LTS.---
+description: Consolidated migration guide for users upgrading directly from Kestra 1.0 LTS to 1.3 LTS.
+---
 
 ## Overview
 
