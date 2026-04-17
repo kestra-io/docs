@@ -101,3 +101,7 @@ Need to talk about migration just [reach out to us](/demo) we would be happy to 
 If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::
+
+:::alert{type="info"}
+📘 **Airflow 2 is no longer maintained.** If you're evaluating whether to upgrade to Airflow 3 or migrate to Kestra, our free [Airflow 2 to Kestra migration guide](/resources/airflow-2-eol-whitepaper) breaks down both paths.
+:::

@@ -126,4 +126,9 @@ It depends on your team and workloads. If you're a Python-native data engineerin
 ### How long does a typical Airflow migration take?
 Both upgrading to Airflow 3 and migrating to an alternative typically take **4 to 8 weeks** for a mid-size deployment (50-200 DAGs), depending on the number of custom operators, undocumented workarounds, and integration complexity. The [airflow-to-kestra-migration](https://github.com/kestra-io/airflow-to-kestra-migration) repository provides a concrete reference for what a DAG-to-YAML conversion looks like.
 
+:::alert{type="info"}
+📘 **Want a structured decision framework?** Our free guide covers what changed in Airflow 3, where the architecture breaks, and how to migrate incrementally — whether you stay on Airflow or switch.
+[Download the Airflow 2 EOL Guide →](/resources/airflow-2-eol-whitepaper)
+:::
+
 EOL is a rare moment when the status quo actually costs you something. Use this opportunity to make the decision deliberately.

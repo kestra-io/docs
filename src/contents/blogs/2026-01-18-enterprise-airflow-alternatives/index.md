@@ -27,6 +27,10 @@ So what are your actual options in 2026?
 | **AWS Step Functions** | AWS-native shops orchestrating serverless and microservices |
 | **Azure Data Factory** | Microsoft-centric enterprises with hybrid on-prem/cloud data movement |
 
+:::alert{type="info"}
+📘 **Airflow 2 reached end of life on April 22, 2026.** For a structured framework to decide between upgrading to Airflow 3, going managed, or switching to declarative orchestration — download our free [Airflow 2 end-of-life guide](/resources/airflow-2-eol-whitepaper).
+:::
+
 ## What enterprise teams need from Airflow alternatives
 
 Google "Airflow alternatives" and you'll find plenty of articles that compare tools on ease of use, language support, and GitHub stars. Sure, these matter, but enterprise teams care about a different set of questions entirely.
