@@ -1,5 +1,6 @@
 ---
-title: Google Batch Task Runner – Run Tasks on Google Cloud VMs
+title: "Google Batch Task Runner: Run Tasks on Cloud VMs"
+h1: Provision and Manage Google Cloud Compute with Kestra Tasks
 sidebarTitle: Google Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"

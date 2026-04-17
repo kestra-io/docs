@@ -1,5 +1,6 @@
 ---
-title: Performance Tuning Kestra – Tune Workers, JDBC, Kafka
+title: "Performance Tuning in Kestra: Workers, JDBC, Kafka"
+h1: "How to Tune Kestra Performance: Workers, JDBC, and Kafka"
 sidebarTitle: Performance Tuning
 icon: /src/contents/docs/icons/admin.svg
 description: Tips and best practices for tuning Kestra performance, covering Worker configuration, JDBC backend, and Kafka settings.

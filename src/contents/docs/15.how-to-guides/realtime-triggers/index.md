@@ -1,5 +1,6 @@
 ---
-title: Use Realtime Triggers in Kestra
+title: "Realtime Triggers in Kestra: Kafka, SQS, Pub/Sub"
+h1: React to Events Instantly with Realtime Triggers
 icon: /src/contents/docs/icons/plugins.svg
 stage: Getting Started
 topics:

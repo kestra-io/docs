@@ -1,6 +1,7 @@
 ---
-title: Flow Revisions in Kestra – Versioning and Rollbacks
-description: Manage versions of flows.
+title: "Flow Revisions in Kestra: Versioning and Rollbacks"
+h1: Version and Roll Back Your Flows with Revisions
+description: Track and manage flow versions in Kestra with built-in revision history. Roll back to any previous version to undo changes and maintain reliability.
 sidebarTitle: Revision
 icon: /src/contents/docs/icons/concepts.svg
 ---

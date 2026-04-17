@@ -1,5 +1,6 @@
 ---
-title: Deprecation of Templates
+title: "Templates Deprecated in Kestra 0.11.0: Migrate to Subflows"
+h1: How to Migrate from Templates to Subflows in Kestra 0.11.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.11.0
 description: Information on the deprecation of Templates in Kestra 0.11.0 and how to migrate to Subflows.

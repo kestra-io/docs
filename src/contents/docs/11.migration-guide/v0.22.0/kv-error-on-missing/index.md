@@ -1,5 +1,6 @@
 ---
-title: KV function errors on missing key
+title: KV Function Now Errors on Missing Keys in 0.22.0
+h1: "Breaking Change: kv() Throws an Error When a Key Is Missing"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]

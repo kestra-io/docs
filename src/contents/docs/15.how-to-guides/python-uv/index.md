@@ -1,5 +1,6 @@
 ---
-title: Manage Python Dependencies with uv
+title: Manage Python Dependencies with uv in Kestra
+h1: Speed Up Python Dependency Management with uv
 icon: /src/contents/docs/icons/python.svg
 stage: Intermediate
 topics:

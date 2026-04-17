@@ -1,6 +1,7 @@
 ---
-title: Backfill in Kestra – Replay Missed Schedules
-description: Backfills are replays of missed schedule intervals between a defined start and end date.
+title: "Backfill in Kestra: Replay Missed Schedules"
+h1: Replay Missed Schedule Intervals with Backfill
+description: Replay missed schedule intervals with Kestra Backfills. Rerun historical executions between a start and end date to reprocess data or recover from gaps.
 sidebarTitle: Backfill
 icon: /src/contents/docs/icons/concepts.svg
 ---

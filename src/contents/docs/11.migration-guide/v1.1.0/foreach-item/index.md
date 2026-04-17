@@ -1,5 +1,6 @@
 ---
-title: ForEachItem now starts iteration at 0 instead of 1
+title: ForEachItem Iteration Now Starts at 0 Instead of 1
+h1: "ForEachItem Index Change: Iteration Now Starts at 0"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]

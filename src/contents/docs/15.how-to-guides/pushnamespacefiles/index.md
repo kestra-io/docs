@@ -1,5 +1,6 @@
 ---
 title: Push Namespace Files to a Git Repository
+h1: Version-Control Your Namespace Files with Git
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:

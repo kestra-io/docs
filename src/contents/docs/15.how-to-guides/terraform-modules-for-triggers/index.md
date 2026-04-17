@@ -1,5 +1,6 @@
 ---
 title: Modularize Triggers and Schedules with Terraform
+h1: Scale Kestra with Reusable Terraform Trigger Templates
 icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:

@@ -1,5 +1,6 @@
 ---
 title: Flow Trigger in Kestra – Chain Flow Executions
+h1: Automate Workflow Dependencies by Chaining Flows
 description: Chain workflows in Kestra using the Flow Trigger. Automate dependencies by triggering flows upon the completion, success, or failure of other flows.
 sidebarTitle: Flow Trigger
 icon: /src/contents/docs/icons/flow.svg

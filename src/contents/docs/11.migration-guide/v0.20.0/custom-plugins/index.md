@@ -1,5 +1,6 @@
 ---
-title: Custom plugins
+title: "Custom Plugins Migration in Kestra 0.20.0: namespace Param"
+h1: Update Custom Plugins for the Mandatory namespace Parameter
 description: Custom Plugin migration for Kestra 0.20.0. Update plugins to handle the mandatory `namespace` parameter in internal storage methods.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0

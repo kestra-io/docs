@@ -1,5 +1,6 @@
 ---
 title: Use Debezium Tasks and Triggers in Kestra
+h1: Enable Change Data Capture with Debezium in Your Workflows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
