@@ -1,12 +1,12 @@
 ---
 title: Build a Custom Plugin for Kestra
+h1: Extend Kestra by Packaging a Custom Java Plugin
 icon: /src/contents/docs/icons/plugins.svg
 stage: Advanced
 topics:
   - Kestra Concepts
   - DevOps
-description: Learn how to build, package, and test a custom Kestra plugin in Java to extend Kestra's capabilities for your specific needs.
----
+description: Learn how to build, package, and test a custom Kestra plugin in Java to extend Kestra's capabilities for your specific needs.---
 
 Build your own Custom Plugin for Kestra.
 

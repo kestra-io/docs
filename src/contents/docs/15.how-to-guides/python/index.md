@@ -1,10 +1,11 @@
 ---
 title: Run Python Inside Your Flows
+h1: Execute Python Scripts in Kestra Workflows
+description: Run Python scripts in Kestra. Install pip packages at runtime, execute code in Docker containers, and pass data between tasks using inputs and outputs.
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
-  - Scripting
----
+  - Scripting---
 
 Run Python code directly in your flows and generate outputs.
 

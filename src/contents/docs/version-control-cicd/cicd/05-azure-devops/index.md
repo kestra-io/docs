@@ -1,9 +1,9 @@
 ---
 title: Azure DevOps for Kestra – YAML Pipelines Example
+h1: Automate Kestra Flow Deployment with Azure DevOps Pipelines
 sidebarTitle: Azure DevOps
 icon: /src/contents/docs/icons/dev.svg
-description: Build CI/CD pipelines in Azure DevOps to automate the validation and deployment of Kestra flows using YAML configurations.
----
+description: Build CI/CD pipelines in Azure DevOps to automate the validation and deployment of Kestra flows using YAML configurations.---
 
 How to use Azure DevOps to create a CI/CD pipeline for your Kestra flows.
 

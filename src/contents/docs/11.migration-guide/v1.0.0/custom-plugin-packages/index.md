@@ -1,10 +1,10 @@
 ---
-title: Internal Package Structure Changes (Custom Plugins Only)
+title: Custom Plugin Package Structure Changes in Kestra 1.0
+h1: Internal Package Structure Changes for Custom Plugin Developers
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
-description: Internal package structure changes for custom plugin developers in Kestra 1.0.0.
----
+description: Internal package structure changes for custom plugin developers in Kestra 1.0.0.---
 
 
 ## Internal Package Structure Changes (Custom Plugins Only)

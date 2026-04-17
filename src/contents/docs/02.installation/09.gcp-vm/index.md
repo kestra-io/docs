@@ -1,9 +1,9 @@
 ---
-title: Deploy Kestra on GCP VM – Cloud SQL and GCS Backend
+title: Deploy Kestra on GCP VM – Cloud SQL and GCS
+h1: Install Kestra on Google Cloud VM with Cloud SQL and GCS
 sidebarTitle: GCP VM with Cloud SQL and GCS
 icon: /src/contents/docs/icons/gcp-compute.svg
-description: Deploy Kestra on a Google Cloud Platform (GCP) VM with Cloud SQL and Google Cloud Storage (GCS).
----
+description: Deploy Kestra on a Google Cloud Platform (GCP) VM with Cloud SQL and Google Cloud Storage (GCS).---
 
 Install Kestra on a GCP VM with Cloud SQL as the database backend and Cloud Storage as the internal storage backend.
 

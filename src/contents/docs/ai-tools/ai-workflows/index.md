@@ -1,9 +1,10 @@
 ---
-title: AI Workflows in Kestra – Orchestrate with Your Preferred LLM
+title: "AI Workflows in Kestra: Orchestrate with Any LLM"
+h1: Orchestrate AI Workflows with Your Preferred LLM Provider
+description: Orchestrate AI workflows in Kestra with any LLM provider. Connect to OpenAI, Anthropic, Google, and more to build intelligent automation pipelines.
 sidebarTitle: AI Workflows
 icon: /src/contents/docs/icons/ai.svg
-version: "1.0.0"
----
+version: "1.0.0"---
 
 Build AI workflows with your preferred LLM.
 

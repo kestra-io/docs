@@ -1,10 +1,10 @@
 ---
-title: Single Sign-On for Kestra – Providers and Setup
+title: "Single Sign-On in Kestra: Providers and Setup"
+h1: Configure SSO with Google, Microsoft, Okta, and Keycloak
 description: Enable Single Sign-On (SSO) in Kestra Enterprise. Configure OIDC authentication with providers like Google, Microsoft, Okta, and Keycloak.
 sidebarTitle: SSO
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE", "Cloud"]
----
+editions: ["EE", "Cloud"]---
 
 How to enable and set up SSO in your Kestra Enterprise instance.
 

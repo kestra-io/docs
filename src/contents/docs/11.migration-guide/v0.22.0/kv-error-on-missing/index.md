@@ -1,10 +1,10 @@
 ---
-title: KV function errors on missing key
+title: KV Function Now Errors on Missing Keys in 0.22.0
+h1: "Breaking Change: kv() Throws an Error When a Key Is Missing"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]
-description: Change in default behavior of the kv() function to throw an error when a key is missing in Kestra 0.22.0.
----
+description: Change in default behavior of the kv() function to throw an error when a key is missing in Kestra 0.22.0.---
 
 
 ## KV function errors on missing key

@@ -1,11 +1,11 @@
 ---
 title: Manage Python Dependencies in Kestra
+h1: "Install and Cache Python Dependencies: pip, venv, Docker"
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
   - Scripting
-description: Learn various ways to manage Python dependencies in Kestra, including using pip, virtual environments, caching, and custom Docker images.
----
+description: Learn various ways to manage Python dependencies in Kestra, including using pip, virtual environments, caching, and custom Docker images.---
 
 Manage your Python dependencies in Kestra.
 

@@ -1,10 +1,10 @@
 ---
-title: Version property renamed
+title: Plugin 'version' Property Renamed in Kestra 0.22.0
+h1: Why the 'version' Property Was Renamed in Several Plugins
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]
-description: Renaming of the version property in several plugins to reserve the keyword for Kestra's internal plugin management.
----
+description: Renaming of the version property in several plugins to reserve the keyword for Kestra's internal plugin management.---
 
 
 ## Version property renamed

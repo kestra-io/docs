@@ -1,9 +1,9 @@
 ---
-title: Disabled Flag in Kestra – Skip Flows, Tasks, Triggers
-description: Temporarily disable flows, tasks, or triggers in Kestra. Use the disabled flag for debugging, testing, or pausing specific workflow components without deletion.
+title: "Disabled Flag in Kestra: Skip Flows and Triggers"
+h1: Temporarily Disable Flows, Tasks, or Triggers
+description: Disable flows or tasks in Kestra without deleting them. Use the disabled property to pause individual tasks or entire flows for maintenance.
 sidebarTitle: Disabled flag
-icon: /src/contents/docs/icons/flow.svg
----
+icon: /src/contents/docs/icons/flow.svg---
 
 The `disabled` flag is a boolean property that lets you skip a flow, task, or trigger.
 

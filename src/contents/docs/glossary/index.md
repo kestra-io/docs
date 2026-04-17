@@ -1,9 +1,9 @@
 ---
-title: Glossary – Useful Kestra Terms and Definitions
-description: A list of terms useful for understanding Kestra and declarative orchestration. 
+title: "Kestra Glossary: Terms and Definitions"
+h1: Glossary of Key Kestra and Orchestration Terms
+description: Glossary of Kestra and declarative orchestration terms. Definitions for flows, tasks, triggers, namespaces, and key concepts used across the platform.
 sidebarTitle: Glossary
-icon: /src/contents/docs/icons/concepts.svg
----
+icon: /src/contents/docs/icons/concepts.svg---
 
 A list of terms useful for understanding Kestra and declarative orchestration. 
 

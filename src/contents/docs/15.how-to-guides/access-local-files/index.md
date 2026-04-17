@@ -1,12 +1,12 @@
 ---
-title: Access Files on Your Local Machine in Kestra
+title: "Access Local Files in Kestra: Bind Mounts Guide"
+h1: Read and Process Local Machine Files Using Bind Mounts
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Scripting
   - Integrations
-description: Access and process files stored on your local machine within Kestra workflows using bind mounts and the Process task runner.
----
+description: Access and process files stored on your local machine within Kestra workflows using bind mounts and the Process task runner.---
 
 Access locally stored files on your machine inside Kestra workflows.
 

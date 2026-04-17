@@ -1,9 +1,9 @@
 ---
-title: Workflow Outputs in Kestra – Sharing Data Between Tasks
+title: "Workflow Outputs in Kestra: Share Data Between Tasks"
+h1: Capture and Reuse Execution Results Across Tasks and Flows
 description: Leverage Outputs in Kestra to share data between tasks and flows. Learn to capture, store, and reuse execution results and artifacts in your workflows.
 icon: /src/contents/docs/icons/flow.svg
-sidebarTitle: Outputs
----
+sidebarTitle: Outputs---
 
 Outputs let you pass data between tasks and flows.
 

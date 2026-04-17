@@ -1,10 +1,10 @@
 ---
-title: Key-value Store and Secrets Metadata Migration
+title: KV Store and Secrets Metadata Migration in Kestra 1.1
+h1: Run Metadata Migration for Key-Value Store and Secrets
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
-description: Required metadata migration for Key-Value Store and Secrets to enable efficient indexing and search.
----
+description: Required metadata migration for Key-Value Store and Secrets to enable efficient indexing and search.---
 
 
 ## Key-value Store and Secrets Metadata Migration

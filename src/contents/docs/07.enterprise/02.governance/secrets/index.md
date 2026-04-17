@@ -1,11 +1,11 @@
 ---
-title: Secrets in Kestra Enterprise – Manage Sensitive Data
+title: "Secrets in Kestra Enterprise: Manage Sensitive Data"
+h1: Create, Use, and Govern Secrets in Your Workflows
 description: Manage sensitive data securely in Kestra Enterprise. Create, use, and govern secrets within your workflows and integrations.
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-docId: secrets
----
+docId: secrets---
 
 How to create and manage Secrets in the Enterprise Edition.
 

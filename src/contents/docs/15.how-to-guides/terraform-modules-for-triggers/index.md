@@ -1,12 +1,12 @@
 ---
 title: Modularize Triggers and Schedules with Terraform
+h1: Scale Kestra with Reusable Terraform Trigger Templates
 icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:
   - DevOps
   - Integrations
-description: Scale your Kestra codebase by modularizing triggers and schedules using Terraform templates for reusable and consistent definitions.
----
+description: Scale your Kestra codebase by modularizing triggers and schedules using Terraform templates for reusable and consistent definitions.---
 
 Scale your codebase using Terraform to template and make scheduling a breeze
 

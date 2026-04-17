@@ -1,9 +1,9 @@
 ---
-title: Plugin Discovery Mechanism
+title: Plugin Discovery Mechanism Change in Kestra 0.17.0
+h1: How Plugin Discovery Changed to Java Service Loader in 0.17.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
-description: Changes to the plugin discovery mechanism in Kestra 0.17.0 using Java Service Loader.
----
+description: Changes to the plugin discovery mechanism in Kestra 0.17.0 using Java Service Loader.---
 
 
 ## Plugin Discovery Mechanism

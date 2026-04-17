@@ -1,9 +1,9 @@
 ---
-title: Execution States in Kestra – Lifecycle Reference
+title: "Execution States in Kestra: Full Lifecycle Guide"
+h1: Understand Every Execution State from Created to Success
 description: Understand the Kestra Execution Lifecycle. Reference guide to all execution and task run states, including Created, Running, Success, Failed, and more.
 sidebarTitle: States
-icon: /src/contents/docs/icons/flow.svg
----
+icon: /src/contents/docs/icons/flow.svg---
 
 States control the status of your workflow execution.
 

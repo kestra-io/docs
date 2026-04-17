@@ -1,10 +1,10 @@
 ---
-title: The default pullPolicy for Docker-based tasks changed
+title: Docker pullPolicy Default Changed to IF_NOT_PRESENT
+h1: Default Docker pullPolicy for Tasks Changed to IF_NOT_PRESENT
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
-description: Details on the change of default pullPolicy for Docker-based tasks to IF_NOT_PRESENT.
----
+description: Details on the change of default pullPolicy for Docker-based tasks to IF_NOT_PRESENT.---
 
 
 ## The default pullPolicy for Docker-based tasks changed

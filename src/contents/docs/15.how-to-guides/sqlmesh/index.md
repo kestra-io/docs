@@ -1,11 +1,12 @@
 ---
 title: Use SQLMesh to Run dbt Projects
+h1: Orchestrate dbt Projects with SQLMesh in Kestra
+description: Orchestrate SQLMesh transformations in Kestra. Run and schedule SQLMesh plans as part of your data pipeline for version-controlled, SQL-first modeling.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations
-version: ">= 0.18.0"
----
+version: ">= 0.18.0"---
 
 Using SQLMesh to run dbt project with Kestra.
 

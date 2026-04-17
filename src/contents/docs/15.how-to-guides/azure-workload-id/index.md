@@ -1,5 +1,6 @@
 ---
 title: Use Azure Managed Workload Identity with Kestra
+h1: Access Azure Resources Securely Without Managing Secrets
 icon: /src/contents/docs/icons/azure-aks.svg
 stage: Advanced
 topics:
@@ -7,8 +8,7 @@ topics:
   - DevOps
   - Integrations
 editions: ["EE", "Cloud"]
-description: Configure Azure Workload Identity on Kestra Enterprise to securely access Azure resources like Key Vault without managing secrets.
----
+description: Configure Azure Workload Identity on Kestra Enterprise to securely access Azure resources like Key Vault without managing secrets.---
 
 How to use Azure Workload identity to provide access to resources such as Azure Key Vault in Kestra
 

@@ -1,10 +1,11 @@
 ---
-title: Use the Synchronous Executions API
+title: Synchronous Executions API in Kestra
+h1: Wait for Execution Results with the Synchronous API
+description: Trigger Kestra workflow executions synchronously via the REST API. Wait for completion and retrieve outputs in a single API call for real-time integrations.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
-  - Integrations
----
+  - Integrations---
 
 Manage the Executions API Synchronously.
 

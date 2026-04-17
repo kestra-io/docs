@@ -1,10 +1,11 @@
 ---
 title: Pause and Resume Flows in Kestra
+h1: How to Pause a Workflow and Resume It on Demand
+description: Pause and resume Kestra workflow executions on demand. Use manual triggers, scheduled waits, and approval gates to control flow progression at runtime.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Kestra Concepts
----
+  - Kestra Concepts---
 
 How to Pause and Resume your flows.
 

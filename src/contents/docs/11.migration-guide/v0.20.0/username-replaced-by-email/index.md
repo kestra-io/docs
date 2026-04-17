@@ -1,10 +1,10 @@
 ---
-title: Usernames replaced by email addresses
+title: Usernames Replaced by Emails in Kestra 0.20.0 Enterprise
+h1: Migrate User Identifiers from Usernames to Email Addresses
 description: Usernames replaced by emails in Kestra 0.20.0 (Enterprise). Run the migration command to update user identifiers to valid email addresses.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0
-editions: ["EE"]
----
+editions: ["EE"]---
 
 
 ## Usernames replaced by email addresses

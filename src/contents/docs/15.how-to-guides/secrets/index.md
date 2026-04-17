@@ -1,11 +1,11 @@
 ---
 title: Configure Secrets in Kestra
+h1: Securely Store and Use Secrets in Your Flows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
-description: Learn how to securely configure and use secrets in Kestra to protect sensitive information like passwords and API keys in your flows.
----
+description: Learn how to securely configure and use secrets in Kestra to protect sensitive information like passwords and API keys in your flows.---
 
 Learn how to securely configure and use secrets in Kestra.
 

@@ -1,9 +1,9 @@
 ---
-title: Designing Data Retention and Purging in Kestra
+title: "Data Retention and Purging in Kestra: Choose a Strategy"
+h1: Choose the Right Purge Strategy for Executions and Logs
 sidebarTitle: Purging Data
 icon: /src/contents/docs/icons/best-practices.svg
-description: Learn how to choose the right purge strategy in Kestra for executions, logs, key-value pairs, Namespace files, assets, and other retained data.
----
+description: Learn how to choose the right purge strategy in Kestra for executions, logs, key-value pairs, Namespace files, assets, and other retained data.---
 
 How to choose the right purge strategy for operational data, retained artifacts, and mutable state in Kestra.
 

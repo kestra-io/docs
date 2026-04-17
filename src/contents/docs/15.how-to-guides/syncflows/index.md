@@ -1,13 +1,13 @@
 ---
 title: Sync Flows from a Git Repository
+h1: Enable GitOps for Kestra with the SyncFlows Task
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control
   - DevOps
 version: ">= 0.17.0"
-description: Automatically sync your flows from a Git repository to Kestra using the SyncFlows task, enabling GitOps and version control for your workflows.
----
+description: Automatically sync your flows from a Git repository to Kestra using the SyncFlows task, enabling GitOps and version control for your workflows.---
 
 Sync flows from a Git Repository to Kestra with the SyncFlows Task.
 

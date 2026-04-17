@@ -1,11 +1,11 @@
 ---
-title: System and Hidden Labels in Kestra – Admin Metadata
-description: Special labels for system use only.
+title: "System Labels in Kestra: Reserved Admin Metadata"
+h1: How System and Hidden Labels Work for Admin Metadata
+description: Use system and hidden labels in Kestra for admin metadata. Understand how internal labels differ from user labels and how they affect filtering.
 sidebarTitle: System Labels & Hidden Labels
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]
-version: ">= 0.20.0"
----
+version: ">= 0.20.0"---
 
 Special labels for system use only.
 

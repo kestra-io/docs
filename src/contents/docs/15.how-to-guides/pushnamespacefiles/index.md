@@ -1,13 +1,13 @@
 ---
 title: Push Namespace Files to a Git Repository
+h1: Version-Control Your Namespace Files with Git
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control
   - DevOps
 version: ">= 0.17.0"
-description: Push your namespace files, such as scripts and configuration, from Kestra to a Git repository to maintain version control.
----
+description: Push your namespace files, such as scripts and configuration, from Kestra to a Git repository to maintain version control.---
 
 Push files in your namespace to a Git Repository with the PushNamespaceFiles Task.
 

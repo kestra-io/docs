@@ -1,8 +1,8 @@
 ---
-title: Why Kestra
-description: "A Simpler, More Powerful Way to Orchestrate Everything"
-hideSidebar: true
----
+title: "Why Kestra: Simpler, More Powerful Orchestration"
+h1: Why Teams Choose Kestra for Workflow Orchestration
+description: Discover why teams choose Kestra for orchestration. A declarative, event-driven platform that scales from simple automations to complex enterprise pipelines.
+hideSidebar: true---
 
 How We See the Orchestration and Automation Market
 

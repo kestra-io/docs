@@ -1,10 +1,11 @@
 ---
 title: Handle Null and Undefined Values in Kestra
+h1: Safely Process Null and Undefined Values in Flows
+description: Handle null and missing values in Kestra flows. Check for null inputs, set defaults, and use conditional logic to manage undefined task outputs.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Best Practices
----
+  - Best Practices---
 
 How to use the null coalescing operator to handle null and undefined values.
 

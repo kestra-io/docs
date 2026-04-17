@@ -1,11 +1,11 @@
 ---
 title: Add Conditional Branching in Kestra
+h1: Direct Execution Paths Using the Switch Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts
-description: Master conditional branching in Kestra workflows using the Switch task to direct execution paths based on dynamic input values.
----
+description: Master conditional branching in Kestra workflows using the Switch task to direct execution paths based on dynamic input values.---
 
 How to use the Switch task to branch the flow based on a value.
 

@@ -1,9 +1,9 @@
 ---
-title: Kestra Community Guidelines – How to Participate
+title: "Community Guidelines: How to Participate in Kestra"
+h1: How to Participate Respectfully in the Kestra Community
 description: Read the Kestra Community Guidelines. Learn how to participate respectfully, ask for help effectively, and foster a welcoming and inclusive environment.
 sidebarTitle: Community Guidelines
-icon: /src/contents/docs/icons/contributing.svg
----
+icon: /src/contents/docs/icons/contributing.svg---
 
 The Kestra community is a welcoming and inclusive place for everyone.
 

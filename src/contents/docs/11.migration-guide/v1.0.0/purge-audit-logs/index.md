@@ -1,10 +1,10 @@
 ---
-title: Audit Log's permissions are renamed to resources
+title: "PurgeAuditLogs: 'permissions' Renamed to 'resources'"
+h1: "Audit Log Property Rename: 'permissions' Is Now 'resources'"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["EE"]
-description: Renaming of the permissions property to resources in the PurgeAuditLogs task for consistency.
----
+description: Renaming of the permissions property to resources in the PurgeAuditLogs task for consistency.---
 
 
 ## Audit Log's permissions are renamed to resources

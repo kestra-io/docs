@@ -1,9 +1,9 @@
 ---
-title: Deprecation of Terraform task_defaults in favor of plugin_defaults
-description: "Terraform Migration: task_defaults to plugin_defaults. Update your Terraform configurations to use the new plugin_defaults property in Kestra provider v0.18.0."
+title: Terraform task_defaults to plugin_defaults in 0.18.0
+h1: "Update Terraform Configs: Migrate task_defaults to plugin_defaults"
+description: Migrate from Terraform task_defaults to plugin_defaults in Kestra 0.18.0. Update your Terraform configurations to use the new plugin_defaults property.
 icon: /src/contents/docs/icons/migration-guide.svg
-release: 0.18.0
----
+release: 0.18.0---
 
 
 ## Deprecation of Terraform task_defaults in favor of plugin_defaults

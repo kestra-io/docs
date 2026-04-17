@@ -1,10 +1,10 @@
 ---
-title: IAM and API Endpoint Changes
+title: IAM and API Endpoint Changes in Kestra 0.24.0
+h1: IAM and API Endpoint Revisions for Security in 0.24.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["EE"]
-description: Details on significant IAM and API endpoint revisions in Kestra 0.24.0 for improved security and management.
----
+description: Details on significant IAM and API endpoint revisions in Kestra 0.24.0 for improved security and management.---
 
 
 ## IAM and API Endpoint Changes

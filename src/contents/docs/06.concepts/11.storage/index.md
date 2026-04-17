@@ -1,9 +1,9 @@
 ---
-title: Data Storage and Processing in Kestra – Where Data Lives
-description: Manage data processed by tasks.
+title: "Data Storage in Kestra: How Task Data Is Managed"
+h1: Understand How Kestra Stores and Processes Task Data
+description: Understand how Kestra stores and processes task data. Learn about internal storage, file handling, and how outputs are passed between tasks in your workflows.
 sidebarTitle: Data storage and processing
-icon: /src/contents/docs/icons/concepts.svg
----
+icon: /src/contents/docs/icons/concepts.svg---
 
 Manage data processed by tasks.
 

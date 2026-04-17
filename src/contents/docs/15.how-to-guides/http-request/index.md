@@ -1,10 +1,11 @@
 ---
 title: Make HTTP Requests Inside Your Flows
+h1: Send HTTP Requests to External APIs from Kestra Workflows
+description: Make HTTP requests inside Kestra workflows. Call REST APIs, fetch remote data, and chain API responses as inputs to downstream tasks.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Integrations
----
+  - Integrations---
 
 Make HTTP Requests to fetch data and generate outputs.
 

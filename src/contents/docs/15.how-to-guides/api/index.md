@@ -1,11 +1,11 @@
 ---
 title: Extend Kestra with the API
+h1: Create Flows, Trigger Executions, and Manage KV Entries via API
 icon: /src/contents/docs/icons/api.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components
-description: Discover how to extend Kestra by using its API to create flows, trigger executions, manage KV store entries, and handle namespace files.
----
+description: Discover how to extend Kestra by using its API to create flows, trigger executions, manage KV store entries, and handle namespace files.---
 
 Extend Kestra by using the API.
 

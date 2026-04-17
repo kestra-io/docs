@@ -1,11 +1,11 @@
 ---
 title: Connect a Supabase Database to Kestra
+h1: Query and Manage Supabase Data from Your Workflows
 icon: /src/contents/docs/icons/supabase.svg
 stage: Intermediate
 topics:
   - Integrations
-description: Learn how to connect your Supabase Database to Kestra workflows using the PostgreSQL plugin to query, copy, and manage your data.
----
+description: Learn how to connect your Supabase Database to Kestra workflows using the PostgreSQL plugin to query, copy, and manage your data.---
 
 Connect your Supabase Database to your workflows using the PostgreSQL plugin.
 

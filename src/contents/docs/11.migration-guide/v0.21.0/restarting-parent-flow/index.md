@@ -1,10 +1,10 @@
 ---
-title: Restarting parent flow
+title: Parent Flow Restart Behavior in Kestra 0.21.0
+h1: How Parent Flow Restart Behavior Changed in 0.21.0
 description: Restart behavior change in Kestra 0.21.0. Parent flows now restart failed subflows by default. Configure `restartBehavior` to change this if needed.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
-editions: ["OSS", "EE"]
----
+editions: ["OSS", "EE"]---
 
 
 ## Restarting parent flow

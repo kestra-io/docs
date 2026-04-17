@@ -1,9 +1,9 @@
 ---
 title: Workflow Errors in Kestra – Handling Strategies
+h1: Handle Workflow Errors with Global and Local Strategies
 description: Master error handling in Kestra. Explore strategies like global and local error handlers, allowing failures, and configuring alerts for robust workflows.
 sidebarTitle: Errors
-icon: /src/contents/docs/icons/flow.svg
----
+icon: /src/contents/docs/icons/flow.svg---
 
 Kestra provides multiple ways to handle errors, helping you both identify issues and decide whether your flows should stop or continue running after an error.
 

@@ -1,9 +1,9 @@
 ---
-title: Kestra Security and Secrets Configuration
+title: Security & Secrets Configuration in Kestra
+h1: Configure Encryption, Secret Backends & Auth Security
 description: Configure encryption, secret backends, auth-related security settings, RBAC-adjacent platform security, and secure server behavior in Kestra.
 sidebarTitle: Security and Secrets
-icon: /src/contents/docs/icons/admin.svg
----
+icon: /src/contents/docs/icons/admin.svg---
 
 Use this page when you need to protect sensitive values or harden a Kestra deployment.
 

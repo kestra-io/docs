@@ -1,11 +1,11 @@
 ---
 title: Docker Task Runner – Run Tasks in Containers
+h1: Isolate Task Execution in Docker Containers
 sidebarTitle: Docker Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]
-description: Isolate task execution in Docker containers using Kestra's Docker Task Runner for consistent environments.
----
+description: Isolate task execution in Docker containers using Kestra's Docker Task Runner for consistent environments.---
 
 Run tasks as Docker containers.
 

@@ -1,8 +1,9 @@
 ---
-title: Kestra CI/CD Pipelines – Validate and Deploy Flows
+title: "CI/CD Pipelines in Kestra: Validate and Deploy Flows"
+h1: Automate Kestra Flow Validation and Deployment with CI/CD
+description: Automate Kestra flow validation and deployment with CI/CD. Integrate with GitHub Actions, GitLab CI, and other pipelines to enforce quality before production.
 sidebarTitle: CI/CD Pipeline
-icon: /src/contents/docs/icons/dev.svg
----
+icon: /src/contents/docs/icons/dev.svg---
 
 Automate the validation and deployment of your Kestra flows using CI/CD pipelines.
 

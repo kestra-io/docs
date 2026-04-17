@@ -1,9 +1,9 @@
 ---
-title: Configure SSL/TLS for Kestra – Secure the UI
+title: "SSL/TLS Configuration: Enable HTTPS for Kestra"
+h1: Enable HTTPS on the Kestra UI with SSL/TLS certificates
 sidebarTitle: Configure SSL for Kestra
 icon: /src/contents/docs/icons/padlock.svg
-description: Configure SSL/TLS encryption for Kestra to secure the UI and API access using self-signed or CA-signed certificates.
----
+description: Configure SSL/TLS encryption for Kestra to secure the UI and API access using self-signed or CA-signed certificates.---
 
 Configure secure access to the Kestra UI via HTTPS.
 

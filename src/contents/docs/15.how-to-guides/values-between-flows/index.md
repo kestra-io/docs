@@ -1,11 +1,11 @@
 ---
 title: Access Values Between Flows
-description: Learn how to access and share values between different Kestra flows using Subflows, KV Store, and Namespace Variables. Understand the benefits and use cases for managing data across workflows in Kestra.
+h1: Share Data Across Flows with Subflows, KV Store, and Variables
+description: Share data across Kestra flows using Subflows, KV Store, and Namespace Variables. Learn best patterns for passing values between different workflows.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Kestra Concepts
----
+  - Kestra Concepts---
 
 How to access values across different flows.
 

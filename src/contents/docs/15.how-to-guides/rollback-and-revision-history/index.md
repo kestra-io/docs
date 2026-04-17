@@ -1,12 +1,12 @@
 ---
-title: Use Revision History and Rollback in Kestra
+title: Revision History and Rollback in Kestra
+h1: Track Changes and Roll Back to Previous Flow Versions
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
   - Version Control
-description: Use Kestra's revision history to track changes, compare flow versions, and easily rollback to previous configurations.
----
+description: Use Kestra's revision history to track changes, compare flow versions, and easily rollback to previous configurations.---
 
 Use revision history to rollback to an older version of a flow.
 

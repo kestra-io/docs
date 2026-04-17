@@ -1,10 +1,11 @@
 ---
-title: Use the MultipleCondition Listener
+title: "MultipleCondition Listener in Kestra: How It Works"
+h1: Trigger Flows When Multiple Conditions Are Met
+description: Configure MultipleCondition triggers in Kestra to start flows only when multiple conditions are met for precise event-driven orchestration.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
-  - Kestra Workflow Components
----
+  - Kestra Workflow Components---
 
 How to set up a Flow to only trigger when multiple conditions are met.
 

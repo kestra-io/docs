@@ -1,13 +1,13 @@
 ---
 title: Push Flows to a Git Repository
+h1: Use PushFlows to Sync Your Flows to Git
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control
   - DevOps
 version: ">= 0.17.0"
-description: Use the PushFlows task to push your Kestra flows to a Git repository directly from the UI, keeping your development and production in sync.
----
+description: Use the PushFlows task to push your Kestra flows to a Git repository directly from the UI, keeping your development and production in sync.---
 
 Push your Flows to a Git Repository with the PushFlows Task.
 

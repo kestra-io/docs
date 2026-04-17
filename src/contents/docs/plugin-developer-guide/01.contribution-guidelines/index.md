@@ -1,9 +1,9 @@
 ---
-title: Plugin Contribution Guidelines
-description: Guidelines for contributing to Kestra plugins, ensuring easy review, quality assurance, consistency, safety, and maintainability. Follow rules for PRs, properties, HTTP, JSON, new plugins, and tests.
+title: Plugin Contribution Guidelines for Kestra
+h1: How to Contribute to Kestra Plugins the Right Way
+description: Guidelines for contributing to Kestra plugins. Covers PR rules, code quality, HTTP and JSON conventions, test requirements, and how to add new plugins.
 sidebarTitle: Contribution Guidelines
-icon: /src/contents/docs/icons/dev.svg
----
+icon: /src/contents/docs/icons/dev.svg---
 
 This page outlines the guidelines to follow when contributing to **Kestra plugins**.
 

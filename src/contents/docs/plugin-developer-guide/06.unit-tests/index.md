@@ -1,9 +1,9 @@
 ---
 title: Add Unit Tests for Kestra Plugins
+h1: How to Write Unit Tests for Kestra Plugins with JUnit
 sidebarTitle: Add Unit Tests
 icon: /src/contents/docs/icons/dev.svg
-description: Learn how to write unit tests for your Kestra plugins using JUnit and the Kestra testing framework.
----
+description: Learn how to write unit tests for your Kestra plugins using JUnit and the Kestra testing framework.---
 
 To avoid regression, we recommend adding unit tests for all your tasks.
 

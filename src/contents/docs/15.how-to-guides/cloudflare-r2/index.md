@@ -1,12 +1,12 @@
 ---
 title: Use Cloudflare R2 with MinIO Gateway for Kestra
+h1: Configure Cloudflare R2 as S3-Compatible Storage for Kestra
 icon: /src/contents/docs/icons/cloudflare.svg
 stage: Intermediate
 topics:
 - DevOps
 - Object Storage
-description: Configure Cloudflare R2 as an S3-compatible object storage backend for Kestra using MinIO Gateway.
----
+description: Configure Cloudflare R2 as an S3-compatible object storage backend for Kestra using MinIO Gateway.---
 
 This guide demonstrates how to use **Cloudflare R2** as an object storage backend through an S3-compatible interface, exposed to **Kestra** via a **MinIO Gateway**.
 This setup enables Kestra to continue using S3 storage without requiring configuration changes.

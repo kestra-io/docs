@@ -1,11 +1,12 @@
 ---
 title: Use Dataform in Kestra
+h1: Orchestrate Declarative Dataform Workflows in Kestra
+description: Orchestrate DataForm transformations in Kestra. Schedule and run DataForm jobs in your data pipeline for reliable, version-controlled SQL-based data modeling.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations
-version: ">= 0.18.0"
----
+version: ">= 0.18.0"---
 
 Run transformations on BigQuery using Dataform in Kestra
 

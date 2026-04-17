@@ -1,10 +1,10 @@
 ---
-title: Enterprise License Upgrade
+title: Enterprise License Upgrade in Kestra 1.3.0
+h1: How to Upgrade Your Enterprise License in Kestra 1.3.0
 sidebarTitle: Enterprise License Upgrade
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.3.0
-description: Migration guide for updating Enterprise licenses in Kestra 1.3.0.
----
+description: Upgrade your Kestra Enterprise license in version 1.3.0. Follow the step-by-step migration guide to apply the new license format and avoid service disruption.---
 
 ## Overview
 

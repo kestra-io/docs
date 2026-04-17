@@ -1,12 +1,12 @@
 ---
-title: Use Realtime Triggers in Kestra
+title: "Realtime Triggers in Kestra: Kafka, SQS, Pub/Sub"
+h1: React to Events Instantly with Realtime Triggers
 icon: /src/contents/docs/icons/plugins.svg
 stage: Getting Started
 topics:
   - Kestra Workflow Components
 version: ">= 0.17.0"
-description: React to events instantly with Kestra's Realtime Triggers for Kafka, Pulsar, AWS SQS, GCP Pub/Sub, and Azure Event Hubs.
----
+description: React to events instantly with Kestra's Realtime Triggers for Kafka, Pulsar, AWS SQS, GCP Pub/Sub, and Azure Event Hubs.---
 
 How to React to events as they happen with millisecond latency.
 

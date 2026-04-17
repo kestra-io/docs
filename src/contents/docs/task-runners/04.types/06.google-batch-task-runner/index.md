@@ -1,11 +1,11 @@
 ---
-title: Google Batch Task Runner – Run Tasks on Google Cloud VMs
+title: "Google Batch Task Runner: Run Tasks on Cloud VMs"
+h1: Provision and Manage Google Cloud Compute with Kestra Tasks
 sidebarTitle: Google Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
-description: Execute Kestra tasks using Google Batch to provision and manage compute resources on Google Cloud efficiently.
----
+description: Execute Kestra tasks using Google Batch to provision and manage compute resources on Google Cloud efficiently.---
 
 Run tasks as containers on Google Cloud VMs.
 

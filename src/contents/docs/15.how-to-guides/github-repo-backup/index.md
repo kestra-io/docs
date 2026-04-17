@@ -1,12 +1,13 @@
 ---
-title: Test GitHub Repository Backups with Kestra Playground
+title: Back Up GitHub Repos with Kestra Playground
+h1: Test and Automate GitHub Repository Backups in Kestra
+description: Automate GitHub repository backups with Kestra. Schedule periodic exports of your repos to cloud storage with built-in error handling and audit logging.
 icon: /src/contents/docs/icons/github.svg
 stage: Intermediate
 topics:
   - Integrations
   - Version Control
-  - Kestra Concepts
----
+  - Kestra Concepts---
 
 Clone every repository in the `kestra-io` GitHub organization, zip each repo, and upload the archives to Google Cloud Storage (GCS) for safekeeping.
 

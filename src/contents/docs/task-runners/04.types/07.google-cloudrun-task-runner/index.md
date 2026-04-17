@@ -1,11 +1,11 @@
 ---
-title: Google Cloud Run Task Runner – Run Tasks on Cloud Run
+title: "Google Cloud Run Task Runner: Serverless Task Execution"
+h1: Run Kestra Tasks as Serverless Containers on Google Cloud Run
 sidebarTitle: Google Cloud Run Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
-description: Run Kestra tasks as serverless containers on Google Cloud Run for scalable and managed execution.
----
+description: Run Kestra tasks as serverless containers on Google Cloud Run for scalable and managed execution.---
 
 Run tasks as containers on Google Cloud Run.
 

@@ -1,10 +1,11 @@
 ---
-title: Choose Between Parallel and Sequential Tasks
+title: Parallel vs. Sequential Tasks in Kestra
+h1: When to Use Parallel Tasks vs. Sequential Execution
+description: Choose between parallel and sequential task execution in Kestra. Understand trade-offs and dependency management to design efficient workflow patterns.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Kestra Concepts
----
+  - Kestra Concepts---
 
 When to use parallel tasks and when to use sequential tasks in Kestra.
 

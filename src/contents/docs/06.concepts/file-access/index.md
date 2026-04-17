@@ -1,10 +1,10 @@
 ---
-title: File Access in Kestra – Use Local and Namespace Files
-description: Access local and namespace files in Kestra with universal file protocol.
+title: "File Access in Kestra: Local and Namespace Files"
+h1: Access Local and Namespace Files with Universal Protocol
+description: Access local and namespace files in Kestra using the universal file protocol. Learn how to read, write, and share files between tasks and namespaces.
 sidebarTitle: File Access in Kestra
 icon: /src/contents/docs/icons/concepts.svg
-version: ">= 0.24.0"
----
+version: ">= 0.24.0"---
 
 Access local and namespace files in Kestra with universal file protocol.
 

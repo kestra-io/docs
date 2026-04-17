@@ -1,9 +1,9 @@
 ---
-title: Automate Manual Approval Processes
+title: Automate Manual Approval Processes in Kestra
+h1: Add Human-in-the-Loop Approvals to Automated Workflows
 sidebarTitle: Approval Processes
 description: Integrate Human-in-the-Loop approvals into critical steps of automated workflows
-icon: /src/contents/docs/icons/kestra.svg
----
+icon: /src/contents/docs/icons/kestra.svg---
 
 Modern automation requires human oversight for critical decisions. Kestra enables integration of manual approval steps within workflows while maintaining audit trails and process consistency.
 

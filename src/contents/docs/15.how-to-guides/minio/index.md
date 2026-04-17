@@ -1,12 +1,12 @@
 ---
 title: Configure Local MinIO Storage for Kestra
+h1: Set Up MinIO as Your Local Object Storage Backend
 icon: /src/contents/docs/icons/minio.svg
 stage: Intermediate
 topics:
 - DevOps
 - Object Storage
-description: Configure MinIO as a local object storage backend for Kestra using Docker and the MinIO client for development and testing.
----
+description: Configure MinIO as a local object storage backend for Kestra using Docker and the MinIO client for development and testing.---
 
 Set up and verify a local [MinIO](https://min.io/) storage backend for Kestra using the `mc` CLI and Docker.
 

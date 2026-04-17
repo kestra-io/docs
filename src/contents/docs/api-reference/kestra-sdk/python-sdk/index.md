@@ -1,10 +1,10 @@
 ---
-title: Kestra Python SDK – Client Setup and Examples
+title: "Python SDK for Kestra: Client Setup and Examples"
+h1: Set Up the Kestra Python SDK and Execute Workflows
 description: Integrate Kestra with your Python applications. Learn to set up the Kestra Python SDK, configure the client, and programmatically create and execute workflows.
 sidebarTitle: Python SDK
 icon: /src/contents/docs/icons/api.svg
-release: 1.0.0
----
+release: 1.0.0---
 Interact with Kestra's API via Python SDK.
 
 ## Use the Kestra Python SDK programmatically

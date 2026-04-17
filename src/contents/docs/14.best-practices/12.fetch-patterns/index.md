@@ -1,9 +1,9 @@
 ---
 title: Choose the Right Fetch Pattern in Kestra
+h1: "Download, HTTP Request, or Script: Pick Your Fetch Pattern"
 sidebarTitle: Fetch Patterns
 icon: /src/contents/docs/icons/best-practices.svg
-description: Learn when to use Download, HTTP Request, or script-based fetching in Kestra, and how to choose the right pattern for files, APIs, and custom integrations.
----
+description: Learn when to use Download, HTTP Request, or script-based fetching in Kestra, and how to choose the right pattern for files, APIs, and custom integrations.---
 
 Choose the simplest fetch pattern that matches the shape, size, and the amount of control you need.
 

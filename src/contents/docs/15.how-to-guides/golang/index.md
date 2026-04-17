@@ -1,11 +1,11 @@
 ---
 title: Run Go Inside Your Flows
+h1: Execute Go Scripts in Kestra Flows Using the Go Plugin
 icon: /src/contents/docs/icons/golang.svg
 stage: Getting Started
 topics:
   - Scripting
-description: Run Go code directly within Kestra flows for high-performance scripting using the Go plugin or inline scripts.
----
+description: Run Go code directly within Kestra flows for high-performance scripting using the Go plugin or inline scripts.---
 
 Run Go code directly inside your Flows and generate outputs.
 

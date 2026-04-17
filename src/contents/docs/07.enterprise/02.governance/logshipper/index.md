@@ -1,11 +1,11 @@
 ---
-title: Log Shipper for Kestra Enterprise – Centralize Logs
+title: "Log Shipper in Kestra Enterprise: Centralize Logs"
+h1: Export Workflow Logs to Datadog, Splunk, Elastic, and More
 description: Centralize monitoring with Kestra Log Shipper. Export workflow and audit logs to Datadog, Splunk, Elastic, AWS S3, and other observability platforms.
 sidebarTitle: Log Shipper
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: "0.21.0"
----
+version: "0.21.0"---
 
 Manage and distribute logs across your entire infrastructure.
 

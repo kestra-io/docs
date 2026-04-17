@@ -1,10 +1,10 @@
 ---
-title: Change in managing Groups via the API
-description: Understand the API changes in Kestra 0.14.0 for managing groups. The `groups` property is renamed to `groupList`, and `groupId` must now be unique to prevent duplicate group creation and improve clarity in multi-tenant environments.
+title: "Groups API Change in Kestra 0.14.0: groupList Rename"
+h1: How to Update Group Management via the API in Kestra 0.14.0
+description: API changes in Kestra 0.14.0. The groups property is renamed to groupList, and groupId must now be unique to prevent duplicate groups across tenants.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.14.0
-editions: ["EE"]
----
+editions: ["EE"]---
 
 
 ## Change in managing Groups via the API

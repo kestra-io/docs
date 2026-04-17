@@ -1,11 +1,11 @@
 ---
-title: Task Runners in Kestra Enterprise – Offload and Isolate Compute
+title: "Task Runners in Kestra Enterprise: Offload Compute"
+h1: Offload Tasks to Docker, Kubernetes, AWS Batch, and More
 description: Optimize compute with Kestra Task Runners. Offload intensive tasks to Docker, Kubernetes, AWS Batch, and other remote environments for scalability.
 sidebarTitle: Task Runners
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: ">= 0.18.0"
----
+version: ">= 0.18.0"---
 
 Task Runner capabilities and supported plugins.
 

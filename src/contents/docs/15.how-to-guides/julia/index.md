@@ -1,10 +1,11 @@
 ---
 title: Run Julia Inside Your Flows
+h1: Execute Julia Scripts Directly in Kestra
+description: Execute Julia scripts in Kestra for scientific computing and data analysis. Use Docker to manage Julia dependencies and pass results between tasks.
 icon: /src/contents/docs/icons/julia.svg
 stage: Getting Started
 topics:
-  - Scripting
----
+  - Scripting---
 
 Run Julia code directly in your flows and generate outputs.
 

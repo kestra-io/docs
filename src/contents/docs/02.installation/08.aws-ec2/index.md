@@ -1,9 +1,9 @@
 ---
 title: Deploy Kestra on AWS EC2 – RDS and S3 Backend
+h1: Install Kestra on EC2 with Amazon RDS and S3
 sidebarTitle: AWS EC2 with Amazon RDS and S3
 icon: /src/contents/docs/icons/aws-ec2.svg
-description: Install Kestra on AWS EC2 using Amazon RDS for the database and S3 for internal storage backend.
----
+description: Install Kestra on AWS EC2 using Amazon RDS for the database and S3 for internal storage backend.---
 
 Install Kestra on AWS EC2 with PostgreSQL RDS database and S3 internal storage backend.
 

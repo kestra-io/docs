@@ -1,11 +1,11 @@
 ---
 title: Run Rust Inside Your Flows
+h1: Execute High-Performance Rust Code in Kestra with Docker
 icon: /src/contents/docs/icons/rust.svg
 stage: Getting Started
 topics:
   - Scripting
-description: Execute Rust code directly within your Kestra flows using Docker to leverage Rust's performance for your data processing tasks.
----
+description: Execute Rust code directly within your Kestra flows using Docker to leverage Rust's performance for your data processing tasks.---
 
 Run Rust code directly in your flows and generate outputs.
 

@@ -1,12 +1,12 @@
 ---
-title: Invitations in Kestra Enterprise – Onboard Users
+title: "Invitations in Kestra Enterprise: Onboard Users"
+h1: Onboard Users by Sending Email Invitations
 description: Onboard users easily with Invitations in Kestra. Manage user access by sending email invitations to join specific tenants or the entire instance.
 sidebarTitle: Invitations
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
-docId: users
----
+docId: users---
 
 Add new users to your Tenant or Instance by using the invitation process.
 

@@ -1,10 +1,10 @@
 ---
 title: Plugin Defaults in Kestra – Set Task-Level Defaults
+h1: Reduce Repetition by Setting Global Plugin Defaults
 description: Streamline Kestra flow configuration with Plugin Defaults. Set global or flow-level default values for task properties to reduce repetition and boilerplate.
 sidebarTitle: Plugin Defaults
 icon: /src/contents/docs/icons/flow.svg
-docId: plugin-defaults
----
+docId: plugin-defaults---
 
 Plugin defaults are default values applied to every task of a given type within one or more flows.
 

@@ -1,13 +1,13 @@
 ---
 title: Sync Namespace Files from a Git Repository
+h1: Keep Namespace Files in Sync with Git Using SyncNamespaceFiles
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
   - Version Control
   - DevOps
 version: ">= 0.17.0"
-description: Sync your namespace files, such as scripts and configuration, from a Git repository to Kestra using the SyncNamespaceFiles task.
----
+description: Sync your namespace files, such as scripts and configuration, from a Git repository to Kestra using the SyncNamespaceFiles task.---
 
 Sync files from a Git Repository to Kestra with SyncNamespaceFiles Task.
 

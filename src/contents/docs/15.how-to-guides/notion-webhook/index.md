@@ -1,12 +1,12 @@
 ---
 title: Integrate Notion Webhooks with Kestra
+h1: Automate Notion Updates and Slack Alerts via Webhooks
 icon: /src/contents/docs/icons/notion.svg
 stage: Getting Started
 topics:
   - Integrations
   - Webhooks
-description: Automate Notion database updates and send Slack notifications by triggering Kestra flows via Notion webhooks.
----
+description: Automate Notion database updates and send Slack notifications by triggering Kestra flows via Notion webhooks.---
 
 Use Notion webhooks to trigger Kestra flows when pages or databases are updated in your Notion workspace.
 

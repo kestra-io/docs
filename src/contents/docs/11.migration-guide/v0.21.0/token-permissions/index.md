@@ -1,10 +1,10 @@
 ---
-title: ME and APITOKEN user permissions
+title: ME and APITOKEN Permissions in Kestra 0.21.0 RBAC
+h1: "New ME and APITOKEN Role Permissions: Update Your Custom Roles"
 description: RBAC updates in Kestra 0.21.0 (Enterprise). New `ME` and `APITOKEN` permissions for managing user profiles and API tokens. Update custom roles accordingly.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
-editions: ["EE"]
----
+editions: ["EE"]---
 
 
 ## ME and APITOKEN user permissions

@@ -1,11 +1,11 @@
 ---
-title: Worker Groups in Kestra Enterprise – Configure Targeted Workers
+title: "Worker Groups in Kestra Enterprise: Target Workers"
+h1: Route Tasks to Specific Workers by Hardware or Region
 description: Manage workloads with Kestra Worker Groups. Target specific workers for tasks based on hardware, region, or security requirements for optimized execution.
 sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
-version: ">= 0.10.0"
----
+version: ">= 0.10.0"---
 
 How to configure Worker Groups in Kestra Enterprise Edition.
 

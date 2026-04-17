@@ -1,10 +1,10 @@
 ---
 title: Agent Skills – Operate Kestra from AI Coding Agents
+h1: Give Claude Code, Cursor & Windsurf Knowledge to Generate Flows
 sidebarTitle: Agent Skills
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"
-description: Give AI coding agents like Claude Code, Cursor, and Windsurf structured knowledge to generate Kestra flows and operate Kestra environments using kestractl.
----
+description: Give AI coding agents like Claude Code, Cursor, and Windsurf structured knowledge to generate Kestra flows and operate Kestra environments using kestractl.---
 
 Give AI coding agents structured knowledge to generate Kestra flows and operate Kestra environments.
 

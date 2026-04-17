@@ -1,9 +1,9 @@
 ---
-title: Tutorial – Pass Outputs Between Tasks in Kestra
+title: Pass Outputs Between Tasks in Kestra
+h1: Share Data Between Tasks and Flows Using Outputs
 sidebarTitle: Outputs
 icon: /src/contents/docs/icons/tutorial.svg
-description: Learn how to pass data between tasks and flows in Kestra using Outputs, enabling complex data processing pipelines.
----
+description: Learn how to pass data between tasks and flows in Kestra using Outputs, enabling complex data processing pipelines.---
 
 Outputs let you pass data between tasks and flows.
 

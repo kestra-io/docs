@@ -1,10 +1,11 @@
 ---
 title: Run R Inside Your Flows
+h1: Execute R Scripts in Kestra Workflows
+description: Run R scripts in Kestra for statistical computing and data analysis. Use Docker to manage package dependencies and capture outputs for downstream tasks.
 icon: /src/contents/docs/icons/r.svg
 stage: Getting Started
 topics:
-  - Scripting
----
+  - Scripting---
 
 Run R code directly in your flows and generate outputs.
 

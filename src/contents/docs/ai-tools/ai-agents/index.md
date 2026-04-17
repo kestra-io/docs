@@ -1,10 +1,10 @@
 ---
 title: AI Agents in Kestra – Autonomous Orchestration
-description: Build autonomous AI agents in Kestra for dynamic, LLM-powered orchestration. Integrate AI-driven tasks that can think, remember, and use tools like web search to automate complex, multi-step workflows. Leverage agentic patterns for flexible and adaptive process automation.
+h1: Build LLM-Powered AI Agents That Think, Remember & Use Tools
+description: Build autonomous AI agents in Kestra for LLM-powered orchestration. Create agents that think, remember, and use tools like web search for complex workflows.
 sidebarTitle: AI Agents
 icon: /src/contents/docs/icons/ai.svg
-version: "1.0.0"
----
+version: "1.0.0"---
 
 Launch autonomous processes with an LLM, memory, and tools.
 

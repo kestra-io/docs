@@ -1,9 +1,9 @@
 ---
-title: GitLab CI for Kestra – Automate Validation and Deployments
+title: "GitLab CI for Kestra: Automate Flow Validation"
+h1: Configure GitLab CI Pipelines to Deploy Kestra Flows
 sidebarTitle: GitLab CI
 icon: /src/contents/docs/icons/dev.svg
-description: Configure GitLab CI pipelines to automatically validate and deploy Kestra flows and resources to your Kestra instance.
----
+description: Configure GitLab CI pipelines to automatically validate and deploy Kestra flows and resources to your Kestra instance.---
 
 Use GitLab CI to automate the validation and deployment of your Kestra flows.
 

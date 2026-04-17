@@ -1,10 +1,10 @@
 ---
-title: Kestra Cloud & Enterprise FAQ – Common Questions
+title: "Cloud & Enterprise FAQ: Licensing and Configuration"
+h1: "Frequently Asked Questions: Kestra Cloud and Enterprise"
 description: FAQ for Kestra Cloud and Enterprise. Find answers to common questions about licensing, configuration, session management, and enterprise features.
 sidebarTitle: Cloud & Enterprise Edition FAQ
 icon: /src/contents/docs/icons/faq.svg
-editions: ["EE", "Cloud"]
----
+editions: ["EE", "Cloud"]---
 
 Frequently asked questions about the Cloud and Enterprise Edition of Kestra.
 
