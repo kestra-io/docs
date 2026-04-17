@@ -29,7 +29,7 @@ For secure handling of secrets, **exclusively** use [Secrets](../../06.concepts/
 
 ## Using outputs
 
-Below is an example of how to use the output of the `produce_output` task in the `use_output` task. We use the [Return](/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.Return) task that has one output attribute named `value`.
+Below is an example of how to use the output of the `produce_output` task in the `use_output` task. We use the [Return](/plugins/core/debug/io.kestra.plugin.core.debug.return) task that has one output attribute named `value`.
 
 ```yaml
 id: task_outputs_example
