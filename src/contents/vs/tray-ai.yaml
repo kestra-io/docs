@@ -1,0 +1,241 @@
+title: "Kestra vs. Tray.ai: Universal Orchestration vs. Enterprise AI Automation"
+description: "Compare Kestra vs Tray.ai: Open-source workflow orchestration for engineering and data teams vs. enterprise iPaaS and AI agent platform. See features, deployment options, and use cases."
+competitorName: Tray.ai
+category: Enterprise iPaaS
+shortDescription: "Enterprise SaaS integration and AI agent platform vs. engineering-grade orchestration with self-hosting and GitOps."
+
+brandColor:
+  color: "#1E3A8A"
+  gradient: "linear-gradient(90deg, #1E3A8A, #2563EB, #1D4ED8)"
+
+intro:
+  title: "Kestra vs. Tray.ai: Universal Orchestration vs. Enterprise AI Automation"
+  description: "Tray.ai is an enterprise automation platform combining iPaaS, AI agent creation, and Model Context Protocol governance into a unified cloud platform with 700+ pre-built connectors. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and production workflows running with full version control and the option to self-host."
+
+philosophy:
+  mainTitle: Two Platforms, Two Definitions of Orchestration
+  kestra:
+    title: "Engineering-Grade Orchestration for Any Workflow"
+    description: "Declarative YAML orchestration platform for engineering and data teams. Define data pipelines, infrastructure automation, and business workflows in version-controlled YAML. Any event, any language, self-hosted or on Kestra Cloud, with GitOps and full audit trails."
+    subCardText: '"How do I orchestrate data pipelines and infrastructure alongside business workflows, all in version-controlled code?"'
+  competitor:
+    title: Enterprise iPaaS and AI Agent Platform
+    description: "Enterprise-grade automation platform built for connecting SaaS applications and deploying AI agents at scale. Visual workflow builder, 700+ pre-built connectors, MCP governance, and built-in compliance controls make it a consolidation platform for enterprise integration and intelligent automation."
+    shadowColor: "#D0DCF0"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I consolidate our enterprise app integrations and deploy AI agents with the governance our security team requires?"'
+
+businessValue:
+  mainTitle: "Enterprise Integration Connects Systems.<br />Orchestration Runs Your Business."
+  kestra:
+    title: Production-Grade Workflow Orchestration
+    list:
+      - Automate data pipelines, infrastructure, and business processes in one platform
+      - Self-hosted or cloud, with full data residency control
+      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - RBAC, audit logs, and multi-tenancy for enterprise compliance
+      - Handles 100,000+ concurrent tasks with no per-connector pricing
+  competitor:
+    title: Enterprise iPaaS and AI Agent Platform
+    list:
+      - 700+ pre-built connectors for enterprise SaaS apps
+      - AI agent creation with Merlin Agent Builder and MCP governance
+      - SOC 2 Type 2, GDPR, RBAC, and enterprise compliance controls
+      - Cloud-only multi-tenant platform (no self-hosting)
+      - Quote-based enterprise pricing
+    shadowColor: "#D0DCF0"
+    bulletColor: "#1E3A8A"
+  footerText: "For enterprise teams consolidating SaaS integrations, deploying AI agents with compliance guardrails, and managing MCP governance at scale, Tray.ai is purpose-built for that scope. When you need data pipelines, self-hosting for data residency, engineering-grade GitOps, or predictable infrastructure-based pricing, Kestra is built for that."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Tray.ai is an enterprise SaaS platform accessed via demo request or trial. There is no infrastructure to provision, but onboarding involves account setup, connector authentication, and learning the visual builder. Kestra runs in two commands and is ready in under five minutes."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No sales process required, no cloud account, no connector licensing."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~30"
+      two: Minutes
+    description: "Request a demo or trial at tray.ai, complete account setup, authenticate your enterprise app connectors via OAuth, and build your first workflow in the visual editor. Enterprise deployments involve procurement, security review, and connector licensing."
+    shadowColor: "#D0DCF0"
+    command: |
+      # Request trial at tray.ai
+      # Complete account setup and connector auth
+
+      Trigger: Schedule
+        Every day at 8:00 AM
+
+      Step 1: HTTP connector - POST
+        URL: your-dbt-cloud-endpoint
+        Auth: OAuth / API token
+
+      Step 2: Slack connector - Send message
+        Channel: #data-team
+        Text: "Daily report ready"
+
+      # Workflows stored in Tray.ai cloud only.
+      # No self-hosting available.
+    lang: yaml
+
+easeOfUse:
+  title: Version-Controlled Workflows vs. Visual Enterprise Builder
+  kestra:
+    title: "Kestra: Readable by Your Whole Team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows live in Git and deploy through your existing CI/CD pipeline."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "Tray.ai: Visual workflows for enterprise integration teams"
+    description: "Tray.ai workflows are built in a visual editor by connecting pre-built connector steps and configuring data mappings. The Merlin Agent Builder extends this to conversational and autonomous AI agents. All configuration lives in Tray.ai's cloud with no local files or version control."
+    shadowColor: "#D0DCF0"
+    code: |
+      # Tray.ai workflow (built visually in-browser)
+      # Conceptual structure:
+
+      Trigger: Schedule
+        Frequency: Daily at 8:00 AM
+
+      Step 1: HTTP Service connector
+        Method: POST
+        URL: "{{dbt_cloud_endpoint}}"
+        Headers:
+          Authorization: "Token {{dbt_token}}"
+
+      Step 2: Slack connector - Post message
+        Channel: "#data-team"
+        Message: "Daily report ready"
+
+      # Workflows stored in Tray.ai cloud.
+      # No local file representation. No Git integration.
+    lang: yaml
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations in one platform. Self-host with full control or use Kestra Cloud. Workflows live in Git and deploy like any other code."
+  competitor:
+    description: "Connect enterprise SaaS apps, deploy AI agents, and manage MCP governance in a unified cloud platform. Strong for enterprise integration consolidation and governed AI agent deployment. Not designed for data pipeline execution, infrastructure automation, or self-hosted deployments."
+    shadowColor: "#D0DCF0"
+
+featureGrid:
+  title: Kestra vs Tray.ai at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Enterprise iPaaS and AI agent platform
+    - feature: Workflow definition
+      kestra: Declarative YAML (version-controlled)
+      competitor: Visual workflow builder (cloud-stored, no local files)
+    - feature: Deployment model
+      kestra: Self-hosted or Kestra Cloud
+      competitor: Cloud-only (no self-hosting)
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: "No-code visual builder; custom logic via connector configuration"
+    - feature: Data pipeline support
+      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
+      competitor: Data connectors available but not built for compute-heavy pipelines
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: AI agent support
+      kestra: "Kestra orchestrates AI workflows and LLM calls via plugins"
+      competitor: "✓ Merlin Agent Builder with MCP governance"
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: "✓ Visual builder for business and IT teams"
+    - feature: GitOps and version control
+      kestra: "✓ Native Git sync, Terraform provider"
+      competitor: No native version control
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Enterprise namespace isolation"
+      competitor: "✓ Enterprise RBAC and compliance controls"
+    - feature: Open source
+      kestra: "✓ Open source (Apache 2.0)"
+      competitor: Closed source SaaS
+
+testimonials:
+  - quote: "With Kestra, orchestration stopped being a fragile point in the architecture and became a stable foundation for the business."
+    author: "Rafael Bartalotti, Engineering Manager @ Víssimo"
+    kpis:
+      - value: "90%"
+        name: Reduction in integration costs
+      - value: "40%"
+        name: Reduction in BI and ETL costs
+      - value: "0"
+        name: Black Friday 2025 incidents
+    storyLink: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
+
+platformStrengths:
+  title: Kestra Is Built for Engineering Teams, Not Just Enterprise Integration
+  features:
+    - title: Data pipelines as first-class workflows
+      description: "Native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1,200+ more let data engineers define ETL pipelines in the same YAML they use for event-driven and business workflows. Tray.ai's connectors can push data between SaaS systems, but the platform is not built for compute-intensive transformations, long-running analytical workloads, or native DAG visualization."
+    - title: Self-hosted for complete data control
+      description: "Your workflow definitions, execution logs, and data never leave your network when Kestra runs on your own infrastructure (Docker, Kubernetes, or air-gapped). Tray.ai is cloud-only, which means execution telemetry, workflow metadata, and any data that passes through connectors flows through Tray.ai's infrastructure. For teams in regulated industries where data residency is non-negotiable, Tray.ai is not an option."
+    - title: Workflows in Git, deployable like code
+      description: "Every Kestra flow is a YAML file reviewed in a pull request, versioned in Git, and deployed through the same CI/CD pipeline as your application code. Tray.ai workflows are built and stored in the visual editor with no native Git integration. When an automation breaks at 3am, a git blame and commit history tell you what changed. A Tray.ai workflow history shows you the same UI you used to build it."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your team needs data pipelines, ETL, or infrastructure automation alongside business process workflows."
+      - "Data residency or compliance requires self-hosting, with execution staying on your own infrastructure."
+      - "Workflows must live in version control, pass code review, and deploy through CI/CD."
+      - "You want cost to scale with infrastructure, not with connector volume or enterprise licensing."
+      - "Your engineers own the workflow layer and need observability, retries, and Git history."
+  competitor:
+    title: Choose Tray.ai When
+    list:
+      - "Your primary need is consolidating enterprise SaaS integrations across Salesforce, ServiceNow, Workday, and similar systems."
+      - "You are deploying AI agents at scale and need built-in MCP governance, guardrails, and identity controls."
+      - "Business and IT teams need to build and modify automations without engineering ownership."
+      - "Enterprise compliance and a managed cloud platform matter more than self-hosting flexibility."
+      - "You want a single platform for integration, AI agents, and API management under centralized governance."
+    shadowColor: "#D0DCF0"
+    bulletColor: "#1E3A8A"
+
+commonQuestions:
+  - question: How do I migrate from Tray.ai to Kestra?
+    answer: "Map each Tray.ai workflow step to the equivalent Kestra plugin. HTTP connectors, schedule triggers, Slack and email notifications, and webhook-based flows translate directly. For Tray.ai's 700+ pre-built connectors, Kestra's 1,200+ plugin library covers the most common enterprise targets: Salesforce, AWS, GCP, Azure, databases, and data warehouses. For systems without a native plugin, the HTTP plugin handles any REST API. Most teams migrate incrementally, starting with data and infrastructure workflows while keeping Tray.ai for complex enterprise SaaS integrations during the transition."
+  - question: Can Kestra handle the enterprise app integrations Tray.ai offers?
+    answer: "Kestra's 1,200+ plugins cover the most common enterprise integration targets: Salesforce, AWS, GCP, Slack, databases, data warehouses, and more. For systems without a native plugin, the HTTP plugin handles any REST API and Script tasks can call any SDK or CLI tool. Tray.ai's 700+ pre-built connectors are optimized for deep SaaS integrations with minimal custom configuration. For teams whose critical integrations involve common enterprise platforms, Kestra's coverage is sufficient. For teams that rely on Tray.ai's specific pre-built enterprise connectors for Workday, SAP, or ServiceNow, those reduce integration time."
+  - question: How does Tray.ai's AI agent capability compare to Kestra's approach?
+    answer: "Tray.ai's Merlin Agent Builder is purpose-built for creating and governing AI agents, with native MCP server support, identity controls, and enterprise guardrails. Kestra orchestrates AI workflows as part of broader pipelines: calling LLM APIs, processing outputs, routing results, and triggering downstream systems, all in deterministic YAML with full observability. If your primary goal is deploying governed conversational or autonomous AI agents across enterprise systems, Tray.ai is designed for that. If your AI workloads are steps inside data pipelines or infrastructure workflows that need reliable orchestration, Kestra handles that natively."
+  - question: How does Kestra handle compliance requirements that Tray.ai covers?
+    answer: "Kestra supports RBAC with namespace isolation, multi-tenancy, audit logs for every execution, SSO/SAML, and secrets management integration with AWS Secrets Manager, Vault, and Azure Key Vault. It is SOC 2 Type II and GDPR compliant. For teams that need self-hosting, Kestra runs in air-gapped environments and on-premise Kubernetes clusters. Tray.ai offers equivalent enterprise compliance controls as a managed cloud service. The difference is that Kestra's self-hosted deployment keeps all data on your infrastructure, while Tray.ai's compliance controls operate within their cloud."
+  - question: Can Kestra and Tray.ai run in parallel during a transition?
+    answer: "The two platforms operate independently. Most teams migrate in phases: data engineering and infrastructure workflows move to Kestra first, while complex enterprise SaaS integrations stay in Tray.ai until they can be re-expressed in Kestra plugins or HTTP calls. Kestra can trigger Tray.ai workflows via webhook during the transition if cross-platform orchestration is needed. The clean separation point is usually the data layer: anything that touches a data warehouse, runs a transformation, or needs version-controlled deployment moves to Kestra; anything that synchronizes enterprise SaaS state moves later."
+  - question: What does self-hosting Kestra look like compared to Tray.ai's cloud model?
+    answer: "Kestra deploys on Docker or Kubernetes with a single Compose file for local development and Helm charts for production. The database and queue are bundled, so there are no external dependencies to provision beyond your infrastructure. Execution logs, workflow definitions, and secrets all stay on your infrastructure. Tray.ai is fully managed, so there is no infrastructure to operate, but all workflow execution flows through Tray.ai's cloud. For teams where data residency is non-negotiable, the self-hosting trade-off is clear: you operate more infrastructure in exchange for complete control over where your data goes."

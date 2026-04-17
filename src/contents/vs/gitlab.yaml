@@ -1,0 +1,242 @@
+title: "Kestra vs. GitLab CI/CD: Universal Orchestration vs. Software Delivery Pipelines"
+description: "Compare Kestra vs GitLab CI/CD: Universal workflow orchestration for data, infrastructure, and operations vs. developer-focused pipelines tied to your code repository. See features, use cases, and deployment options."
+competitorName: GitLab CI/CD
+category: CI/CD and Workflow Automation
+shortDescription: "Repository-scoped CI/CD pipelines vs. universal workflow orchestration for data, infrastructure, and operations."
+
+brandColor:
+  color: "#FC6D26"
+  gradient: "linear-gradient(90deg, #FCA326, #E24329, #FC6D26)"
+
+intro:
+  title: "Kestra vs. GitLab CI/CD: Universal Orchestration vs. Software Delivery Pipelines"
+  description: "GitLab CI/CD automates code builds, tests, and deployments inside the GitLab platform. Kestra is a workflow orchestration platform for teams that need more than software delivery: data pipelines, infrastructure automation, and business processes that run on schedules, events, or API triggers, independently of any code repository."
+
+philosophy:
+  mainTitle: Two Tools, Two Definitions of "Workflow"
+  kestra:
+    title: "Universal Orchestration: Any Workflow, Any Team"
+    description: "Declarative YAML orchestration platform for engineering and data teams. Define data pipelines, infrastructure automation, and business workflows that trigger on any event, in any language, self-hosted or on Kestra Cloud, with GitOps and full audit trails."
+    subCardText: '"How do I orchestrate workflows across data, infrastructure, and operations, not just code deployments?"'
+  competitor:
+    title: Software Delivery Pipelines Inside GitLab
+    description: "CI/CD automation tightly integrated with GitLab source control. Define pipeline stages in .gitlab-ci.yml to build, test, and deploy code. Best for teams already using GitLab who need developer-focused pipeline automation tied to repository events."
+    shadowColor: "#FCEADC"
+    subCardBg: "var(--ks-background-orange-light)"
+    subCardText: '"How do I automate building, testing, and deploying my code from my GitLab repo?"'
+
+businessValue:
+  mainTitle: "CI/CD Automates Code Delivery.<br />Orchestration Runs Your Business."
+  kestra:
+    title: Production-Grade Workflow Orchestration
+    list:
+      - Automate data pipelines, infrastructure provisioning, and business processes in one platform
+      - Self-hosted or cloud, with full data residency control
+      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - RBAC, audit logs, and multi-tenancy for enterprise compliance
+      - Handles 100,000+ concurrent tasks with no per-minute compute billing
+  competitor:
+    title: Software Delivery Automation
+    list:
+      - Automates build, test, and deploy pipelines within GitLab repositories
+      - Shared runners on GitLab.com (400 compute minutes/month on free tier)
+      - Premium plan at $29/user/month unlocks 10,000 compute minutes/month
+      - Pipelines scope to git events: commits, merges, tags, or schedules
+      - Self-hosted GitLab requires significant infrastructure to operate
+    shadowColor: "#FCEADC"
+    bulletColor: "#FC6D26"
+  footerText: "For software engineering teams automating code builds, tests, and deployments within GitLab, GitLab CI/CD is the natural fit. When workflows span data transformation, infrastructure automation, or business operations beyond your git repository, Kestra is built for that scope."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "GitLab CI/CD requires a repository and a configured runner before any pipeline runs. Shared runners simplify cloud setup, but pipelines are always repository-scoped. Self-hosted GitLab adds a full platform installation. Kestra runs standalone in two commands."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No repository required, no cloud account, no per-minute billing."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~20"
+      two: Minutes
+    description: "Create a GitLab account, create a repository, add a .gitlab-ci.yml file, and configure runners (shared on GitLab.com, or register your own). Self-hosted GitLab requires a full platform installation before any pipeline can run."
+    shadowColor: "#FCEADC"
+    command: |
+      # Create a GitLab repo, then add .gitlab-ci.yml:
+
+      stages:
+        - build
+        - test
+        - deploy
+
+      build_job:
+        stage: build
+        script:
+          - echo "Build step here"
+
+      # Push to GitLab to trigger the pipeline
+    lang: yaml
+
+easeOfUse:
+  title: General-Purpose Orchestration vs. Repository-Scoped Pipelines
+  kestra:
+    title: "Kestra: Readable by Your Whole Team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No git repository required to get started."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "GitLab CI/CD: Pipeline Stages Tied to Your Repository"
+    description: "Pipelines are defined in .gitlab-ci.yml at the repository root. Stages and jobs map to software delivery steps. Scheduled triggers work for recurring tasks, but the pipeline always lives inside a repository and depends on runner availability."
+    shadowColor: "#FCEADC"
+    code: |
+      # .gitlab-ci.yml
+
+      stages:
+        - transform
+        - notify
+
+      run_dbt:
+        stage: transform
+        image: python:3.11
+        script:
+          - pip install dbt-core dbt-postgres
+          - dbt run --select reporting
+        rules:
+          - if: '$CI_PIPELINE_SOURCE == "schedule"'
+
+      slack_notify:
+        stage: notify
+        script:
+          - |
+            curl -X POST "$SLACK_WEBHOOK" \
+              -H 'Content-type: application/json' \
+              --data '{"text":"Daily report ready"}'
+        rules:
+          - if: '$CI_PIPELINE_SOURCE == "schedule"'
+            when: on_success
+    lang: yaml
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations in one platform. Trigger on any event, not just git pushes. Self-host with full control or use Kestra Cloud."
+  competitor:
+    description: "Automate code builds, tests, and deployments within GitLab repositories. Pipelines run on git events or schedules and draw from your plan's compute minute quota. Not designed for data pipelines or workflows that live outside the software delivery context."
+    shadowColor: "#FCEADC"
+
+featureGrid:
+  title: Kestra vs GitLab CI/CD at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Software build, test, and deployment pipelines
+    - feature: Workflow definition
+      kestra: Declarative YAML (standalone)
+      competitor: .gitlab-ci.yml (tied to a repository)
+    - feature: Trigger model
+      kestra: "Schedules, webhooks, file arrivals, message queues, database changes"
+      competitor: "Git events (push, merge, tag), schedules, manual triggers"
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: "Any language via Docker images; YAML for pipeline definition"
+    - feature: Data pipeline support
+      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
+      competitor: "Possible via jobs, but no native plugins or DAG visualization"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: "Deployment jobs only; no Terraform or provisioning primitives"
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Not designed for non-engineering users
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Enterprise namespace isolation"
+      competitor: "Group and project roles; advanced compliance on Ultimate plan"
+    - feature: Compute model
+      kestra: Unlimited concurrent tasks (no per-minute billing)
+      competitor: "Compute minutes quota (400/mo free, 10,000/mo Premium)"
+    - feature: Open source
+      kestra: "✓ Open source (Apache 2.0)"
+      competitor: "Open core (Community Edition open source; enterprise features require paid plan)"
+
+testimonials:
+  - quote: "Kestra made the data mesh possible. We produce far more data now, and deliver it nearly 10 times faster."
+    author: "Julien Henrion, CDO @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: In data production
+      - value: "+250"
+        name: Active users
+      - value: "+5000"
+        name: Workflows created
+    storyLink: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
+
+platformStrengths:
+  title: Kestra Is Built for Workflows Beyond Code Delivery
+  features:
+    - title: Any trigger, not just git events
+      description: "GitLab CI/CD is wired to repository events. Kestra triggers on schedules, webhooks, file arrivals on S3 or SFTP, Kafka messages, database row changes, and API polls. When your business processes depend on data arriving from an external system rather than a git push, Kestra handles it natively without requiring a dummy repository to host the workflow."
+    - title: Data pipelines as first-class workflows
+      description: "Kestra ships native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1,200+ more. Data engineers define ETL pipelines in the same YAML they use for everything else, with DAG visualization and retry semantics for data-specific failures. GitLab CI/CD can run a dbt job as a pipeline step, but each run draws from your plan quota and there is no native observability for data workloads."
+    - title: No compute-minute ceiling
+      description: "Kestra runs on your infrastructure and handles 100,000+ concurrent tasks with no per-minute billing. GitLab CI/CD caps free users at 400 compute minutes/month and Premium users at 10,000. For data teams running hundreds of scheduled pipelines daily, those ceilings fill up fast."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your workflows span data transformation, infrastructure provisioning, or business operations beyond code deployments."
+      - "Triggers come from file arrivals, message queues, database events, or webhooks rather than git commits."
+      - "Your team runs more scheduled jobs than a compute-minute quota can sustain."
+      - "Non-engineers need to trigger or monitor workflows through a no-code interface."
+      - "You want a workflow platform independent of your source control provider."
+  competitor:
+    title: Choose GitLab CI/CD When
+    list:
+      - "Your team uses GitLab for source control and needs tightly integrated build, test, and deploy pipelines."
+      - "All your automation starts from repository events: commits, merge requests, or tags."
+      - "You want security scanning, SAST, and compliance pipelines built into your delivery workflow."
+      - "Your pipeline compute needs fit within your plan's minute quota."
+      - "You want a single platform for code hosting, CI/CD, and DevSecOps without adding another system."
+    shadowColor: "#FCEADC"
+    bulletColor: "#FC6D26"
+
+commonQuestions:
+  - question: Can Kestra replace GitLab CI/CD for software deployments?
+    answer: "Kestra handles scheduled and event-driven automation well, but GitLab CI/CD is optimized for software delivery: it integrates with merge requests, runs SAST and dependency scanning, enforces compliance pipelines, and manages deployment environments with native rollback. If you are building and deploying code from a GitLab repository, GitLab CI/CD is the right tool for that. Kestra fits the workflows that run after code is deployed: data pipelines, infrastructure reconciliation, and business process automation."
+  - question: Can I run data pipelines in GitLab CI/CD?
+    answer: "Yes, with limits. You can run dbt, Python scripts, or SQL jobs as GitLab pipeline steps using Docker images and scheduled triggers. But GitLab CI/CD has no native data plugins, no DAG visualization, no built-in retry semantics for data-specific failures, and compute-minute quotas that constrain how many jobs you can run. For teams running a handful of data jobs tied to code deployments, GitLab CI/CD works. For teams with dedicated data pipelines running independently of code releases, Kestra is purpose-built for that scope."
+  - question: How does Kestra's trigger model differ from GitLab CI/CD?
+    answer: "GitLab CI/CD triggers on repository events: pushes, merges, tags, and schedules configured per project. Kestra triggers on anything: schedules, HTTP webhooks, file arrivals on cloud storage or SFTP, Kafka and Pulsar message queue events, database row changes, and API polling. For workflows that respond to business events rather than code changes, Kestra's trigger model is broader and does not require a repository to host the workflow definition."
+  - question: How do I run automation that does not belong to a specific repository?
+    answer: "In GitLab CI/CD, every pipeline lives inside a repository. Cross-project automation requires configuring pipeline triggers across repos, which adds coordination overhead. In Kestra, workflows are standalone: defined in a namespace, stored in the Kestra backend, and deployable via the API, Terraform, or Git sync. A workflow that reconciles cloud infrastructure, syncs a data warehouse, and notifies Slack does not need to live next to application code."
+  - question: Does Kestra support GitOps the way GitLab does?
+    answer: "Yes. Kestra has native Git sync, a Terraform provider, and a CI/CD-friendly API for deploying flows from a pipeline. You can store all Kestra flows in a Git repository and push updates through a GitLab CI/CD pipeline if that is your existing deployment pattern. GitLab CI/CD handles the code delivery; Kestra handles the data pipelines, infrastructure automation, and operational workflows that run alongside or after it."
+  - question: What does migrating scheduled GitLab CI/CD jobs to Kestra look like?
+    answer: "Start by identifying your scheduled .gitlab-ci.yml pipelines that run data or infrastructure jobs independently of code changes. Re-express each job as a Kestra Flow: move scripts into Script tasks or call the appropriate plugin (dbt, SQL, HTTP, shell), configure the Schedule trigger, and set up retry and error-handling logic. Kestra's Blueprints library covers common patterns to accelerate the conversion. Most teams migrate incrementally, keeping GitLab CI/CD for code delivery while moving data and operational workflows to Kestra."

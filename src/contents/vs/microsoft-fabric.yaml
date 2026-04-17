@@ -1,0 +1,262 @@
+title: "Kestra vs. Microsoft Fabric: Universal Orchestration vs. Unified Microsoft Analytics"
+description: "Compare Kestra vs Microsoft Fabric: Open-source workflow orchestration for any stack vs. Microsoft's unified analytics platform with built-in data factory, data warehouse, and Power BI. See features, deployment options, and use cases."
+competitorName: Microsoft Fabric
+category: Data Analytics Platform
+shortDescription: "Azure-native unified analytics platform vs. stack-agnostic workflow orchestration for any cloud or infrastructure."
+
+brandColor:
+  color: "#0078D4"
+  gradient: "linear-gradient(90deg, #0078D4, #50E6FF, #0091FF)"
+
+intro:
+  title: "Kestra vs. Microsoft Fabric: Universal Orchestration vs. Unified Microsoft Analytics"
+  description: "Microsoft Fabric is a unified analytics platform that combines data pipelines, a data warehouse, Spark notebooks, real-time analytics, and Power BI in a single Azure-native SaaS environment. Kestra is a workflow orchestration platform that works with any cloud, any stack, and any language, with the option to self-host and version-control every workflow in Git."
+
+philosophy:
+  mainTitle: Two Approaches to Data Infrastructure
+  kestra:
+    title: "Stack-Agnostic Orchestration for Any Environment"
+    description: "Declarative YAML orchestration platform for engineering and data teams. Orchestrate data pipelines, infrastructure automation, and business workflows across any cloud, any tool, and any language. Self-hosted or on Kestra Cloud, with Git-native deployments and full audit trails."
+    subCardText: '"How do I orchestrate across our entire data stack, regardless of which cloud or tools we use?"'
+  competitor:
+    title: Microsoft's Unified Analytics Platform
+    description: "All-in-one SaaS analytics platform built on Azure. Data Factory pipelines, a data warehouse, Spark notebooks, real-time analytics, and Power BI reports all share OneLake as a common data layer. If your data stack lives in Microsoft and Azure, everything connects natively."
+    shadowColor: "#CCE4F6"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I unify our data engineering, warehousing, and reporting on a single Microsoft platform without managing separate tools?"'
+
+businessValue:
+  mainTitle: "Unified Analytics for Microsoft Shops.<br />Universal Orchestration for Everyone Else."
+  kestra:
+    title: Production-Grade Workflow Orchestration
+    list:
+      - Orchestrate data pipelines, infrastructure, and business processes across any cloud or stack
+      - Self-hosted or cloud, with full data residency control independent of Microsoft
+      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - RBAC, audit logs, and multi-tenancy for enterprise compliance
+      - Handles 100,000+ concurrent tasks with no Azure capacity billing
+  competitor:
+    title: Unified Microsoft Analytics Platform
+    list:
+      - Data Factory, data warehouse, Spark, real-time analytics, and Power BI in one subscription
+      - OneLake as a shared data layer across all Fabric workloads
+      - Capacity-based Azure pricing (compute and storage share a pool)
+      - Azure-only, cloud-only deployment
+      - Native dbt jobs, Dataflow Gen 2, and Apache Airflow integration
+    shadowColor: "#CCE4F6"
+    bulletColor: "#0078D4"
+  footerText: "For teams already invested in Microsoft Azure, with data living in OneLake, reporting in Power BI, and compute in Synapse, Fabric's unified platform eliminates the glue work of connecting separate tools. When your data stack spans multiple clouds, requires self-hosting, or includes tools outside the Microsoft ecosystem, Kestra gives you orchestration that doesn't require rebuilding on Azure."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Microsoft Fabric requires an Azure account, a Fabric-enabled workspace, and capacity allocation before any pipeline runs. Fabric is a SaaS platform so there is no infrastructure to deploy, but Azure account setup, capacity provisioning, and workspace configuration take time. Kestra runs in two commands."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No Azure account, no capacity allocation, no workspace configuration."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~45"
+      two: Minutes
+    description: "Create or sign in to an Azure account, enable Microsoft Fabric in your tenant, provision Fabric capacity (or start a trial), create a workspace, and build your first pipeline in the Data Factory visual designer. Enterprise setups require Azure AD configuration and capacity planning."
+    shadowColor: "#CCE4F6"
+    command: |
+      # 1. Azure account + Fabric trial or capacity
+      # 2. Create a Fabric workspace
+      # 3. Build a pipeline in the Data Factory UI:
+
+      {
+        "name": "daily_report",
+        "activities": [
+          {
+            "name": "run_dbt_job",
+            "type": "DbtActivity",
+            "typeProperties": {
+              "command": "dbt run --select reporting"
+            }
+          },
+          {
+            "name": "notify_slack",
+            "type": "WebActivity",
+            "dependsOn": [{"activity": "run_dbt_job"}],
+            "typeProperties": {
+              "url": "@pipeline().parameters.slack_webhook",
+              "method": "POST",
+              "body": {"text": "Daily report ready"}
+            }
+          }
+        ]
+      }
+    lang: json
+
+easeOfUse:
+  title: YAML Workflows in Git vs. JSON Pipelines in the Azure Portal
+  kestra:
+    title: "Kestra: Readable by Your Whole Team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows live in Git and deploy through your existing CI/CD pipeline."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "Fabric Data Factory: Low-code pipelines in the Azure portal"
+    description: "Fabric Data Factory pipelines are built in a visual designer inside the Azure portal. Pipelines are stored as JSON and can be exported for version control, but there is no native Git integration in the standard experience. Fabric's Copilot can generate pipeline steps from natural language prompts, but those steps land back in the same Azure portal JSON format with the same portability constraints."
+    shadowColor: "#CCE4F6"
+    code: |
+      {
+        "name": "daily_report",
+        "properties": {
+          "activities": [
+            {
+              "name": "run_dbt",
+              "type": "DbtActivity",
+              "typeProperties": {
+                "command": "dbt run --select reporting"
+              }
+            },
+            {
+              "name": "notify_slack",
+              "type": "WebActivity",
+              "dependsOn": [
+                {"activity": "run_dbt", "dependencyConditions": ["Succeeded"]}
+              ],
+              "typeProperties": {
+                "url": "@pipeline().parameters.slack_webhook",
+                "method": "POST",
+                "body": {"text": "Daily report ready"}
+              }
+            }
+          ]
+        }
+      }
+    lang: json
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations across any cloud or tool stack. Self-host with full control or use Kestra Cloud. Every workflow is a YAML file that lives in Git."
+  competitor:
+    description: "Run data engineering, data warehousing, real-time analytics, and Power BI reporting on a unified Microsoft platform. OneLake connects all workloads under a single storage layer, which is Fabric's core architectural advantage for Azure-native teams. Outside that ecosystem, the platform isn't designed for multi-cloud orchestration, self-hosting, or workflows that span tools Microsoft doesn't own."
+    shadowColor: "#CCE4F6"
+
+featureGrid:
+  title: Kestra vs Microsoft Fabric at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Unified analytics platform (data factory, warehouse, BI)
+    - feature: Workflow definition
+      kestra: Declarative YAML (version-controlled in Git)
+      competitor: "Low-code visual designer (JSON, stored in Azure)"
+    - feature: Deployment model
+      kestra: Self-hosted or Kestra Cloud
+      competitor: Azure cloud-only (no self-hosting)
+    - feature: Cloud compatibility
+      kestra: "Any cloud (AWS, GCP, Azure, on-prem)"
+      competitor: Azure-only
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: "Python (Spark/notebooks), SQL, low-code GUI"
+    - feature: Data pipeline support
+      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
+      competitor: "✓ Native (Data Factory, Dataflow Gen 2, dbt jobs, Spark)"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Business intelligence
+      kestra: Triggers and reports via plugins (not built-in BI)
+      competitor: "✓ Power BI embedded natively"
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Power BI and low-code tools for business users
+    - feature: GitOps and version control
+      kestra: "✓ Native Git sync, Terraform provider"
+      competitor: Pipeline export for manual version control; no native Git
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Enterprise namespace isolation"
+      competitor: "✓ Azure AD, workspace roles, capacity governance"
+    - feature: Open source
+      kestra: "✓ Open source (Apache 2.0)"
+      competitor: Closed source Microsoft SaaS
+
+testimonials:
+  - quote: "Kestra made the data mesh possible. We produce far more data now, and deliver it nearly 10 times faster."
+    author: "Julien Henrion, CDO @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: In data production
+      - value: "+250"
+        name: Active users
+      - value: "+5000"
+        name: Workflows created
+    storyLink: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
+
+platformStrengths:
+  title: Kestra Works Across Any Stack, Not Just Azure
+  features:
+    - title: Multi-cloud and stack-agnostic by design
+      description: "Fabric Data Factory is optimized for data that lives in OneLake, Azure Data Lake, Azure SQL, and Synapse. Teams running on AWS, GCP, or a mix of cloud providers have to work against the grain. Kestra's 1,200+ plugins cover every major cloud provider, data warehouse, message queue, and database, regardless of which vendor built them."
+    - title: Workflows in Git, not the Azure portal
+      description: "Every Kestra flow is a YAML file reviewed in a pull request, versioned in Git, and deployed through CI/CD like any other code change. Fabric Data Factory pipelines are designed and stored inside the Azure portal as JSON. You can export them manually for backup, but there is no native Git integration in the standard pipeline experience, which means no diff review, no automated deployment pipeline, and no git blame when something breaks."
+    - title: Self-hosted for complete independence
+      description: "Docker or Kubernetes on any infrastructure, including air-gapped environments and on-premises clusters. That's Kestra's deployment model. Execution logs, workflow definitions, and secrets stay on your infrastructure. Fabric is Azure-only: your data, pipelines, and compute run on Microsoft's infrastructure. For teams in regulated industries where a single-vendor SaaS is a compliance risk, the trade-off is clear: Kestra's self-hosted option keeps execution inside your perimeter, with no dependency on Microsoft's uptime, pricing, or roadmap."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your data stack spans multiple clouds or includes tools outside the Microsoft ecosystem."
+      - "Self-hosting is required for data residency, air-gapped environments, or cloud independence."
+      - "Workflows must live in version control, pass code review, and deploy through CI/CD."
+      - "You need infrastructure automation, not just data pipeline orchestration."
+      - "You want orchestration costs tied to your infrastructure, not Azure capacity billing."
+  competitor:
+    title: Choose Microsoft Fabric When
+    list:
+      - "Your data stack is Azure-native: data lives in OneLake, reporting runs in Power BI, compute runs in Synapse."
+      - "You want a single Microsoft subscription covering data engineering, warehousing, real-time analytics, and BI."
+      - "Your team is standardized on Microsoft tooling and wants to avoid managing separate orchestration infrastructure."
+      - "Native dbt jobs, Dataflow Gen 2 transformations, and Spark notebooks running on shared OneLake are central to your architecture."
+      - "Business users need Power BI dashboards directly connected to the same data infrastructure engineers build."
+    shadowColor: "#CCE4F6"
+    bulletColor: "#0078D4"
+
+commonQuestions:
+  - question: How do I migrate data pipelines from Fabric Data Factory to Kestra?
+    answer: "Export your Fabric Data Factory pipelines as JSON and map each activity to the equivalent Kestra plugin. Web activities become HTTP tasks; dbt activities use Kestra's native dbt plugin; Spark notebook runs use the Spark plugin; control flow logic (conditionals, loops) maps directly to Kestra's YAML constructs. Most teams migrate incrementally, starting with pipelines that pull from non-Azure sources or that need to orchestrate tools outside the Microsoft ecosystem, while leaving Azure-native transformations in Fabric until they are ready to consolidate."
+  - question: Can Kestra replace Fabric's data warehouse and Power BI?
+    answer: "Kestra is an orchestration platform, not an analytics platform. It replaces the Fabric Data Factory orchestration layer (pipelines, triggers, scheduling) but not the data warehouse or Power BI. If your team relies on Fabric's native Synapse warehouse or Power BI reports, those stay. Kestra orchestrates the pipelines that feed data into your existing warehouse and reporting tools, whether those tools are Microsoft's or anyone else's."
+  - question: How does Kestra handle Azure-native tools like OneLake and Synapse?
+    answer: "Kestra has native plugins for Azure Data Lake Storage, Azure Blob Storage, Azure SQL, and Azure Synapse. Pipelines that read from OneLake, run dbt models on Synapse, and write results back to Azure SQL work in Kestra without any special configuration. The difference from Fabric Data Factory is that Kestra treats Azure as one target among many, so the same YAML workflow can read from S3, transform in Databricks, and write to Azure SQL without platform-specific wiring."
+  - question: How does pricing compare between Kestra and Microsoft Fabric?
+    answer: "Microsoft Fabric uses capacity-based Azure pricing: you reserve compute and storage capacity and all workloads share that pool. Costs can be unpredictable as pipeline frequency or data volume grows. Kestra's open-source version is free to self-host; Kestra Cloud pricing is based on execution resources rather than reserved capacity. For teams running Kestra on existing infrastructure alongside Azure services, the orchestration layer adds minimal cost to what you are already paying for compute and storage."
+  - question: Can Kestra and Microsoft Fabric run in parallel?
+    answer: "Yes. Kestra can orchestrate Fabric workloads directly: triggering Fabric Data Factory pipeline runs via the Azure REST API, reading from OneLake, or calling Synapse SQL endpoints. Most teams run both during a transition, using Kestra for new pipelines and multi-cloud workflows while keeping Fabric for existing Azure-native transformations. Once the team is comfortable with Kestra's YAML model, the Fabric pipelines can migrate at whatever pace the data team decides."
+  - question: Does Kestra support Apache Airflow-style DAGs the way Fabric does?
+    answer: "Kestra is a distinct orchestration platform with its own YAML-based workflow model, not an Airflow replacement that runs Python DAGs. If your team is familiar with Airflow's Python DAG approach, Fabric's Apache Airflow integration (which runs actual Python DAGs on Azure) may feel more familiar during a transition. Kestra's YAML model is simpler to read and review than Python DAGs, and avoids Python dependency management, but it requires learning a different paradigm. Teams migrating from Airflow to Kestra typically find the YAML model faster to iterate on, even if the initial syntax feels different."

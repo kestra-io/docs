@@ -1,0 +1,239 @@
+title: "Kestra vs. Zapier: Universal Orchestration vs. No-Code App Automation"
+description: "Compare Kestra vs Zapier: Open-source workflow orchestration for engineering and data teams vs. no-code app automation for individuals and small teams. See features, pricing, and use cases."
+competitorName: Zapier
+category: No-Code Automation
+shortDescription: "No-code app-to-app automation with per-task billing vs. production-grade orchestration with no execution ceiling."
+
+brandColor:
+  color: "#FF4A00"
+  gradient: "linear-gradient(90deg, #FF4A00, #FF6B35, #FF8C00)"
+
+intro:
+  title: "Kestra vs. Zapier: Universal Orchestration vs. No-Code App Automation"
+  description: "Zapier connects over 7,000 apps with a visual, no-code builder and a free tier that lets anyone automate in minutes. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and business processes running at production scale, with version control and the option to self-host."
+
+philosophy:
+  mainTitle: Two Tools, Two Scales of Automation
+  kestra:
+    title: "Production Orchestration: Any Workflow, Any Scale"
+    description: "Declarative YAML orchestration platform for engineering and data teams. Define data pipelines, infrastructure automation, and business workflows in version-controlled YAML. Any event, any language, self-hosted or on Kestra Cloud, with no per-task billing ceiling."
+    subCardText: '"How do I build production workflows that run at scale without per-task billing cutting me off?"'
+  competitor:
+    title: No-Code App Automation for Individuals and Small Teams
+    description: "Visual automation platform built for connecting apps without writing code. Triggers and actions map to events in over 7,000 integrated apps. Free tier, fast setup, and a massive app library make it the default starting point for non-technical automation."
+    shadowColor: "#FFE0D0"
+    subCardBg: "var(--ks-background-orange-light)"
+    subCardText: '"How do I connect these two apps and automate this repetitive task without writing any code?"'
+
+businessValue:
+  mainTitle: "App Automation Connects Tools.<br />Orchestration Runs Your Business."
+  kestra:
+    title: Production-Grade Workflow Orchestration
+    list:
+      - Automate data pipelines, infrastructure, and business processes in one platform
+      - Self-hosted or cloud, with full data residency control
+      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - RBAC, audit logs, and multi-tenancy for enterprise compliance
+      - Handles 100,000+ concurrent tasks with no per-task billing ceiling
+  competitor:
+    title: No-Code App Automation
+    list:
+      - 7,000+ pre-built app integrations (largest library in the category)
+      - Free tier limited to 100 tasks/month and 2-step Zaps only
+      - Multi-step Zaps and premium apps require the Professional plan ($19.99/month)
+      - Every successful action counts as one billable task
+      - Cloud-only, no self-hosting available
+    shadowColor: "#FFE0D0"
+    bulletColor: "#FF4A00"
+  footerText: "For individuals and small teams connecting SaaS apps and automating simple repetitive tasks without writing code, Zapier's app library and free tier are hard to beat. When workflows involve data pipelines, infrastructure automation, complex multi-step logic, or volumes that exceed per-task billing thresholds, Kestra is built for that scope."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Zapier is cloud-only SaaS, so there is no infrastructure to configure. The visual builder gets simple two-app Zaps running in minutes. The per-task billing model means cost scales with execution volume from day one."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No cloud account required, no per-task billing, no execution limits."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~10"
+      two: Minutes
+    description: "Sign up at zapier.com, choose a trigger app and action app, connect via OAuth, and map the fields. Free tier gives 100 tasks/month with 2-step Zaps. Multi-step Zaps require a paid plan."
+    shadowColor: "#FFE0D0"
+    command: |
+      # Sign up at zapier.com
+      # Choose trigger app + action app
+      # Connect via OAuth, map fields
+
+      Trigger: Schedule by Zapier
+        Frequency: Daily at 8:00 AM
+
+      Action 1: Webhooks by Zapier - POST
+        URL: https://cloud.getdbt.com/api/v2/.../run/
+        Headers: Authorization: Token {token}
+
+      Action 2: Slack - Send Channel Message
+        Channel: #data-team
+        Text: "Daily report ready"
+
+      # 2 tasks per run. At daily frequency: ~62 tasks/month.
+    lang: yaml
+
+easeOfUse:
+  title: Version-Controlled Workflows vs. Visual Zap Builder
+  kestra:
+    title: "Kestra: Readable by Your Whole Team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows live in Git and deploy through your existing CI/CD pipeline."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "Zapier: Visual Zaps for Non-Technical Users"
+    description: "Zapier Zaps are built by selecting a trigger app, an action app, and mapping fields between them in the browser. No code required for standard connections. Multi-step Zaps with paths, filters, and delays require a paid plan. Zap logic lives in Zapier's cloud with no local files."
+    shadowColor: "#FFE0D0"
+    code: |
+      # Zapier Zap (built visually in-browser)
+
+      Trigger: Schedule by Zapier
+        Frequency: Daily at 8:00 AM
+
+      Action 1: Webhooks by Zapier - POST
+        URL: "https://cloud.getdbt.com/api/v2/accounts/{{id}}/jobs/{{job_id}}/run/"
+        Headers: {Authorization: "Token {{dbt_token}}"}
+        Data: {cause: "Zapier scheduled run"}
+
+      Action 2: Slack - Send Channel Message
+        Channel: "#data-team"
+        Message: "Daily report ready"
+
+      # No version control. No local files.
+      # Each action = 1 billable task.
+    lang: yaml
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations in one platform. No execution ceiling, no per-task billing. Self-host with full control or use Kestra Cloud."
+  competitor:
+    description: "Connect SaaS apps and automate repetitive tasks without writing code. Fast setup, massive app library, and a free tier make it the default starting point for simple automation. Not designed for data pipelines, infrastructure automation, or workflows that need version control."
+    shadowColor: "#FFE0D0"
+
+featureGrid:
+  title: Kestra vs Zapier at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: No-code app-to-app automation
+    - feature: Workflow definition
+      kestra: Declarative YAML (version-controlled)
+      competitor: Visual Zap builder (cloud-stored, no files)
+    - feature: Deployment model
+      kestra: Self-hosted or Kestra Cloud
+      competitor: Cloud-only (no self-hosting)
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: "No-code (Formatter and Code by Zapier for basic logic)"
+    - feature: Data pipeline support
+      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
+      competitor: Not designed for data pipelines or compute-heavy workloads
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: "✓ Visual builder requires no engineering"
+    - feature: Multi-step workflows with logic
+      kestra: "✓ Native (conditionals, parallel branches, loops)"
+      competitor: Paths and filters available on Professional plan only
+    - feature: GitOps and version control
+      kestra: "✓ Native Git sync, Terraform provider"
+      competitor: No version control (Zap history only)
+    - feature: Pricing model
+      kestra: Infrastructure cost (no per-task billing)
+      competitor: "Per-task billing; free tier caps at 100 tasks/month"
+    - feature: Open source
+      kestra: "✓ Open source (Apache 2.0)"
+      competitor: Closed source SaaS
+
+testimonials:
+  - quote: "Kestra made the data mesh possible. We produce far more data now, and deliver it nearly 10 times faster."
+    author: "Julien Henrion, CDO @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: In data production
+      - value: "+250"
+        name: Active users
+      - value: "+5000"
+        name: Workflows created
+    storyLink: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
+
+platformStrengths:
+  title: Kestra Is Built for Production, Not Just Point-to-Point Automation
+  features:
+    - title: No task ceiling, no billing surprises
+      description: "Zapier charges per task: every successful action counts against your monthly quota. At 100 tasks/month on the free tier, a single daily Zap with two actions consumes 62 tasks before accounting for anything else. Kestra runs on your infrastructure with no per-task billing. A workflow that runs 10,000 times a day costs the same to execute as one that runs once."
+    - title: Data pipelines run alongside everything else
+      description: "Native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1,200+ more let data engineers define ETL pipelines in the same YAML they use for event-driven workflows and infrastructure automation. Zapier can POST to a dbt Cloud API endpoint, but there are no native data plugins, no DAG visualization, and no retry semantics for transformation failures."
+    - title: Workflows in Git, not locked in a browser
+      description: "Every Kestra flow is a YAML file that lives in your repository, deploys through CI/CD, and rolls back like any other code change. Zapier Zaps are stored in Zapier's cloud with no local representation. Reviewing a change, rolling back a broken Zap, or auditing what ran last Tuesday all require navigating Zapier's UI rather than reading a commit history."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your workflows involve data pipelines, ETL, or infrastructure automation beyond app-to-app connections."
+      - "Execution volume makes per-task billing impractical: hundreds of workflows running daily."
+      - "Workflows must live in version control, pass code review, and deploy through CI/CD."
+      - "Self-hosting is required for data residency, compliance, or cost predictability."
+      - "Your team needs multi-step logic, parallel branches, and error handling without paying for a higher plan tier."
+  competitor:
+    title: Choose Zapier When
+    list:
+      - "Your automation needs are simple: connect two apps, trigger on an event, take an action."
+      - "Non-technical users need to build and maintain automations independently, without engineering help."
+      - "You need a specific app integration from the 7,000+ library with no custom development."
+      - "Low execution volume fits within a task quota without hitting billing ceilings."
+      - "You want the fastest possible path from idea to working automation with no setup required."
+    shadowColor: "#FFE0D0"
+    bulletColor: "#FF4A00"
+
+commonQuestions:
+  - question: How do I migrate from Zapier to Kestra?
+    answer: "Map each Zap trigger and action to the equivalent Kestra plugin. Scheduled Zaps become Schedule triggers; webhook Zaps become Webhook triggers; HTTP actions use the HTTP plugin. For Zapier's pre-built app connectors, Kestra's 1,200+ plugin library covers Slack, Gmail, databases, cloud storage, Salesforce, and most common targets. For anything not in the plugin library, the HTTP plugin handles any REST API. Most teams migrate incrementally, starting with Zaps that have grown beyond their task quota or that need multi-step logic unavailable on lower Zapier plans."
+  - question: Can Kestra handle simple app-to-app automation like Zapier does?
+    answer: "Yes. Kestra supports webhook triggers, HTTP actions, Slack notifications, email sending, and connections to virtually any API through its plugin library. The difference is that Kestra workflows are written in YAML rather than built visually. For a non-technical user who needs to connect Gmail to Slack with no engineering support, Zapier's visual builder is faster. For an engineering or data team that already works in YAML and Git, Kestra's approach fits naturally into existing workflows without adding a separate tool to manage."
+  - question: What happens when I hit Zapier's task limits?
+    answer: "Zapier automatically switches to pay-per-task billing at 1.25x the base task rate once you exceed your monthly quota. For teams with growing automation needs, this creates unpredictable costs. Upgrading to higher Zapier plans increases the task quota but does not eliminate per-task pricing. Kestra runs on your infrastructure with no task-based billing: a workflow that executes a thousand times costs the same to run as one that executes ten times."
+  - question: How does pricing compare between Kestra and Zapier at scale?
+    answer: "Zapier's Professional plan starts at $19.99/month for a task quota, then bills per additional task. At higher volumes, that adds up quickly. Kestra's open-source version is free to self-host; Kestra Cloud pricing is based on execution resources rather than per-task counting. For teams running dozens of scheduled workflows daily, the infrastructure cost of running Kestra typically comes out below Zapier's task-based pricing."
+  - question: Does Kestra support multi-step workflows with conditional logic?
+    answer: "Yes, without requiring a paid plan upgrade. Kestra supports conditional branching, parallel task execution, loops, subflows, error handling, and retry logic as first-class YAML constructs available in the open-source version. Zapier's Paths feature (conditional routing) and multi-step Zaps both require the Professional plan at $19.99/month or above. On Zapier's free tier, automations are limited to two-step trigger-plus-action sequences."
+  - question: Can non-technical users use Kestra the way they use Zapier?
+    answer: "Kestra Apps let non-technical users trigger, monitor, and interact with workflows through a no-code interface without touching YAML or accessing the engineering UI. Kestra's business users consume workflows built by engineers; they don't create them independently. Zapier's visual builder lets a non-technical user build an entire automation themselves in minutes. If the primary requirement is self-service automation creation for non-technical users with no engineering involvement, Zapier's builder has a lower floor. Kestra Apps work best when engineering owns the workflow layer and business users need a no-code interface to trigger and monitor without crossing into the engineering UI."
