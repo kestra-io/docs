@@ -119,7 +119,7 @@ Following `multilingual_agent` is the `english_brevity` task, which only needs a
 
 ![AI Agent Abbreviated Summary](./ai-agent-brevity.png)
 
-These outputs can then be passed on as notifications or system messages to external tools or subflows within Kestra. Other useful outputs include `tokenUsage` to compare different providers for the same tasks. For more examples and details about properties, outputs, and definitions, refer to the AI [Agent plugin documentation](/plugins/plugin-ai/agent).
+These outputs can then be passed on as notifications or system messages to external tools or subflows within Kestra. Other useful outputs include `tokenUsage` to compare different providers for the same tasks. At runtime, Kestra also emits counter metrics — `ai.agent.tool.calls`, `ai.provider.calls`, and `ai.embedding.store.calls` — tagged by class name, which you can scrape with Prometheus or export via OpenTelemetry to monitor AI task usage. For more examples and details about properties, outputs, and definitions, refer to the AI [Agent plugin documentation](/plugins/plugin-ai/agent).
 
 ### Plugin defaults
 
