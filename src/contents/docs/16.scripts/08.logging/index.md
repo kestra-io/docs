@@ -1,5 +1,6 @@
 ---
 title: Logging from Scripts – Send Logs to Kestra
+h1: Send Logs from Python, Node.js & Shell Scripts to Kestra
 sidebarTitle: Logging
 icon: /src/contents/docs/icons/dev.svg
 description: Learn how to send logs from your Python, Node.js, and Shell scripts directly to Kestra's backend during execution.

@@ -1,5 +1,6 @@
 ---
-title: Expressions with Namespace Files
+title: Expressions with Namespace Files in Kestra
+h1: Pass Kestra Expressions to Scripts via Namespace Files
 sidebarTitle: Expressions with Namespace Files
 icon: /src/contents/docs/icons/best-practices.svg
 description: Learn how to pass Kestra expressions to scripts stored in Namespace Files using environment variables or CLI arguments.

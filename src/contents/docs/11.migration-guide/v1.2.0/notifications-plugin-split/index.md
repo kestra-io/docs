@@ -1,5 +1,6 @@
 ---
-title: Split notifications plugins (Non-Breaking Change)
+title: Notification Plugins Split in Kestra 1.2.0 (Non-Breaking)
+h1: How Notification Plugins Were Split into Granular Packages
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.2.0
 description: Guide to migrating to the split notification plugins in Kestra 1.2.0, allowing for more granular plugin management.

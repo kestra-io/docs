@@ -1,5 +1,6 @@
 ---
 title: Sync Namespace Files from a Git Repository
+h1: Keep Namespace Files in Sync with Git Using SyncNamespaceFiles
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:

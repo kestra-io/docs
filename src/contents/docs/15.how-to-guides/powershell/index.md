@@ -1,5 +1,7 @@
 ---
 title: Run PowerShell Inside Your Flows
+h1: Execute PowerShell Scripts in Kestra Workflows
+description: Run PowerShell scripts in Kestra. Automate Windows administration, call Azure APIs, and integrate Microsoft services into your automation pipelines.
 icon: /src/contents/docs/icons/powershell.svg
 stage: Getting Started
 topics:

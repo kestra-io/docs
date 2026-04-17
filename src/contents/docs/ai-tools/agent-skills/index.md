@@ -1,5 +1,6 @@
 ---
 title: Agent Skills – Operate Kestra from AI Coding Agents
+h1: Give Claude Code, Cursor & Windsurf Knowledge to Generate Flows
 sidebarTitle: Agent Skills
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"

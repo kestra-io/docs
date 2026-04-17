@@ -1,5 +1,6 @@
 ---
-title: Configure Local Ceph Storage for Kestra via MinIO Gateway
+title: Ceph Storage for Kestra via MinIO S3 Gateway
+h1: Set Up a Local Ceph Cluster as S3-Compatible Storage for Kestra
 icon: /src/contents/docs/icons/ceph.svg
 stage: Intermediate
 topics:

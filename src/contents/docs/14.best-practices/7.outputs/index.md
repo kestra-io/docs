@@ -1,5 +1,6 @@
 ---
-title: Managing and Purging Flow Outputs
+title: Managing and Purging Flow Outputs in Kestra
+h1: Handle, Purge, and Manage Flow Outputs Safely
 sidebarTitle: Flow Outputs
 icon: /src/contents/docs/icons/best-practices.svg
 description: Best practices for managing flow outputs in Kestra, including purging large files and handling conditional outputs efficiently.

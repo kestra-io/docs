@@ -1,5 +1,6 @@
 ---
 title: AWS Batch Task Runner – Run Tasks on ECS Fargate or EC2
+h1: Execute Kestra Tasks as AWS Batch Jobs on ECS Fargate or EC2
 sidebarTitle: AWS Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"

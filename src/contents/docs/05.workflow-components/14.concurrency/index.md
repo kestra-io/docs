@@ -1,5 +1,6 @@
 ---
-title: Flow Concurrency Limits in Kestra – Control Parallel Runs
+title: "Flow Concurrency in Kestra: Limit Parallel Runs"
+h1: Control How Many Flow Executions Run in Parallel
 description: Manage workflow load with Concurrency Limits in Kestra. Control the number of parallel executions for a flow to protect resources and downstream systems.
 sidebarTitle: Concurrency Limits
 icon: /src/contents/docs/icons/flow.svg
