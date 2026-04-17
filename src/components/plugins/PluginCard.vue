@@ -90,7 +90,7 @@
         flex-direction: column;
         gap: 0;
         box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
-        transition: 0.4s ease-out;
+        transition: transform 0.4s ease-out;
         &:hover {
             border-color: var(--ks-border-active);
             transform: scale(1.01);
@@ -217,3 +217,4 @@
         }
     }
 </style>
+

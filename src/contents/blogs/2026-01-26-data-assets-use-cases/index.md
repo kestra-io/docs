@@ -3,9 +3,10 @@ title: "How Kestra's Assets Give You Complete Pipeline Lineage"
 description: "Kestra 1.2 introduces Assets, a unified way to track both data artifacts and infrastructure resources across your workflows, giving you lineage that reflects what your pipelines actually touch."
 date: 2026-01-26T13:00:00
 category: Solutions
-author: 
+author:
   name: "Parham Parvizi"
   image: pparvizi
+  linkedin: https://www.linkedin.com/in/xdatanomad/
   role: Solutions Engineer
 image: ./main.png
 ---

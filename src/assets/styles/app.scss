@@ -393,16 +393,7 @@ blockquote.blockquote {
 
     &.card-centered {
         text-align: center;
-        background: url("/landing/shadow.svg") no-repeat center center;
         justify-content: center;
-
-        @include media-breakpoint-down(xl) {
-            background-size: contain;
-        }
-
-        @include media-breakpoint-down(lg) {
-            background: none;
-        }
 
         .card-title {
             font-size: $font-size-lg;
@@ -797,12 +788,25 @@ small.agree {
     initial-value: 0turn;
 }
 
-@media only screen and (max-width: 768px) {
+// mixin to remove all usal animations
+@mixin disable-usal-animation {
     [data-usal] {
         opacity: 1 !important;
         transform: translate(0) scale(1) !important;
         pointer-events: auto !important;
     }
+}
+
+@media only screen and (max-width: 768px) {
+    @include disable-usal-animation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @include disable-usal-animation;
+}
+
+html.no-animation {
+    @include disable-usal-animation;
 }
 
 .highlight {

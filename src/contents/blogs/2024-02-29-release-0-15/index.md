@@ -6,6 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -280,7 +281,7 @@ Lastly, the `Save` and `Actions` buttons have been moved to a dedicated UI menu 
 
 With this release, we're introducing [Azure EventHubs](/plugins/plugin-azure#eventhubs) and [Solace](/plugins/plugin-solace) plugins, which extend the integration capabilities for event-driven architectures. These plugins open up new possibilities for data processing and event handling within your workflows.
 
-We've also added a new generic Singer plugin that simultaneously integrates with all [taps](/plugins/plugin-singer/taps/io.kestra.plugin.singer.taps.generictap) and [targets](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.generictarget), thereby significantly expanding the range of data sources and destinations that can be declaratively orchestrated in Kestra using the Singer ecosystem.
+We've also added a new generic Singer plugin that simultaneously integrates with all [taps](/plugins/plugin-singer) and [targets](/plugins/plugin-singer), thereby significantly expanding the range of data sources and destinations that can be declaratively orchestrated in Kestra using the Singer ecosystem.
 
 ---
 

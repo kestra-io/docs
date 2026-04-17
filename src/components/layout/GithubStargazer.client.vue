@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-    import axios from "axios"
+    import { $fetch } from "~/utils/fetch"
     import { ref, onMounted } from "vue"
 
     const emit = defineEmits(["apiError"])
@@ -12,8 +12,10 @@
 
     onMounted(async () => {
         try {
-            const response = await axios.get("/api/github")
-            stargazersText.value = Intl.NumberFormat("en-US").format(response.data.stargazers)
+            const response = await $fetch<{ stargazers: number }>("/api/github")
+            stargazersText.value = Intl.NumberFormat("en-US").format(
+                response.stargazers,
+            )
         } catch (error) {
             emit("apiError")
         }

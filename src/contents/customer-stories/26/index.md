@@ -1,5 +1,5 @@
 ---
-title: Orchestrating Cybersecurity for 100+ Users and Billions of Rows
+title: Orchestrating Cybersecurity for 100 Users and Billions of Rows
 description: In under 3 months, JPMorgan Chase empowered 100+
   users, ran thousands of API pulls weekly, and processed billions of rows
   securely with Trino, dbt, and AWS thanks to Kestra.

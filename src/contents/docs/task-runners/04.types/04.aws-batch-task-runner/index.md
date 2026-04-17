@@ -29,6 +29,21 @@ In order to support `inputFiles`, `namespaceFiles`, and `outputFiles`, the AWS B
 
 Since the working directory of the container isn’t known in advance, you must define the working and output directories explicitly. For example, use `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.
 
+### Exit codes
+
+The task runner maps AWS Batch job statuses to exit codes as follows:
+
+| AWS Batch status | Exit code |
+|---|---|
+| `SUCCEEDED` | `0` |
+| `FAILED` | `1` |
+| `RUNNING` | `2` |
+| `RUNNABLE` | `3` |
+| `PENDING` | `4` |
+| `STARTING` | `5` |
+| `SUBMITTED` | `6` |
+| Unknown | `-1` |
+
 ## Minimum permissions required
 
 To submit and monitor AWS Batch jobs, the IAM principal used by Kestra needs permission to create, tag, inspect, and clean up Batch job definitions and jobs. It also needs permission to pass the ECS roles used by the job and to read the AWS Batch log group.
@@ -49,7 +64,12 @@ The following policy is the minimum set required by the task runner:
         "batch:DescribeJobs",
         "batch:DescribeJobDefinitions",
         "batch:DescribeComputeEnvironments",
-        "batch:DeregisterJobDefinition"
+        "batch:DeregisterJobDefinition",
+        "batch:TerminateJob",
+        "batch:CreateJobQueue",
+        "batch:UpdateJobQueue",
+        "batch:DeleteJobQueue",
+        "batch:DescribeJobQueues"
       ],
       "Effect": "Allow",
       "Resource": "*"
@@ -76,7 +96,96 @@ The following policy is the minimum set required by the task runner:
 }
 ```
 
+:::alert{type="info"}
+The `batch:CreateJobQueue`, `batch:UpdateJobQueue`, `batch:DeleteJobQueue`, and `batch:DescribeJobQueues` permissions are only required when `jobQueueArn` is not configured — the task runner will create and clean up a job queue automatically in that case. If you always provide a `jobQueueArn`, you can omit those four permissions.
+:::
+
 Replace `<executionRoleArn>`, `<serviceRoleArn>`, `<taskRoleArn>`, and `<accountId>` with the values from your AWS account. If you use a different region, update the CloudWatch Logs ARN accordingly.
+
+### S3 permissions when using `bucket`
+
+When you set the `bucket` property, the Kestra worker itself (not the ECS task container) uploads `inputFiles` and `namespaceFiles` to S3 before the job starts and downloads `outputFiles` after it finishes. It also deletes the working-directory prefix from the bucket on cleanup. The Kestra IAM principal therefore needs the following additional permissions when `bucket` is configured:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+The ECS task container separately needs S3 access via its `taskRoleArn` to read input files and write output files at runtime. Refer to the [Create the `ecsTaskRole` IAM role](#create-the-ecstaskrole-iam-role) section for the task-level policy.
+
+## Resource sizing
+
+### Default resources
+
+By default, each job runs with `1 vCPU` and `2048 MiB` of memory. Override this with the `resources` property:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Batch
+  # ...
+  resources:
+    request:
+      cpu: "2"
+      memory: "4096"
+```
+
+### Fargate CPU and memory constraints
+
+AWS Fargate enforces strict combinations of vCPU and memory. The task runner validates these at runtime and will throw an error if an invalid combination is used.
+
+| vCPU | Allowed memory (MiB) |
+|---|---|
+| `0.25` | 512, 1024, 2048 |
+| `0.5` | 1024, 2048, 3072, 4096 |
+| `1` | 2048, 3072, 4096, 5120, 6144, 7168, 8192 |
+| `2` | 4096 – 16384 (increments of 1024) |
+| `4` | 8192 – 30720 (increments of 1024) |
+| `8` | 16384 – 61440 (increments of 4096) |
+| `16` | 32768 – 122880 (increments of 8192) |
+
+For EC2 compute environments, the vCPU value must be a whole integer (e.g. `"1"`, `"2"`) and must be ≥ 1.
+
+### Sidecar container resources
+
+When `inputFiles`, `namespaceFiles`, or `outputFiles` are used, the task runner adds sidecar containers that handle S3 file transfers. Default sidecar resources are:
+
+- **ECS Fargate**: `0.25 vCPU` / `512 MiB`
+- **ECS EC2**: `1 vCPU` / `128 MiB`
+
+On Fargate, AWS Batch enforces resource limits at the **task level**. To keep the overall task resources equal to the value set in `resources.request`, the sidecar resources are automatically subtracted from the main container. For example, with `resources.request = 1 vCPU / 2048 MiB` and one sidecar at the default `0.25 vCPU / 512 MiB`, the main container will receive `0.75 vCPU / 1536 MiB`.
+
+If your `resources.request` is too small to accommodate the sidecars, the task runner will throw an error at startup. You can either increase `resources.request` or override sidecar sizing with `sidecarResources`:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Batch
+  # ...
+  resources:
+    request:
+      cpu: "1"
+      memory: "2048"
+  sidecarResources:
+    request:
+      cpu: "0.25"
+      memory: "512"
+```
+
+:::alert{type="info"}
+Fargate always assigns a public IP address to each task. If your subnets do not have a route to the internet (no internet gateway or NAT gateway), the containers will not be able to pull Docker images from public registries.
+:::
 
 ## How to run tasks on AWS ECS Fargate
 
@@ -407,3 +516,43 @@ tasks:
 When you execute this task, the environment information appears in the logs generated by the Python script:
 
 ![logs](./logs.png)
+
+## Advanced configuration
+
+The task runner exposes several optional properties for tuning behavior and authentication.
+
+### Polling and timeouts
+
+| Property | Default | Description |
+|---|---|---|
+| `waitUntilCompletion` | `PT1H` | Maximum duration to wait for the job to complete. If the task defines a `timeout`, that value takes precedence. AWS Batch will automatically terminate the job when this duration is reached. |
+| `completionCheckInterval` | `PT5S` | How often Kestra polls AWS Batch for job status. Lower values reduce latency for short jobs; higher values reduce API call volume for long-running jobs. |
+
+### Job lifecycle
+
+| Property | Default | Description |
+|---|---|---|
+| `resume` | `true` | When `true`, if the Kestra worker is restarted while a job is running, it will reconnect to the existing job rather than submitting a new one. Requires a `jobQueueArn` to be configured. |
+| `delete` | `true` | When `true`, the job definition, any auto-created job queue, and the S3 working-directory prefix are deleted after the job completes. Set to `false` to retain resources for debugging — note that a task retry may then reconnect to the previous (failed) job. |
+
+### STS role assumption
+
+Instead of static `accessKeyId` / `secretKeyId` credentials, you can authenticate via AWS STS `AssumeRole` for cross-account access or short-lived credentials:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Batch
+  region: eu-central-1
+  stsRoleArn: "arn:aws:iam::123456789012:role/kestra-batch-role"
+  stsRoleExternalId: "{{ secret('STS_EXTERNAL_ID') }}"
+  stsRoleSessionName: kestra-session
+  computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
+```
+
+| Property | Description |
+|---|---|
+| `stsRoleArn` | ARN of the IAM role to assume. |
+| `stsRoleExternalId` | External ID for the trust policy (optional). |
+| `stsRoleSessionName` | Session name tag attached to the assumed-role session (optional). |
+| `stsEndpointOverride` | Override the STS endpoint URL (optional, useful in GovCloud or custom environments). |
+| `stsRoleSessionDuration` | Duration of the assumed-role session (optional; defaults to the AWS minimum). |
