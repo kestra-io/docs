@@ -6,7 +6,8 @@ icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:
   - DevOps
-  - Integrations---
+  - Integrations
+---
 
 Scale your codebase using Terraform to template and define flows
 

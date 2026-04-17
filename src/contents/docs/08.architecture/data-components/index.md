@@ -3,7 +3,8 @@ title: Data Storage Components in Kestra Architecture
 h1: How Kestra Stores Inputs, Outputs, Logs, and Metadata
 description: Dive into Kestra's Data Architecture. Learn how inputs, outputs, logs, and metadata are stored across Repositories and Internal Storage systems.
 sidebarTitle: Data Storage in Kestra
-icon: /src/contents/docs/icons/architecture.svg---
+icon: /src/contents/docs/icons/architecture.svg
+---
 
 Understand where different data components ([inputs](../../05.workflow-components/05.inputs/index.md), [outputs](../../05.workflow-components/06.outputs/index.md), logs, and more) are stored in Kestra’s architecture.
 

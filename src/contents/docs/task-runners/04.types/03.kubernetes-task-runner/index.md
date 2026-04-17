@@ -5,7 +5,8 @@ description: Run Kestra tasks as Kubernetes pods with the K8s Task Runner. Confi
 sidebarTitle: Kubernetes Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
-editions: ["EE", "Cloud"]---
+editions: ["EE", "Cloud"]
+---
 
 Run tasks as Kubernetes pods.
 

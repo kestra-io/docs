@@ -4,7 +4,8 @@ h1: "Personalize Your Kestra UI: Themes, Timezone & Editor Prefs"
 description: Customize the Kestra UI. Configure themes, editor preferences, time zones, and default settings to personalize your user experience.
 sidebarTitle: Settings
 icon: /src/contents/docs/icons/ui.svg
-docId: settings---
+docId: settings
+---
 
 Configure Settings for Kestra.
 

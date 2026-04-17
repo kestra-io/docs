@@ -3,7 +3,8 @@ title: "Pebble Templating in Kestra: Dynamic Variables"
 h1: Dynamically Render Variables, Inputs and Outputs with Pebble
 description: Dynamically render variables, inputs, and outputs in Kestra using Pebble templating. Use expressions to build flexible, data-driven workflows.
 sidebarTitle: Pebble Templating Engine
-icon: /src/contents/docs/icons/concepts.svg---
+icon: /src/contents/docs/icons/concepts.svg
+---
 
 Dynamically render variables, inputs and outputs.
 

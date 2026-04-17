@@ -5,7 +5,8 @@ description: Create and manage Service Accounts in Kestra. Securely authenticate
 sidebarTitle: Service Accounts
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: ">= 0.15.0"---
+version: ">= 0.15.0"
+---
 
 How to create and manage Service Accounts.
 

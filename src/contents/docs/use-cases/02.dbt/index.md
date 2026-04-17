@@ -3,7 +3,8 @@ title: Orchestrate dbt Workflows in Kestra
 h1: Version-Control, Test & Deploy dbt Models with GitOps
 sidebarTitle: dbt Workflows
 description: Version-control, test, and deploy dbt models with Kestra and GitOps. Run dbt on demand or on a schedule with on-demand compute for reliable transformations.
-icon: /src/contents/docs/icons/kestra.svg---
+icon: /src/contents/docs/icons/kestra.svg
+---
 
 Data teams use dbt to transform data in warehouses. While dbt simplifies SQL transformations, managing dependencies, testing changes, and deploying models at scale remains challenging. Kestra solves this by integrating dbt with your data platform through version-controlled workflows.
 

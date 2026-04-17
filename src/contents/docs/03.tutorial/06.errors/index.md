@@ -3,7 +3,8 @@ title: "Handle Errors in Kestra: Retries and Alerts"
 h1: Build Resilient Workflows with Retries, Alerts & Failure Handling
 description: Build resilient Kestra workflows with robust error handling. Configure retries, set up alerts, and manage failures at the flow and namespace levels.
 sidebarTitle: Error Handling
-icon: /src/contents/docs/icons/tutorial.svg---
+icon: /src/contents/docs/icons/tutorial.svg
+---
 
 Handle errors with automatic retries and notifications.
 

@@ -6,7 +6,8 @@ sidebarTitle: Invitations
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
-docId: users---
+docId: users
+---
 
 Add new users to your Tenant or Instance by using the invitation process.
 

@@ -5,7 +5,8 @@ description: Use ENUM-type inputs in Kestra to restrict flow parameters to a pre
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Kestra Workflow Components---
+  - Kestra Workflow Components
+---
 
 Input validation with the Enum data type
 

@@ -3,7 +3,8 @@ title: Subflows in Kestra – Modularize and Reuse Flows
 h1: Call Flows from Other Flows and Build Reusable Components
 description: Modularize your Kestra workflows with Subflows. Learn to call flows from other flows, pass inputs and outputs, and build reusable orchestration components.
 sidebarTitle: Subflows
-icon: /src/contents/docs/icons/flow.svg---
+icon: /src/contents/docs/icons/flow.svg
+---
 
 Subflows let you build **modular** and **reusable** workflow components.
 

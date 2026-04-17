@@ -5,7 +5,8 @@ description: Use Kill Switch in Kestra Enterprise to immediately kill, cancel, o
 sidebarTitle: Kill Switch
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: "1.3.0"---
+version: "1.3.0"
+---
 
 Kill Switch is an operational safety lever that lets administrators stop misbehaving executions directly from the UI.
 

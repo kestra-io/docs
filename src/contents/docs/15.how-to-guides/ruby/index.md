@@ -5,7 +5,8 @@ description: Execute Ruby scripts in Kestra. Automate tasks with Ruby code, inst
 icon: /src/contents/docs/icons/ruby.svg
 stage: Getting Started
 topics:
-  - Scripting---
+  - Scripting
+---
 
 Run Ruby code directly in your flows and generate outputs.
 

@@ -4,7 +4,8 @@ h1: "Update Flows: Git Tasks Now Default to main Branch in 0.21.0"
 description: Default Git Branch update in Kestra 0.21.0. Git tasks now default to `main` instead of `kestra`. Update flows relying on the old default.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
-editions: ["OSS", "EE"]---
+editions: ["OSS", "EE"]
+---
 
 
 ## Default Git Branch

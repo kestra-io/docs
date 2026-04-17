@@ -5,7 +5,8 @@ description: Run JavaScript and Node.js scripts in Kestra. Install npm packages 
 icon: /src/contents/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
-  - Scripting---
+  - Scripting
+---
 
 Run Node.js code directly in your flows and generate outputs.
 

@@ -3,7 +3,8 @@ title: "Secrets in Kestra: Store Sensitive Values Securely"
 h1: Store and Access Sensitive Information Securely
 description: Store and access sensitive information securely in Kestra. Use Secrets to protect API keys, passwords, and credentials without exposing plain-text values.
 sidebarTitle: Secrets
-icon: /src/contents/docs/icons/concepts.svg---
+icon: /src/contents/docs/icons/concepts.svg
+---
 
 Store sensitive information securely.
 

@@ -4,7 +4,8 @@ h1: Save and Quickly Reopen Your Favorite Kestra Pages
 description: Use Bookmarks in the Kestra UI. Star frequently used pages for quick access and organize your workflow navigation efficiently.
 sidebarTitle: Bookmarks
 icon: /src/contents/docs/icons/ui.svg
-version: ">= 0.20.0"---
+version: ">= 0.20.0"
+---
 
 Quickly save and access your favorite pages by starring them for instant retrieval.
 

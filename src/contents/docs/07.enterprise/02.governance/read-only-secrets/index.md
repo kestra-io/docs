@@ -5,7 +5,8 @@ description: Enhance security with Read-Only Secret Managers in Kestra. Integrat
 sidebarTitle: Read-only Secret Manager
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: "0.22.0"---
+version: "0.22.0"
+---
 
 Integrate external secrets managers in a read-only mode.
 

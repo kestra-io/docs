@@ -5,7 +5,8 @@ description: Run Bash and shell scripts in Kestra workflows. Execute multi-step 
 icon: /src/contents/docs/icons/bash.svg
 stage: Getting Started
 topics:
-  - Scripting---
+  - Scripting
+---
 
 Run Shell scripts directly in your flows and generate outputs.
 

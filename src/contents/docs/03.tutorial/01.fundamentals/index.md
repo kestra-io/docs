@@ -3,7 +3,8 @@ title: Build a Hello World Flow in Kestra
 h1: Create Your First Hello World Flow
 description: Build your first Hello World flow in Kestra. Follow a step-by-step tutorial to learn declarative workflow design and core Kestra concepts from scratch.
 sidebarTitle: Fundamentals
-icon: /src/contents/docs/icons/tutorial.svg---
+icon: /src/contents/docs/icons/tutorial.svg
+---
 
 Start by building a simple Hello World flow.
 

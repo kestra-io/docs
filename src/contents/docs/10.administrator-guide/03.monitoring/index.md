@@ -3,7 +3,8 @@ title: "Kestra Monitoring: Prometheus, Alerts, and Health Checks"
 h1: Set up alerts and monitor your Kestra instance in production
 description: Monitor and alert on Kestra health. Best practices for setting up Prometheus metrics, health checks, and failure notifications for your instance.
 sidebarTitle: Alerting & Monitoring
-icon: /src/contents/docs/icons/admin.svg---
+icon: /src/contents/docs/icons/admin.svg
+---
 
 This page provides best practices for setting up alerting and monitoring in your Kestra instance.
 

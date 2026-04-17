@@ -5,7 +5,8 @@ description: Handle null and missing values in Kestra flows. Check for null inpu
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Best Practices---
+  - Best Practices
+---
 
 How to use the null coalescing operator to handle null and undefined values.
 

@@ -4,7 +4,8 @@ h1: "Integrate External Secret Managers: Vault, AWS, Azure, GCP"
 description: Secure sensitive data in Kestra with External Secrets Managers. Integrate with AWS, Azure, Google Cloud, Vault, and more for robust secret management.
 sidebarTitle: Secrets Manager
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE", "Cloud"]---
+editions: ["EE", "Cloud"]
+---
 
 How to configure a secrets manager.
 

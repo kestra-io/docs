@@ -5,7 +5,8 @@ description: Manage sensitive data securely in Kestra Enterprise. Create, use, a
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-docId: secrets---
+docId: secrets
+---
 
 How to create and manage Secrets in the Enterprise Edition.
 

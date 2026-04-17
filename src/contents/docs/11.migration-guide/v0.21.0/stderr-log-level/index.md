@@ -4,7 +4,8 @@ h1: Script Task stderr Output Now Logged as ERROR Level
 description: Script Task logging update in Kestra 0.21.0. Output to `stderr` is now logged as ERROR level instead of WARNING.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
-editions: ["OSS", "EE"]---
+editions: ["OSS", "EE"]
+---
 
 
 ## Log level for stderr output

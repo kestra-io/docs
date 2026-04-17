@@ -4,7 +4,8 @@ h1: Activate Your License and Configure the First Tenant
 description: Configure your Kestra Enterprise instance. Activate your license, create the first tenant, and complete the initial setup to start using Enterprise features.
 sidebarTitle: Enterprise Edition Setup Guide
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE", "Cloud"]---
+editions: ["EE", "Cloud"]
+---
 
 How to set up Kestra Enterprise Edition.
 

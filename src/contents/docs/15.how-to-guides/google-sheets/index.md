@@ -5,7 +5,8 @@ description: Integrate Google Sheets with Kestra workflows. Read spreadsheet dat
 icon: /src/contents/docs/icons/gsheets.svg
 stage: Getting Started
 topics:
-  - Integrations---
+  - Integrations
+---
 
 Learn step-by-step how to read data from a Google Sheet in a Kestra flow.
 

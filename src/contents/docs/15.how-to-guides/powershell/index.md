@@ -5,7 +5,8 @@ description: Run PowerShell scripts in Kestra. Automate Windows administration, 
 icon: /src/contents/docs/icons/powershell.svg
 stage: Getting Started
 topics:
-  - Scripting---
+  - Scripting
+---
 
 Run PowerShell code in your flow.
 

@@ -5,7 +5,8 @@ description: Broadcast messages with Kestra Announcements. Create in-app banners
 sidebarTitle: Announcements
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: ">= 0.20.0"---
+version: ">= 0.20.0"
+---
 
 Communicate planned maintenance or incidents with in-app banners
 

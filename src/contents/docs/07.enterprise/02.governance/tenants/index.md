@@ -6,7 +6,8 @@ sidebarTitle: Tenants
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.13.0"
-docId: tenants---
+docId: tenants
+---
 
 How to enable multi-tenancy in your Kestra instance.
 

@@ -4,7 +4,8 @@ h1: Run Kestra Securely and Reliably at Scale
 description: Learn about the Enterprise Edition and how it can help you run Kestra securely and reliably at scale.
 sidebarTitle: Features
 icon: /src/contents/docs/icons/kestra.svg
-editions: ["EE", "Cloud"]---
+editions: ["EE", "Cloud"]
+---
 
 Learn about the Enterprise Edition and how it can help you run Kestra securely and reliably at scale.
 

@@ -5,7 +5,8 @@ description: Populate your Kestra instance with demo data. Use sample flows and 
 icon: /src/contents/docs/icons/admin.svg
 stage: Getting Started
 topics:
-  - Kestra Concepts---
+  - Kestra Concepts
+---
 
 Quickly populate your Kestra instance with realistic demo flows and executions using a single SQL script.
  

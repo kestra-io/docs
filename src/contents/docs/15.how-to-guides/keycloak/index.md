@@ -6,7 +6,8 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
-editions: ["EE"]---
+editions: ["EE"]
+---
 
 Set up Keycloak SSO to manage authentication for users.
 

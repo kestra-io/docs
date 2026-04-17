@@ -5,7 +5,8 @@ description: Build end-to-end ETL pipelines in Kestra. Extract data from any sou
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
-  - Integrations---
+  - Integrations
+---
 
 Build ETL pipelines in Kestra using DuckDB, Python and Task Runners.
 

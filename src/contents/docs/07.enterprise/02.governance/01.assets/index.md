@@ -5,7 +5,8 @@ description: Use Assets in Kestra Enterprise to track workflow lineage and metad
 sidebarTitle: Assets
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: ">= 1.2.0"---
+version: ">= 1.2.0"
+---
 
 Track and manage the resources your workflows create and use.
 
@@ -143,7 +144,8 @@ tasks:
       inventory.ini: |
         localhost ansible_connection=local
       myplaybook.yml: |
-        ---
+        
+---
         - hosts: localhost
           tasks:
             - name: Print Hello World

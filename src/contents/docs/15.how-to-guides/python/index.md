@@ -5,7 +5,8 @@ description: Run Python scripts in Kestra. Install pip packages at runtime, exec
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
-  - Scripting---
+  - Scripting
+---
 
 Run Python code directly in your flows and generate outputs.
 

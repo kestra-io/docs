@@ -5,7 +5,8 @@ description: Manage plugin versions in Kestra Enterprise. Install multiple versi
 sidebarTitle: Versioned Plugins
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: "0.22.0"---
+version: "0.22.0"
+---
 
 Use multiple versions of a plugin depending on your instance requirements and upgrade path.
 

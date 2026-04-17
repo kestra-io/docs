@@ -5,7 +5,8 @@ description: Reference for Kestra RBAC permissions and CRUD actions mapped to AP
 sidebarTitle: Permissions Reference
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-docId: iam---
+docId: iam
+---
 
 This reference maps each RBAC Permission and Action to the Enterprise API endpoints that enforce it. Use it to design least-privilege roles and troubleshoot authorization errors.
 

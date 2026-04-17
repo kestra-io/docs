@@ -4,7 +4,8 @@ h1: Cluster Monitoring Now Requires SUPER_ADMIN in Kestra 0.20.0
 description: Cluster Monitoring permissions update in Kestra 0.20.0. Access to the Instance/Cluster Monitoring page now requires `SUPER_ADMIN` privileges.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0
-editions: ["EE"]---
+editions: ["EE"]
+---
 
 
 ## Different permissions for accessing Cluster Monitoring

@@ -3,7 +3,8 @@ title: Observability & Networking Configuration in Kestra
 h1: Configure Telemetry, Logs, Metrics & SSL in Kestra
 description: Configure telemetry, logs, metrics, Micronaut settings, endpoints, SSL, CORS, and webserver behavior in Kestra.
 sidebarTitle: Observability and Networking
-icon: /src/contents/docs/icons/admin.svg---
+icon: /src/contents/docs/icons/admin.svg
+---
 
 Use this page for operational visibility and network-facing configuration.
 

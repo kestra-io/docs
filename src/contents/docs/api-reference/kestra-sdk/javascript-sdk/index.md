@@ -3,7 +3,8 @@ title: "JavaScript SDK for Kestra: Client Setup and Examples"
 h1: Install and Configure the Kestra JavaScript SDK
 description: Integrate Kestra with JavaScript using the official SDK. Install the library, configure the client, and programmatically create and execute workflows.
 icon: /src/contents/docs/icons/api.svg
-release: 1.2.0---
+release: 1.2.0
+---
 
 Interact with Kestra's API via the JavaScript SDK.
 

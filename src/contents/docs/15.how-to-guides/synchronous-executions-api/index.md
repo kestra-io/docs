@@ -5,7 +5,8 @@ description: Trigger Kestra workflow executions synchronously via the REST API. 
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
-  - Integrations---
+  - Integrations
+---
 
 Manage the Executions API Synchronously.
 

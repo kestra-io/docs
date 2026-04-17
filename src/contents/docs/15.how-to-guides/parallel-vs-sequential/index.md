@@ -5,7 +5,8 @@ description: Choose between parallel and sequential task execution in Kestra. Un
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Kestra Concepts---
+  - Kestra Concepts
+---
 
 When to use parallel tasks and when to use sequential tasks in Kestra.
 

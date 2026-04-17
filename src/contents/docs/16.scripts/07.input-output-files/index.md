@@ -3,7 +3,8 @@ title: Input and Output Files in Script Tasks
 h1: Pass Files Into Scripts and Capture Output with inputFiles & outputFiles
 description: Manage input and output files in Kestra script tasks. Pass extra files using inputFiles (including Namespace Files) and capture task outputs with outputFiles.
 sidebarTitle: Input and Output Files
-icon: /src/contents/docs/icons/dev.svg---
+icon: /src/contents/docs/icons/dev.svg
+---
 
 Manage Input and Output files with your scripts.
 
@@ -22,7 +23,8 @@ tasks:
       inventory.ini: |
         localhost ansible_connection=local
       myplaybook.yml: |
-        ---
+        
+---
         - hosts: localhost
           tasks:
             - name: Print Hello World

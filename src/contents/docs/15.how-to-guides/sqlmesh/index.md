@@ -6,7 +6,8 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations
-version: ">= 0.18.0"---
+version: ">= 0.18.0"
+---
 
 Using SQLMesh to run dbt project with Kestra.
 

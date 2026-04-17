@@ -5,7 +5,8 @@ description: Make HTTP requests inside Kestra workflows. Call REST APIs, fetch r
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Integrations---
+  - Integrations
+---
 
 Make HTTP Requests to fetch data and generate outputs.
 

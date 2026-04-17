@@ -5,7 +5,8 @@ description: Create dynamic Kestra flows at runtime using inputs and Pebble expr
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
-  - Kestra Concepts---
+  - Kestra Concepts
+---
 
 Implement dynamic flows in Kestra.
 

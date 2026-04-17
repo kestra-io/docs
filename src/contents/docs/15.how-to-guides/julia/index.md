@@ -5,7 +5,8 @@ description: Execute Julia scripts in Kestra for scientific computing and data a
 icon: /src/contents/docs/icons/julia.svg
 stage: Getting Started
 topics:
-  - Scripting---
+  - Scripting
+---
 
 Run Julia code directly in your flows and generate outputs.
 

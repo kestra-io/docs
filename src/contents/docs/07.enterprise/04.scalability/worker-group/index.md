@@ -5,7 +5,8 @@ description: Manage workloads with Kestra Worker Groups. Target specific workers
 sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
-version: ">= 0.10.0"---
+version: ">= 0.10.0"
+---
 
 How to configure Worker Groups in Kestra Enterprise Edition.
 

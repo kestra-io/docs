@@ -6,7 +6,8 @@ sidebarTitle: Apps
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
-docId: apps---
+docId: apps
+---
 
 Build custom UIs to interact with Kestra from the outside world.
 

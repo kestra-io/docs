@@ -4,7 +4,8 @@ h1: Delete old executions, logs, and files to reclaim storage
 description: Reclaim storage by purging old executions, logs, KV entries, and files in Kestra. Configure scheduled purge jobs to keep your database lean in production.
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
-version: ">= 0.18.0"---
+version: ">= 0.18.0"
+---
 
 Use purge tasks to remove old executions, logs, and key-value pairs, helping reduce storage usage.
 

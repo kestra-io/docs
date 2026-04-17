@@ -4,7 +4,8 @@ h1: Generate and Refine Flows with Natural Language Prompts
 description: Use Kestra AI Copilot to generate and edit flows with natural language prompts. Get AI-assisted suggestions for tasks, triggers, and configurations.
 sidebarTitle: AI Copilot
 icon: /src/contents/docs/icons/ai.svg
-version: "1.0.0"---
+version: "1.0.0"
+---
 
 Build and modify flows directly from natural language prompts.
 

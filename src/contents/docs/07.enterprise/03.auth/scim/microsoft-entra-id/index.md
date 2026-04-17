@@ -4,7 +4,8 @@ h1: Sync Users and Groups from Entra ID with SCIM
 description: Set up SCIM provisioning with Microsoft Entra ID. Automatically sync users and groups from Entra ID to Kestra for streamlined user management.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: ">= 0.18.0"---
+version: ">= 0.18.0"
+---
 
 Sync users and groups from Microsoft Entra ID to Kestra using SCIM.
 

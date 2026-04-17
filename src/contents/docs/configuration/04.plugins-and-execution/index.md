@@ -3,7 +3,8 @@ title: Plugins & Execution Configuration in Kestra
 h1: Configure Plugin Defaults, Retries & System Flows
 description: Configure plugin installation, plugin defaults, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
 sidebarTitle: Plugins and Execution
-icon: /src/contents/docs/icons/admin.svg---
+icon: /src/contents/docs/icons/admin.svg
+---
 
 Use this page when configuring how tasks, plugins, and execution-time behaviors work across your Kestra instance.
 

@@ -3,7 +3,8 @@ title: Orchestrate Data Pipelines in Kestra
 h1: Schedule, Backfill & Scale Data Pipelines Declaratively
 sidebarTitle: Data Pipelines
 description: Schedule, backfill, and scale data pipelines declaratively with Kestra. Orchestrate ETL, ELT, and analytics workflows from ingestion to delivery.
-icon: /src/contents/docs/icons/kestra.svg---
+icon: /src/contents/docs/icons/kestra.svg
+---
 
 Data teams use orchestration platforms like Kestra to manage complex pipelines — ingest raw data, transform it, and deliver it to data warehouses, lakes, and user-facing applications. The orchestration engine ensures workflows run in the correct sequence, recover from failures, and scale dynamically.
 

@@ -3,7 +3,8 @@ title: Add Triggers to Automate Kestra Flows
 h1: Automate Flows with Schedules, Events & API Triggers
 description: Automate Kestra flows with triggers. Schedule workflows or trigger them based on events like file uploads, API calls, or other flow completions.
 sidebarTitle: Triggers
-icon: /src/contents/docs/icons/tutorial.svg---
+icon: /src/contents/docs/icons/tutorial.svg
+---
 
 Triggers automatically start your flow based on events or a schedule.
 

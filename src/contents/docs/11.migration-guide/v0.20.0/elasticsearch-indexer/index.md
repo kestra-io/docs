@@ -4,7 +4,8 @@ h1: Elasticsearch Indexer Now Embedded in the Webserver (0.20.0)
 description: Elasticsearch Indexer changes in Kestra 0.20.0 (Enterprise). The webserver now embeds the indexer by default for Kafka backends, simplifying deployment.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0
-editions: ["EE"]---
+editions: ["EE"]
+---
 
 
 ## Elasticsearch indexer

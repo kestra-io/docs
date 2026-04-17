@@ -5,7 +5,8 @@ description: Automate security operations with Kestra. Build SecOps workflows fo
 icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:
-  - Integrations---
+  - Integrations
+---
 
 Operationalize SecOps benchmarks with Kestra.
 

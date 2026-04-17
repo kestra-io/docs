@@ -5,7 +5,8 @@ description: Trigger Kestra workflows via webhooks. Configure webhook listeners 
 icon: /src/contents/docs/icons/webhook.svg
 stage: Getting Started
 topics:
-  - Integrations---
+  - Integrations
+---
 
 Execute flows using the Webhooks Trigger.
 

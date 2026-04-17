@@ -5,7 +5,8 @@ description: Create Custom Blueprints in Kestra Enterprise. Standardize workflow
 sidebarTitle: Custom Blueprints
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-docId: custom---
+docId: custom
+---
 
 How to create and manage Custom Blueprints.
 

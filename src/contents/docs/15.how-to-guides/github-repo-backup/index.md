@@ -7,7 +7,8 @@ stage: Intermediate
 topics:
   - Integrations
   - Version Control
-  - Kestra Concepts---
+  - Kestra Concepts
+---
 
 Clone every repository in the `kestra-io` GitHub organization, zip each repo, and upload the archives to Google Cloud Storage (GCS) for safekeeping.
 

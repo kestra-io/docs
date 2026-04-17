@@ -7,7 +7,8 @@ stage: Intermediate
 topics:
   - Kestra Workflow Components
   - Kestra Concepts
-editions: ["EE"]---
+editions: ["EE"]
+---
 
 Build an automated guardrail that pings a microservice endpoint, alerts Slack when it fails, and runs only when its unit tests pass.
 

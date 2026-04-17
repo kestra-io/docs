@@ -5,7 +5,8 @@ description: Experiment in the Kestra Playground. Build and test tasks iterative
 sidebarTitle: Playground
 icon: /src/contents/docs/icons/ui.svg
 editions: ["OSS", "EE"]
-version: "0.24.0"---
+version: "0.24.0"
+---
 
 Iteratively build and test flows task by task without running the entire workflow.
 

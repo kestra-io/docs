@@ -3,7 +3,8 @@ title: Orchestrate Python Workflows in Kestra
 h1: Automate, Schedule & Scale Python Workflows Declaratively
 sidebarTitle: Python Workflows
 description: Automate, schedule, and scale Python workflows declaratively with Kestra. Run scripts in Docker containers with full dependency management and observability.
-icon: /src/contents/docs/icons/kestra.svg---
+icon: /src/contents/docs/icons/kestra.svg
+---
 
 Data teams and developers use Python for AI, ML, ETL, analytics, and a lot more. Kestra lets you schedule and orchestrate Python scripts at scale — whether they’re simple data transformations, API calls, or compute-heavy ML jobs — without rewriting code or managing infrastructure.
 

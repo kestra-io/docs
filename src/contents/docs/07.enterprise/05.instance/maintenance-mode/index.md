@@ -5,7 +5,8 @@ description: Safely upgrade with Kestra Maintenance Mode. Pause new executions w
 sidebarTitle: Maintenance Mode
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: "0.21.0"---
+version: "0.21.0"
+---
 
 Prepare your Kestra instance for maintenance or migration.
 

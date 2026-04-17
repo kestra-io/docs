@@ -5,7 +5,8 @@ description: Manage programmatic access with API Tokens in Kestra. Create and co
 sidebarTitle: API Tokens
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: ">= 0.15.0"---
+version: ">= 0.15.0"
+---
 
 How to manage API tokens in Kestra.
 

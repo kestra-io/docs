@@ -4,7 +4,8 @@ h1: Move Your Flows and Data from Open Source to Enterprise
 description: Migrate your Kestra OSS instance to Enterprise Edition. Learn how to export flows, data, and settings before importing them into Kestra Enterprise.
 sidebarTitle: Migrate from Open Source
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE"]---
+editions: ["EE"]
+---
 
 How to migrate your flows and data from Kestra Open Source to Enterprise Edition.
 

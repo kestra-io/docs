@@ -5,7 +5,8 @@ description: Pause and resume Kestra workflow executions on demand. Use manual t
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
-  - Kestra Concepts---
+  - Kestra Concepts
+---
 
 How to Pause and Resume your flows.
 

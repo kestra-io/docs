@@ -4,7 +4,8 @@ h1: Group Flows and Manage Access with Namespaces
 description: Organize your Kestra workflows with Namespaces. Learn to group flows, manage access, and structure your orchestration environment hierarchically.
 sidebarTitle: Namespace
 icon: /src/contents/docs/icons/flow.svg
-docId: namespaces---
+docId: namespaces
+---
 
 Namespaces are logical groupings of flows and their components.
 

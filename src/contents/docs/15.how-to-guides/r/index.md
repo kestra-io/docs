@@ -5,7 +5,8 @@ description: Run R scripts in Kestra for statistical computing and data analysis
 icon: /src/contents/docs/icons/r.svg
 stage: Getting Started
 topics:
-  - Scripting---
+  - Scripting
+---
 
 Run R code directly in your flows and generate outputs.
 

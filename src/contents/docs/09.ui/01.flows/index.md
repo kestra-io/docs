@@ -4,7 +4,8 @@ h1: Manage and Edit Flows from the Kestra UI
 description: Manage flows in the Kestra UI. Browse, edit, and execute workflows using the code editor, topology view, and version history tools.
 sidebarTitle: Flows
 docId: flowEditor
-icon: /src/contents/docs/icons/ui.svg---
+icon: /src/contents/docs/icons/ui.svg
+---
 
 Manage your flows in one place.
 

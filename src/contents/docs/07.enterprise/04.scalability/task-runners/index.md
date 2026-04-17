@@ -5,7 +5,8 @@ description: Optimize compute with Kestra Task Runners. Offload intensive tasks 
 sidebarTitle: Task Runners
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-version: ">= 0.18.0"---
+version: ">= 0.18.0"
+---
 
 Task Runner capabilities and supported plugins.
 

@@ -3,7 +3,8 @@ title: "State Store Deprecated in Kestra 0.19.0: Use KV Store"
 h1: Migrate from State Store to KV Store for Better Data Management
 description: Migrate from State Store to KV Store in Kestra 0.19.0. Learn why State Store is deprecated and how to transition to the KV Store for better data management.
 icon: /src/contents/docs/icons/migration-guide.svg
-release: 0.19.0---
+release: 0.19.0
+---
 
 
 ## Deprecation of State Store in favor of KV Store

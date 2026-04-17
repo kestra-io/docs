@@ -5,7 +5,8 @@ description: Explore Kestra Blueprints — ready-to-use workflow templates that 
 sidebarTitle: Blueprints
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.10.0"
-docId: blueprints---
+docId: blueprints
+---
 
 Ready-to-use examples designed to kickstart your workflow.
 

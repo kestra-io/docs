@@ -5,7 +5,8 @@ description: Implement Role-Based Access Control (RBAC) in Kestra. Define granul
 sidebarTitle: Role-Based Access Control (RBAC)
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-docId: iam---
+docId: iam
+---
 
 How to manage access and permissions to your instance.
 

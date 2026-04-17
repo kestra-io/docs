@@ -5,7 +5,8 @@ description: Enable LDAP authentication in Kestra. Connect your existing LDAP di
 sidebarTitle: LDAP
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
-version: "0.22.0"---
+version: "0.22.0"
+---
 
 Enable LDAP authentication in Kestra to authenticate users against your existing directory and sync group memberships automatically.
 

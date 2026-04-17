@@ -5,7 +5,8 @@ description: Understand Kestra's Multi-tenancy architecture. Learn how tenant is
 sidebarTitle: Multi-tenancy
 icon: /src/contents/docs/icons/architecture.svg
 editions: ["EE", "Cloud"]
-version: ">= 0.13.0"---
+version: ">= 0.13.0"
+---
 
 Multi-tenancy allows you to manage **multiple environments** (e.g., dev, staging, prod) in a single Kestra instance.
 

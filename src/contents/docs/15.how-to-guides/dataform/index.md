@@ -6,7 +6,8 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Integrations
-version: ">= 0.18.0"---
+version: ">= 0.18.0"
+---
 
 Run transformations on BigQuery using Dataform in Kestra
 

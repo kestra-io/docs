@@ -5,7 +5,8 @@ description: Configure MultipleCondition triggers in Kestra to start flows only 
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
-  - Kestra Workflow Components---
+  - Kestra Workflow Components
+---
 
 How to set up a Flow to only trigger when multiple conditions are met.
 

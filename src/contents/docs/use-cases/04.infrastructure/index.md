@@ -3,7 +3,8 @@ title: Automate Infrastructure Workflows in Kestra
 h1: Provision Resources, Manage Builds & Scale Infrastructure
 sidebarTitle: Infrastructure
 description: Provision resources, manage builds, and scale infrastructure workflows with Kestra. Automate cloud provisioning, CI/CD, and Terraform from one platform.
-icon: /src/contents/docs/icons/kestra.svg---
+icon: /src/contents/docs/icons/kestra.svg
+---
 
 DevOps and engineering teams automate infrastructure to ensure consistency across environments, avoid manual errors, and scale resources on demand. With Kestra, you can orchestrate Docker builds, Terraform, OpenTofu, and Terragrunt deployments, Ansible playbooks, and cloud provisioning in a unified workflow — triggered by schedules, code changes, or external events.
 
