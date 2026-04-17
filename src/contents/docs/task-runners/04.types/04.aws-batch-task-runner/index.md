@@ -249,7 +249,7 @@ tasks:
 
 
 :::alert{type="info"}
-For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-aws/runner/io.kestra.plugin.ee.aws.runner.Batch) or view them in the built-in Code Editor in the Kestra UI.
+For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-ee-aws/aws-batch-task-runner/io.kestra.plugin.ee.aws.runner.batch) or view them in the built-in Code Editor in the Kestra UI.
 :::
 
 ## Full step-by-step guide: setting up AWS Batch from scratch

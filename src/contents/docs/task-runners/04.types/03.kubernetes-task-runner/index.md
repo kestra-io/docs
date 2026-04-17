@@ -213,7 +213,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-kubernetes/runner/io.kestra.plugin.ee.kubernetes.runner.Kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
+For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-ee-kubernetes/io.kestra.plugin.ee.kubernetes.runner.kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
 :::
 
 ## Timeout configuration
