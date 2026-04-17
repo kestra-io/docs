@@ -51,6 +51,11 @@ After April 22, no more security patches, bug fixes, or provider updates for the
 
 Running unsupported software in a production data environment isn't a risk most organizations will accept for long, especially those with compliance requirements. So the question becomes: should you upgrade or look elsewhere? 
 
+:::alert{type="info"}
+📘 **Want a structured decision framework?** Our free guide covers what changed in Airflow 3, where the architecture breaks, and how to migrate incrementally — whether you stay on Airflow or switch.
+[Download the Airflow 2 EOL Guide →](/resources/airflow-2-eol-whitepaper)
+:::
+
 ## What the Airflow 3 upgrade actually costs
 
 [Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) is not a drop-in upgrade. The official migration guide lists several breaking changes:
@@ -125,10 +130,5 @@ It depends on your team and workloads. If you're a Python-native data engineerin
 
 ### How long does a typical Airflow migration take?
 Both upgrading to Airflow 3 and migrating to an alternative typically take **4 to 8 weeks** for a mid-size deployment (50-200 DAGs), depending on the number of custom operators, undocumented workarounds, and integration complexity. The [airflow-to-kestra-migration](https://github.com/kestra-io/airflow-to-kestra-migration) repository provides a concrete reference for what a DAG-to-YAML conversion looks like.
-
-:::alert{type="info"}
-📘 **Want a structured decision framework?** Our free guide covers what changed in Airflow 3, where the architecture breaks, and how to migrate incrementally — whether you stay on Airflow or switch.
-[Download the Airflow 2 EOL Guide →](/resources/airflow-2-eol-whitepaper)
-:::
 
 EOL is a rare moment when the status quo actually costs you something. Use this opportunity to make the decision deliberately.
