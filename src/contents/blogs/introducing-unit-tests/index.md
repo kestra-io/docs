@@ -6,6 +6,7 @@ category: News & Products Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.png

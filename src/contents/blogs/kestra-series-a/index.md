@@ -6,6 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: edarras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   role: CEO & Co-founder
 image: ./series-a-header.png
 ---

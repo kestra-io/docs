@@ -325,7 +325,7 @@ tasks:
           data: "{{ outputs.first.values.data }}"
 
   - id: log_siblings
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.second.values.data }}"
 ```
 
@@ -353,7 +353,7 @@ tasks:
           data: "{{ outputs.first[taskrun.value].values.data }}"
 
   - id: log_output_from_foreach
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.second['value 1'].values.data }}"
 ```
 
@@ -362,6 +362,8 @@ You can also use the `currentEachOutput` function to access the current tree tas
 :::alert{type="warning"}
 Accessing sibling task outputs is impossible on [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) as it runs tasks in parallel.
 :::
+
+For more examples and guidance on accessing sibling outputs inside `ForEach`, including how to read them both inside and outside the loop, see [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach).
 
 ## Outputs preview
 
