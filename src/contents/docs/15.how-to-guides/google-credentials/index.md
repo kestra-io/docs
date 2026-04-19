@@ -1,5 +1,6 @@
 ---
 title: Configure a Google Service Account in Kestra
+h1: Authenticate Google Cloud and Workspace Apps with a Service Account
 icon: /src/contents/docs/icons/gcp-compute.svg
 stage: Getting Started
 topics:

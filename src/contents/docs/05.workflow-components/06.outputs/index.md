@@ -1,5 +1,6 @@
 ---
-title: Workflow Outputs in Kestra – Sharing Data Between Tasks
+title: "Workflow Outputs in Kestra: Share Data Between Tasks"
+h1: Capture and Reuse Execution Results Across Tasks and Flows
 description: Leverage Outputs in Kestra to share data between tasks and flows. Learn to capture, store, and reuse execution results and artifacts in your workflows.
 icon: /src/contents/docs/icons/flow.svg
 sidebarTitle: Outputs
@@ -29,7 +30,7 @@ For secure handling of secrets, **exclusively** use [Secrets](../../06.concepts/
 
 ## Using outputs
 
-Below is an example of how to use the output of the `produce_output` task in the `use_output` task. We use the [Return](/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.Return) task that has one output attribute named `value`.
+Below is an example of how to use the output of the `produce_output` task in the `use_output` task. We use the [Return](/plugins/core/debug/io.kestra.plugin.core.debug.return) task that has one output attribute named `value`.
 
 ```yaml
 id: task_outputs_example
@@ -325,7 +326,7 @@ tasks:
           data: "{{ outputs.first.values.data }}"
 
   - id: log_siblings
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.second.values.data }}"
 ```
 
@@ -353,7 +354,7 @@ tasks:
           data: "{{ outputs.first[taskrun.value].values.data }}"
 
   - id: log_output_from_foreach
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.second['value 1'].values.data }}"
 ```
 

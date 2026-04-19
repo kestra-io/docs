@@ -1,6 +1,7 @@
 ---
-title: Pebble Templating in Kestra – Render Inputs and Outputs
-description: Dynamically render variables, inputs and outputs.
+title: "Pebble Templating in Kestra: Dynamic Variables"
+h1: Dynamically Render Variables, Inputs and Outputs with Pebble
+description: Dynamically render variables, inputs, and outputs in Kestra using Pebble templating. Use expressions to build flexible, data-driven workflows.
 sidebarTitle: Pebble Templating Engine
 icon: /src/contents/docs/icons/concepts.svg
 ---
@@ -62,7 +63,7 @@ tasks:
 
 Since Kestra 0.16.0, you can use the `TemplatedTask` task to fully template all task properties using Pebble. This way, all task properties and their values can be dynamically rendered based on your custom inputs, variables, and outputs from other tasks.
 
-Below is an example of how to use the [TemplatedTask](/plugins/tasks/templating/io.kestra.plugin.core.templating.TemplatedTask) to create a Databricks job using dynamic properties:
+Below is an example of how to use the [TemplatedTask](/plugins/core/templating/io.kestra.plugin.core.templating.templatedtask) to create a Databricks job using dynamic properties:
 
 ```yaml
 id: templated_databricks_job

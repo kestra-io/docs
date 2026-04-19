@@ -1,5 +1,6 @@
 ---
 title: Connect a Supabase Database to Kestra
+h1: Query and Manage Supabase Data from Your Workflows
 icon: /src/contents/docs/icons/supabase.svg
 stage: Intermediate
 topics:

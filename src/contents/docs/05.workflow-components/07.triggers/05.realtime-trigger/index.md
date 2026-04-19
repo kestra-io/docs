@@ -1,5 +1,6 @@
 ---
 title: Realtime Trigger in Kestra – Millisecond Eventing
+h1: React Instantly to Kafka, SQS, and MQTT Events
 description: Achieve low-latency automation with Kestra's Realtime Triggers. React instantly to events from Kafka, SQS, MQTT, and other streaming systems.
 sidebarTitle: Realtime Trigger
 icon: /src/contents/docs/icons/flow.svg

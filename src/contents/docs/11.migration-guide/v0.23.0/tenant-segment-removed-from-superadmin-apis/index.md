@@ -1,5 +1,6 @@
 ---
-title: Removal of tenant from Superadmin API routes
+title: Tenant Path Removed from Superadmin API Routes (EE)
+h1: Tenant Segment Removed from Superadmin API Routes in Enterprise Edition
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE", "Cloud"]

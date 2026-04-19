@@ -1,5 +1,7 @@
 ---
 title: Populate Your Instance with Sample Data
+h1: Load Demo Data into Your Kestra Instance
+description: Populate your Kestra instance with demo data. Use sample flows and datasets to explore features, test integrations, and validate your setup.
 icon: /src/contents/docs/icons/admin.svg
 stage: Getting Started
 topics:

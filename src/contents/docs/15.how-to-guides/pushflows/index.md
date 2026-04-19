@@ -1,5 +1,6 @@
 ---
 title: Push Flows to a Git Repository
+h1: Use PushFlows to Sync Your Flows to Git
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:

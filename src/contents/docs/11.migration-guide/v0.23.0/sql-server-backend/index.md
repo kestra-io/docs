@@ -1,5 +1,6 @@
 ---
-title: SQL Server backend is no longer supported
+title: SQL Server Backend Removed in Kestra 0.23.0
+h1: "SQL Server Backend Support Dropped: Migration Actions Required"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE"]

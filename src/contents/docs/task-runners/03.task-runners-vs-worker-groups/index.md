@@ -1,5 +1,6 @@
 ---
 title: Task Runners vs Worker Groups – When to Use Each
+h1: Choosing Between Task Runners and Worker Groups in Kestra
 sidebarTitle: Task Runner vs. Worker Group
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"

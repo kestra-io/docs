@@ -1,5 +1,6 @@
 ---
-title: Kestra Quickstart Guide – Run Your First Workflow
+title: "Quickstart Guide: Run Your First Kestra Workflow"
+h1: "Get Started with Kestra: Launch Locally with Docker and Run Your First Workflow"
 sidebarTitle: Quickstart
 icon: /src/contents/docs/icons/quickstart.svg
 description: Get started with Kestra in minutes by launching Kestra locally with Docker and running your first workflow.

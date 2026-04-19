@@ -1,5 +1,6 @@
 ---
-title: New prefill Property for Inputs – Breaking Change for Input defaults
+title: "New 'prefill' Property for Inputs: Breaking Change"
+h1: "Breaking Change: New prefill Property Replaces Input defaults"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]

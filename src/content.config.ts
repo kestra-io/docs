@@ -37,7 +37,7 @@ export const collections = {
         loader: glob({
             pattern: "./**/*.md{,x}",
             base: "./src/contents/blogs",
-            generateId,
+            generateId: (opts) => generateId(opts).toLowerCase(),
         }),
         schema: ({ image }) =>
             z.object({
@@ -51,6 +51,7 @@ export const collections = {
                         image: z.string(),
                         twitter: z.string().optional(),
                         linkedin: z.string().optional(),
+                        medium: z.string().optional(),
                         role: z.string().nullable().optional(),
                     })
                     .optional(),
@@ -61,6 +62,7 @@ export const collections = {
                             image: z.string(),
                             twitter: z.string().optional(),
                             linkedin: z.string().optional(),
+                            medium: z.string().optional(),
                             role: z.string().nullable().optional(),
                         }),
                     )

@@ -1,5 +1,6 @@
 ---
 title: Extend Kestra with the API
+h1: Create Flows, Trigger Executions, and Manage KV Entries via API
 icon: /src/contents/docs/icons/api.svg
 stage: Intermediate
 topics:
