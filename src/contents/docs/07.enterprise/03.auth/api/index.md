@@ -1,5 +1,6 @@
 ---
-title: Kestra Enterprise API – Endpoints and Authentication
+title: "Enterprise API in Kestra: Endpoints and Auth"
+h1: "Kestra Enterprise API: Available Endpoints and Authentication"
 description: Interact with the Kestra Enterprise API. Learn about available endpoints, authentication methods, and how to programmatically manage your Kestra instance.
 sidebarTitle: Kestra EE API
 icon: /src/contents/docs/icons/admin.svg

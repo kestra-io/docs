@@ -1,5 +1,7 @@
 ---
 title: Set Up Webhooks to Trigger Flows
+h1: Configure Webhook Triggers for Your Kestra Flows
+description: Trigger Kestra workflows via webhooks. Configure webhook listeners to start flows in response to GitHub events, Slack commands, or any HTTP POST request.
 icon: /src/contents/docs/icons/webhook.svg
 stage: Getting Started
 topics:

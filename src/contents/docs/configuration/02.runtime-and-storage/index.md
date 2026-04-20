@@ -1,5 +1,6 @@
 ---
-title: Kestra Runtime and Storage Configuration
+title: Runtime & Storage Configuration in Kestra
+h1: Configure Repository, Queue, Datasource & Internal Storage
 description: Configure Kestra's repository, queue, datasource, internal storage, server runtime, JVM behavior, environment settings, and variables.
 sidebarTitle: Runtime and Storage
 icon: /src/contents/docs/icons/admin.svg

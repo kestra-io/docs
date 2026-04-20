@@ -1,5 +1,6 @@
 ---
-title: Worker Isolation in Kestra Enterprise – Enforce Separation
+title: "Worker Isolation in Kestra Enterprise: Separation"
+h1: Enforce Execution Isolation for Secure Multi-Tenant Operations
 description: Enforce security with Worker Isolation in Kestra. Isolate execution environments, file systems, and processes for secure multi-tenant operations.
 sidebarTitle: Worker Isolation
 icon: /src/contents/docs/icons/admin.svg

@@ -1,3 +1,5 @@
+- regexp: "/docs/configuration/index\\.md$"
+  to: "/docs/configuration"
 - regexp: "/docs/01\\.getting-started/03\\.contributing\\.md/?$"
   to: "/docs/contribute-to-kestra/contributing"
 - regexp: "/docs/07\\.triggers/?$"

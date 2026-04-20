@@ -1,5 +1,6 @@
 ---
-title: Coordinate Microservices
+title: Orchestrate Microservices in Kestra
+h1: Run Microservices on Events, Handle Failures & Scale with Ease
 sidebarTitle: Microservices
 description: Run microservice tasks in response to events, recover from failures, and scale as needed
 icon: /src/contents/docs/icons/kestra.svg

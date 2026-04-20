@@ -1,5 +1,6 @@
 ---
-title: High Availability for Kestra – Design and Configuration
+title: "High Availability in Kestra: Scale Workers and Webservers"
+h1: Design and configure a fault-tolerant highly available cluster
 sidebarTitle: High Availability
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]

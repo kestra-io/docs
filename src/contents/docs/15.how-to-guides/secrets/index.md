@@ -1,5 +1,6 @@
 ---
 title: Configure Secrets in Kestra
+h1: Securely Store and Use Secrets in Your Flows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

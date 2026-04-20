@@ -1,5 +1,6 @@
 ---
 title: Sync Flows from a Git Repository
+h1: Enable GitOps for Kestra with the SyncFlows Task
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:

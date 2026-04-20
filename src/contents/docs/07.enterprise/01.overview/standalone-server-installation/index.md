@@ -1,6 +1,7 @@
 ---
 title: Install Kestra Enterprise from Standalone JAR
-description: Install Kestra on a standalone server with a simple executable file.
+h1: Run Kestra Enterprise Without Docker Using a JAR File
+description: Install Kestra Enterprise on a standalone server using an executable JAR file. Run the platform without Docker where containerization is unavailable.
 sidebarTitle: Standalone Server Installation Guide
 icon: /src/contents/docs/icons/installation.svg
 editions: ["EE"]

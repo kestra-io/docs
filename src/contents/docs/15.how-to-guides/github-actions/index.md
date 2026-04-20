@@ -1,5 +1,6 @@
 ---
-title: Validate and Deploy Your Flows with GitHub Actions
+title: Validate and Deploy Flows with GitHub Actions
+h1: Automate Flow Validation and Deployment via GitHub Actions CI/CD
 icon: /src/contents/docs/icons/github.svg
 stage: Intermediate
 topics:

@@ -1,5 +1,6 @@
 ---
-title: Kestra Security and Secrets Configuration
+title: Security & Secrets Configuration in Kestra
+h1: Configure Encryption, Secret Backends & Auth Security
 description: Configure encryption, secret backends, auth-related security settings, RBAC-adjacent platform security, and secure server behavior in Kestra.
 sidebarTitle: Security and Secrets
 icon: /src/contents/docs/icons/admin.svg
@@ -389,6 +390,24 @@ kestra:
 
 :::alert{type="warning"}
 Keep the external process manager timeout longer than Kestra's own termination grace period. Otherwise Kubernetes, Docker, or systemd can kill the process before graceful shutdown finishes.
+:::
+
+## Regex timeout
+
+Kestra protects worker threads from ReDoS (catastrophic backtracking) by enforcing a timeout on all regex operations. This applies to [Pebble expression filters](../../expressions/index.mdx) (`regexMatch`, `regexReplace`, `regexExtract`, `replace` with `regexp=true`) and to `validator` patterns on `STRING` and `SECRET` inputs.
+
+The default timeout is **10 seconds**. To change it, set `kestra.regex.timeout` in your configuration:
+
+```yaml
+kestra:
+  regex:
+    timeout: 30s
+```
+
+Accepts any [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) string (e.g., `5s`, `PT30S`, `1m`).
+
+:::alert{type="info"}
+The timeout is set once at startup and cannot be changed at runtime without restarting the server.
 :::
 
 ## Related docs

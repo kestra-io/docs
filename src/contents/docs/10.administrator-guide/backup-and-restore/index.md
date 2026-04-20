@@ -1,5 +1,6 @@
 ---
-title: Backup and Restore Kestra – Metadata and Data
+title: "Backup and Restore Kestra: Flows, Secrets, and Executions"
+h1: How to back up and restore flows, secrets, and execution data
 sidebarTitle: Backup & Restore
 icon: /src/contents/docs/icons/admin.svg
 description: Learn how to perform full or metadata-only backups and restores of your Kestra instance for disaster recovery and migration.

@@ -1,6 +1,7 @@
 ---
-title: Kestra Enterprise and Advanced Configuration
-description: Configure Enterprise-only and advanced Kestra settings including licenses, gRPC TLS/mTLS, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot, and air-gapped deployments.
+title: Enterprise & Advanced Configuration in Kestra
+h1: "Configure Enterprise Features: Kafka, Elasticsearch & AI Copilot"
+description: Configure Enterprise-only Kestra settings. Manage licenses, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot, and air-gapped deployments.
 sidebarTitle: Enterprise and Advanced
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

@@ -1,7 +1,8 @@
 ---
-title: Automate Infrastructure
+title: Automate Infrastructure Workflows in Kestra
+h1: Provision Resources, Manage Builds & Scale Infrastructure
 sidebarTitle: Infrastructure
-description: Provision resources, manage builds, and scale infrastructure workflows
+description: Provision resources, manage builds, and scale infrastructure workflows with Kestra. Automate cloud provisioning, CI/CD, and Terraform from one platform.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 

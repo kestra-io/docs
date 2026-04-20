@@ -1,5 +1,6 @@
 ---
-title: LTS Migration – Kestra 1.0 to 1.3
+title: "LTS Migration: Kestra 1.0 to 1.3 Upgrade Guide"
+h1: "Consolidated LTS Upgrade Guide: From Kestra 1.0 to 1.3"
 sidebarTitle: LTS Migration (1.0 → 1.3)
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.3.0

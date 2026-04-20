@@ -1,5 +1,6 @@
 ---
 title: Polling Trigger in Kestra – Check External Systems
+h1: Trigger Flows When External Systems Change State
 description: Automate workflows based on external state with Polling Triggers. Monitor databases, FTPs, or queues and trigger Kestra flows when changes are detected.
 sidebarTitle: Polling Trigger
 icon: /src/contents/docs/icons/flow.svg

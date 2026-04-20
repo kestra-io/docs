@@ -1,9 +1,10 @@
 ---
-title: kestractl
+title: "kestractl: Kestra CLI for Flows and Executions"
+h1: Manage Flows, Executions, and Namespaces with kestractl
 sidebarTitle: kestractl
 icon: /src/contents/docs/icons/bash.svg
 editions: ["OSS","EE"]
-description: CLI for managing Kestra flows, executions, namespaces, namespace files, and key-value pairs.
+description: Manage Kestra flows, executions, namespaces, and files from the command line. The kestractl CLI provides full control over your instance without a UI.
 ---
 
 Use `kestractl` to interact with the Kestra host API for flows, executions, namespaces, namespace files, and key-value pairs.

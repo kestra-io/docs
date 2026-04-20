@@ -51,6 +51,11 @@ After April 22, no more security patches, bug fixes, or provider updates for the
 
 Running unsupported software in a production data environment isn't a risk most organizations will accept for long, especially those with compliance requirements. So the question becomes: should you upgrade or look elsewhere? 
 
+:::alert{type="info"}
+📘 **Want a structured decision framework?** Our free guide covers what changed in Airflow 3, where the architecture breaks, and how to migrate incrementally — whether you stay on Airflow or switch.
+[Download the Airflow 2 EOL Guide →](/resources/airflow-2-eol-whitepaper)
+:::
+
 ## What the Airflow 3 upgrade actually costs
 
 [Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) is not a drop-in upgrade. The official migration guide lists several breaking changes:

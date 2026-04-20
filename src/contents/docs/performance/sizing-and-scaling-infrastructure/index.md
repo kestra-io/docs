@@ -1,5 +1,6 @@
 ---
-title: Size and Scale Kestra Infrastructure – Executors, Workers, Schedulers
+title: "Size & Scale Kestra: Executors, Workers, Schedulers"
+h1: How to Size and Scale Your Kestra Infrastructure
 sidebarTitle: Sizing and Scaling Infrastructure
 icon: /src/contents/docs/icons/admin.svg
 description: Guidance on sizing and scaling your Kestra infrastructure, including Executors, Workers, and Schedulers, for optimal performance.

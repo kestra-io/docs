@@ -1,5 +1,6 @@
 ---
 title: Bookmarks in the Kestra UI – Star and Revisit Pages
+h1: Save and Quickly Reopen Your Favorite Kestra Pages
 description: Use Bookmarks in the Kestra UI. Star frequently used pages for quick access and organize your workflow navigation efficiently.
 sidebarTitle: Bookmarks
 icon: /src/contents/docs/icons/ui.svg

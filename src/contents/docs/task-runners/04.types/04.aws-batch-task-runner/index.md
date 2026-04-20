@@ -1,5 +1,6 @@
 ---
 title: AWS Batch Task Runner – Run Tasks on ECS Fargate or EC2
+h1: Execute Kestra Tasks as AWS Batch Jobs on ECS Fargate or EC2
 sidebarTitle: AWS Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -248,7 +249,7 @@ tasks:
 
 
 :::alert{type="info"}
-For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-aws/runner/io.kestra.plugin.ee.aws.runner.Batch) or view them in the built-in Code Editor in the Kestra UI.
+For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-ee-aws/aws-batch-task-runner/io.kestra.plugin.ee.aws.runner.batch) or view them in the built-in Code Editor in the Kestra UI.
 :::
 
 ## Full step-by-step guide: setting up AWS Batch from scratch

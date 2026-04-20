@@ -1,5 +1,6 @@
 ---
 title: GitHub Actions for Kestra – CI/CD Workflow Examples
+h1: Automate Kestra Flow Validation and Deployment via GitHub Actions
 sidebarTitle: GitHub Actions
 icon: /src/contents/docs/icons/dev.svg
 description: Automate Kestra flow validation and deployment directly from your GitHub repository using official Kestra GitHub Actions.

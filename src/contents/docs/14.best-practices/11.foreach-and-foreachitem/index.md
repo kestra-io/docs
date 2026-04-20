@@ -1,5 +1,6 @@
 ---
-title: Best Practices for ForEach and ForEachItem
+title: "ForEach vs ForEachItem in Kestra: When to Use Each"
+h1: "ForEach vs ForEachItem: Scaling and Output Access"
 sidebarTitle: ForEach vs ForEachItem
 icon: /src/contents/docs/icons/best-practices.svg
 description: Learn when to use ForEach or ForEachItem in Kestra, how they scale differently, and how to access their outputs correctly in downstream tasks.

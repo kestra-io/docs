@@ -1,5 +1,7 @@
 ---
-title: Kubernetes Task Runner – Run Tasks as Kubernetes Pods
+title: Kubernetes Task Runner – Run Tasks as K8s Pods
+h1: Run Kestra Tasks as Kubernetes Pods
+description: Run Kestra tasks as Kubernetes pods with the K8s Task Runner. Configure pod templates, namespaces, and resource limits for scalable container-based execution.
 sidebarTitle: Kubernetes Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -211,7 +213,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-kubernetes/runner/io.kestra.plugin.ee.kubernetes.runner.Kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
+For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-ee-kubernetes/io.kestra.plugin.ee.kubernetes.runner.kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
 :::
 
 ## Timeout configuration

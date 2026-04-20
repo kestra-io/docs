@@ -1,5 +1,6 @@
 ---
-title: Best Practices for Secrets in Kestra
+title: "Secrets Management in Kestra: Avoid Accidental Exposure"
+h1: Securely Manage and Use Secrets in Kestra Workflows
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/best-practices.svg
 editions: ["EE", "Cloud"]

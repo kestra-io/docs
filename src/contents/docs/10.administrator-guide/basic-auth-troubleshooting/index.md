@@ -1,5 +1,6 @@
 ---
-title: Basic Authentication Troubleshooting in Kestra
+title: Fix Basic Authentication Issues in Kestra
+h1: Diagnose and fix Basic Authentication configuration issues
 sidebarTitle: Troubleshooting Basic Authentication
 icon: /src/contents/docs/icons/faq.svg
 description: Troubleshoot common issues with Basic Authentication in Kestra, including configuration and login problems.
