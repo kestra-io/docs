@@ -119,7 +119,7 @@ const WORKLOAD_CATEGORIES = [
             {
                 icon: "mdi:shield-search",
                 title: "Real-Time Fraud Scoring at Scale",
-                description: "Fan-in vendor threat-intel, enrich in dbt, score with ML, and route to fraud products. The exact pattern JPMorgan Chase runs across billions of rows.",
+                description: "Fan-in vendor threat-intel, enrich in dbt, score with ML, and route to fraud products. The pattern tier-1 banks run across billions of rows.",
             },
         ],
     },
@@ -200,7 +200,7 @@ const BUILD_TABS = [
         name: "Real-time fraud scoring",
         title: "Score vendor threat-intel feeds hourly, at billions-of-rows scale.",
         description:
-            "Pull intel, stage in S3, enrich with dbt, score in Trino, page on-call on failure. The production pattern JPMorgan Chase runs across billions of cybersecurity records.",
+            "Pull intel, stage in S3, enrich with dbt, score in Trino, page on-call on failure. A production pattern running across billions of cybersecurity records at tier-1 banks.",
         code: `id: fraud-intel-pipeline
 namespace: company.risk.fraud
 
@@ -237,14 +237,18 @@ tasks:
 
 errors:
   - id: page_oncall
-    type: io.kestra.plugin.notifications.pagerduty.PagerDutyAlert
-    url: "{{ secret('PD_ROUTING_KEY') }}"
-    payload: '{ "summary": "Fraud pipeline failed: {{ execution.id }}" }'`,
+    type: io.kestra.plugin.pagerduty.PagerDutyExecution
+    url: "{{ secret('PD_EVENT_URL') }}"
+    routingKey: "{{ secret('PD_ROUTING_KEY') }}"
+    eventAction: trigger
+    executionId: "{{ execution.id }}"
+    payloadSummary: "Fraud pipeline failed: {{ execution.id }}"`,
         plugins: [
             { cls: "io.kestra.plugin.core.http.Request" },
             { cls: "io.kestra.plugin.aws.s3.Upload" },
             { cls: "io.kestra.plugin.dbt.cli.Build" },
             { cls: "io.kestra.plugin.jdbc.trino.Query" },
+            { cls: "io.kestra.plugin.pagerduty.PagerDutyExecution" },
         ],
         href: "/blueprints",
     },
@@ -257,22 +261,21 @@ errors:
 namespace: company.finance.eod
 
 sla:
-  - behavior: FAIL
-    conditions:
-      - type: MAX_DURATION
-        duration: PT2H
+  - id: two_hour_window
+    type: MAX_DURATION
+    duration: PT2H
+    behavior: FAIL
 
 tasks:
   - id: extract_core
-    type: io.kestra.plugin.jdbc.oracle.CopyOut
+    type: io.kestra.plugin.jdbc.oracle.Query
     url: "jdbc:oracle:thin:@core-prod:1521/BANK"
     username: "{{ secret('ORACLE_USER') }}"
     password: "{{ secret('ORACLE_PASSWORD') }}"
+    fetchType: STORE
     sql: |
       SELECT * FROM ledger.gl_postings
-      WHERE trade_date = :d
-    parameters:
-      d: "{{ execution.startDate | date('yyyy-MM-dd') }}"
+      WHERE trade_date = TO_DATE('{{ execution.startDate | date('yyyy-MM-dd') }}', 'YYYY-MM-DD')
 
   - id: reconcile
     type: io.kestra.plugin.scripts.python.Commands
@@ -284,19 +287,25 @@ tasks:
     condition: "{{ outputs.reconcile.vars.breaks > 0 }}"
     then:
       - id: alert_controls
-        type: io.kestra.plugin.notifications.mail.MailSend
-        from: "eod-bot@bank.example"
-        to: ["finance-controls@bank.example"]
+        type: io.kestra.plugin.email.MailSend
+        host: smtp.bank.example
+        port: 465
+        username: "{{ secret('SMTP_USER') }}"
+        password: "{{ secret('SMTP_PASSWORD') }}"
+        from: eod-bot@bank.example
+        to: finance-controls@bank.example
         subject: "EOD breaks: {{ outputs.reconcile.vars.breaks }} items"
+        htmlTextContent: "{{ outputs.reconcile.vars.breaks }} unmatched postings require review."
 
   - id: publish_bundle
     type: io.kestra.plugin.aws.s3.Upload
     bucket: "finance-audit"
-    key: "eod/{{ execution.startDate | date('yyyy/MM/dd') }}/bundle.json"`,
+    key: "eod/{{ execution.startDate | date('yyyy/MM/dd') }}/bundle.json"
+    from: "{{ outputs.extract_core.uri }}"`,
         plugins: [
-            { cls: "io.kestra.plugin.jdbc.oracle.CopyOut" },
+            { cls: "io.kestra.plugin.jdbc.oracle.Query" },
             { cls: "io.kestra.plugin.scripts.python.Commands" },
-            { cls: "io.kestra.plugin.notifications.mail.MailSend" },
+            { cls: "io.kestra.plugin.email.MailSend" },
             { cls: "io.kestra.plugin.aws.s3.Upload" },
         ],
         href: "/blueprints",
@@ -321,6 +330,9 @@ tasks:
   - id: gather_positions
     type: io.kestra.plugin.jdbc.postgresql.Query
     url: "jdbc:postgresql://warehouse:5432/finance"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: STORE
     sql: |
       SELECT * FROM risk.positions
       WHERE as_of_date = '{{ inputs.cutoffDate }}'
@@ -339,7 +351,9 @@ tasks:
     type: io.kestra.plugin.core.http.Request
     uri: "https://regulator.example/submit"
     method: POST
-    contentType: application/xml`,
+    contentType: application/xml
+    headers:
+      Authorization: "Bearer {{ secret('REGULATOR_TOKEN') }}"`,
         plugins: [
             { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
             { cls: "io.kestra.plugin.dbt.cli.Build" },
@@ -419,7 +433,7 @@ const FAQ = [
                     <div class="exec-panel">
                         <div class="exec-panel__header">
                             <span class="exec-panel__dot"></span>
-                            <span class="exec-panel__title">nostro-break-escalation</span>
+                            <span class="exec-panel__title">weyland-yutani-invest</span>
                             <span class="exec-panel__meta">namespace · company.finance.ops</span>
                             <span class="exec-panel__duration">1.8s</span>
                         </div>
@@ -464,8 +478,8 @@ const FAQ = [
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
                                 <span class="exec-row__name">notify_team</span>
-                                <span class="exec-row__type">slack.Message</span>
-                                <span class="exec-row__result">#finance-ops</span>
+                                <span class="exec-row__type">teams.TeamsIncomingWebhook</span>
+                                <span class="exec-row__result">finance-ops</span>
                             </div>
                         </div>
 
@@ -998,12 +1012,19 @@ const FAQ = [
         }
 
         &__row {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             align-items: center;
-            justify-content: center;
-            gap: 3.5rem;
-            flex-wrap: wrap;
+            justify-items: center;
+            gap: 1.5rem;
             width: 100%;
+            max-width: 42rem;
+            margin: 0 auto;
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
         }
 
         &__item {
@@ -1019,7 +1040,7 @@ const FAQ = [
             // Normalise visual weight per logo (different intrinsic aspect ratios)
             &:nth-child(1) { max-height: 32px; max-width: 150px; }  // JPMorgan
             &:nth-child(2) { max-height: 52px; max-width: 110px; }  // Crédit Agricole (compact mark — bumped up to match visual weight)
-            &:nth-child(3) { max-height: 38px; max-width: 190px; }  // Bloomberg
+            &:nth-child(3) { max-height: 46px; max-width: 230px; }  // Bloomberg
         }
     }
 
