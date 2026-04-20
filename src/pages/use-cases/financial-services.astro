@@ -20,13 +20,11 @@ import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
 import Git from "vue-material-design-icons/Git.vue"
 
 import JPMorganLogo from "~/contents/customer-stories/26/logo.svg?raw"
-import CreditAgricoleLogo from "~/contents/customer-stories/19/logo.svg?raw"
 import JPMorganLogoImg from "~/contents/customer-stories/26/logo.svg"
 import CreditAgricoleLogoImg from "~/contents/customer-stories/19/logo.svg"
 import BloombergLogoImg from "~/assets/landing/infrastructure/companies/bloomberg.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
-// Hero tags — real Kestra capabilities (no invented compliance claims)
 const HERO_TAGS = [
     { label: "Air-gapped", icon: "mdi:shield-lock-outline" },
     { label: "Self-hosted", icon: "mdi:server-network-outline" },
@@ -41,7 +39,6 @@ const title = "Kestra for Financial Services"
 const description =
     "The orchestration platform for banks that cannot fail. From intraday reconciliation to mission-critical regulatory reporting. JPMorgan Chase, Crédit Agricole, and the world's most heavily regulated financial institutions run their operations on Kestra."
 
-// Banking workflow visualization — Any-style, 4 stages
 const FLOW_STAGES = [
     {
         id: "trigger",
@@ -65,7 +62,6 @@ const FLOW_STAGES = [
     },
 ]
 
-// Single JPMorgan quote with story CTA
 const quotes = [
     {
         quote:
@@ -81,7 +77,6 @@ const quotes = [
     },
 ]
 
-// 12 workloads grouped by category
 const WORKLOAD_CATEGORIES = [
     {
         name: "Core Banking & Modernization",
@@ -165,7 +160,6 @@ const WORKLOAD_CATEGORIES = [
     },
 ]
 
-// Enterprise features (5 for clean 3x2 grid)
 const ENTERPRISE_FEATURES = [
     {
         icon: ShieldCheckOutline,
@@ -194,7 +188,6 @@ const ENTERPRISE_FEATURES = [
     },
 ]
 
-// "What engineers build" — 3-tab Build section (ai-automation style)
 const BUILD_TABS = [
     {
         name: "Real-time fraud scoring",
@@ -400,7 +393,6 @@ const FAQ = [
 <Layout {title} {description} headerTheme="lightText">
     <div class="financial-services">
 
-        <!-- ── 1. HERO ── -->
         <section class="hero">
             <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
             <div class="hero-inner">
@@ -508,7 +500,6 @@ const FAQ = [
             </div>
         </section>
 
-        <!-- ── 2. BANKING WORKFLOW VISUALIZATION ── -->
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
@@ -549,7 +540,6 @@ const FAQ = [
             </div>
         </section>
 
-        <!-- ── 3. 12 WORKLOADS (grouped) ── -->
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
@@ -573,10 +563,8 @@ const FAQ = [
             </div>
         </section>
 
-        <!-- ── 4. CUSTOMER PROOF ── -->
         <Quotes {quotes} client:load />
 
-        <!-- ── 5. ENTERPRISE-GRADE ── -->
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
@@ -592,7 +580,6 @@ const FAQ = [
             </div>
         </section>
 
-        <!-- ── 7. WHAT ENGINEERS BUILD ── -->
         <section class="build">
             <div class="container">
                 <h2>What engineers <span class="highlight">build</span> with Kestra</h2>
@@ -639,29 +626,21 @@ const FAQ = [
             </div>
         </section>
 
-        <!-- ── 8b. READY FOR PRODUCTION ── -->
         <GoFurther />
 
-        <!-- ── 9. PLUGINS ── -->
         <PluginsBlock />
 
-        <!-- ── 10. FINAL CTA ── -->
         <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
             <Fragment slot="title">One platform, from the front office to the back office.</Fragment>
             Talk to our team about how Kestra fits your stack. Air-gapped deployment, regulatory
             lineage, legacy integration, and the workloads you're running today.
         </SeeHow>
 
-        <!-- ── 11. FAQ ── -->
         <Faq items={FAQ} client:visible />
     </div>
 </Layout>
 
 <style lang="scss">
-    /* ══════════════════════════════════════════════════
-       FINANCIAL SERVICES PALETTE — teal + platinum
-       (not used on any other Kestra page)
-       ══════════════════════════════════════════════════ */
     $fs-teal:        #14B8A6;
     $fs-teal-bright: #5EEAD4;
     $fs-teal-light:  #99F6E4;
@@ -670,7 +649,6 @@ const FAQ = [
 
     .financial-services { overflow: clip; }
 
-    /* Dark-mode background — #1C1C20 on every non-hero section */
     :global(html.dark) .financial-services {
         .flow,
         .workloads,
@@ -685,7 +663,6 @@ const FAQ = [
         }
     }
 
-    /* ── HERO (centered, no image, like /get-started) ── */
     .hero {
         position: relative;
         overflow: hidden;
@@ -694,7 +671,6 @@ const FAQ = [
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        // Pull the dark bg up to cover the white body strip under the fixed header
         margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
         padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 1.5rem 6rem;
 
@@ -702,7 +678,6 @@ const FAQ = [
             padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 4rem;
         }
 
-        // Subtle teal glow at the very bottom (reversed)
         &::after {
             content: "";
             position: absolute;
@@ -773,7 +748,6 @@ const FAQ = [
         }
     }
 
-    /* Badge pill — teal */
     .badge-pill {
         display: inline-flex;
         align-items: center;
@@ -802,7 +776,6 @@ const FAQ = [
         }
     }
 
-    /* Tags row — banking trust signals */
     .tags {
         display: flex;
         flex-wrap: wrap;
@@ -839,7 +812,6 @@ const FAQ = [
         }
     }
 
-    /* Execution panel with animated teal neon border (get-started style) */
     @property --fs-neon-angle {
         syntax: '<angle>';
         inherits: false;
@@ -977,19 +949,22 @@ const FAQ = [
         }
     }
 
-    /* CTAs */
     .hero-ctas {
         display: flex;
         gap: 1rem;
         justify-content: center;
+        flex-wrap: wrap;
 
-        @include media-breakpoint-down(md) {
-            flex-direction: column;
-            width: 100%;
+        .btn {
+            justify-content: center;
+
+            @include media-breakpoint-down(md) {
+                width: auto;
+                min-width: 200px;
+            }
         }
     }
 
-    /* Logo strip at hero foot */
     .hero-logos {
         display: flex;
         flex-direction: column;
@@ -1037,14 +1012,12 @@ const FAQ = [
 
             &:hover { opacity: 1; }
 
-            // Normalise visual weight per logo (different intrinsic aspect ratios)
-            &:nth-child(1) { max-height: 32px; max-width: 150px; }  // JPMorgan
-            &:nth-child(2) { max-height: 52px; max-width: 110px; }  // Crédit Agricole (compact mark — bumped up to match visual weight)
-            &:nth-child(3) { max-height: 46px; max-width: 230px; }  // Bloomberg
+            &:nth-child(1) { max-height: 32px; max-width: 150px; }
+            &:nth-child(2) { max-height: 52px; max-width: 110px; }
+            &:nth-child(3) { max-height: 46px; max-width: 230px; }
         }
     }
 
-    /* ── BANKING FLOW VISUALIZATION ── */
     $stages: (
         "trigger": ( "bg": #fff3d3, "border": #a87f4f, "label": #b87f00 ),
         "ingest":  ( "bg": #cbe2ff, "border": #6b62f2, "label": #0069c6 ),
@@ -1058,7 +1031,6 @@ const FAQ = [
         padding: 5.5rem 1rem;
         overflow: hidden;
 
-        // Teal radial glow backdrop — visible in light + dark mode
         &::before {
             content: "";
             position: absolute;
@@ -1285,15 +1257,12 @@ const FAQ = [
         }
     }
 
-    /* ── WORKLOADS (12 grouped) ── */
     .workloads {
         position: relative;
         padding: 5rem 1rem;
         background: var(--ks-background-body);
         overflow: hidden;
 
-        // Top glow — mirrors the flow section's bottom glow so the two halves
-        // combine into a full circle of blur at the section boundary.
         &::after {
             content: "";
             position: absolute;
@@ -1311,7 +1280,6 @@ const FAQ = [
             background: radial-gradient(ellipse at center, rgba(94, 234, 212, 0.32) 0%, rgba(94, 234, 212, 0) 70%);
         }
 
-        // Reversed teal blur at the bottom (replaces the old separator line)
         &::before {
             content: "";
             position: absolute;
@@ -1409,7 +1377,6 @@ const FAQ = [
     }
 
 
-    /* ── BUILD (What engineers build with Kestra) ── */
     .build {
         padding: 3rem 0 4.5rem;
         background: var(--ks-background-primary);
@@ -1574,7 +1541,6 @@ const FAQ = [
         }
     }
 
-    /* ── ENTERPRISE ── */
     .enterprise {
         padding: 140px 1rem 80px;
         gap: 40px;
@@ -1629,7 +1595,6 @@ const FAQ = [
             box-shadow: 0 9px 36px 0 var(--ks-shadows-light-inverse);
         }
 
-        // Force readable text + teal icons regardless of light/dark mode toggle
         :global(.feature-icon) {
             color: $fs-teal !important;
         }
@@ -1643,8 +1608,6 @@ const FAQ = [
         .container-xxl { max-width: 1420px; }
     }
 
-    /* Only the CTA slot card is centered — the feature cards keep NoGapGrid's
-       default left-aligned layout so icons, titles, and descriptions line up. */
     .enterprise :global(.feature-card--cta) {
         width: 100%;
         padding: 2rem 4rem;
