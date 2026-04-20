@@ -44,6 +44,7 @@ The execution context usually includes:
 - `namespace` in Enterprise Edition when namespace variables are configured
 - `envs` for environment variables
 - `globals` for global configuration values
+- `item` inside a [Loop](../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task iteration
 
 :::alert{type="info"}
 To inspect the full runtime context, use `{{ printContext() }}` in the Debug Expression console.
@@ -112,6 +113,36 @@ When the execution is started by a `Flow` trigger:
 | `{{ trigger.namespace }}` | Namespace of the triggering flow |
 | `{{ trigger.flowId }}` | ID of the triggering flow |
 | `{{ trigger.flowRevision }}` | Revision of the triggering flow |
+
+### Loop iteration context
+
+Inside a [Loop](../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task, each iteration runs as an isolated sub-execution. The `item` variable is available to all tasks within that sub-execution.
+
+| Expression | Description |
+|---|---|
+| `{{ item.index }}` | Zero-based index of the current iteration |
+| `{{ item.value }}` | Value of the current iteration |
+| `{{ item.key }}` | Map key of the current iteration; only set when `values` is a map |
+| `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
+| `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
+| `{{ item.parents[n].value }}` | Value of the nth ancestor loop, counting from innermost (`[0]` = immediate parent) |
+
+Because `item` is bound to the loop execution rather than individual task runs, flowable tasks nested inside a `Loop` (such as `If` or `Parallel`) can access `item` directly without any `parent.` prefix.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["value 1", "value 2", "value 3"]
+    tasks:
+      - id: check
+        type: io.kestra.plugin.core.flow.If
+        condition: '{{ item.value == "value 2" }}'
+        then:
+          - id: log
+            type: io.kestra.plugin.core.log.Log
+            message: "Matched at index {{ item.index }}: {{ item.value }}"
+```
 
 ### Environment and global variables
 

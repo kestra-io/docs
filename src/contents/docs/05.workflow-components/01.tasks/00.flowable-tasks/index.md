@@ -279,6 +279,124 @@ Read more about performance optimization in our [best practices guides](../../..
 
 ---
 
+### Loop
+
+The `Loop` task iterates over a set of values and runs a set of child tasks for each item. Unlike `ForEach`, each iteration runs in an isolated sub-execution with its own context.
+
+`values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file.
+
+```yaml
+id: loop_example
+namespace: company.team
+
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["value 1", "value 2", "value 3"]
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ item.index }} - {{ item.value }}"
+```
+
+Inside each iteration, use the `item` variable to access the iteration context:
+
+| Expression | Description |
+|---|---|
+| `{{ item.index }}` | Zero-based iteration index |
+| `{{ item.value }}` | Current iteration value |
+| `{{ item.key }}` | Current map key when `values` is a map; not set for list or URI values |
+| `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
+| `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
+| `{{ item.parents[n].value }}` | Value of the nth ancestor loop, counting from innermost |
+
+For more details on `item`, see [loop iteration context](../../../expressions/index.mdx#loop-iteration-context) in the expressions reference.
+
+#### Concurrent execution
+
+By default (`concurrencyLimit: 1`), iterations run one at a time in order. Set `concurrencyLimit` to a higher value to run multiple iterations simultaneously, or `0` for no limit.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3, 4, 5]
+    concurrencyLimit: 2
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.log.Log
+        message: "Processing {{ item.value }}"
+```
+
+#### Failure propagation
+
+By default (`transmitFailed: true`), a failed iteration causes the Loop task itself to fail. Set `transmitFailed: false` to let the loop continue even when individual iterations fail.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["value 1", "value 2", "value 3"]
+    transmitFailed: false
+    tasks:
+      - id: attempt
+        type: io.kestra.plugin.core.execution.Fail
+```
+
+#### Nested loops
+
+Loops can be nested to any depth. Because `item` is bound to the loop execution rather than individual task runs, flowable tasks nested inside a loop can access `item` directly without a `parent.` prefix.
+
+```yaml
+tasks:
+  - id: outer
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3]
+    tasks:
+      - id: inner
+        type: io.kestra.plugin.core.flow.Loop
+        values: [1, 2, 3]
+        tasks:
+          - id: log
+            type: io.kestra.plugin.core.log.Log
+            message: "outer={{ item.parent.value }} inner={{ item.value }}"
+```
+
+For deeper hierarchies, `item.parents[0]` is the immediate parent loop, `item.parents[1]` is the next outer loop, and so on.
+
+#### Loop outputs
+
+By default, task outputs produced inside a loop are not accessible to tasks that run after the loop. Use the `outputs` property on the Loop task to explicitly declare which values to expose.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["a", "b", "c"]
+    outputs:
+      - id: result
+        type: STRING
+        value: "{{ outputs.process.value }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.debug.Return
+        format: "processed {{ item.value }}"
+```
+
+The loop also exposes monitoring outputs regardless of whether `outputs` is declared:
+
+| Output | Description |
+|---|---|
+| `iterationCount` | Total number of iterations |
+| `runningIterations` | Iterations still in progress |
+| `terminatedIterations` | Iterations that have finished |
+
+The `fetchType` property controls how iteration outputs are collected: `FETCH` returns them directly in the execution context, `STORE` writes them to internal storage as a URI, and `AUTO` (the default) chooses based on whether `values` is a URI.
+
+For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
+
+---
+
 ### LoopUntil
 
 `LoopUntil` runs a group of tasks repeatedly until a boolean condition evaluates to `true`. After each iteration, the task evaluates the `condition` expression; if it evaluates to `false`, the block is executed again after the configured interval.
