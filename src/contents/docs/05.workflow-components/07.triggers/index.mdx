@@ -23,13 +23,9 @@ A trigger is a mechanism that automatically starts the execution of a flow.
     ></iframe>
 </div>
 
----
-
-Triggers can be either scheduled or event-based, giving you flexibility in how you automate workflow execution.
+Triggers can be either scheduled or event-based.
 
 ## Trigger types
-
-Kestra supports both **scheduled** and **external** events.
 
 Kestra supports five core trigger types:
 
@@ -41,7 +37,7 @@ Kestra supports five core trigger types:
 
 Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/io.kestra.plugin.kafka.trigger).
 
-### Trigger Common Properties
+### Trigger common properties
 
 The following properties are common to all triggers:
 
@@ -55,15 +51,13 @@ The following properties are common to all triggers:
 | `workerGroup.key` | To execute this trigger on a specific Worker Group (EE).                                 |
 | `when`            | A Pebble expression that must evaluate to `true` for the trigger to fire.                |
 
----
-
 ## Trigger variables
 
 Triggers expose metadata through expressions. For example:
 
-– `{{ trigger.date }}` returns the current date for the [Schedule trigger](./01.schedule-trigger/index.md)
-– `{{ trigger.uri }}` returns the file or message for file detection or message arrival events
-– `{{ trigger.rows }}` provides query results for triggers like [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
+- `{{ trigger.date }}` returns the current date for the [Schedule trigger](./01.schedule-trigger/index.md)
+- `{{ trigger.uri }}` returns the file or message for file detection or message arrival events
+- `{{ trigger.rows }}` provides query results for triggers like the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger
 
 This example will log the date when the trigger executes the flow:
 
@@ -84,9 +78,9 @@ triggers:
 ```
 
 :::alert{type="warning"}
-Keep in mind that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
+These **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
 
-Also, note that **you don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to e.g. consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
+**You don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to e.g. consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
 :::
 
 Each trigger ID is limited to a single active execution at a time. If a scheduled execution is still running, the next one will be queued instead of started immediately. For instance, if an execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled executions will not be affected.
@@ -248,12 +242,12 @@ When you add that flow to Kestra, you'll see that no Executions are created. To 
 
 ## The `stopAfter` property
 
-Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
+The `stopAfter` property is a list of states that disable the trigger after the flow execution reaches one of those states.
 
 This property is most useful with `Schedule` triggers and polling-based triggers such as HTTP, JDBC, or File Detection.
 
 :::alert{type="info"}
-Note that we don't handle any automatic trigger reenabling logic. After a trigger has been disabled due to the `stopAfter` state condition, you can take some action based on it and manually reenable the trigger.
+Kestra does not automatically re-enable a trigger after it has been disabled by `stopAfter`. You must re-enable it manually once you are ready to resume.
 :::
 
 ### Pause the schedule trigger after a failed execution
@@ -303,7 +297,7 @@ triggers:
           - SUCCESS
 ```
 
-Let's break down the above example:
+This example works as follows:
 
 1. The HTTP trigger will poll the API endpoint every 30 seconds to check if the price of a product is below $110.
 2. If the condition is met, the Execution will be created

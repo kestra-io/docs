@@ -8,15 +8,11 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger one flow based on the execution of another flow.
 
-## Flow trigger – chain flow executions
-
-A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
-
 ```yaml
 type: io.kestra.plugin.core.trigger.Flow
 ```
 
-Kestra can automatically start a flow as soon as another flow ends. This allows you to create dependencies between flows, even when those flows are owned by different teams.
+A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams. This allows you to create dependencies between flows, even when those flows are owned by different teams.
 
 Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
@@ -180,7 +176,7 @@ window:
 
 ## Scoped trigger outputs
 
-When a Flow trigger fires, upstream execution outputs are available under `trigger.outputs`. In Kestra 2.0, outputs are scoped by namespace and flow ID to avoid key collisions when multiple upstream flows are involved:
+When a Flow trigger fires, upstream execution outputs are available under `trigger.outputs`. Outputs are scoped by namespace and flow ID to avoid key collisions when multiple upstream flows are involved:
 
 ```
 trigger.outputs.<namespace>.<flowId>.<outputKey>
