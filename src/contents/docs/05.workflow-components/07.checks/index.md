@@ -1,15 +1,13 @@
 ---
 title: Checks in Kestra – Pre-Execution Validations
 h1: Validate Inputs Before Any Task Runs with Checks
-description: Implement Checks in Kestra for pre-execution validation. Guard your workflows by enforcing conditions on inputs before any task begins execution.
+description: Use checks to enforce conditions on inputs before any task runs, blocking or failing executions that don't meet your criteria.
 sidebarTitle: Checks
 icon: /src/contents/docs/icons/flow.svg
 version: ">= 1.2.0"
 ---
 
-Add pre-execution validations that can block or fail an execution before any tasks run.
-
-## Add checks to validate inputs before execution
+Checks are pre-execution validations that block or fail an execution before any tasks run.
 
 `checks` are flow-level assertions evaluated when validating inputs and before creating a new execution. Each check defines a boolean `when` expression and a `message` shown when the expression evaluates to false. You can choose how Kestra reacts (block, fail, or still create the execution) and how the message is styled in the UI.
 
@@ -19,21 +17,19 @@ Checks are useful to enforce business rules on inputs (e.g., allowed values, dat
 
 Each item in `checks` supports the following properties:
 
-- `when` *(required)*: Pebble expression that must evaluate to a boolean. For example, you can design checks against Inputs, Key-Value pairs, or other [expression](../../expressions/index.mdx) accessible workflow components.
+- `when` *(required)*: Pebble expression that must evaluate to a boolean. Checks can reference inputs, key-value pairs, and other components accessible via [expressions](../../expressions/index.mdx).
 - `message` *(required)*: Text displayed when the condition is false.
 - `style` *(optional, default `INFO`)*: Visual style for the message. One of `ERROR`, `SUCCESS`, `WARNING`, `INFO`.
 - `behavior` *(optional, default `BLOCK_EXECUTION`)*: How the flow should react when the condition is false. One of:
   - `BLOCK_EXECUTION`: Do not create the execution.
   - `FAIL_EXECUTION`: Create the execution immediately in a failed state.
-  - `CREATE_EXECUTION`: Allow execution creation even if the check fails.
+  - `CREATE_EXECUTION`: Create the execution even when the check fails.
 
-When clicking **Execute**, with an `ERROR` message display set in the flow code, the modal will display the `message` as soon as an input is set that doesn't satisfy the check like below:
+When you click **Execute**, the modal displays the `message` as soon as an input fails a check:
 
 ![Failed Check](./checks-fail.png)
 
----
-
-### Multiple checks
+## Multiple checks
 
 If several checks fail, the most restrictive behavior wins in this priority order: `BLOCK_EXECUTION` → `FAIL_EXECUTION` → `CREATE_EXECUTION`. This lets you mix hard stops with softer warnings in the same flow.
 
