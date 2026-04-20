@@ -1,0 +1,231 @@
+title: "Kestra vs. SimplyAsk: Infrastructure Orchestration vs. Business Process Automation"
+description: "Compare Kestra vs SimplyAsk (Symphona): Open-source workflow orchestration for engineering teams vs. no-code business process automation for telco and operations teams."
+competitorName: SimplyAsk
+category: "No-Code Automation"
+shortDescription: "No-code business process automation for telco and operations teams vs. engineering-grade workflow orchestration with self-hosting and GitOps."
+
+brandColor:
+  color: "#2563EB"
+
+intro:
+  title: "Kestra vs. SimplyAsk: Infrastructure Orchestration vs. Business Process Automation"
+  description: "SimplyAsk (Symphona) is a no-code automation platform built for business operations in telecom, manufacturing, and local government. It handles customer service workflows, order management, and service ticketing well. Kestra is a general-purpose orchestration platform for engineering teams that need data pipelines, infrastructure automation, and technical workflows at production scale."
+
+philosophy:
+  mainTitle: Two Platforms, Two Problem Shapes
+  kestra:
+    title: "Engineering-Grade Orchestration for Technical Workflows"
+    description: "Declarative YAML orchestration platform for engineering teams. Define data pipelines, infrastructure automation, and event-driven workflows in version-controlled YAML. Language-agnostic, self-hosted or on Kestra Cloud, with GitOps and full audit trails."
+    subCardText: '"How do I orchestrate technical workflows my engineering team can version, review, and operate like any other infrastructure?"'
+  competitor:
+    title: No-Code Automation for Business Operations
+    description: "Bundled no-code platform for operations teams. Drag-and-drop canvas lets business analysts automate customer service flows, order management, and service tickets without writing code. Purpose-built for telecom OSS/BSS processes and vertical-specific business operations."
+    shadowColor: "#DBEAFE"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I let my operations team automate business processes without waiting on engineering?"'
+
+businessValue:
+  mainTitle: "Business Process Automation Is Not Workflow Orchestration.<br />Know the Difference."
+  kestra:
+    title: Production-Grade Workflow Orchestration
+    list:
+      - Automate data pipelines, infrastructure, and business processes in one platform
+      - Language-agnostic: run Python, Bash, SQL, R, or any script in isolated containers
+      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - Self-hosted (Docker, Kubernetes) or Kestra Cloud, with air-gapped deployment support
+      - Handles 100,000+ concurrent tasks with horizontal scaling and exactly-once execution
+  competitor:
+    title: No-Code Business Process Automation
+    list:
+      - Drag-and-drop canvas for operations teams with no coding required
+      - Bundled Symphona suite (Converse, Flow, Serve, Resolve) for telco and business ops
+      - Credit-based pricing starting at $1,000/month for 25,000 process steps
+      - SaaS-only deployment, no self-hosted or air-gapped option
+      - Built for telecom OSS/BSS workflows, manufacturing, and local government operations
+    shadowColor: "#DBEAFE"
+    bulletColor: "#2563EB"
+  footerText: "For operations teams automating customer service flows, service ticketing, and order management in telecom or manufacturing, SimplyAsk is purpose-built for that problem. When you need infrastructure automation, data pipelines, Git-native workflows, or engineering-grade orchestration at scale, Kestra is the right tool."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "SimplyAsk Symphona is SaaS-only, with no self-hosted option. Engineers who need to run workflows locally, deploy in air-gapped environments, or integrate with infrastructure tooling like Terraform and Ansible have no path forward. Kestra runs in two commands."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No vendor coordination, no infrastructure prerequisites beyond Docker."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~15"
+      two: Minutes
+    description: "Sign up for a Symphona account at simplyask.ai to start a 7-day free trial. Workflows are built visually in the Flow canvas. No local installation option; all automation runs in SimplyAsk's SaaS environment."
+    shadowColor: "#DBEAFE"
+    command: |
+      # SimplyAsk Symphona is SaaS-only
+      # 1. Sign up at simplyask.ai (7-day free trial)
+      # 2. Log in to Symphona dashboard
+      # 3. Open Flow, drag-and-drop process steps onto canvas
+      # 4. Configure triggers: schedule, API, email, or webhook
+
+      # No local installation or self-hosted option available
+      # Minimum paid plan: $1,000/month (25,000 process steps)
+    lang: sh
+
+easeOfUse:
+  title: Built for Engineers vs. Built for Operations
+  kestra:
+    title: "Kestra: Readable by your whole team"
+    description: "YAML is readable on day 1. Docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start from our library of 200+ Blueprints. Engineers bring their existing scripts with no wrappers or refactoring required."
+    code: |
+      id: infra_deploy
+      namespace: engineering
+
+      triggers:
+        - id: on_merge
+          type: io.kestra.plugin.core.trigger.Webhook
+          key: "{{ secret('WEBHOOK_KEY') }}"
+
+      tasks:
+        - id: plan
+          type: io.kestra.plugin.scripts.shell.Commands
+          commands:
+            - terraform plan -out=tfplan
+
+        - id: apply
+          type: io.kestra.plugin.scripts.shell.Commands
+          commands:
+            - terraform apply -auto-approve tfplan
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Infrastructure deployed successfully"
+    lang: yaml
+  competitor:
+    title: "SimplyAsk: No-code canvas for business ops"
+    description: "SimplyAsk Flow workflows are built by dragging steps onto a visual canvas. Supported integrations need no code; complex logic is configured through form-based condition builders. Workflows are stored in SimplyAsk's proprietary format with no code export or version control."
+    shadowColor: "#DBEAFE"
+    code: |
+      # SimplyAsk Flow has no code representation.
+      # Workflows are built visually and stored internally
+      # in SimplyAsk's proprietary SaaS format.
+
+      # To integrate infrastructure tooling (Terraform, Ansible,
+      # Kubernetes), you must wrap all operations in REST API calls.
+      # There is no native shell execution or container support.
+
+      # Example: to run a Terraform plan, you would need to:
+      # 1. Wrap the Terraform CLI in a custom REST API service
+      # 2. Call that API from a Flow HTTP action step
+      # 3. Poll a second endpoint to check for completion
+    lang: sh
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations in one platform. Self-host with full control or use Kestra Cloud."
+  competitor:
+    description: "Purpose-built for business process automation in telecom, manufacturing, and local government. Strong for customer service flows, order management, and service ticketing. Not designed for data pipelines, shell execution, infrastructure provisioning, or engineering-team GitOps."
+    shadowColor: "#DBEAFE"
+
+featureGrid:
+  title: Kestra vs SimplyAsk at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Business process automation (telco and operations)
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: Visual no-code drag-and-drop canvas
+    - feature: Target user
+      kestra: "Engineers, data teams, platform teams"
+      competitor: "Operations teams, business analysts"
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: No-code (REST API calls only for custom logic)
+    - feature: Infrastructure automation
+      kestra: "✓ Native support (Terraform, Ansible, Bash, containers)"
+      competitor: REST API calls only, no shell execution or containers
+    - feature: Data pipeline support
+      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
+      competitor: Not designed for data workloads
+    - feature: GitOps and CI/CD
+      kestra: "✓ Native Git sync, Terraform provider"
+      competitor: No Git integration, no code review workflow
+    - feature: Self-hosted deployment
+      kestra: "✓ Docker, Kubernetes, air-gapped support"
+      competitor: SaaS only, no self-hosted option
+    - feature: Open source
+      kestra: "✓ Open source (Apache 2.0)"
+      competitor: Closed source, proprietary SaaS
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: "✓ Visual canvas for operations analysts"
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Enterprise namespace isolation"
+      competitor: Enterprise plan only
+
+testimonials:
+  - quote: "Kestra made the data mesh possible. We produce far more data now, and deliver it nearly 10 times faster."
+    author: "Julien Henrion, CDO @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: In Data Production
+      - value: "+250"
+        name: Active Users
+      - value: "+5000"
+        name: Workflows Created
+    storyLink: "https://kestra.io/blogs/2023-08-16-datamesh"
+
+platformStrengths:
+  title: Kestra Is Built for Engineering Teams, Not Just Operations
+  features:
+    - title: Code as infrastructure, not just automation
+      description: "Kestra workflows live in Git, deploy via Terraform, and move through the same CI/CD pipeline as application code. Every change is tracked, reviewed, and auditable. SimplyAsk workflows live in a proprietary SaaS canvas with no Git integration, no code review, and no path for environment promotion from dev to staging to prod."
+    - title: Native infrastructure execution
+      description: "Kestra runs Terraform plans, Ansible playbooks, Bash scripts, and containerized tasks natively. Tasks execute in isolated containers, so any existing script runs without wrapping or refactoring. SimplyAsk Flow can call a REST API, but it cannot execute shell commands, run containers, or integrate with IaC tooling without building an API layer in between."
+    - title: Open source with no vendor lock-in
+      description: "Kestra is open source under Apache 2.0. You can inspect the codebase, deploy it anywhere, run it in air-gapped environments, and avoid dependency on a single SaaS vendor. SimplyAsk is closed-source proprietary software from a 120-person company. For teams making long-term infrastructure investments, that's a different risk profile than a project with 26k+ GitHub stars and a public codebase."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your team runs Terraform, Ansible, Bash scripts, or containerized tasks as part of a workflow."
+      - "Workflows should live in version control and deploy through CI/CD like any other infrastructure."
+      - "You need self-hosting that works in Docker, Kubernetes, or air-gapped environments."
+      - "Your engineers author the workflows. YAML and Git are the standard, not a visual canvas."
+      - "You need data pipelines, ETL, or infrastructure automation alongside event-driven triggers."
+  competitor:
+    title: Choose SimplyAsk When
+    list:
+      - "Your primary use case is telco business process automation: order management, service provisioning, customer ops."
+      - "Your team is operations analysts or customer service managers who need to build workflows without engineering support."
+      - "You want a bundled suite covering chat agents, service ticketing, and workflow automation in one SaaS package."
+      - "No-code matters more than GitOps. Your team will not write or review YAML."
+      - "You're in telecom, manufacturing, or local government and want out-of-the-box workflow templates for those verticals."
+    shadowColor: "#DBEAFE"
+    bulletColor: "#2563EB"
+
+commonQuestions:
+  - question: Can Kestra replace SimplyAsk for business process automation?
+    answer: "Kestra handles data pipelines, infrastructure workflows, and API-driven business processes well. For telecom-specific OSS/BSS workflows (customer provisioning, order fulfillment, service ticket routing), SimplyAsk ships out-of-the-box templates built for those flows. If your automation is infrastructure-centric or requires running scripts and containerized tasks, Kestra is the right fit. If your team is operations analysts automating telco business processes without writing code, SimplyAsk was built for that use case."
+  - question: How do I migrate workflows from SimplyAsk to Kestra?
+    answer: "SimplyAsk workflows are built visually in the Flow canvas and stored in a proprietary format. In Kestra, you replicate each workflow in declarative YAML, replacing SimplyAsk's canvas steps with the equivalent Kestra plugins (HTTP requests, script execution, Slack notifications, and more). The trigger model maps directly: schedules, webhooks, and API calls all work in Kestra. Most teams migrate incrementally, starting with workflows that require infrastructure execution or Git-native deployment, since those aren't possible in SimplyAsk."
+  - question: Does Kestra support the same integrations as SimplyAsk Symphona?
+    answer: "Kestra has 1,200+ plugins covering cloud providers, databases, data warehouses, messaging systems, and APIs. SimplyAsk Flow integrates via REST API, SFTP, database connectors, and native connections to its own Symphona products (Converse, Serve, Resolve). For standard API integrations, both tools cover similar ground. Kestra's plugin library goes deeper on data and infrastructure tooling (Spark, dbt, Terraform, Kubernetes), while SimplyAsk has tighter integration with its bundled business ops suite."
+  - question: Can Kestra be self-hosted or run in air-gapped environments?
+    answer: "Yes. Kestra is open source and supports fully self-hosted deployment via Docker or Kubernetes, including air-gapped environments with no outbound internet access. SimplyAsk Symphona is a SaaS platform with no self-hosted option. For engineering firms operating in regulated industries or managing on-premises infrastructure, that's not a configuration trade-off; it's a hard blocker."
+  - question: Can Kestra support non-technical users the way SimplyAsk's no-code canvas does?
+    answer: "SimplyAsk's canvas is designed so operations analysts can build and modify workflows without any engineering support. In Kestra, engineers define workflows in YAML, and Kestra Apps provide a clean UI for non-engineers to trigger, monitor, and interact with those workflows. Business logic stays in version control; execution stays self-service. If you need business analysts to author workflows from scratch without engineers, SimplyAsk's canvas is built for that model."
+  - question: How does Kestra handle event-driven triggers compared to SimplyAsk?
+    answer: "Kestra is event-driven at its core. It triggers natively on webhooks, message queues (Kafka, Pulsar), file arrivals (S3, GCS, SFTP), database changes, and scheduled intervals, all defined in YAML alongside the rest of the workflow. SimplyAsk Flow triggers via schedule, manual kick-off, REST API call, or inbound email. For infrastructure automation (reacting to a failed deployment, a cloud cost threshold, or a Kubernetes pod restart), Kestra's event model covers those signals natively. SimplyAsk's trigger model was designed for business operations volume, not infrastructure event handling."
