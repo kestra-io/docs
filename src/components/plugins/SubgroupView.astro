@@ -7,6 +7,7 @@ import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import PluginDocsFrame from "./PluginDocsFrame.astro"
 import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
 import RelatedBlueprints from "~/components/plugins/blueprints/RelatedBlueprints.astro"
+import { getPluginTitle } from "~/utils/plugins/pluginUtils"
 
 interface Props {
     pluginsWithoutDeprecated: Plugin[]
@@ -72,6 +73,7 @@ const {
             }
             {pluginType}
             customId={blueprintsSectionHeading?.id}
+            pluginTitle={rootPlugin ? getPluginTitle(rootPlugin, metadataMap) : undefined}
         />
     )
 }
