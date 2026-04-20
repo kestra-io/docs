@@ -88,6 +88,42 @@ If your flow uses trigger variables (such as `{{ trigger.body }})`, you can test
 
 See the [Webhook trigger plugin documentation](/plugins/core/trigger/io.kestra.plugin.core.trigger.webhook) for a full list of properties and outputs.
 
+## Filtering webhook executions with `when`
+
+Use the `when` property to conditionally fire the trigger based on the request body or headers. The `when` value is a [Pebble expression](../../../expressions/index.mdx) evaluated against the incoming request. If the expression evaluates to a falsy value, Kestra ignores the request and no execution is created.
+
+### Before
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+    conditions:
+      - type: io.kestra.plugin.core.condition.Expression
+        expression: "{{ trigger.body.hello == 'world' }}"
+```
+
+### After
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+    when: "{{ trigger.body.hello == 'world' }}"
+```
+
+You can combine multiple criteria in a single expression using `and` / `or`:
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+    when: "{{ trigger.body.event == 'push' and trigger.headers['x-github-event'] == 'push' }}"
+```
+
 ### Return flow outputs in the webhook response
 
 To send task outputs back to the caller in the HTTP response, configure the Webhook trigger to wait for the execution and return outputs. The flow must expose at least one `outputs` entry.
