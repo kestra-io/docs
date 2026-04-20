@@ -189,7 +189,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             .filter(Boolean)
     })()
 
-    const blueprintsSectionHeading = getBlueprintsHeading(pluginName, rootPlugin, effectiveSubGroup)
+    const blueprintsSectionHeading = getBlueprintsHeading(pluginName, rootPlugin, effectiveSubGroup, undefined, rootPluginTitle)
 
     const currentPluginCategories = (() => {
         const subgroupCats = currentSubgroupPlugin?.categories
