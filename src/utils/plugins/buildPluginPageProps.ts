@@ -14,6 +14,7 @@ import {
     getPluginTitle,
 } from "~/utils/plugins/pluginUtils"
 import { prunePluginsForSidebar } from "./pruneForClient"
+import { matchesSubGroup } from "./subgroupMatcher"
 import type { PluginPage, PluginPageWithToc, TocLink } from "./types"
 
 const TOC_DEPTH = 2
@@ -80,15 +81,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const currentSubgroupPlugin =
         !effectiveSubGroup || pluginType
             ? undefined
-            : pluginsWithoutDeprecated.find((p) => {
-                  const subgroupLastSegment = p.subGroup?.split(".").pop()
-                  const possibleSubgroupMatches = [
-                      slugify(subGroupName(p)),
-                      subgroupLastSegment,
-                      slugify(subgroupLastSegment ?? ""),
-                  ]
-                  return possibleSubgroupMatches.includes(effectiveSubGroup)
-              })
+            : pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
 
     const currentPluginMetadata = (() => {
         const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group

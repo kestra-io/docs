@@ -44,7 +44,7 @@ Kestra UI offers an embedded code editor allowing you to seamlessly orchestrate 
 
 For business users, Kestra offers UI forms allowing to build workflows without requiring a programming experience. These UI-created pipelines generate human-readable YAML configuration files, organized into namespaces and automatically versioned, just as you would with Git.
 
-If that's your preference, you can make the built-in code editor and UI forms read-only. This is useful in production environments that rely on CI/CD-based deployments. Alternatively, you can use the [Git plugin](/plugins/plugin-git/) to ensure that Kestra always uses the latest version of your code from your custom repository, keeping Git as the single source of truth for your workflows.
+If that's your preference, you can make the built-in code editor and UI forms read-only. This is useful in production environments that rely on CI/CD-based deployments. Alternatively, you can use the [Git plugin](/plugins/plugin-git) to ensure that Kestra always uses the latest version of your code from your custom repository, keeping Git as the single source of truth for your workflows.
 
 
 ### Preventing New Silos

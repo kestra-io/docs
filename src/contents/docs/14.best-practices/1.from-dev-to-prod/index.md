@@ -85,7 +85,7 @@ See the [dedicated SyncFlows guide](../../15.how-to-guides/syncflows/index.md) f
 To push flows from development to Git, use the [`git.PushFlows` task](/plugins/plugin-git/io.kestra.plugin.git.pushflows).
 This ensures flows are validated before being saved — Kestra will reject invalid flows automatically.
 
-You can also automate pull requests with the [`create.Pulls` task](/plugins/github/tasks/io.kestra.plugin.github.pulls.create), which creates a PR to `main` for review before deploying to production.
+You can also automate pull requests with the [`create.Pulls` task](/plugins/plugin-github/github-pull-requests/io.kestra.plugin.github.pulls.create), which creates a PR to `main` for review before deploying to production.
 
 :::alert{type="info"}
 While Kestra validates flow syntax, it does not detect logical or runtime errors. Always test flows thoroughly before promoting them to production.

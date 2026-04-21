@@ -115,9 +115,9 @@ Now that you saw how to leverage Vertex AI Gemini model with Kestra, you can pla
 
 Check out others tasks related to Generative AI that we support with Kestra:
 
-- [**CustomJob**](/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.CustomJob): To start Vertex AI Custom Jobs
-- [**ChatCompletion**](/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.ChatCompletion): For Chat completion
-- [**TextCompletion**](/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.TextCompletion): For Text completion
+- [**CustomJob**](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.customjob): To start Vertex AI Custom Jobs
+- [**ChatCompletion**](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion): For Chat completion
+- [**TextCompletion**](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.textcompletion): For Text completion
 
 For more information, you can have a look at the [Google Quickstarts for Generative AI](https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart) and the documentation of the TestCompletion and ChatCompletion tasks.
 
