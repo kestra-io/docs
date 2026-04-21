@@ -204,7 +204,7 @@ Search for "Bucket" in the Cloud Console and create a new GCS bucket. You can ke
 Below is a sample flow that runs a Python file (`main.py`) using the Google Batch Task Runner. The `taskRunner` section defines properties such as the project, region, and bucket.
 
 :::alert{type="info"}
-By default, the task runner uses the default network configuration of your Google Cloud project. If none exists, you can configure connectivity manually using the `networkInterfaces` property. See the [Google Cloud Batch Task Runner documentation](https://kestra.io/plugins/plugin-ee-gcp/io.kestra.plugin.ee.gcp.runner.batch#properties_networkInterfaces-body) for details.
+By default, the task runner uses the default network configuration of your Google Cloud project. If none exists, you can configure connectivity manually using the `networkInterfaces` property. See the [Google Cloud Batch Task Runner documentation](https://kestra.io/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.batch#properties_networkInterfaces-body) for details.
 :::
 
 ```yaml

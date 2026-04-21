@@ -262,7 +262,7 @@ Make sure to also check:
 
 Kestra can process data **row by row** using file transform tasks. The transformation is done with a small script written in Python, JavaScript, or Groovy.
 
-- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
+- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
 - The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
 - The [Groovy Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.script) task allows running scripts with Groovy.
 

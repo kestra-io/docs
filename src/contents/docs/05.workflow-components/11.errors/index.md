@@ -18,7 +18,7 @@ Kestra provides multiple ways to handle errors, helping you both identify issues
 
 `errors` is a list of tasks set at the flow level that are executed when an error occurs. You can add multiple tasks, and they are executed sequentially. This is useful for sending alerts when errors occur.
 
-The example below sends a flow-level failure alert via Slack using the [SlackIncomingWebhook](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook) task defined using the `errors` property.
+The example below sends a flow-level failure alert via Slack using the [SlackIncomingWebhook](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook) task defined using the `errors` property.
 
 ```yaml
 id: errors
