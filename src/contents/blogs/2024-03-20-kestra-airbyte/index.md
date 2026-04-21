@@ -91,7 +91,7 @@ INSERT INTO employees values(4, "Harry", "Davidson", "London");
 INSERT INTO employees values(5, "Kavita", "Malhotra", "Mumbai");
 ```
 
-Now, create a flow on the Kestra UI. We will be using the [Sync task](/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.sync) which will invoke the sync on the corresponding connection. When you open the connection that you want to sync on Airbyte UI, you will have the URL in the format: `http://<hostname>:8000/workspaces/<workspace_id>/connections/<connection_id>/status`. Pick the connection_id from this URL. Use this in the Sycn task. The Kestra flow with the Sync task should appear like this:
+Now, create a flow on the Kestra UI. We will be using the [Sync task](/plugins/plugin-airbyte/airbyte-connections/io.kestra.plugin.airbyte.connections.sync) which will invoke the sync on the corresponding connection. When you open the connection that you want to sync on Airbyte UI, you will have the URL in the format: `http://<hostname>:8000/workspaces/<workspace_id>/connections/<connection_id>/status`. Pick the connection_id from this URL. Use this in the Sycn task. The Kestra flow with the Sync task should appear like this:
 
 ```yaml
 id: airbyte-sync
@@ -109,7 +109,7 @@ When you run this task, the sync operation should be invoked on the connection. 
 
 ![kestra_airbyte_sync_flow_output](./kestra_airbyte_sync_flow_output.png)
 
-Now, let us use this job ID and check the status of this job using another Kestra flow where we will use the [CheckStatus task](/plugins/tasks/connections/io.kestra.plugin.airbyte.connections.checkstatus).
+Now, let us use this job ID and check the status of this job using another Kestra flow where we will use the [CheckStatus task](/plugins/plugin-airbyte/airbyte-connections/io.kestra.plugin.airbyte.connections.checkstatus).
 
 The flow should look as follows:
 
