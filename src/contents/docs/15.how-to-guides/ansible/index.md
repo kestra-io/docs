@@ -443,7 +443,7 @@ The `upload_output_to_s3` task pushes the generated JSON to S3 using secrets for
 
 ### Add a Slack notification
 
-To include a separate notification to the relevant channels, add the [Slack Incoming Webhook task](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook) after the upload with a message alerting that "Machine X" had outdated software and patched an upgrade. You can swap Slack for any other notifier in the Plugin catalog or chain multiple notifications if needed:
+To include a separate notification to the relevant channels, add the [Slack Incoming Webhook task](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook) after the upload with a message alerting that "Machine X" had outdated software and patched an upgrade. You can swap Slack for any other notifier in the Plugin catalog or chain multiple notifications if needed:
 
 ```yaml
   - id: slack_notification

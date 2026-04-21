@@ -28,8 +28,8 @@ Realtime Triggers continuously listen for events and launch a new workflow execu
 - a message is published to an [AWS SQS queue](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
 - a message is published to [Google Pub/Sub](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
 - a message is published to [Azure Event Hubs](/plugins/plugin-azure/eventhubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
-- a message is published to a [NATS subject](/plugins/plugin-nats/io.kestra.plugin.nats.realtimetrigger)
-- an item is added to a [Redis list](/plugins/plugin-redis/io.kestra.plugin.redis.realtimetriggerlist)
+- a message is published to a [NATS subject](/plugins/plugin-nats/nats-core/io.kestra.plugin.nats.core.realtimetrigger)
+- an item is added to a [Redis list](/plugins/plugin-redis)
 - a row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).
 
 ## How realtime triggers work
