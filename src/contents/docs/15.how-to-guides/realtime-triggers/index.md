@@ -111,7 +111,7 @@ On the Send and Receive messages page, you can put the Message body under the Se
 
 ![sqs_send_message](./sqs_send_message.png)
 
-You can use the AWS SQS [RealtimeTrigger](/plugins/plugin-aws/io.kestra.plugin.aws.sqs.realtimetrigger) in the Kestra flow as follows:
+You can use the AWS SQS [RealtimeTrigger](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: aws-sqs
@@ -149,7 +149,7 @@ On the Publish message popup, put the message you would like to publish to the t
 
 ![pubsub_publish_message](./pubsub_publish_message.png)
 
-You can use the GCP Pub/Sub [RealtimeTrigger](/plugins/plugin-gcp/io.kestra.plugin.gcp.pubsub.realtimetrigger) in the Kestra flow as follows:
+You can use the GCP Pub/Sub [RealtimeTrigger](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: gcp-pubsub

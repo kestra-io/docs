@@ -49,10 +49,10 @@ We now moved the storage of task metrics in a dedicated place out of the task at
 
 ### Log a message and fetch logs
 
-Logging messages is one of the most common things developers do. In a Kestra flow, logging was previously done with the [Echo](/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.Echo.html) task that was on a `debugs` group of plugins. The naming and semantics of the Echo task were not very good and with the new auto-completion feature, we think people may have difficulty finding it.
-That’s why we created a new [Log](/plugins/core/tasks/log/io.kestra.plugin.core.log.Log.html) task to replace the old Echo task that is now deprecated (don’t panic, we will keep it around for a long time). This new task allows logging one or more messages at once.
+Logging messages is one of the most common things developers do. In a Kestra flow, logging was previously done with the [Echo](/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.echo) task that was on a `debugs` group of plugins. The naming and semantics of the Echo task were not very good and with the new auto-completion feature, we think people may have difficulty finding it.
+That’s why we created a new [Log](/plugins/core/tasks/log/io.kestra.plugin.core.log.log) task to replace the old Echo task that is now deprecated (don’t panic, we will keep it around for a long time). This new task allows logging one or more messages at once.
 
-We also added a new [Fetch](/plugins/core/tasks/log/io.kestra.plugin.core.log.Fetch.html) task to retrieve logs so now a flow can access its own log, for example, to send error logs from a notification task in case of failure.
+We also added a new [Fetch](/plugins/core/tasks/log/io.kestra.plugin.core.log.fetch) task to retrieve logs so now a flow can access its own log, for example, to send error logs from a notification task in case of failure.
 
 ### Fail task
 
@@ -77,7 +77,7 @@ And we also improved the quality of the [plugin documentation](/plugins), we hop
 
 ## Plugins
 
-Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](/plugins/plugin-microsoft365/teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](/plugins/plugin-fs/ssh/io.kestra.plugin.fs.ssh.Command.html) task so send shell commands to a remote server with the SSH protocol.
+Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](/plugins/plugin-microsoft365/teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](/plugins/plugin-fs/ssh/io.kestra.plugin.fs.ssh.command) task so send shell commands to a remote server with the SSH protocol.
 
 ## Enterprise Edition
 
