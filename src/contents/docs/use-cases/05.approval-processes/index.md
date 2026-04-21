@@ -314,13 +314,10 @@ tasks:
 triggers:
   - id: flow
     type: io.kestra.plugin.core.trigger.Flow
-    preconditions:
-      id: flow1
-      flows:
-        - flowId: pause_demo
-          namespace: demo
-          states:
-            - SUCCESS
+    dependsOn:
+      - flowId: pause_demo
+        namespace: demo
+        states: [SUCCESS]
 ```
 
 Why this is robust:

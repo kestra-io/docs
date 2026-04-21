@@ -88,7 +88,7 @@ Like all triggers, the Flow trigger supports a top-level `when` Pebble expressio
 triggers:
   - id: after_extract
     type: io.kestra.plugin.core.trigger.Flow
-    when: "{{ not isWeekend(trigger.date) }}"
+    when: "{{ labels.env == 'production' }}"
     dependsOn:
       - flowId: extract
         namespace: company.team
@@ -176,27 +176,27 @@ window:
 
 ## Scoped trigger outputs
 
-When a Flow trigger fires, upstream execution outputs are available under `trigger.outputs`. Outputs are scoped by namespace and flow ID to avoid key collisions when multiple upstream flows are involved:
+When a Flow trigger fires, upstream execution outputs are available under `trigger.outputs`. Outputs are scoped by flow ID to avoid key collisions when multiple upstream flows are involved:
 
 ```
-trigger.outputs.<namespace>.<flowId>.<outputKey>
+trigger.outputs.<flowId>.<outputKey>
 ```
 
-For example, to pass an output from an upstream flow named `extract` in the `company.team` namespace:
+For example, to pass an output from an upstream flow named `extract`:
 
 ```yaml
 triggers:
   - id: after_extract
     type: io.kestra.plugin.core.trigger.Flow
     inputs:
-      date: "{{ trigger.outputs.company.team.extract.date }}"
+      date: "{{ trigger.outputs.extract.date }}"
     dependsOn:
       - flowId: extract
         namespace: company.team
 ```
 
 :::alert{type="warning"}
-The output scoping format changed in Kestra 2.0. If you previously used `trigger.outputs.<key>` (a flat map), update your expressions to the new `trigger.outputs.<namespace>.<flowId>.<key>` format.
+The output scoping format changed in Kestra 2.0. If you previously used `trigger.outputs.<key>` (a flat map), update your expressions to the new `trigger.outputs.<flowId>.<key>` format.
 :::
 
 ## Label-based filtering
@@ -312,7 +312,7 @@ triggers:
 
 ## Example: passing upstream outputs downstream
 
-Reference upstream outputs using the scoped path `trigger.outputs.<namespace>.<flowId>.<key>`:
+Reference upstream outputs using the scoped path `trigger.outputs.<flowId>.<key>`:
 
 ```yaml
 id: flow_b
@@ -331,10 +331,10 @@ triggers:
   - id: upstream_dep
     type: io.kestra.plugin.core.trigger.Flow
     inputs:
-      value_from_a: "{{ trigger.outputs.kestra.sandbox.flow_a.return_value }}"
+      value_from_a: "{{ trigger.outputs.flow_a.return_value }}"
     dependsOn:
       - flowId: flow_a
-        namespace: kestra.sandbox
+        namespace: company.team
         states: [SUCCESS]
 ```
 
@@ -346,8 +346,8 @@ triggers:
 
 If an `inputs` expression on a Flow trigger fails to render — for example, because an upstream output key does not exist — Kestra creates a `FAILED` execution instead of silently dropping the event. This makes failures visible in the UI and actionable via alerting.
 
-## Deprecated: `preconditions` and `conditions`
+## Removed: `preconditions` and `conditions`
 
-The `preconditions` and `conditions` properties are still functional in Kestra 2.0 but are deprecated and will be removed in a future release. Migrate to `dependsOn` at your earliest convenience.
+The `preconditions` and `conditions` properties are removed in Kestra 2.0. Flows that still use them will fail to parse after upgrading. Migrate to `dependsOn`.
 
 See the [trigger conditions migration guide](../../../11.migration-guide/v2.0.0/trigger-conditions-redesign/index.md) for a complete before/after reference.

@@ -111,12 +111,10 @@ tasks:
 triggers:
   - id: alert_on_failure
     type: io.kestra.plugin.core.trigger.Flow
-    labels:
-      sla: miss
-    states:
-      - FAILED
-      - WARNING
-      - CANCELLED
+    dependsOn:
+      - labels:
+          sla: miss
+        states: [FAILED, WARNING, CANCELLED]
 ```
 
 :::alert{type="info"}

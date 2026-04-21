@@ -74,38 +74,16 @@ This helps prevent stalled executions and ensures resource efficiency.
 
 ## Flow trigger on state change
 
-Kestra can automatically start a flow as soon as another flow completes. This makes it easy to create dependencies between flows, even when they are owned by different teams. For example, a flow can trigger based on the `state` of another flow’s execution. There are multiple ways to configure this behavior, but one approach is recommended as a best practice.
-
-Take the following two triggers polling one specific flow: one using `preconditions.flows.states` to define the required `states` and the other using the `states` property.
-
-**Option 1**
+Kestra can automatically start a flow as soon as another flow completes. This makes it easy to create dependencies between flows, even when they are owned by different teams. Use `dependsOn` to declare the upstream flow and the required states:
 
 ```yaml
 triggers:
   - id: release
     type: io.kestra.plugin.core.trigger.Flow
-    preconditions:
-      id: flows
-      flows:
-        - namespace: company.release
-          flowId: parent
-          states:
-            - SUCCESS
+    dependsOn:
+      - namespace: company.release
+        flowId: parent
+        states: [SUCCESS]
 ```
 
-or **Option 2**
-
-```yaml
-triggers:
-  - id: release
-    type: io.kestra.plugin.core.trigger.Flow
-    states:
-      - SUCCESS
-    preconditions:
-      id: flows
-      flows:
-        - namespace: company.release
-          flowId: parent
-```
-
-While both configurations will work, **Option 1** is the recommended approach. It is more performant and declarative compared to **Option 2**, especially when working with flow triggers dependent on state.
+`states` defaults to `[SUCCESS, WARNING]`. Declare it explicitly when you need a different set.

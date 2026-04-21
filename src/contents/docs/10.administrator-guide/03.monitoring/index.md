@@ -52,15 +52,17 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    when: "{{ trigger.executionStatus in ['FAILED', 'WARNING'] and trigger.namespace startsWith 'company.analytics' }}"
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ namespace | startsWith('company.analytics') }}"
 ```
 
 Adding this single flow will ensure that you receive a Slack alert on any flow failure in the `company.analytics` namespace. Here is an example alert notification:
 
 ![alert notification](../../03.tutorial/06.errors/alert-notification.png)
 
-:::alert{type="warning"}
-Note that if you want this alert to be sent on failure across multiple namespaces, combine conditions using `or` in the `when` Pebble expression. See the example below:
+:::alert{type="info"}
+To alert on failures across multiple namespaces or specific flows, use `mode: ANY` with multiple `dependsOn` entries. The trigger fires when any entry is satisfied:
 ```yaml
 id: alert
 namespace: company.system
@@ -75,11 +77,17 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    when: "{{ trigger.executionStatus in ['FAILED', 'WARNING'] and (trigger.namespace startsWith 'company.product' or (trigger.flowId == 'cleanup' and trigger.namespace == 'company.system')) }}"
+    mode: ANY
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ namespace | startsWith('company.product') }}"
+      - flowId: cleanup
+        namespace: company.system
+        states: [FAILED, WARNING]
 ```
 :::
 
-The example above works correctly because `or` is used explicitly in the Pebble expression. If you combine two conditions with `and` where only one can ever be true at a time, no alerts will be sent. For example, a flow execution can only belong to one namespace at a time, so requiring it to match two different namespace prefixes simultaneously will never fire. Make sure to use `or` for alternatives and `and` only for conditions that can both be true at the same time.
+The example above fires when either any `company.product` flow fails or the specific `cleanup` flow in `company.system` fails. `mode: ANY` means the trigger fires as soon as one entry is satisfied — you do not need to combine everything into a single expression.
 
 ## Monitoring
 

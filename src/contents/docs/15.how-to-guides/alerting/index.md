@@ -97,7 +97,8 @@ tasks:
 triggers:
   - id: on_failure
     type: io.kestra.plugin.core.trigger.Flow
-    when: "{{ trigger.executionStatus in ['FAILED', 'WARNING'] }}"
+    dependsOn:
+      - states: [FAILED, WARNING]
 
 ```
 

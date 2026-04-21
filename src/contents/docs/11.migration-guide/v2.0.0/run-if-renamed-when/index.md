@@ -40,9 +40,9 @@ tasks:
 
 The behavior is identical — the same Pebble rendering and `SKIPPED` state logic apply.
 
-## Triggers: conditions → when
+## Triggers: conditions → dependsOn (Flow triggers)
 
-The `conditions` list on triggers is deprecated. Replace it with a single `when` Pebble expression.
+The `conditions` list on Flow triggers is replaced by `dependsOn`. State filtering moves to the `states` property on each entry.
 
 ### Before
 
@@ -62,13 +62,18 @@ triggers:
 triggers:
   - id: on_success
     type: io.kestra.plugin.core.trigger.Flow
-    when: "{{ trigger.executionStatus == 'SUCCESS' }}"
+    dependsOn:
+      - flowId: upstream_flow
+        namespace: company.team
+        states: [SUCCESS]
 ```
+
+For the full before/after reference for Flow trigger conditions, including namespace filtering, label matching, and `preconditions` migration, see the [trigger conditions redesign guide](../trigger-conditions-redesign/index.md).
 
 ## Migration steps
 
 1. **Search your flows** for `runIf:` and replace each occurrence with `when:`. The property value and any Pebble expressions stay the same.
-2. **Search your flows** for `conditions:` on trigger blocks and replace them with an equivalent `when:` Pebble expression.
+2. **Search your flows** for `conditions:` on Flow trigger blocks and replace them with `dependsOn` entries. See the [trigger conditions redesign guide](../trigger-conditions-redesign/index.md) for before/after examples.
 3. **Validate** by saving the updated flows in the Kestra UI or via the API.
 
 :::alert{type="warning"}

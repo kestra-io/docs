@@ -40,7 +40,9 @@ triggers:
 
   - id: flow_trigger
     type: io.kestra.plugin.core.trigger.Flow
-    when: "{{ trigger.namespace == 'company.team' and trigger.flowId == 'first_flow' }}"
+    dependsOn:
+      - flowId: first_flow
+        namespace: company.team
 ```
 
 :::alert{type="info"}
