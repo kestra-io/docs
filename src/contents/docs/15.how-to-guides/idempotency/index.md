@@ -8,139 +8,116 @@ topics:
 
 Use `system.correlationId` as an idempotency key to group related executions, trace execution lineage across subflows, and skip duplicate processing.
 
-::alert{type="info"}
+This guide covers two patterns: setting the correlation ID at execution creation for API-triggered flows, and using a custom label for webhook-triggered flows where the key only becomes available after the execution starts.
+
+:::alert{type="info"}
 This guide applies to Kestra Enterprise. API token authentication and tenant-scoped endpoints are Enterprise features.
-::
+:::
 
 ## How `system.correlationId` works
 
 - A built-in system label present on every execution.
-- Defaults to the ID of the first execution in the lineage and propagates to subflows automatically.
-- Can be overridden with any stable identifier such as a payment intent, webhook idempotency key, or message UUID.
-- When set consistently, provides a single key that represents the same business event across retries, replays, and downstream executions.
+- Defaults to the execution's own ID and propagates to subflows automatically — all executions in a lineage share the root execution's `system.correlationId`.
+- Can be set to any stable business identifier at execution creation time, such as a payment intent, message UUID, or event key.
+- Immutable once the execution is created — it cannot be changed mid-flow.
 
 ## When to use it
 
-Use `system.correlationId` whenever the same business event might arrive more than once and you need to process it only once, for example:
+Use `system.correlationId` when the same business event might arrive more than once and you need to process it only once:
 
-- payment processing
-- webhook deliveries with retry support
+- payment processing triggered via API
 - event-driven pipelines consuming messages from a queue
+- any flow where the caller controls the trigger and holds the stable key at creation time
 
-Use the same correlation ID for every retry or replay of the same event.
+For **webhook-triggered flows**, where the idempotency key arrives in the request headers after the execution is already created, use a custom label instead. See [Webhook-triggered flows](#webhook-triggered-flows).
 
-## Set the correlation ID when starting an execution (API)
+## Set the correlation ID at execution creation
 
-Replace `{your-tenant}` with your Kestra tenant ID (visible in **Administration → Tenants**).
+Pass `system.correlationId` as a `labels` query parameter when creating the execution. Labels use `key:value` format.
+
+Replace `{your-tenant}` with your tenant ID (visible in **Administration → Tenants**).
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/{your-tenant}/executions/company.team/payments \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {your-api-token}" \
-  -d '{
-        "inputs": { "orderId": "ORD-123" },
-        "labels": { "system.correlationId": "payment-ORD-123" }
-      }'
+curl -X POST "http://localhost:8080/api/v1/{your-tenant}/executions/company.team/payments?labels=system.correlationId:payment-ORD-123" \
+  -H "Authorization: Bearer {your-api-token}"
 ```
 
-This is the best option when the caller already knows the stable business key.
-
-## Set or override it inside a flow
-
-If the idempotency key is only known once the flow starts, set it with the [Labels task](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Labels).
-
-The example below reads the key from a webhook trigger header. Webhook triggers expose the incoming HTTP headers via `trigger.headers`, so `trigger.headers['Idempotency-Key']` reads the `Idempotency-Key` header sent by the provider. The `default()` filter falls back to a key derived from the input if the header is absent.
-
-```yaml
-id: payment_flow
-namespace: company.team
-
-variables:
-  idem_key: "{{ trigger.headers['Idempotency-Key'] | default('payment-' ~ inputs.orderId) }}"
-
-tasks:
-  - id: set_correlation
-    type: io.kestra.plugin.core.execution.Labels
-    labels:
-      system.correlationId: "{{ vars.idem_key }}"
-
-  - id: process
-    type: io.kestra.plugin.core.log.Log
-    message: "Processing {{ vars.idem_key }}"
-```
-
-This is useful when the key comes from a webhook header, a payload field, or an upstream task output.
+Use this approach when the caller already holds the stable business key.
 
 ## Short-circuit duplicates early
 
-Once the correlation ID is set, search for an already successful execution with that same value. If one exists, skip the duplicate run.
+After setting the correlation ID at creation, check whether a successful execution with that key already exists. If one does, skip the current run.
+
+Pass the idempotency key as both the `labels` query parameter and an input so the flow can reference it in the duplicate check:
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/{your-tenant}/executions/company.team/payment_flow_guarded?labels=system.correlationId:payment-ORD-123" \
+  -H "Authorization: Bearer {your-api-token}" \
+  -F "idempotencyKey=payment-ORD-123"
+```
 
 ```yaml
 id: payment_flow_guarded
 namespace: company.team
 
-variables:
-  idem_key: "{{ trigger.headers['Idempotency-Key'] }}"
+inputs:
+  - id: idempotencyKey
+    type: STRING
 
 tasks:
-  - id: set_correlation
-    type: io.kestra.plugin.core.execution.Labels
-    labels:
-      system.correlationId: "{{ vars.idem_key }}"
-
   - id: check_existing
     type: io.kestra.plugin.core.http.Request
-    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?labels=system.correlationId:{{ vars.idem_key }}&state=SUCCESS&size=1"
+    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?filters[labels][EQUALS][system.correlationId]={{ inputs.idempotencyKey }}&filters[namespace][EQUALS]=company.team&filters[flowId][EQUALS]=payment_flow_guarded&filters[state][IN]=SUCCESS&size=1"
     method: GET
     headers:
       Authorization: "Bearer {{ secret('KESTRA_API_TOKEN') }}"
 
   - id: maybe_skip
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ json(outputs.check_existing.body).results | length > 0 }}"
+    condition: "{{ not (outputs.check_existing.body contains '\"total\":0') }}"
     then:
       - id: skip
         type: io.kestra.plugin.core.log.Log
-        message: "Duplicate {{ vars.idem_key }} skipped; already succeeded"
+        message: "Duplicate {{ inputs.idempotencyKey }} skipped; already succeeded"
     else:
       - id: continue
         type: io.kestra.plugin.core.log.Log
-        message: "First time for {{ vars.idem_key }}, proceed"
+        message: "First time for {{ inputs.idempotencyKey }}, proceed"
 ```
 
-Store your tenant ID and API token as a [KV pair](../../06.concepts/05.kv-store/index.md) and [Secret](../../06.concepts/04.secret/index.md) respectively so the flow can reference them without hardcoding.
+Store your tenant ID and API token as a [KV pair](../../06.concepts/05.kv-store/index.md) and [Secret](../../06.concepts/04.secret/index.md) respectively.
 
-## Example: webhook retries
+## Webhook-triggered flows
 
-Webhook providers often resend the same event until they receive a successful response. The flow below maps the provider's `Idempotency-Key` header directly to `system.correlationId` and guards against duplicate processing before calling any downstream system.
+`system.correlationId` is assigned automatically when the execution is created and cannot be changed afterwards. For webhook-triggered flows, the provider's idempotency key is only available once the execution has started. Store it in a **custom label** using the [Labels task](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Labels), then use that label for the duplicate check.
 
 ```yaml
 id: payment_webhook
 namespace: company.team
 
 variables:
-  idem_key: "{{ trigger.headers['Idempotency-Key'] }}"
+  idem_key: "{{ trigger.headers['Idempotency-Key'] | first }}"
 
 tasks:
-  - id: set_correlation
+  - id: set_idempotency_key
     type: io.kestra.plugin.core.execution.Labels
     labels:
-      system.correlationId: "{{ vars.idem_key }}"
+      idempotency.key: "{{ vars.idem_key }}"
 
   - id: check_existing
     type: io.kestra.plugin.core.http.Request
-    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?labels=system.correlationId:{{ vars.idem_key }}&state=SUCCESS&size=1"
+    uri: "http://localhost:8080/api/v1/{{ kv('KESTRA_TENANT') }}/executions/search?filters[labels][EQUALS][idempotency.key]={{ vars.idem_key }}&filters[namespace][EQUALS]=company.team&filters[flowId][EQUALS]=payment_webhook&filters[state][IN]=SUCCESS&size=1"
     method: GET
     headers:
       Authorization: "Bearer {{ secret('KESTRA_API_TOKEN') }}"
 
   - id: maybe_skip
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ json(outputs.check_existing.body).results | length > 0 }}"
+    condition: "{{ not (outputs.check_existing.body contains '\"total\":0') }}"
     then:
       - id: skip
         type: io.kestra.plugin.core.log.Log
-        message: "Duplicate {{ vars.idem_key }} skipped; already succeeded"
+        message: "Duplicate {{ vars.idem_key }} skipped"
     else:
       - id: process_payment
         type: io.kestra.plugin.core.log.Log
@@ -155,16 +132,19 @@ triggers:
 ## Operate with correlation IDs
 
 - **UI filtering:** In Executions, add the label filter `system.correlationId:your-key` to view the entire lineage.
-- **API search:** Use `labels=system.correlationId:{value}&state=SUCCESS` as query parameters in the Executions search API to audit or programmatically detect duplicates.
-- **Subflows:** Because the value propagates automatically, downstream executions share the same `system.correlationId` without any extra configuration.
+- **API search:** Use `filters[labels][EQUALS][system.correlationId]={value}` and `filters[state][IN]=SUCCESS` as query parameters in the Executions search API to audit or detect duplicates programmatically.
+- **Subflows:** The value propagates automatically, so downstream executions share the same `system.correlationId` without additional configuration.
 
-::alert{type="warning"}
-`system.correlationId` identifies and groups executions for the same business event, but it does not prevent duplicate processing on its own. You must pair it with an explicit duplicate check, as shown in the examples above.
-::
+:::alert{type="warning"}
+`system.correlationId` identifies and groups executions for the same business event, but it does not prevent duplicate processing on its own. Pair it with an explicit duplicate check as shown in the examples in this guide.
+
+The duplicate check is not atomic. If two executions with the same key start simultaneously, both may pass the SUCCESS check before either completes — neither will be in SUCCESS state yet. For strict once-only guarantees under concurrent load, enforce uniqueness at the system that triggers the execution (message broker deduplication, database unique constraint, or API gateway idempotency).
+:::
 
 ## Quick checklist
 
-- [ ] Pick a stable business key (payment intent, message ID, webhook key).
-- [ ] Set `system.correlationId` when the execution starts, or via the `Labels` task if the key is only known mid-run.
-- [ ] Add an early guard to skip if a successful run with the same correlation ID already exists.
-- [ ] Filter by `system.correlationId` in UI/API for audit and troubleshooting.
+- [ ] Pick a stable business key (payment intent, message ID, event key).
+- [ ] For API-triggered flows: set `system.correlationId` at execution creation via the `labels` query parameter.
+- [ ] For webhook-triggered flows: store the provider's idempotency key as a custom label via the Labels task.
+- [ ] Add an early guard to skip if a successful execution with the same key already exists.
+- [ ] Filter by `system.correlationId` in the UI or API for audit and lineage troubleshooting.
