@@ -1,4 +1,4 @@
 - id: 1
-  text: "Kestra raises $25M to fix the orchestration crisis"
-  href: "blogs/kestra-series-a"
-  linkText: "Read the announcement"
+  text: "Airflow 2 EOL is here. Get our guide to modernizing your orchestration stack."
+  href: "https://kestra.io/resources/airflow-2-eol-whitepaper"
+  linkText: "Get the guide"
