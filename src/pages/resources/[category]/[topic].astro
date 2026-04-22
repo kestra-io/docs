@@ -1,0 +1,22 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content"
+import ResourceArticle from "~/components/resources/ResourceArticle.astro"
+
+export async function getStaticPaths() {
+    const all = await getCollection("resources")
+    return all
+        .filter((post) => !post.data.href)
+        .map((post) => ({
+            params: {
+                category: post.data.tag,
+                topic: post.id.toLowerCase(),
+            },
+            props: { post },
+        }))
+}
+
+type Props = { post: CollectionEntry<"resources"> }
+const { post } = Astro.props
+---
+
+<ResourceArticle post={post} />
