@@ -1,0 +1,114 @@
+---
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import AshisutoLogo from "~/assets/landing/partners/ashisuto-logo.svg?raw"
+
+import PartnerBanner from "~/components/partners/PartnerBanner.astro"
+import Capability from "~/components/partners/Capability.astro"
+
+import assessment from "~/assets/landing/partners/ashisuto-assessment.webp"
+import implementation from "~/assets/landing/partners/ashisuto-implementation.webp"
+import support from "~/assets/landing/partners/ashisuto-support.webp"
+import modernization from "~/assets/landing/partners/ashisuto-modernization.webp"
+import solutions from "~/assets/landing/partners/ashisuto-solutions.webp"
+import BannerImage from "~/assets/landing/partners/ashisutoxkestra.svg"
+
+const title = "Ashisuto & Kestra: Strategic Partner in Japan"
+const description =
+    "The Ashisuto team is your trusted bridge to Kestra in the Japanese market — connecting your business needs with Kestra's engineering expertise."
+
+const banner = {
+    title: "Ashisuto & Kestra Partnership",
+    description:
+        "The Ashisuto team is your trusted bridge to Kestra in the Japanese market — connecting your business needs with Kestra's engineering expertise.",
+    cta: { text: "Book a Demo", href: "/demo" },
+    image: BannerImage,
+    features: [
+        {
+            title: "Headquarters",
+            text: "Tokyo, Japan",
+        },
+        {
+            title: "Kestra Expertise",
+            text: "Strategic Advisory, Enterprise Adoption, Local Support",
+        },
+        {
+            title: "Solution",
+            text: "Ashisuto is a leading Japanese bridge partner connecting enterprises with Kestra.",
+        },
+    ],
+}
+
+const capabilities = {
+    title: "Ashisuto: Leading Japanese bridge partner connecting enterprises with Kestra",
+    description:
+        "Ashisuto brings deep market knowledge and strategic advisory expertise to help Japanese enterprises adopt Kestra. As a bridge between your organization and Kestra's global team, Ashisuto helps you navigate the transition from complex legacy systems to modern, event-driven architectures — whether it's shifting from batch processing to real-time, or optimizing Infrastructure as Code (IaC) and Kubernetes environments.",
+    items: [
+        {
+            image: assessment,
+            alt: "Assessment and Strategy",
+            title: "Assessment and Strategy",
+            text: "Ashisuto works with you to understand your current infrastructure and pain points, specifically targeting dissatisfaction with legacy tools or complex OSS alternatives. By coordinating with Kestra's engineering team, Ashisuto helps develop a strategy that aligns with Japanese business objectives, focusing on reliability, observability, and governance. The goal is to ensure that your transition to Kestra enhances your data capabilities while meeting strict enterprise SLAs.",
+        },
+        {
+            image: implementation,
+            alt: "Implementation and Migration",
+            title: "Implementation and Migration",
+            text: "Ashisuto coordinates the implementation process together with Kestra's engineering team. From configuring your Kestra environment to utilizing compatibility recipes for migrating existing pipelines, Ashisuto serves as your local point of contact throughout the journey. A standard 4–6 week Proof of Concept (PoC) package with defined success metrics — such as reduced Mean Time to Recovery (MTTR) and operational hours — ensures a smooth, measurable transition.",
+        },
+        {
+            image: support,
+            alt: "Ongoing Support and Optimization",
+            title: "Ongoing Support and Optimization",
+            text: "After the initial setup, Ashisuto acts as your local communication partner in Japanese, bridging any language or cultural gaps between your team and Kestra's global support team. Whether you need to scale your operations, integrate new data sources like Snowflake or Databricks, or require 24/7 operational assurance, Ashisuto ensures your needs are clearly communicated to Kestra's engineering team so that the right support reaches you without delay. Their collaborative approach ensures your environment remains secure, compliant (SOC2/ISO), and optimized for the long term.",
+        },
+        {
+            image: modernization,
+            alt: "Modernization",
+            title: "Modernization",
+            text: "Ashisuto helps Japanese enterprises explore Kestra's full potential for infrastructure modernization. From event-driven workflow redesign to ETL/ELT pipelines for MLOps and IoT, Ashisuto connects you with Kestra's platform engineering capabilities and ensures that your modernization goals — including governance, security logging, and compliance requirements — are clearly communicated to Kestra's team. By understanding both your business context and Kestra's product roadmap, Ashisuto helps you plan a path toward a future-proof, reliable data infrastructure.",
+        },
+        {
+            image: solutions,
+            alt: "Tailored Solutions for Your Business",
+            title: "Tailored Solutions for Your Business",
+            text: "Ashisuto understands the unique requirements of the Japanese market. They ensure that Kestra's offerings are adapted to your commercial needs, including support for JPY pricing, annual contracts, and local procurement norms. Whether you are in Automotive, Manufacturing, Finance, or a Digital Native sector, Ashisuto is your trusted partner for adopting Kestra at an enterprise scale.",
+        },
+    ],
+}
+
+const AshisutoQuotes = [
+    {
+        quote: "Our collaboration with Kestra enables us to bring the stability and operational ease that Japan's top-tier enterprises require. As a bridge between Kestra's world-class engineering team and local business needs, we ensure that enterprises can adopt a solution that is efficient in development, reliable in large-scale execution, and backed by responsive, coordinated support. We are committed to establishing a standard of excellence for data orchestration in the Japanese market.",
+        author: "Hideki Itaki - Director, Innovation & Marketing Co-Creation Lab at Ashisuto",
+        smallLogoSvg: AshisutoLogo,
+    },
+]
+---
+
+<Layout {title} {description}>
+    <PartnerBanner
+        title={banner.title}
+        description={banner.description}
+        cta={banner.cta}
+        image={banner.image}
+        features={banner.features}
+    />
+    <Quotes quotes={AshisutoQuotes} />
+    <Capability
+        title={capabilities.title}
+        capabilities={capabilities.items}
+        description={capabilities.description}
+    />
+    <SeeHow
+        cta={{
+            text: "Contact Ashisuto",
+            href: "https://www.ashisuto.co.jp/",
+        }}
+    >
+        <Fragment slot="title">Contact Ashisuto</Fragment>
+        Ready to adopt Kestra at enterprise scale in Japan? Ashisuto's team is here
+        to bridge your business needs with Kestra's engineering expertise.
+    </SeeHow>
+</Layout>
