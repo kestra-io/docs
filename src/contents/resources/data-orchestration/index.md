@@ -10,8 +10,6 @@ faq:
     answer: "Data orchestration is the coordination and management of data flows across multiple systems, tools, and processes. It is the layer that triggers, sequences, monitors, and recovers data pipelines — turning isolated scripts and jobs into a reliable, observable system."
   - question: "What is data orchestration vs ETL?"
     answer: "ETL is a data processing pattern (extract, transform, load). Data orchestration is the coordination layer on top — triggering, sequencing, and monitoring ETL or ELT pipelines alongside other workflows. ETL describes what a pipeline does; orchestration manages when and how it runs reliably."
-  - question: "Is Snowflake a data orchestration tool?"
-    answer: "No. Snowflake is a cloud data warehouse. It includes basic task scheduling (Snowflake Tasks), but it's not a general orchestration tool. Snowflake manages storage and in-warehouse compute; orchestrators like Kestra coordinate workflows across Snowflake, dbt, Airbyte, and the rest of the stack."
   - question: "What is the best data orchestration tool?"
     answer: "The best tool depends on your stack and team: Kestra for declarative YAML and cross-stack orchestration, Airflow for Python-heavy teams, Dagster for asset-first approaches, Prefect for Python-native modern UX, Azure Data Factory for Microsoft stacks. All are legitimate — the choice is about language preference, event-driven needs, and deployment model."
   - question: "Is API gateway an orchestrator?"
