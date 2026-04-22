@@ -1,6 +1,7 @@
 ---
 title: "EE Migration: defaultTenant to Mandatory Multitenancy"
 h1: Enterprise Migration from defaultTenant to Mandatory Multitenancy
+sidebarTitle: "EE: Mandatory Multitenancy"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE"]

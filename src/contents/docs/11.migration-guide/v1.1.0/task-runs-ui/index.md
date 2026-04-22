@@ -1,6 +1,7 @@
 ---
 title: Task Runs UI Page Removed in Kestra EE 1.1.0
 h1: The Task Runs UI Page Has Been Removed from Enterprise Edition
+sidebarTitle: Task Runs UI Removed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["EE"]
