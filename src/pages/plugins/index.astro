@@ -36,6 +36,25 @@ const categories = [
 const title = "Hundreds of Plugins For All Your Orchestrations Needs"
 const description = "Connect Kestra with tools you already know and love"
 
+const pluginsIndexSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://kestra.io/plugins",
+    name: title,
+    description: description,
+    url: "https://kestra.io/plugins",
+    about: {
+        "@type": "SoftwareApplication",
+        "@id": "https://kestra.io/#software",
+    },
+    hasPart: cardPlugins.slice(0, 50).map((p) => ({
+        "@type": "SoftwareApplication",
+        "@id": `https://kestra.io/plugins/${p.name}#${p.name}`,
+        name: p.title ?? p.name,
+        url: `https://kestra.io/plugins/${p.name}`,
+    })),
+}
+
 const ITEMS = [
     {
         question: "What is a Kestra plugin?",
@@ -69,6 +88,12 @@ const ITEMS = [
 ---
 
 <Layout {title} {description}>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(pluginsIndexSchema)}
+        />
+    </Fragment>
     <PluginsLists
         client:idle
         plugins={cardPlugins}
