@@ -1,6 +1,7 @@
 ---
 title: Input Default Values Are Now Dynamically Rendered
 h1: Input Default Values Now Support Dynamic Rendering in 1.0.0
+sidebarTitle: "Input Defaults: Dynamic Rendering"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]

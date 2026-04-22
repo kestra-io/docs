@@ -1,6 +1,7 @@
 ---
 title: "Superadmin Property Migration: Manual User Refresh"
 h1: Refresh User Data Manually to Migrate the Superadmin Property
+sidebarTitle: Superadmin Property Migration
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE", "Cloud"]
