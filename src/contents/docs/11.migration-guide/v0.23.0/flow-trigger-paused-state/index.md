@@ -1,6 +1,7 @@
 ---
 title: Flow Trigger Now Reacts to PAUSED State by Default
 h1: Flow Trigger Now Reacts to Both SUCCESS and PAUSED States
+sidebarTitle: "Flow Trigger: PAUSED State"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]

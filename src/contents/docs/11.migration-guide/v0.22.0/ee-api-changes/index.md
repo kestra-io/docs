@@ -1,6 +1,7 @@
 ---
 title: Service Account API Changes in Kestra 0.22.0 EE
 h1: "Enterprise Service Account API: Non-Unique Names Across Tenants"
+sidebarTitle: Service Account Non-Unique Names
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]
