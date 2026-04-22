@@ -145,8 +145,8 @@ triggers:
 
 See the [Flow trigger documentation](./02.flow-trigger/index.md) for the full `dependsOn` and `window` property reference.
 
-:::alert{type="info"}
-The old `conditions` list is deprecated in Kestra 2.0 but still functional. Migrate to `when` at your earliest convenience. See the [trigger conditions migration guide](../../11.migration-guide/v2.0.0/trigger-conditions-redesign/index.md) for before/after examples.
+:::alert{type="warning"}
+The `conditions` list is removed in Kestra 2.0. Flows that still use it will fail to parse after upgrading. See the [trigger conditions migration guide](../../11.migration-guide/v2.0.0/trigger-conditions-redesign/index.md) for before/after examples.
 :::
 
 ## Unlocking, enabling, and disabling triggers

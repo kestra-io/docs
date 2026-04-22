@@ -93,7 +93,7 @@ You can use this expression to make your **manual execution work**: `{{ trigger.
 :::
 
 
-## Schedule conditions
+## Refining schedules with `when`
 
 When a `cron` expression alone is not sufficient (e.g., only first Monday of the month, only weekends), you can refine schedules using a `when` Pebble expression.
 

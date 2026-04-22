@@ -4,21 +4,18 @@ sidebarTitle: runIf → when (Tasks)
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0
 editions: ["OSS", "EE"]
-description: The task-level runIf property has been renamed to when in Kestra 2.0.0, aligning it with the when property introduced on triggers.
+description: The task-level runIf property is renamed to when in Kestra 2.0, aligning it with the when property introduced on all triggers.
 ---
 
-Kestra 2.0.0 unifies conditional execution under a single property name: `when`.
+Kestra 2.0 introduces a `when` property on all triggers to replace the `conditions` list. To unify conditional execution under a single property name, the task-level `runIf` is renamed to `when` in the same release.
 
-- **Tasks** — `runIf` is renamed to `when`.
-- **Triggers** — the `conditions` list is deprecated in favor of a new `when` Pebble expression string.
+No behavioral change. The Pebble expression is rendered at runtime and the task is set to `SKIPPED` if the result is falsy (`false`, `0`, `-0`, or an empty string) — identical to the existing `runIf` behavior.
 
-Both properties behave the same way: the Pebble expression is rendered at runtime, and if the result is falsy (`false`, `0`, `-0`, or an empty string), the task is set to `SKIPPED` or the trigger does not fire.
+:::alert{type="warning"}
+`runIf` is kept as a deprecated alias in 2.0 so existing flows continue to parse. The alias will be removed in a future release. Update your flows now to avoid a hard break later.
+:::
 
-A deprecated alias keeps `runIf` functional in 2.0.0 so existing flows continue to parse without changes. The alias is scheduled for removal in a future version — update your flows now to avoid a hard break later.
-
-## Tasks: runIf → when
-
-### Before
+## Before
 
 ```yaml
 tasks:
@@ -28,7 +25,7 @@ tasks:
     runIf: "{{ inputs.run_task }}"
 ```
 
-### After
+## After
 
 ```yaml
 tasks:
@@ -38,44 +35,9 @@ tasks:
     when: "{{ inputs.run_task }}"
 ```
 
-The behavior is identical — the same Pebble rendering and `SKIPPED` state logic apply.
-
-## Triggers: conditions → dependsOn (Flow triggers)
-
-The `conditions` list on Flow triggers is replaced by `dependsOn`. State filtering moves to the `states` property on each entry.
-
-### Before
-
-```yaml
-triggers:
-  - id: on_success
-    type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - SUCCESS
-```
-
-### After
-
-```yaml
-triggers:
-  - id: on_success
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: upstream_flow
-        namespace: company.team
-        states: [SUCCESS]
-```
-
-For the full before/after reference for Flow trigger conditions, including namespace filtering, label matching, and `preconditions` migration, see the [trigger conditions redesign guide](../trigger-conditions-redesign/index.md).
-
 ## Migration steps
 
 1. **Search your flows** for `runIf:` and replace each occurrence with `when:`. The property value and any Pebble expressions stay the same.
-2. **Search your flows** for `conditions:` on Flow trigger blocks and replace them with `dependsOn` entries. See the [trigger conditions redesign guide](../trigger-conditions-redesign/index.md) for before/after examples.
-3. **Validate** by saving the updated flows in the Kestra UI or via the API.
+2. **Validate** by saving the updated flows in the Kestra UI or via the API.
 
-:::alert{type="warning"}
-The `runIf` alias will be removed in a future release. Flows that still use `runIf` will fail to parse after the alias is dropped.
-:::
+For trigger condition changes (`conditions` → `when` on Schedule and Webhook triggers, `conditions`/`preconditions` → `dependsOn` on Flow triggers), see the [trigger conditions redesign guide](../trigger-conditions-redesign/index.md).

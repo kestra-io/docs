@@ -4,36 +4,35 @@ sidebarTitle: Trigger Conditions Redesign
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0
 editions: ["OSS", "EE"]
-description: The conditions list on triggers and the preconditions block on Flow triggers are removed in Kestra 2.0. Schedule and Webhook triggers use a top-level when expression. Flow triggers use dependsOn and window.
+description: The conditions list on triggers and the preconditions block on Flow triggers are removed in Kestra 2.0. All trigger types use a top-level when Pebble expression. Flow triggers also use dependsOn and window.
 ---
 
 Kestra 2.0 replaces the `conditions` and `preconditions` system across all trigger types.
 
-- **Schedule and Webhook triggers** — the `conditions` list is removed in favor of a top-level `when` Pebble expression.
+- **All trigger types (Schedule, Webhook, HTTP, Flow, and others)** — the `conditions` list is removed in favor of a top-level `when` Pebble expression.
 - **Flow triggers** — both `conditions` and `preconditions` are removed in favor of `dependsOn` (upstream flow entries) and `window` (time window configuration).
 - **Flow trigger outputs** — scoped by flow ID: `trigger.outputs.<flowId>.<key>`.
 - **Input rendering failures** — now create a `FAILED` execution instead of silently dropping the event.
 
 Both `conditions` and `preconditions` are removed in Kestra 2.0. Flows that still use them will fail to parse after upgrading.
 
-## `conditions` → `when` on Schedule and Webhook triggers
+## `conditions` → `when` on all triggers
 
-### What replaces what
+All trigger types gain a top-level `when` property containing a Pebble expression. When the expression evaluates to `true`, the trigger fires; when `false`, it is skipped. This replaces the `conditions` list, which required a fully qualified Java type for every filtering need and did not compose cleanly across trigger types.
 
-| Old condition type | New `when` expression |
+### `when` expression context
+
+The variables available in a `when` expression depend on the trigger type:
+
+| Trigger type | Available variables |
 |---|---|
-| `DayWeek` (e.g. MONDAY) | `{{ dayOfWeek(trigger.date) == 'MONDAY' }}` |
-| `Weekend` | `{{ isWeekend(trigger.date) }}` |
-| `Not` > `Weekend` (weekdays only) | `{{ not isWeekend(trigger.date) }}` |
-| `Not` > `DayWeek` SUNDAY (exclude Sundays) | `{{ dayOfWeek(trigger.date) != 'SUNDAY' }}` |
-| `PublicHoliday` (country: FR) | `{{ isPublicHoliday(trigger.date, 'FR') }}` |
-| `Not` > `PublicHoliday` + `Weekend` (workdays) | `{{ not isWeekend(trigger.date) and not isPublicHoliday(trigger.date, 'FR') }}` |
-| `DayWeekInMonth` (MONDAY, FIRST) | `{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}` |
-| `DateTimeBetween` (after/before) | `{{ trigger.date > '2025-12-31T23:59:59Z' and trigger.date < '2026-06-30T23:59:59Z' }}` |
-| `TimeBetween` (08:00-17:00) | `{{ hourOfDay(trigger.date) >= 8 and hourOfDay(trigger.date) < 17 }}` |
-| `Expression` (custom Pebble) | Direct `when` expression, no wrapper needed |
-| `Expression` on webhook body/headers | `{{ trigger.body.field == 'value' }}` or `{{ trigger.headers['X-Key'] == 'value' }}` |
-| Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
+| Schedule | `trigger.date`, `trigger.timestamp` |
+| Webhook | `trigger.body`, `trigger.headers` |
+| Flow | `namespace`, `flowId`, `state`, `labels`, `outputs`, `hasRetryAttempt` |
+
+:::alert{type="info"}
+**Schedule date skipping:** When a Schedule trigger has a `when` expression, the scheduler evaluates it against each candidate date. If `when` evaluates to `false`, the scheduler skips that date and advances to the next cron-matching date. This is the same behavior as the previous `conditions` on Schedule triggers — `when` controls which scheduled dates fire, not just whether a single date fires.
+:::
 
 ### New Pebble helper functions
 
@@ -358,37 +357,32 @@ triggers:
 
 Multiple `Expression` conditions combine into a single `when` expression using `and` / `or`.
 
+### What replaces what
+
+| Old condition type | New `when` expression |
+|---|---|
+| `DayWeek` (e.g. MONDAY) | `{{ dayOfWeek(trigger.date) == 'MONDAY' }}` |
+| `Weekend` | `{{ isWeekend(trigger.date) }}` |
+| `Not` > `Weekend` (weekdays only) | `{{ not isWeekend(trigger.date) }}` |
+| `Not` > `DayWeek` SUNDAY (exclude Sundays) | `{{ dayOfWeek(trigger.date) != 'SUNDAY' }}` |
+| `PublicHoliday` (country: FR) | `{{ isPublicHoliday(trigger.date, 'FR') }}` |
+| `Not` > `PublicHoliday` + `Weekend` (workdays) | `{{ not isWeekend(trigger.date) and not isPublicHoliday(trigger.date, 'FR') }}` |
+| `DayWeekInMonth` (MONDAY, FIRST) | `{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}` |
+| `DateTimeBetween` (after/before) | `{{ trigger.date > '2025-12-31T23:59:59Z' and trigger.date < '2026-06-30T23:59:59Z' }}` |
+| `TimeBetween` (08:00-17:00) | `{{ hourOfDay(trigger.date) >= 8 and hourOfDay(trigger.date) < 17 }}` |
+| `Expression` (custom Pebble) | Direct `when` expression, no wrapper needed |
+| `Expression` on webhook body/headers | `{{ trigger.body.field == 'value' }}` or `{{ trigger.headers['X-Key'] == 'value' }}` |
+| Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
+
 For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/index.mdx#date-and-calendar-helpers) reference.
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers
 
-Both `conditions` (execution-level condition types such as `ExecutionStatus`, `ExecutionFlow`, `ExecutionNamespace`) and `preconditions` (upstream flow lists with time windows) are replaced by a single `dependsOn` list. Each entry declares one upstream dependency with typed properties.
-
-### What replaces what
-
-| Old property / condition type | New equivalent |
-|---|---|
-| `conditions` list on Flow trigger | `dependsOn` list |
-| `preconditions` block | `dependsOn` list + `window` |
-| `multipleConditions` block | `dependsOn` list + `window.every` |
-| `ExecutionStatus` (`in: [SUCCESS]`) | `states: [SUCCESS]` on the `dependsOn` entry |
-| `ExecutionFlow` (`flowId`, `namespace`) | `flowId` + `namespace` on the `dependsOn` entry |
-| `ExecutionNamespace` (exact) | `namespace` on the `dependsOn` entry |
-| `ExecutionNamespace` (`comparison: PREFIX`) | `when: "{{ namespace \| startsWith('...') }}"` on the entry |
-| `ExecutionLabels` (`labels: {k: v}`) | `labels: {k: v}` on the `dependsOn` entry |
-| `ExecutionOutputs` (`expression`) | `when` with `outputs.<key>` on the entry |
-| `HasRetryAttempt` | `when: "{{ hasRetryAttempt == true }}"` on the entry |
-| `Not` > `ExecutionStatus` | Explicit `states` list or `when: "{{ state != 'SUCCESS' }}"` |
-| Multiple triggers for OR logic | `mode: ANY` with `dependsOn` entries |
-| `preconditions.resetOnSuccess: true` | `window.fireOnce: true` |
-| `timeWindow.type: DAILY_TIME_DEADLINE` | `window.deadline` |
-| `timeWindow.type: DAILY_TIME_WINDOW` | `window.from` + `window.to` |
-| `timeWindow.type: DURATION_WINDOW` | `window.every` |
-| `timeWindow.type: SLIDING_WINDOW` | `window.lookback` |
+Both `conditions` (execution-level types such as `ExecutionStatus`, `ExecutionFlow`, `ExecutionNamespace`) and `preconditions` (upstream flow lists with time windows) are replaced by a single `dependsOn` list. Each entry declares one upstream dependency with typed properties.
 
 ### `dependsOn` entry properties
 
-| `dependsOn` entry property | Type | Default | Description |
+| Property | Type | Default | Description |
 |---|---|---|---|
 | `flowId` | string | — | Exact flow ID to match. Omit to match any flow. |
 | `namespace` | string | — | Exact namespace to match. Use `when` for prefix or pattern matching. |
@@ -396,13 +390,17 @@ Both `conditions` (execution-level condition types such as `ExecutionStatus`, `E
 | `labels` | map | — | Labels the upstream execution must carry (all must match). |
 | `when` | string | — | Pebble expression for additional filtering on the upstream execution context. |
 
+Both `flowId` and `namespace` use exact matching: `namespace: company.team` matches only `company.team`, not `company.team.project`. For prefix or pattern matching, use `when` with `startsWith` or `endsWith`.
+
 :::alert{type="warning"}
 The default `states` changed from `[SUCCESS, WARNING, PAUSED]` to `[SUCCESS, WARNING]`. If your flows relied on `PAUSED` being included by default, add it explicitly: `states: [SUCCESS, WARNING, PAUSED]`.
 :::
 
-### Single upstream flow (from `preconditions`)
+### Single upstream flow
 
-**Before**
+The `preconditions` block and the `conditions`-based approach both map to a single `dependsOn` entry.
+
+**Before (from `preconditions`)**
 
 ```yaml
 triggers:
@@ -416,21 +414,7 @@ triggers:
           states: [SUCCESS]
 ```
 
-**After**
-
-```yaml
-triggers:
-  - id: after_extract
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: extract
-        namespace: company.team
-        states: [SUCCESS]
-```
-
-### Single upstream flow (from `conditions`)
-
-**Before**
+**Before (from `conditions`)**
 
 ```yaml
 triggers:
@@ -447,7 +431,7 @@ triggers:
 
 ```yaml
 triggers:
-  - id: on_completion
+  - id: after_extract
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - flowId: extract
@@ -531,10 +515,10 @@ triggers:
         namespace: company.team
         states: [SUCCESS]
     window:
-      every: P1D
+      every: PT1D
 ```
 
-The arbitrary string keys (`flow_a`, `flow_b`) are dropped. `dependsOn` is always a list.
+The arbitrary string keys (`flow_a`, `flow_b`) are dropped — `dependsOn` is always a list. The `windowAdvance` property is removed with no direct equivalent.
 
 ### Namespace-wide alerting (prefix matching)
 
@@ -765,7 +749,99 @@ triggers:
 
 Same `dependsOn` syntax regardless of whether the original used `conditions` or `preconditions`.
 
-### OR logic: fire when any upstream completes
+### Passing outputs downstream
+
+Flow trigger outputs are now scoped by flow ID. The path format is `trigger.outputs.<flowId>.<outputKey>`.
+
+**Before** (flat map — all upstream outputs merged together)
+
+```yaml
+triggers:
+  - id: after_extract
+    type: io.kestra.plugin.core.trigger.Flow
+    inputs:
+      date: "{{ trigger.outputs.date }}"
+    preconditions:
+      id: flows
+      flows:
+        - namespace: company.team
+          flowId: extract
+          states: [SUCCESS]
+```
+
+**After** (scoped by flow ID)
+
+```yaml
+triggers:
+  - id: after_extract
+    type: io.kestra.plugin.core.trigger.Flow
+    inputs:
+      date: "{{ trigger.outputs.extract.date }}"
+    dependsOn:
+      - flowId: extract
+        namespace: company.team
+```
+
+For multi-flow triggers, each upstream flow's outputs are accessed under its own key:
+
+```yaml
+dependsOn:
+  - flowId: stg_sales
+    namespace: company.team
+  - flowId: stg_marketing
+    namespace: company.team
+```
+
+Access as `{{ trigger.outputs.stg_sales.row_count }}` and `{{ trigger.outputs.stg_marketing.row_count }}`.
+
+:::alert{type="warning"}
+**Breaking change for multi-flow triggers.** Update all `trigger.outputs.<key>` references to `trigger.outputs.<flowId>.<key>`. For triggers with a single `dependsOn` entry, the unscoped form `{{ trigger.outputs.<key> }}` still works as a shorthand — no update required.
+:::
+
+#### ForEachItem chain
+
+When using Flow triggers to chain `ForEachItem` child flows, reference the child flow's outputs using its `flowId`:
+
+**Before**
+
+```yaml
+triggers:
+  - id: 01_complete
+    type: io.kestra.plugin.core.trigger.Flow
+    inputs:
+      testFile: "{{ trigger.outputs.myFile }}"
+    preconditions:
+      id: output_01_success
+      flows:
+        - namespace: io.kestra.tests.trigger.foreachitem
+          flowId: flow-trigger-for-each-item-child
+          states: [SUCCESS]
+```
+
+**After**
+
+```yaml
+triggers:
+  - id: 01_complete
+    type: io.kestra.plugin.core.trigger.Flow
+    inputs:
+      testFile: "{{ trigger.outputs.flow-trigger-for-each-item-child.myFile }}"
+    dependsOn:
+      - flowId: flow-trigger-for-each-item-child
+        namespace: io.kestra.tests.trigger.foreachitem
+```
+
+### `mode`: OR and N-of-M logic
+
+The `mode` property controls how `dependsOn` entries are combined when evaluating whether to fire.
+
+| Value | Behavior | Required properties |
+|---|---|---|
+| `ALL` (default) | Fires when all `dependsOn` entries are satisfied | — |
+| `ANY` | Fires as soon as any one entry is satisfied | — |
+| `AT_LEAST` | Fires when at least `minSatisfied` entries are satisfied | `minSatisfied` (integer ≥ 1, ≤ entry count) |
+
+#### OR logic: fire when any upstream completes
 
 Previously, OR logic required N separate Flow triggers. `mode: ANY` consolidates them into one.
 
@@ -809,15 +885,7 @@ triggers:
 
 `mode: ANY` fires as soon as either dependency is satisfied. The default `mode: ALL` requires every entry to be satisfied before the trigger fires.
 
-### `mode` values
-
-| Value | Behavior | Required properties |
-|---|---|---|
-| `ALL` (default) | Fires when all `dependsOn` entries are satisfied | — |
-| `ANY` | Fires as soon as any one entry is satisfied | — |
-| `AT_LEAST` | Fires when at least `minSatisfied` entries are satisfied | `minSatisfied` (integer ≥ 1, ≤ entry count) |
-
-### OR logic with a time window
+#### OR logic with a time window
 
 ```yaml
 triggers:
@@ -835,7 +903,7 @@ triggers:
 
 Fire before 9 AM when either source completes.
 
-### N of M: at least 2 out of 3
+#### N of M: at least 2 out of 3
 
 ```yaml
 triggers:
@@ -857,64 +925,44 @@ triggers:
       deadline: "09:00:00"
 ```
 
-`mode: AT_LEAST` fires when `minSatisfied` entries are satisfied. `minSatisfied` must be >= 1 and <= the number of `dependsOn` entries.
+`mode: AT_LEAST` fires when `minSatisfied` entries are satisfied. `minSatisfied` must be ≥ 1 and ≤ the number of `dependsOn` entries.
 
-## Scoped trigger outputs
+### What replaces what
 
-Flow trigger outputs are scoped by flow ID to prevent key collisions when multiple upstream flows are involved.
-
-**Before** (flat map — all upstream outputs merged together)
-
-```yaml
-triggers:
-  - id: after_extract
-    type: io.kestra.plugin.core.trigger.Flow
-    inputs:
-      date: "{{ trigger.outputs.date }}"
-    preconditions:
-      id: flows
-      flows:
-        - namespace: company.team
-          flowId: extract
-          states: [SUCCESS]
-```
-
-**After** (scoped by flow ID)
-
-```yaml
-triggers:
-  - id: after_extract
-    type: io.kestra.plugin.core.trigger.Flow
-    inputs:
-      date: "{{ trigger.outputs.extract.date }}"
-    dependsOn:
-      - flowId: extract
-        namespace: company.team
-```
-
-The path format is `trigger.outputs.<flowId>.<outputKey>`. For multi-flow triggers, each upstream flow's outputs are accessed separately:
-
-```yaml
-dependsOn:
-  - flowId: stg_sales
-    namespace: company.team
-  - flowId: stg_marketing
-    namespace: company.team
-```
-
-Access as `{{ trigger.outputs.stg_sales.row_count }}` and `{{ trigger.outputs.stg_marketing.row_count }}`.
-
-:::alert{type="warning"}
-This is a breaking change. Update all `trigger.outputs.<key>` references to `trigger.outputs.<flowId>.<key>` when migrating to Kestra 2.0.
-:::
+| Old property / condition type | New equivalent |
+|---|---|
+| `conditions` list on Flow trigger | `dependsOn` list |
+| `preconditions` block | `dependsOn` list + `window` |
+| `multipleConditions` block | `dependsOn` list + `window.every` |
+| `ExecutionStatus` (`in: [SUCCESS]`) | `states: [SUCCESS]` on the `dependsOn` entry |
+| `ExecutionFlow` (`flowId`, `namespace`) | `flowId` + `namespace` on the `dependsOn` entry |
+| `ExecutionNamespace` (exact) | `namespace` on the `dependsOn` entry |
+| `ExecutionNamespace` (`comparison: PREFIX`) | `when: "{{ namespace \| startsWith('...') }}"` on the entry |
+| `ExecutionLabels` (`labels: {k: v}`) | `labels: {k: v}` on the `dependsOn` entry |
+| `ExecutionOutputs` (`expression`) | `when` with `outputs.<key>` on the entry |
+| `HasRetryAttempt` | `when: "{{ hasRetryAttempt == true }}"` on the entry |
+| `Not` > `ExecutionStatus` | Explicit `states` list or `when: "{{ state != 'SUCCESS' }}"` |
+| Multiple triggers for OR logic | `mode: ANY` with `dependsOn` entries |
+| `preconditions.resetOnSuccess: true` | `window.fireOnce: true` |
+| `timeWindow.type: DAILY_TIME_DEADLINE` | `window.deadline` |
+| `timeWindow.type: DAILY_TIME_WINDOW` | `window.from` + `window.to` |
+| `timeWindow.type: DURATION_WINDOW` | `window.every` |
+| `timeWindow.type: SLIDING_WINDOW` | `window.lookback` |
 
 ## Window configuration
 
-The `window` property controls how Kestra accumulates upstream executions before evaluating `dependsOn` entries. Set exactly one group of properties per window; combining groups is a validation error.
+The `window` property applies to Flow triggers and controls how Kestra accumulates upstream executions before evaluating `dependsOn` entries. Set exactly one property group per window; combining groups is a validation error.
+
+| Window type | Properties | Behavior |
+|---|---|---|
+| Deadline | `deadline: "09:00:00+01:00"` | Upstream flows must complete by a fixed time each day |
+| Daily time range | `from: "06:00:00"` + `to: "12:00:00"` | Only executions within a daily time range count |
+| Fixed interval | `every: PT1D` + optional `offset: PT6H` | Recurring window of a fixed size, offset from midnight |
+| Lookback | `lookback: PT1H` | Rolling window looking back from the current evaluation time |
+
+`fireOnce: true` can be added to any window type to limit the trigger to firing once per window period rather than every time conditions are met.
 
 ### Deadline
-
-All upstream flows must complete before a fixed time each day:
 
 ```yaml
 window:
@@ -922,8 +970,6 @@ window:
 ```
 
 ### Daily time range
-
-Only executions that completed within a specific time range each day count:
 
 ```yaml
 window:
@@ -933,8 +979,6 @@ window:
 
 ### Fixed interval
 
-Recurring window of a fixed size, with an optional offset from midnight:
-
 ```yaml
 window:
   every: PT1D
@@ -943,16 +987,12 @@ window:
 
 ### Lookback
 
-Count executions that completed within the past duration, relative to the current evaluation time:
-
 ```yaml
 window:
   lookback: PT1H
 ```
 
 ### Fire once per window
-
-Set `fireOnce: true` to ensure the trigger fires at most once per window period, even if conditions are satisfied multiple times within it:
 
 ```yaml
 window:
@@ -964,24 +1004,14 @@ Default is `false` — the trigger fires every time conditions are met within th
 
 ### SLA misses with `onMiss`
 
-Declare what happens when the deadline passes without all dependencies being satisfied:
+`onMiss` is a trigger-level property (peer to `window`) that declares what happens when the deadline passes without all dependencies being satisfied:
 
 ```yaml
-triggers:
-  - id: after_staging
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: stg_sales
-        namespace: company.team
-      - flowId: stg_marketing
-        namespace: company.team
-    window:
-      deadline: "09:00:00+01:00"
-    onMiss:
-      behavior: FAIL
-      labels:
-        sla: miss
-        reason: upstreamNotFinishedOnTime
+onMiss:
+  behavior: FAIL
+  labels:
+    sla: miss
+    reason: upstreamNotFinishedOnTime
 ```
 
 `behavior: FAIL` creates a `FAILED` execution when the deadline passes. Labels are applied to that execution for downstream alerting.
@@ -997,22 +1027,27 @@ triggers:
 
 `preconditions.resetOnSuccess: true` maps to `window.fireOnce: true`.
 
-## Silent failures → FAILED executions
+## Behavior changes after upgrading
 
-Previously, if the `inputs` expression on a Flow trigger failed to render (for example, because an upstream output key did not exist), the trigger silently dropped the event and no execution was created. In Kestra 2.0, a `FAILED` execution is created instead. This makes failures visible in the Kestra UI and allows you to configure downstream alerting.
+### Silent failures → FAILED executions
 
-No migration action is required. Review your Flow trigger `inputs` expressions and ensure they reference valid output keys to avoid unexpected `FAILED` executions after upgrading.
+Previously, if an expression on a Flow trigger failed to render (for example, because an upstream output key did not exist), the trigger silently dropped the event and no execution was created. In Kestra 2.0, a `FAILED` execution is created instead, making failures visible in the UI and actionable via downstream alerting.
 
-## Stable condition IDs
+No migration action is required. Review your Flow trigger `inputs` expressions to ensure they reference valid output keys and avoid unexpected `FAILED` executions after upgrading.
 
-`dependsOn` condition IDs are derived from a stable hash of each entry's `namespace`, `flowId`, `when`, `states`, and `labels`. Previously, condition IDs were auto-incremented (`condition_1`, `condition_2`, …) and reordering entries would reset the accumulated window state.
+### State store reset and in-flight events
 
-Existing state store entries from `preconditions` use `preconditions.id` as their key. After upgrading, in-flight multi-flow triggers re-evaluate from scratch. For most deployments this means at most one missed trigger cycle.
+Previously, auto-generated condition keys (`condition_1`, `condition_2`, …) meant that reordering entries could reset accumulated window state. In Kestra 2.0, `dependsOn` entry keys are derived from each entry's `namespace` and `flowId`, making them order-independent.
+
+The trigger-level state store key also changes: the old scheme used `preconditions.id`; the new scheme uses `{flowId}/{triggerId}`. Existing accumulated state from `preconditions` will not be found after upgrading — in-flight multi-flow triggers re-evaluate from scratch. For most deployments this means at most one missed trigger cycle.
+
+Old-format events in the async queue are discarded gracefully (logged as a warning). No user action is required.
 
 ## Migration steps
 
-1. **Replace `conditions:` on Schedule and Webhook triggers** with a `when:` Pebble expression using the before/after examples above as a reference.
+1. **Replace `conditions:` on all triggers** with a `when:` Pebble expression. This applies to Schedule, Webhook, HTTP, and any other trigger type that used `conditions`.
 2. **Replace `conditions:` and `preconditions:` on Flow triggers** with `dependsOn:` entries and (if applicable) `window:`.
-3. **Update `trigger.outputs` references** from `trigger.outputs.<key>` to `trigger.outputs.<flowId>.<key>`.
-4. **Update `timeWindow` to `window`** using the property mapping table above.
-5. **Validate** by saving the updated flows in the Kestra UI or via the API and confirming that they parse without errors.
+3. **Check for `PAUSED` state dependencies.** The default `states` changed from `[SUCCESS, WARNING, PAUSED]` to `[SUCCESS, WARNING]`. Add `PAUSED` explicitly if your flows depended on it: `states: [SUCCESS, WARNING, PAUSED]`.
+4. **Update `trigger.outputs` references** in multi-flow triggers from `trigger.outputs.<key>` to `trigger.outputs.<flowId>.<key>`. Single-flow triggers can keep the unscoped form.
+5. **Update `timeWindow` to `window`** using the property mapping table above.
+6. **Validate** by saving updated flows in the Kestra UI or via the API and confirming they parse without errors.
