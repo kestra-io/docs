@@ -1,6 +1,7 @@
 ---
 title: "OSS Migration: Introducing the defaultTenant Context"
 h1: "Open-Source Migration Guide: Introducing defaultTenant in 0.23.0"
+sidebarTitle: "OSS: defaultTenant Context"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS"]

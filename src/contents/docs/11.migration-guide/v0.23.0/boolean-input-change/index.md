@@ -1,6 +1,7 @@
 ---
 title: "BOOLEAN Input Deprecated: Switch to BOOL in 0.23.0"
 h1: Replace BOOLEAN-Type Inputs with the New BOOL Toggle
+sidebarTitle: BOOLEAN → BOOL
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
