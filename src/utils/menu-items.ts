@@ -106,7 +106,7 @@ export const menuItems: MenuItems = {
         industry: [
             {
                 icon: BankOutline,
-                title: "Financial Services",
+                title: "Financial Services & Insurance",
                 link: "/use-cases/financial-services"
             },
             {
