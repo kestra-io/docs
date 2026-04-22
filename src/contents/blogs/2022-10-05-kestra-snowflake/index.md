@@ -5,6 +5,7 @@ date: 2023-06-22T10:00:00
 category: Solutions
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg
@@ -62,8 +63,8 @@ This task downloads data from the Snowflake server to an internal Kestra stage w
 The following code snippet downloads the default database to the specified `fileName` location on the internal Kestra server.
 
 ```yaml
-id: "download"
-type: "io.kestra.plugin.jdbc.snowflake.Download"
+id: download
+type: io.kestra.plugin.jdbc.snowflake.Download
 stageName: MYSTAGE
 fileName: prefix/destFile.csv
 ```
@@ -74,8 +75,8 @@ This task uploads data to an internal [Snowflake stage](https://docs.snowflake.c
 The following code snippet uploads data to the specified `fileName` location.
 
 ```yaml
-id: "upload"
-type: "io.kestra.plugin.jdbc.snowflake.Upload"
+id: upload
+type: io.kestra.plugin.jdbc.snowflake.Upload
 stageName: MYSTAGE
 prefix: testUploadStream
 fileName: destFile.csv
@@ -116,8 +117,8 @@ fetchType: FETCH
 While managing data, you might not need all the information from your Snowflake stage. The Download task allows you to fetch only the specific columns you need. This is achievable by modifying the sql property in the task:
 
 ```yaml
-id: "selective_download"
-type: "io.kestra.plugin.jdbc.snowflake.Download"
+id: selective_download
+type: io.kestra.plugin.jdbc.snowflake.Download
 stageName: MYSTAGE
 sql: SELECT column1, column2 FROM source
 fileName: destFile.csv
@@ -127,8 +128,8 @@ fileName: destFile.csv
 Uploading data often involves a transformation process. The Upload task allows you to upload and transform your data in a single step, as shown below:
 
 ```yaml
-id: "transformed_upload"
-type: "io.kestra.plugin.jdbc.snowflake.Upload"
+id: transformed_upload
+type: io.kestra.plugin.jdbc.snowflake.Upload
 stageName: MYSTAGE
 prefix: transformedData
 fileName: destFile.csv
@@ -137,7 +138,7 @@ fileFormat: (type = 'CSV', field_delimiter = ',', skip_header = 1, NULL_IF = ('\
 
 Kestra provides flexibility and control to data teams, it can orchestrate any kind of workflow with ease using the rich UI that monitors all flows.
 
-![](/ui.gif)
+![Kestra UI showing flow executions and monitoring dashboard](/ui.gif)
 
 Kestra's Snowflake plugin makes data warehousing simple even for non-developers thanks to YAML. Your Snowflake storage pipeline can accommodates raw data from multiple sources and transforms it using ETL operations. Additionally, you can skip the transformation and directly load data into the warehouse using the [ELT pipeline](../2022-04-27-etl-vs-elt/index.md). Kestra can manage both workflows simultaneously. In any case, Kestra ensures that the data is readily available to perform analysis and learn valuable patterns.
 

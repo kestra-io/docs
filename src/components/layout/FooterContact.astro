@@ -1,0 +1,105 @@
+---
+interface Button {
+    text?: string
+    href?: string
+}
+
+interface Props {
+    title?: string
+    subtitle?: string
+    dark?: Button | null
+    purple?: Button | null
+    animation?: boolean
+}
+
+const {
+    title,
+    subtitle,
+    dark = {
+        text: "Book a Demo",
+        href: "/demo",
+    },
+    purple = {
+        text: "Get Started",
+        href: "/get-started",
+    },
+    animation = true,
+} = Astro.props
+
+const animationType = (type: string) => (animation ? type : "")
+---
+
+<section>
+    <div class="footer-contact container">
+        <div class="cta-card" data-usal={animationType("fade-up")}>
+            {title && <h3 class="title">{title}</h3>}
+            {subtitle && <p class="subtitle">{subtitle}</p>}
+            <div class="buttons">
+                {
+                    dark?.text && (
+                        <a href={dark?.href} class="btn btn-secondary mb-2">
+                            {dark?.text}
+                        </a>
+                    )
+                }
+                {
+                    purple?.text && (
+                        <a
+                            href={purple?.href}
+                            class:list={[
+                                "btn btn-primary mb-2",
+                                { "ms-sm-3": dark?.text },
+                            ]}
+                        >
+                            {purple?.text}
+                        </a>
+                    )
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    section {
+        background: var(--ks-background-body);
+        padding: $spacer * 4 0;
+    }
+    .footer-contact {
+        .cta-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 3rem 2rem;
+            background: var(--ks-background-secondary);
+            border: 1px solid var(--ks-border-secondary);
+            color: var(--ks-content-primary);
+            border-radius: 1rem;
+            text-align: center;
+
+            .title {
+                font-weight: 700;
+                max-width: 50rem;
+                margin: 0;
+            }
+            .subtitle {
+                max-width: 45rem;
+                margin: 0;
+            }
+
+            .buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+
+                .btn {
+                    border-radius: 8px;
+                    padding: 0.625rem 1.5rem;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+</style>

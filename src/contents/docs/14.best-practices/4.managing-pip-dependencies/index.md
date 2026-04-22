@@ -1,7 +1,9 @@
 ---
-title: Managing pip Package Dependencies
+title: "Managing pip Dependencies in Kestra: Docker & Caching"
+h1: Manage Python pip Dependencies with Docker Images and Caching
 sidebarTitle: pip Dependencies
 icon: /src/contents/docs/icons/best-practices.svg
+description: Efficiently manage Python pip dependencies in Kestra using custom Docker images, server startup installs, or caching.
 ---
 
 Learn how to manage pip package dependencies in your flows.

@@ -4,12 +4,13 @@
         <div class="dropdown">
             <button
                 class="btn btn-sm btn-custom"
+                :class="[`btn-custom-${$props.size}`]"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
             >
-                <span>{{ selectedLabel }}</span>
-                <component :is="ChevronDown" class="icon" />
+                <span class="placeholder-value">{{ selectedLabel }}</span>
+                <ChevronDown class="icon" />
             </button>
             <ul class="dropdown-menu">
                 <li v-for="option in options" :key="option.value">
@@ -31,21 +32,32 @@
     import { computed } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 
-    const props = defineProps<{
-        modelValue: string
-        options: {
-            value: string
-            label: string
-        }[]
-        label?: string
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            modelValue: string
+            options: {
+                value: string
+                label: string
+            }[]
+            label?: string
+            placeholder?: string
+            size?: "sm" | "lg"
+        }>(),
+        {
+            size: "sm",
+        },
+    )
 
     const emit = defineEmits<{
         "update:modelValue": [value: string]
     }>()
 
     const selectedLabel = computed(() => {
-        return props.options.find((o) => o.value === props.modelValue)?.label ?? ""
+        return (
+            props.options.find((o) => o.value === props.modelValue)?.label ??
+            props.placeholder ??
+            ""
+        )
     })
 
     const selectOption = (option: { value: string; label: string }) => {
@@ -54,81 +66,79 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-
     .select-wrapper {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-
         .label {
-            color: $white-3;
+            color: var(--ks-content-tertiary);
             font-size: 0.875rem;
         }
-
         .btn-custom {
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: $block-border;
+            border-color: var(
+                --ks-custom-select-border,
+                var(--ks-border-primary)
+            );
             background-color: var(--ks-background-input);
-            color: $white;
-            font-size: 0.875rem;
+            color: var(--ks-content-primary);
             font-weight: normal;
             transition: border-color 0.2s ease;
-            padding: 0.25rem 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-
-            span {
+            &-sm {
+                padding: 0.25rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            &-lg {
+                padding: 12px 1rem;
+                border-radius: 4px;
+                min-width: 200px;
+            }
+            .placeholder-value {
                 flex-shrink: 0;
+                text-align: left;
+                flex: 1;
                 font-size: 12px;
             }
-
             :deep(svg) {
                 font-size: 20px;
                 transition: transform 0.2s ease;
             }
-
             &:hover {
-                border-color: $primary;
+                border-color: var(--ks-border-active);
                 background-color: var(--ks-background-input);
-                color: $white;
+                color: var(--ks-content-primary);
             }
-
             &:focus {
-                border-color: $primary;
-                box-shadow: 0 0 0 0.25rem rgba($primary, 0.25);
+                border-color: var(--ks-border-active);
+                box-shadow: 0 0 0 0.25rem rgba(var(--ks-border-active), 0.25);
                 background-color: var(--ks-background-input);
-                color: $white;
+                color: var(--ks-content-primary);
             }
-
             &::after {
                 display: none;
             }
         }
-
         .show :deep(svg) {
             transform: rotate(180deg);
         }
-
         .dropdown-menu {
             background-color: var(--ks-background-input);
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
             border-radius: 0.25rem;
             padding: 0;
-
             .dropdown-item {
-                color: $white;
+                color: var(--ks-content-primary);
                 font-size: 12px;
                 padding: 0.25rem 0.75rem;
                 transition: background-color 0.2s ease;
-
                 &:hover {
                     background-color: rgba(255, 255, 255, 0.1);
-                    color: $white;
+                    color: var(--ks-content-primary);
                 }
-
                 &.active {
-                    background-color: $primary-1;
+                    background-color: var(--ks-background-button-primary);
                     color: $white;
                 }
             }

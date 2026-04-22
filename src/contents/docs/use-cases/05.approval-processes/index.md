@@ -1,5 +1,6 @@
 ---
-title: Automate Manual Approval Processes
+title: Automate Manual Approval Processes in Kestra
+h1: Add Human-in-the-Loop Approvals to Automated Workflows
 sidebarTitle: Approval Processes
 description: Integrate Human-in-the-Loop approvals into critical steps of automated workflows
 icon: /src/contents/docs/icons/kestra.svg
@@ -49,7 +50,7 @@ inputs:
 
 tasks:
   - id: notify_manager
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_HR_WEBHOOK') }}"
     payload: |
       {
@@ -350,7 +351,7 @@ Example:
     pauseDuration: PT5M
 ```
 
-* If the `pauseDuration` elapses, the task run ends in a `CANCELED` state, and the execution stops.
+* If the `pauseDuration` elapses, the task run ends in a `CANCELLED` state, and the execution stops.
 * If you **resume** manually before that time, the execution continues, ignoring the `behavior` property.
 * If you **kill** manually before that time, the execution moves to the `KILLING` state, ensuring all tasks are stopped.
 

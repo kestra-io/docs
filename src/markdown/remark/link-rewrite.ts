@@ -10,18 +10,9 @@ const RemarkLinkRewrite: Plugin<{replacer:(url: string, file: {
 }) => string }[]> = (options) => {
   const { replacer } = options;
   return async (tree, file) => {
-    const nodes:any[] = [];
-
-    visit(tree, node => {
-      if (node.type === 'link') {
-        nodes.push(node);
-      }
-    });
-
-    nodes.map(async node => {
-      if (node.type === 'link') {
-        node.url = replacer(node.url, file);
-      }
+    // Visit and transform all link nodes synchronously to avoid async mutation issues
+    visit(tree, 'link', (node: any) => {
+      node.url = replacer(node.url, file);
     });
     return tree;
   };

@@ -1,11 +1,11 @@
 import * as CookieConsent from "vanilla-cookieconsent"
 import posthog from "posthog-js"
-import axios from "axios"
 import identify from "~/utils/identify"
-import { API_URL } from "astro:env/client"
+import { $fetchApi } from "~/utils/fetch"
 import { GTM_ID } from "astro:env/client"
 
-const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
+const isEurope =
+    Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
 const cookieConsent = CookieConsent
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -21,25 +21,28 @@ window.addEventListener("DOMContentLoaded", () => {
         s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
         document.head.appendChild(s)
 
-        const response = await axios.get(`${API_URL}/config`, {
-            withCredentials: true,
+        const response = await $fetchApi<{
+            posthog: { token: string }
+            id: string
+        }>("/config", {
+            credentials: "include",
         })
 
-        posthog.init(response.data.posthog.token, {
-            api_host: response.data.posthog.apiHost,
+        posthog.init(response.posthog.token, {
+            api_host: window.location.origin + "/t/",
             ui_host: "https://eu.posthog.com",
             capture_pageview: false,
             capture_pageleave: true,
             autocapture: false,
-            disable_session_recording: true,
+            disable_session_recording: false,
         })
 
-        posthog.register_once({
+        posthog.register_for_session({
             from: "SITE",
         })
 
         if (!posthog.get_property("__alias")) {
-            posthog.alias(response.data.id)
+            posthog.alias(response.id)
         }
 
         posthog.capture("$pageview")
@@ -48,7 +51,7 @@ window.addEventListener("DOMContentLoaded", () => {
             event: "identify",
             category: "sys",
             noninteraction: true,
-            kuid: response.data.id,
+            kuid: response.id,
         })
 
         window.dataLayer.push({
@@ -57,7 +60,7 @@ window.addEventListener("DOMContentLoaded", () => {
             "content-view-name": window.astroClientConfig.slug,
         })
 
-        localStorage.setItem("KUID", response.data.id)
+        localStorage.setItem("KUID", response.id)
 
         if (window?.location?.search) {
             const urlParams = new URLSearchParams(window.location.search)

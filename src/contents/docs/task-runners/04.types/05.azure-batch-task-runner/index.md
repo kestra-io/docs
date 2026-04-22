@@ -1,9 +1,11 @@
 ---
-title: Azure Batch Task Runner – Run Tasks on Azure Containers
+title: "Azure Batch Task Runner: Run Tasks on Azure Containers"
+h1: Offload Large-Scale Parallel Tasks to Azure Batch
 sidebarTitle: Azure Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
+description: Offload Kestra tasks to Azure Batch to run large-scale parallel and high-performance computing applications efficiently.
 ---
 
 Run tasks as containers on Azure Batch VMs.
@@ -21,6 +23,64 @@ To launch a task on Azure Batch, there are two main concepts to understand:
 To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the Azure Batch task runner relies on [resource files](https://learn.microsoft.com/en-us/azure/batch/resource-files) and [output files](https://learn.microsoft.com/en-us/rest/api/batchservice/task/add?view=rest-batchservice-2023-11-01&tabs=HTTP), which transit through [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs).
 
 Since the working directory of the container is not known in advance, you must explicitly define both the working directory and the output directory when using the Azure Batch runner. For example, use `cat {{ workingDir }}/myFile.txt` rather than `cat myFile.txt`.
+
+The following Pebble expressions and environment variables are available inside the container at runtime:
+
+- `{{ workingDir }}` / `WORKING_DIR` — the working directory path inside the container where input files are staged.
+- `{{ outputDir }}` / `OUTPUT_DIR` — the output directory path inside the working directory where output files must be written.
+- `{{ bucketPath }}` / `BUCKET_PATH` — the path in Azure Blob Storage allocated for this task run, used to stage input and output files.
+
+## Authentication requirements
+
+The Azure Batch task runner described on this page uses the following credentials:
+
+- a Batch account access key (`account`, `accessKey`, `endpoint`)
+- an Azure Blob Storage connection string (`blobStorage.connectionString`)
+
+Because the runner uses shared keys rather than Azure RBAC to submit jobs, this page does not define a minimum Azure role assignment in the same way as the AWS Batch or Google Cloud Run task runners.
+
+Instead, the minimum requirement for Kestra is:
+
+- access to a Batch account key for the target Batch account
+- access to a Blob Storage connection string for the container used to stage input and output files
+
+If your organization uses Azure RBAC to control who can create or rotate those credentials, manage that access outside Kestra as part of your platform setup.
+
+#### Alternative blob storage authentication
+
+Instead of a `connectionString`, you can authenticate to blob storage using a shared key directly. In that case, provide the following properties under `blobStorage` instead:
+
+- `containerName` — the name of the blob container.
+- `endpoint` — the blob storage endpoint URL (e.g. `https://<account>.blob.core.windows.net`).
+- `sharedKeyAccountName` — the storage account name.
+- `sharedKeyAccountAccessKey` — the storage account access key.
+
+Example:
+
+```yaml
+blobStorage:
+  containerName: "{{ vars.containerName }}"
+  endpoint: "{{ secret('AZURE_BLOB_ENDPOINT') }}"
+  sharedKeyAccountName: "{{ secret('AZURE_STORAGE_ACCOUNT_NAME') }}"
+  sharedKeyAccountAccessKey: "{{ secret('AZURE_STORAGE_ACCOUNT_KEY') }}"
+```
+
+:::alert{type="info"}
+If the Kestra Worker running this task is terminated, the Azure Batch job will continue running until completion. Upon restart, the Worker will resume processing on the existing job unless `resume` is set to `false`.
+:::
+
+## Key properties
+
+| Property | Default | Description |
+|---|---|---|
+| `poolId` | — | **Required.** ID of the Azure Batch pool on which to run the job. |
+| `delete` | `true` | Whether to delete the job upon completion. If `false`, a task retry could reconnect to a previous failed job. |
+| `resume` | `true` | Whether to reconnect to an existing job if one already exists (useful after a Worker restart). |
+| `waitUntilCompletion` | `PT1H` | Maximum duration to wait for job completion. Overridden by the task-level `timeout` property if set. |
+| `completionCheckInterval` | `PT5S` | How often Kestra polls Azure Batch for job completion. Lower values increase API call frequency. |
+| `streamLogs` | `false` | Enable log streaming during task execution. Useful with `timeout` — ensures logs up to the termination point are captured. |
+| `registry` | — | Private container registry configuration for pulling images that require authentication. |
+| `blobStorage` | — | Blob storage configuration for staging input/output files. Required when using `inputFiles`, `outputFiles`, or `namespaceFiles`. |
 
 ## A full flow example
 
@@ -84,7 +144,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of properties available in the Azure Batch task runner, see the [Azure plugin documentation](/plugins/plugin-azure/runner/io.kestra.plugin.ee.azure.runner.Batch) or view them in the built-in Code Editor in the Kestra UI.
+For a full list of properties available in the Azure Batch task runner, see the [Azure plugin documentation](/plugins/plugin-ee-azure/runner/io.kestra.plugin.ee.azure.runner.batch) or view them in the built-in Code Editor in the Kestra UI.
 :::
 
 ## Full step-by-step guide: setting up Azure Batch from scratch

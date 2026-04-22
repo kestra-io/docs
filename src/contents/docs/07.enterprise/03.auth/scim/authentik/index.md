@@ -1,5 +1,7 @@
 ---
-title: authentik SCIM Provisioning
+title: authentik SCIM Provisioning in Kestra
+h1: Set Up authentik SCIM Provisioning for User Sync
+description: Configure SCIM provisioning with authentik. Learn how to automatically sync users and groups from authentik to your Kestra Enterprise instance.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
@@ -22,7 +24,7 @@ kestra:
 ```
 
 :::alert{type="info"}
-Tenants are enabled by default. Please refer to the [Migration Guide](../../../11.migration-guide/ 0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
+Tenants are enabled by default. Please refer to the [Migration Guide](../../../../11.migration-guide/v0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
 :::
 
 ## Kestra SCIM setup: create a new provisioning integration
@@ -42,7 +44,7 @@ The above steps will generate a SCIM endpoint URL and a Secret Token that you wi
 
 The endpoint should look as follows:
 
-```
+```plaintext
 https://<your_kestra_host>/api/v1/<your_tenantID>/integrations/integration_id/scim/v2
 ```
 

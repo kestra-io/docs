@@ -1,13 +1,127 @@
 ---
-import Layout from "~/components/layout.astro"
-import Header from "~/components/vs/prefect/Header.vue"
-import Main from "~/components/vs/prefect/Main.vue"
+import { getEntry } from "astro:content"
+import VsLayout from "~/components/versus/VsLayout.astro"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
 
-const title = "Prefect vs Kestra"
-const description = "What are the differences between Kestra and Prefect"
+import prefectLogo from "~/components/versus/assets/prefect.svg?raw"
+import prefectMonogram from "~/components/versus/assets/prefect-monograme.svg?raw"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import prefectImg from "~/components/versus/assets/prefect-img.svg"
+import heroUI from "~/components/versus/assets/hero_ui_prefect.webp"
+
+const entry = await getEntry("vs", "prefect")
+if (!entry) throw new Error("Could not find vs/prefect collection entry")
+
+const {
+    title,
+    shortDescription,
+    competitorName,
+
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    testimonials,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+} = entry.data
 ---
 
-<Layout title={title} description={description}>
-    <Header client:load />
-    <Main client:visible />
-</Layout>
+<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: prefectMonogram,
+        }}
+        image={{ src: heroUI, alt: "kestra ui" }}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: prefectLogo,
+            linkImg: prefectImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo: prefectLogo,
+        }}
+    />
+    <VsTestimonial
+        quotes={testimonials}
+    />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: prefectLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">
+            Getting Started with Declarative Orchestration
+        </Fragment>
+        See how Kestra can simplify your data pipelines—and scale beyond them.
+    </SeeHow>
+</VsLayout>

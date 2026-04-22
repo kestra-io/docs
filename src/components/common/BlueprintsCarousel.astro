@@ -1,0 +1,28 @@
+---
+import Carousel from "~/components/common/Carousel.astro"
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import { $fetchApiCached } from "~/utils/fetch"
+
+const { blueprints } = Astro.props
+
+const tags = await $fetchApiCached<BlueprintTag[]>("/blueprints/versions/latest/tags")
+---
+
+<Carousel>
+    {
+        blueprints.map((blueprint: Blueprint) => (
+            <BlueprintCard
+                blueprint={blueprint}
+                tags={tags}
+                href={`/blueprints/${blueprint.id}`}
+            />
+        ))
+    }
+</Carousel>
+
+<style lang="scss">
+    :global(.carousel-content .blueprint) {
+        flex: 0 0 350px !important;
+        width: 350px !important;
+    }
+</style>

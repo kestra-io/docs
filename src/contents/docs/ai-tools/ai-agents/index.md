@@ -1,5 +1,7 @@
 ---
 title: AI Agents in Kestra – Autonomous Orchestration
+h1: Build LLM-Powered AI Agents That Think, Remember & Use Tools
+description: Build autonomous AI agents in Kestra for LLM-powered orchestration. Create agents that think, remember, and use tools like web search for complex workflows.
 sidebarTitle: AI Agents
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"
@@ -100,7 +102,7 @@ pluginDefaults:
 
 The goal of the AI Agent is to summarize text. The flow uses three inputs -- `summary_length`, `language`, and `text` -- to control the length, language, and source text for the summary.
 
-All inputs have a default value, and more or less can be used and referenced in downstream agentic tasks depending on the use case with [expressions](../../expressions/index.md). When executing the flow, all the inputs can be selected or modified from the defaults.
+All inputs have a default value, and more or less can be used and referenced in downstream agentic tasks depending on the use case with [expressions](../../expressions/index.mdx). When executing the flow, all the inputs can be selected or modified from the defaults.
 
 ![AI Agent Flow Inputs](./ai-agent-inputs.png)
 

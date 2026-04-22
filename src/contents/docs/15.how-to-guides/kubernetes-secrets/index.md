@@ -1,16 +1,16 @@
 ---
 title: Set Up Secrets from a Helm Chart
+h1: Pass Kubernetes Secrets and Env Vars via Helm Chart
 icon: /src/contents/docs/icons/helm.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
   - DevOps
 editions: ["OSS"]
+description: Learn how to pass secrets to your Kestra deployment via Helm Chart using environment variables or Kubernetes Secrets.
 ---
 
 How to add Kestra Secrets to your Helm Chart deployment.
-
-## Set Up Secrets from a Helm Chart
 
 :::alert{type="info"}
 Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../../07.enterprise/02.governance/secrets/index.md) functionality allowing you to securely store your secrets in an [external secret manager](../../07.enterprise/02.governance/secrets-manager/index.md) of your choice.
@@ -120,7 +120,7 @@ Note that in this method, the Kubernetes Secret's keys must start with `SECRET_`
 
 ## Use Kubernetes Secrets as Kestra Secrets with `configurations.secrets`
 
-An alternative is to mount an entire Kubernetes Secret as a [Kestra configuration](../../configuration/index.md) file using the `configurations.secrets` property.
+An alternative is to mount an entire Kubernetes Secret as a [Kestra configuration](../../configuration/01.configuration-basics/index.md) file using the `configurations.secrets` property.
 
 For example, in `values.yaml`:
 

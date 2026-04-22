@@ -5,32 +5,39 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
     "name": "docs",
-    "compatibility_date": "2025-02-04",
-    "main": "./dist/_worker.js/index.js",
+    "main": "./src/middlewares/worker.ts",
+    "compatibility_date": "2026-03-01",
+    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+    "preview_urls": true,
     "routes": [
         {
             "pattern": "kestra.io",
-            "custom_domain": true
-        }
+            "custom_domain": true,
+        },
+        {
+            "pattern": "mta-sts.kestra.io",
+            "custom_domain": true,
+        },
     ],
     "assets": {
         "binding": "ASSETS",
         "directory": "./dist",
-        "html_handling": "drop-trailing-slash"
+        "html_handling": "drop-trailing-slash",
+        "run_worker_first": [
+            "/*.html", // Run worker for HTML pages only
+            "/", // And the root
+        ],
+        // JS/CSS/images still served directly — fast and free
     },
-    "keep_vars": true,
-    "preview_urls": true,
-    "minify": true,
-    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
     "observability": {
         "enabled": true,
         "traces": {
-            "enabled": true
+            "enabled": true,
         },
         "logs": {
             "invocation_logs": true,
-            "enabled": true
-        }
+            "enabled": true,
+        },
     },
     "upload_source_maps": true,
     "logpush": true,
@@ -39,7 +46,6 @@
      * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
      */
     // "placement": { "mode": "smart" },
-
     /**
      * Bindings
      * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
@@ -48,11 +54,14 @@
      */
     "kv_namespaces": [
         {
-            "binding": "ISR_CACHE",
-            "id": "c7003b3ecfc2485bb2efb713d75da274"
-        }
+            "binding": "ICON_CACHE",
+            "id": "205cd288109e4728a1f0f85645cf3b98",
+        },
+        {
+            "binding": "docs-session",
+            "id": "7697469604b64c6899be1721cc799e02",
+        },
     ],
-
     /**
      * Environment Variables
      * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
@@ -60,16 +69,25 @@
     "env": {
         "preview": {
             "vars": {
-                "NO_IMAGE_OPTIM": "true"
-            }
-        }
-    }
+                "NO_IMAGE_OPTIM": "true",
+            },
+            "kv_namespaces": [
+                {
+                    "binding": "ICON_CACHE",
+                    "id": "205cd288109e4728a1f0f85645cf3b98",
+                },
+                {
+                    "binding": "docs-session",
+                    "id": "7697469604b64c6899be1721cc799e02",
+                },
+            ],
+        },
+    },
     /**
      * Note: Use secrets to store sensitive data.
      * https://developers.cloudflare.com/workers/configuration/secrets/
      */
     // "vars": {  "MY_VARIABLE": "production_value" }
-
     /**
      * Service Bindings (communicate between multiple Workers)
      * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings

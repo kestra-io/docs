@@ -1,7 +1,9 @@
 ---
-title: Deploy Kestra on AWS EKS – RDS and S3 Setup
+title: Deploy on AWS EKS with RDS and S3 in Kestra
+h1: AWS EKS Setup with RDS PostgreSQL and S3
 sidebarTitle: Kubernetes on AWS EKS with Amazon RDS and S3
 icon: /src/contents/docs/icons/aws-eks.svg
+description: Deploy Kestra on Amazon EKS with RDS PostgreSQL and S3 for a scalable, cloud-native orchestration platform.
 ---
 
 Deploy Kestra to AWS EKS with a PostgreSQL RDS database and an S3 internal storage backend.
@@ -32,7 +34,7 @@ kubectl get svc
 Navigate to the RDS console to create a PostgreSQL database. Once your database is created, configure the settings, ensuring the database is accessible from your EKS cluster. Make note of the database endpoint and port after creation for later use.
 
 ## Prepare an AWS S3 Bucket
-Create a private S3 bucket (i.e., with public access blocked). Keep a record of the bucket name as this is needed for the [Kestra configuration](../../configuration/index.md).
+Create a private S3 bucket (i.e., with public access blocked). Keep a record of the bucket name as this is needed for the [Kestra runtime and storage configuration](../../configuration/02.runtime-and-storage/index.md).
 
 
 ## Install Kestra on AWS EKS

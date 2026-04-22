@@ -1,12 +1,18 @@
 ---
 title: Deploy Kestra on Azure VM – Azure Database Backend
+h1: Install Kestra on Azure VM with PostgreSQL and Blob Storage
 sidebarTitle: Azure VM with Azure Database
 icon: /src/contents/docs/icons/azure-compute.svg
+description: Deploy Kestra on an Azure Virtual Machine using Azure Database for PostgreSQL and Azure Blob Storage.
 ---
 
 Install Kestra on an Azure VM with Azure Database for PostgreSQL as the database backend and Azure Blob Storage as the internal storage backend.
 
 This guide provides instructions for deploying Kestra on an Azure VM with Azure Database for PostgreSQL as the database backend and Azure Blob Storage as the internal storage backend.
+
+:::alert{type="info"}
+Prefer an Azure-native option? You can deploy Kestra directly from the [Azure Marketplace listing](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official).
+:::
 
 ## Deploy Kestra on an Azure VM with Azure Database
 
@@ -53,7 +59,7 @@ ssh -i <your-key-pair.pem> azureuser@<your-VM-public-IP>
 Kestra can be started using a `.jar` binary or Docker. In this guide, we’ll use Docker for a quick setup:
 
 1. Install Docker on the Azure VM instance. You can find the last updated [instruction on the Docker website](https://docs.docker.com/engine/install/ubuntu/).
-2. [Install docker-compose](https://docs.docker.com/compose/install/).
+2. [Install Docker Compose](https://docs.docker.com/compose/install/).
 
 To check your installation, run `sudo docker version` and `sudo docker compose version`. You're now ready to download and launch the Kestra server.
 
@@ -105,7 +111,7 @@ You can now access your Kestra instance and start developing flows.
 
 ## Launch Azure Database
 
-This first installation relies on a PostgreSQL database running alongside the Kestra server - on the VM instance (see the PostgreSQL service running thanks to the docker-compose).
+This first installation relies on a PostgreSQL database running alongside the Kestra server on the VM instance (see the PostgreSQL service running in Docker Compose).
 
 For a simple proof of concept (PoC), you can keep the PostgreSQL database running in Docker.
 
@@ -153,7 +159,7 @@ datasources:
 
 Because you now use the "Azure Database for PostgreSQL servers" service, you don't need the PostgreSQL Docker service anymore. Remove it from the `docker-compose.yml` file.
 
-In order for the changes to take effect, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
+For the changes to take effect, restart the Docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
 
 ## Configure Azure Blob Storage
 
@@ -184,9 +190,9 @@ kestra:
       connection-string: "<your-connection-string>"
 ```
 
-In order for the changes to take effect, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
+For the changes to take effect, restart the Docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
 
-For more information on Azure Blob storage configuration, check out the [Azure configuration guide](../../configuration/index.md#azure).
+For more information on Azure Blob storage configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md).
 
 ## Next steps
 

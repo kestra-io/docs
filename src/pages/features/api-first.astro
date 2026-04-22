@@ -1,30 +1,82 @@
 ---
 import Layout from "~/components/layout.astro"
-import FeaturesApifirstHeader from "~/components/features/apifirst/Header.vue"
-import FeaturesApifirstFeatures from "~/components/features/apifirst/Features.vue"
-import FeaturesApifirstGitOptions from "~/components/features/apifirst/GitOptions.vue"
-import FeaturesApifirstIntegrationsInfo from "~/components/features/apifirst/IntegrationsInfo.vue"
-import FeaturesApifirstPlugins from "~/components/features/apifirst/Plugins.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import Workflow from "~/components/features/api/Workflow.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
 
-const title = "Kestra API First Design"
-const description = "interact with every aspect of Kestra programmatically."
+import visualHero from "~/assets/landing/features/api/api-hero.webp"
+import flexibility from "~/assets/landing/features/api/flexibility.webp"
+import integration from "~/assets/landing/features/api/integration.webp"
+
+const title = "API-First Design"
+const description =
+    "Kestra is designed in an API-first way, enabling programmatic access to all actions from managing workflows to user administration"
+
+const MAIN_ITEMS = [
+    {
+        icon: "mdi:file-code-outline",
+        title: "API Coverage",
+        description:
+            "From workflow creation to user management, our API reference details how to interact with every aspect of the platform programmatically.",
+    },
+    {
+        icon: "mdi:puzzle-check-outline",
+        title: "Extensibility for Custom Solutions",
+        description:
+            "Leverage the power of Kestra to create interfaces or enhance existing systems, thanks to the API's flexibility.",
+    },
+    {
+        icon: "mdi:link",
+        title: "Terraform Integration & Future SDKs",
+        description:
+            "We offer Terraform integration, and we're expanding our toolkit with SDKs in popular programming languages for even easier integration.",
+    },
+]
+
+const FEATURES = [
+    {
+        title: "Productivity and Integration",
+        description:
+            "Being API-first means Kestra integrates seamlessly with CI/CD pipelines, offering a streamlined path from code development in your local IDE to deployment through tools like GitHub Actions. This integration ensures that your workflows remain in sync with your codebase.",
+        image: integration,
+    },
+    {
+        title: "Development Flexibility",
+        description:
+            "Choose your development environment with confidence, knowing that whether you prefer to code directly in the Kestra UI or in your favorite IDE, our platform supports your workflow. Our API-first approach guarantees that your integration with Git and other version control systems is straightforward, maintaining a single source of truth for your projects.",
+        image: flexibility,
+        reverse: true,
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <div>
-        <FeaturesApifirstHeader client:load />
-        <FeaturesApifirstFeatures client:visible />
-        <FeaturesApifirstGitOptions client:visible />
-        <FeaturesApifirstIntegrationsInfo client:visible />
-        <FeaturesApifirstPlugins client:visible />
-        <LayoutFooterContact
-            client:visible
-            title="Getting Started with Declarative Orchestration"
-            darkButtonText="Get started"
-            darkButtonHref="/docs/quickstart#start-kestra"
-            purpleButtonText="Talk to us"
-            purpleButtonHref="/demo"
-        />
-    </div>
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        {title}
+        description="Kestra is designed in an API-first way, enabling <br class='d-none d-md-block'> programmatic access to all actions from managing <br class='d-none d-md-block'> workflows to user administration"
+        image={visualHero}
+    />
+    <CardGrid
+        title="Building on an <span class='highlight'>API-First</span> Platform"
+        items={MAIN_ITEMS}
+    />
+    <Workflow />
+    <SectionCard cards={FEATURES}>
+        <Fragment slot="title">Productivity and Integration</Fragment>
+    </SectionCard>
+    <PluginsBlock>
+        <Fragment slot="title"> Plugin-Powered Flexibility </Fragment>
+        <Fragment slot="description">
+            Choose from over 1200+ plugins that offer direct integration with
+            third-party services, databases, messaging systems, and more.
+        </Fragment>
+    </PluginsBlock>
+    <SeeHow>
+        <Fragment slot="title">Programmatic Power at Your Fingertips </Fragment>
+        Kestra is built with an API-first mindset, ensuring that every action—from
+        workflow management to system administration—is fully accessible.
+    </SeeHow>
 </Layout>

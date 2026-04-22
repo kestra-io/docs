@@ -1,0 +1,57 @@
+---
+import ContentCard from "~/components/layout/ContentCard.astro"
+import SplitSection from "~/components/layout/SplitSection.astro"
+import fleet from "~/assets/landing/infrastructure/fleet.webp"
+import security from "~/assets/landing/infrastructure/security.webp"
+import automation from "~/assets/landing/infrastructure/automation.webp"
+import governed from "~/assets/landing/infrastructure/governed.webp"
+
+const OPERATIONS = [
+    {
+        svg: fleet,
+        title: "Fleet Management & Patching",
+        desc: "Orchestrate maintenance. Execute Ansible playbooks or PowerShell scripts across thousands of nodes with built-in safety controls.",
+    },
+    {
+        svg: security,
+        title: "Security & Compliance Automation",
+        desc: "Enforce policies and rotate credentials. Turn manual security tasks into auditable, automated workflows.",
+    },
+    {
+        svg: automation,
+        title: "Auto-Remediation & Incident Response",
+        desc: "Reduce MTTR with event-driven logic. Connect your observability stack directly to remediation workflows.",
+    },
+    {
+        svg: governed,
+        title: "Governed Self-Service Apps",
+        desc: "Wrap complex automation into interactive apps. Allow users to request resources or patching via simple forms, routing requests for human approval before execution.",
+    },
+]
+---
+
+<SplitSection
+    cta={{
+        text: "Book a Demo",
+        href: "/demo"
+    }}
+>
+    <Fragment slot="title">
+        Day-2 Operations
+        <br class="d-none d-xxl-block" />
+        Orchestration
+        <br class="d-none d-xxl-block" />
+        With Kestra
+    </Fragment>
+    {
+        OPERATIONS.map((op, index) => (
+            <ContentCard
+                title={op.title}
+                description={op.desc}
+                image={op.svg}
+                index={index}
+            />
+        ))
+    }
+</SplitSection>
+

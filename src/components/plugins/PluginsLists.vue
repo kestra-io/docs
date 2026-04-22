@@ -1,77 +1,112 @@
 <template>
-    <section class="wrapper">
-        <Header
-            :total-plugins="totalPlugins"
-            v-model:search-query="searchQuery"
-            :categories="categories"
-            v-model:active-category="activeCategory"
-        />
-        <div class="container bd-gutter">
-            <div class="d-flex justify-content-end align-items-center my-4">
-                <div class="d-flex align-items-center">
-                    <CustomSelect
-                        v-model="sortBy"
-                        :options="sortOptions"
-                        label="Sort:"
-                        id="sortSelect"
-                    />
-                </div>
-            </div>
-
-            <div class="row my-2" data-usal="fade-u-2 threshold-0">
-                <template v-if="pluginsSlice?.length">
-                    <div
-                        class="col-lg-4 col-md-6 mb-3"
-                        v-for="plugin in pluginsSlice"
-                        :key="plugin.group + (plugin.subGroup ?? '')"
-                    >
-                        <PluginCard :plugin="pluginsInformation(plugin)" />
+    <ListsLayout
+        v-model="activeCategory"
+        :categories="normalizedCategories"
+        id-prefix="cat"
+    >
+        <template #top-bar>
+            <h1>Connect anything to everything</h1>
+            <p>
+                Extend Kestra with {{ props.totalPluginCount }} plugins
+            </p>
+            <div class="search-input">
+                <Magnify class="search-icon" />
+                <input
+                    v-model="searchQuery"
+                    type="text"
+                    :placeholder="`Search across ${props.totalPluginCount} plugins`"
+                />
+                <Close
+                    v-if="searchQuery"
+                    class="clear-icon"
+                    @click="searchQuery = ''"
+                    title="Clear search"
+                />
+                <div class="ai-wrapper">
+                    <span class="or-text">or</span>
+                    <div class="ai-button-inside">
+                        <button
+                            class="btn btn-sm btn-primary"
+                            title="Ask Kestra AI"
+                            data-bs-toggle="modal"
+                            data-bs-target="#search-ai-modal"
+                        >
+                            <img
+                                :src="KSAIImg.src"
+                                alt="Kestra AI"
+                                width="30"
+                                height="30"
+                            />
+                            <span>Ask AI</span>
+                        </button>
                     </div>
-                </template>
-                <div
-                    v-else-if="!pluginsSlice?.length && activePlugins.length"
-                    class="alert alert-warning mb-0"
-                    role="alert"
-                >
-                    No results found for the current search
                 </div>
             </div>
+        </template>
 
-            <CommonPaginationContainer
-                :current-url="fullPath"
-                :total-items="activePlugins.length"
-                @update="
-                    ({ page, size }) => {
-                        currentPage = page
-                        itemsPerPage = size
-                    }
-                "
-            />
-
-            <PluginsFaq />
+        <div class="d-flex align-items-center justify-content-end">
+            <div class="d-flex align-items-center gap-2">
+                <CustomSelect
+                    v-model="sortBy"
+                    :options="sortOptions"
+                    label="Sort by:"
+                    id="sortSelect"
+                />
+            </div>
         </div>
-    </section>
+
+        <div class="row" data-usal="fade-u-2 threshold-0">
+            <template v-if="pluginsSlice?.length">
+                <div
+                    class="col-lg-4 col-md-6 mb-3"
+                    v-for="plugin in pluginsSlice"
+                    :key="plugin.group + (plugin.subGroup ?? '')"
+                >
+                    <PluginCard :plugin="pluginsInformation(plugin)" />
+                </div>
+            </template>
+            <div
+                v-else-if="!pluginsSlice?.length && props.plugins?.length"
+                class="alert alert-warning mb-0"
+                role="alert"
+            >
+                No result found for the current search
+            </div>
+        </div>
+
+        <PaginationContainer
+            :current-url="fullPath"
+            :total-items="categoryFilteredPlugins.length"
+            :showTotal="false"
+            @update="
+                ({ page, size }) => {
+                    currentPage = page
+                    itemsPerPage = size
+                    scrollToTop()
+                }
+            "
+        />
+    </ListsLayout>
 </template>
 
 <script setup lang="ts">
-    import {
-        isEntryAPluginElementPredicate,
-        type Plugin,
-        type PluginElement,
-        filterPluginsWithoutDeprecated,
-    } from "@kestra-io/ui-libs"
-    import Header from "~/components/plugins/Header.vue"
-    import PluginCard from "~/components/plugins/PluginCard.vue"
-    import CommonPaginationContainer from "~/components/common/PaginationContainer.vue"
-    import PluginsFaq from "~/components/plugins/Faq.vue"
-    import CustomSelect from "~/components/common/CustomSelect.vue"
     import { computed, ref, watch, onMounted } from "vue"
-    import { usePluginsCount } from "~/composables/usePluginsCount"
+    import { useWindowScroll } from "@vueuse/core"
+    import { formatCategoryName } from "~/utils/plugins/pluginUtils"
+    import type { CardPlugin } from "~/utils/plugins/pruneForClient"
+
+    import KSAIImg from "../docs/assets/ks-ai.svg"
+    import Close from "vue-material-design-icons/Close.vue"
+    import Magnify from "vue-material-design-icons/Magnify.vue"
+    import PluginCard from "~/components/plugins/PluginCard.vue"
+    import ListsLayout from "~/components/layouts/ListsLayout.vue"
+    import CustomSelect from "~/components/common/CustomSelect.vue"
+    import PaginationContainer from "~/components/common/PaginationContainer.vue"
 
     const currentPage = ref(1)
     const searchQuery = ref("")
-    const itemsPerPage = ref(40)
-    const activeCategory = ref("All Categories")
+    const itemsPerPage = ref(42)
+    const activeCategory = ref("")
     const sortBy = ref("A-Z")
     const sortOptions = [
         { value: "A-Z", label: "Name A-Z" },
@@ -79,81 +114,100 @@
     ]
 
     const props = defineProps<{
-        pluginsData: Record<string, PluginInformation>
-        plugins: Plugin[]
+        plugins: CardPlugin[]
+        categories: string[]
+        totalPluginCount: string
         fullPath: string
     }>()
 
-    const { totalPlugins } = usePluginsCount(ref(props.plugins))
-
-    const categories = computed(() =>
-        [
-            ...new Set(
-                Object.values(props.pluginsData).flatMap((plugin) => plugin.categories ?? []),
-            ),
-        ].sort(),
+    const normalizedCategories = computed(() =>
+        props.categories.map((c) => ({ id: c, label: formatCategoryName(c) })),
     )
 
-    const sortPlugins = (plugins: Plugin[], ascending: boolean) =>
-        [...plugins].sort((a, b) => {
-            // Core plugin (io.kestra.plugin.core with no subGroup) should always appear first
+    const SEARCHABLE_FIELDS: (keyof CardPlugin)[] = ["title", "description", "name", "classes"]
+
+    const sortPlugins = (plugins: CardPlugin[], ascending: boolean, query: string) => {
+        const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
+        const matchesAll = (value: string | undefined) =>
+            tokens.length > 0 && tokens.every((t) => value?.toLowerCase().includes(t))
+
+        return [...plugins].sort((a, b) => {
+            if (query) {
+                const aStrong = matchesAll(a.name) || matchesAll(a.title)
+                const bStrong = matchesAll(b.name) || matchesAll(b.title)
+                if (aStrong !== bStrong) return aStrong ? -1 : 1
+            }
+
             const aCore = a.group === "io.kestra.plugin.core" && !a.subGroup
             const bCore = b.group === "io.kestra.plugin.core" && !b.subGroup
-
-            if (aCore && !bCore) return -1
-            if (!aCore && bCore) return 1
+            if (aCore !== bCore) return aCore ? -1 : 1
 
             const comparison = a.title.toLowerCase().localeCompare(b.title.toLowerCase())
             return ascending ? comparison : -comparison
         })
+    }
 
-    const activePlugins = computed(() => filterPluginsWithoutDeprecated(props.plugins ?? []))
+    const filterBySearch = (plugins: CardPlugin[], query: string) => {
+        if (!query) return plugins
+        const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
+        const matchesAll = (value: string | undefined) =>
+            tokens.every((t) => value?.toLowerCase().includes(t))
+
+        return plugins
+            .filter((p) => SEARCHABLE_FIELDS.some((f) => matchesAll(p[f] as string)))
+            .sort((a, b) => {
+                const aStrong = matchesAll(a.name) || matchesAll(a.title)
+                const bStrong = matchesAll(b.name) || matchesAll(b.title)
+                if (aStrong !== bStrong) return aStrong ? -1 : 1
+                return 0
+            })
+    }
 
     const searchFilteredPlugins = computed(() =>
-        setSearchPlugins(searchQuery.value, activePlugins.value),
+        filterBySearch(props.plugins ?? [], searchQuery.value),
     )
 
     const categoryFilteredPlugins = computed(() =>
-        activeCategory.value === "All Categories"
+        activeCategory.value === ""
             ? searchFilteredPlugins.value
             : searchFilteredPlugins.value.filter((item) =>
-                  item.categories?.includes(activeCategory.value),
-              ),
+                item.categories?.includes(activeCategory.value),
+            ),
     )
 
     const pluginsSlice = computed(() =>
-        sortPlugins(categoryFilteredPlugins.value, sortBy.value === "A-Z").slice(
+        sortPlugins(categoryFilteredPlugins.value, sortBy.value === "A-Z", searchQuery.value).slice(
             (currentPage.value - 1) * itemsPerPage.value,
             currentPage.value * itemsPerPage.value,
         ),
     )
 
-    const pluginsInformation = (plugin: Plugin): PluginInformation => {
-        const pluginInfo = props.pluginsData?.[plugin.subGroup ?? plugin.group ?? plugin.name]
-        return {
-            name: plugin.name,
-            subGroupTitle: plugin.title,
-            title: pluginInfo?.title,
-            description: pluginInfo?.description ?? plugin.description,
-            categories: pluginInfo?.categories,
-            icon: pluginInfo?.icon,
-            elementCounts: pluginInfo?.elementCounts,
-            blueprints: pluginInfo?.blueprints,
-            className: pluginInfo?.className,
-            subGroup: plugin.subGroup,
-        }
-    }
+    const pluginsInformation = (plugin: CardPlugin): PluginInformation => ({
+        ...plugin,
+        elementCounts: plugin.elementCounts ?? 0,
+        blueprints: plugin.blueprints ?? 0,
+    })
 
     onMounted(() => {
         const params = new URLSearchParams(window.location.search)
         searchQuery.value = params.get("q") ?? ""
-        activeCategory.value = params.get("category") ?? "All Categories"
+        activeCategory.value = params.get("category") ?? ""
         sortBy.value = params.get("sort") ?? "A-Z"
     })
 
+    const { y } = useWindowScroll({ behavior: "smooth" })
+
+    function scrollToTop() {
+        y.value = 0
+    }
+
     watch([searchQuery, activeCategory, sortBy], ([q, cat, sort]) => {
+        currentPage.value = 1
         const url = new URL(window.location.href)
-        url.searchParams.set("category", cat)
+
+        if (cat) url.searchParams.set("category", cat)
+        else url.searchParams.delete("category")
+
         url.searchParams.set("sort", sort)
 
         if (q) url.searchParams.set("q", q)
@@ -161,49 +215,82 @@
 
         window.history.replaceState(null, "", url)
     })
-
-    const setSearchPlugins = <T extends Plugin>(search: string | undefined, allPlugins: T[]) => {
-        if (!search) return allPlugins
-        const tokens = search.trim().toLowerCase().split(/\s+/).filter(Boolean)
-        return allPlugins.filter((item) => {
-            if (tokens.every((t) => item?.title.toLowerCase().includes(t))) return true
-            return Object.entries(item)
-                .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
-                .flatMap(([_, elements]) => elements as PluginElement[])
-                .some(({ cls }: PluginElement) =>
-                    tokens.every((t) => cls.toLowerCase().includes(t)),
-                )
-        })
-    }
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-
-    .total-pages {
-        font-size: $font-size-sm;
-        color: $white;
+    :deep(.top-bar) {
+        background: url("~/components/plugins/assets/intro-bg.webp") center / cover no-repeat !important;
     }
+    .search-input {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0.25rem 0.35rem 0.25rem 1rem;
+        background: var(--ks-background-input);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        max-width: 612px;
 
-    .pagination-container {
-        margin-top: 39px;
+        .search-icon {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-lg;
+            flex-shrink: 0;
+            margin-top: -0.25rem;
+        }
 
-        .form-select {
-            border-radius: 4px;
-            border: $block-border;
-            color: $white;
-            font-size: 14px;
-            font-weight: 700;
+        input {
+            flex: 1;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--ks-content-primary);
+            font-size: $font-size-md;
+            padding: 0 0.5rem;
+            min-width: 0;
+            background: var(--ks-background-input);
+
+            &::placeholder {
+                color: var(--ks-content-tertiary);
+            }
+        }
+
+        .clear-icon {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-md;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin: 0 0.25rem;
+
+            &:hover {
+                color: var(--ks-content-primary);
+            }
+        }
+
+        .ai-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+
+            @include media-breakpoint-down(md) {
+                gap: 0.25rem;
+
+                .btn {
+                    padding: 0.25rem 0.5rem;
+                    font-size: 0.75rem;
+                }
+            }
+
+            .or-text {
+                font-size: $font-size-sm;
+                color: var(--ks-content-tertiary);
+            }
         }
     }
 
-    .count {
-        color: $white;
-        font-size: 14px;
-    }
-
     .row > * {
-        padding-left: 8px;
-        padding-right: 8px;
+        padding-inline: 8px;
     }
 </style>
+

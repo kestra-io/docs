@@ -5,6 +5,7 @@ date: 2025-04-01T17:00:00
 category: News & Product Updates
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: bpimpaud
 image: ./main.jpg
 ---
@@ -95,7 +96,7 @@ tasks:
 afterExecution:
   - id: onSuccess
     runIf: "{{execution.state == 'SUCCESS'}}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     payload: |
       {
@@ -104,7 +105,7 @@ afterExecution:
 
   - id: onFailure
     runIf: "{{execution.state == 'FAILED'}}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     payload: |
       {
@@ -372,8 +373,8 @@ Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow
 - **fileSize**: `{{ fileSize(outputs.download.uri) }}` — Returns the size of the file present at the given URI location.
 - **fileExists**: `{{ fileExists(outputs.download.uri) }}` — Returns true if file is present at the given URI location.
 - **fileEmpty**: `{{ isFileEmpty(outputs.download.uri) }}` — Returns true if file present at the given URI location is empty.
-- **Environment Name**: `{{ kestra.environment }}` — Returns the name given to your environment. This value should be configured in the [Kestra configuration](../../docs/configuration/index.md).
-- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the [Kestra configuration](../../docs/configuration/index.md).
+- **Environment Name**: `{{ kestra.environment }}` — Returns the name given to your environment. This value should be configured in the [Kestra configuration](../../docs/configuration/index.mdx).
+- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the [Kestra configuration](../../docs/configuration/index.mdx).
 
 
 ## Thanks to Our Contributors
@@ -389,4 +390,3 @@ This post covered new features and enhancements added in Kestra 0.22.0. Which of
 If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
-

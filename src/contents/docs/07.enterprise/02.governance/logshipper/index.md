@@ -1,5 +1,7 @@
 ---
-title: Log Shipper for Kestra Enterprise – Centralize Logs
+title: "Log Shipper in Kestra Enterprise: Centralize Logs"
+h1: Export Workflow Logs to Datadog, Splunk, Elastic, and More
+description: Centralize monitoring with Kestra Log Shipper. Export workflow and audit logs to Datadog, Splunk, Elastic, AWS S3, and other observability platforms.
 sidebarTitle: Log Shipper
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -16,7 +18,7 @@ Manage and distribute logs across your entire infrastructure.
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
-Log Shipper is built on top of [Kestra plugins](/plugins/), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, and OpenTelemetry.
+Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, and OpenTelemetry.
 
 ## Log shipper properties
 
@@ -73,19 +75,7 @@ The plugin starts by identifying the starting timestamp and checking if the last
 
 The logs are then distributed to the exporters in chunks of 5000, 2000, and 1000 for AWS CloudWatch, Google Suite, and Azure Monitor, respectively. Once the logs are distributed, the offset key in the Key Value store is updated.
 
-```mermaid
-flowchart TD
-    B[Identify starting timestamp] --> C{Last processed log exists?}
-    C -- Yes --> D[Use offsetKey]
-    C -- No --> E["Use now() - lookbackPeriod"]
-    D --> F[Fetch logs from DB]
-    E --> F[Fetch logs from DB]
-    F --> H[Distribute logs to exporters]
-    H -->|Flush in chunks of 5000| I1[AWS CloudWatch]
-    H -->|Flush in chunks of 2000| I2[Google Suite]
-    H -->|Flush in chunks of 1000| I3[Azure Monitor]
-    I1 & I2 & I3 --> K[Update offsetKey in KV]
-```
+![Log Shipper Flow Chart](./logshipper-flow-chart.png)
 
 
 ## Log shipper examples
@@ -472,6 +462,32 @@ tasks:
         otlpEndpoint: http://otel-collector:4318/v1/logs
         authorizationHeaderName: Authorization
         authorizationHeaderValue: "Bearer {{ secret('OTEL_TOKEN') }}"
+```
+
+### Graylog
+
+This example exports logs to [Graylog](https://graylog.org/). The following example flow triggers a daily batch sends logs to Graylog using a GELF HTTP input. Refer to the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for more property details.
+
+```yaml
+ id: log_shipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: GraylogExporter
+        type: io.kestra.plugin.ee.graylog.LogExporter
+        endpoint: "http://localhost:12201/gelf"
+        graylogHost: "Kestra"
+        chunk: 1000
 ```
 
 ## Audit log shipper

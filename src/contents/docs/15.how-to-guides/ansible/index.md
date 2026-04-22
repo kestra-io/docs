@@ -1,12 +1,12 @@
 ---
-title: Check Machine Resources and Tool Versions with Ansible and Kestra
+title: Audit Machines and Tool Versions with Ansible in Kestra
+h1: Use Ansible Playbooks to Check Resources and Automate Updates
 icon: /src/contents/docs/icons/ansiblecli.svg
 stage: Intermediate
+description: Use Ansible playbooks orchestrated by Kestra to audit machine resources, check tool versions, and automate infrastructure updates.
 ---
 
 Run Ansible playbooks from Kestra and coordinate downstream infrastructure tasks.
-
-## Check Machine Resources and Tool Versions with Ansible and Kestra
 
 Ansible is an agentless automation tool that uses YAML playbooks to describe desired state and apply it over SSH or APIs. Teams rely on it to install software, manage configs, update systems, and provision cloud infrastructure.
 
@@ -323,26 +323,28 @@ Make sure Ansible is installed and save the YAML as `system_info.yml`, run it ag
 The diagnostics report captured looks like the following (macOS):
 
 ```json
-"diagnostics": {
-  "disk_usage": [
-    "Filesystem      Size   Used  Avail Capacity iused      ifree %iused  Mounted on",
-    "/dev/disk3s1   466Gi  128Gi  318Gi    29% 1453290 4882459910    0%   /"
-  ],
-  "uptime": "18:42  up 5 days,  7:31, 4 users, load averages: 2.34 2.11 1.98",
-  "top_mem_processes": [
-    "USER         PID  %CPU %MEM      VSZ      RSS   TT  STAT STARTED      TIME COMMAND",
-    "jdoe        4287  23.5  9.8  9876544  823456   ??  R    9:12PM   0:21.43 /Applications/Chrome",
-    "jdoe        1562   7.3  5.4  6453320  455121   ??  S    7:58AM  12:11.01 /usr/bin/python3 myscript.py",
-    "_windowser   991   3.8  3.8  5432100  315789   ??  S    Fri11AM   5:45.22 WindowServer",
-    "root          72   1.2  2.2  4321000  190233   ??  S    Sun09AM   3:12.90 /usr/libexec/trustd",
-    "jdoe        2178   0.9  1.6  3876543  131442   ??  S    Sat08PM   1:03.07 Slack"
-  ]
+{
+  "diagnostics": {
+    "disk_usage": [
+      "Filesystem      Size   Used  Avail Capacity iused      ifree %iused  Mounted on",
+      "/dev/disk3s1   466Gi  128Gi  318Gi    29% 1453290 4882459910    0%   /"
+    ],
+    "uptime": "18:42  up 5 days,  7:31, 4 users, load averages: 2.34 2.11 1.98",
+    "top_mem_processes": [
+      "USER         PID  %CPU %MEM      VSZ      RSS   TT  STAT STARTED      TIME COMMAND",
+      "jdoe        4287  23.5  9.8  9876544  823456   ??  R    9:12PM   0:21.43 /Applications/Chrome",
+      "jdoe        1562   7.3  5.4  6453320  455121   ??  S    7:58AM  12:11.01 /usr/bin/python3 myscript.py",
+      "_windowser   991   3.8  3.8  5432100  315789   ??  S    Fri11AM   5:45.22 WindowServer",
+      "root          72   1.2  2.2  4321000  190233   ??  S    Sun09AM   3:12.90 /usr/libexec/trustd",
+      "jdoe        2178   0.9  1.6  3876543  131442   ??  S    Sat08PM   1:03.07 Slack"
+    ]
+  }
 }
 ```
 
 And the machine information outputs the follwing for local macOS machine:
 
-```json
+```plaintext
 TASK [Show basic system summary] *************************************************************************************************************************************
 ok: [localhost] => {
     "msg": [
@@ -380,7 +382,7 @@ tasks:
       - ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Or, keep the playbook as a [Namespace File](../../05.concepts/02.namespace-files.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli).
+Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files/index.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli).
 
 ![Namespace Files](./flow-namespace-files.png)
 
@@ -441,11 +443,11 @@ The `upload_output_to_s3` task pushes the generated JSON to S3 using secrets for
 
 ### Add a Slack notification
 
-To include a separate notification to the relevant channels, add the [Slack Incoming Webhook task](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook) after the upload with a message alerting that "Machine X" had outdated software and patched an upgrade. You can swap Slack for any other notifier in the Plugin catalog or chain multiple notifications if needed:
+To include a separate notification to the relevant channels, add the [Slack Incoming Webhook task](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook) after the upload with a message alerting that "Machine X" had outdated software and patched an upgrade. You can swap Slack for any other notifier in the Plugin catalog or chain multiple notifications if needed:
 
 ```yaml
   - id: slack_notification
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "Machine `{{ flow.id }}` had outdated Python and an upgrade took place during execution `{{ execution.id }}`. Report available at S3: `{{ outputs.upload_output_to_s3.key }}`"
 ```

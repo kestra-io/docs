@@ -1,0 +1,139 @@
+---
+import type { HTMLAttributes } from "astro/types"
+
+interface Props extends HTMLAttributes<"section"> {
+    title?: string
+    subtitle?: string
+    subtitleHtml?: string
+    subtitleBefore?: string
+    subtitleAfter?: string
+    baseline?: string
+    animation?: boolean
+}
+
+const {
+    title,
+    subtitle,
+    subtitleHtml,
+    subtitleBefore,
+    subtitleAfter,
+    baseline,
+    animation = true,
+    class: className,
+    ...attrs
+} = Astro.props
+
+const animationType = (type: string) => (animation ? type : "")
+---
+
+<section class={className} {...attrs}>
+    {
+        subtitle && (
+            <div class="subtitle" data-usal={animationType("fade-r")}>
+                <p>
+                    {subtitleBefore && <span>{subtitleBefore}</span>}
+                    {subtitle}
+                    {subtitleAfter && <span>{subtitleAfter}</span>}
+                </p>
+            </div>
+        )
+    }
+    {
+        subtitleHtml && (
+            <div
+                class="subtitle"
+                data-usal={animationType("fade-r")}
+                set:html={subtitleHtml}
+            />
+        )
+    }
+    {title && <h2 data-usal={animationType("fade-l")}>{title}</h2>}
+    {
+        baseline && (
+            <p class="baseline" data-usal={animationType("fade-r")}>
+                {baseline}
+            </p>
+        )
+    }
+    <div class="main">
+        <slot />
+    </div>
+</section>
+
+<style lang="scss">
+    section {
+        padding: calc($spacer * 4) 0;
+
+        &.with-shadow {
+            text-align: center;
+        }
+
+        div.subtitle {
+            text-align: center;
+            margin: 0 auto calc($spacer / 2);
+
+            p {
+                color: var(--ks-content-primary);
+                text-align: center;
+                font-size: $font-size-4xl;
+                font-weight: 600;
+                line-height: calc($spacer * 2);
+
+                @include media-breakpoint-down(sm) {
+                    font-size: $font-size-2xl;
+                }
+            }
+        }
+
+        &.dark {
+            div.subtitle {
+                p {
+                    color: var(--ks-content-primary);
+                }
+            }
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+
+        div.main {
+            padding-top: calc($spacer * 3);
+            @include media-breakpoint-down(sm) {
+                padding-top: calc($spacer * 1);
+            }
+        }
+
+        p.baseline {
+            color: var(--ks-content-primary);
+            text-align: center;
+            font-size: 1.15rem;
+            max-width: $baseline-max-width;
+            margin: $spacer auto 0;
+
+            @include media-breakpoint-down(sm) {
+                font-size: $font-size-md;
+            }
+        }
+
+        :global(p.overline) {
+            font-size: $font-size-sm;
+            text-transform: uppercase;
+            color: var(--ks-content-primary);
+            font-family: var(--bs-font-monospace);
+            font-weight: 700;
+            &:after {
+                content: "";
+                position: absolute;
+                margin-top: calc($font-size-sm / 1.5);
+                margin-left: $spacer;
+                display: inline-block;
+                height: 2px;
+                width: 51px;
+                background: var(--bs-pink);
+            }
+        }
+    }
+</style>

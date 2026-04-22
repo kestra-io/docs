@@ -1,5 +1,7 @@
 ---
 title: Task Retries in Kestra – Handle Transient Failures
+h1: Configure Retry Strategies for Transient Task Failures
+description: Configure Retries in Kestra to handle transient failures. Learn about constant, exponential, and random retry strategies for tasks and flows.
 sidebarTitle: Retries
 icon: /src/contents/docs/icons/flow.svg
 ---

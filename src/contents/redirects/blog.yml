@@ -1,0 +1,2 @@
+- regexp: "/blog/(.*)"
+  to: "/blogs/$1"

@@ -1,14 +1,14 @@
 ---
-title: Conditional Branching
+title: Add Conditional Branching in Kestra
+h1: Direct Execution Paths Using the Switch Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Concepts
+description: Master conditional branching in Kestra workflows using the Switch task to direct execution paths based on dynamic input values.
 ---
 
 How to use the Switch task to branch the flow based on a value.
-
-## Conditional Branching
 
 Conditional branching is a process in which the execution of a task is directed along different paths based on specific values. In a flow, it allows for decision-making, where different tasks are executed depending on the value provided.
 
@@ -148,5 +148,5 @@ Within the flow:
 
 You have implemented conditional branching with the `Switch` task using the `switch` flow to check your input strings and `kestra-http-switch` flow to check Kestra’s website status.  The `Switch` task can further be implemented in various use cases to support your flows. Further resources about the `Switch` task:
 
-- [Kestra’s official Switch task plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.switch)
-- [Kestra’s Blueprint Switch task use cases](/blueprints?page=1&size=24&q=switch)
+- [Kestra’s official Switch task plugin documentation](/plugins/core/flow/io.kestra.plugin.core.flow.switch)
+- [Kestra’s Blueprint Switch task use cases](/blueprints/switch)

@@ -1,0 +1,274 @@
+title: "IBM Workload Automation vs Kestra for Enterprise Workload Scheduling"
+description: "Compare Kestra vs IBM Workload Automation (formerly Tivoli Workload Scheduler): Open-source, event-driven orchestration in YAML vs. agent-based enterprise job scheduling with proprietary licensing. See features, setup, and migration path."
+competitorName: IBM Workload Automation
+category: Infrastructure Automation
+shortDescription: "Agent-based enterprise job scheduling vs. open-source, event-driven orchestration in YAML."
+
+brandColor:
+  color: "#1f70c1"
+
+intro:
+  title: "Kestra vs. IBM Workload Automation: Modern Orchestration vs. Legacy Enterprise Scheduling"
+  description: "IBM Workload Automation centralizes batch scheduling behind a multi-component infrastructure and an operations team. Kestra lets any engineer build and ship workflows in YAML. No agents, no proprietary licensing, no weeks-long deployments."
+
+philosophy:
+  mainTitle: Two Eras of Orchestration
+  kestra:
+    title: "Developer Self-Service Orchestration"
+    description: "Declarative YAML workflows versioned in Git, executed in isolated containers, deployed through CI/CD. Existing scripts, ETL jobs, and batch processes run as-is. Any engineer can build and ship workflows without filing a ticket. No ops team in the critical path."
+    subCardText: '"How do we let every team build and ship workflows without a central automation team slowing them down?"'
+  competitor:
+    title: Centralized Enterprise Job Scheduling
+    description: "Enterprise batch scheduler built around a Master Domain Manager, Backup Domain Manager, and agents deployed on every target host. Jobs are defined through the Dynamic Workload Console or command line, scheduled through the engine, and executed by Fault-Tolerant or Dynamic Agents. Changes flow through the operations team."
+    shadowColor: "#1f70c1"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do we schedule and monitor batch jobs across our mainframe, distributed, and cloud systems from a single console?"'
+
+businessValue:
+  mainTitle: "Developer Self-Service vs. Agent-Based Central Scheduling"
+  kestra:
+    title: Self-Service Automation
+    list:
+      - "Data pipelines, infrastructure automation, business processes, and AI workflows"
+      - "Any engineer ships workflows in YAML through Git and CI/CD"
+      - "Event-driven at core: react to real events, not just batch schedules"
+      - "Open source with 1200+ plugins, no per-job licensing, and transparent pricing"
+      - "Self-service for non-engineers via Kestra Apps"
+  competitor:
+    title: Centralized Batch Scheduling
+    list:
+      - "Batch workload scheduling across z/OS mainframe, distributed, and cloud environments"
+      - "Central ops team defines and manages jobs through the Dynamic Workload Console"
+      - "Schedule-first architecture with deep mainframe integration"
+      - "Proprietary IBM licensing tied to processor value units (PVUs)"
+      - "Complex multi-component installation requiring dedicated infrastructure team"
+    shadowColor: "#1f70c1"
+    bulletColor: "#1f70c1"
+  footerText: "IBM Workload Automation fits organizations with z/OS mainframe workloads and deep investment in the IBM ecosystem. Kestra is the right choice if you want developers to own their own workflows, need event-driven automation beyond batch scheduling, or need to orchestrate across legacy and modern systems without routing everything through a centralized operations team."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "IBM Workload Automation requires installing a Master Domain Manager, a Backup Domain Manager, a database (Db2 or Oracle), and agents on each target host, then configuring connectivity and security between all components. Kestra's single Docker Compose command stands up everything in a format that's already production-shaped."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "Weeks to"
+      two: Months
+    description: "Production deployment requires installing the Master Domain Manager (MDM), optionally a Backup Domain Manager (BDM), a supported database (Db2 or Oracle), and Fault-Tolerant or Dynamic Agents on every target host. Configuration involves network connectivity, security certificates, agent-engine pairing, and user role setup through the Dynamic Workload Console."
+    shadowColor: "#1f70c1"
+    command: |
+      # 1. Provision supported database (Db2 or Oracle)
+      # 2. Install Master Domain Manager (MDM)
+      # 3. Install Backup Domain Manager (BDM) for HA
+      # 4. Install Dynamic Workload Console (monitoring UI)
+      # 5. Install Fault-Tolerant Agents on each target host
+      # 6. Configure agent-engine connectivity and certificates
+      # 7. Set up user roles and security policies
+      # 8. Define job streams and scheduling plans
+
+      # For z/OS: install IWA z/OS controller + tracker agents
+      # For cloud: configure Dynamic Agents on cloud VMs
+    lang: sh
+
+easeOfUse:
+  title: YAML Anyone Can Read vs. Proprietary Job Definitions
+  kestra:
+    title: "Kestra: Any engineer, any language"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Engineers deploy through Git, same as application code."
+    code: |
+      id: batch_processing
+      namespace: finance.batch
+
+      inputs:
+        - id: run_date
+          type: DATE
+        - id: region
+          type: SELECT
+          values: [NA, EMEA, APAC]
+
+      tasks:
+        - id: extract
+          type: io.kestra.plugin.jdbc.db2.Query
+          sql: |
+            SELECT * FROM transactions
+            WHERE region = '{{ inputs.region }}'
+            AND process_date = '{{ inputs.run_date }}'
+
+        - id: transform
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            import pandas as pd
+            df = pd.read_csv("{{ outputs.extract.uri }}")
+            df['status'] = 'processed'
+            df.to_csv("{{ outputDir }}/batch_output.csv")
+
+        - id: load
+          type: io.kestra.plugin.gcp.bigquery.Load
+          from: "{{ outputs.transform.outputFiles['batch_output.csv'] }}"
+          destinationTable: "warehouse.fact_transactions"
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          payload: |
+            {"text": "Batch processing complete for {{ inputs.region }}"}
+    lang: yaml
+  competitor:
+    title: "IBM WA: Job definitions in proprietary format"
+    description: "Jobs are defined through the Dynamic Workload Console GUI or via the composer command-line interface using IBM's proprietary job definition language (JSDL). Job streams group related jobs with dependencies, time restrictions, and resource requirements. Modifying scheduling logic typically requires the operations team and familiarity with IBM-specific concepts like workstations, job streams, and scheduling plans."
+    shadowColor: "#1f70c1"
+    code: |
+      # IBM WA job stream definition (composer CLI syntax)
+      # Requires Master Domain Manager running + agents installed
+
+      SCHEDULE FINANCE#BATCH_PROCESSING
+        ON RUNCYCLE RULE1 "FREQ=DAILY"
+        :
+        FINANCE#EXTRACT_DATA
+          SCRIPTNAME "/opt/scripts/extract.sh"
+          STREAMLOGON finance_user
+          DESCRIPTION "Extract transactions from Db2"
+          RECOVERY STOP
+        END
+
+        FINANCE#TRANSFORM_DATA
+          SCRIPTNAME "/opt/scripts/transform.py"
+          STREAMLOGON finance_user
+          DESCRIPTION "Transform and validate data"
+          FOLLOWS FINANCE#EXTRACT_DATA
+          RECOVERY STOP
+        END
+
+        FINANCE#LOAD_DATA
+          SCRIPTNAME "/opt/scripts/load.sh"
+          STREAMLOGON finance_user
+          DESCRIPTION "Load into data warehouse"
+          FOLLOWS FINANCE#TRANSFORM_DATA
+          RECOVERY STOP
+        END
+      END
+    lang: sh
+
+visualPreview:
+  mainTitle: Open Platform vs. Proprietary Lock-In
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from a single open-source platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
+  competitor:
+    description: "Enterprise batch workload automation across z/OS mainframe, distributed, and cloud environments. Deep integration with the IBM ecosystem including MQ, Db2, and Cloud Pak for Business Automation. Agent-based architecture with proprietary IBM licensing tied to processor value units."
+    shadowColor: "#1f70c1"
+
+featureGrid:
+  title: Kestra vs. IBM Workload Automation at a Glance
+  tableData:
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: "GUI (Dynamic Workload Console) or composer CLI"
+    - feature: Architecture
+      kestra: Event-driven at core
+      competitor: "Schedule-first with agent-based execution"
+    - feature: Deployment model
+      kestra: "Single Docker Compose (self-hosted or Kestra Cloud)"
+      competitor: "Master Domain Manager + Backup Domain Manager + Agents on each host"
+    - feature: Licensing
+      kestra: "Open source (Enterprise tier available)"
+      competitor: "Proprietary (IBM PVU-based licensing)"
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, R, Bash, Go, Node.js)"
+      competitor: "Shell scripts, Python, SQL via job types"
+    - feature: Self-service for developers
+      kestra: "Engineers build and deploy via Git"
+      competitor: "Ops-mediated through Dynamic Workload Console"
+    - feature: Self-service for non-engineers
+      kestra: "Kestra Apps"
+      competitor: "Console for monitoring, not self-service triggers"
+    - feature: Mainframe support
+      kestra: "Not a primary use case"
+      competitor: "Native z/OS job scheduling with JCL support"
+    - feature: IBM ecosystem integration
+      kestra: "Via plugins (JDBC, MQ, cloud providers)"
+      competitor: "Native integration with MQ, Db2, Cloud Pak, SAP"
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation + RBAC out-of-box"
+      competitor: "Workstation-based access control (complex multi-tenant setup)"
+    - feature: Time to production
+      kestra: "Minutes (Docker Compose)"
+      competitor: "Weeks to months (multi-component install)"
+
+testimonials:
+  - quote: "Moving from a legacy runbook tool to Kestra was transformative. We went from managing Java application servers and content packs to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
+    author: "IT Automation Architect @ Global Financial Services Firm"
+    kpis:
+      - value: "80%"
+        name: "Reduction in automation lead time"
+      - value: "0"
+        name: "Java app servers to maintain"
+      - value: "10x"
+        name: "More workflows automated"
+    storyLink: "/use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+
+platformStrengths:
+  title: Kestra Is Built for How Modern Teams Work
+  features:
+    - title: No agents, no ops tickets
+      description: "IBM Workload Automation requires installing and maintaining Fault-Tolerant or Dynamic Agents on every target host, with changes routed through a central operations team. Kestra runs tasks in isolated Docker containers. Engineers deploy through Git and CI/CD, the same way they deploy application code."
+    - title: Open source, transparent pricing
+      description: "Kestra's open-source core is free with 1200+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-job metering. IBM Workload Automation uses proprietary PVU-based licensing, and costs scale with the number of processors running the Master Domain Manager, agents, and connected systems."
+    - title: Event-driven, not just batch
+      description: "Kestra was built event-driven from the start: webhooks, S3 uploads, Kafka messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows in open source. IBM Workload Automation is fundamentally a batch scheduler. While it supports file-based and event-driven triggers, the core architecture is built around scheduling plans, run cycles, and time-based job dependencies."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You want developers to build and ship workflows themselves, not file tickets with a central automation team."
+      - "You need event-driven orchestration that reacts to real-time events, not just cron and batch schedules."
+      - "You want to deploy in minutes with Docker, not spend weeks installing multi-component infrastructure."
+      - "Open source and transparent pricing matter. No PVU licensing, no proprietary lock-in."
+      - "Non-engineers need to trigger and monitor workflows without learning a specialized console."
+  competitor:
+    title: Choose IBM Workload Automation When
+    list:
+      - "You have z/OS mainframe workloads that need scheduling alongside distributed and cloud jobs."
+      - "Your organization is deeply invested in the IBM ecosystem (MQ, Db2, Cloud Pak) and needs native integration."
+      - "A centralized operations team manages all automation and you need a single console across mainframe and distributed."
+      - "You need JCL-based mainframe job scheduling tightly coupled with your batch processing."
+      - "Regulatory requirements mandate IBM-certified infrastructure with IBM support contracts."
+    shadowColor: "#1f70c1"
+    bulletColor: "#1f70c1"
+
+commonQuestions:
+  - question: How hard is it to migrate from IBM Workload Automation to Kestra?
+    answer: "Kestra doesn't require you to rewrite your business logic. Shell scripts, Python code, SQL queries, and file transfer operations work as-is in Kestra's Script and plugin tasks. The migration is mostly about translating IBM WA job definitions and job streams into Kestra's YAML format and replacing agent-based execution with containerized tasks. Most teams start new workflows in Kestra and migrate existing jobs incrementally, leaving mainframe workloads on IBM WA."
+  - question: We have thousands of IBM WA jobs. Is incremental migration realistic?
+    answer: "Yes. Kestra and IBM Workload Automation can run side by side. Start by building new workflows in Kestra while existing IBM WA jobs continue running. Migrate jobs in batches, starting with the simplest distributed workloads. Kestra's webhook and API triggers can bridge the two systems during the transition, letting IBM WA trigger Kestra workflows or vice versa. Many organizations keep IBM WA only for mainframe jobs and move everything else to Kestra."
+  - question: IBM Workload Automation has native z/OS mainframe support. Does Kestra?
+    answer: "Kestra is not designed for z/OS mainframe job scheduling. If you have significant mainframe workloads with JCL jobs, IBM Workload Automation or a dedicated mainframe scheduler is the right tool for that layer. However, many organizations use Kestra for everything except mainframe, reducing their IBM WA footprint and licensing costs to only where mainframe integration is truly needed."
+  - question: How does Kestra's pricing compare to IBM Workload Automation?
+    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-job metering. IBM Workload Automation uses PVU-based licensing where costs scale with the number of processors running the Master Domain Manager, agents, and connected systems. Enterprise pricing requires engaging IBM sales."
+  - question: Does Kestra support the same integrations as IBM Workload Automation?
+    answer: "Kestra's 1200+ plugin library covers cloud providers (AWS, Azure, GCP), data warehouses (Snowflake, BigQuery, Databricks), databases, message queues (Kafka, RabbitMQ, Pulsar), and CI/CD tools. IBM WA has native connectors for z/OS, IBM MQ, Db2, SAP, and PeopleSoft that Kestra doesn't replicate directly. For cloud-native and data platform integrations, both tools cover the same ground. The gap is primarily in mainframe and IBM-specific ecosystem integrations."
+  - question: How does Kestra handle access control compared to IBM Workload Automation?
+    answer: "Kestra provides namespace isolation with RBAC, SSO/SAML, audit logs for every execution, and secrets management integration with AWS Secrets Manager, HashiCorp Vault, and Azure Key Vault. IBM WA offers role-based access through the Dynamic Workload Console and workstation-level security, but multi-tenancy requires complex configuration across the Master Domain Manager, domains, and agents. Kestra's governance model is built into the platform rather than layered across distributed components."
+  - question: What is the Dynamic Workload Console, and does Kestra have an equivalent?
+    answer: "The Dynamic Workload Console is IBM WA's web-based monitoring and management interface for viewing job status, managing schedules, and handling exceptions. Kestra's built-in UI serves a similar purpose but goes further: it includes a visual workflow editor, real-time execution monitoring, log inspection, embedded documentation, and an AI Copilot for building workflows. Kestra's UI is also where developers author workflows, not just where operators monitor them."
+  - question: IBM WA supports Fault-Tolerant and Dynamic Agents. Why doesn't Kestra need agents?
+    answer: "IBM WA's agent architecture (Fault-Tolerant Agents for persistent connections, Dynamic Agents for on-demand provisioning) was designed for an era when distributed execution required permanent software installations on target hosts. Kestra uses Docker containers for task execution: each task runs in an isolated container that spins up on demand and tears down when complete. No agent software to install, patch, or maintain on target hosts. This eliminates agent sprawl and reduces operational overhead."
+  - question: We use IBM WA as part of IBM Cloud Pak for Business Automation. Can Kestra replace that?
+    answer: "IBM Cloud Pak for Business Automation bundles IBM WA with other IBM automation products (Business Automation Workflow, Operational Decision Manager, etc.). Kestra replaces the workload orchestration layer but is not a direct replacement for IBM's business process management or decision management tools. If your primary need is job scheduling and workflow orchestration, Kestra covers that. If you rely heavily on IBM's BPM or ODM capabilities, those are separate concerns."
+  - question: How does Kestra's event-driven architecture compare to IBM WA's?
+    answer: "IBM Workload Automation supports file-based triggers and some event-driven capabilities, but its core architecture is built around scheduling plans, run cycles, and time-based dependencies. Kestra was event-driven from the start: webhooks, S3 and GCS uploads, Kafka and Pulsar messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows are available in the open-source version, with no execution caps or licensing overhead."
+  - question: Can we replace IBM Workload Automation with cron or Ansible instead of Kestra?
+    answer: "Teams sometimes reach for cron jobs or config management tools as an IBM WA replacement because they're already in the stack. These tools lack workflow orchestration fundamentals: event-driven triggers, DAG-based dependency management, retries with backoff, real-time execution monitoring, and cross-job observability. The result is usually cron jobs wrapped around scripts with no visibility into failures. Kestra is purpose-built for orchestration and can call Ansible playbooks or Terraform plans as tasks within a workflow."

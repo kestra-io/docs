@@ -5,6 +5,7 @@ date: 2025-06-17T17:00:00
 category: News & Product Updates
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: bpimpaud
 image: ./main.jpg
 ---
@@ -103,7 +104,7 @@ tasks:
     condition: "{{ outputs.http_request.code != 200 }}"
     then:
       - id: server_unreachable_alert
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ inputs.slack_webhook_uri }}"
         payload: |
           {
@@ -167,7 +168,7 @@ Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage
 
 By default, all flow outputs are stored in the shared metadata database. With this new configuration, you can isolate outputs for each tenant or namespace, making sure that sensitive data is not accessible outside its intended scope.
 
-To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your [Kestra configuration](../../docs/configuration/index.md) file:
+To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your [Kestra configuration](../../docs/configuration/index.mdx) file:
 
 ```yaml
 kestra:
@@ -686,7 +687,7 @@ With this release, we've taken the opportunity to introduce several important br
 :::alert{type="warning"}
 Tenant is now required; `defaultTenant` (null tenant) is no longer supported. Kestra now always requires a tenant context in both OSS and Enterprise editions. A migration is required to upgrade to 0.23:
 - [Open Source](../../docs/11.migration-guide/v0.23.0/tenant-migration-oss/index.md)
-- [Enteprise](../../docs/11.migration-guide/ 0.23.0/tenant-migration-ee/index.md)
+- [Enteprise](../../docs/11.migration-guide/v0.23.0/tenant-migration-ee/index.md)
 :::
 
 **Key changes include:**

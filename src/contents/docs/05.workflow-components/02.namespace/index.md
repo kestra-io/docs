@@ -1,5 +1,7 @@
 ---
 title: Namespaces in Kestra – Organize and Secure Workflows
+h1: Group Flows and Manage Access with Namespaces
+description: Organize your Kestra workflows with Namespaces. Learn to group flows, manage access, and structure your orchestration environment hierarchically.
 sidebarTitle: Namespace
 icon: /src/contents/docs/icons/flow.svg
 docId: namespaces
@@ -58,7 +60,7 @@ Additionally, you can organize your code on a namespace-level using the embedded
 
 ## Namespace tab
 
-In the **Namespaces** tab, you can see all the namespaces associated with the different flows in Kestra.
+In the **Namespaces** tab, you can see all the namespaces associated with the different flows in Kestra. You can also list and filter namespaces from the command line using [`kestractl namespaces list`](../../kestra-cli/kestractl/index.md).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=cEgJHKc6qbIu6kMN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

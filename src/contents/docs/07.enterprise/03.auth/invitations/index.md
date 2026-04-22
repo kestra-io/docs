@@ -1,5 +1,7 @@
 ---
-title: Invitations in Kestra Enterprise – Onboard Users
+title: "Invitations in Kestra Enterprise: Onboard Users"
+h1: Onboard Users by Sending Email Invitations
+description: Onboard users easily with Invitations in Kestra. Manage user access by sending email invitations to join specific tenants or the entire instance.
 sidebarTitle: Invitations
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -17,7 +19,7 @@ Add new users to your Tenant or Instance by using the invitation process.
 
 Administrators can invite users with pre-configured RBAC permissions. Invitations can be emailed directly, and users can set up their accounts upon acceptance.
 
-By default, if the [email server is configured in Kestra EE](../../../configuration/index.md#configuring-a-mail-server), an email with an invitation link is sent. If the email server is not configured, you can manually share the link with invited users.
+By default, if the [email server is configured in Kestra EE](../../../configuration/03.observability-and-networking/index.md), an email with an invitation link is sent. If the email server is not configured, you can manually share the link with invited users.
 
 ## How to Invite Users
 

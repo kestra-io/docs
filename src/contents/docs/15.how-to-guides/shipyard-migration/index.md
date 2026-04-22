@@ -1,14 +1,14 @@
 ---
-title: Migrate from Shipyard
+title: Migrate from Shipyard to Kestra
+h1: Map Shipyard Concepts to Kestra Flows and Tasks
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Best Practices
+description: A comprehensive guide for migrating workflows from Shipyard to Kestra, mapping concepts like Fleets and Vessels to Flows and Tasks.
 ---
 
 Migrate from Shipyard to Kestra.
-
-## Migrate from Shipyard
 
 This is a guide for users who are considering migration of their workflows from [Shipyard](https://www.shipyardapp.com/) to [Kestra](https://kestra.io/).
 

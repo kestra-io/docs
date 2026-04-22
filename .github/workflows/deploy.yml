@@ -15,11 +15,26 @@ concurrency:
 
 permissions:
   pull-requests: write
+  actions: read # download baseline artifact from lighthouse.yml
 
 jobs:
+  truncate-url-slug:
+    name: Truncate URL
+    runs-on: ubuntu-latest
+    outputs:
+      slug: ${{ steps.truncate-url.outputs.slug }}
+    steps:
+      - name: Display branch name
+        run: echo ${GITHUB_HEAD_REF}
+
+      - name: truncate Url
+        id: truncate-url
+        run: echo "slug=ks-$(echo ${GITHUB_HEAD_REF} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')" >> "$GITHUB_OUTPUT"
+
   deploy-workers:
     name: Publish to Cloudflare Workers
     runs-on: ubuntu-latest
+    needs: truncate-url-slug
     env:
       CF_PAGES_BRANCH: ${{ github.ref_name }}
       CF_PAGES_COMMIT_SHA: ${{ github.sha }}
@@ -27,7 +42,7 @@ jobs:
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
-      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }}
+      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
 
     steps:
       - name: Checkout
@@ -41,14 +56,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Lint all files
+        if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
+        run: npm run lint
+
+      - name: Check usage of collection in SSR pages
+        if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
+        run: node scripts/check-astro-content-imports.mjs
+
       - name: Build
         run: npm run build
         env:
           NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
           PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
-
-      - name: Generate slug variables
-        uses: rlespinasse/github-slug-action@v4
 
       - name: Deploy Worker
         id: prod-deploy
@@ -66,7 +86,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --preview-alias="${{ env.GITHUB_REF_NAME_SLUG_URL }}"
+          command: versions upload --preview-alias="${{ needs.truncate-url-slug.outputs.slug }}"
 
       - name: Add comment to PR
         if: ${{ startsWith(github.repository, 'kestra-io/')  && github.event_name == 'pull_request'}}
@@ -75,5 +95,96 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: "☁️ Cloudflare Worker Preview Deployed!"
           template: |
-            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', env.GITHUB_REF_NAME_SLUG_URL) }})
+            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
+
+  lighthouse:
+    name: Lighthouse Benchmark
+    if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request' }}
+    needs: truncate-url-slug
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
+        env:
+          NO_IMAGE_OPTIM: "true"
+
+      - name: Install Lighthouse
+        # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
+        run: npm install --no-save lighthouse chrome-launcher
+
+      - name: Start local dev server
+        # wrangler dev serves the built Workers bundle locally via Miniflare —
+        # no Cloudflare credentials required, no network access needed.
+        run: npx wrangler dev --local &
+
+      - name: Wait for dev server to be ready
+        run: |
+          echo "Waiting for http://localhost:8787…"
+          for i in $(seq 1 24); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8787 || true)
+            if [ "$STATUS" = "200" ]; then
+              echo "Server is ready (HTTP 200)."
+              exit 0
+            fi
+            echo "  Attempt $i/24: HTTP $STATUS — retrying in 5 s…"
+            sleep 5
+          done
+          echo "Warning: server did not return 200 after 2 min; running Lighthouse anyway."
+
+      # Try to download the latest baseline artifact saved after a main-branch deploy.
+      # If none exists yet (first run after setup), this step is skipped silently.
+      - name: Download main branch baseline
+        id: baseline
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          workflow: lighthouse.yml
+          branch: main
+          name: lighthouse-baseline
+          path: baseline/
+
+      - name: Run Lighthouse benchmark
+        run: node scripts/lighthouse-benchmark.mjs
+        env:
+          BASE_URL: http://localhost:8787
+          BASE_URL_OUTPUT: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
+          OUTPUT_FILE: lighthouse-results.json
+          BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
+          MARKDOWN_FILE: lighthouse-report.md
+
+      - name: Read Lighthouse report
+        id: report
+        run: |
+          {
+            echo "content<<LIGHTHOUSE_REPORT_DELIMITER"
+            cat lighthouse-report.md
+            printf '\n'
+            echo "LIGHTHOUSE_REPORT_DELIMITER"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        uses: kestra-io/actions/actions/comment-update@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          title: "## 🔦 Lighthouse Benchmark"
+          template: ${{ steps.report.outputs.content }}
+
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-results
+          path: lighthouse-results.json
+          retention-days: 30

@@ -1,5 +1,7 @@
 ---
-title: Alerting and Monitoring Kestra – Best Practices
+title: "Kestra Monitoring: Prometheus, Alerts, and Health Checks"
+h1: Set up alerts and monitor your Kestra instance in production
+description: Monitor and alert on Kestra health. Best practices for setting up Prometheus metrics, health checks, and failure notifications for your instance.
 sidebarTitle: Alerting & Monitoring
 icon: /src/contents/docs/icons/admin.svg
 ---
@@ -10,9 +12,9 @@ This page provides best practices for setting up alerting and monitoring in your
 
 Failure alerts are essential. When a production workflow fails, you should be notified immediately. To implement failure alerting, you can use Kestra’s built-in notification tasks, such as:
 
-- [Slack](/plugins/plugin-slack/io.kestra.plugin.slack.slackexecution)
-- [Microsoft Teams](/plugins/plugin-teams/io.kestra.plugin.teams.teamsexecution)
-- [Email](/plugins/plugin-mail/io.kestra.plugin.mail.mailexecution)
+- [Slack](/plugins/plugin-slack)
+- [Microsoft Teams](/plugins/plugin-teams)
+- [Email](/plugins/plugin-mail)
 
 
 Technically, you can add custom failure alerts to each flow separately using the `errors` tasks:
@@ -27,7 +29,7 @@ tasks:
 
 errors:
   - id: slack
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: "Failure alert for flow `{{ flow.namespace }}.{{ flow.id }}` with ID `{{ execution.id }}`. Here is a bit more context about why the execution failed: `{{ errorLogs() }}`"
 ```
@@ -42,7 +44,7 @@ namespace: company.monitoring
 
 tasks:
   - id: send
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -65,14 +67,14 @@ Adding this single flow will ensure that you receive a Slack alert on any flow f
 ![alert notification](../../03.tutorial/06.errors/alert-notification.png)
 
 :::alert{type="warning"}
-Note that if you want this alert to be sent on failure across multiple namespaces, you will need to add an ``OrCondition`` to the ``conditions`` list. See the example below:
+Note that if you want this alert to be sent on failure across multiple namespaces, you will need to add an `OrCondition` to the `conditions` list. See the example below:
 ```yaml
 id: alert
 namespace: company.system
 
 tasks:
   - id: send
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -105,7 +107,7 @@ description: This example will not work
 
 tasks:
   - id: send
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -130,7 +132,7 @@ Here, there's no overlap between the two conditions. The first condition will on
 
 ## Monitoring
 
-Kestra exposes a monitoring endpoint on port 8081 by default. You can change this port using the `endpoints.all.port` property in the [configuration options](../../configuration/index.md).
+Kestra exposes a monitoring endpoint on port 8081 by default. You can change this port using the `endpoints.all.port` property in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 This monitoring endpoint provides invaluable information for troubleshooting and monitoring, including Prometheus metrics and several Kestra's internal routes. For instance, the `/health` endpoint exposed by default on port 8081 (e.g., http://localhost:8081/health) generates a similar response as shown below as long as your Kestra instance is healthy:
 
@@ -193,7 +195,7 @@ For a complete list of available metrics, refer to the [Prometheus metrics page]
 
 You can leverage Kestra's internal metrics to configure custom alerts. Each metric provides multiple time series with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
 
-Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [configuration options](../../configuration/index.md#metrics).
+Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 Each task type can expose custom metrics that will be also exposed on Prometheus.
 
@@ -269,7 +271,7 @@ Check out the [Micronaut documentation](https://micronaut-projects.github.io/mic
 
 Kestra uses Elasticsearch to store all executions and metrics. Therefore, you can easily create a dashboard with [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) to monitor the health of your Kestra instance.
 
-We'd love to see what dashboards you will build. Feel free to share a screenshot or a template of your dashboard with [the community](/slack). Meanwhile, here is an example of a Grafana dashboard that we use internally to monitor Kestra - feel free to use it as a starting point for your own dashboard:
+We'd love to see what dashboards you will build. Feel free to share a screenshot or a template of your dashboard with [the community](/slack). Meanwhile, here is an example of a Grafana dashboard that we use internally to monitor Kestra. Feel free to use it as a starting point for your own dashboard:
 
 ![grafana](./grafana.png)
 

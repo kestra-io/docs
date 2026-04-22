@@ -1,0 +1,124 @@
+---
+import { Image } from "astro:assets"
+
+export interface BlogPost {
+    path: string
+    image?: ImageMetadata
+    title: string
+    date: string
+    category?: string
+    plugins?: string[]
+}
+
+interface Props {
+    posts: BlogPost[]
+    title: string
+    headingId?: string
+}
+
+const { posts, title, headingId } = Astro.props
+
+const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "long",
+})
+---
+
+<div>
+    <h2 id={headingId}>{title}</h2>
+    <div class="list-of-posts">
+        {
+            posts.map((post, index) => (
+                <>
+                    {index > 0 && <hr />}
+                    <a href={post.path} class="post-card">
+                        {post.image && (
+                            <Image
+                                src={post.image}
+                                class="card-img-left"
+                                alt={post.title}
+                            />
+                        )}
+                        <div class="card-body">
+                            <div class="card-details">
+                                <span class="card-category">
+                                    {post.category}
+                                </span>
+                                <span class="card-date">
+                                    {dateTimeFormat.format(new Date(post.date))}
+                                </span>
+                            </div>
+                            <p class="card-title">{post.title}</p>
+                        </div>
+                    </a>
+                </>
+            ))
+        }
+    </div>
+</div>
+
+<style lang="scss">
+    h2 {
+        font-size: 1.25rem;
+        padding: 0;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+
+    .list-of-posts {
+        hr {
+            width: 100%;
+            border: none;
+            border-top: $block-border;
+            margin: 0;
+        }
+
+        .post-card {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            // compensate the padding to get alignment with title
+            margin-left: -0.5rem;
+
+            &:hover {
+                background-color: var(--ks-background-secondary);
+                .card-title {
+                    color: var(--ks-content-secondary);
+                }
+            }
+
+            .card-img-left {
+                width: 125px;
+                height: 70px;
+                object-fit: cover;
+                border-radius: 0.25rem;
+                border: 1px solid var(--ks-border-secondary);
+            }
+
+            .card-body {
+                display: flex;
+                flex-direction: column;
+
+                .card-details {
+                    font-size: $font-size-xs;
+
+                    .card-category {
+                        color: var(--ks-content-link);
+                        margin-right: 1rem;
+                    }
+
+                    .card-date {
+                        color: var(--ks-content-tertiary);
+                    }
+                }
+
+                .card-title {
+                    font-size: $font-size-sm;
+                    font-weight: normal;
+                    margin: 0;
+                }
+            }
+        }
+    }
+</style>

@@ -1,6 +1,8 @@
 ---
-title: Build and Publish a Plugin
+title: Build and Publish a Kestra Plugin
+h1: How to Build and Publish Your Kestra Plugin to Maven Central
 icon: /src/contents/docs/icons/dev.svg
+description: Learn how to build and publish your Kestra plugins to Maven Central using Gradle and GitHub Actions.
 ---
 
 Use the included Gradle task to build the plugin. Then, you can publish it to [Maven Central](https://central.sonatype.com).
@@ -15,17 +17,18 @@ To build your plugin, execute the `./gradlew shadowJar` command from the plugin 
 
 The resulting JAR file will be generated in the `build/libs` directory.
 
-To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../server-cli/index.md#plugin-commands).
+To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../kestra-cli/kestra-server/index.md#plugin-commands).
 
 ### Use a custom docker image with your plugin
 
 Adding this `Dockerfile` to the root of your plugin project:
 
-```
+```dockerfile
 FROM kestra/kestra:develop
 
 COPY build/libs/* /app/plugins/
 ```
+
 You can build and run the image with the following command, assuming you're in the root directory of your plugin:
 `./gradlew shadowJar && docker build -t kestra-custom . && docker run --rm -p 8080:8080 kestra-custom server local`
 
@@ -44,15 +47,13 @@ The template includes a Gradle task that will publish the plugin to Maven Centra
 
 You only need to configure the `gradle.properties` to have all required properties:
 
-```yaml
+```properties
 sonatypeUsername=
 sonatypePassword=
 signing.keyId=
 signing.password=
 signing.secretKeyRingFile=
-
 ```
-
 
 There is a pre-configured GitHub Actions workflow in the `.github/workflows/main.yml` file that you can customize to your need:
 

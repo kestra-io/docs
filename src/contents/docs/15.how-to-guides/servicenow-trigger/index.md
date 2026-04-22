@@ -1,14 +1,14 @@
 ---
-title: Use ServiceNow to Trigger a Kestra Flow
+title: Trigger Kestra Flows from ServiceNow
+h1: Automate ServiceNow Fulfillment via Kestra Webhooks
 icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:
   - Integrations
+description: Integrate ServiceNow with Kestra by triggering flows via webhooks from ServiceNow Service Catalog items for automated fulfillment.
 ---
 
 Execute Kestra flows with a ServiceNow webhook trigger.
-
-## Use ServiceNow to Trigger a Kestra Flow
 
 ServiceNow often acts as the front door for enterprise automation. This guide shows how to let analysts request an on-demand compliance scan from a ServiceNow catalog item while Kestra executes the workflow behind the scenes through a webhook trigger.
 

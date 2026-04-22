@@ -1,8 +1,11 @@
 ---
-title: Version property renamed
+title: Plugin 'version' Property Renamed in Kestra 0.22.0
+h1: Why the 'version' Property Was Renamed in Several Plugins
+sidebarTitle: Plugin version Rename
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["OSS", "EE"]
+description: Renaming of the version property in several plugins to reserve the keyword for Kestra's internal plugin management.
 ---
 
 
@@ -26,7 +29,7 @@ Note that your **custom plugins** will need an equivalent approach of renaming a
 
 Upgrading to Kestra 0.22.0 requires a change in the way plugins are stored and managed. The [plugin versioning system](../../../07.enterprise/05.instance/versioned-plugins/index.md) requires a global internal storage configuration, because plugins are now stored in a global internal storage location. This is true even if you are using a dedicated internal storage backend for each tenant.
 
-Under the hood, plugins are now stored in the [Internal Storage](../../../08.architecture/data-components/index.md#internal-storage) under the path `_plugins/repository/`. Therefore, the service account or credentials you use in your [Internal Storage configuration](../../../configuration/index.md#internal-storage) **must have permissions to access the `_plugins` directory in the global instance internal storage (e.g. your S3 bucket)**. If you are using a service account or an IAM role, make sure that it has access to these resources. Alternatively you can temporarily disable this feature using the following configuration:
+Under the hood, plugins are now stored in the [Internal Storage](../../../08.architecture/data-components/index.md#internal-storage) under the path `_plugins/repository/`. Therefore, the service account or credentials you use in your [Runtime and Storage configuration](../../../configuration/02.runtime-and-storage/index.md) **must have permissions to access the `_plugins` directory in the global instance internal storage (e.g. your S3 bucket)**. If you are using a service account or an IAM role, make sure that it has access to these resources. Alternatively you can temporarily disable this feature using the following configuration:
 
 ```yaml
 kestra:

@@ -1,115 +1,94 @@
 ---
 import Layout from "~/components/layout.astro"
-import Header from "~/components/home/Header.vue"
-import LogosTable from "~/components/home/LogosTable.vue"
-import OpenSource from "~/components/home/OpenSource.vue"
-import OpenSourceQuotes from "~/components/home/OpenSourceQuotes.vue"
-import { $fetchApi } from "~/utils/fetch"
-import Features from "~/components/home/Features.vue"
-import EveryDev from "~/components/home/EveryDev.vue"
-import Experience from "~/components/home/Experience.vue"
-import BlueprintsRender from "~/components/home/BlueprintsRender.vue"
-import Enterprise from "~/components/home/Enterprise.vue"
-import EnterpriseQuotesRender from "~/components/home/EnterpriseQuotesRender.vue"
-import CTA from "~/components/home/CTA.vue"
-import PluginsBox from "~/components/PluginsBox.astro"
-import { getValues } from "./api/github"
-import { getImage } from "astro:assets"
-
-const logosNonRandomized = import.meta.glob(
-    "~/assets/trusted-companies/*.{svg,png}",
-)
-const logos = await Promise.all(
-    Object.entries(logosNonRandomized).map(([filePath, mod]) => {
-        return mod().then((img: any) => {
-            return {
-                name: filePath.split("/").pop()?.split(".").shift(),
-                url: img.default.src,
-            }
-        })
-    }),
-).then((imgs: any) => imgs.toSorted(() => 0.5 - Math.random()))
-
-const githubData = await getValues()
-
-const blueprints = await $fetchApi<{ results: Blueprint[] }>(
-    "/blueprints/versions/latest?page=1&size=20",
-)
-const stories = await $fetchApi<{ results: any[] }>(
-    "/customer-stories-v2?featured=true",
-)
-
-const quotesCompaniesLogos = import.meta.glob(
-    "~/assets/quotes-companies/*.{svg,png}",
-)
-const quotesLogos = (
-    await Promise.all(
-        Object.entries(quotesCompaniesLogos).map(([filePath, mod]) => {
-            return mod().then((img: any) => {
-                return {
-                    name: filePath.split("/").pop(),
-                    url: img.default.src,
-                }
-            })
-        }),
-    )
-).reduce(
-    (acc, curr) => {
-        if (curr.name) {
-            acc[curr.name] = curr.url
-        }
-        return acc
-    },
-    {} as Record<string, string>,
-)
-
-const tabs = [
-    {
-        label: "CI/CD for all your Workflows",
-        image: await getImage({
-            src: import("~/components/home/assets/tabs/cd.png"),
-            width: 1096,
-            height: 590,
-        }),
-    },
-    {
-        label: "No Code, Low Code, Full Code",
-        image: await getImage({
-            src: import("~/components/home/assets/tabs/no-code.png"),
-            width: 1096,
-            height: 590,
-        }),
-    },
-    {
-        label: "Revision History & Rollback",
-        image: await getImage({
-            src: import("~/components/home/assets/tabs/revisions.png"),
-            width: 1096,
-            height: 590,
-        }),
-    },
-    {
-        label: "Alerting & Infrastructure Monitoring",
-        image: await getImage({
-            src: import("~/components/home/assets/tabs/alerting.png"),
-            width: 1096,
-            height: 590,
-        }),
-    },
-]
+import Hero from "~/components/home/Hero.astro"
+import Comparison from "~/components/home/Comparison.astro"
+import Stacked from "~/components/common/Stacked.astro"
+import PlatformOverview from "~/components/home/PlatformOverview.astro"
+import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
+import Testimonial from "~/components/home/Testimonial.astro"
+import Blueprints from "~/components/home/Blueprints.astro"
+import ClosingCTA from "~/components/home/ClosingCTA.astro"
+import GetStarted from "~/components/common/GetStarted.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
 ---
 
-<Layout>
-    <Header client:load />
-    <LogosTable logos={logos} />
-    <OpenSource {...githubData} />
-    <OpenSourceQuotes client:visible />
-    <Features />
-    <EveryDev />
-    <Experience tabs={tabs} client:visible />
-    <PluginsBox />
-    <BlueprintsRender blueprints={blueprints.results} client:visible />
-    <Enterprise stories={stories.results} client:visible />
-    <EnterpriseQuotesRender quotesCompaniesLogos={quotesLogos} client:visible />
-    <CTA client:visible />
+<Layout headerTheme="darkHeader">
+    <div class="home-page">
+        <Hero />
+        <Comparison />
+        <Stacked>
+            <h2 slot="title" id="adopt">
+                Adopt Once.<br />
+                <span>Standardize Everywhere.</span>
+            </h2>
+
+            <div slot="description"></div>
+        </Stacked>
+        <PlatformOverview />
+        <UseCaseGrid />
+        <PluginsBlock>
+            <span slot="title">
+                Work With Your Stack, <br />
+                Not the Other Way Around.
+            </span>
+            <span slot="description">
+                Kestra integrates with your existing cloud, data,
+                infrastructure, and SaaS tools. <br />With 1,200+ plugins, you
+                can orchestrate everything without building custom glue code.
+            </span>
+        </PluginsBlock>
+        <Testimonial />
+        <GetStarted>
+            <h2 slot="heading" id="get-started">
+                Deploy Anywhere. Keep Everything Governed.
+            </h2>
+        </GetStarted>
+        <Blueprints />
+        <ClosingCTA />
+    </div>
 </Layout>
+
+<style lang="scss">
+    /* since the home page will mostly follow its own theme,
+     * we need to define some of the colors here. */
+    .home-page {
+        --hp-background-dark: #0a0b0d;
+        --hp-content-dark: #ffffff;
+        --hp-content-primary: #131316;
+        --hp-background-secondary: #f7f7f7;
+        --hp-content-secondary: #3b3a41;
+        --hp-content-secondary-inverse: #cccbce;
+        --hp-background-tertiary: #7f7f86;
+        --hp-content-tertiary: #94a3b8;
+        --hp-border-primary: #f1f1f1;
+        --hp-border-secondary: #cccbce;
+        --hp-content-color-highlight: #631bff;
+        --hp-background-purple-light: #f1efff;
+        --hp-grid-size: 68px;
+        background-color: var(--hp-background-dark);
+        color: var(--hp-content-dark);
+        overflow: clip;
+    }
+
+    h2 {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        margin-inline: auto;
+        @include media-breakpoint-up(md) {
+            width: 700px;
+        }
+    }
+
+    h2#adopt {
+        color: var(--ks-content-primary);
+        span {
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
+    h2#get-started {
+        color: var(--ks-content-primary-inverse);
+    }
+</style>
+

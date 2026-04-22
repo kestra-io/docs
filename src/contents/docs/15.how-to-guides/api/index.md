@@ -1,14 +1,14 @@
 ---
 title: Extend Kestra with the API
+h1: Create Flows, Trigger Executions, and Manage KV Entries via API
 icon: /src/contents/docs/icons/api.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components
+description: Discover how to extend Kestra by using its API to create flows, trigger executions, manage KV store entries, and handle namespace files.
 ---
 
 Extend Kestra by using the API.
-
-## Extend Kestra with the API
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/uf-b7r_38Zk?si=jytDjFPxqiomcveI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -26,7 +26,7 @@ The docs include references for both the [Open Source](../../api-reference/02.op
 
 ## Making Requests with Authentication
 
-If you have [Basic Auth enabled](../../configuration/index.md#http-basic-authentication) or you’re using the [Enterprise Edition](/enterprise), authenticate each request. With cURL you can pass credentials via `-u username:password`. The example below uses the defaults from the [Kestra Docker Compose](../../02.installation/03.docker-compose/index.md):
+If you have [Basic Auth enabled](../../configuration/05.security-and-secrets/index.md) or you’re using the [Enterprise Edition](/enterprise), authenticate each request. With cURL you can pass credentials via `-u username:password`. The example below uses the defaults from the [Kestra Docker Compose](../../02.installation/03.docker-compose/index.md):
 
 ```bash
 curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8080/api/v1/executions/company.team/hello_world
@@ -82,10 +82,10 @@ The response looks like this:
       {
         "id": "hello",
         "type": "io.kestra.plugin.core.log.Log",
-        "message": "Hello World! \uD83D\uDE80",
-      },
+        "message": "Hello World! \uD83D\uDE80"
+      }
     ],
-  "source": "id: created_by_api\nnamespace: company.team\n\ntasks:\n  - id: hello\n    type: io.kestra.plugin.core.log.Log\n    message: Hello World! \uD83D\uDE80",
+  "source": "id: created_by_api\nnamespace: company.team\n\ntasks:\n  - id: hello\n    type: io.kestra.plugin.core.log.Log\n    message: Hello World! \uD83D\uDE80"
 }
 ```
 
@@ -500,7 +500,7 @@ curl -X GET 'http://localhost:8080/api/v1/main/namespaces/company.team/files?pat
 
 which returns:
 
-```
+```plaintext
 Hello, World!
 ```
 

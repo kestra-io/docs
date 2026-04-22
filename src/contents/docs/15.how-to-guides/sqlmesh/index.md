@@ -1,5 +1,7 @@
 ---
-title: Using SQLMesh to run dbt Projects
+title: Use SQLMesh to Run dbt Projects
+h1: Orchestrate dbt Projects with SQLMesh in Kestra
+description: Orchestrate SQLMesh transformations in Kestra. Run and schedule SQLMesh plans as part of your data pipeline for version-controlled, SQL-first modeling.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -8,8 +10,6 @@ version: ">= 0.18.0"
 ---
 
 Using SQLMesh to run dbt project with Kestra.
-
-## Using SQLMesh to run dbt Projects
 
 SQLMesh is an open source python data transformation and modelling framework. It automates everything needed to run a scalable data transformation platform. SQLMesh works with a variety of [engines and orchestrators](https://sqlmesh.readthedocs.io/en/stable/integrations/overview/).
 
@@ -172,7 +172,7 @@ sources:
 
 Lastly, we will create `stg_orders.sql` which will materialize the `stg_orders` view for the `orders` table.
 
-```
+```sql
 {{ config(materialized="view") }}
 
 select order_id,

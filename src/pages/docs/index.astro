@@ -1,6 +1,6 @@
 ---
 import NavToc from "~/components/docs/NavToc.vue"
-import LayoutDocs from "~/components/layout-docs.astro"
+import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import { getEntry, render } from "astro:content"
 const doc = await getEntry("docs", "<index>")
 if (!doc) {
@@ -14,8 +14,13 @@ const editUrl = doc.filePath
     : undefined
 ---
 
-<LayoutDocs activeStem="/docs" isHomePage>
-    <h1 slot="title" class="py-0 title">{doc.data?.title}</h1>
+<LayoutDocs
+    activeStem="/docs"
+    isHomePage
+    title={doc.data?.title}
+    description={doc.data?.description}
+>
+    <h1 slot="title" class="py-0 title">{doc.data?.h1 ?? doc.data?.title}</h1>
 
     <NavToc
         client:visible
@@ -27,9 +32,10 @@ const editUrl = doc.filePath
         slot="headings"
         class="right-menu"
         {editUrl}
+        markdownBody={doc.body}
     />
 
-    <div class="bd-markdown">
+    <div class="bd-content">
         <Content />
     </div>
 </LayoutDocs>

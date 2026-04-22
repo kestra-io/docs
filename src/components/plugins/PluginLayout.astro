@@ -1,0 +1,89 @@
+---
+
+---
+
+<section class="plugin-details">
+    <div class="container-xxl">
+        <div class="plugin-layout">
+            <aside class="plugin-layout__sidebar">
+                <slot name="sidebar" />
+            </aside>
+            <div class="plugin-layout__content">
+                <slot />
+            </div>
+            <aside class="plugin-layout__aside">
+                <slot name="aside" />
+            </aside>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .plugin-details {
+        padding: $rem-3 $rem-1;
+        inset: 0;
+        z-index: -1;
+        background: var(--ks-background-primary) url("./assets/plugin-grid.svg")
+            no-repeat top center / 1720px auto;
+
+        .container-xxl {
+            width: 100%;
+        }
+
+        .plugin-layout {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+
+            @media (min-width: 1600px) {
+                gap: 132px;
+            }
+
+            @include media-breakpoint-down(xl) {
+                flex-direction: column;
+            }
+
+            &__sidebar {
+                max-width: 210px;
+                width: 100%;
+                flex-shrink: 0;
+                position: sticky;
+                top: calc(6rem + var(--announce-height));
+                align-self: flex-start;
+
+                @include media-breakpoint-down(xl) {
+                    display: none;
+                }
+            }
+
+            &__content {
+                flex: 1;
+                min-width: 0;
+
+                @include media-breakpoint-up(xxl) {
+                    width: 838px;
+                    flex: none;
+                }
+
+                @include media-breakpoint-down(xl) {
+                    width: 100%;
+                }
+            }
+
+            &__aside {
+                max-width: 210px;
+                width: 100%;
+                flex-shrink: 0;
+                position: sticky;
+                top: calc(6rem + var(--announce-height));
+                align-self: flex-start;
+
+                @include media-breakpoint-down(xl) {
+                    max-width: 100%;
+                    position: static;
+                    order: -1;
+                }
+            }
+        }
+    }
+</style>

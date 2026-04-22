@@ -1,16 +1,16 @@
 ---
-title: Run Shell scripts inside of your Flows
+title: Run Shell Scripts Inside Your Flows
+h1: Execute Bash and Shell Commands in Kestra Workflows
+description: Run Bash and shell scripts in Kestra workflows. Execute multi-step commands, chain scripts with pipes, and handle errors in automated shell tasks.
 icon: /src/contents/docs/icons/bash.svg
 stage: Getting Started
 topics:
   - Scripting
 ---
 
-Run Shell scripts directly inside of your Flows and generate outputs.
+Run Shell scripts directly in your flows and generate outputs.
 
-## Run Shell scripts inside of your Flows
-
-You can execute bash script inside of a flow by either writing your Shell commands inline or by executing a `.sh` file. You can get outputs and metrics from your Shell script too.
+You can execute bash script in a flow by either writing your Shell commands inline or by executing a `.sh` file. You can get outputs and metrics from your Shell script too.
 
 ## Scripts
 

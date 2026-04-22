@@ -1,0 +1,596 @@
+---
+import Squared from "~/components/layout/Squared.vue"
+import LogoCarousel from "~/components/common/LogoCarousel.astro"
+
+import Plus from "vue-material-design-icons/Plus.vue"
+import CheckBold from "vue-material-design-icons/CheckBold.vue"
+import ArrowDown from "vue-material-design-icons/ArrowDown.vue"
+
+import awsSVG from "~/assets/enterprise/aws.svg?raw"
+import azureSVG from "~/assets/enterprise/azure.svg?raw"
+import googleSVG from "~/assets/enterprise/google.svg?raw"
+import homeRoofSVG from "~/assets/enterprise/home-roof.svg?raw"
+
+const ENTERPRISE_FEATURES = {
+    "Access & Governance": [
+        "Core Security And Access Control",
+        "LDAP, SCIM & Custom RBAC",
+        "Public/Cloud SSO",
+        "Audit Logs",
+        "Storage Isolation",
+        "Multiple Tenants",
+    ],
+    "Scale & Reliability": [
+        "Worker Groups & Task Runners",
+        "High Concurrency",
+        "Plugin Versioning",
+        "External Log Aggregators",
+        "Internal Secret Manager",
+        "External Secret Manager",
+    ],
+    "Extensibility & AI": [
+        "Enterprise Exclusive Plugins",
+        "AI Copilot with Custom Models",
+        "Custom Apps on Workflows",
+    ],
+}
+
+const ENTERPRISE_EXTRAS = [
+    {
+        text: "Customer Success Program & Enterprise Support with SLA",
+        icon: Plus,
+    },
+    {
+        text: "Run anywhere Cloud, On-Prem, Air-Gapped",
+        icon: Plus,
+        showLogos: true,
+    },
+]
+
+const OS_FEATURES = [
+    "Declarative Workflows",
+    "1,200+ Plugins",
+    "Event-Driven Scheduling",
+    "Business Logic in Any Language",
+    "Everything as Code & From the UI",
+    "Unlimited Flows & Executions",
+]
+
+const CLOUD_PLAN = {
+    name: "Kestra Cloud",
+    subtitle: "Everything in Open Source",
+    features: [
+        {
+            text: "Everything in Open Source",
+            icon: CheckBold,
+        },
+        {
+            text: "Fully Managed Platform (Hosting, Upgrades, Monitoring)",
+            icon: Plus,
+        },
+        { text: "Automatic Scaling", icon: Plus },
+        {
+            text: "Built-in Security and Governance Features",
+            icon: Plus,
+        },
+        {
+            text: "Enterprise Plugins Included",
+            icon: Plus,
+        },
+        {
+            text: "Fast Onboarding and Guided Experience",
+            icon: Plus,
+        },
+        { text: "Zero Maintenance Overhead", icon: Plus },
+        { text: "SOC2 Compliant", icon: Plus },
+    ],
+    button: { text: "Request Access", link: "/cloud-early-access" },
+    footerNote: "Start small, scale instantly, pay only for what you use.",
+}
+---
+
+<Squared>
+    <div class="content">
+        <h1 class="title" data-usal="fade-r">Kestra Pricing</h1>
+    </div>
+</Squared>
+
+<section class="cards-section">
+    <div class="container">
+        <slot name="switcher" />
+
+        <div class="host-wrapper">
+            <div class="self-hosted-view" data-host="self-hosted">
+                <!-- Enterprise Edition Card -->
+                <div class="edition-card enterprise-card">
+                    <div class="edition-header">
+                        <div class="edition-header-left">
+                            <span class="badge enterprise-badge">Enterprise Edition</span>
+                            <h2 class="edition-title" data-usal="fade-r">Built for mission-critical workloads</h2>
+                            <p class="edition-description" data-usal="fade-r delay-10">Operate, govern, and scale workflows across your entire organization</p>
+                        </div>
+                        <div class="edition-header-right" data-usal="fade-l delay-10">
+                            <a href="/demo" class="btn btn-primary">Contact Sales</a>
+                            <div class="subscription-info">
+                                <span class="subscription-label">Annual Subscription</span>
+                                <span class="subscription-detail">Per instance model,<br />unlimited flows/tasks/executions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider" />
+
+                    {Object.entries(ENTERPRISE_FEATURES).map(([category, features]) => (
+                        <div class="feature-category">
+                            <h3 class="category-title">{category}</h3>
+                            <ul class="category-features">
+                                {features.map((feature) => (
+                                    <li data-usal="fade-l delay-20">
+                                        <CheckBold class="icon" />
+                                        <span>{feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+
+                    <div class="divider" />
+
+                    <div class="enterprise-extras">
+                        {ENTERPRISE_EXTRAS.map((extra) => {
+                            const Icon = extra.icon
+                            return (
+                                <div class="extra-item" data-usal="fade-l delay-30">
+                                    <Icon class="icon-plus" />
+                                    <span>{extra.text}</span>
+                                    {extra.showLogos && (
+                                        <span class="cloud-logos">
+                                            <span set:html={awsSVG} />
+                                            <span set:html={azureSVG} />
+                                            <span set:html={googleSVG} />
+                                            <span set:html={homeRoofSVG} />
+                                        </span>
+                                    )}
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+
+                <div class="edition-card opensource-card">
+                    <div class="edition-header-simple">
+                        <span class="badge opensource-badge">Open Source</span>
+                        <h2 class="edition-title" data-usal="fade-r">Production-ready orchestration, by default</h2>
+                        <p class="edition-description" data-usal="fade-r delay-10">Declarative, event-driven platform built to run in production from day one.</p>
+                    </div>
+
+                    <ul class="os-features">
+                        {OS_FEATURES.map((feature) => (
+                            <li data-usal="fade-l delay-20">
+                                <CheckBold class="icon" />
+                                <span>{feature}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cloud-hosted-view d-none" data-host="cloud-hosted">
+                <div class="cloud-card">
+                    <div class="card-header">
+                        <h2 class="plan-name" data-usal="fade-r">
+                            {CLOUD_PLAN.name}
+                        </h2>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <ul class="features">
+                        {
+                            CLOUD_PLAN.features.map((feature) => {
+                                const Icon = feature.icon
+                                const isBold = Icon === CheckBold
+                                return (
+                                    <li
+                                        class={isBold ? "bold" : ""}
+                                        data-usal="fade-l delay-30"
+                                    >
+                                        <Icon class="icon" />
+                                        <span>{feature.text}</span>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+
+                    <div class="card-footer">
+                        {
+                            CLOUD_PLAN.button && (
+                                <a
+                                    href={CLOUD_PLAN.button.link}
+                                    class="btn btn-primary"
+                                >
+                                    {CLOUD_PLAN.button.text}
+                                </a>
+                            )
+                        }
+
+                        <div class="divider"></div>
+
+                        <p class="footer-note">{CLOUD_PLAN.footerNote}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="compare-all"
+            data-host="self-hosted"
+            data-usal="fade-u delay-30"
+        >
+            <a href="#comparison-table">See all features <ArrowDown /></a>
+        </div>
+
+        <div data-usal="fade-u delay-40">
+            <LogoCarousel
+                title="Trusted by leading companies"
+                centered={true}
+            />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    :global(section.squared) {
+        padding-bottom: 0 !important;
+    }
+
+    .cards-section {
+        padding: 1rem 1rem 5rem 1rem;
+        background: var(--ks-background-body);
+
+        .divider {
+            height: 1px;
+            background: var(--ks-border-secondary);
+            margin: 1.5rem 0;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.625rem;
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+
+                &.bold {
+                    font-weight: 700;
+                }
+
+                .icon {
+                    font-size: $font-size-md;
+                    flex-shrink: 0;
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+        }
+        .card-footer {
+            flex-shrink: 0;
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* New self-hosted layout */
+        .self-hosted-view {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2rem;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid var(--ks-border-secondary);
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+        }
+
+        .edition-card {
+            padding: 2rem 2.5rem;
+            background: var(--ks-background-primary);
+
+            @include media-breakpoint-down(md) {
+                padding: 1.5rem;
+            }
+        }
+
+        .enterprise-card {
+            background: var(--ks-background-primary);
+        }
+
+        .opensource-card {
+            background: var(--ks-background-secondary);
+            border-top: 1px solid var(--ks-border-secondary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            border-radius: 40px;
+            font-size: $font-size-sm;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .enterprise-badge {
+            background: #F1EFFF;
+            color: #631BFF;
+        }
+
+        .opensource-badge {
+            background: #BFFDDD;
+            color: #215D42;
+        }
+
+        .edition-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ks-content-primary);
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+        }
+
+        .edition-description {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .edition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+
+        .edition-header-left {
+            flex: 1;
+        }
+
+        .edition-header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1rem;
+            flex-shrink: 0;
+
+            @include media-breakpoint-down(md) {
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .btn {
+                min-width: 200px;
+                text-align: center;
+            }
+        }
+
+        .subscription-info {
+            text-align: right;
+
+            @include media-breakpoint-down(md) {
+                text-align: left;
+            }
+        }
+
+        .subscription-label {
+            display: block;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-alert-info);
+        }
+
+        .subscription-detail {
+            display: block;
+            font-size: $font-size-xs;
+            color: var(--ks-content-secondary);
+            line-height: 1.4;
+        }
+
+        .feature-category {
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-size: $font-size-xs;
+            font-weight: 600;
+            color: var(--ks-content-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 0.75rem;
+        }
+
+        .category-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem 2rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+            }
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+
+                .icon {
+                    font-size: $font-size-md;
+                    flex-shrink: 0;
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+        }
+
+        .enterprise-extras {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .extra-item {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+
+                .icon-plus {
+                    font-size: $font-size-md;
+                    flex-shrink: 0;
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+
+            .cloud-logos {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-left: 0.5rem;
+
+                :global(svg) {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+        }
+
+        .edition-header-simple {
+            margin-bottom: 1rem;
+        }
+
+        .os-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem 2rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+            }
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+
+                .icon {
+                    font-size: $font-size-md;
+                    flex-shrink: 0;
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+        }
+
+        .cloud-hosted-view {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+
+            .cloud-card {
+                max-width: 614px;
+                width: 100%;
+                border-radius: 0.5rem;
+                padding: 2rem;
+                background: var(--ks-background-primary);
+                box-shadow: 2px 0.1875rem 1rem 0px var(--ks-shadows-light);
+                border: 1px solid var(--ks-border-secondary);
+                display: flex;
+                flex-direction: column;
+
+                .divider {
+                    background: var(--ks-border-secondary);
+                }
+
+                .features {
+                    li {
+                        margin-bottom: 0.5rem;
+                    }
+                }
+
+                .card-footer {
+                    .btn {
+                        margin-top: 1rem;
+                    }
+
+                    .footer-note {
+                        text-align: left;
+                        font-size: $font-size-xs;
+                        color: var(--ks-content-secondary);
+                    }
+                }
+            }
+        }
+
+        .compare-all {
+            text-align: center;
+            margin-bottom: 4rem;
+            a {
+                color: var(--ks-content-link);
+                text-decoration: none;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.375rem;
+                transition: transform 0.2s ease-in-out;
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+
+                svg {
+                    margin-top: -2px;
+                }
+            }
+        }
+    }
+</style>

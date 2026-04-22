@@ -1,5 +1,8 @@
 ---
-title: Retrieving non-existing secrets
+title: "Secret Function Change: Missing Keys Now Throw Errors"
+h1: Missing Secrets Now Throw an Exception in 0.21.0
+sidebarTitle: Secret Function Throws on Missing
+description: Secret function update in Kestra 0.21.0 (OSS). Fetching missing secrets now throws an exception instead of returning null, matching Enterprise behavior.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
 editions: ["OSS"]

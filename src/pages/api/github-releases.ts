@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro"
+import { DISABLE_GITHUB } from "astro:env/server"
 
 export const prerender = false
 
@@ -11,80 +12,53 @@ interface GitHubRelease {
 export interface ReleaseInfo {
     version: string
     publishedAt: string | null
-    kestraVersion?: string | null
-}
-
-const cache: { [key: string]: { data: any; expiry: number } } = {}
-
-async function getFromCache(keys: string[]) {
-    const cacheKey = keys.join(":")
-    const cachedEntry = cache[cacheKey]
-
-    if (cachedEntry && cachedEntry.expiry > Date.now()) {
-        return cachedEntry.data
-    }
-    return null
-}
-
-async function addToCache(data: any, keys: string[], ttl: number) {
-    const cacheKey = keys.join(":")
-    cache[cacheKey] = {
-        data,
-        expiry: Date.now() + ttl * 1000,
-    }
+    minCoreCompatibilityVersion?: string | null
+    releaseNotesUrl?: string | null
 }
 
 export async function retrieveRepoReleases(repo: string) {
-    const cached = await getFromCache([repo])
-
-    if (cached) return cached
-
+    if (DISABLE_GITHUB) {
+        return { versions: [] }
+    }
     const headers: Record<string, string> = { "User-Agent": "request" }
 
-    const response = await fetch(`https://api.github.com/repos/kestra-io/${repo}/releases`, {
-        headers,
-    })
+    const response = await fetch(
+        `https://api.github.com/repos/kestra-io/${repo}/releases`,
+        {
+            headers,
+        },
+    )
 
     if (!response.ok) {
         if (response.status === 404) {
-            const result = { versions: [] }
-            await addToCache(result, [], 3600)
-            return result
+            return { versions: [] }
         }
-        console.error(`GitHub API error for ${repo}: ${response.status} ${response.statusText}`)
+        console.error(
+            `GitHub API error for ${repo}: ${response.status} ${response.statusText}`,
+        )
         return { versions: [] }
     }
 
     const releases = (await response.json()) as GitHubRelease[]
 
     try {
-        const versions: ReleaseInfo[] = await Promise.all(
-            releases
-                .filter((release) => !release.draft)
-                .map(async (release) => {
-                    const version = release.tag_name.replace(/^v/, "")
-                    let kestraVersion: string | null = null
-                    const response = await fetch(
-                        `https://raw.githubusercontent.com/kestra-io/${repo}/${release.tag_name}/gradle.properties`,
-                        { headers },
-                    )
-                    if (response.ok) {
-                        const content = await response.text()
-                        kestraVersion =
-                            content.match(/kestraVersion\s*=\s*(.+)/)?.[1]?.trim() ?? null
-                    }
-                    return {
-                        version,
-                        publishedAt: release.published_at,
-                        kestraVersion,
-                    }
-                }),
-        )
+        const versions: ReleaseInfo[] = releases
+            .filter((release) => !release.draft)
+            .map((release) => ({
+                version: release.tag_name.replace(/^v/, ""),
+                publishedAt: release.published_at,
+            }))
+            .filter((v) => {
+                const major = parseInt(v.version.split(".")[0])
+                return !isNaN(major) && major >= 1
+            })
+            .toSorted((a, b) => {
+                const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0
+                const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0
+                return bTime - aTime
+            })
 
-        const result = { versions }
-        await addToCache(result, [repo], 3600)
-
-        return result
+        return { versions }
     } catch (error) {
         console.error(`Error processing releases for ${repo}:`, error)
         return { versions: [] }
@@ -96,7 +70,7 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response(JSON.stringify(data), {
         headers: {
             "Content-Type": "application/json",
-            "Cache-Control": "max-age=86400",
+            "Cache-Control": "public, max-age=86400",
         },
     })
 }

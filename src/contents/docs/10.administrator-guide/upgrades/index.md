@@ -1,7 +1,9 @@
 ---
-title: Manage Kestra Upgrades – Rolling and Rollback
+title: "Upgrade Kestra: Rolling Updates, Migrations, and Rollback"
+h1: Upgrade Kestra safely with rolling updates and rollback strategies
 sidebarTitle: Managing Upgrades
 icon: /src/contents/docs/icons/admin.svg
+description: Best practices for upgrading Kestra, performing rolling updates, and rolling back to previous versions safely.
 ---
 
 Kestra evolves quickly. This page explains how to upgrade your installation.
@@ -52,7 +54,7 @@ The `Breaking Changes` section appears at the end of the [release notes](https:/
 If you run Kestra as separate components, you should:
 
 - Stop the executors and the scheduler
-- Stop the workers — a graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminateGracePeriod = '5m'`, configurable in your [Kestra configuration](../../configuration/index.md).
+- Stop the workers — a graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminateGracePeriod = '5m'`, configurable in your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md).
 - If the job finishes within five minutes, the worker shuts down immediately. Otherwise, the task is killed and restarts when the worker restarts.
 - Stop the webserver (and the indexer if using EE with Kafka).
 

@@ -1,5 +1,8 @@
 ---
-title: Log level for stderr output
+title: "stderr Log Level Change: WARNING to ERROR in 0.21.0"
+h1: Script Task stderr Output Now Logged as ERROR Level
+sidebarTitle: stderr Logged as ERROR
+description: Script Task logging update in Kestra 0.21.0. Output to `stderr` is now logged as ERROR level instead of WARNING.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
 editions: ["OSS", "EE"]
@@ -38,10 +41,10 @@ errors:
 
 Here is the output of the `fail` task before the change:
 
-![log.png](./stderr-log-level1.png)
+![Script task stderr output logged at WARNING level before 0.21.0](./stderr-log-level1.png)
 
 ## After 0.21.0
 
 Here is the output of the `fail` task after the change:
 
-![log2.png](./stderr-log-level2.png)
+![Script task stderr output logged at ERROR level after 0.21.0](./stderr-log-level2.png)

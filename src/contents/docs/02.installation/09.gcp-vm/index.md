@@ -1,7 +1,9 @@
 ---
-title: Deploy Kestra on GCP VM – Cloud SQL and GCS Backend
+title: Deploy Kestra on GCP VM – Cloud SQL and GCS
+h1: Install Kestra on Google Cloud VM with Cloud SQL and GCS
 sidebarTitle: GCP VM with Cloud SQL and GCS
 icon: /src/contents/docs/icons/gcp-compute.svg
+description: Deploy Kestra on a Google Cloud Platform (GCP) VM with Cloud SQL and Google Cloud Storage (GCS).
 ---
 
 Install Kestra on a GCP VM with Cloud SQL as the database backend and Cloud Storage as the internal storage backend.
@@ -90,7 +92,7 @@ You can now access your Kestra instance and start developing flows.
 
 ## Launch Cloud SQL
 
-This first installation relies on a PostgreSQL database running alongside the Kestra server - on the VM instance (see the PostgreSQL service running thanks to the docker-compose).
+This first installation relies on a PostgreSQL database running alongside the Kestra server on the VM instance (see the PostgreSQL service running in Docker Compose).
 
 For a simple proof of concept (PoC), you can keep the PostgreSQL database running in Docker.
 
@@ -174,7 +176,7 @@ depends_on:
 
 Since you're now using Cloud SQL, you no longer need the PostgreSQL Docker service. Remove it from the `docker-compose.yml` file.
 
-In order for the changes to take effect, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
+For the changes to take effect, restart the Docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
 
 
 ## Configure GCS

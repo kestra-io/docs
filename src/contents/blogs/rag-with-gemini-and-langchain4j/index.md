@@ -5,6 +5,7 @@ date: 2025-06-10T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
+  linkedin: https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/
   image: lmathieu
   role: Lead Developer
 image: ./main.jpg
@@ -12,13 +13,13 @@ image: ./main.jpg
 
 Generative AI tools are great. However, relying purely on generative models can lead to outputs that feel generic, inaccurate, or outdated. This is where **Retrieval-Augmented Generation (RAG)** comes in, combining the creativity of Generative AI with real-time, accurate context sourced from custom data.
 
-We just introduced the [Langchain4J plugin](/plugins/plugin-langchain4j) that allows users to create complex Generative AI workflows in an AI provider-agnostic way. This plugin also provides all the tasks needed to create a RAG pipeline.
+We just introduced the [Langchain4J plugin](/plugins/plugin-ai) that allows users to create complex Generative AI workflows in an AI provider-agnostic way. This plugin also provides all the tasks needed to create a RAG pipeline.
 
 In this post, you'll learn how to build an advanced RAG pipeline using Google Gemini AI and Kestra’s new Langchain4J plugin, which leverages precise, context-aware AI generation. We'll cover document ingestion, embedding creation, retrieval strategies, and finally, demonstrate a full end-to-end RAG example.
 
 ## Create Powerful AI Workflows with Kestra’s Langchain4J
 
-The new [Langchain4J plugin](/plugins/plugin-langchain4j) simplifies the implementation of RAG by handling document ingestion, embedding creation, retrieval, and generation tasks.
+The new [Langchain4J plugin](/plugins/plugin-ai) simplifies the implementation of RAG by handling document ingestion, embedding creation, retrieval, and generation tasks.
 
 Here's a high-level overview of the workflows you'll create:
 

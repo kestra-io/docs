@@ -1,5 +1,7 @@
 ---
 title: Flows in the Kestra UI – Browse, Edit, Execute
+h1: Manage and Edit Flows from the Kestra UI
+description: Manage flows in the Kestra UI. Browse, edit, and execute workflows using the code editor, topology view, and version history tools.
 sidebarTitle: Flows
 docId: flowEditor
 icon: /src/contents/docs/icons/ui.svg
@@ -9,9 +11,9 @@ Manage your flows in one place.
 
 ## Manage and edit flows from the UI
 
-On the **Flows** page, you see a list of flows which you can edit and execute. You can also create a new flow in the top right hand corner.
+On the **Flows** page, you see a list of flows that you can edit and execute. You can also create a new flow in the top-right corner.
 
-By clicking on a flow id or on the eye icon, you can open a flow.
+Click a flow ID or the eye icon to open a flow.
 
 ![Kestra User Interface Flows Page](./04-Flows.png)
 
@@ -61,7 +63,7 @@ The **Topology** view allows you to visualize the structure of your flow. This i
 
 ### Documentation view
 
-The **Documentation** view displays Kestra's documentation right inside of the editor. As you move your type cursor around the editor, the documentation page updates to reflect the specific task type documentation.
+The **Documentation** view displays Kestra's documentation directly inside the editor. As you move your cursor around the editor, the documentation panel updates to reflect the specific task type documentation.
 
 ![Docs](./docs-editor.png)
 
@@ -123,12 +125,12 @@ To use the JSON Schema in Visual Studio Code (VSCode), follow these steps:
 ```json
 {
   "yaml.schemas": {
-    "https://your-kestra-instance.com/api/v1/main/schemas/flow.json": "/*.yaml"
+    "https://your-kestra-instance.com/api/v1/schemas/flow.json": "/*.yaml"
   }
 }
 ```
 
-Replace `https://your-kestra-instance.com/api/v1/main/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
+Replace `https://your-kestra-instance.com/api/v1/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
 
 ### Example of using JSON Schema in flow editor
 
@@ -149,7 +151,7 @@ When you open this flow in the editor, the JSON Schema validates the structure a
 
 The JSON Schema for Kestra flows is available at the following URL:
 
-```
+```plaintext
 https://your-kestra-instance.com/api/v1/main/schemas/flow.json
 ```
 

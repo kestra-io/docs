@@ -1,15 +1,15 @@
 ---
-title: Connect Web Apps to Kestra
+title: Connect Web Apps to Kestra via Webhooks
+h1: Trigger Kestra Flows from Your Web Application
 icon: /src/contents/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
   - Scripting
   - Integrations
+description: Integrate your web applications with Kestra using Webhook triggers to start workflows from your frontend or backend code.
 ---
 
 Integrate Kestra into your JavaScript App using Webhooks.
-
-## Connect Web Apps to Kestra
 
 With Kestra's API First Design, you can build web applications to integrate with Kestra acting as a backend server.
 
@@ -32,7 +32,7 @@ micronaut:
       enabled: true
 ```
 
-More information can be found in the [configuration documentation](../../configuration/index.md#configuring-cors).
+More information can be found in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 ## Building a Workflow with a Webhook Trigger
 
@@ -179,7 +179,7 @@ function App() {
 }
 ```
 
-Now our example will collect the data inside of the `input` field as `dataField` and send it in our request as a key value pair: `dataField: {the input value}`. For example, if I type "Hello" and press **Submit**, it will send the body `{dataField: "Hello"}`.
+Now our example will collect the data in the `input` field as `dataField` and send it in our request as a key value pair: `dataField: {the input value}`. For example, if I type "Hello" and press **Submit**, it will send the body `{dataField: "Hello"}`.
 
 ![js-final](./js-final.png)
 

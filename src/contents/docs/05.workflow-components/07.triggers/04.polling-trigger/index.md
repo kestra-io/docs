@@ -1,5 +1,7 @@
 ---
 title: Polling Trigger in Kestra – Check External Systems
+h1: Trigger Flows When External Systems Change State
+description: Automate workflows based on external state with Polling Triggers. Monitor databases, FTPs, or queues and trigger Kestra flows when changes are detected.
 sidebarTitle: Polling Trigger
 icon: /src/contents/docs/icons/flow.svg
 ---
@@ -55,7 +57,7 @@ id: salesforce_contact_trigger
 namespace: company.sales
 tasks:
   - id: notify_sales_manager
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "New contact created"
 

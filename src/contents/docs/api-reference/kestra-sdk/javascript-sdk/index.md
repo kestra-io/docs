@@ -1,5 +1,7 @@
 ---
-title: Kestra JavaScript SDK
+title: "JavaScript SDK for Kestra: Client Setup and Examples"
+h1: Install and Configure the Kestra JavaScript SDK
+description: Integrate Kestra with JavaScript using the official SDK. Install the library, configure the client, and programmatically create and execute workflows.
 icon: /src/contents/docs/icons/api.svg
 release: 1.2.0
 ---
@@ -11,7 +13,7 @@ Interact with Kestra's API via the JavaScript SDK.
 This guide shows how to create and execute flows programmatically with the JavaScript SDK.
 Before starting, ensure your Kestra instance is reachable (for example via `KESTRA_API_URL`), and keep credentials in environment variables or an `.env` file:
 
-```
+```bash
 KESTRA_API_URL=http://localhost:8080
 KESTRA_USERNAME=root@root.com
 KESTRA_PASSWORD=Root!1234

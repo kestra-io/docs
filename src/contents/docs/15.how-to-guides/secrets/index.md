@@ -1,14 +1,14 @@
 ---
-title: Configure Secrets
+title: Configure Secrets in Kestra
+h1: Securely Store and Use Secrets in Your Flows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
+description: Learn how to securely configure and use secrets in Kestra to protect sensitive information like passwords and API keys in your flows.
 ---
 
 Learn how to securely configure and use secrets in Kestra.
-
-## Configure Secrets
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -28,7 +28,7 @@ If you prefer a simpler, UI-based experience, check out the [Enterprise Edition]
 
 Start by defining your secrets in a standard environment file:
 
-```
+```bash
 POSTGRES_PASSWORD=actual_postgres_password
 OPENAI_KEY=actual_openai_key
 AWS_ACCESS_KEY=actual_aws_access_key
@@ -40,7 +40,7 @@ AWS_SECRET_KEY=actual_aws_secret_key
 Kestra expects all secret keys to be **prefixed with `SECRET_`** and their values **base64-encoded**.
 The resulting `.env_encoded` file should look like this:
 
-```
+```bash
 SECRET_POSTGRES_PASSWORD=base64_encoded_postgres_password
 SECRET_OPENAI_KEY=base64_encoded_openai_key
 SECRET_AWS_ACCESS_KEY=base64_encoded_aws_access_key
@@ -64,7 +64,7 @@ You can verify the output by opening `.env_encoded` — it should look like the 
 
 Alternatively, you can manually write the file using macros to encode secrets dynamically:
 
-```
+```bash
 SECRET_POSTGRES_PASSWORD={{ "actual_postgres_password" | base64encode }}
 SECRET_OPENAI_KEY={{ "actual_openai_key" | base64encode }}
 SECRET_AWS_ACCESS_KEY={{ "actual_aws_access_key" | base64encode }}

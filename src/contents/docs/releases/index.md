@@ -1,12 +1,12 @@
 ---
-title: Kestra Releases & LTS Policy – Cadence and Support
+title: "Releases & LTS Policy in Kestra: Cadence and Support"
+h1: Kestra Release Cadence, Versioning Strategy, and LTS Policy
 sidebarTitle: Releases & LTS Policy
 icon: /src/contents/docs/icons/admin.svg
+description: Information on Kestra's release cadence, versioning strategy, and Long-Term Support (LTS) policy.
 ---
 
 Track Kestra's long‑term support (LTS) releases alongside the fast cadence of feature releases.
-
-## Understand Kestra release cadence and LTS policy
 
 ## Current releases
 
@@ -14,8 +14,14 @@ Kestra maintains two tracks:
 
 | Type    | Version | Release Date | Supported Until           | Release Notes |
 |---------|---------|--------------|---------------------------|---------------|
-| LTS     | 1.0     | 2025‑09‑09   | 2026‑09‑09 (planned)      | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.0.0) |
-| Feature | 1.2     | 2026‑13‑01   | Superseded by next release | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.2.0) |
+| LTS     | 1.3     | 2026‑03‑03   | 2027‑03                   | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.3.0) |
+| Feature | 1.2     | 2026‑01‑13   | Support ended by LTS 1.3  | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.2.0) |
+| Feature | 1.1     | 2025‑11‑04   | Support ended by LTS 1.3  | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.1.0) |
+| LTS     | 1.0     | 2025‑09‑09   | 2026‑09                   | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.0.0) |
+
+:::alert{type="info"}
+Runtime prerequisite: Kestra 1.3 requires Java 25 or later (Eclipse Temurin recommended). Upgrade Java before adopting a new LTS or feature line to avoid startup/runtime issues.
+:::
 
 ## Release model
 
@@ -42,7 +48,7 @@ Kestra follows a structured release strategy with three release types:
 
 Each LTS release receives support for 1 year. All security fixes, bug fixes, and patches are automatically applied.
 
-Up to 2 LTS versions can be active at the same time. Both receive the same bug and security fixes. The newer LTS also includes features released between the two versions.`
+Up to 2 LTS versions can be active at the same time. Both receive the same bug and security fixes. The newer LTS also includes features released between the two versions.
 
 ## Backports and bug fixes
 
@@ -52,7 +58,7 @@ To identify backported changes, check the [GitHub releases](https://github.com/k
 
 ## Tracking the latest LTS
 
-LTS versions are clearly labeled in the [GitHub release notes](https://github.com/kestra-io/kestra/releases) and we also publish a `latest-lts` Docker tag, as described in the [Introducing LTS](../../blogs/introducing-lts/index.md#tracking-the-latest-lts) announcement:
+LTS versions are clearly labeled in the [GitHub release notes](https://github.com/kestra-io/kestra/releases) and we also publish a `latest-lts` Docker tag (see [Docker image tags](../02.installation/02.docker/index.md#docker-image-tags) for the full tag list):
 
 ```bash
 kestra/kestra:latest-lts                 # Open Source

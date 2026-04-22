@@ -1,0 +1,7 @@
+title: "Push your Files to Git | Version Control in Kestra"
+description: "The PushNamespaceFiles task is a powerful integration that allows you to push your namespace files to Git from the UI while still managing this process entirely in code! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control."
+category: "Deep Dive Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=-bEnwR5t7VI"
+publicationDate: "2024-06-06T00:00:00.000"
+contentType: "Deep Dive Tutorials"

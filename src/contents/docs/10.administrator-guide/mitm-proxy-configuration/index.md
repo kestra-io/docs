@@ -1,7 +1,9 @@
 ---
-title: Configure Kestra with MITM Proxy – Outbound HTTPS
+title: "MITM Proxy: Inspect Kestra's Outbound HTTPS Traffic"
+h1: Route and inspect outbound HTTPS traffic through a MITM proxy
 sidebarTitle: MITM Proxy for Kestra
 icon: /src/contents/docs/icons/padlock.svg
+description: Configure Kestra to route outbound HTTPS traffic through a Man-in-the-Middle (MITM) proxy for secure environments.
 ---
 
 Configure outbound HTTP/S traffic through an MITM proxy in Kestra.
@@ -52,11 +54,11 @@ This secret will be mounted into Kestra pods.
 
 ## Configuring Kestra to use the MITM proxy
 
-You must update the [Kestra configuration](../../configuration/index.md) and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
+You must update the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
 
 ### 1. Micronaut / Kestra configuration
 
-Add proxy settings and truststore configuration to your [Kestra configuration](../../configuration/index.md) (merged via Helm `configurations.application` or a config file):
+Add proxy settings and truststore configuration to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) (merged via Helm `configurations.application` or a config file):
 
 ```yaml
 ## values.yaml (or application.yml configuration)

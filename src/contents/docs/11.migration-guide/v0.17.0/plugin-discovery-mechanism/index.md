@@ -1,7 +1,10 @@
 ---
-title: Plugin Discovery Mechanism
+title: Plugin Discovery Mechanism Change in Kestra 0.17.0
+h1: How Plugin Discovery Changed to Java Service Loader in 0.17.0
+sidebarTitle: Plugin Discovery Mechanism
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
+description: Changes to the plugin discovery mechanism in Kestra 0.17.0 using Java Service Loader.
 ---
 
 
@@ -33,7 +36,7 @@ However, Micronaut is still required to use the utility classes provided by Kest
 
 Kestra requires a new annotation processor to be configured in the `build.gradle` file of your project (or `pom.xml` for Maven).
 
-```
+```groovy
 annotationProcessor group: "io.kestra", name: "processor", version: kestraVersion
 ```
 

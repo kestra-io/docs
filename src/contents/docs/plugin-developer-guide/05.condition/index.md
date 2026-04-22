@@ -1,7 +1,9 @@
 ---
 title: Develop a Kestra Condition Plugin
+h1: How to Build a Custom Condition Plugin for Kestra
 sidebarTitle: Develop a Condition
 icon: /src/contents/docs/icons/dev.svg
+description: Develop custom Condition plugins for Kestra to control flow execution logic based on specific criteria.
 ---
 
 

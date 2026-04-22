@@ -1,0 +1,25 @@
+---
+import bgMobile from "~/assets/landing/ai/mob-bkg-AI.webp"
+import bgDesktop from "~/assets/landing/ai/desk-bkg-AI.webp"
+
+import VerticalsIntro from "~/components/common/VerticalsIntro.astro"
+---
+
+<VerticalsIntro
+    badge={{
+        icon: "mdi:chart-timeline-variant-shimmer",
+        label: "AI Orchestration",
+        theme: {
+            textColor: "#3ADA7A",
+            borderFrom: "#3ADA7A",
+            borderTo: "#85FED1",
+        },
+    }}
+    title={`Stop writing glue code <br class="d-none d-xl-block" /> around your AI pipelines.`}
+    description="Kestra orchestrates everything your LLM framework doesn't: data ingestion, scheduling, retries, human approvals, and outputs. Works alongside LangChain, LlamaIndex, and whatever else is already in your stack."
+    iframeSrc="https://demo.arcade.software/VTwayBOgKm17CfAySNbR?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true"
+    bg={{
+        mobile: bgMobile.src,
+        desktop: bgDesktop.src,
+    }}
+/>

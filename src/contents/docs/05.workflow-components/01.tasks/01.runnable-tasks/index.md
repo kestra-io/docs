@@ -1,5 +1,7 @@
 ---
 title: Runnable Tasks in Kestra – Execute Workloads
+h1: Execute Scripts, API Calls, and Queries with Runnable Tasks
+description: Learn about Runnable Tasks in Kestra. Execute compute-intensive workloads like scripts, API calls, and database queries using distributed workers.
 sidebarTitle: Runnable Tasks
 icon: /src/contents/docs/icons/flow.svg
 ---

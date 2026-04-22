@@ -1,5 +1,7 @@
 ---
 title: Flows in Kestra – Define Orchestration Units
+h1: "Understand Flows: The Core Units of Kestra Orchestration"
+description: Understand Kestra Flows, the fundamental units of orchestration. Learn to define tasks, inputs, outputs, and logic to automate your business processes.
 sidebarTitle: Flow
 icon: /src/contents/docs/icons/flow.svg
 docId: flows
@@ -62,9 +64,8 @@ labels:
 inputs:
   - id: my-value
     type: STRING
-    required: false
     defaults: "default value"
-    description: This input is optional.
+    description: This input is has a default value.
 
 variables:
   first: "1"
@@ -120,7 +121,7 @@ By default, Kestra only includes a few Runnable Tasks. However, many of them are
 
 ### Flowable Task
 
-[Flowable Tasks](../01.tasks/00.flowable-tasks/index.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch) decides the next task to run based on some inputs.
+[Flowable Tasks](../01.tasks/00.flowable-tasks/index.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](/plugins/core/flow/io.kestra.plugin.core.flow.switch) decides the next task to run based on some inputs.
 
 A Flowable Task is handled by an executor and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation.
 
@@ -172,7 +173,6 @@ Flows have a number of variable expressions giving you information about them dy
 | `{{ flow.tenantId }}`         | The identifier of the tenant (EE only).                                                                                           |
 | `{{ flow.revision }}`         | The revision of the flow.                                                                                                         |
 
-
 ## Listeners (deprecated)
 
 Listeners are special tasks that can listen to the current flow and launch tasks *outside the flow*, meaning launch tasks that are not part of the flow.
@@ -193,7 +193,7 @@ Templates are lists of tasks that can be shared between flows. You can define a 
 
 Flows are stored in a serialized format directly **in the Kestra backend database**.
 
-The easiest way to add new flows is to add them directly from the Kestra UI. You can also use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
+The easiest way to add new flows is to add them directly from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
 
 To see how flows are represented in a file structure, you can leverage the `_flows` directory in the [Namespace Files](../../06.concepts/02.namespace-files/index.md) editor.
 
@@ -207,8 +207,9 @@ To pre-load flows from a directory when Kestra starts (so they’re available im
 
 Point this to a directory of YAML flow definitions; Kestra will load them at startup and place them in the namespaces declared in each file.
 
-For more information about the Kestra server CLI, check the [Server CLI Reference](../../server-cli/index.md) section.
+For more information about the Kestra server CLI, check the [Server CLI Reference](../../kestra-cli/kestra-server/index.md) section.
 
 ### Can I sync a local flows directory to be continuously loaded into Kestra?
 
 At the time of writing, there is no syncing of a flows directory to Kestra. However, we are aware of that need and we are working on a solution. You can follow up in [this GitHub issue](https://github.com/kestra-io/kestra/issues/2403).
+

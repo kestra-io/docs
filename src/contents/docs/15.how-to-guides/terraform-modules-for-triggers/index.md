@@ -1,15 +1,15 @@
 ---
-title: Modularize your triggers and schedules with Terraform
+title: Modularize Triggers and Schedules with Terraform
+h1: Scale Kestra with Reusable Terraform Trigger Templates
 icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:
   - DevOps
   - Integrations
+description: Scale your Kestra codebase by modularizing triggers and schedules using Terraform templates for reusable and consistent definitions.
 ---
 
 Scale your codebase using Terraform to template and make scheduling a breeze
-
-## Modularize your triggers and schedules with Terraform
 
 As seen in this [terraform templating](../terraform-templating/index.md) guide, you can leverage Terraform to template and define flows.
 
@@ -21,7 +21,7 @@ Note: we created the repo [kestra-flows-template](https://github.com/kestra-io/k
 
 ## Code structure
 
-```
+```plaintext
 .
 └── environment/
     ├── development

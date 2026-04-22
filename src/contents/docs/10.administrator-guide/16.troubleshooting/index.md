@@ -1,7 +1,9 @@
 ---
-title: Troubleshooting Kestra – Common Issues and Fixes
+title: "Troubleshoot Kestra: Kubernetes, Docker, and Startup Issues"
+h1: Diagnose and resolve common Kestra deployment and runtime issues
 sidebarTitle: Troubleshooting
 icon: /src/contents/docs/icons/faq.svg
+description: Solutions for common Kestra issues, including pod restarts, unprocessable executions, and Docker-in-Docker problems.
 ---
 
 Something doesn't work as expected? Check out these common issues and fixes.
@@ -108,7 +110,7 @@ securityContext:
 
 If you see errors like:
 
-```text
+```plaintext
 java.io.IOException: com.sun.jna.LastErrorException: [111] Connection refused
 ```
 
@@ -182,7 +184,7 @@ kestra:
       path: /home/kestra/tmp
 ```
 
-Volume example:
+Example volume configuration:
 
 ```yaml
 volumes:

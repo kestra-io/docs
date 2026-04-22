@@ -1,5 +1,7 @@
 ---
 title: Task Runs in Kestra – Track Task Execution
+h1: Monitor Task Run States, Attempts, and Outputs
+description: Understand Task Runs in Kestra. Track the execution of individual tasks, monitor their states, attempts, and outputs within your workflow executions.
 sidebarTitle: Task Runs
 icon: /src/contents/docs/icons/flow.svg
 docId: taskruns
@@ -28,6 +30,7 @@ Similar to executions, task runs can exist in different states.
 | State | Description                                                                                                                                                                                                                                  |
 | - |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `CREATED` | The task run is waiting to be processed, usually queued and not yet started.                                                                                                                                                                 |
+| `SUBMITTED` | The task run has been submitted to a Worker but has not started running yet.                                                                                                                                                               |
 | `RUNNING` | The execution or task run is currently being processed.                                                                                                                                                                                      |
 | `SUCCESS` | The execution or task run has been completed successfully.                                                                                                                                                                                   |
 | `WARNING` | The task run had issues but continued, flagged with a warning.                                                                                                                                                                               |

@@ -1,8 +1,11 @@
 ---
-title: Open-Source Migration Guide to introduce defaultTenant
+title: "OSS Migration: Introducing the defaultTenant Context"
+h1: "Open-Source Migration Guide: Introducing defaultTenant in 0.23.0"
+sidebarTitle: "OSS: defaultTenant Context"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS"]
+description: Migration guide for Open-Source Edition users to introduce the mandatory defaultTenant context in Kestra 0.23.0.
 ---
 
 
@@ -56,6 +59,8 @@ initContainers:
 
 You can remove it after successful run (it has to be only executed once).
 :::
+
+Migrating some tables can take a long time, you can use `--exludes=table1,table2` to exclude some tables from the migration and update them manually.
 
 ## Internal storage migration guide from `defaultTenant` to a tenant
 
@@ -334,7 +339,7 @@ If your internal storage is a local directory (or a network drive), you can manu
 
 For example:
 
-```
+```plaintext
 base-path/
   main/
   foo/

@@ -1,5 +1,7 @@
 ---
-title: Setup Webhooks to trigger Flows
+title: Set Up Webhooks to Trigger Flows
+h1: Configure Webhook Triggers for Your Kestra Flows
+description: Trigger Kestra workflows via webhooks. Configure webhook listeners to start flows in response to GitHub events, Slack commands, or any HTTP POST request.
 icon: /src/contents/docs/icons/webhook.svg
 stage: Getting Started
 topics:
@@ -8,9 +10,7 @@ topics:
 
 Execute flows using the Webhooks Trigger.
 
-## Setup Webhooks to trigger Flows
-
-Webhooks are HTTP requests that are triggered by an event. These are useful for being able to tell another application to do something, such as starting the execution of a Flow inside of Kestra.
+Webhooks are HTTP requests that are triggered by an event. These are useful for being able to tell another application to do something, such as starting the execution of a Flow in Kestra.
 
 If your provider sends an idempotency key header (e.g., `Idempotency-Key`), map it to `system.correlationId` and add a duplicate guard as shown in [Idempotency with correlation IDs](../idempotency/index.md) to prevent double-processing.
 

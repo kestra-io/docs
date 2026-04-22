@@ -1,5 +1,7 @@
 ---
-title: Blueprints in Kestra – Reusable Workflow Templates
+title: "Blueprints in Kestra: Reusable Workflow Templates"
+h1: Get Started Faster with Ready-to-Use Workflow Blueprints
+description: Explore Kestra Blueprints — ready-to-use workflow templates that help you get started faster. Browse community and Enterprise blueprints for any automation.
 sidebarTitle: Blueprints
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.10.0"
@@ -37,10 +39,12 @@ Community Blueprints are particularly helpful when you're getting started with a
 Blueprints are accessible from two places in the UI:
 
 1. The left navigation sidebar
-2. A dedicated tab in the code editor named "Source and blueprints", showing your source code and Blueprints side by side.
 
 ![Blueprint UI](./blueprints2.png)
 
+2. A dedicated tab in the flow code editor named **Blueprints**, showing your source code and Blueprints side by side.
+
+![Flow Editor Blueprints](./blueprints3.png)
 
 ### How to find the right Blueprint
 

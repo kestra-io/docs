@@ -1,26 +1,35 @@
 <template>
     <div v-bind="$attrs">
         <Header
-            :slug="slug"
+            :slug
             :title="story.title"
             :meta-description="story.description"
             :hero-image="story.heroImage"
-            :logo="story.logoDark"
+            :logo="story.logo"
+            :logo-dark="story.logoDark"
             :kpi1="story.kpi1"
             :kpi2="story.kpi2"
             :kpi3="story.kpi3"
         />
-        <Content :story :content />
-        <Change />
+        <div class="column-sticky">
+            <TwoColumnStickyLayout>
+                <template #sidebar>
+                    <Sidebar :story />
+                </template>
+                <Main :story :content />
+            </TwoColumnStickyLayout>
+        </div>
+        <slot name="change" />
         <More :related />
     </div>
 </template>
 
 <script setup lang="ts">
-    import Header from "./Header.vue"
-    import Content from "./Content.vue"
-    import More from "./More.vue"
-    import Change from "./Change.vue"
+    import Header from "~/components/stories/Header.vue"
+    import More from "~/components/stories/More.vue"
+    import Sidebar from "~/components/stories/Sidebar.vue"
+    import Main from "~/components/stories/Main.vue"
+    import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 
     defineProps<{
         slug: string
@@ -31,9 +40,21 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
     .-row {
         align-items: stretch;
+    }
+
+    .column-sticky {
+        :deep(.container) {
+            max-width: 1140px;
+            gap: 4rem;
+        }
+
+        :deep(.left) {
+            min-width: 0 !important;
+            @include media-breakpoint-up(lg) {
+                max-width: 209px;
+            }
+        }
     }
 </style>

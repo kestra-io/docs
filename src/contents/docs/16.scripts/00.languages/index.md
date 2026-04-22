@@ -1,107 +1,115 @@
 ---
 title: Supported Programming Languages in Kestra
+h1: Which Languages Have Dedicated Kestra Script Plugins
 sidebarTitle: Programming Languages
 icon: /src/contents/docs/icons/dev.svg
+description: See which languages have dedicated Kestra script plugins and how to run other languages with Shell tasks and Docker.
 ---
 
-Kestra is language agnostic — you can use any programming language inside your workflows.
+Kestra lets you run code in many languages inside your workflows.
 
-## Choose languages and plugins for script tasks
+## Choose the right way to run a language
 
-Kestra works with any programming language, with some having dedicated plugins and libraries that make it easier to send outputs and metrics back to Kestra.
+Use a dedicated script plugin when Kestra provides one for your language. Use the Shell plugin when you need to run another language or compile code inside a container.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/oZYtLimdKBo?si=w5Tq8qwZQcmjMehf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Dedicated plugins
+## Languages with dedicated plugins
 
-Kestra currently supports the following programming languages with dedicated plugins:
+Kestra provides dedicated script plugins for these languages:
 
-1. [Python](/plugins/plugin-script-python)
-2. [R](/plugins/plugin-script-r)
-3. [Node.js](/plugins/plugin-script-node)
-4. [Shell](/plugins/plugin-script-shell)
-5. [PowerShell](/plugins/plugin-script-powershell)
-6. [Julia](/plugins/plugin-script-julia)
-7. [Ruby](/plugins/plugin-script-ruby)
-8. [Go](/plugins/plugin-script-go)
-9. [Deno](/plugins/plugin-script-deno)
-10. [Lua](/plugins/plugin-script-lua)
-11. [Bun](/plugins/plugin-script-bun)
-12. [PHP](/plugins/plugin-script-php)
-13. [Perl](/plugins/plugin-script-perl)
-14. [Groovy](/plugins/plugin-script-groovy)
+- [Python](/plugins/plugin-script-python)
+- [R](/plugins/plugin-script-r)
+- [Node.js](/plugins/plugin-script-node)
+- [Shell](/plugins/plugin-script-shell)
+- [PowerShell](/plugins/plugin-script-powershell)
+- [Julia](/plugins/plugin-script-julia)
+- [Ruby](/plugins/plugin-script-ruby)
+- [Go](/plugins/plugin-script-go)
+- [Deno](/plugins/plugin-script-deno)
+- [Lua](/plugins/plugin-script-lua)
+- [Bun](/plugins/plugin-script-bun)
+- [PHP](/plugins/plugin-script-php)
+- [Perl](/plugins/plugin-script-perl)
+- [Groovy](/plugins/plugin-script-groovy)
 
 Each of these plugins provides two task types:
-- **Commands**: Execute scripts using a command-line interface (ideal for longer, pre-written files).
-- **Script**: Write your code directly in YAML (best for short inline scripts).
 
-### Script example
+- `Script` for short inline code in your flow definition.
+- `Commands` for code stored in files or split across multiple commands.
 
-An example of an inline Python script:
+Here is a minimal example that uses the Python `Script` task:
 
 ```yaml
-id: myflow
+id: python_script_example
 namespace: company.team
 
 tasks:
-  - id: script
+  - id: run_python
     type: io.kestra.plugin.scripts.python.Script
-    beforeCommands:
-      - pip install requests kestra
+    containerImage: python:3.12-slim
     script: |
-      from kestra import Kestra
-      import requests
-
-      response = requests.get('https://google.com')
-      print(response.status_code)
-
-      Kestra.outputs({'status': response.status_code, 'text': response.text})
+      print("Hello from Python")
 ```
 
-### Commands example
-
-An example using Shell commands, similar to a terminal session:
+Use the `Commands` task when you want to run a file from `namespaceFiles` or execute multiple commands in sequence:
 
 ```yaml
-id: myflow
+id: python_commands_example
 namespace: company.team
 
 tasks:
-  - id: commands
-    type: io.kestra.plugin.scripts.shell.Commands
-    outputFiles:
-      - first.txt
-      - second.txt
+  - id: run_python_file
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+    containerImage: python:3.12-slim
     commands:
-      - echo "1" >> first.txt
-      - echo "2" >> second.txt
+      - python hello.py
 ```
 
-## Run any language using the Shell task
+## Language-specific guides
 
-With the `Commands` task, you can execute arbitrary commands inside a Docker container. This means you can run **any language**, as long as:
-1. Its dependencies can be included in a Docker image.
-2. It can be executed from a Shell command.
+Use these guides for complete examples, outputs, metrics, and dependency management:
 
-For handling outputs and metrics, use the same `::{}::` syntax as the `Shell` task.
-Read more in [Shell outputs and metrics](../06.outputs-metrics/index.md#shell).
+- [Run Python inside your flows](../../15.how-to-guides/python/index.md)
+- [Run R inside your flows](../../15.how-to-guides/r/index.md)
+- [Run JavaScript inside your flows](../../15.how-to-guides/javascript/index.md)
+- [Run Shell scripts inside your flows](../../15.how-to-guides/shell/index.md)
+- [Run PowerShell inside your flows](../../15.how-to-guides/powershell/index.md)
+- [Run Julia inside your flows](../../15.how-to-guides/julia/index.md)
+- [Run Go inside your flows](../../15.how-to-guides/golang/index.md)
+- [Run Perl inside your flows](../../15.how-to-guides/perl/index.md)
+- [Run Rust inside your flows](../../15.how-to-guides/rust/index.md)
 
-### Rust
+## Run other languages with the Shell plugin
 
-Here is an example flow that runs a Rust file inside of a container using a `rust` image:
+Use `io.kestra.plugin.scripts.shell.Commands` when your language does not have a dedicated plugin or when you want to compile and run code in a container.
+
+This approach works best when:
+
+- the language runtime is available in the container image
+- your commands can be executed from a shell
+- you want to use `namespaceFiles` or `inputFiles` for source code
+
+For outputs and metrics, use the same `::{}::` syntax documented for Shell tasks. See [Shell outputs and metrics](../06.outputs-metrics/index.md#shell).
+
+### Rust example
+
+This example compiles and runs a Rust file stored in `namespaceFiles`:
 
 ```yaml
-id: rust
+id: rust_example
 namespace: company.team
 
 tasks:
-  - id: rust
+  - id: run_rust
     type: io.kestra.plugin.scripts.shell.Commands
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: rust:latest
+    containerImage: rust:1.82
     namespaceFiles:
       enabled: true
     commands:
@@ -109,7 +117,7 @@ tasks:
       - ./hello_world
 ```
 
-The Rust code is saved as a namespace file called `hello_world.rs`:
+The `hello_world.rs` file can contain:
 
 ```rust
 fn main() {
@@ -117,36 +125,28 @@ fn main() {
 }
 ```
 
-When executed, the print statement is displayed in the Kestra logs:
+See the full [Rust guide](../../15.how-to-guides/rust/index.md) for outputs and file handling.
 
-![rust_output](./rust_output.png)
+### Java example
 
-Check out the [full guide](../../15.how-to-guides/rust/index.md) which includes using [outputs and metrics](../06.outputs-metrics/index.md).
-
-### Java
-
-You can build [custom plugins](../../plugin-developer-guide/index.mdx) in Java which enable you to add custom tasks to your workflows. If you're looking to execute something simpler, you can use the `Shell` task with a Docker container.
-
-Here is an example flow that runs a Java file inside of a container using a `eclipse-temurin` image:
+If you need to run Java code without building a custom plugin, you can compile and run it from a container:
 
 ```yaml
-id: java
+id: java_example
 namespace: company.team
 
 tasks:
-  - id: java
+  - id: run_java
     type: io.kestra.plugin.scripts.shell.Commands
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: eclipse-temurin:latest
+    containerImage: eclipse-temurin:21
     namespaceFiles:
       enabled: true
     commands:
       - javac HelloWorld.java
       - java HelloWorld
 ```
-
-The Java code is saved as a namespace file called `HelloWorld.java`:
 
 ```java
 class HelloWorld {
@@ -156,107 +156,29 @@ class HelloWorld {
 }
 ```
 
-When executed, the print statement is displayed in the Kestra logs:
+### TypeScript example
 
-![java_output](./java_output.png)
-
-### C
-
-Here is an example flow that runs a C file inside of a container using a `gcc` image:
+You can run TypeScript with the Node.js plugin by compiling it to JavaScript first:
 
 ```yaml
-id: c
+id: typescript_example
 namespace: company.team
 
 tasks:
-  - id: c
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: gcc:latest
-    namespaceFiles:
-      enabled: true
-    commands:
-      - gcc hello_world.c
-      - ./a.out
-```
-
-The C code is saved as a namespace file called `hello_world.c`:
-
-```c
-#include <stdio.h>
-
-int main() {
-   printf("Hello, World!");
-   return 0;
-}
-```
-
-When executed, the print statement is displayed in the Kestra logs:
-
-![c_output](./c_output.png)
-
-### C++
-
-Here is an example flow that runs a C++ file inside of a container using a `gcc` image:
-
-```yaml
-id: cplusplus
-namespace: company.team
-
-tasks:
-  - id: cpp
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: gcc:latest
-    namespaceFiles:
-      enabled: true
-    commands:
-      - g++ hello_world.cpp
-      - ./a.out
-```
-
-The C++ code is saved as a namespace file called `hello_world.cpp`:
-
-```cpp
-#include <iostream>
-
-int main() {
-    std::cout << "Hello World!";
-    return 0;
-}
-```
-
-When executed, the print statement is displayed in the Kestra logs:
-
-![cpp_output](./cpp_output.png)
-
-### TypeScript
-
-You can execute TypeScript using the NodeJS plugin. To do so, you need to install TypeScript and compile our code to JavaScript using `tsc`.
-
-Once done, you can then execute with NodeJS. However, do note that the file is now a `.js` file.
-
-```yaml
-id: typescript
-namespace: company.team
-
-tasks:
-  - id: ts
+  - id: run_typescript
     type: io.kestra.plugin.scripts.node.Commands
     namespaceFiles:
       enabled: true
+    containerImage: node:22-slim
     commands:
-      - npm i -D typescript
+      - npm install --save-dev typescript
       - npx tsc example.ts
       - node example.js
 ```
 
-This example can be found in the [Node.js docs](https://nodejs.org/en/learn/getting-started/nodejs-with-typescript#examples). The file is saved as `example.ts`.
+The `example.ts` file can contain:
 
 ```typescript
-
 type User = {
   name: string;
   age: number;
@@ -267,195 +189,33 @@ function isAdult(user: User): boolean {
 }
 
 const justine: User = {
-  name: 'Justine',
+  name: "Justine",
   age: 23,
 };
 
-const isJustineAnAdult: boolean = isAdult(justine);
-console.log(isJustineAnAdult)
+console.log(isAdult(justine));
 ```
 
-When executed, the print statement is displayed in the Kestra logs:
+For more background, see the official [Node.js with TypeScript guide](https://nodejs.org/en/learn/getting-started/nodejs-with-typescript).
 
-![ts_output](./ts_output.png)
+## Use a custom Docker image for extra dependencies
 
-For more information, you can read more about [Node.js with TypeScript](https://nodejs.org/en/learn/getting-started/nodejs-with-typescript) on their official site.
+Use a custom Docker image when you need tools or libraries that are not present in the default runtime image.
 
-### PHP
-
-Here is an example flow that runs a PHP file inside of a container using a `php` image:
-
-```yaml
-id: php
-namespace: company.team
-
-tasks:
-  - id: php
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: php:8.4-rc-alpine
-    namespaceFiles:
-      enabled: true
-    commands:
-      - php hello_world.php
-```
-
-The PHP code is saved as a namespace file called `hello_world.php`:
-
-```php
-<?php
-echo "Hello, World!";
-?>
-```
-
-When executed, the print statement is displayed in the Kestra logs:
-
-![php_output](./php_output.png)
-
-There is a dedicated [PHP plugin](/plugins/plugin-script-php). An example flow might look like the following using a script task:
-
-```yaml
-id: php_script
-namespace: company.team
-
-tasks:
-  - id: script
-    type: io.kestra.plugin.scripts.php.Script
-    script: |
-      #!/usr/bin/php
-      <?php
-      echo "Hello, World!\\n";
-      ?>
-```
-Check out the following example for the commands task:
-
-```yaml
-id: php_commands
-namespace: company.team
-tasks:
-  - id: commands
-    type: io.kestra.plugin.scripts.php.Commands
-    inputFiles:
-      main.php: |
-        #!/usr/bin/php
-        <?php
-        echo "Hello, World!\\n";
-        ?>
-    commands:
-      - php main.php
-```
-
-### Scala
-
-Here is an example flow that runs a Scala file inside of a container using a `sbtscala/scala-sbt` image:
-
-```yaml
-id: scala
-namespace: company.team
-
-tasks:
-  - id: scala
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: sbtscala/scala-sbt:eclipse-temurin-17.0.4_1.7.1_3.2.0
-    namespaceFiles:
-      enabled: true
-    commands:
-      - scalac HelloWorld.scala
-      - scala HelloWorld
-```
-
-The Scala code is saved as a namespace file called `HelloWorld.scala`:
-
-```scala
-object HelloWorld {
-    def main(args: Array[String]) = {
-        println("Hello, World!")
-    }
-}
-```
-
-When executed, the print statement is displayed in the Kestra logs:
-
-![scala_output](./scala_output.png)
-
-### Perl
-
-Here is an example flow that runs a Perl file inside of a container using a `perl` image:
-
-```yaml
-id: perl
-namespace: company.team
-
-tasks:
-  - id: perl
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: perl:5.41.2
-    namespaceFiles:
-      enabled: true
-    commands:
-      - perl hello_world.pl
-```
-
-The Perl code is saved as a namespace file called `hello_world.pl`:
-
-```perl
-#!/usr/bin/perl
-use warnings;
-print("Hello, World!\n");
-```
-
-When executed, the print statement is displayed in the Kestra logs:
-
-![perl_output](./perl_output.png)
-
-There is a dedicated [Perl plugin](/plugins/plugin-script-perl). An example flow might look like the following using a script task:
-
-```yaml
-id: perl_inline
-namespace: company.team
-tasks:
-  - id: perl_script
-    type: io.kestra.plugin.scripts.perl.Script
-    script: |
-      my $message = "Hello from an inline Perl script!";
-      print $message . "\\n";
-```
-
-Check out the following example for the commands task:
-
-```yaml
-id: perl_commands
-namespace: company.team
-tasks:
-  - id: perl
-    type: io.kestra.plugin.scripts.perl.Commands
-    commands:
-      - perl -e 'print "Hello from Kestra!
-```
-
-## Run any language using a custom Docker image
-
-You can pre-install any language using a custom Docker image and use the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md) to execute it. Example using Go:
+The Dockerfile below adds Go to a Kestra image:
 
 ```dockerfile
 FROM kestra/kestra:latest
 USER root
 
-## Install Go
 RUN apt-get update -y && apt-get install -y wget && \
     wget -qO- https://go.dev/dl/go1.24.3.linux-amd64.tar.gz | tar -C /usr/local -xzf - && \
     echo 'export PATH=$PATH:/usr/local/go/bin' > /etc/profile.d/golang.sh
 
-## Set Go environment variables for Docker
 ENV PATH="/usr/local/go/bin:${PATH}"
 ```
 
-Then, point to that Dockerfile in your [`docker-compose.yml` file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml):
+Point your `docker-compose.yml` file to that Dockerfile:
 
 ```yaml
 services:
@@ -466,7 +226,7 @@ services:
     image: kestra-go:latest
 ```
 
-Once you start Kestra using `docker compose up -d`, you can create a flow that directly runs Go tasks with your custom dependencies using the `io.kestra.plugin.core.runner.Process` task runner:
+After you start Kestra with `docker compose up -d`, you can run Go code with the `Process` task runner:
 
 ```yaml
 id: golang_process
@@ -483,19 +243,29 @@ tasks:
       - go mod tidy
     script: |
       package main
+
       import (
           "os"
           "github.com/go-gota/gota/dataframe"
           "github.com/go-gota/gota/series"
       )
+
       func main() {
           names := series.New([]string{"Alice", "Bob", "Charlie"}, series.String, "Name")
           ages := series.New([]int{25, 30, 35}, series.Int, "Age")
           df := dataframe.New(names, ages)
           file, _ := os.Create("output.csv")
-          df.WriteCSV(file)
           defer file.Close()
+          df.WriteCSV(file)
       }
     outputFiles:
       - output.csv
 ```
+
+## Related pages
+
+- [Scripts overview](../index.mdx)
+- [Commands vs. scripts](../01.commands-vs-scripts/index.md)
+- [Task runners](../03.task-runners/index.md)
+- [Installing dependencies](../05.installing-dependencies/index.md)
+- [Outputs and metrics](../06.outputs-metrics/index.md)

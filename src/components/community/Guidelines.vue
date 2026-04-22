@@ -1,98 +1,165 @@
 <template>
-    <div class="container-fluid">
+    <section class="guidelines">
         <div class="container">
-            <Section
-                subtitle="Community Guidelines"
-                baseline="The Kestra community is a friendly and welcoming place for everyone."
-            >
-                <div class="guidelines row">
-                    <div class="col-md-6 col-sm-12 p-3">
-                        <Card :icon="AutoMode" :cardInfo="kestraCommunity" />
+            <div class="header">
+                <h2 data-usal="fade-r">Community Guidelines</h2>
+                <p data-usal="fade-l">The Kestra community is a friendly and welcoming place for everyone.</p>
+            </div>
+
+            <div class="guide-list">
+                <div
+                    v-for="(item, index) in FAQ_ITEMS"
+                    :key="index"
+                    class="guide-item"
+                    :class="{ active: activeIndex === index }"
+                >
+                    <div class="guide-header" @click="toggle(index)">
+                        <h3 data-usal="fade-r">{{ item.title }}</h3>
+                        <span class="icon">
+                            <Plus v-if="activeIndex !== index" />
+                            <Minus v-else />
+                        </span>
                     </div>
-                    <div class="col-md-6 col-sm-12 p-3">
-                        <Card :icon="ChartBoxOutline" :cardInfo="makeEasy" />
-                    </div>
-                    <div class="col-md-6 col-sm-12 p-3">
-                        <Card :icon="AccountGroupOutline" :cardInfo="relevantChannel" />
-                    </div>
-                    <div class="col-md-6 col-sm-12 p-3">
-                        <Card :icon="AccountGroupOutline" :cardInfo="dontSpam" />
-                    </div>
-                    <div class="d-flex flex-wrap justify-content-center">
-                        <p>
-                            If you have any questions, don't hestitate to ask us on
-                            <a target="_blank" href="https://kestra.io/slack">Slack</a>
-                        </p>
+                    <div class="wrapper">
+                        <div class="content" v-html="item.content" />
                     </div>
                 </div>
-            </Section>
+            </div>
+            <p>
+                If you have any questions, don't hesitate to ask us on
+                <a href="https://kestra.io/slack" target="_blank">Slack <OpenInNew /></a>
+            </p>
         </div>
-    </div>
+    </section>
 </template>
 
-<script setup>
-    import AutoMode from "vue-material-design-icons/AutoMode.vue"
-    import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
-    import ChartBoxOutline from "vue-material-design-icons/ChartBoxOutline.vue"
-</script>
+<script setup lang="ts">
+    import { ref } from 'vue';
+    import Plus from "vue-material-design-icons/Plus.vue";
+    import Minus from "vue-material-design-icons/Minus.vue";
+    import OpenInNew from "vue-material-design-icons/OpenInNew.vue";
 
-<script>
-    import Section from "~/components/layout/Section.vue"
-    import Card from "~/components/card/Card.vue"
-
-    export default {
-        components: { Section, Card },
-        data() {
-            return {
-                kestraCommunity: {
-                    title: "Be respectful to the Kestra community",
-                    descriptionHtml:
-                        "Be respectful towards other members of this Slack Community. Do not harass others. <br/><br/> Assume positive intent.",
-                },
-                makeEasy: {
-                    title: "Make it easy to help you",
-                    descriptionHtml:
-                        "<ul>\n" +
-                        "                   <li>Please share relevant flows (YAML), logs and stack traces <a target='_blank' href='https://slack.com/intl/en-gb/help/articles/202288908-Format-your-messages'>formatted</a> in code blocks (no screenshots, please).</li><br/>\n" +
-                        "                   <li>Please share how you have deployed Kestra:\n" +
-                        "                   <ol type='a'>\n" +
-                        "                       <li>Deployment choices (Standalone, Docker, Kubernetes, etc.).</li>\n" +
-                        "                       <li>The version of Kestra.</li>\n" +
-                        "                       <li>Your OS and its version.</li>\n" +
-                        "                       </ul>\n" +
-                        "                   </ol>\n" +
-                        "               </ul>",
-                },
-                relevantChannel: {
-                    title: "Use relevant channels",
-                    description:
-                        "Refrain from asking questions multiple times across different channels.",
-                },
-                dontSpam: {
-                    title: "Don’t spam",
-                    descriptionHtml:
-                        "While we’ll do our best to help you, there is no guaranteed timeline to answer your question. <br /><br /> If you need support with SLA guarantees, <a href='https://kestra.io/demo' target='_blank'>reach out to us.</a>",
-                },
-            }
+    const FAQ_ITEMS = [
+        {
+            title: "Be respectful to the Kestra community",
+            content: "Be respectful towards other members of this Slack Community. Do not harass others. <br/> Assume positive intent.",
         },
-    }
+        {
+            title: "Make it easy to help you",
+            content: `<ul>
+                <li>Please share relevant flows (YAML), logs and stack traces <a target='_blank' href='https://slack.com/intl/en-gb/help/articles/202288908-Format-your-messages'>formatted</a> in code blocks (no screenshots, please).</li>
+                <li>Please share how you have deployed Kestra:
+                    <ol type='a'>
+                        <li>Deployment choices (Standalone, Docker, Kubernetes, etc.).</li>
+                        <li>The version of Kestra.</li>
+                        <li>Your OS and its version.</li>
+                    </ol>
+                </li>
+            </ul>`
+        },
+        {
+            title: "Use relevant channels",
+            content: "Refrain from asking questions multiple times across different channels.",
+        },
+        {
+            title: "Don't spam",
+            content: "While we'll do our best to help you, there is no guaranteed timeline to answer your question. <br /> If you need support with SLA guarantees, <a href='https://kestra.io/demo' target='_blank'>reach out to us.</a>",
+        }
+    ];
+
+    const activeIndex = ref<number | null>(0);
+
+    const toggle = (index: number) => {
+        activeIndex.value = activeIndex.value === index ? null : index;
+    };
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-    .container-fluid {
-        background: url("./assets/guidelines-bg.svg") no-repeat bottom center;
-        :deep(.card-body) {
-            h4 {
-                font-weight: 600;
-                font-size: $font-size-2xl;
+
+
+    section.guidelines {
+        padding-top: 120px;
+        padding-bottom: 120px;
+        margin: 0 auto;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-primary);
+
+        .container {
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .guide-list {
+            display: flex;
+            flex-direction: column;
+
+            .guide-item {
+                background: var(--ks-background-purple-light);
+                transition: background 0.3s ease;
+
+                &.active {
+                    background: var(--ks-background-purple-hover);
+
+                    .guide-header {
+                        padding-bottom: 0.75rem;
+                    }
+
+                    .wrapper {
+                        max-height: 1000px;
+                    }
+                }
+
+                .guide-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 2rem;
+                    cursor: pointer;
+                    transition: padding 0.3s ease;
+
+                    h3 {
+                        margin: 0;
+                        color: var(--ks-content-primary);
+                    }
+
+                    .icon {
+                        display: flex;
+                        align-items: center;
+                        color: var(--ks-content-primary);
+                        font-weight: 700;
+                        font-size: 1.5rem;
+                    }
+                }
+
+                .wrapper {
+                    max-height: 0;
+                    transition: max-height 0.3s ease;
+                    overflow: hidden;
+
+                    .content {
+                        padding: 0 2rem 2rem;
+
+                        :deep(ul), :deep(ol) {
+                            padding-left: 1.5rem;
+                            margin-bottom: 0;
+                        }
+
+                        :deep(a) {
+                            color: var(--ks-content-link);
+                        }
+
+                        p {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
             }
         }
-        p {
-            font-weight: 500;
-            font-size: $font-size-lg;
-            margin-top: 64px;
-            color: $white;
+
+        a {
+            color: var(--ks-content-link);
         }
     }
 </style>

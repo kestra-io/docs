@@ -1,7 +1,9 @@
 ---
-title: Size and Scale Kestra Infrastructure – Executors, Workers, Schedulers
+title: "Size & Scale Kestra: Executors, Workers, Schedulers"
+h1: How to Size and Scale Your Kestra Infrastructure
 sidebarTitle: Sizing and Scaling Infrastructure
 icon: /src/contents/docs/icons/admin.svg
+description: Guidance on sizing and scaling your Kestra infrastructure, including Executors, Workers, and Schedulers, for optimal performance.
 ---
 
 Kestra is designed to scale from lightweight workflows to enterprise-scale orchestration with thousands of task runs per minute. Choosing the right infrastructure depends on your workload patterns, execution volume, and latency requirements. This page provides practical guidance on how to size your Kestra deployment, how many Executors and Workers you need, and how to scale and tune performance over time.
@@ -106,6 +108,38 @@ To improve executor throughput:
 
 - **JDBC/Postgres backend (Enterprise and OSS)**: simpler to operate with low latency for up to ~1,000 task runs/min. [Performance tunin](../../performance/performance-tuning/index.md)g involves adjusting JDBC queue polling intervals and executor threads beyond scaling the infrastructure.
 - **Kafka backend (Enterprise)**: required for higher throughput, real-time triggers, and scaling beyond ~2,000 task runs/min. Ensure enough partitions are allocated (≥ number of Executors/Workers) for full parallelism.
+
+---
+
+## Scaling the Webserver for many UI users
+
+When a large number of business users access the Kestra UI — for example to trigger flows manually, monitor executions, or browse logs — the **Webserver is rarely the bottleneck**. The Webserver is a stateless component that serves the UI and REST API. It can be scaled horizontally by simply adding more replicas behind a load balancer.
+
+### Estimating concurrent users
+
+Not all registered users are active at the same time. A common rule of thumb for internal tools is a 10 per 1 to 100 per 1 ratio between total users and concurrent users:
+
+| Total users | Estimated concurrent users |
+|-------------|---------------------------|
+| 100         | 1 – 10                    |
+| 800         | 8 – 80                    |
+| 5,000       | 50 – 500                  |
+
+A single Webserver instance (1 vCPU / 2 GB RAM) can comfortably handle **dozens of concurrent users**. For larger deployments or high API usage (bulk trigger calls, large file uploads), add Webserver replicas.
+
+### The real bottleneck: the database
+
+When many users simultaneously browse dashboards, execution lists, or large log outputs, **the database becomes the primary concern**, not the Webserver itself. Each page load in the UI can trigger several queries against your execution and log tables, which grow continuously over time.
+
+To keep the database healthy under this type of usage:
+
+- **Purge execution history regularly**: use [purge tasks](../../administrator-guide/purge/index.md) to delete old executions, logs, and storage files. At high throughput, execution data can accumulate quickly — terabytes per year is not uncommon.
+- **Reduce the default dashboard time range**: shorter default periods (e.g. last 24h instead of last 7 days) reduce the volume of data scanned on each dashboard load.
+- **Monitor slow queries**: track query latency on your database to identify execution or log queries that benefit from index tuning or data retention changes.
+
+:::alert{type="info"}
+If you are using a managed Postgres instance (e.g. Cloud SQL on GCP), ensure that your instance tier is sized to handle the read load from concurrent UI users in addition to the write load from flow executions.
+:::
 
 ---
 

@@ -1,7 +1,9 @@
 ---
-title: Configure DinD Behind MITM Proxy for Kestra
+title: "Docker-in-Docker Behind a Proxy: Kestra on Kubernetes"
+h1: Run Docker-in-Docker behind a corporate proxy on Kubernetes
 sidebarTitle: MITM Proxy for DinD
 icon: /src/contents/docs/icons/padlock.svg
+description: Configure Docker-in-Docker (DinD) to run securely behind a corporate or MITM proxy within your Kestra deployment.
 ---
 Configure Docker-in-Docker (DinD) to run behind a Proxy in a Kubernetes-based Kestra deployment.
 
@@ -17,7 +19,7 @@ If your environment uses a proxy that intercepts HTTPS traffic (such as an MITM 
 
 Without this, you'll see errors like:
 
-```text
+```plaintext
 x509: certificate signed by unknown authority
 ```
 
@@ -109,7 +111,7 @@ Here, `volume-enabled: true` ensures that the CA certificate is mounted from the
 
 ## DinD in action
 
-The configuration will help the DinD Pod pull the required Container Images successfully through the MITM Proxy.
+This configuration will help the DinD pod pull the required container images successfully through the MITM proxy.
 
 For Kestra tasks that run in Docker containers (e.g., `io.kestra.plugin.scripts.shell.Script`), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.
 For consistency across tasks, consider configuring these settings as plugin defaults.

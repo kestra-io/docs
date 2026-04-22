@@ -8,52 +8,126 @@ import "~/assets/styles/app.scss"
 import "~/assets/styles/theme.scss"
 import Header from "~/components/layout/Header.vue"
 import Search from "~/components/layout/Search.vue"
-import LayoutFooter from "~/components/layout/Footer.vue"
+import LayoutFooter from "~/components/layout/Footer.astro"
 import LayoutFixed from "~/components/layout/Fixed.vue"
-import { fetchSlackMembers } from "~/utils/fetchSlackMembers"
+import Announce from "~/components/layout/Announce.vue"
+import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
+import BreadcrumbList from "~/components/common/BreadcrumbList.astro"
+import { getRandomAiQuestions } from "~/utils/aiQuestions"
+import annoncesData from "~/contents/annonces/annonces.yml?raw"
+import YAML from "yaml"
+import { DISABLE_USAL, PREVIEW } from "astro:env/server"
+
+const parsedAnnonces = YAML.parse(annoncesData ?? "[]")
 
 interface Props {
     title?: string
     description?: string
     image?: string
-    isStories?: boolean
+    /**
+     * @param headerTheme Controls the header appearance before scrolling.
+     * - `"lightText"` — White nav links/logo; for dark/gradient hero backgrounds.
+     * - `"darkText"` — Dark nav links/logo; for white hero backgrounds.
+     * - `"darkHeader"` — Opaque dark header background in both modes (currently only used on homepage for the riv black bg).
+     * @param headerBg Override the dark header background color. Only applies when `headerTheme="darkHeader"`.
+     */
+    headerTheme?: "lightText" | "darkText" | "darkHeader"
+    headerBg?: string
+    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
+    canonical?: string
 }
 
 const props = Astro.props
-const currentOrigin = Astro.url.origin ?? "https://kestra.io"
+
+const currentUrl = Astro.url
+currentUrl.pathname = currentUrl.pathname.endsWith("/")
+    ? currentUrl.pathname.slice(0, -1)
+    : currentUrl.pathname
+
+const currentOrigin = currentUrl.origin ?? "https://kestra.io"
 const slug = Astro.routePattern
 
 const title = props.title
     ? props.title + " | Kestra"
-    : "Kestra, Open Source Declarative Data Orchestration"
+    : "Kestra, Open Source Declarative Orchestration Platform"
 const description =
     props.description ??
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
-const slackMembers = await fetchSlackMembers()
 
+const query = new URLSearchParams(
+    currentUrl.searchParams
+        .entries()
+        .filter(([key, _]) => ["category", "sort", "page"].includes(key))
+        .reduce(
+            (acc, [key, value]) => {
+                acc[key] = value
+                return acc
+            },
+            {} as Record<string, string>,
+        ),
+)
 
-const query = new URLSearchParams(Astro.url.searchParams.entries()
-    .filter(([key, _]) => ["category", "sort", "page"].includes(key))
-    .reduce((acc, [key, value]) => {
-        acc[key] = value
-        return acc
-    }, {} as Record<string, string>))
+const currentUrlNoQS = new URL(
+    currentUrl.toString().replace(currentUrl.search, ""),
+)
+const canonicalUrl = props.canonical
+    ? new URL(props.canonical, Astro.site)
+    : new URL(
+          currentUrlNoQS.toString() +
+              (query.size > 0 ? "?" + query.toString() : ""),
+          Astro.site,
+      )
 
-const canonicalUrl = new URL(Astro.url.pathname + (query.size > 0 ? "?" + query.toString() : ""), Astro.site)
+const randomAiQuestions = getRandomAiQuestions()
+const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
+
+const isHomepage = Astro.url.pathname === "/"
+const hasAnnounce = isHomepage && annonces.length > 0
+
+const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://kestra.io/#organization",
+    "name": "Kestra Technologies",
+    "url": "https://kestra.io",
+    "logo": "https://kestra.io/logo.svg",
+    "description": "Kestra is the open-source orchestration platform for data, AI, and infrastructure workflows. Event-driven, language-agnostic, and built for enterprise scale.",
+    "foundingDate": "2021",
+    "sameAs": [
+        "https://github.com/kestra-io/kestra",
+        "https://www.linkedin.com/company/kestra",
+        "https://x.com/kestra_io",
+        "https://hub.docker.com/r/kestra/kestra"
+    ],
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "url": "https://kestra.io/demo"
+    }
+}
 ---
 
-<html lang="en" class="dark">
+<html lang="en" class:list={{ "no-animation": DISABLE_USAL }}>
     <head>
+        <script is:inline>
+            ;(function () {
+                var theme = localStorage.getItem("theme") || "system"
+                var dark =
+                    theme === "dark" ||
+                    (theme === "system" &&
+                        matchMedia("(prefers-color-scheme: dark)").matches)
+                document.documentElement.classList.add(dark ? "dark" : "light")
+            })()
+        </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title}</title>
         <meta name="title" content={title} />
         <meta name="description" content={description} />
 
-        <Font cssVariable="--font-family-public-sans" preload />
-        <Font cssVariable="--font-family-source-code-pro" preload />
-        <Font cssVariable="--font-family-mona-sans" />
+        <Font cssVariable="--font-family-mona-sans" preload />
+        <Font cssVariable="--font-family-jetbrains-mono" preload />
 
         <meta name="msapplication-TileColor" content="#2c0059" />
         <meta name="theme-color" content="#2c0059" />
@@ -99,6 +173,7 @@ const canonicalUrl = new URL(Astro.url.pathname + (query.size > 0 ? "?" + query.
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
+        <BreadcrumbList url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl} pageTitle={props.title} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />
@@ -117,7 +192,7 @@ const canonicalUrl = new URL(Astro.url.pathname + (query.size > 0 ? "?" + query.
             )
         }
         <meta property="og:image:alt" content={title} />
-        <meta property="og:url" content={`${currentOrigin}`} />
+        <meta property="og:url" content={canonicalUrl.toString()} />
         <meta property="og:image" content={image} />
 
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -136,29 +211,55 @@ const canonicalUrl = new URL(Astro.url.pathname + (query.size > 0 ? "?" + query.
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
+        <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+
         <slot name="head" />
 
         <ClientRouter />
-        <LoadingIndicator color="#8405FF" threshold={0} />
+        <LoadingIndicator color="#a796ff" threshold={0} />
 
-        <script src="../scripts/analytics.js"></script>
+        {
+            import.meta.env.DEV || PREVIEW ? null : (
+                <>
+                    <!-- @prettier-ignore -->
+                    <script src="../scripts/analytics.js"></script>
+                    <script src="../scripts/cookieconsent.ts"></script>
+                </>
+            )
+        }
         <script src="../scripts/bootstrap.js"></script>
-        <script src="../scripts/cookieconsent.ts"></script>
         <script src="../scripts/zoom.js"></script>
+        <script src="../scripts/theme.ts"></script>
+        <script src="../scripts/ec-collapsible.ts"></script>
     </head>
-    <body>
-        <Header
-            client:load
-            isStories={Boolean(props.isStories)}
-            transition:persist
-        />
-        <Search client:load />
+    <body
+        data-header-theme={{
+            darkHeader: "darkBg",
+            lightText: "dark",
+            darkText: "light",
+        }[props.headerTheme!]}
+        style={props.headerBg
+            ? `--header-dark-bg: ${props.headerBg}`
+            : undefined}
+        class={hasAnnounce ? "has-annonces" : ""}
+    >
+        <Header client:load transition:persist />
+        <Search randomAiQuestions={randomAiQuestions} client:load />
+        {
+            hasAnnounce ? (
+                <Announce client:load transition:persist content={annonces} />
+            ) : (
+                ""
+            )
+        }
         <main>
             <slot />
         </main>
 
-        <LayoutFooter transition:persist client:visible />
-        <LayoutFixed client:load transition:persist online={slackMembers} />
+        <LayoutFooter transition:persist>
+            <ThemeSwitcher slot="theme-switcher" />
+        </LayoutFooter>
+        <LayoutFixed client:load transition:persist />
         <script define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>

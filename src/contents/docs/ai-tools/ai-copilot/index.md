@@ -1,5 +1,7 @@
 ---
 title: AI Copilot in Kestra – Generate and Edit Flows
+h1: Generate and Refine Flows with Natural Language Prompts
+description: Use Kestra AI Copilot to generate and edit flows with natural language prompts. Get AI-assisted suggestions for tasks, triggers, and configurations.
 sidebarTitle: AI Copilot
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"
@@ -17,20 +19,57 @@ The AI Copilot can generate and iteratively edit declarative flow code with AI-a
 
 The AI Copilot is designed to help build and modify flows directly from natural language prompts. Describe what you are trying to build, and Copilot will generate the YAML flow code for you to accept or adjust. Once your initial flow is created, you can iteratively refine it with Copilot’s help, adding new tasks or adjusting triggers without touching unrelated parts of the flow. Everything stays as code and in Kestra's usual declarative syntax.
 
+Copilot is available anywhere you build in Kestra — Flows, Apps, Unit tests, and Dashboards — so you can keep iterating with the same AI assistant across the product surface.
+
+You can type prompts or click the microphone button in the Copilot panel to dictate them with speech-to-text directly from the UI.
+
+Copilot grounds its suggestions in your Namespace metadata. It automatically reads Plugin Defaults, Variables, Secrets, and Key-Value pairs configured in the current Namespace, so prompts like "Create a task that integrates with MongoDB" can reuse your existing `pluginDefaults`, stored credentials, or variables without extra hints.
+
 ## Configuration
 
-To add Copilot to your flow editor, add the following to your [Kestra configuration](../../configuration/index.md):
+To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). The `providers` array lets you register multiple LLMs and pick a default (`isDefault: true`):
 
 ```yaml
 kestra:
   ai:
-    type: gemini
-    gemini:
-      model-name: gemini-2.5-flash
-      api-key: YOUR_GEMINI_API_KEY
+    enabled: true # set to false to disable AI Copilot entirely
+    providers:
+      - id: gemini
+        display-name: Gemini - Private
+        type: gemini
+        configuration:
+          model-name: gemini-2.5-flash
+          api-key: YOUR_GEMINI_API_KEY
+      - id: gpt
+        display-name: Open AI
+        type: openai
+        isDefault: true
+        configuration:
+          model-name: gpt-4
+          api-key: YOUR_OPENAI_API_KEY
 ```
 
-Replace `api-key` with your Google Gemini API key, and Copilot will appear in the top right corner of the flow editor. Optionally, you can add the following properties to your configuration (not all properties may be included with every provider):
+:::alert{type="info"}
+Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
+:::
+
+### Disabling AI Copilot
+
+To fully disable the AI Copilot — including the built-in fallback to the `api.kestra.io` service — set `kestra.ai.enabled` to `false`:
+
+```yaml
+kestra:
+  ai:
+    enabled: false
+```
+
+When disabled, the Copilot UI will not appear and all AI endpoints will be deactivated. The property defaults to `true`.
+
+### Multiple providers
+
+When multiple providers are configured, users can switch models from a dropdown in the Copilot UI instead of relying only on the default.
+
+Replace `api-key` with your provider credentials. Copilot appears in the top right corner of the flow editor. Optionally, you can add the following properties inside each provider `configuration` block (availability varies by provider):
 
 - `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
 - `topP` (nucleus sampling): Ranges from 0.0–1.0; lower values (0.1–0.3) produce safer, more focused responses for technical tasks, while higher values (0.7–0.9) encourage more creative and varied outputs.
@@ -42,6 +81,11 @@ Replace `api-key` with your Google Gemini API key, and Copilot will appear in th
 - `clientPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
 - `caPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
 - `customHeaders`: Specify custom HTTP headers for authentication and routing through internal AI gateways. Custom headers should be passed as a map inside the property.
+- `timeout`: Specifies the maximum duration to wait for an AI model API request to complete before timing out. ISO 8601 duration format (Java Duration): `PT30S` = 30 seconds. You can set it per provider to enforce strict SLAs.
+
+:::alert{type="info"}
+Enterprise Edition includes an [RBAC permission](../../07.enterprise/03.auth/rbac/index.md) that lets administrators allow or disallow Copilot usage per role at tenant or namespace scope.
+:::
 
 ![AI Copilot](./ai-copilot.png)
 
@@ -53,7 +97,7 @@ The open-source version supports only Google Gemini models. Enterprise Edition u
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-In the above demo, we want to create a flow that uses a [Python script](/plugins/tasks/io.kestra.plugin.scripts.python.Script) to fetch New York City weather data. To get started, open the Copilot and write a prompt. For example:
+In the above demo, we want to create a flow that uses a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) to fetch New York City weather data. To get started, open the Copilot and write a prompt. For example:
 
 ```txt
 Create a flow with a Python script that fetches weather data for New York City
@@ -132,7 +176,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 
 ## Enterprise Edition Copilot configurations
 
-Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Each configuration has slight differences, so make sure to adjust for your provider.
+Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Add one or more of the snippets below as entries inside `kestra.ai.providers` (set `isDefault: true` on the default provider). Each configuration has slight differences, so make sure to adjust for your provider.
 Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
 
 ### Amazon Bedrock
@@ -140,11 +184,14 @@ Only non-thinking modes are supported. If the used LLM is a pure thinking model 
 ```yaml
 kestra:
   ai:
-    type: bedrock
-    bedrock:
-      model-name: amazon.nova-lite-v1:0
-      access-key-id: BEDROCK_ACCESS_KEY_ID
-      secret-access-key: BEDROCK_SECRET_ACCESS_KEY
+    providers:
+      - id: bedrock
+        display-name: Amazon Bedrock
+        type: bedrock
+        configuration:
+          model-name: amazon.nova-lite-v1:0
+          access-key-id: BEDROCK_ACCESS_KEY_ID
+          secret-access-key: BEDROCK_SECRET_ACCESS_KEY
 ```
 
 ### Anthropic
@@ -152,10 +199,13 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: anthropic
-    anthropic:
-      model-name: claude-opus-4-1-20250805
-      api-key: CLAUDE_API_KEY
+    providers:
+      - id: anthropic
+        display-name: Anthropic
+        type: anthropic
+        configuration:
+          model-name: claude-opus-4-1-20250805
+          api-key: CLAUDE_API_KEY
 ```
 
 ### Azure OpenAI
@@ -163,14 +213,17 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: azure-openai
-    azure-openai:
-      model-name: gpt-4o-2024-11-20
-      api-key: AZURE_OPENAI_API_KEY
-      tenant-id: AZURE_TENANT_ID
-      client-id: AZURE_CLIENT_ID
-      client-secret: AZURE_CLIENT_SECRET
-      endpoint: "https://your-resource.openai.azure.com/"
+    providers:
+      - id: azure-openai
+        display-name: Azure OpenAI
+        type: azure-openai
+        configuration:
+          model-name: gpt-4o-2024-11-20
+          api-key: AZURE_OPENAI_API_KEY
+          tenant-id: AZURE_TENANT_ID
+          client-id: AZURE_CLIENT_ID
+          client-secret: AZURE_CLIENT_SECRET
+          endpoint: "https://your-resource.openai.azure.com/"
 ```
 
 ### Deepseek
@@ -178,11 +231,14 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: deepseek
-    deepseek:
-      model-name: deepseek-chat
-      api-key: DEEPSEEK_API_KEY
-      base-url: "https://api.deepseek.com/v1"
+    providers:
+      - id: deepseek
+        display-name: DeepSeek
+        type: deepseek
+        configuration:
+          model-name: deepseek-chat
+          api-key: DEEPSEEK_API_KEY
+          base-url: "https://api.deepseek.com/v1"
 ```
 
 ### Google Gemini
@@ -190,10 +246,13 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: gemini
-    gemini:
-      model-name: gemini-2.5-flash
-      api-key: YOUR_GEMINI_API_KEY
+    providers:
+      - id: gemini
+        display-name: Google Gemini
+        type: gemini
+        configuration:
+          model-name: gemini-2.5-flash
+          api-key: YOUR_GEMINI_API_KEY
 ```
 
 ### Google Vertex AI
@@ -201,12 +260,15 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: googlevertexai
-    googlevertexai:
-      model-name: gemini-2.5-flash
-      project: GOOGLE_PROJECT_ID
-      location: GOOGLE_CLOUD_REGION
-      endpoint: VERTEX-AI-ENDPOINT
+    providers:
+      - id: vertex
+        display-name: Google Vertex AI
+        type: googlevertexai
+        configuration:
+          model-name: gemini-2.5-flash
+          project: GOOGLE_PROJECT_ID
+          location: GOOGLE_CLOUD_REGION
+          endpoint: VERTEX-AI-ENDPOINT
 ```
 
 ### Mistral
@@ -214,11 +276,14 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: mistralai
-    mistralai:
-      model-name: mistral:7b
-      api-key: MISTRALAI_API_KEY
-      base-url: "https://api.mistral.ai/v1"
+    providers:
+      - id: mistral
+        display-name: Mistral
+        type: mistralai
+        configuration:
+          model-name: mistral:7b
+          api-key: MISTRALAI_API_KEY
+          base-url: "https://api.mistral.ai/v1"
 ```
 
 ### Ollama
@@ -226,10 +291,13 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: ollama
-    ollama:
-      model-name: llama3
-      base-url: http://localhost:11434
+    providers:
+      - id: ollama
+        display-name: Ollama
+        type: ollama
+        configuration:
+          model-name: llama3
+          base-url: http://localhost:11434
 ```
 
 :::alert{type="info"}
@@ -246,11 +314,14 @@ Please double-check that the chosen model has a non-thinking version or that a t
 ```yaml
 kestra:
   ai:
-    type: openai
-    openai:
-      model-name: gpt-5-nano
-      api-key: OPENAI_API_KEY
-      base-url: https://api.openai.com/v1
+    providers:
+      - id: openai
+        display-name: OpenAI
+        type: openai
+        configuration:
+          model-name: gpt-5-nano
+          api-key: OPENAI_API_KEY
+          base-url: https://api.openai.com/v1
 ```
 
 ### OpenRouter
@@ -258,9 +329,12 @@ kestra:
 ```yaml
 kestra:
   ai:
-    type: openrouter
-    openrouter:
-      api-key: OPENROUTER_API_KEY
-      base-url: "https://openrouter.ai/api/v1"
-      model-name: "anthropic/claude-sonnet-4"
+    providers:
+      - id: openrouter
+        display-name: OpenRouter
+        type: openrouter
+        configuration:
+          api-key: OPENROUTER_API_KEY
+          base-url: "https://openrouter.ai/api/v1"
+          model-name: "anthropic/claude-sonnet-4"
 ```

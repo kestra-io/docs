@@ -1,6 +1,8 @@
 ---
-title: Document Your Plugin
+title: Document Your Kestra Plugin with Annotations
+h1: How to Document a Kestra Plugin for the UI and Website
 icon: /src/contents/docs/icons/dev.svg
+description: Document your Kestra plugins using annotations and schemas to generate documentation for the UI and website.
 ---
 
 Here is how you can document your plugin.
@@ -146,12 +148,7 @@ You can add multiple examples if needed.
 
 ### Document the plugin properties
 
-In a plugin, all properties must be annotated by `io.kestra.core.models.annotations.PluginProperty` and should provide documentation via the `io.swagger.v3.oas.annotations.media.Schema` annotation and validation rules via `javax.validation.constraints.*`.
-
-The `@PluginProperty` annotation contains two attributes:
-
-- `dynamic`: set it to true if the property will be rendered dynamically.
-- `additionalProperties`: you can use it to denote the sub-type of the property. For example, when using a `Map<String, Message>`, you can set it to `Message.class`.
+Declare inputs with the `Property<T>` carrier type whenever possible, and document them with the `io.swagger.v3.oas.annotations.media.Schema` annotation plus validation rules from `javax.validation.constraints.*`. Use `io.kestra.core.models.annotations.PluginProperty` only when you need its metadata attributes—`group`, `hidden`, or `internalStorageURI`—that are not available on `Property<T>`.
 
 The Swagger `@Schema` annotation contains a lot of attributes that can be used to document the plugin properties. The most useful are:
 
@@ -164,7 +161,6 @@ The `@Schema` and `@PluginProperty` annotations can be used on fields, methods, 
 Many tasks can take input from multiple sources on the same property. They usually have a single `from` property, a string representing a file in the Kestra Storage, a single object, or a list of objects. To document such property, you can use `anyOf` this way:
 
 ```java
-@PluginProperty(dynamic = true)
 @NotNull
 @Schema(
     title = "The source of the published data.",
@@ -241,7 +237,7 @@ When you open this flow in the editor, the JSON Schema will validate the structu
 
 The JSON Schema for Kestra flows is available at the following URL:
 
-```
+```plaintext
 https://your-kestra-instance.com/api/v1/main/schemas/flow.json
 ```
 

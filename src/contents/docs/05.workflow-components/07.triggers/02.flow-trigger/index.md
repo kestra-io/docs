@@ -1,5 +1,7 @@
 ---
 title: Flow Trigger in Kestra – Chain Flow Executions
+h1: Automate Workflow Dependencies by Chaining Flows
+description: Chain workflows in Kestra using the Flow Trigger. Automate dependencies by triggering flows upon the completion, success, or failure of other flows.
 sidebarTitle: Flow Trigger
 icon: /src/contents/docs/icons/flow.svg
 ---
@@ -11,19 +13,19 @@ Trigger one flow based on the execution of another flow.
 A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Flow"
+type: io.kestra.plugin.core.trigger.Flow
 ```
 
 Kestra can automatically start a flow as soon as another flow ends. This allows you to create dependencies between flows, even when those flows are owned by different teams.
 
-Check the [Flow trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow) documentation for the list of all properties.
+Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
 ## Preconditions
 
 A Flow trigger requires preconditions to filter which upstream executions can trigger the flow, often within a defined time window.
 
 :::alert{type="info"}
-[Pebble expressions](../../../expressions/index.md) cannot be used in Flow Trigger (pre)conditions. You must declaratively define any condition variables.
+[Pebble expressions](../../../expressions/index.mdx) cannot be used in Flow Trigger (pre)conditions. You must declaratively define any condition variables.
 :::
 
 ### Filters
@@ -83,7 +85,7 @@ The `timeWindow` property lets you define how Kestra evaluates upstream flow exe
 
 - `DURATION_WINDOW`: This is the default type. It uses a start time (windowAdvance) and end time (window) that are moving forward to the next interval whenever the evaluation time reaches the end time, based on the defined duration window.
 
-For example, with a 1-day window (`window: PT1D`, the default), SLA conditions are evaluated over a 24-hour period starting at midnight each day. If you set `windowAdvance: PT6H`, the window will start at 6 AM each day. If you set `windowAdvance: PT6H` and you also override `window: PT6H`, the window will start at 6 AM and last for 6 hours — as a result, Kestra will check the SLA conditions during the following time periods: 06:00 to 12:00, 12:00 to 18:00, 18:00 to 00:00, and 00:00 to 06:00, and so on.
+For example, with a 1-day window (`window: PT1D`, the default), SLA conditions are evaluated over a 24-hour period starting at midnight each day. If you set `windowAdvance: PT6H`, the window will start at 6 AM each day. If you set `windowAdvance: PT6H` and you also override `window: PT6H`, the window will start at 6 AM and last for 6 hours — as a result, Kestra will check the SLA conditions during the following time periods: `06:00` to `12:00`, `12:00` to `18:00`, `18:00` to `00:00`, and `00:00` to `06:00`, and so on.
 
 - `SLIDING_WINDOW`: This option also evaluates SLA conditions over a fixed time window, but it always goes backward from the current time. For example, a sliding window of 1 hour (window: PT1H) will evaluate executions for the past hour (so between now and one hour before now). It uses a default window of 1 day.
 
@@ -136,9 +138,9 @@ outputs:
 ```
 
 
-- `DAILY_TIME_DEADLINE`: This option enforces SLA conditions that must be met before a specific cutoff time each day. With the string property deadline, you can configure a daily cutoff for checking conditions. For example, deadline: "09:00:00.00Z" means that the defined SLA conditions should be met from midnight until 9 AM each day; otherwise, the flow will not be triggered.
+- `DAILY_TIME_DEADLINE`: This option enforces SLA conditions that must be met before a specific cutoff time each day. With the string property deadline, you can configure a daily cutoff for checking conditions. For example, deadline: `09:00:00.00Z` means that the defined SLA conditions should be met from midnight until 9 AM each day; otherwise, the flow will not be triggered.
 
-For the example, this trigger definition only triggers the flow if  `flow_a` is in SUCCESS state before 9:00 AM every day.
+For the example, this trigger definition only triggers the flow if  `flow_a` is in SUCCESS state before `9:00` AM every day.
 
 ```yaml
 triggers:
@@ -211,7 +213,7 @@ id: alert
 namespace: system
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{secret('SLACK_WEBHOOK')}}" # format: https://hooks.slack.com/services/xzy/xyz/xyz
     channel: "#general"
     executionId: "{{trigger.executionId}}"

@@ -1,5 +1,7 @@
 ---
-title: Multi-Tenancy Architecture in Kestra – Isolation Model
+title: "Multi-Tenancy in Kestra: Tenant Isolation Model"
+h1: How Tenant Isolation Works in Kestra Enterprise
+description: Understand Kestra's Multi-tenancy architecture. Learn how tenant isolation works for flows, data, and resources in a single Enterprise instance.
 sidebarTitle: Multi-tenancy
 icon: /src/contents/docs/icons/architecture.svg
 editions: ["EE", "Cloud"]

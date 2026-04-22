@@ -1,14 +1,14 @@
 ---
-title: Pass Inputs via an API call
+title: Pass Inputs via an API Call
+h1: Parameterize Flow Executions by Passing Inputs via API
 icon: /src/contents/docs/icons/api.svg
 stage: Getting Started
 topics:
   - Kestra Workflow Components
+description: Learn how to pass dynamic inputs to Kestra flow executions via API calls to parameterize your workflows at runtime.
 ---
 
 Passing Inputs via an API Call
-
-## Pass Inputs via an API call
 
 Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../../05.workflow-components/05.inputs/index.md) documentation page.
 

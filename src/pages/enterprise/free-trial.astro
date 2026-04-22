@@ -1,0 +1,11 @@
+---
+import Layout from "~/components/layout.astro"
+import FreeTrialForm from "~/components/enterprise/FreeTrialForm.vue"
+
+const TITLE = "Free Trial - Enterprise"
+const DESCRIPTION = "Request Access for a Free Trial of Kestra Enterprise Team Edition"
+---
+
+<Layout title={TITLE} description={DESCRIPTION}>
+    <FreeTrialForm routePath={Astro.url.pathname} client:load />
+</Layout>

@@ -1,7 +1,10 @@
 ---
-title: Volume Mount
+title: "Volume Mount Migration in Kestra 0.17.0: Plugin Config"
+h1: Migrate from volume-enabled to Plugin Configuration in 0.17.0
+sidebarTitle: Volume Mount → Plugin Config
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
+description: Guide to migrating from the deprecated volume-enabled property to plugin configuration in Kestra 0.17.0.
 ---
 
 

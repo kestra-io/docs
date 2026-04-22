@@ -1,8 +1,11 @@
 ---
-title: Failed Attempts Lockout
+title: Account Lockout After Failed Login Attempts (0.22.0)
+h1: New Account Lockout Policy After Multiple Failed Logins
+sidebarTitle: Account Lockout Policy
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]
+description: Introduction of account lockout after multiple failed login attempts in Enterprise Edition for enhanced security.
 ---
 
 

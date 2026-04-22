@@ -1,0 +1,323 @@
+---
+import { Image } from "astro:assets"
+import TeamImages from "~/utils/teamsImages"
+
+const teamMembers = [
+    {
+        name: "Emmanuel Darras",
+        title: "CEO",
+        image: TeamImages["edarras-round.png"],
+    },
+    {
+        name: "Ludovic Dehon",
+        title: "CTO",
+        image: TeamImages["ldehon-round.png"],
+    },
+    {
+        name: "Anna Geller",
+        title: "Product Lead",
+        image: TeamImages["ageller-round.png"],
+    },
+    {
+        name: "David Khan",
+        title: "Sales Leader",
+        image: TeamImages["dkhan-round.png"],
+    },
+    {
+        name: "Luke Lipan",
+        title: "Sales Leader",
+        image: TeamImages["llipan-round.png"],
+    },
+    {
+        name: "Paul Grainger",
+        title: "Lead Field Engineer",
+        image: TeamImages["pgrainger-round.png"],
+    },
+    {
+        name: "Parham Parvizi",
+        title: "Solution Architect",
+        image: TeamImages["pparvizi-round.png"],
+    },
+    {
+        name: "Florian Cailles",
+        title: "Lead Growth Engineer",
+        image: TeamImages["fcailles-round.png"],
+    },
+    {
+        name: "Florian Hussonnois",
+        title: "Lead Software Engineer",
+        image: TeamImages["fhussonois-round.png"],
+    },
+    {
+        name: "Loïc Mathieu",
+        title: "Lead Software Engineer",
+        image: TeamImages["lmathieu-round.png"],
+    },
+    {
+        name: "François Delbrayelle",
+        title: "Lead Software Engineer",
+        image: TeamImages["fdelbrayelle-round.png"],
+    },
+    {
+        name: "Martin-Pierre Roset",
+        title: "Lead Growth & Marketing",
+        image: TeamImages["mproset-round.png"],
+    },
+    {
+        name: "Elliot Gunn",
+        title: "Product Marketing Manager",
+        image: TeamImages["egunn-round.png"],
+    },
+    {
+        name: "Nenad Malić",
+        title: "Product Marketing Lead",
+        image: TeamImages["nmalic-round.png"],
+    },
+    {
+        name: "Virgile Fanucci",
+        title: "Lead SEO/SEA",
+        image: TeamImages["vfanucci-round.png"],
+    },
+    {
+        name: "Nicolas Callens",
+        title: "Lead Product Designer",
+        image: TeamImages["ncallens-round.png"],
+    },
+    {
+        name: "Faizan Qazi",
+        title: "Solution Engineer",
+        image: TeamImages["fqazi-round.png"],
+    },
+    {
+        name: "Antoine Lin",
+        title: "Lead Finance & Admin",
+        image: TeamImages["alin-round.png"],
+    },
+    {
+        name: "Benoît Pimpaud",
+        title: "Product Owner",
+        image: TeamImages["bpimpaud-round.png"],
+    },
+    {
+        name: "Amara Graham",
+        title: "Developer Advocate",
+        image: TeamImages["agraham-round.png"],
+    },
+    {
+        name: "Will Russell",
+        title: "Developer Advocate",
+        image: TeamImages["wrussell-round.png"],
+    },
+    {
+        name: "Yann Coornaert",
+        title: "Software Engineer",
+        image: TeamImages["ycoornaert-round.png"],
+    },
+    {
+        name: "Brian Mulier",
+        title: "Software Engineer",
+        image: TeamImages["bmulier-round.png"],
+    },
+    {
+        name: "Malay Dewangan",
+        title: "Software Engineer",
+        image: TeamImages["mdewangan-round.png"],
+    },
+    {
+        name: "Steven Meek",
+        title: "Software Engineer",
+        image: TeamImages["smeek-round.png"],
+    },
+    {
+        name: "Nicolas Kwiatkowski",
+        title: "Software Engineer",
+        image: TeamImages["nkwiatkowski-round.png"],
+    },
+    {
+        name: "Roman Acevedo",
+        title: "Software Engineer",
+        image: TeamImages["racevedo-round.png"],
+    },
+    {
+        name: "Miloš Paunović",
+        title: "Software Engineer",
+        image: TeamImages["mpaunovic-round.png"],
+    },
+    {
+        name: "Bart Ledoux",
+        title: "Software Engineer",
+        image: TeamImages["bledoux-round.png"],
+    },
+    {
+        name: "Piyush Bhaskar",
+        title: "Software Engineer",
+        image: TeamImages["pbhaskar-round.png"],
+    },
+    {
+        name: "Marco Sabatini",
+        title: "Platform Engineer",
+        image: TeamImages["msabatini-round.png"],
+    },
+    {
+        name: "Gilles Perreymond",
+        title: "Platform Engineer",
+        image: TeamImages["gperreymond-round.png"],
+    },
+    {
+        name: "Alex Emerich",
+        title: "Technical Writer",
+        image: TeamImages["aemerich-round.png"],
+    },
+    {
+        name: "Rok Grabnar",
+        title: "Data Analyst",
+        image: TeamImages["rgrabnar-round.png"],
+    },
+    {
+        name: "Pradumna Saraf",
+        title: "QA Engineer",
+        image: TeamImages["psaraf-round.png"],
+    },
+    {
+        name: "Wish to see <br />your photo here?",
+        title: null,
+        image: TeamImages["portrait-round.png"],
+        isOpenPosition: true,
+    },
+]
+---
+
+<section class="team-section" data-usal="fade-u">
+    <div class="container">
+        <div class="text-left">
+            <div class="subtitle">
+                <h2>An International Team</h2>
+            </div>
+            <p class="baseline">
+                Kestra is led by experienced founders and industry veterans
+                dedicated to innovation, quality, and customer success.
+            </p>
+        </div>
+        <div class="team-grid" data-usal="fade-u delay-200">
+            {
+                teamMembers.map((member, index) => (
+                    <div class="team-card" data-usal="zoomin">
+                        <Image
+                            src={member.image}
+                            alt={member.name.replace(/<br\s*\/?>/gi, " ")}
+                            width={164.8}
+                            height={164.8}
+                        />
+                        <div class="team-info">
+                            <p class="team-name mb-0" set:html={member.name} />
+                            {member.title && (
+                                <small class="team-title">{member.title}</small>
+                            )}
+                            {member.isOpenPosition && (
+                                <a
+                                    href="/careers"
+                                    class="btn btn-sm btn-secondary"
+                                >
+                                    Open Positions
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .team-section {
+        padding: $rem-4 $rem-1;
+        background-color: var(--ks-background-body);
+        text-align: left;
+
+        .subtitle {
+            text-align: left;
+            color: var(--ks-content-primary);
+        }
+
+        .baseline {
+            margin-bottom: 3rem;
+            font-size: 18px;
+            line-height: 26px;
+            color: var(--ks-content-primary);
+            text-align: left;
+
+            @include media-breakpoint-up(lg) {
+                max-width: 518px;
+            }
+        }
+
+        .team-grid {
+            max-width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            border-top: $block-border;
+            border-left: $block-border;
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            @include media-breakpoint-up(xl) {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .team-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: $block-border;
+            border-right: $block-border;
+            padding: 32px;
+            gap: 16px;
+            box-sizing: border-box;
+
+            @include media-breakpoint-up(md) {
+                min-width: 228px;
+            }
+
+            img {
+                object-fit: cover;
+                filter: grayscale(100%);
+            }
+
+            .team-info {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: $rem-1;
+
+                .team-name {
+                    color: var(--ks-content-primary);
+                    font-size: 18px;
+                    font-weight: 700;
+                    margin-bottom: 0;
+                    line-height: 1.2;
+
+                    &.mb-3 {
+                        margin-bottom: 1rem;
+                    }
+                }
+
+                .team-title {
+                    color: var(--ks-content-tertiary);
+                    font-size: $font-size-xs;
+                    line-height: 20px;
+                    font-weight: 400;
+                }
+            }
+
+            :global(.btn-secondary) {
+                white-space: nowrap;
+            }
+        }
+    }
+</style>

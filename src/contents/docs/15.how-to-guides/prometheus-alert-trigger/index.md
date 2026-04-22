@@ -1,9 +1,11 @@
 ---
 title: Trigger a Flow on a Prometheus Alert
+h1: Auto-Trigger Kestra Flows from Prometheus Alerts
 icon: /src/contents/docs/icons/prometheus.svg
 stage: Intermediate
 topics:
   - DevOps
+description: Connect Prometheus alerts to Kestra to automatically trigger flows via webhooks when specific metrics thresholds are breached.
 ---
 
 Connect Prometheus alerts to Kestra to trigger flows.
@@ -212,7 +214,7 @@ Once the flow is written, you can verify the trigger is active from the **Flows 
 
 * The `Webhook` trigger listens for HTTP POST requests to:
 
-  ```
+  ```text
   https://<your-kestra-host>/api/v1/triggers/webhook/prometheus
   ```
 - Prometheus Alertmanager sends alerts to this endpoint.

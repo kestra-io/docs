@@ -1,5 +1,7 @@
 ---
-title: Kestra Architecture – Main Components
+title: Main Components of Kestra Architecture
+h1: Explore Kestra's Repository, Queue, Storage, and Plugin System
+description: Understand Kestra's core architecture. Dive into main components like the Repository, Queue, Internal Storage, and Plugin system.
 sidebarTitle: Main components
 icon: /src/contents/docs/icons/architecture.svg
 ---
@@ -52,7 +54,7 @@ Scalable alternatives are available as plugins:
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) — for [Google Cloud Storage](https://cloud.google.com/storage).
 - [Storage Azure](https://github.com/kestra-io/storage-azure) — for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 
-For details, see [Internal storage configuration](../../configuration/index.md#internal-storage-configuration).
+For details, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 ## Queue
 

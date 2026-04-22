@@ -1,5 +1,7 @@
 ---
-title: Maintenance Mode in Kestra Enterprise – Pause for Upgrades
+title: "Maintenance Mode in Kestra Enterprise: Safe Upgrades"
+h1: Pause New Executions Safely During System Upgrades
+description: Safely upgrade with Kestra Maintenance Mode. Pause new executions while allowing running tasks to complete for seamless system updates.
 sidebarTitle: Maintenance Mode
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

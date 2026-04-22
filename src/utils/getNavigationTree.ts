@@ -1,3 +1,4 @@
+import type { CollectionEntry } from "astro:content";
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 export type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 
@@ -12,34 +13,36 @@ const navigationTree = {
         // "Video Tutorials"
     ],
     "Build with Kestra": [
-        "Concepts",
         "Workflow Components",
+        "Concepts",
         "Multi-Language Script Tasks",
         "AI Tools",
-        "No-Code",
+        "No Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
+        "Use Cases",
         "How-to Guides",
     ],
     "Scale with Kestra": [
         "Cloud & Enterprise Edition",
-        "Task Runners",
+        "Task Runners in Kestra: Offload & Isolate Compute",
         // "Worker Groups",
         "Best Practices",
     ],
     "Manage Kestra": ["Administrator Guide", "Migration Guide", "Performance"],
     "Reference Docs": [
-        "Configuration",
         "Releases & LTS Policy",
+        "Configuration",
         "Expressions",
-        "API Reference",
         "Terraform Provider",
+        "API Reference",
         "Kestra CLI",
+        "Glossary",
     ],
 }
 
 export function getNavigationTree(
-    docsPages: { id: string; data: { title: string; sidebarTitle?: string } }[],
+    docsPages: CollectionEntry<"docs">[],
 ) {
     // build the initial tree structure by finding each title in the navigationTree
     // then build the navigation tree
@@ -64,6 +67,8 @@ export function getNavigationTree(
                               sidebarTitle: page.data.sidebarTitle,
                               path: `/docs/${page.id}`,
                               children: recursivelyBuildChildren(page.id, docsPages),
+                              hideSubMenus: Boolean(page.data.hideSubMenus),
+                              hideSidebar: Boolean(page.data.hideSidebar),
                           }
                         : undefined
                 })
@@ -77,7 +82,7 @@ export function getNavigationTree(
 
 function recursivelyBuildChildren(
     parentId: string,
-    docsPages: { id: string; data: { title: string; sidebarTitle?: string } }[],
+    docsPages: CollectionEntry<"docs">[],
 ): NavigationItem[] | undefined {
     const children = docsPages.filter((page) => {
         const parentPath = parentId.endsWith("/") ? parentId : parentId + "/"

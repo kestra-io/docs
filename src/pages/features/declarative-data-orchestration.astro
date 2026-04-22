@@ -1,27 +1,70 @@
 ---
+import CardGrid from "~/components/card/CardGrid.astro"
+import Powerful from "~/components/features/declarative/Powerful.astro"
 import Layout from "~/components/layout.astro"
-import Header from "~/components/features/declaratives/Header.vue"
-import Main from "~/components/features/declaratives/Main.vue"
-import Features from "~/components/features/declaratives/Features.vue"
-import Empower from "~/components/features/declaratives/Empower.vue"
-import PluginsBox from "~/components/PluginsBox.astro"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
+import TopHero from "~/components/layout/TopHero.astro"
+import Design from "~/components/features/declarative/Design.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import visualHero from "~/assets/landing/features/declarative/declarative_hero.svg"
 
 const title = "Declarative Orchestration with Kestra"
 const description =
     "Bring Infrastructure as Code Best Practices to All Workflows"
+    
+const MAIN_ITEMS = [
+    {
+        icon: "mdi:typewriter",
+        title: "Declarative Orchestration Logic",
+        description:
+            "YAML is easy to learn. The simple syntax allows more people in the organization to collaborate on building workflows together.",
+    },
+    {
+        icon: "mdi:bug-outline",
+        title: "Fewer Bugs in Production",
+        description:
+            "Kestra's built-in syntax validation ensures that your YAML code is error-free before execution, reducing the risk of runtime errors in production.",
+    },
+    {
+        icon: "mdi:read",
+        title: "Easy to Read by Humans and Machines",
+        description:
+            "YAML is a superset of JSON, therefore it works extraordinaly well with REST APIs, while remaining human-readable and easy to understand.",
+    },
+    {
+        icon: "mdi:git",
+        title: "Simple Version Control",
+        description:
+            "Since you describe your workflow in a single YAML configuration, it's easy to track changes over time, collaborate on pull request reviews, and roll back when needed.",
+    },
+    {
+        icon: "mdi:lan",
+        title: "Platform Independence",
+        description:
+            "Due to separation of your orchestration logic from the business logic, you don't need any modifications to your existing code to orchestrate it with Kestra.",
+    },
+    {
+        icon: "mdi:alert-circle-outline",
+        title: "Reduced Maintenance Effort",
+        description:
+            "Need to adjust your workflow? Just edit the YAML file. No need for redeploying code and complex code packaging in CI/CD.",
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <Header client:load />
-    <Main client:visible />
-    <Features client:visible />
-    <Empower client:visible />
-    <PluginsBox />
-    <LayoutFooterContact
-        client:visible
-        title="Getting Started with Declarative Orchestration"
-        darkButtonText="Read the docs"
-        purpleButtonText="Get started"
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Declarative Orchestration with Kestra"
+        description="Define what should happen, not how to wire it together, and let the engine handle execution, state, retries, and scheduling."
+        image={visualHero}
     />
+    <CardGrid title="Simple Workflow Definition in YAML" items={MAIN_ITEMS} />
+    <Powerful />
+    <Design />
+    <PluginsBlock />
+    <SeeHow>
+        <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
+        Built for Enterprises and SMBs, with strong governance, enterprise-grade security,
+        seamless scalability, and dedicated enterprise support backed by SLAs.
+    </SeeHow>
 </Layout>

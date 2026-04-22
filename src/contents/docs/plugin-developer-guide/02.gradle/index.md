@@ -1,7 +1,9 @@
 ---
 title: Gradle Configuration for Kestra Plugins
+h1: Configure Gradle for Kestra Plugin Development
 sidebarTitle: Gradle Configuration
 icon: /src/contents/docs/icons/dev.svg
+description: Configure Gradle for Kestra plugin development, including dependencies, mandatory settings, and shadow jar creation.
 ---
 
 We use [Gradle](https://gradle.org/) as a build tool. This page will help you configure Gradle for your plugin.

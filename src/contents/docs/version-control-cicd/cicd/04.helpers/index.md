@@ -1,7 +1,9 @@
 ---
-title: CI/CD Helpers for Kestra – Local Dev and Read-Only Flows
+title: "CI/CD Helpers in Kestra: Local Dev and Read-Only Flows"
+h1: Simplify Local Flow Development and Validation with Helpers
 sidebarTitle: Helpers
 icon: /src/contents/docs/icons/dev.svg
+description: Simplify local flow development and validation with Kestra CI/CD helpers for expanding inclusions and managing read-only flows.
 ---
 
 Kestra provides a set of **helper functions** designed to make local flow development easier — especially when working with large or modular flows.

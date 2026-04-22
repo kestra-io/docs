@@ -1,5 +1,7 @@
 ---
-title: Audit Logs in Kestra – Governance and Compliance Guide
+title: "Audit Logs in Kestra: Governance and Compliance"
+h1: Track User Activity and Flow Executions with Audit Logs
+description: Ensure compliance with Kestra Audit Logs. Track and monitor all user activities, flow executions, and system changes for security and governance.
 sidebarTitle: Audit Logs
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

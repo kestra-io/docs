@@ -16,24 +16,27 @@ declare global {
 export function hubspotFormCreate(eventType: string, data: Record<string, any>) {
     const gtm = useGtm()
     scriptLoad(() => {
-        const formData = {
+        window.hbspt.forms.create({
             ...data,
             region: "eu1",
             portalId: "27220195",
-            onFormSubmit: function ($form: HTMLFormElement) {
-                gtm?.trackEvent({
-                    event: eventType,
-                    noninteraction: false,
-                })
-                posthog.capture(eventType)
-                const email = $form.querySelector('[name="email"]') as HTMLInputElement
-                if (email?.value) {
-                    identify(email?.value)
+            onFormReady: ($form: HTMLFormElement) => {
+                if (data.css) {
+                    const style = document.createElement("style");
+                    if (data.styleId) style.id = data.styleId;
+                    style.innerHTML = data.css;
+                    $form.appendChild(style);
                 }
+                data.onFormReady?.($form);
             },
-        }
-
-        window.hbspt.forms.create(formData)
+            onFormSubmit: ($form: HTMLFormElement) => {
+                gtm?.trackEvent({ event: eventType, noninteraction: false });
+                posthog.capture(eventType);
+                const email = ($form.querySelector('[name="email"]') as HTMLInputElement)?.value;
+                if (email) identify(email);
+                data.onFormSubmit?.($form);
+            },
+        })
     })
 }
 

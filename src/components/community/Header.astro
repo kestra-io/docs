@@ -1,0 +1,130 @@
+---
+import glow1 from "./assets/glow-1.svg?raw"
+import glow2 from "./assets/glow-2.svg?raw"
+import headerBg from "./assets/header-bg.svg?raw"
+import TopHero from "~/components/layout/TopHero.astro"
+---
+
+<TopHero background="linear-gradient(0deg, #000000 20%, #0f1a2e 100%)">
+    <div class="container">
+        <h1 data-usal="fade-r">Connect and Collaborate</h1>
+        <p data-usal="fade-l">
+            Connect with experts in the field, get support from the community,
+            exchange ideas and contribute your code and feedback.
+        </p>
+    </div>
+    <div class="visuals" data-usal="fade">
+        <div
+            class="glow bottom"
+            set:html={glow1}
+            role="img"
+            aria-label="glow bottom"
+        />
+        <div
+            class="glow top"
+            set:html={glow2}
+            role="img"
+            aria-label="glow top"
+        />
+        <div
+            class="header-bg img-fluid"
+            set:html={headerBg}
+            role="img"
+            aria-label="hero_art"
+        />
+    </div>
+</TopHero>
+
+<style lang="scss">
+    :global(section.head) {
+        padding-bottom: 0 !important;
+        overflow: hidden;
+
+        .container {
+            position: relative;
+            z-index: 10;
+            margin-inline: auto;
+            text-align: center;
+            color: $white;
+
+            p {
+                margin-inline: auto;
+                @include media-breakpoint-up(lg) {
+                    max-width: 589px;
+                }
+            }
+        }
+
+        --visuals-offset-y: -5rem;
+        --glow-bottom-offset-y: 10rem;
+        --glow-top-offset-y: 15rem;
+        --glow-top-offset-x: 2rem;
+
+        @include media-breakpoint-up(md) {
+            --visuals-offset-y: -8rem;
+            --glow-bottom-offset-y: 12rem;
+            --glow-top-offset-y: 30rem;
+            --glow-top-offset-x: 3.5rem;
+        }
+
+        @include media-breakpoint-up(lg) {
+            --visuals-offset-y: -10rem;
+            --glow-bottom-offset-y: 15rem;
+            --glow-top-offset-y: 40rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            --visuals-offset-y: -19vw;
+            --glow-bottom-offset-y: 20rem;
+            --glow-top-offset-y: 50rem;
+            --glow-top-offset-x: 5rem;
+        }
+
+        @media screen and (min-width: 1400px) {
+            --visuals-offset-y: -266px;
+        }
+
+        .visuals {
+            position: relative;
+            z-index: 1;
+            margin-top: var(--visuals-offset-y);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            max-width: 1400px;
+            margin-inline: auto;
+
+            .glow {
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: auto;
+                display: flex;
+                justify-content: center;
+
+                &.bottom {
+                    margin-top: var(--glow-bottom-offset-y);
+                }
+
+                &.top {
+                    margin-top: var(--glow-top-offset-y);
+                    margin-left: var(--glow-top-offset-x);
+                    :global(svg) {
+                        width: 100%;
+                        height: auto;
+                    }
+                }
+            }
+            .header-bg {
+                display: block;
+                width: 100%;
+                height: auto;
+                :global(svg) {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+</style>

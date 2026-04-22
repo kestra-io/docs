@@ -1,0 +1,67 @@
+---
+import CardGrid from "~/components/card/CardGrid.astro"
+
+const ITEMS = [
+    {
+        icon: "mdi:image-filter-center-focus-strong",
+        title: "Centralized Orchestration",
+        description:
+            "Your Unified Infrastructure Control Plane. From Terraform to Python, manage every tool and script in a single, governed environment.",
+    },
+    {
+        icon: "mdi:security-network",
+        title: "Secure Remote Execution",
+        description:
+            "Run tasks safely inside air-gapped networks, VPCs, and private data centers, or in the cloud of your choice.",
+    },
+    {
+        icon: "mdi:clipboard-text-search-outline",
+        title: "Audit-Ready by Design",
+        description:
+            "Automatically capture full run history, task logs, approvals, and evidence bundles for instant compliance.",
+    },
+    {
+        icon: "mdi:cloud-sync-outline",
+        title: "Self-Service Infrastructure",
+        description:
+            "Manage infrastructure directly from a self service catalog. Kestra provisions the server, syncs the records, and resolves the ticket request automatically.",
+    },
+    {
+        icon: "mdi:toolbox-outline",
+        title: "Bring Your Own Tools",
+        description:
+            "Reuse your existing scripts, Terraform modules, Ansible roles, alongside VMware, NetApp or any other tool you already use.",
+    },
+    {
+        icon: "mdi:filter-remove-outline",
+        title: "No BoilerPlate",
+        description:
+            "Keep your scripts lightweight. Offload inputs, secrets, retries, and backoff logic to Kestra, so your code focuses purely on the business logic.",
+    },
+    {
+        icon: "mdi:shield-lock-outline",
+        title: "Built for Hybrid & Air-Gapped",
+        description:
+            "Manage cloud, IT, and OT automation from one platform. Execute tasks securely inside your VPCs or private networks.",
+    },
+    {
+        icon: "mdi:git",
+        title: "Native GitOps Integration",
+        description:
+            "Workflows live in your codebase, move through CI/CD pipelines, and can be instantly rolled back if a deployment fails.",
+    },
+    {
+        title: "Unify, Secure, and Automate Your Infrastructure",
+        link: {
+            href: "/get-started",
+            text: "Get Started"
+        },
+        evenBg: true,
+    },
+]
+---
+
+<CardGrid 
+    title="Built for the Way Infrastructure Teams Work"
+    items={ITEMS}
+/>

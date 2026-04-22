@@ -5,6 +5,7 @@ date: 2025-04-16T13:00:00
 category: Solutions
 author:
   name: Emmanuel Darras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   image: edarras
   role: CEO & Co-Founder
 image: ./main.jpg
@@ -42,7 +43,7 @@ Kestra was explicitly created to break free of this. We believe your orchestrati
 
 What does this mean in practice? With Kestra, you can orchestrate *any* code in *any* language, framework, or environment – as first-class citizens of your workflow. Want to execute a Spark job, run a SQL query on Snowflake, trigger a bash script on a server, call a REST API, and train a Python ML model all in one pipeline? Kestra can do that. Our YAML workflow definitions are **universal**: they describe the flow and dependencies, while the actual tasks can be implemented in whatever tool or language is best for the job. Kestra’s engine doesn’t require tasks to be Python functions or Java classes – it supports both through plugins, along with hundreds of other integrations.
 
-This is possible because of Kestra’s **rich plugin ecosystem**. The platform comes with **hundreds of plugins (over 600 and counting!)** that interface with databases, cloud services, messaging systems, filesystems, and more. Each plugin extends Kestra with new task types, so you can, say, drop in a `BigQuery` query task, or an `AWS S3` file transfer task, or a `Spark` submit, without writing any glue code. Under the hood, Kestra will handle running that task in the appropriate environment (some plugins run tasks in isolated Docker containers, others call external APIs, etc.), but from the user perspective, it’s just another YAML step. Crucially, *if* a specific integration doesn’t exist yet, developing a custom plugin is straightforward and fast – often just a few hours of work.
+This is possible because of Kestra’s **rich plugin ecosystem**. The platform comes with **hundreds of plugins (over 1200 and counting!)** that interface with databases, cloud services, messaging systems, filesystems, and more. Each plugin extends Kestra with new task types, so you can, say, drop in a `BigQuery` query task, or an `AWS S3` file transfer task, or a `Spark` submit, without writing any glue code. Under the hood, Kestra will handle running that task in the appropriate environment (some plugins run tasks in isolated Docker containers, others call external APIs, etc.), but from the user perspective, it’s just another YAML step. Crucially, *if* a specific integration doesn’t exist yet, developing a custom plugin is straightforward and fast – often just a few hours of work.
 
  Our plugin framework is developer-friendly, meaning your engineers can easily extend Kestra to talk to in-house systems or niche tools. You’re not limited by the orchestrator’s built-in library; you have the freedom to expand it. This level of extensibility transforms Kestra from a static tool into a platform that evolves with your tech stack.
 

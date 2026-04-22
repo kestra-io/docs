@@ -1,7 +1,9 @@
 ---
-title: Deploy Kestra with Podman Compose – Postgres Backend
+title: "Deploy with Podman Compose in Kestra: Postgres"
+h1: Rootless Container Deployment with Podman Compose
 sidebarTitle: Podman Compose
 icon: /src/contents/docs/icons/podman.svg
+description: Deploy Kestra using Podman Compose with PostgreSQL, offering a rootless container alternative to Docker.
 ---
 
 Start Kestra with a PostgreSQL database backend using Podman Compose.
@@ -38,7 +40,7 @@ To avoid errors during the `podman machine init` (`Error: exec: "qemu-img": exec
 
 Then, you may also have to edit the `~/.config/containers/containers.conf` file and add replace `/path/to/bin` with the result of `dirname $(which gvproxy)`:
 
-```
+```toml
 [engine]
 helper_binaries_dir = ["/path/to/bin"]
 ```
@@ -51,13 +53,13 @@ podman machine init --cpus 2 --rootful -v /tmp:/tmp -v $PWD:$PWD
 podman machine start
 podman compose up -d
 
-## Optional steps if you have SSH related issues with `podman compose up -d`:
-## podman machine inspect podman-machine-default --format '{{.SSHConfig.IdentityPath}}'
-## ssh-add $(podman machine inspect podman-machine-default --format '{{.SSHConfig.IdentityPath}}')
-## ssh -v -p 46719 core@127.0.0.1 echo "hello" # to accept to open a tunnel between podman and localhost
+# Optional steps if you have SSH-related issues with `podman compose up -d`:
+# podman machine inspect podman-machine-default --format '{{.SSHConfig.IdentityPath}}'
+# ssh-add $(podman machine inspect podman-machine-default --format '{{.SSHConfig.IdentityPath}}')
+# ssh -v -p 46719 core@127.0.0.1 echo "hello" # accept the tunnel between Podman and localhost
 #
-## Optional step if you have such an error: "Cannot connect to the Docker daemon at [path]. Is the docker daemon running?"
-## export DOCKER_HOST='unix:///run/user/1000/podman/podman-machine-default-api.sock' # <= to be replaced by the above error [path]
+# Optional step if you see the error: "Cannot connect to the Docker daemon at [path]. Is the docker daemon running?"
+# export DOCKER_HOST='unix:///run/user/1000/podman/podman-machine-default-api.sock' # replace with the [path] shown in the error
 ```
 
 :::alert{type="info"}
@@ -72,12 +74,12 @@ Open the URL `http://localhost:8080` in your browser to launch the UI.
 
 The command above starts a *standalone* server (all architecture components in one JVM).
 
-The [configuration](../../configuration/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
+The [configuration](../../configuration/01.configuration-basics/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
 
 :::alert{type="info"}
 If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../10.administrator-guide/16.troubleshooting/index.md).
 
-For running Kestra with Docker Compose with each server component as a separate service, see the [multi-component Docker Compose example](../../server-cli/index.md).
+For running Kestra with Docker Compose with each server component as a separate service, see the [multi-component Docker Compose example](../../kestra-cli/kestra-server/index.md).
 :::
 
 ### Use a configuration file

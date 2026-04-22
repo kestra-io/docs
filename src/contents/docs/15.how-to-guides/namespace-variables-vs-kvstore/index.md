@@ -1,14 +1,14 @@
 ---
-title: Namespace Variables vs KV Store
+title: Namespace Variables vs. KV Store in Kestra
+h1: "Choose the Right Storage: Namespace Variables or KV Store"
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
+description: Understand the differences between Namespace Variables and the KV Store in Kestra to choose the right storage for your data.
 ---
 
 When to store key-value pairs as namespace-level Variables vs. KV store
-
-## Namespace Variables vs KV Store
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/fs86GLg-OGM?si=aKz38pdclO54Z2jh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

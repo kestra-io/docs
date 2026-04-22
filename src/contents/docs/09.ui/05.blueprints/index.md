@@ -1,5 +1,7 @@
 ---
 title: Blueprints in the Kestra UI – Find and Use Templates
+h1: Discover and Reuse Pre-Built Workflow Templates
+description: Explore Blueprints in the Kestra UI. Discover and use pre-built workflow templates to kickstart your orchestration projects quickly.
 sidebarTitle: Blueprints
 icon: /src/contents/docs/icons/ui.svg
 ---

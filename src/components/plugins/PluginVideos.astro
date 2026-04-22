@@ -1,0 +1,75 @@
+---
+interface Props {
+    videos?: string[]
+}
+
+const YOUTUBE_ID_REGEX =
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/
+
+const { videos = [] } = Astro.props
+
+const extractId = (url: string): string | null =>
+    url.match(YOUTUBE_ID_REGEX)?.[1] ?? null
+
+const videoIds = videos.map(extractId).filter(Boolean) as string[]
+---
+
+{
+    videoIds.length > 0 && (
+        <section id="see-it-in-action" class="videos">
+            <h2 class="videos__title">See it in action</h2>
+
+            <div class="row g-3">
+                {videoIds.map((id) => (
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                        <div class="video-embed">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${id}`}
+                                title={`Video ${id}`}
+                                loading="lazy"
+                                allow="
+                                accelerometer;
+                                autoplay;
+                                clipboard-write;
+                                encrypted-media;
+                                gyroscope;
+                                picture-in-picture;
+                                web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    )
+}
+
+<style lang="scss">
+    .videos {
+        &__title {
+            margin-bottom: 1.25rem;
+            color: var(--ks-content-primary);
+        }
+
+        .video-embed {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 430 / 245;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--ks-background-tertiary);
+            border: $block-border;
+
+            iframe {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+                display: block;
+            }
+        }
+    }
+</style>

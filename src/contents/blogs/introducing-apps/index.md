@@ -5,6 +5,8 @@ date: 2024-12-04T13:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.jpg

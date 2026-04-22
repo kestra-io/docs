@@ -1,14 +1,128 @@
 ---
-import Layout from "~/components/layout.astro"
-import Header from "~/components/vs/vmware-cloud-foundation/Header.vue"
-import Main from "~/components/vs/vmware-cloud-foundation/Main.vue"
+import { getEntry } from "astro:content"
+import VsLayout from "~/components/versus/VsLayout.astro"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
 
-const title = "VMware Cloud Foundation vs Kestra"
-const description =
-    "What are the differences between Kestra and VMware Cloud Foundation"
+import competitorLogo from "~/components/versus/assets/vmware-cloud-foundation.svg?raw"
+import competitorMonogram from "~/components/versus/assets/vmware-cloud-foundation-monograme.svg?raw"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import competitorImg from "~/components/versus/assets/vmware-cloud-foundation-img.svg"
+import heroUI from "~/components/versus/assets/hero_ui_vmware-cloud-foundation.webp"
+
+const entry = await getEntry("vs", "vmware-cloud-foundation")
+if (!entry) throw new Error("Could not find vs/vmware-cloud-foundation collection entry")
+
+const {
+    title,
+    shortDescription,
+    competitorName,
+
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    testimonials,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+} = entry.data
 ---
 
-<Layout title={title} description={description}>
-    <Header client:visible />
-    <Main client:load />
-</Layout>
+<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: competitorMonogram,
+        }}
+        image={{ src: heroUI, alt: "kestra ui" }}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: competitorLogo,
+            linkImg: competitorImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo: competitorLogo,
+        }}
+    />
+    <VsTestimonial
+        quotes={testimonials}
+    />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">
+            Getting Started with Modern Infrastructure Orchestration
+        </Fragment>
+        See how Kestra replaces VMware Aria Automation with declarative YAML workflows
+        across any cloud.
+    </SeeHow>
+</VsLayout>

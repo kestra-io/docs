@@ -1,5 +1,7 @@
 ---
 title: Descriptions in Kestra – Document Flows and Tasks
+h1: Add Markdown Descriptions to Flows, Tasks, and Triggers
+description: Document your Kestra workflows effectively. Add Markdown descriptions to flows, tasks, inputs, and triggers to improve maintainability and collaboration.
 sidebarTitle: Descriptions
 icon: /src/contents/docs/icons/flow.svg
 ---

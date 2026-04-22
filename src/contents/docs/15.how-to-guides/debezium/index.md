@@ -1,14 +1,14 @@
 ---
-title: Debezium Tasks and Triggers
+title: Use Debezium Tasks and Triggers in Kestra
+h1: Enable Change Data Capture with Debezium in Your Workflows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Integrations
+description: Enable Change Data Capture (CDC) in your databases to use Debezium tasks and triggers in Kestra for real-time data ingestion.
 ---
 
 How to enable databases to leverage Debezium tasks and triggers.
-
-## Debezium Tasks and Triggers
 
 In order to ensure the change data capture works seamlessly and to get the Debezium tasks and triggers running, you need to perform the necessary setup on the database. Below are instructions on how to set this up.
 
@@ -25,13 +25,13 @@ A Debezium MySQL connector requires a MySQL user account. This MySQL user must h
 
 1. Create the MySQL user:
 
-```
+```sql
 mysql> CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
 ```
 
 2. Grant the required permissions to the user:
 
-```
+```sql
 mysql> GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'user' IDENTIFIED BY 'password';
 ```
 
@@ -43,7 +43,7 @@ If using a hosted option such as Amazon RDS or Amazon Aurora that does not allow
 
 3. Finalize the user’s permissions:
 
-```
+```sql
 mysql> FLUSH PRIVILEGES;
 ```
 
@@ -60,7 +60,7 @@ You must enable binary logging for MySQL replication. The binary logs record tra
 
 1. Check whether the `log-bin` option is enabled:
 
-```
+```sql
 // for MySQL 5.x
 mysql> SELECT variable_value as "BINARY LOGGING STATUS (log-bin) ::"
 FROM information_schema.global_variables WHERE variable_name='log_bin';
@@ -71,7 +71,7 @@ FROM performance_schema.global_variables WHERE variable_name='log_bin';
 
 2. If the binlog is `OFF`, add the properties in the following table to the configuration file for the MySQL server:
 
-```
+```ini
 server-id         = 223344 # Querying variable is called server_id, e.g. SELECT variable_value FROM information_schema.global_variables WHERE variable_name='server_id';
 log_bin                     = mysql-bin
 binlog_format               = ROW
@@ -81,7 +81,7 @@ binlog_expire_logs_seconds  = 864000
 
 3. Confirm your changes by checking the binlog status once more:
 
-```
+```sql
 // for MySQL 5.x
 mysql> SELECT variable_value as "BINARY LOGGING STATUS (log-bin) ::"
 FROM information_schema.global_variables WHERE variable_name='log_bin';
@@ -108,19 +108,19 @@ GTIDs are available in MySQL 5.6.5 and later. See the [MySQL documentation](http
 
 1. Enable `gtid_mode`:
 
-```
+```sql
 mysql> gtid_mode=ON
 ```
 
 2. Enable `enforce_gtid_consistency`:
 
-```
+```sql
 mysql> enforce_gtid_consistency=ON
 ```
 
 3. Confirm the changes:
 
-```
+```sql
 mysql> show global variables like '%GTID%';
 ```
 
@@ -147,13 +147,13 @@ When an initial consistent snapshot is made for large databases, your establishe
 
 1. Configure `interactive_timeout`:
 
-```
+```sql
 mysql> interactive_timeout=<duration-in-seconds>
 ```
 
 2. Configure wait_timeout:
 
-```
+```sql
 mysql> wait_timeout=<duration-in-seconds>
 ```
 
@@ -173,7 +173,7 @@ This option is available in MySQL 5.6 and later.
 
 1. Enable `binlog_rows_query_log_events` in MySQL:
 
-```
+```sql
 mysql> binlog_rows_query_log_events=ON
 ```
 
@@ -196,7 +196,7 @@ Verify the setting of the `binlog_row_value_options` variable in the database. T
 
 1. Check current variable value
 
-```
+```sql
 mysql> show global variables where variable_name = 'binlog_row_value_options';
 ```
 
@@ -209,7 +209,7 @@ mysql> show global variables where variable_name = 'binlog_row_value_options';
 
 If the value of the variable is set to `PARTIAL_JSON`, run the following command to unset it:
 
-```
+```sql
 mysql> set @@global.binlog_row_value_options="" ;
 ```
 
@@ -270,7 +270,7 @@ It is possible to use Debezium with [Azure Database for PostgreSQL](https://do
 
 Set the Azure replication support to `logical`. You can use the [Azure CLI](https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical#using-azure-cli) or the [Azure Portal](https://docs.microsoft.com/en-us/azure/postgresql/concepts-logical#using-azure-portal) to configure this. For example, to use the Azure CLI, here are the `az postgres server` commands that you need to execute:
 
-```
+```bash
 az postgres server configuration set --resource-group mygroup --server-name myserver --name azure.replication_support --value logical
 
 az postgres server restart --resource-group mygroup --name myserver
@@ -365,7 +365,7 @@ After the database is enabled for CDC, a schema with the name cdc is created, al
 
 The following example shows how to enable CDC for the database `MyDB`:
 
-```
+```sql
 USE MyDB
 GO
 EXEC sys.sp_cdc_enable_db
@@ -398,7 +398,7 @@ A SQL Server administrator must enable change data capture on the source tables 
 
 The following example shows how to enable CDC for the table `MyTable`:
 
-```
+```sql
 USE MyDB
 GO
 
@@ -441,7 +441,7 @@ Queries should not return empty results.
 
 The following example runs the stored procedure `sys.sp_cdc_help_change_data_capture` on the database `MyDB`:
 
-```
+```sql
 USE MyDB;
 GO
 EXEC sys.sp_cdc_help_change_data_capture

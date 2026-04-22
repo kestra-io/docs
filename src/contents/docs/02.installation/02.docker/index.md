@@ -1,7 +1,9 @@
 ---
 title: Run Kestra with Docker – Single-Container Setup
+h1: Get Started with Kestra Using a Single Docker Container
 sidebarTitle: Docker
 icon: /src/contents/docs/icons/docker.svg
+description: Run Kestra in a single Docker container for quick testing and development, with options for custom configuration.
 ---
 
 Start Kestra using a single Docker container.
@@ -17,13 +19,19 @@ Start Kestra using a single Docker container.
 Once you have Docker running, you can start Kestra in a single command (*if you're running on Windows, make sure to use [WSL](https://docs.docker.com/desktop/wsl/)*):
 
 ```bash
-docker run --pull=always --rm -it -p 8080:8080 --user=root -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp kestra/kestra:latest server local
+docker run --pull=always --rm -it -p 8080:8080 --user=root \
+  --name kestra \
+  -v kestra_data:/app/storage \
+  -v kestra_db:/app/data \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp \
+  kestra/kestra:latest server local
 ```
 
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
 
 :::alert{type="info"}
-The above command starts Kestra with an embedded H2 database. If you want to use a persistent database backend with PostgreSQL and more configurability, follow the [Docker Compose installation](../03.docker-compose/index.md).
+The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../03.docker-compose/index.md).
 :::
 
 :::alert{type="info"}
@@ -87,7 +95,7 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
 
 ### Using the `KESTRA_CONFIGURATION` environment variable
 
-You can adjust the [Kestra configuration](../../configuration/index.md) by passing the `KESTRA_CONFIGURATION` variable to the Docker container via the `-e` option.
+You can adjust the [Kestra configuration](../../configuration/01.configuration-basics/index.md) by passing the `KESTRA_CONFIGURATION` variable to the Docker container via the `-e` option.
 This environment variable must be a valid YAML string.
 
 Managing a large configuration via a single YAML string can be tedious. To simplify this, consider using a configuration file instead.
@@ -119,7 +127,7 @@ kestra:
   tasks:
     tmp-dir:
       path: /tmp/kestra-wd/tmp
-  url: http://localhost:8080/'
+  url: http://localhost:8080/
 ```
 
 :::alert{type="info"}

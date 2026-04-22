@@ -1,7 +1,9 @@
 ---
-title: Tutorial – Add Inputs to Kestra Workflows
+title: Add Inputs to Kestra Workflows
+h1: Make Flows Dynamic with Inputs
 sidebarTitle: Inputs
 icon: /src/contents/docs/icons/tutorial.svg
+description: Discover how to add dynamic inputs to your Kestra workflows to make them flexible and reusable across different scenarios.
 ---
 
 Inputs make your flows more dynamic and reusable.
@@ -11,7 +13,7 @@ Instead of hardcoding values in your flow, use inputs to make your workflows mor
 ## Make Flows dynamic with Inputs
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/uml91UcDd-E?si=5WMFeIQ7gKsb2YB6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/7abajF7wmzY?si=7oLTHTmC1QPPSCn7" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ---
@@ -35,9 +37,13 @@ tasks:
     message: Hey there, {{ inputs.user }}
 ```
 
-In the Log task, you'll notice `inputs.user`. To retrieve an input value, you need to identify the input in an [expression](../../expressions/index.md). In Kestra, bracket notation `{{   }}` is used to wrap an expression. For an input, follow this general `{{ inputs.input_id }}` syntax.
+In the Log task, you'll notice `inputs.user`. To retrieve an input value, you need to identify the input in an [expression](../../expressions/index.mdx). In Kestra, bracket notation `{{   }}` is used to wrap an expression. For an input, follow this general `{{ inputs.input_id }}` syntax.
 
 In the example above, the input `id` is set to `user`, and it's referenced in the task message as `{{ inputs.user }}`. Leverage [autocompletion](../01.fundamentals/index.md#autocompletion) in the flow editor to use expressions; they can be tricky at first, let Kestra do the hard work.
+
+:::alert{type="info"}
+Hit the `Backspace` or `Delete` key while building your expression? Use the keyboard shortcut to bring autocomplete back again: `CTRL + SPACE`.
+:::
 
 Try running the above flow with different values for the `user` input. You can do this by clicking on the **Execute** button and then typing a new string value in the prompt for whatever name you'd like.
 

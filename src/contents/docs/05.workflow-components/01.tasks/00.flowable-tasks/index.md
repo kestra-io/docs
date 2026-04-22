@@ -1,5 +1,7 @@
 ---
-title: Flowable Tasks in Kestra – Control Orchestration Logic
+title: "Flowable Tasks in Kestra: Control Flow Logic"
+h1: Control Execution Flow with Sequential, Parallel, and Loop Tasks
+description: Deep dive into Kestra Flowable Tasks. Learn to control execution flow with sequential, parallel, switch, if/else, loops, and error handling constructs.
 sidebarTitle: Flowable Tasks
 icon: /src/contents/docs/icons/flow.svg
 ---
@@ -10,7 +12,7 @@ Control your orchestration logic.
 
 Flowable tasks control orchestration logic — running tasks or subflows in parallel, creating loops, and handling conditional branching. They do not run heavy operations; those are handled by workers.
 
-Flowable tasks use [expressions](../../../expressions/index.md) from the execution context to determine which tasks run next. For example, you can use the outputs of a previous task in a `Switch` task to decide which task to run next.
+Flowable tasks use [expressions](../../../expressions/index.mdx) from the execution context to determine which tasks run next. For example, you can use the outputs of a previous task in a `Switch` task to decide which task to run next.
 
 ### Sequential
 
@@ -41,7 +43,7 @@ tasks:
 You can access the output of a sibling task using the syntax `{{ outputs.sibling.value }}`.
 :::
 
-For more details on capabilities, check out the [Sequential Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential).
+For more details on capabilities, check out the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
 
 ### Parallel
 
@@ -72,7 +74,7 @@ tasks:
 You cannot access the output of a sibling task as tasks will be run in parallel.
 :::
 
-For more task details, refer to the [Parallel Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel).
+For more task details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
 
@@ -103,7 +105,7 @@ tasks:
           message: "This is false"
 ```
 
-For more plugin details, refer to the [Switch Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch).
+For more plugin details, refer to the [Switch Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.switch).
 
 ### If
 
@@ -136,7 +138,7 @@ tasks:
         message: "This is false"
 ```
 
-For more details, check out the [If Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If).
+For more details, check out the [If Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.if).
 
 ### ForEach
 
@@ -196,12 +198,12 @@ tasks:
             - sleep {{ parent.taskrun.value }}
 ```
 
-For more information on handling outputs generated from `ForEach`, check out this [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md).
+For more information on handling outputs generated from `ForEach`, check out the [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md) and the [Best Practices for ForEach and ForEachItem](../../../14.best-practices/11.foreach-and-foreachitem/index.md) guide, including how to access [sibling task outputs correctly](../../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach) inside the loop.
 
 For processing items, or forwarding processing to a subflow, [ForEachItem](#foreachitem) is better suited.
 
 :::alert{type="info"}
-For more details, refer to the [ForEach Task documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach).
+For more details, refer to the [ForEach Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach).
 :::
 
 ### ForEachItem
@@ -259,7 +261,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For more details, refer to the [ForEachItem Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEachItem).
+For more details, refer to the [ForEachItem Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem).
 :::
 
 #### `ForEach` vs `ForEachItem`
@@ -286,7 +288,7 @@ Key properties:
 
 - `condition` — expression evaluated after each iteration; has access to the child task outputs from the most recent run (e.g. `{{ outputs.checkStatus.code }}`).
 - `tasks` — the list of child tasks to run before re-evaluating the condition.
-- `checkFrequency` — optional guardrails that define `interval`, `maxIterations`, and/or `maxDuration` between repeats. (See the [LoopUntil migration note](../../../11.migration-guide/0.23.0/loop-until-defaults/index.md) for default values.)
+- `checkFrequency` — optional guardrails that define `interval`, `maxIterations`, and/or `maxDuration` between repeats. (See the [LoopUntil migration note](../../../11.migration-guide/v0.23.0/loop-until-defaults/index.md) for default values.)
 
 Example: poll an API until it returns HTTP 200, checking every 30 seconds and stopping after 50 attempts if it never succeeds.
 
@@ -308,7 +310,7 @@ tasks:
         uri: https://kestra.io/api/mock
 ```
 
-For more details, refer to the [LoopUntil Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.LoopUntil).
+For more details, refer to the [LoopUntil Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil).
 
 ---
 
@@ -348,7 +350,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For more details, refer to the [AllowFailure Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.AllowFailure).
+For more details, refer to the [AllowFailure Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.allowfailure).
 :::
 
 ### Fail
@@ -411,7 +413,7 @@ tasks:
     message: "I'm after the fail on condition"
 ```
 
-For more information, refer to the [Fail Task documentation](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Fail).
+For more information, refer to the [Fail Task documentation](/plugins/core/execution/io.kestra.plugin.core.execution.fail).
 
 ### Subflow
 
@@ -420,20 +422,24 @@ This task triggers another flow. This enables you to decouple the first flow fro
 You can pass flow outputs as inputs to the triggered subflow (those must be declared in the subflow).
 
 ```yaml
-id: subflow
+id: subflow_example
 namespace: company.team
 
+inputs:
+  - id: my_file
+    type: FILE
+
 tasks:
-  - id: "subflow"
+  - id: subflow
     type: io.kestra.plugin.core.flow.Subflow
     namespace: company.team
-    flowId: my-subflow
+    flowId: my_subflow
     inputs:
-      file: "{{ inputs.myFile }}"
+      file: "{{ inputs.my_file }}"
       store: 12
 ```
 
-For more details, refer to the [Subflow Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Subflow).
+For more details, refer to the [Subflow Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.subflow).
 
 ### WorkingDirectory
 
@@ -513,7 +519,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-[WorkingDirectory Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory)
+[WorkingDirectory Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory)
 :::
 
 ### Pause
@@ -555,7 +561,7 @@ tasks:
 
 :::alert{type="info"}
 A Pause task without delay waits indefinitely until the task state is changed to **Running**.
-For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu, and select **Mark as RUNNING** on the form. This makes the task run until its end. For more details, refer to the [Pause Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Pause).
+For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu, and select **Mark as RUNNING** on the form. This makes the task run until its end. For more details, refer to the [Pause Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.pause).
 :::
 
 ### DAG
@@ -601,7 +607,7 @@ tasks:
           - task3
 ```
 
-For more details, refer to the [Dag Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag).
+For more details, refer to the [Dag Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.dag).
 
 ### Template (deprecated)
 

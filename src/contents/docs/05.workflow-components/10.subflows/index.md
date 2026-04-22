@@ -1,5 +1,7 @@
 ---
 title: Subflows in Kestra – Modularize and Reuse Flows
+h1: Call Flows from Other Flows and Build Reusable Components
+description: Modularize your Kestra workflows with Subflows. Learn to call flows from other flows, pass inputs and outputs, and build reusable orchestration components.
 sidebarTitle: Subflows
 icon: /src/contents/docs/icons/flow.svg
 ---
@@ -21,7 +23,7 @@ Subflows allow you to build modular and reusable components that you can use acr
 :::alert{type="warning"}
 Recursive flows are not supported. Kestra doesn’t allow a flow to call itself (directly or indirectly). Any cycle **(flowA→flowA)** makes the flow invalid. Recursive execution can create infinite loops and unbounded fan-out.
 
-**Do instead:** Use **[ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach**)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
+**Do instead:** Use **[ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
 :::
 
 ## How to declare a subflow
@@ -149,7 +151,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
-For more details, see the [sublow outputs documentation](../../11.migration-guide/0.15.0/subflow-outputs/index.md).
+For more details, see the [sublow outputs documentation](../../11.migration-guide/v0.15.0/subflow-outputs/index.md).
 
 ### Passing inputs to a subflow
 

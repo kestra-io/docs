@@ -5,6 +5,7 @@ date: 2024-03-21T08:00:00
 category: Company News
 author:
   name: Emmanuel Darras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   image: "edarras"
 image: ./main.jpg
 ---
@@ -43,8 +44,8 @@ fetchType: FETCH
     Here is the snippet for downloading data:
 
     ```yaml
-    id: "download"
-    type: "io.kestra.plugin.jdbc.snowflake.Download"
+    id: download
+    type: io.kestra.plugin.jdbc.snowflake.Download
     stageName: MYSTAGE
     fileName: prefix/destFile.csv
 
@@ -55,9 +56,8 @@ fetchType: FETCH
     Here is the snippet for uploading data:
 
     ```yaml
-    yamlCopy code
-    id: "upload"
-    type: "io.kestra.plugin.jdbc.snowflake.Upload"
+    id: upload
+    type: io.kestra.plugin.jdbc.snowflake.Upload
     stageName: MYSTAGE
     prefix: testUploadStream
     fileName: destFile.csv

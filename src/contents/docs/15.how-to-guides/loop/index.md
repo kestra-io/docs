@@ -1,14 +1,14 @@
 ---
 title: Loop Over a List of Values
+h1: Iterate Over Lists with the ForEach Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components
+description: Learn how to iterate over lists of values in Kestra workflows using the ForEach task to execute tasks for each item efficiently.
 ---
 
 How to iterate over a list of values in your flow.
-
-## Loop Over a List of Values
 
 In this guide, you will learn how to iterate over a list of values using the `ForEach` task. This task enables you to loop through a list of values and execute specific tasks for each value in the list. This approach is useful for scenarios where multiple similar tasks need to be run for different inputs.
 
@@ -85,4 +85,4 @@ Now that you've seen how to loop over a list of values using `ForEach`, you can 
 - Using dynamic input values instead of hardcoded lists.
 - Logging or processing additional data from each iteration.
 
-For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) task documentation.
+For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task documentation and the [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md) guide, which covers how to access sibling task outputs inside and outside the loop, when to use `ForEachItem` instead, and common mistakes to avoid.

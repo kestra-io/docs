@@ -1,8 +1,11 @@
 ---
-title: Required Basic Authentication
+title: Basic Authentication Now Required in Kestra OSS 0.24.0
+h1: Basic Authentication Is Now Mandatory for All OSS Instances
+sidebarTitle: Basic Auth Now Required
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS"]
+description: Notice regarding mandatory Basic Authentication for all Kestra Open-Source instances starting in version 0.24.0.
 ---
 
 
@@ -10,7 +13,7 @@ editions: ["OSS"]
 
 Basic authentication (`username` and `password`) is now required to enhance security on open-source instances. All users must log in to access the Kestra UI and API, even if they are running Kestra locally or in a development environment. This change is designed to prevent unauthorized access to your Kestra instance and ensure that only authenticated users can view and manage flows.
 
-The credentials can be configured from the Setup Page in the UI (http://localhost:8080/ui/main/setup) or you can set them manually in the [Kestra configuration](../../../configuration/index.md) file under `basic-auth` (recommended for production):
+The credentials can be configured from the Setup Page in the UI (http://localhost:8080/ui/main/setup) or you can set them manually in the [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) file under `basic-auth` (recommended for production):
 
 ```yaml
 kestra:

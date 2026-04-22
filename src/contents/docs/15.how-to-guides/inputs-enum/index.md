@@ -1,5 +1,7 @@
 ---
-title: Validate Inputs with Enum Data Type
+title: Validate Inputs with the Enum Data Type
+h1: Restrict Input Values Using the Enum Type for Validation
+description: Use ENUM-type inputs in Kestra to restrict flow parameters to a predefined set of values, improving validation and reducing runtime configuration errors.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -7,8 +9,6 @@ topics:
 ---
 
 Input validation with the Enum data type
-
-## Validate Inputs with Enum Data Type
 
 Inputs allow you to dynamically pass data to your execution at runtime. For a detailed overview of inputs, see the [Inputs](../../05.workflow-components/05.inputs/index.md) documentation page.
 

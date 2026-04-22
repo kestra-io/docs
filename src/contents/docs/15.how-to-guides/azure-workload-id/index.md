@@ -1,5 +1,6 @@
 ---
-title: Use Azure Managed Workload on Kestra
+title: Use Azure Managed Workload Identity with Kestra
+h1: Access Azure Resources Securely Without Managing Secrets
 icon: /src/contents/docs/icons/azure-aks.svg
 stage: Advanced
 topics:
@@ -7,11 +8,10 @@ topics:
   - DevOps
   - Integrations
 editions: ["EE", "Cloud"]
+description: Configure Azure Workload Identity on Kestra Enterprise to securely access Azure resources like Key Vault without managing secrets.
 ---
 
 How to use Azure Workload identity to provide access to resources such as Azure Key Vault in Kestra
-
-## Use Azure Managed Workload on Kestra
 
 :::alert{type="info"}
 Note that this page is only relevant for the Enterprise Edition of Kestra. Should you require features such as integrations with Cloud-based secret managers, please contact us on sales@kestra.io or chat with us in our Slack community.
@@ -211,7 +211,7 @@ Should you be unable to upgrade at this time, here is a workaround:
 - Navigate to file `templates/_helpers.tpl`
 - In the section `kestra.selectorsLabels`, add the required label to the list, e.g.:
 
-```
+```yaml
 {{- define "kestra.selectorsLabels" -}}
 app.kubernetes.io/name: {{ include "kestra.name" . }}
 app.kubernetes.io/component: {{ .Component }}

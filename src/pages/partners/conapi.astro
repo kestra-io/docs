@@ -1,0 +1,107 @@
+---
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import ConapiLogo from "~/assets/landing/partners/conapi-logo-small.svg?raw"
+
+import PartnerBanner from "~/components/partners/PartnerBanner.astro"
+import Capability from "~/components/partners/Capability.astro"
+import seeHowImg from "~/assets/landing/partners/conapi-cta.webp"
+
+import jms from "~/assets/landing/partners/conapi-jms.webp"
+import api from "~/assets/landing/partners/conapi-api.webp"
+import modern from "~/assets/landing/partners/conapi-modern.webp"
+import pragmatic from "~/assets/landing/partners/conapi-pragmatic-approach.webp"
+import BannerImage from "~/assets/landing/partners/conapixkestra.svg"
+
+const title =
+    "Conapi & Kestra: Practical Integration Patterns for the Enterprise"
+const description =
+    "The Conapi team delivers the plumbing without the pain, enabling simple integration between Kestra workflows, JMS architectures, and Gravitee API management"
+
+const banner = {
+    title: "Conapi & Kestra Partnership",
+    description:
+        "Conapi brings its integration expertise to the Kestra ecosystem, specializing in connecting legacy infrastructure with modern solutions",
+    cta: { text: "Book a Demo", href: "/demo" },
+    image: BannerImage,
+    features: [
+        {
+            title: "Headquarters",
+            text: "Vienna, Austria (DACH Region)",
+        },
+        {
+            title: "Kestra Expertise",
+            text: "System Integration, API Management, Messaging (JMS)",
+        },
+        {
+            title: "Solution",
+            text: "Conapi is an integration-focused consultancy and Gravitee partner.",
+        },
+    ],
+}
+
+const capabilities = {
+    title: "Conapi: 20+ Years of Integration Expertise",
+    description:
+        'Conapi specializes in connecting legacy systems with modern tools. They ensure production-ready integration without a complete "rip-and-replace" of existing infrastructure, acting as the bridge between API management, messaging systems, and workflow automation.',
+    items: [
+        {
+            image: pragmatic,
+            alt: "Pragmatic Approach",
+            title: "Pragmatic Approach",
+            text: "Conapi specializes in connecting existing enterprise landscapes with modern requirements without unnecessary complexity. Their focus is on making enterprise integration actually work in production, not just in theory. By prioritizing practical bridges over total system replacements, they help organizations connect what they have with what they need, ensuring a smooth transition to modern orchestration without discarding valuable legacy investments.",
+        },
+        {
+            image: jms,
+            alt: "JMS",
+            title: "Native JMS Support for Kestra",
+            text: "To support enterprise messaging requirements, Conapi has contributed the official JMS Integration Plugin to the Kestra open-source ecosystem. This contribution brings native support for the Java Message Service, allowing Kestra to integrate seamlessly with existing ESBs and event-driven architectures. The plugin provides robust components to trigger flows when messages arrive on a queue, produce messages to destinations, and consume messages during workflow execution.",
+        },
+        {
+            image: api,
+            alt: "API",
+            title: "Unifying API Management and Orchestration",
+            text: "As a key partner of both Kestra and Gravitee, Conapi has developed a powerful bridge between API management and workflow orchestration. This integration enables executing Kestra flows directly from the API layer for real-time scenarios like dynamic pricing, as well as JMS-based integration for long-running processes. For longer workflows, we trigger them via queues with correlation IDs. This keeps APIs responsive and prevents timeouts.",
+        },
+        {
+            image: modern,
+            alt: "Modern Integration",
+            title: "Bridging Legacy and Modern Architectures",
+            text: "Conapi helps organizations navigate the transition from legacy monoliths to modern, event-driven architectures. They have demonstrated success in complex sectors like manufacturing and ERP management. By implementing Conapi’s patterns, teams can handle long-running workflows such as multi-step approvals or complex order processing without architectural compromises. This ensures that legacy investments in Enterprise Service Buses remain valuable while adding the agility of Kestra’s orchestration.",
+        },
+    ],
+}
+
+const ConapiQuotes = [
+    {
+        quote: "Our clients need to connect legacy systems to modern automation without throwing everything away. This integration protects existing infrastructure while enriching APIs with Kestra data. It's the practical bridge enterprises actually need.",
+        author: "Stefan Fritz - CEO, Conapi",
+        smallLogoSvg: ConapiLogo,
+    },
+]
+---
+
+<Layout {title} {description}>
+    <PartnerBanner
+        cta={banner.cta}
+        title={banner.title}
+        image={banner.image}
+        features={banner.features}
+        description={banner.description}
+    />
+    <Quotes quotes={ConapiQuotes} />
+    <Capability
+        title={capabilities.title}
+        description={capabilities.description}
+        capabilities={capabilities.items}
+    />
+    <SeeHow
+        imgSrc={seeHowImg}
+        cta={{ text: "Contact Conapi", href: "https://conapi.at/#contact" }}
+    >
+        <Fragment slot="title">Contact Conapi</Fragment>
+        Ready to bridge your legacy systems with modern orchestration? Conapi's experts
+        are here to assist you.
+    </SeeHow>
+</Layout>

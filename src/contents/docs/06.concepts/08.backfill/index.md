@@ -1,5 +1,7 @@
 ---
-title: Backfill in Kestra – Replay Missed Schedules
+title: "Backfill in Kestra: Replay Missed Schedules"
+h1: Replay Missed Schedule Intervals with Backfill
+description: Replay missed schedule intervals with Kestra Backfills. Rerun historical executions between a start and end date to reprocess data or recover from gaps.
 sidebarTitle: Backfill
 icon: /src/contents/docs/icons/concepts.svg
 ---
@@ -33,7 +35,7 @@ triggers:
     cron: "*/30 * * * *"
 ```
 
-This flow run every 30 minutes. However, imagine that your source system had an outage for 5 hours. The flow will miss 10 executions. To replay these missed executions, you can use the backfill feature.
+This flow runs every 30 minutes. However, imagine that your source system had an outage for 5 hours. The flow will miss 10 executions. To replay these missed executions, you can use the backfill feature.
 
 Ensure the backfill’s start and end dates encompass every missed schedule, so the trigger can replay each execution. Note that Backfill does not only replay missed executions in the time window. If there are successful executions, then these are also replayed. To target specific executions, rather than a time window, to avoid duplication use [Replay](../10.replay/index.md).
 
@@ -78,12 +80,12 @@ Deleting a backfill only cancels the scheduled catch-up executions. For example,
 You can invoke the backfill executions using the `cURL` call as follows:
 
 ```sh
-curl -X PUT http://localhost:8080/api/v1/main/release/triggers \
+curl -X PUT http://localhost:8080/api/v1/main/triggers \
   -H "Authorization: Bearer $KESTRA_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "namespace": "dev",
-    "flowId":    "scheduled_flow",
+    "namespace": "company.team",
+    "flowId":    "myflow",
     "triggerId": "schedule",
     "backfill":  {
       "start": "2025-04-29T11:30:00Z",
@@ -100,23 +102,25 @@ curl -X PUT http://localhost:8080/api/v1/main/release/triggers \
 
 In the `backfill` attribute, you need to provide the start time for the backfill; the end time can be optionally provided. You can provide inputs to the flow with `inputs`, as well as assign labels to the backfill executions by providing key-value pairs in the `labels` section. In the example `reason:outage` is labelled to make it clear what caused the need to backfill.
 
-Other attributes to this PUT call are `flowId`, `namespace`, and `triggerId` corresponding to the flow that is to backfilled.
+Other attributes in this PUT call are `flowId`, `namespace`, and `triggerId`, corresponding to the flow to backfill.
+
+Check out the [API Reference](../../api-reference/02.open-source/index.mdx) for further backfill operations via the API.
 
 ### Using a service account
 
 :::badge{version=">=0.15" editions="EE,Cloud"}
 :::
 
-For Enterprise and Cloud users, the same process as above can be done with [Service Accounts](../../07.enterprise/03.auth/service-accounts/index.md), so no human user needed to be involved. In this case, you must specify the Tenant to use in the request header and definition: `X-KESTRA-TENANT` and `tenantId`. In the example we use a Tenant named `production`.
+For Enterprise and Cloud users, the same process as above can be done with [Service Accounts](../../07.enterprise/03.auth/service-accounts/index.md), so no human user needs to be involved. In this case, you must specify the Tenant to use in the request header and definition: `X-KESTRA-TENANT` and `tenantId`. In the example, we use a Tenant named `production`.
 
 ```sh
-curl -X PUT http://localhost:8080/api/v1/main/release/triggers \
+curl -X PUT http://localhost:8080/api/v1/main/triggers \
   -H "Authorization: Bearer $KESTRA_API_TOKEN" \
   -H "X-Kestra-Tenant: production" \
   -H "Content-Type: application/json" \
   -d '{
-    "namespace": "dev",
-    "flowId":    "scheduled_flow",
+    "namespace": "company.team",
+    "flowId":    "myflow",
     "triggerId": "schedule",
     "tenantId": "production",
     "backfill":  {
@@ -140,7 +144,7 @@ The interactive demo below walks through the steps one-by-one.
 
 ### Using Python requests
 
-You can invoke the backfill exections using the Python requests as follows:
+You can invoke the backfill executions using Python `requests` as follows:
 
 ```python
 import requests
@@ -164,7 +168,7 @@ data = {
       }
     ]
   },
-  "flowId": "scheduled_flow",
+  "flowId": "myflow",
   "namespace": "company.team",
   "triggerId": "schedule"
 }

@@ -1,5 +1,7 @@
 ---
-title: AI Workflows in Kestra – Orchestrate with Your Preferred LLM
+title: "AI Workflows in Kestra: Orchestrate with Any LLM"
+h1: Orchestrate AI Workflows with Your Preferred LLM Provider
+description: Orchestrate AI workflows in Kestra with any LLM provider. Connect to OpenAI, Anthropic, Google, and more to build intelligent automation pipelines.
 sidebarTitle: AI Workflows
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"
@@ -25,7 +27,7 @@ Different provider plugins may include additional properties beyond those shown 
 
 :::collapse{title="Check the weather is suitable for sports every day using Gemini"}
 
-This flow checks the daily wind conditions in Cambridgeshire and uses Google Gemini to decide whether it is suitable to go sailing. If the wind speed falls within the preferred range (above 10 knots and below 30 knots), the flow notifies you in Slack with the recommendation and automatically blocks your calendar for the day with an 'Out of office – gone sailing' event. It runs every morning at 8:00 AM on a schedule.
+This flow checks the daily wind conditions in Cambridgeshire and uses Google Gemini to decide whether it is suitable to go sailing. If the wind speed falls within the preferred range (above 10 knots and below 30 knots), the flow notifies you in Slack with the recommendation and automatically blocks your calendar for the day with an 'Out of office – gone sailing' event. It runs every morning at `8:00` AM on a schedule.
 
 ```yaml
 id: check_weather
@@ -59,7 +61,7 @@ tasks:
     condition: "{{ outputs.ask_ai['predictions'] | first | jq('.go_sailing') | first }}"
     then:
       - id: notify_me
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
@@ -218,7 +220,7 @@ tasks:
 
 :::collapse{title="Summarize Git commits from the past week using Ollama"}
 
-This flow automatically summarizes Git commits from the past week in a specified repository and branch. Each Friday at 15:00 UTC, it generates a plain-text summary using Ollama and posts it to Slack, keeping teams updated on project progress.
+This flow automatically summarizes Git commits from the past week in a specified repository and branch. Each Friday at `15:00` UTC, it generates a plain-text summary using Ollama and posts it to Slack, keeping teams updated on project progress.
 
 ```yaml
 id: ai-summarize-weekly-git-commits
@@ -277,7 +279,7 @@ tasks:
       - output.txt
 
   - id: slack
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: |
       {{

@@ -1,5 +1,7 @@
 ---
-title: Worker Isolation in Kestra Enterprise – Enforce Separation
+title: "Worker Isolation in Kestra Enterprise: Separation"
+h1: Enforce Execution Isolation for Secure Multi-Tenant Operations
+description: Enforce security with Worker Isolation in Kestra. Isolate execution environments, file systems, and processes for secure multi-tenant operations.
 sidebarTitle: Worker Isolation
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
@@ -13,7 +15,7 @@ When dealing with multiple teams, you can add extra security measures to your Ke
 
 ## Java security
 
-By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](/plugins/plugin-graalvm/python), and more. This is because the worker shares the same file system.
+By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](/plugins/plugin-graalvm/python-graalvm), and more. This is because the worker shares the same file system.
 
 You can use the following to opt in to real isolation of file systems using advanced Kestra EE Java security:
 
@@ -32,7 +34,7 @@ To only limit access to certain plugins on a Worker without requiring file path 
 
 ### `kestra.ee.java-security.forbidden-paths`
 
-This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can help to protect [Kestra configuration](../../../configuration/index.md) files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
+This is a list of paths on the file system that the Kestra Worker will be forbidden to read or write to. This can help to protect [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) files and ensure security for audits and compliance. With this property configured, you can reduce the amount of directories that a Worker can access such as protecting access to the folders where global Kestra configuration or `~/.aws/credentials` are stored.
 
 ### `kestra.ee.java-security.authorized-class-prefix`
 

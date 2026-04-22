@@ -1,0 +1,177 @@
+---
+import PluginsCarousel from "~/components/common/PluginsCarousel.astro"
+
+interface Props {
+    plugins?: {
+        name: string
+        logo: any
+    }[]
+    title?: string
+    subtitle?: string
+    link?: {
+        href: string
+        text: string
+    }
+    vertical?: "infrastructure" | "data" | "ai"
+}
+
+const {
+    plugins = [],
+    title = "Connect With Any Infrastructure Tools",
+    subtitle = "",
+    link = { href: "/plugins", text: "See All Plugins" },
+    vertical = "infrastructure",
+} = Astro.props
+---
+
+<div class={`connect connect--${vertical}`}>
+    <div class="connect__row">
+        <div class="connect__panel connect__panel--left">
+            <div
+                id="lottie-container"
+                class="connect__lottie"
+                data-vertical={vertical}
+            >
+            </div>
+        </div>
+
+        <div class="connect__panel connect__panel--right">
+            <PluginsCarousel {plugins} {title} {subtitle} {link} />
+        </div>
+    </div>
+</div>
+
+<script>
+    import lottie from "lottie-web"
+
+    const ANIMATIONS = {
+        data: () => import("~/assets/lottie/data-plugins.json"),
+        infrastructure: () => import("~/assets/lottie/plugins-lottie.json"),
+        ai: () => import("~/assets/lottie/ai-plugins.json"),
+    }
+
+    document.addEventListener("astro:page-load", async () => {
+        const container = document.getElementById("lottie-container")
+        if (!container) return
+
+        const vertical = (container.dataset.vertical ??
+            "infrastructure") as keyof typeof ANIMATIONS
+        const animationData = (await ANIMATIONS[vertical]()).default
+
+        container.innerHTML = ""
+        lottie.loadAnimation({
+            container,
+            renderer: "svg",
+            loop: true,
+            autoplay: true,
+            animationData,
+        })
+    })
+</script>
+
+<style lang="scss">
+    .connect {
+        background: #151128;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        padding: 100px 16px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-repeat: no-repeat;
+            background-position: left bottom;
+            z-index: 1;
+        }
+
+        &--infrastructure::before {
+            background-image: url("~/assets/landing/infrastructure/connect.svg");
+        }
+
+        &--data::before {
+            background-image: url("~/assets/landing/data/connect-data.svg");
+        }
+
+        &--ai {
+            &::after {
+                content: "";
+                position: absolute;
+                width: 473px;
+                height: 457px;
+                background: radial-gradient(
+                    circle,
+                    #57f795 20%,
+                    #07411e 60%,
+                    transparent 100%
+                );
+                filter: blur(120px);
+                opacity: 1;
+                z-index: 0;
+                pointer-events: none;
+                top: -200px;
+                right: -200px;
+            }
+        }
+
+        &__row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.25rem;
+            position: relative;
+            z-index: 2;
+
+            @include media-breakpoint-up(xl) {
+                padding: 0 1.25rem;
+                gap: 100px;
+            }
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+        }
+
+        &__panel {
+            display: flex;
+            align-items: start;
+            justify-content: center;
+
+            @include media-breakpoint-down(lg) {
+                align-items: center;
+            }
+
+            &--left {
+                height: 536px;
+                @include media-breakpoint-down(lg) {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+
+            &--right {
+                display: flex;
+                flex-direction: column;
+                gap: 1.25rem;
+
+                @include media-breakpoint-up(lg) {
+                    gap: 2rem;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    width: 100%;
+                }
+            }
+        }
+
+        &__lottie {
+            width: 100%;
+            height: 100%;
+        }
+    }
+</style>

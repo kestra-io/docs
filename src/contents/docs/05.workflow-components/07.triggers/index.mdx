@@ -1,5 +1,7 @@
 ---
-title: Triggers in Kestra – Workflow Component Reference
+title: "Triggers in Kestra: Schedule, Events, Webhooks"
+h1: Start Flows Automatically with Scheduled, Event, and Webhook Triggers
+description: Automate flow execution with Kestra Triggers. Explore scheduled, event-based, and webhook triggers to start workflows based on time or external events.
 icon: /src/contents/docs/icons/flow.svg
 docId: triggers
 sidebarTitle: Triggers
@@ -111,16 +113,16 @@ You can pass a list of conditions; in this case, all the conditions must match t
 
 Available conditions include:
 
-- [HasRetryAttempt](/plugins/core/conditions/io.kestra.plugin.core.condition.hasretryattempt)
-- [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.multiplecondition)
-- [Not](/plugins/core/conditions/io.kestra.plugin.core.condition.Not)
-- [Or](/plugins/core/conditions/io.kestra.plugin.core.condition.Or)
-- [ExecutionFlow](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlow)
-- [ExecutionNamespace](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespace)
-- [ExecutionLabels](/plugins/core/conditions/io.kestra.plugin.core.condition.executionlabels)
-- [ExecutionStatus](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatus)
-- [ExecutionOutputs](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputs)
-- [Expression](/plugins/core/conditions/io.kestra.plugin.core.condition.Expression)
+- [HasRetryAttempt](/plugins/core/condition/io.kestra.plugin.core.condition.hasretryattempt)
+- [MultipleCondition](/plugins/core)
+- [Not](/plugins/core/condition/io.kestra.plugin.core.condition.not)
+- [Or](/plugins/core/condition/io.kestra.plugin.core.condition.or)
+- [ExecutionFlow](/plugins/core/condition/io.kestra.plugin.core.condition.executionflow)
+- [ExecutionNamespace](/plugins/core/condition/io.kestra.plugin.core.condition.executionnamespace)
+- [ExecutionLabels](/plugins/core/condition/io.kestra.plugin.core.condition.executionlabels)
+- [ExecutionStatus](/plugins/core/condition/io.kestra.plugin.core.condition.executionstatus)
+- [ExecutionOutputs](/plugins/core/condition/io.kestra.plugin.core.condition.executionoutputs)
+- [Expression](/plugins/core/condition/io.kestra.plugin.core.condition.expression)
 
 You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger/index.md#schedule-conditions).
 
@@ -246,7 +248,7 @@ triggers:
           - FAILED
 ```
 
-The above flow will be triggered every day at 9:00 AM, but if it fails, the schedule will be paused so that you can manually reenable the trigger once the issue is fixed. This is useful for business-critical flows that should not continue running the next scheduled executions if a previous execution has failed.
+The above flow will be triggered every day at `9:00` AM, but if it fails, the schedule will be paused so that you can manually reenable the trigger once the issue is fixed. This is useful for business-critical flows that should not continue running the next scheduled executions if a previous execution has failed.
 
 ### Disable the HTTP trigger after the first successful execution
 
@@ -258,7 +260,7 @@ namespace: company.team
 
 tasks:
     - id: slack
-      type: io.kestra.plugin.slack.SlackIncomingWebhook
+      type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
       url: "{{ secret('SLACK_WEBHOOK') }}"
       messageText: "The price is now: {{ json(trigger.body).price }}"
 

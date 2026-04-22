@@ -1,48 +1,66 @@
 ---
-import FeaturesHeader from "~/components/features/Header.vue"
-import FeaturesDeclarative from "~/components/features/Declarative.vue"
-import FeaturesOutBox from "~/components/features/OutBox.vue"
-import FeaturesExperience from "~/components/features/Experience.vue"
-import FeaturesFeatureEnterprise from "~/components/features/FeatureEnterprise.vue"
-import FeaturesCTA from "~/components/features/CTA.vue"
+import Faq from "~/components/common/Faq.vue"
 import Layout from "~/components/layout.astro"
-import PluginsBox from "~/components/PluginsBox.astro"
+import Run from "~/components/features/core/Run.astro"
+import Stacked from "~/components/common/Stacked.astro"
+import Intro from "~/components/features/core/Intro.astro"
+import Operate from "~/components/features/core/Operate.astro"
+import Simple from "~/components/features/core/Simple.astro"
+import GetStarted from "~/components/common/GetStarted.astro"
+import EveryPlugin from "~/components/features/core/EveryPlugin.astro"
 
-const title = "Powerful Features for Reliable Data Workflows"
+const title = "Powerful Features for Reliable Workflows"
 const description =
     "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra | Your All-in-One Solution for Orchestrating Workflows"
+
+const items = [
+    {
+        question: "What workflows can Kestra orchestrate?",
+        answer: "Data pipelines, AI workflows, infrastructure automation, business processes. If it runs in a container, Kestra orchestrates it.",
+    },
+    {
+        question: "Do I need to know a specific language?",
+        answer: "No. Workflows are YAML. Tasks run in Python, SQL, R, Bash, or any language. Your existing scripts work unchanged.",
+    },
+    {
+        question: "How does Kestra compare to Airflow?",
+        answer: "Modern event-driven architecture (not just cron), language-agnostic (not Python-only), simpler operations (Docker install vs complex infrastructure). <a href='/docs/migration-guide'>Migration guide →</a> | <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide →</a>",
+    },
+    {
+        question: "What's included in OSS vs Enterprise?",
+        answer: "<strong>OSS</strong>: Full orchestration, unlimited executions, 1200+ plugins, event triggers. <strong>Enterprise</strong>: Adds RBAC, SSO, audit logs, multi-tenancy. <a href='/pricing'>Compare editions →</a>",
+    },
+    {
+        question: "What deployment options exist?",
+        answer: "OSS: Docker, Kubernetes (Helm charts), single-VM. Enterprise/Cloud: Managed hosting, HA, air-gapped deployments.",
+    },
+    {
+        question: "How does event-driven orchestration work?",
+        answer: "Native triggers for S3/GCS/Azure files, webhooks, Kafka, database changes, message queues. Workflows start instantly when events occur. Unlimited in OSS.",
+    },
+    {
+        question: "What support is available?",
+        answer: "OSS: Community Slack, GitHub discussions, docs, Blueprints. Enterprise: Dedicated support, SLAs, training.",
+    },
+]
 ---
 
-<Layout title={title} description={description}>
-    <div class="features">
-        <FeaturesHeader client:load />
-        <FeaturesDeclarative client:visible />
-        <FeaturesOutBox client:visible />
-        <section class="features-plugins">
-            <div class="container">
-                <PluginsBox />
-            </div>
-        </section>
-        <FeaturesExperience client:visible />
-        <FeaturesFeatureEnterprise client:visible />
-        <FeaturesCTA client:visible />
+<Layout {title} {description} headerTheme="lightText">
+    <div class="core">
+        <Intro />
+        <Simple />
+        <Operate />
+        <EveryPlugin />
+        <Run />
+        <Stacked />
+        <GetStarted />
+        <Faq {items} client:load />
     </div>
 </Layout>
 
-<style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-    .features-plugins {
-        background: linear-gradient(180deg, #e8eaf2 74.52%, #ffffff 74.52%);
-        padding: 2rem 1rem;
-        margin-top: -2rem;
-
-        @include media-breakpoint-up(lg) {
-            padding: 6rem;
-        }
-        text-align: center;
-
-        .container {
-            margin-bottom: 3rem;
-        }
+<style lang="scss">
+    .core {
+        overflow: clip;
     }
 </style>
+

@@ -1,0 +1,7 @@
+title: "Kestra Tutorial: Inputs"
+description: "In this video, Will shows you how to make your Kestra workflows more dynamic and reusable by using inputs effectively. This tutorial covers the basics of setting up inputs such as strings, integers, and booleans, and demonstrates their application in tasks from logging messages to making HTTP requests. Watch how simple changes to inputs can directly influence the behavior and output of your workflows."
+category: "Quick Start Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=qrmEh-0BILg"
+publicationDate: "2024-04-24T00:00:00.000"
+contentType: "Quick Start Tutorials"

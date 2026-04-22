@@ -1,0 +1,281 @@
+---
+import { Image } from "astro:assets"
+import rtpGlobal from "~/assets/teams/rtpglobal.svg?raw"
+import alven from "~/assets/teams/alven-new.svg?raw"
+import isai from "~/assets/teams/isai-new.svg?raw"
+import axeleo from "~/assets/teams/axeleo-new.svg?raw"
+import TeamsImages from "~/utils/teamsImages"
+
+const investorsLogos = [
+    {
+        name: "RTP Global",
+        src: rtpGlobal,
+        link: "https://rtp.vc",
+    },
+    {
+        name: "Alven",
+        src: alven,
+        link: "https://www.alven.co",
+    },
+    {
+        name: "Isai",
+        src: isai,
+        link: "https://isai.vc",
+    },
+    {
+        name: "Axeleo Capital",
+        src: axeleo,
+        link: "https://www.axc.vc",
+    },
+]
+
+const investorsProfiles = [
+    {
+        name: "Nicolas Dessaigne",
+        title: "Founder at Algolia & partner Y Combinator",
+        image: TeamsImages["nico-algolia.svg"],
+    },
+    {
+        name: "Olivier Pomel",
+        title: "Founder & CEO at Datadog",
+        image: TeamsImages["olivier-datadog.svg"],
+    },
+    {
+        name: "Tristan Handy",
+        title: "Founder & CEO at dbt Labs",
+        image: TeamsImages["tristian-dbt.svg"],
+    },
+    {
+        name: "Michel Tricot",
+        title: "Founder & CEO at Airbyte",
+        image: TeamsImages["michel-airbyte.svg"],
+    },
+    {
+        name: "Frédéric Plais",
+        title: "Founder & CEO at Platform.sh",
+        image: TeamsImages["fred-invest.svg"],
+    },
+    {
+        name: "Clément Delangue",
+        title: "Founder & CEO at Hugging Face",
+        image: TeamsImages["clement-hugface.svg"],
+    },
+    {
+        name: "Bertrand Diard",
+        title: "Co-Founder & former CEO at Talend",
+        image: TeamsImages["bert-syroco.svg"],
+    },
+    {
+        name: "Pierre Burgy",
+        title: "Founder & CEO at Strapi",
+        image: TeamsImages["pierre-strapi.svg"],
+    },
+    {
+        name: "Stijn Christiaens",
+        title: "Co-founder & Chief Data Citizen at Collibra",
+        image: TeamsImages["schristiaens.png"],
+    },
+]
+---
+
+<div class="container">
+    <div class="title-section" data-usal="fade-u">
+        <h2 class="title">Our investors</h2>
+        <p class="subtitle">
+            Kestra is backed by a <strong>$25M Series A</strong> round and a total
+            of <strong>$36M in funding</strong>, supported by visionary
+            investors and founders from leading technology companies.
+            <br class="d-none d-lg-block" />
+            <br />
+            These investments fuel Kestra's mission to redefine enterprise orchestration,
+            helping organizations orchestrate complex workflows across data, infrastructure,
+            AI, and applications.
+        </p>
+    </div>
+
+    <div class="investors">
+        {
+            investorsLogos.map((logo) => (
+                <div class="investor-item">
+                    <a
+                        href={logo.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="logo-link"
+                    >
+                        <div
+                            class="logo-image"
+                            set:html={logo.src}
+                            role="img"
+                            aria-label={logo.name}
+                        />
+                    </a>
+                </div>
+            ))
+        }
+    </div>
+
+    <div class="profiles" data-usal="fade-u delay-600">
+        {
+            investorsProfiles.map((profile, index) => (
+                <div
+                    class="profile"
+                    data-usal={`fade-u delay-${300 + index * 50}`}
+                >
+                    <Image
+                        src={profile.image}
+                        alt={profile.name}
+                        class="profile-img"
+                        width={50}
+                        height={50}
+                    />
+                    <div class="profile-text">
+                        <h6 class="profile-name">{profile.name}</h6>
+                        <p class="profile-title">{profile.title}</p>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</div>
+
+<style lang="scss">
+    .container {
+        max-width: 100%;
+        background-color: var(--ks-background-secondary);
+        padding: $rem-3 $rem-1;
+    }
+
+    .title-section {
+        max-width: 824px;
+        margin: 0 auto;
+        text-align: center;
+        margin-bottom: 4rem;
+
+        .title {
+            font-size: 2rem;
+            line-height: 48px;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: $font-size-lg;
+            line-height: 26px;
+            color: var(--ks-content-primary);
+            margin: 0;
+
+            .d-none {
+                display: none;
+            }
+
+            @include media-breakpoint-up(lg) {
+                .d-lg-block {
+                    display: inline !important;
+                }
+            }
+        }
+    }
+
+    .investors {
+        width: 100%;
+        min-height: 150px;
+        border-radius: 8px;
+        background: var(--ks-border-primary);
+        border: 1px solid var(--ks-border-primary);
+        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+        margin: 0 auto 4rem;
+        max-width: 1140px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1px;
+        overflow: hidden;
+
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .investor-item {
+            background: var(--ks-background-primary);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+
+            .logo-image {
+                width: 140px;
+                object-fit: contain;
+
+                :global(.dark) & {
+                    filter: invert(1);
+                }
+            }
+
+            .logo-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: transform 0.3s ease-in-out;
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
+    }
+
+    .profiles {
+        width: 1140px;
+        max-width: 100%;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 2rem;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 1rem;
+
+            .profile-img {
+                width: 50px;
+                height: 50px;
+                flex-shrink: 0;
+            }
+
+            .profile-text {
+                .profile-name {
+                    font-weight: 700;
+                    color: var(--ks-content-primary);
+                    font-size: $font-size-md;
+                    line-height: 1.2;
+
+                    margin-bottom: 0.25rem;
+                }
+
+                .profile-title {
+                    color: var(--ks-content-tertiary);
+                    font-size: $font-size-xs;
+
+                    line-height: 20px;
+                    margin: 0;
+                }
+            }
+        }
+    }
+</style>

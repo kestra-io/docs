@@ -1,5 +1,7 @@
 ---
-title: KV Store in Kestra – Persist Shared State
+title: "KV Store in Kestra: Persist Shared State"
+h1: Build Stateful Workflows with the KV Store
+description: Build stateful workflows with the Kestra KV Store. Persist and share key-value pairs across flows and executions for dynamic configuration and shared state.
 sidebarTitle: Key Value (KV) Store
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -68,6 +70,7 @@ Here is a list of the different ways to manage KV pairs:
 4. **Kestra's Terraform provider**: use the `kestra_kv` resource to create, read, and delete KV pairs.
 5. **Pebble function**: use the `kv()` function to retrieve a value by key in a flow.
 6. **GitHub Actions**: create, read, and delete KV pairs in your CI/CD pipeline.
+7. **kestractl**: use `kestractl kv` to list, set, update, get, and delete KV pairs from the command line. See the [kestractl docs](../../kestra-cli/kestractl/index.md) for setup.
 
 The sections below provide detailed instructions on how to create and manage KV pairs using each of these methods.
 
@@ -87,7 +90,7 @@ You can create, read, update, and delete KV pairs from the UI in the following w
 
 ### Update, Delete, and Copy KV pairs from the UI
 
-You can edit, delete, or copy any KV pair by clicking on the associated button on the right side of each KV pair. The copy option copies the [Pebble expression of the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY'') }}`) to use directly in your flow.
+You can edit, delete, or copy any KV pair by clicking on the associated button on the right side of each KV pair. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY') }}`) so you can use it directly in your flow.
 
 ![edit_delete_kv_pair](./edit_delete_kv_pair.png)
 
@@ -144,7 +147,7 @@ The easiest way to retrieve a value by key is to use the `{{ kv('YOUR_KEY'') }}`
 
 Below is the full syntax of that function:
 
-```
+```twig
 {{ kv(key='your_key_name', namespace='your_namespace_name', errorOnMissing=false) }}
 ```
 
@@ -318,39 +321,31 @@ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/mai
 
 The above `curl` command creates the KV pair with key `my_key` and the `Hello World` string value in the `company.team` namespace. The API does not return any response.
 
-### Read the value by key
+### Read all keys in the namespace
 
-You can get any particular KV pair using:
+You can get all KV pairs using:
+
+```bash
+curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/
+```
+
+You can also use the `filters` to get all KV pairs from a specific Namespace (replace `namespace-name`):
+
+```bash
+curl -G "http://localhost:8080/api/v1/main/kv" \
+  --data-urlencode "filters[namespace][EQUALS]= namespace-name" \
+  -H "Authorization: Bearer <API-TOKEN>"
+```
+
+Older versions of Kestra may use the path to specify a Namespace:
 
 ```bash
 curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv/{key}
 ```
 
-For example:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key
-```
-
-This `curl` command retrieves a KV pair with the key `my_key` in the `company.team` namespace. The output of the API contains the data type of the value and the retrieved value of the KV pair:
-
-```json
-{"type": "STRING", "value": "Hello World"}
-```
-
-### Read all keys in the namespace
-
-You can list all keys in the namespace as follows:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv
-```
-
-The `curl` command below returns all keys in the `company.team` namespace:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv
-```
+:::alert{type="info"}
+As a general tip, your Kestra instance exposes an interactive API reference at https://<your-kestra-host>/api which lists all available endpoints for your installed version.
+:::
 
 The output is returned as a JSON array of all keys in the namespace:
 ```json
