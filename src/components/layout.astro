@@ -85,6 +85,18 @@ const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 const isHomepage = Astro.url.pathname === "/"
 const hasAnnounce = isHomepage && annonces.length > 0
 
+const websiteSchema = isHomepage
+    ? {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://kestra.io/#website",
+          "url": "https://kestra.io",
+          "name": "Kestra",
+          "description":
+              "Open-source declarative orchestration platform for data, AI, and infrastructure workflows",
+      }
+    : null
+
 const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -212,6 +224,7 @@ const organizationSchema = {
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
         <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+        {websiteSchema && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
 
         <slot name="head" />
 
