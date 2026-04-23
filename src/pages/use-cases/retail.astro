@@ -711,11 +711,11 @@ const FAQ = [
 
         <PluginsBlock>
             <Fragment slot="title">
-                Integrates with the <span class="highlight">systems regulated teams</span> already rely on.
+                Integrates with the <span class="highlight">systems retail teams</span> already rely on.
             </Fragment>
             <Fragment slot="description">
-                Connect core platforms, policy and claims systems, data stacks, messaging layers, case tools,
-                and security controls through 1,200+ plugins. Or build the exact integration your environment requires.
+                Connect OMS, WMS, POS, storefronts, PIM, payment gateways, carriers, CS tools, loyalty platforms,
+                and analytics stacks through 1,200+ plugins. Or build the exact integration your environment requires.
             </Fragment>
         </PluginsBlock>
 
@@ -1140,23 +1140,6 @@ const FAQ = [
         padding: 5.5rem 1rem;
         overflow: hidden;
 
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 800px 420px at 50% 0%, rgba(124, 58, 237, 0.18) 0%, rgba(124, 58, 237, 0) 70%),
-                radial-gradient(ellipse 900px 420px at 50% 100%, rgba(167, 139, 250, 0.22) 0%, rgba(167, 139, 250, 0) 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        :global(html.dark) &::before {
-            background:
-                radial-gradient(ellipse 900px 460px at 50% 0%, rgba(124, 58, 237, 0.28) 0%, rgba(124, 58, 237, 0) 70%),
-                radial-gradient(ellipse 900px 420px at 50% 100%, rgba(167, 139, 250, 0.32) 0%, rgba(167, 139, 250, 0) 70%);
-        }
-
         .container-xxl {
             margin: 0 auto;
             position: relative;
@@ -1371,40 +1354,6 @@ const FAQ = [
         padding: 5rem 1rem;
         background: var(--ks-background-body);
         overflow: hidden;
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: -420px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1800px;
-            height: 840px;
-            background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.22) 0%, rgba(167, 139, 250, 0) 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        :global(html.dark) &::after {
-            background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.32) 0%, rgba(167, 139, 250, 0) 70%);
-        }
-
-        &::before {
-            content: "";
-            position: absolute;
-            bottom: -220px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1100px;
-            height: 440px;
-            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.14) 0%, rgba(124, 58, 237, 0) 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        :global(html.dark) &::before {
-            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.22) 0%, rgba(124, 58, 237, 0) 70%);
-        }
 
         > .container {
             position: relative;
@@ -1661,36 +1610,6 @@ const FAQ = [
         overflow: hidden;
 
         @include media-breakpoint-down(lg) { padding: 4rem 1rem 3rem; }
-
-        &::after {
-            content: "";
-            position: absolute;
-            width: 352.83px;
-            height: 343.43px;
-            border-radius: 50%;
-            background: linear-gradient(179.01deg, $rt-purple 0.85%, $rt-purple-light 62.43%);
-            opacity: 0.55;
-            transform: rotate(45deg);
-            filter: blur(36px);
-            z-index: 1;
-            top: -250px;
-            left: -250px;
-        }
-
-        &::before {
-            content: "";
-            position: absolute;
-            width: 120%;
-            height: 314px;
-            border-radius: 50%;
-            background: linear-gradient(90deg, $rt-purple 0%, var(--ks-Color-gradient-1-inverse-2) 100%);
-            filter: blur(36px);
-            transform: rotate(-13.2074deg);
-            z-index: 0;
-            top: -210px;
-            left: -65%;
-            opacity: 0.45;
-        }
 
         &__title {
             color: #fff;
