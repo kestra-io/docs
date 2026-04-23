@@ -2,6 +2,7 @@
 title: Prevent Duplicate Executions with Correlation IDs
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
+editions: ["EE"]
 topics:
   - Kestra Concepts
 ---
