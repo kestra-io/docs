@@ -10,6 +10,7 @@ import {
 import {
     formatElementName,
     formatElementType,
+    formatPluginName,
     getBlueprintsHeading,
     getPluginTitle,
 } from "~/utils/plugins/pluginUtils"
@@ -120,15 +121,37 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         )
     })()
 
+    const rootPluginTitle = rootPlugin
+        ? getPluginTitle(rootPlugin, metadataMap)
+        : pluginName
+
     const headingTitle = pluginType
         ? formatElementName(pluginType)
         : ((rootPlugin
               ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
               : undefined) ?? pluginName)
 
-    const rootPluginTitle = rootPlugin
-        ? getPluginTitle(rootPlugin, metadataMap)
-        : pluginName
+    // Unique SEO meta title for individual task pages — includes plugin/service context
+    // to prevent the "Upload | Kestra" × N duplicate-title problem across plugins.
+    // H1 (headingTitle) stays short; only the <title> tag gets the enriched version.
+    const seoTitle = (() => {
+        if (!pluginType) return headingTitle
+        const taskName = formatElementName(pluginType)
+        // Core plugin tasks are unique by nature — no risk of cross-plugin duplicates
+        if (pluginName === "core") return taskName
+        // Find the subgroup plugin for context (currentSubgroupPlugin is undefined when
+        // pluginType is set, so we look it up directly from the full plugin list)
+        const subgroupPlugin = effectiveSubGroup
+            ? pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
+            : undefined
+        const subgroupTitle = subgroupPlugin
+            ? getPluginTitle(subgroupPlugin, metadataMap) || formatPluginName(effectiveSubGroup)
+            : null
+        if (subgroupTitle && subgroupTitle !== rootPluginTitle) {
+            return `${taskName} ${rootPluginTitle} ${subgroupTitle}`
+        }
+        return `${taskName} ${rootPluginTitle}`
+    })()
 
     let combinedDescription = currentPageMetadata?.description
     const bodyText = (currentPageMetadata as any)?.body
@@ -281,6 +304,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     return {
         headingTitle,
+        seoTitle,
         headingDescription,
         ogImage,
 
