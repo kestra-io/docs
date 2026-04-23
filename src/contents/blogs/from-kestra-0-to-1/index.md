@@ -57,7 +57,7 @@ And this is just a glimpse of what the team has delivered during those past year
 
 Alongside these features, the **community became a force multiplier.** Kestra trended on GitHub multiple times, surged past **20,000 stars**. Every contribution, bug report, and edge-case fix helped turn Kestra into the orchestrator that could run anywhere, for anyone.
 
-And trust followed. Today, **Apple, Toyota, Bloomberg, JPMorgan Chase, SoftBank, Deutsche Telekom, BHP, and many others** run Kestra in production, orchestrating billions of workflows across data, AI, infrastructure, and business operations. Trust was earned one execution at a time, under load, with outcomes that mattered.
+And trust followed. Today, **Apple, Amdocs, Bloomberg, JPMorgan Chase, Deutsche Telekom, BHP, and many others** run Kestra in production, orchestrating billions of workflows across data, AI, infrastructure, and business operations. Trust was earned one execution at a time, under load, with outcomes that mattered.
 
 ## “Nine hundred plugins? That seems like a lot.”
 
