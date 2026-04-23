@@ -20,9 +20,13 @@ import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
 import Git from "vue-material-design-icons/Git.vue"
 
 import JPMorganLogo from "~/contents/customer-stories/26/logo.svg?raw"
-import JPMorganLogoImg from "~/contents/customer-stories/26/logo.svg"
-import CreditAgricoleLogoImg from "~/contents/customer-stories/19/logo.svg"
-import BloombergLogoImg from "~/assets/landing/infrastructure/companies/bloomberg.svg"
+import JPMorganLogoImg from "~/assets/trusted-companies/JPMorgan.svg"
+import CreditAgricoleLogoImg from "~/assets/trusted-companies/CreditAgricole.svg"
+import BloombergLogoImg from "~/assets/trusted-companies/Bloomberg.svg"
+import ICapitalLogoImg from "~/assets/trusted-companies/iCapital.svg"
+import MatmutLogoImg from "~/assets/trusted-companies/Matmut.svg"
+import GateIoLogoImg from "~/assets/trusted-companies/GateIO.svg"
+import TotalEnergiesLogoImg from "~/assets/trusted-companies/TotalEnergies.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
 const HERO_TAGS = [
@@ -31,34 +35,62 @@ const HERO_TAGS = [
     { label: "Open source", icon: "mdi:code-tags" },
     { label: "Four-eyes approval", icon: "mdi:account-supervisor-outline" },
     { label: "Replayable lineage", icon: "mdi:history" },
-    { label: "Deploy on any region", icon: "mdi:earth" },
+    { label: "EU & US residency", icon: "mdi:earth" },
     { label: "1200+ plugins", icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Financial Services"
+const title = "Kestra for Financial Services & Insurance"
 const description =
-    "The orchestration platform for banks that cannot fail. From intraday reconciliation to mission-critical regulatory reporting. JPMorgan Chase, Crédit Agricole, and the world's most heavily regulated financial institutions run their operations on Kestra."
+    "One orchestration platform for banks, insurers, investment firms, and fintechs. Kestra runs the regulated workflows behind modern financial services and insurance. Claims, onboarding, payments, reporting, risk, and AI, orchestrated from one declarative control plane."
 
 const FLOW_STAGES = [
     {
         id: "trigger",
         label: "TRIGGER",
-        items: ["SWIFT MT940 / MT950", "Kafka / AMQP event", "FedNow / SEPA Instant", "Cron / market open", "Webhook / API"],
+        items: [
+            "API / webhook",
+            "Schedule / cutoff / market close",
+            "Document arrival / FNOL / intake",
+            "File drop / partner feed",
+            "Queue / stream event",
+            "Core-system change event",
+        ],
     },
     {
         id: "ingest",
         label: "INGEST",
-        items: ["Oracle / DB2 core", "Postgres / SQL Server", "Snowflake / BigQuery", "S3 / ADLS / GCS", "SFTP / MQ / mainframe"],
+        items: [
+            "Oracle / DB2 / SQL Server / mainframe",
+            "Guidewire / Duck Creek / claims",
+            "Snowflake / BigQuery / lakehouse",
+            "S3 / ADLS / GCS / SFTP / MQ",
+            "CRM / case systems / partner APIs",
+            "Payment, ledger & portfolio systems",
+        ],
     },
     {
         id: "process",
         label: "PROCESS",
-        items: ["dbt transformations", "Python / R scripts", "Trino / Spark / Iceberg", "Four-eyes Pause gate", "Vault / CyberArk secrets"],
+        items: [
+            "Rules and validations",
+            "dbt / SQL / Python / R / Spark",
+            "Reconciliation & exception handling",
+            "OCR / extraction / LLM review",
+            "Human approval gates",
+            "Vault / CyberArk / policy controls",
+        ],
     },
     {
         id: "act",
         label: "ACT",
-        items: ["Regulator submission", "Fraud / AML product", "ERP / ledger / GL", "Lakehouse / data mart", "ServiceNow / Slack"],
+        items: [
+            "Update core systems",
+            "Create case / task / ticket",
+            "Trigger payment / settlement",
+            "Issue policy / servicing step",
+            "Generate report / audit package",
+            "Notify teams / downstream platforms",
+        ],
     },
 ]
 
@@ -79,82 +111,82 @@ const quotes = [
 
 const WORKLOAD_CATEGORIES = [
     {
-        name: "Core Banking & Modernization",
+        name: "Core Systems & Lifecycle Operations",
         items: [
             {
                 icon: "mdi:server-network",
-                title: "Core Banking CDC & Mainframe Modernization",
-                description: "Strangle the mainframe, domain by domain. Stream Debezium from Oracle, DB2, and Teradata to modern lakehouse layers.",
+                title: "Legacy Modernization & Core Integration",
+                description: "Connect core platforms, policy admin systems, ledgers, mainframes, and modern data platforms without freezing transformation programs. Orchestrate CDC, file exchanges, APIs, and staged cutovers with full lineage.",
+            },
+            {
+                icon: "mdi:file-document-edit-outline",
+                title: "Policy, Account & Product Lifecycle",
+                description: "Automate quote-to-bind, account opening, servicing requests, endorsements, renewals, product changes, and downstream updates across internal and partner systems.",
+            },
+            {
+                icon: "mdi:clipboard-check-outline",
+                title: "Claims, Servicing & Case Management",
+                description: "Coordinate intake, validation, routing, approvals, disbursements, notifications, and exception handling across claims, servicing, disputes, and operational casework.",
+            },
+        ],
+    },
+    {
+        name: "Transactions, Portfolios & Money Movement",
+        items: [
+            {
+                icon: "mdi:bank-transfer",
+                title: "Payments, Disbursements & Reconciliations",
+                description: "Validate files and events, handle exceptions, reconcile statuses, and trigger downstream actions across payments, claim payouts, collections, refunds, and settlement workflows.",
             },
             {
                 icon: "mdi:wallet-outline",
-                title: "Intraday Liquidity & Cash Positioning",
-                description: "Pull positions from custodians, forecast flows, stress funding, and push decisions to the core. Every hour, not every midnight.",
+                title: "Treasury, Cash, Portfolio & Fund Operations",
+                description: "Pull positions, process portfolio events, support end-of-day controls, and distribute outputs to treasury, finance, risk, and operations teams.",
             },
             {
-                icon: "mdi:swap-horizontal-bold",
-                title: "Intraday Nostro & Cash Reconciliation",
-                description: "Match SWIFT MT940/950, correspondent feeds, and internal ledgers in real time. Auto-route breaks with a signed audit trail.",
+                icon: "mdi:handshake-outline",
+                title: "Broker, Partner & Distribution Workflows",
+                description: "Coordinate data exchange, approvals, documents, and status updates across brokers, TPAs, carriers, lenders, and external service providers.",
             },
         ],
     },
     {
-        name: "Payments & Transactions",
-        items: [
-            {
-                icon: "mdi:flash-outline",
-                title: "RTGS, SEPA Instant & FedNow Settlement",
-                description: "Validate, route, settle, and post across card networks and instant rails with idempotency, retries, and strictly enforced SLA guarantees.",
-            },
-            {
-                icon: "mdi:eye-outline",
-                title: "AML Transaction Monitoring",
-                description: "Correlate transactions against watchlists, sanctions, and behavioural baselines. Generate SARs automatically with full data lineage.",
-            },
-            {
-                icon: "mdi:shield-search",
-                title: "Real-Time Fraud Scoring at Scale",
-                description: "Fan-in vendor threat-intel, enrich in dbt, score with ML, and route to fraud products. The pattern tier-1 banks run across billions of rows.",
-            },
-        ],
-    },
-    {
-        name: "Risk, Compliance & Reporting",
+        name: "Risk, Compliance & Governance",
         items: [
             {
                 icon: "mdi:file-document-check-outline",
-                title: "FINREP, COREP & BCBS 239 Submission",
-                description: "Pull positions, transform with dbt, gate on four-eyes approval, and submit. Every cutoff fully replayable with transparent lineage.",
+                title: "Regulatory Reporting & Controls",
+                description: "Run recurring and event-driven reporting workflows with validations, dual control, evidence capture, and replayable execution for internal audit and external regulators.",
             },
             {
-                icon: "mdi:chart-line",
-                title: "Trade Surveillance & P&L Explain",
-                description: "Ingest trade events, compute end-of-day marks, run explain-shift analytics, and fan results to front office, risk, and finance teams.",
+                icon: "mdi:shield-search",
+                title: "Fraud, AML, KYC & Trust Operations",
+                description: "Orchestrate screenings, vendor checks, enrichment, scoring, case creation, and human review across onboarding, transactions, claims, payments, and account activity.",
             },
             {
                 icon: "mdi:brain",
-                title: "Model Risk Governance & MLOps",
-                description: "Train, validate, deploy, and monitor scorecards and fraud models. Champion/challenger flows gated by strict approval steps.",
+                title: "Model Governance & AI Workflows",
+                description: "Train, validate, approve, deploy, and monitor decisioning, pricing, claims, fraud, and service models with clear approvals and operational guardrails.",
             },
         ],
     },
     {
-        name: "Operations & Security",
+        name: "Customer, Data & Platform Operations",
         items: [
             {
                 icon: "mdi:account-check-outline",
-                title: "KYC & Document Intelligence",
-                description: "Orchestrate OCR, LLM extraction, adverse-media screening, and human review into one seamless, declarative onboarding workflow.",
+                title: "Onboarding & Document Intelligence",
+                description: "Handle document intake, extraction, review, screening, and downstream updates for customers, businesses, brokers, claimants, and partners.",
             },
             {
-                icon: "mdi:receipt-text-outline",
-                title: "Financial Close & Consolidation",
-                description: "Orchestrate ERP extracts, journal postings, intercompany eliminations, and multi-entity consolidation to achieve a 3-day close.",
+                icon: "mdi:database-sync-outline",
+                title: "Operational Data Workflows",
+                description: "Move, transform, and operationalize data across dbt, lakehouse, SQL, Python, and Spark to support live operations, not just analytics.",
             },
             {
                 icon: "mdi:security-network",
                 title: "Cybersecurity & Platform Automation",
-                description: "Automate certificate management, config tests, vulnerability scans, and incident response via declarative pipelines.",
+                description: "Automate certificate management, privileged workflows, vulnerability scans, incident response, and platform operations across regulated environments.",
             },
         ],
     },
@@ -190,129 +222,219 @@ const ENTERPRISE_FEATURES = [
 
 const BUILD_TABS = [
     {
-        name: "Real-time fraud scoring",
-        title: "Score vendor threat-intel feeds hourly, at billions-of-rows scale.",
+        name: "Claims triage & payout",
+        title: "Triage an FNOL, score for fraud, and pay the customer in minutes, not days.",
         description:
-            "Pull intel, stage in S3, enrich with dbt, score in Trino, page on-call on failure. A production pattern running across billions of cybersecurity records at tier-1 banks.",
-        code: `id: fraud-intel-pipeline
-namespace: company.risk.fraud
+            "A claim lands on the webhook, Kestra parses it, scores for fraud, auto-routes to an adjuster queue, and fires the payout. Every step auditable. Every dispute replayable.",
+        code: `id: claims-triage-payout
+namespace: company.insurance.claims
 
-triggers:
-  - id: hourly
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 * * * *"
+inputs:
+  - id: claim_payload
+    type: JSON
+    displayName: FNOL payload (JSON)
 
 tasks:
-  - id: pull_vendor_feeds
-    type: io.kestra.plugin.core.http.Request
-    uri: "https://intel.vendor.example/feeds"
-    headers:
-      Authorization: "Bearer {{ secret('INTEL_TOKEN') }}"
-
-  - id: stage_to_s3
-    type: io.kestra.plugin.aws.s3.Upload
-    bucket: "fraud-intel-raw"
-    key: "{{ execution.startDate | date('yyyy/MM/dd/HH') }}/feed.json"
-    from: "{{ outputs.pull_vendor_feeds.uri }}"
-
-  - id: enrich
-    type: io.kestra.plugin.dbt.cli.Build
-    projectDir: "./dbt/fraud"
-    select: "tag:fraud_intel"
-
-  - id: score
-    type: io.kestra.plugin.jdbc.trino.Query
-    url: "jdbc:trino://trino.internal:443"
+  - id: persist_claim
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://policy-admin:5432/claims"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
     sql: |
-      SELECT tx_id, risk_score
-      FROM prod.fraud_scores
-      WHERE risk_score > 0.85
+      INSERT INTO claims.fnol (policy_id, payload, received_at)
+      VALUES (
+        '{{ inputs.claim_payload.policy_id }}',
+        '{{ inputs.claim_payload | toJson }}',
+        NOW()
+      ) RETURNING claim_id
 
-errors:
-  - id: page_oncall
-    type: io.kestra.plugin.pagerduty.PagerDutyExecution
-    url: "{{ secret('PD_EVENT_URL') }}"
-    routingKey: "{{ secret('PD_ROUTING_KEY') }}"
-    eventAction: trigger
-    executionId: "{{ execution.id }}"
-    payloadSummary: "Fraud pipeline failed: {{ execution.id }}"`,
+  - id: fraud_score
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://ml.insurance.example/score"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.claim_payload | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('ML_TOKEN') }}"
+
+  - id: route
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.fraud_score.body.risk > 0.75 }}"
+    then:
+      - id: adjuster_review
+        type: io.kestra.plugin.core.flow.Pause
+        description: |
+          High-risk claim {{ outputs.persist_claim.row.claim_id }}.
+          Four-eyes review required before payout.
+    else:
+      - id: auto_payout
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://payments.example/v1/disbursements"
+        method: POST
+        contentType: application/json
+        body: |
+          {
+            "policy_id": "{{ inputs.claim_payload.policy_id }}",
+            "amount": {{ inputs.claim_payload.amount }},
+            "currency": "EUR"
+          }
+
+  - id: notify_customer
+    type: io.kestra.plugin.email.MailSend
+    host: smtp.insurer.example
+    port: 465
+    username: "{{ secret('SMTP_USER') }}"
+    password: "{{ secret('SMTP_PASSWORD') }}"
+    from: claims@insurer.example
+    to: "{{ inputs.claim_payload.customer_email }}"
+    subject: "Claim {{ outputs.persist_claim.row.claim_id }} received"
+    htmlTextContent: "We've received your claim and will update you shortly."`,
         plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
             { cls: "io.kestra.plugin.core.http.Request" },
-            { cls: "io.kestra.plugin.aws.s3.Upload" },
-            { cls: "io.kestra.plugin.dbt.cli.Build" },
-            { cls: "io.kestra.plugin.jdbc.trino.Query" },
-            { cls: "io.kestra.plugin.pagerduty.PagerDutyExecution" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.email.MailSend" },
         ],
         href: "/blueprints",
     },
     {
-        name: "EOD reconciliation",
-        title: "Close the books against the core, with a 2-hour SLA and zero silent failures.",
+        name: "Customer onboarding & document review",
+        title: "Turn a stack of documents into an approved customer, with audit trail.",
         description:
-            "Extract from Oracle, reconcile in Python, assert controls, publish a signed audit bundle. Retries, exception routing, and mail alerts are declarative primitives.",
-        code: `id: eod-reconciliation
-namespace: company.finance.eod
+            "Extract data from uploaded documents, screen against sanctions lists, persist the case, pause for compliance review, and activate the account. One flow, KYC-grade evidence, replayable end-to-end.",
+        code: `id: customer-onboarding
+namespace: company.regulated.onboarding
 
-sla:
-  - id: two_hour_window
-    type: MAX_DURATION
-    duration: PT2H
-    behavior: FAIL
+inputs:
+  - id: application
+    type: JSON
+    displayName: Customer application payload
 
 tasks:
-  - id: extract_core
+  - id: extract_documents
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python extract.py --application '{{ inputs.application | toJson }}'
+
+  - id: screen_sanctions
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://sanctions.example/screen"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.application | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('SCREEN_TOKEN') }}"
+
+  - id: persist_case
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://crm:5432/onboarding"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    sql: |
+      INSERT INTO onboarding.cases (applicant, screening, status)
+      VALUES (
+        '{{ inputs.application.name }}',
+        '{{ outputs.screen_sanctions.body | toJson }}',
+        'pending_review'
+      ) RETURNING case_id
+
+  - id: compliance_review
+    type: io.kestra.plugin.core.flow.Pause
+    description: |
+      Compliance reviewer must approve the KYC decision
+      for case {{ outputs.persist_case.row.case_id }}.
+
+  - id: activate_account
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://core.example/accounts/activate"
+    method: POST
+    contentType: application/json
+    body: |
+      { "case_id": "{{ outputs.persist_case.row.case_id }}" }`,
+        plugins: [
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Reconciliation & exception management",
+        title: "Reconcile two sources nightly and route every break to the right team.",
+        description:
+            "Pull two ledgers, reconcile in Python, and branch on exceptions. Breaks open cases in ServiceNow. Clean runs publish a signed audit bundle. Every step replayable at the same cutoff, years later.",
+        code: `id: reconciliation-exceptions
+namespace: company.regulated.ops
+
+triggers:
+  - id: nightly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"
+
+tasks:
+  - id: extract_source_a
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://ledger-a:5432/ledger"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: STORE
+    sql: "SELECT txn_id, amount FROM postings WHERE trade_date = CURRENT_DATE - 1"
+
+  - id: extract_source_b
     type: io.kestra.plugin.jdbc.oracle.Query
-    url: "jdbc:oracle:thin:@core-prod:1521/BANK"
+    url: "jdbc:oracle:thin:@ledger-b:1521/LEDGER"
     username: "{{ secret('ORACLE_USER') }}"
     password: "{{ secret('ORACLE_PASSWORD') }}"
     fetchType: STORE
-    sql: |
-      SELECT * FROM ledger.gl_postings
-      WHERE trade_date = TO_DATE('{{ execution.startDate | date('yyyy-MM-dd') }}', 'YYYY-MM-DD')
+    sql: "SELECT txn_id, amount FROM postings WHERE trade_date = TRUNC(SYSDATE) - 1"
 
   - id: reconcile
     type: io.kestra.plugin.scripts.python.Commands
     commands:
-      - python reconcile.py --date {{ execution.startDate | date('yyyy-MM-dd') }}
+      - python reconcile.py --a {{ outputs.extract_source_a.uri }} --b {{ outputs.extract_source_b.uri }}
 
-  - id: assert_breaks
+  - id: route_exceptions
     type: io.kestra.plugin.core.flow.If
     condition: "{{ outputs.reconcile.vars.breaks > 0 }}"
     then:
-      - id: alert_controls
-        type: io.kestra.plugin.email.MailSend
-        host: smtp.bank.example
-        port: 465
-        username: "{{ secret('SMTP_USER') }}"
-        password: "{{ secret('SMTP_PASSWORD') }}"
-        from: eod-bot@bank.example
-        to: finance-controls@bank.example
-        subject: "EOD breaks: {{ outputs.reconcile.vars.breaks }} items"
-        htmlTextContent: "{{ outputs.reconcile.vars.breaks }} unmatched postings require review."
+      - id: open_case
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://servicenow.example/api/now/table/incident"
+        method: POST
+        contentType: application/json
+        headers:
+          Authorization: "Bearer {{ secret('SNOW_TOKEN') }}"
+        body: |
+          {
+            "short_description": "Reconciliation breaks: {{ outputs.reconcile.vars.breaks }}",
+            "assignment_group": "ops-controls"
+          }
 
-  - id: publish_bundle
+  - id: publish_audit
     type: io.kestra.plugin.aws.s3.Upload
-    bucket: "finance-audit"
-    key: "eod/{{ execution.startDate | date('yyyy/MM/dd') }}/bundle.json"
-    from: "{{ outputs.extract_core.uri }}"`,
+    bucket: "ops-audit"
+    key: "recon/{{ execution.startDate | date('yyyy/MM/dd') }}/bundle.json"
+    from: "{{ outputs.reconcile.outputFiles.bundle }}"`,
         plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
             { cls: "io.kestra.plugin.jdbc.oracle.Query" },
             { cls: "io.kestra.plugin.scripts.python.Commands" },
-            { cls: "io.kestra.plugin.email.MailSend" },
+            { cls: "io.kestra.plugin.core.flow.If" },
             { cls: "io.kestra.plugin.aws.s3.Upload" },
         ],
         href: "/blueprints",
     },
     {
-        name: "Regulatory reporting",
-        title: "Submit FINREP with lineage any auditor will sign off on.",
+        name: "Regulatory reporting & approvals",
+        title: "Regulatory submissions with dual control and lineage any auditor will sign off on.",
         description:
-            "Gather positions, transform with dbt, require four-eyes approval, submit to the regulator. Every cutoff replayable, on demand, years later.",
-        code: `id: finrep-quarterly
-namespace: company.finance.regulatory
+            "Gather positions, transform with dbt, require four-eyes approval, submit to the regulator. Every cutoff replayable with signed evidence, on demand, years later. Works for FINREP, COREP, Solvency II, and internal reporting alike.",
+        code: `id: regulatory-submission
+namespace: company.regulated.reporting
 
 labels:
-  regulation: "FINREP"
+  regulation: "FINREP / Solvency II"
 
 inputs:
   - id: cutoffDate
@@ -338,7 +460,7 @@ tasks:
   - id: human_approval
     type: io.kestra.plugin.core.flow.Pause
     description: |
-      Reviewer must validate the FINREP template before submission.
+      Reviewer must validate the submission template before filing.
 
   - id: submit
     type: io.kestra.plugin.core.http.Request
@@ -359,32 +481,52 @@ tasks:
 
 const FAQ = [
     {
-        question: "Can Kestra run in an air-gapped or on-prem environment?",
-        answer: "Yes. Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. This is how tier-1 banks deploy us.",
+        question: "Can Kestra orchestrate insurance workflows like claims, underwriting, policy admin, billing, and renewals?",
+        answer: "Yes. Kestra integrates with Guidewire, Duck Creek, and legacy policy and claims cores via JDBC, HTTP, SFTP, Kafka, and MQ. Orchestrate FNOL intake, fraud scoring, underwriting referrals, policy issuance, billing events, and renewals, all with four-eyes approval gates, document handling, and immutable audit trails.",
     },
     {
-        question: "How does Kestra support SOX, BCBS 239, DORA, and internal audit controls?",
-        answer: "Every flow is YAML in Git. Every execution is immutable and replayable. RBAC enforces least privilege per namespace. Audit logs stream to your SIEM. Lineage ships with each run. Four-eyes approval gates are a first-class flow primitive.",
+        question: "Can Kestra orchestrate banking, payments, and lending workflows without replacing our core systems?",
+        answer: "Yes. Kestra sits alongside your core banking, ledger, card, and payment platforms. It connects them to data systems, case tools, partner APIs, and customer-facing services, so you can modernize incrementally without a big-bang migration.",
     },
     {
-        question: "Does Kestra replace Airflow, Control-M, Autosys, or IBM Workload Automation?",
-        answer: "It's designed to. Banks consolidate onto Kestra to replace Cron, Control-M, Autosys, Airflow, and hand-rolled schedulers. One control plane for data, infrastructure, and business workflows, with a plugin ecosystem from mainframe to cloud.",
+        question: "How does Kestra support approvals, segregation of duties, and auditability?",
+        answer: "Every flow is YAML in Git. Every execution is immutable and replayable. RBAC enforces least privilege per namespace. Audit logs stream to your SIEM. Lineage ships with each run. Four-eyes approval gates are a first-class flow primitive, ready to enforce SOX, BCBS 239, Solvency II, DORA, and internal controls for regulatory submissions, payout approvals, and underwriting decisions.",
     },
     {
-        question: "How do you handle secrets and credentials for banking systems?",
+        question: "Can Kestra handle document-heavy onboarding and servicing workflows?",
+        answer: "Yes. Orchestrate document intake from SFTP, email, web forms, and portals; run OCR and LLM extraction; screen against sanctions and adverse-media lists; pause for human review; and post the decision back to core systems. One declarative flow covers KYC, KYB, claims documents, and servicing paperwork.",
+    },
+    {
+        question: "Does Kestra work with mainframes, SFTP, MQ, and other legacy systems?",
+        answer: "Yes. Plugins for JDBC (DB2, Oracle, Teradata, SQL Server), SFTP/FTPS, JMS/IBM MQ, Kafka, and shell execution for CICS interfaces. Most institutions start by wrapping existing jobs, then modernize incrementally. No big-bang migration required.",
+    },
+    {
+        question: "How does Kestra fit alongside Airflow, Control-M, or IBM Workload Automation?",
+        answer: "Kestra is designed to replace them. Banks, insurers, lenders, and investment firms consolidate onto Kestra to retire Cron, Control-M, Autosys, Airflow, and hand-rolled schedulers. One control plane for data, infrastructure, and business workflows, with a plugin ecosystem spanning mainframe to cloud.",
+    },
+    {
+        question: "Does Kestra integrate with PagerDuty for incident response?",
+        answer: "Yes. The PagerDuty plugin fires events on flow failures, SLA breaches, or any conditional branch. Route by severity, deduplicate with custom keys, and attach the full execution ID so on-call engineers can replay the failing run in one click. Works the same way for claims pipelines, reconciliations, and regulatory submissions.",
+    },
+    {
+        question: "Can Kestra replace VMware Aria Automation or other cloud-automation suites?",
+        answer: "Yes. Teams migrate off VMware Aria Automation, Aria Orchestrator, vRealize, and similar cloud-automation suites onto Kestra to unify cloud provisioning, platform automation, and business workflows in one declarative engine. Terraform, Ansible, shell, Python, and native API plugins cover the same provisioning and governance scenarios, with Git-backed flows, RBAC, and audit built in.",
+    },
+    {
+        question: "What deployment options exist for restricted, sovereign, or air-gapped environments?",
+        answer: "Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions. Pick the one that fits your jurisdiction, with no cross-region data transfer.",
+    },
+    {
+        question: "How do you handle secrets and credentials for regulated systems?",
         answer: "Native integrations with HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, and CyberArk. Secrets are scoped per namespace, per tenant, per flow, and never written to logs.",
     },
     {
-        question: "Can Kestra orchestrate mainframe and legacy systems?",
-        answer: "Yes. Plugins for JDBC (DB2, Oracle, Teradata), SFTP/FTPS, JMS/IBM MQ, and shell execution for CICS interfaces. Most banks start by wrapping existing jobs, then modernize incrementally. No big-bang migration required.",
-    },
-    {
-        question: "What about data residency and sovereign cloud?",
-        answer: "Deploy per-region with full control over residency. Kestra Cloud runs in EU or US regions — pick the one that fits your jurisdiction, with no cross-region data transfer. For sovereign requirements, self-host on your own infrastructure.",
-    },
-    {
-        question: "Is Kestra open source? What's the licensing model?",
+        question: "Is Kestra open source, and what does the licensing model look like?",
         answer: "Yes. Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
+    },
+    {
+        question: "Does Kestra support digital asset and BNPL workflows?",
+        answer: "Yes. Orchestrate on-chain events, stablecoin settlement, wallet reconciliation, and buy-now-pay-later authorization alongside SWIFT, SEPA, and card rails. The same declarative model covers traditional and digital asset flows.",
     },
 ]
 
@@ -397,19 +539,18 @@ const FAQ = [
             <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
             <div class="hero-inner">
                 <div class="badge-pill" data-usal="zoomin">
-                    <Icon name="mdi:bank-outline" />
-                    <span>Financial Services</span>
+                    <Icon name="mdi:scale-balance" />
+                    <span>Financial Services &amp; Insurance</span>
                 </div>
 
                 <h1 data-usal="fade-u">
-                    The Orchestration Platform<br />
-                    <span class="gradient">for Banks That Cannot Fail.</span>
+                    One orchestration platform for<br />
+                    <span class="gradient">regulated financial workflows.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
-                    Intraday reconciliation. Regulatory reporting. Core-banking modernization.
-                    Run your most critical workflows on the same control plane as
-                    JPMorgan Chase, Crédit Agricole, and Bloomberg.
+                    The regulated workflows behind modern financial services and insurance. Claims, onboarding, payments,
+                    reporting, risk, and AI, orchestrated from one declarative control plane.
                 </p>
 
                 <div class="tags" data-usal="fade-l">
@@ -425,62 +566,56 @@ const FAQ = [
                     <div class="exec-panel">
                         <div class="exec-panel__header">
                             <span class="exec-panel__dot"></span>
-                            <span class="exec-panel__title">weyland-yutani-invest</span>
-                            <span class="exec-panel__meta">namespace · company.finance.ops</span>
-                            <span class="exec-panel__duration">1.8s</span>
+                            <span class="exec-panel__title">regulated-case-intake</span>
+                            <span class="exec-panel__meta">namespace · company.regulated.ops</span>
+                            <span class="exec-panel__duration">1.4s</span>
                         </div>
 
                         <div class="exec-panel__body">
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">open_ticket</span>
-                                <span class="exec-row__type">servicenow.Post</span>
-                                <span class="exec-row__result">INC0042891</span>
+                                <span class="exec-row__name">receive_request</span>
+                                <span class="exec-row__type">core.http.Webhook</span>
+                                <span class="exec-row__result">accepted</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">fetch_positions</span>
-                                <span class="exec-row__type">jdbc.postgresql.Query</span>
-                                <span class="exec-row__result">442 rows</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">reconcile</span>
+                                <span class="exec-row__name">extract_data</span>
                                 <span class="exec-row__type">scripts.python.Commands</span>
-                                <span class="exec-row__result">8 breaks</span>
+                                <span class="exec-row__result">12 fields</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">manage_position</span>
+                                <span class="exec-row__name">validate_rules</span>
                                 <span class="exec-row__type">jdbc.postgresql.Query</span>
-                                <span class="exec-row__result">8 updates</span>
+                                <span class="exec-row__result">0 exceptions</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">human_in_the_loop</span>
+                                <span class="exec-row__name">human_review</span>
                                 <span class="exec-row__type">core.flow.Pause</span>
                                 <span class="exec-row__result">Approved</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">close_ticket</span>
-                                <span class="exec-row__type">servicenow.Patch</span>
-                                <span class="exec-row__result">resolved</span>
+                                <span class="exec-row__name">update_systems</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">completed</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
                                 <span class="exec-row__name">notify_team</span>
                                 <span class="exec-row__type">teams.TeamsIncomingWebhook</span>
-                                <span class="exec-row__result">finance-ops</span>
+                                <span class="exec-row__result">ops-team</span>
                             </div>
                         </div>
 
                         <div class="exec-panel__footer">
-                            <span class="exec-footer__item">Ticket resolved</span>
-                            <span class="exec-footer__sep">·</span>
-                            <span class="exec-footer__item">Lineage signed</span>
-                            <span class="exec-footer__sep">·</span>
                             <span class="exec-footer__item">Audit-ready</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Replayable</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Human-approved</span>
                         </div>
                     </div>
                 </div>
@@ -490,11 +625,15 @@ const FAQ = [
                 </div>
 
                 <div class="hero-logos" data-usal="fade-u">
-                    <span class="hero-logos__label">Trusted by leading financial institutions</span>
+                    <span class="hero-logos__label">Used by regulated teams across banking, insurance, investment, payments &amp; fintech</span>
                     <div class="hero-logos__row">
                         <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item" />
                         <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item" />
                         <Image src={BloombergLogoImg} alt="Bloomberg" class="hero-logos__item" />
+                        <Image src={TotalEnergiesLogoImg} alt="TotalEnergies Trading" class="hero-logos__item" />
+                        <Image src={ICapitalLogoImg} alt="iCapital" class="hero-logos__item" />
+                        <Image src={MatmutLogoImg} alt="Matmut" class="hero-logos__item" />
+                        <Image src={GateIoLogoImg} alt="Gate.io" class="hero-logos__item" />
                     </div>
                 </div>
             </div>
@@ -503,10 +642,10 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    Any <span class="highlight">source</span>. Any <span class="highlight">rail</span>. Any <span class="highlight">regulator</span>.
+                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
                 </h2>
                 <p class="flow__lead">
-                    SWIFT messages, FedNow settlements, FINREP submissions, core banking CDC. Kestra orchestrates every step of every banking workload with one declarative model.
+                    Claim, payment, customer, policy, portfolio event, or reporting deadline. The orchestration job is the same: connect systems, route exceptions, trigger actions, capture evidence.
                 </p>
 
                 <div class="flow__grid">
@@ -535,7 +674,7 @@ const FAQ = [
                 </div>
 
                 <h5 class="flow__footer text-center">
-                    Each step is a declarative YAML task. Swap the source, the rail, or the regulator without touching the rest.
+                    Each step is a declarative YAML task. Change the source system, workflow step, or destination without rebuilding the whole process.
                 </h5>
             </div>
         </section>
@@ -543,8 +682,8 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>Built for every banking domain.</h2>
-                    <p>The workflows Kestra orchestrates across every division of a modern financial institution, from the core to the regulator.</p>
+                    <h2>Every critical workflow in financial services and insurance.</h2>
+                    <p>Core systems, money movement, risk and compliance, customer operations. One engine runs them all.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
                     <div class="workloads__group">
@@ -568,7 +707,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    <span class="highlight">Enterprise-Grade</span> Orchestration, Engineered for Banking.
+                    <span class="highlight">Enterprise-Grade</span> Orchestration for Every Regulated Workload.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -582,15 +721,15 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2>What engineers <span class="highlight">build</span> with Kestra</h2>
-                <p class="build__lead">Three production patterns running at tier-1 banks today. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
+                <h2><span class="highlight">Blueprints</span> for financial services and insurance.</h2>
+                <p class="build__lead">Production workflows, from claims triage to regulatory reporting. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
                 <div class="wrapper">
                     <div class="inner">
                         <div class="header row g-0">
                             {BUILD_TABS.map((tab, idx) => (
                                 <div
                                     class:list={[
-                                        "col-4 header-tab",
+                                        "col-6 col-md-3 header-tab",
                                         { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
                                     ]}
                                     data-tab-target={idx}
@@ -628,12 +767,20 @@ const FAQ = [
 
         <GoFurther />
 
-        <PluginsBlock />
+        <PluginsBlock>
+            <Fragment slot="title">
+                Integrates with the <span class="highlight">systems regulated teams</span> already rely on.
+            </Fragment>
+            <Fragment slot="description">
+                Connect core platforms, policy and claims systems, data stacks, messaging layers, case tools,
+                and security controls through 1,200+ plugins. Or build the exact integration your environment requires.
+            </Fragment>
+        </PluginsBlock>
 
         <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
-            <Fragment slot="title">One platform, from the front office to the back office.</Fragment>
-            Talk to our team about how Kestra fits your stack. Air-gapped deployment, regulatory
-            lineage, legacy integration, and the workloads you're running today.
+            <Fragment slot="title">One platform for regulated workflows.</Fragment>
+            Modernize legacy systems, connect the tools your teams already use, and add lineage, approvals,
+            and auditability across claims, onboarding, payments, reconciliations, reporting, servicing, and risk.
         </SeeHow>
 
         <Faq items={FAQ} client:visible />
@@ -987,17 +1134,19 @@ const FAQ = [
 
         &__row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(12, 1fr);
             align-items: center;
             justify-items: center;
-            gap: 1.5rem;
+            column-gap: 0.5rem;
+            row-gap: 1.25rem;
             width: 100%;
-            max-width: 42rem;
+            max-width: 48rem;
             margin: 0 auto;
 
-            @include media-breakpoint-down(sm) {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 1rem;
+                row-gap: 1.25rem;
             }
         }
 
@@ -1008,12 +1157,29 @@ const FAQ = [
             filter: brightness(0) invert(1);
             opacity: 0.8;
             transition: opacity 0.2s;
+            max-width: 100%;
 
             &:hover { opacity: 1; }
 
-            &:nth-child(1) { max-height: 32px; max-width: 150px; }
-            &:nth-child(2) { max-height: 52px; max-width: 110px; }
-            &:nth-child(3) { max-height: 46px; max-width: 230px; }
+            // Row 1: 4 logos, each spans 3 of 12 cols
+            &:nth-child(-n+4) { grid-column: span 3; }
+            // Row 2: 3 logos, each spans 4 of 12 cols (3×4=12 centers naturally)
+            &:nth-child(n+5)  { grid-column: span 4; }
+
+            @include media-breakpoint-down(md) {
+                &:nth-child(-n+4),
+                &:nth-child(n+5) { grid-column: auto; }
+            }
+
+            // Normalised optical sizing: text-logos ≈ 28–32px tall,
+            // icon-centric logos ≈ 40–44px tall so they read at the same weight.
+            &:nth-child(1) { max-height: 34px; max-width: 160px; }  // JPMorgan
+            &:nth-child(2) { max-height: 46px; max-width: 180px; }  // Crédit Agricole (icon + text)
+            &:nth-child(3) { max-height: 40px; max-width: 220px; }  // Bloomberg
+            &:nth-child(4) { max-height: 56px; max-width: 200px; }  // TotalEnergies (icon + text)
+            &:nth-child(5) { max-height: 32px; max-width: 160px; }  // iCapital
+            &:nth-child(6) { max-height: 38px; max-width: 170px; }  // Matmut (icon + text)
+            &:nth-child(7) { max-height: 34px; max-width: 140px; }  // Gate.io
         }
     }
 
@@ -1144,14 +1310,14 @@ const FAQ = [
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            width: 230px;
-            min-height: 285px;
+            width: 240px;
+            min-height: 340px;
             padding: 16px;
             border-radius: 8px;
 
             @include media-breakpoint-down(lg) {
-                width: 210px;
-                min-height: 270px;
+                width: 220px;
+                min-height: 330px;
             }
 
             @include media-breakpoint-down(sm) {
@@ -1374,7 +1540,6 @@ const FAQ = [
             margin: 0;
         }
     }
-
 
     .build {
         padding: 3rem 0 4.5rem;
