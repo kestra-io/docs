@@ -179,7 +179,7 @@ tasks:
 We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
 
 :::alert{type="info"}
-If your body message input is multiple lines, the best practice is to use a pebble expression to convert it to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../../expressions/index.mdx#multiline-json-bodies).
+If your body message input is multiple lines, the best practice is to use a pebble expression to convert it to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../../expressions/02.syntax/index.mdx#multiline-json-bodies).
 :::
 
 When we execute this as a `POST` request, this is the response we receive using the same Debug Expression option in the Outputs page:

@@ -336,7 +336,7 @@ App URL generation relies on the `kestra.url` server configuration property. If 
 
 ### App expressions
 
-From within flows, you can generate app URLs using the Enterprise-only `appLink` expression. See the [Function Reference](../../../expressions/index.mdx#function-reference) for parameters and examples.
+From within flows, you can generate app URLs using the Enterprise-only `appLink` expression. See [Workflow Functions](../../../expressions/04.functions/04.workflow/index.mdx) for parameters and examples.
 
 ---
 
