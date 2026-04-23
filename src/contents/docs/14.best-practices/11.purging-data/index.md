@@ -33,8 +33,8 @@ Use this rule of thumb:
 
 | If you want to remove... | Prefer | Why |
 | --- | --- | --- |
-| Old execution records | [`PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) | It permanently deletes execution metadata and related execution data |
-| Old execution and trigger logs | [`PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs) | It is designed for bulk log cleanup |
+| Old execution records | [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions) | It permanently deletes execution metadata and related execution data |
+| Old execution and trigger logs | [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs) | It is designed for bulk log cleanup |
 | Expired runtime state in the KV Store | [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv) or automatic KV expiration purge | It removes stale KV entries without treating them as static configuration |
 | Old Namespace file versions | [`PurgeFiles`](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) | It applies retention rules to Namespace files and their versions |
 | Old asset records, usages, or lineage data | [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) | It applies retention to asset-related records without touching executions or logs |
@@ -55,7 +55,7 @@ This makes retention predictable and easier to review.
 
 ## When to purge executions and logs
 
-Use [`PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) and [`PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs) when your main goal is to reduce the footprint of historical operational data.
+Use [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions) and [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs) when your main goal is to reduce the footprint of historical operational data.
 
 This is usually the right choice when:
 

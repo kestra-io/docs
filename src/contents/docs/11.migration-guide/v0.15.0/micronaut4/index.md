@@ -1,6 +1,7 @@
 ---
 title: "Micronaut 4.3 Migration in Kestra 0.15.0: Plugin Update"
 h1: Update Custom Plugins for Micronaut 4.3 Compatibility
+sidebarTitle: Micronaut 4.3 Compatibility
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
 description: Guide for migrating custom plugins to be compatible with Micronaut 4.3 in Kestra 0.15.0.
