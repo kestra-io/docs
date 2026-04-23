@@ -111,17 +111,17 @@ export const menuItems: MenuItems = {
             },
             {
                 icon: Car,
-                title: "Automotive",
+                title: "Automotive & Manufacturing",
                 link: "/use-cases/automotive"
             },
             {
                 icon: CartMinus,
-                title: "Retail",
+                title: "Retail & Commerce",
                 link: "/use-cases/retail"
             },
             {
                 icon: DNA,
-                title: "Healthcare",
+                title: "Healthcare & Life Sciences",
                 link: "/use-cases/healthcare"
             },
         ],
