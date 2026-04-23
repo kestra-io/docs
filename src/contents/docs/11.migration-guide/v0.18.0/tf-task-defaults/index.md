@@ -1,6 +1,7 @@
 ---
 title: Terraform task_defaults to plugin_defaults in 0.18.0
 h1: "Update Terraform Configs: Migrate task_defaults to plugin_defaults"
+sidebarTitle: task_defaults → plugin_defaults
 description: Migrate from Terraform task_defaults to plugin_defaults in Kestra 0.18.0. Update your Terraform configurations to use the new plugin_defaults property.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.18.0

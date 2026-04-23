@@ -1,5 +1,6 @@
 ---
 title: maxAttempt renamed maxAttempts
+sidebarTitle: maxAttempts Rename
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS", "EE"]

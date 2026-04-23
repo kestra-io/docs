@@ -1,0 +1,1810 @@
+---
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+
+import Layout from "~/components/layout.astro"
+import Link from "~/components/common/Link.astro"
+import Faq from "~/components/common/Faq.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import Snippets from "~/components/common/Snippets.vue"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import GoFurther from "~/components/get-started/GoFurther.astro"
+
+import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
+import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
+import FileDocumentCheckOutline from "vue-material-design-icons/FileDocumentCheckOutline.vue"
+import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
+import Git from "vue-material-design-icons/Git.vue"
+
+import JPMorganLogo from "~/contents/customer-stories/26/logo.svg?raw"
+import JPMorganLogoImg from "~/assets/trusted-companies/JPMorgan.svg"
+import CreditAgricoleLogoImg from "~/assets/trusted-companies/CreditAgricole.svg"
+import BloombergLogoImg from "~/assets/trusted-companies/Bloomberg.svg"
+import ICapitalLogoImg from "~/assets/trusted-companies/iCapital.svg"
+import MatmutLogoImg from "~/assets/trusted-companies/Matmut.svg"
+import GateIoLogoImg from "~/assets/trusted-companies/GateIO.svg"
+import TotalEnergiesLogoImg from "~/assets/trusted-companies/TotalEnergies.svg"
+import { optimizeSvgIcon } from "~/utils/svgo"
+
+const HERO_TAGS = [
+    { label: "Air-gapped", icon: "mdi:shield-lock-outline" },
+    { label: "Self-hosted", icon: "mdi:server-network-outline" },
+    { label: "Open source", icon: "mdi:code-tags" },
+    { label: "Four-eyes approval", icon: "mdi:account-supervisor-outline" },
+    { label: "Replayable lineage", icon: "mdi:history" },
+    { label: "EU & US residency", icon: "mdi:earth" },
+    { label: "1200+ plugins", icon: "mdi:puzzle-outline" },
+]
+
+const title = "Kestra for Financial Services & Insurance"
+const description =
+    "One orchestration platform for banks, insurers, investment firms, and fintechs. Kestra runs the regulated workflows behind modern financial services and insurance. Claims, onboarding, payments, reporting, risk, and AI, orchestrated from one declarative control plane."
+
+const FLOW_STAGES = [
+    {
+        id: "trigger",
+        label: "TRIGGER",
+        items: [
+            "API / webhook",
+            "Schedule / cutoff / market close",
+            "Document arrival / FNOL / intake",
+            "File drop / partner feed",
+            "Queue / stream event",
+            "Core-system change event",
+        ],
+    },
+    {
+        id: "ingest",
+        label: "INGEST",
+        items: [
+            "Oracle / DB2 / SQL Server / mainframe",
+            "Guidewire / Duck Creek / claims",
+            "Snowflake / BigQuery / lakehouse",
+            "S3 / ADLS / GCS / SFTP / MQ",
+            "CRM / case systems / partner APIs",
+            "Payment, ledger & portfolio systems",
+        ],
+    },
+    {
+        id: "process",
+        label: "PROCESS",
+        items: [
+            "Rules and validations",
+            "dbt / SQL / Python / R / Spark",
+            "Reconciliation & exception handling",
+            "OCR / extraction / LLM review",
+            "Human approval gates",
+            "Vault / CyberArk / policy controls",
+        ],
+    },
+    {
+        id: "act",
+        label: "ACT",
+        items: [
+            "Update core systems",
+            "Create case / task / ticket",
+            "Trigger payment / settlement",
+            "Issue policy / servicing step",
+            "Generate report / audit package",
+            "Notify teams / downstream platforms",
+        ],
+    },
+]
+
+const quotes = [
+    {
+        quote:
+            "For the first time, our analysts weren't waiting for engineering to catch up. They could define the workflows themselves. That changed everything.",
+        author: "Cybersecurity Product Owner, JPMorgan Chase",
+        smallLogoSvg: optimizeSvgIcon(JPMorganLogo, "jpm-quote-logo"),
+        kpis: [
+            { value: "Billions", name: "of rows processed" },
+            { value: "100+", name: "users empowered" },
+            { value: "4,000+", name: "API pulls / week" },
+        ],
+        storyLink: "/use-cases/stories/26-orchestrating-cybersecurity-for-100-users-and-billions-of-rows",
+    },
+]
+
+const WORKLOAD_CATEGORIES = [
+    {
+        name: "Core Systems & Lifecycle Operations",
+        items: [
+            {
+                icon: "mdi:server-network",
+                title: "Legacy Modernization & Core Integration",
+                description: "Connect core platforms, policy admin systems, ledgers, mainframes, and modern data platforms without freezing transformation programs. Orchestrate CDC, file exchanges, APIs, and staged cutovers with full lineage.",
+            },
+            {
+                icon: "mdi:file-document-edit-outline",
+                title: "Policy, Account & Product Lifecycle",
+                description: "Automate quote-to-bind, account opening, servicing requests, endorsements, renewals, product changes, and downstream updates across internal and partner systems.",
+            },
+            {
+                icon: "mdi:clipboard-check-outline",
+                title: "Claims, Servicing & Case Management",
+                description: "Coordinate intake, validation, routing, approvals, disbursements, notifications, and exception handling across claims, servicing, disputes, and operational casework.",
+            },
+        ],
+    },
+    {
+        name: "Transactions, Portfolios & Money Movement",
+        items: [
+            {
+                icon: "mdi:bank-transfer",
+                title: "Payments, Disbursements & Reconciliations",
+                description: "Validate files and events, handle exceptions, reconcile statuses, and trigger downstream actions across payments, claim payouts, collections, refunds, and settlement workflows.",
+            },
+            {
+                icon: "mdi:wallet-outline",
+                title: "Treasury, Cash, Portfolio & Fund Operations",
+                description: "Pull positions, process portfolio events, support end-of-day controls, and distribute outputs to treasury, finance, risk, and operations teams.",
+            },
+            {
+                icon: "mdi:handshake-outline",
+                title: "Broker, Partner & Distribution Workflows",
+                description: "Coordinate data exchange, approvals, documents, and status updates across brokers, TPAs, carriers, lenders, and external service providers.",
+            },
+        ],
+    },
+    {
+        name: "Risk, Compliance & Governance",
+        items: [
+            {
+                icon: "mdi:file-document-check-outline",
+                title: "Regulatory Reporting & Controls",
+                description: "Run recurring and event-driven reporting workflows with validations, dual control, evidence capture, and replayable execution for internal audit and external regulators.",
+            },
+            {
+                icon: "mdi:shield-search",
+                title: "Fraud, AML, KYC & Trust Operations",
+                description: "Orchestrate screenings, vendor checks, enrichment, scoring, case creation, and human review across onboarding, transactions, claims, payments, and account activity.",
+            },
+            {
+                icon: "mdi:brain",
+                title: "Model Governance & AI Workflows",
+                description: "Train, validate, approve, deploy, and monitor decisioning, pricing, claims, fraud, and service models with clear approvals and operational guardrails.",
+            },
+        ],
+    },
+    {
+        name: "Customer, Data & Platform Operations",
+        items: [
+            {
+                icon: "mdi:account-check-outline",
+                title: "Onboarding & Document Intelligence",
+                description: "Handle document intake, extraction, review, screening, and downstream updates for customers, businesses, brokers, claimants, and partners.",
+            },
+            {
+                icon: "mdi:database-sync-outline",
+                title: "Operational Data Workflows",
+                description: "Move, transform, and operationalize data across dbt, lakehouse, SQL, Python, and Spark to support live operations, not just analytics.",
+            },
+            {
+                icon: "mdi:security-network",
+                title: "Cybersecurity & Platform Automation",
+                description: "Automate certificate management, privileged workflows, vulnerability scans, incident response, and platform operations across regulated environments.",
+            },
+        ],
+    },
+]
+
+const ENTERPRISE_FEATURES = [
+    {
+        icon: ShieldCheckOutline,
+        title: "Air-Gapped & Sovereign Deployment",
+        description: "Self-hosted, VPC, or fully air-gapped. EU or US data residency. Segment control plane and workers across restricted zones with zero egress required.",
+    },
+    {
+        icon: Git,
+        title: "Immutable, Replayable Execution",
+        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical cutoff with the exact code, secrets, and inputs, in one click.",
+    },
+    {
+        icon: FileDocumentCheckOutline,
+        title: "Four-Eyes Approval Gates",
+        description: "Pause any workflow pending human sign-off. Enforce mandatory dual-control for regulatory submissions, model promotions, and production deployments.",
+    },
+    {
+        icon: AccountGroupOutline,
+        title: "RBAC & Multi-Tenant Isolation",
+        description: "Namespace-scoped RBAC with SSO/SAML/SCIM. Every division owns its secrets and runtime on a shared platform. Zero blast radius.",
+    },
+    {
+        icon: CodeTagsCheck,
+        title: "Audit Logs & SIEM Integration",
+        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, or your preferred SIEM.",
+    },
+]
+
+const BUILD_TABS = [
+    {
+        name: "Claims triage & payout",
+        title: "Triage an FNOL, score for fraud, and pay the customer in minutes, not days.",
+        description:
+            "A claim lands on the webhook, Kestra parses it, scores for fraud, auto-routes to an adjuster queue, and fires the payout. Every step auditable. Every dispute replayable.",
+        code: `id: claims-triage-payout
+namespace: company.insurance.claims
+
+inputs:
+  - id: claim_payload
+    type: JSON
+    displayName: FNOL payload (JSON)
+
+tasks:
+  - id: persist_claim
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://policy-admin:5432/claims"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    sql: |
+      INSERT INTO claims.fnol (policy_id, payload, received_at)
+      VALUES (
+        '{{ inputs.claim_payload.policy_id }}',
+        '{{ inputs.claim_payload | toJson }}',
+        NOW()
+      ) RETURNING claim_id
+
+  - id: fraud_score
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://ml.insurance.example/score"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.claim_payload | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('ML_TOKEN') }}"
+
+  - id: route
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.fraud_score.body.risk > 0.75 }}"
+    then:
+      - id: adjuster_review
+        type: io.kestra.plugin.core.flow.Pause
+        description: |
+          High-risk claim {{ outputs.persist_claim.row.claim_id }}.
+          Four-eyes review required before payout.
+    else:
+      - id: auto_payout
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://payments.example/v1/disbursements"
+        method: POST
+        contentType: application/json
+        body: |
+          {
+            "policy_id": "{{ inputs.claim_payload.policy_id }}",
+            "amount": {{ inputs.claim_payload.amount }},
+            "currency": "EUR"
+          }
+
+  - id: notify_customer
+    type: io.kestra.plugin.email.MailSend
+    host: smtp.insurer.example
+    port: 465
+    username: "{{ secret('SMTP_USER') }}"
+    password: "{{ secret('SMTP_PASSWORD') }}"
+    from: claims@insurer.example
+    to: "{{ inputs.claim_payload.customer_email }}"
+    subject: "Claim {{ outputs.persist_claim.row.claim_id }} received"
+    htmlTextContent: "We've received your claim and will update you shortly."`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.email.MailSend" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Customer onboarding & document review",
+        title: "Turn a stack of documents into an approved customer, with audit trail.",
+        description:
+            "Extract data from uploaded documents, screen against sanctions lists, persist the case, pause for compliance review, and activate the account. One flow, KYC-grade evidence, replayable end-to-end.",
+        code: `id: customer-onboarding
+namespace: company.regulated.onboarding
+
+inputs:
+  - id: application
+    type: JSON
+    displayName: Customer application payload
+
+tasks:
+  - id: extract_documents
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python extract.py --application '{{ inputs.application | toJson }}'
+
+  - id: screen_sanctions
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://sanctions.example/screen"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.application | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('SCREEN_TOKEN') }}"
+
+  - id: persist_case
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://crm:5432/onboarding"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    sql: |
+      INSERT INTO onboarding.cases (applicant, screening, status)
+      VALUES (
+        '{{ inputs.application.name }}',
+        '{{ outputs.screen_sanctions.body | toJson }}',
+        'pending_review'
+      ) RETURNING case_id
+
+  - id: compliance_review
+    type: io.kestra.plugin.core.flow.Pause
+    description: |
+      Compliance reviewer must approve the KYC decision
+      for case {{ outputs.persist_case.row.case_id }}.
+
+  - id: activate_account
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://core.example/accounts/activate"
+    method: POST
+    contentType: application/json
+    body: |
+      { "case_id": "{{ outputs.persist_case.row.case_id }}" }`,
+        plugins: [
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Reconciliation & exception management",
+        title: "Reconcile two sources nightly and route every break to the right team.",
+        description:
+            "Pull two ledgers, reconcile in Python, and branch on exceptions. Breaks open cases in ServiceNow. Clean runs publish a signed audit bundle. Every step replayable at the same cutoff, years later.",
+        code: `id: reconciliation-exceptions
+namespace: company.regulated.ops
+
+triggers:
+  - id: nightly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"
+
+tasks:
+  - id: extract_source_a
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://ledger-a:5432/ledger"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: STORE
+    sql: "SELECT txn_id, amount FROM postings WHERE trade_date = CURRENT_DATE - 1"
+
+  - id: extract_source_b
+    type: io.kestra.plugin.jdbc.oracle.Query
+    url: "jdbc:oracle:thin:@ledger-b:1521/LEDGER"
+    username: "{{ secret('ORACLE_USER') }}"
+    password: "{{ secret('ORACLE_PASSWORD') }}"
+    fetchType: STORE
+    sql: "SELECT txn_id, amount FROM postings WHERE trade_date = TRUNC(SYSDATE) - 1"
+
+  - id: reconcile
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python reconcile.py --a {{ outputs.extract_source_a.uri }} --b {{ outputs.extract_source_b.uri }}
+
+  - id: route_exceptions
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.reconcile.vars.breaks > 0 }}"
+    then:
+      - id: open_case
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://servicenow.example/api/now/table/incident"
+        method: POST
+        contentType: application/json
+        headers:
+          Authorization: "Bearer {{ secret('SNOW_TOKEN') }}"
+        body: |
+          {
+            "short_description": "Reconciliation breaks: {{ outputs.reconcile.vars.breaks }}",
+            "assignment_group": "ops-controls"
+          }
+
+  - id: publish_audit
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "ops-audit"
+    key: "recon/{{ execution.startDate | date('yyyy/MM/dd') }}/bundle.json"
+    from: "{{ outputs.reconcile.outputFiles.bundle }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.jdbc.oracle.Query" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.flow.If" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Regulatory reporting & approvals",
+        title: "Regulatory submissions with dual control and lineage any auditor will sign off on.",
+        description:
+            "Gather positions, transform with dbt, require four-eyes approval, submit to the regulator. Every cutoff replayable with signed evidence, on demand, years later. Works for FINREP, COREP, Solvency II, and internal reporting alike.",
+        code: `id: regulatory-submission
+namespace: company.regulated.reporting
+
+labels:
+  regulation: "FINREP / Solvency II"
+
+inputs:
+  - id: cutoffDate
+    type: DATE
+    displayName: Regulatory cutoff date
+
+tasks:
+  - id: gather_positions
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://warehouse:5432/finance"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: STORE
+    sql: |
+      SELECT * FROM risk.positions
+      WHERE as_of_date = '{{ inputs.cutoffDate }}'
+
+  - id: transform
+    type: io.kestra.plugin.dbt.cli.Build
+    projectDir: "./dbt/regulatory"
+    vars: '{ "cutoff": "{{ inputs.cutoffDate }}" }'
+
+  - id: human_approval
+    type: io.kestra.plugin.core.flow.Pause
+    description: |
+      Reviewer must validate the submission template before filing.
+
+  - id: submit
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://regulator.example/submit"
+    method: POST
+    contentType: application/xml
+    headers:
+      Authorization: "Bearer {{ secret('REGULATOR_TOKEN') }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.dbt.cli.Build" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+        ],
+        href: "/blueprints",
+    },
+]
+
+const FAQ = [
+    {
+        question: "Can Kestra orchestrate insurance workflows like claims, underwriting, policy admin, billing, and renewals?",
+        answer: "Yes. Kestra integrates with Guidewire, Duck Creek, and legacy policy and claims cores via JDBC, HTTP, SFTP, Kafka, and MQ. Orchestrate FNOL intake, fraud scoring, underwriting referrals, policy issuance, billing events, and renewals, all with four-eyes approval gates, document handling, and immutable audit trails.",
+    },
+    {
+        question: "Can Kestra orchestrate banking, payments, and lending workflows without replacing our core systems?",
+        answer: "Yes. Kestra sits alongside your core banking, ledger, card, and payment platforms. It connects them to data systems, case tools, partner APIs, and customer-facing services, so you can modernize incrementally without a big-bang migration.",
+    },
+    {
+        question: "How does Kestra support approvals, segregation of duties, and auditability?",
+        answer: "Every flow is YAML in Git. Every execution is immutable and replayable. RBAC enforces least privilege per namespace. Audit logs stream to your SIEM. Lineage ships with each run. Four-eyes approval gates are a first-class flow primitive, ready to enforce SOX, BCBS 239, Solvency II, DORA, and internal controls for regulatory submissions, payout approvals, and underwriting decisions.",
+    },
+    {
+        question: "Can Kestra handle document-heavy onboarding and servicing workflows?",
+        answer: "Yes. Orchestrate document intake from SFTP, email, web forms, and portals; run OCR and LLM extraction; screen against sanctions and adverse-media lists; pause for human review; and post the decision back to core systems. One declarative flow covers KYC, KYB, claims documents, and servicing paperwork.",
+    },
+    {
+        question: "Does Kestra work with mainframes, SFTP, MQ, and other legacy systems?",
+        answer: "Yes. Plugins for JDBC (DB2, Oracle, Teradata, SQL Server), SFTP/FTPS, JMS/IBM MQ, Kafka, and shell execution for CICS interfaces. Most institutions start by wrapping existing jobs, then modernize incrementally. No big-bang migration required.",
+    },
+    {
+        question: "How does Kestra fit alongside Airflow, Control-M, or IBM Workload Automation?",
+        answer: "Kestra is designed to replace them. Banks, insurers, lenders, and investment firms consolidate onto Kestra to retire Cron, Control-M, Autosys, Airflow, and hand-rolled schedulers. One control plane for data, infrastructure, and business workflows, with a plugin ecosystem spanning mainframe to cloud.",
+    },
+    {
+        question: "Does Kestra integrate with PagerDuty for incident response?",
+        answer: "Yes. The PagerDuty plugin fires events on flow failures, SLA breaches, or any conditional branch. Route by severity, deduplicate with custom keys, and attach the full execution ID so on-call engineers can replay the failing run in one click. Works the same way for claims pipelines, reconciliations, and regulatory submissions.",
+    },
+    {
+        question: "Can Kestra replace VMware Aria Automation or other cloud-automation suites?",
+        answer: "Yes. Teams migrate off VMware Aria Automation, Aria Orchestrator, vRealize, and similar cloud-automation suites onto Kestra to unify cloud provisioning, platform automation, and business workflows in one declarative engine. Terraform, Ansible, shell, Python, and native API plugins cover the same provisioning and governance scenarios, with Git-backed flows, RBAC, and audit built in.",
+    },
+    {
+        question: "What deployment options exist for restricted, sovereign, or air-gapped environments?",
+        answer: "Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions. Pick the one that fits your jurisdiction, with no cross-region data transfer.",
+    },
+    {
+        question: "How do you handle secrets and credentials for regulated systems?",
+        answer: "Native integrations with HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, and CyberArk. Secrets are scoped per namespace, per tenant, per flow, and never written to logs.",
+    },
+    {
+        question: "Is Kestra open source, and what does the licensing model look like?",
+        answer: "Yes. Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
+    },
+    {
+        question: "Does Kestra support digital asset and BNPL workflows?",
+        answer: "Yes. Orchestrate on-chain events, stablecoin settlement, wallet reconciliation, and buy-now-pay-later authorization alongside SWIFT, SEPA, and card rails. The same declarative model covers traditional and digital asset flows.",
+    },
+]
+
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <div class="financial-services">
+
+        <section class="hero">
+            <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
+            <div class="hero-inner">
+                <div class="badge-pill" data-usal="zoomin">
+                    <Icon name="mdi:scale-balance" />
+                    <span>Financial Services &amp; Insurance</span>
+                </div>
+
+                <h1 data-usal="fade-u">
+                    One orchestration platform for<br />
+                    <span class="gradient">regulated financial workflows.</span>
+                </h1>
+
+                <p class="subtitle" data-usal="fade-l">
+                    The regulated workflows behind modern financial services and insurance. Claims, onboarding, payments,
+                    reporting, risk, and AI, orchestrated from one declarative control plane.
+                </p>
+
+                <div class="tags" data-usal="fade-l">
+                    {HERO_TAGS.map((tag) => (
+                        <span class="tag">
+                            <Icon name={tag.icon} class="tag-icon" />
+                            {tag.label}
+                        </span>
+                    ))}
+                </div>
+
+                <div class="exec-panel-wrapper" data-usal="fade-up">
+                    <div class="exec-panel">
+                        <div class="exec-panel__header">
+                            <span class="exec-panel__dot"></span>
+                            <span class="exec-panel__title">regulated-case-intake</span>
+                            <span class="exec-panel__meta">namespace · company.regulated.ops</span>
+                            <span class="exec-panel__duration">1.4s</span>
+                        </div>
+
+                        <div class="exec-panel__body">
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">receive_request</span>
+                                <span class="exec-row__type">core.http.Webhook</span>
+                                <span class="exec-row__result">accepted</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">extract_data</span>
+                                <span class="exec-row__type">scripts.python.Commands</span>
+                                <span class="exec-row__result">12 fields</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">validate_rules</span>
+                                <span class="exec-row__type">jdbc.postgresql.Query</span>
+                                <span class="exec-row__result">0 exceptions</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">human_review</span>
+                                <span class="exec-row__type">core.flow.Pause</span>
+                                <span class="exec-row__result">Approved</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">update_systems</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">completed</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">notify_team</span>
+                                <span class="exec-row__type">teams.TeamsIncomingWebhook</span>
+                                <span class="exec-row__result">ops-team</span>
+                            </div>
+                        </div>
+
+                        <div class="exec-panel__footer">
+                            <span class="exec-footer__item">Audit-ready</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Replayable</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Human-approved</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-ctas" data-usal="zoomin">
+                    <Link href="/demo" class="btn btn-primary btn-lg">Book a Demo</Link>
+                </div>
+
+                <div class="hero-logos" data-usal="fade-u">
+                    <span class="hero-logos__label">Used by regulated teams across banking, insurance, investment, payments &amp; fintech</span>
+                    <div class="hero-logos__row">
+                        <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item" />
+                        <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item" />
+                        <Image src={BloombergLogoImg} alt="Bloomberg" class="hero-logos__item" />
+                        <Image src={TotalEnergiesLogoImg} alt="TotalEnergies Trading" class="hero-logos__item" />
+                        <Image src={ICapitalLogoImg} alt="iCapital" class="hero-logos__item" />
+                        <Image src={MatmutLogoImg} alt="Matmut" class="hero-logos__item" />
+                        <Image src={GateIoLogoImg} alt="Gate.io" class="hero-logos__item" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="flow">
+            <div class="container-xxl">
+                <h2 class="flow__title text-center">
+                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                </h2>
+                <p class="flow__lead">
+                    Claim, payment, customer, policy, portfolio event, or reporting deadline. The orchestration job is the same: connect systems, route exceptions, trigger actions, capture evidence.
+                </p>
+
+                <div class="flow__grid">
+                    <div class="flow__steps">
+                        {FLOW_STAGES.map((stage, idx) => (
+                            <div class={`flow-block flow-${idx}`}>
+                                <div class="flow-block__content">
+                                    <span class={`flow-block__label label-${stage.id}`}>{stage.label}</span>
+                                    <div class={`flow-block__card card-${stage.id}`}>
+                                        <div class="flow-block__items">
+                                            {stage.items.map(item => (
+                                                <div class="flow-block__item">{item}</div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {idx < FLOW_STAGES.length - 1 && (
+                                    <div class={`flow-arrow arrow-${idx}`}>
+                                        <div class="line" />
+                                        <Icon name="mdi:play" class="head" width={16} height={16} />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <h5 class="flow__footer text-center">
+                    Each step is a declarative YAML task. Change the source system, workflow step, or destination without rebuilding the whole process.
+                </h5>
+            </div>
+        </section>
+
+        <section class="workloads">
+            <div class="container">
+                <div class="workloads__head">
+                    <h2>Every critical workflow in financial services and insurance.</h2>
+                    <p>Core systems, money movement, risk and compliance, customer operations. One engine runs them all.</p>
+                </div>
+                {WORKLOAD_CATEGORIES.map(cat => (
+                    <div class="workloads__group">
+                        <h3 class="workloads__category">{cat.name}</h3>
+                        <div class="workloads__grid">
+                            {cat.items.map(item => (
+                                <div class="workload-card">
+                                    <Icon name={item.icon} class="workload-card__icon" />
+                                    <h4 class="workload-card__title">{item.title}</h4>
+                                    <p class="workload-card__desc">{item.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <Quotes {quotes} client:load />
+
+        <section class="enterprise">
+            <div class="container-xxl">
+                <h2 class="enterprise__title" data-usal="fade-r">
+                    <span class="highlight">Enterprise-Grade</span> Orchestration for Every Regulated Workload.
+                </h2>
+                <NoGapGrid items={ENTERPRISE_FEATURES}>
+                    <div class="feature-card feature-card--cta">
+                        <a href="/demo" class="btn btn-secondary" data-usal="zoomin">
+                            Book a Demo
+                        </a>
+                    </div>
+                </NoGapGrid>
+            </div>
+        </section>
+
+        <section class="build">
+            <div class="container">
+                <h2><span class="highlight">Blueprints</span> for financial services and insurance.</h2>
+                <p class="build__lead">Production workflows, from claims triage to regulatory reporting. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="header row g-0">
+                            {BUILD_TABS.map((tab, idx) => (
+                                <div
+                                    class:list={[
+                                        "col-6 col-md-3 header-tab",
+                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
+                                    ]}
+                                    data-tab-target={idx}
+                                >
+                                    {tab.name}
+                                </div>
+                            ))}
+                        </div>
+
+                        {BUILD_TABS.map((tab, idx) => (
+                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
+                                <div class="panel panel-1">
+                                    <Snippets client:idle code={tab.code} lang="yaml" />
+                                </div>
+                                <div class="panel panel-2">
+                                    <h3 data-usal="fade-r">{tab.title}</h3>
+                                    <p data-usal="fade-l">{tab.description}</p>
+                                    <div class="plugins" data-usal="zoomin">
+                                        {tab.plugins.map(plugin => (
+                                            <div class="plugin-icon">
+                                                <TaskIcon cls={plugin.cls} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <Link class="goto" href={tab.href} data-usal="fade-r">
+                                        Explore Blueprints
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <GoFurther />
+
+        <PluginsBlock>
+            <Fragment slot="title">
+                Integrates with the <span class="highlight">systems regulated teams</span> already rely on.
+            </Fragment>
+            <Fragment slot="description">
+                Connect core platforms, policy and claims systems, data stacks, messaging layers, case tools,
+                and security controls through 1,200+ plugins. Or build the exact integration your environment requires.
+            </Fragment>
+        </PluginsBlock>
+
+        <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
+            <Fragment slot="title">One platform for regulated workflows.</Fragment>
+            Modernize legacy systems, connect the tools your teams already use, and add lineage, approvals,
+            and auditability across claims, onboarding, payments, reconciliations, reporting, servicing, and risk.
+        </SeeHow>
+
+        <Faq items={FAQ} client:visible />
+    </div>
+</Layout>
+
+<style lang="scss">
+    $fs-teal:        #14B8A6;
+    $fs-teal-bright: #5EEAD4;
+    $fs-teal-light:  #99F6E4;
+    $fs-teal-deep:   #0F766E;
+    $fs-platinum:    #E8EDF0;
+
+    .financial-services { overflow: clip; }
+
+    :global(html.dark) .financial-services {
+        .flow,
+        .workloads,
+        .build,
+        .enterprise {
+            background: #1C1C20;
+        }
+        :global(section.quotes-wrapper),
+        :global(section.plugin-block),
+        :global(.see) {
+            background: #1C1C20;
+        }
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        background: #060a0c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
+        padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 1.5rem 6rem;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 4rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1100px;
+            height: 520px;
+            background: radial-gradient(ellipse at center, rgba(20, 184, 166, 0.20) 0%, rgba(20, 184, 166, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+    }
+
+    .hero-bg-grid {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1720px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        max-width: 68rem;
+        color: $white;
+        text-align: center;
+
+        @include media-breakpoint-down(md) { gap: 1.5rem; }
+
+        h1 {
+            color: $white;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .gradient {
+            background: linear-gradient(90deg, #{$fs-teal-bright}, #{$fs-teal-light});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: $font-size-lg;
+            line-height: 1.6;
+            max-width: 48rem;
+            margin: 0;
+
+            @include media-breakpoint-down(md) { font-size: $font-size-md; }
+        }
+    }
+
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 4px 1.125rem;
+        gap: 0.5rem;
+        border-radius: 2.5rem;
+        background: #060b0d;
+        position: relative;
+        z-index: 1;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        color: $fs-teal-bright;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 2.5rem;
+            padding: 1px;
+            background: linear-gradient(90deg, #{$fs-teal} 0%, #{$fs-teal-light} 100%);
+            -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.72);
+        font-size: $font-size-xs;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: rgba(94, 234, 212, 0.4);
+            background: rgba(20, 184, 166, 0.08);
+            color: $white;
+
+            :global(.tag-icon) { color: $fs-teal-light; }
+        }
+
+        :global(.tag-icon) {
+            width: 12px;
+            height: 12px;
+            color: $fs-teal-bright;
+            flex-shrink: 0;
+        }
+    }
+
+    @property --fs-neon-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes fs-neon-trace {
+        to { --fs-neon-angle: 360deg; }
+    }
+
+    .exec-panel-wrapper {
+        --fs-neon-angle: 0deg;
+        border-radius: 10px;
+        background: conic-gradient(
+            from var(--fs-neon-angle),
+            rgba(20, 184, 166, 0.12) 0deg,
+            rgba(20, 184, 166, 0.12) 320deg,
+            #{$fs-teal}              340deg,
+            $fs-platinum             350deg,
+            #{$fs-teal}              360deg
+        );
+        padding: 1px;
+        box-shadow:
+            0 1.214px 10.321px 0 rgba(20, 184, 166, 0.22) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(20, 184, 166, 0.55);
+        width: 100%;
+        max-width: 640px;
+        animation: fs-neon-trace 5s linear infinite;
+    }
+
+    .exec-panel {
+        background: #06100f;
+        border-radius: 9px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        text-align: left;
+
+        &__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(20, 184, 166, 0.04);
+            flex-wrap: wrap;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+        }
+
+        &__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: $fs-teal-bright;
+            box-shadow: 0 0 8px $fs-teal-bright;
+            flex-shrink: 0;
+        }
+
+        &__title {
+            color: $white;
+            font-weight: 600;
+        }
+
+        &__meta {
+            color: rgba(255, 255, 255, 0.45);
+            flex: 1;
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__duration {
+            color: $fs-teal-light;
+            font-weight: 500;
+        }
+
+        &__body {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        &__footer {
+            padding: 10px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(20, 184, 166, 0.03);
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            color: $fs-teal-light;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .exec-footer__sep { color: rgba(255, 255, 255, 0.25); }
+    }
+
+    .exec-row {
+        display: grid;
+        grid-template-columns: 20px minmax(130px, 1fr) minmax(150px, 1fr) minmax(90px, auto);
+        align-items: center;
+        gap: 1rem;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        transition: background 0.2s;
+
+        &:hover { background: rgba(20, 184, 166, 0.06); }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 20px 1fr auto;
+        }
+
+        &__check {
+            color: $fs-teal-bright;
+            font-weight: 700;
+        }
+
+        &__name {
+            color: $white;
+            font-weight: 500;
+        }
+
+        &__type {
+            color: rgba(255, 255, 255, 0.45);
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__result {
+            color: $fs-teal-light;
+            text-align: right;
+            white-space: nowrap;
+        }
+    }
+
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn {
+            justify-content: center;
+
+            @include media-breakpoint-down(md) {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+    }
+
+    .hero-logos {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        padding-top: 2rem;
+        width: 100%;
+        max-width: 52rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+
+        &__label {
+            font-size: $font-size-xs;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        &__row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            align-items: center;
+            justify-items: center;
+            column-gap: 0.5rem;
+            row-gap: 1.25rem;
+            width: 100%;
+            max-width: 48rem;
+            margin: 0 auto;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 1rem;
+                row-gap: 1.25rem;
+            }
+        }
+
+        &__item {
+            width: auto;
+            height: auto;
+            display: block;
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            max-width: 100%;
+
+            &:hover { opacity: 1; }
+
+            // Row 1: 4 logos, each spans 3 of 12 cols
+            &:nth-child(-n+4) { grid-column: span 3; }
+            // Row 2: 3 logos, each spans 4 of 12 cols (3×4=12 centers naturally)
+            &:nth-child(n+5)  { grid-column: span 4; }
+
+            @include media-breakpoint-down(md) {
+                &:nth-child(-n+4),
+                &:nth-child(n+5) { grid-column: auto; }
+            }
+
+            // Normalised optical sizing: text-logos ≈ 28–32px tall,
+            // icon-centric logos ≈ 40–44px tall so they read at the same weight.
+            &:nth-child(1) { max-height: 34px; max-width: 160px; }  // JPMorgan
+            &:nth-child(2) { max-height: 46px; max-width: 180px; }  // Crédit Agricole (icon + text)
+            &:nth-child(3) { max-height: 40px; max-width: 220px; }  // Bloomberg
+            &:nth-child(4) { max-height: 56px; max-width: 200px; }  // TotalEnergies (icon + text)
+            &:nth-child(5) { max-height: 32px; max-width: 160px; }  // iCapital
+            &:nth-child(6) { max-height: 38px; max-width: 170px; }  // Matmut (icon + text)
+            &:nth-child(7) { max-height: 34px; max-width: 140px; }  // Gate.io
+        }
+    }
+
+    $stages: (
+        "trigger": ( "bg": #fff3d3, "border": #a87f4f, "label": #b87f00 ),
+        "ingest":  ( "bg": #cbe2ff, "border": #6b62f2, "label": #0069c6 ),
+        "process": ( "bg": #e3cffe, "border": #bb62f2, "label": #822bfd ),
+        "act":     ( "bg": #d3ffe0, "border": #4fa876, "label": #007336 )
+    );
+
+    .flow {
+        position: relative;
+        background: var(--ks-background-secondary);
+        padding: 5.5rem 1rem;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 800px 420px at 50% 0%, rgba(20, 184, 166, 0.18) 0%, rgba(20, 184, 166, 0) 70%),
+                radial-gradient(ellipse 900px 420px at 50% 100%, rgba(94, 234, 212, 0.22) 0%, rgba(94, 234, 212, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        :global(html.dark) &::before {
+            background:
+                radial-gradient(ellipse 900px 460px at 50% 0%, rgba(20, 184, 166, 0.28) 0%, rgba(20, 184, 166, 0) 70%),
+                radial-gradient(ellipse 900px 420px at 50% 100%, rgba(94, 234, 212, 0.32) 0%, rgba(94, 234, 212, 0) 70%);
+        }
+
+        .container-xxl {
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        &__title {
+            margin-bottom: 1rem;
+            color: var(--ks-content-primary);
+
+            .highlight {
+                background: linear-gradient(90deg, #{$fs-teal}, #{$fs-teal-bright});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            line-height: 1.55;
+            max-width: 50rem;
+            margin: 0 auto 3rem;
+        }
+
+        &__footer {
+            margin-top: 2rem;
+            color: var(--ks-content-secondary);
+            font-weight: 500;
+        }
+
+        &__grid {
+            width: 100%;
+            padding: 2rem 1rem;
+            background-color: rgba(20, 184, 166, 0.04);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%2314B8A6' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 10px;
+        }
+
+        &__steps {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+
+            @include media-breakpoint-down(xl) {
+                display: grid;
+                grid-template-columns: repeat(2, auto);
+                row-gap: 80px;
+                column-gap: 40px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+                row-gap: 60px;
+                column-gap: 0;
+            }
+        }
+    }
+
+    .flow-block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 1;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                max-width: 320px;
+                margin-top: 0.5rem;
+            }
+        }
+
+        &__label {
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            text-transform: uppercase;
+            font-weight: 700;
+
+            @each $id, $colors in $stages {
+                &.label-#{$id} { color: map-get($colors, "label"); }
+            }
+        }
+
+        &__card {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 240px;
+            min-height: 340px;
+            padding: 16px;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(lg) {
+                width: 220px;
+                min-height: 330px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                min-height: auto;
+                padding: 24px 16px;
+            }
+
+            @each $id, $colors in $stages {
+                &.card-#{$id} {
+                    background: map-get($colors, "bg");
+                    border: 1px solid map-get($colors, "border");
+                }
+            }
+        }
+
+        &__items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &__item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #333638;
+            border-radius: 4px;
+            color: #333638;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            box-shadow: 4px 4px 0 0 #EBEBEB, 4px 4px 0 1px #333638CC;
+        }
+    }
+
+    .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+
+        .line {
+            background: #000000;
+            html.dark & { background: #ffffff; }
+        }
+
+        .head {
+            position: absolute;
+            color: #000000;
+            html.dark & { color: #ffffff; }
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 90px;
+
+            .line { width: 100%; height: 1.5px; }
+            .head {
+                right: -4px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        @include media-breakpoint-between(sm, xl) {
+            &.arrow-0, &.arrow-1 {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 50%;
+                height: 72px;
+                width: 1.5px;
+                transform: translateX(-50%);
+
+                .line { width: 1.5px; height: 100%; }
+                .head {
+                    bottom: -5px;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(90deg);
+                }
+            }
+            &.arrow-2 { display: none; }
+        }
+
+        @include media-breakpoint-down(sm) {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            height: 58px;
+            width: 1.5px;
+            transform: translateX(-50%);
+
+            .line { width: 1.5px; height: 100%; }
+            .head {
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%) rotate(90deg);
+            }
+        }
+    }
+
+    .workloads {
+        position: relative;
+        padding: 5rem 1rem;
+        background: var(--ks-background-body);
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: -420px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1800px;
+            height: 840px;
+            background: radial-gradient(ellipse at center, rgba(94, 234, 212, 0.22) 0%, rgba(94, 234, 212, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        :global(html.dark) &::after {
+            background: radial-gradient(ellipse at center, rgba(94, 234, 212, 0.32) 0%, rgba(94, 234, 212, 0) 70%);
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: -220px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1100px;
+            height: 440px;
+            background: radial-gradient(ellipse at center, rgba(20, 184, 166, 0.14) 0%, rgba(20, 184, 166, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        :global(html.dark) &::before {
+            background: radial-gradient(ellipse at center, rgba(20, 184, 166, 0.22) 0%, rgba(20, 184, 166, 0) 70%);
+        }
+
+        > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        &__head {
+            text-align: center;
+            max-width: 46rem;
+            margin: 0 auto 3rem;
+
+            h2 { color: var(--ks-content-primary); margin-bottom: 0.75rem; }
+            p { color: var(--ks-content-secondary); font-size: $font-size-lg; margin: 0; }
+        }
+
+        &__group {
+            max-width: 72rem;
+            margin: 0 auto 3rem;
+
+            &:last-child { margin-bottom: 0; }
+        }
+
+        &__category {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: $fs-teal-deep;
+            margin: 0 0 1rem;
+
+            :global(html.dark) & { color: $fs-teal-bright; }
+        }
+
+        &__grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+
+            @include media-breakpoint-up(md) { grid-template-columns: repeat(3, 1fr); }
+        }
+    }
+
+    .workload-card {
+        padding: 1.5rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 10px;
+        transition: border-color 0.2s, transform 0.2s;
+
+        &:hover {
+            border-color: $fs-teal;
+            transform: translateY(-2px);
+        }
+
+        &__icon {
+            font-size: 1.375rem;
+            color: $fs-teal-deep;
+            margin-bottom: 0.75rem;
+            width: 1.375rem;
+            height: 1.375rem;
+
+            :global(html.dark) & { color: $fs-teal-bright; }
+        }
+
+        &__title {
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+        }
+
+        &__desc {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+    }
+
+    .build {
+        padding: 3rem 0 4.5rem;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: 1rem;
+                padding-inline: $rem-1;
+                text-align: center;
+
+                .highlight { color: $fs-teal; }
+
+                @include media-breakpoint-up(xl) { padding-inline: 0; }
+            }
+
+            .wrapper {
+                border: 1px solid var(--ks-border-primary);
+                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+                border-radius: 13px;
+
+                @include media-breakpoint-down(xl) { border-radius: 0; }
+
+                .inner {
+                    border-radius: $rem-1;
+                    background: var(--ks-background-primary-inverse);
+                    overflow: clip;
+
+                    @include media-breakpoint-down(xxl) { border-radius: 0; }
+
+                    .header {
+                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
+
+                        & > div {
+                            padding: 1.1875rem $rem-2;
+                            font-size: $font-size-md;
+                            color: var(--ks-content-secondary-inverse);
+                            text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
+
+                            &.active {
+                                background: var(--ks-background-secondary-inverse);
+                                border-bottom: 1px solid var(--ks-border-active);
+                                color: var(--ks-content-primary-inverse);
+                                font-weight: 600;
+                            }
+                        }
+
+                        & .middle-part {
+                            border-left: 1px solid var(--ks-border-primary-inverse);
+                            border-right: 1px solid var(--ks-border-primary-inverse);
+                        }
+                    }
+
+                    .content {
+                        display: none;
+                        flex-direction: row;
+                        gap: $rem-2;
+                        padding: $rem-2;
+                        justify-content: center;
+
+                        &.active { display: flex; }
+
+                        @include media-breakpoint-down(xl) {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
+
+                        .panel {
+                            border-radius: 0.5rem;
+                            flex-shrink: 0;
+
+                            &.panel-1 {
+                                width: 39.4375rem;
+
+                                @include media-breakpoint-down(xl) { width: 100%; }
+
+                                :global(.code-card) {
+                                    border: 1px solid var(--ks-border-secondary-inverse);
+                                    background: var(--ks-background-input);
+                                    height: 100%;
+
+                                    :global(.code-inner) { transition: max-height 0.3s ease; }
+                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
+
+                                    &:global(:not(.is-expanded)) {
+                                        :global(.code-inner) { max-height: 27.9375rem !important; }
+                                    }
+                                }
+                            }
+
+                            &.panel-2 {
+                                position: relative;
+                                padding-top: $rem-2;
+                                color: var(--ks-content-primary-inverse);
+                                width: 27.5625rem;
+
+                                @include media-breakpoint-down(xl) {
+                                    width: 100%;
+                                    padding-top: 0;
+                                }
+
+                                p {
+                                    font-size: $font-size-lg;
+                                    margin-top: $rem-1;
+                                    margin-bottom: $rem-2;
+                                }
+
+                                .plugins {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    flex-wrap: wrap;
+
+                                    .plugin-icon {
+                                        width: 2.125rem;
+                                        height: 2.125rem;
+                                        padding: 0.375rem;
+                                        background: $white;
+                                        border: $block-border;
+                                        border-radius: $border-radius;
+                                    }
+                                }
+
+                                .goto {
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    color: var(--ks-content-link-inverse);
+                                    font-weight: 600;
+
+                                    @include media-breakpoint-down(xl) {
+                                        position: relative;
+                                        margin-top: $rem-3;
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            margin: 0 auto $rem-2;
+            max-width: 44rem;
+            padding-inline: $rem-1;
+        }
+    }
+
+    .enterprise {
+        padding: 140px 1rem 80px;
+        gap: 40px;
+        background: var(--ks-background-primary-inverse);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) { padding: 4rem 1rem 3rem; }
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: 352.83px;
+            height: 343.43px;
+            border-radius: 50%;
+            background: linear-gradient(179.01deg, $fs-teal 0.85%, $fs-teal-light 62.43%);
+            opacity: 0.55;
+            transform: rotate(45deg);
+            filter: blur(36px);
+            z-index: 1;
+            top: -250px;
+            left: -250px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            width: 120%;
+            height: 314px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, $fs-teal 0%, var(--ks-Color-gradient-1-inverse-2) 100%);
+            filter: blur(36px);
+            transform: rotate(-13.2074deg);
+            z-index: 0;
+            top: -210px;
+            left: -65%;
+            opacity: 0.45;
+        }
+
+        &__title {
+            color: #fff;
+            margin-bottom: 2.5rem;
+            text-align: center;
+
+            .highlight { color: $fs-teal-bright; }
+        }
+
+        :global(.features-grid) {
+            box-shadow: 0 9px 36px 0 var(--ks-shadows-light-inverse);
+        }
+
+        :global(.feature-icon) {
+            color: $fs-teal !important;
+        }
+        :global(.feature-title) {
+            color: #fff !important;
+        }
+        :global(.feature-desc) {
+            color: rgba(255, 255, 255, 0.72) !important;
+        }
+
+        .container-xxl { max-width: 1420px; }
+    }
+
+    .enterprise :global(.feature-card--cta) {
+        width: 100%;
+        padding: 2rem 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 1px 1px 0 0 var(--ks-border-secondary-inverse);
+
+        @include media-breakpoint-down(lg) { padding: 2rem; }
+
+        .btn { white-space: nowrap; }
+    }
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(".build .inner")) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
+                const target = tab && (container as Element).querySelector(
+                    `[data-tab-content="${tab.dataset.tabTarget}"]`
+                )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(".header-tab, .content")) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+    })
+</script>
