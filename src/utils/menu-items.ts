@@ -106,22 +106,22 @@ export const menuItems: MenuItems = {
         industry: [
             {
                 icon: BankOutline,
-                title: "Financial Services & Insurance",
+                title: "Finance",
                 link: "/use-cases/financial-services"
             },
             {
                 icon: Car,
-                title: "Automotive & Manufacturing",
+                title: "Automotive",
                 link: "/use-cases/automotive"
             },
             {
                 icon: CartMinus,
-                title: "Retail & Commerce",
+                title: "Retail",
                 link: "/use-cases/retail"
             },
             {
                 icon: DNA,
-                title: "Healthcare & Life Sciences",
+                title: "Healthcare",
                 link: "/use-cases/healthcare"
             },
         ],
