@@ -1,17 +1,15 @@
 ---
 export const prerender = false
 import Layout from "~/components/layout.astro"
-import FooterContact from "~/components/layout/FooterContact.astro"
-import MapMarkerOutline from "vue-material-design-icons/MapMarkerOutline.vue"
-import { $fetch } from "~/utils/fetch"
-import Header from "~/components/careers/Header.astro"
-import { type AshbyJob, type AshbyJobPosting, fetchJob, type Job, mapJob } from "~/utils/careers.ts"
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import HeaderDetails from "~/components/careers/HeaderDetails.astro"
+import { type AshbyJobPosting, fetchJob } from "~/utils/careers.ts"
+import Share from "~/components/common/Share.vue"
+import Link from "~/components/common/Link.astro"
 
 const { id1, id2, id3, id4, id5 } = Astro.params
 const { url } = Astro.request
 
-const uid = [id1, id2, id3, id4, id5].join("-");
+const uid = [id1, id2, id3, id4, id5].join("-")
 
 if (!uid) {
     return Astro.redirect("/careers")
@@ -30,35 +28,95 @@ const title = page.title
 ---
 
 <Layout title={title}>
-    <Header fullPath="/careers">
-        <h1 data-usal="fade-l">
-            {page.title}
-        </h1>
-        <h4 data-usal="fade-l">
-            <span class="department-tag">{page.departmentName}</span>
-            <MapMarkerOutline /> Remote
-        </h4>
-        <a
-            href={url + "/apply"}
-            class="btn btn-animated btn-purple-animated mt-4"
-            data-usal="zoomin"
-        >
-            Apply for this job
-        </a>
-    </Header>
+    <HeaderDetails title={page.title} />
 
     <section>
-        <div class="container">
-            <article set:html={page.descriptionHtml} data-usal="fade-up" />
+        <div class="container job-description">
+            <article set:html={page.descriptionHtml} />
+            <div class="sidebar">
+                <h3>Location</h3>
+                <p>
+                    {page.locationName}
+                </p>
+
+                <hr />
+
+                <Share
+                    title={page.title}
+                    titleText="Share this role"
+                    url={url}
+                    class="mt-4"
+                />
+                <Link
+                    href={url + "/apply"}
+                    class="btn btn-primary apply-btn"
+                >
+                    Apply for this job
+                </Link>
+            </div>
         </div>
     </section>
-    <FooterContact
-        title="Join our team"
-        subtitle="Interested in joining us but not able to find what you are looking for? Let's talk anyway. Write to us at"
-        purple={{
-            text: "Send an Open Application",
-            href: "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply",
-        }}
-        dark={null}
-    />
 </Layout>
+
+<style lang="scss">
+    .job-description {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 2rem;
+        margin-bottom: 3rem;
+
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+        }
+
+        hr {
+            border-color: var(--ks-border-primary);
+        }
+
+        .sidebar {
+            flex: 0 0 auto;
+            align-self: flex-start;
+            position: relative;
+            padding: 1rem;
+            border-radius: 8px;
+
+            @include media-breakpoint-up(md) {
+                flex: 0 0 250px;
+                position: sticky;
+                top: 4rem;
+            }
+            h3 {
+                color: var(--ks-content-secondary);
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+            p {
+                color: var(--ks-content-primary);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+    .apply-btn {
+        margin-top: 3rem;
+    }
+    article {
+        @include media-breakpoint-down(md) {
+            padding-inline: 1rem;
+        }
+        :global(h3) {
+            @include media-breakpoint-up(md) {
+                margin-top: 3rem;
+            }
+            margin-bottom: 1rem;
+        }
+        :global(p) {
+            margin: 0;
+        }
+        :global(ul) {
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>

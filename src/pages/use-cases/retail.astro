@@ -1,219 +1,1673 @@
 ---
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+
 import Layout from "~/components/layout.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Cards from "~/components/use-cases/Cards.astro"
-import CustomerStory from "~/components/use-cases/CustomerStory.vue"
-import FeaturePlugins from "~/components/layout/FeaturePlugins.astro"
-import RetailOps from "~/components/use-cases/retail/RetailOps.vue"
-import FooterContact from "~/components/layout/FooterContact.astro"
-import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
-import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
-import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
-import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
-import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import LeroyMerlin from "~/assets/companies/leroy-merlin.svg?raw"
+import Link from "~/components/common/Link.astro"
+import Faq from "~/components/common/Faq.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import Snippets from "~/components/common/Snippets.vue"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import GoFurther from "~/components/get-started/GoFurther.astro"
 
-const HEADER = {
-    title: "Kestra for Retail and Consuming goods",
-    tag: 'Orchestrate Your <br /><span class="text-gradient">Retail Ecosystem</span><br />with Kestra',
-    description:
-        "From data pipelines to complex integrations, Kestra empowers retail businesses with an event-driven, language-agnostic orchestration platform that scales as you grow.",
-    cta: [
-        {
-            text: "Talk to us",
-            href: "/demo",
-            style: "btn btn-dark",
-        },
-        {
-            text: "Get started",
-            href: "/docs",
-            style: "btn-animated btn-purple-animated btn",
-        },
-    ],
-    image: {
-        href: "/retail/header.svg",
-        alt: "Header",
-        style: "image-retail",
-        width: "542px",
-        height: "598px",
-    },
-}
+import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
+import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
+import FileDocumentCheckOutline from "vue-material-design-icons/FileDocumentCheckOutline.vue"
+import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
+import Git from "vue-material-design-icons/Git.vue"
 
-const SOLUTIONS = [
+import LeroyMerlinLogo from "~/contents/customer-stories/14/logo.svg?raw"
+import LeroyMerlinLogoImg from "~/assets/trusted-companies/LeroyMerlin.svg"
+import GorgiasLogoImg from "~/assets/trusted-companies/Gorgias.svg"
+import AuchanLogoImg from "~/assets/trusted-companies/Auchan.svg"
+import DecathlonLogoImg from "~/assets/trusted-companies/Decathlon.svg"
+import IntersportLogoImg from "~/assets/trusted-companies/Intersport.svg"
+import DiorLogoImg from "~/assets/trusted-companies/Dior.svg"
+import FilaLogoImg from "~/assets/trusted-companies/Fila.svg"
+import { optimizeSvgIcon } from "~/utils/svgo"
+
+const HERO_TAGS = [
+    { label: "Peak-season scale", icon: "mdi:flash-outline" },
+    { label: "Event-driven orders", icon: "mdi:shopping-outline" },
+    { label: "Shopify, SAP, Manhattan", icon: "mdi:store-outline" },
+    { label: "BOPIS & omnichannel", icon: "mdi:swap-horizontal-bold" },
+    { label: "PCI-friendly", icon: "mdi:shield-check-outline" },
+    { label: "Replayable launches", icon: "mdi:history" },
+]
+
+const title = "Kestra for Retail & Commerce"
+const description =
+    "Kestra keeps orders, inventory, returns, and customers in sync across OMS, WMS, storefront, POS, and partner APIs. Peak-season ready. Queue-backed. Always replayable. Built for retailers who can't afford silent failures during launch day or Black Friday."
+
+const FLOW_STAGES = [
     {
-        icon: RefreshAuto,
-        title: "Automated Inventory Management",
-        description:
-            "Eliminate manual tracking to use Kestra to automate your inventory management system.",
+        id: "trigger",
+        label: "TRIGGER",
+        items: [
+            "Order / return / cart event",
+            "API / webhook / storefront",
+            "POS / store / inventory event",
+            "Supplier feed / EDI / drop",
+            "Schedule / promo cutoff",
+            "Queue / stream event",
+        ],
     },
     {
-        icon: CommentQuoteOutline,
-        title: "Enhanced Customer Experience",
-        description:
-            "Use Kestra to collect, analyze, and use customer feedback. Automate the delivery of personalized promotions and recommendations based on customer data.",
+        id: "ingest",
+        label: "INGEST",
+        items: [
+            "Shopify / Salesforce Commerce",
+            "SAP / Oracle / Manhattan",
+            "Snowflake / BigQuery / lakehouse",
+            "S3 / ADLS / GCS / SFTP",
+            "POS / OMS / WMS / PIM",
+            "CRM, service & partner APIs",
+        ],
     },
     {
-        icon: ChartBellCurve,
-        title: "Compliance and Reporting",
-        description:
-            "Automate the reporting processes, ensuring that all data compiles with retail standards and regulations. Ideal for generating automated end-of-day sales reports, inventory counts, and more.",
+        id: "process",
+        label: "PROCESS",
+        items: [
+            "Business rules & validations",
+            "dbt / SQL / Python / R / Spark",
+            "Exception handling",
+            "OCR / LLM document review",
+            "Human approval gates",
+            "Vault / KMS / policy controls",
+        ],
     },
     {
-        icon: FileChartOutline,
-        title: "Report Automation for Supply Chain",
-        description:
-            "Automate supplier evaluation and order placement, ensuring a smooth and efficient supply chain operation.",
-    },
-    {
-        icon: ImageFilterCenterFocus,
-        title: "Streamlined Data Management",
-        description:
-            "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.",
+        id: "act",
+        label: "ACT",
+        items: [
+            "Update OMS / WMS / PIM",
+            "Create case / task / ticket",
+            "Trigger fulfillment / refund",
+            "Update pricing / promo / loyalty",
+            "Generate report / audit package",
+            "Notify teams / downstream platforms",
+        ],
     },
 ]
 
-const SOLUTIONS_TITLE = "Use Cases in <span class='highlight'>Retail</span>"
-
-const LEROY = {
-    logo: {
-        alt: "Leroy Logo",
-        src: LeroyMerlin,
-        subtitle: "Customer Success",
-        width: "127px",
-        height: "76px",
+const quotes = [
+    {
+        quote:
+            "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+        author: "Julien Henrion, Head of Data Engineering at Leroy Merlin",
+        smallLogoSvg: optimizeSvgIcon(LeroyMerlinLogo, "leroy-merlin-quote-logo"),
+        kpis: [
+            { value: "+900%", name: "in data production" },
+            { value: "+250", name: "active users" },
+            { value: "+5,000", name: "workflows created" },
+        ],
+        storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent",
     },
-    alt: "Leroy",
-    title:
-        "Leroy Merlin France enabling data mesh architecture and 900% increase in productivity with Kestra",
-    description:
-        "Leroy Merlin France transformed data infrastructure by adopting Kestra, enabling a data mesh architecture and achieving a remarkable 900% boost in productivity. The shift empowered hundreds of data practitioners to create high-quality, scalable analytics, fundamentally changing how data is managed and valued across the organization.",
-    cta: {
-        text: "Read the story",
-        href: "/blogs/2023-08-16-datamesh",
-        style: "btn-dark",
+]
+
+const WORKLOAD_CATEGORIES = [
+    {
+        name: "Orders, Fulfillment & Returns",
+        items: [
+            {
+                icon: "mdi:shopping-outline",
+                title: "Order Orchestration & Fulfillment",
+                description: "Validate carts, reserve inventory, route to warehouses or stores, dispatch carriers, and sync status back to storefronts. One declarative flow across OMS, WMS, and partner APIs.",
+            },
+            {
+                icon: "mdi:keyboard-return",
+                title: "Returns & Reverse Logistics",
+                description: "Authorize returns, route items to the right reverse hub, issue refunds or replacements, and reconcile inventory. Keep refunds, restock, and finance books in sync.",
+            },
+            {
+                icon: "mdi:truck-delivery-outline",
+                title: "Supplier & Partner Coordination",
+                description: "Ingest supplier feeds via EDI, API, or SFTP. Validate, route exceptions, update POs, and publish status back. Works across dropship, wholesale, and marketplace partners.",
+            },
+        ],
     },
-    image: {
-        href: "/retail/architecture.svg",
-        alt: "leroy architecture",
-        width: "722px",
-        height: "594px",
+    {
+        name: "Inventory, Merchandising & Pricing",
+        items: [
+            {
+                icon: "mdi:package-variant",
+                title: "Inventory & Stock Sync",
+                description: "Sync stock positions across stores, warehouses, marketplaces, and partners in near real time. Resolve conflicts, handle exceptions, and publish authoritative counts.",
+            },
+            {
+                icon: "mdi:tag-outline",
+                title: "Pricing, Promotions & Loyalty",
+                description: "Propagate price, promo, and loyalty changes across PIM, storefronts, POS, and partners. Support time-bound campaigns with staged cutovers and rollbacks.",
+            },
+            {
+                icon: "mdi:image-multiple-outline",
+                title: "Product Content & PIM Workflows",
+                description: "Enrich product data, orchestrate translation, run image and copy reviews, and publish to every channel. Keep content, inventory, and pricing in lockstep.",
+            },
+        ],
     },
-}
+    {
+        name: "Customer, Service & Loyalty",
+        items: [
+            {
+                icon: "mdi:face-agent",
+                title: "Customer Service & Case Management",
+                description: "Route cases across Gorgias, Zendesk, Salesforce Service Cloud, and internal tools. Assemble order, shipment, and refund evidence. Escalate with full context.",
+            },
+            {
+                icon: "mdi:heart-outline",
+                title: "Loyalty, CRM & Personalization Data",
+                description: "Coordinate customer events across CRM, marketing, analytics, and loyalty platforms. Trigger personalized campaigns from real operational signals, not batch dumps.",
+            },
+            {
+                icon: "mdi:shield-search",
+                title: "Fraud, Disputes & Trust Operations",
+                description: "Screen orders, route disputes, enrich with device and behavioural signals, score with ML, and hand off to human review. Keep chargeback evidence one click away.",
+            },
+        ],
+    },
+    {
+        name: "Store, Data & Platform Operations",
+        items: [
+            {
+                icon: "mdi:store-outline",
+                title: "Store Operations & Omnichannel Handoffs",
+                description: "Orchestrate BOPIS, click-and-collect, ship-from-store, and cross-channel returns. Keep store, e-commerce, and fulfillment systems in one operational loop.",
+            },
+            {
+                icon: "mdi:database-sync-outline",
+                title: "Operational Data Workflows",
+                description: "Move, transform, and operationalize data across dbt, lakehouse, SQL, Python, and Spark to support live retail operations, not just analytics.",
+            },
+            {
+                icon: "mdi:security-network",
+                title: "Platform, CI/CD & Security Automation",
+                description: "Automate certificate management, store rollouts, vulnerability scans, and incident response. The same engine that runs your business runs your platform.",
+            },
+        ],
+    },
+]
 
-const OPS = {
-    title: "End-To-End Solution for Managing Complex Retail Operations",
-    description:
-        "Powers your business-critical retail applications, streamlines inventory, optimizes supply chain and much more. By breaking own organizational silos. Kestra fosters a collaborative environment for better operational efficiency.",
-    items: [
-        {
-            title: "YAML-Based Workflows",
-            text: "Build, maintain and scale, your workflows with Kestra's YAML-based interface.",
-            icon: "/retail/solutions/Icon1.svg",
-        },
-        {
-            title: "Full CI/CD Integration",
-            text: "From Terraform to GitHub Actions, Kestra provides complete control over deployment and resource management.",
-            icon: "/retail/solutions/Icon2.svg",
-        },
-        {
-            title: "Language Agnostic",
-            text: "Kestra's language-agnostic capabilities let you integrate various languages. Customize workflows to align with your unique retail business logic.",
-            icon: "/retail/solutions/Icon3.svg",
-        },
-        {
-            title: "Event-Driven Orchestration",
-            text: "Kestra's event-driven capabilities ensure that your retail operations react in real time.",
-            icon: "/retail/solutions/Icon4.svg",
-        },
-        {
-            title: "Developer Centric Platform",
-            text: "API-first design with robust, scalable, cloud-native architecture makes Kestra the go-to platform for software engineers in the retail industry.",
-            icon: "/retail/solutions/Icon5.svg",
-        },
-        {
-            title: "User-Friendly Interface",
-            text: "Engineered to be intuitive for both developers and business professionals. Kestra facilitates quick and efficient workflow development.",
-            icon: "/retail/solutions/Icon6.svg",
-        },
-    ],
-}
+const ENTERPRISE_FEATURES = [
+    {
+        icon: ShieldCheckOutline,
+        title: "Peak-Season Ready Deployment",
+        description: "Self-hosted, VPC, or cloud. Horizontal worker scaling absorbs Black Friday and launch-day spikes without architectural surgery. PCI-friendly segmentation built in.",
+    },
+    {
+        icon: Git,
+        title: "Immutable, Replayable Execution",
+        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical order, price change, or campaign cutover with the exact code, secrets, and inputs.",
+    },
+    {
+        icon: FileDocumentCheckOutline,
+        title: "Human-in-the-Loop Controls",
+        description: "Pause any workflow pending merchandiser, finance, or ops sign-off. Enforce dual control on price changes, large refunds, promo go-lives, and production rollouts.",
+    },
+    {
+        icon: AccountGroupOutline,
+        title: "RBAC & Multi-Tenant Isolation",
+        description: "Namespace-scoped RBAC with SSO/SAML/SCIM. Every brand, region, or business line owns its secrets and runtime on a shared platform. Zero blast radius.",
+    },
+    {
+        icon: CodeTagsCheck,
+        title: "Audit Logs & Observability",
+        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, Datadog, or your preferred SIEM for PCI and SOC 2 evidence.",
+    },
+]
 
-const PLUGINS = {
-    title: "Connect Your",
-    highlight: "Entire Stack",
-    description: "with Dedicated Plugins"
-}
+const BUILD_TABS = [
+    {
+        name: "Order orchestration",
+        title: "From webhook to warehouse, with the exceptions routed automatically.",
+        description:
+            "An order lands on the webhook. Kestra validates it, reserves inventory, triggers fulfillment, and syncs status back to the storefront. Failures open Gorgias cases. Every step auditable.",
+        code: `id: order-orchestration
+namespace: company.retail.orders
 
-const FOOTER = {
-    title: "Getting Started",
-    cta: [
-        {
-            text: "Read the docs",
-            href: "/docs",
-            style: "btn-dark",
-        },
-        {
-            text: "Get started",
-            href: "/docs/quickstart#start-kestra",
-            style: "btn-animated btn-purple-animated",
-        },
-    ],
-}
+inputs:
+  - id: order
+    type: JSON
+    displayName: Order payload from storefront
 
-const TITLE = HEADER.title
-const DESCRIPTION = HEADER.description
+tasks:
+  - id: persist_order
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://oms:5432/orders"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    sql: |
+      INSERT INTO orders.new (payload, received_at, status)
+      VALUES ('{{ inputs.order | toJson }}', NOW(), 'received')
+      RETURNING order_id
+
+  - id: reserve_inventory
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://wms.example/api/reserve"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.order | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('WMS_TOKEN') }}"
+
+  - id: route_fulfillment
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.reserve_inventory.body.in_stock == true }}"
+    then:
+      - id: dispatch
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://carriers.example/dispatch"
+        method: POST
+        contentType: application/json
+        body: |
+          { "order_id": "{{ outputs.persist_order.row.order_id }}" }
+    else:
+      - id: backorder_case
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://api.gorgias.com/api/tickets"
+        method: POST
+        contentType: application/json
+        headers:
+          Authorization: "Basic {{ secret('GORGIAS_TOKEN') }}"
+        body: |
+          {
+            "subject": "Backorder — order {{ outputs.persist_order.row.order_id }}",
+            "channel": "email"
+          }
+
+  - id: notify_customer
+    type: io.kestra.plugin.email.MailSend
+    host: smtp.retail.example
+    port: 465
+    username: "{{ secret('SMTP_USER') }}"
+    password: "{{ secret('SMTP_PASSWORD') }}"
+    from: orders@retail.example
+    to: "{{ inputs.order.customer_email }}"
+    subject: "Order {{ outputs.persist_order.row.order_id }} confirmed"
+    htmlTextContent: "Your order is being prepared."`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.core.flow.If" },
+            { cls: "io.kestra.plugin.email.MailSend" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Returns & reverse logistics",
+        title: "Return, restock, refund. One flow keeps OMS, WMS, and finance aligned.",
+        description:
+            "Authorize a return, route to the right reverse hub, trigger the refund, and update inventory. Breaks open cases in ServiceNow. Reconciliation bundles land in S3 for finance.",
+        code: `id: returns-reverse-logistics
+namespace: company.retail.returns
+
+inputs:
+  - id: return_request
+    type: JSON
+    displayName: Return request from storefront
+
+tasks:
+  - id: validate_return
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://oms:5432/orders"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: FETCH_ONE
+    sql: |
+      SELECT order_id, total, currency, status
+      FROM orders.completed
+      WHERE order_id = '{{ inputs.return_request.order_id }}'
+
+  - id: route_hub
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://wms.example/api/reverse-route"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.return_request | toJson }}"
+
+  - id: human_review
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.validate_return.row.total > 500 }}"
+    then:
+      - id: finance_review
+        type: io.kestra.plugin.core.flow.Pause
+        description: "High-value refund requires finance sign-off."
+
+  - id: issue_refund
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://payments.example/v1/refunds"
+    method: POST
+    contentType: application/json
+    body: |
+      {
+        "order_id": "{{ outputs.validate_return.row.order_id }}",
+        "amount": {{ outputs.validate_return.row.total }}
+      }
+
+  - id: update_inventory
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://wms.example/api/restock"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.return_request | toJson }}"
+
+  - id: publish_recon
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "retail-audit"
+    key: "returns/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ outputs.validate_return.row.order_id }}.json"
+    from: "{{ outputs.route_hub.body }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Inventory sync & exceptions",
+        title: "Keep stock positions true across stores, marketplaces, and partners.",
+        description:
+            "Pull stock snapshots from WMS and partners, reconcile in Python, publish to storefronts and marketplaces, and route conflicts to merch ops. Peak-season scale, years of replay.",
+        code: `id: inventory-sync
+namespace: company.retail.inventory
+
+triggers:
+  - id: every_5_min
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/5 * * * *"
+
+tasks:
+  - id: snapshot_wms
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://wms:5432/wms"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: STORE
+    sql: "SELECT sku, location, qty FROM wms.stock"
+
+  - id: pull_partners
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://marketplace.example/api/stock"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ secret('MARKET_TOKEN') }}"
+
+  - id: reconcile
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python reconcile_stock.py --wms {{ outputs.snapshot_wms.uri }} --partner {{ outputs.pull_partners.uri }}
+
+  - id: publish_storefront
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://shop.example/admin/api/inventory"
+    method: POST
+    contentType: application/json
+    body: "{{ outputs.reconcile.outputFiles.reconciled }}"
+
+  - id: route_conflicts
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.reconcile.vars.conflicts > 0 }}"
+    then:
+      - id: notify_merch
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        url: "{{ secret('SLACK_MERCH_URL') }}"
+        payload: |
+          { "text": "Inventory conflicts: {{ outputs.reconcile.vars.conflicts }}" }`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.flow.If" },
+            { cls: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook" },
+        ],
+        href: "/blueprints",
+    },
+]
+
+const FAQ = [
+    {
+        question: "Can Kestra orchestrate order, return, and fulfillment workflows without replacing our OMS or WMS?",
+        answer: "Yes. Kestra sits alongside Shopify, Salesforce Commerce, SAP Commerce, Oracle Retail, Manhattan, and custom OMS/WMS stacks. It connects them to payments, carriers, partners, and customer-facing systems with declarative flows, retries, and full audit. You modernize incrementally without rebuilding core commerce.",
+    },
+    {
+        question: "Does Kestra handle omnichannel workflows: BOPIS, click-and-collect, ship-from-store, cross-channel returns?",
+        answer: "Yes. Orchestrate handoffs across e-commerce, POS, store fulfillment, and reverse logistics. Kestra coordinates inventory reservation, associate notification, customer communication, and finance reconciliation so the same operational workflow spans every channel.",
+    },
+    {
+        question: "Can Kestra scale through Black Friday, product launches, and peak seasons?",
+        answer: "Yes. Horizontal worker scaling absorbs traffic spikes without architectural changes. Queue-backed triggers and per-namespace rate controls protect downstream systems. Pre-peak dry runs are replayable against production code, so launch-day behaviour is known before launch day.",
+    },
+    {
+        question: "How does Kestra handle high-value refunds, price changes, and promo go-lives?",
+        answer: "Four-eyes Pause tasks are first-class flow primitives. Any refund over a threshold, any price change, any promo go-live can pause for merchandiser, finance, or ops sign-off. Namespace-scoped RBAC enforces segregation of duties; every decision is versioned.",
+    },
+    {
+        question: "Can Kestra power personalization, loyalty, and customer-data workflows?",
+        answer: "Yes. Coordinate events across CRM, CDP, marketing, analytics, and loyalty platforms. Trigger personalized campaigns from real operational signals — orders, returns, service cases, store visits — not yesterday's batch dumps. Segment membership changes become actions in seconds, not days.",
+    },
+    {
+        question: "Does Kestra help with fraud, disputes, and chargebacks?",
+        answer: "Yes. Screen orders against vendor and internal signals, score with ML, route to manual review, and assemble chargeback evidence automatically. Kestra keeps the full decision trail one click away for dispute teams and acquirers.",
+    },
+    {
+        question: "How does Kestra integrate with CS tools like Gorgias, Zendesk, and Salesforce Service Cloud?",
+        answer: "Native HTTP plugins + dedicated integrations for Slack and email mean Gorgias, Zendesk, Intercom, or Service Cloud sit naturally in a flow. Assemble order, shipment, and refund context automatically so agents never open five tabs to resolve one ticket.",
+    },
+    {
+        question: "How is Kestra different from Airflow, Control-M, or custom cron scripts?",
+        answer: "Airflow and Control-M were built for batch data pipelines, not event-driven commerce. Kestra is declarative YAML over an event-first engine: webhooks, streams, and schedules are equals, retries and exception routing are built in, and every run is auditable out of the box.",
+    },
+    {
+        question: "What deployment options exist and how are secrets handled?",
+        answer: "Self-hosted in your private cloud or VPC, Kestra Cloud in EU or US, or fully air-gapped. Secrets come from Vault, AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, or CyberArk. PCI-friendly segmentation is built in.",
+    },
+    {
+        question: "Is Kestra open source, and what does the licensing model look like?",
+        answer: "Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
+    },
+]
+
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-        <DetailsHero
-            client:load
-            title={HEADER.tag}
-            description={HEADER.description}
-            image={{
-                src: HEADER.image.href,
-                alt: HEADER.image.alt,
-                width: HEADER.image.width,
-                height: HEADER.image.height,
-                class: HEADER.image.style,
-            }}
-            actions={{
-                dark: HEADER.cta[0],
-                purple: HEADER.cta[1],
-            }}
-        />
+<Layout {title} {description} headerTheme="lightText">
+    <div class="retail">
 
-        <Cards title={SOLUTIONS_TITLE} cards={SOLUTIONS} />
+        <section class="hero">
+            <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
+            <div class="hero-inner">
+                <div class="badge-pill" data-usal="zoomin">
+                    <Icon name="mdi:shopping-outline" />
+                    <span>Retail &amp; Commerce</span>
+                </div>
 
-        <CustomerStory
-            client:visible
-            class="retail"
-            title={LEROY.title}
-            description={LEROY.description}
-            image={{
-                src: LEROY.image.href,
-                alt: LEROY.image.alt,
-            }}
-            logo={{
-                src: LEROY.logo.src,
-                alt: LEROY.logo.alt,
-                width: LEROY.logo.width,
-            }}
-            href={LEROY.cta.href}
-        />
+                <h1 data-usal="fade-u">
+                    Kestra keeps retail operations<br />
+                    <span class="gradient">in sync, even on launch day.</span>
+                </h1>
 
-        <RetailOps
-            title={OPS.title}
-            description={OPS.description}
-            items={OPS.items}
-            client:visible
-        />
+                <p class="subtitle" data-usal="fade-l">
+                    Retailers use Kestra to move orders, returns, inventory, and customers across OMS, WMS, storefront,
+                    POS, and partner APIs without silent failures. Peak-season ready, queue-backed, replayable, and
+                    audit-ready from supplier to storefront.
+                </p>
 
-        <FeaturePlugins content={PLUGINS} />
+                <div class="tags" data-usal="fade-l">
+                    {HERO_TAGS.map((tag) => (
+                        <span class="tag">
+                            <Icon name={tag.icon} class="tag-icon" />
+                            {tag.label}
+                        </span>
+                    ))}
+                </div>
 
-        <FooterContact
-            title={FOOTER.title}
-            dark={FOOTER.cta[0]}
-            purple={FOOTER.cta[1]}
-        />
+                <div class="exec-panel-wrapper" data-usal="fade-up">
+                    <div class="exec-panel">
+                        <div class="exec-panel__header">
+                            <span class="exec-panel__dot"></span>
+                            <span class="exec-panel__title">order-orchestration</span>
+                            <span class="exec-panel__meta">namespace · company.retail.orders</span>
+                            <span class="exec-panel__duration">1.1s</span>
+                        </div>
+
+                        <div class="exec-panel__body">
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">receive_order</span>
+                                <span class="exec-row__type">core.http.Webhook</span>
+                                <span class="exec-row__result">accepted</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">persist_order</span>
+                                <span class="exec-row__type">jdbc.postgresql.Query</span>
+                                <span class="exec-row__result">order #40821</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">reserve_inventory</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">in stock</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">dispatch_carrier</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">tracking #</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">update_storefront</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">synced</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">notify_customer</span>
+                                <span class="exec-row__type">email.MailSend</span>
+                                <span class="exec-row__result">sent</span>
+                            </div>
+                        </div>
+
+                        <div class="exec-panel__footer">
+                            <span class="exec-footer__item">Peak-ready</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Replayable</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Exception-routed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-ctas" data-usal="zoomin">
+                    <Link href="/demo" class="btn btn-primary btn-lg">Book a Demo</Link>
+                </div>
+
+                <div class="hero-logos" data-usal="fade-u">
+                    <span class="hero-logos__label">Used by retail, e-commerce, and consumer-goods teams</span>
+                    <div class="hero-logos__row">
+                        <Image src={LeroyMerlinLogoImg} alt="Leroy Merlin" class="hero-logos__item" />
+                        <Image src={AuchanLogoImg} alt="Auchan" class="hero-logos__item" />
+                        <Image src={DecathlonLogoImg} alt="Decathlon" class="hero-logos__item" />
+                        <Image src={IntersportLogoImg} alt="Intersport" class="hero-logos__item" />
+                        <Image src={DiorLogoImg} alt="Dior" class="hero-logos__item" />
+                        <Image src={GorgiasLogoImg} alt="Gorgias" class="hero-logos__item" />
+                        <Image src={FilaLogoImg} alt="Fila" class="hero-logos__item" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="flow">
+            <div class="container-xxl">
+                <h2 class="flow__title text-center">
+                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                </h2>
+                <p class="flow__lead">
+                    Order, return, stock change, promo go-live, customer case, or supplier feed. The orchestration job is the same: connect systems, route exceptions, trigger actions, keep the books aligned.
+                </p>
+
+                <div class="flow__grid">
+                    <div class="flow__steps">
+                        {FLOW_STAGES.map((stage, idx) => (
+                            <div class={`flow-block flow-${idx}`}>
+                                <div class="flow-block__content">
+                                    <span class={`flow-block__label label-${stage.id}`}>{stage.label}</span>
+                                    <div class={`flow-block__card card-${stage.id}`}>
+                                        <div class="flow-block__items">
+                                            {stage.items.map(item => (
+                                                <div class="flow-block__item">{item}</div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {idx < FLOW_STAGES.length - 1 && (
+                                    <div class={`flow-arrow arrow-${idx}`}>
+                                        <div class="line" />
+                                        <Icon name="mdi:play" class="head" width={16} height={16} />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <h5 class="flow__footer text-center">
+                    Each step is a declarative YAML task. Change the source system, workflow step, or destination without rebuilding the whole process.
+                </h5>
+            </div>
+        </section>
+
+        <section class="workloads">
+            <div class="container">
+                <div class="workloads__head">
+                    <h2>Every critical workflow in retail and commerce.</h2>
+                    <p>Orders and returns, inventory and pricing, customer and loyalty, store and platform operations. One engine runs them all.</p>
+                </div>
+                {WORKLOAD_CATEGORIES.map(cat => (
+                    <div class="workloads__group">
+                        <h3 class="workloads__category">{cat.name}</h3>
+                        <div class="workloads__grid">
+                            {cat.items.map(item => (
+                                <div class="workload-card">
+                                    <Icon name={item.icon} class="workload-card__icon" />
+                                    <h4 class="workload-card__title">{item.title}</h4>
+                                    <p class="workload-card__desc">{item.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <Quotes {quotes} client:load />
+
+        <section class="enterprise">
+            <div class="container-xxl">
+                <h2 class="enterprise__title" data-usal="fade-r">
+                    <span class="highlight">Enterprise-Grade</span> Orchestration for Every Retail Workload.
+                </h2>
+                <NoGapGrid items={ENTERPRISE_FEATURES}>
+                    <div class="feature-card feature-card--cta">
+                        <a href="/demo" class="btn btn-secondary" data-usal="zoomin">
+                            Book a Demo
+                        </a>
+                    </div>
+                </NoGapGrid>
+            </div>
+        </section>
+
+        <section class="build">
+            <div class="container">
+                <h2><span class="highlight">Blueprints</span> for retail and commerce.</h2>
+                <p class="build__lead">Production workflows, from order orchestration to inventory sync. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="header row g-0">
+                            {BUILD_TABS.map((tab, idx) => (
+                                <div
+                                    class:list={[
+                                        "col-6 col-md-4 header-tab",
+                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
+                                    ]}
+                                    data-tab-target={idx}
+                                >
+                                    {tab.name}
+                                </div>
+                            ))}
+                        </div>
+
+                        {BUILD_TABS.map((tab, idx) => (
+                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
+                                <div class="panel panel-1">
+                                    <Snippets client:idle code={tab.code} lang="yaml" />
+                                </div>
+                                <div class="panel panel-2">
+                                    <h3 data-usal="fade-r">{tab.title}</h3>
+                                    <p data-usal="fade-l">{tab.description}</p>
+                                    <div class="plugins" data-usal="zoomin">
+                                        {tab.plugins.map(plugin => (
+                                            <div class="plugin-icon">
+                                                <TaskIcon cls={plugin.cls} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <Link class="goto" href={tab.href} data-usal="fade-r">
+                                        Explore Blueprints
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <GoFurther />
+
+        <PluginsBlock>
+            <Fragment slot="title">
+                Integrates with the <span class="highlight">systems retail teams</span> already rely on.
+            </Fragment>
+            <Fragment slot="description">
+                Connect OMS, WMS, POS, storefronts, PIM, payment gateways, carriers, CS tools, loyalty platforms,
+                and analytics stacks through 1,200+ plugins. Or build the exact integration your environment requires.
+            </Fragment>
+        </PluginsBlock>
+
+        <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
+            <Fragment slot="title">One platform for retail and commerce.</Fragment>
+            Modernize commerce stacks, connect the tools your teams already use, and add lineage, approvals,
+            and observability across orders, returns, inventory, pricing, customer service, and store operations.
+        </SeeHow>
+
+        <Faq items={FAQ} client:visible />
+    </div>
 </Layout>
 
+<style lang="scss">
+    $rt-purple:        #7C3AED;
+    $rt-purple-bright: #A78BFA;
+    $rt-purple-light:  #EDE9FE;
+    $rt-purple-deep:   #581C87;
+    $rt-platinum:    #E8EDF0;
+
+    .retail { overflow: clip; }
+
+    :global(html.dark) .retail {
+        .flow,
+        .workloads,
+        .build,
+        .enterprise {
+            background: #1C1C20;
+        }
+        :global(section.quotes-wrapper),
+        :global(section.plugin-block),
+        :global(.see) {
+            background: #1C1C20;
+        }
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        background: #060a0c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
+        padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 1.5rem 6rem;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 4rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1100px;
+            height: 520px;
+            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.20) 0%, rgba(124, 58, 237, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+    }
+
+    .hero-bg-grid {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1720px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        max-width: 68rem;
+        color: $white;
+        text-align: center;
+
+        @include media-breakpoint-down(md) { gap: 1.5rem; }
+
+        h1 {
+            color: $white;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .gradient {
+            background: linear-gradient(90deg, #{$rt-purple-bright}, #{$rt-purple-light});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: $font-size-lg;
+            line-height: 1.6;
+            max-width: 48rem;
+            margin: 0;
+
+            @include media-breakpoint-down(md) { font-size: $font-size-md; }
+        }
+    }
+
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 4px 1.125rem;
+        gap: 0.5rem;
+        border-radius: 2.5rem;
+        background: #060b0d;
+        position: relative;
+        z-index: 1;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        color: $rt-purple-bright;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 2.5rem;
+            padding: 1px;
+            background: linear-gradient(90deg, #{$rt-purple} 0%, #{$rt-purple-light} 100%);
+            -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.72);
+        font-size: $font-size-xs;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: rgba(167, 139, 250, 0.4);
+            background: rgba(124, 58, 237, 0.08);
+            color: $white;
+
+            :global(.tag-icon) { color: $rt-purple-light; }
+        }
+
+        :global(.tag-icon) {
+            width: 12px;
+            height: 12px;
+            color: $rt-purple-bright;
+            flex-shrink: 0;
+        }
+    }
+
+    @property --fs-neon-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes fs-neon-trace {
+        to { --fs-neon-angle: 360deg; }
+    }
+
+    .exec-panel-wrapper {
+        --fs-neon-angle: 0deg;
+        border-radius: 10px;
+        background: conic-gradient(
+            from var(--fs-neon-angle),
+            rgba(124, 58, 237, 0.12) 0deg,
+            rgba(124, 58, 237, 0.12) 320deg,
+            #{$rt-purple}              340deg,
+            $rt-platinum             350deg,
+            #{$rt-purple}              360deg
+        );
+        padding: 1px;
+        box-shadow:
+            0 1.214px 10.321px 0 rgba(124, 58, 237, 0.22) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(124, 58, 237, 0.55);
+        width: 100%;
+        max-width: 640px;
+        animation: fs-neon-trace 5s linear infinite;
+    }
+
+    .exec-panel {
+        background: #06100f;
+        border-radius: 9px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        text-align: left;
+
+        &__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(124, 58, 237, 0.04);
+            flex-wrap: wrap;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+        }
+
+        &__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: $rt-purple-bright;
+            box-shadow: 0 0 8px $rt-purple-bright;
+            flex-shrink: 0;
+        }
+
+        &__title {
+            color: $white;
+            font-weight: 600;
+        }
+
+        &__meta {
+            color: rgba(255, 255, 255, 0.45);
+            flex: 1;
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__duration {
+            color: $rt-purple-light;
+            font-weight: 500;
+        }
+
+        &__body {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        &__footer {
+            padding: 10px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(124, 58, 237, 0.03);
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            color: $rt-purple-light;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .exec-footer__sep { color: rgba(255, 255, 255, 0.25); }
+    }
+
+    .exec-row {
+        display: grid;
+        grid-template-columns: 20px minmax(130px, 1fr) minmax(150px, 1fr) minmax(90px, auto);
+        align-items: center;
+        gap: 1rem;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        transition: background 0.2s;
+
+        &:hover { background: rgba(124, 58, 237, 0.06); }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 20px 1fr auto;
+        }
+
+        &__check {
+            color: $rt-purple-bright;
+            font-weight: 700;
+        }
+
+        &__name {
+            color: $white;
+            font-weight: 500;
+        }
+
+        &__type {
+            color: rgba(255, 255, 255, 0.45);
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__result {
+            color: $rt-purple-light;
+            text-align: right;
+            white-space: nowrap;
+        }
+    }
+
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn {
+            justify-content: center;
+
+            @include media-breakpoint-down(md) {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+    }
+
+    .hero-logos {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        padding-top: 2rem;
+        width: 100%;
+        max-width: 52rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+
+        &__label {
+            font-size: $font-size-xs;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        &__row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            align-items: center;
+            justify-items: center;
+            column-gap: 0.5rem;
+            row-gap: 1.25rem;
+            width: 100%;
+            max-width: 48rem;
+            margin: 0 auto;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 1rem;
+                row-gap: 1.25rem;
+            }
+        }
+
+        &__item {
+            width: auto;
+            height: auto;
+            display: block;
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            max-width: 100%;
+
+            &:hover { opacity: 1; }
+
+            // Row 1: 4 logos, each spans 3 of 12 cols
+            &:nth-child(-n+4) { grid-column: span 3; }
+            // Row 2: 3 logos, each spans 4 of 12 cols (3×4=12 centers naturally)
+            &:nth-child(n+5)  { grid-column: span 4; }
+
+            @include media-breakpoint-down(md) {
+                &:nth-child(-n+4),
+                &:nth-child(n+5) { grid-column: auto; }
+            }
+
+            // Normalised optical sizing: text-logos ≈ 28–32px tall,
+            // icon-centric logos ≈ 40–44px tall so they read at the same weight.
+            // Normalised optical sizing: text-logos ≈ 28–32px tall,
+            // icon-centric logos ≈ 40–44px tall so they read at the same weight.
+            &:nth-child(1) { max-height: 30px; max-width: 150px; }  // Leroy Merlin
+            &:nth-child(2) { max-height: 32px; max-width: 150px; }  // Auchan
+            &:nth-child(3) { max-height: 28px; max-width: 150px; }  // Decathlon
+            &:nth-child(4) { max-height: 36px; max-width: 160px; }  // Intersport
+            &:nth-child(5) { max-height: 30px; max-width: 140px; }  // Dior
+            &:nth-child(6) { max-height: 32px; max-width: 160px; }  // Gorgias
+            &:nth-child(7) { max-height: 28px; max-width: 120px; }  // Fila
+        }
+    }
+
+    $stages: (
+        "trigger": ( "bg": #fff3d3, "border": #a87f4f, "label": #b87f00 ),
+        "ingest":  ( "bg": #cbe2ff, "border": #6b62f2, "label": #0069c6 ),
+        "process": ( "bg": #e3cffe, "border": #bb62f2, "label": #822bfd ),
+        "act":     ( "bg": #d3ffe0, "border": #4fa876, "label": #007336 )
+    );
+
+    .flow {
+        position: relative;
+        background: var(--ks-background-secondary);
+        padding: 5.5rem 1rem;
+        overflow: hidden;
+
+        .container-xxl {
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        &__title {
+            margin-bottom: 1rem;
+            color: var(--ks-content-primary);
+
+            .highlight {
+                background: linear-gradient(90deg, #{$rt-purple}, #{$rt-purple-bright});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            line-height: 1.55;
+            max-width: 50rem;
+            margin: 0 auto 3rem;
+        }
+
+        &__footer {
+            margin-top: 2rem;
+            color: var(--ks-content-secondary);
+            font-weight: 500;
+        }
+
+        &__grid {
+            width: 100%;
+            padding: 2rem 1rem;
+            background-color: rgba(124, 58, 237, 0.04);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%2314B8A6' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 10px;
+        }
+
+        &__steps {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+
+            @include media-breakpoint-down(xl) {
+                display: grid;
+                grid-template-columns: repeat(2, auto);
+                row-gap: 80px;
+                column-gap: 40px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+                row-gap: 60px;
+                column-gap: 0;
+            }
+        }
+    }
+
+    .flow-block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 1;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                max-width: 320px;
+                margin-top: 0.5rem;
+            }
+        }
+
+        &__label {
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            text-transform: uppercase;
+            font-weight: 700;
+
+            @each $id, $colors in $stages {
+                &.label-#{$id} { color: map-get($colors, "label"); }
+            }
+        }
+
+        &__card {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 240px;
+            min-height: 340px;
+            padding: 16px;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(lg) {
+                width: 220px;
+                min-height: 330px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                min-height: auto;
+                padding: 24px 16px;
+            }
+
+            @each $id, $colors in $stages {
+                &.card-#{$id} {
+                    background: map-get($colors, "bg");
+                    border: 1px solid map-get($colors, "border");
+                }
+            }
+        }
+
+        &__items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &__item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #333638;
+            border-radius: 4px;
+            color: #333638;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            box-shadow: 4px 4px 0 0 #EBEBEB, 4px 4px 0 1px #333638CC;
+        }
+    }
+
+    .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+
+        .line {
+            background: #000000;
+            html.dark & { background: #ffffff; }
+        }
+
+        .head {
+            position: absolute;
+            color: #000000;
+            html.dark & { color: #ffffff; }
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 90px;
+
+            .line { width: 100%; height: 1.5px; }
+            .head {
+                right: -4px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        @include media-breakpoint-between(sm, xl) {
+            &.arrow-0, &.arrow-1 {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 50%;
+                height: 72px;
+                width: 1.5px;
+                transform: translateX(-50%);
+
+                .line { width: 1.5px; height: 100%; }
+                .head {
+                    bottom: -5px;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(90deg);
+                }
+            }
+            &.arrow-2 { display: none; }
+        }
+
+        @include media-breakpoint-down(sm) {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            height: 58px;
+            width: 1.5px;
+            transform: translateX(-50%);
+
+            .line { width: 1.5px; height: 100%; }
+            .head {
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%) rotate(90deg);
+            }
+        }
+    }
+
+    .workloads {
+        position: relative;
+        padding: 5rem 1rem;
+        background: var(--ks-background-body);
+        overflow: hidden;
+
+        > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        &__head {
+            text-align: center;
+            max-width: 46rem;
+            margin: 0 auto 3rem;
+
+            h2 { color: var(--ks-content-primary); margin-bottom: 0.75rem; }
+            p { color: var(--ks-content-secondary); font-size: $font-size-lg; margin: 0; }
+        }
+
+        &__group {
+            max-width: 72rem;
+            margin: 0 auto 3rem;
+
+            &:last-child { margin-bottom: 0; }
+        }
+
+        &__category {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: $rt-purple-deep;
+            margin: 0 0 1rem;
+
+            :global(html.dark) & { color: $rt-purple-bright; }
+        }
+
+        &__grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+
+            @include media-breakpoint-up(md) { grid-template-columns: repeat(3, 1fr); }
+        }
+    }
+
+    .workload-card {
+        padding: 1.5rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 10px;
+        transition: border-color 0.2s, transform 0.2s;
+
+        &:hover {
+            border-color: $rt-purple;
+            transform: translateY(-2px);
+        }
+
+        &__icon {
+            font-size: 1.375rem;
+            color: $rt-purple-deep;
+            margin-bottom: 0.75rem;
+            width: 1.375rem;
+            height: 1.375rem;
+
+            :global(html.dark) & { color: $rt-purple-bright; }
+        }
+
+        &__title {
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+        }
+
+        &__desc {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+    }
+
+    .build {
+        padding: 3rem 0 4.5rem;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: 1rem;
+                padding-inline: $rem-1;
+                text-align: center;
+
+                .highlight { color: $rt-purple; }
+
+                @include media-breakpoint-up(xl) { padding-inline: 0; }
+            }
+
+            .wrapper {
+                border: 1px solid var(--ks-border-primary);
+                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+                border-radius: 13px;
+
+                @include media-breakpoint-down(xl) { border-radius: 0; }
+
+                .inner {
+                    border-radius: $rem-1;
+                    background: var(--ks-background-primary-inverse);
+                    overflow: clip;
+
+                    @include media-breakpoint-down(xxl) { border-radius: 0; }
+
+                    .header {
+                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
+
+                        & > div {
+                            padding: 1.1875rem $rem-2;
+                            font-size: $font-size-md;
+                            color: var(--ks-content-secondary-inverse);
+                            text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
+
+                            &.active {
+                                background: var(--ks-background-secondary-inverse);
+                                border-bottom: 1px solid var(--ks-border-active);
+                                color: var(--ks-content-primary-inverse);
+                                font-weight: 600;
+                            }
+                        }
+
+                        & .middle-part {
+                            border-left: 1px solid var(--ks-border-primary-inverse);
+                            border-right: 1px solid var(--ks-border-primary-inverse);
+                        }
+                    }
+
+                    .content {
+                        display: none;
+                        flex-direction: row;
+                        gap: $rem-2;
+                        padding: $rem-2;
+                        justify-content: center;
+
+                        &.active { display: flex; }
+
+                        @include media-breakpoint-down(xl) {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
+
+                        .panel {
+                            border-radius: 0.5rem;
+                            flex-shrink: 0;
+
+                            &.panel-1 {
+                                width: 39.4375rem;
+
+                                @include media-breakpoint-down(xl) { width: 100%; }
+
+                                :global(.code-card) {
+                                    border: 1px solid var(--ks-border-secondary-inverse);
+                                    background: var(--ks-background-input);
+                                    height: 100%;
+
+                                    :global(.code-inner) { transition: max-height 0.3s ease; }
+                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
+
+                                    &:global(:not(.is-expanded)) {
+                                        :global(.code-inner) { max-height: 27.9375rem !important; }
+                                    }
+                                }
+                            }
+
+                            &.panel-2 {
+                                position: relative;
+                                padding-top: $rem-2;
+                                color: var(--ks-content-primary-inverse);
+                                width: 27.5625rem;
+
+                                @include media-breakpoint-down(xl) {
+                                    width: 100%;
+                                    padding-top: 0;
+                                }
+
+                                p {
+                                    font-size: $font-size-lg;
+                                    margin-top: $rem-1;
+                                    margin-bottom: $rem-2;
+                                }
+
+                                .plugins {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    flex-wrap: wrap;
+
+                                    .plugin-icon {
+                                        width: 2.125rem;
+                                        height: 2.125rem;
+                                        padding: 0.375rem;
+                                        background: $white;
+                                        border: $block-border;
+                                        border-radius: $border-radius;
+                                    }
+                                }
+
+                                .goto {
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    color: var(--ks-content-link-inverse);
+                                    font-weight: 600;
+
+                                    @include media-breakpoint-down(xl) {
+                                        position: relative;
+                                        margin-top: $rem-3;
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            margin: 0 auto $rem-2;
+            max-width: 44rem;
+            padding-inline: $rem-1;
+        }
+    }
+
+    .enterprise {
+        padding: 140px 1rem 80px;
+        gap: 40px;
+        background: var(--ks-background-primary-inverse);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) { padding: 4rem 1rem 3rem; }
+
+        &__title {
+            color: #fff;
+            margin-bottom: 2.5rem;
+            text-align: center;
+
+            .highlight { color: $rt-purple-bright; }
+        }
+
+        :global(.features-grid) {
+            box-shadow: 0 9px 36px 0 var(--ks-shadows-light-inverse);
+        }
+
+        :global(.feature-icon) {
+            color: $rt-purple !important;
+        }
+        :global(.feature-title) {
+            color: #fff !important;
+        }
+        :global(.feature-desc) {
+            color: rgba(255, 255, 255, 0.72) !important;
+        }
+
+        .container-xxl { max-width: 1420px; }
+    }
+
+    .enterprise :global(.feature-card--cta) {
+        width: 100%;
+        padding: 2rem 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 1px 1px 0 0 var(--ks-border-secondary-inverse);
+
+        @include media-breakpoint-down(lg) { padding: 2rem; }
+
+        .btn { white-space: nowrap; }
+    }
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(".build .inner")) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
+                const target = tab && (container as Element).querySelector(
+                    `[data-tab-content="${tab.dataset.tabTarget}"]`
+                )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(".header-tab, .content")) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+    })
+</script>

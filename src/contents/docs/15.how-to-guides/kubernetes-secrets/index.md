@@ -1,5 +1,6 @@
 ---
 title: Set Up Secrets from a Helm Chart
+h1: Pass Kubernetes Secrets and Env Vars via Helm Chart
 icon: /src/contents/docs/icons/helm.svg
 stage: Getting Started
 topics:
@@ -119,7 +120,7 @@ Note that in this method, the Kubernetes Secret's keys must start with `SECRET_`
 
 ## Use Kubernetes Secrets as Kestra Secrets with `configurations.secrets`
 
-An alternative is to mount an entire Kubernetes Secret as a [Kestra configuration](../../configuration/index.md) file using the `configurations.secrets` property.
+An alternative is to mount an entire Kubernetes Secret as a [Kestra configuration](../../configuration/01.configuration-basics/index.md) file using the `configurations.secrets` property.
 
 For example, in `values.yaml`:
 

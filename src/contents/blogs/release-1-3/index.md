@@ -5,6 +5,7 @@ date: 2026-03-03T17:00:00
 category: News & Product Updates
 authors:
   - name: "Benoit Pimpaud"
+    linkedin: https://www.linkedin.com/in/pimpaudben/
     image: bpimpaud
 image: ./main.jpg
 ---
@@ -365,7 +366,7 @@ Kestra 1.3 introduces **`kestractl`**, a command-line interface focused on API-d
 
 Use `kestractl` to interact with the Kestra host API for flows, executions, namespaces, and namespace files.
 
-For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](/docs/server-cli).
+For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](/docs/kestra-cli/kestra-server).
 
 The **Kestra Server CLI** is the original CLI many teams already know and trust, and it remains the right choice for server administration. **Kestractl** is the new companion focused on direct host operation.
 

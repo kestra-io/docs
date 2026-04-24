@@ -5,6 +5,7 @@ date: 2024-02-28T18:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: "bpimpaud"
 image: ./main.png
 ---
@@ -152,7 +153,7 @@ The following sections will demonstrate how you can easily orchestrate dbt and S
 
 ### Orchestrating SQL Mesh with Kestra
 
-Using SQLMesh in Kestra is straightforward. The following example shows how you can clone a [SQLMesh project from a Git repository](https://github.com/TobikoData/sqlmesh-examples), run it with the dedicated [SQLMeshCLI task](/plugins/tasks/cli/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and query the results with [DuckDB](https://duckdb.org/).
+Using SQLMesh in Kestra is straightforward. The following example shows how you can clone a [SQLMesh project from a Git repository](https://github.com/TobikoData/sqlmesh-examples), run it with the dedicated [SQLMeshCLI task](/plugins/plugin-sqlmesh/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and query the results with [DuckDB](https://duckdb.org/).
 
 ```yaml
 id: sqlmesh

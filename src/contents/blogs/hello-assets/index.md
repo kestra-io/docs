@@ -5,6 +5,7 @@ date: 2026-01-20T13:00:00
 category: Solutions
 authors:
   - name: "Emmanuel Darras"
+    linkedin: https://www.linkedin.com/in/emmanuel-darras/
     image: edarras
     role: CEO & Co-Founder
 image: ./main.jpg
@@ -13,9 +14,9 @@ image: ./main.jpg
 If you’ve ever tried to understand which workflow updated a table in production, why a downstream job suddenly broke, or what depends on a critical dataset, you’ve seen the limits of orchestration without context. Workflows run, but the knowledge of what they touch and produce is scattered across logs, code, and people’s heads.
 
 **Kestra Assets** solves this by making governance a **byproduct of execution**.
->
- This approach is **technology-agnostic by design**. Whether a workflow runs a **SQL query**, a **Python script**, a **dbt transformation**, an **API call**, a **CLI command**, or provisions infrastructure, you can attach asset declarations to any task. **Unlike language- or code-centric solutions** (such as Python decorators), Kestra Assets are **declarative and universal**. No matter the tool or language used under the hood, inputs and outputs can be captured as named assets. In short: *if your workflow touches it, you can track it.*
->
+
+This approach is **technology-agnostic by design**. Whether a workflow runs a **SQL query**, a **Python script**, a **dbt transformation**, an **API call**, a **CLI command**, or provisions infrastructure, you can attach asset declarations to any task. **Unlike language- or code-centric solutions** (such as Python decorators), Kestra Assets are **declarative and universal**. No matter the tool or language used under the hood, inputs and outputs can be captured as named assets. In short: *if your workflow touches it, you can track it.*
+
 The result is a catalog you can trust and lineage that reflects reality without manual documentation or guesswork. Data and infrastructure artifacts become **discoverable, traceable, and reusable**, enabling safer pipelines and better collaboration across data, platform, and engineering teams.
 
 In this post, we’ll explore what Kestra Assets are, how they work (in a **language-agnostic** way that goes beyond just Python code), and why they matter for building modern, governed platforms.
@@ -239,7 +240,6 @@ Kestra’s vision is to make this even more global. We’re working on plugin en
 
 ## The End of "I Don't Know"
 
-
 **Think about the last time someone asked you:** “Which pipeline updates this table?” or “What broke when we changed that upstream dataset?” How long did it take you to answer? **Minutes? Hours? Days?**
 
 **With Kestra Assets, the answer is instant.**
@@ -269,3 +269,4 @@ Assets is available now in [Kestra Enterprise Edition](/enterprise). If you’re
 → [Schedule a Demo](/demo) <br>
 → [Explore Enterprise Edition](/enterprise)<br>
 → [Read the Documentation](../../docs/07.enterprise/02.governance/01.assets/index.md)
+

@@ -159,7 +159,7 @@ tasks:
     fetchOne: true
 
   - id: insert_into_mongodb
-    type: "io.kestra.plugin.mongodb.InsertOne"
+    type: io.kestra.plugin.mongodb.InsertOne
     connection:
       uri: "mongodb://username:password@docker.host.internal:27017/?authSource=admin"
     database: "kestra"

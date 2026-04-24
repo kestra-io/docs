@@ -5,6 +5,7 @@ date: 2023-05-30T14:00:00
 category: Solutions
 author:
   name: Quentin Sinig
+  linkedin: https://www.linkedin.com/in/quentinsinig/
   image: "qsinig"
 image: ./main.jpg
 ---

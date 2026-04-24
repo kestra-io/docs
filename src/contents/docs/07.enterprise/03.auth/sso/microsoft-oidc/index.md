@@ -1,5 +1,6 @@
 ---
-title: Set Up Microsoft OIDC SSO for Kestra
+title: Set Up Microsoft OIDC SSO in Kestra
+h1: Authenticate with Microsoft Entra ID via OIDC
 description: Configure Microsoft OIDC SSO for Kestra. Enable users to sign in with their Microsoft Entra ID (Azure AD) credentials using OpenID Connect.
 sidebarTitle: Microsoft OIDC SSO
 icon: /src/contents/docs/icons/admin.svg
@@ -41,7 +42,7 @@ To get your `client-id` and `client-secret`, refer to the [Microsoft Documentati
 
 1. Go to **Certificates & secrets**.
 2. Under **Client secrets**, click on **New client secret**.
-3. Copy the generated secret and use it in the `{{ clientSecret }}` field in your [configuration](../../../../configuration/index.md).
+3. Copy the generated secret and use it in the `{{ clientSecret }}` field in your [Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md).
 
 ### Kestra configuration
 

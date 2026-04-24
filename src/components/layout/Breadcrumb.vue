@@ -1,14 +1,19 @@
 <template>
     <nav aria-label="breadcrumb" class="slug">
         <ol class="breadcrumb">
-            <li v-for="(item, index) in breadcrumb" :key="`${item}-${index}`" class="breadcrumb-item"
-                :class="{ active: index === breadcrumb.length - 1 }">
-                <a v-if="index !== breadcrumb.length - 1"
-                    :href="breadcrumbLinkExist(index) ? breadcrumbLink(index) : ''" class="link">
-                    {{ getDisplayName(item, index) }}
+            <li
+                v-for="(item, index) in crumbs"
+                :key="index" class="breadcrumb-item"
+                :class="{ active: index === crumbs.length - 1 && crumbs.length > 1 }"
+            >
+                <a
+                    v-if="item.href"
+                    :href="item.href"
+                    class="link"
+                >
+                    {{ item.label }}
                 </a>
-
-                <span v-else aria-current="page">{{ getDisplayName(item, index) }}</span>
+                <span v-else aria-current="page">{{ item.label }}</span>
             </li>
         </ol>
     </nav>
@@ -17,21 +22,40 @@
 <script setup lang="ts">
     import { computed } from "vue"
 
+    interface BreadcrumbItem {
+        label: string
+        href: string
+    }
+
     const props = defineProps<{
-        slug: string
+        items?: BreadcrumbItem[]
+        slug?: string
         pageList?: string[]
         pageNames?: Record<string, string>
         pageTitle?: string
     }>()
 
-    const breadcrumb = computed(() => {
-        const crumbs = [...new Set(props.slug.split("/").filter(Boolean))]
-        return crumbs.length > 0 ? crumbs : ["docs"]
+    const crumbs = computed<BreadcrumbItem[]>(() => {
+        if (props.items) return props.items
+
+        const segments = props.slug
+            ? [...new Set(props.slug.split("/").filter(Boolean))]
+            : ["docs"]
+
+        return (segments.length > 0 ? segments : ["docs"]).map((item, index, arr) => {
+            const href = "/" + arr.slice(0, index + 1).join("/")
+            const isLast = index === arr.length - 1
+            const label = isLast && props.pageTitle
+                ? props.pageTitle
+                : item !== "docs" && props.pageNames?.[href]
+                    ? props.pageNames[href]
+                    : formatDirectoryName(item)
+            return {
+                label,
+                href: index === 0 || props.pageList?.includes(href) ? href : "",
+            }
+        })
     })
-
-    const breadcrumbLink = (index: number) => "/" + breadcrumb.value.slice(0, index + 1).join("/")
-
-    const breadcrumbLinkExist = (index: number) => index === 0 || props.pageList?.includes(breadcrumbLink(index))
 
     const formatDirectoryName = (item: string) => {
         const specialCases: Record<string, string> = {
@@ -46,25 +70,12 @@
                 .join(" ")
         )
     }
-
-    const getDisplayName = (item: string, index: number) => {
-        const key = breadcrumbLink(index)
-        if (index === breadcrumb.value.length - 1 && props.pageTitle) {
-            return props.pageTitle
-        }
-        return item !== "docs" && props.pageNames?.[key]
-            ? props.pageNames[key]
-            : formatDirectoryName(item)
-    }
 </script>
 
 <style lang="scss" scoped>
-
-
-    nav {
+    nav.slug {
         white-space: pre-wrap;
         width: 100%;
-        max-width: 45.8rem;
         font-size: $font-size-sm;
         font-weight: 400;
         margin-inline: auto;
@@ -73,18 +84,21 @@
         }
         .breadcrumb {
             --bs-breadcrumb-divider: ">";
+            --bs-breadcrumb-margin-bottom: 0.5rem;
         }
         .breadcrumb-item {
             a,
-            &.active,
             &::before {
+                font-size: $font-size-sm;
                 color: var(--ks-content-tertiary);
                 cursor: pointer;
                 &:hover {
                     color: var(--ks-content-secondary) !important;
                 }
             }
-            &.active {
+            &.active,
+            &.active a {
+                font-size: $font-size-sm;
                 font-weight: 700;
                 color: var(--ks-content-primary) !important;
             }

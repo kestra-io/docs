@@ -1,5 +1,6 @@
 ---
-title: Custom & Template Blueprints in Kestra Enterprise – Private Templates
+title: "Custom Blueprints in Kestra Enterprise: Templates"
+h1: Create Private Workflow Templates with Custom Blueprints
 description: Create Custom Blueprints in Kestra Enterprise. Standardize workflows with private templates, promoting reuse and best practices across your organization.
 sidebarTitle: Custom Blueprints
 icon: /src/contents/docs/icons/admin.svg
@@ -37,7 +38,7 @@ Templated Blueprints allow you to create reusable, configurable workflows that u
 
 This approach democratizes workflow creation by letting platform teams build reusable templates once while enabling business users to generate production-ready workflows through a simple form interface. 
 
-**How It Works:** Templated Blueprints use [Pebble templating](../05.concepts/06.pebble.md), with custom delimiters to avoid conflicts with Kestra expressions.
+**How It Works:** Templated Blueprints use [Pebble templating](../../../06.concepts/06.pebble/index.md), with custom delimiters to avoid conflicts with Kestra expressions.
 
 ### Define Template Arguments
 
@@ -55,7 +56,7 @@ extend:
         - value3
 ```
 
-All Kestra [input types](../../04.workflow-components/01.inputs.md) and their validation rules are supported. These arguments automatically generate a UI form when the blueprint is instantiated.
+All Kestra [input types](../../../05.workflow-components/05.inputs/index.md) and their validation rules are supported. These arguments automatically generate a UI form when the blueprint is instantiated.
 
 
 ### Use Template Arguments

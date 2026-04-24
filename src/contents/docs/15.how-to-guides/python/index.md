@@ -1,5 +1,7 @@
 ---
 title: Run Python Inside Your Flows
+h1: Execute Python Scripts in Kestra Workflows
+description: Run Python scripts in Kestra. Install pip packages at runtime, execute code in Docker containers, and pass data between tasks using inputs and outputs.
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
@@ -444,8 +446,8 @@ triggers:
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.eval)
-- [FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform)
+- [Eval](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.eval)
+- [FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 

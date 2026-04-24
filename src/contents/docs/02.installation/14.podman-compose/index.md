@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra with Podman Compose – Postgres Backend
+title: "Deploy with Podman Compose in Kestra: Postgres"
+h1: Rootless Container Deployment with Podman Compose
 sidebarTitle: Podman Compose
 icon: /src/contents/docs/icons/podman.svg
 description: Deploy Kestra using Podman Compose with PostgreSQL, offering a rootless container alternative to Docker.
@@ -39,7 +40,7 @@ To avoid errors during the `podman machine init` (`Error: exec: "qemu-img": exec
 
 Then, you may also have to edit the `~/.config/containers/containers.conf` file and add replace `/path/to/bin` with the result of `dirname $(which gvproxy)`:
 
-```
+```toml
 [engine]
 helper_binaries_dir = ["/path/to/bin"]
 ```
@@ -73,7 +74,7 @@ Open the URL `http://localhost:8080` in your browser to launch the UI.
 
 The command above starts a *standalone* server (all architecture components in one JVM).
 
-The [configuration](../../configuration/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
+The [configuration](../../configuration/01.configuration-basics/index.md) is done inside the `KESTRA_CONFIGURATION` environment variable of the Kestra container. You can update the environment variable inside the Docker compose file or pass it via the Docker command line argument.
 
 :::alert{type="info"}
 If you want to extend your Docker Compose file, modify container networking, or if you have any other issues using this Docker Compose file, check the [Troubleshooting Guide](../../10.administrator-guide/16.troubleshooting/index.md).

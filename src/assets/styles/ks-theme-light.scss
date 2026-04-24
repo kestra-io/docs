@@ -58,6 +58,7 @@
 	/* Color */
 	#{--ks-Color-gradient-1-inverse}: #8b71fe;
 	#{--ks-Color-gradient-1-inverse-2}: #25232e;
+	#{--ks-Color-gradient-blue}: #2da4ff;
 
 	/* background */
 	#{--ks-background-alert-danger}: #ffe3e3;
@@ -68,25 +69,25 @@
 	#{--ks-background-blue-light}: #eff4ff;
 	#{--ks-background-body}: $base-grey-white;
 	#{--ks-background-button-primary}: $base-primary-base;
-	#{--ks-background-button-primary-hover}: $base-primary-200;
+	#{--ks-background-button-primary-hover}: $base-primary-400;
 	#{--ks-background-button-secondary}: $base-grey-white;
 	#{--ks-background-button-secondary-active}: $base-grey-white;
 	#{--ks-background-button-secondary-hover}: $base-grey-Black;
 	#{--ks-background-function}: $base-primary-100;
 	#{--ks-background-header}: rgba($base-grey-white, 0.8);
 	#{--ks-background-input}: $base-grey-white;
+	#{--ks-background-orange-light}: #ffeae0;
 	#{--ks-background-primary}: $base-grey-white;
 	#{--ks-background-primary-inverse}: $base-grey-700;
 	#{--ks-background-purple-hover}: $base-primary-200;
 	#{--ks-background-purple-light}: $base-primary-100;
 	#{--ks-background-secondary}: $base-grey-50;
 	#{--ks-background-secondary-inverse}: $base-grey-800;
-	#{--ks-background-tertiary}: $base-grey-100;
-	#{--ks-background-tertiary-inverse}: $base-grey-Black;
-
-	/* background */
+	#{--ks-background-tag-EE}: #fdfabf;
 	#{--ks-background-tag-category}: $base-primary-100;
 	#{--ks-background-tag-success}: #bffddd;
+	#{--ks-background-tertiary}: $base-grey-100;
+	#{--ks-background-tertiary-inverse}: $base-grey-Black;
 
 	/* blur */
 	#{--ks-blur-effect}: $base-primary-300;
@@ -116,9 +117,10 @@
 	#{--ks-content-output}: #1e875e;
 	#{--ks-content-primary}: $base-grey-Black;
 	#{--ks-content-primary-inverse}: $base-grey-white;
-	#{--ks-content-propertie}: #1761fd;
+	#{--ks-content-property}: #1761fd;
 	#{--ks-content-secondary}: $base-grey-600;
 	#{--ks-content-secondary-inverse}: $base-grey-200;
+	#{--ks-content-tag-EE}: #dd5f00;
 	#{--ks-content-tag-category}: $base-primary-500;
 	#{--ks-content-tag-success}: #215d42;
 	#{--ks-content-tertiary}: $base-grey-400;
@@ -135,9 +137,11 @@
 	#{--ks-icon-color}: $base-primary-400;
 
 	/* shadows */
+	#{--ks-shadows-green}: #1e875e;
 	#{--ks-shadows-hight}: #27205633;
-	#{--ks-shadows-light}: #3952F219;
+	#{--ks-shadows-light}: #3952f21a;
 	#{--ks-shadows-light-inverse}: #22222f;
+	#{--ks-shadows-xl-inverse}: #9d6aeb;
 
 	/* special */
 	#{--ks-special-green}: #06f0b1;
@@ -191,4 +195,3 @@
 	/* red/base */
 	#{--red-base}: #ab0009;
 }
-

@@ -1,5 +1,7 @@
 ---
 title: Run JavaScript Inside Your Flows
+h1: Execute JavaScript Scripts in Kestra Workflows
+description: Run JavaScript and Node.js scripts in Kestra. Install npm packages at runtime and pass outputs between tasks using inputs and variables.
 icon: /src/contents/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
@@ -243,8 +245,8 @@ Once this has executed, `duration` will be viewable under **Metrics**.
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute JavaScript code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.eval)
-- [FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform)
+- [Eval](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.eval)
+- [FileTransform](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. As GraalVM can polyfill from Java, we can use the `int()` function to convert the string into an integer. Additionally, using the `outputs` property simplifies the process of fetching variables from JavaScript and accessing them inside Kestra. It is useful if you want to manipulate data and pass the new format to another task.
 

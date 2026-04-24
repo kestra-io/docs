@@ -5,6 +5,8 @@ date: 2024-10-01T17:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -440,7 +442,7 @@ kestra:
 
 The key needs to be at least 32 ASCII characters long (256 bits), so don’t forget to replace `BASE64_ENCODED_STRING_OF_32_CHARCTERS` with a secure, base64-encoded custom value. While this key never expires, the refresh token it signs is valid for 30 days, similar to a JWT token with a default 1-hour lifetime.
 
-For more details, see the [Configuration article](../../docs/configuration/index.md#encryption).
+For more details, see the [Configuration article](../../docs/configuration/05.security-and-secrets/index.md#encryption).
 
 If you want to use a separate secret for your JWT refresh token signature, you can **optionally** customize that as follows:
 
@@ -510,7 +512,7 @@ One of the key advantages of Managed Roles is that they stay up to date automati
 If more granular control is needed, you can still create **custom roles** tailored to specific requirements. For most users, Managed Roles provide a convenient, hands-off approach to role and permission management, ensuring access to all new features without any extra work.
 
 :::alert{type="info"}
-Note that Managed Roles are not the same as [Default Roles](../../docs/configuration/index.md#default-role). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've enhanced the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
+Note that Managed Roles are not the same as [Default Roles](../../docs/configuration/05.security-and-secrets/index.md#security-settings). A default role is a role that will be assigned by default to every new user joining your instance, which is useful for users automatically created via SSO. Managed Roles, on the other hand, are predefined roles that cannot be edited or customized. You can assign a Managed Role as a Default Role. In this release, we've enhanced the Default Role configuration to include an optional `tenantId` allowing you to restrict the default role access only to a specific tenant when needed (e.g., development, staging, production).
 :::
 
 ---

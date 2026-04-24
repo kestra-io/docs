@@ -1,7 +1,8 @@
-import { defineCollection, z } from "astro:content"
+import { defineCollection } from "astro:content"
+import { z } from "astro/zod"
 import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
-import { vsPagesSchema } from "./schemas/vsPages"
+import { vsSchema } from "./schemas/vs"
 
 export const collections = {
     docs: defineCollection({
@@ -13,6 +14,7 @@ export const collections = {
         schema: () =>
             z.object({
                 title: z.string(),
+                h1: z.string().optional(),
                 sidebarTitle: z.string().optional(),
                 description: z.string().optional(),
                 icon: z.string().optional(),
@@ -35,7 +37,7 @@ export const collections = {
         loader: glob({
             pattern: "./**/*.md{,x}",
             base: "./src/contents/blogs",
-            generateId,
+            generateId: (opts) => generateId(opts).toLowerCase(),
         }),
         schema: ({ image }) =>
             z.object({
@@ -48,6 +50,8 @@ export const collections = {
                         name: z.string(),
                         image: z.string(),
                         twitter: z.string().optional(),
+                        linkedin: z.string().optional(),
+                        medium: z.string().optional(),
                         role: z.string().nullable().optional(),
                     })
                     .optional(),
@@ -57,6 +61,8 @@ export const collections = {
                             name: z.string(),
                             image: z.string(),
                             twitter: z.string().optional(),
+                            linkedin: z.string().optional(),
+                            medium: z.string().optional(),
                             role: z.string().nullable().optional(),
                         }),
                     )
@@ -64,6 +70,7 @@ export const collections = {
                 image: image().optional(),
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
+                schema: z.record(z.string(), z.unknown()).optional(),
             }),
     }),
     legal: defineCollection({
@@ -80,24 +87,10 @@ export const collections = {
     }),
     vs: defineCollection({
         loader: glob({
-            pattern: "./*.md{,x}",
-            base: "./src/contents/vs",
-            generateId,
-        }),
-        schema: z.object({
-            title: z.string(),
-            headerTitle: z.string().optional(),
-            description: z.string().optional(),
-            competitorName: z.string(),
-            logo: z.string(),
-        }),
-    }),
-    vsPages: defineCollection({
-        loader: glob({
             pattern: "./*.{yaml,yml}",
-            base: "./src/contents/vs-pages",
+            base: "./src/contents/vs",
         }),
-        schema: vsPagesSchema,
+        schema: vsSchema,
     }),
     externalBlogs: defineCollection({
         loader: glob({
@@ -143,6 +136,7 @@ export const collections = {
                 headquarter: z.string(),
                 solution: z.string(),
                 companyName: z.string(),
+                cta: z.string().optional(),
             }),
     }),
     tutorialVideos: defineCollection({
@@ -182,6 +176,33 @@ export const collections = {
             }),
         ),
     }),
+    resources: defineCollection({
+        loader: glob({
+            pattern: "./**/*.md{,x}",
+            base: "./src/contents/resources",
+            generateId: (opts) => generateId(opts).toLowerCase(),
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                description: z.string().optional(),
+                metaTitle: z.string().optional(),
+                metaDescription: z.string().optional(),
+                tag: z.enum(["infrastructure", "data", "ai", "whitepapers"]),
+                date: z.coerce.date().optional(),
+                image: image().optional(),
+                href: z.string().optional(),
+                faq: z
+                    .array(
+                        z.object({
+                            question: z.string(),
+                            answer: z.string(),
+                        }),
+                    )
+                    .optional(),
+                schema: z.record(z.string(), z.unknown()).optional(),
+            }),
+    }),
     feeds: defineCollection({
         loader: glob({
             pattern: "./**/index.md",
@@ -199,3 +220,4 @@ export const collections = {
             }),
     }),
 }
+

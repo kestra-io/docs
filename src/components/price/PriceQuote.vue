@@ -19,7 +19,7 @@
 
     const appleQuotes = [
         {
-            quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+            quote: "We switched from Airflow to Kestra because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
             author: "Senior Engineering Manager (ML Team)",
             smallLogoSvg: appleLogo
         }
@@ -35,13 +35,11 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .quote-section {
         position: relative;
         z-index: 10;
         width: 100%;
-        background: var(--ks-background-primary);
+        background: var(--ks-background-body);
         border-bottom: 1px solid var(--ks-border-primary);
 
         &::before {
@@ -67,7 +65,7 @@
         }
 
         :deep(.wrapper) {
-            background-color: transparent !important;
+            background: none !important;
 
             .navigation {
                 display: none;

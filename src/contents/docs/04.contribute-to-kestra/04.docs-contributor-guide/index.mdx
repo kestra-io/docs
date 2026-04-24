@@ -1,5 +1,6 @@
 ---
-title: Contribute to Kestra Documentation – Writer’s Guide
+title: "Kestra Docs Contributor Guide: Writer's Reference"
+h1: "How to Contribute to Kestra Docs: Setup, Front Matter, and Best Practices"
 description: Help improve Kestra's documentation. This writer's guide covers local build setup, front matter conventions, and best practices for contributing to docs.
 sidebarTitle: Kestra Documentation
 icon: /src/contents/docs/icons/contributing.svg
@@ -311,7 +312,7 @@ The component has the following syntax, able to include both `version` and `edit
 
 In the documentation, we try to always have an accompanying video for the discussed feature. To ensure the YouTube video is embedded and displayed correctly and consistently on every page, we use a custom `video-container` div class. Add the div after the page's introductory sentence and before the main content.
 
-```
+```html
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/97xvcAMf888?si=y9vEEtGvoHfLxsK4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -468,7 +469,8 @@ extend:
     - SQL
   ee: false
   demo: true
-  meta_description: This flow represents a data engineering use case. It downloads
+  metaTitle: Getting Started - Data Engineering Pipeline
+  metaDescription: This flow represents a data engineering use case. It downloads
     a JSON file, filters the data in Python, and calculates the KPIs in SQL
     using DuckDB.
 ```

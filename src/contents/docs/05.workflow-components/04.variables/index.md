@@ -1,5 +1,6 @@
 ---
 title: Variables in Kestra – Reuse Values Across Flows
+h1: Configure and Use Dynamic Variables with Pebble Templating
 description: Master Variables in Kestra to reuse values across tasks and flows. Learn to configure, modify, and utilize dynamic variables with Pebble templating.
 sidebarTitle: Variables
 icon: /src/contents/docs/icons/flow.svg
@@ -40,7 +41,7 @@ Use variables with the syntax `{{ vars.variable_name }}`.
 
 You can use variables in any task property documented as **dynamic**.
 
-Dynamic variables are rendered by the Pebble templating engine, which processes expressions with filters and functions. More information on variable processing can be found under [Expressions](../../expressions/index.md).
+Dynamic variables are rendered by the Pebble templating engine, which processes expressions with filters and functions. More information on variable processing can be found under [Expressions](../../expressions/index.mdx).
 
 :::alert{type="info"}
 Variables are no longer rendered recursively. Learn more about this change — and how to adjust behavior — in the [migration guide](../../11.migration-guide/v0.14.0/recursive-rendering/index.md).
@@ -138,7 +139,7 @@ After executing the flow, the only remaining variable is `nested.unchanged` with
 
 ### How do I escape a block in Pebble syntax to ensure that it won't be parsed?
 
-To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../../expressions/index.md#tag). For example, the following returns the string `{{ myvar }}` instead of the value of `myvar`:
+To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../../expressions/index.mdx#raw). For example, the following returns the string `{{ myvar }}` instead of the value of `myvar`:
 
 ```yaml
 {% raw %}{{ myvar }}{% endraw %}
@@ -150,7 +151,7 @@ To ensure that a block of code won't be parsed by Pebble, you can use the `{% ra
 
 Therefore, you can use inputs within variables, but you cannot use variables or Pebble expressions in most contexts (Check out [Dynamic Inputs](../05.inputs/index.md#dynamic-inputs) for more information) within inputs.
 
-[Expressions](../../expressions/index.md) are rendered recursively: if a variable references another variable, the inner one is resolved first.
+[Expressions](../../expressions/index.mdx) are rendered recursively: if a variable references another variable, the inner one is resolved first.
 
 Triggers are handled similarly to inputs because they are known before the execution starts (they create the execution). This means you cannot use inputs (unless they have `defaults`) within triggers, but you can use trigger variables inside `variables`.
 

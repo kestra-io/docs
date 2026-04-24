@@ -1,15 +1,18 @@
 ---
-import { fetchPluginIcon } from "~/utils/pluginIcon"
-const { cls } = Astro.props
-
-const IconStr = await fetchPluginIcon(cls)
+const { cls, class: className, ...rest } = Astro.props
 ---
 
 <div
-    class="icon-wrapper"
+    class:list={["icon-wrapper", className ?? ""]}
     data-tooltip={cls.split(".").pop()}
-    set:html={IconStr}
-/>
+>
+    <img
+        data-theme-responsive
+        src={`/icons/${cls}.svg`}
+        alt={cls.split(".").pop() + " icon"}
+        {...rest}
+    />
+</div>
 
 <style lang="scss">
     .icon-wrapper {
@@ -22,10 +25,10 @@ const IconStr = await fetchPluginIcon(cls)
         touch-action: pan-y;
         pointer-events: auto;
 
-        :global(svg) {
-            max-width: 100%;
-            max-height: 100%;
-            display: block;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         &[data-tooltip]:hover::after {
@@ -46,3 +49,38 @@ const IconStr = await fetchPluginIcon(cls)
         }
     }
 </style>
+
+<script>
+    /**
+     * Upon loading a document, find all the [data-theme-responsive] images
+     * and replace their source with white if the html element has the class "dark", otherwise replace it with black
+     */
+    const updateThemeIcons = () => {
+        const isDarkMode = document.documentElement.classList.contains("dark")
+        const themeIcons = document.querySelectorAll(
+            "img[data-theme-responsive]",
+        )
+
+        themeIcons.forEach((icon) => {
+            const src = icon.getAttribute("src")
+            if (src) {
+                const newSrc = src.replace(
+                    /(-white|-black)?\.svg$/,
+                    isDarkMode ? "-white.svg" : "-black.svg",
+                )
+                icon.setAttribute("src", newSrc)
+            }
+        })
+    }
+    updateThemeIcons()
+
+    // when classes change on the html element, update the icons
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === "class") {
+                updateThemeIcons()
+            }
+        })
+    })
+    observer.observe(document.documentElement, { attributes: true })
+</script>

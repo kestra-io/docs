@@ -1,0 +1,80 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#FFF3EE"/>
+<g filter="url(#filter0_d_camunda)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#FC5D0D" shape-rendering="crispEdges"/>
+<!-- Document/list icon: Model (BPMN model file) -->
+<path d="M58 110H76C77.1 110 78 110.9 78 112V130C78 131.1 77.1 132 76 132H58C56.9 132 56 131.1 56 130V112C56 110.9 56.9 110 58 110ZM60 114V116H74V114H60ZM60 118V120H74V118H60ZM60 122V124H70V122H60Z" fill="currentColor"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Model</text>
+</g>
+<g filter="url(#filter1_d_camunda)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#FC5D0D" shape-rendering="crispEdges"/>
+<!-- Upload arrow icon: Deploy -->
+<path d="M174 112V126" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M168 118L174 112L180 118" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="165" y1="128" x2="183" y2="128" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Deploy</text>
+</g>
+<g filter="url(#filter2_d_camunda)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#FC5D0D" shape-rendering="crispEdges"/>
+<!-- Server icon: Worker -->
+<rect x="273" y="111" width="18" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="273" y="118" width="18" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<rect x="273" y="125" width="18" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+<circle cx="287" cy="113.5" r="1.5" fill="currentColor"/>
+<circle cx="287" cy="120.5" r="1.5" fill="currentColor"/>
+<circle cx="287" cy="127.5" r="1.5" fill="currentColor"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Worker</text>
+</g>
+<g filter="url(#filter3_d_camunda)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#FC5D0D" shape-rendering="crispEdges"/>
+<!-- Eye icon: Monitor -->
+<path d="M380 121C380 121 384 113 390.5 113C397 113 401 121 401 121C401 121 397 129 390.5 129C384 129 380 121 380 121Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="390.5" cy="121" r="4" fill="currentColor"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Monitor</text>
+</g>
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="currentColor"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="currentColor"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="currentColor"/>
+<defs>
+<filter id="filter0_d_camunda" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.988 0 0 0 0 0.365 0 0 0 0 0.051 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_camunda"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_camunda" result="shape"/>
+</filter>
+<filter id="filter1_d_camunda" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.988 0 0 0 0 0.365 0 0 0 0 0.051 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_camunda"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_camunda" result="shape"/>
+</filter>
+<filter id="filter2_d_camunda" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.988 0 0 0 0 0.365 0 0 0 0 0.051 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_camunda"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_camunda" result="shape"/>
+</filter>
+<filter id="filter3_d_camunda" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.988 0 0 0 0 0.365 0 0 0 0 0.051 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_camunda"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_camunda" result="shape"/>
+</filter>
+</defs>
+</svg>

@@ -1,5 +1,6 @@
 ---
 title: Set Up for Kestra Plugin Development
+h1: Prepare Your Dev Environment for Building Kestra Plugins
 sidebarTitle: Set Up for Plugin Development
 icon: /src/contents/docs/icons/dev.svg
 description: Set up your development environment for creating Kestra plugins, including Java, IntelliJ IDEA, and Gradle configuration.
@@ -20,7 +21,7 @@ That template will create a project hosting a group of plugins — we usually cr
 :::alert{type="warning"}
 Note that the Kestra plugin library **version** must align with your Kestra instance. You may encounter validation issues during flow creation (e.g., `Invalid bean` response with status 422) when some plugins are on an older version of the Kestra plugin library. In that case, you may want to update the file `plugin-yourplugin/gradle.properties` and set the `version` property to the correct Kestra version like below:
 
-```
+```properties
 version=0.20.0-SNAPSHOT
 kestraVersion=[0.20,)
 ```

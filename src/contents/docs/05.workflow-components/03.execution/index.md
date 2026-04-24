@@ -1,5 +1,6 @@
 ---
 title: Executions in Kestra – Run and Monitor Flows
+h1: Trigger, Monitor, and Troubleshoot Flow Executions
 description: Manage Flow Executions in Kestra. Learn how to trigger, monitor, and troubleshoot workflow runs, understand states, and access execution metrics.
 sidebarTitle: Execution
 icon: /src/contents/docs/icons/flow.svg
@@ -93,7 +94,7 @@ There are multiple possible states:
 | `KILLING` | A command was issued that asked for the Execution or task run to be killed. The system is in the process of killing the associated tasks.                                                                                                 |
 | `KILLED` | An Execution or task run was killed (upon request), and no more tasks will run.                                                                                                                                                           |
 | `RESTARTED` | Transitional status equivalent to `CREATED`for a flow that was executed, failed, and then restarted.                                                                                                                                      |
-| `CANCELLED` | An Execution or task run has been aborted because it has reached its defined [concurrency limit](../14.concurrency/index.md). The limit was set to the `CANCEL` behavior.                                                                 |
+| `CANCELLED` | An Execution or task run has been aborted because it has reached the defined [concurrency limit](../14.concurrency/index.md) or exceeded the [SLA](../18.sla/index.md) . The behavior was set to the `CANCEL`.                                                                 |
 | `QUEUED` | An Execution or task run has been put on hold because it has reached its defined concurrency limit. The limit was set to the `QUEUE` behavior.                                                                                            |
 | `RETRYING` | The Execution or task run is currently being [retried](../12.retries/index.md).                                                                                                                                                           |
 | `RETRIED` | An Execution or task run exhibited unintended behavior, stopped, and created a new execution as defined by its [flow-level retry policy](../12.retries/index.md#flow-level-retries). The policy was set to the `CREATE_NEW_EXECUTION` behavior. |
@@ -334,7 +335,7 @@ You will see output similar to the following:
 
 You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
 
-Keep in mind that you need to configure the URL of your Kestra instance within your [configuration](../../configuration/index.md) file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
+Keep in mind that you need to configure the URL of your Kestra instance within your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
 
 ```yaml
 kestra:
@@ -386,6 +387,20 @@ Finally, click the **Send** button to trigger the flow execution. You should get
 - Use the **webhook trigger** when you want to create new executions based on some **event** happening in an **external application**, such as a GitHub event (_e.g. a Pull Request is merged_) or a new record in a SaaS application, and you want to send the event metadata (header and body) to the flow to act on it.
 - Use an **API call** when you only need to pass **typed inputs** and do not need to send an arbitrary payload.
 :::
+
+---
+
+## Execute a flow via kestractl
+
+You can trigger and inspect executions from the command line using [kestractl](../../kestra-cli/kestractl/index.md).
+
+```bash
+# Run a flow and wait for completion
+kestractl executions run prod nightly-refresh --wait
+
+# Run a flow and get the result as JSON
+kestractl executions run prod nightly-refresh --wait --output json
+```
 
 ---
 

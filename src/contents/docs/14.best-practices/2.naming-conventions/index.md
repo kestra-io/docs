@@ -1,5 +1,6 @@
 ---
-title: Naming Conventions
+title: "Naming Conventions in Kestra: Flows and Namespaces"
+h1: Name Namespaces, Flows, and Tasks for a Scalable Hierarchy
 sidebarTitle: Naming Conventions
 icon: /src/contents/docs/icons/best-practices.svg
 description: Learn the best practices for naming namespaces, flows, tasks, and other identifiers in Kestra for a clean and scalable hierarchy.
@@ -30,7 +31,7 @@ When synced with Git, this nested structure maps directly to nested directories 
 
 ## Example namespace structure
 
-```text
+```plaintext
 mycompany
 ├── mycompany.marketing
 │   ├── mycompany.marketing.projectA

@@ -1,18 +1,5 @@
-import { $fetch, $fetchNoCache } from "./fetch"
+import { $fetch } from "./fetch"
 import { ASHBY_APIKEY } from "astro:env/server"
-
-export const countryCodeToEmoji = (countryCode: string): string | null => {
-    if (countryCode === undefined) {
-        return null
-    }
-
-    let codePoints = countryCode
-        .toUpperCase()
-        .split("")
-        .map((char) => 127397 + (char as any).charCodeAt())
-    return String.fromCodePoint(...codePoints)
-}
-
 
 const headers = {
     accept: "application/json",
@@ -20,44 +7,8 @@ const headers = {
     authorization: `Basic ${ASHBY_APIKEY}`,
 }
 
-export const mapJob = (job: DoverJob): Job => {
-    return {
-        id: job.id,
-        title: job.title,
-        locations: job.locations
-            ? job.locations.map((l) => {
-                  if (l.location_option.display_name === "International") {
-                      return {
-                          code: "INTL",
-                          name: "World",
-                          emoji: "🌍",
-                      }
-                  }
-
-                  if (l.location_option.display_name === "Europe") {
-                      return {
-                          code: "EU",
-                          name: "Europe",
-                          emoji: "🇪🇺",
-                      }
-                  }
-
-                  return {
-                      code: l.location_option.country ?? "UNKNOWN",
-                      name: l.location_option.display_name,
-                      emoji: countryCodeToEmoji(l.location_option.country) ?? "🌐",
-                  }
-              })
-            : [],
-        remote: job.locations
-            ? job.locations.filter((l) => l.location_type === "REMOTE").length > 0
-            : false,
-        link: `https://app.dover.com/apply/Kestra%20Technologies/${job.id}`,
-    }
-}
-
 export const fetchDepartment = async (): Promise<Department[]> => {
-    return $fetchNoCache<{ results: Department[] }>(
+    return $fetch<{ results: Department[] }>(
         `https://api.ashbyhq.com/department.list`,
         {
             method: "POST",
@@ -67,9 +18,12 @@ export const fetchDepartment = async (): Promise<Department[]> => {
 }
 
 export const fetchJobs = async (): Promise<AshbyJob[]> => {
-    const departments = await fetchDepartment();
+    if (!ASHBY_APIKEY) {
+        return import("./mock-jobs.json").then((module) => module.default)
+    }
+    const departments = await fetchDepartment()
 
-    const jobsList = await $fetchNoCache<{ results: AshbyJob[] }>(
+    const jobsList = await $fetch<{ results: AshbyJob[] }>(
         `https://api.ashbyhq.com/job.list`,
         {
             method: "POST",
@@ -84,14 +38,31 @@ export const fetchJobs = async (): Promise<AshbyJob[]> => {
     )
 
     return jobsList.results
-        .map(value => {
-            return {...value, department: departments.find(d => d.id === value.departmentId)}
+        .map((value) => {
+            return {
+                ...value,
+                department: departments.find(
+                    (d) => d.id === value.departmentId,
+                ),
+            }
+        })
+        .sort((a, b) => {
+            return parseInt(a.customRequisitionId || "999") >
+                parseInt(b.customRequisitionId || "999")
+                ? 1
+                : -1
         })
 }
 
-
-export const fetchJob = async (jobPostingId: string): Promise<AshbyJobPosting> => {
-    const job = await $fetchNoCache<{ results: AshbyJobPosting }>(
+export const fetchJob = async (
+    jobPostingId: string,
+): Promise<AshbyJobPosting> => {
+    if (!ASHBY_APIKEY) {
+        return import("./mock-job-posting.json").then(
+            (module) => module.default,
+        )
+    }
+    const job = await $fetch<{ results: AshbyJobPosting }>(
         `https://api.ashbyhq.com/jobPosting.info`,
         {
             method: "POST",
@@ -104,30 +75,6 @@ export const fetchJob = async (jobPostingId: string): Promise<AshbyJobPosting> =
     )
 
     return job.results
-}
-
-interface DoverJob {
-    id: string
-    title: string
-    locations?: Array<{
-        location_type: string
-        location_option: {
-            country: string
-            display_name: string
-        }
-    }>
-}
-
-interface Job {
-    id: string
-    title: string
-    locations: Array<{
-        code: string
-        name: string
-        emoji: string
-    }>
-    remote: boolean
-    link: string
 }
 
 interface PostalAddress {
@@ -287,6 +234,7 @@ interface AshbyJobPosting {
     teamName: string
     teamNameHierarchy: string[]
     jobId: string
+    locationName: string
     locationIds: JobLocationIds
     linkedData: JobLinkedData
     publishedDate: string
@@ -314,6 +262,7 @@ interface AshbyJob {
     employmentType: string
     locationId: string
     jobPostingIds: string[]
+    customRequisitionId: string | undefined
     departmentId: string
     department: Department | undefined
     location: Location
@@ -325,4 +274,4 @@ interface Department {
     externalName: string
 }
 
-export type { Job, DoverJob, AshbyJob, AshbyJobPosting }
+export type { AshbyJob, AshbyJobPosting }

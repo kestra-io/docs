@@ -1,7 +1,8 @@
 ---
-title: Orchestrate Python Workflows
+title: Orchestrate Python Workflows in Kestra
+h1: Automate, Schedule & Scale Python Workflows Declaratively
 sidebarTitle: Python Workflows
-description: Automate, schedule and scale Python workflows in a declarative way
+description: Automate, schedule, and scale Python workflows declaratively with Kestra. Run scripts in Docker containers with full dependency management and observability.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 

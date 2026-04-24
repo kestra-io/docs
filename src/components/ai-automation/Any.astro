@@ -1,0 +1,385 @@
+---
+import { Icon } from "astro-icon/components"
+import KestraMonogram from "~/components/ai-automation/assets/monogram.svg"
+
+import OpenAI from "~/components/ai-automation/assets/Open-AI.svg"
+import Claude from "~/components/ai-automation/assets/Claude.svg"
+import Gemini from "~/components/ai-automation/assets/Gemini (Google AI).svg"
+import Ollama from "~/components/ai-automation/assets/Ollama.svg"
+
+const ICONS: Record<string, any> = {
+    OpenAI: OpenAI,
+    Claude: Claude,
+    Gemini: Gemini,
+    Ollama: Ollama,
+}
+
+const WORKFLOW_STEPS = [
+    {
+        id: "trigger",
+        label: "TRIGGER",
+        items: ["Schedule", "Event", "Webhook", "New file"],
+        hasArrow: true,
+    },
+    {
+        id: "ingest",
+        label: "INGEST",
+        items: ["API", "S3 / database", "Web scrape", "Message queue"],
+        hasArrow: true,
+    },
+    {
+        id: "process",
+        label: "PROCESS",
+        items: ["OpenAI", "Claude", "Gemini", "Ollama"],
+        hasArrow: true,
+    },
+    {
+        id: "act",
+        label: "ACT",
+        items: ["Slack", "Vector DB", "Database", "HTTP / File"],
+        hasArrow: false,
+    },
+]
+---
+
+<section class="workflow-any">
+    <div class="container-xxl">
+        <h2 class="text-center">
+            <span class="highlight">One workflow.</span>
+            Any data source. Any LLM. Any output.
+        </h2>
+
+        <div class="any-grid">
+            <div class="steps-list">
+                {
+                    WORKFLOW_STEPS.map((step, index) => (
+                        <div class={`step-block step-${index}`}>
+                            <div class="step-content">
+                                <span class={`step-label label-${step.id}`}>
+                                    {step.label}
+                                </span>
+                                <div class={`step-card card-${step.id}`}>
+                                    <div class="items-list">
+                                        {step.items.map((item) => {
+                                            const Icon = ICONS[item];
+                                            return (
+                                                <div class="item-tag">
+                                                    {Icon && <Icon />}
+                                                    {item}
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {index < 3 && (
+                                <div class={`workflow-arrow arrow-${index}`}>
+                                    <div class="line" />
+                                    <Icon
+                                        name="mdi:play"
+                                        class="head"
+                                        width={16}
+                                        height={16}
+                                    />
+                                    <div class="icon-box">
+                                        <KestraMonogram />
+                                        <Icon name="mdi:cog" class="cog" />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+        <h5 class="text-center mt-4">
+            Each step is a declarative YAML task. Swap any piece without
+            touching the rest.
+        </h5>
+    </div>
+</section>
+
+<style lang="scss">
+    $steps: (
+        "trigger": (
+            "bg": #e0ffd3,
+            "border": #76a84f,
+            "label": #007336
+        ),
+        "ingest": (
+            "bg": #cbe2ff,
+            "border": #6b62f2,
+            "label": #0069c6
+        ),
+        "process": (
+            "bg": #e3cffe,
+            "border": #bb62f2,
+            "label": #822bfd
+        ),
+        "act": (
+            "bg": #ffeed3,
+            "border": #a84f4f,
+            "label": #e5692f
+        )
+    );
+
+    .workflow-any {
+        background: var(--ks-background-secondary);
+        border-bottom: 1px solid var(--ks-border-secondary);
+        padding: 5.5rem 1rem;
+
+        .container-xxl {
+            margin: 0 auto;
+        }
+
+        h2 {
+            margin-bottom: 2rem;
+            color: var(--ks-content-primary);
+
+            .highlight {
+                color: var(--ks-border-active);
+            }
+        }
+
+        .any-grid {
+            width: 100%;
+            padding: 2rem 1rem;
+            background-color: var(--ks-background-purple-light);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23631BFF' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 10px;
+        }
+
+        .steps-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+            @include media-breakpoint-down(xl) {
+                display: grid;
+                grid-template-columns: repeat(2, auto);
+                row-gap: 80px;
+                column-gap: 40px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+                row-gap: 60px;
+                column-gap: 0;
+            }
+        }
+
+        .step-block {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 1;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                max-width: 320px;
+                margin-top: 0.5rem;
+            }
+        }
+
+        .step-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 230px;
+            height: 285px;
+            padding: 16px;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(lg) {
+                width: 210px;
+                height: 270px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                height: auto;
+                padding: 24px 16px;
+            }
+
+            @each $id, $colors in $steps {
+                &.card-#{$id} {
+                    background: map-get($colors, "bg");
+                    border: 1px solid map-get($colors, "border");
+                }
+            }
+        }
+
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            .item-tag {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                width: calc(100% - 4px);
+                margin: 0 4px 4px 0;
+                padding: 11px;
+                background: #ffffff;
+                border: 1px solid #333638;
+                border-radius: 4px;
+                color: #333638;
+                font-family: $font-family-monospace;
+                font-size: $font-size-xs;
+                font-weight: 700;
+                box-shadow: 4px 4px 0 0 #EBEBEB, 4px 4px 0 1px #333638CC;
+
+                :global(svg) {
+                    width: 25px;
+                    height: 25px;
+                    flex-shrink: 0;
+                }
+            }
+        }
+
+        .step-label {
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            text-transform: uppercase;
+
+            @each $id, $colors in $steps {
+                &.label-#{$id} {
+                    color: map-get($colors, "label");
+                }
+            }
+        }
+
+        .workflow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+
+            .line {
+                background: #000000;
+
+                html.dark & {
+                    background: #ffffff;
+                }
+            }
+
+            .head {
+                position: absolute;
+                color: #000000;
+
+                html.dark & {
+                    color: #ffffff;
+                }
+            }
+
+            .icon-box {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 28px;
+                height: 28px;
+                z-index: 2;
+
+                :global(svg:not(.cog)) {
+                    width: 28px;
+                    height: 28px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    border-radius: 4px;
+                }
+
+                .cog {
+                    position: absolute;
+                    top: -14px;
+                    right: -14px;
+                    color: rgba(112, 10, 215, 0.3);
+
+                    @include media-breakpoint-down(sm) {
+                        top: -6px;
+                        right: -16px;
+                    }
+
+                    html.dark & {
+                        color: rgba(202, 163, 241, 0.7);
+                    }
+                }
+            }
+
+            @include media-breakpoint-up(xl) {
+                width: 105px;
+
+                .line {
+                    width: 100%;
+                    height: 1.5px;
+                }
+
+                .head {
+                    right: -4px;
+                    top: 45%;
+                    transform: translateY(-50%);
+                }
+            }
+
+            @include media-breakpoint-between(sm, xl) {
+                &.arrow-0,
+                &.arrow-1 {
+                    position: absolute;
+                    top: calc(100% + 4px);
+                    left: 50%;
+                    height: 72px;
+                    width: 1.5px;
+                    transform: translateX(-50%);
+
+                    .line {
+                        width: 1.5px;
+                        height: 100%;
+                    }
+
+                    .head {
+                        bottom: -5px;
+                        left: 50%;
+                        transform: translateX(-50%) rotate(90deg);
+                    }
+                }
+
+                &.arrow-2 {
+                    display: none;
+                }
+            }
+
+            @include media-breakpoint-down(sm) {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 50%;
+                height: 58px;
+                width: 1.5px;
+                transform: translateX(-50%);
+
+                .line {
+                    width: 1.5px;
+                    height: 100%;
+                }
+
+                .head {
+                    bottom: -6px;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(90deg);
+                }
+            }
+        }
+    }
+</style>

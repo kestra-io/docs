@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra on GCP GKE – CloudSQL and Cloud Storage
+title: "Deploy on GCP GKE: CloudSQL and Cloud Storage"
+h1: GKE Deployment with CloudSQL and Google Cloud Storage
 sidebarTitle: Kubernetes on GCP GKE with CloudSQL and Cloud Storage
 icon: /src/contents/docs/icons/gcp-gke.svg
 description: Install Kestra on Google Kubernetes Engine (GKE) using CloudSQL and Google Cloud Storage for a robust GCP deployment.

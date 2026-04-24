@@ -1,5 +1,6 @@
 ---
-title: Configure External Secrets Manager in Kestra Enterprise
+title: "External Secrets Manager in Kestra: AWS, Azure, GCP"
+h1: "Integrate External Secret Managers: Vault, AWS, Azure, GCP"
 description: Secure sensitive data in Kestra with External Secrets Managers. Integrate with AWS, Azure, Google Cloud, Vault, and more for robust secret management.
 sidebarTitle: Secrets Manager
 icon: /src/contents/docs/icons/admin.svg
@@ -96,7 +97,7 @@ kestra:
 
 For Kestra instance deployed using the Kafka/Elastic backend, you can use the same configuration.
 
-Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../../configuration/index.md#encryption).
+Your secret key should be encrypted. You can find an example key in our [Security and Secrets configuration documentation](../../../configuration/05.security-and-secrets/index.md).
 
 ## Google Secret Manager configuration
 
@@ -130,9 +131,10 @@ When configuring the secret manager using the UI, either under Namespace or Tena
 
 ![GCP Secret Manager Configuration via UI](./gcp-secret-configuration.png)
 
-## Vault configuration
+## HashiCorp Vault configuration
 
-Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you are considering alternative Vault secrets engines, please note the following:
+Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you are considering alternative HashiCorp Vault secrets engines, please note the following:
+
 - The [Vault's database secrets engine](https://developer.hashicorp.com/vault/docs/secrets/databases), often referred to as "dynamic secrets", is not supported as we need long-term secret storage.
 - The [Vault Secrets Operator on Kubernetes](https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator) creates a Kubernetes secret which is compatible with Kestra with some additional steps. If you are interested about this option, [reach out to us](/demo) and we can advise how you can set this up.
 
@@ -226,7 +228,7 @@ And any secret that you create from Kestra would be placed under the following s
 
 Kestra integrates with [CyberArk](https://www.cyberark.com/products/secrets-management/) as a secrets backend. CyberArk stores your secrets externally, and Kestra workers retrieve them at runtime and keep them only in memory.
 
-To use CyberArk, configure the CyberArk endpoint and credentials. This configuration can be set globally in your [Kestra configuration file](../../../configuration/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
+To use CyberArk, configure the CyberArk endpoint and credentials. This configuration can be set globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
 kestra:
@@ -248,7 +250,7 @@ kestra:
 
 Kestra integrates with [Doppler](https://api.doppler.com) as a secrets backend. Doppler securely stores your secrets and exposes them through its API, which Kestra workers access at runtime. Secrets are only kept in memory by Kestra and are never persisted internally.
 
-To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your [Kestra configuration file](../../../configuration/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
+To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
 secret:
@@ -271,7 +273,7 @@ secret:
 
 Kestra integrates with 1Password as a secrets backend. Under the hood, it relies on the [1Password Connect API](https://developer.1password.com/docs/connect/api-reference/) to read and manage secrets securely. Workers access secrets at runtime and store them only in memory.
 
-To use 1Password, you need a running 1Password Connect server and a Connect token with access to the target vault. Then, add the following configuration either globally in your [Kestra configuration file](../../../configuration/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
+To use 1Password, you need a running 1Password Connect server and a Connect token with access to the target vault. Then, add the following configuration either globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
 kestra:
@@ -311,6 +313,31 @@ kestra:
 * **runAs**: User context to run API calls as (e.g. domain\\username).
 * **folderId**: Secrets Safe folder ID where Kestra secrets are stored.
 
+## Delinea Secret Server Configuration
+
+Kestra integrates with [Delinea Secret Server](https://delinea.com/products/secret-server) as an external secrets backend. Secrets are stored securely in Delinea Secret Server, and Kestra workers retrieve them at runtime and keep them only in memory.
+
+```yaml
+kestra:
+  secret:
+    type: delinea
+    delinea:
+      address: https://your-delinea-instance.secretservercloud.com
+      username: YOUR_USERNAME
+      password: YOUR_PASSWORD
+      folderId: YOUR_FOLDER_ID
+      secretTemplateId: YOUR_TEMPLATE_ID
+```
+
+**Configuration properties:**
+
+  - **address**: The base URL of your Delinea Secret Server instance.
+  - **username**: Username used to authenticate to Delinea Secret Server.
+  - **password**: Password used to authenticate to Delinea Secret Server.
+  - **domain**: Optional. Active Directory domain for on-premise deployments using domain accounts.
+  - **folderId**: The folder ID in Delinea Secret Server where Kestra secrets are stored. Required for write operations.
+  - **secretTemplateId**: The secret template ID used when creating new secrets. Required for write operations.
+
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
 Kestra also supports internal secret backend. For the JDBC backend (H2, PostgreSQL, or MySQL), the following configuration allows you to set secret backend:
@@ -323,7 +350,7 @@ kestra:
       secret: <your-secret-key>
 ```
 
-Your secret key should be encrypted. You can find an example key in our [encryption configuration documentation](../../../configuration/index.md#encryption).
+Your secret key should be encrypted. You can find an example key in our [Security and Secrets configuration documentation](../../../configuration/05.security-and-secrets/index.md).
 
 ## Default tags
 

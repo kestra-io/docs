@@ -5,6 +5,7 @@ date: 2025-06-17T17:00:00
 category: News & Product Updates
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: bpimpaud
 image: ./main.jpg
 ---
@@ -167,7 +168,7 @@ Kestra 0.23 introduces the ability to store flow outputs in the Internal Storage
 
 By default, all flow outputs are stored in the shared metadata database. With this new configuration, you can isolate outputs for each tenant or namespace, making sure that sensitive data is not accessible outside its intended scope.
 
-To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your [Kestra configuration](../../docs/configuration/index.md) file:
+To enable output storage in Internal Storage for a specific tenant or namespace, add the following to your [Kestra configuration](../../docs/configuration/index.mdx) file:
 
 ```yaml
 kestra:

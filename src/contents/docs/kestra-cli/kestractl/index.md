@@ -1,14 +1,15 @@
 ---
-title: kestractl
+title: "kestractl: Kestra CLI for Flows and Executions"
+h1: Manage Flows, Executions, and Namespaces with kestractl
 sidebarTitle: kestractl
 icon: /src/contents/docs/icons/bash.svg
 editions: ["OSS","EE"]
-description: CLI for managing Kestra flows, executions, namespaces, and namespace files.
+description: Manage Kestra flows, executions, namespaces, and files from the command line. The kestractl CLI provides full control over your instance without a UI.
 ---
 
-Use `kestractl` to interact with the Kestra host API for flows, executions, namespaces, and namespace files.
+Use `kestractl` to interact with the Kestra host API for flows, executions, namespaces, namespace files, and key-value pairs.
 
-For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](./index.mdx).
+For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](../kestra-server/index.mdx).
 
 ## Installation
 
@@ -73,6 +74,7 @@ kestractl flows list my.namespace --output json
 - `executions`: run and inspect executions.
 - `namespaces`: list and filter namespaces.
 - `nsfiles`: list, get, upload, and delete namespace files.
+- `kv`: list, set, update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
 

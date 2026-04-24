@@ -1,7 +1,6 @@
 $white: #fff;
 $black: #000;
 
-
 $font-family-sans-serif: var(--font-family-mona-sans);
 $font-family-monospace: var(--font-family-jetbrains-mono);
 
@@ -19,7 +18,7 @@ $h1-font-size: $font-size-4xl;
 $h2-font-size: $font-size-3xl;
 $h3-font-size: $font-size-2xl;
 $h4-font-size: $font-size-xl;
-$h5-font-size: calc($font-size-lg - 0.25rem);
+$h5-font-size: $font-size-lg;
 $h6-font-size: $font-size-md;
 
 $link-decoration: none;

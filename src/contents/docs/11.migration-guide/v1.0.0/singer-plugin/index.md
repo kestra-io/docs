@@ -1,5 +1,7 @@
 ---
-title: Singer Tap Plugin Removal
+title: "Singer Tap Plugin Removed: Migrate to Airbyte or dlt"
+h1: Migrating Away from the Removed Singer Tap Plugin
+sidebarTitle: Singer Plugin Removed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -9,7 +11,7 @@ description: Guide to migrating from the removed Singer tap plugin to supported 
 
 ## Singer Tap Plugin Removal
 
-Singer support is being deprecated in Kestra 0.24 and fully removed in Kestra 1.0. This guide walks you through migrating existing Singer pipelines to supported alternatives in Kestra, such as [Airbyte](/plugin/plugin-airbyte), [dlt](/blueprints?page=1&size=24&q=dlt), and [CloudQuery](/plugin/plugin-cloudquery).
+Singer support is being deprecated in Kestra 0.24 and fully removed in Kestra 1.0. This guide walks you through migrating existing Singer pipelines to supported alternatives in Kestra, such as [Airbyte](/plugins/plugin-airbyte), [dlt](/blueprints?page=1&size=24&q=dlt), and [CloudQuery](/plugins/plugin-cloudquery).
 
 ## Why is Singer support being removed?
 

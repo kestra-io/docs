@@ -1,29 +1,33 @@
 ---
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import Link from "~/components/common/Link.astro"
-import Carousel from "~/components/common/Carousel.vue"
+import Carousel from "~/components/common/Carousel.astro"
 
 interface Props {
     title: string
+    subtitle?: string
     blueprints: any[]
-    tags: any[]
+    tags?: any[]
     link: {
         href: string
         text: string
     }
 }
 
-const { title, blueprints, tags, link } = Astro.props
+const { title, subtitle, blueprints, tags, link } = Astro.props
 
 const displayBlueprints = blueprints?.slice(0, 20) ?? []
 ---
 
 <section class="blueprints-carousel">
     <div class="container">
-        <h2 data-usal="fade-u delay-0 duration-400 ease-out" set:html={title} />
+        <div class="header text-center">
+            <h2 data-usal="fade-r" set:html={title} />
+            <p data-usal="fade-l" set:html={subtitle} />
+        </div>
 
         <div class="blueprints-container d-md-none">
-            <Carousel client:load>
+            <Carousel>
                 {
                     displayBlueprints.map((blueprint) => (
                         <div class="card-wrapper">
@@ -31,7 +35,6 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
                                 blueprint={blueprint}
                                 tags={tags}
                                 href={`/blueprints/${blueprint.id}`}
-                                client:visible
                             />
                         </div>
                     ))
@@ -51,7 +54,6 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
                                 blueprint={blueprint}
                                 tags={tags}
                                 href={`/blueprints/${blueprint.id}`}
-                                client:visible
                             />
                         </div>
                     ))
@@ -72,6 +74,7 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
     .blueprints-carousel {
         width: 100%;
         padding: 3rem 0;
+        overflow: hidden;
         background-image: url("~/assets/landing/infrastructure/grid.svg");
         background-color: var(--ks-background-tertiary);
 
@@ -94,8 +97,15 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
                 max-width: 768px;
             }
 
+            .header {
+                width: 100%;
+            }
+
             h2 {
-                text-align: center;
+                margin-bottom: 1rem;
+                @include media-breakpoint-up(lg) {
+                    text-align: center;
+                }
                 :global(.gradient) {
                     color: var(--ks-content-color-highlight);
                 }
@@ -141,7 +151,8 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
             }
 
             .row {
-                width: 100%;
+                margin-right: -8px;
+                margin-left: -8px;
 
                 > * {
                     padding-right: 8px;

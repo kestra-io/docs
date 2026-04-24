@@ -1,5 +1,7 @@
 ---
 title: Build SecOps Workflows with Kestra
+h1: Automate Security Operations Workflows in Kestra
+description: Automate security operations with Kestra. Build SecOps workflows for incident response, vulnerability scanning, and compliance automation.
 icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:
@@ -35,7 +37,7 @@ This how-to shows how to operationalize SecOps benchmarks with Kestra. You will 
 
 And they can be stored by following this hierarchy:
 
-```text
+```plaintext
 1
 ├── 1.1
 │   ├── 1.1.1
@@ -65,7 +67,7 @@ Repeat this process for every control you intend to enforce. The walkthrough bel
 
 Design a flow that evaluates each control, remediates if required, and proceeds to the next control. At a high level the logic looks like this:
 
-```text
+```plaintext
 Start → Execute Control 1.6.4 → Assess Compliance
 → If compliant → Move to next control
 → If not compliant → Remediate → Re-assess → Next control

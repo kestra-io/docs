@@ -1,150 +1,1643 @@
 ---
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+
 import Layout from "~/components/layout.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Cards from "~/components/use-cases/Cards.astro"
-import BusinessStats from "~/components/layout/BusinessStats.astro"
-import Unlock from "~/components/use-cases/Unlock.vue"
-import HeaderBox from "~/components/common/HeaderBox.vue"
-import SophiaGenetics from "~/assets/companies/sophia-genetics.svg?raw"
-import RefreshAuto from "vue-material-design-icons/RefreshAuto.vue"
-import CommentQuoteOutline from "vue-material-design-icons/CommentQuoteOutline.vue"
-import ChartBellCurve from "vue-material-design-icons/ChartBellCurve.vue"
-import FileChartOutline from "vue-material-design-icons/FileChartOutline.vue"
-import ImageFilterCenterFocus from "vue-material-design-icons/ImageFilterCenterFocus.vue"
-import ArrowUp from "~/components/demo/assets/arrow-up-thin.svg?url"
+import Link from "~/components/common/Link.astro"
+import Faq from "~/components/common/Faq.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import Snippets from "~/components/common/Snippets.vue"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import GoFurther from "~/components/get-started/GoFurther.astro"
 
-const TITLE = "Kestra for Healthcare"
-const DESCRIPTION =
-    "Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
+import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
+import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
+import FileDocumentCheckOutline from "vue-material-design-icons/FileDocumentCheckOutline.vue"
+import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
+import Git from "vue-material-design-icons/Git.vue"
 
-const COMPANY_INFO = {
-    personName: "Yohann Nédélec",
-    personRole: "Tech Lead",
-    logo: SophiaGenetics,
-    logoAlt: "Sophia Genetics",
-}
+import ApotekHjartatLogo from "~/contents/customer-stories/29/logo.svg?raw"
+import ApotekHjartatLogoImg from "~/contents/customer-stories/29/logo.svg"
+import SophiaGeneticsLogoImg from "~/assets/use-cases/healthcare/SophiaGenetics.svg"
+import BrainlabLogoImg from "~/assets/landing/infrastructure/companies/brainlab.svg"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
-const UNLOCK_CONTENT = {
-    leftContent: [
-        {
-            title: "Accelerate Data Processing",
-            description:
-                "Kestra facilitates seamless data sharing and workflow coordination among bioinformaticians, data scientists, and IT teams.",
-        },
-        {
-            title: "Improve Data Accuracy and Reliability",
-            description:
-                "Kestra prioritizes data security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations.",
-        },
-    ],
-    rightContent: [
-        {
-            title: "Enhance Collaboration",
-            description:
-                "Whether dealing with genomic sequences, patient records, or research data, Kestra ensures that your data is processed swiftly and accurately.",
-        },
-        {
-            title: "Secure and Compliant Data Handling",
-            description:
-                "Manual data processing is prone to errors and inconsistencies. Kestra’s automation capabilities minimize these risks by ensuring that data is handled consistently and accurately.",
-        },
-    ],
-}
+const HERO_TAGS = [
+    { label: "HIPAA-ready", icon: "mdi:shield-check-outline" },
+    { label: "PHI stays on-prem", icon: "mdi:shield-lock-outline" },
+    { label: "HL7 & FHIR native", icon: "mdi:lan-connect" },
+    { label: "Epic, Cerner, Meditech", icon: "mdi:hospital-building" },
+    { label: "Clinical approval gates", icon: "mdi:account-supervisor-outline" },
+    { label: "Replayable encounters", icon: "mdi:history" },
+]
 
-const CHALLENGES_TITLE = `<span class="highlight">Key Benefits</span> of Using Kestra for<br/> Healthcare Workflows`
+const title = "Kestra for Healthcare & Life Sciences"
+const description =
+    "Kestra replaces the fax, portal, and glue-code tax on healthcare operations. Automate prior authorization, claims, denials, HL7 and FHIR interoperability, revenue cycle, and research workflows — with PHI inside your perimeter and audit evidence any compliance team can sign off on."
 
-const CARDS_DATA = [
+const FLOW_STAGES = [
     {
-        icon: RefreshAuto,
-        cardInfo: {
-            title: "Healthcare Data Management",
-            description:
-                "Automates the integration and management of patient data from various sources, ensuring that records are always updated and accurate.",
-        },
+        id: "trigger",
+        label: "TRIGGER",
+        items: [
+            "HL7 / FHIR event",
+            "API / webhook / portal",
+            "Referral / intake / FNOL-style",
+            "EHR change event",
+            "File drop / partner feed",
+            "Schedule / batch cutoff",
+        ],
     },
     {
-        icon: CommentQuoteOutline,
-        cardInfo: {
-            title: "Genomic Data Processing",
-            description:
-                "Process large volumes of genomic data quickly and accurately. Kestra automates sequencing workflows and data analysis, significantly cutting down processing times and minimizing errors.",
-        },
+        id: "ingest",
+        label: "INGEST",
+        items: [
+            "Epic / Cerner / Meditech",
+            "Payer / claims / policy admin",
+            "Lab / imaging / pharmacy systems",
+            "Snowflake / BigQuery / lakehouse",
+            "S3 / ADLS / GCS / SFTP / HL7",
+            "CRM / case / contact center",
+        ],
     },
     {
-        icon: ChartBellCurve,
-        cardInfo: {
-            title: "Regulatory Compliance",
-            description:
-                "Automate the generation of compliance reports, access logs, and data usage reports. Ensure compliance with regulatory standards reducing the risk of breaches and improving data governance.",
-        },
+        id: "process",
+        label: "PROCESS",
+        items: [
+            "Eligibility & clinical rules",
+            "dbt / SQL / Python / R / Spark",
+            "OCR / extraction / LLM review",
+            "Exception handling",
+            "Human approval gates",
+            "Vault / CyberArk / PHI controls",
+        ],
     },
     {
-        icon: FileChartOutline,
-        cardInfo: {
-            title: "Predictive Analytics",
-            description:
-                "Integrates your workflows with machine learning models and analytics platforms to utilize patient data for predictive analytics.",
-        },
-    },
-    {
-        icon: ImageFilterCenterFocus,
-        cardInfo: {
-            title: "Streamlined Data Management",
-            description:
-                "Centralize your fragmented data workflow into a unified control plane, thereby simplifying orchestration and improving efficiency.",
-        },
+        id: "act",
+        label: "ACT",
+        items: [
+            "Update EHR / clinical systems",
+            "Create case / referral / task",
+            "Submit claim / prior auth decision",
+            "Generate report / audit package",
+            "Notify care team / patient / payer",
+            "Update downstream platforms",
+        ],
     },
 ]
+
+const quotes = [
+    {
+        quote:
+            "Stability was the turning point. With Kestra, our most critical flows finally run the way they should.",
+        author: "Infrastructure Lead, Apotek Hjärtat",
+        smallLogoSvg: optimizeSvgIcon(ApotekHjartatLogo, "apotek-hjartat-quote-logo"),
+        kpis: [
+            { value: "400+", name: "pharmacies rely on Kestra" },
+            { value: "50+", name: "critical workflows modernized" },
+            { value: "30+ yrs", name: "of legacy platform, replaced" },
+        ],
+        storyLink: "/use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment",
+    },
+]
+
+const WORKLOAD_CATEGORIES = [
+    {
+        name: "Intake, Referrals & Authorizations",
+        items: [
+            {
+                icon: "mdi:clipboard-pulse-outline",
+                title: "Prior Authorization Automation",
+                description: "Collect eligibility, run medical-necessity checks, route to clinical review, and submit decisions back to payers. Replace fax-and-portal ping-pong with one declarative, audit-ready flow.",
+            },
+            {
+                icon: "mdi:share-variant-outline",
+                title: "Referrals & Care Coordination",
+                description: "Route referrals across provider networks, validate coverage, schedule appointments, and sync status updates with EHRs, CRMs, and patient portals.",
+            },
+            {
+                icon: "mdi:account-plus-outline",
+                title: "Patient, Member & Provider Onboarding",
+                description: "Document intake, eligibility checks, credentialing, and downstream enrollment updates across payer, provider, and partner systems with PHI-safe handling.",
+            },
+        ],
+    },
+    {
+        name: "Claims, Revenue Cycle & Payments",
+        items: [
+            {
+                icon: "mdi:file-document-check-outline",
+                title: "Claims Processing & Adjudication Support",
+                description: "Validate encounters, scrub against payer rules, trigger resubmissions, and sync adjudication status. Every decision replayable, every exception auditable.",
+            },
+            {
+                icon: "mdi:alert-circle-outline",
+                title: "Denials, Appeals & Exception Handling",
+                description: "Route denials to the right queue, assemble appeal packages from EHR and clinical evidence, and close the loop with payers. Track time-to-resolution end to end.",
+            },
+            {
+                icon: "mdi:cash-sync",
+                title: "Revenue Cycle Automation",
+                description: "Eligibility, charge capture, billing, collections, and remittance reconciliation. Orchestrate across Epic, payer APIs, clearinghouses, and finance systems.",
+            },
+        ],
+    },
+    {
+        name: "Interoperability, Data & Research",
+        items: [
+            {
+                icon: "mdi:lan-connect",
+                title: "HL7 & FHIR Interoperability",
+                description: "Receive HL7 v2 feeds, publish FHIR resources, and translate between legacy and modern formats. Mirth, Rhapsody, or native Kestra tasks, all replayable.",
+            },
+            {
+                icon: "mdi:database-sync-outline",
+                title: "Clinical & Operational Data Pipelines",
+                description: "Move and transform data across EHRs, data warehouses, and lakehouses for quality, population health, and operational dashboards. dbt, SQL, Python, Spark.",
+            },
+            {
+                icon: "mdi:dna",
+                title: "Genomic & Research Workflows",
+                description: "Parallelize sequencing pipelines, manage long-running jobs, and coordinate researcher, scientist, and IT tasks with versioned, reproducible flows.",
+            },
+        ],
+    },
+    {
+        name: "Compliance, AI & Platform Operations",
+        items: [
+            {
+                icon: "mdi:shield-check-outline",
+                title: "HIPAA, HITRUST & Audit Controls",
+                description: "Immutable execution, namespace-scoped RBAC, SIEM-ready audit logs, and four-eyes approval gates on PHI-touching flows. Governance, not paperwork.",
+            },
+            {
+                icon: "mdi:brain",
+                title: "AI-Assisted Document & Decision Support",
+                description: "Orchestrate OCR, LLM extraction, and clinical rule checks on clinical notes, faxes, and attachments. Keep humans in the loop for any PHI decision.",
+            },
+            {
+                icon: "mdi:security-network",
+                title: "Contact Center, Service & Platform Automation",
+                description: "Automate case routing, ticket lifecycle, certificate management, and incident response across ServiceNow, Salesforce Health Cloud, and internal platforms.",
+            },
+        ],
+    },
+]
+
+const ENTERPRISE_FEATURES = [
+    {
+        icon: ShieldCheckOutline,
+        title: "Air-Gapped & PHI-Safe Deployment",
+        description: "Self-hosted, VPC, or fully air-gapped. HIPAA-ready. Segment control plane and workers across restricted zones so PHI never leaves your perimeter.",
+    },
+    {
+        icon: Git,
+        title: "Immutable, Replayable Execution",
+        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any past encounter, claim, or referral with the exact code, secrets, and inputs.",
+    },
+    {
+        icon: FileDocumentCheckOutline,
+        title: "Four-Eyes Clinical & Compliance Gates",
+        description: "Pause any workflow pending human sign-off. Enforce dual control on PHI-touching decisions, prior-auth approvals, and production promotions.",
+    },
+    {
+        icon: AccountGroupOutline,
+        title: "RBAC & Multi-Tenant Isolation",
+        description: "Namespace-scoped RBAC with SSO/SAML/SCIM. Every business unit owns its secrets and runtime on a shared platform. Zero blast radius across teams.",
+    },
+    {
+        icon: CodeTagsCheck,
+        title: "Audit Logs & SIEM Integration",
+        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, or your preferred SIEM for HITRUST and SOC 2 evidence.",
+    },
+]
+
+const BUILD_TABS = [
+    {
+        name: "Prior authorization",
+        title: "From request to payer decision, with clinical sign-off in the loop.",
+        description:
+            "A provider submits a prior-auth request. Kestra checks eligibility, persists a PHI-safe case, pauses for clinical review, submits the decision to the payer, and notifies the provider. Every step auditable.",
+        code: `id: prior-auth-intake
+namespace: company.health.auth
+
+inputs:
+  - id: request
+    type: JSON
+    displayName: Prior auth request (patient, codes, docs)
+
+tasks:
+  - id: check_eligibility
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://payer.example/api/eligibility"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.request | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('PAYER_TOKEN') }}"
+
+  - id: persist_case
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://phi-vault:5432/auth"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    sql: |
+      INSERT INTO auth.requests (patient_ref, payload, eligibility, status)
+      VALUES (
+        '{{ inputs.request.patient_ref }}',
+        '{{ inputs.request | toJson }}',
+        '{{ outputs.check_eligibility.body | toJson }}',
+        'pending_review'
+      ) RETURNING case_id
+
+  - id: clinical_review
+    type: io.kestra.plugin.core.flow.Pause
+    description: |
+      Clinician must review case {{ outputs.persist_case.row.case_id }}
+      before decision is submitted to the payer.
+
+  - id: submit_decision
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://payer.example/api/prior-auth"
+    method: POST
+    contentType: application/json
+    body: |
+      {
+        "case_id": "{{ outputs.persist_case.row.case_id }}",
+        "decision": "approved",
+        "reviewer": "{{ execution.taskrun.value }}"
+      }
+
+  - id: notify_provider
+    type: io.kestra.plugin.email.MailSend
+    host: smtp.health.example
+    port: 465
+    username: "{{ secret('SMTP_USER') }}"
+    password: "{{ secret('SMTP_PASSWORD') }}"
+    from: auth@health.example
+    to: "{{ inputs.request.provider_email }}"
+    subject: "Prior-auth {{ outputs.persist_case.row.case_id }} decision"
+    htmlTextContent: "The payer has issued a decision on the prior-auth request."`,
+        plugins: [
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.email.MailSend" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Denials & appeals",
+        title: "Turn a payer denial into a reviewed, evidence-backed appeal.",
+        description:
+            "A denial lands on the webhook. Kestra pulls the claim, assembles clinical evidence from EHR and attachments, pauses for reviewer sign-off, resubmits to the payer, and ships a signed audit bundle for RCM leadership.",
+        code: `id: denial-appeal-pipeline
+namespace: company.health.rcm
+
+inputs:
+  - id: denial
+    type: JSON
+    displayName: Payer denial notification
+
+tasks:
+  - id: fetch_claim
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://rcm:5432/claims"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: FETCH_ONE
+    sql: |
+      SELECT claim_id, patient_ref, encounter_id, payload
+      FROM claims.submitted
+      WHERE claim_id = '{{ inputs.denial.claim_id }}'
+
+  - id: assemble_evidence
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python assemble_evidence.py --claim {{ outputs.fetch_claim.row.claim_id }}
+
+  - id: reviewer_pause
+    type: io.kestra.plugin.core.flow.Pause
+    description: |
+      Clinical reviewer must approve appeal package
+      for claim {{ outputs.fetch_claim.row.claim_id }}.
+
+  - id: submit_appeal
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://payer.example/api/appeals"
+    method: POST
+    contentType: application/json
+    body: |
+      {
+        "claim_id": "{{ outputs.fetch_claim.row.claim_id }}",
+        "evidence_uri": "{{ outputs.assemble_evidence.outputFiles.bundle }}"
+      }
+    headers:
+      Authorization: "Bearer {{ secret('PAYER_TOKEN') }}"
+
+  - id: publish_audit
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "rcm-audit"
+    key: "appeals/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ outputs.fetch_claim.row.claim_id }}.json"
+    from: "{{ outputs.assemble_evidence.outputFiles.bundle }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "HL7 to FHIR interop",
+        title: "Keep legacy HL7 feeds flowing into a modern FHIR estate.",
+        description:
+            "Pull HL7 v2 messages from partner SFTP, transform to FHIR resources, publish to the data platform, and open a ServiceNow case if validation fails. One declarative pipeline, fully observable.",
+        code: `id: hl7-to-fhir-pipeline
+namespace: company.health.interop
+
+triggers:
+  - id: every_5_min
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/5 * * * *"
+
+tasks:
+  - id: pull_hl7
+    type: io.kestra.plugin.fs.sftp.Downloads
+    host: "hl7-feed.example"
+    port: "22"
+    username: "{{ secret('SFTP_USER') }}"
+    password: "{{ secret('SFTP_PASSWORD') }}"
+    from: "/outbound/"
+    regExp: ".*\\\\.hl7$"
+    action: MOVE
+    moveDirectory: "/processed/"
+
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python hl7_to_fhir.py --in {{ outputs.pull_hl7.files }}
+
+  - id: publish_fhir
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://fhir.health.example/R4/Bundle"
+    method: POST
+    contentType: application/fhir+json
+    body: "{{ outputs.transform.outputFiles.bundle }}"
+    headers:
+      Authorization: "Bearer {{ secret('FHIR_TOKEN') }}"
+
+  - id: route_errors
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.transform.vars.errors > 0 }}"
+    then:
+      - id: open_case
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://servicenow.example/api/now/table/incident"
+        method: POST
+        contentType: application/json
+        headers:
+          Authorization: "Bearer {{ secret('SNOW_TOKEN') }}"
+        body: |
+          {
+            "short_description": "HL7 to FHIR: {{ outputs.transform.vars.errors }} validation errors",
+            "assignment_group": "health-interop"
+          }`,
+        plugins: [
+            { cls: "io.kestra.plugin.fs.sftp.Downloads" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+            { cls: "io.kestra.plugin.core.flow.If" },
+        ],
+        href: "/blueprints",
+    },
+]
+
+const FAQ = [
+    {
+        question: "Can Kestra orchestrate prior authorization without replacing our EHR or payer portals?",
+        answer: "Yes. Kestra sits in front of Epic, Cerner, Meditech, and payer portals. It receives the request, checks eligibility, persists a PHI-safe case, pauses for clinical review, and submits the decision back to the payer via X12 278 or portal API. The EHR stays in place.",
+    },
+    {
+        question: "Can Kestra orchestrate HL7 and FHIR interoperability without replacing our interface engine?",
+        answer: "Yes. Kestra sits alongside Mirth, Rhapsody, Cloverleaf, or native EHR interfaces. Pull HL7 v2 from SFTP or MLLP, transform to FHIR R4, validate against US Core or custom profiles, and publish to your data platform or downstream systems. Wrap existing interface flows first, modernize incrementally.",
+    },
+    {
+        question: "How does Kestra support denials, appeals, and revenue cycle workflows?",
+        answer: "A payer denial fires a webhook. Kestra pulls the original claim, assembles clinical evidence from EHR and attachments, pauses for clinical reviewer sign-off, and resubmits the appeal — with a signed audit bundle for RCM leadership. Eligibility, billing, remittance reconciliation, and collections run on the same engine.",
+    },
+    {
+        question: "Is PHI safe inside Kestra? Where does sensitive data live?",
+        answer: "PHI never has to leave your perimeter. Workers run next to your data; the control plane can live in a separate, segmented zone. Secrets come from Vault, AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, or CyberArk. Self-hosted and air-gapped deployments keep PHI fully on-prem.",
+    },
+    {
+        question: "How does Kestra support HIPAA, HITRUST, and SOC 2 evidence?",
+        answer: "Every flow is YAML in Git. Every execution is immutable and replayable. Namespace-scoped RBAC enforces least privilege. Audit logs stream to Splunk, Elastic, or your SIEM. Four-eyes Pause tasks enforce dual control on any PHI-touching decision, claim appeal, or production promotion.",
+    },
+    {
+        question: "Can Kestra handle fax, document, and LLM-assisted review workflows?",
+        answer: "Yes. Ingest from SFTP, email-to-fax gateways, portals, and partner drops. Run OCR, schema extraction, and LLM review with humans in the loop on any PHI decision. One declarative flow covers referrals, prior auth, claims evidence, and member servicing paperwork.",
+    },
+    {
+        question: "Does Kestra work with mainframes, HL7 MLLP, MQ, and other legacy healthcare plumbing?",
+        answer: "Yes. Plugins for JDBC (DB2, Oracle, SQL Server), SFTP/FTPS, MLLP, JMS/IBM MQ, Kafka, and shell execution for CICS or custom adapters. Most providers and payers start by wrapping existing jobs, then modernize incrementally.",
+    },
+    {
+        question: "Can Kestra orchestrate genomics and research pipelines alongside operational workflows?",
+        answer: "Yes. Parallelize sequencing jobs, manage long-running batches on Azure Batch, AWS Batch, or Kubernetes, and coordinate researcher, scientist, and IT handoffs. The same engine that runs prior auth runs your bioinformatics pipelines — versioned, reproducible, and replayable.",
+    },
+    {
+        question: "What deployment options exist for restricted or air-gapped healthcare environments?",
+        answer: "Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions with no cross-region data transfer.",
+    },
+    {
+        question: "Is Kestra open source, and what does the licensing model look like?",
+        answer: "Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
+    },
+]
+
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <DetailsHero
-        client:load
-        title="Transform<br> <span>Healthcare</span> <br> with Automated<br> Workflows"
-        description={DESCRIPTION}
-        image={{
-            src: "/landing/usecases/healthcare/header-hero.svg",
-            alt: "Healthcare Workflows",
-        }}
-    />
+<Layout {title} {description} headerTheme="lightText">
+    <div class="healthcare">
 
-    <Cards title={CHALLENGES_TITLE} cards={CARDS_DATA} />
+        <section class="hero">
+            <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
+            <div class="hero-inner">
+                <div class="badge-pill" data-usal="zoomin">
+                    <Icon name="mdi:heart-pulse" />
+                    <span>Healthcare &amp; Life Sciences</span>
+                </div>
 
-    <BusinessStats
-        items={[
-            {
-                type: "stat",
-                icon: { src: ArrowUp },
-                value: "200%",
-                label: "Increased productivity",
-            },
-            {
-                type: "quote",
-                text: "“Kestra strong observability, ease of development,<br> and flexibility make it a versatile solution for<br> managing data pipelines in the field of genomics.”",
-            },
-            {
-                type: "author",
-                name: COMPANY_INFO.personName,
-                role: COMPANY_INFO.personRole,
-                logo: { src: COMPANY_INFO.logo, alt: COMPANY_INFO.logoAlt },
-                class: "align-items-start",
-            },
-        ]}
-    />
+                <h1 data-usal="fade-u">
+                    Kestra runs the workflows your EHR,<br />
+                    <span class="gradient">payers, and partner systems don't.</span>
+                </h1>
 
-    <Unlock
-        client:visible
-        title="Healthcare Ecosystem"
-        description="Kestra empowers data engineers, software engineers, and platform engineers in the healthcare industry to create custom workflows effortlessly, ensuring seamless operations and optimized performance across all processes."
-        logo={{
-            src: "/landing/usecases/healthcare/heart-pulse.svg",
-            alt: "heart pulse",
-        }}
-        strokeColor="#3991FF"
-        content={UNLOCK_CONTENT}
-    />
+                <p class="subtitle" data-usal="fade-l">
+                    Providers, payers, and life-sciences teams use Kestra to replace fax-and-portal ping-pong with declarative
+                    automation. Prior authorization, claims, denials, HL7/FHIR interop, revenue cycle, and research pipelines —
+                    with PHI inside your perimeter and an audit trail any compliance team can sign off on.
+                </p>
 
-    <div class="enterprise-edition">
-        <HeaderBox client:visible />
+                <div class="tags" data-usal="fade-l">
+                    {HERO_TAGS.map((tag) => (
+                        <span class="tag">
+                            <Icon name={tag.icon} class="tag-icon" />
+                            {tag.label}
+                        </span>
+                    ))}
+                </div>
+
+                <div class="exec-panel-wrapper" data-usal="fade-up">
+                    <div class="exec-panel">
+                        <div class="exec-panel__header">
+                            <span class="exec-panel__dot"></span>
+                            <span class="exec-panel__title">prior-auth-intake</span>
+                            <span class="exec-panel__meta">namespace · company.health.ops</span>
+                            <span class="exec-panel__duration">1.3s</span>
+                        </div>
+
+                        <div class="exec-panel__body">
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">receive_request</span>
+                                <span class="exec-row__type">core.http.Webhook</span>
+                                <span class="exec-row__result">accepted</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">check_eligibility</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">covered</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">persist_case</span>
+                                <span class="exec-row__type">jdbc.postgresql.Query</span>
+                                <span class="exec-row__result">case #48213</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">clinical_review</span>
+                                <span class="exec-row__type">core.flow.Pause</span>
+                                <span class="exec-row__result">Approved</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">submit_decision</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">payer ack</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">notify_provider</span>
+                                <span class="exec-row__type">email.MailSend</span>
+                                <span class="exec-row__result">sent</span>
+                            </div>
+                        </div>
+
+                        <div class="exec-panel__footer">
+                            <span class="exec-footer__item">PHI-safe</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Replayable</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Human-approved</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-ctas" data-usal="zoomin">
+                    <Link href="/demo" class="btn btn-primary btn-lg">Book a Demo</Link>
+                </div>
+
+                <div class="hero-logos" data-usal="fade-u">
+                    <span class="hero-logos__label">Used by healthcare, pharmacy, and life-sciences teams</span>
+                    <div class="hero-logos__row">
+                        <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item" />
+                        <Image src={SophiaGeneticsLogoImg} alt="Sophia Genetics" class="hero-logos__item" />
+                        <Image src={BrainlabLogoImg} alt="Brainlab" class="hero-logos__item" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="flow">
+            <div class="container-xxl">
+                <h2 class="flow__title text-center">
+                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                </h2>
+                <p class="flow__lead">
+                    Referral, prior auth, claim, HL7 feed, lab result, or encounter update. The orchestration job is the same: connect systems, route exceptions, trigger actions, capture PHI-safe evidence.
+                </p>
+
+                <div class="flow__grid">
+                    <div class="flow__steps">
+                        {FLOW_STAGES.map((stage, idx) => (
+                            <div class={`flow-block flow-${idx}`}>
+                                <div class="flow-block__content">
+                                    <span class={`flow-block__label label-${stage.id}`}>{stage.label}</span>
+                                    <div class={`flow-block__card card-${stage.id}`}>
+                                        <div class="flow-block__items">
+                                            {stage.items.map(item => (
+                                                <div class="flow-block__item">{item}</div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {idx < FLOW_STAGES.length - 1 && (
+                                    <div class={`flow-arrow arrow-${idx}`}>
+                                        <div class="line" />
+                                        <Icon name="mdi:play" class="head" width={16} height={16} />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <h5 class="flow__footer text-center">
+                    Each step is a declarative YAML task. Change the source system, workflow step, or destination without rebuilding the whole process.
+                </h5>
+            </div>
+        </section>
+
+        <section class="workloads">
+            <div class="container">
+                <div class="workloads__head">
+                    <h2>Every critical workflow in healthcare and life sciences.</h2>
+                    <p>Intake and authorizations, claims and revenue cycle, interoperability and data, compliance and operations. One engine runs them all.</p>
+                </div>
+                {WORKLOAD_CATEGORIES.map(cat => (
+                    <div class="workloads__group">
+                        <h3 class="workloads__category">{cat.name}</h3>
+                        <div class="workloads__grid">
+                            {cat.items.map(item => (
+                                <div class="workload-card">
+                                    <Icon name={item.icon} class="workload-card__icon" />
+                                    <h4 class="workload-card__title">{item.title}</h4>
+                                    <p class="workload-card__desc">{item.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <Quotes {quotes} client:load />
+
+        <section class="enterprise">
+            <div class="container-xxl">
+                <h2 class="enterprise__title" data-usal="fade-r">
+                    <span class="highlight">Enterprise-Grade</span> Orchestration for PHI-Safe Workloads.
+                </h2>
+                <NoGapGrid items={ENTERPRISE_FEATURES}>
+                    <div class="feature-card feature-card--cta">
+                        <a href="/demo" class="btn btn-secondary" data-usal="zoomin">
+                            Book a Demo
+                        </a>
+                    </div>
+                </NoGapGrid>
+            </div>
+        </section>
+
+        <section class="build">
+            <div class="container">
+                <h2><span class="highlight">Blueprints</span> for healthcare and life sciences.</h2>
+                <p class="build__lead">Production workflows, from prior-auth intake to HL7-to-FHIR interop. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="header row g-0">
+                            {BUILD_TABS.map((tab, idx) => (
+                                <div
+                                    class:list={[
+                                        "col-6 col-md-4 header-tab",
+                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
+                                    ]}
+                                    data-tab-target={idx}
+                                >
+                                    {tab.name}
+                                </div>
+                            ))}
+                        </div>
+
+                        {BUILD_TABS.map((tab, idx) => (
+                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
+                                <div class="panel panel-1">
+                                    <Snippets client:idle code={tab.code} lang="yaml" />
+                                </div>
+                                <div class="panel panel-2">
+                                    <h3 data-usal="fade-r">{tab.title}</h3>
+                                    <p data-usal="fade-l">{tab.description}</p>
+                                    <div class="plugins" data-usal="zoomin">
+                                        {tab.plugins.map(plugin => (
+                                            <div class="plugin-icon">
+                                                <TaskIcon cls={plugin.cls} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <Link class="goto" href={tab.href} data-usal="fade-r">
+                                        Explore Blueprints
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <GoFurther />
+
+        <PluginsBlock>
+            <Fragment slot="title">
+                Integrates with the <span class="highlight">systems healthcare teams</span> already rely on.
+            </Fragment>
+            <Fragment slot="description">
+                Connect EHRs, HL7 and FHIR engines, payer APIs, clearinghouses, lab and imaging systems,
+                data platforms, and security controls through 1,200+ plugins. Or build the exact integration
+                your environment requires.
+            </Fragment>
+        </PluginsBlock>
+
+        <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
+            <Fragment slot="title">One platform for healthcare operations.</Fragment>
+            Modernize legacy interfaces, connect the tools your teams already use, and add lineage, approvals,
+            and PHI-safe auditability across referrals, prior auth, claims, revenue cycle, interoperability, and clinical data.
+        </SeeHow>
+
+        <Faq items={FAQ} client:visible />
     </div>
 </Layout>
+
+<style lang="scss">
+    $hc-blue:        #2563EB;
+    $hc-blue-bright: #60A5FA;
+    $hc-blue-light:  #DBEAFE;
+    $hc-blue-deep:   #1E3A8A;
+    $hc-platinum:    #E8EDF0;
+
+    .healthcare { overflow: clip; }
+
+    :global(html.dark) .healthcare {
+        .flow,
+        .workloads,
+        .build,
+        .enterprise {
+            background: #1C1C20;
+        }
+        :global(section.quotes-wrapper),
+        :global(section.plugin-block),
+        :global(.see) {
+            background: #1C1C20;
+        }
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        background: #060a0c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
+        padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 1.5rem 6rem;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 4rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1100px;
+            height: 520px;
+            background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.20) 0%, rgba(37, 99, 235, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+    }
+
+    .hero-bg-grid {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1720px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        max-width: 68rem;
+        color: $white;
+        text-align: center;
+
+        @include media-breakpoint-down(md) { gap: 1.5rem; }
+
+        h1 {
+            color: $white;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .gradient {
+            background: linear-gradient(90deg, #{$hc-blue-bright}, #{$hc-blue-light});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: $font-size-lg;
+            line-height: 1.6;
+            max-width: 48rem;
+            margin: 0;
+
+            @include media-breakpoint-down(md) { font-size: $font-size-md; }
+        }
+    }
+
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 4px 1.125rem;
+        gap: 0.5rem;
+        border-radius: 2.5rem;
+        background: #060b0d;
+        position: relative;
+        z-index: 1;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        color: $hc-blue-bright;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 2.5rem;
+            padding: 1px;
+            background: linear-gradient(90deg, #{$hc-blue} 0%, #{$hc-blue-light} 100%);
+            -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.72);
+        font-size: $font-size-xs;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(37, 99, 235, 0.08);
+            color: $white;
+
+            :global(.tag-icon) { color: $hc-blue-light; }
+        }
+
+        :global(.tag-icon) {
+            width: 12px;
+            height: 12px;
+            color: $hc-blue-bright;
+            flex-shrink: 0;
+        }
+    }
+
+    @property --fs-neon-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes fs-neon-trace {
+        to { --fs-neon-angle: 360deg; }
+    }
+
+    .exec-panel-wrapper {
+        --fs-neon-angle: 0deg;
+        border-radius: 10px;
+        background: conic-gradient(
+            from var(--fs-neon-angle),
+            rgba(37, 99, 235, 0.12) 0deg,
+            rgba(37, 99, 235, 0.12) 320deg,
+            #{$hc-blue}              340deg,
+            $hc-platinum             350deg,
+            #{$hc-blue}              360deg
+        );
+        padding: 1px;
+        box-shadow:
+            0 1.214px 10.321px 0 rgba(37, 99, 235, 0.22) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(37, 99, 235, 0.55);
+        width: 100%;
+        max-width: 640px;
+        animation: fs-neon-trace 5s linear infinite;
+    }
+
+    .exec-panel {
+        background: #06100f;
+        border-radius: 9px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        text-align: left;
+
+        &__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(37, 99, 235, 0.04);
+            flex-wrap: wrap;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+        }
+
+        &__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: $hc-blue-bright;
+            box-shadow: 0 0 8px $hc-blue-bright;
+            flex-shrink: 0;
+        }
+
+        &__title {
+            color: $white;
+            font-weight: 600;
+        }
+
+        &__meta {
+            color: rgba(255, 255, 255, 0.45);
+            flex: 1;
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__duration {
+            color: $hc-blue-light;
+            font-weight: 500;
+        }
+
+        &__body {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        &__footer {
+            padding: 10px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(37, 99, 235, 0.03);
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            color: $hc-blue-light;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .exec-footer__sep { color: rgba(255, 255, 255, 0.25); }
+    }
+
+    .exec-row {
+        display: grid;
+        grid-template-columns: 20px minmax(130px, 1fr) minmax(150px, 1fr) minmax(90px, auto);
+        align-items: center;
+        gap: 1rem;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        transition: background 0.2s;
+
+        &:hover { background: rgba(37, 99, 235, 0.06); }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 20px 1fr auto;
+        }
+
+        &__check {
+            color: $hc-blue-bright;
+            font-weight: 700;
+        }
+
+        &__name {
+            color: $white;
+            font-weight: 500;
+        }
+
+        &__type {
+            color: rgba(255, 255, 255, 0.45);
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__result {
+            color: $hc-blue-light;
+            text-align: right;
+            white-space: nowrap;
+        }
+    }
+
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn {
+            justify-content: center;
+
+            @include media-breakpoint-down(md) {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+    }
+
+    .hero-logos {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        padding-top: 2rem;
+        width: 100%;
+        max-width: 52rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+
+        &__label {
+            font-size: $font-size-xs;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        &__row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            justify-items: center;
+            column-gap: 0.5rem;
+            row-gap: 1.25rem;
+            width: 100%;
+            max-width: 36rem;
+            margin: 0 auto;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 1rem;
+                row-gap: 1.25rem;
+            }
+        }
+
+        &__item {
+            width: auto;
+            height: auto;
+            display: block;
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            max-width: 100%;
+
+            &:hover { opacity: 1; }
+
+            // Normalised optical sizing: text-logos ≈ 28–32px tall,
+            // icon-centric logos ≈ 40–44px tall so they read at the same weight.
+            &:nth-child(1) { max-height: 30px; max-width: 150px; }  // Apotek Hjärtat
+            &:nth-child(2) { max-height: 32px; max-width: 160px; }  // Sophia Genetics
+            &:nth-child(3) { max-height: 38px; max-width: 180px; }  // Brainlab
+        }
+    }
+
+    $stages: (
+        "trigger": ( "bg": #fff3d3, "border": #a87f4f, "label": #b87f00 ),
+        "ingest":  ( "bg": #cbe2ff, "border": #6b62f2, "label": #0069c6 ),
+        "process": ( "bg": #e3cffe, "border": #bb62f2, "label": #822bfd ),
+        "act":     ( "bg": #d3ffe0, "border": #4fa876, "label": #007336 )
+    );
+
+    .flow {
+        position: relative;
+        background: var(--ks-background-secondary);
+        padding: 5.5rem 1rem;
+        overflow: hidden;
+
+        .container-xxl {
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        &__title {
+            margin-bottom: 1rem;
+            color: var(--ks-content-primary);
+
+            .highlight {
+                background: linear-gradient(90deg, #{$hc-blue}, #{$hc-blue-bright});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            line-height: 1.55;
+            max-width: 50rem;
+            margin: 0 auto 3rem;
+        }
+
+        &__footer {
+            margin-top: 2rem;
+            color: var(--ks-content-secondary);
+            font-weight: 500;
+        }
+
+        &__grid {
+            width: 100%;
+            padding: 2rem 1rem;
+            background-color: rgba(37, 99, 235, 0.04);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%2314B8A6' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 10px;
+        }
+
+        &__steps {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+
+            @include media-breakpoint-down(xl) {
+                display: grid;
+                grid-template-columns: repeat(2, auto);
+                row-gap: 80px;
+                column-gap: 40px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+                row-gap: 60px;
+                column-gap: 0;
+            }
+        }
+    }
+
+    .flow-block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 1;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                max-width: 320px;
+                margin-top: 0.5rem;
+            }
+        }
+
+        &__label {
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            text-transform: uppercase;
+            font-weight: 700;
+
+            @each $id, $colors in $stages {
+                &.label-#{$id} { color: map-get($colors, "label"); }
+            }
+        }
+
+        &__card {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 240px;
+            min-height: 340px;
+            padding: 16px;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(lg) {
+                width: 220px;
+                min-height: 330px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                min-height: auto;
+                padding: 24px 16px;
+            }
+
+            @each $id, $colors in $stages {
+                &.card-#{$id} {
+                    background: map-get($colors, "bg");
+                    border: 1px solid map-get($colors, "border");
+                }
+            }
+        }
+
+        &__items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &__item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #333638;
+            border-radius: 4px;
+            color: #333638;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            box-shadow: 4px 4px 0 0 #EBEBEB, 4px 4px 0 1px #333638CC;
+        }
+    }
+
+    .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+
+        .line {
+            background: #000000;
+            html.dark & { background: #ffffff; }
+        }
+
+        .head {
+            position: absolute;
+            color: #000000;
+            html.dark & { color: #ffffff; }
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 90px;
+
+            .line { width: 100%; height: 1.5px; }
+            .head {
+                right: -4px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        @include media-breakpoint-between(sm, xl) {
+            &.arrow-0, &.arrow-1 {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 50%;
+                height: 72px;
+                width: 1.5px;
+                transform: translateX(-50%);
+
+                .line { width: 1.5px; height: 100%; }
+                .head {
+                    bottom: -5px;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(90deg);
+                }
+            }
+            &.arrow-2 { display: none; }
+        }
+
+        @include media-breakpoint-down(sm) {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            height: 58px;
+            width: 1.5px;
+            transform: translateX(-50%);
+
+            .line { width: 1.5px; height: 100%; }
+            .head {
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%) rotate(90deg);
+            }
+        }
+    }
+
+    .workloads {
+        position: relative;
+        padding: 5rem 1rem;
+        background: var(--ks-background-body);
+        overflow: hidden;
+
+        > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        &__head {
+            text-align: center;
+            max-width: 46rem;
+            margin: 0 auto 3rem;
+
+            h2 { color: var(--ks-content-primary); margin-bottom: 0.75rem; }
+            p { color: var(--ks-content-secondary); font-size: $font-size-lg; margin: 0; }
+        }
+
+        &__group {
+            max-width: 72rem;
+            margin: 0 auto 3rem;
+
+            &:last-child { margin-bottom: 0; }
+        }
+
+        &__category {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: $hc-blue-deep;
+            margin: 0 0 1rem;
+
+            :global(html.dark) & { color: $hc-blue-bright; }
+        }
+
+        &__grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+
+            @include media-breakpoint-up(md) { grid-template-columns: repeat(3, 1fr); }
+        }
+    }
+
+    .workload-card {
+        padding: 1.5rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 10px;
+        transition: border-color 0.2s, transform 0.2s;
+
+        &:hover {
+            border-color: $hc-blue;
+            transform: translateY(-2px);
+        }
+
+        &__icon {
+            font-size: 1.375rem;
+            color: $hc-blue-deep;
+            margin-bottom: 0.75rem;
+            width: 1.375rem;
+            height: 1.375rem;
+
+            :global(html.dark) & { color: $hc-blue-bright; }
+        }
+
+        &__title {
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+        }
+
+        &__desc {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+    }
+
+    .build {
+        padding: 3rem 0 4.5rem;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: 1rem;
+                padding-inline: $rem-1;
+                text-align: center;
+
+                .highlight { color: $hc-blue; }
+
+                @include media-breakpoint-up(xl) { padding-inline: 0; }
+            }
+
+            .wrapper {
+                border: 1px solid var(--ks-border-primary);
+                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+                border-radius: 13px;
+
+                @include media-breakpoint-down(xl) { border-radius: 0; }
+
+                .inner {
+                    border-radius: $rem-1;
+                    background: var(--ks-background-primary-inverse);
+                    overflow: clip;
+
+                    @include media-breakpoint-down(xxl) { border-radius: 0; }
+
+                    .header {
+                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
+
+                        & > div {
+                            padding: 1.1875rem $rem-2;
+                            font-size: $font-size-md;
+                            color: var(--ks-content-secondary-inverse);
+                            text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
+
+                            &.active {
+                                background: var(--ks-background-secondary-inverse);
+                                border-bottom: 1px solid var(--ks-border-active);
+                                color: var(--ks-content-primary-inverse);
+                                font-weight: 600;
+                            }
+                        }
+
+                        & .middle-part {
+                            border-left: 1px solid var(--ks-border-primary-inverse);
+                            border-right: 1px solid var(--ks-border-primary-inverse);
+                        }
+                    }
+
+                    .content {
+                        display: none;
+                        flex-direction: row;
+                        gap: $rem-2;
+                        padding: $rem-2;
+                        justify-content: center;
+
+                        &.active { display: flex; }
+
+                        @include media-breakpoint-down(xl) {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
+
+                        .panel {
+                            border-radius: 0.5rem;
+                            flex-shrink: 0;
+
+                            &.panel-1 {
+                                width: 39.4375rem;
+
+                                @include media-breakpoint-down(xl) { width: 100%; }
+
+                                :global(.code-card) {
+                                    border: 1px solid var(--ks-border-secondary-inverse);
+                                    background: var(--ks-background-input);
+                                    height: 100%;
+
+                                    :global(.code-inner) { transition: max-height 0.3s ease; }
+                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
+
+                                    &:global(:not(.is-expanded)) {
+                                        :global(.code-inner) { max-height: 27.9375rem !important; }
+                                    }
+                                }
+                            }
+
+                            &.panel-2 {
+                                position: relative;
+                                padding-top: $rem-2;
+                                color: var(--ks-content-primary-inverse);
+                                width: 27.5625rem;
+
+                                @include media-breakpoint-down(xl) {
+                                    width: 100%;
+                                    padding-top: 0;
+                                }
+
+                                p {
+                                    font-size: $font-size-lg;
+                                    margin-top: $rem-1;
+                                    margin-bottom: $rem-2;
+                                }
+
+                                .plugins {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    flex-wrap: wrap;
+
+                                    .plugin-icon {
+                                        width: 2.125rem;
+                                        height: 2.125rem;
+                                        padding: 0.375rem;
+                                        background: $white;
+                                        border: $block-border;
+                                        border-radius: $border-radius;
+                                    }
+                                }
+
+                                .goto {
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    color: var(--ks-content-link-inverse);
+                                    font-weight: 600;
+
+                                    @include media-breakpoint-down(xl) {
+                                        position: relative;
+                                        margin-top: $rem-3;
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            margin: 0 auto $rem-2;
+            max-width: 44rem;
+            padding-inline: $rem-1;
+        }
+    }
+
+    .enterprise {
+        padding: 140px 1rem 80px;
+        gap: 40px;
+        background: var(--ks-background-primary-inverse);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) { padding: 4rem 1rem 3rem; }
+
+        &__title {
+            color: #fff;
+            margin-bottom: 2.5rem;
+            text-align: center;
+
+            .highlight { color: $hc-blue-bright; }
+        }
+
+        :global(.features-grid) {
+            box-shadow: 0 9px 36px 0 var(--ks-shadows-light-inverse);
+        }
+
+        :global(.feature-icon) {
+            color: $hc-blue !important;
+        }
+        :global(.feature-title) {
+            color: #fff !important;
+        }
+        :global(.feature-desc) {
+            color: rgba(255, 255, 255, 0.72) !important;
+        }
+
+        .container-xxl { max-width: 1420px; }
+    }
+
+    .enterprise :global(.feature-card--cta) {
+        width: 100%;
+        padding: 2rem 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 1px 1px 0 0 var(--ks-border-secondary-inverse);
+
+        @include media-breakpoint-down(lg) { padding: 2rem; }
+
+        .btn { white-space: nowrap; }
+    }
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(".build .inner")) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
+                const target = tab && (container as Element).querySelector(
+                    `[data-tab-content="${tab.dataset.tabTarget}"]`
+                )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(".header-tab, .content")) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+    })
+</script>

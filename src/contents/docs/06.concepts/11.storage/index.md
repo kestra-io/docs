@@ -1,6 +1,7 @@
 ---
-title: Data Storage and Processing in Kestra – Where Data Lives
-description: Manage data processed by tasks.
+title: "Data Storage in Kestra: How Task Data Is Managed"
+h1: Understand How Kestra Stores and Processes Task Data
+description: Understand how Kestra stores and processes task data. Learn about internal storage, file handling, and how outputs are passed between tasks in your workflows.
 sidebarTitle: Data storage and processing
 icon: /src/contents/docs/icons/concepts.svg
 ---
@@ -11,7 +12,7 @@ Manage data processed by tasks.
 
 Kestra's primary purpose is to orchestrate data processing via tasks, so data is central to each flow's execution.
 
-Depending on the task, data can be stored inside the execution context or inside Kestra's internal storage. You can also manually store data inside Kestra's KV store by using [dedicated tasks](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Set).
+Depending on the task, data can be stored inside the execution context or inside Kestra's internal storage. You can also manually store data inside Kestra's KV store by using [dedicated tasks](/plugins/core/kv/io.kestra.plugin.core.kv.set).
 
 Some tasks give you the choice of where you want to store the data, usually using a `fetchType` property or the three `fetch`/`fetchOne`/`store` properties.
 
@@ -51,13 +52,13 @@ Depending on the Kestra internal queue and repository implementation, there can 
 
 ### Storing data inside the internal storage
 
-Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [internal storage configuration](../../configuration/index.md#internal-storage).
+Kestra has an internal storage that can store data of any size. By default, the internal storage uses the host filesystem, but plugins exist to use other implementations like Amazon S3, Google Cloud Storage, or Microsoft Azure Blobs storage. See [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 When using the internal storage, data is, by default, stored using [Amazon Ion](https://amazon-ion.github.io/ion-docs/) format.
 
 Tasks that can store data inside the internal storage usually have an output attribute named `uri` that can be used to access this file in following tasks.
 
-The following example uses the [DynamoDB Query](/plugins/plugin-aws/dynamodb/io.kestra.plugin.aws.dynamodb.query) task to query a table and the [FTP Upload](/plugins/plugin-fs/ftp/io.kestra.plugin.fs.ftp.upload) task to send the retrieved rows to an external FTP server.
+The following example uses the [DynamoDB Query](/plugins/plugin-aws/dynamodb/io.kestra.plugin.aws.dynamodb.query) task to query a table and the [FTP Upload](/plugins/plugin-fs/ftp-file-transfer-protocol/io.kestra.plugin.fs.ftp.upload) task to send the retrieved rows to an external FTP server.
 
 ```yaml
 tasks:
@@ -80,14 +81,14 @@ tasks:
 If you need to access data from the internal storage, you can use the `read()` function to read the file's content as a string.
 
 Dedicated tasks allow managing the files stored inside the internal storage:
-- [Concat](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Concat): concat multiple files.
-- [Delete](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Delete): delete a file.
-- [Size](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Size): get the size of a file.
-- [Split](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Split): split a file into multiple files depending on the size of the file or the number of rows.
+- [Concat](/plugins/core/storage/io.kestra.plugin.core.storage.concat): concat multiple files.
+- [Delete](/plugins/core/storage/io.kestra.plugin.core.storage.delete): delete a file.
+- [Size](/plugins/core/storage/io.kestra.plugin.core.storage.size): get the size of a file.
+- [Split](/plugins/core/storage/io.kestra.plugin.core.storage.split): split a file into multiple files depending on the size of the file or the number of rows.
 
 :::alert{type="warning"}
 This should be the main method for storing and carrying large data from task to task.
-As an example, if you know that a [HTTP Request](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Request) returns a heavy payload, you should consider using [HTTP Download](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Download) along with a [Serdes](/plugins/plugin-serdes) instead of carrying raw data in [Flow Execution Context](#storing-data-inside-the-flow-execution-context)
+As an example, if you know that a [HTTP Request](/plugins/core/http/io.kestra.plugin.core.http.request) returns a heavy payload, you should consider using [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) along with a [Serdes](/plugins/plugin-serdes) instead of carrying raw data in [Flow Execution Context](#storing-data-inside-the-flow-execution-context)
 :::
 
 ### Storing data inside the KV store
@@ -97,9 +98,9 @@ Dedicated tasks can store data inside Kestra's KV store. The KV store transparen
 The KV store allows storing data that will be shared by all executions of the same namespace. You can think of it as a key/value store dedicated to a namespace.
 
 The following tasks are available:
-- [Set](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Set): set data in key/value pair.
-- [Get](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Get): get data from key/value pair.
-- [Delete](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Delete): delete a key/value pair.
+- [Set](/plugins/core/kv/io.kestra.plugin.core.kv.set): set data in key/value pair.
+- [Get](/plugins/core/kv/io.kestra.plugin.core.kv.get): get data from key/value pair.
+- [Delete](/plugins/core/kv/io.kestra.plugin.core.kv.delete): delete a key/value pair.
 
 Example:
 
@@ -165,7 +166,7 @@ When we `Set` a new value for `user_name`, we have to use another `Get` task to 
 
 ## Processing data
 
-For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.md).
+For basic data processing, you can leverage Kestra's [Pebble templating engine](../../expressions/index.mdx).
 
 For more complex data transformations, Kestra offers various data processing plugins including transform tasks or custom scripts.
 
@@ -261,9 +262,9 @@ Make sure to also check:
 
 Kestra can process data **row by row** using file transform tasks. The transformation is done with a small script written in Python, JavaScript, or Groovy.
 
-- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
-- The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
-- The [Groovy Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.Script) task allows running scripts with Groovy.
+- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
+- The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
+- The [Groovy Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.script) task allows running scripts with Groovy.
 
 The following example queries the BigQuery public dataset for Wikipedia pages, convert it row by row with the Nashorn FileTransform, and write it in a CSV file.
 
@@ -314,26 +315,26 @@ The script can access a logger to log messages. Each row is available in a `row`
 
 ---
 
-The [PurgeExecution](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Purgeexecution) task can purge all the files stored inside the internal context by a flow execution.
+The PurgeExecution task can purge all the files stored inside the internal context by a flow execution.
 It can be used at the end of a flow to purge all its generated files.
 
 ```yaml
 tasks:
-  - id: "purge-execution"
-    type: "io.kestra.plugin.core.storage.PurgeExecution"
+  - id: purge-execution
+    type: io.kestra.plugin.core.storage.PurgeExecution
 ```
 
-The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [configurations](../../configuration/index.md).
+The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 
-Also, the [Purge](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Purge) task can be used to purge storages, logs, and executions of previous execution. For example, this flow purges all of these every day:
+Also, the [Purge](/plugins/core) task can be used to purge storages, logs, and executions of previous execution. For example, this flow purges all of these every day:
 ```yaml
 id: purge
 namespace: company.team
 
 tasks:
-  - id: "purge"
-    type: "io.kestra.plugin.core.storage.Purge"
+  - id: purge
+    type: io.kestra.plugin.core.storage.Purge
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
 
 triggers:
@@ -406,7 +407,7 @@ namespace: company.team
 
 tasks:
   - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
+    type: io.kestra.plugin.jdbc.duckdb.Queries
     sql: |
       INSTALL httpfs;
       LOAD httpfs;
@@ -416,7 +417,7 @@ tasks:
 
   - id: each_raw
     type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
+    items: "{{ outputs.extract.outputs[0].uri }}"
     namespace: company.team
     flowId: subflow_raw_string_input
     inputs:

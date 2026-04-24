@@ -1,5 +1,5 @@
 ---
-title: "CI/CD And Control Plane Accelerated Deployments, Better Data Process "
+title: "Gorgias, Using Declarative Data Engineering Orchestration With Kestra"
 description: "This is the story of how Gorgias, a leading company in enhancing
   user experiences for online merchants and shoppers, integrated Kestra into
   their data infrastructure "
@@ -35,6 +35,7 @@ headquarter: Paris, France
 solution: Gorgias is the leading AI customer experience platform for ecommerce
   stores. Trusted by over 15000 merchants worldwide.
 companyName: Gorgias
+cta: "What would change if your CI/CD pipelines and data workflows were unified in a single orchestration platform—shipping faster with full visibility?"
 ---
 
 ## About Gorgias

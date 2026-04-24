@@ -1,5 +1,6 @@
 ---
-title: Keycloak SCIM Provisioning
+title: Keycloak SCIM Provisioning in Kestra
+h1: Set Up Keycloak SCIM Provisioning for Identity Sync
 description: Configure SCIM provisioning with Keycloak. Synchronize users and groups from Keycloak to Kestra Enterprise for centralized identity management.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -43,7 +44,7 @@ The steps above will generate a SCIM endpoint URL and a Secret Token that you wi
 
 The endpoint should look as follows:
 
-```
+```plaintext
 https://<your_kestra_host>/api/v1/<your_tenant>/integrations/integration_id/scim/v2
 ```
 

@@ -5,6 +5,8 @@ date: 2024-08-07T11:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
 image: ./main.png
 ---
@@ -21,7 +23,7 @@ The table below summarizes the highlights of this release.
 | **Realtime Triggers**            | The improved Trigger UI allows you to view **logs** of each Realtime Trigger and **restart** it directly from the UI.                                                                                                                  | Both Open-Source and Enterprise  | [Link](../../docs/05.workflow-components/07.triggers/05.realtime-trigger/index.md) |
 | **Task Runners**                 | Task Runners are out of Beta — you can safely use the `taskRunner` property in all script and CLI tasks in production at scale.                                                                                                        | Both Open-Source and Enterprise  | [Link](../../docs/task-runners/index.mdx)                       |
 | **SCIM Directory Sync**          | Enterprise customers can automate the **sync of users and groups** from their Identity Provider to Kestra using the SCIM v2.0 protocol.                                                                                                | Enterprise Edition                  | [Link](../../docs/07.enterprise/03.auth/scim/index.mdx)                              |
-| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](../../docs/configuration/index.md#database)                             |
+| **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](../../docs/configuration/02.runtime-and-storage/index.md#database-and-datasources)                             |
 | **Audit Logs**                   | Audit Logs have undergone a major overhaul, now including a diff-based display of changes and enabling new use cases such as filtering for executions created by specific users.                                                       | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/06.audit-logs/index.md)                       |
 | **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets/index.md)                          |
 
@@ -106,17 +108,17 @@ Our SCIM integration allows you to automate the provisioning and de-provisioning
 
 ![scim](./scim.jpeg)
 
-At the time of this release, we have tested and [documented](../../docs/07.enterprise/03.auth/scim/index.mdx) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo/).
+At the time of this release, we have tested and [documented](../../docs/07.enterprise/03.auth/scim/index.mdx) our SCIM integration with Microsoft Entra ID, Okta, Keycloak, and authentik. If you are using a different IdP or struggle to set up SCIM with Kestra, please [reach out](/demo).
 
 ---
 
 ## SQL Server Backend (Preview) 🛠️
 
-Based on requests from several Enterprise customers, we've added SQL Server as a backend database option for [Kestra EE](/enterprise/). This feature is currently in preview, and we are looking for feedback from early adopters of this backend.
+Based on requests from several Enterprise customers, we've added SQL Server as a backend database option for [Kestra EE](/enterprise). This feature is currently in preview, and we are looking for feedback from early adopters of this backend.
 
 Until we remove the `preview` label, we recommend using SQL Server in development/staging environments only and PostgreSQL for production JDBC-based deployments.
 
-To help you set up a SQL Server backend, check our [Database Configuration Guide](../../docs/configuration/index.md#database).
+To help you set up a SQL Server backend, check our [Database Configuration Guide](../../docs/configuration/02.runtime-and-storage/index.md#database-and-datasources).
 
 ---
 
@@ -259,7 +261,7 @@ Here are the main enhancements to Task Runners added in this release:
 Task Runners in Kestra 0.18.0 offer more resilient file handling and more stability when recovering from failure in remote compute environments.
 
 :::alert{type="info"}
-Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../../docs/07.enterprise/index.mdx) license or a [Kestra Cloud account](/cloud/). If you are interested in trying them out, please [reach out](/demo/).
+Note that starting from Kestra 0.18.0, the Docker and Process task runners are included in the Open Source edition. The Kubernetes, AWS Batch, Azure Batch, Google Batch, and Google Cloud Run task runners require an [Enterprise Edition](../../docs/07.enterprise/index.mdx) license or a [Kestra Cloud account](/cloud). If you are interested in trying them out, please [reach out](/demo).
 :::
 
 Read more about Task Runners in our [Documentation](../../docs/task-runners/index.mdx).
@@ -272,7 +274,7 @@ Read more about Task Runners in our [Documentation](../../docs/task-runners/inde
 
 A new `ForEach` core task has been [introduced](https://github.com/kestra-io/kestra/issues/2137) to unify and simplify parallel and sequential task executions, replacing (_in a non-breaking way_) the `EachParallel` and `EachSequential` tasks. Those old tasks are deprecated but you can still use them — take as much time as you need to migrate.
 
-Check the [core plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) to learn more.
+Check the [core plugin documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) to learn more.
 
 ### New `SELECT` and `MULTISELECT` input types
 

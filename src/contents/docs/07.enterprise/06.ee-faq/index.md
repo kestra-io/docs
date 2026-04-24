@@ -1,5 +1,6 @@
 ---
-title: Kestra Cloud & Enterprise FAQ – Common Questions
+title: "Cloud & Enterprise FAQ: Licensing and Configuration"
+h1: "Frequently Asked Questions: Kestra Cloud and Enterprise"
 description: FAQ for Kestra Cloud and Enterprise. Find answers to common questions about licensing, configuration, session management, and enterprise features.
 sidebarTitle: Cloud & Enterprise Edition FAQ
 icon: /src/contents/docs/icons/faq.svg
@@ -12,7 +13,7 @@ Frequently asked questions about the Cloud and Enterprise Edition of Kestra.
 
 ## My session expires too quickly. Is there a way to change the session expiration time?
 
-Yes, there is! Add the following Micronaut setting to your [Kestra configuration](../../configuration/index.md) to change the session expiration time to 10 hours:
+Yes, there is! Add the following Micronaut setting to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) to change the session expiration time to 10 hours:
 
 ```yaml
     environment:

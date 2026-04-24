@@ -6,7 +6,7 @@
                 <li v-if="editLink !== false && editLink">
                     <a :href="editLink" target="_blank">
                         <Github />
-                        Edit this page
+                        Edit This Page
                     </a>
                 </li>
                 <li v-for="link in socialLinks" :key="link.href">
@@ -52,7 +52,7 @@
         {
             href: "https://kestra.io/slack",
             icon: Slack,
-            text: "Join us on Slack",
+            text: "Join Us on Slack",
         },
         {
             href: "https://www.youtube.com/@kestra-io",
@@ -72,7 +72,7 @@
         {
             href: "https://web-cdn.bsky.app/profile/kestra.io",
             icon: BlueSky,
-            text: "BlueSky",
+            text: "Bluesky",
         },
         {
             href: "https://www.linkedin.com/company/kestra",

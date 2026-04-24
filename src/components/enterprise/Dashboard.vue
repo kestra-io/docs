@@ -111,10 +111,8 @@
 
 <style lang="scss" scoped>
 
-
     .dashboard {
         margin-top: 4rem;
-        min-height: 464px;
         border: 1px solid var(--ks-border-active);
         box-shadow: 0px 0px 20px 0px hsla(264, 76%, 67%, 1);
         background: var(--ks-background-primary);
@@ -141,11 +139,9 @@
             }
 
             &:first-child {
-                min-height: 352px;
             }
 
             &:last-child {
-                min-height: 112px;
                 border-bottom: none;
 
                 .dashboard-col {
@@ -225,9 +221,9 @@
     }
 
     .hero-bottom {
-        margin-top: 2rem;
+        margin-top: 1rem;
         min-height: 5.5rem;
-        border-radius: 8px;
+        border-radius: $border-radius-lg;
         background: var(--ks-background-secondary);
         border: 1px solid var(--ks-border-secondary);
         display: flex;

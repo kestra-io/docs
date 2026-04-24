@@ -1,6 +1,7 @@
 ---
-title: Namespace Files in Kestra – Manage Project Assets
-description: Manage Namespace Files and how to use them in your flows.
+title: "Namespace Files in Kestra: Manage Project Assets"
+h1: Manage Namespace Files and Use Them in Your Flows
+description: Manage Namespace Files in Kestra and use them in your flows. Store scripts, configs, and assets at the namespace level for centralized file management.
 sidebarTitle: Namespace Files
 icon: /src/contents/docs/icons/concepts.svg
 ---
@@ -208,55 +209,23 @@ resource "kestra_namespace_file" "prod_scripts" {
 }
 ```
 
-### Deploy namespace files from Git via CLI
+### Deploy namespace files via kestractl
 
-You can also use the Kestra CLI to deploy all your custom script files from a specific directory to a given Kestra namespace. Below is a simple example showing how you can synchronize an entire directory of local scripts with the `prod` namespace using the Kestra CLI:
-
-```bash
-./kestra namespace files update prod /Users/anna/gh/KESTRA_REPOS/scripts --server=http://localhost:8080 --user=rick:password
-```
-
-In fact, you can even use that command directly in a flow. You can attach a schedule or a webhook trigger to automatically execute that flow anytime you push/merge changes to your Git repository or on a regular schedule.
-
-Below is an example of a flow that synchronizes an entire directory of local scripts with the `prod` namespace:
-
-```yaml
-id: ci
-namespace: company.team
-
-variables:
-  host: http://host.docker.internal:28080/
-
-tasks:
-  - id: deploy
-    type: io.kestra.plugin.core.flow.WorkingDirectory
-    tasks:
-      - id: clone
-        type: io.kestra.plugin.git.Clone
-        url: https://github.com/kestra-io/scripts
-        branch: main
-
-      - id: deploy_files
-        type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
-        commands:
-          - /app/kestra namespace files update prod . . --server={{vars.host}}
-```
-
-Note that the two dots in the command `/app/kestra namespace files update prod . .` indicate that we want to sync an entire directory of files cloned from the Git repository to the root directory of the `prod` namespace. If you wanted to sync that repository to the `scripts` directory, you would use the following command: `/app/kestra namespace files update prod . scripts`. The syntax of that command follows the structure:
+You can upload namespace files from the command line using [kestractl](../../kestra-cli/kestractl/index.md). The following example synchronizes an entire local directory with the `prod` namespace:
 
 ```bash
-/app/kestra namespace files update <namespace> <local_directory> <remote_directory>
+kestractl nsfiles upload prod ./scripts --override
 ```
 
-To reproduce that flow, start Kestra using the following command:
+To upload to a specific path within the namespace rather than the root:
 
 ```bash
-docker run --pull=always --rm -it -p 28080:8080  kestra/kestra:latest  server local
+kestractl nsfiles upload prod ./assets --path resources --override --fail-fast
 ```
 
-Next, open the Kestra UI at `http://localhost:28080` and create a new flow with the content above. Once you execute the flow, you then see the entire directory from the `scripts` repository being synchronized with the `prod` namespace.
+The `--override` flag replaces existing files; `--fail-fast` stops on the first error rather than continuing.
+
+`kestractl nsfiles` also supports `list`, `get`, and `delete` for inspecting and removing individual files. Run `kestractl nsfiles --help` for the full reference.
 
 
 ## How to use Namespace Files in your flows
@@ -427,9 +396,9 @@ tasks:
 ```
 
 Read more about the tasks below:
-- [UploadFiles](/plugins/core/tasks/namespace/io.kestra.plugin.core.namespace.uploadfiles)
-- [DownloadFiles](/plugins/core/tasks/namespace/io.kestra.plugin.core.namespace.downloadfiles)
-- [DeleteFiles](/plugins/core/tasks/namespace/io.kestra.plugin.core.namespace.deletefiles)
+- [UploadFiles](/plugins/core/namespace/io.kestra.plugin.core.namespace.uploadfiles)
+- [DownloadFiles](/plugins/core/namespace/io.kestra.plugin.core.namespace.downloadfiles)
+- [DeleteFiles](/plugins/core/namespace/io.kestra.plugin.core.namespace.deletefiles)
 
 ## Include / exclude namespace files
 

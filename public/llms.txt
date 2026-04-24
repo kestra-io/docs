@@ -1,0 +1,161 @@
+# Kestra
+
+> Kestra is an open-source workflow orchestration platform. Workflows are defined declaratively in YAML as **flows**. Each flow has an `id`, a `namespace`, a list of `tasks`, and optionally `inputs`, `outputs`, `triggers`, and `variables`. Tasks reference plugins via a fully-qualified `type` such as `io.kestra.plugin.core.log.Log`. Dynamic values use `{{ ... }}` Pebble expressions referencing `inputs`, `outputs`, `trigger`, `vars`, `execution`, and other context variables. Kestra is API-first: every action available in the UI is also available via REST API.
+>
+> **For agents and LLMs:** Append `.md` to any `kestra.io/docs/*` URL to retrieve that page as plain Markdown, or set `Accept: text/markdown` on the request. Use this to fetch full page content when a link in this file is relevant to your task.
+
+## Core model
+
+Understanding these five concepts is enough to read and write most Kestra flows. Everything else in this file builds on them.
+
+- **Flow** — the unit of work. A YAML file with `id`, `namespace`, `tasks`, and optional `inputs`, `outputs`, `triggers`, `variables`, `errors`, `labels`, `pluginDefaults`.
+- **Task** — a single step in a flow. Every task has an `id`, a `type` (plugin reference), and type-specific properties. Tasks can be runnable (do work) or flowable (control execution logic).
+- **Plugin** — the integration and logic layer. All task types live under `io.kestra.plugin.*`. Browse at [kestra.io/plugins](https://kestra.io/plugins).
+- **Expression** — `{{ ... }}` syntax powered by Pebble. Used in any dynamic property to reference inputs, prior task outputs, trigger data, secrets, and environment variables.
+- **Namespace** — hierarchical grouping for flows (e.g. `company.team`). Namespaces scope files, secrets, KV store entries, and access control.
+
+## AI and agents
+
+This section covers two distinct things: (1) guidance for AI agents interacting with Kestra, and (2) Kestra features for building AI and LLM-powered workflows. If you are an AI agent helping a user with Kestra, start with Agent Skills. If the user wants to build AI workflows on top of Kestra, use the remaining links.
+
+- [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
+- [AI Tools overview](https://kestra.io/docs/ai-tools): Overview of all AI capabilities in Kestra — Copilot, Agents, Agent Skills, AI Workflows, and RAG Workflows
+- [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot): Generate and refine flow YAML from natural language prompts inside the Kestra UI
+- [AI Agents](https://kestra.io/docs/ai-tools/ai-agents): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
+- [AI Workflows](https://kestra.io/docs/ai-tools/ai-workflows): Patterns for building AI-native workflows — LLM calls, tool use, and multi-step inference pipelines — using Kestra tasks
+- [RAG Workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows): Retrieval-augmented generation patterns — indexing, chunking, embedding, and querying — orchestrated as Kestra flows
+
+## Authoring flows
+
+Use this section when writing, editing, or understanding the structure of a Kestra flow. Covers every top-level property and component a flow can have.
+
+- [Flow definition](https://kestra.io/docs/workflow-components/flow): All top-level flow properties — `id`, `namespace`, `tasks`, `inputs`, `outputs`, `triggers`, `variables`, `errors`, `labels`, `pluginDefaults`, `disabled`, `concurrency`
+- [Tasks](https://kestra.io/docs/workflow-components/tasks): Runnable tasks (do work on a worker) vs flowable tasks (control execution logic), and how task properties work
+- [Flowable tasks](https://kestra.io/docs/workflow-components/tasks/flowable-tasks): Control flow primitives — `Sequential`, `Parallel`, `ForEach`, `ForEachItem`, `Switch`, `If`, `DAG`, `LoopUntil`, `Subflow`, `AllowFailure`, `Pause`, `WorkingDirectory`
+- [Inputs](https://kestra.io/docs/workflow-components/inputs): Typed runtime parameters (`STRING`, `INT`, `BOOLEAN`, `FILE`, `JSON`, `ARRAY`, `ENUM`, `DATETIME`, etc.) with optional defaults and validation
+- [Outputs](https://kestra.io/docs/workflow-components/outputs): Reference task outputs with `{{ outputs.task_id.attribute }}`, dynamic task outputs with `{{ outputs.task_id[taskrun.value].attribute }}`, and sibling outputs inside loops
+- [Triggers](https://kestra.io/docs/workflow-components/triggers): Start flows automatically — Schedule (cron), Flow (react to another flow's completion), Webhook, Polling, and Realtime triggers
+- [Variables](https://kestra.io/docs/workflow-components/variables): Flow-level named values referenced as `{{ vars.name }}`; useful for values reused across multiple tasks
+- [Subflows](https://kestra.io/docs/workflow-components/subflows): Call another flow as a task, pass inputs, wait for completion, and consume its outputs
+- [Errors](https://kestra.io/docs/workflow-components/errors): `errors` block for flow-level error handling tasks; `AllowFailure` for marking individual tasks as non-fatal
+- [Retries](https://kestra.io/docs/workflow-components/retries): Retry policies — constant, exponential, random — with `maxAttempt` and `maxDuration`
+- [Plugin Defaults](https://kestra.io/docs/workflow-components/plugin-defaults): Set default property values for a plugin type across all tasks in a flow or namespace, avoiding repetition
+- [Concurrency](https://kestra.io/docs/workflow-components/concurrency): Limit simultaneous executions of a flow with `concurrency.limit` and `behavior` (queue or cancel)
+
+## Expressions and templating
+
+Use this section when you need to write or debug a `{{ ... }}` expression — to access runtime values, transform data, or apply conditional logic inside a flow property.
+
+- [Expressions reference](https://kestra.io/docs/expressions): Full reference for `{{ ... }}` syntax — context variables, filters, functions, operators, and tags
+- [Execution context variables](https://kestra.io/docs/expressions#execution-context-variables): Everything available at runtime: `inputs`, `outputs`, `vars`, `trigger`, `execution`, `flow`, `taskrun`, `envs`, `globals`, `namespace` (EE only)
+- [Pebble templating](https://kestra.io/docs/concepts/pebble): Filters (`date`, `json`, `first`, `last`, `keys`, `values`, `chunk`, etc.), conditionals, loops, and string manipulation inside expressions
+
+## Finding and using plugins
+
+Use this section to find the right `type` for a task, understand its properties, or run code in a specific language or environment.
+
+- [Plugin marketplace](https://kestra.io/plugins): Search all available task, trigger, condition, and storage plugins with full property documentation — the definitive reference for any plugin type
+- [Core plugins](https://kestra.io/plugins/core): Built-in tasks — `Log`, `Return`, `OutputValues`, `ForEach`, `ForEachItem`, `Http.Request`, `Http.Download`, `Subflow`, and more
+- [Script tasks](https://kestra.io/docs/scripts): Run Python, Shell, Node.js, R, Julia, Ruby, Perl, and PowerShell inline or from files inside a flow
+- [Task runners](https://kestra.io/docs/task-runners): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS ECS Fargate, Azure Batch, Google Batch, or Google Cloud Run — instead of the local worker
+
+## Data, state, and storage
+
+Use this section when a flow needs to store or retrieve data that lives outside the flow itself — files, shared state, secrets, or reusable scripts.
+
+- [Internal storage](https://kestra.io/docs/concepts/storage): Kestra's built-in file system for passing large files between tasks; tasks return internal storage URIs as output attributes (e.g. `uri`)
+- [Namespace files](https://kestra.io/docs/concepts/namespace-files): Scripts, configs, and SQL files stored at the namespace level and available to all flows in that namespace via `WorkingDirectory` or `{{ namespaceFiles }}`
+- [KV Store](https://kestra.io/docs/concepts/kv-store): Persistent key-value pairs scoped to a namespace; read with `{{ kv('key') }}`, written via tasks or the API — use for shared state and counters
+- [Secrets](https://kestra.io/docs/concepts/secret): Encrypted values referenced with `{{ secret('NAME') }}`; stored in Kestra or delegated to an external secrets manager
+- [Backfill](https://kestra.io/docs/concepts/backfill): Re-execute a scheduled trigger over a past date range to reprocess historical data
+
+## Best practices
+
+Use this section when deciding *how* to structure a flow or *which* pattern to use. Covers common decision points and traps that are easy to get wrong.
+
+- [Best practices overview](https://kestra.io/docs/best-practices): Entry point for all design guidance
+- [Flow design](https://kestra.io/docs/best-practices/flows): How to structure, split, and reuse flows — when to use subflows vs tasks, and how to avoid oversized executions
+- [ForEach vs ForEachItem](https://kestra.io/docs/best-practices/foreach-and-foreachitem): When to use each loop primitive, how to access sibling outputs inside loops with `outputs.task_id[taskrun.value]`, and common mistakes
+- [Outputs patterns](https://kestra.io/docs/best-practices/outputs): Clean patterns for producing and consuming task outputs across tasks and flows
+- [Credentials vs Secrets vs KV Store](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store): Decision guide for choosing the right storage backend for each type of value
+- [Secrets management](https://kestra.io/docs/best-practices/secrets-management): How to handle credentials and sensitive values safely in flows
+- [Naming conventions](https://kestra.io/docs/best-practices/naming-conventions): Consistent `id`, `namespace`, and label conventions for maintainable flows
+
+## Examples, how-tos, and use cases
+
+Use this section to find working code for a specific tool or integration, understand what Kestra is commonly used for, or get a starting-point flow template.
+
+- [How-to guides](https://kestra.io/docs/how-to-guides): Task-focused, example-driven guides for specific tools, languages, and integration patterns — the fastest way to produce working flow code for a given scenario
+- [Use cases](https://kestra.io/docs/use-cases): End-to-end solutions for data pipelines, dbt, microservices, infrastructure automation, approval workflows, and Python — useful for understanding what Kestra is built for and how teams use it in practice
+- [Blueprints](https://kestra.io/blueprints): Curated, ready-to-use flow templates searchable by tag, plugin, and use case
+
+## APIs, CLI, and IaC
+
+Use this section when interacting with Kestra programmatically — deploying flows, triggering executions, querying results, or managing resources as code.
+
+- [REST API reference — OSS](https://kestra.io/docs/api-reference/open-source): All endpoints for flows, executions, logs, triggers, namespaces, storage, and more
+- [REST API reference — Enterprise](https://kestra.io/docs/api-reference/enterprise): Additional endpoints for tenants, users, roles, audit logs, and worker groups
+- [kestractl CLI](https://kestra.io/docs/kestra-cli/kestractl): CLI for flow deployment, execution management, and namespace operations
+- [Terraform provider](https://kestra.io/docs/terraform): Manage flows, namespaces, users, roles, and secrets as code using the official Kestra Terraform provider
+- [Kestra SDK](https://kestra.io/docs/api-reference/kestra-sdk): Java, Python, and Node.js API clients
+
+## Enterprise and Cloud
+
+Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud account. OSS deployments do not have access to the features in this section. Use this section when setting up authentication, governance, multi-tenancy, or scale-oriented features.
+
+- [Enterprise overview](https://kestra.io/docs/enterprise): Full feature set, setup guidance, and migration path from OSS
+- [OSS vs Enterprise](https://kestra.io/docs/oss-vs-paid): Side-by-side feature comparison across Open Source, Enterprise, and Cloud editions
+
+**Authentication and access control**
+- [RBAC](https://kestra.io/docs/enterprise/auth/rbac): Role-based access control — define roles with namespace-scoped permissions and assign them to users or service accounts
+- [SSO](https://kestra.io/docs/enterprise/auth/sso): Single sign-on via OIDC, LDAP, or SAML; configure identity providers and attribute mappings
+- [Service accounts](https://kestra.io/docs/enterprise/auth/service-accounts): Non-human identities with API tokens for CI/CD pipelines and automated deployments
+- [SCIM](https://kestra.io/docs/enterprise/auth/scim): Provision and deprovision users and groups automatically from your identity provider
+
+**Governance**
+- [Tenants](https://kestra.io/docs/enterprise/governance/tenants): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
+- [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs): Immutable record of all user and system actions across the platform
+- [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
+- [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
+- [Worker isolation](https://kestra.io/docs/enterprise/governance/worker-isolation): Restrict which workers can execute tasks from a given namespace
+
+**Scalability**
+- [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-groups): Route tasks to labeled worker pools — use `workerGroup.key` on any task to target a specific pool
+- [Apps](https://kestra.io/docs/enterprise/scalability/apps): Build and publish lightweight form-based UIs on top of flows for non-technical users
+
+**Instance management**
+- [Maintenance mode](https://kestra.io/docs/enterprise/instance/maintenance-mode): Pause execution scheduling without stopping the server
+- [Kill switch](https://kestra.io/docs/enterprise/instance/kill-switch): Immediately halt all running executions across the instance
+
+## Operating Kestra
+
+Use this section for questions about installing, configuring, or running a Kestra server in production. Less relevant for flow authoring questions.
+
+- [Installation](https://kestra.io/docs/installation): Docker, Docker Compose, Kubernetes (AWS EKS, GCP GKE, Azure AKS), and VM deployment guides
+- [Configuration reference](https://kestra.io/docs/configuration): All server configuration options — datasource, storage, queue, auth, encryption, plugins, and telemetry
+- [Administrator guide](https://kestra.io/docs/administrator-guide): Production operations — monitoring, HA, SSL, security hardening, backup, purging, and troubleshooting
+- [Performance](https://kestra.io/docs/performance): Benchmarks, JVM tuning, and infrastructure sizing guidance
+- [Migration guide](https://kestra.io/docs/migration-guide): Breaking changes and upgrade notes across Kestra versions
+
+## Extending Kestra
+
+Use this section when building custom plugins, managing flows in Git, deploying via CI/CD pipelines, or building flows without writing YAML.
+
+- [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide): Build, test, document, and publish custom Kestra plugins in Java
+- [Version control and CI/CD](https://kestra.io/docs/version-control-cicd): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
+- [No-code editor](https://kestra.io/docs/no-code): Build and configure flows visually without writing YAML using the drag-and-drop editor
+
+## Reference
+
+Use this section for definitions, architecture questions, or understanding Kestra's internal design.
+
+- [Glossary](https://kestra.io/docs/glossary): Definitions of Kestra-specific and general orchestration terms
+- [Architecture](https://kestra.io/docs/architecture): How Kestra's components fit together — Webserver, Scheduler, Executor, Worker, Queue, and storage layers
+- [Why Kestra](https://kestra.io/docs/why-kestra): How Kestra compares to other orchestration tools and where it is best suited
+
+## Getting started
+
+Human-oriented onboarding for users installing and learning Kestra for the first time. Agents that have already processed the Core model section above do not need to start here.
+
+- [Quickstart](https://kestra.io/docs/quickstart): Run Kestra locally with Docker in minutes
+- [Tutorial](https://kestra.io/docs/tutorial): Step-by-step introduction covering flows, inputs, outputs, triggers, and error handling end to end

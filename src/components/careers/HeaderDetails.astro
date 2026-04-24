@@ -1,0 +1,20 @@
+---
+import Header from "~/components/careers/Header.astro"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
+interface Props {
+    title: string
+}
+const { title } = Astro.props
+---
+
+<Header>
+    <Breadcrumb
+        items={[
+            { label: "Home", href: "/" },
+            { label: "Open Roles", href: "/careers" },
+        ]}
+    />
+    <h1 data-usal="fade-l">
+        {title}
+    </h1>
+</Header>

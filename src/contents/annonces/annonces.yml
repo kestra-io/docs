@@ -1,4 +1,4 @@
-- id: 1
-  text: "Orchestration & Kestra 101 Webinar: 12th March 12pm ET"
-  href: "https://www.linkedin.com/events/7434242811195039745?viewAsMember=true"
-  linkText: "Join us"
+- id: 0
+  text: "This Thursday, Apr 23: Learn why YAML beats Python for AI-ready workflows"
+  href: "https://www.youtube.com/watch?v=xpxNK47jRBA"
+  linkText: "Join live"

@@ -1,46 +1,74 @@
 ---
+import type { AshbyJob } from "~/utils/careers"
+import FilterForm from "./FilterForm.vue"
+
 interface Props {
-    fullPath: string
+    positions?: AshbyJob[]
 }
 
-const { fullPath } = Astro.props
+const { positions = [] } = Astro.props
+
+const departments = new Map<string, string>()
+const locations = new Map<string, string>()
+
+for (const position of positions) {
+    if (position.department) {
+        departments.set(position.department.id, position.department.name)
+    }
+    if (position.location) {
+        locations.set(position.location.id, position.location.name)
+    }
+}
 ---
 
-<div class="header-container">
-    <div class="header container d-flex flex-column align-items-center gap-3">
+<section class="header-container">
+    <div class="header container">
         <slot>
-            <h1 data-usal="fade-l">
-                Join our <span class="highlight">Team</span>
-            </h1>
-            <h4 data-usal="fade-r">
+            <h1>Open Roles</h1>
+            <p>
                 Drive innovation in a globally distributed, collaborative
                 environment
-            </h4>
-            <a
-                href={(fullPath === "/careers" ? "" : "/careers") +
-                    "#positions"}
-                class="btn btn-animated btn-purple-animated mt-4"
-                data-usal="zoomin"
-            >
-                Open positions
-            </a>
+            </p>
+            <FilterForm
+                departments={departments}
+                locations={locations}
+                client:idle
+            />
         </slot>
     </div>
-</div>
+</section>
 
 <style lang="scss">
     .header-container {
-        margin-top: $rem-5;
-        background: url("~/assets/dotted-bg.svg") no-repeat top;
-        .header {
-            padding-bottom: calc($spacer * 4);
+        --careers-grid-size: 55px;
+        --careers-grid-color: color-mix(
+            in srgb,
+            var(--ks-border-secondary) 30%,
+            var(--ks-background-purple-light) 70%
+        );
+        background: url("~/assets/squared-grid.svg") no-repeat top center /
+            1400px auto;
 
-            :global(h1),
-            :global(h4) {
-                color: var(--ks-content-primary);
-                text-align: center;
-                margin-bottom: 0;
+        @include media-breakpoint-down(md) {
+            padding-inline: 1rem;
+        }
+        .header {
+            padding-top: 6rem;
+            padding-bottom: 2rem;
+
+            h1 {
                 font-weight: 600;
+            }
+
+            h1,
+            p {
+                color: var(--ks-content-primary);
+                text-align: left;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                margin-bottom: 2rem;
             }
         }
     }

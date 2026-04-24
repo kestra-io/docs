@@ -1,7 +1,9 @@
-title: "AI Copilot in Kestra:  Data Engineering Zoomcamp - 2.5.3"
-description: "Kestra's AI Copilot is specifically designed to generate and modify Kestra flows with full context about the latest plugins, workflow ..."
-category: "Feature Highlight"
+title: "From Cron Job to Event-Driven: Automating my YouTube Workflow"
+description: "Learn how to use Kestra's new YouTube VideoTrigger to automatically
+  open a GitHub PR when a new video is published, eliminating the need for manual
+  updates or polling logic."
+category: "Deep Dive Tutorials"
 author: "Kestra"
-url: "https://youtube.com/watch?v=3IbjHfC8bMg"
-publicationDate: "2026-01-26T00:00:00.000"
-contentType: "Feature Highlight"
+url: "https://www.youtube.com/watch?v=jICOZjTsTPg"
+publicationDate: "2026-04-07T00:00:00.000"
+contentType: "Deep Dive Tutorials"

@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra on Azure AKS – Azure Database and Blob Storage
+title: "Deploy on Azure AKS: PostgreSQL and Blob Storage"
+h1: Azure AKS Setup with Azure Database and Blob Storage
 sidebarTitle: Kubernetes on Azure AKS with Azure Database and Blob Storage
 icon: /src/contents/docs/icons/azure-aks.svg
 description: Run Kestra on Azure Kubernetes Service (AKS) with Azure Database for PostgreSQL and Blob Storage for enterprise-grade orchestration.

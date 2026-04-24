@@ -1,14 +1,15 @@
 ---
-title: Enterprise License Upgrade
+title: Enterprise License Upgrade in Kestra 1.3.0
+h1: How to Upgrade Your Enterprise License in Kestra 1.3.0
 sidebarTitle: Enterprise License Upgrade
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.3.0
-description: Migration guide for updating Enterprise licenses in Kestra 1.3.0.
+description: Upgrade your Kestra Enterprise license in version 1.3.0. Follow the step-by-step migration guide to apply the new license format and avoid service disruption.
 ---
 
 ## Overview
 
-Kestra 1.3.0 included required changes in the Kestra licensing API. Licenses issued before 1.3.0 will not be accepted by 1.3.0+ nodes. Every customer upgrading to 1.3.0 must install a newly generated [license](../../../configuration/index.md#ee-license). If you are planning to upgrade to `v1.3.0`, please reach out to our Customer Success or Sales contacts so we can provide you with a compatible license. 
+Kestra 1.3.0 included required changes in the Kestra licensing API. Licenses issued before 1.3.0 will not be accepted by 1.3.0+ nodes. Every customer upgrading to 1.3.0 must install a newly generated [license](../../../configuration/06.enterprise-and-advanced/index.md). If you are planning to upgrade to `v1.3.0`, please reach out to our Customer Success or Sales contacts so we can provide you with a compatible license. 
 
 The change required will be to update the license ID, key, and fingerprint with the new value prior to deploying Kestra v1.3.0.
 

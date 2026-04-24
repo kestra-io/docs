@@ -1,5 +1,6 @@
 ---
-title: Namespace Management in Kestra Enterprise – Secure Configuration
+title: "Namespace Management in Kestra Enterprise: Isolation"
+h1: Configure Isolated Namespaces with Secrets and Plugin Defaults
 description: Secure your Kestra instance with Namespace Management. Configure isolated environments, manage secrets, and set Namespace-level plugin defaults.
 sidebarTitle: Namespace Management
 icon: /src/contents/docs/icons/admin.svg
@@ -51,7 +52,7 @@ namespace: company.team
 
 tasks:
   - id: query
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://localhost:3306/test
     username: root
     password: "{{ secret('MYSQL_PASSWORD') }}"
@@ -83,7 +84,7 @@ namespace: company.team
 
 tasks:
   - id: query
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://localhost:3306/test
     username: root
     sql: select * from employees
@@ -114,7 +115,7 @@ namespace: company.team
 
 tasks:
   - id: query
-    type: "io.kestra.plugin.jdbc.mysql.Query"
+    type: io.kestra.plugin.jdbc.mysql.Query
     url: jdbc:mysql://localhost:3306/test
     username: "{{ namespace.mysql_user }}"
     sql: select * from employees

@@ -1,5 +1,6 @@
 ---
 title: Configure Local MinIO Storage for Kestra
+h1: Set Up MinIO as Your Local Object Storage Backend
 icon: /src/contents/docs/icons/minio.svg
 stage: Intermediate
 topics:

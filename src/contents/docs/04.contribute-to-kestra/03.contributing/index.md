@@ -1,5 +1,6 @@
 ---
-title: Contribute to the Kestra Codebase – Issues and PRs
+title: "Contribute to the Kestra Codebase: Issues and PRs"
+h1: "How to Contribute to Kestra: Fix Bugs, Add Features, and Submit PRs"
 description: Guide to contributing to the Kestra codebase. Learn how to report bugs, request features, build plugins, and submit pull requests to help improve the platform.
 sidebarTitle: Kestra Codebase
 icon: /src/contents/docs/icons/contributing.svg
@@ -24,7 +25,7 @@ Check out our [Plugin Developer Guide](../../plugin-developer-guide/index.mdx) f
 
 We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes.
 
-Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.md) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
+Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.mdx) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
 
 ---
 
@@ -140,7 +141,7 @@ Now that you can run the frontend, if opened, you will see a loading screen runn
 It waits for a backend to answer.
 To set it up:
 
-- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Kestra configuration](../../configuration/index.md) YAML definition:
+- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) YAML definition:
 
 ```yaml
 micronaut:

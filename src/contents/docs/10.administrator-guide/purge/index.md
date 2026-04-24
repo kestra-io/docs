@@ -1,5 +1,7 @@
 ---
-title: Purge Old Data in Kestra – Executions, Logs, Key-Value Store, Files
+title: Purge Executions, Logs, and Files in Kestra
+h1: Delete old executions, logs, and files to reclaim storage
+description: Reclaim storage by purging old executions, logs, KV entries, and files in Kestra. Configure scheduled purge jobs to keep your database lean in production.
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.18.0"
@@ -9,7 +11,7 @@ Use purge tasks to remove old executions, logs, and key-value pairs, helping red
 
 ## Purge old execution data safely
 
-To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
+To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
 - `PurgeExecutions`: deletes execution records
 - `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk
 - `PurgeKV`: deletes expired keys globally for a specific namespace
@@ -152,7 +154,7 @@ Purge tasks perform **hard deletion**, permanently removing records and reclaimi
 This distinction matters for compliance and troubleshooting: purge flows are best for cleaning up space, while UI deletions preserve history for auditability.
 
 :::alert{type="warning"}
-Purge tasks do not affect Kestra’s [internal queues](../../08.architecture/01.main-components/index.md#queue). Queue retention is managed separately via [JDBC Cleaner](../../configuration/index.md#jdbc-cleaner) (for database) or [topic retention](../../configuration/index.md#topic-retention) (for Kafka).
+Purge tasks do not affect Kestra’s [internal queues](../../08.architecture/01.main-components/index.md#queue). Queue retention is managed separately via the [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) for JDBC or the [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md) for Kafka.
 :::
 
 :::collapse{title="Renamed Purge Tasks in 0.18.0"}

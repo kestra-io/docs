@@ -1,5 +1,6 @@
 ---
-title: Validate and Deploy Your Flows with GitHub Actions
+title: Validate and Deploy Flows with GitHub Actions
+h1: Automate Flow Validation and Deployment via GitHub Actions CI/CD
 icon: /src/contents/docs/icons/github.svg
 stage: Intermediate
 topics:
@@ -124,7 +125,7 @@ jobs:
 
 ## Authentication
 
-If you have [authentication](../../configuration/index.md#http-basic-authentication) enabled in your Kestra instance, you will need to add additional properties so your action can authenticate with your instance.
+If you have [authentication](../../configuration/05.security-and-secrets/index.md) enabled in your Kestra instance, you will need to add additional properties so your action can authenticate with your instance.
 
 ### Basic Authentication
 

@@ -1,5 +1,6 @@
 ---
 title: Build a Custom Plugin for Kestra
+h1: Extend Kestra by Packaging a Custom Java Plugin
 icon: /src/contents/docs/icons/plugins.svg
 stage: Advanced
 topics:
@@ -399,7 +400,7 @@ Now that the plugin is developed and tested, its time to see the plugin in actio
 
 Add this `Dockerfile` to the root of your plugin project:
 
-```
+```dockerfile
 FROM kestra/kestra:develop
 
 COPY build/libs/* /app/plugins/

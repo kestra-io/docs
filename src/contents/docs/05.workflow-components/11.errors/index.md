@@ -1,5 +1,6 @@
 ---
 title: Workflow Errors in Kestra – Handling Strategies
+h1: Handle Workflow Errors with Global and Local Strategies
 description: Master error handling in Kestra. Explore strategies like global and local error handlers, allowing failures, and configuring alerts for robust workflows.
 sidebarTitle: Errors
 icon: /src/contents/docs/icons/flow.svg
@@ -17,7 +18,7 @@ Kestra provides multiple ways to handle errors, helping you both identify issues
 
 `errors` is a list of tasks set at the flow level that are executed when an error occurs. You can add multiple tasks, and they are executed sequentially. This is useful for sending alerts when errors occur.
 
-The example below sends a flow-level failure alert via Slack using the [SlackIncomingWebhook](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook) task defined using the `errors` property.
+The example below sends a flow-level failure alert via Slack using the [SlackIncomingWebhook](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook) task defined using the `errors` property.
 
 ```yaml
 id: errors
@@ -68,7 +69,7 @@ Two kinds of error handlers can be defined:
 
 ## Global error handler
 
-This example shows a global error handler. The first task fails immediately, triggering the handler, which then logs the ID of the failed task using the `errorLogs()` function.
+This example shows a global error handler. The first task fails immediately, triggering the handler, which then logs the ID of the failed task using the `tasksWithState()` function.
 
 ```yaml
 id: errors
@@ -79,9 +80,9 @@ tasks:
     type: io.kestra.plugin.core.execution.Fail
 
 errors:
-  - id: 2nd
+  - id: error_handler
     type: io.kestra.plugin.core.log.Log
-    message: I'm failing {{ errorLogs()[0]['taskId'] }} # Because errorLogs() is an array, the first taskId to fail is retrieved.
+    message: I'm failing task '{{ tasksWithState('failed')[0]['taskId'] }}' # Because tasksWithState() returns an array, the first taskId to fail is retrieved.
     level: INFO
 ```
 

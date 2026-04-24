@@ -1,5 +1,6 @@
 ---
-title: Backup and Restore Kestra – Metadata and Data
+title: "Backup and Restore Kestra: Flows, Secrets, and Executions"
+h1: How to back up and restore flows, secrets, and execution data
 sidebarTitle: Backup & Restore
 icon: /src/contents/docs/icons/admin.svg
 description: Learn how to perform full or metadata-only backups and restores of your Kestra instance for disaster recovery and migration.
@@ -56,7 +57,7 @@ By default, backups are encrypted with the embedded Kestra encryption key. You c
 
 When you start the backup process from the command line, you will see the following logs which include a backup summary and the URI to the Kestra internal storage file where the backup will be stored.
 
-```
+```plaintext
 2024-09-17 16:33:12,706 INFO  create       io.kestra.ee.backup.BackupService Backup summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, TRIGGER: 2, USER: 1]
 2024-09-17 16:33:12,706 INFO  create       io.kestra.ee.backup.BackupService Backup instance created in 508 ms
 Backup created: kestra:///backups/full/backup-20240917163312.kestra
@@ -77,7 +78,7 @@ You can use the following command line parameters:
 
 Starting the restore process from the command line will display the following logs which include backup information and a restore summary.
 
-```
+```plaintext
 2024-09-17 16:41:06,065 INFO  restore      io.kestra.ee.backup.BackupService Restoring kestra:///backups/full/backup-20240917163312.kestra
 2024-09-17 16:41:06,149 INFO  restore      io.kestra.ee.backup.BackupService Restoring FULL backup from Kestra version 0.19.0-SNAPSHOT created at 2024-09-17T16:33:12.700099909
 2024-09-17 16:41:06,150 INFO  restore      io.kestra.ee.backup.BackupService Backup summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, TRIGGER: 2, USER: 1]

@@ -1,5 +1,6 @@
 ---
 title: Extend Kestra with the API
+h1: Create Flows, Trigger Executions, and Manage KV Entries via API
 icon: /src/contents/docs/icons/api.svg
 stage: Intermediate
 topics:
@@ -25,7 +26,7 @@ The docs include references for both the [Open Source](../../api-reference/02.op
 
 ## Making Requests with Authentication
 
-If you have [Basic Auth enabled](../../configuration/index.md#http-basic-authentication) or you’re using the [Enterprise Edition](/enterprise), authenticate each request. With cURL you can pass credentials via `-u username:password`. The example below uses the defaults from the [Kestra Docker Compose](../../02.installation/03.docker-compose/index.md):
+If you have [Basic Auth enabled](../../configuration/05.security-and-secrets/index.md) or you’re using the [Enterprise Edition](/enterprise), authenticate each request. With cURL you can pass credentials via `-u username:password`. The example below uses the defaults from the [Kestra Docker Compose](../../02.installation/03.docker-compose/index.md):
 
 ```bash
 curl -X POST -u 'admin@kestra.io:kestra' http://localhost:8080/api/v1/executions/company.team/hello_world
@@ -159,6 +160,8 @@ The response includes execution metadata and a link to the UI:
     "url": "http://localhost:8080//ui/executions/company.team/hello_world/MYkTmLrI36s10iVXHwRbR"
 }
 ```
+
+For end-to-end idempotency using a stable business key, set `system.correlationId` when you create the execution and add a guard as shown in [Idempotency with correlation IDs](../idempotency/index.md).
 
 See the [Executions documentation](../../05.workflow-components/03.execution/index.md#execute-a-flow-via-an-api-call) for additional examples.
 
@@ -497,7 +500,7 @@ curl -X GET 'http://localhost:8080/api/v1/main/namespaces/company.team/files?pat
 
 which returns:
 
-```
+```plaintext
 Hello, World!
 ```
 

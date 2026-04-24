@@ -31,6 +31,7 @@ industry: Travel Industry
 headquarter: Jakarta, Indonesia
 solution: Flights and Hotels booking solution
 companyName: ""
+cta: "What would change if your travel data workflows ran smarter—automating the complex pipelines that power bookings, pricing, and experiences?"
 ---
 
 ## About Airpaz
