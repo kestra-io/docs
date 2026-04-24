@@ -313,7 +313,7 @@ namespace: company.team
 
 tasks:
   - id: sequential
-    type: io.kestra.core.tasks.flows.Sequential
+    type: io.kestra.plugin.core.flow.Sequential
     tasks:
       - id: first
         type: io.kestra.plugin.core.output.OutputValues
