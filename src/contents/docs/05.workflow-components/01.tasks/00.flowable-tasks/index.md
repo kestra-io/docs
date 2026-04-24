@@ -142,6 +142,10 @@ For more details, check out the [If Task documentation](/plugins/core/flow/io.ke
 
 ### ForEach
 
+:::alert{type="warning"}
+`ForEach` is removed in Kestra 2.0. Use the [`Loop` task](#loop) instead. See the [ForEach → Loop migration guide](../../../11.migration-guide/v2.0.0/foreach-loop/index.md).
+:::
+
 This task executes a group of tasks for each value in the list.
 
 In the following example, the variable is static, but it could also be generated from a previous task output, starting any number of subtasks.
@@ -208,6 +212,10 @@ For more details, refer to the [ForEach Task documentation](/plugins/core/flow/i
 :::
 
 ### ForEachItem
+
+:::alert{type="warning"}
+`ForEachItem` is removed in Kestra 2.0. Use the [`Loop` task](#loop) with a URI value instead. See the [ForEach → Loop migration guide](../../../11.migration-guide/v2.0.0/foreach-loop/index.md).
+:::
 
 This task iterates over a list of items and runs a subflow for each item, or for each batch of items.
 
@@ -286,7 +294,7 @@ The `Loop` task iterates over a set of values and runs a set of child tasks for 
 `values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file.
 
 ```yaml
-id: loop_example
+id: loop-basic
 namespace: company.team
 
 tasks:
@@ -294,9 +302,9 @@ tasks:
     type: io.kestra.plugin.core.flow.Loop
     values: ["value 1", "value 2", "value 3"]
     tasks:
-      - id: process
+      - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "{{ item.index }} - {{ item.value }}"
+        message: "index={{ item.index }} value={{ item.value }}"
 ```
 
 Inside each iteration, use the `item` variable to access the iteration context:
@@ -321,11 +329,11 @@ tasks:
   - id: loop
     type: io.kestra.plugin.core.flow.Loop
     values: [1, 2, 3, 4, 5]
-    concurrencyLimit: 2
+    concurrencyLimit: 3
     tasks:
-      - id: process
+      - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "Processing {{ item.value }}"
+        message: "Processing {{ item.value }} (index={{ item.index }})"
 ```
 
 #### Failure propagation
@@ -336,11 +344,19 @@ By default (`transmitFailed: true`), a failed iteration causes the Loop task its
 tasks:
   - id: loop
     type: io.kestra.plugin.core.flow.Loop
-    values: ["value 1", "value 2", "value 3"]
+    values: ["ok", "fail", "ok"]
     transmitFailed: false
     tasks:
-      - id: attempt
-        type: io.kestra.plugin.core.execution.Fail
+      - id: maybe_fail
+        type: io.kestra.plugin.core.flow.If
+        condition: '{{ item.value == "fail" }}'
+        then:
+          - id: do_fail
+            type: io.kestra.plugin.core.execution.Fail
+        else:
+          - id: success
+            type: io.kestra.plugin.core.log.Log
+            message: "OK: {{ item.value }}"
 ```
 
 #### Nested loops
@@ -355,7 +371,7 @@ tasks:
     tasks:
       - id: inner
         type: io.kestra.plugin.core.flow.Loop
-        values: [1, 2, 3]
+        values: ["a", "b"]
         tasks:
           - id: log
             type: io.kestra.plugin.core.log.Log
@@ -369,6 +385,9 @@ For deeper hierarchies, `item.parents[0]` is the immediate parent loop, `item.pa
 By default, task outputs produced inside a loop are not accessible to tasks that run after the loop. Use the `outputs` property on the Loop task to explicitly declare which values to expose.
 
 ```yaml
+id: loop-outputs
+namespace: company.team
+
 tasks:
   - id: loop
     type: io.kestra.plugin.core.flow.Loop
@@ -381,6 +400,10 @@ tasks:
       - id: process
         type: io.kestra.plugin.core.debug.Return
         format: "processed {{ item.value }}"
+
+  - id: summary
+    type: io.kestra.plugin.core.log.Log
+    message: "Loop ran {{ outputs.loop.iterationCount }} iterations"
 ```
 
 The loop also exposes monitoring outputs regardless of whether `outputs` is declared:
@@ -392,6 +415,56 @@ The loop also exposes monitoring outputs regardless of whether `outputs` is decl
 | `terminatedIterations` | Iterations that have finished |
 
 The `fetchType` property controls how iteration outputs are collected: `FETCH` returns them directly in the execution context, `STORE` writes them to internal storage as a URI, and `AUTO` (the default) chooses based on whether `values` is a URI.
+
+#### Accessing loop outputs in a script task
+
+The following example runs a Python task inside a loop to compute a value, then reads the collected results in a subsequent Python task using the monitoring output and the Kestra Python SDK.
+
+```yaml
+id: loop-python-outputs
+namespace: company.team
+
+tasks:
+  - id: process_items
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3, 4, 5]
+    outputs:
+      - id: squared
+        type: INT
+        value: "{{ outputs.compute.vars.result }}"
+    tasks:
+      - id: compute
+        type: io.kestra.plugin.scripts.python.Script
+        dependencies:
+          - kestra
+        script: |
+          from kestra import Kestra
+          n = {{ item.value }}
+          Kestra.outputs({"result": n * n})
+
+  - id: analyze
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - kestra
+    script: |
+      from kestra import Kestra
+
+      iteration_count = {{ outputs.process_items.iterationCount }}
+
+      # outputs.process_items.outputs is a map keyed by iteration value string:
+      # {"1": {"squared": 1}, "2": {"squared": 4}, "3": {"squared": 9}, ...}
+      all_outputs = {{ outputs.process_items.outputs | toJson }}
+
+      squared_values = [v["squared"] for v in all_outputs.values()]
+
+      print(f"Processed {iteration_count} items")
+      print(f"Squared values: {squared_values}")
+      print(f"Sum of squares: {sum(squared_values)}")
+
+      Kestra.outputs({"total": sum(squared_values)})
+```
+
+`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a map keyed by iteration value string — for `values: [1, 2, 3, 4, 5]`, the keys are `"1"`, `"2"`, `"3"`, `"4"`, `"5"`. To access a single iteration's output directly in an expression, use `outputs.process_items.outputs['1'].squared`.
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
 
