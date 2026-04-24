@@ -215,7 +215,7 @@ namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
@@ -286,7 +286,7 @@ namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
@@ -294,7 +294,7 @@ tasks:
 
   - id: end
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ outputs.inner['value 1'].value }}"
+    format: "{{ task.id }} > {{ outputs.inner['alpha'].value }}"
 ```
 
 It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` in  `[VALUE]` is called the subscript notation; it enables using special chars like space or '-' in task identifiers or output attributes.
@@ -341,7 +341,7 @@ namespace: company.team
 tasks:
   - id: foreach
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: first
         type: io.kestra.plugin.core.output.OutputValues
@@ -355,7 +355,7 @@ tasks:
 
   - id: log_output_from_foreach
     type: io.kestra.plugin.core.log.Log
-    message: "{{ outputs.second['value 1'].values.data }}"
+    message: "{{ outputs.second['alpha'].values.data }}"
 ```
 
 You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/index.mdx#function-reference) for more details.
