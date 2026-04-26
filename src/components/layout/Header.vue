@@ -7,6 +7,7 @@
             open: isOpen,
             scrolled: isScrolled || props.scrolled,
         }"
+        @focusout="handleNavFocusOut"
     >
         <div class="container-xl">
             <a
@@ -89,22 +90,33 @@
                         @mouseover="mouseOver('product', $event)"
                         @mouseleave="mouseOut('product')"
                     >
-                        <a
+                        <button
+                            type="button"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'product' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            aria-haspopup="menu"
+                            :aria-controls="menuControls('product')"
+                            :aria-expanded="
+                                showMenuId === 'product' && showMenu
+                            "
+                            data-desktop-menu-trigger="product"
+                            @focus="focusMenu('product', $event)"
+                            @keydown="
+                                handleDropdownTriggerKeydown('product', $event)
+                            "
+                            @click="
+                                handleDropdownTriggerClick('product', $event)
+                            "
                         >
                             Product
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
-                        <div class="dropdown-menu d-xl-none">
+                        </button>
+                        <div id="product-mobile-menu" class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
                                     v-for="item in menuItems.product.items"
@@ -138,22 +150,39 @@
                         @mouseover="mouseOver('solutions', $event)"
                         @mouseleave="mouseOut('solutions')"
                     >
-                        <a
+                        <button
+                            type="button"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'solutions' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            aria-haspopup="menu"
+                            :aria-controls="menuControls('solutions')"
+                            :aria-expanded="
+                                showMenuId === 'solutions' && showMenu
+                            "
+                            data-desktop-menu-trigger="solutions"
+                            @focus="focusMenu('solutions', $event)"
+                            @keydown="
+                                handleDropdownTriggerKeydown(
+                                    'solutions',
+                                    $event,
+                                )
+                            "
+                            @click="
+                                handleDropdownTriggerClick('solutions', $event)
+                            "
                         >
                             Solutions
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
-                        <div class="dropdown-menu d-xl-none">
+                        </button>
+                        <div
+                            id="solutions-mobile-menu"
+                            class="dropdown-menu d-xl-none"
+                        >
                             <ul class="dropdown-column">
                                 <p class="column-caption">Use-cases</p>
                                 <li
@@ -214,7 +243,6 @@
                         <a
                             class="nav-link"
                             href="/plugins"
-                            role="button"
                             @click="globalClick(true)"
                         >
                             <span>Plugins</span>
@@ -225,22 +253,39 @@
                         @mouseover="mouseOver('resources', $event)"
                         @mouseleave="mouseOut('resources')"
                     >
-                        <a
+                        <button
+                            type="button"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'resources' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            aria-haspopup="menu"
+                            :aria-controls="menuControls('resources')"
+                            :aria-expanded="
+                                showMenuId === 'resources' && showMenu
+                            "
+                            data-desktop-menu-trigger="resources"
+                            @focus="focusMenu('resources', $event)"
+                            @keydown="
+                                handleDropdownTriggerKeydown(
+                                    'resources',
+                                    $event,
+                                )
+                            "
+                            @click="
+                                handleDropdownTriggerClick('resources', $event)
+                            "
                         >
                             Learn
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
-                        <div class="dropdown-menu d-xl-none">
+                        </button>
+                        <div
+                            id="resources-mobile-menu"
+                            class="dropdown-menu d-xl-none"
+                        >
                             <ul class="dropdown-column">
                                 <li
                                     v-for="item in menuItems.resources.items"
@@ -265,22 +310,33 @@
                         @mouseover="mouseOver('company', $event)"
                         @mouseleave="mouseOut('company')"
                     >
-                        <a
+                        <button
+                            type="button"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'company' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            aria-haspopup="menu"
+                            :aria-controls="menuControls('company')"
+                            :aria-expanded="
+                                showMenuId === 'company' && showMenu
+                            "
+                            data-desktop-menu-trigger="company"
+                            @focus="focusMenu('company', $event)"
+                            @keydown="
+                                handleDropdownTriggerKeydown('company', $event)
+                            "
+                            @click="
+                                handleDropdownTriggerClick('company', $event)
+                            "
                         >
                             Company
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
-                        <div class="dropdown-menu d-xl-none">
+                        </button>
+                        <div id="company-mobile-menu" class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
                                     v-for="item in menuItems.company.items"
@@ -406,7 +462,15 @@
                     @mouseleave="mouseLeaveMenu"
                 >
                     <div class="header-menu-card">
-                        <div id="product" class="header-menu-card-section">
+                        <div
+                            id="product"
+                            class="header-menu-card-section"
+                            :inert="showMenuId !== 'product' || !showMenu"
+                            :aria-hidden="showMenuId !== 'product' || !showMenu"
+                            @keydown="
+                                handleDesktopMenuKeydown('product', $event)
+                            "
+                        >
                             <div class="header-menu-content">
                                 <div class="header-menu-card-section-column">
                                     <ul class="d-flex flex-column w-100">
@@ -448,7 +512,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="solutions" class="header-menu-card-section">
+                        <div
+                            id="solutions"
+                            class="header-menu-card-section"
+                            :inert="showMenuId !== 'solutions' || !showMenu"
+                            :aria-hidden="
+                                showMenuId !== 'solutions' || !showMenu
+                            "
+                            @keydown="
+                                handleDesktopMenuKeydown('solutions', $event)
+                            "
+                        >
                             <div class="header-menu-content">
                                 <div
                                     class="row w-100 h-100 flex-nowrap"
@@ -546,7 +620,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="resources" class="header-menu-card-section">
+                        <div
+                            id="resources"
+                            class="header-menu-card-section"
+                            :inert="showMenuId !== 'resources' || !showMenu"
+                            :aria-hidden="
+                                showMenuId !== 'resources' || !showMenu
+                            "
+                            @keydown="
+                                handleDesktopMenuKeydown('resources', $event)
+                            "
+                        >
                             <div class="header-menu-content">
                                 <div class="header-menu-card-section-column">
                                     <ul class="d-flex flex-column w-100">
@@ -588,7 +672,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="company" class="header-menu-card-section">
+                        <div
+                            id="company"
+                            class="header-menu-card-section"
+                            :inert="showMenuId !== 'company' || !showMenu"
+                            :aria-hidden="showMenuId !== 'company' || !showMenu"
+                            @keydown="
+                                handleDesktopMenuKeydown('company', $event)
+                            "
+                        >
                             <div class="header-menu-content">
                                 <div class="header-menu-card-section-column">
                                     <ul class="d-flex flex-column w-100">
@@ -670,6 +762,7 @@
     const isMobile = ref(false)
     const isScrolled = ref(false)
     const closeMenuTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
+    let skipNextFocusMenuId: string | null = null
 
     interface Collapse {
         hide: () => void
@@ -737,17 +830,16 @@
     }
 
     function mouseLeaveMenu() {
-        closeMenuTimeout.value = setTimeout(() => {
-            showMenu.value = false
-            mouseoverMenu.value = false
-            showMenuId.value = null
-            headerMenuPointerEvents.value = "none"
-        }, 100)
+        closeMenuTimeout.value = setTimeout(closeDesktopMenu, 100)
     }
 
     function mouseOver(id: string, event: MouseEvent) {
         if (window.innerWidth <= 1199) return
 
+        openDesktopMenu(id, event.currentTarget as HTMLElement)
+    }
+
+    function openDesktopMenu(id: string, trigger: HTMLElement) {
         if (closeMenuTimeout.value) {
             clearTimeout(closeMenuTimeout.value)
             closeMenuTimeout.value = null
@@ -771,9 +863,7 @@
         headerMenuPointerEvents.value = "auto"
         headerMenuSize.value = menuSize(id)
 
-        const { left, width } = (
-            event.currentTarget as HTMLElement
-        ).getBoundingClientRect()
+        const { left } = trigger.getBoundingClientRect()
         const menuWidth = parseInt(headerMenuSize.value.width)
         const offset = id === "solutions" ? 0 : 45
         const maxLeft = window.innerWidth - menuWidth - 16
@@ -782,14 +872,165 @@
         menu.classList.add("z-1", "opacity-100")
     }
 
+    function focusMenu(id: string, event: FocusEvent) {
+        if (window.innerWidth <= 1199) return
+
+        if (skipNextFocusMenuId === id) {
+            skipNextFocusMenuId = null
+            return
+        }
+
+        openDesktopMenu(id, event.currentTarget as HTMLElement)
+    }
+
+    function menuControls(id: string) {
+        return isMobile.value ? `${id}-mobile-menu` : id
+    }
+
+    function getDesktopMenuItems(id: string) {
+        return Array.from(
+            document.querySelectorAll<HTMLAnchorElement>(
+                `#${id} a.dropdown-item`,
+            ),
+        )
+    }
+
+    function focusFirstMenuItem(id: string) {
+        getDesktopMenuItems(id).at(0)?.focus()
+    }
+
+    function focusMenuTrigger(id: string, openMenu = true) {
+        const trigger = document.querySelector<HTMLButtonElement>(
+            `[data-desktop-menu-trigger="${id}"]`,
+        )
+        if (!openMenu) {
+            skipNextFocusMenuId = id
+        }
+        trigger?.focus()
+    }
+
+    function focusNextHeaderItem(id: string) {
+        const nextTargetByMenuId: Record<string, string> = {
+            product: '[data-desktop-menu-trigger="solutions"]',
+            solutions: '#main-header a.nav-link[href="/plugins"]',
+            resources: '[data-desktop-menu-trigger="company"]',
+            company: '#main-header a.nav-link[href="/pricing"]',
+        }
+        const nextTarget = document.querySelector<HTMLElement>(
+            nextTargetByMenuId[id],
+        )
+
+        if (!nextTarget) return
+
+        nextTarget.focus()
+        if (!nextTarget.matches("[data-desktop-menu-trigger]")) {
+            closeDesktopMenu()
+        }
+    }
+
+    function handleDesktopMenuKeydown(id: string, event: KeyboardEvent) {
+        if (window.innerWidth <= 1199) return
+
+        if (event.key === "Escape") {
+            event.preventDefault()
+            closeDesktopMenu()
+            focusMenuTrigger(id, false)
+            return
+        }
+
+        if (event.key !== "Tab") return
+
+        const menuItems = getDesktopMenuItems(id)
+        const currentItem = event.target
+        const firstItem = menuItems.at(0)
+        const lastItem = menuItems.at(-1)
+
+        if (event.shiftKey && currentItem === firstItem) {
+            event.preventDefault()
+            focusMenuTrigger(id)
+            return
+        }
+
+        if (!event.shiftKey && currentItem === lastItem) {
+            event.preventDefault()
+            focusNextHeaderItem(id)
+        }
+    }
+
+    function handleDropdownTriggerKeydown(id: string, event: KeyboardEvent) {
+        if (window.innerWidth <= 1199) return
+
+        if (
+            event.key === "ArrowDown" ||
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
+            event.preventDefault()
+            openDesktopMenu(id, event.currentTarget as HTMLElement)
+            nextTick(() => focusFirstMenuItem(id))
+            return
+        }
+
+        if (event.key === "Escape") {
+            closeDesktopMenu()
+        }
+    }
+
+    function handleDropdownTriggerClick(id: string, event: MouseEvent) {
+        if (window.innerWidth <= 1199) return
+
+        if (showMenuId.value === id && showMenu.value) {
+            return
+        }
+
+        openDesktopMenu(id, event.currentTarget as HTMLElement)
+    }
+
+    function handleNavFocusOut(event: FocusEvent) {
+        if (!showMenu.value) return
+
+        const nextFocusedElement = event.relatedTarget
+
+        if (
+            !(nextFocusedElement instanceof Node) ||
+            !navbar.value?.contains(nextFocusedElement)
+        ) {
+            closeDesktopMenu()
+            return
+        }
+
+        if (!(nextFocusedElement instanceof Element)) return
+
+        const isDropdownTrigger = nextFocusedElement.matches(
+            "[data-desktop-menu-trigger]",
+        )
+        const openMenuSection = showMenuId.value
+            ? document.getElementById(showMenuId.value)
+            : null
+        const isInsideOpenMenu =
+            openMenuSection?.contains(nextFocusedElement) ?? false
+
+        if (!isDropdownTrigger && !isInsideOpenMenu) {
+            closeDesktopMenu()
+        }
+    }
+
+    function closeDesktopMenu() {
+        document.querySelectorAll(".header-menu-card-section").forEach((el) => {
+            el.classList.remove("opacity-100", "z-1")
+        })
+        showMenu.value = false
+        mouseoverMenu.value = false
+        showMenuId.value = null
+        headerMenuPointerEvents.value = "none"
+    }
+
     function mouseOut(id: string) {
         if (window.innerWidth > 1199) {
             let menu = document.getElementById(id)
             if (menu) {
                 closeMenuTimeout.value = setTimeout(() => {
-                    headerMenuPointerEvents.value = "none"
-                    showMenu.value = false
-                    showMenuId.value = null
+                    closeDesktopMenu()
                 }, 150)
             }
         }
@@ -811,10 +1052,7 @@
             return
         }
         if (close) {
-            showMenu.value = false
-            mouseoverMenu.value = false
-            showMenuId.value = null
-            headerMenuPointerEvents.value = "none"
+            closeDesktopMenu()
             if (navbar.value?.classList.contains("open")) {
                 isOpen.value = false
                 document.body.style.overflow = "unset"
@@ -853,7 +1091,9 @@
 <style lang="scss" scoped>
     @mixin dark-nav-content($color: $white) {
         a.nav-link:not(.btn),
+        button.nav-link:not(.btn),
         .nav-item a:not(.btn),
+        .nav-item button:not(.btn),
         div.nav-items a:not(.btn),
         .navbar-toggler {
             color: $color;
@@ -988,7 +1228,8 @@
             }
         }
 
-        a.nav-link {
+        a.nav-link,
+        button.nav-link {
             display: flex !important;
             align-items: center;
             gap: 4px;
@@ -999,6 +1240,21 @@
             padding-left: 12px !important;
             border-radius: $border-radius;
             transition: background-color 0.2s ease;
+
+            &[type="button"] {
+                appearance: none;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+                cursor: pointer;
+                font-family: inherit;
+                justify-content: flex-start;
+                line-height: inherit;
+                margin: 0;
+                text-align: left;
+                text-decoration: none;
+                white-space: nowrap;
+            }
 
             @include media-breakpoint-between(xl, xxl) {
                 padding-left: 8px !important;
@@ -1011,6 +1267,12 @@
                     background-color: var(--ks-background-tertiary);
                     border-color: var(--ks-border-primary);
                 }
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+                border-radius: $border-radius;
             }
 
             .dropdown-chevron {
@@ -1042,6 +1304,12 @@
                         height: calc($spacer * 1.5);
                     }
                 }
+
+                &:focus-visible {
+                    outline: 2px solid currentColor;
+                    outline-offset: 2px;
+                    border-radius: $border-radius;
+                }
             }
         }
 
@@ -1053,6 +1321,12 @@
 
             &:focus {
                 box-shadow: none;
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+                border-radius: $border-radius;
             }
         }
 
@@ -1087,7 +1361,8 @@
                     font-size: $font-size-md;
                 }
 
-                a.nav-link {
+                a.nav-link,
+                button.nav-link {
                     border-radius: $border-radius;
 
                     span.material-design-icon {
@@ -1102,6 +1377,7 @@
 
                     @include media-breakpoint-down(xl) {
                         display: flex;
+                        width: 100%;
                         justify-content: space-between;
                         border-radius: 0;
                         color: var(--ks-content-primary) !important;
