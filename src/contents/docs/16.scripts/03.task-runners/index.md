@@ -21,8 +21,6 @@ Each `taskRunner` is identified by its `type`. The [Process](../../task-runners/
   <iframe src="https://www.youtube.com/embed/89ywEU9hXjI?si=pVnk4GZbVQOGIxfU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Here's an example of the Docker Task Runner configured to use the `centos` container image:
 
 ```yaml

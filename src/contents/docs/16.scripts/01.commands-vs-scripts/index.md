@@ -14,8 +14,6 @@ Types of tasks for executing programming languages.
     <iframe src="https://www.youtube.com/embed/l-1MDlhV2oM?si=A--h-VEvmVNWW1TW" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 For each of the [supported languages](../00.languages/index.md) (e.g., Python, R, Node.js, Shell), Kestra provides two task types: **Script** and **Commands**.
 
 1. **Script** tasks are written inline in the YAML flow configuration. They’re best for short scripts and make it easy to pass data from flow inputs and other tasks to your code.
