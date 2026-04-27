@@ -8,8 +8,6 @@ sidebarTitle: Outputs
 
 Outputs let you pass data between tasks and flows.
 
-## Workflow Outputs – sharing data between tasks
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/j6Iyn5rCeRI?si=2al6ZgqzfNqAJ0Wf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -415,7 +413,6 @@ You can now use Pebble expressions to evaluate and analyze the output data furth
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/SPGmXSJN3VE?si=c2RkQJdidKig90Ot" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
----
 
 :::alert{type="info"}
 Note: This was previously called **Render expression**.
