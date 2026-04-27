@@ -27,6 +27,9 @@ import ITZBundLogoImg from "~/assets/trusted-companies/ITZBunds.svg"
 import BundesagenturLogoImg from "~/assets/trusted-companies/Bundesagentur.svg"
 import BattelleLogoImg from "~/assets/trusted-companies/Battelle.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "On-prem & air-gapped", icon: "mdi:shield-lock-outline" },
@@ -35,7 +38,7 @@ const HERO_TAGS = [
     { label: "Replayable audit trail", icon: "mdi:history" },
     { label: "Multi-tenant by namespace", icon: "mdi:domain" },
     { label: "LDAP, OIDC, SAML, SCIM", icon: "mdi:account-key-outline" },
-    { label: "1200+ plugins", icon: "mdi:puzzle-outline" },
+    { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
 ]
 
 const title = "Kestra for Public Services & Institutions"
