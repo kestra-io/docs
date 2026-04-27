@@ -5,8 +5,9 @@ date: 2026-04-27T09:00:00
 category: Solutions
 author:
   name: François Delbrayelle
+  linkedin: https://www.linkedin.com/in/fdelbrayelle/
   image: fdelbrayelle
-  role: Senior Software Engineer
+  role: Lead Software Engineer
 image: ./main.png
 schema:
   "@context": "https://schema.org"
