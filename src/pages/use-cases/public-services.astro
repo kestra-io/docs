@@ -30,17 +30,17 @@ import { optimizeSvgIcon } from "~/utils/svgo"
 
 const HERO_TAGS = [
     { label: "On-prem & air-gapped", icon: "mdi:shield-lock-outline" },
-    { label: "Apache 2.0 licensed", icon: "mdi:code-tags" },
+    { label: "EU & US data residency", icon: "mdi:earth" },
     { label: "Kubernetes & OpenShift native", icon: "mdi:server-network-outline" },
-    { label: "PostgreSQL backend", icon: "mdi:database-outline" },
+    { label: "Replayable audit trail", icon: "mdi:history" },
     { label: "Multi-tenant by namespace", icon: "mdi:domain" },
     { label: "LDAP, OIDC, SAML, SCIM", icon: "mdi:account-key-outline" },
-    { label: "1200+ open-source plugins", icon: "mdi:puzzle-outline" },
+    { label: "1200+ plugins", icon: "mdi:puzzle-outline" },
 ]
 
 const title = "Kestra for Public Services & Institutions"
 const description =
-    "One open-source orchestration engine for infrastructure, SOC, data, and modernization workflows. Integrate what you already run. Standardize how operations execute. Replace brittle orchestration silos when you're ready."
+    "One orchestration engine for infrastructure, SOC, data, and modernization workflows. Integrate what you already run. Standardize how operations execute. Replace brittle orchestration silos when you're ready."
 
 const FLOW_STAGES = [
     {
@@ -782,7 +782,7 @@ const FAQ = [
         <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
             <Fragment slot="title">Modernize public-sector IT on a platform you fully own.</Fragment>
             Self-hosted, air-gapped, and procurement-friendly. Modernize legacy automation incrementally,
-            run SOC and platform operations on-prem, and deploy AI inside your perimeter. One open-source orchestration engine.
+            run SOC and platform operations on-prem, and deploy AI inside your perimeter. One orchestration engine you fully control.
         </SeeHow>
 
         <Faq items={FAQ} client:visible />
