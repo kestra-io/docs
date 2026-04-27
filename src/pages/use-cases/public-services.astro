@@ -20,73 +20,75 @@ import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
 import Git from "vue-material-design-icons/Git.vue"
 import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 
-import ApotekHjartatLogo from "~/contents/customer-stories/29/logo.svg?raw"
-import ApotekHjartatLogoImg from "~/contents/customer-stories/29/logo.svg"
-import SophiaGeneticsLogoImg from "~/assets/use-cases/healthcare/SophiaGenetics.svg"
-import BrainlabLogoImg from "~/assets/landing/infrastructure/companies/brainlab.svg"
+import DataportLogo from "~/contents/customer-stories/30/logo.svg?raw"
+import COELogoImg from "~/components/enterprise/assets/logos/COE.svg"
+import DataportLogoImg from "~/assets/trusted-companies/Dataport.svg"
+import ITZBundLogoImg from "~/assets/trusted-companies/ITZBunds.svg"
+import BundesagenturLogoImg from "~/assets/trusted-companies/Bundesagentur.svg"
+import BattelleLogoImg from "~/assets/trusted-companies/Battelle.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
 const HERO_TAGS = [
-    { label: "HIPAA & HITRUST friendly", icon: "mdi:shield-check-outline" },
-    { label: "PHI stays on-prem", icon: "mdi:shield-lock-outline" },
-    { label: "Air-gapped & sovereign", icon: "mdi:earth-box" },
+    { label: "On-prem & air-gapped", icon: "mdi:shield-lock-outline" },
     { label: "Apache 2.0 licensed", icon: "mdi:code-tags" },
-    { label: "Kubernetes & GPU workers", icon: "mdi:server-network-outline" },
-    { label: "Multi-tenant data science", icon: "mdi:account-group-outline" },
+    { label: "Kubernetes & OpenShift native", icon: "mdi:server-network-outline" },
+    { label: "PostgreSQL backend", icon: "mdi:database-outline" },
+    { label: "Multi-tenant by namespace", icon: "mdi:domain" },
+    { label: "LDAP, OIDC, SAML, SCIM", icon: "mdi:account-key-outline" },
     { label: "1200+ open-source plugins", icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Healthcare & Life Sciences"
+const title = "Kestra for Public Services & Institutions"
 const description =
-    "The orchestration layer behind modern healthcare and life sciences. Run medical AI imaging, pharmacy supply chains, genomics pipelines, and HIPAA-compliant data operations on one open-source engine. PHI stays inside your perimeter."
+    "One open-source orchestration engine for infrastructure, SOC, data, and modernization workflows. Integrate what you already run. Standardize how operations execute. Replace brittle orchestration silos when you're ready."
 
 const FLOW_STAGES = [
     {
         id: "trigger",
         label: "TRIGGER",
         items: [
-            "Medical image / DICOM arrival",
-            "Supplier file drop / SFTP",
+            "API request / portal call",
             "Schedule / batch window",
-            "Kafka / event stream",
-            "Webhook / portal call",
-            "Ticket / incident update",
+            "SIEM / SOC alert",
+            "Git push / change event",
+            "vCenter / hypervisor event",
+            "ServiceNow ticket update",
         ],
     },
     {
         id: "ingest",
         label: "INGEST",
         items: [
-            "PACS, DICOM & imaging archives",
-            "Pharmacy & supplier file feeds",
-            "Genomics / lab / sequencing data",
-            "Lakehouse / dbt / warehouse",
-            "Vault / CyberArk / PHI secrets",
+            "vSphere, KVM, Nutanix, MAAS",
+            "Mainframe / Oracle / DB2 / SQL Server",
             "Identity (LDAP, Keycloak, AD)",
+            "ServiceNow / NetBox / CMDB",
+            "Vault / CyberArk / Delinea",
+            "Lakehouse / dbt / warehouse",
         ],
     },
     {
         id: "process",
         label: "PROCESS",
         items: [
-            "Image segmentation & ML scoring",
-            "Supplier file normalization",
-            "Bioinformatics & genomics jobs",
-            "dbt / SQL / Python / R / Spark",
-            "Clinical & analyst approval gates",
-            "PHI policy & retention controls",
+            "Terraform / Ansible / Argo CD",
+            "Snapshot / patch / verify / rollback",
+            "SOC enrichment & risk scoring",
+            "Policy & compliance checks",
+            "Human approval gates",
+            "AI-assisted triage & runbooks",
         ],
     },
     {
         id: "act",
         label: "ACT",
         items: [
-            "Update PACS / EHR / CRM",
-            "Sync inventory / dispatch supplier",
-            "Publish lakehouse / data product",
-            "Notify clinician / analyst / on-call",
-            "Archive signed audit bundle",
-            "Update downstream systems",
+            "Provision VMs / clusters / bare metal",
+            "Update CMDB & NetBox source-of-truth",
+            "Trigger remediation / isolation",
+            "Deploy / promote / release",
+            "Notify on-call / partner team",
+            "Sign and archive audit bundle",
         ],
     },
 ]
@@ -94,96 +96,96 @@ const FLOW_STAGES = [
 const quotes = [
     {
         quote:
-            "Stability was the turning point. With Kestra, our most critical flows finally run the way they should.",
-        author: "Infrastructure Lead, Apotek Hjärtat",
-        smallLogoSvg: optimizeSvgIcon(ApotekHjartatLogo, "apotek-hjartat-quote-logo"),
+            "Kestra gives us a modern orchestration platform we can run ourselves without compromising on governance.",
+        author: "Platform Architect, Dataport",
+        smallLogoSvg: optimizeSvgIcon(DataportLogo, "dataport-quote-logo"),
         kpis: [
-            { value: "400+", name: "pharmacies rely on Kestra" },
-            { value: "50+", name: "critical workflows modernized" },
-            { value: "30+ yrs", name: "of legacy platform, replaced" },
+            { value: "1", name: "control plane for private cloud" },
+            { value: "3 weeks", name: "to validate compliance" },
+            { value: "0", name: "external dependencies" },
         ],
-        storyLink: "/use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment",
+        storyLink: "/use-cases/stories/30-building-a-government-grade-orchestration-control-plane-with-kestra",
     },
 ]
 
 const WORKLOAD_CATEGORIES = [
     {
-        name: "Medical AI, Imaging & Decision Support",
+        name: "Infrastructure & Platform Orchestration",
         items: [
             {
-                icon: "mdi:image-search-outline",
-                title: "Medical Image & AI Pipelines",
-                description: "Process half-gigabyte DICOM volumes, run segmentation and scoring models, and route case outputs for analyst review. The orchestration layer behind cardiac, radiology, and pathology AI workflows. 80 to 90 percent less orchestration overhead than hand-rolled pipelines.",
-            },
-            {
-                icon: "mdi:account-supervisor-outline",
-                title: "Human-in-the-Loop Clinical Review",
-                description: "Pause any workflow for case-analyst, clinician, or compliance sign-off. Dynamic reprioritization based on AI corner cases, study importance, or operational SLAs. Every decision captured in the immutable audit trail.",
-            },
-            {
-                icon: "mdi:flask-outline",
-                title: "Computer Vision & Diagnostic Support",
-                description: "Orchestrate inference across cardiac imaging, neurosurgery planning, oncology workflows, and pathology slides. Native Docker and Kubernetes execution with GPU worker groups for ML workloads.",
-            },
-        ],
-    },
-    {
-        name: "Pharmacy, Supply Chain & Operations",
-        items: [
-            {
-                icon: "mdi:pill",
-                title: "Pharmacy Supply Chain Orchestration",
-                description: "Receive supplier orders from SFTP, email, or API. Normalize formats with Python or shell scripts, validate against rules, and load to your back-office system. The pattern running major pharmacy retail networks.",
-            },
-            {
-                icon: "mdi:swap-horizontal-bold",
-                title: "Mission-Critical Integration Modernization",
-                description: "Replace 30-year-old integration platforms one workflow at a time. Wrap legacy Python scripts and Cron jobs as Kestra flows, then modernize incrementally. Stability and observability without freezing operations.",
-            },
-            {
-                icon: "mdi:warehouse",
-                title: "Inventory, Distribution & Logistics",
-                description: "Coordinate inventory, distribution, and partner logistics. Kafka triggers for high-volume events, MySQL or Postgres back-office writes, and exception routing to the right ops team.",
-            },
-        ],
-    },
-    {
-        name: "Genomics, Research & Data Science",
-        items: [
-            {
-                icon: "mdi:dna",
-                title: "Genomics & Bioinformatics Pipelines",
-                description: "Parallelize sequencing pipelines on Kubernetes, AWS Batch, or GPU workers. Long-running jobs with retries, timeouts, and lineage. Hypersensitive genomic data stays inside your perimeter.",
-            },
-            {
-                icon: "mdi:account-group-outline",
-                title: "Multi-Team Data Science Workflows",
-                description: "Different data science teams have different workflow needs. Namespace-scoped flows, secrets, and runtime per team. Each lab or research group owns its environment on a shared, governed platform.",
+                icon: "mdi:server-plus-outline",
+                title: "VM Lifecycle & Self-Service Portals",
+                description: "Native plugins for vSphere, vCenter, ESXi, KVM, MAAS, and Nutanix orchestrate the full VM lifecycle: provision, snapshot, clone, template, restore. Expose it all as a self-service catalog with quota validation, approval gates, and CMDB updates.",
             },
             {
                 icon: "mdi:cube-outline",
-                title: "Long-Running Compute & GPU Orchestration",
-                description: "Manage long-running training and inference jobs across Kubernetes, AWS Batch, and GPU clusters. Pause for researcher review, retry with exponential backoff, and capture lineage for reproducibility.",
+                title: "Terraform, Ansible & Kubernetes Operations",
+                description: "Wrap your existing IaC with sovereign orchestration. Run Terraform plans and applies, Ansible playbooks, Argo CD syncs, and OpenShift or Kubernetes operations from one Git-backed control plane, with state isolation per environment.",
+            },
+            {
+                icon: "mdi:cloud-sync-outline",
+                title: "Hybrid Cloud & Multi-Cluster Operations",
+                description: "Coordinate workloads across on-prem datacenters, sovereign clouds, and hyperscaler regions. Linux, Windows, and GPU workers run side-by-side on a shared control plane with worker-group isolation.",
             },
         ],
     },
     {
-        name: "HIPAA Data, Platform & IT Operations",
+        name: "Cybersecurity & SOC Operations",
         items: [
             {
-                icon: "mdi:shield-check-outline",
-                title: "HIPAA-Compliant Data Pipelines",
-                description: "PHI stays inside your perimeter. Self-hosted workers run next to PHI; the control plane can live in a segmented zone. Multifax and high-volume ingestion patterns with SLA-bound execution and burst capacity.",
+                icon: "mdi:shield-search",
+                title: "Open SOC Triage & Alert Routing",
+                description: "An open alternative to Palo Alto SOAR, Splunk SOAR, and the Python glue between them. Receive alerts from your SIEM, enrich with threat intelligence, score risk with rules or ML, route to the right analyst queue. All on infrastructure your data-protection team has signed off on.",
             },
             {
-                icon: "mdi:ticket-outline",
-                title: "Identity, Ticketing & Service Operations",
-                description: "Replace manual orchestration that takes hours and waits days for resolution. Centralize multi-server scripts behind one declarative engine, with tickets routed automatically and resolution captured in audit.",
+                icon: "mdi:lan-disconnect",
+                title: "Incident Response & Threat Containment",
+                description: "Automate containment runbooks: isolate hosts, rotate credentials, snapshot evidence, open ServiceNow incidents, notify on-call. Mandatory analyst confirmation on irreversible actions. Replayable per alert, audit-ready by default.",
             },
             {
-                icon: "mdi:security-network",
-                title: "Sovereign Platform & Cloud Operations",
-                description: "Self-hosted on private cloud or air-gapped infrastructure. Kubernetes, OpenShift, AWS, GCP, or Azure deployment with worker-group isolation. Modernize legacy infra automation without compromising on PHI controls.",
+                icon: "mdi:office-building-cog-outline",
+                title: "Multi-Tenant SOC for Multi-Agency Estates",
+                description: "Operate one SOC platform across multiple states, agencies, or institutional clients. Namespace-scoped flows, secrets, and audit trails per tenant. Zero blast radius between environments.",
+            },
+        ],
+    },
+    {
+        name: "Modernizing Legacy Automation",
+        items: [
+            {
+                icon: "mdi:swap-horizontal-bold",
+                title: "The Open Exit from VMware Aria & vRealize",
+                description: "Replace the brittle automation layer above your virtualization stack, not VMware itself. Integrate vSphere, vCenter, and ESXi directly. Standardize on YAML in Git, REST APIs, OIDC, OpenTelemetry. Procurement-friendly, no proprietary runtime lock-in.",
+            },
+            {
+                icon: "mdi:calendar-clock-outline",
+                title: "From Schedulers & Runbook Tools to Declarative Flows",
+                description: "Retire Cron, Control-M, Autosys, vRO, Rundeck, HP Operations Orchestration, and hand-rolled wrappers. Replace them with declarative YAML, event triggers, and a unified execution history. At your own pace, without freezing existing jobs.",
+            },
+            {
+                icon: "mdi:transit-connection-variant",
+                title: "Incremental Migration from Mainframe & Legacy",
+                description: "Wrap existing JCL, AS/400, Oracle, SFTP, and MQ jobs first, then modernize incrementally. Plugins for JDBC, SFTP/FTPS, JMS/IBM MQ, Kafka, and shell. Integrate first, standardize next, replace only when you're ready.",
+            },
+        ],
+    },
+    {
+        name: "Sovereign Data & AI Platforms",
+        items: [
+            {
+                icon: "mdi:database-sync-outline",
+                title: "Cross-Department Data Pipelines",
+                description: "Move and transform data across departmental warehouses, lakehouses, and operational systems. dbt, SQL, Python, Spark, and Java tasks orchestrated with full lineage and replayability per tenant.",
+            },
+            {
+                icon: "mdi:earth-box",
+                title: "Lakehouse & dbt on Sovereign Infrastructure",
+                description: "Run modern data stacks inside your jurisdictional perimeter. Java-based engine fits enterprise environments where Python-only tools struggle. EU and US residency, no cross-region data transfer.",
+            },
+            {
+                icon: "mdi:brain",
+                title: "AI Workflows Inside Your Perimeter",
+                description: "Orchestrate OCR, LLM extraction, classification, and decision-support models alongside rule-based checks. Models, prompts, and PII never leave your environment. Humans-in-the-loop on every consequential decision.",
             },
         ],
     },
@@ -192,275 +194,287 @@ const WORKLOAD_CATEGORIES = [
 const ENTERPRISE_FEATURES = [
     {
         icon: ShieldCheckOutline,
-        title: "PHI-Safe & Air-Gapped Deployment",
-        description: "Self-hosted, VPC, or fully air-gapped. Segment control plane and workers across restricted zones so PHI never leaves your perimeter. EU or US data residency for Kestra Cloud.",
+        title: "Sovereign & Air-Gapped Deployment",
+        description: "Self-hosted, VPC, or fully air-gapped. EU or US data residency. Segment control plane and workers across restricted zones with zero egress required. Kestra runs entirely inside your jurisdictional perimeter.",
     },
     {
         icon: ServerNetworkOutline,
-        title: "Kubernetes, OpenShift & GPU Workers",
-        description: "Docker, Helm, or OpenShift. Worker groups isolate Linux, Windows, GPU, and PHI-touching runtimes on one shared control plane. PostgreSQL backend handles millions of executions.",
+        title: "Kubernetes, OpenShift & Hybrid Workers",
+        description: "Docker, Helm, or OpenShift. Worker groups isolate Linux, Windows, GPU, and secure-zone runtimes on one shared control plane. PostgreSQL backend handles millions of executions. No Kafka or Elasticsearch required.",
     },
     {
         icon: Git,
         title: "Immutable, Replayable Execution",
-        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical case, study, or supplier batch with the exact code, secrets, and inputs. Years later, the audit holds.",
+        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical run with the exact code, secrets, and inputs, in one click. Years later, the audit holds.",
     },
     {
         icon: AccountGroupOutline,
         title: "Multi-Tenant by Namespace, RBAC by Default",
-        description: "Each lab, business unit, or research team owns its flows, secrets, and runtime on a shared platform. Namespace-scoped RBAC with SSO, SAML, OIDC, and SCIM. Zero blast radius between teams.",
+        description: "Each agency, programme, or environment owns its flows, secrets, and runtime on a shared platform. Namespace-scoped RBAC with SSO, SAML, OIDC, and SCIM. Zero blast radius between tenants.",
     },
     {
         icon: FileDocumentCheckOutline,
-        title: "Clinical & Compliance Approval Gates",
-        description: "Pause any workflow pending human sign-off. Enforce dual control on clinical decisions, model promotions, PHI-touching releases, and any production change. A first-class flow primitive.",
+        title: "Approval Gates, Kill Switch & Apps",
+        description: "Pause any workflow pending human sign-off. Stop or contain a problematic execution from the UI in one click. Build self-service forms in front of flows with Apps. Governance at the speed of operations.",
     },
     {
         icon: CodeTagsCheck,
         title: "Audit Logs, Lineage & SIEM Integration",
-        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, or your preferred SIEM for HIPAA, HITRUST, and SOC 2 evidence.",
+        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, or your preferred SIEM. Hand auditors a signed evidence bundle in minutes, not weeks.",
     },
 ]
 
 const BUILD_TABS = [
     {
-        name: "Medical image AI pipeline",
-        title: "From DICOM arrival to clinician review, with the AI pipeline orchestrated end to end.",
+        name: "VMware safe-patch with rollback",
+        title: "Snapshot, patch, verify, rollback. VMware orchestration with the safety net built in.",
         description:
-            "A medical study lands on the webhook. Kestra loads credentials from Vault, segments the volume with a Python container, scores anomalies, pauses for case-analyst confirmation on flagged studies, and writes results back to PACS. A common pattern for cardiac, radiology, and pathology AI at scale.",
-        code: `id: medical-image-pipeline
-namespace: company.health.imaging
+            "Snapshot the VM through the native vSphere plugin, apply the change, verify health, and roll back automatically if validation fails. The safe-patching pattern most teams build by hand, expressed as one declarative flow. Automation that fails safely.",
+        code: `id: vmware-safe-patch
+namespace: company.platform.vmware
 
 inputs:
-  - id: study
-    type: JSON
-    displayName: DICOM study payload (study UID, modality, patient ref)
+  - id: vm_name
+    type: STRING
+    displayName: VM name to patch
 
 tasks:
-  - id: load_secrets
-    type: io.kestra.plugin.hashicorp.vault.kv.Read
-    url: "{{ secret('VAULT_URL') }}"
-    token: "{{ secret('VAULT_TOKEN') }}"
-    path: "secret/health/imaging"
+  - id: snapshot_before
+    type: io.kestra.plugin.ee.vmware.esxi.CreateVmSnapshot
+    server: "{{ secret('VCENTER_HOST') }}"
+    username: "{{ secret('VCENTER_USER') }}"
+    password: "{{ secret('VCENTER_PASS') }}"
+    vmName: "{{ inputs.vm_name }}"
+    snapshotName: "pre-change-{{ execution.id }}"
+    description: "Automatic snapshot before patching"
 
-  - id: segment_volume
-    type: io.kestra.plugin.scripts.python.Commands
-    containerImage: "ghcr.io/health/segmentation:1.4"
+  - id: apply_patch
+    type: io.kestra.plugin.scripts.shell.Commands
     commands:
-      - python segment.py --study '{{ inputs.study | toJson }}'
+      - ansible-playbook patch.yml -e vm={{ inputs.vm_name }}
 
-  - id: score_anomaly
-    type: io.kestra.plugin.scripts.python.Commands
-    containerImage: "ghcr.io/health/scoring:2.1"
-    commands:
-      - python score.py --segments {{ outputs.segment_volume.outputFiles.segments }}
+  - id: verify_health
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://monitoring.internal/health/{{ inputs.vm_name }}"
+    allowFailed: true
 
-  - id: route_review
+  - id: rollback_if_failed
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs.score_anomaly.vars.flagged == true }}"
+    condition: "{{ outputs.verify_health.code != 200 }}"
     then:
-      - id: analyst_review
+      - id: restore_snapshot
+        type: io.kestra.plugin.ee.vmware.esxi.RestoreVmFromSnapshot
+        server: "{{ secret('VCENTER_HOST') }}"
+        username: "{{ secret('VCENTER_USER') }}"
+        password: "{{ secret('VCENTER_PASS') }}"
+        vmName: "{{ inputs.vm_name }}"
+        snapshotName: "pre-change-{{ execution.id }}"
+
+      - id: alert_team
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        url: "{{ secret('SLACK_WEBHOOK') }}"
+        messageText: "Patch failed for {{ inputs.vm_name }}. VM rolled back to snapshot."`,
+        plugins: [
+            { cls: "io.kestra.plugin.ee.vmware.esxi.CreateVmSnapshot" },
+            { cls: "io.kestra.plugin.scripts.shell.Commands" },
+            { cls: "io.kestra.plugin.core.flow.If" },
+            { cls: "io.kestra.plugin.ee.vmware.esxi.RestoreVmFromSnapshot" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "SOC alert triage & containment",
+        title: "Triage SIEM alerts, enrich, and contain. The open alternative to closed SOAR platforms.",
+        description:
+            "Receive alerts from your SIEM, enrich with threat intelligence, score with a Python model, branch on severity, pause for analyst confirmation on critical events, isolate hosts, and open ServiceNow incidents. Replaces Palo Alto SOAR, Splunk SOAR, and the script glue between them.",
+        code: `id: soc-alert-triage
+namespace: company.soc.alerts
+
+triggers:
+  - id: siem_webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "siem-events"
+
+inputs:
+  - id: alert
+    type: JSON
+    displayName: SIEM alert payload
+
+tasks:
+  - id: enrich_indicators
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://intel.internal/enrich"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.alert | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('INTEL_TOKEN') }}"
+
+  - id: score_risk
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python score.py --alert '{{ inputs.alert | toJson }}' --intel '{{ outputs.enrich_indicators.body | toJson }}'
+
+  - id: route_decision
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.score_risk.vars.risk == 'critical' }}"
+    then:
+      - id: analyst_confirm
         type: io.kestra.plugin.core.flow.Pause
         description: |
-          Case analyst must confirm finding for study
-          {{ inputs.study.study_uid }} before posting back to PACS.
+          Analyst must confirm containment for alert {{ inputs.alert.id }}.
 
-  - id: post_to_pacs
+      - id: isolate_host
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://edr.internal/hosts/{{ inputs.alert.host_id }}/isolate"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ secret('EDR_TOKEN') }}"
+
+  - id: create_incident
     type: io.kestra.plugin.core.http.Request
-    uri: "https://pacs.internal/api/studies/{{ inputs.study.study_uid }}/findings"
+    uri: "https://servicenow.example/api/now/table/incident"
     method: POST
     contentType: application/json
     headers:
-      Authorization: "Bearer {{ outputs.load_secrets.data.pacs_token }}"
-    body: "{{ outputs.score_anomaly.outputFiles.report }}"
-
-  - id: archive_lineage
-    type: io.kestra.plugin.aws.s3.Upload
-    bucket: "imaging-audit"
-    key: "studies/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ inputs.study.study_uid }}.json"
-    from: "{{ outputs.score_anomaly.outputFiles.report }}"`,
+      Authorization: "Bearer {{ secret('SNOW_TOKEN') }}"
+    body: |
+      {
+        "short_description": "SOC alert {{ inputs.alert.id }}",
+        "assignment_group": "soc-tier1"
+      }`,
         plugins: [
-            { cls: "io.kestra.plugin.hashicorp.vault.kv.Read" },
+            { cls: "io.kestra.plugin.core.trigger.Webhook" },
             { cls: "io.kestra.plugin.scripts.python.Commands" },
             { cls: "io.kestra.plugin.core.flow.Pause" },
-            { cls: "io.kestra.plugin.aws.s3.Upload" },
+            { cls: "io.kestra.plugin.core.http.Request" },
         ],
         href: "/blueprints",
     },
     {
-        name: "Pharmacy supply chain ingestion",
-        title: "Normalize supplier files from any format and load them to the back office.",
+        name: "Bare metal + NetBox source-of-truth",
+        title: "Provision bare metal through MAAS and update NetBox in one execution. No drift by design.",
         description:
-            "Suppliers drop order files in any format. Kestra polls the SFTP, normalizes each file with a Python script, validates against business rules, loads to the back-office database, and routes exceptions to the right ops queue. The pattern running pharmacy retail networks at scale.",
-        code: `id: supplier-order-ingestion
-namespace: company.pharmacy.supply
+            "Commission a server through MAAS, deploy the OS image, register the device in NetBox, assign the IP. If the inventory write fails, the workflow fails. Metal provisioning, source-of-truth, and downstream automation become one execution you can debug.",
+        code: `id: provision-metal-and-register
+namespace: company.platform.bare-metal
 
-triggers:
-  - id: every_5_min
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "*/5 * * * *"
+inputs:
+  - id: hostname
+    type: STRING
+  - id: mac_address
+    type: STRING
 
 tasks:
-  - id: list_files
-    type: io.kestra.plugin.fs.sftp.List
-    host: "supplier-feed.internal"
-    port: "22"
-    username: "{{ secret('SFTP_USER') }}"
-    password: "{{ secret('SFTP_PASSWORD') }}"
-    from: "/inbound/orders/"
+  - id: enlist
+    type: io.kestra.plugin.ee.canonical.maas.EnlistMachine
+    url: "{{ secret('MAAS_URL') }}"
+    apiKey: "{{ secret('MAAS_API_KEY') }}"
+    macAddress: "{{ inputs.mac_address }}"
+    hostname: "{{ inputs.hostname }}"
+    architecture: "amd64/generic"
+    powerType: "ipmi"
+    powerParameters:
+      power_address: "192.168.1.100"
+      power_user: "{{ secret('IPMI_USER') }}"
+      power_pass: "{{ secret('IPMI_PASSWORD') }}"
 
-  - id: normalize
-    type: io.kestra.plugin.scripts.python.Commands
-    commands:
-      - python normalize.py --listing {{ outputs.list_files.uri }}
+  - id: commission
+    type: io.kestra.plugin.ee.canonical.maas.CommissionMachine
+    url: "{{ secret('MAAS_URL') }}"
+    apiKey: "{{ secret('MAAS_API_KEY') }}"
+    systemId: "{{ outputs.enlist.systemId }}"
+    waitForCompletion: true
+    timeout: PT30M
 
-  - id: validate
-    type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs.normalize.vars.errors > 0 }}"
-    then:
-      - id: notify_ops
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-        url: "{{ secret('SLACK_OPS_URL') }}"
-        payload: |
-          { "text": "{{ outputs.normalize.vars.errors }} supplier file errors. Run {{ execution.id }}." }
+  - id: deploy
+    type: io.kestra.plugin.ee.canonical.maas.DeployMachine
+    url: "{{ secret('MAAS_URL') }}"
+    apiKey: "{{ secret('MAAS_API_KEY') }}"
+    systemId: "{{ outputs.commission.systemId }}"
+    osystem: "ubuntu"
+    distroSeries: "jammy"
+    waitForDeployment: true
+    timeout: PT45M
 
-  - id: load_to_backoffice
-    type: io.kestra.plugin.jdbc.mysql.Query
-    url: "jdbc:mysql://backoffice:3306/orders"
-    username: "{{ secret('MYSQL_USER') }}"
-    password: "{{ secret('MYSQL_PASSWORD') }}"
-    sql: |
-      INSERT INTO orders.supplier_batch (batch_id, file_count, loaded_at)
-      VALUES ('{{ execution.id }}', {{ outputs.normalize.vars.file_count }}, NOW())
+  - id: register_in_netbox
+    type: io.kestra.plugin.ee.netbox.CreateDevice
+    url: "{{ secret('NETBOX_URL') }}"
+    token: "{{ secret('NETBOX_API_TOKEN') }}"
+    name: "{{ inputs.hostname }}"
 
-  - id: archive_batch
-    type: io.kestra.plugin.aws.s3.Upload
-    bucket: "supply-chain-archive"
-    key: "orders/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ execution.id }}.json"
-    from: "{{ outputs.normalize.outputFiles.batch }}"`,
+  - id: assign_ip
+    type: io.kestra.plugin.ee.netbox.AssignIpAddress
+    url: "{{ secret('NETBOX_URL') }}"
+    token: "{{ secret('NETBOX_API_TOKEN') }}"
+    address: "10.100.1.45/24"
+    status: "active"
+    assignedObjectType: "dcim.interface"
+    assignedObjectId: "{{ outputs.register_in_netbox.primary_interface_id }}"
+    dnsName: "{{ inputs.hostname }}.mgmt.example.com"`,
         plugins: [
-            { cls: "io.kestra.plugin.fs.sftp.List" },
-            { cls: "io.kestra.plugin.scripts.python.Commands" },
-            { cls: "io.kestra.plugin.jdbc.mysql.Query" },
-            { cls: "io.kestra.plugin.aws.s3.Upload" },
+            { cls: "io.kestra.plugin.ee.canonical.maas.EnlistMachine" },
+            { cls: "io.kestra.plugin.ee.canonical.maas.CommissionMachine" },
+            { cls: "io.kestra.plugin.ee.canonical.maas.DeployMachine" },
+            { cls: "io.kestra.plugin.ee.netbox.CreateDevice" },
         ],
         href: "/blueprints",
     },
     {
-        name: "Genomics pipeline per team",
-        title: "Per-team genomics pipeline with namespace isolation and signed lineage.",
+        name: "Multi-tenant data pipeline",
+        title: "Per-tenant data pipeline with namespace isolation and signed lineage.",
         description:
-            "Each research team owns its namespace, secrets, and runtime. The same flow shape runs per team: pull raw sequencing data, run a containerized bioinformatics step on Kubernetes, validate, publish to the secure lakehouse, archive the lineage. Hypersensitive data never leaves your perimeter.",
-        code: `id: genomics-pipeline
-namespace: company.research.team_a
+            "Each department or programme owns its own namespace, secrets, and runtime. The same flow shape runs per tenant: extract, transform with dbt, validate, publish to the sovereign lakehouse, archive lineage. Zero blast radius between teams. Full audit per run.",
+        code: `id: tenant-data-pipeline
+namespace: company.data.tenant_a
 
 triggers:
   - id: nightly
     type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 3 * * *"
+    cron: "0 2 * * *"
 
 tasks:
-  - id: pull_raw_data
-    type: io.kestra.plugin.aws.s3.Downloads
-    bucket: "raw-sequencing"
-    prefix: "{{ flow.namespace }}/inbound/"
+  - id: extract_source
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://source-{{ flow.namespace }}:5432/data"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: STORE
+    sql: "SELECT * FROM events WHERE event_date = CURRENT_DATE - 1"
 
-  - id: run_pipeline
-    type: io.kestra.plugin.kubernetes.kubectl.Apply
-    namespace: "research-{{ flow.namespace }}"
-    spec: |
-      apiVersion: batch/v1
-      kind: Job
-      metadata:
-        name: bioinformatics-{{ execution.id }}
-      spec:
-        template:
-          spec:
-            containers:
-              - name: pipeline
-                image: ghcr.io/research/bio:v3
-                args: ["--input", "{{ outputs.pull_raw_data.uri }}"]
-            restartPolicy: Never
+  - id: dbt_build
+    type: io.kestra.plugin.dbt.cli.Build
+    projectDir: "./dbt"
+    commands:
+      - dbt build --target {{ flow.namespace }}
 
   - id: quality_checks
     type: io.kestra.plugin.scripts.python.Commands
     commands:
-      - python validate_run.py --execution {{ execution.id }}
+      - python validate.py --tenant {{ flow.namespace }}
 
-  - id: publish_to_lakehouse
+  - id: publish_lakehouse
     type: io.kestra.plugin.aws.s3.Upload
-    bucket: "research-lakehouse"
-    key: "{{ flow.namespace }}/{{ execution.startDate | date('yyyy/MM/dd') }}/results.parquet"
-    from: "{{ outputs.quality_checks.outputFiles.parquet }}"
+    bucket: "sovereign-lakehouse"
+    key: "{{ flow.namespace }}/{{ execution.startDate | date('yyyy/MM/dd') }}/output.parquet"
+    from: "{{ outputs.dbt_build.outputFiles.results }}"
 
-  - id: notify_team
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "{{ secret('SLACK_TEAM_URL') }}"
-    payload: |
-      { "text": "Genomics run {{ execution.id }} complete. Results in lakehouse." }`,
+  - id: archive_lineage
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://lineage.internal/runs"
+    method: POST
+    contentType: application/json
+    body: |
+      {
+        "tenant": "{{ flow.namespace }}",
+        "execution_id": "{{ execution.id }}",
+        "completed_at": "{{ execution.endDate }}"
+      }`,
         plugins: [
-            { cls: "io.kestra.plugin.aws.s3.Downloads" },
-            { cls: "io.kestra.plugin.kubernetes.kubectl.Apply" },
-            { cls: "io.kestra.plugin.scripts.python.Commands" },
-            { cls: "io.kestra.plugin.aws.s3.Upload" },
-        ],
-        href: "/blueprints",
-    },
-    {
-        name: "HIPAA-compliant intake",
-        title: "High-volume PHI intake with policy enforcement, retention controls, and signed audit.",
-        description:
-            "A document or fax lands on the webhook. Kestra enforces PHI policy at the edge, runs OCR and extraction, transforms with dbt, archives the bundle with retention metadata for HIPAA, and notifies the team. Bursty, replayable, audit-ready.",
-        code: `id: hipaa-intake
-namespace: company.health.intake
-
-triggers:
-  - id: intake_webhook
-    type: io.kestra.plugin.core.trigger.Webhook
-    key: "phi-intake"
-
-inputs:
-  - id: document
-    type: JSON
-    displayName: Incoming document or fax payload
-
-tasks:
-  - id: enforce_policy
-    type: io.kestra.plugin.scripts.python.Commands
-    commands:
-      - python enforce_phi_policy.py --doc '{{ inputs.document | toJson }}'
-
-  - id: ocr_extract
-    type: io.kestra.plugin.scripts.python.Commands
-    containerImage: "ghcr.io/health/ocr:5.2"
-    commands:
-      - python extract.py --doc '{{ inputs.document | toJson }}'
-
-  - id: dbt_transform
-    type: io.kestra.plugin.dbt.cli.Build
-    projectDir: "./dbt/intake"
-    commands:
-      - dbt build --target intake
-
-  - id: archive_with_retention
-    type: io.kestra.plugin.aws.s3.Upload
-    bucket: "phi-archive"
-    key: "intake/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ execution.id }}.json"
-    from: "{{ outputs.ocr_extract.outputFiles.bundle }}"
-    metadata:
-      retention-class: "hipaa-7y"
-      execution-id: "{{ execution.id }}"
-
-  - id: notify_team
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "{{ secret('SLACK_INTAKE_URL') }}"
-    payload: |
-      { "text": "PHI intake {{ execution.id }} archived with HIPAA retention." }`,
-        plugins: [
-            { cls: "io.kestra.plugin.core.trigger.Webhook" },
-            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
             { cls: "io.kestra.plugin.dbt.cli.Build" },
             { cls: "io.kestra.plugin.aws.s3.Upload" },
+            { cls: "io.kestra.plugin.core.http.Request" },
         ],
         href: "/blueprints",
     },
@@ -468,76 +482,76 @@ tasks:
 
 const FAQ = [
     {
-        question: "Can Kestra orchestrate medical AI and imaging pipelines at scale?",
-        answer: "Yes. Process half-gigabyte DICOM volumes, run segmentation and scoring models, route case outputs for analyst review, and write results back to PACS. GPU worker groups handle ML workloads. Human-in-the-loop pauses on flagged studies. A common pattern for cardiac, radiology, and pathology AI at scale.",
+        question: "Can Kestra orchestrate VMware lifecycle, vSphere, vCenter, and ESXi without a portal layer above it?",
+        answer: "Yes. The native VMware plugin orchestrates the full VM lifecycle (provision, snapshot, clone, template, restore, power state) across vCenter and ESXi. Event-driven triggers react to vCenter lifecycle events. The point is to replace the brittle automation UI layer (Aria, vRealize Automation) while keeping the virtualization substrate intact. No big-bang rewrite, no rip-and-replace.",
     },
     {
-        question: "How does Kestra handle PHI safely for HIPAA, HITRUST, and SOC 2?",
-        answer: "PHI never has to leave your perimeter. Self-hosted workers run next to PHI; the control plane can live in a segmented zone. Secrets come from Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or CyberArk. Every execution is immutable and replayable. Audit logs stream to Splunk, Elastic, or your SIEM for HIPAA, HITRUST, and SOC 2 evidence.",
+        question: "How does Kestra fit alongside legacy automation suites like VMware Aria, vRealize Automation, vRO, Rundeck, HP Operations Orchestration, Control-M, and Autosys?",
+        answer: "Kestra is the open-source modernization path. Most public-sector teams start by wrapping existing jobs as Kestra flows, then migrate workflow by workflow at their own pace. No big-bang cutover, no freezing of existing automation. Procurement-friendly licensing, open standards (YAML, REST, OIDC, OpenTelemetry), and a clear exit path for every workflow.",
     },
     {
-        question: "Can Kestra automate pharmacy supply chains and supplier file integration?",
-        answer: "Yes. Poll SFTP for supplier files in any format, normalize with Python or shell scripts, validate against business rules, load to your back-office database, and route exceptions to the right ops queue. The pattern running major pharmacy retail networks across hundreds of stores.",
+        question: "Can Kestra orchestrate bare metal through MAAS, NetBox, and existing source-of-truth systems?",
+        answer: "Yes. Plugins for Canonical MAAS (Metal as a Service) cover the full lifecycle: list, enlist, commission, deploy, power-control machines. The NetBox plugin keeps your DCIM and IPAM source-of-truth in sync as part of the same execution. If inventory update fails, the workflow fails. No drift by design.",
     },
     {
-        question: "Can Kestra orchestrate genomics and bioinformatics pipelines?",
-        answer: "Yes. Parallelize sequencing pipelines on Kubernetes, AWS Batch, or GPU workers. Long-running jobs with retries, timeouts, lineage, and per-team namespace isolation. Hypersensitive genomic data stays inside your perimeter. The pattern multi-team genomics and life-sciences data programs use.",
+        question: "Can Kestra run SOC and security-automation workflows on-prem?",
+        answer: "Yes. Public-sector SOCs use Kestra as an open alternative to Palo Alto SOAR and Splunk SOAR: triage SIEM alerts, enrich with threat intelligence, score with rules or ML, isolate hosts, rotate credentials, snapshot evidence, open ServiceNow incidents. Multi-tenant by namespace for multi-state and multi-agency estates. Replayable per alert, audit-ready by default.",
     },
     {
         question: "Can Kestra run fully air-gapped, sovereign, or on-premise for restricted environments?",
-        answer: "Yes. Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions with no cross-region data transfer.",
+        answer: "Yes. Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions. Pick the deployment that fits your jurisdiction and information-classification regime, with no cross-region data transfer.",
     },
     {
         question: "Does Kestra deploy on Kubernetes, OpenShift, and Docker?",
-        answer: "Yes. Native deployment on Docker, Helm charts for Kubernetes, and OpenShift. Worker groups let you isolate Linux, Windows, GPU, and PHI-touching runtimes on a shared control plane. PostgreSQL backend handles millions of executions without requiring Kafka or Elasticsearch.",
+        answer: "Yes. Native deployment on Docker, Helm charts for Kubernetes, and OpenShift. Worker groups let you isolate Linux, Windows, GPU, and secure-zone runtimes on a shared control plane. PostgreSQL backend handles millions of executions without requiring Kafka or Elasticsearch, keeping your operational footprint minimal.",
     },
     {
-        question: "How does Kestra handle multi-tenant isolation across data science teams or business units?",
-        answer: "Different data science teams have different needs. Namespace-scoped RBAC and multi-tenant isolation let each team own its flows, secrets, and runtime on a shared platform. Subflows and triggers coordinate work across teams when needed. Zero blast radius between environments.",
+        question: "How does Kestra handle multi-tenant isolation across departments, agencies, or states?",
+        answer: "Namespace-scoped RBAC and multi-tenant isolation let each department, agency, programme, or state own its flows, secrets, and runtime on a shared platform. Subflows and triggers coordinate work across tenants when needed. Zero blast radius between environments. A single platform team operates the control plane while consuming teams self-serve their own workloads.",
     },
     {
-        question: "Does Kestra integrate with EHRs, HL7, FHIR, and existing healthcare interface engines?",
-        answer: "Yes, when needed. Plugins for HL7 v2 over MLLP, FHIR REST APIs, and the SFTP, MQ, and Kafka feeds your interface engine already produces. But interface engines are not where Kestra is strongest. Modern healthcare and life-sciences customers reach for Kestra to orchestrate medical AI pipelines, pharmacy supply chains, genomics workflows, and HIPAA-compliant data operations.",
+        question: "Does Kestra support OIDC, SAML, LDAP, Keycloak, and existing identity providers?",
+        answer: "Yes. SSO via SAML, OIDC, and OAuth2; user and group provisioning via SCIM; integration with Active Directory, LDAP, Keycloak, Azure AD, Okta, and any standards-compliant IdP. Fine-grained RBAC enforces least privilege per namespace, environment, and resource type. Aligned with how public-sector identity governance is already organized.",
     },
     {
-        question: "How does Kestra handle secrets, identity, and access control for sensitive healthcare data?",
-        answer: "Native integrations with HashiCorp Vault, CyberArk, AWS Secrets Manager, GCP Secret Manager, and Azure Key Vault. Secrets are scoped per namespace, per tenant, per flow, and never written to logs. SSO via SAML, OIDC, and OAuth2; SCIM provisioning; integration with Active Directory, LDAP, Keycloak, Azure AD, and Okta.",
+        question: "How does Kestra handle secrets like Vault, CyberArk, Delinea, and AWS, Azure, or GCP secret managers?",
+        answer: "Native integrations with HashiCorp Vault, CyberArk, Delinea Secrets Manager, AWS Secrets Manager, GCP Secret Manager, and Azure Key Vault. Secrets are scoped per namespace, per tenant, per flow, and never written to logs. Combined with namespace-scoped RBAC, each department or programme gets an isolated secret store on a shared, audited platform.",
     },
     {
-        question: "Can Kestra modernize legacy healthcare workflows that run on hand-rolled scripts and 30-year-old platforms?",
-        answer: "Yes. Wrap existing Python scripts, Cron jobs, and legacy integration platforms as Kestra flows, then modernize incrementally. Major pharmacy retailers have replaced 30-plus-year-old integration platforms across hundreds of stores and dozens of critical workflows this way. No big-bang rewrite, no production freeze.",
+        question: "Is Kestra open source, and does it fit public-sector procurement requirements?",
+        answer: "Yes. Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, Kill Switch, Apps for self-service UIs, and 24x7 support. Open standards throughout (YAML, REST, OIDC, OpenTelemetry), no proprietary runtime lock-in, transparent licensing. Maps cleanly to public-sector procurement, framework agreements, and open-source-by-default policies.",
     },
     {
-        question: "Is Kestra open source, and does it fit healthcare procurement requirements?",
-        answer: "Yes. Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, Kill Switch, Apps for self-service UIs, and 24x7 support. Open standards (YAML, REST, OIDC, OpenTelemetry), no proprietary runtime lock-in, transparent licensing. Maps cleanly to healthcare procurement and compliance frameworks.",
+        question: "Can Kestra build self-service infrastructure portals in front of flows?",
+        answer: "Yes. Apps let you build a UI in front of any flow: forms for data entry, approval buttons, controlled output views. The flow remains the backend. Combined with ServiceNow triggers and CMDB integration, you can turn catalog requests into provisioned resources in minutes, with audit proof end-to-end.",
     },
     {
-        question: "How does Kestra support AI-assisted workflows while keeping humans in the loop?",
-        answer: "Orchestrate OCR, LLM extraction, computer vision, and ML scoring alongside rule-based checks. Pause for human review at any decision point: case analyst confirmation, clinician sign-off, model promotion, exception handling. Models, prompts, and PHI stay inside your environment. Every model output and human decision is captured in the immutable audit trail.",
+        question: "How does Kestra support AI-assisted triage and runbooks while keeping humans in the loop?",
+        answer: "Orchestrate OCR, LLM extraction, classification, and decision-support models alongside rule-based checks. Pause for human review at any decision point: analyst confirmation, change-advisory approval, model promotion, exception handling. Models, prompts, and PII stay inside your environment. Every model output and human decision is captured in the immutable audit trail.",
     },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
-    <div class="healthcare">
+    <div class="public-services">
 
         <section class="hero">
             <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
             <div class="hero-inner">
                 <div class="badge-pill" data-usal="zoomin">
-                    <Icon name="mdi:heart-pulse" />
-                    <span>Healthcare &amp; Life Sciences</span>
+                    <Icon name="mdi:city-variant-outline" />
+                    <span>Public Services &amp; Institutions</span>
                 </div>
 
                 <h1 data-usal="fade-u">
-                    The orchestration layer behind<br />
-                    <span class="gradient">modern healthcare and life sciences.</span>
+                    Modernize public-sector IT.<br />
+                    <span class="gradient">On a platform you fully control.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
-                    Run medical AI pipelines, pharmacy supply chains, genomics workflows, and HIPAA-compliant data
-                    operations on one open-source engine. PHI stays inside your perimeter. Replayable end to end.
+                    One open-source orchestration engine for infrastructure, SOC, data, and modernization workflows.
+                    Integrate what you already run. Standardize how operations execute. Replace brittle orchestration silos when you're ready.
                 </p>
 
                 <div class="tags" data-usal="fade-l">
@@ -553,56 +567,56 @@ const FAQ = [
                     <div class="exec-panel">
                         <div class="exec-panel__header">
                             <span class="exec-panel__dot"></span>
-                            <span class="exec-panel__title">medical-image-pipeline</span>
-                            <span class="exec-panel__meta">namespace · company.health.imaging</span>
-                            <span class="exec-panel__duration">2.8s</span>
+                            <span class="exec-panel__title">vmware-safe-patch</span>
+                            <span class="exec-panel__meta">namespace · company.platform.vmware</span>
+                            <span class="exec-panel__duration">3.1s</span>
                         </div>
 
                         <div class="exec-panel__body">
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">receive_study</span>
-                                <span class="exec-row__type">core.http.Webhook</span>
-                                <span class="exec-row__result">DICOM accepted</span>
+                                <span class="exec-row__name">snapshot_before</span>
+                                <span class="exec-row__type">vmware.esxi.CreateVmSnapshot</span>
+                                <span class="exec-row__result">snapshot saved</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">load_secrets</span>
-                                <span class="exec-row__type">hashicorp.vault.kv.Read</span>
-                                <span class="exec-row__result">4 keys</span>
+                                <span class="exec-row__name">apply_patch</span>
+                                <span class="exec-row__type">scripts.shell.Commands</span>
+                                <span class="exec-row__result">ansible ok</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">segment_volume</span>
-                                <span class="exec-row__type">scripts.python (GPU)</span>
-                                <span class="exec-row__result">14 regions</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">score_anomaly</span>
-                                <span class="exec-row__type">scripts.python.Commands</span>
-                                <span class="exec-row__result">flagged</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">analyst_review</span>
-                                <span class="exec-row__type">core.flow.Pause</span>
-                                <span class="exec-row__result">Confirmed</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">post_to_pacs</span>
+                                <span class="exec-row__name">verify_health</span>
                                 <span class="exec-row__type">core.http.Request</span>
-                                <span class="exec-row__result">posted</span>
+                                <span class="exec-row__result">200 OK</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">change_approval</span>
+                                <span class="exec-row__type">core.flow.Pause</span>
+                                <span class="exec-row__result">Approved</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">update_netbox</span>
+                                <span class="exec-row__type">netbox.CreateDevice</span>
+                                <span class="exec-row__result">registered</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">notify_team</span>
+                                <span class="exec-row__type">notifications.slack</span>
+                                <span class="exec-row__result">sent</span>
                             </div>
                         </div>
 
                         <div class="exec-panel__footer">
-                            <span class="exec-footer__item">PHI-safe</span>
+                            <span class="exec-footer__item">Self-hosted</span>
                             <span class="exec-footer__sep">·</span>
-                            <span class="exec-footer__item">Replayable</span>
+                            <span class="exec-footer__item">Air-gapped</span>
                             <span class="exec-footer__sep">·</span>
-                            <span class="exec-footer__item">Human-approved</span>
+                            <span class="exec-footer__item">Audit-ready</span>
                         </div>
                     </div>
                 </div>
@@ -612,11 +626,13 @@ const FAQ = [
                 </div>
 
                 <div class="hero-logos" data-usal="fade-u">
-                    <span class="hero-logos__label">Trusted by healthcare, pharmacy, and life-sciences teams</span>
+                    <span class="hero-logos__label">Trusted by public administrations, institutions &amp; public-service IT operators</span>
                     <div class="hero-logos__row">
-                        <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item hero-logos__item--apotek" />
-                        <Image src={BrainlabLogoImg} alt="Brainlab" class="hero-logos__item hero-logos__item--brainlab" />
-                        <Image src={SophiaGeneticsLogoImg} alt="SOPHIA GENETICS" class="hero-logos__item hero-logos__item--sophia" />
+                        <Image src={COELogoImg} alt="Council of Europe" class="hero-logos__item hero-logos__item--coe" />
+                        <Image src={DataportLogoImg} alt="Dataport" class="hero-logos__item hero-logos__item--dataport" />
+                        <Image src={ITZBundLogoImg} alt="ITZBund" class="hero-logos__item hero-logos__item--itzbund" />
+                        <Image src={BundesagenturLogoImg} alt="Bundesagentur für Arbeit" class="hero-logos__item hero-logos__item--bundesagentur" />
+                        <Image src={BattelleLogoImg} alt="Battelle" class="hero-logos__item hero-logos__item--battelle" />
                     </div>
                 </div>
             </div>
@@ -625,12 +641,12 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    One control plane for the workflows <span class="highlight">healthcare and life sciences run on</span>.
+                    One control plane for the <span class="highlight">platforms public-sector IT runs</span>.
                 </h2>
                 <p class="flow__lead">
-                    Medical AI pipelines. Pharmacy supply chains. Genomics workflows. HIPAA-compliant data operations.
-                    Whether you're segmenting cardiac volumes, normalizing supplier files for 400 pharmacies, or
-                    parallelizing genomic pipelines, the engine is the same. Self-hosted, multi-tenant, audit-ready.
+                    VMware lifecycle. Bare-metal commissioning. SOC alert response. GitOps delivery.
+                    Cross-department data. Whether you're orchestrating vSphere, MAAS, Argo CD,
+                    or a sovereign data platform, the engine is the same. Self-hosted, multi-tenant, audit-ready.
                 </p>
 
                 <div class="flow__grid">
@@ -659,7 +675,7 @@ const FAQ = [
                 </div>
 
                 <h5 class="flow__footer text-center">
-                    Each step is a declarative YAML task. Wrap an existing legacy pipeline today. Modernize it in place tomorrow. No rewrite of the whole estate.
+                    Each step is a declarative YAML task. Wrap an existing legacy job today. Modernize it in place tomorrow. No rewrite of the whole estate.
                 </h5>
             </div>
         </section>
@@ -667,8 +683,8 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>What healthcare and life-sciences teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
-                    <p>Real workloads from real institutions. Medical AI imaging across cardiac, oncology, and pathology. Pharmacy and supply-chain operations at scale. Secure genomics and life-sciences pipelines. HIPAA-compliant data and IT operations across multi-team estates.</p>
+                    <h2>What public-sector IT teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <p>Real workloads from real institutions. Self-service infrastructure at federal IT centres. SOC operations across multi-state estates. Sovereign data platforms in EU institutions. Incremental modernization of legacy automation.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
                     <div class="workloads__group">
@@ -692,7 +708,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    Built to the bar <span class="highlight">healthcare IT</span> actually needs.
+                    Built to the bar <span class="highlight">institutional IT</span> actually needs.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -706,8 +722,8 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2>Patterns from real <span class="highlight">healthcare and life-sciences deployments</span>.</h2>
-                <p class="build__lead">Real workflows running today inside healthcare, pharmacy, medtech, and life-sciences teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
+                <h2>Patterns from real <span class="highlight">public-sector deployments</span>.</h2>
+                <p class="build__lead">Real workflows running today inside public-sector IT teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
                 <div class="wrapper">
                     <div class="inner">
                         <div class="header row g-0">
@@ -754,20 +770,19 @@ const FAQ = [
 
         <PluginsBlock>
             <Fragment slot="title">
-                Integrates with the <span class="highlight">systems healthcare and life-sciences teams</span> already run.
+                Integrates with the <span class="highlight">systems public-sector IT teams</span> already run.
             </Fragment>
             <Fragment slot="description">
-                Native plugins for PACS and DICOM systems, Epic, Cerner and HL7 feeds where needed, lab and genomics
-                platforms, AWS, GCP, Azure, Kubernetes, Vault, CyberArk, Splunk, Elastic, plus 1,200+ more.
-                Or build the exact integration your environment needs.
+                Native plugins for vSphere, vCenter, ESXi, KVM, Nutanix, MAAS, NetBox, Argo CD, Cloudflare,
+                ServiceNow, Vault, CyberArk, Delinea, Splunk, Elastic, plus mainframe, SFTP, MQ, Kafka,
+                and 1,200+ more. Or build the exact integration your environment needs.
             </Fragment>
         </PluginsBlock>
 
         <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
-            <Fragment slot="title">Modernize healthcare workflows on a platform you fully own.</Fragment>
-            Self-hosted, air-gapped, and procurement-friendly. Modernize legacy pipelines incrementally,
-            run medical AI inside your perimeter, and orchestrate sensitive data operations end to end.
-            One open-source engine.
+            <Fragment slot="title">Modernize public-sector IT on a platform you fully own.</Fragment>
+            Self-hosted, air-gapped, and procurement-friendly. Modernize legacy automation incrementally,
+            run SOC and platform operations on-prem, and deploy AI inside your perimeter. One open-source orchestration engine.
         </SeeHow>
 
         <Faq items={FAQ} client:visible />
@@ -775,18 +790,18 @@ const FAQ = [
 </Layout>
 
 <style lang="scss">
-    // ── Healthcare palette: medical green ────────────────────────────
-    // Distinct from FSI (yellow), Public Services (cobalt), Automotive
-    // (red), Retail (purple). Reads as wellness, vital, sovereign green.
-    $hc-green:        #16A34A;
-    $hc-green-bright: #4ADE80;
-    $hc-green-light:  #BBF7D0;
-    $hc-green-deep:   #14532D;
-    $hc-platinum:     #E8EDF0;
+    // ── Public Services palette: civic cobalt blue ───────────────────
+    // Distinct from FSI (yellow), Healthcare (green), Automotive (red),
+    // Retail (purple). Reads as institutional, sovereign, civic.
+    $ps-blue:        #2563EB;
+    $ps-blue-bright: #60A5FA;
+    $ps-blue-light:  #93C5FD;
+    $ps-blue-deep:   #1E3A8A;
+    $ps-platinum:    #E8EDF0;
 
-    .healthcare { overflow: clip; }
+    .public-services { overflow: clip; }
 
-    :global(html.dark) .healthcare {
+    :global(html.dark) .public-services {
         .flow,
         .workloads,
         .build,
@@ -803,7 +818,7 @@ const FAQ = [
     .hero {
         position: relative;
         overflow: hidden;
-        background: #050d08;
+        background: #050a14;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -823,7 +838,7 @@ const FAQ = [
             transform: translateX(-50%);
             width: 1100px;
             height: 520px;
-            background: radial-gradient(ellipse at center, rgba(22, 163, 74, 0.32) 0%, rgba(22, 163, 74, 0) 70%);
+            background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.32) 0%, rgba(37, 99, 235, 0) 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -867,7 +882,7 @@ const FAQ = [
         }
 
         .gradient {
-            background: linear-gradient(90deg, #{$hc-green-bright}, #{$hc-green-light});
+            background: linear-gradient(90deg, #{$ps-blue-bright}, #{$ps-blue-light});
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -891,12 +906,12 @@ const FAQ = [
         padding: 4px 1.125rem;
         gap: 0.5rem;
         border-radius: 2.5rem;
-        background: #050d08;
+        background: #050a14;
         position: relative;
         z-index: 1;
         font-size: $font-size-xs;
         font-weight: 600;
-        color: $hc-green-bright;
+        color: $ps-blue-bright;
 
         &::before {
             content: "";
@@ -904,7 +919,7 @@ const FAQ = [
             inset: 0;
             border-radius: 2.5rem;
             padding: 1px;
-            background: linear-gradient(90deg, #{$hc-green} 0%, #{$hc-green-light} 100%);
+            background: linear-gradient(90deg, #{$ps-blue} 0%, #{$ps-blue-light} 100%);
             -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -933,53 +948,53 @@ const FAQ = [
         transition: all 0.2s ease;
 
         &:hover {
-            border-color: rgba(74, 222, 128, 0.55);
-            background: rgba(22, 163, 74, 0.14);
+            border-color: rgba(96, 165, 250, 0.55);
+            background: rgba(37, 99, 235, 0.14);
             color: $white;
 
-            :global(.tag-icon) { color: $hc-green-light; }
+            :global(.tag-icon) { color: $ps-blue-light; }
         }
 
         :global(.tag-icon) {
             width: 12px;
             height: 12px;
-            color: $hc-green-bright;
+            color: $ps-blue-bright;
             flex-shrink: 0;
         }
     }
 
-    @property --hc-neon-angle {
+    @property --ps-neon-angle {
         syntax: '<angle>';
         inherits: false;
         initial-value: 0deg;
     }
 
-    @keyframes hc-neon-trace {
-        to { --hc-neon-angle: 360deg; }
+    @keyframes ps-neon-trace {
+        to { --ps-neon-angle: 360deg; }
     }
 
     .exec-panel-wrapper {
-        --hc-neon-angle: 0deg;
+        --ps-neon-angle: 0deg;
         border-radius: 10px;
         background: conic-gradient(
-            from var(--hc-neon-angle),
-            rgba(22, 163, 74, 0.16) 0deg,
-            rgba(22, 163, 74, 0.16) 320deg,
-            #{$hc-green}             340deg,
-            $hc-platinum             350deg,
-            #{$hc-green}             360deg
+            from var(--ps-neon-angle),
+            rgba(37, 99, 235, 0.16) 0deg,
+            rgba(37, 99, 235, 0.16) 320deg,
+            #{$ps-blue}              340deg,
+            $ps-platinum             350deg,
+            #{$ps-blue}              360deg
         );
         padding: 1px;
         box-shadow:
-            0 1.214px 10.321px 0 rgba(22, 163, 74, 0.28) inset,
-            -6.667px -7.143px 31.334px 3.333px rgba(22, 163, 74, 0.6);
+            0 1.214px 10.321px 0 rgba(37, 99, 235, 0.28) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(37, 99, 235, 0.6);
         width: 100%;
         max-width: 640px;
-        animation: hc-neon-trace 5s linear infinite;
+        animation: ps-neon-trace 5s linear infinite;
     }
 
     .exec-panel {
-        background: #061a0e;
+        background: #060d1d;
         border-radius: 9px;
         overflow: hidden;
         backdrop-filter: blur(12px);
@@ -991,7 +1006,7 @@ const FAQ = [
             gap: 0.75rem;
             padding: 12px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(22, 163, 74, 0.08);
+            background: rgba(37, 99, 235, 0.08);
             flex-wrap: wrap;
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
@@ -1001,8 +1016,8 @@ const FAQ = [
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: $hc-green-bright;
-            box-shadow: 0 0 8px $hc-green-bright;
+            background: $ps-blue-bright;
+            box-shadow: 0 0 8px $ps-blue-bright;
             flex-shrink: 0;
         }
 
@@ -1019,7 +1034,7 @@ const FAQ = [
         }
 
         &__duration {
-            color: $hc-green-light;
+            color: $ps-blue-light;
             font-weight: 500;
         }
 
@@ -1033,10 +1048,10 @@ const FAQ = [
         &__footer {
             padding: 10px 16px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(22, 163, 74, 0.06);
+            background: rgba(37, 99, 235, 0.06);
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
-            color: $hc-green-light;
+            color: $ps-blue-light;
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
@@ -1056,14 +1071,14 @@ const FAQ = [
         font-size: $font-size-xs;
         transition: background 0.2s;
 
-        &:hover { background: rgba(22, 163, 74, 0.10); }
+        &:hover { background: rgba(37, 99, 235, 0.10); }
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: 20px 1fr auto;
         }
 
         &__check {
-            color: $hc-green-bright;
+            color: $ps-blue-bright;
             font-weight: 700;
         }
 
@@ -1079,7 +1094,7 @@ const FAQ = [
         }
 
         &__result {
-            color: $hc-green-light;
+            color: $ps-blue-light;
             text-align: right;
             white-space: nowrap;
         }
@@ -1102,7 +1117,9 @@ const FAQ = [
     }
 
     // ── Hero logo strip ──────────────────────────────────────────────
-    // 3 logos, optically balanced per SVG aspect ratio.
+    // 5 logos on a single row at md+, normalised to the same optical
+    // weight via per-logo max-height + max-width tuned to each SVG's
+    // aspect ratio.
     .hero-logos {
         display: flex;
         flex-direction: column;
@@ -1112,7 +1129,7 @@ const FAQ = [
         margin-top: 1rem;
         padding-top: 2rem;
         width: 100%;
-        max-width: 52rem;
+        max-width: 60rem;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
 
@@ -1126,15 +1143,16 @@ const FAQ = [
 
         &__row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             align-items: center;
             justify-items: center;
-            column-gap: 3rem;
+            column-gap: 2rem;
             row-gap: 1.5rem;
             width: 100%;
 
             @include media-breakpoint-down(md) {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 1.5rem;
                 row-gap: 1.75rem;
             }
         }
@@ -1152,16 +1170,19 @@ const FAQ = [
             &:hover { opacity: 1; }
 
             // Unified optical sizing across all industry pages:
-            // text wordmarks 36px, compact icon+text 42px, stacked
-            // vertically icon+text 52–56px.
-            &--apotek   { max-height: 42px; max-width: 180px; }  // icon + text
-            &--brainlab { max-height: 36px; max-width: 180px; }  // text
-            &--sophia   { max-height: 36px; max-width: 200px; }  // text wide
+            // text wordmarks 36px, small text 32px, compact icon+text
+            // 42px, stacked vertically icon+text 52–56px.
+            &--coe           { max-height: 56px; max-width: 130px; }  // stacked icon + text + stars
+            &--itzbund       { max-height: 56px; max-width: 150px; }  // stacked icon + text
+            &--dataport      { max-height: 36px; max-width: 170px; }  // text
+            &--bundesagentur { max-height: 36px; max-width: 180px; }  // text + symbol
+            &--battelle      { max-height: 32px; max-width: 140px; }  // small text
 
             @include media-breakpoint-down(md) {
-                &--apotek   { max-height: 48px; max-width: 200px; }
-                &--brainlab { max-height: 40px; max-width: 200px; }
-                &--sophia   { max-height: 40px; max-width: 220px; }
+                &--coe, &--itzbund { max-height: 60px; max-width: 160px; }
+                &--dataport        { max-height: 40px; max-width: 190px; }
+                &--bundesagentur   { max-height: 40px; max-width: 200px; }
+                &--battelle        { max-height: 36px; max-width: 150px; }
             }
         }
     }
@@ -1190,7 +1211,7 @@ const FAQ = [
             color: var(--ks-content-primary);
 
             .highlight {
-                background: linear-gradient(90deg, #{$hc-green}, #{$hc-green-bright});
+                background: linear-gradient(90deg, #{$ps-blue}, #{$ps-blue-bright});
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
@@ -1215,8 +1236,8 @@ const FAQ = [
         &__grid {
             width: 100%;
             padding: 2rem 1rem;
-            background-color: rgba(22, 163, 74, 0.06);
-            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%2316A34A' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            background-color: rgba(37, 99, 235, 0.06);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%232563EB' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
             border-radius: 10px;
         }
 
@@ -1409,7 +1430,7 @@ const FAQ = [
         }
 
         &__highlight {
-            background: linear-gradient(90deg, #{$hc-green}, #{$hc-green-bright});
+            background: linear-gradient(90deg, #{$ps-blue}, #{$ps-blue-bright});
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -1427,10 +1448,10 @@ const FAQ = [
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: $hc-green-deep;
+            color: $ps-blue-deep;
             margin: 0 0 1rem;
 
-            :global(html.dark) & { color: $hc-green-bright; }
+            :global(html.dark) & { color: $ps-blue-bright; }
         }
 
         &__grid {
@@ -1451,19 +1472,19 @@ const FAQ = [
         transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 
         &:hover {
-            border-color: $hc-green;
+            border-color: $ps-blue;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
         }
 
         &__icon {
             font-size: 1.375rem;
-            color: $hc-green;
+            color: $ps-blue;
             margin-bottom: 0.75rem;
             width: 1.375rem;
             height: 1.375rem;
 
-            :global(html.dark) & { color: $hc-green-bright; }
+            :global(html.dark) & { color: $ps-blue-bright; }
         }
 
         &__title {
@@ -1497,7 +1518,7 @@ const FAQ = [
                 padding-inline: $rem-1;
                 text-align: center;
 
-                .highlight { color: $hc-green; }
+                .highlight { color: $ps-blue; }
 
                 @include media-breakpoint-up(xl) { padding-inline: 0; }
             }
@@ -1664,7 +1685,7 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $hc-green-bright; }
+            .highlight { color: $ps-blue-bright; }
         }
 
         :global(.features-grid) {
@@ -1672,7 +1693,7 @@ const FAQ = [
         }
 
         :global(.feature-icon) {
-            color: $hc-green !important;
+            color: $ps-blue !important;
         }
         :global(.feature-title) {
             color: #fff !important;
