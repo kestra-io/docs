@@ -21,7 +21,7 @@ Launch Kestra locally, create a simple flow, and run your first execution in a f
 
 ## Start Kestra
 
-Once Docker is running, start Kestra with a single command. If you are using Windows, make sure to use [WSL](https://docs.docker.com/desktop/wsl/):
+Once Docker is running, start Kestra with a single command:
 
 ```bash
 docker run --pull=always --rm -it -p 8080:8080 --user=root \
@@ -51,8 +51,6 @@ Open `http://localhost:8080` in your browser to launch the UI, create your user,
 :::alert{type="info"}
 The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
 :::
-
----
 
 ## Next steps
 
