@@ -24,6 +24,9 @@ import ApotekHjartatLogoImg from "~/contents/customer-stories/29/logo.svg"
 import SophiaGeneticsLogoImg from "~/assets/use-cases/healthcare/SophiaGenetics.svg"
 import BrainlabLogoImg from "~/assets/landing/infrastructure/companies/brainlab.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "HIPAA-ready", icon: "mdi:shield-check-outline" },
@@ -700,7 +703,7 @@ const FAQ = [
             </Fragment>
             <Fragment slot="description">
                 Connect EHRs, HL7 and FHIR engines, payer APIs, clearinghouses, lab and imaging systems,
-                data platforms, and security controls through 1,200+ plugins. Or build the exact integration
+                data platforms, and security controls through {totalPlugins}+ plugins. Or build the exact integration
                 your environment requires.
             </Fragment>
         </PluginsBlock>

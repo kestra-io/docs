@@ -28,6 +28,9 @@ import IntersportLogoImg from "~/assets/trusted-companies/Intersport.svg"
 import DiorLogoImg from "~/assets/trusted-companies/Dior.svg"
 import FilaLogoImg from "~/assets/trusted-companies/Fila.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "Peak-season scale", icon: "mdi:flash-outline" },
@@ -715,7 +718,7 @@ const FAQ = [
             </Fragment>
             <Fragment slot="description">
                 Connect OMS, WMS, POS, storefronts, PIM, payment gateways, carriers, CS tools, loyalty platforms,
-                and analytics stacks through 1,200+ plugins. Or build the exact integration your environment requires.
+                and analytics stacks through {totalPlugins}+ plugins. Or build the exact integration your environment requires.
             </Fragment>
         </PluginsBlock>
 

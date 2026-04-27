@@ -28,6 +28,9 @@ import MatmutLogoImg from "~/assets/trusted-companies/Matmut.svg"
 import GateIoLogoImg from "~/assets/trusted-companies/GateIO.svg"
 import TotalEnergiesLogoImg from "~/assets/trusted-companies/TotalEnergies.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "Air-gapped", icon: "mdi:shield-lock-outline" },
@@ -36,7 +39,7 @@ const HERO_TAGS = [
     { label: "Four-eyes approval", icon: "mdi:account-supervisor-outline" },
     { label: "Replayable lineage", icon: "mdi:history" },
     { label: "EU & US residency", icon: "mdi:earth" },
-    { label: "1200+ plugins", icon: "mdi:puzzle-outline" },
+    { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
 ]
 
 const title = "Kestra for Financial Services & Insurance"
@@ -773,7 +776,7 @@ const FAQ = [
             </Fragment>
             <Fragment slot="description">
                 Connect core platforms, policy and claims systems, data stacks, messaging layers, case tools,
-                and security controls through 1,200+ plugins. Or build the exact integration your environment requires.
+                and security controls through {totalPlugins}+ plugins. Or build the exact integration your environment requires.
             </Fragment>
         </PluginsBlock>
 

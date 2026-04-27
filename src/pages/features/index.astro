@@ -8,6 +8,9 @@ import Operate from "~/components/features/core/Operate.astro"
 import Simple from "~/components/features/core/Simple.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import EveryPlugin from "~/components/features/core/EveryPlugin.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = "Powerful Features for Reliable Workflows"
 const description =
@@ -28,7 +31,7 @@ const items = [
     },
     {
         question: "What's included in OSS vs Enterprise?",
-        answer: "<strong>OSS</strong>: Full orchestration, unlimited executions, 1200+ plugins, event triggers. <strong>Enterprise</strong>: Adds RBAC, SSO, audit logs, multi-tenancy. <a href='/pricing'>Compare editions →</a>",
+        answer: `<strong>OSS</strong>: Full orchestration, unlimited executions, ${totalPlugins}+ plugins, event triggers. <strong>Enterprise</strong>: Adds RBAC, SSO, audit logs, multi-tenancy. <a href='/pricing'>Compare editions →</a>`,
     },
     {
         question: "What deployment options exist?",
