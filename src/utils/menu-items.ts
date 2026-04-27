@@ -3,6 +3,7 @@ import type { Component } from "vue"
 import Car from "vue-material-design-icons/Car.vue"
 import DNA from "vue-material-design-icons/Dna.vue"
 import BankOutline from "vue-material-design-icons/BankOutline.vue"
+import CityVariantOutline from "vue-material-design-icons/CityVariantOutline.vue"
 import Looks from "vue-material-design-icons/Looks.vue"
 import ChartLine from "vue-material-design-icons/ChartLine.vue"
 import CartMinus from "vue-material-design-icons/CartMinus.vue"
@@ -123,6 +124,11 @@ export const menuItems: MenuItems = {
                 icon: DNA,
                 title: "Healthcare",
                 link: "/use-cases/healthcare"
+            },
+            {
+                icon: CityVariantOutline,
+                title: "Public Services",
+                link: "/use-cases/public-services"
             },
         ],
     },
