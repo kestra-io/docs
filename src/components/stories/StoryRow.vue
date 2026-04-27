@@ -3,11 +3,18 @@
         <div class="sr-img">
             <img :src="story.featuredImage" :alt="`${story.title} image`" />
             <div class="sr-tasks" v-if="story.tasks?.length">
-                <span class="sr-task" v-for="task in story.tasks.slice(0, 4)" :key="task">
+                <span
+                    class="sr-task"
+                    v-for="task in story.tasks.slice(0, 4)"
+                    :key="task"
+                >
                     <TaskIcon :cls="task" />
                 </span>
                 <span class="sr-task">
-                    <img src="/landing/usecases/stories/monograme-kestra.svg" alt="Kestra" />
+                    <img
+                        src="/landing/usecases/stories/monograme-kestra.svg"
+                        alt="Kestra"
+                    />
                 </span>
             </div>
         </div>
@@ -29,15 +36,23 @@
 <script lang="ts" setup>
     import { computed } from "vue"
     import { slugify } from "@kestra-io/ui-libs"
-    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
+    import MDCParserAndRenderer from ".~/components/MDCParserAndRenderer.vue"
     import CheckboxMultipleMarkedCircleOutlineIcon from "vue-material-design-icons/CheckboxMultipleMarkedCircleOutline.vue"
     import TaskIcon from "../common/TaskIcon.vue"
     import Link from "../common/Link.vue"
 
     const props = defineProps<{ story: Story }>()
 
-    const storyUrl = computed(() => `/use-cases/stories/${props.story.id}-${slugify(props.story.title ?? "--")}`)
-    const kpis = computed(() => [props.story.kpi1, props.story.kpi2, props.story.kpi3].filter(Boolean) as string[])
+    const storyUrl = computed(
+        () =>
+            `/use-cases/stories/${props.story.id}-${slugify(props.story.title ?? "--")}`,
+    )
+    const kpis = computed(
+        () =>
+            [props.story.kpi1, props.story.kpi2, props.story.kpi3].filter(
+                Boolean,
+            ) as string[],
+    )
 
     function navigate() {
         window.location.href = storyUrl.value
@@ -195,11 +210,10 @@
         :deep(svg) {
             font-size: 1.5rem;
             bottom: -0.375rem;
-            color: #02BE8A;
+            color: #02be8a;
         }
 
         .sr-kpi-body {
-
             :deep(h5),
             :deep(p) {
                 display: inline;

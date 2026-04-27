@@ -5,7 +5,7 @@
     import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
     import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
 
-    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
+    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 
     const activeId = ref("")
 
@@ -108,7 +108,9 @@
         gap: 0;
         font-size: $font-size-sm;
         font-family: $font-family-sans-serif;
-        span.material-design-icon, span.chevron-down-icon, span.chevron-up-icon {
+        span.material-design-icon,
+        span.chevron-down-icon,
+        span.chevron-up-icon {
             display: none !important;
         }
 

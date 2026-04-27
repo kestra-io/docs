@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
     import { SchemaToHtmlV2, type JSONSchema } from "@kestra-io/ui-libs"
-    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
+    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
 
     defineProps<{
         schema: JSONSchema
@@ -36,7 +36,8 @@
     .plugin-schema {
         :deep(hr) {
             opacity: 0.5;
-            border-top: calc(2 * var(--bs-border-width)) solid var(--ks-background-primary);
+            border-top: calc(2 * var(--bs-border-width)) solid
+                var(--ks-background-primary);
             margin: 0 !important;
         }
 
@@ -117,7 +118,8 @@
                 }
 
                 > *:not(:first-child) {
-                    border-top: var(--bs-border-width) var(--bs-border-style) var(--ks-border-primary);
+                    border-top: var(--bs-border-width) var(--bs-border-style)
+                        var(--ks-border-primary);
                 }
 
                 .border:not(.type-box) {
