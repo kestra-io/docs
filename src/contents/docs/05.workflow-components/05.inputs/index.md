@@ -547,8 +547,6 @@ Variables are best suited for values that you don't want to change and are used 
   <iframe src="https://www.youtube.com/embed/IOoND_WDzkY?si=CPAX9sPHlndM2FbI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Inputs in Kestra are strongly typed. Currently, you cannot enforce strong types and simultaneously use dynamically rendered Pebble expressions.
 
 The example below demonstrates using an expression inside of an input. When you select execute, the expression is rendered.

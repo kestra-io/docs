@@ -14,8 +14,6 @@ Extend Kestra by using the API.
   <iframe src="https://www.youtube.com/embed/uf-b7r_38Zk?si=jytDjFPxqiomcveI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Kestra is API-first, so it’s straightforward to connect external systems to your flows or call the platform directly. This guide focuses on the Kestra API itself and how you can extend or integrate Kestra from other services.
 
 ## Using the API Reference

@@ -25,8 +25,6 @@ Use concurrency when you need to protect downstream systems (rate limits, databa
   <iframe src="https://www.youtube.com/embed/lDGOqqMyQEo?si=01KzCswO3dHdhYdt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 For example, if you set the concurrency `limit` to 2, only two executions of that flow will be allowed to run at the same time. If you try to trigger a third execution, it will be queued until one of the two running executions is completed.
 
 ### When to use concurrency

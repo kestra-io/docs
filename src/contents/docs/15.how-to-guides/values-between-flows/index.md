@@ -16,8 +16,6 @@ Sometimes it's useful to store values so they can be used across multiple flows.
   <iframe src="https://www.youtube.com/embed/1XqujT5HeDM?si=Vx-lscIKtQ0vLsfK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 There are three different ways you can access values across different flows:
 1. Subflows
 2. KV Store

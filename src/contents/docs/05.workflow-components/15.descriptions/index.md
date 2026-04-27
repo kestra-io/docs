@@ -16,8 +16,6 @@ The `description` property is a string field that supports [Markdown](https://en
   <iframe src="https://www.youtube.com/embed/coxJhDSRqvg?si=9vX7yl7iD5-R-pFz" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 You can add a `description` property on:
 - Flows
 - Inputs

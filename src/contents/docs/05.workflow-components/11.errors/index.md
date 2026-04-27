@@ -120,8 +120,6 @@ tasks:
   <iframe src="https://www.youtube.com/embed/WY6G_AONU_E?si=rEFrP-ButAkc9Ndf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 When you execute a flow and one of its tasks fails, downstream tasks are not executed. This may not always be desirable, especially for non-critical tasks. You can resolve this by adding the `allowFailure` property to the task, which allows downstream tasks to continue despite an error. In this case, the execution will finish in a `WARNING` state.
 
 ```yaml

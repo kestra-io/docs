@@ -276,8 +276,6 @@ Read more about performance optimization in our [best practices guides](../../..
   <iframe src="https://www.youtube.com/embed/mkZcdbgxSWA?si=DXGrFU6m6XEOtZSN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ### LoopUntil
 
 `LoopUntil` runs a group of tasks repeatedly until a boolean condition evaluates to `true`. After each iteration, the task evaluates the `condition` expression; if it evaluates to `false`, the block is executed again after the configured interval.

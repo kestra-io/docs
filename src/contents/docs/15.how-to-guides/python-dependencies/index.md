@@ -14,8 +14,6 @@ Manage your Python dependencies in Kestra.
   <iframe src="https://www.youtube.com/embed/iZeDizdrpMI?si=af1byHzZcxvUL-DQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Managing Python Dependencies can be frustrating. There's several ways you can manage your dependencies in Kestra.
 
 ## Install with pip using `beforeCommands`
@@ -56,8 +54,6 @@ Since Kestra 0.23, you can also use the `dependencies` property allowing you to 
 <div class="video-container">
   <iframe src="https://youtube.com/embed/g9Jt5zt9wI4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 With this feature, Python dependencies are cached and reused across executions of different flows. The [uv package manager](../python-uv/index.md) installs the dependencies on the [worker](../../08.architecture/02.server-components/index.md#worker) under the hood. These cached dependencies will be available for subsequent executions, leading to performance improvements. This method is recommended for smaller tasks that require only a few dependencies, which you don't want to add each time. For more complex workflows, you can continue to use `beforeCommands`.
 
@@ -150,8 +146,6 @@ tasks:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/mLcoLK0y1m0?si=0H4XW_s-aayEJDi8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 You can also build packages directly in Kestra and then use that package between different flows in the same namespace. This works for zip files and wheels.
 

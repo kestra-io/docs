@@ -17,8 +17,6 @@ They work like default function arguments, helping you avoid repetition when tas
   <iframe src="https://www.youtube.com/embed/9zQTUeL0KMc?si=xOAqec_9X79-7YDp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## Plugin Defaults on a flow-level
 
 You can define plugin defaults in the `pluginDefaults` section to avoid repeating properties across multiple tasks of the same type. For example:

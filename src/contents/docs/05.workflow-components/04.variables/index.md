@@ -53,8 +53,6 @@ Variables are no longer rendered recursively. Learn more about this change — a
   <iframe src="https://www.youtube.com/embed/IOoND_WDzkY?si=CPAX9sPHlndM2FbI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 If a variable contains an expression, wrap it with `render` when using it in a task.
 
 For example, the variable below displays the current time only when wrapped with `render`; otherwise, the log prints the expression as a string:

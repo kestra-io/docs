@@ -16,8 +16,6 @@ How to create and manage Custom Blueprints.
   <iframe src="https://www.youtube.com/embed/qbGfK-FJi6s?si=UX6cOyT7nvlyd6zb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 In addition to the publicly available [Community Blueprints](../../../06.concepts/07.blueprints/index.md), Kestra allows you to create **Custom Blueprints**—private, reusable workflow templates tailored to your team. These blueprints help centralize orchestration patterns, document best practices, and streamline collaboration across your organization.
 
 You can think of Custom Blueprints as your team's internal App Store, offering a wide range of integrations and validated workflow patterns tailored to your needs.

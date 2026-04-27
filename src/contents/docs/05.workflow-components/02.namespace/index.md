@@ -17,8 +17,6 @@ Use namespaces to organize workflows and manage access to secrets, key-value pai
   <iframe src="https://www.youtube.com/embed/_HGz2qePYqY?si=QiIRTXasyJyyjWX4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 You can think of a namespace as a **folder for your flows**. Similar to folders on your file system, namespaces can be used to organize flows into logical categories. Similar to filesystems, namespaces can be indefinitely nested.
 
 If you're looking to completely isolate environments with their own resources on the same Kestra instance, you should consider [Tenants](../../07.enterprise/02.governance/tenants/index.md), part of the [Enterprise Edition](../../07.enterprise/index.mdx).
