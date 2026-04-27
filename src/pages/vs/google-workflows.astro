@@ -22,6 +22,9 @@ import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import googleWorkflowsImg from "~/components/versus/assets/google-workflows-img.svg"
 import heroUI from "~/components/versus/assets/google_workflows_hero_ui.webp"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const entry = await getEntry("vs", "google-workflows")
 if (!entry)
@@ -123,7 +126,7 @@ const {
         <Fragment slot="title">
             Orchestrate Beyond GCP Service Coordination
         </Fragment>
-        See how Kestra runs code directly, connects to 1200+ plugins, and works across
+        See how Kestra runs code directly, connects to {totalPlugins}+ plugins, and works across
         every cloud — without Cloud Functions.
     </SeeHow>
 </VsLayout>

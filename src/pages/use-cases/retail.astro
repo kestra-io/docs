@@ -29,6 +29,9 @@ import IntersportLogoImg from "~/assets/trusted-companies/Intersport.svg"
 import DiorLogoImg from "~/assets/trusted-companies/Dior.svg"
 import FilaLogoImg from "~/assets/trusted-companies/Fila.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "Self-hosted & EU residency", icon: "mdi:earth" },
@@ -769,9 +772,8 @@ const FAQ = [
                 Integrates with the <span class="highlight">systems retail teams</span> already run.
             </Fragment>
             <Fragment slot="description">
-                Native plugins for SAP, Oracle, mainframe, Shopify, Salesforce Commerce, Manhattan, Snowflake,
-                BigQuery, dbt, Gorgias, Zendesk, Salesforce Service Cloud, Vault, AWS, GCP, Azure, plus 1,200+ more.
-                Or build the exact integration your environment needs.
+                Connect OMS, WMS, POS, storefronts, PIM, payment gateways, carriers, CS tools, loyalty platforms,
+                and analytics stacks through {totalPlugins}+ plugins. Or build the exact integration your environment requires.
             </Fragment>
         </PluginsBlock>
 
