@@ -173,8 +173,6 @@ url  = "https://api.kestra.io/v1/mcp"
 
 Most MCP servers are local processes: install them, keep them updated, configure them per machine. A remote HTTP MCP server requires none of that. There is nothing to install, nothing to update locally, and no background process consuming memory. The catalog stays current because it mirrors the live plugin registry and blueprint index that powers [kestra.io/plugins](https://kestra.io/plugins) — updated on every Kestra release.
 
-Want to develop against unreleased plugins? The same endpoint is available locally if you run `api.kestra.io` yourself: `http://localhost:8080/v1/mcp`.
-
 ---
 
 ## Frequently asked questions
@@ -193,6 +191,3 @@ No. The endpoint is public and requires no API key or login. All tools are read-
 
 ### Can I use it with AI agents other than Claude Code?
 Yes. Codex CLI, Gemini CLI, OpenCode, or any framework that supports MCP over HTTP. Configuration snippets for each are in the post above.
-
-### Is there a local version for development?
-Yes. Run `api.kestra.io` locally and point your MCP client at `http://localhost:8080/v1/mcp`. Useful for testing with private or unreleased plugins.
