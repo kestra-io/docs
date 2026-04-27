@@ -225,6 +225,7 @@ Common options include:
 
 - `local` for local testing
 - `s3`
+- `s3files`
 - `gcs`
 - `azure`
 - `minio`
@@ -313,6 +314,44 @@ kestra:
       sts-role-session-duration: "<optional>"
       sts-endpoint-override: "<optional>"
 ```
+
+#### S3 Files compatibility mode
+
+If your bucket has [AWS S3 Files](https://aws.amazon.com/blogs/aws/launching-s3-files-making-s3-buckets-accessible-as-file-systems/) enabled, set `s3-files-compatible: true`. S3 Files requires bucket versioning, so Kestra enables versioning on the bucket during startup. Kestra will also hard-delete all object versions and delete markers instead of writing a single delete marker.
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+      s3-files-compatible: true
+```
+
+:::alert{type="warning"}
+Do not enable this flag on a plain S3 bucket that is not using S3 Files. Once versioning is enabled on a bucket it cannot be fully disabled, only suspended.
+:::
+
+### S3 Files
+
+Use `s3files` when Kestra runs on a host where an [S3 Files](https://aws.amazon.com/blogs/aws/launching-s3-files-making-s3-buckets-accessible-as-file-systems/) NFS filesystem is already mounted locally. This backend reads and writes directly through the local filesystem — no S3 SDK or AWS credentials are required.
+
+Mount the NFS filesystem on every host that runs a Kestra component before configuring this backend. All components must share the same mount path.
+
+```yaml
+kestra:
+  storage:
+    type: s3files
+    s3files:
+      mount-path: "/mnt/s3files"
+```
+
+`mount-path` must point to a directory that exists and is readable and writable by the Kestra process. Kestra will not create the directory on startup.
+
+Object metadata is stored in `.meta` sidecar files alongside each object on the filesystem. Custom S3 object metadata is not exposed through this backend.
+
+If you prefer to keep the S3 SDK path (for example, because not every host has the NFS mount), use the standard `s3` backend with `s3-files-compatible: true` instead.
 
 ### MinIO
 
