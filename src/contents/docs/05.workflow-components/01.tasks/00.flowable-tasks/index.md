@@ -172,8 +172,6 @@ In this execution, you can access:
 - The iteration value i.e., the index of a loop (the loop index starts at 0) using the syntax `{{ taskrun.iteration }}`
 - The output of a sibling task using the syntax `{{ outputs.sibling[taskrun.value].value }}`
 
----
-
 This example shows how to run tasks in parallel for each value in the list. All child tasks of the parallel task run in parallel. However, due to the `concurrencyLimit` property set to 2, only two parallel task groups run at any given time.
 
 ```yaml
@@ -310,8 +308,6 @@ tasks:
 
 For more details, refer to the [LoopUntil Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil).
 
----
-
 ### AllowFailure
 
 This task allows child tasks to fail.
@@ -443,7 +439,7 @@ For more details, refer to the [Subflow Task documentation](/plugins/core/flow/i
 
 By default, Kestra launches each task in a new working directory, possibly on different workers if multiple ones exist.
 
-The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. In order to share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
+The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. To share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
 
 This task can be particularly useful for compute-intensive file system operations.
 

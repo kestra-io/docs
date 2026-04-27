@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/flow.svg
 
 You can document flows, inputs, outputs, tasks, and triggers by adding a `description` property.
 
-## Descriptions – document flows and tasks
-
 The `description` property is a string field that supports [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax.
 
 <div class="video-container">

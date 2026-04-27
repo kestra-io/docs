@@ -8,8 +8,6 @@ sidebarTitle: Inputs
 
 Inputs are dynamic values passed to the flow at runtime.
 
-## Workflow Inputs – concepts and usage
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/peQvnhaspyQ?si=gcZxTX5KF2dC7ZLO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

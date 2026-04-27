@@ -9,8 +9,6 @@ docId: plugin-defaults
 
 Plugin defaults are default values applied to every task of a given type within one or more flows.
 
-## Plugin Defaults – set task-level defaults
-
 They work like default function arguments, helping you avoid repetition when tasks or plugins frequently use the same values.
 
 <div class="video-container">

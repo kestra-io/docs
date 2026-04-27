@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/flow.svg
 
 Labels are key-value pairs in Kestra that let you organize [flows](../01.flow/index.md) and [executions](../03.execution/index.md) across multiple dimensions, without being restricted to a single hierarchy.
 
-## Labels – tag flows and executions
-
 You can organize flows and executions by project, priority, maintainer, or any other relevant criteria. Unlike fixed categories, labels support flexible filtering, grouping, and discovery.
 
 Labels can be associated with both the flow definition and individual execution instances. This allows you to distinguish between different executions of the same flow.
