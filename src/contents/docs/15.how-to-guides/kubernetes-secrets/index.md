@@ -1,5 +1,6 @@
 ---
 title: Set Up Secrets from a Helm Chart
+h1: Pass Kubernetes Secrets and Env Vars via Helm Chart
 icon: /src/contents/docs/icons/helm.svg
 stage: Getting Started
 topics:

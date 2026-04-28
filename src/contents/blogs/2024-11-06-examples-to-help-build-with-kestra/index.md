@@ -240,7 +240,7 @@ We have official plugins for [AWS](/plugins/plugin-aws), [Google Cloud](/plugins
 
 ### Detect New Files in S3 and process them in Python
 
-Jumping right in, this workflow is event driven based on files arriving in an S3 bucket using the [S3 Trigger](/plugins/aws/triggers/io.kestra.plugin.aws.s3.trigger). This is a great way to allow Kestra to make your existing code event driven.
+Jumping right in, this workflow is event driven based on files arriving in an S3 bucket using the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger). This is a great way to allow Kestra to make your existing code event driven.
 
 ```yaml
 id: s3-trigger-python

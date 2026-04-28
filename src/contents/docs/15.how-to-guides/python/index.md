@@ -1,5 +1,7 @@
 ---
 title: Run Python Inside Your Flows
+h1: Execute Python Scripts in Kestra Workflows
+description: Run Python scripts in Kestra. Install pip packages at runtime, execute code in Docker containers, and pass data between tasks using inputs and outputs.
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
@@ -13,8 +15,6 @@ You can execute Python code in a flow by either writing your Python inline or by
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/Xv16DUla6hA?si=sKYTpTJPL4p_MA1G" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 In this example, the flow will install the required pip packages, make an API request to fetch data and use the Python Kestra library to generate outputs and metrics using this data.
 
@@ -129,8 +129,6 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/6pN5bZ4l1_8?si=QudHhk15z8LeZ8lw" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 If you want to get a variable or file from your Python code, you can use an [output](../../05.workflow-components/06.outputs/index.md).
 
@@ -251,8 +249,6 @@ _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.ke
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/0FT3iZKgxYg?si=c162iQbg79R_IEa9" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 If your Python code needs to log something to the console, we recommend using the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
 
@@ -444,8 +440,8 @@ triggers:
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.eval)
-- [FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform)
+- [Eval](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.eval)
+- [FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 

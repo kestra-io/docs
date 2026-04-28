@@ -1,5 +1,6 @@
 ---
-title: Alerting and Monitoring Kestra – Best Practices
+title: "Kestra Monitoring: Prometheus, Alerts, and Health Checks"
+h1: Set up alerts and monitor your Kestra instance in production
 description: Monitor and alert on Kestra health. Best practices for setting up Prometheus metrics, health checks, and failure notifications for your instance.
 sidebarTitle: Alerting & Monitoring
 icon: /src/contents/docs/icons/admin.svg
@@ -11,9 +12,9 @@ This page provides best practices for setting up alerting and monitoring in your
 
 Failure alerts are essential. When a production workflow fails, you should be notified immediately. To implement failure alerting, you can use Kestra’s built-in notification tasks, such as:
 
-- [Slack](/plugins/plugin-slack/io.kestra.plugin.slack.slackexecution)
-- [Microsoft Teams](/plugins/plugin-teams/io.kestra.plugin.teams.teamsexecution)
-- [Email](/plugins/plugin-mail/io.kestra.plugin.mail.mailexecution)
+- [Slack](/plugins/plugin-slack)
+- [Microsoft Teams](/plugins/plugin-teams)
+- [Email](/plugins/plugin-mail)
 
 
 Technically, you can add custom failure alerts to each flow separately using the `errors` tasks:

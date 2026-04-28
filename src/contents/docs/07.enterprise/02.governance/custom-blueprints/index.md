@@ -1,5 +1,6 @@
 ---
-title: Custom & Template Blueprints in Kestra Enterprise – Private Templates
+title: "Custom Blueprints in Kestra Enterprise: Templates"
+h1: Create Private Workflow Templates with Custom Blueprints
 description: Create Custom Blueprints in Kestra Enterprise. Standardize workflows with private templates, promoting reuse and best practices across your organization.
 sidebarTitle: Custom Blueprints
 icon: /src/contents/docs/icons/admin.svg
@@ -14,8 +15,6 @@ How to create and manage Custom Blueprints.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/qbGfK-FJi6s?si=UX6cOyT7nvlyd6zb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 In addition to the publicly available [Community Blueprints](../../../06.concepts/07.blueprints/index.md), Kestra allows you to create **Custom Blueprints**—private, reusable workflow templates tailored to your team. These blueprints help centralize orchestration patterns, document best practices, and streamline collaboration across your organization.
 

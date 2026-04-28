@@ -1,5 +1,7 @@
 ---
 title: Make HTTP Requests Inside Your Flows
+h1: Send HTTP Requests to External APIs from Kestra Workflows
+description: Make HTTP requests inside Kestra workflows. Call REST APIs, fetch remote data, and chain API responses as inputs to downstream tasks.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -11,8 +13,6 @@ Make HTTP Requests to fetch data and generate outputs.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/sI-BDbb1aPI?si=ygTv9ZVoHPwYMaty" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 You can make HTTP Requests directly inside a flow as well as get outputs from the responses. In this guide, we'll walk you through what HTTP Requests are and how you can use the most common request methods in Kestra.
 
@@ -105,7 +105,7 @@ While these tools are very useful for testing APIs, it can be challenging to aut
 
 This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Request).
+To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation](/plugins/core/http/io.kestra.plugin.core.http.request).
 
 ### GET Request
 
@@ -177,7 +177,7 @@ tasks:
 We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
 
 :::alert{type="info"}
-If your body message input is multiple lines, the best practice is to use a pebble expression to convert it to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../../expressions/02.pebble-syntax/index.md#multiline-json-bodies).
+If your body message input is multiple lines, the best practice is to use a pebble expression to convert it to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../../expressions/index.mdx#multiline-json-bodies).
 :::
 
 When we execute this as a `POST` request, this is the response we receive using the same Debug Expression option in the Outputs page:

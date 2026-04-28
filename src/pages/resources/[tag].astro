@@ -1,0 +1,47 @@
+---
+import type { GetStaticPaths } from "astro"
+import Layout from "~/components/layout.astro"
+import Mesh from "~/components/layout/Mesh.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Link from "~/components/common/Link.astro"
+import ResourceList from "~/components/resources/ResourceList.astro"
+import ResourceSearchHero from "~/components/resources/ResourceSearchHero.vue"
+import { ALL_RESOURCES, resourceTabs } from "~/components/resources/tags"
+import { loadResources } from "~/components/resources/getResources"
+import { getResourceSection } from "~/components/resources/resourcesContent"
+
+export const getStaticPaths = (() => {
+    return Array.from(resourceTabs.keys()).map((tag) => ({
+        params: { tag },
+    }))
+}) satisfies GetStaticPaths
+
+const { tag } = Astro.params
+
+const { items } = await loadResources()
+const resources = items.map((r) => ({
+    ...r,
+    date: r.date ? r.date.toISOString() : undefined,
+}))
+
+const section = getResourceSection(tag)
+---
+
+<Layout
+    canonical={tag === ALL_RESOURCES ? "/resources" : undefined}
+    title={section.metaTitle}
+    description={section.metaDescription}
+>
+    <Mesh>
+        <ResourceSearchHero client:load />
+    </Mesh>
+    <ResourceList resources={resources} tag={tag} />
+    <SeeHow cta={{ text: "Get Started", href: "/get-started" }}>
+        <Fragment slot="title">Ready to try Kestra?</Fragment>
+        Spin up the open-source edition in minutes, or talk to our team about
+        Enterprise and Cloud options for production workloads.
+        <Link slot="footer" href="/demo" class="btn btn-secondary">
+            Book a Demo
+        </Link>
+    </SeeHow>
+</Layout>

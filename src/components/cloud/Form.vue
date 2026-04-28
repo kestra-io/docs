@@ -12,7 +12,9 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="firstname">First name <span class="required">*</span></label>
+                    <label for="firstname"
+                        >First name <span class="required">*</span></label
+                    >
                     <input
                         name="firstname"
                         type="text"
@@ -23,7 +25,9 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="lastname">Last name <span class="required">*</span></label>
+                    <label for="lastname"
+                        >Last name <span class="required">*</span></label
+                    >
                     <input
                         name="lastname"
                         type="text"
@@ -34,7 +38,9 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="email">Company Email <span class="required">*</span></label>
+                    <label for="email"
+                        >Company Email <span class="required">*</span></label
+                    >
                     <input
                         name="email"
                         type="email"
@@ -45,7 +51,10 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="use_case_context">Tell us more about your Orchestration strategy and how we can help <span class="required">*</span></label>
+                    <label for="use_case_context"
+                        >Tell us more about your Orchestration strategy and how
+                        we can help <span class="required">*</span></label
+                    >
                     <textarea
                         name="use_case_context"
                         class="form-control"
@@ -58,13 +67,19 @@
                 <div class="col-12 mb-2 text-center">
                     <p class="privacy-text">
                         By submitting this form, you agree to our
-                        <a target="_blank" href="/privacy-policy">Privacy Policy</a>.
+                        <a target="_blank" href="/privacy-policy"
+                            >Privacy Policy</a
+                        >.
                     </p>
                 </div>
 
                 <div class="col-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" :disabled="submitting">
-                        {{ submitting ? 'Sending...' : 'Request access' }}
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        :disabled="submitting"
+                    >
+                        {{ submitting ? "Sending..." : "Request access" }}
                     </button>
                 </div>
             </form>
@@ -83,12 +98,15 @@
 
 <script setup lang="ts">
     import { ref, useTemplateRef, onMounted } from "vue"
-    import axios from "axios"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { getHubspotTracking } from "~/utils/hubspot"
-    import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeeting"
+    import { $fetch } from "~/utils/fetch"
+    import {
+        getMeetingUrl,
+        ensureMeetingsScriptLoaded,
+    } from "~/composables/useMeeting"
 
     const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("cloud-form")
@@ -98,7 +116,8 @@
     const meetingUrl = ref("")
     const submitting = ref(false)
 
-    const HUBSPOT_URL = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03"
+    const HUBSPOT_URL =
+        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03"
 
     onMounted(() => {
         if (getHubspotTracking() === null) {
@@ -128,7 +147,9 @@
             const hsq = ((window as any)._hsq = (window as any)._hsq || [])
             hsq.push(["identify", { email, firstname, lastname, kuid }])
 
-            const { data: { ip } } = await axios.get("https://api.ipify.org?format=json")
+            const { ip } = await $fetch<{ ip: string }>(
+                "https://api.ipify.org?format=json",
+            )
 
             const payload = {
                 fields: [
@@ -136,7 +157,10 @@
                     { name: "lastname", value: lastname },
                     { name: "email", value: email },
                     { name: "use_case_context", value: useCase },
-                    { name: "form_submission_identifier", value: "Contact for Cloud Edition" },
+                    {
+                        name: "form_submission_identifier",
+                        value: "Contact for Cloud Edition",
+                    },
                     { name: "kuid", value: kuid },
                 ],
                 context: {
@@ -147,7 +171,13 @@
                 },
             }
 
-            await axios.post(HUBSPOT_URL, payload)
+            await $fetch(HUBSPOT_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            })
 
             posthog.capture("cloud_form")
             hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }])
@@ -160,10 +190,13 @@
             hsq.push(["trackPageView"])
             meetingUrl.value = getMeetingUrl()
         } catch (error: any) {
-            const isBlocked = error?.response?.data?.errors?.some((e: any) => e.errorType === "BLOCKED_EMAIL")
+            const isBlocked = error?.response?.data?.errors?.some(
+                (e: any) => e.errorType === "BLOCKED_EMAIL",
+            )
             message.value = isBlocked
                 ? "Please use a professional email address."
-                : (error?.response?.data?.message || "Something went wrong. Please check your connection and try again.")
+                : error?.response?.data?.message ||
+                  "Something went wrong. Please check your connection and try again."
         } finally {
             submitting.value = false
         }
@@ -171,8 +204,6 @@
 </script>
 
 <style scoped lang="scss">
-
-
     .meeting-container {
         position: relative;
         display: flex;

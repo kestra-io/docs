@@ -1,5 +1,6 @@
 ---
-title: Manage Kestra Upgrades – Rolling and Rollback
+title: "Upgrade Kestra: Rolling Updates, Migrations, and Rollback"
+h1: Upgrade Kestra safely with rolling updates and rollback strategies
 sidebarTitle: Managing Upgrades
 icon: /src/contents/docs/icons/admin.svg
 description: Best practices for upgrading Kestra, performing rolling updates, and rolling back to previous versions safely.

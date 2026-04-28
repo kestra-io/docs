@@ -1,0 +1,67 @@
+---
+import ResourceCard from "~/components/resources/ResourceCard.vue"
+import { loadResources, type ResourceListItem } from "~/components/resources/getResources"
+import type { ResourceTag } from "~/components/resources/tags"
+
+interface Props {
+    currentId: string
+    tag: ResourceTag
+    limit?: number
+}
+
+const { currentId, tag, limit = 3 }: Props = Astro.props
+
+const { items } = await loadResources()
+const related: ResourceListItem[] = items
+    .filter((r) => r.tag === tag && r.id !== currentId)
+    .slice(0, limit)
+---
+
+{
+    related.length > 0 && (
+        <section class="similar">
+            <div class="container">
+                <h2>Related resources</h2>
+                <div class="grid">
+                    {related.map((resource) => (
+                        <ResourceCard
+                            resource={{
+                                ...resource,
+                                date: resource.date
+                                    ? resource.date.toISOString()
+                                    : undefined,
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+<style lang="scss">
+    .similar {
+        padding: $rem-4 $rem-1;
+        background: var(--ks-background-body);
+        border-top: $block-border;
+
+        .container {
+            max-width: 1180px;
+            padding: 0;
+        }
+
+        h2 {
+            margin-bottom: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    }
+</style>

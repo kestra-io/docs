@@ -1,5 +1,6 @@
 ---
-title: Tutorial – Flowable Tasks in Kestra – Branch, Loop, Parallelize
+title: "Flowable Tasks in Kestra: Branch, Loop, Parallelize"
+h1: Master Branching, Looping & Parallel Execution with Flowable Tasks
 description: Master Kestra's Flowable tasks to control workflow logic. Learn how to implement branching, loops, and parallel execution for complex orchestration scenarios.
 sidebarTitle: Flowable tasks
 icon: /src/contents/docs/icons/tutorial.svg
@@ -17,7 +18,7 @@ To this point, our flow extracts data from an API, uses that data in a Python sc
 
 Tasks from the [Core Flow plugin](/plugins/core/flow) control flow logic. Use them to run tasks in parallel or sequentially, branch conditionally, iterate over items, pause, or allow specific tasks to fail without stopping the execution.
 
-For example, you can use the [If task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.if) to specify your conditions and define what action to take based on whether those conditions are met.
+For example, you can use the [If task](/plugins/core/flow/io.kestra.plugin.core.flow.if) to specify your conditions and define what action to take based on whether those conditions are met.
 
 Let's take our previous example, and modify it to incorporate the If task for conditional logic. Below, we have redesigned the flow to be based on a product `SELECT` input rather than a `STRING` URI, but it still calls back to [dummyjson](https://dummyjson.com), and an API request is made based on the product category input of either `beauty` or `notebook` (one does not exist).
 
@@ -142,7 +143,7 @@ tasks:
         uri: https://kestra.io
 ```
 
-This flow checks an HTTP endpoint every 30 seconds and stops either when it returns 200 or after 50 attempts, whichever comes first. You can reference the child task outputs (here `outputs.healthCheck.code`) inside the `condition` expression. See the [LoopUntil task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.LoopUntil) for additional options.
+This flow checks an HTTP endpoint every 30 seconds and stops either when it returns 200 or after 50 attempts, whichever comes first. You can reference the child task outputs (here `outputs.healthCheck.code`) inside the `condition` expression. See the [LoopUntil task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil) for additional options.
 
 ## Add parallelism using Flowable tasks
 

@@ -1,5 +1,6 @@
 ---
-title: Build and Publish a Plugin
+title: Build and Publish a Kestra Plugin
+h1: How to Build and Publish Your Kestra Plugin to Maven Central
 icon: /src/contents/docs/icons/dev.svg
 description: Learn how to build and publish your Kestra plugins to Maven Central using Gradle and GitHub Actions.
 ---

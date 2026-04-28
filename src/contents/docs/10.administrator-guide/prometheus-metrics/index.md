@@ -1,5 +1,6 @@
 ---
-title: Prometheus Metrics in Kestra – Endpoint and Signals
+title: "Prometheus Metrics for Kestra: Reference and /prometheus Endpoint"
+h1: Available Prometheus metrics and how to scrape them
 sidebarTitle: Prometheus Metrics
 icon: /src/contents/docs/icons/admin.svg
 description: Explore the available Prometheus metrics in Kestra to monitor the performance and health of your orchestration cluster.
@@ -96,6 +97,7 @@ Various Kestra-specific database queries:
 For each internal queue:
 
 * `kestra_queue_big_message_count_total` (counter): Big messages in the queue.
+* `kestra_queue_message_lag_count` (gauge): Total number of messages in the queue that are not yet consumed.
 * `kestra_queue_poll_size` (gauge): Size of a poll to the queue (message batch size).
 * `kestra_queue_produce_count_total` (counter): Total number of produced messages.
 * `kestra_queue_receive_duration_seconds` (summary): Queue duration to receive and consume a batch of messages.

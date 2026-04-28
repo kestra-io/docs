@@ -1,5 +1,7 @@
 ---
-title: Deprecation of Templates
+title: "Templates Deprecated in Kestra 0.11.0: Migrate to Subflows"
+h1: How to Migrate from Templates to Subflows in Kestra 0.11.0
+sidebarTitle: Templates → Subflows
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.11.0
 description: Information on the deprecation of Templates in Kestra 0.11.0 and how to migrate to Subflows.
@@ -177,7 +179,7 @@ Templates are lists of tasks that can be shared between flows. You can define a 
 
 All tasks in a template will be executed sequentially; you can provide the same tasks that are found in a *standard* flow, including an *errors* branch.
 
-Templates can have arguments passed via the `args` property — see the [Template Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Template).
+Templates can have arguments passed via the `args` property — see the [Template Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.template).
 
 ### Example
 

@@ -1,5 +1,6 @@
 ---
-title: Validate and Deploy Your Flows with GitHub Actions
+title: Validate and Deploy Flows with GitHub Actions
+h1: Automate Flow Validation and Deployment via GitHub Actions CI/CD
 icon: /src/contents/docs/icons/github.svg
 stage: Intermediate
 topics:
@@ -15,8 +16,6 @@ How to use GitHub Actions to automatically validate and deploy your flows to Kes
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4MqtD9VtGVs?si=eMqBQFumZG9P4OHb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 If you're version controlling your flows in a Git repository, it can be useful to automatically validate that they're in the correct format before merging into your `main` branch. On top of that, you can automatically deploy your flows in your `main` branch to your Kestra instance.
 
