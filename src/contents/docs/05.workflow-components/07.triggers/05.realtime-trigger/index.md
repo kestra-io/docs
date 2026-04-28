@@ -30,7 +30,7 @@ Realtime Triggers continuously listen for events and launch a new workflow execu
 - an item is added to a [Redis list](/plugins/plugin-redis)
 - a row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).
 
-## How realtime triggers work
+## How Realtime Triggers work
 
 Once a Realtime Trigger is added to a workflow, Kestra spins up a dedicated listener thread that remains active. As soon as a new event arrives, the listener immediately starts a workflow execution to process it.
 
@@ -63,9 +63,9 @@ The table below compares Triggers with Realtime Triggers to help you choose the 
 | **Use cases**        | Data orchestration for analytics and building data products           | Process and microservice orchestration (real time updates, anomaly detection, order processing) |
 
 
-## How to Use Realtime Triggers
+## How to use Realtime Triggers
 
-To use Realtime Triggers, simply choose the `RealtimeTrigger` as a trigger type of your desired service. Here, we use the `RealtimeTrigger` to [listen to new messages in an AWS SQS queue](https://youtu.be/bLzk4dKc95g):
+To use Realtime Triggers, choose the `RealtimeTrigger` as the trigger type for your desired service. The following flow uses the `RealtimeTrigger` to [listen to new messages in an AWS SQS queue](https://youtu.be/bLzk4dKc95g):
 
 ```yaml
 id: sqs
@@ -85,9 +85,30 @@ triggers:
     queueUrl: https://sqs.eu-north-1.amazonaws.com/123456789/MyQueue
 ```
 
+## Worker failover for Realtime Triggers
+
+Each Realtime Trigger runs as a dedicated listener thread on one specific worker. If that worker stops, the listener stops with it. Kestra's [liveness mechanism](../../../10.administrator-guide/server-lifecycle/index.md) detects this and re-emits the trigger so another available worker can pick it up.
+
+The time before failover depends on how the worker stopped:
+
+- **Graceful shutdown** (e.g. `docker stop`, rolling deploy): the Executor waits for `kestra.server.terminationGracePeriod` (default `PT5M`) before reassigning the trigger. This prevents duplicate processing when the worker is expected to come back shortly, such as during a rolling deployment.
+- **Abrupt failure** (no heartbeat received): the Executor detects the missing heartbeat within `kestra.server.liveness.timeout` and reassigns the trigger without waiting for the grace period.
+
+To reduce the failover time after a graceful shutdown, lower the `terminationGracePeriod`:
+
+```yaml
+kestra:
+  server:
+    terminationGracePeriod: PT1M  # default is PT5M
+```
+
+::alert{type="info"}
+Events are not lost during the failover window. They remain in the source system (Kafka topic, SQS queue, etc.) and will be consumed once the trigger listener is restarted on another worker.
+::
+
 ## Comparison with real-time data processing engines
 
-It's important to note that Kestra's Realtime Triggers are not intended to be used as a replacement for real-time data processing engines such as Apache Flink, Apache Beam, or Google Dataflow.
+Kestra's Realtime Triggers are not a replacement for real-time data processing engines such as Apache Flink, Apache Beam, or Google Dataflow.
 
 Those data processing engines excel at **stateful** streaming applications and complex SQL transformations over real-time data streams.
 
