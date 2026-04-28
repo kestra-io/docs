@@ -14,8 +14,6 @@ Automate maintenance workflows with System Flows.
   <iframe src="https://www.youtube.com/embed/o05hcKNI_7I?si=sRuuMei3YJb4f7nC" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## System Flows – automate platform maintenance
 
 System Flows periodically execute background operations that keep your platform running but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:

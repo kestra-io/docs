@@ -25,6 +25,9 @@ import ApotekHjartatLogoImg from "~/contents/customer-stories/29/logo.svg"
 import SophiaGeneticsLogoImg from "~/assets/use-cases/healthcare/SophiaGenetics.svg"
 import BrainlabLogoImg from "~/assets/landing/infrastructure/companies/brainlab.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "HIPAA & HITRUST friendly", icon: "mdi:shield-check-outline" },
@@ -33,7 +36,7 @@ const HERO_TAGS = [
     { label: "Apache 2.0 licensed", icon: "mdi:code-tags" },
     { label: "Kubernetes & GPU workers", icon: "mdi:server-network-outline" },
     { label: "Multi-tenant data science", icon: "mdi:account-group-outline" },
-    { label: "1200+ open-source plugins", icon: "mdi:puzzle-outline" },
+    { label: `${totalPlugins}+ open-source plugins`, icon: "mdi:puzzle-outline" },
 ]
 
 const title = "Kestra for Healthcare & Life Sciences"
@@ -757,9 +760,9 @@ const FAQ = [
                 Integrates with the <span class="highlight">systems healthcare and life-sciences teams</span> already run.
             </Fragment>
             <Fragment slot="description">
-                Native plugins for PACS and DICOM systems, Epic, Cerner and HL7 feeds where needed, lab and genomics
-                platforms, AWS, GCP, Azure, Kubernetes, Vault, CyberArk, Splunk, Elastic, plus 1,200+ more.
-                Or build the exact integration your environment needs.
+                Connect EHRs, HL7 and FHIR engines, payer APIs, clearinghouses, lab and imaging systems,
+                data platforms, and security controls through {totalPlugins}+ plugins. Or build the exact integration
+                your environment requires.
             </Fragment>
         </PluginsBlock>
 

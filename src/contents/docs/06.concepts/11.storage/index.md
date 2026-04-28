@@ -313,8 +313,6 @@ The script can access a logger to log messages. Each row is available in a `row`
   <iframe src="https://www.youtube.com/embed/XiPegyF6uJY?si=5OQgTZBqMBcu4gHZ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 The PurgeExecution task can purge all the files stored inside the internal context by a flow execution.
 It can be used at the end of a flow to purge all its generated files.
 

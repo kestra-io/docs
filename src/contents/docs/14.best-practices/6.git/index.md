@@ -19,8 +19,6 @@ However, if you want to use Git to manage your [flows](../../05.workflow-compone
     <iframe src="https://www.youtube.com/embed/videoseries?si=wOyAUkgChRUuJxcy&amp;list=PLEK3H8YwZn1p7tyd9RV5-WDxh_ZGpMpA3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 There are multiple ways to use Git with Kestra:
 
 - The [git.SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) pattern enables a GitOps approach, using Git as the single source of truth for your flows.

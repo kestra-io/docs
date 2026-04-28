@@ -25,6 +25,9 @@ import RenaultLogoImg from "~/assets/trusted-companies/Renault.svg"
 import MichelinLogoImg from "~/assets/trusted-companies/Michelin.svg"
 import XiaomiLogoImg from "~/assets/landing/infrastructure/companies/xiaomi.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "Plant & edge ready", icon: "mdi:factory" },
@@ -439,7 +442,7 @@ const FAQ = [
     },
     {
         question: "How is Kestra different from IBM Maximo, SAP IPC, or hand-rolled MES scripts?",
-        answer: "Maximo and SAP IPC are domain suites, not orchestration engines. Hand-rolled scripts die the day the engineer who wrote them leaves. Kestra is declarative YAML in Git with 1,200+ plugins covering plant floor to cloud — so quality, warranty, recall, and telemetry live in one versioned, owned-by-your-team system.",
+        answer: `Maximo and SAP IPC are domain suites, not orchestration engines. Hand-rolled scripts die the day the engineer who wrote them leaves. Kestra is declarative YAML in Git with ${totalPlugins}+ plugins covering plant floor to cloud — so quality, warranty, recall, and telemetry live in one versioned, owned-by-your-team system.`,
     },
     {
         question: "How do you handle secrets and engineering IP?",
@@ -692,7 +695,7 @@ const FAQ = [
             </Fragment>
             <Fragment slot="description">
                 Connect MES, SCADA, PLM, ERP, dealer DMS, supplier EDI feeds, telemetry platforms, data stacks,
-                and security controls through 1,200+ plugins. Or build the exact integration your environment requires.
+                and security controls through {totalPlugins}+ plugins. Or build the exact integration your environment requires.
             </Fragment>
         </PluginsBlock>
 

@@ -8,11 +8,8 @@ description: Deploy Kestra on Amazon EKS with RDS PostgreSQL and S3 for a scalab
 
 Deploy Kestra to AWS EKS with a PostgreSQL RDS database and an S3 internal storage backend.
 
-## Deploy Kestra on AWS EKS with RDS and S3
+## Prerequisites
 
-This guide provides detailed instructions for deploying Kestra to AWS Elastic Kubernetes Service (EKS) with a PostgreSQL RDS database backend and AWS S3 for internal storage.
-
-**Prerequisites:**
 - Basic command-line interface (CLI) skills.
 - Familiarity with AWS EKS, RDS, S3, and Kubernetes.
 
@@ -100,7 +97,5 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 Once the ALB is configured and deployed, access the Kestra UI using the ALB endpoint.
 
 ## Next steps
-
-This guide walked you through installing Kestra to [AWS EKS](https://docs.aws.amazon.com/eks/) with PostgreSQL RDS database and S3 storage backend.
 
 Reach out via [Slack](/slack) if you encounter any issues or have questions about deploying Kestra to production.

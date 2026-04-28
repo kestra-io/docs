@@ -8,8 +8,6 @@ sidebarTitle: Inputs
 
 Inputs are dynamic values passed to the flow at runtime.
 
-## Workflow Inputs – concepts and usage
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/peQvnhaspyQ?si=gcZxTX5KF2dC7ZLO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -546,8 +544,6 @@ Variables are best suited for values that you don't want to change and are used 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/IOoND_WDzkY?si=CPAX9sPHlndM2FbI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Inputs in Kestra are strongly typed. Currently, you cannot enforce strong types and simultaneously use dynamically rendered Pebble expressions.
 
