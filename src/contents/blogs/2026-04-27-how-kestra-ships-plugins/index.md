@@ -1,7 +1,7 @@
 ---
 title: "How Kestra Ships 1200+ Plugins (Using Kestra)"
 description: "1200+ plugins, one team, zero manual release steps. Here's the Kestra-on-Kestra pipeline that made it possible."
-date: 2026-04-13T09:00:00
+date: 2026-04-27T09:00:00
 category: Engineering
 author:
   name: François Delbrayelle
