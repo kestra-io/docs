@@ -28,11 +28,17 @@ The other problem is visibility. When something goes wrong in a manual workflow,
 
 Five flows cover the full lifecycle.
 
-The core release flow, `daily_plugin_release`, is semi-automated with one human-in-the-loop gate before anything ships. The automation handles preparation and runs the checks. Then it pauses for a manual approval. That pause is worth having as it's the moment where someone confirms that what's about to go out is what we intended, before it's irreversible. Everything else in the flow is automatic.
+![The five plugin release flows in the kestra.engineering.plugins namespace](./plugins-namespace-flows.png)
+
+The core release flow, `daily_docs_release_plugin`, is semi-automated with one human-in-the-loop gate before anything ships. The automation handles preparation and runs the checks. Then it pauses for a manual approval. That pause is worth having as it's the moment where someone confirms that what's about to go out is what we intended, before it's irreversible. Everything else in the flow is automatic.
+
+![The daily_docs_release_plugin flow topology](./daily-docs-release-plugin-topology.png)
+
+*The flow definition on the left; Kestra renders the task graph on the right automatically.*
 
 When a new release tag is created, `index_plugin_release` triggers automatically. New plugin versions show up in the library without anyone having to remember to run the indexer. The metadata work lives in a [subflow](https://kestra.io/docs/workflow-components/subflows) called `process_plugin_metadata`, which `index_plugin_release` calls but which we can also run independently when something needs reindexing. Separating it out keeps debugging clean: if indexing fails, we know exactly where to look.
 
-`weekend_compatibility_check` runs every Saturday. It takes the entire plugin library and runs it against the latest `main` branch of Kestra core. The results land in Slack before the week starts.
+`nightly_compatibility_check` runs every night. It takes the entire plugin library and runs it against the latest `main` branch of Kestra core. The results land in Slack each morning.
 
 The fifth flow, `weekly_released_plugins`, compiles a digest of everything that shipped: new features, bug fixes, version bumps. It posts automatically to [Slack](/plugins/plugin-slack) and our [Notion](/plugins/plugin-notion) database. The team gets a summary without anyone writing one, and it gives visibility beyond engineering: product, customer success, marketing, and sales can all follow what's shipping without attending every standup.
 
@@ -42,9 +48,9 @@ The obvious answer is time saved. We do save time. But the more accurate, and in
 
 Before these flows, I was holding a lot of state in my head. What step are we on? Did that job finish? Was the metadata indexed for that version? That cognitive overhead is small per task but it compounds across a day when you're running multiple releases in parallel and also trying to do actual engineering work.
 
-Now, that overhead is Kestra's responsibility. The flows track state, handle retries, and send alerts when something needs attention. My job is to handle the things that actually require human judgment: the approval gate in `daily_plugin_release`, the investigation when a compatibility check fails, the decision about whether a breaking change in a dependency warrants a major version bump.
+Now, that overhead is Kestra's responsibility. The flows track state, handle retries, and send alerts when something needs attention. My job is to handle the things that actually require human judgment: the approval gate in `daily_docs_release_plugin`, the investigation when a compatibility check fails, the decision about whether a breaking change in a dependency warrants a major version bump.
 
-The weekend compatibility check is the one that changed my Monday mornings most noticeably. Before we had it, discovering a plugin regression typically happened mid-week, when someone was in the middle of something else and had to drop it to investigate. Now it happens over the weekend while nobody's paying attention. By Monday, the result is waiting. If it's clean, that's a green light. If something's broken, it's almost always a flaky test or a dependency change, and we can triage it before anyone's day gets derailed.
+The nightly compatibility check is the one that changed my mornings most noticeably. Before we had it, discovering a plugin regression typically happened mid-day, when someone was in the middle of something else and had to drop it to investigate. Now it happens overnight while nobody's paying attention. By the time the day starts, the result is waiting. If it's clean, that's a green light. If something's broken, it's almost always a flaky test or a dependency change, and we can triage it before anyone's day gets derailed.
 
 ## Why YAML makes this easy to maintain
 
@@ -52,7 +58,7 @@ In Kestra, a workflow is a YAML file. It describes what tasks should run, in wha
 
 We're not a large team, so the flows need to be readable by everyone on the team and debuggable without a handoff. YAML that describes intent, with tasks that execute the actual logic, means reading a flow is close to reading a checklist. You can understand what it does without knowing anything about how it was implemented.
 
-When we needed to add the human-in-the-loop approval step to `daily_plugin_release`, it was a few lines of YAML. When we needed to separate out the metadata indexing into its own subflow, it was a refactor that took less than an afternoon. The flow definition and the execution logic stay separate: the YAML describes what should happen, and Kestra handles execution.
+When we needed to add the human-in-the-loop approval step to `daily_docs_release_plugin`, it was a few lines of YAML. When we needed to separate out the metadata indexing into its own subflow, it was a refactor that took less than an afternoon. The flow definition and the execution logic stay separate: the YAML describes what should happen, and Kestra handles execution.
 
 ## The floor we didn't know we were missing
 
@@ -60,6 +66,8 @@ Before we had these flows, a release that ran smoothly felt like a success. Now,
 
 We have time to ask them now because the flows handle everything that doesn't require judgment.
 
-[Kestra is open source](https://github.com/kestra-io/kestra). The five flows covering our release lifecycle (the release gate, indexing, metadata processing, weekend compatibility checks, and the weekly digest) are each a few dozen lines of YAML. If your team is running similar processes manually, the [plugin library](/plugins) and [Blueprint catalog](/blueprints) are good places to start.
+[Kestra is open source](https://github.com/kestra-io/kestra). The five flows covering our release lifecycle (the release gate, indexing, metadata processing, nightly compatibility checks, and the weekly digest) are each a few dozen lines of YAML. If your team is running similar processes manually, the [plugin library](/plugins) and [Blueprint catalog](/blueprints) are good places to start.
 
 We're also continuing to push this further. The next step is automating more of the maintenance cycle, including accelerating how we detect and respond to upstream dependency changes across the full plugin library. More on that as it ships.
+
+If you want to build something similar, the [quickstart](../../docs/01.quickstart/index.md) gets you running in minutes. If you have questions or want to share what you've built, come find us on [Slack](/slack) or give us [a star on GitHub](https://github.com/kestra-io/kestra) ⭐️.
