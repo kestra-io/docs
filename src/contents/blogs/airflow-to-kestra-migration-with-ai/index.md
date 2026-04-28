@@ -1,45 +1,50 @@
 ---
 title: "Migrating from Airflow to Kestra with AI Coding Agents"
 description: "Learn how to migrate Apache Airflow DAGs to Kestra flows using AI coding agents like Claude Code, with step-by-step guidance on the kestra-flow and kestra-ops agent skills."
-date: 2026-04-02T09:00:00
+date: 2026-04-22T09:00:00
 category: Solutions
+image: ./main.png
 author:
   name: Benoit Pimpaud
   image: bpimpaud
 ---
 
-Migrating from Apache Airflow to Kestra is a decision many engineering teams make as their workflow complexity grows. Airflow's Python-first model works well for teams already comfortable with Python, but as pipelines scale, the operational overhead mounts: workers need the right packages installed, XCom has size limits, and DAG files mix orchestration logic with business logic in ways that become hard to maintain.
+Airflow 2 reached end of life in April 2026. For most teams, the easiest path is to upgrade to [Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) and move on. I think that's a mistake worth pausing on. The Airflow 3 [open issue tracker](https://github.com/apache/airflow/issues?q=is%3Aissue+is%3Aopen+airflow+3+upgrade) hints at a non-trivial migration even within the ecosystem, and the end of a major version is one of the few moments where the switching cost is low enough to seriously evaluate alternatives.
 
-Kestra takes a different approach: declarative YAML flows, file-based data passing with no size limits, and a 600+ plugin ecosystem that covers most integrations out of the box. The IDE-like UI, with a live topology view and built-in code editor, makes the day-to-day workflow significantly smoother.
+The reason most teams won't evaluate is the same reason I [failed to migrate a data team to dbt](https://medium.pimpaudben.fr/how-i-failed-to-implement-dbt-in-my-previous-job-0b168f59e150) a few years ago. I had a working prototype, benchmarks, and a migration plan. What I didn't have was a working example in front of the people who needed to say yes, before they'd already mentally committed to the status quo. Airflow migrations replay this pattern: the translation work kills most evaluations before they start. Most teams look at years of accumulated DAGs and decide the upgrade is easier. They never get to the working demo stage.
 
-The migration itself used to require deep knowledge of both platforms. Now, with AI coding agents and Kestra's dedicated agent skills, you can migrate a DAG in minutes rather than hours. This post walks through a real migration — a DummyJSON products analytics pipeline — to show exactly what the process looks like.
+LLMs have started to change that calculus. I built [migration-skills](https://github.com/kestra-io/migration-skills) so the conversion part takes minutes instead of weeks. Convert a DAG, run it in Kestra, and you have something to show the right people the same day you decide to look.
+
+Kestra takes a different approach: declarative YAML flows, file-based data passing with no size limits, and a 1200+ plugin ecosystem that covers most integrations out of the box. The IDE-like UI, with a live topology view and built-in code editor, makes the day-to-day workflow significantly smoother.
+
+I'll walk through a real migration (a DummyJSON products analytics pipeline) using AI coding agents and Kestra's dedicated agent skills to show exactly what the process looks like.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5JL6gVtI6FE" title="Migrating from Airflow to Kestra with AI Coding Agents" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## What Changes When You Move from Airflow to Kestra
+## What changes when you move from Airflow to Kestra
 
 Before touching any code, it helps to internalize the key conceptual shifts:
 
 | Aspect | Airflow | Kestra |
 |---|---|---|
 | **Definition format** | Python code (DAG files) | Declarative YAML |
-| **State passing** | XCom (serialized to metadata DB, size-limited) | Files via internal storage — no size limits |
-| **Parallelism** | Implicit — independent tasks run in parallel | Explicit — wrap concurrent tasks in `io.kestra.plugin.core.flow.Parallel` |
+| **State passing** | XCom (serialized to metadata DB, size-limited) | Files via internal storage, no size limits |
+| **Parallelism** | Implicit; independent tasks run in parallel | Explicit; wrap concurrent tasks in `io.kestra.plugin.core.flow.Parallel` |
 | **Scheduling** | `schedule` parameter on the DAG object | Separate `Schedule` trigger with a `cron` expression |
 | **Dependencies** | pip packages installed on workers | Java plugins loaded at startup, or per-task `dependencies` |
 | **Namespace files** | No equivalent | First-class script/config storage, scoped per namespace |
 
 The biggest shift is **data passing**. In Airflow, tasks return Python objects via XCom, which get serialized to the metadata database. In Kestra, tasks write files to disk, declare them in `outputFiles`, and Kestra uploads them to internal storage. Downstream tasks reference them via `inputFiles` using Pebble expressions like `{{ outputs.my_task.outputFiles['data.json'] }}`. No size limits, no serialization overhead.
 
-## The Tool Stack for AI-Assisted Migration
+## The tool stack for AI-assisted migration
 
 The migration uses three tools working together:
 
-1. **Claude Code** (or Codex / Gemini CLI) — the AI coding agent that reads your DAGs and generates Kestra flows
-2. **`kestra-flow` agent skill** — gives Claude Code live knowledge of Kestra's flow schema so it never generates invalid YAML
-3. **`kestra-ops` agent skill** — gives Claude Code the ability to operate `kestractl` for deployment, validation, and namespace file management
+1. **Claude Code** (or Codex / Gemini CLI), the AI coding agent that reads your DAGs and generates Kestra flows
+2. **`kestra-flow` agent skill**, which gives Claude Code live knowledge of Kestra's flow schema so it never generates invalid YAML
+3. **`kestra-ops` agent skill**, which gives Claude Code the ability to operate `kestractl` for deployment, validation, and namespace file management
 
 Install both skills by following the instructions at [kestra.io/docs/ai-tools/agent-skills](https://kestra.io/docs/ai-tools/agent-skills). Once installed, Claude Code automatically invokes the right skill based on what you ask.
 
@@ -57,9 +62,9 @@ kestractl flows list --namespace company.analytics
 
 :::
 
-## The Pipeline We're Migrating
+## The pipeline we're migrating
 
-The source DAG — `dummyjson_products_pipeline.py` — fetches product data from [dummyjson.com](https://dummyjson.com), runs pandas analytics, and produces JSON output artifacts. It has two stages of parallelism:
+The source DAG, `dummyjson_products_pipeline.py`, fetches product data from [dummyjson.com](https://dummyjson.com), runs pandas analytics, and produces JSON output artifacts. It has two stages of parallelism:
 
 :::collapse{title="DAG topology"}
 
@@ -136,9 +141,9 @@ with DAG(
 
 Everything lives in one Python file. The task functions return Python objects that Airflow serializes via XCom.
 
-## Step-by-Step: Migrating the DAG
+## Step-by-step: migrating the DAG
 
-### 1. Get Airflow Running (with Claude Code)
+### 1. Get Airflow running (with Claude Code)
 
 If you don't have a local Airflow instance already running, just ask Claude Code:
 
@@ -152,7 +157,7 @@ Install Airflow and run it on port 28080
 
 Claude will create a virtual environment, install Airflow, initialize the database, and run `airflow standalone`. You'll have a working Airflow UI at `http://localhost:28080` in a few minutes.
 
-### 2. Prompt Claude to Migrate
+### 2. Prompt Claude to migrate
 
 Open Claude Code in your project directory and give it a specific migration prompt:
 
@@ -175,10 +180,10 @@ Requirements:
 
 What happens under the hood:
 
-1. Claude reads the entire DAG file — tasks, dependencies, XCom wiring, schedule, retries
+1. Claude reads the entire DAG file: tasks, dependencies, XCom wiring, schedule, retries
 2. It invokes the `kestra-flow` skill, which fetches the live Kestra plugin schema from `https://api.kestra.io/v1/plugins/schemas/flow`
 3. Every task type and property is validated against that schema before the YAML is written
-4. Each `@task` function is extracted into its own Python script — XCom returns become file writes, XCom inputs become file reads
+4. Each `@task` function is extracted into its own Python script. XCom returns become file writes, XCom inputs become file reads.
 
 The output:
 
@@ -199,7 +204,7 @@ kestra-migrate/
 
 :::
 
-### 3. What the Extraction Looks Like
+### 3. What the extraction looks like
 
 The key transformation is how XCom data passing becomes file I/O. In Airflow, `fetch_all_products` returns a Python list that Airflow serializes to the metadata database. In the extracted namespace file, it writes a JSON file to disk instead:
 
@@ -240,7 +245,7 @@ json.dump(all_products, open("products.json", "w"), indent=2)  # written to disk
 
 :::
 
-Similarly, `compute_category_stats` — which in Airflow received products via XCom — now reads `products.json` from disk:
+Similarly, `compute_category_stats`, which in Airflow received products via XCom, now reads `products.json` from disk:
 
 :::collapse{title="After: compute_category_stats (namespace file)"}
 
@@ -403,11 +408,11 @@ triggers:
 
 ![Kestra flow topology for dummyjson_products_pipeline, showing the three-stage parallel execution graph in the Kestra UI](./kestra_flow.png)
 
-Notice how `compute_category_review_sentiment` receives both `products.json` from `fetch_all_products` and `categories.json` from `fetch_categories` — the same multi-input dependency that the Airflow DAG expressed via function parameters is now explicit in `inputFiles`.
+Notice how `compute_category_review_sentiment` receives both `products.json` from `fetch_all_products` and `categories.json` from `fetch_categories`. The same multi-input dependency that the Airflow DAG expressed via function parameters is now explicit in `inputFiles`.
 
-### 4. Deploy Namespace Files
+### 4. Deploy namespace files
 
-Namespace files let your flows reference scripts stored in Kestra's file storage — separate from the flow YAML itself. Upload the extracted scripts:
+Namespace files let your flows reference scripts stored in Kestra's file storage, separate from the flow YAML itself. Upload the extracted scripts:
 
 :::collapse{title="Deploy namespace files with kestractl"}
 
@@ -424,9 +429,9 @@ kestractl nsfiles list company.analytics --path scripts/ --recursive
 
 :::
 
-Or ask Claude to handle this for you — it will use the `kestra-ops` skill and run the right `kestractl` commands.
+Or ask Claude to handle this for you. It will use the `kestra-ops` skill and run the right `kestractl` commands.
 
-### 5. Validate and Deploy the Flow
+### 5. Validate and deploy the flow
 
 Always validate before deploying:
 
@@ -468,9 +473,19 @@ kestractl flows create kestra-migrate/flow.yaml --override
 
 :::
 
-Open the Kestra UI to confirm the topology view shows three stages — fetch, analytics fan-out, and executive summary — then trigger a test execution.
+Open the Kestra UI to confirm the topology view shows three stages (fetch, analytics fan-out, and executive summary), then trigger a test execution.
 
-## Common Translation Patterns
+## Why this approach works
+
+Converting Python DAGs to YAML flows is exactly the kind of task LLMs handle well: the source is structured code with predictable patterns, the target format is well-documented, and the mapping rules are consistent. What breaks that is schema drift. An AI agent guessing task type names and property names produces YAML that fails validation.
+
+The `kestra-flow` skill solves this by grounding Claude Code in the actual, live Kestra schema. Every generated property is validated against the plugin registry before it's written.
+
+The `kestra-ops` skill handles the operational side. Claude doesn't need to memorize `kestractl` flags. It fetches the right commands, runs them, and reports back.
+
+For teams with large DAG catalogs, this approach scales. You can migrate DAGs one at a time, running both Airflow and Kestra in parallel until you're confident in the new flows.
+
+## Common translation patterns
 
 ### Scheduling
 
@@ -493,7 +508,7 @@ triggers:
 
 :::
 
-Kestra supports multiple triggers per flow — combine a schedule with a webhook to make the same flow runnable both on a schedule and via API call.
+Kestra supports multiple triggers per flow. Combine a schedule with a webhook to make the same flow runnable both on a schedule and via API call.
 
 ### Retries
 
@@ -546,7 +561,9 @@ def choose_branch(**kwargs):
 
 :::
 
-## Concept Mapping Reference
+## Concept mapping reference
+
+These are the patterns that come up most when working through a larger DAG catalog.
 
 | Airflow Concept | Kestra Equivalent |
 |---|---|
@@ -563,21 +580,22 @@ def choose_branch(**kwargs):
 | Tags | Labels (`labels: { env: "prod" }`) |
 | `trigger_rule` | `allowFailure: true` on tasks |
 
-## Why This Approach Works
+## Getting started
 
-The AI-assisted migration works well because the `kestra-flow` skill grounds Claude Code in the actual, live Kestra schema. Without it, an AI agent would guess task type names and property names, producing YAML that fails validation. With the skill, every generated property is validated against the plugin registry before it's written.
+Spin up a local Kestra instance with Docker:
 
-The `kestra-ops` skill handles the operational side — Claude doesn't need to memorize `kestractl` flags. It fetches the right commands, runs them, and reports back.
+```bash
+docker run --pull=always --rm -it -p 8080:8080 --user=root \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp kestra/kestra:latest server local
+```
 
-For teams with large DAG catalogs, this approach scales. You can migrate DAGs one at a time, running both Airflow and Kestra in parallel until you're confident in the new flows.
-
-## Getting Started
+Then:
 
 1. Install Kestra agent skills: [kestra.io/docs/ai-tools/agent-skills](https://kestra.io/docs/ai-tools/agent-skills)
 2. Install `kestractl`: [kestra.io/docs/kestra-cli/kestractl](https://kestra.io/docs/kestra-cli/kestractl)
-3. Spin up a local Kestra instance or connect to your existing environment
-4. Pick a simple DAG to start — a 3-5 task sequential pipeline is a good first candidate
+3. Pick a simple DAG to start (a 3-5 task sequential pipeline works well) and run it through the migration workflow described above
 
-If you prefer a standalone migration tool, the [kestra-io/migration-skills](https://github.com/kestra-io/migration-skills) repository on GitHub provides a dedicated `/migrate-airflow-kestra` skill you can install directly into Claude Code. It handles the full migration workflow — DAG parsing, namespace file extraction, flow validation, and deployment — as a single command.
+If you prefer a standalone migration tool, the [kestra-io/migration-skills](https://github.com/kestra-io/migration-skills) repository on GitHub provides a dedicated `/migrate-airflow-kestra` skill you can install directly into Claude Code. It handles the full migration workflow (DAG parsing, namespace file extraction, flow validation, and deployment) as a single command.
 
-The migration from Airflow to Kestra doesn't have to be a months-long project. With the right tooling, a single DAG goes from Python to validated, deployed Kestra flow in under an hour.
+A working example moves things faster than any migration plan. One DAG, converted, running in Kestra, in front of the people who need to say yes. That's how evaluations actually start.
