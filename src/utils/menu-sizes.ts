@@ -7,7 +7,7 @@ const menuSizes: Record<string, MenuSize> = {
     },
     solutions: {
         width: "782px",
-        height: "300px"
+        height: "340px"
     },
     resources: {
         width: "285px",
