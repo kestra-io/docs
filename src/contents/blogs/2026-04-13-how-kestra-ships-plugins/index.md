@@ -14,7 +14,7 @@ The Plugins & Integrations team at Kestra is responsible for the 1200+ plugins t
 
 At that volume, releasing a plugin meant manually coordinating the same sequence of steps across every affected package: validate, release, index, notify. This manual process creates a lot of interruptions when you're also running multiple releases in parallel and also doing other engineering work.
 
-We build orchestration software, so fixing this with Kestra was the obvious move. I'll walk through what we built and what changed.
+We build orchestration software, so fixing this with Kestra was the obvious move. In the most literal sense, this is dogfooding: we use Kestra to ship Kestra. I'll walk through what we built and what changed.
 
 ## What the release process used to look like
 
@@ -32,9 +32,9 @@ The core release flow, `daily_plugin_release`, is semi-automated with one human-
 
 When a new release tag is created, `index_plugin_release` triggers automatically. New plugin versions show up in the library without anyone having to remember to run the indexer. The metadata work lives in a [subflow](https://kestra.io/docs/workflow-components/subflows) called `process_plugin_metadata`, which `index_plugin_release` calls but which we can also run independently when something needs reindexing. Separating it out keeps debugging clean: if indexing fails, we know exactly where to look.
 
-`weekend_compatibility_check` runs every Saturday. It takes the entire plugin library and runs it against the latest `develop` branch of Kestra core. The results land in Slack before the week starts.
+`weekend_compatibility_check` runs every Saturday. It takes the entire plugin library and runs it against the latest `main` branch of Kestra core. The results land in Slack before the week starts.
 
-The fifth flow, `weekly_released_plugins`, compiles a digest of everything that shipped: new features, bug fixes, version bumps. It posts automatically to [Slack](/plugins/plugin-slack) and our [Notion](/plugins/plugin-notion) database. The team gets a summary without anyone writing one.
+The fifth flow, `weekly_released_plugins`, compiles a digest of everything that shipped: new features, bug fixes, version bumps. It posts automatically to [Slack](/plugins/plugin-slack) and our [Notion](/plugins/plugin-notion) database. The team gets a summary without anyone writing one, and it gives visibility beyond engineering: product, customer success, marketing, and sales can all follow what's shipping without attending every standup.
 
 ## What changed
 
@@ -56,8 +56,10 @@ When we needed to add the human-in-the-loop approval step to `daily_plugin_relea
 
 ## The floor we didn't know we were missing
 
-Before we had these flows, a release that ran smoothly felt like a success. Now, a release that runs smoothly is the floor, not the ceiling. We get focus on the important questions that require human judgment. Why did this compatibility check fail? What changed in this dependency? Why is this plugin failing on the develop branch but not on main?
+Before we had these flows, a release that ran smoothly felt like a success. Now, a release that runs smoothly is the floor, not the ceiling. We get focus on the important questions that require human judgment. Why did this compatibility check fail? What changed in this dependency? Why is this plugin failing on main when it passed last week?
 
 We have time to ask them now because the flows handle everything that doesn't require judgment.
 
 [Kestra is open source](https://github.com/kestra-io/kestra). The five flows covering our release lifecycle (the release gate, indexing, metadata processing, weekend compatibility checks, and the weekly digest) are each a few dozen lines of YAML. If your team is running similar processes manually, the [plugin library](/plugins) and [Blueprint catalog](/blueprints) are good places to start.
+
+We're also continuing to push this further. The next step is automating more of the maintenance cycle, including accelerating how we detect and respond to upstream dependency changes across the full plugin library. More on that as it ships.
