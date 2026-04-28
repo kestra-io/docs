@@ -1,5 +1,6 @@
 ---
-title: Kestra Configuration Basics – Where to Edit Config and How Overrides Work
+title: "Configuration Basics in Kestra: YAML & Env Overrides"
+h1: Where Kestra Config Lives and How Overrides Work
 description: Learn where Kestra configuration is defined, how YAML and environment variables interact, and what minimal settings are needed to start a Kestra instance.
 sidebarTitle: Configuration Basics
 icon: /src/contents/docs/icons/admin.svg

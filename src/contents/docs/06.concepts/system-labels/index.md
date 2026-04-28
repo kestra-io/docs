@@ -1,6 +1,7 @@
 ---
-title: System and Hidden Labels in Kestra – Admin Metadata
-description: Special labels for system use only.
+title: "System Labels in Kestra: Reserved Admin Metadata"
+h1: How System and Hidden Labels Work for Admin Metadata
+description: Use system and hidden labels in Kestra for admin metadata. Understand how internal labels differ from user labels and how they affect filtering.
 sidebarTitle: System Labels & Hidden Labels
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]
@@ -40,13 +41,14 @@ By default, System Labels (prefixed with `system.`) are hidden. To display them,
 
 ## System labels
 
-System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels.
+System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels. For a step-by-step guide on using `system.correlationId` specifically as an idempotency key, see [Idempotency with correlation IDs](../../15.how-to-guides/idempotency/index.md).
 
 ### `system.correlationId`
 
 - Automatically set for every execution and propagated to downstream executions created by `Subflow` or `ForEachItem` tasks
 - Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage
-- Use this label to filter all executions originating from a specific parent execution.
+- Can also be set to a stable business key and used as an idempotency key for flows that must not process the same event twice
+- Use this label to filter all executions originating from a specific parent execution or business event.
 
 For example, if a parent flow triggers multiple subflows, filtering by the parent's `system.correlationId` displays all related executions.
 

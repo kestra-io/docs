@@ -1,5 +1,7 @@
 ---
-title: Kubernetes Task Runner – Run Tasks as Kubernetes Pods
+title: Kubernetes Task Runner – Run Tasks as K8s Pods
+h1: Run Kestra Tasks as Kubernetes Pods
+description: Run Kestra tasks as Kubernetes pods with the K8s Task Runner. Configure pod templates, namespaces, and resource limits for scalable container-based execution.
 sidebarTitle: Kubernetes Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -135,6 +137,58 @@ taskRunner:
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
 ```
 
+### Exec timeout and residual `InterruptedIOException` errors
+
+The sequence diagram below illustrates a failure mode that occurs when the `waitUntilRunning` timeout expires while the OkHttp dispatcher is still retrying the `/exec` WebSocket upgrade in the background.
+
+```mermaid
+sequenceDiagram
+    participant W as Kestra Worker (Main Thread)
+    participant OK as OkHttp Dispatcher (Background Threads)
+    participant API as EKS API Server (Control Plane)
+    participant P as Target Task Pod (Worker Node)
+
+    Note over W: Task Start: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+    W->>API: 1. POST /api/v1/namespaces/default/pods (Create Pod)
+    API-->>P: Schedule & Initialize Container
+
+    Note over W: Wait for 'waitUntilRunning' (Default PT10M)
+
+    W->>OK: 2. Initiate /exec Handshake (File/Marker Upload)
+
+    loop Background Retry Loop
+        OK->>API: 3. GET /api/v1/.../exec (WebSocket Upgrade)
+        API-->>OK: 500 Internal Server Error (Kubelet/Node not ready)
+        Note over OK: Wait for retry interval
+    end
+
+    Note over W: 4. Main Thread Timeout Reached
+    W->>W: Mark TaskRun as FAILED
+
+    par Cleanup Phase
+        W->>API: 5. DELETE /api/v1/namespaces/default/pods/{name}
+        API-->>P: Terminate Pod
+        W->>W: 6. SHUTDOWN OkHttp Thread Pool (Executor)
+    and Residual Logging
+        Note over OK: 7. Background Thread wakes for Attempt 3
+        OK->>OK: Thread INTERRUPTED (Pool is Terminated)
+        Note right of OK: Log: java.io.InterruptedIOException: executor rejected
+        Note right of OK: Log: ERROR Stop retry, attempts 3 elapsed after 24 seconds
+    end
+```
+
+
+The task is already marked `FAILED` at step 4. The `java.io.InterruptedIOException: executor rejected` and `ERROR Stop retry` log lines emitted at step 7 are residual — they confirm the cleanup path ran correctly and can be safely ignored. If the `waitUntilRunning` timeout fires before the pod is ready (for example, due to slow image pulls or kubelet initialization on a cold node), increase the value to give the cluster more time:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  waitUntilRunning: PT20M
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
 ## Specifying resource requests
 
 Use the `resources` property to set CPU and memory requests and limits on the main task container. Both `cpu` and `memory` accept static values or Pebble expressions, so you can drive them from flow inputs at runtime.
@@ -211,7 +265,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-kubernetes/runner/io.kestra.plugin.ee.kubernetes.runner.Kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
+For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-ee-kubernetes/io.kestra.plugin.ee.kubernetes.runner.kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
 :::
 
 ## Timeout configuration

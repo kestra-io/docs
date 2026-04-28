@@ -1,5 +1,7 @@
 ---
 title: Run JavaScript Inside Your Flows
+h1: Execute JavaScript Scripts in Kestra Workflows
+description: Run JavaScript and Node.js scripts in Kestra. Install npm packages at runtime and pass outputs between tasks using inputs and variables.
 icon: /src/contents/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
@@ -13,8 +15,6 @@ You can execute NodeJS code in a flow by either writing your NodeJS inline or by
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/nACf-2mnonk?si=OzJP7gtN-AbGrkr_" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 In this example, the flow will install the required npm packages, make an API request to fetch data and use the NodeJS Kestra Library to generate outputs and metrics using this data.
 

@@ -1,5 +1,6 @@
 ---
-title: Kestra Kubernetes Operator – GitOps for Flows and Resources
+title: "Kubernetes Operator in Kestra: GitOps for Flows"
+h1: Manage Kestra Resources Declaratively with the Kubernetes Operator
 sidebarTitle: Kubernetes Operator
 icon: /src/contents/docs/icons/dev.svg
 editions: ["EE"]

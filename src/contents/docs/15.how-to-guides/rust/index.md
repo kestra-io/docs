@@ -1,5 +1,6 @@
 ---
 title: Run Rust Inside Your Flows
+h1: Execute High-Performance Rust Code in Kestra with Docker
 icon: /src/contents/docs/icons/rust.svg
 stage: Getting Started
 topics:

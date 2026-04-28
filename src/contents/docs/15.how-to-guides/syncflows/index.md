@@ -1,5 +1,6 @@
 ---
 title: Sync Flows from a Git Repository
+h1: Enable GitOps for Kestra with the SyncFlows Task
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
@@ -15,9 +16,7 @@ Sync flows from a Git Repository to Kestra with the SyncFlows Task.
   <iframe src="https://www.youtube.com/embed/YbIuqYWLrpA?si=4g11iHE4qm0VdKMv" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
-The [SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.SyncFlows) task is a powerful integration that allows you to **sync your code with Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
+The [SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) task is a powerful integration that allows you to **sync your code with Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
 The process is simple: you can sync your flows from a Git repository on a schedule or anytime you push a change to a given Git branch. The task allows you to easily sync one or more flows from a given namespace.
 

@@ -180,7 +180,7 @@ testimonials:
         name: "Faster workflow creation"
       - value: "0"
         name: "Pipeline failures"
-    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/use-cases/stories/32-apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Data Teams Actually Work
@@ -214,7 +214,7 @@ decisionGuide:
 
 commonQuestions:
   - question: "Airflow 2 is EOL. Now what?"
-    answer: "Apache Airflow 2 reached end of life in April 2026. No more security patches, bug fixes, or provider updates for 2.x. Teams still running it face a real decision: upgrade to Airflow 3 or migrate to a different orchestrator. Both paths require comparable work. Upgrading to Airflow 3 means removing SubDAGs, updating deprecated context variables, moving operators to the new providers package, and splitting the webserver into an API server and DAG processor—every change is Airflow-specific. Migrating to Kestra means extracting business logic from DAG files and defining orchestration in YAML; your Python, SQL, and Shell code stays unchanged and portable. The difference is what you get at the end: Airflow 3 modernizes the scheduler and adds event-driven features, but DAGs are still Python. Kestra lets any team member contribute workflows in YAML, with tasks running in any language in isolated containers."
+    answer: "Apache Airflow 2 reached end of life in April 2026. No more security patches, bug fixes, or provider updates for 2.x. Teams still running it face a real decision: upgrade to Airflow 3 or migrate to a different orchestrator. Both paths require comparable work. Upgrading to Airflow 3 means removing SubDAGs, updating deprecated context variables, moving operators to the new providers package, and splitting the webserver into an API server and DAG processor—every change is Airflow-specific. Migrating to Kestra means extracting business logic from DAG files and defining orchestration in YAML; your Python, SQL, and Shell code stays unchanged and portable. The difference is what you get at the end: Airflow 3 modernizes the scheduler and adds event-driven features, but DAGs are still Python. Kestra lets any team member contribute workflows in YAML, with tasks running in any language in isolated containers. For a structured breakdown of both paths, see our <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a>."
   - question: "Do I have to migrate all my DAGs at once?"
     answer: "No. Most teams run Airflow and Kestra side by side during a transition. Kestra can trigger Airflow jobs via its HTTP plugin, so you can migrate workflows incrementally while keeping production pipelines running. Start with new workflows in Kestra, migrate lower-risk DAGs next, and cut over the rest when you're confident."
   - question: "What happens to my existing Python scripts and operators if I move to Kestra?"

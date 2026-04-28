@@ -1,5 +1,6 @@
 ---
-title: Access Files on Your Local Machine in Kestra
+title: "Access Local Files in Kestra: Bind Mounts Guide"
+h1: Read and Process Local Machine Files Using Bind Mounts
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

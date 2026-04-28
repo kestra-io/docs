@@ -1,5 +1,6 @@
 ---
-title: Google Cloud Run Task Runner – Run Tasks on Cloud Run
+title: "Google Cloud Run Task Runner: Serverless Task Execution"
+h1: Run Kestra Tasks as Serverless Containers on Google Cloud Run
 sidebarTitle: Google Cloud Run Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -281,7 +282,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a complete list of properties available in the Cloud Run task runner, see the [GCP plugin documentation](/plugins/plugin-gcp/runner/io.kestra.plugin.ee.gcp.runner.CloudRun) or explore the configuration in the built-in Code Editor in the Kestra UI.
+For a complete list of properties available in the Cloud Run task runner, see the [GCP plugin documentation](/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.cloudrun) or explore the configuration in the built-in Code Editor in the Kestra UI.
 :::
 
 ## How to run tasks on Google Cloud Run

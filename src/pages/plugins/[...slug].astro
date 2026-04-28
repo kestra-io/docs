@@ -24,6 +24,7 @@ import {
     fetchPageDefinition,
     fetchSecondaryData,
 } from "~/utils/plugins/fetchPluginPageData"
+import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -129,10 +130,7 @@ const {
 
 if (
     page === null ||
-    !pluginsWithoutDeprecated.some(
-        (p: any) =>
-            effectiveSubGroup === undefined || slugify(subGroupName(p)) === effectiveSubGroup,
-    )
+    !pluginsWithoutDeprecated.some(p => matchesSubGroup(p, effectiveSubGroup))
 ) {
     console.warn("Redirecting due to no content")
     return Astro.redirect(

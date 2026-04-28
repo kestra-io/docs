@@ -1,5 +1,7 @@
 ---
 title: Working Directory Task – Share Files Across Scripts
+h1: Share Files Between Tasks Using WorkingDirectory
+description: Share files across script tasks using Kestra's WorkingDirectory task. Group related scripts to read and write to a shared filesystem within one execution.
 sidebarTitle: Working Directory
 icon: /src/contents/docs/icons/dev.svg
 ---

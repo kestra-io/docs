@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra on GCP GKE – CloudSQL and Cloud Storage
+title: "Deploy on GCP GKE: CloudSQL and Cloud Storage"
+h1: GKE Deployment with CloudSQL and Google Cloud Storage
 sidebarTitle: Kubernetes on GCP GKE with CloudSQL and Cloud Storage
 icon: /src/contents/docs/icons/gcp-gke.svg
 description: Install Kestra on Google Kubernetes Engine (GKE) using CloudSQL and Google Cloud Storage for a robust GCP deployment.
@@ -7,17 +8,14 @@ description: Install Kestra on Google Kubernetes Engine (GKE) using CloudSQL and
 
 Deploy Kestra to GCP GKE with CloudSQL as the database backend and Google Cloud Storage as the internal storage backend.
 
-## Deploy Kestra on GCP GKE with CloudSQL and GCS
+## Prerequisites
 
-This guide provides detailed instructions for deploying Kestra to Google Kubernetes Engine (GKE) with CloudSQL as the database backend and Google Cloud Storage (GCS) for internal storage.
-
-**Prerequisites:**
 - Basic command-line interface (CLI) skills.
 - Familiarity with GCP GKE, PostgreSQL, GCS, and Kubernetes.
 
-## Launch an GKE Cluster
+## Launch a GKE cluster
 
-First, login to GCP using `gcloud init`.
+First, log in to GCP using `gcloud init`.
 
 Run the following command to create a GKE cluster named `my-kestra-cluster`:
 
@@ -149,7 +147,7 @@ configurations:
         password: <your-password>
 ```
 
-In order for the changes to take effect, run the `helm upgrade` command as:
+To apply the changes, run:
 
 ```shell
 helm upgrade my-kestra kestra/kestra -f values.yaml
@@ -166,7 +164,7 @@ This section guides you on how to change the storage backend to Cloud Storage to
 5. On the Service Accounts page, click on the newly created service account.
 6. On the newly created service account page, go to the **Keys** tab at the top of the page and click on **Add Key**. From the dropdown, select **Create New Key**.
 7. Select the Key type as **JSON** and click on **Create**. The JSON key file for the service account will be downloaded.
-8. We will be using the stringified JSON for our configuration. You can use the bash command `cat <path_to_json_file> | jq '@json'` to generate stringified JSON.
+8. Use the stringified JSON for the configuration. You can use the bash command `cat <path_to_json_file> | jq '@json'` to generate stringified JSON.
 9. Edit Kestra storage configuration in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11).
 
 :::alert{type="info"}
@@ -186,7 +184,7 @@ configurations:
             "<stringified-json-file-contents>"
 ```
 
-In order for the changes to take effect, run the `helm upgrade` command as:
+To apply the changes, run:
 
 ```shell
 helm upgrade my-kestra kestra/kestra -f values.yaml
@@ -208,10 +206,11 @@ tasks:
     message: User {{ inputs.file }}
 ```
 
-## Commented-out Examples in values.yaml
-To provide users with clear guidance on configuring the values.yaml file, we have included some commented-out examples in the configuration. These examples can be used to set up various aspects of Kestra, such as secrets, database configurations, and other key parameters. You can uncomment and modify them as needed.
+## Commented-out examples in values.yaml
 
-Here’s an example of how you can define secrets and other configurations in the values.yaml file:
+The `values.yaml` file includes commented-out examples for secrets, database, and other configuration options. Uncomment and adjust them as needed.
+
+Example:
 
 ```yaml
 ## Example configuration for secrets:
@@ -240,16 +239,8 @@ Here’s an example of how you can define secrets and other configurations in th
 ##      key: basic-auth.yml
 ```
 
-In this example:
-
-- **Secrets**: You can configure sensitive values as secrets, either hardcoding them or referencing existing Kubernetes secrets.
-- **Queue and Repository**: By default, these can use PostgreSQL or any other supported type. Uncomment the relevant lines to use them.
-- **PostgreSQL Configuration**: Set the datasources section to provide details for connecting to a PostgreSQL database.
-
-Feel free to uncomment and modify these examples based on your setup needs. This provides flexibility while keeping your values.yaml well-structured.
+The example above demonstrates how to configure secrets, queue and repository types, and a PostgreSQL datasource. Uncomment and adjust the relevant sections for your setup.
 
 ## Next steps
-
-This guide walked you through installing Kestra to [Google GKE](https://cloud.google.com/kubernetes-engine/docs) with CloudSQL as the database and Google Cloud Storage as the storage backend.
 
 Reach out via [Slack](/slack) if you encounter any issues or have any questions regarding deploying Kestra to production.

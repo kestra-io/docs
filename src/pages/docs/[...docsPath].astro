@@ -70,7 +70,7 @@ const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
     image={image.toString()}
 >
     <h1 class="title" slot="title">
-        {doc.data?.title}
+        {doc.data?.h1 ?? doc.data?.title}
     </h1>
     <div class="bd-content">
         <Content />

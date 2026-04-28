@@ -1,5 +1,7 @@
 ---
-title: Purge Old Data in Kestra – Executions, Logs, Key-Value Store, Files
+title: Purge Executions, Logs, and Files in Kestra
+h1: Delete old executions, logs, and files to reclaim storage
+description: Reclaim storage by purging old executions, logs, KV entries, and files in Kestra. Configure scheduled purge jobs to keep your database lean in production.
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.18.0"
@@ -9,7 +11,7 @@ Use purge tasks to remove old executions, logs, and key-value pairs, helping red
 
 ## Purge old execution data safely
 
-To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
+To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
 - `PurgeExecutions`: deletes execution records
 - `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk
 - `PurgeKV`: deletes expired keys globally for a specific namespace

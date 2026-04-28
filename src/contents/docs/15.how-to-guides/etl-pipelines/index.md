@@ -1,5 +1,7 @@
 ---
 title: Build ETL Pipelines in Kestra
+h1: Design and Automate ETL Pipelines Using DuckDB and Kestra
+description: Build end-to-end ETL pipelines in Kestra. Extract data from any source, transform it, and load to your target data warehouse with full observability.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

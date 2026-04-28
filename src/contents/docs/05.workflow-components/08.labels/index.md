@@ -1,13 +1,12 @@
 ---
 title: Labels in Kestra – Tag Flows and Executions
+h1: Organize Flows and Executions with Key-Value Labels
 description: Organize and filter Kestra flows and executions with Labels. Use key-value tags to group workflows by team, environment, project, or priority.
 sidebarTitle: Labels
 icon: /src/contents/docs/icons/flow.svg
 ---
 
 Labels are key-value pairs in Kestra that let you organize [flows](../01.flow/index.md) and [executions](../03.execution/index.md) across multiple dimensions, without being restricted to a single hierarchy.
-
-## Labels – tag flows and executions
 
 You can organize flows and executions by project, priority, maintainer, or any other relevant criteria. Unlike fixed categories, labels support flexible filtering, grouping, and discovery.
 

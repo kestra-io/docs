@@ -6,6 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -20,7 +21,7 @@ We've heard from many of you that you'd like to use Git to [version control](../
 
 ### GitOps with `git.Sync`
 
-The new `git.Sync` task makes it easy to [sync your code](/plugins/plugin-git/io.kestra.plugin.git.sync) from a Git repository to Kestra. This task facilitates GitOps in a simple and straightforward manner.
+The new `git.Sync` task makes it easy to [sync your code](/plugins/plugin-git) from a Git repository to Kestra. This task facilitates GitOps in a simple and straightforward manner.
 
 You can use `git.Sync` in two ways:
 1. **Event-driven (webhook trigger)**: a system flow will automatically sync your code whenever a new commit is pushed to the Git repository
@@ -30,7 +31,7 @@ Check the [Git Sync](../../docs/version-control-cicd/04.git/index.md#git-syncflo
 
 ### Push to Git from Kestra with `git.Push`
 
-Apart from syncing your code from Git to Kestra, you can also [push your code](/plugins/plugin-git/io.kestra.plugin.git.push) from Kestra to Git using the new `git.Push` task. This pattern is particularly useful for business users who want to leverage Git without having to use the terminal and complex Git workflows.
+Apart from syncing your code from Git to Kestra, you can also [push your code](/plugins/plugin-git) from Kestra to Git using the new `git.Push` task. This pattern is particularly useful for business users who want to leverage Git without having to use the terminal and complex Git workflows.
 
 Check the [Version Control with Git](../../docs/version-control-cicd/04.git/index.md) documentation for a deep dive into multiple ways to version control your code with Git and when to use them.
 
@@ -251,7 +252,7 @@ You should see that OpenAI classifies all reviews astoundingly well and provides
 
 ### Google Vertex AI plugin now supports multimodal completion with Gemini
 
-The [GCP plugin](/plugins/plugin-gcp) now supports [multimodal completion](/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.MultimodalCompletion), allowing you to process text, image, video and audio content based on a prompt passed to [Google Gemini LLM](https://deepmind.google/technologies/gemini). This feature is particularly useful for generating captions for images or transcripts for audio and video files.
+The [GCP plugin](/plugins/plugin-gcp) now supports [multimodal completion](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.multimodalcompletion), allowing you to process text, image, video and audio content based on a prompt passed to [Google Gemini LLM](https://deepmind.google/technologies/gemini). This feature is particularly useful for generating captions for images or transcripts for audio and video files.
 
 Here is an example of a workflow that uses multimodal completion to describe an image:
 

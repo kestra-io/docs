@@ -1,5 +1,7 @@
 ---
 title: Connect Google Sheets to Kestra
+h1: Integrate Google Sheets Data into Your Kestra Workflows
+description: Integrate Google Sheets with Kestra workflows. Read spreadsheet data, write pipeline outputs, and trigger flows automatically from sheet updates.
 icon: /src/contents/docs/icons/gsheets.svg
 stage: Getting Started
 topics:

@@ -1,6 +1,7 @@
 ---
-title: Secrets in Kestra – Store Sensitive Values Securely
-description: Store sensitive information securely.
+title: "Secrets in Kestra: Store Sensitive Values Securely"
+h1: Store and Access Sensitive Information Securely
+description: Store and access sensitive information securely in Kestra. Use Secrets to protect API keys, passwords, and credentials without exposing plain-text values.
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/concepts.svg
 ---
@@ -14,8 +15,6 @@ Secrets are a mechanism that allows you to securely store sensitive information,
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 To retrieve secrets in a flow, use the `secret()` function, e.g., `"{{ secret('API_TOKEN') }}"`. You can leverage your existing secrets manager as a secrets backend.
 

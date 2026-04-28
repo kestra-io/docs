@@ -1,5 +1,6 @@
 ---
 title: Configure Monitoring with Grafana and Prometheus
+h1: Monitor Kestra with Prometheus Metrics and Grafana Dashboards
 icon: /src/contents/docs/icons/grafana.svg
 stage: Intermediate
 topics:
@@ -13,8 +14,6 @@ Set up Prometheus and Grafana for monitoring Kestra.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4borr5sFTSg?si=q1z9mqLXI8arG0a5" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Kestra exposes [Prometheus](https://prometheus.io/) metrics at port 8081 on the endpoint `/prometheus`. This endpoint can be used by any compatible monitoring system.
 

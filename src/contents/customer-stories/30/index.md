@@ -1,8 +1,8 @@
 ---
 title: Building a Government-Grade Orchestration Control Plane with Kestra
-description: standardized API-driven cloud orchestration on private cloud using Kestra.
-metaTitle: Building a Government-Grade Orchestration Control Plane with Kestra
-metaDescription: standardized API-driven cloud orchestration on private cloud using Kestra.
+description: How Dataport, Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud using Kestra.
+metaTitle: "Dataport & Kestra: Building a Government-Grade Orchestration Control Plane"
+metaDescription: How Dataport, Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud using Kestra.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
@@ -27,16 +27,16 @@ quote: Kestra gives us a modern orchestration platform we can run ourselves
   without compromising on governance.
 quotePerson: Platform Architect
 quotePersonTitle: ""
-industry: Service Provider
-headquarter: Berlin - Germany
+industry: Public Sector
+headquarter: Altenholz - Germany
 solution: Build a government-grade cloud service portal
-companyName: Public-sector IT services provider
-cta: "What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane—built for governance, visibility, and scale?"
+companyName: Dataport
+cta: "What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane, built for governance, visibility, and scale?"
 ---
 
 ## The context
 
-This organization is a major public-sector IT services provider in Germany. Its role is to design, operate, and evolve shared digital platforms for government institutions.
+Dataport is one of Germany's leading public-sector IT services providers, designing, operating, and evolving shared digital platforms for federal states and government institutions across northern Germany.
 
 As part of a broader cloud initiative, the team was building a **private cloud service portal**, a platform that would expose infrastructure services through APIs while meeting strict public-sector requirements.
 
@@ -128,7 +128,7 @@ After validating the core orchestration patterns, the team plans to extend Kestr
 
 The long-term goal is clear: a **standardized orchestration control plane** that government teams can rely on for secure, auditable cloud operations.
 
-**What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane—built for governance, visibility, and scale?**
+**What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane, built for governance, visibility, and scale?**
 
 → [Explore governed automation with Kestra.](https://kestra.io/demo)
 

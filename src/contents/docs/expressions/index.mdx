@@ -1,5 +1,6 @@
 ---
-title: Kestra Expressions Guide – Pebble and Context Variables
+title: "Expressions in Kestra: Pebble Syntax and Variables"
+h1: "Using Kestra Expressions: Pebble Syntax, Filters, and Functions"
 description: Learn how to work with Kestra expressions using the execution context, Pebble syntax, filters, functions, and operators.
 sidebarTitle: Expressions
 icon: /src/contents/docs/icons/expression.svg
@@ -28,7 +29,7 @@ Use this section to find out what data is available inside `{{ ... }}` at runtim
 
 ### Understand the execution context
 
-Kestra expressions combine the [Pebble templating engine](../../06.concepts/06.pebble/index.md) with the execution context to dynamically render flow properties.
+Kestra expressions combine the [Pebble templating engine](/docs/concepts/pebble) with the execution context to dynamically render flow properties.
 
 The execution context usually includes:
 
@@ -113,7 +114,7 @@ When the execution is started by a `Flow` trigger:
 
 ### Environment and global variables
 
-Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the [runtime and storage configuration](../../configuration/02.runtime-and-storage/index.md).
+Kestra provides access to environment variables prefixed with `ENV_` by default, unless configured otherwise in the [runtime and storage configuration](/docs/configuration/runtime-and-storage).
 
 - reference `ENV_FOO` as `{{ envs.foo }}`
 - reference the configured environment name as `{{ kestra.environment }}`
@@ -164,7 +165,7 @@ tasks:
     format: "{{ secret('MY_SECRET') }}"
 ```
 
-Use `credential()` in Enterprise Edition to inject a short-lived token from a managed [Credential](../../07.enterprise/03.auth/credentials/index.md):
+Use `credential()` in Enterprise Edition to inject a short-lived token from a managed [Credential](/docs/enterprise/auth/credentials):
 
 ```yaml
 tasks:
@@ -799,6 +800,12 @@ Escapes special characters in a string. The `type` argument controls which style
 {{ "2024-01-15" | regexExtract("(\\d{4})-(\\d{2})-(\\d{2})", 1) }}
 {# output: 2024 #}
 ```
+
+:::alert{type="warning"}
+Regex filter operations are subject to a **10-second timeout** to prevent ReDoS (catastrophic backtracking). If a pattern takes longer than the limit, the task fails with an error message.
+
+Patterns with nested quantifiers such as `(a+)+` applied to large inputs are most likely to trigger this. Use anchored, non-ambiguous patterns to avoid it. The timeout can be adjusted with [`kestra.regex.timeout`](/docs/configuration/security-and-secrets#regex-timeout) in your Kestra configuration.
+:::
 
 #### Worked string filter example
 
@@ -1488,7 +1495,7 @@ Examples:
 {{ foo ?? bar ?? raise }}         {# raises an exception if all are undefined #}
 ```
 
-For detailed null vs undefined behavior, see the [Handling null and undefined values](../../15.how-to-guides/null-values/index.md) guide.
+For detailed null vs undefined behavior, see the [Handling null and undefined values](/docs/how-to-guides/null-values) guide.
 
 #### Operator precedence
 

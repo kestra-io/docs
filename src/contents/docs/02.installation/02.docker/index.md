@@ -1,5 +1,6 @@
 ---
 title: Run Kestra with Docker – Single-Container Setup
+h1: Get Started with Kestra Using a Single Docker Container
 sidebarTitle: Docker
 icon: /src/contents/docs/icons/docker.svg
 description: Run Kestra in a single Docker container for quick testing and development, with options for custom configuration.
@@ -12,8 +13,6 @@ Start Kestra using a single Docker container.
 </div>
 
 ## Install Kestra with a single Docker Container
-
----
 
 Once you have Docker running, you can start Kestra in a single command (*if you're running on Windows, make sure to use [WSL](https://docs.docker.com/desktop/wsl/)*):
 
@@ -80,7 +79,7 @@ kestra:
 ```
 
 :::alert{type="info"}
-Note: this configuration is taken from our official [docker-compose.yaml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml#L33) file and uses a PostgreSQL database; you may want to retrieve it there to be sure it is accurate.
+This configuration is taken from the official [docker-compose.yaml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml#L33) file and uses a PostgreSQL database; you may want to retrieve it there to be sure it is accurate.
 :::
 
 After creating the configuration file, update the command to mount the file to the container and start Kestra. We also adjust the Kestra command to start a standalone version, as we now have a PostgreSQL database as a backend.
@@ -130,7 +129,7 @@ kestra:
 ```
 
 :::alert{type="info"}
-Note: this configuration is taken from our official [docker-compose.yaml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml#L33) file and uses a PostgreSQL database; you may want to retrieve it there to be sure it is accurate.
+This configuration is taken from the official [docker-compose.yaml](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml#L33) file and uses a PostgreSQL database; you may want to retrieve it there to be sure it is accurate.
 :::
 
 Once configured, pass the `KESTRA_CONFIGURATION` environment variable in a Docker command and adjust the Kestra command to run the standalone server:
@@ -147,17 +146,17 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
 
 The official Kestra Docker images are available on [DockerHub](https://hub.docker.com/r/kestra/kestra) for both `linux/amd64` and `linux/arm64` platforms.
 
-We provide two image variants:
+Two image variants are available:
 - `kestra/kestra:*`
 - `kestra/kestra:*-no-plugins`
 
 Both variants are based on the [`eclipse-temurin:21-jre`](https://hub.docker.com/_/eclipse-temurin) Docker image.
 
-The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-no-plugins` images do not contain any plugins. We recommend using the `kestra/kestra:*` version to take advantage of all the available plugins in your flows.
+The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-no-plugins` images do not contain any plugins. Use the `kestra/kestra:*` version to access all available plugins.
 
 ## Docker image tags
 
-We provide the following tags for each Docker image (append `-no-plugins` to any image to exclude all but Kestra core plugins):
+The following tags are available for each Docker image (append `-no-plugins` to any image to exclude all but Kestra core plugins):
 
 - `latest`: The most recent stable release (rolling tag). Intended for trying new features; not an LTS. Support ends when the next stable release (~ 2 months) becomes available.
 - `latest-lts`: The current Long-Term Support (rolling tag). Tracks the active LTS line (updates roughly every 6 months to the new LTS) and receives fixes for ~1 year.
@@ -169,7 +168,7 @@ The **default Kestra image** `kestra/kestra:latest` already includes **all plugi
 
 ### Recommended images for production
 
-For production deployments, we recommend one of the following:
+For production deployments, choose one of the following:
 
 **Latest stable version** for staying most up to date while also stable (make note that this is a rolling tag that changes quite frequently):
 
