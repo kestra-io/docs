@@ -4,6 +4,7 @@ import Car from "vue-material-design-icons/Car.vue"
 import DNA from "vue-material-design-icons/Dna.vue"
 import BankOutline from "vue-material-design-icons/BankOutline.vue"
 import CityVariantOutline from "vue-material-design-icons/CityVariantOutline.vue"
+import ApplicationCogOutline from "vue-material-design-icons/ApplicationCogOutline.vue"
 import Looks from "vue-material-design-icons/Looks.vue"
 import ChartLine from "vue-material-design-icons/ChartLine.vue"
 import CartMinus from "vue-material-design-icons/CartMinus.vue"
@@ -129,6 +130,11 @@ export const menuItems: MenuItems = {
                 icon: CityVariantOutline,
                 title: "Public Services",
                 link: "/use-cases/public-services"
+            },
+            {
+                icon: ApplicationCogOutline,
+                title: "Software & Services",
+                link: "/use-cases/software-providers"
             },
         ],
     },
