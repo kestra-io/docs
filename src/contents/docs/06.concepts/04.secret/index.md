@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Store sensitive information securely.
 
-## Secrets – store sensitive values securely
-
 Secrets are a mechanism that allows you to securely store sensitive information, such as passwords and API keys, and retrieve them in your flows.
 
 <div class="video-container">
@@ -59,8 +57,6 @@ For a concrete example of using secrets in flows, check out our dedicated [How-T
 
 Kestra [Enterprise Edition](../../07.enterprise/index.mdx) provides additional secret management backends and integrations with secrets managers. See the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page for more details.
 
----
-
 ## Secrets in the Open-Source version
 
 When using the open-source version, sensitive variables can be managed using base64-encoded environment variables. The section below demonstrates several ways to encode those values and use them in your Kestra instance.
@@ -101,7 +97,7 @@ This secret can be used in a flow using the `{{ secret('MYPASSWORD') }}` syntax,
 Lastly, if you want to reference any non-encoded environment variables in your flow definitions, you can always use the syntax `{{ envs.lowercase_environment_variable_key }}`.
 
 :::alert{type="warning"}
-Note that Kestra has built-in protection to prevent its logs from revealing any encoded secret you have defined.
+Kestra has built-in protection to prevent its logs from revealing any encoded secret you have defined.
 :::
 
 ### Convert all variables in an `.env` file
