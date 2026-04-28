@@ -22,6 +22,10 @@ The first generation of modern data orchestrators made a reasonable bet on Pytho
 
 That bet paid off for adoption, but it didn't pay off for the orchestration layer itself, because orchestration is a configuration problem, not a programming one: run this task, then that one, retry on failure, alert on error, respect a schedule. That's a data structure, not a program. Expressing it in a general-purpose language means every workflow carries the overhead of imports, decorator patterns, operator overloading, and framework-specific conventions that don't serve the workflow.
 
+Here's what that looks like in the Kestra editor — YAML on the left, DAG topology updating live on the right:
+
+![Kestra editor showing YAML workflow and DAG topology side by side](./kestra-data-eng-pipeline-ui.png)
+
 Compare the same pipeline in these examples:
 
 ```yaml
@@ -181,6 +185,14 @@ If you're following the argument but rusty on YAML syntax, here's the minimum yo
 The most common parse errors: tabs instead of spaces, missing space after colon, and unquoted special characters (`:`, `#`, `{`, `}`). YAML 1.1 also parses `NO`, `yes`, `on`, and `off` as booleans, so country codes and feature flags need quotes.
 
 For a complete reference, including boolean edge cases and Kestra-specific patterns, see the [YAML basics guide](../2023-11-27-yaml-crashcourse/index.md).
+
+## See it in practice
+
+If you want to see the argument in action — including how AI generates production-ready YAML workflows and what hands-on orchestration looks like end to end — Benoit and Will covered exactly this in a recent webinar:
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/xpxNK47jRBA" title="YAML-First Workflow Orchestration" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Where to go from here
 
