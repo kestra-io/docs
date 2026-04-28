@@ -51,8 +51,6 @@ tasks:
     message: "API Status Code: {{ outputs.api.code }}"
 ```
 
----
-
 ## Use outputs in your flow
 
 While returning status code is good for unit testing a flow, typically when fetching data from a REST API we want to use that data. Kestra stores that fetched data in the internal storage and makes it available to downstream tasks using the `body` output argument.
@@ -112,8 +110,6 @@ You can test `{{ outputs.task_id.body | jq('.products') | first }}` and any othe
 
 ![Debug Expression](./eval_expressions.png)
 
----
-
 ## Passing data between tasks
 
 So now our flow is able to handle different API endpoints through an input, extract that API's data as an output, and pass that output to a custom Python script to package the data into a usable CSV file.
@@ -164,7 +160,7 @@ This example flow passes data between tasks using Outputs. The `inputFiles` argu
 
 ![Preview](./preview.png)
 
-To sum up, our flow extracts data from an API, uses that data in a Python script, executes a SQL query, and generates a downloadable artifact.
+This flow extracts data from an API, processes it in a Python script, executes a SQL query, and generates a downloadable artifact.
 
 :::alert{type="info"}
 If you encounter any issues while executing the above flow, this might be a Docker-related issue (i.e., Docker-in-Docker setup, which can be difficult to configure on Windows). Set the runner property to `PROCESS` to run the Python script task in the same process as the flow rather than in a Docker container, as shown in the example below. This will avoid any Docker related issues.

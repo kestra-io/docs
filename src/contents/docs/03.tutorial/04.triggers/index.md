@@ -50,8 +50,6 @@ triggers:
 Schedules default to UTC. To use a different time zone, set the `timezone` property on the `Schedule` trigger (for example, `America/New_York`).
 :::
 
----
-
 ## Add a trigger to your flow
 
 Building on the example flow from the previous pages, we can add one of the above triggers to the flow. For example, take the following and ensure our flow runs every Monday at 10 AM to get the latest product data.
