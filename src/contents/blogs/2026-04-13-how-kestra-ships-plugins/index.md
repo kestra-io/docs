@@ -1,6 +1,6 @@
 ---
-title: "How Kestra Ships and Maintains 1200+ Plugins"
-description: "The Plugins & Integrations team at Kestra runs its entire release pipeline on Kestra. Here's what that looks like from the inside: the flows we built, why we built them, and what changed once we did."
+title: "How Kestra Ships 1200+ Plugins (Using Kestra)"
+description: "1200+ plugins, one team, zero manual release steps. Here's the Kestra-on-Kestra pipeline that made it possible."
 date: 2026-04-13T09:00:00
 category: Engineering
 author:
@@ -14,7 +14,7 @@ The Plugins & Integrations team at Kestra is responsible for the 1200+ plugins t
 
 At that volume, releasing a plugin meant manually coordinating the same sequence of steps across every affected package: validate, release, index, notify. This manual process creates a lot of interruptions when you're also running multiple releases in parallel and also doing other engineering work.
 
-We build orchestration software, so fixing this with Kestra was the obvious move. In the most literal sense, this is dogfooding: we use Kestra to ship Kestra. I'll walk through what we built and what changed.
+We build orchestration software, so fixing this with Kestra was the obvious move. I'll walk through what we built and what changed.
 
 ## What the release process used to look like
 
