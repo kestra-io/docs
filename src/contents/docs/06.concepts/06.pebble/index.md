@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Dynamically render variables, inputs and outputs.
 
-## Pebble Templating – render Inputs and Outputs
-
 Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to the [Python Jinja Template Engine](https://palletsprojects.com/p/jinja/) syntax. Kestra uses it to dynamically render variables, inputs, and outputs within the execution context.
 
 <div class="video-container">
@@ -34,7 +32,7 @@ tasks:
     message: "Hello 👋, my name is {{ inputs.name }}"
 ```
 
-## Reading task ouputs
+## Reading task outputs
 
 Most of Kestra's tasks expose output values. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task output can be found in the corresponding task documentation.
 
@@ -166,7 +164,7 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` returns `2`.
 
 `jq(".[1]")` accesses the second value of the list and returns an array with one element. We then use `first` to access the value itself.
 
-> Note: we could have used `{{ inputs | jq(".data.value[1]") | first }}`, jq allows to parse any object in Kestra context.
+`{{ inputs | jq(".data.value[1]") | first }}` also works — jq can parse any object in the Kestra context.
 
 You can troubleshoot complex Pebble expressions using the **Debug Expression** button in the outputs tab of a Flow execution page in the UI. It's helpful to validate how complex objects will be parsed.
 
