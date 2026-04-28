@@ -1,7 +1,7 @@
 ---
 title: "How We Release Kestra With Kestra"
 description: "How to automate parallel releases across multiple versions with automatic retry handling."
-date: 2026-04-15T09:00:00
+date: 2026-04-28T09:00:00
 category: Engineering
 author:
   name: Roman Acevedo
