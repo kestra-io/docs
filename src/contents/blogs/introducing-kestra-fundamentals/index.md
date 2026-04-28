@@ -14,13 +14,17 @@ Workflow orchestration shows up everywhere: data pipelines that ETL across a doz
 
 Most engineers arrive at this coordination layer in pieces. A tutorial here, a Stack Overflow answer there, a few days of trial and error. That's enough to ship. It's not enough to reason: to know why a flow is shaped the way it is, when to reach for a [subflow](../../docs/05.workflow-components/10.subflows/index.md) instead of inline tasks, or how to turn a scheduled job into an event-driven one without rewriting it.
 
-The [Kestra Fundamentals course](https://academy.kestra.io/kestra-fundamentals) closes that gap. It's a video-led course across four modules (introduction, core concepts, plugins and blueprints, and a quiz), with hands-on examples throughout. Pass the quiz and you earn a certificate that lives on your LinkedIn profile.
+The [Kestra Fundamentals course](https://academy.kestra.io/kestra-fundamentals) closes that gap. It's a self-led course across four modules (introduction, core concepts, plugins and blueprints, and a quiz), with hands-on examples throughout. Pass the quiz and you earn a certificate that lives on your LinkedIn profile.
+
+<div class="video-container">
+<iframe width="100%" height="100%" src="https://www.youtube.com/embed/EjNvS69nUVE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
 
 ## Who this course is for
 
 You'll get the most from the course if one of these sounds like you:
 
-- **You've been running Kestra in production for a while.** Things mostly work, but you've never built the mental model from scratch. When a flow behaves unexpectedly, you're guessing more than reasoning.
+- **You're new to Kestra and want to learn it properly.** You've seen enough to know it's worth understanding deeply, and you want to build the mental model from scratch rather than copying examples until something works.
 - **You're evaluating Kestra for your team.** You want to understand the abstractions well enough to tell whether the tool fits your use case, not just whether it technically can do what you need.
 - **You're moving off another orchestration tool.** The concepts don't map one-to-one to what you used before, and you want the new model, not a translation.
 
@@ -58,6 +62,6 @@ Every workflow is unique, but most start from the same base patterns: fetch data
 
 Orchestration is one of those skills most engineers pick up informally, which makes it hard to demonstrate. Anyone can say they've built pipelines.
 
-That's why we added a quiz that you have to pass to get a certificate you can post to LinkedIn. The certificate says something more specific: that you understand what an execution is, how data flows between tasks, when to use a subflow, and how to make a workflow event-driven.
+That's why we added a quiz that you have to pass to get a certificate you can post to LinkedIn. The certificate says something more specific: that you understand what an [execution](../../docs/05.workflow-components/03.execution/index.md) is, how data flows between [tasks](../../docs/05.workflow-components/01.tasks/index.mdx), when to use a [subflow](../../docs/05.workflow-components/10.subflows/index.md), and how to make a workflow [event-driven](../../docs/05.workflow-components/07.triggers/index.mdx).
 
 Set aside an afternoon and [take the Kestra Fundamentals course](https://academy.kestra.io/kestra-fundamentals). When you earn your certificate, share it with us. We'd love to see it.
