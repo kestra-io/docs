@@ -1,5 +1,6 @@
 ---
-title: OpenTelemetry in Kestra – Traces, Metrics, Logs
+title: "OpenTelemetry for Kestra: Traces, Metrics, and Logs"
+h1: Collect traces, metrics, and logs with OpenTelemetry
 sidebarTitle: OpenTelemetry
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.21.0"

@@ -1,40 +1,30 @@
 ---
 export const prerender = false
+
+import { slugify, subGroupName } from "@kestra-io/ui-libs"
+
 import Layout from "~/components/layout.astro"
-import PluginSidebar from "~/components/plugins/PluginSidebar.vue"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
-import NavToc from "~/components/docs/NavToc.vue"
-import RelatedBlueprints from "~/components/plugins/RelatedBlueprints.astro"
-import SimilarPlugins from "~/components/plugins/SimilarPlugins.astro"
-import BlogList from "~/components/common/BlogList.astro"
-import PluginsMDCRender from "~/components/plugins/PluginsMDCRender.vue"
-import PluginsIndexWrapper from "~/components/plugins/PluginsIndexWrapper.vue"
-import PluginVideos from "~/components/plugins/PluginVideos.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
-import { $fetchApiCached } from "~/utils/fetch"
-import { API_URL } from "astro:env/client"
+import PluginLayout from "~/components/plugins/PluginLayout.astro"
+import RightSideBar from "~/components/plugins/sidebar/RightSideBar.vue"
+import PluginSidebar from "~/components/plugins/sidebar/PluginSidebar.vue"
+import DefinitionView from "~/components/plugins/DefinitionView.astro"
+import SubgroupView from "~/components/plugins/SubgroupView.astro"
+import SimilarPlugins from "~/components/plugins/similar-plugins/SimilarPlugins.astro"
+
 import { generatePageNames, recursivePages } from "~/utils/navigation"
-import {
-    filterPluginsWithoutDeprecated,
-    isEntryAPluginElementPredicate,
-    slugify,
-    subGroupName,
-    type JSONSchema,
-    type Plugin,
-    type PluginMetadata,
-} from "@kestra-io/ui-libs"
-import {
-    formatElementName,
-    formatElementType,
-    getBlueprintsHeading,
-    getPluginTitle,
-} from "~/utils/pluginUtils"
+import { buildPluginPageProps } from "~/utils/plugins/buildPluginPageProps"
+import { resolveGithubReleaseRepo } from "~/utils/plugins/resolveGithubRepo"
+import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
-import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
-import { retrieveRepoReleases } from "../api/github-releases"
-import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
-import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
+import {
+    fetchInitialPluginData,
+    fetchPageDefinition,
+    fetchSecondaryData,
+} from "~/utils/plugins/fetchPluginPageData"
+import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -42,167 +32,41 @@ let pathname = new URL(Astro.request.url).pathname
 if (pathname !== "/plugins/" && pathname.endsWith("/")) {
     return Astro.redirect(pathname.slice(0, -1), 301)
 }
-if (pathname.endsWith("/")) {
-    pathname = pathname.slice(0, -1)
-}
-
-interface PluginPage {
-    body: {
-        group?: string
-        plugins?: Plugin[]
-        toc?: {
-            links: Array<{
-                id: string
-                depth: number
-                text: string
-                children?: Array<{
-                    id: string
-                    depth: number
-                    text: string
-                }>
-            }>
-        }
-    }
-    rightBar?: boolean
-    title?: string
-    description?: string
-    longDescription?: string
-    error?: boolean
-    message?: string
-    editLink?: boolean
-    extension?: string
-    stem?: string
-}
-
-interface PluginPageWithToc extends PluginPage {
-    body: {
-        toc: Required<Required<PluginPage["body"]>["toc"]>
-    } & PluginPage["body"]
-}
+pathname = pathname.replace(/\/$/, "")
 
 const pluginName = splitRouteSlug[0]
-
 const maybeSubGroup = splitRouteSlug[1]
 const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup
 
-const githubReleaseRepo = (() => {
-    const name = pluginName ?? ""
-    switch (true) {
-        // because core plugin is part of kestra repo
-        case name === "core":
-            return "kestra"
-        // because plugin-jdbc is the parent for many subgroups in same repo.
-        case name.startsWith("plugin-jdbc-") || name === "plugin-jdbc":
-            return "plugin-jdbc"
-        case name.startsWith("plugin-script-") || name === "plugin-script":
-            return "plugin-scripts"
-        case name.startsWith("plugin-debezium-") || name === "plugin-debezium":
-            return "plugin-debezium"
-        case name.startsWith("plugin-transform-") ||
-            name === "plugin-transform":
-            return "plugin-transform"
-        default:
-            return name
-    }
-})()
-
+const githubReleaseRepo = resolveGithubReleaseRepo(pluginName ?? "")
 const isEePlugin = githubReleaseRepo.includes("plugin-ee")
-
-// Batch 1: fetch github releases, artifacts, and all plugins in parallel
-const [
-    githubVersions,
-    artifactsData,
-    allPlugins,
-    allPluginMetadata,
-    pluginsInformation,
-] = await Promise.all([
-    isEePlugin
-        ? Promise.resolve({ versions: [] as any[] })
-        : retrieveRepoReleases(githubReleaseRepo),
-    !isEePlugin
-        ? $fetchApiCached(`/plugins/artifacts/${githubReleaseRepo}`).catch(
-              (e) => {
-                  console.error("Artifacts fetch failed", e)
-                  return {}
-              },
-          )
-        : Promise.resolve({}),
-    $fetchApiCached<Plugin[]>(`/plugins/subgroups`),
-    $fetchApiCached<PluginMetadata[]>(`/plugins/metadata?icons=false`),
-    $fetchApiCached(
-        `/plugins/pluginsInformation/${githubReleaseRepo}?icons=false`,
-    ),
-])
-
-if (isEePlugin) {
-    try {
-        const eeData = await $fetchApiCached<{
-            results: {
-                version: string
-                kestraVersion: string
-                releaseDate: string | null
-            }[]
-            total: number
-        }>(
-            `/plugins/artifacts/ee/releases?artifactId=${githubReleaseRepo}&size=100`,
-        )
-
-        githubVersions.versions = eeData.results.map((r) => ({
-            version: r.version,
-            publishedAt: r.releaseDate,
-            minCoreCompatibilityVersion: r.kestraVersion,
-            releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
-        }))
-    } catch (e) {
-        console.error("EE releases fetch failed", e)
-    }
-} else {
-    try {
-        const normalizeRepoUrl = (url?: string) => {
-            if (!url) return undefined
-            return url
-                .replace(/^git@github\.com:/, "https://github.com/")
-                .replace(/\.git$/, "")
-        }
-
-        const repoUrl = normalizeRepoUrl(
-            `https://github.com/kestra-io/${githubReleaseRepo}`,
-        )
-
-        githubVersions.versions?.forEach((v: any) => {
-            v.minCoreCompatibilityVersion = (
-                Object.values(artifactsData).flat() as any[]
-            ).find(
-                (a) =>
-                    a.version === v.version &&
-                    normalizeRepoUrl(a.repository) === repoUrl,
-            )?.minCoreCompatibilityVersion
-        })
-    } catch (e) {
-        console.error("Artifacts annotation failed", e)
-    }
-}
-
 const githubReleasesUrl = isEePlugin
     ? null
     : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
+
+const { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
+    await fetchInitialPluginData(
+        pluginName ?? "",
+        githubReleaseRepo,
+        isEePlugin,
+    )
+
+if (subGroup && allPlugins.filter((p) => p.name === pluginName && p.subGroup).length === 1) {
+    return Astro.redirect(`/plugins/${[pluginName, ...splitRouteSlug.slice(2)].join("/")}`, 301)
+}
+
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
-
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
 
 const pluginType = (() => {
     const lastSegment = splitRouteSlug[splitRouteSlug.length - 1]
     if (!lastSegment || !lastSegment.includes(".")) return undefined
-
-    const parts = lastSegment.replace(/.md$/, "").split(".")
-    return `${parts.slice(0, -1).join(".")}.${
-        pageNames?.[pathname] ?? parts[parts.length - 1]
-    }`
+    const parts = lastSegment.replace(/\.md$/, "").split(".")
+    return `${parts.slice(0, -1).join(".")}.${pageNames?.[pathname] ?? parts[parts.length - 1]}`
 })()
 
-// try to redirect if alias found
 try {
     const mappedUrl = redirectAlias(
         aliasMapping,
@@ -210,488 +74,84 @@ try {
         pageList,
         pluginType,
     )
-
-    if (mappedUrl && mappedUrl !== pathname) {
+    if (mappedUrl && mappedUrl !== pathname)
         return Astro.redirect(mappedUrl, 301)
-    }
 } catch {
     // do nothing if plugin not found
 }
 
-// Batch 2: fetch remaining data in parallel
-const [{ countByPlugins: blueprintCounts }] = await Promise.all([
-    $fetchApiCached<{ countByPlugins: Record<string, number> }>(
-        `/blueprints/countByPlugins`,
-    ),
-])
-
-const subgroups = allPlugins.filter((r) => r.name === pluginName)
-
 const sidebarPluginData = generateSidebarPluginData(
-    subgroups,
+    allPlugins.filter((r) => r.name === pluginName),
     allPluginMetadata,
 )
 
-async function makePagePluginDefinition() {
-    try {
-        const pageData = await $fetchApiCached<{
-            markdown: string
-            schema: JSONSchema & {
-                properties: {
-                    $deprecated?: "true" | "false"
-                }
-            }
-        }>(`/plugins/definitions/${pluginType}?markdown=false`)
-        const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
-        const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
-
-        if (pageData.schema.properties.$deprecated === "true") {
-            return null
-        }
-
-        return {
-            name,
-            type: definitionType,
-            ...nuxtBlocksFromJsonSchema(pageData.schema),
-        }
-    } catch {
-        return null
-    }
-}
-
-const page: PluginPage | null =
-    pluginType === undefined
-        ? sidebarPluginData
-        : await makePagePluginDefinition()
-
-const pluginsWithoutDeprecated = filterPluginsWithoutDeprecated(
+const [page, { blueprintCounts, relatedBlogs }] = await Promise.all([
     pluginType
-        ? (sidebarPluginData?.body?.plugins ?? [])
-        : (page?.body?.plugins ?? []),
-)
+        ? fetchPageDefinition(pluginType)
+        : Promise.resolve(sidebarPluginData),
+    fetchSecondaryData(pluginName),
+])
 
-const toElementKey = (title?: string): string | undefined => {
-    if (!title) return undefined
-
-    const words = title
-        .match(/[a-zA-Z0-9]+/g)
-        ?.map((word) => word.toLowerCase())
-    if (!words || words.length === 0) return undefined
-
-    return [
-        words[0],
-        ...words
-            .slice(1)
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1)),
-    ].join("")
-}
-
-const pluginMetadataTitle = (plugin: Plugin): string | undefined =>
-    allPluginMetadata?.find(
-        (m) => m.group === (plugin.subGroup ?? plugin.group),
-    )?.title
-
-const pluginsForDisplay = pluginsWithoutDeprecated.map((plugin) => {
-    const elementKeys = Object.entries(plugin)
-        .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-        .map(([key]) => key)
-
-    const isOnlyAdditionalPlugins =
-        plugin.subGroup !== undefined &&
-        elementKeys.length === 1 &&
-        elementKeys[0] === "additionalPlugins"
-
-    if (!isOnlyAdditionalPlugins) {
-        return plugin
-    }
-
-    const displayKey = toElementKey(pluginMetadataTitle(plugin))
-    if (
-        !displayKey ||
-        displayKey === "additionalPlugins" ||
-        Object.hasOwn(plugin, displayKey)
-    ) {
-        return plugin
-    }
-
-    return Object.fromEntries(
-        Object.entries(plugin).map(([key, value]) => [
-            key === "additionalPlugins" ? displayKey : key,
-            value,
-        ]),
-    ) as Plugin
-})
-
-const subGroupWrapper = pluginsForDisplay.find(
-    (p) => slugify(subGroupName(p)) === subGroup,
-)
-
-const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
-const subGroupsIcons = page?.body?.plugins
-    ? Object.fromEntries(
-          page.body.plugins.map((p) => [
-              p.subGroup ?? p.group,
-              `/icons/${p.subGroup ?? p.group}.svg`,
-          ]),
-      )
-    : {}
-
-const blogs = await loadBlogPostsMetadata()
-
-const relatedBlogs = blogs
-    .filter((b) => b.data.plugins?.includes(pluginName))
-    .sort((a, b) => {
-        return new Date(a.data.date) > new Date(b.data.date) ? 1 : -1
-    })
-
-const rootPlugin = pluginsForDisplay?.find(
-    (p: Plugin) => p.subGroup === undefined,
-)
-
-const currentSubgroupPlugin =
-    !subGroup || pluginType
-        ? undefined
-        : pluginsForDisplay?.find((p) => {
-              const subgroupLastSegment = p.subGroup?.split(".").pop()
-              const possibleSubgroupMatches = [
-                  slugify(subGroupName(p)),
-                  subgroupLastSegment,
-                  slugify(subgroupLastSegment ?? ""),
-              ]
-              return possibleSubgroupMatches.includes(subGroup)
-          })
-
-const currentPluginMetadata = (() => {
-    const subgroupId =
-        currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
-    const rootGroupId = rootPlugin?.group ?? pluginName
-
-    if (subgroupId) {
-        const found = allPluginMetadata?.find((m) => m.group === subgroupId)
-        return found ? [found] : []
-    }
-
-    if (rootGroupId) {
-        return (
-            allPluginMetadata?.filter(
-                (m) =>
-                    m.group &&
-                    (m.group === rootGroupId ||
-                        m.group.startsWith(rootGroupId + ".")),
-            ) ?? []
-        )
-    }
-
-    return []
-})()
-
-const metadataMap = currentPluginMetadata?.reduce<
-    Record<string, PluginMetadata>
->((acc, meta) => {
-    acc[meta.group] = meta
-    return acc
-}, {})
-
-const currentPageMetadata = (() => {
-    const meta = currentPluginMetadata
-    if (!meta) return null
-
-    if (Array.isArray(meta)) {
-        const rootGroup = rootPlugin?.group
-        const subgroupGroup =
-            currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
-        return (
-            meta.find(
-                (m) => m.group === rootGroup || m.group === subgroupGroup,
-            ) ?? null
-        )
-    }
-
-    return meta
-})()
-
-const headingTitle = pluginType
-    ? formatElementName(pluginType)
-    : ((rootPlugin
-          ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
-          : undefined) ?? pluginName)
-
-let combinedDescription = currentPageMetadata?.description
-const body = (currentPageMetadata as any)?.body
-if (body && body !== combinedDescription) {
-    combinedDescription += (combinedDescription ? "\n\n" : "") + body
-}
-
-const headingDescription = pluginType
-    ? page?.title
-    : (combinedDescription ??
-      (subGroup === undefined
-          ? (rootPlugin?.longDescription ?? combinedDescription)
-          : (currentSubgroupPlugin?.longDescription ?? combinedDescription)))
-
-const pageNamesHeading = {
-    ...pageNames,
-    [pathname]: headingTitle,
-    [`/plugins/${pluginName}`]:
-        getPluginTitle(rootPlugin!, metadataMap) ?? pluginName,
-}
-
-const generateTocForPluginElements = (wrapper: Plugin) =>
-    Object.entries(wrapper)
-        .filter(([key]) =>
-            isEntryAPluginElementPredicate(key, wrapper[key as keyof Plugin]),
-        )
-        .map(([key]) => {
-            const formattedElementType = key.replace(
-                /[A-Z]/g,
-                (match) => ` ${match}`,
-            )
-            return {
-                id: `section-${slugify(formattedElementType)}`,
-                depth: 2,
-                text: formatElementType(key),
-            }
-        })
-
-const currentPluginVideos = (() => {
-    const meta = currentPluginMetadata
-    if (!meta) return []
-
-    const subgroupId =
-        currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
-    const rootGroup = rootPlugin?.group
-    const entries = Array.isArray(meta) ? meta : [meta]
-
-    return entries
-        .filter((m) => {
-            if (!m) return false
-
-            if (subgroupId) {
-                return (
-                    typeof m.group === "string" &&
-                    (m.group === subgroupId ||
-                        m.group.startsWith(subgroupId + "."))
-                )
-            } else if (m.name === pluginName) {
-                return true
-            }
-
-            return (
-                typeof m.group === "string" &&
-                (m.group === rootGroup || m.group?.startsWith(rootGroup ?? ""))
-            )
-        })
-        .flatMap((m) => m?.videos ?? [])
-        .filter(Boolean)
-})()
-
-const blueprintsSectionHeading = getBlueprintsHeading(
-    pluginName,
+const {
+    effectiveSubGroup,
+    pluginsWithoutDeprecated,
     rootPlugin,
+    rootPluginTitle,
+    currentSubgroupPlugin,
+    currentPluginMetadata,
+    metadataMap,
+    headingTitle,
+    headingDescription,
+    pageNamesHeading,
+    currentPageIcon,
+    subGroupsIcons,
+    currentPluginVideos,
+    currentPluginCategories,
+    blueprintsSectionHeading,
+    subgroupBlueprintCounts,
+    pageWithToc,
+    elementTitle,
+    ogImage,
+    prunedRootPlugin,
+    prunedPluginsWithoutDeprecated,
+} = buildPluginPageProps({
+    pluginName,
     subGroup,
     pluginType,
-)
+    pathname,
+    pageNames,
+    allPlugins,
+    allPluginMetadata,
+    blueprintCounts,
+    relatedBlogs,
+    page,
+    sidebarPluginData,
+})
 
-const currentPluginCategories = (() => {
-    const subgroupCats = currentSubgroupPlugin?.categories
-    const pluginCats = rootPlugin?.categories
-    return subGroup === undefined
-        ? (pluginCats ?? [])
-        : subgroupCats?.length
-          ? subgroupCats
-          : (pluginCats ?? [])
-})()
-
-function makeTOC() {
-    const pluginToc = (() => {
-        if (!rootPlugin) return []
-
-        if (subGroup && currentSubgroupPlugin) {
-            return generateTocForPluginElements(currentSubgroupPlugin)
-        }
-
-        if (!subGroup && !pluginType) {
-            const subGroups =
-                pluginsWithoutDeprecated?.filter((p) => p.subGroup) ?? []
-            return subGroups.length
-                ? subGroups.map((sub) => ({
-                      id: slugify(subGroupName(sub)),
-                      depth: 2,
-                      text: subGroupName(sub),
-                  }))
-                : generateTocForPluginElements(rootPlugin)
-        }
-
-        return []
-    })()
-
-    const subgroupBlueprintCounts = (() => {
-        const result: Record<string, number> = {}
-
-        pluginsWithoutDeprecated?.forEach((subgroupWrapper) => {
-            const subgroupKey = subgroupWrapper.subGroup
-            if (subgroupKey !== undefined) {
-                const formattedKey = `${subgroupWrapper.group ?? subgroupWrapper.name}-${slugify(subGroupName(subgroupWrapper))}`
-                result[formattedKey] = blueprintCounts?.[subgroupKey] ?? 0
-            }
-        })
-
-        return result
-    })()
-
-    const baseTocLinks = pluginType
-        ? (page?.body.toc?.links?.map((l) => ({ ...l, children: undefined })) ??
-          [])
-        : page?.body?.toc
-          ? []
-          : pluginToc
-
-    const hasBlueprints = pluginType
-        ? blueprintCounts?.[pluginType] > 0
-        : subGroup
-          ? subgroupBlueprintCounts?.[
-                `${rootPlugin?.group ?? pluginName}-${subGroup}`
-            ] > 0
-          : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
-
-    const tocLinks = [
-        ...baseTocLinks,
-        ...(pluginType === undefined && rootPlugin?.longDescription
-            ? [
-                  {
-                      id: "how-to-use-this-plugin",
-                      depth: 2,
-                      text: "How to use this plugin",
-                  },
-              ]
-            : []),
-        ...(pluginType === undefined && currentPluginVideos?.length > 0
-            ? [{ id: "see-it-in-action", depth: 2, text: "See it in action" }]
-            : []),
-        ...(hasBlueprints &&
-        blueprintsSectionHeading?.id &&
-        blueprintsSectionHeading?.text
-            ? [
-                  {
-                      id: blueprintsSectionHeading.id,
-                      depth: 2,
-                      text: blueprintsSectionHeading.text,
-                  },
-              ]
-            : []),
-        ...(pluginType === undefined &&
-        subGroup === undefined &&
-        relatedBlogs?.length > 0
-            ? [{ id: "latest-blog-posts", depth: 2, text: "Latest Blog Posts" }]
-            : []),
-        ...(currentPluginCategories?.length > 0
-            ? [
-                  {
-                      id: "more-plugins-in-this-category",
-                      depth: 2,
-                      text: "More Plugins in this Category",
-                  },
-              ]
-            : []),
-    ]
-
-    return tocLinks
-}
-
-const pageWithToc: PluginPageWithToc = page
-    ? {
-          ...page,
-          body: {
-              ...page.body,
-              toc: {
-                  links: makeTOC(),
-              },
-          },
-      }
-    : {
-          body: {
-              toc: {
-                  links: [],
-              },
-          },
-      }
-
-// if no content to show, redirect to parent until /plugins
 if (
     page === null ||
-    !pluginsWithoutDeprecated.some(
-        (p) => subGroup === undefined || slugify(subGroupName(p)) === subGroup,
-    )
+    !pluginsWithoutDeprecated.some(p => matchesSubGroup(p, effectiveSubGroup))
 ) {
     console.warn("Redirecting due to no content")
-
     return Astro.redirect(
         `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
         301,
     )
 }
-
-const subgroupBlueprintCounts = (() => {
-    const result: Record<string, number> = {}
-
-    pluginsWithoutDeprecated?.forEach((subgroupWrapper) => {
-        const subgroupKey = subgroupWrapper.subGroup
-        if (subgroupKey !== undefined) {
-            const formattedKey = `${subgroupWrapper.group ?? subgroupWrapper.name}-${slugify(subGroupName(subgroupWrapper))}`
-            result[formattedKey] = blueprintCounts?.[subgroupKey] ?? 0
-        }
-    })
-
-    return result
-})()
-
-const elementTitle = (() =>
-    Object.fromEntries(
-        (pluginsWithoutDeprecated ?? [])
-            .flatMap((p) =>
-                (
-                    Object.entries(p) as [
-                        string,
-                        { title?: string; cls: string }[],
-                    ][]
-                )
-                    .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
-                    .flatMap(([_, els]) =>
-                        els
-                            .filter((el) => el?.title)
-                            .map((el) => [el.cls, { title: el.title }]),
-                    ),
-            )
-            .filter(([_, v]) => typeof v === "object" && Boolean(v?.title)),
-    ))()
-
-let ogImage: string | null = null
-
-if (!pluginType && !subGroup) {
-    ogImage = `/meta/plugins/${pluginName}.svg`
-} else if (subGroup) {
-    const filterElement = subgroups.filter(
-        (r) => slugify(r.title) === subGroup,
-    )[0]
-    ogImage = `/meta/plugins/group-${filterElement?.subGroup}.svg`
-} else {
-    ogImage = `/meta/plugins/${pluginType}.svg`
-}
 ---
 
 <Layout title={headingTitle} description={headingDescription} image={ogImage}>
-    <div class="container-fluid bd-gutter bd-layout">
+    <PluginLayout>
         <PluginSidebar
-            pluginWrapper={rootPlugin}
-            pluginsWithoutDeprecated={pluginsForDisplay}
+            slot="sidebar"
+            pluginWrapper={prunedRootPlugin}
+            pluginsWithoutDeprecated={prunedPluginsWithoutDeprecated}
             pluginName={pluginName}
-            title={headingTitle}
+            title={rootPluginTitle}
             routeParts={splitRouteSlug}
+            client:idle
         />
-        <article
-            class="bd-main order-1"
-            class:list={[{ full: page?.rightBar === false }]}
-        >
+        <article class="bd-main">
             <div class="bd-title">
                 <Breadcrumb
                     slug={pathname}
@@ -702,258 +162,91 @@ if (!pluginType && !subGroup) {
                     page && (
                         <OneHeader
                             {headingTitle}
-                            {pluginType}
-                            {rootPlugin}
                             {currentPageIcon}
                             {headingDescription}
-                        />
-                    )
-                }
-            </div>
-
-            <div class="bd-content">
-                {
-                    pluginType ? (
-                        <PluginsMDCRender
-                            schema={(pageWithToc.body as any).jsonSchema}
-                            pluginType={pluginType}
-                            client:idle
-                        />
-                    ) : (
-                        <PluginsIndexWrapper
-                            plugins={pluginsForDisplay}
-                            icons={subGroupsIcons}
-                            pluginName={pluginName}
-                            subGroup={subGroup}
-                            routePath={pathname}
-                            subgroupBlueprintCounts={subgroupBlueprintCounts}
-                            metadataMap={metadataMap}
-                            schemas={elementTitle}
-                            client:idle
+                            {rootPlugin}
                         />
                     )
                 }
             </div>
 
             {
-                pluginType === undefined && currentPluginVideos?.length > 0 && (
-                    <PluginVideos videos={currentPluginVideos} />
+                pluginType ? (
+                    <DefinitionView
+                        schema={(pageWithToc.body as any).jsonSchema}
+                        pluginType={pluginType}
+                    />
+                ) : (
+                    <SubgroupView
+                        {pluginsWithoutDeprecated}
+                        {subGroupsIcons}
+                        {pluginName}
+                        subGroup={effectiveSubGroup}
+                        {pathname}
+                        {subgroupBlueprintCounts}
+                        {metadataMap}
+                        {elementTitle}
+                        {currentPluginVideos}
+                        {rootPlugin}
+                        {currentSubgroupPlugin}
+                        {pluginType}
+                        {blueprintsSectionHeading}
+                        {relatedBlogs}
+                    />
                 )
-            }
-
-            <RelatedBlueprints
-                pluginName={pluginName}
-                pluginWrapper={rootPlugin}
-                currentSubgroupPlugin={currentSubgroupPlugin}
-                subGroupName={currentSubgroupPlugin
-                    ? slugify(subGroupName(currentSubgroupPlugin))
-                    : subGroup}
-                pluginType={pluginType}
-                customId={blueprintsSectionHeading?.id}
-            />
-
-            {
-                pluginType === undefined &&
-                    subGroup === undefined &&
-                    relatedBlogs &&
-                    relatedBlogs.length > 0 && (
-                        <div class="related-blogs">
-                            <BlogList
-                                posts={relatedBlogs.map((p) => ({
-                                    ...p.data,
-                                    path: `/blogs/${p.id}`,
-                                    date: p.data.date.toISOString(),
-                                }))}
-                                title="Latest Blog Posts"
-                                headingId="latest-blog-posts"
-                            />
-                        </div>
-                    )
             }
 
             {
                 currentPluginCategories?.length > 0 && (
                     <SimilarPlugins
                         {allPlugins}
-                        pluginsData={pluginsInformation.byPlugin}
+                        pluginsData={pluginsInformations.byPlugin}
                         categories={currentPluginCategories}
                         {pluginName}
                     />
                 )
             }
         </article>
-        <NavToc
+        <RightSideBar
+            slot="aside"
             links={pageWithToc.body.toc?.links}
-            editLink={pageWithToc.editLink}
-            extension={pageWithToc.extension}
-            stem={pageWithToc.stem}
             version={githubVersions}
             releasesUrl={githubReleasesUrl}
             categories={currentPluginCategories}
             metadata={currentPluginMetadata}
-            capitalize
-            isPluginPage
-            class="right-sidebar"
+            title={headingTitle}
+            url={Astro.url.href}
+            client:idle
         />
-    </div>
+    </PluginLayout>
 </Layout>
 
 <style lang="scss">
-    .related-blogs {
-        padding: 2rem 0;
-        border-top: $block-border;
-
-        @include media-breakpoint-up(lg) {
-            margin: 0 -3rem;
-            padding: 2rem 3rem;
-        }
-    }
-
-    .container-fluid {
-        border-top: 1px solid var(--ks-border-primary);
-        padding: 0;
+    .bd-main {
         display: flex;
         flex-direction: column;
+        gap: 4rem;
+        width: 100%;
+        max-width: 100%;
 
-        .bd-content {
-            margin: 0 auto;
-            padding: 2rem 0;
-            @include media-breakpoint-up(lg) {
-                max-width: 100%;
-            }
-
-            :global(.gradient-overlay),
-            :global(.more-btn) {
-                background: linear-gradient(
-                    transparent,
-                    var(--ks-background-body)
-                );
-            }
-
-            :global(div.description) {
-                border-color: var(--ks-border-primary) !important;
-                margin: 0 -2rem !important;
-                padding: 2rem !important;
-            }
-
-            :global(.element-card),
-            :global(.plugin) {
-                background-color: var(--ks-background-primary) !important;
-                border-color: var(--ks-border-primary) !important;
-                box-shadow: none !important;
-                &:hover {
-                    border-color: var(--ks-border-active) !important;
-                }
-                :global(h6) {
-                    color: var(--ks-content-primary);
-                }
-                :global(.plugin-info) {
-                    background-color: transparent;
-                    border: $block-border;
-                    :global(.plugin-class) {
-                        color: var(--ks-content-link) !important;
-                    }
-                }
-                :global(.description) {
-                    text-transform: none;
-                }
-            }
-
-            :global(code) {
-                border: none !important;
-                background-color: transparent !important;
-            }
-        }
-
-        @include media-breakpoint-up(lg) {
-            display: grid;
-            grid-template-columns: 250px 1fr 269px;
-            grid-template-areas: "sidebar article toc";
-            gap: 0;
-        }
-
-        > .bd-main {
-            padding: 0 1.25rem;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            box-sizing: border-box;
-
-            @include media-breakpoint-up(lg) {
-                grid-area: article;
-                padding: 0 2rem 0 2.7rem;
-            }
-
-            @include media-breakpoint-down(sm) {
-                gap: 0 calc($spacer * 7);
-            }
-
-            .bd-toc nav {
-                border: 0;
-                padding: 0;
-            }
-        }
-
-        > .right-sidebar {
-            @include media-breakpoint-up(lg) {
-                grid-area: toc;
-                position: sticky;
-                top: var(--announce-height);
-                height: 100%;
-            }
+        :global(h2#latest-blog-posts) {
+            font-size: $h2-font-size;
 
             @include media-breakpoint-down(lg) {
-                margin-top: 2rem;
-                padding: 0 1.25rem;
-                width: 100%;
-                box-sizing: border-box;
+                font-size: $h3-font-size;
             }
-        }
-
-        .bd-title {
-            margin-top: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--ks-border-primary);
-            width: 100%;
-            box-sizing: border-box;
-
-            @include media-breakpoint-up(lg) {
-                margin: 0 -2rem;
-                padding: 2rem;
-                width: calc(100% + 4rem);
-
-                nav,
-                h1 {
-                    max-width: 100%;
-                }
-            }
-
-            @include media-breakpoint-down(lg) {
-                margin-top: $spacer;
-            }
-        }
-
-        .title .btn {
-            min-width: 116px;
-            padding: 0.25rem 0.625rem;
-            white-space: nowrap;
         }
     }
 
-    li > mark {
-        background-color: var(--ks-content-link);
-    }
+    .bd-title {
+        width: 100%;
 
-    .docs-prev-next a {
-        span {
-            color: var(--ks-content-link);
+        :global(.breadcrumb) {
+            margin-bottom: 1rem;
         }
-        .directory {
-            color: var(--ks-background-body);
-        }
-    }
 
-    .btn span {
-        color: var(--ks-background-secondary);
+        .slug {
+            max-width: 100%;
+        }
     }
 </style>

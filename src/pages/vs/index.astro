@@ -1,0 +1,572 @@
+---
+import { getCollection } from "astro:content"
+import Layout from "~/components/layout.astro"
+import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import GetStarted from "~/components/common/GetStarted.astro"
+import kestraIcon from "~/components/versus/assets/ks-icon.svg?raw"
+import vsBadgeSvg from "~/components/versus/assets/vs-badge.svg?raw"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const vsEntries = await getCollection("vs")
+
+const monogramModules = import.meta.glob<string>(
+    "~/components/versus/assets/*-monograme.svg",
+    { query: "?raw", import: "default", eager: true },
+)
+
+const monogramMap: Record<string, string> = {}
+for (const [path, svg] of Object.entries(monogramModules)) {
+    const filename = path.split("/").pop()?.replace("-monograme.svg", "") ?? ""
+    monogramMap[filename] = svg
+}
+
+const entries = vsEntries
+    .sort((a, b) => a.data.competitorName.localeCompare(b.data.competitorName))
+    .map((entry) => ({
+        path: `/vs/${entry.id}`,
+        competitorName: entry.data.competitorName,
+        category: entry.data.category,
+        monogram: monogramMap[entry.id] ?? "",
+        shortDescription: entry.data.shortDescription,
+        color: entry.data.brandColor.color,
+        gradient: entry.data.brandColor.gradient ?? "",
+    }))
+
+const faqItems = [
+    {
+        question: "What makes Kestra different from other orchestration tools?",
+        answer: `Kestra is a universal orchestration platform that works with any language, any stack, and any cloud. Unlike tools that lock you into Python, a specific cloud, or a proprietary GUI, Kestra uses declarative YAML workflows that are version-controlled in Git, with ${totalPlugins}+ plugins and a built-in code editor supporting Python, R, Node.js, Shell, and more.`,
+    },
+    {
+        question: "Can Kestra replace my current workflow orchestration tool?",
+        answer: "Yes. Kestra is designed as a drop-in replacement for legacy tools like Control-M, Stonebranch, or IBM TWS, as well as modern alternatives like Airflow, Prefect, or n8n. It supports data pipelines, infrastructure automation, business processes, and AI workflows from a single platform.",
+    },
+    {
+        question: "Is Kestra open source?",
+        answer: "Yes, Kestra's core is fully open source under the Apache 2.0 license. You can self-host it anywhere. For teams that need enterprise features like RBAC, audit logs, SSO, and high availability, Kestra offers an Enterprise Edition and a fully managed Cloud offering.",
+    },
+    {
+        question: "How does Kestra handle infrastructure automation?",
+        answer: "Kestra orchestrates infrastructure workflows by integrating with Terraform, Ansible, Kubernetes, cloud APIs, and more. It provides event-driven triggers, approval gates, self-service Apps, and full audit trails — making it a modern replacement for legacy runbook and workload automation tools.",
+    },
+    {
+        question: "Does Kestra support data pipeline orchestration?",
+        answer: "Yes. Kestra natively supports ETL/ELT pipelines with integrations for dbt, Spark, Flink, BigQuery, Snowflake, and hundreds of data sources. Unlike Python-only tools, Kestra lets you orchestrate data workflows in any language with declarative YAML.",
+    },
+    {
+        question: "How do I get started with Kestra?",
+        answer: "You can start Kestra locally in under a minute with Docker, or try the managed Cloud version for free. Visit the <a href='/docs/quickstart'>quickstart guide</a> to launch your first workflow, or <a href='/demo'>book a demo</a> to see how Kestra fits your team.",
+    },
+]
+---
+
+<Layout
+    title="Kestra vs. Alternatives"
+    description="Compare Kestra with other workflow orchestration, data automation, and infrastructure automation tools."
+>
+    <section class="header-container">
+        <div class="header container">
+            <div class="hero-logos">
+                <div class="hero-picto ks" set:html={kestraIcon} />
+                <div class="hero-vs" set:html={vsBadgeSvg} />
+                <div class="hero-carousel" id="hero-carousel">
+                    {
+                        entries.map((entry, i) => (
+                            <div
+                                class:list={[
+                                    "hero-picto",
+                                    "carousel-item",
+                                    { active: i === 0 },
+                                ]}
+                                set:html={entry.monogram}
+                                data-name={entry.competitorName}
+                                data-color={entry.color}
+                                data-gradient={entry.gradient}
+                            />
+                        ))
+                    }
+                </div>
+            </div>
+            <h1>
+                Kestra vs. <span
+                    id="hero-name"
+                    style={entries[0].gradient
+                        ? `background: ${entries[0].gradient}; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;`
+                        : `color: ${entries[0].color}`}
+                    >{entries[0].competitorName}</span
+                >
+            </h1>
+            <p>
+                See how Kestra compares to other orchestration and automation
+                tools
+            </p>
+            <div class="search-wrapper">
+                <input
+                    type="search"
+                    placeholder="Search tools..."
+                    id="vs-search"
+                />
+                <svg
+                    class="search-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    ><path
+                        d="M7.333 12.667A5.333 5.333 0 1 0 7.333 2a5.333 5.333 0 0 0 0 10.667ZM14 14l-2.9-2.9"
+                        stroke="currentColor"
+                        stroke-width="1.333"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path></svg
+                >
+            </div>
+        </div>
+    </section>
+
+    <section class="listing">
+        <div class="container">
+            <div class="toggle" id="vs-toggle">
+                <button class="toggle-btn active" data-category=""
+                    >All tools</button
+                >
+                <button
+                    class="toggle-btn"
+                    data-category="Infrastructure Automation"
+                    >Infrastructure Automation</button
+                >
+                <button class="toggle-btn" data-category="Data Orchestration"
+                    >Data Orchestration</button
+                >
+            </div>
+            <div class="grid" id="vs-grid">
+                {
+                    entries.map((entry) => (
+                        <a
+                            href={entry.path}
+                            class="card"
+                            data-name={entry.competitorName}
+                            data-category={entry.category}
+                        >
+                            <div class="pictos">
+                                <div class="picto ks" set:html={kestraIcon} />
+                                <div class="vs-badge" set:html={vsBadgeSvg} />
+                                <div class="picto" set:html={entry.monogram} />
+                            </div>
+                            <p class="name">
+                                Kestra vs. {entry.competitorName}
+                            </p>
+                            <span class="cat-tag">{entry.category}</span>
+                            <p class="desc">{entry.shortDescription}</p>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+
+    <GetStarted>
+        <Fragment slot="heading">
+            <h2
+                style="color: var(--ks-content-primary-inverse); text-align: center;"
+            >
+                Ready to Replace Your Current Tool?
+            </h2>
+            <div
+                style="display: flex; justify-content: center; margin-top: 1.5rem; margin-bottom: 4rem;"
+            >
+                <a
+                    href="/demo"
+                    class="btn btn-primary"
+                    style="color: white !important;">Book a Demo</a
+                >
+            </div>
+        </Fragment>
+    </GetStarted>
+
+    <SchemaFAQ items={faqItems} slot="head" />
+    <Faq items={faqItems} title="Frequently Asked Questions" client:visible />
+</Layout>
+
+<script is:inline>
+    ;(function () {
+        // Clear any previous carousel interval
+        if (window.__vsCarouselTimer) clearInterval(window.__vsCarouselTimer)
+
+        function init() {
+            var toggle = document.getElementById("vs-toggle")
+            var grid = document.getElementById("vs-grid")
+            var search = document.getElementById("vs-search")
+            var activeCategory = ""
+
+            function applyFilters() {
+                if (!grid) return
+                var q = ((search && search.value) || "").toLowerCase().trim()
+                var cards = grid.querySelectorAll(".card")
+                for (var i = 0; i < cards.length; i++) {
+                    var card = cards[i]
+                    var name = (
+                        card.getAttribute("data-name") || ""
+                    ).toLowerCase()
+                    var category = card.getAttribute("data-category") || ""
+                    var matchesSearch = !q || name.indexOf(q) !== -1
+                    var matchesCat =
+                        !activeCategory || category === activeCategory
+                    card.style.display =
+                        matchesSearch && matchesCat ? "" : "none"
+                }
+            }
+
+            if (toggle) {
+                toggle.addEventListener("click", function (e) {
+                    var btn = e.target.closest(".toggle-btn")
+                    if (!btn) return
+                    var btns = toggle.querySelectorAll(".toggle-btn")
+                    for (var i = 0; i < btns.length; i++)
+                        btns[i].classList.remove("active")
+                    btn.classList.add("active")
+                    activeCategory = btn.getAttribute("data-category") || ""
+                    applyFilters()
+                })
+            }
+
+            if (search) {
+                search.addEventListener("input", applyFilters)
+            }
+
+            // Hero carousel
+            var carousel = document.getElementById("hero-carousel")
+            var heroName = document.getElementById("hero-name")
+            if (carousel && heroName) {
+                var items = carousel.querySelectorAll(".carousel-item")
+                var current = 0
+                var total = items.length
+
+                function updateHeroName(item) {
+                    heroName.textContent = item.getAttribute("data-name") || ""
+                    var color = item.getAttribute("data-color") || "#8465ff"
+                    var gradient = item.getAttribute("data-gradient") || ""
+                    if (gradient) {
+                        heroName.style.background = gradient
+                        heroName.style.webkitBackgroundClip = "text"
+                        heroName.style.webkitTextFillColor = "transparent"
+                        heroName.style.backgroundClip = "text"
+                        heroName.style.color = ""
+                    } else {
+                        heroName.style.background = ""
+                        heroName.style.webkitBackgroundClip = ""
+                        heroName.style.webkitTextFillColor = ""
+                        heroName.style.backgroundClip = ""
+                        heroName.style.color = color
+                    }
+                }
+
+                window.__vsCarouselTimer = setInterval(function () {
+                    items[current].classList.remove("active")
+                    heroName.style.opacity = "0"
+                    heroName.style.transition = "opacity 0.2s ease"
+                    setTimeout(function () {
+                        current = (current + 1) % total
+                        items[current].classList.add("active")
+                        updateHeroName(items[current])
+                        heroName.style.opacity = "1"
+                    }, 200)
+                }, 2000)
+            }
+        }
+
+        if (!window.__vsInitDone) {
+            window.__vsInitDone = true
+            document.addEventListener("astro:page-load", init)
+            document.addEventListener("visibilitychange", function () {
+                if (!document.hidden) init()
+            })
+        }
+        init()
+    })()
+</script>
+
+<style lang="scss">
+    .header-container {
+        background: url("~/assets/squared-grid.svg") no-repeat top center /
+            1400px auto;
+        padding-inline: 1rem;
+
+        .header {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding-top: 4rem;
+            padding-bottom: 1rem;
+
+            .hero-logos {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+
+                .hero-picto {
+                    width: 64px;
+                    height: 64px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid #f1f1f1;
+                    border-radius: 12px;
+                    padding: 8px;
+                    background: #f7f7f7;
+
+                    :global(svg) {
+                        max-width: 100%;
+                        max-height: 100%;
+                        width: auto;
+                        height: auto;
+                    }
+
+                    &.ks {
+                        padding: 4px;
+                        overflow: hidden;
+
+                        :global(svg) {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+
+                .hero-vs {
+                    :global(svg) {
+                        width: 32px;
+                        height: auto;
+                    }
+                }
+
+                .hero-carousel {
+                    position: relative;
+                    width: 64px;
+                    height: 64px;
+
+                    .carousel-item {
+                        position: absolute;
+                        inset: 0;
+                        opacity: 0;
+                        transform: translateY(8px);
+                        transition:
+                            opacity 0.4s ease,
+                            transform 0.4s ease;
+                        pointer-events: none;
+
+                        &.active {
+                            opacity: 1;
+                            transform: translateY(0);
+                            pointer-events: auto;
+                        }
+                    }
+                }
+            }
+
+            h1 {
+                font-weight: 600;
+                color: var(--ks-content-primary);
+                margin-bottom: 0.5rem;
+
+                span {
+                    color: var(--ks-border-active);
+                }
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+                margin-bottom: 1.5rem;
+            }
+
+            .search-wrapper {
+                position: relative;
+                max-width: 450px;
+
+                input {
+                    width: 100%;
+                    padding: 0.75rem 2.75rem 0.75rem 1rem;
+                    border: 1px solid var(--ks-border-secondary);
+                    border-radius: 8px;
+                    font-size: $font-size-sm;
+                    background-color: var(--ks-background-input);
+                    color: var(--ks-content-primary);
+                    outline: none;
+
+                    &::placeholder {
+                        color: var(--ks-content-tertiary);
+                    }
+
+                    &:focus {
+                        border-color: var(--ks-border-active);
+                    }
+                }
+
+                .search-icon {
+                    position: absolute;
+                    right: 0.875rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--ks-content-tertiary);
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+
+    .listing {
+        padding: $rem-2 1rem $rem-6;
+        background: var(--ks-background-body);
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0;
+        }
+    }
+
+    .toggle {
+        display: flex;
+        gap: 0;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        width: fit-content;
+    }
+
+    .toggle-btn {
+        font-size: $font-size-sm;
+        color: var(--ks-content-secondary);
+        background: transparent;
+        padding: 0.75rem 1.25rem;
+        border: none;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+
+        &:hover {
+            color: var(--ks-content-primary);
+        }
+
+        &.active {
+            color: var(--ks-content-primary);
+            border-bottom-color: var(--ks-content-primary);
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 24px;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        text-decoration: none;
+        background: var(--ks-background-primary);
+        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+        transition: all 0.2s ease;
+
+        html.light & {
+            background: $white;
+        }
+
+        &:hover {
+            border-color: var(--ks-border-active);
+        }
+    }
+
+    .pictos {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .picto {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 8px;
+        padding: 8px;
+        background: $white;
+        flex-shrink: 0;
+
+        :global(svg) {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
+
+        &.ks {
+            padding: 5px;
+            overflow: hidden;
+
+            :global(svg) {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .vs-badge {
+        display: flex;
+        align-items: center;
+
+        :global(svg) {
+            width: 31px;
+            height: auto;
+        }
+    }
+
+    .name {
+        color: var(--ks-content-primary);
+        font-weight: 600;
+        font-size: $font-size-md;
+        line-height: 24px;
+        margin: 0;
+    }
+
+    .desc {
+        color: var(--ks-content-secondary);
+        font-size: $font-size-sm;
+        line-height: 20px;
+        margin: 0;
+        min-height: 60px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .cat-tag {
+        align-self: flex-start;
+        font-size: $font-size-xs;
+        line-height: 16px;
+        padding: 2px 8px;
+        border-radius: 40px;
+        white-space: nowrap;
+        font-weight: 600;
+        background: var(--ks-background-tag-category);
+        color: var(--ks-content-tag-category);
+    }
+</style>

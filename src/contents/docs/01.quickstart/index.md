@@ -1,5 +1,6 @@
 ---
-title: Kestra Quickstart Guide – Run Your First Workflow
+title: "Quickstart Guide: Run Your First Kestra Workflow"
+h1: "Get Started with Kestra: Launch Locally with Docker and Run Your First Workflow"
 sidebarTitle: Quickstart
 icon: /src/contents/docs/icons/quickstart.svg
 description: Get started with Kestra in minutes by launching Kestra locally with Docker and running your first workflow.
@@ -20,12 +21,13 @@ Launch Kestra locally, create a simple flow, and run your first execution in a f
 
 ## Start Kestra
 
-Once Docker is running, start Kestra with a single command. If you are using Windows, make sure to use [WSL](https://docs.docker.com/desktop/wsl/):
+Once Docker is running, start Kestra with a single command:
 
 ```bash
-docker run --pull=always -it -p 8080:8080 --user=root \
-  --name kestra --restart=always \
+docker run --pull=always --rm -it -p 8080:8080 --user=root \
+  --name kestra \
   -v kestra_data:/app/storage \
+  -v kestra_db:/app/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
   kestra/kestra:latest server local
@@ -36,6 +38,7 @@ If you re-run the command and Docker reports `You have to remove (or rename) tha
 :::collapse{title="This command does the following:"}
 - starts Kestra on port `8080`
 - stores local files in the `kestra_data` Docker volume
+- persists the H2 database in the `kestra_db` Docker volume
 - mounts `/tmp` and the Docker socket so script and container tasks can run locally
 :::
 
@@ -46,10 +49,8 @@ Open `http://localhost:8080` in your browser to launch the UI, create your user,
 <br />
 
 :::alert{type="info"}
-The above command starts Kestra with an embedded H2 database that does not persist data. Storage files are stored on the `kestra_data` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
+The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
 :::
-
----
 
 ## Next steps
 

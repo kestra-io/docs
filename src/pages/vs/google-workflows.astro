@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -8,7 +8,7 @@ import SetupSpeed from "~/components/versus/SetupSpeed.astro"
 import EaseOfUse from "~/components/versus/EaseOfUse.astro"
 import VisualPreview from "~/components/versus/VisualPreview.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
-import SocialProof from "~/components/common/SocialProof.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -16,13 +16,15 @@ import Faq from "~/components/common/Faq.vue"
 
 import googleWorkflowsLogo from "~/components/versus/assets/google-workflows.svg?raw"
 import googleWorkflowsMonogram from "~/components/versus/assets/google-workflows-monograme.svg?raw"
-import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import googleWorkflowsImg from "~/components/versus/assets/google-workflows-img.svg"
 import heroUI from "~/components/versus/assets/google_workflows_hero_ui.webp"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const entry = await getEntry("vs", "google-workflows")
 if (!entry)
@@ -30,7 +32,7 @@ if (!entry)
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -40,14 +42,14 @@ const {
     easeOfUse,
     visualPreview,
     featureGrid,
-    socialProof,
+    testimonials,
     platformStrengths,
     decisionGuide,
     commonQuestions,
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
@@ -102,9 +104,8 @@ const {
             competitorLogo: googleWorkflowsLogo,
         }}
     />
-    <SocialProof
-        {...socialProof}
-        image={{ ...socialProof.image, src: lmfrImage }}
+    <VsTestimonial
+        quotes={testimonials}
     />
     <PlatformStrengths
         {...platformStrengths}
@@ -125,7 +126,7 @@ const {
         <Fragment slot="title">
             Orchestrate Beyond GCP Service Coordination
         </Fragment>
-        See how Kestra runs code directly, connects to 1200+ plugins, and works across
+        See how Kestra runs code directly, connects to {totalPlugins}+ plugins, and works across
         every cloud — without Cloud Functions.
     </SeeHow>
-</Layout>
+</VsLayout>

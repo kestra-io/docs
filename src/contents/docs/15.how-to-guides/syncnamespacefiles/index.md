@@ -1,5 +1,6 @@
 ---
 title: Sync Namespace Files from a Git Repository
+h1: Keep Namespace Files in Sync with Git Using SyncNamespaceFiles
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
@@ -14,8 +15,6 @@ Sync files from a Git Repository to Kestra with SyncNamespaceFiles Task.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/AbxaDtINcr8?si=IeCvWT-0PWl5Jq8t" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 The [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) task is a powerful integration that allows you to **sync your namespace files with Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
@@ -131,7 +130,7 @@ To setup this webhook, go to the Settings for your GitHub repository and head to
 
 For the Payload URL, your URL will follow the following format:
 
-```
+```plaintext
 https://{your_hostname}/api/v1/main/executions/webhook/system/sync_files_from_git/abcdefg
 ```
 
@@ -143,4 +142,4 @@ Once we've done this, we can press save and test it by committing something to o
 
 We can see that the most recent execution was triggered by our Webhook. This is a great way to automate this task so Kestra is always up to date with your Git repository.
 
-If you also want to sync your flows, check out our guide on how to set that up [here](../syncflows/index.md)!
+If you also want to sync your flows, check out our [guide on syncing flows](../syncflows/index.md)!

@@ -5,6 +5,7 @@ date: 2025-06-17T17:00:00
 category: News & Product Updates
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: bpimpaud
 image: ./main.jpg
 ---
@@ -28,8 +29,6 @@ Check the video below for a quick overview of all enhancements.
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/MukH164HRu8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Let's dive into these highlights and other enhancements in more detail.
 

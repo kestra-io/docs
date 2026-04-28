@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -8,7 +8,7 @@ import SetupSpeed from "~/components/versus/SetupSpeed.astro"
 import EaseOfUse from "~/components/versus/EaseOfUse.astro"
 import VisualPreview from "~/components/versus/VisualPreview.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
-import SocialProof from "~/components/common/SocialProof.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -16,7 +16,6 @@ import Faq from "~/components/common/Faq.vue"
 
 import competitorLogo from "~/components/versus/assets/hp-operations-orchestrator.svg?raw"
 import competitorMonogram from "~/components/versus/assets/hp-operations-orchestrator-monograme.svg?raw"
-import cagipImage from "~/components/versus/assets/cagip.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
@@ -32,7 +31,7 @@ if (!entry)
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -42,14 +41,14 @@ const {
     easeOfUse,
     visualPreview,
     featureGrid,
-    socialProof,
+    testimonials,
     platformStrengths,
     decisionGuide,
     commonQuestions,
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
@@ -104,9 +103,8 @@ const {
             competitorLogo: competitorLogo,
         }}
     />
-    <SocialProof
-        {...socialProof}
-        image={{ ...socialProof.image, src: cagipImage }}
+    <VsTestimonial
+        quotes={testimonials}
     />
     <PlatformStrengths
         {...platformStrengths}
@@ -130,4 +128,4 @@ const {
         See how enterprises replace HP OO and other legacy runbook tools with Kestra's
         declarative platform.
     </SeeHow>
-</Layout>
+</VsLayout>

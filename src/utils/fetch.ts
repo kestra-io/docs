@@ -21,9 +21,32 @@ async function internalFetch(
     }
 
     if (!response.ok) {
-        throw new Error(
+        let responseData: unknown
+
+        try {
+            const contentType = response.headers.get("content-type") || ""
+            if (contentType.includes("application/json")) {
+                responseData = await response.clone().json()
+            } else {
+                responseData = await response.clone().text()
+            }
+        } catch {
+            responseData = undefined
+        }
+
+        const error = new Error(
             `Fetch error: ${response.status} ${response.statusText} on url ${url}`,
-        )
+        ) as Error & {
+            response?: { status: number; statusText: string; data?: unknown }
+        }
+
+        error.response = {
+            status: response.status,
+            statusText: response.statusText,
+            data: responseData,
+        }
+
+        throw error
     }
 
     return response
@@ -47,6 +70,15 @@ export async function $fetchCached<T = any>(
     return await $fetch<T>(url, cachingConfig)
 }
 
+export async function $fetchCachedRaw(
+    url: string,
+    init: RequestInit = {},
+): Promise<Response> {
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
+
+    return await internalFetch(url, cachingConfig)
+}
+
 export async function $fetchApi<T = any>(
     url: string,
     init: RequestInit = {},
@@ -63,7 +95,7 @@ export async function $fetchApiCached<T = any>(
     return await $fetchApi<T>(url, cachingConfig)
 }
 
-export async function $fetchApiRawCached<T = any>(
+export async function $fetchApiRawCached(
     url: string,
     init: RequestInit = {},
 ): Promise<Response> {

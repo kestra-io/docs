@@ -1,6 +1,11 @@
 title: "Redwood RunMyJobs vs Kestra for Workload Automation"
 description: "Compare Kestra vs Redwood RunMyJobs: Open-source, developer-first orchestration in YAML vs. SaaS-first enterprise workload automation with SAP integration and GUI-driven job scheduling. See features, setup, and migration path."
 competitorName: Redwood
+category: Infrastructure Automation
+shortDescription: "SaaS-first enterprise workload automation with SAP focus vs. open-source orchestration in YAML."
+
+brandColor:
+  color: "#e24650"
 
 intro:
   title: "Kestra vs. Redwood RunMyJobs: Open-Source Orchestration vs. SaaS Workload Automation"
@@ -211,25 +216,17 @@ featureGrid:
       kestra: "Minutes (Docker Compose)"
       competitor: "Weeks to months (SaaS onboarding + connectivity setup)"
 
-socialProof:
-  image:
-    alt: Enterprise team modernizing with Kestra
-    width: 333
-    height: 364
-  quote:
-    text: "Replacing our legacy scheduler with Kestra meant our engineers could finally own their workflows. We went from weeks of back-and-forth with a central team to self-service deployment through Git. The open-source model gave us full visibility into what we were running."
+testimonials:
+  - quote: "Replacing our legacy scheduler with Kestra meant our engineers could finally own their workflows. We went from weeks of back-and-forth with a central team to self-service deployment through Git. The open-source model gave us full visibility into what we were running."
     author: "Platform Engineering Lead @ Enterprise Manufacturing Company"
-  metrics:
-    - value: "70%"
-      label: Faster workflow deployment
-    - value: "1200+"
-      label: Open-source plugins available
-    - value: "5x"
-      label: More teams building automation
-  cta:
-    text: "See how enterprises modernize IT automation with Kestra"
-    link: /use-cases/stories/22-scaling-big-data-operations
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "70%"
+        name: "Faster workflow deployment"
+      - value: "1200+"
+        name: "Open-source plugins available"
+      - value: "5x"
+        name: "More teams building automation"
+    storyLink: "/use-cases/stories/22-scaling-big-data-operations"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

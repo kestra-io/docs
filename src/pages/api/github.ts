@@ -1,38 +1,35 @@
-import { $fetchCached } from "~/utils/fetch"
+import { $fetchCached, $fetchCachedRaw } from "~/utils/fetch"
+import { DISABLE_GITHUB } from "astro:env/server"
+
+const defaultValues = {
+    stargazers: 0,
+    watchers: 0,
+    issues: 0,
+    forks: 0,
+    network: 0,
+    subscribers: 0,
+    size: 0,
+    contributors: 0,
+}
 
 export async function getValues() {
+    if (DISABLE_GITHUB) {
+        return defaultValues
+    }
     let contribCountRes: any
     try {
-        contribCountRes = await $fetchCached(
+        contribCountRes = await $fetchCachedRaw(
             "https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1",
             { headers: { "User-Agent": "request" } },
         )
     } catch (error) {
         console.error("Error fetching contributors count:", error)
-        return {
-            stargazers: 0,
-            watchers: 0,
-            issues: 0,
-            forks: 0,
-            network: 0,
-            subscribers: 0,
-            size: 0,
-            contributors: 0,
-        }
+        return defaultValues
     }
 
     if (!contribCountRes.ok) {
         if (contribCountRes.status === 404) {
-            return {
-                stargazers: 0,
-                watchers: 0,
-                issues: 0,
-                forks: 0,
-                network: 0,
-                subscribers: 0,
-                size: 0,
-                contributors: 0,
-            }
+            return defaultValues
         }
         // Handle other errors
         console.error(

@@ -2,11 +2,10 @@
     <div
         id="nav-toc-global"
         class="bd-toc d-lg-flex justify-content-end"
-        :class="{ plugin: isPluginPage }"
     >
         <div>
             <a
-                v-if="!isPluginPage && markdownBody"
+                v-if="markdownBody"
                 role="button"
                 class="copy-md"
                 :class="{ copied: isCopied }"
@@ -35,14 +34,6 @@
                         <ChevronDown class="chev-icon" v-else />
                     </span>
                 </button>
-
-                <OverviewPanel
-                    v-show="isPluginPage"
-                    :version
-                    :releasesUrl
-                    :categories
-                    :metadata="props.metadata"
-                />
 
                 <div class="collapse bd-toc-collapse" id="tocContents">
                     <slot name="header"></slot>
@@ -100,31 +91,18 @@
 
 <script setup lang="ts">
     import { nextTick, ref, onUnmounted } from "vue"
-    import { useClipboard, useEventListener, useScroll } from "@vueuse/core"
+    import { useClipboard, useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import Check from "vue-material-design-icons/Check.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
-    import OverviewPanel from "~/components/plugins/OverviewPanel.vue"
-    import type { PluginMetadata } from "@kestra-io/ui-libs"
-    import type { ReleaseInfo } from "../../pages/api/github-releases"
 
     export interface TocLink {
         id: string
         depth: number
         text: string
         children?: TocLink[]
-    }
-
-    const throttle = (fn: Function, delay: number) => {
-        let lastCall = 0;
-        return (...args: any[]) => {
-            const now = Date.now();
-            if (now - lastCall < delay) return;
-            lastCall = now;
-            return fn(...args);
-        }
     }
 
     const props = withDefaults(
@@ -135,20 +113,12 @@
             stem?: string,
             editUrl?: string,
             capitalize?: boolean,
-            version?: { versions?: ReleaseInfo[] } | null,
-            releasesUrl?: string | null,
-            categories?: string[],
-            metadata?: PluginMetadata[],
-            isPluginPage?: boolean,
+            class?: string,
             markdownBody?: string,
-            class?: string
+
         }>(),
         {
             links: () => [],
-            version: null,
-            releasesUrl: null,
-            categories: () => [],
-            metadata: () => []
         }
     )
 
@@ -230,7 +200,7 @@
         document.getElementById("tocContents")?.classList.remove("show")
     }
 
-    const handleScroll = throttle(() => {
+    const handleScroll = useThrottleFn(() => {
         if (isManualScrolling.value || scrollY.value === 0) {
             if (scrollY.value === 0) activeLinkId.value = ""
             return
@@ -273,17 +243,12 @@
             max-height: 100%;
             min-width: 250px;
             z-index: 10;
-            &:not(.plugin) {
-                border: 0;
-                border-left-width: 1px;
-                border-style: solid;
-                border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
-                html.light & {
-                    border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
-                }
-            }
-            &.plugin {
-                border-left: $block-border;
+            border: 0;
+            border-left-width: 1px;
+            border-style: solid;
+            border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
+            html.light & {
+                border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
             }
         }
         &::-webkit-scrollbar {
@@ -297,11 +262,6 @@
                 width: 100%;
                 overflow-x: hidden;
                 overflow-y: auto;
-            }
-        }
-        &.plugin > div {
-            @include media-breakpoint-up(lg) {
-                top: var(--announce-height);
             }
         }
         nav {

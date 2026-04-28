@@ -1,5 +1,6 @@
 ---
 title: Connect a Neon Database to Kestra
+h1: Query and Manage Neon PostgreSQL from Your Workflows
 icon: /src/contents/docs/icons/neon.svg
 stage: Intermediate
 topics:

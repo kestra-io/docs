@@ -1,5 +1,6 @@
 ---
-title: Use Realtime Triggers in Kestra
+title: "Realtime Triggers in Kestra: Kafka, SQS, Pub/Sub"
+h1: React to Events Instantly with Realtime Triggers
 icon: /src/contents/docs/icons/plugins.svg
 stage: Getting Started
 topics:
@@ -18,7 +19,7 @@ Let us understand how we can implement Realtime Trigger for some of the messagin
 
 To setup Apache Kafka locally, follow the instructions mentioned in the [official documentation](https://kafka.apache.org/quickstart). Once Apache Kafka is installed, you can create the `logs` topic, and start producing data into the topic using the following commands:
 
-```
+```bash
 ## Create topic
 $ bin/kafka-topics.sh --create --topic logs --bootstrap-server localhost:9092
 
@@ -110,7 +111,7 @@ On the Send and Receive messages page, you can put the Message body under the Se
 
 ![sqs_send_message](./sqs_send_message.png)
 
-You can use the AWS SQS [RealtimeTrigger](/plugins/plugin-aws/io.kestra.plugin.aws.sqs.realtimetrigger) in the Kestra flow as follows:
+You can use the AWS SQS [RealtimeTrigger](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: aws-sqs
@@ -148,7 +149,7 @@ On the Publish message popup, put the message you would like to publish to the t
 
 ![pubsub_publish_message](./pubsub_publish_message.png)
 
-You can use the GCP Pub/Sub [RealtimeTrigger](/plugins/plugin-gcp/io.kestra.plugin.gcp.pubsub.realtimetrigger) in the Kestra flow as follows:
+You can use the GCP Pub/Sub [RealtimeTrigger](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger) in the Kestra flow as follows:
 
 ```yaml
 id: gcp-pubsub

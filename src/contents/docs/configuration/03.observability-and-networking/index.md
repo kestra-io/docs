@@ -1,5 +1,6 @@
 ---
-title: Kestra Observability and Networking Configuration
+title: Observability & Networking Configuration in Kestra
+h1: Configure Telemetry, Logs, Metrics & SSL in Kestra
 description: Configure telemetry, logs, metrics, Micronaut settings, endpoints, SSL, CORS, and webserver behavior in Kestra.
 sidebarTitle: Observability and Networking
 icon: /src/contents/docs/icons/admin.svg
@@ -155,7 +156,7 @@ This creates a tag named `label_<key>` for each configured label. When an execut
 
 For example, with `country` and `environment` configured, an execution that has `country=Germany` but no `environment` label produces:
 
-```
+```plaintext
 kestra_executions_total{flow_id="my-flow",namespace_id="default",state="SUCCESS",label_country="Germany",label_environment="__none__"} 1
 ```
 

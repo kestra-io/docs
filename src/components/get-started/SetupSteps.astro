@@ -3,16 +3,18 @@ import { Icon } from "astro-icon/components"
 import Snippets from "~/components/common/Snippets.astro"
 import Link from "~/components/common/Link.astro"
 
-const dockerCommandUnix = `docker run --pull=always -it -p 8080:8080 --user=root \\
-  --name kestra --restart=always \\
+const dockerCommandUnix = `docker run --pull=always --rm -it -p 8080:8080 --user=root \\
+  --name kestra \\
   -v kestra_data:/app/storage \\
+  -v kestra_db:/app/data \\
   -v /var/run/docker.sock:/var/run/docker.sock \\
   -v /tmp:/tmp \\
   kestra/kestra:latest server local`
 
-const dockerCommandWindows = `docker run --pull=always -it -p 8080:8080 --user=root ^
-  --name kestra --restart=always ^
+const dockerCommandWindows = `docker run --pull=always --rm -it -p 8080:8080 --user=root ^
+  --name kestra ^
   -v kestra_data:/app/storage ^
+  -v kestra_db:/app/data ^
   -v /var/run/docker.sock:/var/run/docker.sock ^
   -v /tmp:/tmp ^
   kestra/kestra:latest server local`
@@ -20,7 +22,6 @@ const dockerCommandWindows = `docker run --pull=always -it -p 8080:8080 --user=r
 
 <section class="setup-steps">
     <div class="container">
-        <p class="overline" data-usal="fade-r">Setup Instructions</p>
         <h2 data-usal="fade-l">
             Up and Running in <span class="highlight">3 Steps</span>
         </h2>

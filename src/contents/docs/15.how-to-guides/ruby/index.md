@@ -1,5 +1,7 @@
 ---
 title: Run Ruby Inside Your Flows
+h1: Execute Ruby Scripts in Kestra Workflows
+description: Execute Ruby scripts in Kestra. Automate tasks with Ruby code, install gems at runtime, and pass outputs to downstream tasks for flexible scripting.
 icon: /src/contents/docs/icons/ruby.svg
 stage: Getting Started
 topics:
@@ -189,8 +191,8 @@ Once this has executed, both the metrics can be viewed under **Metrics**.
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Ruby code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.eval)
-- [FileTransform](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.filetransform)
+- [Eval](/plugins/plugin-graalvm/ruby-graalvm/io.kestra.plugin.graalvm.ruby.eval)
+- [FileTransform](/plugins/plugin-graalvm/ruby-graalvm/io.kestra.plugin.graalvm.ruby.filetransform)
 
 In this example, the `Eval` is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 

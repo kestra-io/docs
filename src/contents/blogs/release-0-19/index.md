@@ -5,6 +5,8 @@ date: 2024-10-01T17:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -132,8 +134,6 @@ The video below demonstrates how to set up System Flows:
 <div class="video-container">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/o05hcKNI_7I?si=fo8XuY6yVTmUTykb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 
 ## Conditional Inputs

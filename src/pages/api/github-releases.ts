@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro"
+import { DISABLE_GITHUB } from "astro:env/server"
 
 export const prerender = false
 
@@ -16,6 +17,9 @@ export interface ReleaseInfo {
 }
 
 export async function retrieveRepoReleases(repo: string) {
+    if (DISABLE_GITHUB) {
+        return { versions: [] }
+    }
     const headers: Record<string, string> = { "User-Agent": "request" }
 
     const response = await fetch(
@@ -49,11 +53,9 @@ export async function retrieveRepoReleases(repo: string) {
                 return !isNaN(major) && major >= 1
             })
             .toSorted((a, b) => {
-                return a.version < b.version
-                    ? 1
-                    : a.version > b.version
-                      ? -1
-                      : 0
+                const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0
+                const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0
+                return bTime - aTime
             })
 
         return { versions }

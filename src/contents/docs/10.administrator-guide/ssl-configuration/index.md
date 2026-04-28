@@ -1,5 +1,6 @@
 ---
-title: Configure SSL/TLS for Kestra – Secure the UI
+title: "SSL/TLS Configuration: Enable HTTPS for Kestra"
+h1: Enable HTTPS on the Kestra UI with SSL/TLS certificates
 sidebarTitle: Configure SSL for Kestra
 icon: /src/contents/docs/icons/padlock.svg
 description: Configure SSL/TLS encryption for Kestra to secure the UI and API access using self-signed or CA-signed certificates.
@@ -369,7 +370,7 @@ kubectl get certificate kestra-tls -w
 ```
 
 Expected output:
-```
+```plaintext
 NAME        READY   SECRET      AGE
 kestra-tls  True    kestra-tls  5m
 ```

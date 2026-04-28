@@ -1,6 +1,11 @@
 title: "Kestra vs. Broadcom Dollar Universe: Modern Orchestration vs. Legacy Workload Automation"
 description: "Compare Kestra vs Broadcom Dollar Universe: declarative YAML workflow orchestration vs proprietary UPROC-based enterprise workload automation. See features, setup time, and use cases."
 competitorName: Broadcom Dollar Universe
+category: Infrastructure Automation
+shortDescription: "Proprietary UPROC-based enterprise workload automation vs. modern declarative YAML orchestration."
+
+brandColor:
+  color: "#cc092f"
 
 intro:
   title: "Kestra vs. Broadcom Dollar Universe: Modern Orchestration vs. Legacy Workload Automation"
@@ -170,25 +175,17 @@ featureGrid:
       kestra: "✓ Native namespace isolation"
       competitor: Available but centrally managed
 
-socialProof:
-  image:
-    alt: Success story
-    width: 333
-    height: 364
-  quote:
-    text: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture."
+testimonials:
+  - quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture."
     author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
-  metrics:
-    - value: "+900%"
-      label: In data production
-    - value: "+250"
-      label: Active users
-    - value: "+5,000"
-      label: Workflows created
-  cta:
-    text: "See how Leroy Merlin scaled to 5,000 workflows without a central bottleneck"
-    link: https://kestra.io/blogs/2023-08-16-datamesh
-  theme: "var(--ks-special-green)"
+    kpis:
+      - value: "+900%"
+        name: "In data production"
+      - value: "+250"
+        name: "Active users"
+      - value: "+5,000"
+        name: "Workflows created"
+    storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

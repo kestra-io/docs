@@ -1,5 +1,6 @@
 ---
-title: Kestra Architecture – Server Components Explained
+title: Server Components in Kestra Architecture Explained
+h1: Executor, Worker, Scheduler, Webserver, and Indexer Roles
 description: Explore Kestra server components. Learn about the Executor, Worker, Scheduler, Webserver, and Indexer roles in the orchestration engine.
 sidebarTitle: Server components
 icon: /src/contents/docs/icons/architecture.svg

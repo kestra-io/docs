@@ -1,5 +1,7 @@
 ---
-title: Reserved keywords cannot be used as Flow IDs
+title: Reserved Keywords Cannot Be Used as Flow IDs (1.0.0)
+h1: Reserved Keywords Are Now Blocked as Flow IDs
+sidebarTitle: Reserved Keywords as Flow IDs
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -13,7 +15,7 @@ Starting with Kestra 1.0, certain keywords are reserved and **cannot be used as 
 
 **Reserved keywords:**
 
-```
+```plaintext
 pause
 resume
 force-run

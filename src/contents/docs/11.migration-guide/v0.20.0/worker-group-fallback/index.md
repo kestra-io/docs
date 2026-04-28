@@ -1,5 +1,7 @@
 ---
-title: Fallback on unhealthy workers
+title: Worker Group Fallback Change in Kestra 0.20.0 Enterprise
+h1: Configure Worker Group Fallback Behavior for Unhealthy Workers
+sidebarTitle: Worker Group Fallback Behavior
 description: "Worker Group Fallback changes in Kestra 0.20.0 (Enterprise). Configure fallback: FAIL to retain previous behavior when no workers are available in a group."
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0

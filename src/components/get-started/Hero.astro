@@ -1,20 +1,25 @@
 ---
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const TAGS = [
     { label: "Declarative", icon: "mdi:xml" },
     { label: "Any Language", icon: "mdi:code-tags" },
-    { label: "1200+ Plugins", icon: "mdi:puzzle-outline" },
+    { label: `${totalPlugins}+ Plugins`, icon: "mdi:puzzle-outline" },
     { label: "API-First", icon: "mdi:api" },
     { label: "No Lock-in", icon: "mdi:lock-open-outline" },
     { label: "Self-Hosted", icon: "mdi:server-network-outline" },
     { label: "Cloud", icon: "mdi:cloud-check-outline" },
 ]
 
-const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run</span> <span class="t-flag">--pull=always</span> <span class="t-flag">-it</span> <span class="t-flag">-p</span> <span class="t-val">8080:8080</span> <span class="t-flag">--user=root</span> <span class="t-bs">\\</span>
-  <span class="t-flag">--name</span> <span class="t-val">kestra</span> <span class="t-flag">--restart=always</span> <span class="t-bs">\\</span>
+const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run</span> <span class="t-flag">--pull=always</span> <span class="t-flag">--rm</span> <span class="t-flag">-it</span> <span class="t-flag">-p</span> <span class="t-val">8080:8080</span> <span class="t-flag">--user=root</span> <span class="t-bs">\\</span>
+  <span class="t-flag">--name</span> <span class="t-val">kestra</span> <span class="t-bs">\\</span>
   <span class="t-flag">-v</span> <span class="t-val">kestra_data:/app/storage</span> <span class="t-bs">\\</span>
+  <span class="t-flag">-v</span> <span class="t-val">kestra_db:/app/data</span> <span class="t-bs">\\</span>
   <span class="t-flag">-v</span> <span class="t-val">/var/run/docker.sock:/var/run/docker.sock</span> <span class="t-bs">\\</span>
+  <span class="t-flag">-v</span> <span class="t-val">/tmp:/tmp</span> <span class="t-bs">\\</span>
   <span class="t-val">kestra/kestra:latest</span> <span class="t-sub">server local</span>`
 ---
 
@@ -30,7 +35,7 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                     <span class="gradient">Start Orchestrating.</span>
                 </h1>
                 <p class="subtitle">
-                    One YAML file. Any language. 1200+ integrations.<br />
+                    One YAML file. Any language. {totalPlugins}+ integrations.<br />
                     Your first workflow runs in under 2 minutes.
                 </p>
             </div>
@@ -50,7 +55,7 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                 <div class="command-label">
                     <img src="/icon-simple.svg" alt="Kestra" width="20" height="20" style="width:20px;height:20px;flex-shrink:0" />
                     <span class="command-hint">Run this. That's it.</span>
-                    <button class="copy-btn" title="Copy command" onclick={`navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always -it -p 8080:8080 --user=root \\\n  --name kestra --restart=always \\\n  -v kestra_data:/app/storage \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  kestra/kestra:latest server local`)})`}>
+                    <button class="copy-btn" title="Copy command" onclick={`navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always --rm -it -p 8080:8080 --user=root \\\n  --name kestra \\\n  -v kestra_data:/app/storage \\\n  -v kestra_db:/app/data \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -v /tmp:/tmp \\\n  kestra/kestra:latest server local`)})`}>
                         <Icon name="mdi:content-copy" />
                     </button>
                 </div>

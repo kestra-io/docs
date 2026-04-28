@@ -1,0 +1,245 @@
+title: "Kestra vs. Google Cloud Composer: Orchestrate Beyond Managed Airflow"
+description: "Compare Kestra vs Google Cloud Composer: YAML-first universal orchestration vs managed Apache Airflow on GCP. See setup complexity, cloud dependency, and what changes when Python DAGs aren't the only option."
+competitorName: Cloud Composer
+category: Data Orchestration
+shortDescription: "GCP-managed Apache Airflow vs. open-source, multi-cloud YAML orchestration without vendor lock-in."
+
+brandColor:
+  color: "#4285F4"
+
+intro:
+  title: "Kestra vs. Google Cloud Composer: Orchestrate Beyond Managed Airflow"
+  description: "Cloud Composer gives GCP-native teams managed Apache Airflow without running the infrastructure themselves. Kestra takes a different approach: declarative YAML orchestration that runs on any cloud, in any language, covering data pipelines, infrastructure automation, and business processes, without a 25-minute environment provisioning step before your first workflow runs."
+
+philosophy:
+  mainTitle: Two Ways to Think About Managed Orchestration
+  kestra:
+    title: "Universal Orchestration: Any Cloud, Any Language"
+    description: "Declarative YAML orchestration with no cloud dependency baked into the architecture. Workflows describe what should run, not which managed services to wire together first. Python, SQL, Bash, R, and Go tasks run in isolated containers alongside GCP-native tasks, on any cloud or on-prem."
+    subCardText: '"How do we orchestrate data, infrastructure, and business workflows without being pinned to one cloud provider?"'
+  competitor:
+    title: Managed Apache Airflow on GCP
+    description: "Apache Airflow, fully managed on Google Kubernetes Engine. Cloud Composer handles Airflow upgrades, GKE cluster management, and Cloud SQL provisioning. DAGs are stored in Cloud Storage, and GCP IAM controls access. The GCP integration runs deep: BigQuery, Dataflow, Cloud Run, and Pub/Sub are first-class targets, and Python is the only way to author them."
+    shadowColor: "#C6DAFC"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do we run Airflow on GCP without managing GKE clusters and Cloud SQL ourselves?"'
+
+businessValue:
+  mainTitle: "GCP-Bound Pipeline Scheduling vs. Cloud-Agnostic Workflow Orchestration"
+  kestra:
+    title: Universal Workflows, Any Cloud
+    list:
+      - "Data pipelines, infrastructure automation, business processes, AI workflows"
+      - "Multi-language: Python, SQL, Bash, Go, Node.js, R"
+      - "Event-driven at core: respond to Pub/Sub, S3, webhooks, database changes"
+      - "Self-service for non-engineers via Kestra Apps"
+      - "Runs on GCP, AWS, Azure, on-prem, or your laptop"
+  competitor:
+    title: Managed Airflow Inside GCP
+    list:
+      - "Apache Airflow on GKE, managed by Google"
+      - "Python DAGs stored in Cloud Storage"
+      - "Deep GCP integration: BigQuery, Dataflow, Cloud Run, Pub/Sub"
+      - "Data engineering scope"
+      - "GCP-only deployment"
+    shadowColor: "#C6DAFC"
+    bulletColor: "#4285F4"
+  footerText: "Cloud Composer is a strong choice if your team is invested in Airflow and your data stack is primarily GCP. Kestra is the right choice if you need multi-language teams contributing without Python DAGs, orchestration that spans cloud providers, or a setup path that doesn't require a GKE cluster before your first workflow runs."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Cloud Composer is Google's fully managed Airflow service—there is no local or self-hosted install option. This comparison reflects what's required to provision a Composer environment: enabling the API, creating a service account with Composer Worker permissions, configuring IAM roles across five permission levels, and waiting roughly 25 minutes for the GKE-backed environment to provision."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No GCP project, no service account, no IAM roles, no GCS bucket."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~45"
+      two: Minutes
+    description: "Enable the Cloud Composer API, create a service account with Composer Worker role, assign five IAM permission levels, create the Composer environment (~25 min to provision), then upload DAG files to the GCS bucket and wait for the Airflow scheduler to detect them."
+    shadowColor: "#C6DAFC"
+    command: |
+      # Step 1: Enable API
+      gcloud services enable composer.googleapis.com
+
+      # Step 2: Create service account + assign roles
+      gcloud iam service-accounts create composer-sa
+      gcloud projects add-iam-policy-binding PROJECT_ID \
+        --member="serviceAccount:composer-sa@PROJECT_ID.iam.gserviceaccount.com" \
+        --role="roles/composer.worker"
+
+      # Step 3: Create environment (~25 min to provision)
+      gcloud composer environments create my-env \
+        --location=us-central1 \
+        --service-account=composer-sa@PROJECT_ID.iam.gserviceaccount.com
+
+      # Step 4: Upload DAGs to GCS, write Python DAGs...
+    lang: sh
+
+easeOfUse:
+  title: Workflows Your Whole Team Can Read
+  kestra:
+    title: "Kestra: Readable by your whole team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python knowledge required to understand or modify a workflow."
+    code: |
+      id: daily_etl
+      namespace: data.production
+
+      tasks:
+        - id: extract
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            # Paste your existing extraction logic here
+            result = {"records": 1000}
+
+        - id: transform
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select staging
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "ETL complete: {{ outputs.extract.vars.result.records }} records processed"
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 0 * * *"
+    lang: yaml
+  competitor:
+    title: "Cloud Composer: Python DAGs in Cloud Storage, Airflow on GKE"
+    description: "DAG files are Python scripts stored in a GCS bucket. Updating a workflow means pushing a new file to Cloud Storage and waiting for the Airflow scheduler to detect the change. Operators, dependencies, and scheduling logic are all Python. Non-Python contributors can view runs in the Airflow UI but cannot author or edit workflows."
+    shadowColor: "#C6DAFC"
+    code: |
+      from airflow import DAG
+      from airflow.operators.python import PythonOperator
+      from airflow.operators.bash import BashOperator
+      from airflow.providers.slack.operators.slack_webhook import SlackWebhookOperator
+      from datetime import datetime
+
+      def extract_data(**context):
+          # extraction logic
+          return {"records": 1000}
+
+      with DAG('daily_etl', start_date=datetime(2024, 1, 1), schedule='@daily') as dag:
+          extract = PythonOperator(
+              task_id='extract',
+              python_callable=extract_data,
+          )
+          transform = BashOperator(
+              task_id='transform',
+              bash_command='dbt run --select staging',
+          )
+          notify = SlackWebhookOperator(
+              task_id='notify',
+              slack_webhook_conn_id='slack_default',
+              message='ETL complete',
+          )
+          extract >> transform >> notify
+    lang: python
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate across data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for Pub/Sub, GCS file arrivals, webhooks, Kafka, and database changes. Runs on any cloud or on-prem."
+  competitor:
+    description: "Managed Airflow on GKE with first-class GCP integration. Excellent for Python-based data pipelines that target BigQuery, Dataflow, and Cloud Run. Infrastructure automation and business process workflows are possible via Python operators but are not first-class use cases. Runs exclusively on GCP."
+    shadowColor: "#C6DAFC"
+
+featureGrid:
+  title: Kestra vs. Cloud Composer at a Glance
+  tableData:
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: Python DAGs stored in Cloud Storage
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, R, Bash, Go, Node.js)"
+      competitor: "Python-first (Bash/SQL via operators)"
+    - feature: Cloud dependency
+      kestra: "Runs anywhere (GCP, AWS, Azure, on-prem)"
+      competitor: GCP only
+    - feature: Setup requirements
+      kestra: Docker Compose (two commands)
+      competitor: "API enable, IAM roles, service account, GKE environment (~45 min)"
+    - feature: Architecture
+      kestra: Event-driven at core
+      competitor: "Schedule-first (Airflow under the hood)"
+    - feature: Airflow version control
+      kestra: "Your upgrade timeline"
+      competitor: "Google controls Airflow version availability and cadence"
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation + RBAC out-of-box"
+      competitor: "IAM-based access; separate Composer environments for strong isolation"
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: "Airflow UI is observability-focused, no self-service authoring"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: "Possible via Python operators and GCP SDK, not a primary use case"
+
+testimonials:
+  - quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML."
+    author: "Senior Engineering Manager @ Apple (ML team)"
+    kpis:
+      - value: "200"
+        name: Engineers onboarded
+      - value: "2x"
+        name: Faster workflow creation
+      - value: "0"
+        name: Pipeline failures
+    storyLink: "/use-cases/stories/32-apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+
+platformStrengths:
+  title: Kestra Is Built for Teams Who Orchestrate Beyond GCP
+  features:
+    - title: No GKE cluster before your first workflow
+      description: "Kestra runs in two Docker Compose commands. No GCP project to configure, no service account to provision, no IAM roles to assign across five permission levels, no 25-minute environment creation window. Teams get a production-shaped Kestra instance locally in under 5 minutes, using the same Docker-based deployment that scales to Kubernetes in production."
+    - title: Not locked to a single cloud
+      description: "When your pipelines pull from BigQuery but push to Snowflake or trigger infrastructure jobs on AWS, routing everything through a GCP-only control plane adds friction. Kestra runs on GCP, AWS, Azure, or your own data center, with native plugins for GCS, BigQuery, Pub/Sub, and every major GCP service alongside AWS and Azure targets."
+    - title: Upgrade when you're ready
+      description: "Kestra upgrades run on your schedule: pull a new image, test in staging, and ship when ready. No waiting for a managed service to certify a release or schedule a maintenance window. Roll back instantly if something unexpected surfaces after an upgrade."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your team writes Python, SQL, Bash, and dbt, and you want orchestration that doesn't force everyone into Python DAGs."
+      - "You need workflows that span GCP, AWS, Azure, or on-prem without being locked to one cloud."
+      - "You want a local development environment in under 5 minutes, not 45 minutes of IAM and GKE configuration."
+      - "Your workflows span data pipelines, infrastructure automation, and business processes."
+      - "Non-engineers need to trigger or monitor workflows without writing Python."
+  competitor:
+    title: Choose Cloud Composer When
+    list:
+      - "Your team is fully invested in Airflow and your entire data stack runs on GCP."
+      - "Deep GCP integration is non-negotiable: IAM-controlled access, native BigQuery operators, and Dataflow orchestration from within the Airflow DAG."
+      - "GCP compliance requirements (data residency, VPC-SC, org-level IAM) make a fully managed GCP service the right choice."
+      - "Your existing Python DAG library and Airflow operator investments are too large to migrate near-term."
+    shadowColor: "#C6DAFC"
+    bulletColor: "#4285F4"
+
+commonQuestions:
+  - question: How do I migrate from Cloud Composer to Kestra?
+    answer: "Kestra doesn't require you to refactor your business logic. Extract Python code from your Airflow DAG files and run it directly as a Script task in Kestra. SQL queries and Shell commands work as-is. Define orchestration in YAML. Most teams migrate incrementally, running both platforms in parallel: Kestra's HTTP trigger can call remaining Composer DAGs during transition so there's no hard cutover. For a detailed breakdown of both upgrade and migration paths, see our <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a>."
+  - question: Does Kestra integrate with GCP services?
+    answer: "Yes. Kestra has native plugins for BigQuery, Cloud Storage, Pub/Sub, Cloud Run, Dataflow, Firestore, and more. The GCS trigger lets Kestra react to file arrivals natively without polling. GCP credentials are managed through Kestra's secrets management, and Kestra deployments on GCP typically run on GKE using the same IAM service account patterns your team already uses."
+  - question: Cloud Composer handles Airflow upgrades for me. What does Kestra offer?
+    answer: "Kestra upgrades run on your schedule: pull a new image, test in staging, and ship when your team is ready. There's no waiting for GCP to certify a version or schedule a maintenance window. Cloud Composer controls the upgrade cadence and typically lags the open-source Airflow release, including Airflow 3 support, by several months."
+  - question: Does Kestra support the same data pipeline use cases as Cloud Composer?
+    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1200+ plugins, it covers the same GCP integrations available through Airflow providers: BigQuery, GCS, Pub/Sub, Dataflow, and more. The difference is YAML task definitions instead of Python operator classes."
+  - question: Can Kestra and Cloud Composer run in parallel during migration?
+    answer: "Yes. Teams commonly run both during transition. Kestra can trigger Composer DAGs via the Airflow REST API, so you migrate incrementally: start new workflows in Kestra, move existing pipelines on your own timeline, and keep Composer running until you're confident in the switch."
+  - question: How does Kestra handle multi-tenancy compared to Cloud Composer?
+    answer: "Kestra uses namespace isolation out-of-the-box. Teams, projects, and environments get separate namespaces with scoped RBAC, secrets, and execution history. Cloud Composer's access model is IAM-based; strong team isolation typically requires separate Composer environments, each with its own GKE cluster and cost. Kestra handles this within a single deployment."

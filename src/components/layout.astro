@@ -12,9 +12,11 @@ import LayoutFooter from "~/components/layout/Footer.astro"
 import LayoutFixed from "~/components/layout/Fixed.vue"
 import Announce from "~/components/layout/Announce.vue"
 import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
+import BreadcrumbList from "~/components/common/BreadcrumbList.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
 import annoncesData from "~/contents/annonces/annonces.yml?raw"
 import YAML from "yaml"
+import { DISABLE_USAL, PREVIEW } from "astro:env/server"
 
 const parsedAnnonces = YAML.parse(annoncesData ?? "[]")
 
@@ -31,6 +33,8 @@ interface Props {
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
+    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
+    canonical?: string
 }
 
 const props = Astro.props
@@ -67,19 +71,56 @@ const query = new URLSearchParams(
 const currentUrlNoQS = new URL(
     currentUrl.toString().replace(currentUrl.search, ""),
 )
-const canonicalUrl = new URL(
-    currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
-    Astro.site,
-)
+const canonicalUrl = props.canonical
+    ? new URL(props.canonical, Astro.site)
+    : new URL(
+          currentUrlNoQS.toString() +
+              (query.size > 0 ? "?" + query.toString() : ""),
+          Astro.site,
+      )
 
 const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
 const hasAnnounce = isHomepage && annonces.length > 0
+
+const websiteSchema = isHomepage
+    ? {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://kestra.io/#website",
+          "url": "https://kestra.io",
+          "name": "Kestra",
+          "description":
+              "Open-source declarative orchestration platform for data, AI, and infrastructure workflows",
+      }
+    : null
+
+const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://kestra.io/#organization",
+    "name": "Kestra Technologies",
+    "url": "https://kestra.io",
+    "logo": "https://kestra.io/logo.svg",
+    "description": "Kestra is the open-source orchestration platform for data, AI, and infrastructure workflows. Event-driven, language-agnostic, and built for enterprise scale.",
+    "foundingDate": "2021",
+    "sameAs": [
+        "https://github.com/kestra-io/kestra",
+        "https://www.linkedin.com/company/kestra",
+        "https://x.com/kestra_io",
+        "https://hub.docker.com/r/kestra/kestra"
+    ],
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "url": "https://kestra.io/demo"
+    }
+}
 ---
 
-<html lang="en">
+<html lang="en" class:list={{ "no-animation": DISABLE_USAL }}>
     <head>
         <script is:inline>
             ;(function () {
@@ -144,6 +185,7 @@ const hasAnnounce = isHomepage && annonces.length > 0
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
+        <BreadcrumbList url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl} pageTitle={props.title} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />
@@ -181,17 +223,28 @@ const hasAnnounce = isHomepage && annonces.length > 0
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
+        <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+        {websiteSchema && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
+
         <slot name="head" />
 
         <ClientRouter />
         <LoadingIndicator color="#a796ff" threshold={0} />
 
-        <script src="../scripts/analytics.js"></script>
+        {
+            import.meta.env.DEV || PREVIEW ? null : (
+                <>
+                    <!-- @prettier-ignore -->
+                    <script src="../scripts/analytics.js"></script>
+                    <script src="../scripts/cookieconsent.ts"></script>
+                </>
+            )
+        }
         <script src="../scripts/bootstrap.js"></script>
-        <script src="../scripts/cookieconsent.ts"></script>
         <script src="../scripts/zoom.js"></script>
         <script src="../scripts/theme.ts"></script>
         <script src="../scripts/ec-collapsible.ts"></script>
+        <script src="../scripts/mermaid.ts"></script>
     </head>
     <body
         data-header-theme={{

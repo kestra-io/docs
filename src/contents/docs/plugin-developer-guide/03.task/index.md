@@ -1,5 +1,6 @@
 ---
 title: Develop a Kestra Task Plugin
+h1: "How to Build a Custom Task Plugin: Properties, Logic & Outputs"
 sidebarTitle: Develop a Task
 icon: /src/contents/docs/icons/dev.svg
 description: Step-by-step guide to developing custom Task plugins for Kestra, including properties, run logic, outputs, and validation.
@@ -420,4 +421,4 @@ When developing such tasks, you must make it fault-tolerant as an exception thro
 
 Keep in mind that a flowable task will be evaluated very frequently inside the Executor and must have low CPU usage; no I/O should be done by this kind of task.
 
-In the future, complete documentation will be available here. In the meantime, you can find all the actual Flowable tasks [here](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/plugin/core/flow) to have some inspiration for Sequential or Parallel tasks development.
+In the future, complete documentation will be available here. In the meantime, you can find all the actual [Flowable task source files](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/plugin/core/flow) to have some inspiration for Sequential or Parallel tasks development.

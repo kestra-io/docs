@@ -5,6 +5,8 @@ date: 2025-09-11T15:00:00
 category: News & Product Updates
 authors:
   - name: Anna Geller
+    linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+    medium: https://annageller.medium.com/
     image: ageller
     role: Product Lead
 image: ./main.jpg
@@ -44,3 +46,4 @@ With LTS, Kestra offers stability and predictability for production, while allow
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 
 For questions or feedback, join [our Slack community](/slack) or open an issue on GitHub.
+

@@ -1,5 +1,7 @@
 ---
-title: Use Terraform for Flow Modularity
+title: Terraform for Flow Modularity in Kestra
+h1: Make Flows Modular and Reusable with Terraform Templates
+description: Combine Kestra with Terraform for IaC workflows. Template and provision cloud resources automatically as part of your CI/CD automation pipelines.
 icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:
@@ -26,7 +28,7 @@ Below we will cover the creation of a single Terraform module and a subflow, and
 
 ## Code structure
 
-```
+```plaintext
 .
 └── environment/
     ├── development
@@ -58,7 +60,7 @@ Let's create a module that will define a Kestra flow that will sync data from Ai
 
 ## Tree structure of a Terraform module
 
-```
+```plaintext
 .
 └── airbyte_sync/
     ├── main.tf

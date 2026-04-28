@@ -1,5 +1,5 @@
 ---
-title: "CI/CD And Control Plane Accelerated Deployments, Better Data Process "
+title: "Gorgias, Using Declarative Data Engineering Orchestration With Kestra"
 description: "This is the story of how Gorgias, a leading company in enhancing
   user experiences for online merchants and shoppers, integrated Kestra into
   their data infrastructure "
