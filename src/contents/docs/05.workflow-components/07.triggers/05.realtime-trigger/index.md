@@ -1,5 +1,6 @@
 ---
 title: Realtime Trigger in Kestra – Millisecond Eventing
+h1: React Instantly to Kafka, SQS, and MQTT Events
 description: Achieve low-latency automation with Kestra's Realtime Triggers. React instantly to events from Kafka, SQS, MQTT, and other streaming systems.
 sidebarTitle: Realtime Trigger
 icon: /src/contents/docs/icons/flow.svg
@@ -7,8 +8,6 @@ version: ">= 0.17.0"
 ---
 
 Trigger workflows instantly as events occur, with millisecond latency.
-
-## Realtime trigger – millisecond eventing
 
 [Triggers](./index.md) in Kestra can listen to external events and start a workflow execution when the event occurs. Most triggers in Kestra **poll** external systems at regular intervals (e.g., every second) to detect new events. This is effective for batch-style data processing. However, business-critical workflows often demand immediate reactions — within milliseconds. **Realtime Triggers** address this need by listening directly for events and starting workflows as soon as they occur.
 
@@ -27,8 +26,8 @@ Realtime Triggers continuously listen for events and launch a new workflow execu
 - a message is published to an [AWS SQS queue](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
 - a message is published to [Google Pub/Sub](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
 - a message is published to [Azure Event Hubs](/plugins/plugin-azure/eventhubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
-- a message is published to a [NATS subject](/plugins/plugin-nats/io.kestra.plugin.nats.realtimetrigger)
-- an item is added to a [Redis list](/plugins/plugin-redis/io.kestra.plugin.redis.realtimetriggerlist)
+- a message is published to a [NATS subject](/plugins/plugin-nats/nats-core/io.kestra.plugin.nats.core.realtimetrigger)
+- an item is added to a [Redis list](/plugins/plugin-redis)
 - a row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).
 
 ## How realtime triggers work

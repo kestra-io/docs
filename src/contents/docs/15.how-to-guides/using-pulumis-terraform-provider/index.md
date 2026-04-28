@@ -1,5 +1,6 @@
 ---
-title: Integrate Kestra with Pulumi's Terraform Provider
+title: Kestra with Pulumi's Terraform Provider
+h1: Manage Kestra Infrastructure from Your Pulumi Projects
 icon: /src/contents/docs/icons/pulumi.svg
 stage: Advanced
 topics:

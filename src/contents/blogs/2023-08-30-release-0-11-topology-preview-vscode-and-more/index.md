@@ -6,6 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -15,11 +16,11 @@ We're excited to announce Kestra 0.11.0, which includes a **redesigned topology 
 
 Along with this release, we've published the **[official Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=kestra-io.kestra)** offering autocompletion and syntax validation for local development. You can now create and deploy complex workflows directly from your local VS Code IDE without ever having to open the UI.
 
-This release also makes Kestra easier to use for Command Line enthusiasts. We've added new integrations to automate tasks on [AWS](/plugins/plugin-aws#cli), [Google Cloud](/plugins/plugin-gcp#cli), [Azure](/plugins/plugin-azure#cli), [dbt](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli), and [Spark](/plugins/plugin-spark/io.kestra.plugin.spark.sparkcli) using dedicated **CLI tasks**.
+This release also makes Kestra easier to use for Command Line enthusiasts. We've added new integrations to automate tasks on [AWS](/plugins/plugin-aws#cli), [Google Cloud](/plugins/plugin-gcp#cli), [Azure](/plugins/plugin-azure#cli), [dbt](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli), and [Spark](/plugins/plugin-spark/io.kestra.plugin.spark.sparkcli) using dedicated **CLI tasks**.
 
 The [Databricks](/plugins/plugin-databricks) and [AWS Athena](/plugins/plugin-aws#athena) integrations help orchestrate and manage **data lake(house)s**, and the script plugin now also supports **[Julia](/plugins/plugin-script-julia)**.
 
-This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle) and [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
+This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer) and [Microsoft SQL Server](/plugins/plugin-singer), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
 
 Lastly, we've introduced several performance, documentation, and usability enhancements.
 
@@ -333,7 +334,7 @@ tasks:
         - spark-submit --name Pi --master spark://localhost:7077 etl/spark_pi.py
 ```
 
-Similarly to `SparkCLI`, the new [DbtCLI task](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli) can be used to orchestrate any dbt command. Below is a [Blueprint example](/blueprints) running `dbt deps` and `dbt build` commands.
+Similarly to `SparkCLI`, the new [DbtCLI task](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli) can be used to orchestrate any dbt command. Below is a [Blueprint example](/blueprints) running `dbt deps` and `dbt build` commands.
 
 ```yaml
 id: dbtGitDockerDuckDB
@@ -399,8 +400,8 @@ Databricks is a unified data analytics platform that provides a collaborative wo
 ## AI and ML
 
 We've added two new tasks to integrate Kestra with [Vertex AI APIs](/plugins/plugin-gcp/#vertex-ai) using Google's PaLM 2 Large Language Models.
-1. The [PaLM TextCompletion API](/plugins/plugin-gcp/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
-2. The [PaLM ChatCompletion API](/plugins/plugin-gcp/vertexai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
+1. The [PaLM TextCompletion API](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
+2. The [PaLM ChatCompletion API](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
 
 To see both of these tasks in action, check [the blog post by Loïc Mathieu](../2023-08-24-using-google-bard-ai-with-kestra/index.md).
 
@@ -425,8 +426,8 @@ tasks:
 ### New Singer Taps: Oracle and Microsoft SQL Server
 
 We've extended the existing Singer plugin to support the following new taps:
-- [Microsoft SQL Server](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.sqlserver)
-- [Oracle](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.oracle).
+- [Microsoft SQL Server](/plugins/plugin-singer)
+- [Oracle](/plugins/plugin-singer).
 
 
 ### MotherDuck integration

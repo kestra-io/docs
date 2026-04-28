@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra on GCP VM – Cloud SQL and GCS Backend
+title: Deploy Kestra on GCP VM – Cloud SQL and GCS
+h1: Install Kestra on Google Cloud VM with Cloud SQL and GCS
 sidebarTitle: GCP VM with Cloud SQL and GCS
 icon: /src/contents/docs/icons/gcp-compute.svg
 description: Deploy Kestra on a Google Cloud Platform (GCP) VM with Cloud SQL and Google Cloud Storage (GCS).
@@ -11,11 +12,8 @@ Install Kestra on a GCP VM with Cloud SQL as the database backend and Cloud Stor
   <iframe src="https://www.youtube.com/embed/qwA7-hm7d2o?si=EpcG6jyVGJoyjqen" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Deploy Kestra on a GCP VM with Cloud SQL and GCS
+## Prerequisites
 
-This guide provides instructions for deploying Kestra on Google Cloud Platform (GCP). We use Compute Engine with Docker to host the Kestra server, a Cloud SQL PostgreSQL database, and Cloud Storage as the storage backend.
-
-Prerequisites:
 - Basic command-line interface (CLI) skills.
 - Familiarity with Compute Engine, Cloud Storage, and PostgreSQL.
 
@@ -189,7 +187,7 @@ By default, internal storage is implemented using the local file system. This se
 5. On the Service Accounts page, click on the newly created service account.
 6. On the newly created service account page, go to the **Keys** tab at the top of the page and click on **Add Key**. From the dropdown, select **Create New Key**.
 7. Select the Key type as **JSON** and click **Create**. The JSON key file for the service account will get downloaded.
-8. We will be using the stringified JSON for our configuration. You can use the bash command `cat <path_to_json_file> | jq '@json'` to generate stringified JSON.
+8. Use the stringified JSON for the configuration. You can use the bash command `cat <path_to_json_file> | jq '@json'` to generate stringified JSON.
 9. Edit the Kestra storage configuration.
 
 ```yaml
@@ -203,11 +201,9 @@ kestra:
         <stringified-json-file-contents>
 ```
 
-In order for the changes to take effect, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
+To apply the changes, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
 
 ## Next steps
-
-This guide walked you through installing Kestra on a GCP VM instance with a Cloud SQL database and Cloud Storage as the storage backend.
 
 This setup provides the easiest starting point for running Kestra in production on a single machine. For a deployment to a distributed cluster on GCP, check the [GKE Kubernetes deployment guide](../05.kubernetes-gcp-gke/index.md).
 

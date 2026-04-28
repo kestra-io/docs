@@ -1,5 +1,7 @@
 ---
 title: Build Dynamic Flows in Kestra
+h1: Use Inputs and Expressions to Build Flexible Dynamic Flows
+description: Create dynamic Kestra flows at runtime using inputs and Pebble expressions. Generate flow configurations on the fly for data-driven, adaptive orchestration.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

@@ -10,6 +10,9 @@ import Blueprints from "~/components/home/Blueprints.astro"
 import ClosingCTA from "~/components/home/ClosingCTA.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 ---
 
 <Layout headerTheme="darkHeader">
@@ -33,7 +36,7 @@ import PluginsBlock from "~/components/common/PluginsBlock.astro"
             </span>
             <span slot="description">
                 Kestra integrates with your existing cloud, data,
-                infrastructure, and SaaS tools. <br />With 1,200+ plugins, you
+                infrastructure, and SaaS tools. <br />With {totalPlugins}+ plugins, you
                 can orchestrate everything without building custom glue code.
             </span>
         </PluginsBlock>

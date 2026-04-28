@@ -1,5 +1,6 @@
 ---
 title: Executions in Kestra – Run and Monitor Flows
+h1: Trigger, Monitor, and Troubleshoot Flow Executions
 description: Manage Flow Executions in Kestra. Learn how to trigger, monitor, and troubleshoot workflow runs, understand states, and access execution metrics.
 sidebarTitle: Execution
 icon: /src/contents/docs/icons/flow.svg
@@ -7,8 +8,6 @@ docId: executions
 ---
 
 Execute flows and view the results.
-
-## Executions – run and monitor flows
 
 An execution is a single run of a flow with a specific state.
 
@@ -93,7 +92,7 @@ There are multiple possible states:
 | `KILLING` | A command was issued that asked for the Execution or task run to be killed. The system is in the process of killing the associated tasks.                                                                                                 |
 | `KILLED` | An Execution or task run was killed (upon request), and no more tasks will run.                                                                                                                                                           |
 | `RESTARTED` | Transitional status equivalent to `CREATED`for a flow that was executed, failed, and then restarted.                                                                                                                                      |
-| `CANCELLED` | An Execution or task run has been aborted because it has reached its defined [concurrency limit](../14.concurrency/index.md). The limit was set to the `CANCEL` behavior.                                                                 |
+| `CANCELLED` | An Execution or task run has been aborted because it has reached the defined [concurrency limit](../14.concurrency/index.md) or exceeded the [SLA](../18.sla/index.md) . The behavior was set to the `CANCEL`.                                                                 |
 | `QUEUED` | An Execution or task run has been put on hold because it has reached its defined concurrency limit. The limit was set to the `QUEUE` behavior.                                                                                            |
 | `RETRYING` | The Execution or task run is currently being [retried](../12.retries/index.md).                                                                                                                                                           |
 | `RETRIED` | An Execution or task run exhibited unintended behavior, stopped, and created a new execution as defined by its [flow-level retry policy](../12.retries/index.md#flow-level-retries). The policy was set to the `CREATE_NEW_EXECUTION` behavior. |
@@ -119,8 +118,6 @@ You can trigger a flow manually from the Kestra UI by clicking the **Execute** b
 
 ![execute_button](./execute_button.png)
 
----
-
 ## Use automatic triggers
 
 You can add a **Schedule trigger** to automatically launch a flow execution at a regular time interval.
@@ -145,8 +142,6 @@ http://localhost:8080/api/v1/main/executions/webhook/dev/hello-world/secretWebho
 ```
 
 You can also pass inputs to the flow using the `inputs` query parameter.
-
----
 
 ## Execute a flow via an API call
 

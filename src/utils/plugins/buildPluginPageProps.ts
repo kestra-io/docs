@@ -14,6 +14,7 @@ import {
     getPluginTitle,
 } from "~/utils/plugins/pluginUtils"
 import { prunePluginsForSidebar } from "./pruneForClient"
+import { matchesSubGroup } from "./subgroupMatcher"
 import type { PluginPage, PluginPageWithToc, TocLink } from "./types"
 
 const TOC_DEPTH = 2
@@ -56,8 +57,12 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         pluginType ? (sidebarPluginData?.body?.plugins ?? []) : (page?.body?.plugins ?? []),
     )
 
+    const subGroupPlugins = pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined)
+    const effectiveSubGroup = subGroup
+        ?? (subGroupPlugins.length === 1 ? slugify(subGroupName(subGroupPlugins[0])) : undefined)
+
     const subGroupWrapper = pluginsWithoutDeprecated.find(
-        (p) => slugify(subGroupName(p)) === subGroup,
+        (p) => slugify(subGroupName(p)) === effectiveSubGroup,
     )
 
     const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
@@ -74,17 +79,9 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const rootPlugin = pluginsWithoutDeprecated.find((p) => p.subGroup === undefined)
 
     const currentSubgroupPlugin =
-        !subGroup || pluginType
+        !effectiveSubGroup || pluginType
             ? undefined
-            : pluginsWithoutDeprecated.find((p) => {
-                  const subgroupLastSegment = p.subGroup?.split(".").pop()
-                  const possibleSubgroupMatches = [
-                      slugify(subGroupName(p)),
-                      subgroupLastSegment,
-                      slugify(subgroupLastSegment ?? ""),
-                  ]
-                  return possibleSubgroupMatches.includes(subGroup)
-              })
+            : pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
 
     const currentPluginMetadata = (() => {
         const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
@@ -142,7 +139,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const headingDescription = pluginType
         ? page?.title
         : (combinedDescription ??
-          (subGroup === undefined
+          (effectiveSubGroup === undefined
               ? (rootPlugin?.longDescription ?? combinedDescription)
               : (currentSubgroupPlugin?.longDescription ?? combinedDescription)))
 
@@ -185,12 +182,12 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             .filter(Boolean)
     })()
 
-    const blueprintsSectionHeading = getBlueprintsHeading(pluginName, rootPlugin, subGroup)
+    const blueprintsSectionHeading = getBlueprintsHeading(pluginName, rootPlugin, effectiveSubGroup, undefined, rootPluginTitle)
 
     const currentPluginCategories = (() => {
         const subgroupCats = currentSubgroupPlugin?.categories
         const pluginCats = rootPlugin?.categories
-        return subGroup === undefined
+        return effectiveSubGroup === undefined
             ? (pluginCats ?? [])
             : subgroupCats?.length
               ? subgroupCats
@@ -211,9 +208,9 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const makeTOC = (): TocLink[] => {
         const pluginToc = (() => {
             if (!rootPlugin) return []
-            if (subGroup && currentSubgroupPlugin)
+            if (effectiveSubGroup && currentSubgroupPlugin)
                 return generateTocForPluginElements(currentSubgroupPlugin)
-            if (!subGroup && !pluginType) {
+            if (!effectiveSubGroup && !pluginType) {
                 const subGroups = pluginsWithoutDeprecated.filter((p) => p.subGroup)
                 return subGroups.length
                     ? subGroups.map((sub) =>
@@ -232,8 +229,8 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
         const hasBlueprints = pluginType
             ? blueprintCounts?.[pluginType] > 0
-            : subGroup
-              ? subgroupBlueprintCounts?.[`${rootPlugin?.group ?? pluginName}-${subGroup}`] > 0
+            : effectiveSubGroup
+              ? subgroupBlueprintCounts?.[`${rootPlugin?.group ?? pluginName}-${effectiveSubGroup}`] > 0
               : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
 
         const isRootView = pluginType === undefined
@@ -252,7 +249,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             blueprintsSectionHeading?.text
                 ? [tocEntry(blueprintsSectionHeading.id, blueprintsSectionHeading.text)]
                 : []),
-            ...(isRootView && subGroup === undefined && relatedBlogs.length > 0
+            ...(isRootView && effectiveSubGroup === undefined && relatedBlogs.length > 0
                 ? [tocEntry("latest-blog-posts", "Latest Blog Posts")]
                 : []),
             ...(currentPluginCategories?.length > 0
@@ -275,8 +272,8 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         ),
     )
 
-    const ogImage = subGroup
-        ? `/meta/plugins/group-${subgroups.find((r) => slugify(r.title) === subGroup)?.subGroup}.svg`
+    const ogImage = effectiveSubGroup
+        ? `/meta/plugins/group-${subgroups.find((r) => slugify(r.title) === effectiveSubGroup)?.subGroup}.svg`
         : `/meta/plugins/${pluginType ?? pluginName}.svg`
 
     const prunedRootPlugin = rootPlugin ? prunePluginsForSidebar([rootPlugin])[0] : undefined
@@ -297,6 +294,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         currentPluginCategories,
         sidebarPluginDataResult: sidebarPluginData,
 
+        effectiveSubGroup,
         pluginsWithoutDeprecated,
         rootPlugin,
         rootPluginTitle,

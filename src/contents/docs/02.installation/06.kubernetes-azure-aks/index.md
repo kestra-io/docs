@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra on Azure AKS – Azure Database and Blob Storage
+title: "Deploy on Azure AKS: PostgreSQL and Blob Storage"
+h1: Azure AKS Setup with Azure Database and Blob Storage
 sidebarTitle: Kubernetes on Azure AKS with Azure Database and Blob Storage
 icon: /src/contents/docs/icons/azure-aks.svg
 description: Run Kestra on Azure Kubernetes Service (AKS) with Azure Database for PostgreSQL and Blob Storage for enterprise-grade orchestration.
@@ -7,11 +8,8 @@ description: Run Kestra on Azure Kubernetes Service (AKS) with Azure Database fo
 
 Deploy Kestra to Azure AKS with Azure Database for PostgreSQL as the database backend and Blob Storage as the internal storage backend.
 
-## Deploy Kestra on Azure AKS with Azure Database and Blob Storage
+## Prerequisites
 
-This guide provides detailed instructions for deploying Kestra to Azure Kubernetes Service (AKS) with Azure Database for PostgreSQL servers as database backend and Blob Storage for internal storage.
-
-**Prerequisites:**
 - Basic command-line interface (CLI) skills
 - Familiarity with Azure AKS, PostgreSQL, Blob Storage, and Kubernetes
 
@@ -104,7 +102,7 @@ configurations:
         password: <your-password>
 ```
 
-In order for the changes to take effect, run the `helm upgrade` command as:
+To apply the changes, run:
 
 ```shell
 helm upgrade my-kestra kestra/kestra -f values.yaml
@@ -141,7 +139,7 @@ configurations:
           connectionString: "<your-connection-string>"
 ```
 
-In order for the changes to take effect, run the `helm upgrade` command as:
+To apply the changes, run:
 
 ```shell
 helm upgrade my-kestra kestra/kestra -f values.yaml
@@ -172,7 +170,5 @@ helm install aks-load-balancer-controller application-gateway-kubernetes-ingress
 Once the load balancer is deployed, you can access the Kestra UI through the ALB URL.
 
 ## Next steps
-
-This guide walked you through installing Kestra to [Azure AKS](https://learn.microsoft.com/en-us/azure/aks/) with Azure Database for PostgreSQL as the database and Blob Storage as the storage backend.
 
 Reach out via [Slack](/slack) if you encounter any issues or have any questions regarding deploying Kestra to production.

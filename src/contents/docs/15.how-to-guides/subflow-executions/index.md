@@ -1,5 +1,6 @@
 ---
-title: Manage Retries, Restarts, and Replays with Subflow Executions
+title: Subflow Retries, Restarts, and Replays in Kestra
+h1: Configure Retries, Restarts, and Replays in Subflows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:

@@ -19,7 +19,7 @@ export const formatPluginName = (raw?: string): string => {
     const words = (raw.split(".").pop() ?? raw)
         .replace(/^plugins?[-_]/i, "")
         .split(/[-_]/)
-        .filter(Boolean)
+        .filter((w) => w && w.toLowerCase() !== "ee")
     if (words.length === 0) return ""
     if (words.length === 1) {
         const w = words[0]!
@@ -51,13 +51,13 @@ export function getBlueprintsHeading(
     pluginWrapper?: Plugin,
     subGroupName?: string,
     customId?: string | null,
+    pluginTitle?: string,
 ): { text: string; html: string; id: string } {
-    const base = formatPluginName(pluginWrapper?.group ?? pluginName)
-    const dynamic = subGroupName ? `${base} ${formatPluginName(subGroupName)}` : base
-    const suffix = subGroupName ? "" : " Plugins"
+    const base = pluginTitle ?? formatPluginName(pluginWrapper?.group ?? pluginName)
+    const dynamic = subGroupName ? formatPluginName(subGroupName) : base
 
-    const text = `Create automations with ${dynamic}${suffix}`
-    const html = `Create automations with ${highlight(dynamic)}${suffix}`
+    const text = `Create automations with ${dynamic} Plugin`
+    const html = `Create automations with ${highlight(dynamic)} Plugin`
     const id =
         customId ||
         `create-with-${text
@@ -67,4 +67,3 @@ export function getBlueprintsHeading(
 
     return { text, html, id }
 }
-

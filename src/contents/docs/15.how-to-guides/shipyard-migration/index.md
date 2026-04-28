@@ -1,5 +1,6 @@
 ---
 title: Migrate from Shipyard to Kestra
+h1: Map Shipyard Concepts to Kestra Flows and Tasks
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

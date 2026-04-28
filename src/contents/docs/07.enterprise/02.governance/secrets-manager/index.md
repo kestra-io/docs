@@ -1,5 +1,6 @@
 ---
-title: Configure External Secrets Manager in Kestra Enterprise
+title: "External Secrets Manager in Kestra: AWS, Azure, GCP"
+h1: "Integrate External Secret Managers: Vault, AWS, Azure, GCP"
 description: Secure sensitive data in Kestra with External Secrets Managers. Integrate with AWS, Azure, Google Cloud, Vault, and more for robust secret management.
 sidebarTitle: Secrets Manager
 icon: /src/contents/docs/icons/admin.svg
@@ -130,9 +131,10 @@ When configuring the secret manager using the UI, either under Namespace or Tena
 
 ![GCP Secret Manager Configuration via UI](./gcp-secret-configuration.png)
 
-## Vault configuration
+## HashiCorp Vault configuration
 
-Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you are considering alternative Vault secrets engines, please note the following:
+Kestra currently supports the [KV secrets engine - version 2](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) as a secrets backend. If you are considering alternative HashiCorp Vault secrets engines, please note the following:
+
 - The [Vault's database secrets engine](https://developer.hashicorp.com/vault/docs/secrets/databases), often referred to as "dynamic secrets", is not supported as we need long-term secret storage.
 - The [Vault Secrets Operator on Kubernetes](https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator) creates a Kubernetes secret which is compatible with Kestra with some additional steps. If you are interested about this option, [reach out to us](/demo) and we can advise how you can set this up.
 
