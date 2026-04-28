@@ -1,5 +1,6 @@
 ---
 title: Build a Custom Plugin for Kestra
+h1: Extend Kestra by Packaging a Custom Java Plugin
 icon: /src/contents/docs/icons/plugins.svg
 stage: Advanced
 topics:

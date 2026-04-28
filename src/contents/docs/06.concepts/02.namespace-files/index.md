@@ -1,6 +1,7 @@
 ---
-title: Namespace Files in Kestra – Manage Project Assets
-description: Manage Namespace Files and how to use them in your flows.
+title: "Namespace Files in Kestra: Manage Project Assets"
+h1: Manage Namespace Files and Use Them in Your Flows
+description: Manage Namespace Files in Kestra and use them in your flows. Store scripts, configs, and assets at the namespace level for centralized file management.
 sidebarTitle: Namespace Files
 icon: /src/contents/docs/icons/concepts.svg
 ---
@@ -395,9 +396,9 @@ tasks:
 ```
 
 Read more about the tasks below:
-- [UploadFiles](/plugins/core/tasks/namespace/io.kestra.plugin.core.namespace.uploadfiles)
-- [DownloadFiles](/plugins/core/tasks/namespace/io.kestra.plugin.core.namespace.downloadfiles)
-- [DeleteFiles](/plugins/core/tasks/namespace/io.kestra.plugin.core.namespace.deletefiles)
+- [UploadFiles](/plugins/core/namespace/io.kestra.plugin.core.namespace.uploadfiles)
+- [DownloadFiles](/plugins/core/namespace/io.kestra.plugin.core.namespace.downloadfiles)
+- [DeleteFiles](/plugins/core/namespace/io.kestra.plugin.core.namespace.deletefiles)
 
 ## Include / exclude namespace files
 

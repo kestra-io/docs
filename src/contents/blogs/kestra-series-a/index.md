@@ -6,6 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: edarras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   role: CEO & Co-founder
 image: ./series-a-header.png
 ---
@@ -45,7 +46,7 @@ A production AI workflow is rarely just a model call. It includes data retrieval
 
 At Apple, hundreds of AI engineers use Kestra to orchestrate large-scale pipelines across the App Store, Apple Music, and device diagnostics. What used to consume an entire team's worth of engineering hours now runs on Kestra — and those engineers build models instead of managing glue.
 
-At Toyota, data and AI pipelines ran across multiple platforms with no shared view of what was running, what had failed, or who owned what. Kestra replaced that fragmentation with a single orchestration layer, giving teams across the organization unified monitoring and governance over pipelines that were previously invisible to each other.
+At Amdocs, the Foundation delivery team needed to turn environment provisioning into a repeatable, automated service. Kestra now orchestrates the full delivery chain — provisioning infrastructure, deploying and installing application components, integrating with internal systems, and running automated validation — so developers and testers get fully ready environments on demand, without manual intervention.
 
 The enterprises that will win in the AI era won't be the ones with the most models. They'll be the ones with the strongest coordination layer beneath it all.
 

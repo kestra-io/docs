@@ -1,5 +1,7 @@
 ---
-title: Helm Chart Updates
+title: Helm Chart Updates in Kestra 1.0.0 for Production
+h1: Major Helm Chart Restructuring for Production Deployments in 1.0.0
+sidebarTitle: Helm Chart Restructure
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]

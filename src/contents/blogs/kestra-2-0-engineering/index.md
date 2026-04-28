@@ -6,6 +6,7 @@ category: Engineering
 author:
   name: Ludovic Dehon
   image: ldehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   role: CTO & Co-founder
 image: ./main.png
 ---

@@ -189,7 +189,7 @@ testimonials:
         name: Faster workflow creation
       - value: "0"
         name: Pipeline failures
-    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/use-cases/stories/32-apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for Teams Who Ship More Than Data Pipelines
@@ -223,7 +223,7 @@ decisionGuide:
 
 commonQuestions:
   - question: How do I migrate from Astronomer/Airflow to Kestra?
-    answer: "Kestra doesn't require you to refactor your business logic. Extract your Python logic from Airflow DAG files and run it directly as a Script task in Kestra. Your SQL queries, Shell scripts, and Python code work as-is. Define orchestration flow in YAML. Most teams migrate incrementally, running both platforms in parallel using Kestra's HTTP trigger to bridge them during transition."
+    answer: "Kestra doesn't require you to refactor your business logic. Extract your Python logic from Airflow DAG files and run it directly as a Script task in Kestra. Your SQL queries, Shell scripts, and Python code work as-is. Define orchestration flow in YAML. Most teams migrate incrementally, running both platforms in parallel using Kestra's HTTP trigger to bridge them during transition. For a detailed breakdown of both upgrade and migration paths, see our <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a>."
   - question: Does Kestra offer the same enterprise features as Astronomer?
     answer: "Yes. Kestra Enterprise includes RBAC with namespace isolation, SSO/SAML, audit logs for every execution, secrets management integrations (AWS Secrets Manager, HashiCorp Vault, Azure Key Vault), and SOC2 Type II compliance. The difference is that Kestra runs on your own infrastructure (your cloud or on-prem), rather than requiring Astronomer's SaaS platform."
   - question: Astronomer manages Airflow infrastructure for me. What does Kestra offer?

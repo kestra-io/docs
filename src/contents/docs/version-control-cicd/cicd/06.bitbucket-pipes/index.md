@@ -1,5 +1,6 @@
 ---
-title: Bitbucket Pipes for Kestra – Build and Deploy from Bitbucket
+title: "Bitbucket Pipes for Kestra: Build and Deploy Flows"
+h1: Streamline Kestra Flow Deployment with Bitbucket Pipes
 sidebarTitle: Bitbucket Pipes
 icon: /src/contents/docs/icons/dev.svg
 description: Use Bitbucket Pipes to streamline the build and deployment process of your Kestra flows from Bitbucket repositories.

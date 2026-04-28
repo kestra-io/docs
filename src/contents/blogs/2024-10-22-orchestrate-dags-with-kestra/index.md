@@ -1,7 +1,7 @@
 ---
-title: "Orchestrate Your Airflow Jobs with Kestra: One Workflow at a Time"
-description: Integrate your existing Airflow DAGs with Kestra, avoid complex migrations and get better monitoring, and simplified workflow management. Scale your workflows without the need to rewrite everything from scratch.
-date: 2024-10-22T15:00:00
+title: "Orchestrate Airflow DAGs from Kestra and Migrate Without Disruption"
+description: Airflow 2 is end-of-life. Kestra's Airflow plugin lets you trigger and monitor existing DAGs directly from Kestra, so you can migrate incrementally without rewriting everything at once.
+date: 2026-04-20T15:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
@@ -11,17 +11,21 @@ author:
 image: ./main.jpg
 ---
 
-Migrating from one orchestration tool to another can seem like an intimidating task—especially if you have critical workflows running in production. When you rely on Airflow for essential data processing, the idea of moving everything to a new platform at once might feel risky. That’s why with **Kestra**, you don't have to jump into a big-bang migration. Instead, you can transition **one workflow at a time** and gradually adopt Kestra’s advanced orchestration capabilities while keeping what works in Airflow.
+[Airflow 2](/vs/airflow) is end-of-life. Whether your team is [upgrading to Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) or [evaluating a broader migration](../2026-01-18-enterprise-airflow-alternatives/index.md), the decision can’t wait much longer. But committing to a direction doesn’t mean committing to a big-bang cutover.
 
-By allowing you to integrate and manage your existing **Airflow DAGs alongside Kestra’s workflows**, Kestra provides a unified platform to run, monitor, and orchestrate both old and new systems.
+With Kestra, you can transition one workflow at a time. Keep what works in Airflow, move jobs into Kestra incrementally, and avoid the risk of a full rewrite while critical workflows are in production. Kestra’s [Airflow plugin](/plugins/plugin-airflow) lets you trigger and monitor Airflow DAGs directly from within Kestra, giving you a unified control plane across both systems from day one.
 
-Let’s dive into how you can orchestrate Airflow jobs using Kestra and how this approach helps developers avoid the headaches that come with full-scale migrations.
+I’ll walk through how the plugin works, then show how this fits into a broader migration strategy for teams that can’t afford downtime.
 
 ## The Strangler Fig Pattern for Orchestration
 
-This gradual migration is part of a well-known strategy called the [**Strangler Fig Pattern**](https://martinfowler.com/bliki/StranglerFigApplication.html), where the new system (Kestra) slowly replaces the old one (Airflow) by taking over its workflows, piece by piece. Over time, more and more workflows run in Kestra, while Airflow’s role diminishes—until, eventually, Kestra handles everything.
+This gradual migration is part of a well-known strategy called the [**Strangler Fig Pattern**](https://martinfowler.com/bliki/StranglerFigApplication.html), where the new system (Kestra) slowly replaces the old one (Airflow) by taking over its workflows, piece by piece. Over time, more and more workflows run in Kestra, while Airflow’s role diminishes. Eventually, Kestra handles everything.
 
 This approach avoids the risks and complexity of doing a full migration in one go. Instead of uprooting everything at once, you can orchestrate Airflow DAGs within **Kestra’s control plane** and **centralized UI**, gaining better visibility and scalability, while continuing to leverage what’s already working in Airflow.
+
+:::alert{type="info"}
+📘 **Airflow 2 is no longer maintained.** If you're evaluating whether to upgrade to Airflow 3 or migrate to Kestra, our free [Airflow 2 to Kestra migration guide](/resources/airflow-2-eol-whitepaper) breaks down both paths.
+:::
 
 ### Airflow Plugin: Migrate Without Disruption
 
@@ -60,42 +64,36 @@ In this setup:
 - **Pass execution metadata** (like task and flow IDs) to maintain context and track workflow performance across both platforms.
 
 ![kestra outputs](./kestra.png)
-As we can see, Kestra catch all the dag run information.
+Kestra captures all the DAG run information.
 
 ![airflow ui](./airflow.png)
 On the other side, the Airflow DAG is triggered successfully.
 
-## Kestra: A Central tool for All Your Workflows
+## Kestra: A central control plane for all your workflows
 
-Once integrated, Kestra becomes the **central control plane** for orchestrating workflows across your stack. Whether it's managing complex real-time data pipelines or orchestrating legacy Airflow jobs, you can monitor all executions through **Kestra’s dashboard**, which offers deeper insights and enhanced monitoring compared to Airflow’s built-in tools. With centralized logging, real-time outputs, and intuitive error tracking, Kestra simplifies your workflow management.
+Once integrated, Kestra becomes the **central control plane** for orchestrating workflows across your stack. Whether it's managing complex real-time data pipelines or orchestrating legacy Airflow jobs, you can monitor all executions through **Kestra’s dashboard**, which offers deeper insights and enhanced monitoring compared to Airflow’s built-in tools. Centralized logging, real-time outputs, and cross-system execution history mean you're not context-switching between dashboards to understand what's running.
 
-Kestra’s **declarative approach** makes it easier to build and manage workflows. Say goodbye to the complexity of Python-based DAGs. Instead of managing dependencies, glue code, and intricate DAG structures, Kestra lets you define workflows in a simple, readable format and manage them directly through the UI.
+Kestra’s **declarative approach** removes the glue code that makes Airflow DAGs complex. Instead of managing Python dependencies and intricate DAG structures, you define workflows in a simple, readable format and manage them directly through the UI.
 
-### Simplifying Complex Workflows: Get Rid of Glue Code
+### Simplifying complex workflows: get rid of glue code
 
-Airflow is known for its complexity in constructing DAGs—especially when basic workflows end up requiring complicated Python scripts. With **Kestra**, you can streamline your workflows with a **declarative syntax**, eliminating the need for glue code and additional scripts.
+Airflow is known for its complexity in constructing DAGs, especially when basic workflows end up requiring complicated Python scripts. With **Kestra**, you can streamline your workflows with a **declarative syntax**, eliminating the need for glue code and additional scripts.
 
 Here’s how Kestra helps you:
 
 - **No need for Python glue code**: Kestra’s pre-built tasks handle common operations like HTTP requests, file transfers, and API calls without extra scripts.
-- **Unified orchestration**: Use Kestra to orchestrate tasks across diverse platforms—cloud services, data processing, APIs—within the same workflow.
+- **Unified orchestration**: Use Kestra to orchestrate tasks across diverse platforms (cloud services, data processing, APIs) within the same workflow.
 - **UI-based or as code management**: Build, trigger, and monitor workflows directly from Kestra’s UI or build everything as code.
 
-## What’s Next on the Roadmap?
+## Going deeper on the migration decision
 
-Currently, you can orchestrate Airflow DAGs using Kestra, but we’re working on expanding this integration. Soon, we’ll provide more detailed documentation and tools to help users **migrate Airflow workflows** directly into Kestra. The goal is to make it as seamless as possible to shift your orchestration to Kestra at your own pace.
+The Strangler Fig approach handles the tactical question: how do you move workflows without breaking production? There’s a harder one underneath it. Teams upgrading to Airflow 3 are not just modernizing their tooling. They’re reaffirming a commitment to a Python-first, scheduler-centric architecture where execution is coupled to orchestration. That may still be the right call for your team, but the Airflow 2 EOL is worth treating as a moment for deliberate evaluation rather than routine maintenance.
 
-### How Can We Help?
+Our [Airflow migration whitepaper](/resources/airflow-2-eol-whitepaper) covers the decision in full: the real cost of the Airflow 3 upgrade, what a declarative alternative looks like at scale, and how teams like Crédit Agricole migrated across 100+ clusters without a big-bang cutover. Free to download.
 
-We want to hear from you! If there are specific features or tools you’d like to see to support your migration from Airflow, let us know. We’re constantly working on ways to make this transition easier for you.
+[Download the whitepaper →](/resources/airflow-2-eol-whitepaper)
 
-## Conclusion: Migrate Without the Big Bang
-
-Migrating to a new orchestration platform doesn’t have to mean ripping out everything at once. With Kestra, you can adopt a **gradual migration strategy**, integrating your existing Airflow workflows while gaining access to the advanced orchestration features that Kestra offers. Whether you need a unified UI, better monitoring, or scalable workflows, Kestra simplifies orchestration without the need for complex migrations.
-
-So why not give it a try? Use Kestra to orchestrate Airflow alongside your other workflows and **scale at your own pace**.
-
-Need to talk about migration just [reach out to us](/demo) we would be happy to discuss this with you!
+If you’d rather talk through your specific setup, [book a demo](/demo).
 
 :::alert{type="info"}
 If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).

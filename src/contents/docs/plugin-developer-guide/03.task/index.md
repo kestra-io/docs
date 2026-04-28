@@ -1,5 +1,6 @@
 ---
 title: Develop a Kestra Task Plugin
+h1: "How to Build a Custom Task Plugin: Properties, Logic & Outputs"
 sidebarTitle: Develop a Task
 icon: /src/contents/docs/icons/dev.svg
 description: Step-by-step guide to developing custom Task plugins for Kestra, including properties, run logic, outputs, and validation.

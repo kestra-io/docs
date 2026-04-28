@@ -1,4 +1,4 @@
-import { $fetchCached } from "~/utils/fetch"
+import { $fetchCached, $fetchCachedRaw } from "~/utils/fetch"
 import { DISABLE_GITHUB } from "astro:env/server"
 
 const defaultValues = {
@@ -18,7 +18,7 @@ export async function getValues() {
     }
     let contribCountRes: any
     try {
-        contribCountRes = await $fetchCached(
+        contribCountRes = await $fetchCachedRaw(
             "https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1",
             { headers: { "User-Agent": "request" } },
         )

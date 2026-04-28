@@ -1,5 +1,7 @@
 ---
-title: Default Tenant & Multi-Tenancy
+title: "Default Tenant Deprecated: Multi-Tenancy Now Default"
+h1: Deprecating the Default Tenant and Enabling Multi-Tenancy
+sidebarTitle: Default Tenant Deprecated
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]

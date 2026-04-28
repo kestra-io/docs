@@ -1,5 +1,6 @@
 ---
 title: Set Up for Kestra Plugin Development
+h1: Prepare Your Dev Environment for Building Kestra Plugins
 sidebarTitle: Set Up for Plugin Development
 icon: /src/contents/docs/icons/dev.svg
 description: Set up your development environment for creating Kestra plugins, including Java, IntelliJ IDEA, and Gradle configuration.

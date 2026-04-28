@@ -1,5 +1,6 @@
 ---
 title: Use Azure Managed Workload Identity with Kestra
+h1: Access Azure Resources Securely Without Managing Secrets
 icon: /src/contents/docs/icons/azure-aks.svg
 stage: Advanced
 topics:

@@ -2,7 +2,7 @@ import { $fetchCached } from "~/utils/fetch.ts"
 
 export interface GitHubRelease {
     tag_name: string
-    name: string | null
+    name?: string
     body: string
     published_at: string
     draft: boolean

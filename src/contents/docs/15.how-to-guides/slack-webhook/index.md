@@ -1,5 +1,6 @@
 ---
-title: Use the Slack Events API with Kestra
+title: "Slack Events API with Kestra: Trigger Flows"
+h1: Trigger Kestra Flows Automatically from Slack Events
 icon: /src/contents/docs/icons/slack.svg
 stage: Getting Started
 topics:
