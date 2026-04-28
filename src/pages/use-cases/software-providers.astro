@@ -1,0 +1,1734 @@
+---
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+
+import Layout from "~/components/layout.astro"
+import Link from "~/components/common/Link.astro"
+import Faq from "~/components/common/Faq.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import Snippets from "~/components/common/Snippets.vue"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import GoFurther from "~/components/get-started/GoFurther.astro"
+
+import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
+import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
+import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
+import Git from "vue-material-design-icons/Git.vue"
+import CloudOutline from "vue-material-design-icons/CloudOutline.vue"
+import LifebuoyVariant from "vue-material-design-icons/Lifebuoy.vue"
+
+import AmdocsLogo from "~/contents/customer-stories/33/logo.svg?raw"
+import AmdocsLogoImg from "~/assets/trusted-companies/Amdocs.svg"
+import AcxiomLogoImg from "~/assets/trusted-companies/Acxiom.svg"
+import KPMGLogoImg from "~/assets/trusted-companies/KPMG.svg"
+import HCLLogoImg from "~/assets/trusted-companies/HCL.svg"
+import SophtLogoImg from "~/contents/customer-stories/18/logo.svg"
+import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const HERO_TAGS = [
+    { label: "Multi-tenant by namespace", icon: "mdi:domain" },
+    { label: "Cloud, self-hosted, or air-gapped", icon: "mdi:cloud-outline" },
+    { label: "GitOps & Terraform native", icon: "mdi:source-branch" },
+    { label: "RBAC, SSO, SAML, OIDC, SCIM", icon: "mdi:account-key-outline" },
+    { label: "Apps for self-service portals", icon: "mdi:application-cog-outline" },
+    { label: "Replayable audit trail", icon: "mdi:history" },
+    { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
+]
+
+const title = "Kestra for Software, Consulting & Service Providers"
+const description =
+    "One orchestration engine for every client, every product, every delivery. Onboard customers, ship environments, and run multi-tenant workloads on the platform your delivery team already wants."
+
+const FLOW_STAGES = [
+    {
+        id: "trigger",
+        label: "TRIGGER",
+        items: [
+            "Customer signup / order event",
+            "API call from your product",
+            "Schedule / SLA window",
+            "Git push / version bump",
+            "Webhook from upstream service",
+            "Support ticket / escalation",
+        ],
+    },
+    {
+        id: "ingest",
+        label: "INGEST",
+        items: [
+            "Salesforce, HubSpot, Stripe",
+            "Snowflake, Databricks, Postgres",
+            "Identity (Okta, Azure AD, LDAP)",
+            "Vault, AWS, GCP, Azure secrets",
+            "Cloud APIs across AWS, GCP, Azure",
+            "Internal product & billing APIs",
+        ],
+    },
+    {
+        id: "process",
+        label: "PROCESS",
+        items: [
+            "Terraform, Ansible, Argo CD",
+            "dbt, Spark, Python, Java, Scala",
+            "LLM, OCR, classification, scoring",
+            "Per-tenant validation & policy",
+            "Approval gates & human review",
+            "Compliance & audit hooks",
+        ],
+    },
+    {
+        id: "act",
+        label: "ACT",
+        items: [
+            "Provision tenant resources",
+            "Deploy to client environments",
+            "Publish to lakehouse / warehouse",
+            "Notify customer, on-call, or CS",
+            "Update CRM, billing, ticketing",
+            "Sign and archive audit bundle",
+        ],
+    },
+]
+
+const quotes = [
+    {
+        quote:
+            "From a technical point of view, Kestra sits at the first place.",
+        author: "Alex Lernerman, DevOps Engineer, Amdocs",
+        smallLogoSvg: optimizeSvgIcon(AmdocsLogo, "amdocs-quote-logo"),
+        kpis: [
+            { value: "Days → Hours", name: "environment delivery time" },
+            { value: "Validated", name: "test-ready environments out of the box" },
+            { value: "2 months", name: "from evaluation to production" },
+        ],
+        storyLink: "/use-cases/stories/33-amdocs-delivers-integration-environments-as-a-service-with-kestra",
+    },
+]
+
+const WORKLOAD_CATEGORIES = [
+    {
+        name: "Repeatable Customer Delivery & Onboarding",
+        items: [
+            {
+                icon: "mdi:account-multiple-plus-outline",
+                title: "Per-Tenant Onboarding & Provisioning",
+                description: "Turn customer onboarding into one declarative flow. Provision infrastructure with Terraform, deploy default workflows in the customer's namespace, seed baseline data, configure secrets, notify your team. Trigger it from your CRM, your billing system, or an internal portal. Same flow shape for tenant one and tenant five hundred.",
+            },
+            {
+                icon: "mdi:format-list-checks",
+                title: "Standardized Client Engagement Runbooks",
+                description: "Codify your delivery playbook as flows. Implementation teams parameterize and trigger the same audited workflow for every client, customizations included. Roll new versions out across all clients without rewriting SOPs. Stop reverse-engineering what you did for the last client and start running it identically every time.",
+            },
+            {
+                icon: "mdi:swap-horizontal-bold",
+                title: "Migration Factories",
+                description: "Coordinate migrations across tenants, environments, and product versions. Snapshot, migrate, validate, roll back on failure. The same factory drives a five-tenant pilot and a 500-tenant cutover. Reuse it for Airflow-to-Kestra cutovers, database-engine swaps, and any other big lift you'd otherwise script by hand.",
+            },
+        ],
+    },
+    {
+        name: "Environment-as-a-Service & Migration Factories",
+        items: [
+            {
+                icon: "mdi:server-plus-outline",
+                title: "Environment-as-a-Service for Devs & Testers",
+                description: "Give your engineers click-to-provision environments instead of multi-day setup tickets. Provision VMs or clusters, install the application stack, wire integrations, run regression and smoke suites, and only release when validation passes. Days-to-hours delivery for the people who actually build your product.",
+            },
+            {
+                icon: "mdi:cloud-sync-outline",
+                title: "Hybrid & Multi-Cloud Provisioning",
+                description: "Run one control plane across AWS, GCP, Azure, and your own datacenters. Drive Terraform plans, Kubernetes deploys, and SaaS API calls from the same engine. Move tenants between regions without rewriting flows. Worker groups isolate Linux, Windows, and GPU runtimes on a single shared platform.",
+            },
+            {
+                icon: "mdi:tools",
+                title: "Replace Aria, vRO, and Custom Python Glue",
+                description: "Retire vRealize Orchestrator, VMware Aria Automation, brittle Bash, and the Python wrappers that grew up around them. Standardize on declarative YAML, REST APIs, OIDC, OpenTelemetry. Wrap an existing job as a flow today, replace it tomorrow. Modernize without freezing the automation keeping your lights on.",
+            },
+        ],
+    },
+    {
+        name: "Multi-Tenant Platform Operations",
+        items: [
+            {
+                icon: "mdi:domain",
+                title: "Namespace-Per-Tenant Data Pipelines",
+                description: "Give every customer its own namespace, secrets, and runtime on one shared control plane. Tighten isolation to dedicated VPCs, buckets, or clusters when compliance demands it. Add the next 50 tenants without adding 50 platforms. Zero blast radius between customers, full audit per run.",
+            },
+            {
+                icon: "mdi:database-cog-outline",
+                title: "Internal Platform Operations Behind Your SaaS",
+                description: "Operate the platform behind your product. Database management, schema migrations, secret rotation, billing reconciliation, scheduled backups, internal API jobs. Kubernetes-native runners, namespace-scoped secrets, KV store, and helper flows let Kestra fit naturally next to whatever your engineers already run.",
+            },
+            {
+                icon: "mdi:shield-account-outline",
+                title: "Per-Customer Data Mapping & Compliance",
+                description: "Map source schemas to target schemas per customer, log per-asset failures, keep tenant data inside its boundary. Apply policy and compliance checks declaratively. Hand auditors a signed evidence bundle on demand. The right shape for privacy-sensitive flows where the audit trail and namespace boundary actually matter.",
+            },
+        ],
+    },
+    {
+        name: "AI-Assisted Product & Delivery Workflows",
+        items: [
+            {
+                icon: "mdi:brain",
+                title: "AI Embedded in Your Product",
+                description: "Ship AI features in your product without taking on a research-team burden. Orchestrate LLM extraction, OCR, classification, and decision-support alongside rule-based logic. Prompts versioned in Git, retries handled, models swapped without rewriting the product. Keep models, prompts, and customer data inside your environment.",
+            },
+            {
+                icon: "mdi:robot-outline",
+                title: "AI-Assisted Pipeline Authoring",
+                description: "Build complex pipelines in a day instead of a sprint. The Kestra Copilot generates flow YAML from natural-language descriptions, and the MCP integration plugs Kestra into your IDE and your AI assistants. Onboard new engineers without burning weeks on orchestration plumbing.",
+            },
+            {
+                icon: "mdi:account-check-outline",
+                title: "Managed Runbooks with Humans-in-the-Loop",
+                description: "Pause any flow for human review at consequential steps. Client deliverable approvals, model promotion, environment releases, exception handling. Reviewers approve from Apps, Slack, or the UI. Every approval captured in the immutable audit trail so AI and automation stay accountable to a real reviewer.",
+            },
+        ],
+    },
+]
+
+const ENTERPRISE_FEATURES = [
+    {
+        icon: AccountGroupOutline,
+        title: "Multi-Tenant by Namespace, RBAC by Default",
+        description: "Each customer, environment, or delivery team owns its flows, secrets, and runtime on a shared platform. Namespace-scoped RBAC with SSO, SAML, OIDC, and SCIM. One platform team operates the control plane while consuming teams self-serve their own workloads.",
+    },
+    {
+        icon: CloudOutline,
+        title: "Cloud, Self-Hosted, or Air-Gapped",
+        description: "Run on Kestra Cloud in EU or US, or self-host inside your VPC, Kubernetes cluster, or fully air-gapped datacenter. Worker groups isolate Linux, Windows, and GPU workloads. PostgreSQL backend handles millions of executions without Kafka or Elasticsearch.",
+    },
+    {
+        icon: Git,
+        title: "GitOps & Terraform-Native",
+        description: "Every flow is YAML in Git. The Terraform provider deploys flows, namespaces, secrets, and KV-store entries as code. The pattern enterprise software vendors use to onboard a new tenant with a few lines of configuration and trust the rest to land predictably.",
+    },
+    {
+        icon: ShieldCheckOutline,
+        title: "Apps for Self-Service Customer Portals",
+        description: "Build a UI in front of any flow with Apps. Forms for tenant input, approval buttons for delivery checkpoints, controlled views for stakeholders. Turn catalog requests, environment requests, and client deliverables into governed flows with audit proof end to end.",
+    },
+    {
+        icon: CodeTagsCheck,
+        title: "Replayable Audit Trail & Lineage",
+        description: "Every execution frozen in time. Replay any historical run with the exact code, secrets, and inputs in one click. OpenLineage and OpenTelemetry built in. Stream logs to Splunk, Datadog, or your preferred backend. Hand auditors and customers a signed evidence bundle in minutes.",
+    },
+    {
+        icon: LifebuoyVariant,
+        title: "24/7 Support & Customer Success Program",
+        description: "Enterprise plans include 24x7 support, a dedicated Slack channel, and a Customer Success Program with implementation experts. The cadence software vendors and consultancies expect from a platform their delivery teams depend on.",
+    },
+]
+
+const BUILD_TABS = [
+    {
+        name: "Per-tenant customer onboarding",
+        title: "Onboard a customer end to end. One flow, every client, every plan.",
+        description:
+            "Stand up a new tenant in one execution: provision infrastructure with Terraform, deploy default flows for the customer's namespace, seed baseline data, and notify Customer Success. Same flow shape runs for tenant one and tenant five hundred. Replayable, observable, audit-ready.",
+        code: `id: onboard-tenant
+namespace: company.delivery.tenants
+
+inputs:
+  - id: tenant_id
+    type: STRING
+    displayName: Tenant identifier
+  - id: plan
+    type: SELECT
+    values: [starter, growth, enterprise]
+  - id: region
+    type: STRING
+    defaults: eu-west-1
+
+tasks:
+  - id: provision_infra
+    type: io.kestra.plugin.terraform.cli.TerraformCLI
+    inputFiles:
+      main.tf: "{{ read('infra/tenant.tf') }}"
+    commands:
+      - terraform init
+      - terraform apply -auto-approve -var tenant_id={{ inputs.tenant_id }} -var plan={{ inputs.plan }} -var region={{ inputs.region }}
+
+  - id: deploy_default_flows
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.delivery.flows
+    flowId: deploy-tenant-flows
+    inputs:
+      tenant_id: "{{ inputs.tenant_id }}"
+      plan: "{{ inputs.plan }}"
+
+  - id: seed_baseline_data
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://tenant-{{ inputs.tenant_id }}.internal:5432/app"
+    username: "{{ secret('TENANT_PG_USER') }}"
+    password: "{{ secret('TENANT_PG_PASSWORD') }}"
+    sql: |
+      INSERT INTO settings (tenant_id, plan, region, onboarded_at)
+      VALUES ('{{ inputs.tenant_id }}', '{{ inputs.plan }}', '{{ inputs.region }}', NOW());
+
+  - id: notify_cs
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('CS_SLACK_WEBHOOK') }}"
+    messageText: |
+      Tenant {{ inputs.tenant_id }} onboarded on the {{ inputs.plan }} plan in {{ inputs.region }}.
+      Execution {{ execution.id }} ready in the audit log.`,
+        plugins: [
+            { cls: "io.kestra.plugin.terraform.cli.TerraformCLI" },
+            { cls: "io.kestra.plugin.core.flow.Subflow" },
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Environment-as-a-Service",
+        title: "Provision, deploy, validate, hand off. Environments go from days to hours.",
+        description:
+            "Click a button, get a finished environment. Provision the VMs in parallel, install the application stack, run the regression suite, and only release when validation is green. The pattern platform teams at large software vendors use to make integration environments a self-service product instead of a multi-day ticket.",
+        code: `id: provision-integration-environment
+namespace: company.platform.environments
+
+inputs:
+  - id: environment_name
+    type: STRING
+  - id: vm_count
+    type: INT
+    defaults: 1
+  - id: with_validation
+    type: BOOLEAN
+    defaults: true
+
+tasks:
+  - id: provision_vms
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ range(1, inputs.vm_count + 1) }}"
+    tasks:
+      - id: provision_vm
+        type: io.kestra.plugin.scripts.shell.Commands
+        commands:
+          - /opt/scripts/provision-vm.sh --env {{ inputs.environment_name }} --idx {{ taskrun.value }}
+
+  - id: install_app_stack
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.platform.deploy
+    flowId: install-application-stack
+    inputs:
+      environment: "{{ inputs.environment_name }}"
+
+  - id: validate
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ inputs.with_validation }}"
+    then:
+      - id: run_regression
+        type: io.kestra.plugin.core.flow.Parallel
+        tasks:
+          - id: smoke_tests
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - pytest tests/smoke --env {{ inputs.environment_name }}
+          - id: integration_tests
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - pytest tests/integration --env {{ inputs.environment_name }}
+
+  - id: handover_to_user
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://portal.internal/environments/{{ inputs.environment_name }}/ready"
+    method: POST`,
+        plugins: [
+            { cls: "io.kestra.plugin.core.flow.ForEach" },
+            { cls: "io.kestra.plugin.scripts.shell.Commands" },
+            { cls: "io.kestra.plugin.core.flow.Subflow" },
+            { cls: "io.kestra.plugin.core.flow.Parallel" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "AI-assisted client deliverable",
+        title: "AI extraction with a human in the loop. Inside your product, on your audit trail.",
+        description:
+            "Receive a client request, extract context with Python and an LLM, query the engagement history, generate a draft, pause for reviewer approval, then deliver. Models, prompts, and customer data stay inside your environment. Every model output and human decision captured in the immutable audit log.",
+        code: `id: ai-assisted-deliverable
+namespace: company.delivery.ai
+
+triggers:
+  - id: client_request
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "client-request"
+
+inputs:
+  - id: client_id
+    type: STRING
+  - id: source_doc
+    type: FILE
+
+tasks:
+  - id: extract_context
+    type: io.kestra.plugin.scripts.python.Commands
+    inputFiles:
+      doc: "{{ inputs.source_doc }}"
+    commands:
+      - python extract.py --doc doc --client {{ inputs.client_id }}
+
+  - id: query_history
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://history-db:5432/engagements"
+    username: "{{ secret('HISTORY_DB_USER') }}"
+    password: "{{ secret('HISTORY_DB_PASSWORD') }}"
+    fetchType: STORE
+    sql: "SELECT context, decisions FROM engagement WHERE client = '{{ inputs.client_id }}' ORDER BY ts DESC LIMIT 50"
+
+  - id: generate_draft
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://llm.internal/v1/generate"
+    method: POST
+    contentType: application/json
+    headers:
+      Authorization: "Bearer {{ secret('LLM_API_TOKEN') }}"
+    body: |
+      {
+        "client": "{{ inputs.client_id }}",
+        "context": {{ outputs.extract_context.vars.summary | toJson }}
+      }
+
+  - id: human_review
+    type: io.kestra.plugin.core.flow.Pause
+    description: |
+      Reviewer must approve the AI draft for client {{ inputs.client_id }} before delivery.
+
+  - id: deliver
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://portal.internal/clients/{{ inputs.client_id }}/deliveries"
+    method: POST`,
+        plugins: [
+            { cls: "io.kestra.plugin.core.trigger.Webhook" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.core.http.Request" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Multi-tenant data pipeline",
+        title: "Per-tenant data pipeline with namespace isolation and zero blast radius.",
+        description:
+            "Each customer owns its namespace, secrets, and runtime. The same flow shape runs per tenant: extract from the tenant database, transform with dbt, aggregate on Databricks, publish to the tenant bucket. Zero blast radius across customers, full audit per execution. The pattern modern SaaS teams use to scale from 5 to 500 customers without scaling the platform team.",
+        code: `id: tenant-data-pipeline
+namespace: company.data.tenants.acme
+
+triggers:
+  - id: hourly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 * * * *"
+
+tasks:
+  - id: extract_source
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://source-acme.internal:5432/data"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: STORE
+    sql: "SELECT * FROM events WHERE updated_at > NOW() - INTERVAL '1 hour'"
+
+  - id: transform_with_dbt
+    type: io.kestra.plugin.dbt.cli.Build
+    projectDir: "./dbt"
+    commands:
+      - dbt build --target acme
+
+  - id: aggregate_on_databricks
+    type: io.kestra.plugin.databricks.job.CreateJob
+    host: "{{ secret('DATABRICKS_HOST') }}"
+    authentication:
+      token: "{{ secret('DATABRICKS_TOKEN') }}"
+    jobTasks:
+      - taskKey: aggregate
+        notebookTask:
+          notebookPath: "/tenants/acme/aggregate"
+        existingClusterId: "{{ secret('DATABRICKS_CLUSTER_ID') }}"
+
+  - id: publish_to_tenant_bucket
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "tenant-acme-out"
+    key: "{{ execution.startDate | date('yyyy/MM/dd/HH') }}/output.parquet"
+    from: "{{ outputs.transform_with_dbt.outputFiles.results }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.dbt.cli.Build" },
+            { cls: "io.kestra.plugin.databricks.job.CreateJob" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+]
+
+const FAQ = [
+    {
+        question: "How does Kestra handle per-customer multi-tenancy for SaaS and managed services?",
+        answer: "Namespace-scoped RBAC and multi-tenant isolation let each customer own its flows, secrets, KV store entries, and runtime on a shared control plane. Add a tenant by adding a namespace, not a platform. When compliance demands stronger isolation, dedicate a worker group, a VPC, an S3 bucket, or even a separate Kubernetes cluster per customer. Subflows coordinate cross-tenant work when needed. Zero blast radius between customers, full audit per execution.",
+    },
+    {
+        question: "Can Kestra orchestrate customer onboarding and tenant provisioning end to end?",
+        answer: "Yes. The standard pattern is one flow that provisions infrastructure with Terraform, deploys the customer's default flows via subflows, seeds baseline data, configures secrets, and notifies Customer Success. Same flow shape runs for the first tenant and the five-hundredth. Replayable per tenant, audit-ready by default, and exposed as an internal Apps form when you want a button on a portal.",
+    },
+    {
+        question: "Can Kestra deliver Environment-as-a-Service for internal developers and testers?",
+        answer: "Yes. Provision VMs or clusters, install the application stack, wire integrations, run regression and smoke suites, and only release the environment when validation is green. Days-to-hours delivery is the typical outcome. Flows scale horizontally based on input parameters, so the same workflow handles a single VM and a multi-VM topology without duplicating logic.",
+    },
+    {
+        question: "How does Kestra fit alongside Airflow, Prefect, Temporal, n8n, and existing Python or cron orchestration?",
+        answer: "Kestra is the open-source modernization path. Most teams start by wrapping existing jobs as Kestra flows, then migrate workflow by workflow at their own pace. No big-bang cutover, no freezing of existing automation. Open standards throughout (YAML, REST, OIDC, OpenTelemetry), 1,200+ plugins, and a clear exit path for every workflow. The pattern modern SaaS teams use to retire DAG-only orchestrators and DIY scripts without breaking production.",
+    },
+    {
+        question: "Does Kestra support GitOps, Terraform, and IaC-driven flow deployment?",
+        answer: "Yes. Every flow is YAML in Git. The Terraform provider deploys flows, namespaces, secrets, and KV-store entries as code. CI/CD pipelines push to Kestra without anyone touching the UI in production. The pattern enterprise software vendors use to onboard a new tenant with a few lines of configuration and trust the rest to land predictably across environments.",
+    },
+    {
+        question: "Can Kestra orchestrate AI workflows and LLM pipelines inside a software product?",
+        answer: "Yes. Orchestrate LLM extraction, OCR, classification, scoring, and decision-support models alongside rule-based checks and human approvals. Models, prompts, and customer data stay inside your environment. Every model output and human decision captured in the audit trail. The Kestra Copilot and the MCP integration also speed up flow authoring itself, so engineers ship complex pipelines in a day instead of a sprint.",
+    },
+    {
+        question: "How does Kestra support consultancies and systems integrators delivering to clients?",
+        answer: "Package your delivery playbook as flows. Implementation teams trigger the same audited workflow for every client, with parameters for plan, region, and customizations. Deploy the same flows on-premises at the client site, in the client's cloud, or on a shared multi-tenant platform you operate. Build it once, deliver it the next 50 times, and roll new versions out without rewriting client SOPs.",
+    },
+    {
+        question: "Does Kestra deploy on Kubernetes, OpenShift, Docker Swarm, and Cloud?",
+        answer: "Yes. Native deployment on Docker, Helm charts for Kubernetes and OpenShift, and Kestra Cloud in EU or US regions. Docker Swarm and standalone modes are supported for smaller footprints. Worker groups let you isolate Linux, Windows, and GPU runtimes on a shared control plane. PostgreSQL backend handles millions of executions without Kafka or Elasticsearch.",
+    },
+    {
+        question: "Can software vendors use Kestra to power version-upgrade automation and migration factories?",
+        answer: "Yes. Coordinate version migrations across tenants and product versions in one factory: snapshot, migrate schema and data, validate, roll back on failure. The same factory drives a five-tenant pilot and a five-hundred-tenant cutover. Replace the brittle scripts and runbooks that today live in a senior engineer's head with declarative flows that survive turnover.",
+    },
+    {
+        question: "How does Kestra handle secrets, identity, and RBAC for shared client teams?",
+        answer: "Native integrations with HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, CyberArk, and Delinea. Secrets scoped per namespace, per tenant, per flow, and never written to logs. SSO via SAML, OIDC, OAuth2, with SCIM provisioning and integration with Okta, Azure AD, Auth0, Keycloak, LDAP, and Active Directory. Fine-grained RBAC enforces least privilege per namespace and resource type.",
+    },
+    {
+        question: "Is Kestra suitable for embedding inside a commercial product or running as a managed service for clients?",
+        answer: "Yes. Multi-tenant by namespace, API-first, Apps for self-service portals, the Terraform provider for fleet-wide deployment, and an open-source core under Apache 2.0. Software vendors run Kestra as the orchestration backbone behind their commercial offering. Managed-service teams operate one shared control plane across many client engagements with namespace-scoped isolation and per-client audit.",
+    },
+    {
+        question: "What kind of support and Customer Success do enterprise software and services teams get?",
+        answer: "Enterprise plans include 24x7 support, a dedicated Slack channel with the engineering team, a Customer Success Program staffed with implementation experts, and a clear escalation path for production issues. Quarterly business reviews, joint roadmap discussions, and named contacts for upgrades and migrations. The cadence software vendors and consultancies expect from a platform their delivery teams depend on.",
+    },
+]
+
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <div class="software-providers">
+
+        <section class="hero">
+            <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
+            <div class="hero-inner">
+                <div class="badge-pill" data-usal="zoomin">
+                    <Icon name="mdi:application-cog-outline" />
+                    <span>Software, Consulting &amp; Service Providers</span>
+                </div>
+
+                <h1 data-usal="fade-u">
+                    One orchestration engine for<br />
+                    <span class="gradient">every client, every product, every delivery.</span>
+                </h1>
+
+                <p class="subtitle" data-usal="fade-l">
+                    Onboard customers, ship environments, and run multi-tenant workloads on the platform your delivery team already wants.
+                    Build it once, deliver it identically the next fifty times. Replace the brittle automation between your product and your customers.
+                </p>
+
+                <div class="tags" data-usal="fade-l">
+                    {HERO_TAGS.map((tag) => (
+                        <span class="tag">
+                            <Icon name={tag.icon} class="tag-icon" />
+                            {tag.label}
+                        </span>
+                    ))}
+                </div>
+
+                <div class="exec-panel-wrapper" data-usal="fade-up">
+                    <div class="exec-panel">
+                        <div class="exec-panel__header">
+                            <span class="exec-panel__dot"></span>
+                            <span class="exec-panel__title">onboard-tenant</span>
+                            <span class="exec-panel__meta">namespace · company.delivery.tenants</span>
+                            <span class="exec-panel__duration">4.2s</span>
+                        </div>
+
+                        <div class="exec-panel__body">
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">provision_infra</span>
+                                <span class="exec-row__type">terraform.cli.TerraformCLI</span>
+                                <span class="exec-row__result">12 resources</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">deploy_default_flows</span>
+                                <span class="exec-row__type">core.flow.Subflow</span>
+                                <span class="exec-row__result">4 flows</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">seed_baseline_data</span>
+                                <span class="exec-row__type">jdbc.postgresql.Query</span>
+                                <span class="exec-row__result">250 rows</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">install_app_stack</span>
+                                <span class="exec-row__type">kubernetes.PodCreate</span>
+                                <span class="exec-row__result">ready</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">run_validation</span>
+                                <span class="exec-row__type">core.flow.Parallel</span>
+                                <span class="exec-row__result">8 checks</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">notify_cs</span>
+                                <span class="exec-row__type">notifications.slack</span>
+                                <span class="exec-row__result">sent</span>
+                            </div>
+                        </div>
+
+                        <div class="exec-panel__footer">
+                            <span class="exec-footer__item">Multi-tenant</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">GitOps-native</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Audit-ready</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-ctas" data-usal="zoomin">
+                    <Link href="/demo" class="btn btn-primary btn-lg">Book a Demo</Link>
+                </div>
+
+                <div class="hero-logos" data-usal="fade-u">
+                    <span class="hero-logos__label">Trusted by software vendors, SaaS platforms, consultancies &amp; managed-service providers</span>
+                    <div class="hero-logos__row">
+                        <Image src={AmdocsLogoImg} alt="Amdocs" class="hero-logos__item hero-logos__item--amdocs" />
+                        <Image src={AcxiomLogoImg} alt="Acxiom" class="hero-logos__item hero-logos__item--acxiom" />
+                        <Image src={KPMGLogoImg} alt="KPMG" class="hero-logos__item hero-logos__item--kpmg" />
+                        <Image src={HCLLogoImg} alt="HCL" class="hero-logos__item hero-logos__item--hcl" />
+                        <Image src={SophtLogoImg} alt="Sopht" class="hero-logos__item hero-logos__item--sopht" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="flow">
+            <div class="container-xxl">
+                <h2 class="flow__title text-center">
+                    One control plane for the <span class="highlight">platforms software and services teams ship</span>.
+                </h2>
+                <p class="flow__lead">
+                    Customer onboarding. Environment-as-a-Service. Multi-tenant data pipelines. AI in your product.
+                    Whether you're shipping a SaaS, running a managed service, or delivering for a client,
+                    the engine is the same. Cloud, self-hosted, or air-gapped. Multi-tenant by namespace. Audit-ready by default.
+                </p>
+
+                <div class="flow__grid">
+                    <div class="flow__steps">
+                        {FLOW_STAGES.map((stage, idx) => (
+                            <div class={`flow-block flow-${idx}`}>
+                                <div class="flow-block__content">
+                                    <span class={`flow-block__label label-${stage.id}`}>{stage.label}</span>
+                                    <div class={`flow-block__card card-${stage.id}`}>
+                                        <div class="flow-block__items">
+                                            {stage.items.map(item => (
+                                                <div class="flow-block__item">{item}</div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {idx < FLOW_STAGES.length - 1 && (
+                                    <div class={`flow-arrow arrow-${idx}`}>
+                                        <div class="line" />
+                                        <Icon name="mdi:play" class="head" width={16} height={16} />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <h5 class="flow__footer text-center">
+                    Each step is a declarative YAML task. Wrap a brittle Python wrapper today. Replace it with a flow tomorrow. Build it once, deliver it identically across every client.
+                </h5>
+            </div>
+        </section>
+
+        <section class="workloads">
+            <div class="container">
+                <div class="workloads__head">
+                    <h2>What <span class="workloads__highlight">you can build</span> on Kestra for your customers, your platform, and your team.</h2>
+                    <p>Twelve concrete patterns, from onboarding the next customer to retiring the brittle Python holding your platform together. Build each one once. Run it across every tenant, every environment, every client. Replayable per execution, audit-ready by default.</p>
+                </div>
+                {WORKLOAD_CATEGORIES.map(cat => (
+                    <div class="workloads__group">
+                        <h3 class="workloads__category">{cat.name}</h3>
+                        <div class="workloads__grid">
+                            {cat.items.map(item => (
+                                <div class="workload-card">
+                                    <Icon name={item.icon} class="workload-card__icon" />
+                                    <h4 class="workload-card__title">{item.title}</h4>
+                                    <p class="workload-card__desc">{item.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <Quotes {quotes} client:load />
+
+        <section class="enterprise">
+            <div class="container-xxl">
+                <h2 class="enterprise__title" data-usal="fade-r">
+                    Built for the <span class="highlight">platform and delivery teams</span> behind your product.
+                </h2>
+                <NoGapGrid items={ENTERPRISE_FEATURES}>
+                    <div class="feature-card feature-card--cta">
+                        <a href="/demo" class="btn btn-secondary" data-usal="zoomin">
+                            Book a Demo
+                        </a>
+                    </div>
+                </NoGapGrid>
+            </div>
+        </section>
+
+        <section class="build">
+            <div class="container">
+                <h2>Patterns from real <span class="highlight">software and services deployments</span>.</h2>
+                <p class="build__lead">Real workflows running today inside SaaS platforms, consultancies, and managed-service teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="header row g-0">
+                            {BUILD_TABS.map((tab, idx) => (
+                                <div
+                                    class:list={[
+                                        "col-6 col-md-3 header-tab",
+                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
+                                    ]}
+                                    data-tab-target={idx}
+                                >
+                                    {tab.name}
+                                </div>
+                            ))}
+                        </div>
+
+                        {BUILD_TABS.map((tab, idx) => (
+                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
+                                <div class="panel panel-1">
+                                    <Snippets client:idle code={tab.code} lang="yaml" />
+                                </div>
+                                <div class="panel panel-2">
+                                    <h3 data-usal="fade-r">{tab.title}</h3>
+                                    <p data-usal="fade-l">{tab.description}</p>
+                                    <div class="plugins" data-usal="zoomin">
+                                        {tab.plugins.map(plugin => (
+                                            <div class="plugin-icon">
+                                                <TaskIcon cls={plugin.cls} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <Link class="goto" href={tab.href} data-usal="fade-r">
+                                        Explore Blueprints
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <GoFurther />
+
+        <PluginsBlock>
+            <Fragment slot="title">
+                Integrates with the <span class="highlight">stack software and services teams</span> already run.
+            </Fragment>
+            <Fragment slot="description">
+                Native plugins for AWS, GCP, Azure, Kubernetes, Docker, Terraform, Ansible, Argo CD, Salesforce,
+                HubSpot, Snowflake, Databricks, dbt, Postgres, Kafka, ServiceNow, Vault, Splunk, OpenLineage,
+                plus 1,200+ more. Or build the exact integration your product or your customer needs.
+            </Fragment>
+        </PluginsBlock>
+
+        <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
+            <Fragment slot="title">Ship every customer, every product, every delivery on the same engine.</Fragment>
+            One control plane for onboarding, environments, multi-tenant pipelines, and AI workflows.
+            Cloud, self-hosted, or air-gapped. Build it once, deliver it identically the next fifty times,
+            and prove the audit on demand.
+        </SeeHow>
+
+        <Faq items={FAQ} client:visible />
+    </div>
+</Layout>
+
+<style lang="scss">
+    // ── Software & Services palette: deep magenta ────────────────────
+    // Distinct from FSI (yellow), Healthcare (green), Automotive (red),
+    // Retail (violet), Public Services (cobalt blue). Reads as modern
+    // builder / SaaS / craft.
+    $sw-magenta:        #DB2777;
+    $sw-magenta-bright: #F472B6;
+    $sw-magenta-light:  #F9A8D4;
+    $sw-magenta-deep:   #831843;
+    $sw-platinum:       #F4E8EE;
+
+    .software-providers { overflow: clip; }
+
+    :global(html.dark) .software-providers {
+        .flow,
+        .workloads,
+        .build,
+        .enterprise {
+            background: #1C1C20;
+        }
+        :global(section.quotes-wrapper),
+        :global(section.plugin-block),
+        :global(.see) {
+            background: #1C1C20;
+        }
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        background: #0d0612;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
+        padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 1.5rem 6rem;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 4rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1100px;
+            height: 520px;
+            background: radial-gradient(ellipse at center, rgba(219, 39, 119, 0.32) 0%, rgba(219, 39, 119, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+    }
+
+    .hero-bg-grid {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1720px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        max-width: 68rem;
+        color: $white;
+        text-align: center;
+
+        @include media-breakpoint-down(md) { gap: 1.5rem; }
+
+        h1 {
+            color: $white;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .gradient {
+            background: linear-gradient(90deg, #{$sw-magenta-bright}, #{$sw-magenta-light});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: $font-size-lg;
+            line-height: 1.6;
+            max-width: 48rem;
+            margin: 0;
+
+            @include media-breakpoint-down(md) { font-size: $font-size-md; }
+        }
+    }
+
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 4px 1.125rem;
+        gap: 0.5rem;
+        border-radius: 2.5rem;
+        background: #0d0612;
+        position: relative;
+        z-index: 1;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        color: $sw-magenta-bright;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 2.5rem;
+            padding: 1px;
+            background: linear-gradient(90deg, #{$sw-magenta} 0%, #{$sw-magenta-light} 100%);
+            -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.78);
+        font-size: $font-size-xs;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: rgba(244, 114, 182, 0.55);
+            background: rgba(219, 39, 119, 0.14);
+            color: $white;
+
+            :global(.tag-icon) { color: $sw-magenta-light; }
+        }
+
+        :global(.tag-icon) {
+            width: 12px;
+            height: 12px;
+            color: $sw-magenta-bright;
+            flex-shrink: 0;
+        }
+    }
+
+    @property --sw-neon-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes sw-neon-trace {
+        to { --sw-neon-angle: 360deg; }
+    }
+
+    .exec-panel-wrapper {
+        --sw-neon-angle: 0deg;
+        border-radius: 10px;
+        background: conic-gradient(
+            from var(--sw-neon-angle),
+            rgba(219, 39, 119, 0.16) 0deg,
+            rgba(219, 39, 119, 0.16) 320deg,
+            #{$sw-magenta}            340deg,
+            $sw-platinum              350deg,
+            #{$sw-magenta}            360deg
+        );
+        padding: 1px;
+        box-shadow:
+            0 1.214px 10.321px 0 rgba(219, 39, 119, 0.28) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(219, 39, 119, 0.6);
+        width: 100%;
+        max-width: 640px;
+        animation: sw-neon-trace 5s linear infinite;
+    }
+
+    .exec-panel {
+        background: #120712;
+        border-radius: 9px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        text-align: left;
+
+        &__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(219, 39, 119, 0.08);
+            flex-wrap: wrap;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+        }
+
+        &__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: $sw-magenta-bright;
+            box-shadow: 0 0 8px $sw-magenta-bright;
+            flex-shrink: 0;
+        }
+
+        &__title {
+            color: $white;
+            font-weight: 600;
+        }
+
+        &__meta {
+            color: rgba(255, 255, 255, 0.45);
+            flex: 1;
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__duration {
+            color: $sw-magenta-light;
+            font-weight: 500;
+        }
+
+        &__body {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        &__footer {
+            padding: 10px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(219, 39, 119, 0.06);
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            color: $sw-magenta-light;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .exec-footer__sep { color: rgba(255, 255, 255, 0.25); }
+    }
+
+    .exec-row {
+        display: grid;
+        grid-template-columns: 20px minmax(130px, 1fr) minmax(150px, 1fr) minmax(90px, auto);
+        align-items: center;
+        gap: 1rem;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        transition: background 0.2s;
+
+        &:hover { background: rgba(219, 39, 119, 0.10); }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 20px 1fr auto;
+        }
+
+        &__check {
+            color: $sw-magenta-bright;
+            font-weight: 700;
+        }
+
+        &__name {
+            color: $white;
+            font-weight: 500;
+        }
+
+        &__type {
+            color: rgba(255, 255, 255, 0.45);
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__result {
+            color: $sw-magenta-light;
+            text-align: right;
+            white-space: nowrap;
+        }
+    }
+
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn {
+            justify-content: center;
+
+            @include media-breakpoint-down(md) {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+    }
+
+    // ── Hero logo strip ──────────────────────────────────────────────
+    // 5 logos on a single row at md+, normalised to the same optical
+    // weight via per-logo max-height + max-width tuned to each SVG's
+    // aspect ratio. Sizing system matches the other industry pages.
+    .hero-logos {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        padding-top: 2rem;
+        width: 100%;
+        max-width: 60rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+
+        &__label {
+            font-size: $font-size-xs;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        &__row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            align-items: center;
+            justify-items: center;
+            column-gap: 2rem;
+            row-gap: 1.5rem;
+            width: 100%;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 1.5rem;
+                row-gap: 1.75rem;
+            }
+        }
+
+        &__item {
+            width: auto;
+            height: auto;
+            display: block;
+            filter: brightness(0) invert(1);
+            opacity: 0.85;
+            transition: opacity 0.2s;
+            object-fit: contain;
+            max-width: 100%;
+
+            &:hover { opacity: 1; }
+
+            // Unified optical sizing across all industry pages:
+            // text wordmarks 36px, small text 32px, compact icon+text
+            // 42px, stacked icon+text 52-56px.
+            &--amdocs { max-height: 32px; max-width: 150px; }   // small text
+            &--acxiom { max-height: 36px; max-width: 160px; }   // text wordmark
+            &--kpmg   { max-height: 36px; max-width: 130px; }   // text wordmark
+            &--hcl    { max-height: 36px; max-width: 130px; }   // text wordmark
+            &--sopht  { max-height: 42px; max-width: 150px; }   // compact icon + text
+
+            @include media-breakpoint-down(md) {
+                &--amdocs { max-height: 36px; max-width: 170px; }
+                &--acxiom { max-height: 40px; max-width: 180px; }
+                &--kpmg   { max-height: 40px; max-width: 150px; }
+                &--hcl    { max-height: 40px; max-width: 150px; }
+                &--sopht  { max-height: 48px; max-width: 170px; }
+            }
+        }
+    }
+
+    $stages: (
+        "trigger": ( "bg": #fff3d3, "border": #a87f4f, "label": #b87f00 ),
+        "ingest":  ( "bg": #cbe2ff, "border": #6b62f2, "label": #0069c6 ),
+        "process": ( "bg": #e3cffe, "border": #bb62f2, "label": #822bfd ),
+        "act":     ( "bg": #d3ffe0, "border": #4fa876, "label": #007336 )
+    );
+
+    .flow {
+        position: relative;
+        background: var(--ks-background-secondary);
+        padding: 5.5rem 1rem;
+        overflow: hidden;
+
+        .container-xxl {
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        &__title {
+            margin-bottom: 1rem;
+            color: var(--ks-content-primary);
+
+            .highlight {
+                background: linear-gradient(90deg, #{$sw-magenta}, #{$sw-magenta-bright});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            line-height: 1.55;
+            max-width: 50rem;
+            margin: 0 auto 3rem;
+        }
+
+        &__footer {
+            margin-top: 2rem;
+            color: var(--ks-content-secondary);
+            font-weight: 500;
+        }
+
+        &__grid {
+            width: 100%;
+            padding: 2rem 1rem;
+            background-color: rgba(219, 39, 119, 0.06);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23DB2777' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 10px;
+        }
+
+        &__steps {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+
+            @include media-breakpoint-down(xl) {
+                display: grid;
+                grid-template-columns: repeat(2, auto);
+                row-gap: 80px;
+                column-gap: 40px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+                row-gap: 60px;
+                column-gap: 0;
+            }
+        }
+    }
+
+    .flow-block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 1;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                max-width: 320px;
+                margin-top: 0.5rem;
+            }
+        }
+
+        &__label {
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            text-transform: uppercase;
+            font-weight: 700;
+
+            @each $id, $colors in $stages {
+                &.label-#{$id} { color: map-get($colors, "label"); }
+            }
+        }
+
+        &__card {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 240px;
+            min-height: 340px;
+            padding: 16px;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(lg) {
+                width: 220px;
+                min-height: 330px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                min-height: auto;
+                padding: 24px 16px;
+            }
+
+            @each $id, $colors in $stages {
+                &.card-#{$id} {
+                    background: map-get($colors, "bg");
+                    border: 1px solid map-get($colors, "border");
+                }
+            }
+        }
+
+        &__items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &__item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #333638;
+            border-radius: 4px;
+            color: #333638;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            box-shadow: 4px 4px 0 0 #EBEBEB, 4px 4px 0 1px #333638CC;
+        }
+    }
+
+    .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+
+        .line {
+            background: #000000;
+            html.dark & { background: #ffffff; }
+        }
+
+        .head {
+            position: absolute;
+            color: #000000;
+            html.dark & { color: #ffffff; }
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 90px;
+
+            .line { width: 100%; height: 1.5px; }
+            .head {
+                right: -4px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        @include media-breakpoint-between(sm, xl) {
+            &.arrow-0, &.arrow-1 {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 50%;
+                height: 72px;
+                width: 1.5px;
+                transform: translateX(-50%);
+
+                .line { width: 1.5px; height: 100%; }
+                .head {
+                    bottom: -5px;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(90deg);
+                }
+            }
+            &.arrow-2 { display: none; }
+        }
+
+        @include media-breakpoint-down(sm) {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            height: 58px;
+            width: 1.5px;
+            transform: translateX(-50%);
+
+            .line { width: 1.5px; height: 100%; }
+            .head {
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%) rotate(90deg);
+            }
+        }
+    }
+
+    .workloads {
+        position: relative;
+        padding: 5rem 1rem;
+        background: var(--ks-background-body);
+        overflow: hidden;
+
+        > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        &__head {
+            text-align: center;
+            max-width: 46rem;
+            margin: 0 auto 3rem;
+
+            h2 { color: var(--ks-content-primary); margin-bottom: 0.75rem; }
+            p { color: var(--ks-content-secondary); font-size: $font-size-lg; margin: 0; }
+        }
+
+        &__highlight {
+            background: linear-gradient(90deg, #{$sw-magenta}, #{$sw-magenta-bright});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        &__group {
+            max-width: 72rem;
+            margin: 0 auto 3rem;
+
+            &:last-child { margin-bottom: 0; }
+        }
+
+        &__category {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: $sw-magenta-deep;
+            margin: 0 0 1rem;
+
+            :global(html.dark) & { color: $sw-magenta-bright; }
+        }
+
+        &__grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+
+            @include media-breakpoint-up(md) { grid-template-columns: repeat(3, 1fr); }
+        }
+    }
+
+    .workload-card {
+        padding: 1.5rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 10px;
+        box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            border-color: $sw-magenta;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
+        }
+
+        &__icon {
+            font-size: 1.375rem;
+            color: $sw-magenta;
+            margin-bottom: 0.75rem;
+            width: 1.375rem;
+            height: 1.375rem;
+
+            :global(html.dark) & { color: $sw-magenta-bright; }
+        }
+
+        &__title {
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+        }
+
+        &__desc {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+    }
+
+    .build {
+        padding: 3rem 0 4.5rem;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: 1rem;
+                padding-inline: $rem-1;
+                text-align: center;
+
+                .highlight { color: $sw-magenta; }
+
+                @include media-breakpoint-up(xl) { padding-inline: 0; }
+            }
+
+            .wrapper {
+                border: 1px solid var(--ks-border-primary);
+                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+                border-radius: 13px;
+
+                @include media-breakpoint-down(xl) { border-radius: 0; }
+
+                .inner {
+                    border-radius: $rem-1;
+                    background: var(--ks-background-primary-inverse);
+                    overflow: clip;
+
+                    @include media-breakpoint-down(xxl) { border-radius: 0; }
+
+                    .header {
+                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
+
+                        & > div {
+                            padding: 1.1875rem $rem-2;
+                            font-size: $font-size-md;
+                            color: var(--ks-content-secondary-inverse);
+                            text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
+
+                            &.active {
+                                background: var(--ks-background-secondary-inverse);
+                                border-bottom: 1px solid var(--ks-border-active);
+                                color: var(--ks-content-primary-inverse);
+                                font-weight: 600;
+                            }
+                        }
+
+                        & .middle-part {
+                            border-left: 1px solid var(--ks-border-primary-inverse);
+                            border-right: 1px solid var(--ks-border-primary-inverse);
+                        }
+                    }
+
+                    .content {
+                        display: none;
+                        flex-direction: row;
+                        gap: $rem-2;
+                        padding: $rem-2;
+                        justify-content: center;
+
+                        &.active { display: flex; }
+
+                        @include media-breakpoint-down(xl) {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
+
+                        .panel {
+                            border-radius: 0.5rem;
+                            flex-shrink: 0;
+
+                            &.panel-1 {
+                                width: 39.4375rem;
+
+                                @include media-breakpoint-down(xl) { width: 100%; }
+
+                                :global(.code-card) {
+                                    border: 1px solid var(--ks-border-secondary-inverse);
+                                    background: var(--ks-background-input);
+                                    height: 100%;
+
+                                    :global(.code-inner) { transition: max-height 0.3s ease; }
+                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
+
+                                    &:global(:not(.is-expanded)) {
+                                        :global(.code-inner) { max-height: 27.9375rem !important; }
+                                    }
+                                }
+                            }
+
+                            &.panel-2 {
+                                position: relative;
+                                padding-top: $rem-2;
+                                color: var(--ks-content-primary-inverse);
+                                width: 27.5625rem;
+
+                                @include media-breakpoint-down(xl) {
+                                    width: 100%;
+                                    padding-top: 0;
+                                }
+
+                                p {
+                                    font-size: $font-size-lg;
+                                    margin-top: $rem-1;
+                                    margin-bottom: $rem-2;
+                                }
+
+                                .plugins {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    flex-wrap: wrap;
+
+                                    .plugin-icon {
+                                        width: 2.125rem;
+                                        height: 2.125rem;
+                                        padding: 0.375rem;
+                                        background: $white;
+                                        border: $block-border;
+                                        border-radius: $border-radius;
+                                    }
+                                }
+
+                                .goto {
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    color: var(--ks-content-link-inverse);
+                                    font-weight: 600;
+
+                                    @include media-breakpoint-down(xl) {
+                                        position: relative;
+                                        margin-top: $rem-3;
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            margin: 0 auto $rem-2;
+            max-width: 44rem;
+            padding-inline: $rem-1;
+        }
+    }
+
+    .enterprise {
+        padding: 140px 1rem 80px;
+        gap: 40px;
+        background: var(--ks-background-primary-inverse);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) { padding: 4rem 1rem 3rem; }
+
+        &__title {
+            color: #fff;
+            margin-bottom: 2.5rem;
+            text-align: center;
+
+            .highlight { color: $sw-magenta-bright; }
+        }
+
+        :global(.features-grid) {
+            box-shadow: 0 9px 36px 0 var(--ks-shadows-light-inverse);
+        }
+
+        :global(.feature-icon) {
+            color: $sw-magenta !important;
+        }
+        :global(.feature-title) {
+            color: #fff !important;
+        }
+        :global(.feature-desc) {
+            color: rgba(255, 255, 255, 0.72) !important;
+        }
+
+        .container-xxl { max-width: 1420px; }
+    }
+
+    .enterprise :global(.feature-card--cta) {
+        width: 100%;
+        padding: 2rem 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 1px 1px 0 0 var(--ks-border-secondary-inverse);
+
+        @include media-breakpoint-down(lg) { padding: 2rem; }
+
+        .btn { white-space: nowrap; }
+    }
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(".build .inner")) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
+                const target = tab && (container as Element).querySelector(
+                    `[data-tab-content="${tab.dataset.tabTarget}"]`
+                )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(".header-tab, .content")) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+    })
+</script>
