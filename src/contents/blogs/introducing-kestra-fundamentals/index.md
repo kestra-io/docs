@@ -20,6 +20,10 @@ The [Kestra Fundamentals course](https://academy.kestra.io/kestra-fundamentals) 
 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/EjNvS69nUVE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/EjNvS69nUVE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Who this course is for
 
 You'll get the most from the course if one of these sounds like you:
