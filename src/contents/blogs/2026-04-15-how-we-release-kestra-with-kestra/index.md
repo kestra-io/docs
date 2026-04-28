@@ -10,7 +10,7 @@ author:
 image: ./main.png TODO
 ---
 
-Every Tuesday, we ship bug fixes across multiple maintained versions at once — [LTS](https://kestra.io/blogs/introducing-lts), latest, and sometimes older releases. At peak, that's four parallel releases on the same day.
+Every Tuesday, we ship bug fixes across multiple maintained versions at once — [LTS](../introducing-lts/index.md), latest, and sometimes older releases. At peak, that's four parallel releases on the same day.
 
 For a while, coordinating those releases required a lot of manual actions and mental bandwidth between GitHub repositories.
 
@@ -46,11 +46,11 @@ while true; do npx --yes @kestra-io/kestra-devtools checkWorkflowStatus pre-rele
 I would run that in multiple terminals, and visually check from time to time if everything was green.
 
 ### Creating a first Flow
-A few releases later, after a few fixes on my CLI tool, I went further and I created the initial Kestra Flow of this project: a simple Flow that loops on the same command I used locally until GitHub workflow is green
+A few releases later, after a few fixes on my CLI tool, I went further and created the initial Kestra Flow of this project: a simple Flow that loops on the same command I used locally until GitHub workflow is green
 
 Nothing fancy:
 - a **start_release** shell task installing and using [GH CLI](https://cli.github.com/) to trigger a GitHub workflow
-- and a **poll_release_status** LoopUntil task checking this workflow job every 5 minutes, with a maximal timeout of 6 hours
+- and a **poll_release_status** [LoopUntil](../../docs/15.how-to-guides/loop/index.md) task checking this workflow job every 5 minutes, with a maximal timeout of 6 hours
 
 ![release-oss_flow.png](release-oss_flow.png)
 
@@ -115,11 +115,11 @@ I now had a Flow I could easily share with my colleagues, with logs and everythi
 ### Orchestrating with SubFlows
 I quickly realised after a few other releases that I could easily duplicate **release-oss** Flow for our EE (Enterprise Edition) release, and run them in parallel.
 
-orchestrating with core Kestra tasks:
-- a Parallel task to run multiple tasks in parallel
+Orchestrating with core Kestra tasks:
+- a [Parallel](../../docs/15.how-to-guides/parallel-vs-sequential/index.md) task to run multiple tasks in parallel
 - two Subflow tasks that will call the **release-oss** Flow I showed earlier
 
-Retry logic for flaky tests lives in a dedicated [subflow](https://kestra.io/docs/workflow-components/subflows) that the main flow calls per version. When a test fails, the subflow retries without any input from me. I don't have to watch for it.
+Retry logic for flaky tests lives in a dedicated [subflow](../../docs/05.workflow-components/10.subflows/index.md) that the main flow calls per version. When a test fails, the subflow retries without any input from me. I don't have to watch for it.
 
 ![first_iteration.png](first_iteration.png)
 ```yaml
@@ -172,12 +172,11 @@ Anyone on the team can run, modify, or debug the flow without a handoff. It does
 > My answer: in this usecase, the flow is just a YAML file describing this manual procedure. If the instance goes down, an engineer opens the file, reads the steps, and runs them manually. The orchestrator adds automation, not a dependency you can't escape.
 
 Remember I said the previous Flow was handling 80% of the release process?
-We still had one manual action to manually run to publish our Dockers images: another GitHub workflow.
-
+We still had one manual action to run to publish our Dockers images: another GitHub workflow.
 
 I didn't initially include it in the Flow because it didn't seem that useful. But we kept forgetting to run it manually, so I eventually automated it.
-I added a new **docker-publish** Flow, almost identical to **release-oss**, and used the same Parallel + SubFlow pattern, to finally have the full release orchestrated by Kestra.
 
+I added a new **docker-publish** Flow, almost identical to **release-oss**, and used the same Parallel + SubFlow pattern, to finally have the full release orchestrated by Kestra.
 
 ![full_final_flow.png](full_final_flow.png)
 ```yaml
@@ -245,10 +244,10 @@ tasks:
 
 Before, release days meant trying to not get lost between all the GitHub workflows for each release and staying on standby, so getting anything else done was basically impossible. Now I start a release in a few clicks and get back to work. The flow handles the intermediate state.
 
-
 ![execution_run.png](execution_run.png)
 
 It also made us realise that what we thought was a quick fire-and-forget manual process could become a 4-hour waiting game when transient network errors or flaky test failures stacked up.
+
 I was genuinely surprised by how long the whole process took once I saw the final duration in one of the first executions of that Flow.
 
 Another bonus: we could start releases from our restaurant table on our phones at lunchtime.
@@ -259,7 +258,7 @@ I built this for myself initially, running it during support duty when I had the
 
 My colleague Brian picked it up almost immediately. He saw the pattern and applied it to something that had been bothering him too: the manual checklist work that follows a major release. Opening PRs to downstream repos, updating changelogs, the small but error-prone steps that nobody wants to own. He built a second flow that handles all of it.
 
-And there's now a third flow: [nightly CI runs](https://kestra.io/use-cases/ci-cd) on production branches. Every night, a Flow run GitHub workflows against the active branches. Engineers start in the morning with a health signal. If a branch is red, it's almost certainly regression introduced overnight, not a flaky test. Knowing that before you start your day is different from discovering it mid-PR review.
+And there's now a third flow: [nightly CI runs](/use-cases/ci-cd) on production branches. Every night, a Flow run GitHub workflows against the active branches. Engineers start in the morning with a health signal. If a branch is red, it's almost certainly regression introduced overnight, not a flaky test. Knowing that before you start your day is different from discovering it mid-PR review.
 
 None of this required a meeting or a formal handoff. I built a flow, shared it, and the team saw what was possible and proactively added more. The YAML is readable enough that picking it up takes minutes.
 
@@ -269,11 +268,10 @@ GitHub Actions is excellent for CI steps. It's less suited for coordinating acro
 
 A shell script could do the polling, but it's fragile and invisible. There's no DAG view, execution history, or failure alerts. You'd be replacing one manual process with a brittle automated one. The moment something goes wrong, you'd be debugging a script with no observability instead of reading an execution log.
 
-Kestra gives you coordination and [execution history](https://kestra.io/docs/workflow-components/execution) out of the box. When something breaks in a different way every week, having execution history and a DAG view isn't a nice-to-have — it's the whole point.
-
+Kestra gives you coordination and [execution history](../../docs/05.workflow-components/03.execution/index.md) out of the box. When something breaks in a different way every week, having execution history and a DAG view isn't a nice-to-have — it's the whole point.
 
 Once I put it in a Flow, engineers stopped checking GitHub workflows every 15 minutes on Tuesdays.
 
 ## Try it yourself
 
-If your release days look anything like ours did, a few dozen lines of YAML might save you a lot of Tuesday afternoons. [Kestra is open source](https://github.com/kestra-io/kestra) — the release coordination flow, the post-release checklist, and the nightly CI monitor are all a reasonable place to start.
+If your release days look anything like ours did, a few dozen lines of YAML might save you a lot of Tuesday afternoons. We run this on [Kestra Enterprise](https://kestra.io/enterprise), the same stack that ships Kestra itself every Tuesday. Start with [Kestra OSS](https://github.com/kestra-io/kestra), or go straight to Enterprise if you need it in production.
