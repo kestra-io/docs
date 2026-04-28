@@ -1,7 +1,7 @@
 ---
 title: "YAML-First Orchestration: Why Workflow Definitions Belong in Config, Not Code"
 description: "Python-based orchestrators put workflow definitions and execution code in the same language, often the same files. Every attempt to fix that — asset-centric models, IaC, dbt — converges on the same answer: the coordination layer needs to be separate from the execution layer. YAML enforces that separation. Python, by design, doesn't."
-date: 2026-04-10T13:00:00
+date: 2026-04-23T13:00:00
 category: Tutorials
 author:
   name: Elliot Gunn
