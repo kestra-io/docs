@@ -3,6 +3,7 @@
         id="top-bar"
         ref="navbar"
         class="navbar navbar-expand-xl fixed-top"
+        aria-label="Menu"
         :class="{
             open: isOpen,
             scrolled: isScrolled || props.scrolled,
@@ -56,16 +57,17 @@
             </div>
 
             <div class="nav-items d-flex align-items-center">
-                <a
+                <button
+                    type="button"
                     @click="globalClick(true)"
-                    href="#"
                     class="btn btn-sm icon-button p-0 d-xl-none"
                     data-bs-toggle="modal"
                     data-bs-target="#search-modal"
                     title="Search"
+                    aria-label="Search"
                 >
                     <Magnify />
-                </a>
+                </button>
                 <button
                     class="navbar-toggler d-flex d-xl-none align-items-center gap-2"
                     @click="globalClick(isOpen)"
@@ -89,21 +91,26 @@
                         @mouseover="mouseOver('product', $event)"
                         @mouseleave="mouseOut('product')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-product"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'product' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'product' && showMenu) || false
+                            "
+                            :aria-controls="isMobile ? undefined : 'product'"
+                            @click="onTriggerClick('product', $event)"
+                            @keydown="onTriggerKeydown('product', $event)"
                         >
                             Product
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
@@ -138,21 +145,27 @@
                         @mouseover="mouseOver('solutions', $event)"
                         @mouseleave="mouseOut('solutions')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-solutions"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'solutions' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'solutions' && showMenu) ||
+                                false
+                            "
+                            :aria-controls="isMobile ? undefined : 'solutions'"
+                            @click="onTriggerClick('solutions', $event)"
+                            @keydown="onTriggerKeydown('solutions', $event)"
                         >
                             Solutions
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <p class="column-caption">Use-cases</p>
@@ -225,21 +238,27 @@
                         @mouseover="mouseOver('resources', $event)"
                         @mouseleave="mouseOut('resources')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-resources"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'resources' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'resources' && showMenu) ||
+                                false
+                            "
+                            :aria-controls="isMobile ? undefined : 'resources'"
+                            @click="onTriggerClick('resources', $event)"
+                            @keydown="onTriggerKeydown('resources', $event)"
                         >
                             Learn
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
@@ -265,21 +284,26 @@
                         @mouseover="mouseOver('company', $event)"
                         @mouseleave="mouseOut('company')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-company"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'company' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'company' && showMenu) || false
+                            "
+                            :aria-controls="isMobile ? undefined : 'company'"
+                            @click="onTriggerClick('company', $event)"
+                            @keydown="onTriggerKeydown('company', $event)"
                         >
                             Company
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
@@ -419,6 +443,12 @@
                                                 class="dropdown-item"
                                                 :href="item.link"
                                                 @click="globalClick(true)"
+                                                @keydown="
+                                                    onMenuKeydown(
+                                                        'product',
+                                                        $event,
+                                                    )
+                                                "
                                             >
                                                 <div>
                                                     <div class="same-row">
@@ -468,6 +498,12 @@
                                                     class="dropdown-item"
                                                     :href="item.link"
                                                     @click="globalClick(true)"
+                                                    @keydown="
+                                                        onMenuKeydown(
+                                                            'solutions',
+                                                            $event,
+                                                        )
+                                                    "
                                                 >
                                                     <div>
                                                         <div class="same-row">
@@ -497,6 +533,12 @@
                                                     class="dropdown-item"
                                                     :href="item.link"
                                                     @click="globalClick(true)"
+                                                    @keydown="
+                                                        onMenuKeydown(
+                                                            'solutions',
+                                                            $event,
+                                                        )
+                                                    "
                                                 >
                                                     <div>
                                                         <div class="same-row">
@@ -528,6 +570,12 @@
                                                     class="dropdown-item"
                                                     :href="item.link"
                                                     @click="globalClick(true)"
+                                                    @keydown="
+                                                        onMenuKeydown(
+                                                            'solutions',
+                                                            $event,
+                                                        )
+                                                    "
                                                 >
                                                     <div>
                                                         <div class="same-row">
@@ -559,6 +607,12 @@
                                                 class="dropdown-item"
                                                 :href="item.link"
                                                 @click="globalClick(true)"
+                                                @keydown="
+                                                    onMenuKeydown(
+                                                        'resources',
+                                                        $event,
+                                                    )
+                                                "
                                             >
                                                 <div>
                                                     <div class="same-row">
@@ -601,6 +655,12 @@
                                                 class="dropdown-item"
                                                 :href="item.link"
                                                 @click="globalClick(true)"
+                                                @keydown="
+                                                    onMenuKeydown(
+                                                        'company',
+                                                        $event,
+                                                    )
+                                                "
                                             >
                                                 <div>
                                                     <div class="same-row">
@@ -840,6 +900,87 @@
         globalClick(true)
     }
 
+    function getDropdownItems(id: string): HTMLElement[] {
+        const container = document.getElementById(id)
+        if (!container) return []
+        return Array.from(
+            container.querySelectorAll<HTMLElement>(".dropdown-item"),
+        )
+    }
+
+    function openDesktopMenu(id: string) {
+        const trigger = document.getElementById(`trigger-${id}`)
+        if (!trigger) return
+        mouseOver(id, {
+            currentTarget: trigger,
+        } as unknown as MouseEvent)
+    }
+
+    function closeDesktopMenu() {
+        if (closeMenuTimeout.value) {
+            clearTimeout(closeMenuTimeout.value)
+            closeMenuTimeout.value = null
+        }
+        showMenu.value = false
+        showMenuId.value = null
+        mouseoverMenu.value = false
+        headerMenuPointerEvents.value = "none"
+    }
+
+    function onTriggerClick(id: string, event: MouseEvent) {
+        if (isMobile.value) return
+        event.preventDefault()
+        if (showMenuId.value === id && showMenu.value) {
+            closeDesktopMenu()
+        } else {
+            openDesktopMenu(id)
+        }
+    }
+
+    function onTriggerKeydown(id: string, event: KeyboardEvent) {
+        if (isMobile.value) return
+        const isExpanded = showMenuId.value === id && showMenu.value
+        const { key } = event
+
+        if (key === "Escape" && isExpanded) {
+            event.preventDefault()
+            closeDesktopMenu()
+        } else if (key === "ArrowDown" || key === "ArrowUp") {
+            event.preventDefault()
+            if (!isExpanded) openDesktopMenu(id)
+            nextTick(() => {
+                const items = getDropdownItems(id)
+                items[key === "ArrowUp" ? items.length - 1 : 0]?.focus()
+            })
+        }
+    }
+
+    function onMenuKeydown(id: string, event: KeyboardEvent) {
+        if (isMobile.value) return
+        const items = getDropdownItems(id)
+        if (!items.length) return
+
+        const { key } = event
+        const idx = items.indexOf(event.currentTarget as HTMLElement)
+        const targets: Record<string, number> = {
+            ArrowDown: (idx + 1) % items.length,
+            ArrowUp: (idx - 1 + items.length) % items.length,
+            Home: 0,
+            End: items.length - 1,
+        }
+
+        if (key in targets) {
+            event.preventDefault()
+            items[targets[key]]?.focus()
+        } else if (key === "Escape") {
+            event.preventDefault()
+            closeDesktopMenu()
+            document.getElementById(`trigger-${id}`)?.focus()
+        } else if (key === "Tab") {
+            closeDesktopMenu()
+        }
+    }
+
     function showDownloadLogosModal(event: Event) {
         event.preventDefault()
         showDownloadLogos.value = true
@@ -853,7 +994,9 @@
 <style lang="scss" scoped>
     @mixin dark-nav-content($color: $white) {
         a.nav-link:not(.btn),
+        button.nav-link:not(.btn),
         .nav-item a:not(.btn),
+        .nav-item button:not(.btn),
         div.nav-items a:not(.btn),
         .navbar-toggler {
             color: $color;
@@ -988,7 +1131,8 @@
             }
         }
 
-        a.nav-link {
+        a.nav-link,
+        button.nav-link {
             display: flex !important;
             align-items: center;
             gap: 4px;
@@ -999,6 +1143,21 @@
             padding-left: 12px !important;
             border-radius: $border-radius;
             transition: background-color 0.2s ease;
+
+            &[type="button"] {
+                appearance: none;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+                cursor: pointer;
+                font-family: inherit;
+                justify-content: flex-start;
+                line-height: inherit;
+                margin: 0;
+                text-align: left;
+                text-decoration: none;
+                white-space: nowrap;
+            }
 
             @include media-breakpoint-between(xl, xxl) {
                 padding-left: 8px !important;
@@ -1011,6 +1170,12 @@
                     background-color: var(--ks-background-tertiary);
                     border-color: var(--ks-border-primary);
                 }
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+                border-radius: $border-radius;
             }
 
             .dropdown-chevron {
@@ -1042,6 +1207,12 @@
                         height: calc($spacer * 1.5);
                     }
                 }
+
+                &:focus-visible {
+                    outline: 2px solid currentColor;
+                    outline-offset: 2px;
+                    border-radius: $border-radius;
+                }
             }
         }
 
@@ -1053,6 +1224,12 @@
 
             &:focus {
                 box-shadow: none;
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+                border-radius: $border-radius;
             }
         }
 
@@ -1087,7 +1264,8 @@
                     font-size: $font-size-md;
                 }
 
-                a.nav-link {
+                a.nav-link,
+                button.nav-link {
                     border-radius: $border-radius;
 
                     span.material-design-icon {
@@ -1102,6 +1280,7 @@
 
                     @include media-breakpoint-down(xl) {
                         display: flex;
+                        width: 100%;
                         justify-content: space-between;
                         border-radius: 0;
                         color: var(--ks-content-primary) !important;
@@ -1523,3 +1702,4 @@
         }
     }
 </style>
+
