@@ -18,81 +18,80 @@ import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.v
 import FileDocumentCheckOutline from "vue-material-design-icons/FileDocumentCheckOutline.vue"
 import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
 import Git from "vue-material-design-icons/Git.vue"
+import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 
-import JPMorganLogo from "~/contents/customer-stories/26/logo.svg?raw"
-import JPMorganLogoImg from "~/assets/trusted-companies/JPMorgan.svg"
-import CreditAgricoleLogoImg from "~/assets/trusted-companies/CreditAgricole.svg"
-import BloombergLogoImg from "~/assets/trusted-companies/Bloomberg.svg"
-import ICapitalLogoImg from "~/assets/trusted-companies/iCapital.svg"
-import MatmutLogoImg from "~/assets/trusted-companies/Matmut.svg"
-import GateIoLogoImg from "~/assets/trusted-companies/GateIO.svg"
-import TotalEnergiesLogoImg from "~/assets/trusted-companies/TotalEnergies.svg"
+import DataportLogo from "~/contents/customer-stories/30/logo.svg?raw"
+import COELogoImg from "~/components/enterprise/assets/logos/COE.svg"
+import DataportLogoImg from "~/assets/trusted-companies/Dataport.svg"
+import ITZBundLogoImg from "~/assets/trusted-companies/ITZBunds.svg"
+import BundesagenturLogoImg from "~/assets/trusted-companies/Bundesagentur.svg"
+import BattelleLogoImg from "~/assets/trusted-companies/Battelle.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
-    { label: "Air-gapped", icon: "mdi:shield-lock-outline" },
-    { label: "Self-hosted", icon: "mdi:server-network-outline" },
-    { label: "Open source", icon: "mdi:code-tags" },
-    { label: "Four-eyes approval", icon: "mdi:account-supervisor-outline" },
-    { label: "Replayable lineage", icon: "mdi:history" },
-    { label: "EU & US residency", icon: "mdi:earth" },
+    { label: "On-prem & air-gapped", icon: "mdi:shield-lock-outline" },
+    { label: "EU & US data residency", icon: "mdi:earth" },
+    { label: "Kubernetes & OpenShift native", icon: "mdi:server-network-outline" },
+    { label: "Replayable audit trail", icon: "mdi:history" },
+    { label: "Multi-tenant by namespace", icon: "mdi:domain" },
+    { label: "LDAP, OIDC, SAML, SCIM", icon: "mdi:account-key-outline" },
     { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Financial Services & Insurance"
+const title = "Kestra for Public Services & Institutions"
 const description =
-    "One orchestration platform for banks, insurers, investment firms, and fintechs. Kestra runs the regulated workflows behind modern financial services and insurance. Claims, onboarding, payments, reporting, risk, and AI, orchestrated from one declarative control plane."
+    "One orchestration engine for infrastructure, SOC, data, and modernization workflows. Integrate what you already run. Standardize how operations execute. Replace brittle orchestration silos when you're ready."
 
 const FLOW_STAGES = [
     {
         id: "trigger",
         label: "TRIGGER",
         items: [
-            "API / webhook",
-            "Schedule / cutoff / market close",
-            "Document arrival / FNOL / intake",
-            "File drop / partner feed",
-            "Queue / stream event",
-            "Core-system change event",
+            "API request / portal call",
+            "Schedule / batch window",
+            "SIEM / SOC alert",
+            "Git push / change event",
+            "vCenter / hypervisor event",
+            "ServiceNow ticket update",
         ],
     },
     {
         id: "ingest",
         label: "INGEST",
         items: [
-            "Oracle / DB2 / SQL Server / mainframe",
-            "Guidewire / Duck Creek / claims",
-            "Snowflake / BigQuery / lakehouse",
-            "S3 / ADLS / GCS / SFTP / MQ",
-            "CRM / case systems / partner APIs",
-            "Payment, ledger & portfolio systems",
+            "vSphere, KVM, Nutanix, MAAS",
+            "Mainframe / Oracle / DB2 / SQL Server",
+            "Identity (LDAP, Keycloak, AD)",
+            "ServiceNow / NetBox / CMDB",
+            "Vault / CyberArk / Delinea",
+            "Lakehouse / dbt / warehouse",
         ],
     },
     {
         id: "process",
         label: "PROCESS",
         items: [
-            "Rules and validations",
-            "dbt / SQL / Python / R / Spark",
-            "Reconciliation & exception handling",
-            "OCR / extraction / LLM review",
+            "Terraform / Ansible / Argo CD",
+            "Snapshot / patch / verify / rollback",
+            "SOC enrichment & risk scoring",
+            "Policy & compliance checks",
             "Human approval gates",
-            "Vault / CyberArk / policy controls",
+            "AI-assisted triage & runbooks",
         ],
     },
     {
         id: "act",
         label: "ACT",
         items: [
-            "Update core systems",
-            "Create case / task / ticket",
-            "Trigger payment / settlement",
-            "Issue policy / servicing step",
-            "Generate report / audit package",
-            "Notify teams / downstream platforms",
+            "Provision VMs / clusters / bare metal",
+            "Update CMDB & NetBox source-of-truth",
+            "Trigger remediation / isolation",
+            "Deploy / promote / release",
+            "Notify on-call / partner team",
+            "Sign and archive audit bundle",
         ],
     },
 ]
@@ -100,96 +99,96 @@ const FLOW_STAGES = [
 const quotes = [
     {
         quote:
-            "For the first time, our analysts weren't waiting for engineering to catch up. They could define the workflows themselves. That changed everything.",
-        author: "Cybersecurity Product Owner, JPMorgan Chase",
-        smallLogoSvg: optimizeSvgIcon(JPMorganLogo, "jpm-quote-logo"),
+            "Kestra gives us a modern orchestration platform we can run ourselves without compromising on governance.",
+        author: "Platform Architect, Dataport",
+        smallLogoSvg: optimizeSvgIcon(DataportLogo, "dataport-quote-logo"),
         kpis: [
-            { value: "Billions", name: "of rows processed" },
-            { value: "100+", name: "users empowered" },
-            { value: "4,000+", name: "API pulls / week" },
+            { value: "1", name: "control plane for private cloud" },
+            { value: "3 weeks", name: "to validate compliance" },
+            { value: "0", name: "external dependencies" },
         ],
-        storyLink: "/use-cases/stories/26-orchestrating-cybersecurity-for-100-users-and-billions-of-rows",
+        storyLink: "/use-cases/stories/30-building-a-government-grade-orchestration-control-plane-with-kestra",
     },
 ]
 
 const WORKLOAD_CATEGORIES = [
     {
-        name: "Core Systems & Lifecycle Operations",
+        name: "Infrastructure & Platform Orchestration",
         items: [
             {
-                icon: "mdi:server-network",
-                title: "Legacy Modernization & Core Integration",
-                description: "Connect core platforms, policy admin systems, ledgers, mainframes, and modern data platforms without freezing transformation programs. Orchestrate CDC, file exchanges, APIs, and staged cutovers with full lineage.",
+                icon: "mdi:server-plus-outline",
+                title: "VM Lifecycle & Self-Service Portals",
+                description: "Native plugins for vSphere, vCenter, ESXi, KVM, MAAS, and Nutanix orchestrate the full VM lifecycle: provision, snapshot, clone, template, restore. Expose it all as a self-service catalog with quota validation, approval gates, and CMDB updates.",
             },
             {
-                icon: "mdi:file-document-edit-outline",
-                title: "Policy, Account & Product Lifecycle",
-                description: "Automate quote-to-bind, account opening, servicing requests, endorsements, renewals, product changes, and downstream updates across internal and partner systems.",
+                icon: "mdi:cube-outline",
+                title: "Terraform, Ansible & Kubernetes Operations",
+                description: "Wrap your existing IaC with sovereign orchestration. Run Terraform plans and applies, Ansible playbooks, Argo CD syncs, and OpenShift or Kubernetes operations from one Git-backed control plane, with state isolation per environment.",
             },
             {
-                icon: "mdi:clipboard-check-outline",
-                title: "Claims, Servicing & Case Management",
-                description: "Coordinate intake, validation, routing, approvals, disbursements, notifications, and exception handling across claims, servicing, disputes, and operational casework.",
+                icon: "mdi:cloud-sync-outline",
+                title: "Hybrid Cloud & Multi-Cluster Operations",
+                description: "Coordinate workloads across on-prem datacenters, sovereign clouds, and hyperscaler regions. Linux, Windows, and GPU workers run side-by-side on a shared control plane with worker-group isolation.",
             },
         ],
     },
     {
-        name: "Transactions, Portfolios & Money Movement",
+        name: "Cybersecurity & SOC Operations",
         items: [
-            {
-                icon: "mdi:bank-transfer",
-                title: "Payments, Disbursements & Reconciliations",
-                description: "Validate files and events, handle exceptions, reconcile statuses, and trigger downstream actions across payments, claim payouts, collections, refunds, and settlement workflows.",
-            },
-            {
-                icon: "mdi:wallet-outline",
-                title: "Treasury, Cash, Portfolio & Fund Operations",
-                description: "Pull positions, process portfolio events, support end-of-day controls, and distribute outputs to treasury, finance, risk, and operations teams.",
-            },
-            {
-                icon: "mdi:handshake-outline",
-                title: "Broker, Partner & Distribution Workflows",
-                description: "Coordinate data exchange, approvals, documents, and status updates across brokers, TPAs, carriers, lenders, and external service providers.",
-            },
-        ],
-    },
-    {
-        name: "Risk, Compliance & Governance",
-        items: [
-            {
-                icon: "mdi:file-document-check-outline",
-                title: "Regulatory Reporting & Controls",
-                description: "Run recurring and event-driven reporting workflows with validations, dual control, evidence capture, and replayable execution for internal audit and external regulators.",
-            },
             {
                 icon: "mdi:shield-search",
-                title: "Fraud, AML, KYC & Trust Operations",
-                description: "Orchestrate screenings, vendor checks, enrichment, scoring, case creation, and human review across onboarding, transactions, claims, payments, and account activity.",
+                title: "Open SOC Triage & Alert Routing",
+                description: "An open alternative to Palo Alto SOAR, Splunk SOAR, and the Python glue between them. Receive alerts from your SIEM, enrich with threat intelligence, score risk with rules or ML, route to the right analyst queue. All on infrastructure your data-protection team has signed off on.",
+            },
+            {
+                icon: "mdi:lan-disconnect",
+                title: "Incident Response & Threat Containment",
+                description: "Automate containment runbooks: isolate hosts, rotate credentials, snapshot evidence, open ServiceNow incidents, notify on-call. Mandatory analyst confirmation on irreversible actions. Replayable per alert, audit-ready by default.",
+            },
+            {
+                icon: "mdi:office-building-cog-outline",
+                title: "Multi-Tenant SOC for Multi-Agency Estates",
+                description: "Operate one SOC platform across multiple states, agencies, or institutional clients. Namespace-scoped flows, secrets, and audit trails per tenant. Zero blast radius between environments.",
+            },
+        ],
+    },
+    {
+        name: "Modernizing Legacy Automation",
+        items: [
+            {
+                icon: "mdi:swap-horizontal-bold",
+                title: "The Open Exit from VMware Aria & vRealize",
+                description: "Replace the brittle automation layer above your virtualization stack, not VMware itself. Integrate vSphere, vCenter, and ESXi directly. Standardize on YAML in Git, REST APIs, OIDC, OpenTelemetry. Procurement-friendly, no proprietary runtime lock-in.",
+            },
+            {
+                icon: "mdi:calendar-clock-outline",
+                title: "From Schedulers & Runbook Tools to Declarative Flows",
+                description: "Retire Cron, Control-M, Autosys, vRO, Rundeck, HP Operations Orchestration, and hand-rolled wrappers. Replace them with declarative YAML, event triggers, and a unified execution history. At your own pace, without freezing existing jobs.",
+            },
+            {
+                icon: "mdi:transit-connection-variant",
+                title: "Incremental Migration from Mainframe & Legacy",
+                description: "Wrap existing JCL, AS/400, Oracle, SFTP, and MQ jobs first, then modernize incrementally. Plugins for JDBC, SFTP/FTPS, JMS/IBM MQ, Kafka, and shell. Integrate first, standardize next, replace only when you're ready.",
+            },
+        ],
+    },
+    {
+        name: "Sovereign Data & AI Platforms",
+        items: [
+            {
+                icon: "mdi:database-sync-outline",
+                title: "Cross-Department Data Pipelines",
+                description: "Move and transform data across departmental warehouses, lakehouses, and operational systems. dbt, SQL, Python, Spark, and Java tasks orchestrated with full lineage and replayability per tenant.",
+            },
+            {
+                icon: "mdi:earth-box",
+                title: "Lakehouse & dbt on Sovereign Infrastructure",
+                description: "Run modern data stacks inside your jurisdictional perimeter. Java-based engine fits enterprise environments where Python-only tools struggle. EU and US residency, no cross-region data transfer.",
             },
             {
                 icon: "mdi:brain",
-                title: "Model Governance & AI Workflows",
-                description: "Train, validate, approve, deploy, and monitor decisioning, pricing, claims, fraud, and service models with clear approvals and operational guardrails.",
-            },
-        ],
-    },
-    {
-        name: "Customer, Data & Platform Operations",
-        items: [
-            {
-                icon: "mdi:account-check-outline",
-                title: "Onboarding & Document Intelligence",
-                description: "Handle document intake, extraction, review, screening, and downstream updates for customers, businesses, brokers, claimants, and partners.",
-            },
-            {
-                icon: "mdi:database-sync-outline",
-                title: "Operational Data Workflows",
-                description: "Move, transform, and operationalize data across dbt, lakehouse, SQL, Python, and Spark to support live operations, not just analytics.",
-            },
-            {
-                icon: "mdi:security-network",
-                title: "Cybersecurity & Platform Automation",
-                description: "Automate certificate management, privileged workflows, vulnerability scans, incident response, and platform operations across regulated environments.",
+                title: "AI Workflows Inside Your Perimeter",
+                description: "Orchestrate OCR, LLM extraction, classification, and decision-support models alongside rule-based checks. Models, prompts, and PII never leave your environment. Humans-in-the-loop on every consequential decision.",
             },
         ],
     },
@@ -198,177 +197,239 @@ const WORKLOAD_CATEGORIES = [
 const ENTERPRISE_FEATURES = [
     {
         icon: ShieldCheckOutline,
-        title: "Air-Gapped & Sovereign Deployment",
-        description: "Self-hosted, VPC, or fully air-gapped. EU or US data residency. Segment control plane and workers across restricted zones with zero egress required.",
+        title: "Sovereign & Air-Gapped Deployment",
+        description: "Self-hosted, VPC, or fully air-gapped. EU or US data residency. Segment control plane and workers across restricted zones with zero egress required. Kestra runs entirely inside your jurisdictional perimeter.",
+    },
+    {
+        icon: ServerNetworkOutline,
+        title: "Kubernetes, OpenShift & Hybrid Workers",
+        description: "Docker, Helm, or OpenShift. Worker groups isolate Linux, Windows, GPU, and secure-zone runtimes on one shared control plane. PostgreSQL backend handles millions of executions. No Kafka or Elasticsearch required.",
     },
     {
         icon: Git,
         title: "Immutable, Replayable Execution",
-        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical cutoff with the exact code, secrets, and inputs, in one click.",
-    },
-    {
-        icon: FileDocumentCheckOutline,
-        title: "Four-Eyes Approval Gates",
-        description: "Pause any workflow pending human sign-off. Enforce mandatory dual-control for regulatory submissions, model promotions, and production deployments.",
+        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical run with the exact code, secrets, and inputs, in one click. Years later, the audit holds.",
     },
     {
         icon: AccountGroupOutline,
-        title: "RBAC & Multi-Tenant Isolation",
-        description: "Namespace-scoped RBAC with SSO/SAML/SCIM. Every division owns its secrets and runtime on a shared platform. Zero blast radius.",
+        title: "Multi-Tenant by Namespace, RBAC by Default",
+        description: "Each agency, programme, or environment owns its flows, secrets, and runtime on a shared platform. Namespace-scoped RBAC with SSO, SAML, OIDC, and SCIM. Zero blast radius between tenants.",
+    },
+    {
+        icon: FileDocumentCheckOutline,
+        title: "Approval Gates, Kill Switch & Apps",
+        description: "Pause any workflow pending human sign-off. Stop or contain a problematic execution from the UI in one click. Build self-service forms in front of flows with Apps. Governance at the speed of operations.",
     },
     {
         icon: CodeTagsCheck,
-        title: "Audit Logs & SIEM Integration",
-        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, or your preferred SIEM.",
+        title: "Audit Logs, Lineage & SIEM Integration",
+        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, or your preferred SIEM. Hand auditors a signed evidence bundle in minutes, not weeks.",
     },
 ]
 
 const BUILD_TABS = [
     {
-        name: "Claims triage & payout",
-        title: "Triage an FNOL, score for fraud, and pay the customer in minutes, not days.",
+        name: "VMware safe-patch with rollback",
+        title: "Snapshot, patch, verify, rollback. VMware orchestration with the safety net built in.",
         description:
-            "A claim lands on the webhook, Kestra parses it, scores for fraud, auto-routes to an adjuster queue, and fires the payout. Every step auditable. Every dispute replayable.",
-        code: `id: claims-triage-payout
-namespace: company.insurance.claims
+            "Snapshot the VM through the native vSphere plugin, apply the change, verify health, and roll back automatically if validation fails. The safe-patching pattern most teams build by hand, expressed as one declarative flow. Automation that fails safely.",
+        code: `id: vmware-safe-patch
+namespace: company.platform.vmware
 
 inputs:
-  - id: claim_payload
-    type: JSON
-    displayName: FNOL payload (JSON)
+  - id: vm_name
+    type: STRING
+    displayName: VM name to patch
 
 tasks:
-  - id: persist_claim
-    type: io.kestra.plugin.jdbc.postgresql.Query
-    url: "jdbc:postgresql://policy-admin:5432/claims"
-    username: "{{ secret('PG_USER') }}"
-    password: "{{ secret('PG_PASSWORD') }}"
-    sql: |
-      INSERT INTO claims.fnol (policy_id, payload, received_at)
-      VALUES (
-        '{{ inputs.claim_payload.policy_id }}',
-        '{{ inputs.claim_payload | toJson }}',
-        NOW()
-      ) RETURNING claim_id
+  - id: snapshot_before
+    type: io.kestra.plugin.ee.vmware.esxi.CreateVmSnapshot
+    server: "{{ secret('VCENTER_HOST') }}"
+    username: "{{ secret('VCENTER_USER') }}"
+    password: "{{ secret('VCENTER_PASS') }}"
+    vmName: "{{ inputs.vm_name }}"
+    snapshotName: "pre-change-{{ execution.id }}"
+    description: "Automatic snapshot before patching"
 
-  - id: fraud_score
+  - id: apply_patch
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - ansible-playbook patch.yml -e vm={{ inputs.vm_name }}
+
+  - id: verify_health
     type: io.kestra.plugin.core.http.Request
-    uri: "https://ml.insurance.example/score"
-    method: POST
-    contentType: application/json
-    body: "{{ inputs.claim_payload | toJson }}"
-    headers:
-      Authorization: "Bearer {{ secret('ML_TOKEN') }}"
+    uri: "https://monitoring.internal/health/{{ inputs.vm_name }}"
+    allowFailed: true
 
-  - id: route
+  - id: rollback_if_failed
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs.fraud_score.body.risk > 0.75 }}"
+    condition: "{{ outputs.verify_health.code != 200 }}"
     then:
-      - id: adjuster_review
-        type: io.kestra.plugin.core.flow.Pause
-        description: |
-          High-risk claim {{ outputs.persist_claim.row.claim_id }}.
-          Four-eyes review required before payout.
-    else:
-      - id: auto_payout
-        type: io.kestra.plugin.core.http.Request
-        uri: "https://payments.example/v1/disbursements"
-        method: POST
-        contentType: application/json
-        body: |
-          {
-            "policy_id": "{{ inputs.claim_payload.policy_id }}",
-            "amount": {{ inputs.claim_payload.amount }},
-            "currency": "EUR"
-          }
+      - id: restore_snapshot
+        type: io.kestra.plugin.ee.vmware.esxi.RestoreVmFromSnapshot
+        server: "{{ secret('VCENTER_HOST') }}"
+        username: "{{ secret('VCENTER_USER') }}"
+        password: "{{ secret('VCENTER_PASS') }}"
+        vmName: "{{ inputs.vm_name }}"
+        snapshotName: "pre-change-{{ execution.id }}"
 
-  - id: notify_customer
-    type: io.kestra.plugin.email.MailSend
-    host: smtp.insurer.example
-    port: 465
-    username: "{{ secret('SMTP_USER') }}"
-    password: "{{ secret('SMTP_PASSWORD') }}"
-    from: claims@insurer.example
-    to: "{{ inputs.claim_payload.customer_email }}"
-    subject: "Claim {{ outputs.persist_claim.row.claim_id }} received"
-    htmlTextContent: "We've received your claim and will update you shortly."`,
+      - id: alert_team
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        url: "{{ secret('SLACK_WEBHOOK') }}"
+        messageText: "Patch failed for {{ inputs.vm_name }}. VM rolled back to snapshot."`,
         plugins: [
-            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
-            { cls: "io.kestra.plugin.core.http.Request" },
-            { cls: "io.kestra.plugin.core.flow.Pause" },
-            { cls: "io.kestra.plugin.email.MailSend" },
+            { cls: "io.kestra.plugin.ee.vmware.esxi.CreateVmSnapshot" },
+            { cls: "io.kestra.plugin.scripts.shell.Commands" },
+            { cls: "io.kestra.plugin.core.flow.If" },
+            { cls: "io.kestra.plugin.ee.vmware.esxi.RestoreVmFromSnapshot" },
         ],
         href: "/blueprints",
     },
     {
-        name: "Customer onboarding & document review",
-        title: "Turn a stack of documents into an approved customer, with audit trail.",
+        name: "SOC alert triage & containment",
+        title: "Triage SIEM alerts, enrich, and contain. The open alternative to closed SOAR platforms.",
         description:
-            "Extract data from uploaded documents, screen against sanctions lists, persist the case, pause for compliance review, and activate the account. One flow, KYC-grade evidence, replayable end-to-end.",
-        code: `id: customer-onboarding
-namespace: company.regulated.onboarding
+            "Receive alerts from your SIEM, enrich with threat intelligence, score with a Python model, branch on severity, pause for analyst confirmation on critical events, isolate hosts, and open ServiceNow incidents. Replaces Palo Alto SOAR, Splunk SOAR, and the script glue between them.",
+        code: `id: soc-alert-triage
+namespace: company.soc.alerts
+
+triggers:
+  - id: siem_webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "siem-events"
 
 inputs:
-  - id: application
+  - id: alert
     type: JSON
-    displayName: Customer application payload
+    displayName: SIEM alert payload
 
 tasks:
-  - id: extract_documents
+  - id: enrich_indicators
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://intel.internal/enrich"
+    method: POST
+    contentType: application/json
+    body: "{{ inputs.alert | toJson }}"
+    headers:
+      Authorization: "Bearer {{ secret('INTEL_TOKEN') }}"
+
+  - id: score_risk
     type: io.kestra.plugin.scripts.python.Commands
     commands:
-      - python extract.py --application '{{ inputs.application | toJson }}'
+      - python score.py --alert '{{ inputs.alert | toJson }}' --intel '{{ outputs.enrich_indicators.body | toJson }}'
 
-  - id: screen_sanctions
+  - id: route_decision
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.score_risk.vars.risk == 'critical' }}"
+    then:
+      - id: analyst_confirm
+        type: io.kestra.plugin.core.flow.Pause
+        description: |
+          Analyst must confirm containment for alert {{ inputs.alert.id }}.
+
+      - id: isolate_host
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://edr.internal/hosts/{{ inputs.alert.host_id }}/isolate"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ secret('EDR_TOKEN') }}"
+
+  - id: create_incident
     type: io.kestra.plugin.core.http.Request
-    uri: "https://sanctions.example/screen"
+    uri: "https://servicenow.example/api/now/table/incident"
     method: POST
     contentType: application/json
-    body: "{{ inputs.application | toJson }}"
     headers:
-      Authorization: "Bearer {{ secret('SCREEN_TOKEN') }}"
-
-  - id: persist_case
-    type: io.kestra.plugin.jdbc.postgresql.Query
-    url: "jdbc:postgresql://crm:5432/onboarding"
-    username: "{{ secret('PG_USER') }}"
-    password: "{{ secret('PG_PASSWORD') }}"
-    sql: |
-      INSERT INTO onboarding.cases (applicant, screening, status)
-      VALUES (
-        '{{ inputs.application.name }}',
-        '{{ outputs.screen_sanctions.body | toJson }}',
-        'pending_review'
-      ) RETURNING case_id
-
-  - id: compliance_review
-    type: io.kestra.plugin.core.flow.Pause
-    description: |
-      Compliance reviewer must approve the KYC decision
-      for case {{ outputs.persist_case.row.case_id }}.
-
-  - id: activate_account
-    type: io.kestra.plugin.core.http.Request
-    uri: "https://core.example/accounts/activate"
-    method: POST
-    contentType: application/json
+      Authorization: "Bearer {{ secret('SNOW_TOKEN') }}"
     body: |
-      { "case_id": "{{ outputs.persist_case.row.case_id }}" }`,
+      {
+        "short_description": "SOC alert {{ inputs.alert.id }}",
+        "assignment_group": "soc-tier1"
+      }`,
         plugins: [
+            { cls: "io.kestra.plugin.core.trigger.Webhook" },
             { cls: "io.kestra.plugin.scripts.python.Commands" },
-            { cls: "io.kestra.plugin.core.http.Request" },
-            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
             { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.core.http.Request" },
         ],
         href: "/blueprints",
     },
     {
-        name: "Reconciliation & exception management",
-        title: "Reconcile two sources nightly and route every break to the right team.",
+        name: "Bare metal + NetBox source-of-truth",
+        title: "Provision bare metal through MAAS and update NetBox in one execution. No drift by design.",
         description:
-            "Pull two ledgers, reconcile in Python, and branch on exceptions. Breaks open cases in ServiceNow. Clean runs publish a signed audit bundle. Every step replayable at the same cutoff, years later.",
-        code: `id: reconciliation-exceptions
-namespace: company.regulated.ops
+            "Commission a server through MAAS, deploy the OS image, register the device in NetBox, assign the IP. If the inventory write fails, the workflow fails. Metal provisioning, source-of-truth, and downstream automation become one execution you can debug.",
+        code: `id: provision-metal-and-register
+namespace: company.platform.bare-metal
+
+inputs:
+  - id: hostname
+    type: STRING
+  - id: mac_address
+    type: STRING
+
+tasks:
+  - id: enlist
+    type: io.kestra.plugin.ee.canonical.maas.EnlistMachine
+    url: "{{ secret('MAAS_URL') }}"
+    apiKey: "{{ secret('MAAS_API_KEY') }}"
+    macAddress: "{{ inputs.mac_address }}"
+    hostname: "{{ inputs.hostname }}"
+    architecture: "amd64/generic"
+    powerType: "ipmi"
+    powerParameters:
+      power_address: "192.168.1.100"
+      power_user: "{{ secret('IPMI_USER') }}"
+      power_pass: "{{ secret('IPMI_PASSWORD') }}"
+
+  - id: commission
+    type: io.kestra.plugin.ee.canonical.maas.CommissionMachine
+    url: "{{ secret('MAAS_URL') }}"
+    apiKey: "{{ secret('MAAS_API_KEY') }}"
+    systemId: "{{ outputs.enlist.systemId }}"
+    waitForCompletion: true
+    timeout: PT30M
+
+  - id: deploy
+    type: io.kestra.plugin.ee.canonical.maas.DeployMachine
+    url: "{{ secret('MAAS_URL') }}"
+    apiKey: "{{ secret('MAAS_API_KEY') }}"
+    systemId: "{{ outputs.commission.systemId }}"
+    osystem: "ubuntu"
+    distroSeries: "jammy"
+    waitForDeployment: true
+    timeout: PT45M
+
+  - id: register_in_netbox
+    type: io.kestra.plugin.ee.netbox.CreateDevice
+    url: "{{ secret('NETBOX_URL') }}"
+    token: "{{ secret('NETBOX_API_TOKEN') }}"
+    name: "{{ inputs.hostname }}"
+
+  - id: assign_ip
+    type: io.kestra.plugin.ee.netbox.AssignIpAddress
+    url: "{{ secret('NETBOX_URL') }}"
+    token: "{{ secret('NETBOX_API_TOKEN') }}"
+    address: "10.100.1.45/24"
+    status: "active"
+    assignedObjectType: "dcim.interface"
+    assignedObjectId: "{{ outputs.register_in_netbox.primary_interface_id }}"
+    dnsName: "{{ inputs.hostname }}.mgmt.example.com"`,
+        plugins: [
+            { cls: "io.kestra.plugin.ee.canonical.maas.EnlistMachine" },
+            { cls: "io.kestra.plugin.ee.canonical.maas.CommissionMachine" },
+            { cls: "io.kestra.plugin.ee.canonical.maas.DeployMachine" },
+            { cls: "io.kestra.plugin.ee.netbox.CreateDevice" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Multi-tenant data pipeline",
+        title: "Per-tenant data pipeline with namespace isolation and signed lineage.",
+        description:
+            "Each department or programme owns its own namespace, secrets, and runtime. The same flow shape runs per tenant: extract, transform with dbt, validate, publish to the sovereign lakehouse, archive lineage. Zero blast radius between teams. Full audit per run.",
+        code: `id: tenant-data-pipeline
+namespace: company.data.tenant_a
 
 triggers:
   - id: nightly
@@ -376,106 +437,46 @@ triggers:
     cron: "0 2 * * *"
 
 tasks:
-  - id: extract_source_a
+  - id: extract_source
     type: io.kestra.plugin.jdbc.postgresql.Query
-    url: "jdbc:postgresql://ledger-a:5432/ledger"
+    url: "jdbc:postgresql://source-{{ flow.namespace }}:5432/data"
     username: "{{ secret('PG_USER') }}"
     password: "{{ secret('PG_PASSWORD') }}"
     fetchType: STORE
-    sql: "SELECT txn_id, amount FROM postings WHERE trade_date = CURRENT_DATE - 1"
+    sql: "SELECT * FROM events WHERE event_date = CURRENT_DATE - 1"
 
-  - id: extract_source_b
-    type: io.kestra.plugin.jdbc.oracle.Query
-    url: "jdbc:oracle:thin:@ledger-b:1521/LEDGER"
-    username: "{{ secret('ORACLE_USER') }}"
-    password: "{{ secret('ORACLE_PASSWORD') }}"
-    fetchType: STORE
-    sql: "SELECT txn_id, amount FROM postings WHERE trade_date = TRUNC(SYSDATE) - 1"
+  - id: dbt_build
+    type: io.kestra.plugin.dbt.cli.Build
+    projectDir: "./dbt"
+    commands:
+      - dbt build --target {{ flow.namespace }}
 
-  - id: reconcile
+  - id: quality_checks
     type: io.kestra.plugin.scripts.python.Commands
     commands:
-      - python reconcile.py --a {{ outputs.extract_source_a.uri }} --b {{ outputs.extract_source_b.uri }}
+      - python validate.py --tenant {{ flow.namespace }}
 
-  - id: route_exceptions
-    type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs.reconcile.vars.breaks > 0 }}"
-    then:
-      - id: open_case
-        type: io.kestra.plugin.core.http.Request
-        uri: "https://servicenow.example/api/now/table/incident"
-        method: POST
-        contentType: application/json
-        headers:
-          Authorization: "Bearer {{ secret('SNOW_TOKEN') }}"
-        body: |
-          {
-            "short_description": "Reconciliation breaks: {{ outputs.reconcile.vars.breaks }}",
-            "assignment_group": "ops-controls"
-          }
-
-  - id: publish_audit
+  - id: publish_lakehouse
     type: io.kestra.plugin.aws.s3.Upload
-    bucket: "ops-audit"
-    key: "recon/{{ execution.startDate | date('yyyy/MM/dd') }}/bundle.json"
-    from: "{{ outputs.reconcile.outputFiles.bundle }}"`,
-        plugins: [
-            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
-            { cls: "io.kestra.plugin.jdbc.oracle.Query" },
-            { cls: "io.kestra.plugin.scripts.python.Commands" },
-            { cls: "io.kestra.plugin.core.flow.If" },
-            { cls: "io.kestra.plugin.aws.s3.Upload" },
-        ],
-        href: "/blueprints",
-    },
-    {
-        name: "Regulatory reporting & approvals",
-        title: "Regulatory submissions with dual control and lineage any auditor will sign off on.",
-        description:
-            "Gather positions, transform with dbt, require four-eyes approval, submit to the regulator. Every cutoff replayable with signed evidence, on demand, years later. Works for FINREP, COREP, Solvency II, and internal reporting alike.",
-        code: `id: regulatory-submission
-namespace: company.regulated.reporting
+    bucket: "sovereign-lakehouse"
+    key: "{{ flow.namespace }}/{{ execution.startDate | date('yyyy/MM/dd') }}/output.parquet"
+    from: "{{ outputs.dbt_build.outputFiles.results }}"
 
-labels:
-  regulation: "FINREP / Solvency II"
-
-inputs:
-  - id: cutoffDate
-    type: DATE
-    displayName: Regulatory cutoff date
-
-tasks:
-  - id: gather_positions
-    type: io.kestra.plugin.jdbc.postgresql.Query
-    url: "jdbc:postgresql://warehouse:5432/finance"
-    username: "{{ secret('PG_USER') }}"
-    password: "{{ secret('PG_PASSWORD') }}"
-    fetchType: STORE
-    sql: |
-      SELECT * FROM risk.positions
-      WHERE as_of_date = '{{ inputs.cutoffDate }}'
-
-  - id: transform
-    type: io.kestra.plugin.dbt.cli.Build
-    projectDir: "./dbt/regulatory"
-    vars: '{ "cutoff": "{{ inputs.cutoffDate }}" }'
-
-  - id: human_approval
-    type: io.kestra.plugin.core.flow.Pause
-    description: |
-      Reviewer must validate the submission template before filing.
-
-  - id: submit
+  - id: archive_lineage
     type: io.kestra.plugin.core.http.Request
-    uri: "https://regulator.example/submit"
+    uri: "https://lineage.internal/runs"
     method: POST
-    contentType: application/xml
-    headers:
-      Authorization: "Bearer {{ secret('REGULATOR_TOKEN') }}"`,
+    contentType: application/json
+    body: |
+      {
+        "tenant": "{{ flow.namespace }}",
+        "execution_id": "{{ execution.id }}",
+        "completed_at": "{{ execution.endDate }}"
+      }`,
         plugins: [
             { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
             { cls: "io.kestra.plugin.dbt.cli.Build" },
-            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
             { cls: "io.kestra.plugin.core.http.Request" },
         ],
         href: "/blueprints",
@@ -484,76 +485,76 @@ tasks:
 
 const FAQ = [
     {
-        question: "Can Kestra orchestrate insurance workflows like claims, underwriting, policy admin, billing, and renewals?",
-        answer: "Yes. Kestra integrates with Guidewire, Duck Creek, and legacy policy and claims cores via JDBC, HTTP, SFTP, Kafka, and MQ. Orchestrate FNOL intake, fraud scoring, underwriting referrals, policy issuance, billing events, and renewals, all with four-eyes approval gates, document handling, and immutable audit trails.",
+        question: "Can Kestra orchestrate VMware lifecycle, vSphere, vCenter, and ESXi without a portal layer above it?",
+        answer: "Yes. The native VMware plugin orchestrates the full VM lifecycle (provision, snapshot, clone, template, restore, power state) across vCenter and ESXi. Event-driven triggers react to vCenter lifecycle events. The point is to replace the brittle automation UI layer (Aria, vRealize Automation) while keeping the virtualization substrate intact. No big-bang rewrite, no rip-and-replace.",
     },
     {
-        question: "Can Kestra orchestrate banking, payments, and lending workflows without replacing our core systems?",
-        answer: "Yes. Kestra sits alongside your core banking, ledger, card, and payment platforms. It connects them to data systems, case tools, partner APIs, and customer-facing services, so you can modernize incrementally without a big-bang migration.",
+        question: "How does Kestra fit alongside legacy automation suites like VMware Aria, vRealize Automation, vRO, Rundeck, HP Operations Orchestration, Control-M, and Autosys?",
+        answer: "Kestra is the open-source modernization path. Most public-sector teams start by wrapping existing jobs as Kestra flows, then migrate workflow by workflow at their own pace. No big-bang cutover, no freezing of existing automation. Procurement-friendly licensing, open standards (YAML, REST, OIDC, OpenTelemetry), and a clear exit path for every workflow.",
     },
     {
-        question: "How does Kestra support approvals, segregation of duties, and auditability?",
-        answer: "Every flow is YAML in Git. Every execution is immutable and replayable. RBAC enforces least privilege per namespace. Audit logs stream to your SIEM. Lineage ships with each run. Four-eyes approval gates are a first-class flow primitive, ready to enforce SOX, BCBS 239, Solvency II, DORA, and internal controls for regulatory submissions, payout approvals, and underwriting decisions.",
+        question: "Can Kestra orchestrate bare metal through MAAS, NetBox, and existing source-of-truth systems?",
+        answer: "Yes. Plugins for Canonical MAAS (Metal as a Service) cover the full lifecycle: list, enlist, commission, deploy, power-control machines. The NetBox plugin keeps your DCIM and IPAM source-of-truth in sync as part of the same execution. If inventory update fails, the workflow fails. No drift by design.",
     },
     {
-        question: "Can Kestra handle document-heavy onboarding and servicing workflows?",
-        answer: "Yes. Orchestrate document intake from SFTP, email, web forms, and portals; run OCR and LLM extraction; screen against sanctions and adverse-media lists; pause for human review; and post the decision back to core systems. One declarative flow covers KYC, KYB, claims documents, and servicing paperwork.",
+        question: "Can Kestra run SOC and security-automation workflows on-prem?",
+        answer: "Yes. Public-sector SOCs use Kestra as an open alternative to Palo Alto SOAR and Splunk SOAR: triage SIEM alerts, enrich with threat intelligence, score with rules or ML, isolate hosts, rotate credentials, snapshot evidence, open ServiceNow incidents. Multi-tenant by namespace for multi-state and multi-agency estates. Replayable per alert, audit-ready by default.",
     },
     {
-        question: "Does Kestra work with mainframes, SFTP, MQ, and other legacy systems?",
-        answer: "Yes. Plugins for JDBC (DB2, Oracle, Teradata, SQL Server), SFTP/FTPS, JMS/IBM MQ, Kafka, and shell execution for CICS interfaces. Most institutions start by wrapping existing jobs, then modernize incrementally. No big-bang migration required.",
+        question: "Can Kestra run fully air-gapped, sovereign, or on-premise for restricted environments?",
+        answer: "Yes. Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions. Pick the deployment that fits your jurisdiction and information-classification regime, with no cross-region data transfer.",
     },
     {
-        question: "How does Kestra fit alongside Airflow, Control-M, or IBM Workload Automation?",
-        answer: "Kestra is designed to replace them. Banks, insurers, lenders, and investment firms consolidate onto Kestra to retire Cron, Control-M, Autosys, Airflow, and hand-rolled schedulers. One control plane for data, infrastructure, and business workflows, with a plugin ecosystem spanning mainframe to cloud.",
+        question: "Does Kestra deploy on Kubernetes, OpenShift, and Docker?",
+        answer: "Yes. Native deployment on Docker, Helm charts for Kubernetes, and OpenShift. Worker groups let you isolate Linux, Windows, GPU, and secure-zone runtimes on a shared control plane. PostgreSQL backend handles millions of executions without requiring Kafka or Elasticsearch, keeping your operational footprint minimal.",
     },
     {
-        question: "Does Kestra integrate with PagerDuty for incident response?",
-        answer: "Yes. The PagerDuty plugin fires events on flow failures, SLA breaches, or any conditional branch. Route by severity, deduplicate with custom keys, and attach the full execution ID so on-call engineers can replay the failing run in one click. Works the same way for claims pipelines, reconciliations, and regulatory submissions.",
+        question: "How does Kestra handle multi-tenant isolation across departments, agencies, or states?",
+        answer: "Namespace-scoped RBAC and multi-tenant isolation let each department, agency, programme, or state own its flows, secrets, and runtime on a shared platform. Subflows and triggers coordinate work across tenants when needed. Zero blast radius between environments. A single platform team operates the control plane while consuming teams self-serve their own workloads.",
     },
     {
-        question: "Can Kestra replace VMware Aria Automation or other cloud-automation suites?",
-        answer: "Yes. Teams migrate off VMware Aria Automation, Aria Orchestrator, vRealize, and similar cloud-automation suites onto Kestra to unify cloud provisioning, platform automation, and business workflows in one declarative engine. Terraform, Ansible, shell, Python, and native API plugins cover the same provisioning and governance scenarios, with Git-backed flows, RBAC, and audit built in.",
+        question: "Does Kestra support OIDC, SAML, LDAP, Keycloak, and existing identity providers?",
+        answer: "Yes. SSO via SAML, OIDC, and OAuth2; user and group provisioning via SCIM; integration with Active Directory, LDAP, Keycloak, Azure AD, Okta, and any standards-compliant IdP. Fine-grained RBAC enforces least privilege per namespace, environment, and resource type. Aligned with how public-sector identity governance is already organized.",
     },
     {
-        question: "What deployment options exist for restricted, sovereign, or air-gapped environments?",
-        answer: "Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions. Pick the one that fits your jurisdiction, with no cross-region data transfer.",
+        question: "How does Kestra handle secrets like Vault, CyberArk, Delinea, and AWS, Azure, or GCP secret managers?",
+        answer: "Native integrations with HashiCorp Vault, CyberArk, Delinea Secrets Manager, AWS Secrets Manager, GCP Secret Manager, and Azure Key Vault. Secrets are scoped per namespace, per tenant, per flow, and never written to logs. Combined with namespace-scoped RBAC, each department or programme gets an isolated secret store on a shared, audited platform.",
     },
     {
-        question: "How do you handle secrets and credentials for regulated systems?",
-        answer: "Native integrations with HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, and CyberArk. Secrets are scoped per namespace, per tenant, per flow, and never written to logs.",
+        question: "Is Kestra open source, and does it fit public-sector procurement requirements?",
+        answer: "Yes. Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, Kill Switch, Apps for self-service UIs, and 24x7 support. Open standards throughout (YAML, REST, OIDC, OpenTelemetry), no proprietary runtime lock-in, transparent licensing. Maps cleanly to public-sector procurement, framework agreements, and open-source-by-default policies.",
     },
     {
-        question: "Is Kestra open source, and what does the licensing model look like?",
-        answer: "Yes. Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
+        question: "Can Kestra build self-service infrastructure portals in front of flows?",
+        answer: "Yes. Apps let you build a UI in front of any flow: forms for data entry, approval buttons, controlled output views. The flow remains the backend. Combined with ServiceNow triggers and CMDB integration, you can turn catalog requests into provisioned resources in minutes, with audit proof end-to-end.",
     },
     {
-        question: "Does Kestra support digital asset and BNPL workflows?",
-        answer: "Yes. Orchestrate on-chain events, stablecoin settlement, wallet reconciliation, and buy-now-pay-later authorization alongside SWIFT, SEPA, and card rails. The same declarative model covers traditional and digital asset flows.",
+        question: "How does Kestra support AI-assisted triage and runbooks while keeping humans in the loop?",
+        answer: "Orchestrate OCR, LLM extraction, classification, and decision-support models alongside rule-based checks. Pause for human review at any decision point: analyst confirmation, change-advisory approval, model promotion, exception handling. Models, prompts, and PII stay inside your environment. Every model output and human decision is captured in the immutable audit trail.",
     },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
-    <div class="financial-services">
+    <div class="public-services">
 
         <section class="hero">
             <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
             <div class="hero-inner">
                 <div class="badge-pill" data-usal="zoomin">
-                    <Icon name="mdi:scale-balance" />
-                    <span>Financial Services &amp; Insurance</span>
+                    <Icon name="mdi:city-variant-outline" />
+                    <span>Public Services &amp; Institutions</span>
                 </div>
 
                 <h1 data-usal="fade-u">
-                    One orchestration platform for<br />
-                    <span class="gradient">regulated financial workflows.</span>
+                    Modernize public-sector IT.<br />
+                    <span class="gradient">On a platform you fully control.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
-                    The regulated workflows behind modern financial services and insurance. Claims, onboarding, payments,
-                    reporting, risk, and AI, orchestrated from one declarative control plane.
+                    One orchestration engine for infrastructure, SOC, data, and modernization workflows.
+                    Integrate what you already run. Standardize how operations execute. Replace brittle orchestration silos when you're ready.
                 </p>
 
                 <div class="tags" data-usal="fade-l">
@@ -569,56 +570,56 @@ const FAQ = [
                     <div class="exec-panel">
                         <div class="exec-panel__header">
                             <span class="exec-panel__dot"></span>
-                            <span class="exec-panel__title">regulated-case-intake</span>
-                            <span class="exec-panel__meta">namespace · company.regulated.ops</span>
-                            <span class="exec-panel__duration">1.4s</span>
+                            <span class="exec-panel__title">vmware-safe-patch</span>
+                            <span class="exec-panel__meta">namespace · company.platform.vmware</span>
+                            <span class="exec-panel__duration">3.1s</span>
                         </div>
 
                         <div class="exec-panel__body">
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">receive_request</span>
-                                <span class="exec-row__type">core.http.Webhook</span>
-                                <span class="exec-row__result">accepted</span>
+                                <span class="exec-row__name">snapshot_before</span>
+                                <span class="exec-row__type">vmware.esxi.CreateVmSnapshot</span>
+                                <span class="exec-row__result">snapshot saved</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">extract_data</span>
-                                <span class="exec-row__type">scripts.python.Commands</span>
-                                <span class="exec-row__result">12 fields</span>
+                                <span class="exec-row__name">apply_patch</span>
+                                <span class="exec-row__type">scripts.shell.Commands</span>
+                                <span class="exec-row__result">ansible ok</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">validate_rules</span>
-                                <span class="exec-row__type">jdbc.postgresql.Query</span>
-                                <span class="exec-row__result">0 exceptions</span>
+                                <span class="exec-row__name">verify_health</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">200 OK</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">human_review</span>
+                                <span class="exec-row__name">change_approval</span>
                                 <span class="exec-row__type">core.flow.Pause</span>
                                 <span class="exec-row__result">Approved</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">update_systems</span>
-                                <span class="exec-row__type">core.http.Request</span>
-                                <span class="exec-row__result">completed</span>
+                                <span class="exec-row__name">update_netbox</span>
+                                <span class="exec-row__type">netbox.CreateDevice</span>
+                                <span class="exec-row__result">registered</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
                                 <span class="exec-row__name">notify_team</span>
-                                <span class="exec-row__type">teams.TeamsIncomingWebhook</span>
-                                <span class="exec-row__result">ops-team</span>
+                                <span class="exec-row__type">notifications.slack</span>
+                                <span class="exec-row__result">sent</span>
                             </div>
                         </div>
 
                         <div class="exec-panel__footer">
+                            <span class="exec-footer__item">Self-hosted</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Air-gapped</span>
+                            <span class="exec-footer__sep">·</span>
                             <span class="exec-footer__item">Audit-ready</span>
-                            <span class="exec-footer__sep">·</span>
-                            <span class="exec-footer__item">Replayable</span>
-                            <span class="exec-footer__sep">·</span>
-                            <span class="exec-footer__item">Human-approved</span>
                         </div>
                     </div>
                 </div>
@@ -628,15 +629,13 @@ const FAQ = [
                 </div>
 
                 <div class="hero-logos" data-usal="fade-u">
-                    <span class="hero-logos__label">Used by regulated teams across banking, insurance, investment, payments &amp; fintech</span>
+                    <span class="hero-logos__label">Trusted by public administrations, institutions &amp; public-service IT operators</span>
                     <div class="hero-logos__row">
-                        <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item" />
-                        <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item" />
-                        <Image src={BloombergLogoImg} alt="Bloomberg" class="hero-logos__item" />
-                        <Image src={TotalEnergiesLogoImg} alt="TotalEnergies Trading" class="hero-logos__item" />
-                        <Image src={ICapitalLogoImg} alt="iCapital" class="hero-logos__item" />
-                        <Image src={MatmutLogoImg} alt="Matmut" class="hero-logos__item" />
-                        <Image src={GateIoLogoImg} alt="Gate.io" class="hero-logos__item" />
+                        <Image src={COELogoImg} alt="Council of Europe" class="hero-logos__item hero-logos__item--coe" />
+                        <Image src={DataportLogoImg} alt="Dataport" class="hero-logos__item hero-logos__item--dataport" />
+                        <Image src={ITZBundLogoImg} alt="ITZBund" class="hero-logos__item hero-logos__item--itzbund" />
+                        <Image src={BundesagenturLogoImg} alt="Bundesagentur für Arbeit" class="hero-logos__item hero-logos__item--bundesagentur" />
+                        <Image src={BattelleLogoImg} alt="Battelle" class="hero-logos__item hero-logos__item--battelle" />
                     </div>
                 </div>
             </div>
@@ -645,10 +644,12 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                    One control plane for the <span class="highlight">platforms public-sector IT runs</span>.
                 </h2>
                 <p class="flow__lead">
-                    Claim, payment, customer, policy, portfolio event, or reporting deadline. The orchestration job is the same: connect systems, route exceptions, trigger actions, capture evidence.
+                    VMware lifecycle. Bare-metal commissioning. SOC alert response. GitOps delivery.
+                    Cross-department data. Whether you're orchestrating vSphere, MAAS, Argo CD,
+                    or a sovereign data platform, the engine is the same. Self-hosted, multi-tenant, audit-ready.
                 </p>
 
                 <div class="flow__grid">
@@ -677,7 +678,7 @@ const FAQ = [
                 </div>
 
                 <h5 class="flow__footer text-center">
-                    Each step is a declarative YAML task. Change the source system, workflow step, or destination without rebuilding the whole process.
+                    Each step is a declarative YAML task. Wrap an existing legacy job today. Modernize it in place tomorrow. No rewrite of the whole estate.
                 </h5>
             </div>
         </section>
@@ -685,8 +686,8 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>Every critical workflow in financial services and insurance.</h2>
-                    <p>Core systems, money movement, risk and compliance, customer operations. One engine runs them all.</p>
+                    <h2>What public-sector IT teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <p>Real workloads from real institutions. Self-service infrastructure at federal IT centres. SOC operations across multi-state estates. Sovereign data platforms in EU institutions. Incremental modernization of legacy automation.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
                     <div class="workloads__group">
@@ -710,7 +711,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    <span class="highlight">Enterprise-Grade</span> Orchestration for Every Regulated Workload.
+                    Built to the bar <span class="highlight">institutional IT</span> actually needs.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -724,8 +725,8 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2><span class="highlight">Blueprints</span> for financial services and insurance.</h2>
-                <p class="build__lead">Production workflows, from claims triage to regulatory reporting. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
+                <h2>Patterns from real <span class="highlight">public-sector deployments</span>.</h2>
+                <p class="build__lead">Real workflows running today inside public-sector IT teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
                 <div class="wrapper">
                     <div class="inner">
                         <div class="header row g-0">
@@ -772,18 +773,19 @@ const FAQ = [
 
         <PluginsBlock>
             <Fragment slot="title">
-                Integrates with the <span class="highlight">systems regulated teams</span> already rely on.
+                Integrates with the <span class="highlight">systems public-sector IT teams</span> already run.
             </Fragment>
             <Fragment slot="description">
-                Connect core platforms, policy and claims systems, data stacks, messaging layers, case tools,
-                and security controls through {totalPlugins}+ plugins. Or build the exact integration your environment requires.
+                Native plugins for vSphere, vCenter, ESXi, KVM, Nutanix, MAAS, NetBox, Argo CD, Cloudflare,
+                ServiceNow, Vault, CyberArk, Delinea, Splunk, Elastic, plus mainframe, SFTP, MQ, Kafka,
+                and 1,200+ more. Or build the exact integration your environment needs.
             </Fragment>
         </PluginsBlock>
 
         <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
-            <Fragment slot="title">One platform for regulated workflows.</Fragment>
-            Modernize legacy systems, connect the tools your teams already use, and add lineage, approvals,
-            and auditability across claims, onboarding, payments, reconciliations, reporting, servicing, and risk.
+            <Fragment slot="title">Modernize public-sector IT on a platform you fully own.</Fragment>
+            Self-hosted, air-gapped, and procurement-friendly. Modernize legacy automation incrementally,
+            run SOC and platform operations on-prem, and deploy AI inside your perimeter. One orchestration engine you fully control.
         </SeeHow>
 
         <Faq items={FAQ} client:visible />
@@ -791,15 +793,18 @@ const FAQ = [
 </Layout>
 
 <style lang="scss">
-    $fs-yellow:        #EAB308;
-    $fs-yellow-bright: #FDE047;
-    $fs-yellow-light:  #FEF3C7;
-    $fs-yellow-deep:   #713F12;
-    $fs-platinum:    #E8EDF0;
+    // ── Public Services palette: civic cobalt blue ───────────────────
+    // Distinct from FSI (yellow), Healthcare (green), Automotive (red),
+    // Retail (purple). Reads as institutional, sovereign, civic.
+    $ps-blue:        #2563EB;
+    $ps-blue-bright: #60A5FA;
+    $ps-blue-light:  #93C5FD;
+    $ps-blue-deep:   #1E3A8A;
+    $ps-platinum:    #E8EDF0;
 
-    .financial-services { overflow: clip; }
+    .public-services { overflow: clip; }
 
-    :global(html.dark) .financial-services {
+    :global(html.dark) .public-services {
         .flow,
         .workloads,
         .build,
@@ -816,7 +821,7 @@ const FAQ = [
     .hero {
         position: relative;
         overflow: hidden;
-        background: #060a0c;
+        background: #050a14;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -836,7 +841,7 @@ const FAQ = [
             transform: translateX(-50%);
             width: 1100px;
             height: 520px;
-            background: radial-gradient(ellipse at center, rgba(234, 179, 8, 0.20) 0%, rgba(234, 179, 8, 0) 70%);
+            background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.32) 0%, rgba(37, 99, 235, 0) 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -880,7 +885,7 @@ const FAQ = [
         }
 
         .gradient {
-            background: linear-gradient(90deg, #{$fs-yellow-bright}, #{$fs-yellow-light});
+            background: linear-gradient(90deg, #{$ps-blue-bright}, #{$ps-blue-light});
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -904,12 +909,12 @@ const FAQ = [
         padding: 4px 1.125rem;
         gap: 0.5rem;
         border-radius: 2.5rem;
-        background: #060b0d;
+        background: #050a14;
         position: relative;
         z-index: 1;
         font-size: $font-size-xs;
         font-weight: 600;
-        color: $fs-yellow-bright;
+        color: $ps-blue-bright;
 
         &::before {
             content: "";
@@ -917,7 +922,7 @@ const FAQ = [
             inset: 0;
             border-radius: 2.5rem;
             padding: 1px;
-            background: linear-gradient(90deg, #{$fs-yellow} 0%, #{$fs-yellow-light} 100%);
+            background: linear-gradient(90deg, #{$ps-blue} 0%, #{$ps-blue-light} 100%);
             -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -938,61 +943,61 @@ const FAQ = [
         gap: 6px;
         padding: 6px 14px;
         border-radius: 9999px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.04);
-        color: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.78);
         font-size: $font-size-xs;
         white-space: nowrap;
         transition: all 0.2s ease;
 
         &:hover {
-            border-color: rgba(253, 224, 71, 0.4);
-            background: rgba(234, 179, 8, 0.08);
+            border-color: rgba(96, 165, 250, 0.55);
+            background: rgba(37, 99, 235, 0.14);
             color: $white;
 
-            :global(.tag-icon) { color: $fs-yellow-light; }
+            :global(.tag-icon) { color: $ps-blue-light; }
         }
 
         :global(.tag-icon) {
             width: 12px;
             height: 12px;
-            color: $fs-yellow-bright;
+            color: $ps-blue-bright;
             flex-shrink: 0;
         }
     }
 
-    @property --fs-neon-angle {
+    @property --ps-neon-angle {
         syntax: '<angle>';
         inherits: false;
         initial-value: 0deg;
     }
 
-    @keyframes fs-neon-trace {
-        to { --fs-neon-angle: 360deg; }
+    @keyframes ps-neon-trace {
+        to { --ps-neon-angle: 360deg; }
     }
 
     .exec-panel-wrapper {
-        --fs-neon-angle: 0deg;
+        --ps-neon-angle: 0deg;
         border-radius: 10px;
         background: conic-gradient(
-            from var(--fs-neon-angle),
-            rgba(234, 179, 8, 0.12) 0deg,
-            rgba(234, 179, 8, 0.12) 320deg,
-            #{$fs-yellow}              340deg,
-            $fs-platinum             350deg,
-            #{$fs-yellow}              360deg
+            from var(--ps-neon-angle),
+            rgba(37, 99, 235, 0.16) 0deg,
+            rgba(37, 99, 235, 0.16) 320deg,
+            #{$ps-blue}              340deg,
+            $ps-platinum             350deg,
+            #{$ps-blue}              360deg
         );
         padding: 1px;
         box-shadow:
-            0 1.214px 10.321px 0 rgba(234, 179, 8, 0.22) inset,
-            -6.667px -7.143px 31.334px 3.333px rgba(234, 179, 8, 0.55);
+            0 1.214px 10.321px 0 rgba(37, 99, 235, 0.28) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(37, 99, 235, 0.6);
         width: 100%;
         max-width: 640px;
-        animation: fs-neon-trace 5s linear infinite;
+        animation: ps-neon-trace 5s linear infinite;
     }
 
     .exec-panel {
-        background: #06100f;
+        background: #060d1d;
         border-radius: 9px;
         overflow: hidden;
         backdrop-filter: blur(12px);
@@ -1004,7 +1009,7 @@ const FAQ = [
             gap: 0.75rem;
             padding: 12px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(234, 179, 8, 0.04);
+            background: rgba(37, 99, 235, 0.08);
             flex-wrap: wrap;
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
@@ -1014,8 +1019,8 @@ const FAQ = [
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: $fs-yellow-bright;
-            box-shadow: 0 0 8px $fs-yellow-bright;
+            background: $ps-blue-bright;
+            box-shadow: 0 0 8px $ps-blue-bright;
             flex-shrink: 0;
         }
 
@@ -1032,7 +1037,7 @@ const FAQ = [
         }
 
         &__duration {
-            color: $fs-yellow-light;
+            color: $ps-blue-light;
             font-weight: 500;
         }
 
@@ -1046,10 +1051,10 @@ const FAQ = [
         &__footer {
             padding: 10px 16px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(234, 179, 8, 0.03);
+            background: rgba(37, 99, 235, 0.06);
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
-            color: $fs-yellow-light;
+            color: $ps-blue-light;
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
@@ -1069,14 +1074,14 @@ const FAQ = [
         font-size: $font-size-xs;
         transition: background 0.2s;
 
-        &:hover { background: rgba(234, 179, 8, 0.06); }
+        &:hover { background: rgba(37, 99, 235, 0.10); }
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: 20px 1fr auto;
         }
 
         &__check {
-            color: $fs-yellow-bright;
+            color: $ps-blue-bright;
             font-weight: 700;
         }
 
@@ -1092,7 +1097,7 @@ const FAQ = [
         }
 
         &__result {
-            color: $fs-yellow-light;
+            color: $ps-blue-light;
             text-align: right;
             white-space: nowrap;
         }
@@ -1114,16 +1119,20 @@ const FAQ = [
         }
     }
 
+    // ── Hero logo strip ──────────────────────────────────────────────
+    // 5 logos on a single row at md+, normalised to the same optical
+    // weight via per-logo max-height + max-width tuned to each SVG's
+    // aspect ratio.
     .hero-logos {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1.5rem;
         align-items: center;
         justify-content: center;
         margin-top: 1rem;
         padding-top: 2rem;
         width: 100%;
-        max-width: 52rem;
+        max-width: 60rem;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
 
@@ -1132,24 +1141,22 @@ const FAQ = [
             font-weight: 600;
             letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(255, 255, 255, 0.6);
         }
 
         &__row {
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             align-items: center;
             justify-items: center;
-            column-gap: 0.5rem;
-            row-gap: 1.25rem;
+            column-gap: 2rem;
+            row-gap: 1.5rem;
             width: 100%;
-            max-width: 48rem;
-            margin: 0 auto;
 
             @include media-breakpoint-down(md) {
                 grid-template-columns: repeat(2, 1fr);
-                column-gap: 1rem;
-                row-gap: 1.25rem;
+                column-gap: 1.5rem;
+                row-gap: 1.75rem;
             }
         }
 
@@ -1158,32 +1165,28 @@ const FAQ = [
             height: auto;
             display: block;
             filter: brightness(0) invert(1);
-            opacity: 0.8;
+            opacity: 0.85;
             transition: opacity 0.2s;
+            object-fit: contain;
             max-width: 100%;
 
             &:hover { opacity: 1; }
 
-            // Row 1: 4 logos, each spans 3 of 12 cols
-            &:nth-child(-n+4) { grid-column: span 3; }
-            // Row 2: 3 logos, each spans 4 of 12 cols (3×4=12 centers naturally)
-            &:nth-child(n+5)  { grid-column: span 4; }
+            // Unified optical sizing across all industry pages:
+            // text wordmarks 36px, small text 32px, compact icon+text
+            // 42px, stacked vertically icon+text 52–56px.
+            &--coe           { max-height: 56px; max-width: 130px; }  // stacked icon + text + stars
+            &--itzbund       { max-height: 56px; max-width: 150px; }  // stacked icon + text
+            &--dataport      { max-height: 36px; max-width: 170px; }  // text
+            &--bundesagentur { max-height: 36px; max-width: 180px; }  // text + symbol
+            &--battelle      { max-height: 32px; max-width: 140px; }  // small text
 
             @include media-breakpoint-down(md) {
-                &:nth-child(-n+4),
-                &:nth-child(n+5) { grid-column: auto; }
+                &--coe, &--itzbund { max-height: 60px; max-width: 160px; }
+                &--dataport        { max-height: 40px; max-width: 190px; }
+                &--bundesagentur   { max-height: 40px; max-width: 200px; }
+                &--battelle        { max-height: 36px; max-width: 150px; }
             }
-
-            // Unified optical sizing across all industry pages:
-            // text wordmarks 36px, compact icon+text 42px, stacked
-            // vertically icon+text 52–56px. Mobile bumps each by ~4px.
-            &:nth-child(1) { max-height: 36px; max-width: 170px; }  // JPMorgan (text)
-            &:nth-child(2) { max-height: 42px; max-width: 180px; }  // Crédit Agricole (icon + text)
-            &:nth-child(3) { max-height: 36px; max-width: 200px; }  // Bloomberg (text wide)
-            &:nth-child(4) { max-height: 56px; max-width: 200px; }  // TotalEnergies (icon + text stacked)
-            &:nth-child(5) { max-height: 36px; max-width: 160px; }  // iCapital (text)
-            &:nth-child(6) { max-height: 42px; max-width: 170px; }  // Matmut (icon + text)
-            &:nth-child(7) { max-height: 36px; max-width: 140px; }  // Gate.io (text)
         }
     }
 
@@ -1211,7 +1214,7 @@ const FAQ = [
             color: var(--ks-content-primary);
 
             .highlight {
-                background: linear-gradient(90deg, #{$fs-yellow}, #{$fs-yellow-bright});
+                background: linear-gradient(90deg, #{$ps-blue}, #{$ps-blue-bright});
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
@@ -1236,8 +1239,8 @@ const FAQ = [
         &__grid {
             width: 100%;
             padding: 2rem 1rem;
-            background-color: rgba(234, 179, 8, 0.04);
-            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23EAB308' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            background-color: rgba(37, 99, 235, 0.06);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%232563EB' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
             border-radius: 10px;
         }
 
@@ -1429,6 +1432,13 @@ const FAQ = [
             p { color: var(--ks-content-secondary); font-size: $font-size-lg; margin: 0; }
         }
 
+        &__highlight {
+            background: linear-gradient(90deg, #{$ps-blue}, #{$ps-blue-bright});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         &__group {
             max-width: 72rem;
             margin: 0 auto 3rem;
@@ -1441,10 +1451,10 @@ const FAQ = [
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: $fs-yellow-deep;
+            color: $ps-blue-deep;
             margin: 0 0 1rem;
 
-            :global(html.dark) & { color: $fs-yellow-bright; }
+            :global(html.dark) & { color: $ps-blue-bright; }
         }
 
         &__grid {
@@ -1465,19 +1475,19 @@ const FAQ = [
         transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 
         &:hover {
-            border-color: $fs-yellow;
+            border-color: $ps-blue;
             transform: translateY(-2px);
             box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
         }
 
         &__icon {
             font-size: 1.375rem;
-            color: $fs-yellow-deep;
+            color: $ps-blue;
             margin-bottom: 0.75rem;
             width: 1.375rem;
             height: 1.375rem;
 
-            :global(html.dark) & { color: $fs-yellow-bright; }
+            :global(html.dark) & { color: $ps-blue-bright; }
         }
 
         &__title {
@@ -1511,7 +1521,7 @@ const FAQ = [
                 padding-inline: $rem-1;
                 text-align: center;
 
-                .highlight { color: $fs-yellow; }
+                .highlight { color: $ps-blue; }
 
                 @include media-breakpoint-up(xl) { padding-inline: 0; }
             }
@@ -1678,7 +1688,7 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $fs-yellow-bright; }
+            .highlight { color: $ps-blue-bright; }
         }
 
         :global(.features-grid) {
@@ -1686,7 +1696,7 @@ const FAQ = [
         }
 
         :global(.feature-icon) {
-            color: $fs-yellow !important;
+            color: $ps-blue !important;
         }
         :global(.feature-title) {
             color: #fff !important;

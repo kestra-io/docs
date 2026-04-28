@@ -9,8 +9,6 @@ docId: flows
 
 Flow is a container for tasks and their orchestration logic.
 
-## Flows – define orchestration units
-
 A Flow is the fundamental unit of orchestration in Kestra. It defines a set of tasks, their execution order, inputs, outputs, and orchestration logic.
 
 <div class="video-container">
@@ -211,5 +209,5 @@ For more information about the Kestra server CLI, check the [Server CLI Referenc
 
 ### Can I sync a local flows directory to be continuously loaded into Kestra?
 
-At the time of writing, there is no syncing of a flows directory to Kestra. However, we are aware of that need and we are working on a solution. You can follow up in [this GitHub issue](https://github.com/kestra-io/kestra/issues/2403).
+Yes. See [Synchronize Local Flows](../../15.how-to-guides/local-flow-sync/index.md) for syncing a local directory, or [Sync Flows from a Git Repository](../../15.how-to-guides/syncflows/index.md) for Git-based workflows.
 

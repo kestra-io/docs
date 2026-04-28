@@ -100,8 +100,6 @@ If you want inspiration beyond the examples on this page, browse the Apps-focuse
   <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 To create a new app, go to the **Apps** page in the main UI and click **+ Create**. Add your app configuration as YAML and click **Save**. Like flows, apps have multiple editor views — you can configure the app while viewing documentation, previewing the layout, or searching the blueprint repository.
 
 You can set `disabled: true` in the YAML to create an app in an inactive state. A disabled app does not appear in the catalog and cannot be opened via its URL until you enable it. This is useful for staging an app before you are ready to release it.

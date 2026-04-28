@@ -14,8 +14,6 @@ How to use the null coalescing operator to handle null and undefined values.
   <iframe src="https://www.youtube.com/embed/j6H_54CpLuY?si=lU5hZV6jL9MHUQWf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 The null coalescing operator is a binary operator that returns its left-hand value if it's not null; otherwise, it returns its right-hand value. You can think of it as a way to provide a default value when the left-hand value is null.
 
 ```yaml

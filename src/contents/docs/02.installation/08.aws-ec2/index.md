@@ -12,19 +12,14 @@ Install Kestra on AWS EC2 with PostgreSQL RDS database and S3 internal storage b
 Prefer a one-click option? You can launch Kestra directly from the [AWS Marketplace listing](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg).
 :::
 
-## Deploy Kestra on AWS EC2 with RDS and S3
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/qG6R_tKvDxY?si=5D3fG4b6yTRjjl2m" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
+## Prerequisites
 
-This guide provides instructions for deploying Kestra on Amazon Web Services (AWS). We use an EC2 with Docker to host Kestra server, a PostgreSQL RDS database, and AWS S3 as storage backend.
-
-Prerequisites:
 - Basic knowledge about using a command line interface
-- Basic knowledge about EC2, S3 and PostgreSQL.
+- Basic knowledge about EC2, S3, and PostgreSQL.
 
 You can find the corresponding [full Terraform configuration in this repository](https://github.com/kestra-io/deployment-templates/tree/main/aws).
 
@@ -77,7 +72,7 @@ kestra:
 Next, use the following command to start the Kestra server:
 
 ```bash
-`docker compose up -d`
+docker compose up -d
 ```
 ## Step 3: Allow external traffic
 
@@ -105,14 +100,14 @@ For a simple proof of concept (PoC), you can keep the PostgreSQL database runnin
 
 However, for a production-grade installation, we recommend a managed database service such as [AWS RDS](https://aws.amazon.com/rds/).
 
-**Create a AWS RDS database**
+**Create an AWS RDS database**
 
 1. Go to the [RDS console](https://eu-north-1.console.aws.amazon.com/rds/home).
 2. Create a database and choose PostgreSQL (Kestra also supports MySQL, but PostgreSQL is recommended)
 3. Set a username and password.
 4. On the connectivity configuration choose “Connect to an EC2 compute resource” and choose your EC2 instance.
 5. Also select the existing DB subnet group and existing VPC security group and choose the one attached to your EC2 instance.
-5. Fine-tune instance class and storage type to avoid import AWS costs. For a first step, a small PostgreSQL instance is enough.
+6. Fine-tune instance class and storage type to avoid incurring AWS costs. For a first step, a small PostgreSQL instance is enough.
 6. Click create and wait for completion
 
 ![RDS setup](./rds_setup1.png)
@@ -173,8 +168,6 @@ kestra:
 For more information on S3 storage configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md).
 
 ## Next steps
-
-This guide walked you through installing Kestra on an AWS EC2 instance with RDS database and S3 storage backend.
 
 This setup provides the easiest starting point for running Kestra in production on a single machine. For a deployment to a distributed cluster, check the [Kubernetes deployment guide](../03.kubernetes/index.md).
 

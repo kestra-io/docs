@@ -14,8 +14,6 @@ Build stateful workflows with the KV Store.
   <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=69b0O0fxKESDnQs7" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## KV Store – persist shared state
 
 Kestra's workflows are stateless by design. All workflow executions and task runs are isolated from each other by default to avoid any unintended side effects. When you pass data between tasks, you do so explicitly by passing outputs from one task to another, and that data is stored transparently in Kestra's internal storage. This stateless execution model ensures that workflows are idempotent and can be executed anywhere in parallel at scale.
