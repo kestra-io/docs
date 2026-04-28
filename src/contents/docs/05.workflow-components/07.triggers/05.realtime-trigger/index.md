@@ -85,6 +85,27 @@ triggers:
     queueUrl: https://sqs.eu-north-1.amazonaws.com/123456789/MyQueue
 ```
 
+## Worker failover for Realtime Triggers
+
+Each Realtime Trigger runs as a dedicated listener thread on one specific worker. If that worker stops, the listener stops with it. Kestra's [liveness mechanism](../../../10.administrator-guide/server-lifecycle/index.md) will detect this and re-emit the trigger so another available worker can pick it up.
+
+The time before failover depends on how the worker stopped:
+
+- **Graceful shutdown** (e.g. `docker stop`, rolling deploy): the executor waits for `kestra.server.terminationGracePeriod` (default `PT5M`) before reassigning the trigger. This prevents duplicate processing when the worker is expected to come back shortly, such as during a rolling deployment.
+- **Abrupt failure** (no heartbeat received): the executor detects the missing heartbeat within `kestra.server.liveness.timeout` and reassigns the trigger without waiting for the grace period.
+
+To reduce the failover time after a graceful shutdown, lower the `terminationGracePeriod`:
+
+```yaml
+kestra:
+  server:
+    terminationGracePeriod: PT1M  # default is PT5M
+```
+
+::alert{type="info"}
+Events are not lost during the failover window. They remain in the source system (Kafka topic, SQS queue, etc.) and will be consumed once the trigger listener is restarted on another worker.
+::
+
 ## Comparison with real-time data processing engines
 
 It's important to note that Kestra's Realtime Triggers are not intended to be used as a replacement for real-time data processing engines such as Apache Flink, Apache Beam, or Google Dataflow.

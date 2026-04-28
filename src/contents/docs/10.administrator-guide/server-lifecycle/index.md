@@ -50,6 +50,10 @@ Configure this behavior via `kestra.server.workerTaskRestartStrategy`:
 - `IMMEDIATELY`: resubmit jobs right away.
 - `NEVER`: never resubmit jobs (tasks remain incomplete and flows stay `RUNNING`).
 
+::alert{type="info"}
+This resubmission mechanism also applies to **Realtime Triggers**. If the worker running a Realtime Trigger listener is stopped gracefully, Kestra will wait for the `terminationGracePeriod` before reassigning the trigger to another worker. See [Worker failover for Realtime Triggers](../../05.workflow-components/07.triggers/05.realtime-trigger/index.md#worker-failover-for-realtime-triggers) for more details.
+::
+
 Resubmitted task runs show multiple attempts in the UI.
 
 ![resubmitted task run](./taskrun-resubmitted-attempts.png)
