@@ -14,9 +14,19 @@ interface Props {
         src: any
         alt: string
     }
+    secondaryCta?: {
+        label: string
+        href: string
+    }
 }
 
-const { title, description, competitor, image } = Astro.props as Props
+const {
+    title,
+    description,
+    competitor,
+    image,
+    secondaryCta = { label: "Book a Demo", href: "/demo" },
+} = Astro.props as Props
 ---
 
 <section
@@ -42,10 +52,10 @@ const { title, description, competitor, image } = Astro.props as Props
                     href="/get-started"
                     class="btn btn-primary text-white"
                 >
-                    Try for Free - 26k GitHub Stars
+                    Get Started
                 </Link>
-                <Link href="/demo" class="btn btn-secondary">
-                    Book a Demo
+                <Link href={secondaryCta.href} class="btn btn-secondary">
+                    {secondaryCta.label}
                 </Link>
             </div>
         </div>
