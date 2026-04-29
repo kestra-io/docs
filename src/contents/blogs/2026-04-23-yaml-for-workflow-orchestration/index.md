@@ -47,7 +47,7 @@ triggers:
     cron: "0 6 * * *"
 ```
 
-The YAML version above; the equivalent in a Python-based orchestrator below:
+The YAML has none of that overhead. The Python version requires decorator patterns, operator overloading (`>>`), framework-specific imports, and the implicit convention that calling `etl_pipeline()` at module scope registers it with the scheduler.
 
 ```python
 from some_orchestrator import dag, task, schedule
@@ -70,7 +70,7 @@ def etl_pipeline():
 etl_pipeline()
 ```
 
-The Python version requires decorator patterns, operator overloading (`>>`), framework-specific imports, and the implicit convention that calling `etl_pipeline()` at module scope registers it with the scheduler. None of that serves the goal, which is: run extract, then load, on a schedule. It serves the framework.
+None of that serves the goal of running extract, then load, on a schedule. It serves the framework.
 
 When Python is your orchestration language, your task code runs inside the framework's execution environment. The framework owns imports and controls execution context. If you want to run a Bash script or a Node.js function, you go through the framework's abstractions for it. The orchestration layer and the execution layer share a runtime, which means changing one touches the other.
 
