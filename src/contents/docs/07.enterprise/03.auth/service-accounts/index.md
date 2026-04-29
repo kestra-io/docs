@@ -16,8 +16,6 @@ How to create and manage Service Accounts.
   <iframe src="https://www.youtube.com/embed/5_rVseynye4?si=LdgbY4LOwYLgIat2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 A Service Account represents an **application** that can access Kestra. It is not tied to a specific person and does not have personal information (such as the first name, last name, or email) attached to it. Instead, it only has a name, an optional description, an optional allocation to a group, and a list of Roles that grant it permissions to access specific resources.
 
 ## Service accounts vs. users

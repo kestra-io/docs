@@ -2,10 +2,13 @@
 import { Image } from "astro:assets"
 
 import agent from "./assets/overview/agent.png"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import code from "./assets/overview/code.png"
 import eventDriven from "./assets/overview/event-driven.png"
 import governance from "./assets/overview/governance.png"
 import { API_URL } from "astro:env/client"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const images = [
     {
@@ -89,7 +92,7 @@ const pluginIcons = await Promise.all(
                                         {pluginIcons.map((icon, index) => (
                                             <span set:html={icon} />
                                         ))}
-                                        1200+ plugins
+                                        {totalPlugins}+ plugins
                                     </p>
                                 )}
                             </figcaption>

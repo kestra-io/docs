@@ -16,8 +16,6 @@ There are only two kinds of programming languages: the ones people complain abou
   <iframe src="https://www.youtube.com/embed/oZYtLimdKBo?si=7BHcOIvSgxELwh33" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 In this post, we'll look at the different ways that you can run your code inside of Kestra and how you can make your workflows more dynamic. Let's dive in!
 
 ## Why use different languages?

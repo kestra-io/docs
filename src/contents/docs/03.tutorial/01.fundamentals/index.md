@@ -14,7 +14,7 @@ If you haven't already, follow the [Quickstart Guide](../../01.quickstart/index.
 
 ## Build your first Hello World Flow
 
-<div class=video-container>
+<div class="video-container">
   <iframe src="https://www.youtube.com/embed/Foq3RZfwV90?si=uO7xdC5TXZxMGShB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
@@ -97,8 +97,6 @@ tasks:
 
 Learn more about flows in the [Flows page](../../05.workflow-components/01.flow/index.md).
 
----
-
 ## Tasks
 
 Now that you know how to document and organize your flows, it's time to get to the core of orchestration: tasks.
@@ -153,8 +151,6 @@ Kestra supports [hundreds of tasks](/plugins) integrating with various external 
 If you want to comment or uncomment out part of your code, use `CTRL + /` on Windows/Linux or `⌘ + /` on macOS. All available keyboard shortcuts are listed in the code editor context menu.
 :::
 
----
-
 ## Create and run a flow
 
 To this point, we have shown some flows to run and get familiar with. Now, let's create a flow to use throughout the rest of the tutorial. Open the **Flows** view and click **+ Create**:
@@ -185,4 +181,4 @@ After execution, you’ll be directed to the Gantt view to see the stages of you
 
 ![gantt view](./gantt-view.png)
 
-While fetching data is a great first step, it is just that, a first step. In the next sections, with a basic understanding of flows and tasks under our belt, we introduce other critical components to Kestra Flows: Inputs, Outputs, Triggers, and more.
+While fetching data is a great first step, it is just that, a first step. In the next sections, you'll explore the other critical components of Kestra flows: Inputs, Outputs, Triggers, and more.
