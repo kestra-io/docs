@@ -1,5 +1,5 @@
 ---
-title: "What are Agentic Workflows? IBM & GitHub Insights"
+title: "What are Agentic Workflows?"
 description: "Explore agentic workflows, AI-driven processes where autonomous AI agents make decisions, automate tasks, and coordinate with minimal human oversight. Learn how Kestra enables their implementation."
 metaTitle: "Agentic Workflows: Definition, Examples & How They Work"
 metaDescription: "Explore agentic workflows: AI-driven processes where autonomous agents make decisions, automate tasks, and coordinate. Learn more about agentic AI!"
