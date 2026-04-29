@@ -1,7 +1,7 @@
 ---
 title: "Kestra MCP: A Live Plugin and Blueprint Catalog for AI Coding Agents"
 description: "The Kestra MCP server exposes the full plugin registry and Blueprint catalog as Model Context Protocol tools. Connect any AI coding agent to it once, and it can discover plugins, inspect task schemas, and fetch ready-made flow YAML without leaving the conversation."
-date: 2026-05-01T09:00:00
+date: 2026-04-30T09:00:00
 category: Solutions
 author:
   name: François Delbrayelle
