@@ -10,8 +10,6 @@ version: ">= 0.20.0"
 
 Special labels for system use only.
 
-## System and hidden Labels in Kestra – Admin metadata
-
 System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 6WuLA1vh9lpFsGyrkuVRYb`.
 
 ![correlationId](./correlationId.png)
@@ -19,8 +17,6 @@ System Labels and Hidden Labels are reserved for storing metadata used by admini
 The table will then show the execution connected to that ID.
 
 ![Correlation ID Filter Result](./correlationId-filter-result.png)
-
----
 
 ## Hidden labels
 
@@ -36,8 +32,6 @@ kestra:
 ```
 
 By default, System Labels (prefixed with `system.`) are hidden. To display them, simply remove the `system.` prefix from the list of hidden prefixes.
-
----
 
 ## System labels
 
@@ -62,8 +56,6 @@ The Execution API supports setting this label at execution creation but not modi
 
 - Automatically set for every execution and contains the username of the user who triggered the execution
 - Useful for auditing and identifying who initiated specific executions
-
----
 
 ### `system.readOnly`
 

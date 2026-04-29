@@ -74,8 +74,6 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
 :::
 
----
-
 ## Microsoft Entra ID SCIM setup
 
 ### 1. Register Kestra as an Enterprise Application:

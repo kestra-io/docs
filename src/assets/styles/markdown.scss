@@ -208,6 +208,7 @@
         border: 1px solid var(--ks-background-primary);
         background-color: var(--ks-background-secondary);
         overflow: hidden;
+        margin-bottom: $spacer * 1.5;
 
         iframe {
             position: absolute;

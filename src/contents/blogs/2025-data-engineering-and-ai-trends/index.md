@@ -18,8 +18,6 @@ Many trends that began shaping [data engineering in 2024](../2024-01-24-2024-dat
   <iframe src="https://www.youtube.com/embed/JMfRRP_2Bs8?si=W1SSyqcwRGw-sfZV" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## **1. Generative AI as an Efficiency Driver**
 
 Last year’s prediction that AI would turn data teams [from cost into profit centers](../2024-01-24-2024-data-engineering-trends#data-teams-as-profit-centers/index.md) hasn't played out as expected. While generative AI is delivering measurable productivity gains, its impact on **revenue generation remains limited outside hyperscalers and niche applications**.

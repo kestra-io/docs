@@ -25,6 +25,9 @@ import RenaultLogoImg from "~/assets/trusted-companies/Renault.svg"
 import MichelinLogoImg from "~/assets/trusted-companies/Michelin.svg"
 import XiaomiLogoImg from "~/assets/landing/infrastructure/companies/xiaomi.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
     { label: "Plant & edge ready", icon: "mdi:factory" },
@@ -439,7 +442,7 @@ const FAQ = [
     },
     {
         question: "How is Kestra different from IBM Maximo, SAP IPC, or hand-rolled MES scripts?",
-        answer: "Maximo and SAP IPC are domain suites, not orchestration engines. Hand-rolled scripts die the day the engineer who wrote them leaves. Kestra is declarative YAML in Git with 1,200+ plugins covering plant floor to cloud — so quality, warranty, recall, and telemetry live in one versioned, owned-by-your-team system.",
+        answer: `Maximo and SAP IPC are domain suites, not orchestration engines. Hand-rolled scripts die the day the engineer who wrote them leaves. Kestra is declarative YAML in Git with ${totalPlugins}+ plugins covering plant floor to cloud — so quality, warranty, recall, and telemetry live in one versioned, owned-by-your-team system.`,
     },
     {
         question: "How do you handle secrets and engineering IP?",
@@ -692,7 +695,7 @@ const FAQ = [
             </Fragment>
             <Fragment slot="description">
                 Connect MES, SCADA, PLM, ERP, dealer DMS, supplier EDI feeds, telemetry platforms, data stacks,
-                and security controls through 1,200+ plugins. Or build the exact integration your environment requires.
+                and security controls through {totalPlugins}+ plugins. Or build the exact integration your environment requires.
             </Fragment>
         </PluginsBlock>
 
@@ -707,10 +710,10 @@ const FAQ = [
 </Layout>
 
 <style lang="scss">
-    $au-amber:        #D97706;
-    $au-amber-bright: #FBBF24;
-    $au-amber-light:  #FEF3C7;
-    $au-amber-deep:   #92400E;
+    $au-red:        #DC2626;
+    $au-red-bright: #F87171;
+    $au-red-light:  #FECACA;
+    $au-red-deep:   #7F1D1D;
     $au-platinum:    #E8EDF0;
 
     .automotive { overflow: clip; }
@@ -752,7 +755,7 @@ const FAQ = [
             transform: translateX(-50%);
             width: 1100px;
             height: 520px;
-            background: radial-gradient(ellipse at center, rgba(217, 119, 6, 0.20) 0%, rgba(217, 119, 6, 0) 70%);
+            background: radial-gradient(ellipse at center, rgba(220, 38, 38, 0.20) 0%, rgba(220, 38, 38, 0) 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -796,7 +799,7 @@ const FAQ = [
         }
 
         .gradient {
-            background: linear-gradient(90deg, #{$au-amber-bright}, #{$au-amber-light});
+            background: linear-gradient(90deg, #{$au-red-bright}, #{$au-red-light});
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -825,7 +828,7 @@ const FAQ = [
         z-index: 1;
         font-size: $font-size-xs;
         font-weight: 600;
-        color: $au-amber-bright;
+        color: $au-red-bright;
 
         &::before {
             content: "";
@@ -833,7 +836,7 @@ const FAQ = [
             inset: 0;
             border-radius: 2.5rem;
             padding: 1px;
-            background: linear-gradient(90deg, #{$au-amber} 0%, #{$au-amber-light} 100%);
+            background: linear-gradient(90deg, #{$au-red} 0%, #{$au-red-light} 100%);
             -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -862,17 +865,17 @@ const FAQ = [
         transition: all 0.2s ease;
 
         &:hover {
-            border-color: rgba(251, 191, 36, 0.4);
-            background: rgba(217, 119, 6, 0.08);
+            border-color: rgba(248, 113, 113, 0.4);
+            background: rgba(220, 38, 38, 0.08);
             color: $white;
 
-            :global(.tag-icon) { color: $au-amber-light; }
+            :global(.tag-icon) { color: $au-red-light; }
         }
 
         :global(.tag-icon) {
             width: 12px;
             height: 12px;
-            color: $au-amber-bright;
+            color: $au-red-bright;
             flex-shrink: 0;
         }
     }
@@ -892,16 +895,16 @@ const FAQ = [
         border-radius: 10px;
         background: conic-gradient(
             from var(--fs-neon-angle),
-            rgba(217, 119, 6, 0.12) 0deg,
-            rgba(217, 119, 6, 0.12) 320deg,
-            #{$au-amber}              340deg,
+            rgba(220, 38, 38, 0.12) 0deg,
+            rgba(220, 38, 38, 0.12) 320deg,
+            #{$au-red}              340deg,
             $au-platinum             350deg,
-            #{$au-amber}              360deg
+            #{$au-red}              360deg
         );
         padding: 1px;
         box-shadow:
-            0 1.214px 10.321px 0 rgba(217, 119, 6, 0.22) inset,
-            -6.667px -7.143px 31.334px 3.333px rgba(217, 119, 6, 0.55);
+            0 1.214px 10.321px 0 rgba(220, 38, 38, 0.22) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(220, 38, 38, 0.55);
         width: 100%;
         max-width: 640px;
         animation: fs-neon-trace 5s linear infinite;
@@ -920,7 +923,7 @@ const FAQ = [
             gap: 0.75rem;
             padding: 12px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(217, 119, 6, 0.04);
+            background: rgba(220, 38, 38, 0.04);
             flex-wrap: wrap;
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
@@ -930,8 +933,8 @@ const FAQ = [
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: $au-amber-bright;
-            box-shadow: 0 0 8px $au-amber-bright;
+            background: $au-red-bright;
+            box-shadow: 0 0 8px $au-red-bright;
             flex-shrink: 0;
         }
 
@@ -948,7 +951,7 @@ const FAQ = [
         }
 
         &__duration {
-            color: $au-amber-light;
+            color: $au-red-light;
             font-weight: 500;
         }
 
@@ -962,10 +965,10 @@ const FAQ = [
         &__footer {
             padding: 10px 16px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(217, 119, 6, 0.03);
+            background: rgba(220, 38, 38, 0.03);
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
-            color: $au-amber-light;
+            color: $au-red-light;
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
@@ -985,14 +988,14 @@ const FAQ = [
         font-size: $font-size-xs;
         transition: background 0.2s;
 
-        &:hover { background: rgba(217, 119, 6, 0.06); }
+        &:hover { background: rgba(220, 38, 38, 0.06); }
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: 20px 1fr auto;
         }
 
         &__check {
-            color: $au-amber-bright;
+            color: $au-red-bright;
             font-weight: 700;
         }
 
@@ -1008,7 +1011,7 @@ const FAQ = [
         }
 
         &__result {
-            color: $au-amber-light;
+            color: $au-red-light;
             text-align: right;
             white-space: nowrap;
         }
@@ -1082,10 +1085,13 @@ const FAQ = [
 
             // Normalised optical sizing: text-logos ≈ 28–32px tall,
             // icon-centric logos ≈ 40–44px tall so they read at the same weight.
-            &:nth-child(1) { max-height: 30px; max-width: 130px; }  // Quadis
-            &:nth-child(2) { max-height: 30px; max-width: 140px; }  // Renault
-            &:nth-child(3) { max-height: 42px; max-width: 160px; }  // Michelin (icon+text)
-            &:nth-child(4) { max-height: 30px; max-width: 130px; }  // Xiaomi
+            // Unified optical sizing across all industry pages:
+            // text wordmarks 36px, compact icon+text 42px, stacked
+            // vertically icon+text 52–56px.
+            &:nth-child(1) { max-height: 36px; max-width: 150px; }  // Quadis (text)
+            &:nth-child(2) { max-height: 42px; max-width: 130px; }  // Renault (icon)
+            &:nth-child(3) { max-height: 52px; max-width: 180px; }  // Michelin (icon + text)
+            &:nth-child(4) { max-height: 36px; max-width: 130px; }  // Xiaomi (text)
         }
     }
 
@@ -1113,7 +1119,7 @@ const FAQ = [
             color: var(--ks-content-primary);
 
             .highlight {
-                background: linear-gradient(90deg, #{$au-amber}, #{$au-amber-bright});
+                background: linear-gradient(90deg, #{$au-red}, #{$au-red-bright});
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
@@ -1138,8 +1144,8 @@ const FAQ = [
         &__grid {
             width: 100%;
             padding: 2rem 1rem;
-            background-color: rgba(217, 119, 6, 0.04);
-            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%2314B8A6' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            background-color: rgba(220, 38, 38, 0.04);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23DC2626' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
             border-radius: 10px;
         }
 
@@ -1343,10 +1349,10 @@ const FAQ = [
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: $au-amber-deep;
+            color: $au-red-deep;
             margin: 0 0 1rem;
 
-            :global(html.dark) & { color: $au-amber-bright; }
+            :global(html.dark) & { color: $au-red-bright; }
         }
 
         &__grid {
@@ -1363,21 +1369,23 @@ const FAQ = [
         background: var(--ks-background-primary);
         border: 1px solid var(--ks-border-secondary);
         border-radius: 10px;
-        transition: border-color 0.2s, transform 0.2s;
+        box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 
         &:hover {
-            border-color: $au-amber;
+            border-color: $au-red;
             transform: translateY(-2px);
+            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
         }
 
         &__icon {
             font-size: 1.375rem;
-            color: $au-amber-deep;
+            color: $au-red-deep;
             margin-bottom: 0.75rem;
             width: 1.375rem;
             height: 1.375rem;
 
-            :global(html.dark) & { color: $au-amber-bright; }
+            :global(html.dark) & { color: $au-red-bright; }
         }
 
         &__title {
@@ -1411,7 +1419,7 @@ const FAQ = [
                 padding-inline: $rem-1;
                 text-align: center;
 
-                .highlight { color: $au-amber; }
+                .highlight { color: $au-red; }
 
                 @include media-breakpoint-up(xl) { padding-inline: 0; }
             }
@@ -1578,7 +1586,7 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $au-amber-bright; }
+            .highlight { color: $au-red-bright; }
         }
 
         :global(.features-grid) {
@@ -1586,7 +1594,7 @@ const FAQ = [
         }
 
         :global(.feature-icon) {
-            color: $au-amber !important;
+            color: $au-red !important;
         }
         :global(.feature-title) {
             color: #fff !important;

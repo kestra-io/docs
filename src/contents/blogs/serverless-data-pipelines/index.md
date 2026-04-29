@@ -43,8 +43,6 @@ You can see the entire workflow in action in the video below:
   <iframe width="560" height="315" src="https://www.youtube.com/embed/Wqz7CZudqNo?si=QgO2bizPu2a-vBoB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## Modular Data Transformations with dbt
 
 The dbt models used in [this project](https://github.com/kestra-io/serverless/tree/main/dbt/models) are structured into three main layers: **staging**, **marts**, and **aggregations**:

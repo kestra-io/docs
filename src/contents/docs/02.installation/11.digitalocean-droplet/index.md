@@ -6,25 +6,21 @@ icon: /src/contents/docs/icons/digitalocean.svg
 description: Install Kestra on a DigitalOcean Droplet with Managed Database and Spaces Object Storage for a cloud-native setup.
 ---
 
-Install Kestra on DigitalOcean Droplet with DigitalOcean Database as a database backend.
+Install Kestra on a DigitalOcean Droplet with Managed Database as the database backend.
 
-This guide provides instructions for deploying Kestra on DigitalOcean Droplet with Managed Database from DigitalOcean as a database backend.
-
-## Deploy Kestra on DigitalOcean Droplet with managed database
-
-Prerequisites:
+## Prerequisites
 
 - Basic knowledge about using a command line interface
 - Basic knowledge about DigitalOcean and PostgreSQL
 
 ## Create a DigitalOcean Droplet
 
-First, we need to create a virtual machine known as a Droplet in DigitalOcean. To do so, go to the DigitalOcean portal and choose [Droplets](https://www.digitalocean.com/products/droplets) from the left navigation bar.
+Go to the DigitalOcean portal and choose [Droplets](https://www.digitalocean.com/products/droplets) from the left navigation bar.
 
-1. On the Droplets page, click on `Create Droplet` button. This will navigate you to the "Create Droplets" page.
+1. On the Droplets page, click **Create Droplet**.
 2. Choose an appropriate region.
 3. Choose `Ubuntu` as the OS image with the latest version.
-4. Kestra needs at least 4GiB Memory and 2vCPU to run correctly. You can go with Shared or Dedicated CPU configuraton options as per your requirement. Here, we are choosing `Basic` plan with `Regular` CPU option and a plan that provides us with 4GiB Memory and 2vCPU.
+4. Kestra requires at least 4 GiB of memory and 2 vCPUs. The `Basic` plan with `Regular` CPU and 4 GiB / 2 vCPU is a good starting point.
 5. You can choose an appropriate authentication method: SSH Key or Password based.
 6. Provide an appropriate hostname and click on the `Create Droplet` button at the bottom.
 
@@ -55,7 +51,7 @@ To check your installation, run `sudo docker version` and `sudo docker compose v
 Download the official Docker-Compose file:
 
 ```bash
-`curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml`
+curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
 ```
 
 Use an editor such as Vim to modify the `docker-compose.yml`, set basic authentication to `true`, and configure your basic authentication credentials to secure your Kestra instance.
@@ -126,7 +122,7 @@ However, for a production-grade installation, we recommend a managed database se
 
 **Update Kestra configuration**
 
-In the docker-compose configuration, edit the `datasources` property of the Kestra service to point Kestra to your Azure database:
+In the docker-compose configuration, edit the `datasources` property of the Kestra service to point Kestra to your DigitalOcean database:
 
 ```yaml
 datasources:
@@ -146,7 +142,7 @@ depends_on:
     condition: service_started
 ```
 
-In order for the changes to take effect, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
+To apply the changes, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
 
 ## Configure Spaces Object Storage
 
@@ -190,7 +186,7 @@ kestra:
       bucket: "<bucket-name>"
 ```
 
-In order for the changes to take effect, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
+To apply the changes, restart the docker services with `sudo docker compose restart` or `sudo docker compose up -d`.
 
 ![spaces_object_storage1](./spaces_object_storage1.png)
 
@@ -201,8 +197,6 @@ In order for the changes to take effect, restart the docker services with `sudo 
 ![spaces_object_storage4](./spaces_object_storage4.png)
 
 ## Next steps
-
-This guide walked you through installing Kestra on a DigitalOcean Droplet with DigitalOcean Database.
 
 This setup provides a simple starting point for running Kestra in production on a single machine.
 

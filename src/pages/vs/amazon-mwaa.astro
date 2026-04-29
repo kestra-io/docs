@@ -16,13 +16,11 @@ import Faq from "~/components/common/Faq.vue"
 
 import amazonMwaaLogo from "~/components/versus/assets/amazon-mwaa.svg?raw"
 import amazonMwaaMonogram from "~/components/versus/assets/amazon-mwaa-monograme.svg?raw"
-import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import amazonMwaaImg from "~/components/versus/assets/amazon-mwaa-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_amazon-mwaa.webp"
 
 const entry = await getEntry("vs", "amazon-mwaa")
 if (!entry) throw new Error("Could not find vs/amazon-mwaa collection entry")
@@ -46,14 +44,13 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<Layout {title} description={shortDescription}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: amazonMwaaMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}
