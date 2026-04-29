@@ -22,7 +22,6 @@ import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import snowflakeImg from "~/components/versus/assets/snowflake-tasks-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_snowflake-tasks.webp"
 
 const entry = await getEntry("vs", "snowflake-tasks")
 if (!entry) throw new Error("Could not find vs/snowflake-tasks collection entry")
@@ -46,14 +45,13 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<Layout {title} description={shortDescription}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: snowflakeMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}
