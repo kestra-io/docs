@@ -88,6 +88,10 @@ kestra migrate default-tenant \
 
 After the migration, you can use the following Kibana style query to migrate asynchronously the excluded indices, note that it can take a long time.
 
+:::alert{type="warning"}
+The script must also update `tenantId` on each entry in `taskRunList` inside executions. Failing to do so will cause executor crashes in Kafka-based deployments, as the executor expects every `TaskRun` to have a valid `tenantId`.
+:::
+
 ```
 POST /kestra_executions/_update_by_query?wait_for_completion=false
 {
@@ -99,7 +103,7 @@ POST /kestra_executions/_update_by_query?wait_for_completion=false
     }
   },
   "script": {
-    "source": "ctx._source.tenantId = 'tenant'",
+    "source": "ctx._source.tenantId = 'tenant'; if (ctx._source.taskRunList != null) { for (def taskRun : ctx._source.taskRunList) { taskRun.tenantId = 'tenant'; } }",
     "lang": "painless"
   }
 }
