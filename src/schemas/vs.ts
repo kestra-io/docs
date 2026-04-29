@@ -36,7 +36,7 @@ export const vsSchema = z.object({
     title: z.string(),
     description: z.string(),
     competitorName: z.string(),
-    category: z.enum(["Data Orchestration", "Infrastructure Automation"]),
+    category: z.enum(["Data Orchestration", "Infrastructure Automation", "Business Automation"]),
     shortDescription: z.string(),
     brandColor: z.object({
         color: z.string(),

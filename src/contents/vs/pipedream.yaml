@@ -1,7 +1,7 @@
 title: "Kestra vs. Pipedream: Orchestration vs. Integration"
 description: "Compare Kestra vs Pipedream: Full-stack workflow orchestration with declarative YAML vs. serverless API integration with JavaScript. See features, deployment options, and use cases."
 competitorName: Pipedream
-category: Infrastructure Automation
+category: Business Automation
 shortDescription: "Serverless API integration and event-driven automation vs. universal YAML orchestration at production scale."
 
 brandColor:
