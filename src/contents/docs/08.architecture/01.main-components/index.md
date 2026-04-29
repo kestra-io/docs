@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/architecture.svg
 
 Technical overview of Kestra’s main components: internal storage, queue, repository, and plugins.
 
-## Learn Kestra’s main components
-
 Kestra relies on the following internal components:
 
 - **Internal storage**: stores flow data such as task outputs and flow inputs.

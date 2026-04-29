@@ -12,8 +12,6 @@ Replay allows you to re-run a workflow execution from any chosen task run.
   <iframe src="https://www.youtube.com/embed/RvNc3gLXMEs?si=sBuEo3yPfJvi4K48" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Replay Executions – rerun from any Task
-
 By using Replay, you can re-run a workflow execution from any selected task run. To do that, simply go to the Gantt view of the chosen workflow execution (it doesn't need to be a Failed execution, it can be an execution in any state) and click on the task run you want to re-run. Additionally, you can re-run an execution or bulk executions from the **Executions** tab with the option to use the latest revision.
 
 ![replay6](./replay6.png)
@@ -162,4 +160,4 @@ The **Overview** tab will additionally show the new attempt number and the new r
 
 ![Replay Execution Overview](./replay-execution-overview.png)
 
-The replay feature allowed you to re-run a failed task with the corrected version of the flow code. You didn't have to rerun tasks that had already completed successfully. This is a huge time-saver when iterating on your workflows! ⚡️
+Replay lets you re-run a failed task with the corrected flow code without rerunning tasks that already completed successfully.
