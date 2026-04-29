@@ -1,6 +1,6 @@
 ---
-title: "How Kestra Ships 1200+ Plugins (Using Kestra)"
-description: "1200+ plugins, one team, zero manual release steps. Here's the Kestra-on-Kestra pipeline that made it possible."
+title: "How Kestra Ships 1300+ Plugins (Using Kestra)"
+description: "1300+ plugins, one team, zero manual release steps. Here's the Kestra-on-Kestra pipeline that made it possible."
 date: 2026-04-27T09:00:00
 category: Engineering
 author:
@@ -10,7 +10,7 @@ author:
 image: ./main.png
 ---
 
-The Plugins & Integrations team at Kestra is responsible for the 1200+ plugins that connect Kestra to the rest of the data and cloud ecosystem. [AWS](/plugins/plugin-aws), [GCP](/plugins/plugin-gcp), [Azure](/plugins/plugin-azure), [Snowflake](/plugins/plugin-jdbc-snowflake), [Kafka](/plugins/plugin-kafka), [dbt](/plugins/plugin-dbt), [Airbyte](/plugins/plugin-airbyte), and a few hundred more. Every release, every regression, every compatibility check across all of them falls to us.
+The Plugins & Integrations team at Kestra is responsible for the 1300+ plugins that connect Kestra to the rest of the data and cloud ecosystem. [AWS](/plugins/plugin-aws), [GCP](/plugins/plugin-gcp), [Azure](/plugins/plugin-azure), [Snowflake](/plugins/plugin-jdbc-snowflake), [Kafka](/plugins/plugin-kafka), [dbt](/plugins/plugin-dbt), [Airbyte](/plugins/plugin-airbyte), and a few hundred more. Every release, every regression, every compatibility check across all of them falls to us.
 
 At that volume, releasing a plugin meant manually coordinating the same sequence of steps across every affected package: validate, release, index, notify. This manual process creates a lot of interruptions when you're also running multiple releases in parallel and also doing other engineering work.
 
@@ -18,7 +18,7 @@ We build orchestration software, so fixing this with Kestra was the obvious move
 
 ## What the release process used to look like
 
-Maintaining 1200+ plugins across a constantly-moving ecosystem means releases are continuous. A new plugin ships, a provider updates its API, a dependency bumps a version. Every one of those events needs the same sequence of steps: validate, release, index, notify.
+Maintaining 1300+ plugins across a constantly-moving ecosystem means releases are continuous. A new plugin ships, a provider updates its API, a dependency bumps a version. Every one of those events needs the same sequence of steps: validate, release, index, notify.
 
 Doing that manually means relying on whoever owns the release to remember every step, in order, without skipping anything under time pressure.
 
@@ -38,7 +38,7 @@ The core release flow, `daily_docs_release_plugin`, is semi-automated with one h
 
 When a new release tag is created, `index_plugin_release` triggers automatically. New plugin versions show up in the library without anyone having to remember to run the indexer. The metadata work lives in a [subflow](https://kestra.io/docs/workflow-components/subflows) called `process_plugin_metadata`, which `index_plugin_release` calls but which we can also run independently when something needs reindexing. Separating it out keeps debugging clean: if indexing fails, we know exactly where to look.
 
-`nightly_compatibility_check` runs every night. It takes the entire plugin library and runs it against the latest `main` branch of Kestra core. The results land in Slack each morning.
+`nightly_compatibility_check` runs every Saturday. It takes the entire plugin library and runs it against the latest `develop` branch of Kestra core. The results land in Slack on Monday morning before the week starts.
 
 The fifth flow, `weekly_released_plugins`, compiles a digest of everything that shipped: new features, bug fixes, version bumps. It posts automatically to [Slack](/plugins/plugin-slack) and our [Notion](/plugins/plugin-notion) database. The team gets a summary without anyone writing one, and it gives visibility beyond engineering: product, customer success, marketing, and sales can all follow what's shipping without attending every standup.
 
