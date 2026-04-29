@@ -22,11 +22,7 @@ The first generation of modern data orchestrators made a reasonable bet on Pytho
 
 That bet paid off for adoption, but it didn't pay off for the orchestration layer itself, because orchestration is a configuration problem, not a programming one: run this task, then that one, retry on failure, alert on error, respect a schedule. That's a data structure, not a program. Expressing it in a general-purpose language means every workflow carries the overhead of imports, decorator patterns, operator overloading, and framework-specific conventions that don't serve the workflow.
 
-Here's what that looks like in the Kestra editor — YAML on the left, DAG topology updating live on the right:
-
-![Kestra editor showing YAML workflow and DAG topology side by side](./kestra-data-eng-pipeline-ui.png)
-
-Compare the same pipeline in these examples:
+The difference is easier to see than to explain. The same ETL pipeline, in YAML and Python:
 
 ```yaml
 id: etl_pipeline
@@ -51,6 +47,8 @@ triggers:
     cron: "0 6 * * *"
 ```
 
+The YAML version above; the equivalent in a Python-based orchestrator below:
+
 ```python
 from some_orchestrator import dag, task, schedule
 
@@ -73,9 +71,14 @@ etl_pipeline()
 ```
 
 The Python version requires decorator patterns, operator overloading (`>>`), framework-specific imports, and the implicit convention that calling `etl_pipeline()` at module scope registers it with the scheduler. None of that serves the goal, which is: run extract, then load, on a schedule. It serves the framework.
+
 When Python is your orchestration language, your task code runs inside the framework's execution environment. The framework owns imports and controls execution context. If you want to run a Bash script or a Node.js function, you go through the framework's abstractions for it. The orchestration layer and the execution layer share a runtime, which means changing one touches the other.
 
 YAML severs that connection: the workflow definition is pure configuration, and tasks are external processes the orchestrator invokes and monitors without owning. Your Python script, R model, or Java service runs in its own container, exactly as it was written. The orchestrator coordinates execution without participating in it.
+
+That separation is visible in Kestra's editor itself: YAML on the left, the live DAG topology on the right:
+
+![Kestra editor showing YAML workflow and DAG topology side by side](./kestra-data-eng-pipeline-ui.png)
 
 ## Asset-centric models got the model right, not the language
 
@@ -122,6 +125,10 @@ When a domain matures past the point where one team writes all the code, separat
 Python orchestration restricts workflow ownership to people who know Python and the framework's specific abstractions. Those are two separate bars. Knowing Python fluently doesn't mean you can read a pipeline built in an unfamiliar framework's DSL. A YAML workflow definition sidesteps both: the analytics engineer who writes SQL, the platform engineer who manages infrastructure, the data scientist who needs to understand why their model retraining job failed on Tuesday without standing up a Python environment to trace it.
 
 That exclusion compounds as orchestration scope grows. When workflows handled just data pipelines, the audience was data engineers who already knew Python. Now that orchestration covers infrastructure automation, API coordination, and business processes, the people who need to read and own workflows are no longer a single-language community. A format that requires Python literacy to participate in orchestration is a format that excludes most of the people who depend on it.
+
+The Python orchestration ecosystem is already signalling the shift. Two recent examples: one open source project lets platform teams define reusable task group logic in Python while analysts and data scientists compose workflows entirely in YAML; a separate framework shipped YAML-first pipeline configuration, making `defs.yaml` the primary mechanism for defining reusable pipeline components. In both cases, the separation that YAML enforces by design is being retrofitted into Python orchestration as a workaround. 
+
+If the ecosystem is building the separation anyway, the question then becomes: why not start there?
 
 ## AI makes declarative YAML the obvious choice
 
@@ -188,13 +195,15 @@ For a complete reference, including boolean edge cases and Kestra-specific patte
 
 ## See it in practice
 
-If you want to see the argument in action — including how AI generates production-ready YAML workflows and what hands-on orchestration looks like end to end — Benoit and Will covered exactly this in a recent webinar:
+If you want to see the argument in action — including how AI generates production-ready YAML workflows and what hands-on orchestration looks like end to end — Benoit, Kestra's product manager, and Will, developer advocate, covered exactly this in a recent webinar:
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/xpxNK47jRBA" title="YAML-First Workflow Orchestration" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Where to go from here
+
+The orchestration layer and the execution layer were always meant to be separate. YAML is what happens when you build that separation in from the start, rather than retrofitting it later.
 
 The best way to pressure-test this argument is to read a few real workflows. If the separation of orchestration and execution is real, it should be obvious in the YAML.
 
