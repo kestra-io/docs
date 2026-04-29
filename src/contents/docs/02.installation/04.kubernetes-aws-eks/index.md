@@ -44,7 +44,7 @@ helm install my-kestra kestra/kestra
 
 In the deployment configuration, integrate RDS and S3 as the database and storage backends, respectively. Set the database connection under `datasources` and S3 details under `storage` in your Helm values.
 
-Here is how you can configure RDS in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11):
+Here is how you can configure RDS in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml):
 
 ```yaml
 configurations:
@@ -62,7 +62,7 @@ configurations:
         password: <your_password>
 ```
 
-Add the S3 configuration in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11) like in the following example:
+Add the S3 configuration in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) like in the following example:
 
 ```yaml
 configurations:
