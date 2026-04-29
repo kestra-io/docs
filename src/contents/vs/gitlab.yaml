@@ -67,7 +67,7 @@ setupSpeed:
     title:
       one: "~20"
       two: Minutes
-    description: "Create a GitLab account, create a repository, add a .gitlab-ci.yml file, and configure runners (shared on GitLab.com, or register your own). Self-hosted GitLab requires a full platform installation before any pipeline can run."
+    description: "Create a GitLab account, create a repository, add a .gitlab-ci.yml file, and configure runners (shared on GitLab.com, or register your own). This estimate covers a net-new setup; teams with an existing GitLab account and registered runners can add a pipeline faster. Self-hosted GitLab requires a full platform installation before any pipeline can run."
     shadowColor: "#FCEADC"
     command: |
       # Create a GitLab repo, then add .gitlab-ci.yml:
@@ -199,12 +199,12 @@ testimonials:
 platformStrengths:
   title: Kestra Is Built for Workflows Beyond Code Delivery
   features:
-    - title: Any trigger, not just git events
-      description: "GitLab CI/CD is wired to repository events. Kestra triggers on schedules, webhooks, file arrivals on S3 or SFTP, Kafka messages, database row changes, and API polls. When your business processes depend on data arriving from an external system rather than a git push, Kestra handles it natively without requiring a dummy repository to host the workflow."
+    - title: Triggers for any event source
+      description: "Kestra triggers on schedules, webhooks, file arrivals on cloud storage or SFTP, Kafka and Pulsar messages, database row changes, and API polls. Any of these events can kick off a workflow defined in standalone YAML, without a repository commit acting as the entry point. Teams building data and infrastructure automation pick the trigger that matches the business event, not the one their source control system supports."
     - title: Data pipelines as first-class workflows
-      description: "Kestra ships native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1,200+ more. Data engineers define ETL pipelines in the same YAML they use for everything else, with DAG visualization and retry semantics for data-specific failures. GitLab CI/CD can run a dbt job as a pipeline step, but each run draws from your plan quota and there is no native observability for data workloads."
-    - title: No compute-minute ceiling
-      description: "Kestra runs on your infrastructure and handles 100,000+ concurrent tasks with no per-minute billing. GitLab CI/CD caps free users at 400 compute minutes/month and Premium users at 10,000. For data teams running hundreds of scheduled pipelines daily, those ceilings fill up fast."
+      description: "1,200+ native plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, message queue, and cloud provider. Data engineers define ETL pipelines in the same YAML they use for infrastructure automation and business workflows, with DAG visualization, per-task observability, and retry semantics for data-specific failures built in. A morning dbt run, a Kafka consumer pipeline, and a Terraform provisioning job all live in the same platform with the same tooling."
+    - title: Unlimited concurrent execution on your infrastructure
+      description: "Kestra runs on your own infrastructure with no compute quotas, no per-task billing, and no ceiling on how many workflows run in parallel. Horizontal scaling and exactly-once execution guarantees are standard deployment options. A team running hundreds of scheduled pipelines daily pays the same infrastructure cost whether tasks run once or ten thousand times."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job

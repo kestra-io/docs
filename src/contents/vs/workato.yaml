@@ -42,7 +42,7 @@ businessValue:
       - Low-code visual recipe builder for business and IT teams
       - Cloud-only, multi-region deployment (US, EU, APAC)
       - Quote-based pricing tied to recipe volume and connector usage
-      - 8x Gartner Magic Quadrant Leader for iPaaS
+      - Consistent Gartner Magic Quadrant Leader for iPaaS
     shadowColor: "#D1E9FF"
     bulletColor: "#0055B3"
   footerText: "For enterprise teams connecting SaaS applications and automating business processes like order-to-cash or employee onboarding, Workato's connector library and visual builder are hard to match. When you need data pipelines, self-hosting for compliance, engineering-grade GitOps, or cost predictability at scale, Kestra is built for that scope."
@@ -196,14 +196,14 @@ testimonials:
     storyLink: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
 
 platformStrengths:
-  title: Kestra Is Built for Engineering Teams, Not Just Business Users
+  title: Kestra Is Built for Engineering Teams
   features:
-    - title: Workflows in Git, not locked in the cloud
-      description: "Every Kestra flow is a YAML file that lives in your repository, deploys through CI/CD, and gets reviewed like any other code change. Workato recipes are stored in Workato's cloud. Moving them between environments or auditing change history requires manual export and re-import."
-    - title: Data pipelines as first-class workflows
-      description: "Kestra ships native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1,200+ more. Engineers define ETL pipelines alongside business workflows in the same declarative YAML, with DAG visualization and retry semantics for data-specific failures. Workato's data pipeline recipes can move data between systems but are not built for compute-intensive transformations or long-running analytical workloads."
-    - title: No per-recipe cost ceiling
-      description: "Per-recipe pricing makes cost projection difficult as automation scales. Kestra runs on your infrastructure with no such ceiling: costs scale with infrastructure, not workflow count. Teams that have replaced iPaaS platforms with Kestra have reported integration cost reductions of 90% or more, including one team that cut integration spend to roughly 10% of their previous iPaaS bill."
+    - title: Workflows in Git, deployed like code
+      description: "Every Kestra flow is a YAML file stored in a repository, reviewed in a pull request, and deployed through CI/CD. Changes are tracked in commit history, rollbacks are a git revert, and every deployment is auditable by anyone with repo access. Automation gets the same engineering rigor as any other production system."
+    - title: Data pipelines alongside business workflows
+      description: "1,200+ native plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse and cloud provider. Engineers define ETL pipelines in the same declarative YAML they use for business process automation, with DAG visualization and retry semantics for data-specific failures built in. A Salesforce sync, an overnight dbt run, and a nightly report delivery all run in one platform with one operational model."
+    - title: Cost tied to infrastructure, not workflow count
+      description: "Kestra runs on your infrastructure with no per-execution billing. Costs grow with compute and storage, not with the number of automations you build or how often they run. Teams that have migrated from usage-based automation platforms to Kestra have reported integration cost reductions of 90% or more."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job

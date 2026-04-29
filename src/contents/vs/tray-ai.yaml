@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Tray.ai: Universal Orchestration vs. Enterprise AI Automation"
-  description: "Tray.ai is an enterprise automation platform combining iPaaS, AI agent creation, and Model Context Protocol governance into a unified cloud platform with 700+ pre-built connectors. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and production workflows running with full version control and the option to self-host."
+  description: "Tray.ai is an enterprise automation platform for connecting SaaS applications and deploying AI agents at scale, with purpose-built tooling for governed AI agent creation. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and production workflows running with full version control and the option to self-host."
 
 philosophy:
   mainTitle: Two Platforms, Two Definitions of Orchestration
@@ -196,14 +196,14 @@ testimonials:
     storyLink: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
 
 platformStrengths:
-  title: Kestra Is Built for Engineering Teams, Not Just Enterprise Integration
+  title: What Kestra Brings to Engineering and Data Teams
   features:
     - title: Data pipelines as first-class workflows
-      description: "Native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1,200+ more let data engineers define ETL pipelines in the same YAML they use for event-driven and business workflows. Tray.ai's connectors can push data between SaaS systems, but the platform is not built for compute-intensive transformations, long-running analytical workloads, or native DAG visualization."
-    - title: Self-hosted for complete data control
-      description: "Your workflow definitions, execution logs, and data never leave your network when Kestra runs on your own infrastructure (Docker, Kubernetes, or air-gapped). Tray.ai is cloud-only, which means execution telemetry, workflow metadata, and any data that passes through connectors flows through Tray.ai's infrastructure. For teams in regulated industries where data residency is non-negotiable, Tray.ai is not an option."
+      description: "1,200+ native plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, cloud provider, and message queue. Data engineers define ETL pipelines in the same declarative YAML they use for event-driven and business workflows, with DAG visualization and retry semantics for data-specific failures as standard. One platform, one operational model, for both data and business automation."
+    - title: Self-hosted with complete data control
+      description: "Kestra deploys on Docker or Kubernetes on any infrastructure, including air-gapped environments and on-premises clusters. Workflow definitions, execution logs, and secrets stay on your infrastructure. For teams in regulated industries where data residency is a hard requirement, self-hosted Kestra keeps every piece of execution inside the perimeter you control."
     - title: Workflows in Git, deployable like code
-      description: "Every Kestra flow is a YAML file reviewed in a pull request, versioned in Git, and deployed through the same CI/CD pipeline as your application code. Tray.ai workflows are built and stored in the visual editor with no native Git integration. When an automation breaks at 3am, a git blame and commit history tell you what changed. A Tray.ai workflow history shows you the same UI you used to build it."
+      description: "Every Kestra flow is a YAML file reviewed in a pull request, versioned in Git, and deployed through the same CI/CD pipeline as your application code. When an automation breaks, git blame and commit history tell you exactly what changed and when. Automation gets the same review, audit, and rollback process as any other production system."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job

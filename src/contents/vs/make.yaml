@@ -10,7 +10,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Make: Universal Orchestration vs. Visual Scenario Automation"
-  description: "Make (formerly Integromat) is a visual automation platform built around a flowchart-style scenario builder with 3,000+ app integrations and a free tier. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and production workflows running without operation-credit limits or 40-minute execution ceilings."
+  description: "Make (formerly Integromat) is a visual automation platform built around a flowchart-style scenario builder with 3,000+ app integrations and a free tier. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and production workflows at scale, with version control and the option to self-host."
 
 philosophy:
   mainTitle: Two Platforms, Two Automation Models
@@ -201,14 +201,14 @@ testimonials:
     storyLink: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
 
 platformStrengths:
-  title: Kestra Is Built for Production Workloads, Not Just App Connections
+  title: Kestra Is Built for Production Workloads
   features:
-    - title: No execution time ceiling
-      description: "Make caps all scenario executions at 40 minutes, even on Enterprise. For dbt runs against large models, Spark jobs, file exports, or any compute-intensive data workload, that ceiling is a hard architectural constraint. Kestra flows run for as long as the task requires, from seconds to hours, with no platform-imposed limit."
-    - title: Data pipelines run natively
-      description: "Native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and 1,200+ more let data engineers define ETL pipelines in the same YAML they use for event-driven automations. Make can call a dbt Cloud API endpoint via its HTTP module, but there are no native data plugins, no DAG visualization, and no retry semantics for transformation failures."
-    - title: Workflows in Git, not the browser
-      description: "Every Kestra flow is a YAML file stored in your repository, deployed through CI/CD, and rolled back like any code change. Make scenarios live in Make's cloud. There is no native version control and no way to review a scenario change in a pull request before it goes live."
+    - title: No platform-imposed execution limits
+      description: "Kestra flows run for as long as the task requires, from seconds to hours, with no ceiling on execution time. A dbt run against a large model, a Spark job processing overnight data, or a file export from cloud storage all complete at their natural pace. Retry logic, timeout configuration, and execution monitoring are available as YAML-level settings on every workflow."
+    - title: Data pipelines as native workflows
+      description: "1,200+ plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, cloud provider, and message queue. Data engineers define ETL pipelines in the same declarative YAML they use for event-driven automations and business process workflows. DAG visualization and data-specific retry semantics are built in, not bolted on."
+    - title: Version control for every workflow change
+      description: "Kestra flows are YAML files in a repository. Every modification is a commit, deployments are tracked, and rolling back a broken workflow is a git revert. Teams review automation changes in a pull request before they go live, the same process they use for any other production change."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job

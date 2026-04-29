@@ -9,7 +9,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. SimplyAsk: Infrastructure Orchestration vs. Business Process Automation"
-  description: "SimplyAsk (Symphona) is a no-code automation platform built for business operations in telecom, manufacturing, and local government. It handles customer service workflows, order management, and service ticketing well. Kestra is a general-purpose orchestration platform for engineering teams that need data pipelines, infrastructure automation, and technical workflows at production scale."
+  description: "SimplyAsk (Symphona) is a no-code platform for operations teams in telecom, manufacturing, and local government. Kestra is a general-purpose orchestration platform for engineering teams that need data pipelines, infrastructure automation, and technical workflows at production scale."
 
 philosophy:
   mainTitle: Two Platforms, Two Problem Shapes
@@ -25,7 +25,7 @@ philosophy:
     subCardText: '"How do I let my operations team automate business processes without waiting on engineering?"'
 
 businessValue:
-  mainTitle: "Business Process Automation Is Not Workflow Orchestration.<br />Know the Difference."
+  mainTitle: "No-Code Automation Serves Business Operations.<br />Engineering Orchestration Serves Technical Infrastructure."
   kestra:
     title: Production-Grade Workflow Orchestration
     list:
@@ -153,7 +153,7 @@ featureGrid:
       competitor: No-code (REST API calls only for custom logic)
     - feature: Infrastructure automation
       kestra: "✓ Native support (Terraform, Ansible, Bash, containers)"
-      competitor: REST API calls only, no shell execution or containers
+      competitor: Out of scope; built for business operations, not infrastructure tooling
     - feature: Data pipeline support
       kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
       competitor: Not designed for data workloads
@@ -178,22 +178,22 @@ testimonials:
     author: "Julien Henrion, CDO @ Leroy Merlin"
     kpis:
       - value: "+900%"
-        name: In Data Production
+        name: In data production
       - value: "+250"
-        name: Active Users
+        name: Active users
       - value: "+5000"
-        name: Workflows Created
-    storyLink: "https://kestra.io/blogs/2023-08-16-datamesh"
+        name: Workflows created
+    storyLink: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
 
 platformStrengths:
-  title: Kestra Is Built for Engineering Teams, Not Just Operations
+  title: Kestra Is Built for Engineering Teams
   features:
-    - title: Code as infrastructure, not just automation
-      description: "Kestra workflows live in Git, deploy via Terraform, and move through the same CI/CD pipeline as application code. Every change is tracked, reviewed, and auditable. SimplyAsk workflows live in a proprietary SaaS canvas with no Git integration, no code review, and no path for environment promotion from dev to staging to prod."
-    - title: Native infrastructure execution
-      description: "Kestra runs Terraform plans, Ansible playbooks, Bash scripts, and containerized tasks natively. Tasks execute in isolated containers, so any existing script runs without wrapping or refactoring. SimplyAsk Flow can call a REST API, but it cannot execute shell commands, run containers, or integrate with IaC tooling without building an API layer in between."
-    - title: Open source with no vendor lock-in
-      description: "Kestra is open source under Apache 2.0. You can inspect the codebase, deploy it anywhere, run it in air-gapped environments, and avoid dependency on a single SaaS vendor. SimplyAsk is closed-source proprietary software from a 120-person company. For teams making long-term infrastructure investments, that's a different risk profile than a project with 26k+ GitHub stars and a public codebase."
+    - title: Workflows in Git, promoted like code
+      description: "Every Kestra flow is a YAML file that lives in a repository, moves through a CI/CD pipeline, and promotes from dev to staging to production the same way application code does. Every change is tracked, reviewed in a pull request, and auditable. Automation gets the same engineering rigor as the infrastructure it controls."
+    - title: Native shell, container, and IaC execution
+      description: "Terraform plans, Ansible playbooks, Bash scripts, and Docker containers all run natively in Kestra. Tasks execute in isolated containers, so existing scripts work without wrappers or refactoring. Bring the code, define the trigger and retry logic in YAML, and run it. Infrastructure automation from provisioning through configuration to notification can live in a single workflow."
+    - title: Open source with a public codebase
+      description: "Kestra is open source under Apache 2.0, with 26k+ GitHub stars and a codebase you can inspect, extend, and deploy anywhere. Self-hosting is available on Docker, Kubernetes, and in air-gapped environments with no outbound internet access required. For teams making long-term infrastructure investments, an open community and a permissive license are a different foundation than a proprietary SaaS platform."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job
