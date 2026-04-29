@@ -148,7 +148,7 @@ jobs:
       # If none exists yet (first run after setup), this step is skipped silently.
       - name: Download main branch baseline
         id: baseline
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v21
         continue-on-error: true
         with:
           workflow: lighthouse.yml
