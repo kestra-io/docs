@@ -1,7 +1,7 @@
 title: "Kestra vs. Tray.ai: Universal Orchestration vs. Enterprise AI Automation"
 description: "Compare Kestra vs Tray.ai: Open-source workflow orchestration for engineering and data teams vs. enterprise iPaaS and AI agent platform. See features, deployment options, and use cases."
 competitorName: Tray.ai
-category: Enterprise iPaaS
+category: Business Automation
 shortDescription: "Enterprise SaaS integration and AI agent platform vs. engineering-grade orchestration with self-hosting and GitOps."
 
 brandColor:
@@ -32,7 +32,7 @@ businessValue:
     list:
       - Automate data pipelines, infrastructure, and business processes in one platform
       - Self-hosted or cloud, with full data residency control
-      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
       - RBAC, audit logs, and multi-tenancy for enterprise compliance
       - Handles 100,000+ concurrent tasks with no per-connector pricing
   competitor:

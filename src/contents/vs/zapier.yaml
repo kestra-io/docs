@@ -1,7 +1,7 @@
 title: "Kestra vs. Zapier: Universal Orchestration vs. No-Code App Automation"
 description: "Compare Kestra vs Zapier: Open-source workflow orchestration for engineering and data teams vs. no-code app automation for individuals and small teams. See features, pricing, and use cases."
 competitorName: Zapier
-category: No-Code Automation
+category: Business Automation
 shortDescription: "No-code app-to-app automation with per-task billing vs. production-grade orchestration with no execution ceiling."
 
 brandColor:
@@ -32,7 +32,7 @@ businessValue:
     list:
       - Automate data pipelines, infrastructure, and business processes in one platform
       - Self-hosted or cloud, with full data residency control
-      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
       - RBAC, audit logs, and multi-tenancy for enterprise compliance
       - Handles 100,000+ concurrent tasks with no per-task billing ceiling
   competitor:

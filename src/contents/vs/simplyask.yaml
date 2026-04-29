@@ -1,7 +1,7 @@
 title: "Kestra vs. SimplyAsk: Infrastructure Orchestration vs. Business Process Automation"
 description: "Compare Kestra vs SimplyAsk (Symphona): Open-source workflow orchestration for engineering teams vs. no-code business process automation for telco and operations teams."
 competitorName: SimplyAsk
-category: "No-Code Automation"
+category: Business Automation
 shortDescription: "No-code business process automation for telco and operations teams vs. engineering-grade workflow orchestration with self-hosting and GitOps."
 
 brandColor:
@@ -30,8 +30,8 @@ businessValue:
     title: Production-Grade Workflow Orchestration
     list:
       - Automate data pipelines, infrastructure, and business processes in one platform
-      - Language-agnostic: run Python, Bash, SQL, R, or any script in isolated containers
-      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - "Language-agnostic: run Python, Bash, SQL, R, or any script in isolated containers"
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
       - Self-hosted (Docker, Kubernetes) or Kestra Cloud, with air-gapped deployment support
       - Handles 100,000+ concurrent tasks with horizontal scaling and exactly-once execution
   competitor:

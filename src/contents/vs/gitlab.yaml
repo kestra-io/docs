@@ -1,7 +1,7 @@
 title: "Kestra vs. GitLab CI/CD: Universal Orchestration vs. Software Delivery Pipelines"
 description: "Compare Kestra vs GitLab CI/CD: Universal workflow orchestration for data, infrastructure, and operations vs. developer-focused pipelines tied to your code repository. See features, use cases, and deployment options."
 competitorName: GitLab CI/CD
-category: CI/CD and Workflow Automation
+category: Infrastructure Automation
 shortDescription: "Repository-scoped CI/CD pipelines vs. universal workflow orchestration for data, infrastructure, and operations."
 
 brandColor:
@@ -32,7 +32,7 @@ businessValue:
     list:
       - Automate data pipelines, infrastructure provisioning, and business processes in one platform
       - Self-hosted or cloud, with full data residency control
-      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
       - RBAC, audit logs, and multi-tenancy for enterprise compliance
       - Handles 100,000+ concurrent tasks with no per-minute compute billing
   competitor:
@@ -41,7 +41,7 @@ businessValue:
       - Automates build, test, and deploy pipelines within GitLab repositories
       - Shared runners on GitLab.com (400 compute minutes/month on free tier)
       - Premium plan at $29/user/month unlocks 10,000 compute minutes/month
-      - Pipelines scope to git events: commits, merges, tags, or schedules
+      - "Pipelines scope to git events: commits, merges, tags, or schedules"
       - Self-hosted GitLab requires significant infrastructure to operate
     shadowColor: "#FCEADC"
     bulletColor: "#FC6D26"

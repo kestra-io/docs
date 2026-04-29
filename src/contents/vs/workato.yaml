@@ -1,7 +1,7 @@
 title: "Kestra vs. Workato: Universal Orchestration vs. Enterprise iPaaS"
 description: "Compare Kestra vs Workato: Open-source workflow orchestration for engineering teams vs. enterprise integration platform for business automation. See features, deployment options, and use cases."
 competitorName: Workato
-category: Enterprise iPaaS
+category: Business Automation
 shortDescription: "Low-code enterprise SaaS integration vs. engineering-grade orchestration for data pipelines, infrastructure, and self-hosting."
 
 brandColor:
@@ -32,7 +32,7 @@ businessValue:
     list:
       - Automate data pipelines, infrastructure, and business processes in one platform
       - Self-hosted or cloud, with full data residency control
-      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
       - RBAC, audit logs, and multi-tenancy for enterprise compliance
       - Handles 100,000+ concurrent tasks with no per-recipe pricing ceiling
   competitor:

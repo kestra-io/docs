@@ -1,7 +1,7 @@
 title: "Kestra vs. Make: Universal Orchestration vs. Visual Scenario Automation"
 description: "Compare Kestra vs Make: Open-source workflow orchestration for engineering teams vs. visual no-code automation for business teams. See features, execution limits, pricing, and use cases."
 competitorName: Make
-category: No-Code Automation
+category: Business Automation
 shortDescription: "Visual no-code scenario builder with operation credits and a 40-minute execution limit vs. production-grade orchestration with no ceiling."
 
 brandColor:
@@ -32,7 +32,7 @@ businessValue:
     list:
       - Automate data pipelines, infrastructure, and business processes in one platform
       - Self-hosted or cloud, with full data residency control
-      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
       - RBAC, audit logs, and multi-tenancy for enterprise compliance
       - Handles 100,000+ concurrent tasks with no per-operation billing ceiling
   competitor:

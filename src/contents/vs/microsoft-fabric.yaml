@@ -1,7 +1,7 @@
 title: "Kestra vs. Microsoft Fabric: Universal Orchestration vs. Unified Microsoft Analytics"
 description: "Compare Kestra vs Microsoft Fabric: Open-source workflow orchestration for any stack vs. Microsoft's unified analytics platform with built-in data factory, data warehouse, and Power BI. See features, deployment options, and use cases."
 competitorName: Microsoft Fabric
-category: Data Analytics Platform
+category: Data Orchestration
 shortDescription: "Azure-native unified analytics platform vs. stack-agnostic workflow orchestration for any cloud or infrastructure."
 
 brandColor:
@@ -32,7 +32,7 @@ businessValue:
     list:
       - Orchestrate data pipelines, infrastructure, and business processes across any cloud or stack
       - Self-hosted or cloud, with full data residency control independent of Microsoft
-      - GitOps-native: version control, CI/CD, and Terraform for all workflows
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
       - RBAC, audit logs, and multi-tenancy for enterprise compliance
       - Handles 100,000+ concurrent tasks with no Azure capacity billing
   competitor:

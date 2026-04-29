@@ -14,18 +14,13 @@ import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 
-// TODO: replace with tray-ai.svg?raw once logo SVG is added
-const trayAiLogo = ""
-// TODO: replace with tray-ai-monograme.svg?raw once monogram SVG is added
-const trayAiMonogram = ""
+import trayAiLogo from "~/components/versus/assets/tray-ai.svg?raw"
+import trayAiMonogram from "~/components/versus/assets/tray-ai-monograme.svg?raw"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import trayAiImg from "~/components/versus/assets/tray-ai-img.svg"
-// TODO: replace with hero_ui_tray-ai.webp once created
-import heroUI from "~/components/versus/assets/hero_ui.webp"
-import lmfrImage from "~/components/versus/assets/lmfr.png"
 
 const entry = await getEntry("vs", "tray-ai")
 if (!entry) throw new Error("Could not find vs/tray-ai collection entry")
@@ -49,14 +44,13 @@ const {
 } = entry.data
 ---
 
-<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
+<VsLayout {title} description={shortDescription} {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: trayAiMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}
