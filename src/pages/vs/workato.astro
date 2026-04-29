@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -14,16 +14,16 @@ import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 
-import astronomerLogo from "~/components/versus/assets/astronomer.svg?raw"
-import astronomerMonogram from "~/components/versus/assets/astronomer-monograme.svg?raw"
+import workatoLogo from "~/components/versus/assets/workato.svg?raw"
+import workatoMonogram from "~/components/versus/assets/workato-monograme.svg?raw"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
-import astronomerImg from "~/components/versus/assets/astronomer-img.svg"
+import workatoImg from "~/components/versus/assets/workato-img.svg"
 
-const entry = await getEntry("vs", "astronomer")
-if (!entry) throw new Error("Could not find vs/astronomer collection entry")
+const entry = await getEntry("vs", "workato")
+if (!entry) throw new Error("Could not find vs/workato collection entry")
 
 const {
     title,
@@ -44,40 +44,40 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription}>
+<VsLayout {title} description={shortDescription} {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
-            monogram: astronomerMonogram,
+            monogram: workatoMonogram,
         }}
     />
     <Philosophy
         {...philosophy}
         competitor={{
             ...philosophy.competitor,
-            logo: astronomerLogo,
+            logo: workatoLogo,
         }}
     />
     <BusinessValue
         {...businessValue}
         competitor={{
             ...businessValue.competitor,
-            logo: astronomerLogo,
+            logo: workatoLogo,
         }}
     />
     <SetupSpeed
         {...setupSpeed}
         competitor={{
             ...setupSpeed.competitor,
-            logo: astronomerLogo,
+            logo: workatoLogo,
         }}
     />
     <EaseOfUse
         {...easeOfUse}
         competitor={{
             ...easeOfUse.competitor,
-            logo: astronomerLogo,
+            logo: workatoLogo,
         }}
     />
     <VisualPreview
@@ -88,14 +88,14 @@ const {
         }}
         competitor={{
             ...visualPreview.competitor,
-            logo: astronomerLogo,
-            linkImg: astronomerImg,
+            logo: workatoLogo,
+            linkImg: workatoImg,
         }}
     />
     <FeatureGrid
         featureGrid={{
             ...featureGrid,
-            competitorLogo: astronomerLogo,
+            competitorLogo: workatoLogo,
         }}
     />
     <VsTestimonial
@@ -112,7 +112,7 @@ const {
         {...decisionGuide}
         competitor={{
             ...decisionGuide.competitor,
-            logo: astronomerLogo,
+            logo: workatoLogo,
         }}
     />
     <Faq items={commonQuestions} client:visible />
@@ -120,6 +120,6 @@ const {
         <Fragment slot="title">
             Getting Started with Declarative Orchestration
         </Fragment>
-        See how Kestra can simplify your data pipelines—and scale beyond Python-first orchestration.
+        See how Kestra can simplify your workflows—and scale beyond enterprise iPaaS.
     </SeeHow>
-</Layout>
+</VsLayout>

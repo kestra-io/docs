@@ -84,7 +84,7 @@ const renderedTitle = (title ?? "").replace(
 
             @include media-breakpoint-down(lg) {
                 padding-block: 2.5rem;
-                flex-direction: column;
+                flex-direction: column-reverse;
                 align-items: flex-start;
                 gap: 2rem;
             }
@@ -99,6 +99,12 @@ const renderedTitle = (title ?? "").replace(
                 color: var(--ks-content-primary);
                 font-weight: 600;
                 margin-bottom: 1rem;
+                font-size: 2.5rem;
+                line-height: 1.15;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 2rem;
+                }
 
                 :global(.highlight) {
                     color: var(--ks-content-color-highlight);
