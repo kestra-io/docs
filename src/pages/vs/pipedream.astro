@@ -22,7 +22,6 @@ import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import pipedreamImg from "~/components/versus/assets/pipedream-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_pipedream.webp"
 
 const entry = await getEntry("vs", "pipedream")
 if (!entry) throw new Error("Could not find vs/pipedream collection entry")
@@ -46,14 +45,13 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<Layout {title} description={shortDescription}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: pipedreamMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}

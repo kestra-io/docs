@@ -1,6 +1,7 @@
 ---
-title: Blueprints in Kestra – Reusable Workflow Templates
-description: Ready-to-use examples designed to kickstart your workflow.
+title: "Blueprints in Kestra: Reusable Workflow Templates"
+h1: Get Started Faster with Ready-to-Use Workflow Blueprints
+description: Explore Kestra Blueprints — ready-to-use workflow templates that help you get started faster. Browse community and Enterprise blueprints for any automation.
 sidebarTitle: Blueprints
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.10.0"
@@ -9,13 +10,9 @@ docId: blueprints
 
 Ready-to-use examples designed to kickstart your workflow.
 
-## Blueprints – reusable workflow templates
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5mvYVLKLzGk?si=Ga4ndYv_pI3NIlLK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Blueprints are a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow.
 

@@ -1,13 +1,12 @@
 ---
-title: Data Storage and Processing in Kestra – Where Data Lives
-description: Manage data processed by tasks.
+title: "Data Storage in Kestra: How Task Data Is Managed"
+h1: Understand How Kestra Stores and Processes Task Data
+description: Understand how Kestra stores and processes task data. Learn about internal storage, file handling, and how outputs are passed between tasks in your workflows.
 sidebarTitle: Data storage and processing
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
 Manage data processed by tasks.
-
-## Data storage and processing
 
 Kestra's primary purpose is to orchestrate data processing via tasks, so data is central to each flow's execution.
 
@@ -261,7 +260,7 @@ Make sure to also check:
 
 Kestra can process data **row by row** using file transform tasks. The transformation is done with a small script written in Python, JavaScript, or Groovy.
 
-- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
+- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
 - The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
 - The [Groovy Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.script) task allows running scripts with Groovy.
 
@@ -311,8 +310,6 @@ The script can access a logger to log messages. Each row is available in a `row`
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/XiPegyF6uJY?si=5OQgTZBqMBcu4gHZ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 The PurgeExecution task can purge all the files stored inside the internal context by a flow execution.
 It can be used at the end of a flow to purge all its generated files.
@@ -424,8 +421,6 @@ tasks:
 ```
 :::
 
----
-
 #### How to read a Namespace File as a string?
 
 So far, you've seen how to read a file from the internal storage as a string. However, you can use the same `read()` function to read a Namespace File as a string. This is especially useful when you want to execute a Python script or a long SQL query stored in a dedicated SQL file.
@@ -445,8 +440,6 @@ tasks:
 ```
 
 The same syntax applies to SQL queries, custom scripts, and many more. Check the [Namespace Files](../../06.concepts/02.namespace-files/index.md) documentation for more details.
-
----
 
 #### How to read a file from the internal storage as a JSON object?
 

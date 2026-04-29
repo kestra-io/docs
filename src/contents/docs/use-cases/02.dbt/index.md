@@ -1,7 +1,8 @@
 ---
-title: Orchestrate dbt Workflows
+title: Orchestrate dbt Workflows in Kestra
+h1: Version-Control, Test & Deploy dbt Models with GitOps
 sidebarTitle: dbt Workflows
-description: Version-control, test, and deploy dbt models with GitOps and on-demand compute
+description: Version-control, test, and deploy dbt models with Kestra and GitOps. Run dbt on demand or on a schedule with on-demand compute for reliable transformations.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 

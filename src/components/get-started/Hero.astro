@@ -1,10 +1,13 @@
 ---
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const TAGS = [
     { label: "Declarative", icon: "mdi:xml" },
     { label: "Any Language", icon: "mdi:code-tags" },
-    { label: "1200+ Plugins", icon: "mdi:puzzle-outline" },
+    { label: `${totalPlugins}+ Plugins`, icon: "mdi:puzzle-outline" },
     { label: "API-First", icon: "mdi:api" },
     { label: "No Lock-in", icon: "mdi:lock-open-outline" },
     { label: "Self-Hosted", icon: "mdi:server-network-outline" },
@@ -32,7 +35,7 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                     <span class="gradient">Start Orchestrating.</span>
                 </h1>
                 <p class="subtitle">
-                    One YAML file. Any language. 1200+ integrations.<br />
+                    One YAML file. Any language. {totalPlugins}+ integrations.<br />
                     Your first workflow runs in under 2 minutes.
                 </p>
             </div>

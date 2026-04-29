@@ -1,5 +1,6 @@
 ---
-title: Use ServiceNow to Trigger a Kestra Flow
+title: Trigger Kestra Flows from ServiceNow
+h1: Automate ServiceNow Fulfillment via Kestra Webhooks
 icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:

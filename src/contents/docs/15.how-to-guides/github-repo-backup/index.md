@@ -1,5 +1,7 @@
 ---
-title: Test GitHub Repository Backups with Kestra Playground
+title: Back Up GitHub Repos with Kestra Playground
+h1: Test and Automate GitHub Repository Backups in Kestra
+description: Automate GitHub repository backups with Kestra. Schedule periodic exports of your repos to cloud storage with built-in error handling and audit logging.
 icon: /src/contents/docs/icons/github.svg
 stage: Intermediate
 topics:
@@ -25,7 +27,7 @@ This flow has potentially long running operations, so to optimize testing certai
 - GitHub personal access token stored as `GITHUB_TOKEN`.
 - GCP service account JSON key stored as `GCP_SERVICE_ACCOUNT`.
 - A target bucket such as `gs://your_gcs_bucket/kestra-backups/`.
-- The [Google Cloud Storage plugin](/plugins/plugin-gcp/gcs/io.kestra.plugin.gcp.gcs.upload) available to your workers.
+- The [Google Cloud Storage plugin](/plugins/plugin-gcp/cloud-storage-gcs/io.kestra.plugin.gcp.gcs.upload) available to your workers.
 
 ---
 

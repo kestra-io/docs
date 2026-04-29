@@ -176,6 +176,33 @@ export const collections = {
             }),
         ),
     }),
+    resources: defineCollection({
+        loader: glob({
+            pattern: "./**/*.md{,x}",
+            base: "./src/contents/resources",
+            generateId: (opts) => generateId(opts).toLowerCase(),
+        }),
+        schema: ({ image }) =>
+            z.object({
+                title: z.string(),
+                description: z.string().optional(),
+                metaTitle: z.string().optional(),
+                metaDescription: z.string().optional(),
+                tag: z.enum(["infrastructure", "data", "ai", "whitepapers"]),
+                date: z.coerce.date().optional(),
+                image: image().optional(),
+                href: z.string().optional(),
+                faq: z
+                    .array(
+                        z.object({
+                            question: z.string(),
+                            answer: z.string(),
+                        }),
+                    )
+                    .optional(),
+                schema: z.record(z.string(), z.unknown()).optional(),
+            }),
+    }),
     feeds: defineCollection({
         loader: glob({
             pattern: "./**/index.md",

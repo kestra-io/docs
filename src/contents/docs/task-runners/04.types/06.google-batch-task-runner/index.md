@@ -1,5 +1,6 @@
 ---
-title: Google Batch Task Runner – Run Tasks on Google Cloud VMs
+title: "Google Batch Task Runner: Run Tasks on Cloud VMs"
+h1: Provision and Manage Google Cloud Compute with Kestra Tasks
 sidebarTitle: Google Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -114,7 +115,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of available properties, see the [Google Batch plugin documentation](/plugins/plugin-gcp/runner/io.kestra.plugin.ee.gcp.runner.Batch) or explore the configuration in the built-in Code Editor in the Kestra UI.
+For a full list of available properties, see the [Google Batch plugin documentation](/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.batch) or explore the configuration in the built-in Code Editor in the Kestra UI.
 :::
 
 ---
@@ -203,7 +204,7 @@ Search for "Bucket" in the Cloud Console and create a new GCS bucket. You can ke
 Below is a sample flow that runs a Python file (`main.py`) using the Google Batch Task Runner. The `taskRunner` section defines properties such as the project, region, and bucket.
 
 :::alert{type="info"}
-By default, the task runner uses the default network configuration of your Google Cloud project. If none exists, you can configure connectivity manually using the `networkInterfaces` property. See the [Google Cloud Batch Task Runner documentation](https://kestra.io/plugins/plugin-ee-gcp/io.kestra.plugin.ee.gcp.runner.batch#properties_networkInterfaces-body) for details.
+By default, the task runner uses the default network configuration of your Google Cloud project. If none exists, you can configure connectivity manually using the `networkInterfaces` property. See the [Google Cloud Batch Task Runner documentation](https://kestra.io/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.batch#properties_networkInterfaces-body) for details.
 :::
 
 ```yaml

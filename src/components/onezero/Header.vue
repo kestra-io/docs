@@ -77,10 +77,10 @@
             height: 39,
         },
         {
-            name: "Toyota",
-            src: "/landing/onezero/toyota.svg",
-            width: 152.78,
-            height: 25.13,
+            name: "Amdocs",
+            src: "/landing/onezero/amdocs.svg",
+            width: 120,
+            height: 26,
         },
         {
             name: "Acxiom",

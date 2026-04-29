@@ -1,5 +1,6 @@
 ---
 title: Executions in Kestra – Run and Monitor Flows
+h1: Trigger, Monitor, and Troubleshoot Flow Executions
 description: Manage Flow Executions in Kestra. Learn how to trigger, monitor, and troubleshoot workflow runs, understand states, and access execution metrics.
 sidebarTitle: Execution
 icon: /src/contents/docs/icons/flow.svg
@@ -7,8 +8,6 @@ docId: executions
 ---
 
 Execute flows and view the results.
-
-## Executions – run and monitor flows
 
 An execution is a single run of a flow with a specific state.
 
@@ -119,8 +118,6 @@ You can trigger a flow manually from the Kestra UI by clicking the **Execute** b
 
 ![execute_button](./execute_button.png)
 
----
-
 ## Use automatic triggers
 
 You can add a **Schedule trigger** to automatically launch a flow execution at a regular time interval.
@@ -145,8 +142,6 @@ http://localhost:8080/api/v1/main/executions/webhook/dev/hello-world/secretWebho
 ```
 
 You can also pass inputs to the flow using the `inputs` query parameter.
-
----
 
 ## Execute a flow via an API call
 

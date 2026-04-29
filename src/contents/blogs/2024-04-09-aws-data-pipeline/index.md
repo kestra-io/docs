@@ -192,7 +192,7 @@ You can also check the detailed orders by going to the Outputs tab and using the
 
 This example demonstrated how we can orchestrate data pipelines using Kestra. Kestra can orchestrate any kind of workflow, exposing a rich UI that monitors all executions.
 
-![](/ui.gif)
+![Kestra UI showing flow executions and monitoring dashboard](/ui.gif)
 
 Join the Slack [community](/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://x.com/kestra_io) for the latest news.

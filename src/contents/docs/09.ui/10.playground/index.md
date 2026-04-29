@@ -1,5 +1,6 @@
 ---
-title: Playground in the Kestra UI – Build Flows Task by Task
+title: "Playground in Kestra UI: Build Flows Task by Task"
+h1: Experiment and Debug Workflows with Kestra Playground
 description: Experiment in the Kestra Playground. Build and test tasks iteratively in the UI to debug and refine workflows without full execution.
 sidebarTitle: Playground
 icon: /src/contents/docs/icons/ui.svg

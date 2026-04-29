@@ -98,8 +98,6 @@ Check the following video demo for a deep dive into the new `Namespaces` UI:
   <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=RiEZ_NKQym3Kh1tt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## SCIM Directory Sync 🗂️
 
 The Enterprise Edition of Kestra now supports Directory Sync Integration via SCIM 2.0 protocol, allowing you to keep your users and groups in sync between your Identity Provider (IdP) and Kestra.
@@ -241,8 +239,6 @@ Check the video below for a Task Runners feature showcase:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 :::collapse{title="The main v0.18.0 enhancements to Task Runners"}
 Here are the main enhancements to Task Runners added in this release:

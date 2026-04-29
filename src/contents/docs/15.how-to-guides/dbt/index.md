@@ -1,5 +1,6 @@
 ---
 title: Manage dbt Projects with Kestra's Code Editor
+h1: Clone, Edit, Test, and Push dbt Models from Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

@@ -1,5 +1,6 @@
 ---
 title: Sync Namespace Files from a Git Repository
+h1: Keep Namespace Files in Sync with Git Using SyncNamespaceFiles
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
@@ -14,8 +15,6 @@ Sync files from a Git Repository to Kestra with SyncNamespaceFiles Task.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/AbxaDtINcr8?si=IeCvWT-0PWl5Jq8t" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 The [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) task is a powerful integration that allows you to **sync your namespace files with Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 

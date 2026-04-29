@@ -1,5 +1,6 @@
 ---
-title: Troubleshooting Kestra – Common Issues and Fixes
+title: "Troubleshoot Kestra: Kubernetes, Docker, and Startup Issues"
+h1: Diagnose and resolve common Kestra deployment and runtime issues
 sidebarTitle: Troubleshooting
 icon: /src/contents/docs/icons/faq.svg
 description: Solutions for common Kestra issues, including pod restarts, unprocessable executions, and Docker-in-Docker problems.
@@ -33,7 +34,7 @@ You can also skip executions at broader levels:
    ```
    Example:
    ```sh
-   kestra server executor "--skip-flows=tenant|namespace|daily-data-sync"
+   kestra server executor "--skip-flows=companyA|production-data|daily-data-sync"
    ```
 
 :::alert{type="info"}
@@ -46,7 +47,7 @@ Make sure to replace `tenant` and `namespace` with the correct values for the fl
    ```
    Example:
    ```sh
-   kestra server executor "--skip-namespaces=tenant|production-data"
+   kestra server executor "--skip-namespaces=companyA|production-data"
    ```
 
 :::alert{type="info"}

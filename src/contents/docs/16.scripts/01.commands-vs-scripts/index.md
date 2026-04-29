@@ -1,5 +1,6 @@
 ---
 title: Commands vs Script Tasks in Kestra
+h1: When to Use Script Tasks vs Commands Tasks
 sidebarTitle: Commands and Script Tasks
 icon: /src/contents/docs/icons/dev.svg
 description: Understand the differences between Script and Commands tasks in Kestra and when to use each for your workflows.
@@ -12,8 +13,6 @@ Types of tasks for executing programming languages.
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/l-1MDlhV2oM?si=A--h-VEvmVNWW1TW" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 For each of the [supported languages](../00.languages/index.md) (e.g., Python, R, Node.js, Shell), Kestra provides two task types: **Script** and **Commands**.
 
