@@ -14,7 +14,7 @@
         <hr class="card-hr" />
         <div class="bottom">
             <Link
-                :href="`/use-cases/stories/${story.slug}`"
+                :href="`/use-cases/stories/${story.id}`"
                 text="Read the Story"
             />
         </div>

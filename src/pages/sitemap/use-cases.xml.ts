@@ -7,7 +7,7 @@ export const GET: APIRoute = async () => {
 
     const urls = allUseCases.map(
         (story) =>
-            `https://kestra.io/use-cases/stories/${story.data.slug}`,
+            `https://kestra.io/use-cases/stories/${story.id}`,
     )
 
     return sitemapResponse(urls)

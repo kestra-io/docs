@@ -10,8 +10,8 @@ const title = "Kestra's Customers Stories"
 const description =
     "Learn how we helped companies manage their critical operations."
 
-const allEntries = (await getCollection("customerStories")).sort((a, b) =>
-    parseInt(a.id) > parseInt(b.id) ? -1 : 1,
+const allEntries = (await getCollection("customerStories")).sort(
+    (a, b) => b.data.order - a.data.order,
 )
 
 const totalStories = allEntries.length
