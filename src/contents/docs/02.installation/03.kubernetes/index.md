@@ -29,7 +29,7 @@ Kestra maintains three Helm charts:
 
 Chart sources:
 - Repository: [helm.kestra.io](https://helm.kestra.io/)
-- Source code: [kestra-io/kestra](https://github.com/kestra-io/kestra)
+- Source code: [kestra helm chart](https://github.com/kestra-io/kestra/tree/develop/charts/kestra)
 - ArtifactHub: [kestra](https://artifacthub.io/packages/helm/kestra/kestra) · [kestra-starter](https://artifacthub.io/packages/helm/kestra/kestra-starter)
 
 :::alert{type="info"}
