@@ -1,7 +1,7 @@
 ---
 title: A Solopreneur's Journey, How NetworkLessons Leverage Kestra to Automate
   his Business
-order: 15
+rank: 3
 description: Discover how NetworkLessons, a leading platform in Cisco technology
   education, streamlined its operations and reduced workflow maintenance time
   by  using Kestra. Learn how Rene Molenaar, the founder, leveraged Kestra to

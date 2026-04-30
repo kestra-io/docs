@@ -1,6 +1,6 @@
 ---
 title: "Quadis Drives Innovation: Transforming Car Retail Operations with Kestra"
-order: 4
+rank: 3
 description: This is the story of how Quadis optimized their operations using
   Kestra for efficient financial reporting and improved customer communication.
 metaTitle: "Quadis Drives Innovation: Transforming Car Retail Operations with Kestra"

@@ -11,7 +11,7 @@ const description =
     "Learn how we helped companies manage their critical operations."
 
 const allEntries = (await getCollection("customerStories")).sort(
-    (a, b) => b.data.order - a.data.order,
+    (a, b) => a.data.rank - b.data.rank,
 )
 
 const totalStories = allEntries.length

@@ -1,6 +1,6 @@
 ---
 title: Displayce Optimized Workflow Orchestration and Enhanced Data Management
-order: 9
+rank: 3
 description: Faced with the challenge of expanding their data operations and
   lacking a unified system for monitoring and orchestration, Displayce sought a
   robust solution to streamline their processes, leading them to Kestra.

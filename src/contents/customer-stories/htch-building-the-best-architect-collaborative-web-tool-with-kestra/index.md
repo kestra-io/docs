@@ -1,6 +1,6 @@
 ---
 title: HTCH Building The Best Architect Collaborative Web Tool with Kestra
-order: 11
+rank: 3
 description: This is the Story of HTCH a collaborative web platform for
   architects. They rely on Kestra to manage their data landscape.
 metaTitle: HTCH Building The Best Architect Collaborative Web Tool with Kestra

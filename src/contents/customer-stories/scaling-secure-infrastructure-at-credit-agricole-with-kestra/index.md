@@ -1,6 +1,6 @@
 ---
 title: Scaling Secure Infrastructure at Crédit Agricole with Kestra
-order: 19
+rank: 1
 description: This is the story of how CAGIP, the IT production arm of Crédit
   Agricole, transformed infrastructure operations and scaled data workflows
   across more than 100 clusters using Kestra.

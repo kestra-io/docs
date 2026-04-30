@@ -1,6 +1,6 @@
 ---
 title: DataMesh at Scale Increased its Data Production by 900%
-order: 14
+rank: 1
 description: This is the story of how Leroy Merlin France leveraged Kestra to
   transform its data architecture and enhance its data operations.
 metaTitle: "Leroy Merlin France & Kestra: DataMesh at Scale Increased its Data
