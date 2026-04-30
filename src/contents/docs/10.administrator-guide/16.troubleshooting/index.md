@@ -6,9 +6,7 @@ icon: /src/contents/docs/icons/faq.svg
 description: Solutions for common Kestra issues, including pod restarts, unprocessable executions, and Docker-in-Docker problems.
 ---
 
-Something doesn't work as expected? Check out these common issues and fixes.
-
-## Fix common Kestra issues
+Common issues and fixes for Kestra deployments.
 
 ## CrashLoopBackoff when restarting all pods
 
@@ -38,7 +36,7 @@ You can also skip executions at broader levels:
    ```
 
 :::alert{type="info"}
-Make sure to replace `tenant` and `namespace` with the correct values for the flow.
+Replace `tenant` and `namespace` with the correct values for the flow.
 :::
 
 2. **Namespaces** — Skip all executions within specific namespaces:
@@ -51,7 +49,7 @@ Make sure to replace `tenant` and `namespace` with the correct values for the fl
    ```
 
 :::alert{type="info"}
-Make sure to replace `tenant` with the correct values for the namespace.
+Replace `tenant` with the correct values for the namespace.
 :::
 
 3. **Tenants** — Skip all executions associated with specific tenants:

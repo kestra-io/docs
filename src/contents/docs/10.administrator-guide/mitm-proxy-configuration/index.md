@@ -8,13 +8,11 @@ description: Configure Kestra to route outbound HTTPS traffic through a Man-in-t
 
 Configure outbound HTTP/S traffic through an MITM proxy in Kestra.
 
-## Route Kestra traffic through an MITM proxy
-
-This guide walks through the steps to route and inspect Kestra's outbound HTTP/S traffic using an MITM proxy.
+This guide explains how to route and inspect Kestra's outbound HTTP/S traffic using an MITM proxy.
 
 ## Why use an MITM proxy
 
-In secured or restricted environments it’s common to route outbound HTTP/S traffic through a **Man-in-the-Middle (MITM) proxy** for auditing, inspection, or policy enforcement. For this to work seamlessly, clients (Kestra) must:
+In secured or restricted environments it’s common to route outbound HTTP/S traffic through a **Man-in-the-Middle (MITM) proxy** for auditing, inspection, or policy enforcement. For this to work, clients (Kestra) must:
 
 - Trust the proxy’s CA certificate.
 - Route outbound traffic through the proxy.
@@ -23,8 +21,6 @@ In secured or restricted environments it’s common to route outbound HTTP/S tra
 :::alert{type="info"}
 **Security note:** An MITM proxy intercepts TLS traffic. Only enable this in controlled environments and with appropriate approvals.
 :::
-
----
 
 ## Prerequisites
 
@@ -49,8 +45,6 @@ kubectl create secret generic kestra-ssl   --from-file=truststore.jks   -n kestr
 ```
 
 This secret will be mounted into Kestra pods.
-
----
 
 ## Configuring Kestra to use the MITM proxy
 
@@ -133,8 +127,6 @@ services:
     environment:
       - JAVA_OPTS=-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.trustStoreType=JKS -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com
 ```
-
----
 
 ## Troubleshooting
 
