@@ -129,7 +129,7 @@ This configuration links your Kubernetes service account to the GCP service acco
 
 **Update Kestra configuration**
 
-Configure CloudSQL Database in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11) like in the following example:
+Configure CloudSQL Database in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) like in the following example:
 
 ```yaml
 configurations:
@@ -165,7 +165,7 @@ This section guides you on how to change the storage backend to Cloud Storage to
 6. On the newly created service account page, go to the **Keys** tab at the top of the page and click on **Add Key**. From the dropdown, select **Create New Key**.
 7. Select the Key type as **JSON** and click on **Create**. The JSON key file for the service account will be downloaded.
 8. Use the stringified JSON for the configuration. You can use the bash command `cat <path_to_json_file> | jq '@json'` to generate stringified JSON.
-9. Edit Kestra storage configuration in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11).
+9. Edit Kestra storage configuration in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml).
 
 :::alert{type="info"}
 *Note: If you want to use a Kubernetes service account configured with Workload Identity, you don't need to provide anything for `serviceAccount`, as it will be autodetected for the pod configuration if it's well configured.*
