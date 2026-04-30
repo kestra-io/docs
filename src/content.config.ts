@@ -117,6 +117,7 @@ export const collections = {
         schema: ({ image }) =>
             z.object({
                 title: z.string(),
+                slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "slug must be lowercase alphanumeric with single hyphens"),
                 description: z.string(),
                 metaTitle: z.string(),
                 metaDescription: z.string(),

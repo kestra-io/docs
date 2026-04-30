@@ -1,5 +1,6 @@
 ---
 title: Scaling Big Data Operations
+slug: scaling-big-data-operations
 description: This is the story of how Acxiom partnered with Kestra to modernize
   its Big Data orchestration, unlocking scalability, flexibility, and robust
   multi-tenant automation across its entire data infrastructure.

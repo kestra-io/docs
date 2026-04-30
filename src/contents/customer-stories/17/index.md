@@ -1,5 +1,6 @@
 ---
 title: ERP Transformation Smarter, Faster, Fully Automated
+slug: erp-transformation-smarter-faster-fully-automated
 description: This is the story of how FILA, a global leader in sportswear,
   orchestrates complex ERP and supply chain workflows across continents using
   Kestra.

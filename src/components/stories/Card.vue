@@ -14,7 +14,7 @@
         <hr class="card-hr" />
         <div class="bottom">
             <Link
-                :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`"
+                :href="`/use-cases/stories/${story.slug}`"
                 text="Read the Story"
             />
         </div>
@@ -22,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-    import { slugify } from "@kestra-io/ui-libs"
     import TaskIcon from "~/components/common/TaskIcon.vue"
     import Link from "~/components/common/Link.vue"
 

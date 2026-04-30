@@ -1,5 +1,6 @@
 ---
 title: Governed Self‑Service Cloud Automation in Regulated Environments with Kestra
+slug: governed-self-service-cloud-automation-in-regulated-environments-with-kestra
 description: How an European software provider standardized cloud automation
   with Kestra, enabling self-service, auditability, and strict access control.
 metaTitle: Governed Self‑Service Cloud Automation in Regulated Environments with Kestra

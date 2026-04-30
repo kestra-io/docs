@@ -28,7 +28,6 @@
 
 <script lang="ts" setup>
     import { computed } from "vue"
-    import { slugify } from "@kestra-io/ui-libs"
     import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
     import CheckboxMultipleMarkedCircleOutlineIcon from "vue-material-design-icons/CheckboxMultipleMarkedCircleOutline.vue"
     import TaskIcon from "../common/TaskIcon.vue"
@@ -36,7 +35,7 @@
 
     const props = defineProps<{ story: Story }>()
 
-    const storyUrl = computed(() => `/use-cases/stories/${props.story.id}-${slugify(props.story.title ?? "--")}`)
+    const storyUrl = computed(() => `/use-cases/stories/${props.story.slug}`)
     const kpis = computed(() => [props.story.kpi1, props.story.kpi2, props.story.kpi3].filter(Boolean) as string[])
 
     function navigate() {

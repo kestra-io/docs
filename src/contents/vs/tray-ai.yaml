@@ -193,7 +193,7 @@ testimonials:
         name: Reduction in BI and ETL costs
       - value: "0"
         name: Black Friday 2025 incidents
-    storyLink: /use-cases/stories/31-modernizing-mission-critical-e-commerce-integrations-with-kestra
+    storyLink: /use-cases/stories/modernizing-mission-critical-e-commerce-integrations-with-kestra
 
 platformStrengths:
   title: What Kestra Brings to Engineering and Data Teams

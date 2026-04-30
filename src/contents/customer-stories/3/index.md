@@ -1,5 +1,6 @@
 ---
 title: CleverConnect Enhances HR Integration Platform with Kestra
+slug: cleverconnect-enhances-hr-integration-platform-with-kestra
 description: This is the story of how CleverConnect, a human resources tech
   company, leveraged Kestra's capabilities to create an advanced integration
   platform

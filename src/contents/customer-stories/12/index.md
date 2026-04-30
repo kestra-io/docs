@@ -1,5 +1,6 @@
 ---
 title: Bouygues Immobilier Platform, Orchestrate its Marketing Data with Kestra
+slug: bouygues-immobilier-platform-orchestrate-its-marketing-data-with-kestra
 description: " This is the story of Valorissimo's partnership with Hanalytics to
   modernize their data infrastructure with Kestra, enhancing their marketing and
   sales efficiency in the real estate investment sector."

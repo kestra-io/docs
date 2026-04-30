@@ -1,5 +1,6 @@
 ---
 title: Clever Cloud, Offloading Terabytes of Data with Kestra Every Month
+slug: clever-cloud-offloading-terabytes-of-data-with-kestra-every-month
 description: This is the story of how Clever Cloud integrated Kestra to automate
   data offloading, significantly improving their system efficiency and data
   handling capacity.

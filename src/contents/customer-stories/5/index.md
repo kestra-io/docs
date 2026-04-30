@@ -1,5 +1,6 @@
 ---
 title: Airpaz Optimizes Travel Data Workflows with Kestra
+slug: airpaz-optimizes-travel-data-workflows-with-kestra
 description: This is the story of how Airpaz, a leading travel service provider,
   utilized Kestra to enhance data orchestration, automate workflows, and improve
   overall efficiency in the travel booking experience.
