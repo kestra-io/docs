@@ -1,6 +1,6 @@
 ---
 title: When Your API Writes Its Own Docs With Kestra
-order: 25
+rank: 2
 description: This is the story of how Gravitee, a 2024 Gartner® Magic Quadrant
   Leader for API Management, brought orchestration and AI together to generate
   documentation, optimize ML models, and scale real-time pipelines with Kestra.

@@ -1,6 +1,6 @@
 ---
 title: Amdocs Delivers Integration Environments as a Service with Kestra
-order: 33
+rank: 1
 description: How Amdocs' Foundation team uses Kestra to orchestrate end-to-end environment provisioning, deployment, and automated validation at scale.
 metaTitle: Amdocs Delivers Integration Environments as a Service with Kestra
 metaDescription: How Amdocs' Foundation team uses Kestra to orchestrate end-to-end environment provisioning, deployment, and automated validation at scale.

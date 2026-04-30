@@ -1,6 +1,6 @@
 ---
 title: Modernizing Mission‑Critical Workflows in a Highly Regulated Environment
-order: 29
+rank: 1
 description: How a leading pharmacy retailer replaced a 30+ year legacy critical
   integration platform using Kestra.
 metaTitle: Modernizing Mission‑Critical Workflows in a Highly Regulated Environment

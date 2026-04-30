@@ -1,7 +1,7 @@
 ---
 title: "Copines De Voyage: Enhancing Travel Experiences Through Advanced Data
   Orchestration with Kestra"
-order: 8
+rank: 3
 description: This is the story of how Copines De Voyage, an exclusively
   female-focused travel agency, partnered with Data Hanalytics to transition
   from a legacy PHP and cron job infrastructure to Kestra

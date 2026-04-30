@@ -1,6 +1,6 @@
 ---
 title: Ntico Manage Geospatial Data Operations with Kestra
-order: 2
+rank: 3
 description: This is the story of how Ntico leveraged Kestra to power Locxia, a
   platform providing businesses and local authorities with deep insights into
   territories and residents through satellite imagery.

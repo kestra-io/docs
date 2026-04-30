@@ -1,6 +1,6 @@
 ---
 title: Sopht Scales Its Green ITOps Platform with Kestra
-order: 18
+rank: 2
 description: This is the story of Sopht’s partnership with DataFlooder to
   redesign and scale their data architecture with Kestra, enabling reliable
   orchestration and customer-level automation for their Green ITOps platform.

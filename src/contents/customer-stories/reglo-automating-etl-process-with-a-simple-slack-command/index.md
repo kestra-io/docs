@@ -1,6 +1,6 @@
 ---
 title: Reglo, Automating ETL process with a Simple Slack Command
-order: 10
+rank: 3
 description: This is the story of Reglo, a company that struggled with juggling
   multiple platforms to refresh and process data. During their search for an
   effective solution, they discovered Kestra

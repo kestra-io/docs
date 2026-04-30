@@ -1,6 +1,6 @@
 ---
 title: Apple ML Team Orchestrates Large-Scale Data Pipelines with Kestra
-order: 32
+rank: 1
 description: Apple's 200-engineer ML team replaced Airflow with Kestra to orchestrate large-scale ETL workloads with declarative syntax and robust fault tolerance.
 metaTitle: Apple's ML team orchestrates large-scale data pipelines with Kestra
 metaDescription: Apple's 200-engineer ML team replaced Airflow with Kestra to orchestrate large-scale ETL workloads with declarative syntax and fault tolerance.

@@ -1,6 +1,6 @@
 ---
 title: "Gorgias, Using Declarative Data Engineering Orchestration With Kestra"
-order: 13
+rank: 2
 description: "This is the story of how Gorgias, a leading company in enhancing
   user experiences for online merchants and shoppers, integrated Kestra into
   their data infrastructure "
