@@ -4,7 +4,6 @@ import { getCollection, type CollectionEntry } from "astro:content"
 import StoryDetail from "~/components/stories/StoryDetail.vue"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Layout from "~/components/layout.astro"
-import { slugify } from "@kestra-io/ui-libs"
 import { NO_RANDOM_ORDER } from "astro:env/client"
 import { randomSortFunction } from "~/utils/random"
 
@@ -49,18 +48,16 @@ export const getStaticPaths = (async () => {
             },
         },
         params: {
-            staticSlug: `${entry.id}-${slugify(entry.data.title)}`,
+            staticSlug: entry.data.slug,
         },
     }))
 }) satisfies GetStaticPaths
 
 const { entry, related } = Astro.props
-const { staticSlug } = Astro.params
-const id = staticSlug?.split("-")[0]
-const slug = slugify(entry.data.title)
+const slug = entry.data.slug
 
 if (!entry) {
-    throw new Error(`Unable to find id '${id}'`)
+    throw new Error(`Unable to find slug '${slug}'`)
 }
 
 const story = {

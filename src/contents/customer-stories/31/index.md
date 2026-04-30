@@ -1,5 +1,6 @@
 ---
 title: Modernizing Mission-Critical E-commerce Integrations with Kestra
+slug: modernizing-mission-critical-e-commerce-integrations-with-kestra
 description: Víssimo chose Kestra over Temporal, Airflow, Prefect, and n8n for
   resilient e-commerce and BI workflows.
 metaTitle: Modernizing Mission-Critical E-commerce Integrations with Kestra

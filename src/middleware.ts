@@ -8,6 +8,22 @@ const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
     query: "?raw",
 })
 
+const customerStoryFiles = import.meta.glob("./contents/customer-stories/*/index.md", {
+    eager: true,
+    import: "default",
+    query: "?raw",
+})
+
+const customerStoryIdToSlug: Record<string, string> = {}
+for (const path in customerStoryFiles) {
+    const idMatch = path.match(/customer-stories\/([^/]+)\/index\.md$/)
+    const fmMatch = (customerStoryFiles[path] as string).match(/^---\n([\s\S]*?)\n---/)
+    if (idMatch && fmMatch) {
+        const fm = YAML.parse(fmMatch[1]) as { slug?: string }
+        if (fm.slug) customerStoryIdToSlug[idMatch[1]] = fm.slug
+    }
+}
+
 const redirectCollection: {
     id: string
     data: {
@@ -150,6 +166,16 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
     if (response.status !== 404) {
         return response
+    }
+
+    // Legacy customer-story URLs of the form /use-cases/stories/<id>-<anything>
+    // redirect to the canonical /use-cases/stories/<slug>.
+    const storyIdMatch = context.url.pathname.match(/^\/use-cases\/stories\/(\d+)(?:-|$)/)
+    if (storyIdMatch) {
+        const slug = customerStoryIdToSlug[storyIdMatch[1]]
+        if (slug) {
+            return sendRedirect(`/use-cases/stories/${slug}`)
+        }
     }
 
     const originalUrl = new URL(context.url)

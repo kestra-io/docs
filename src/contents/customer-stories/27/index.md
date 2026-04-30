@@ -1,5 +1,6 @@
 ---
 title: Securing Hybrid Cloud Automation Across IT & OT with Kestra
+slug: securing-hybrid-cloud-automation-across-it-and-ot-with-kestra
 description: How a Fortune 500 industrial company replaced VMware Aria
   Automation with Kestra to cut costs and secure OT operations.
 metaTitle: Securing Hybrid Cloud Automation Across IT & OT with Kestra

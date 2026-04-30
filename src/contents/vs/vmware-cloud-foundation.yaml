@@ -199,7 +199,7 @@ testimonials:
         name: "Platform instead of vRA + vRO + separate tools"
       - value: "100%"
         name: "Audit coverage across all environments"
-    storyLink: "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
+    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
 
 platformStrengths:
   title: "Kestra Is Built for the Full Infrastructure Lifecycle"

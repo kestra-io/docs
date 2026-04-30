@@ -1,5 +1,6 @@
 ---
 title: Boosted Productivity, Slashed Costs, and Accelerated Delivery
+slug: boosted-productivity-slashed-costs-and-accelerated-delivery
 description: This is the story of how Foundation Data, a leading marketing and
   advertising partner for major automotive brands across the USA, streamlined
   their data orchestration and significantly enhanced operational efficiency

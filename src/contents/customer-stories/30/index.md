@@ -1,5 +1,6 @@
 ---
 title: Building a Government-Grade Orchestration Control Plane with Kestra
+slug: building-a-government-grade-orchestration-control-plane-with-kestra
 description: How Dataport, Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud using Kestra.
 metaTitle: "Dataport & Kestra: Building a Government-Grade Orchestration Control Plane"
 metaDescription: How Dataport, Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud using Kestra.
