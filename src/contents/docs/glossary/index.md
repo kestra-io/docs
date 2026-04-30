@@ -105,6 +105,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 <span id="secrets"></span>
 - [Secrets](#secrets) - sensitive information stored securely. [Secrets](../06.concepts/04.secret/index.md) can be retrieved and used within Kestra flows using the `secret()` function (e.g., `{{ secret('API_TOKEN') }}`).
 <span id="subflow"></span>
+- [Sibling task](#sibling-task) - A sibling task is a task that shares a common parent task with other tasks, like in the `tasks` list inside a loop.  
 - [Subflow](#subflow) - Subflows let you build modular and reusable workflow components. They work like function calls: executing a [subflow](../05.workflow-components/10.subflows/index.md) creates a new flow run from within another flow.
 <span id="system-flows"></span>
 - [System flows](#system-flows) - System flows automate maintenance workflows. Any valid Kestra flow can become a [System Flow](../06.concepts/system-flows/index.md) if it’s added to the `system` namespace.

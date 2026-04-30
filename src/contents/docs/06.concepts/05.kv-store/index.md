@@ -14,10 +14,6 @@ Build stateful workflows with the KV Store.
   <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=69b0O0fxKESDnQs7" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
-## KV Store – persist shared state
-
 Kestra's workflows are stateless by design. All workflow executions and task runs are isolated from each other by default to avoid any unintended side effects. When you pass data between tasks, you do so explicitly by passing outputs from one task to another, and that data is stored transparently in Kestra's internal storage. This stateless execution model ensures that workflows are idempotent and can be executed anywhere in parallel at scale.
 
 However, in certain scenarios, your workflow might need to share data beyond passing outputs from one task to another. For example, you might want to persist data across executions or even across different workflows. This is where the Key Value (KV) store comes into play.
@@ -185,7 +181,7 @@ tasks:
 ```
 
 The function arguments such as the `errorOnMissing` keyword can be skipped for brevity as long as you fill in all positional arguments i.e., `{{ kv(key='your_key_name', namespace='your_namespace_name', errorOnMissing=false) }}` — the version below has the same effect:
-{{ kv(key='my_key', namespace='company.team') }}
+`{{ kv(key='my_key', namespace='company.team') }}`
 ```yaml
 id: read_non_existing_kv_pair
 namespace: company.team

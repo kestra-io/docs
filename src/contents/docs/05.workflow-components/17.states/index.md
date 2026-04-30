@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/flow.svg
 
 States control the status of your workflow execution.
 
-## Execution states – lifecycle reference
-
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h5AigXBAs6Y?si=ftaD1zM24b7BDUMo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

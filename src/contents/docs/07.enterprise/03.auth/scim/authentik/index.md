@@ -77,8 +77,6 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
 :::
 
----
-
 ## authentik SCIM 2.0 setup
 
 Configuring SCIM 2.0 follows a process similar to SSO — you'll need to create a new `Application`. Then, in the second step, select `SCIM` as the Provider Type.
@@ -113,8 +111,6 @@ Once groups and users are created, they should be visible in the Kestra UI under
 ![scim-for-authentik-12](./authentik12.png)
 
 Then, to verify access, log in as one of those new authentik users in a separate browser or incognito mode and verify that the user has the permissions you expect.
-
----
 
 ## Additional resources
 

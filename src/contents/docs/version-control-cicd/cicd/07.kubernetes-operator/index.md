@@ -9,6 +9,10 @@ description: Manage Kestra resources declaratively using the Kestra Kubernetes O
 
 How to use the Kestra Kubernetes Operator to provision and manage changes to Kestra resources, including flows, namespace files, and key-value store entries.
 
+:::alert{type="warning"}
+The Kestra Kubernetes Operator is no longer maintained. It will not receive further updates or bug fixes. For declarative flow management, consider using the [Terraform provider](../03.terraform/index.md) or the [Kestra CLI](../../../kestra-cli/index.mdx) as alternatives.
+:::
+
 ## Manage Kestra with the Kubernetes Operator
 
 :::alert{type="info"}
@@ -30,7 +34,7 @@ The Kestra Kubernetes Operator manages Kestra flows, namespace files, and key-va
 
 ## Installing the Kestra Kubernetes Operator
 
-We provide a Helm chart to install Kestra in Kubernetes; see the [installation guide](../../../02.installation/03.kubernetes/index.md). The [Kestra Operator](https://github.com/kestra-io/helm-charts/tree/master/charts/kestra-operator) can be installed with the `kestra-operator` chart. To install the chart with the release name `my-kestra-operator` use:
+We provide a Helm chart to install Kestra in Kubernetes; see the [installation guide](../../../02.installation/03.kubernetes/index.md). The [Kestra Operator](https://github.com/kestra-io/kestra/tree/develop/charts/kestra-operator) can be installed with the `kestra-operator` chart. To install the chart with the release name `my-kestra-operator` use:
 
 ```bash
 $ helm repo add kestra https://helm.kestra.io/

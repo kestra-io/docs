@@ -16,8 +16,6 @@ You can execute NodeJS code in a flow by either writing your NodeJS inline or by
   <iframe src="https://www.youtube.com/embed/nACf-2mnonk?si=OzJP7gtN-AbGrkr_" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 In this example, the flow will install the required npm packages, make an API request to fetch data and use the NodeJS Kestra Library to generate outputs and metrics using this data.
 
 

@@ -23,7 +23,7 @@ Note that you need to deploy Kestra using the [Kafka and Elasticsearch architect
 
 ## Scaling the components
 
-The following components can be scaled horizontally by increasing the number of replicas in your [Helm chart values](https://github.com/kestra-io/helm-charts/blob/57e23342bdc430b16326ad04d55e23d796e71721/charts/kestra/values.yaml#L29):
+The following components can be scaled horizontally by increasing the number of replicas in your [Helm chart values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml):
 
 - Webserver
 - Scheduler

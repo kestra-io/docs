@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Manage file caching inside Kestra.
 
-## Caching in Kestra – speed up repeated tasks
-
 Kestra provides file caching, which is especially useful when you work with sizable package dependencies that don't change often.
 
 ## Cache files in a `WorkingDirectory` task

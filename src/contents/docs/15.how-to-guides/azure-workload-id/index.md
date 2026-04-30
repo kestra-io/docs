@@ -163,13 +163,14 @@ Before we deploy Kestra, we need to modify the `values.yaml` of the helm chart u
 ### Configure Secrets Manager
 
 ```yaml
-configuration:
-  kestra:
-    secret:
-      type: azure-key-vault
-      azureKeyVault:
-        vaultName: ${KEYVAULT_NAME}
-        workloadIdentityClientId: ${MANAGED_CLIENT_ID}
+configurations:
+  application:
+    kestra:
+      secret:
+        type: azure-key-vault
+        azureKeyVault:
+          vaultName: ${KEYVAULT_NAME}
+          workloadIdentityClientId: ${MANAGED_CLIENT_ID}
 ```
 
 ### Service Account
@@ -177,9 +178,9 @@ configuration:
 Make sure to add the service account name to the `values.yaml` file. Since a value is already present, overwrite it with your value defined above.
 
 ```yaml
-### Global Deployement
-nameOverride: ""
-serviceAccountName: ${SERVICE_ACCOUNT_NAME}
+serviceAccount:
+  create: false
+  name: ${SERVICE_ACCOUNT_NAME}
 ```
 
 ## Deployment

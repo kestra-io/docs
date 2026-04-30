@@ -10,8 +10,6 @@ version: ">= 0.20.0"
 
 Special labels for system use only.
 
-## System and hidden Labels in Kestra – Admin metadata
-
 System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 6WuLA1vh9lpFsGyrkuVRYb`.
 
 ![correlationId](./correlationId.png)
@@ -19,8 +17,6 @@ System Labels and Hidden Labels are reserved for storing metadata used by admini
 The table will then show the execution connected to that ID.
 
 ![Correlation ID Filter Result](./correlationId-filter-result.png)
-
----
 
 ## Hidden labels
 
@@ -37,17 +33,16 @@ kestra:
 
 By default, System Labels (prefixed with `system.`) are hidden. To display them, simply remove the `system.` prefix from the list of hidden prefixes.
 
----
-
 ## System labels
 
-System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels.
+System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels. For a step-by-step guide on using `system.correlationId` specifically as an idempotency key, see [Idempotency with correlation IDs](../../15.how-to-guides/idempotency/index.md).
 
 ### `system.correlationId`
 
 - Automatically set for every execution and propagated to downstream executions created by `Subflow` or `ForEachItem` tasks
 - Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage
-- Use this label to filter all executions originating from a specific parent execution.
+- Can also be set to a stable business key and used as an idempotency key for flows that must not process the same event twice
+- Use this label to filter all executions originating from a specific parent execution or business event.
 
 For example, if a parent flow triggers multiple subflows, filtering by the parent's `system.correlationId` displays all related executions.
 
@@ -61,8 +56,6 @@ The Execution API supports setting this label at execution creation but not modi
 
 - Automatically set for every execution and contains the username of the user who triggered the execution
 - Useful for auditing and identifying who initiated specific executions
-
----
 
 ### `system.readOnly`
 

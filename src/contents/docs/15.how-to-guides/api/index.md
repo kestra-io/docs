@@ -14,8 +14,6 @@ Extend Kestra by using the API.
   <iframe src="https://www.youtube.com/embed/uf-b7r_38Zk?si=jytDjFPxqiomcveI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Kestra is API-first, so it’s straightforward to connect external systems to your flows or call the platform directly. This guide focuses on the Kestra API itself and how you can extend or integrate Kestra from other services.
 
 ## Using the API Reference
@@ -160,6 +158,8 @@ The response includes execution metadata and a link to the UI:
     "url": "http://localhost:8080//ui/executions/company.team/hello_world/MYkTmLrI36s10iVXHwRbR"
 }
 ```
+
+For end-to-end idempotency using a stable business key, set `system.correlationId` when you create the execution and add a guard as shown in [Idempotency with correlation IDs](../idempotency/index.md).
 
 See the [Executions documentation](../../05.workflow-components/03.execution/index.md#execute-a-flow-via-an-api-call) for additional examples.
 

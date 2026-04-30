@@ -61,21 +61,21 @@ You must update the [Observability and Networking configuration](../../configura
 Add proxy settings and truststore configuration to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) (merged via Helm `configurations.application` or a config file):
 
 ```yaml
-## values.yaml (or application.yml configuration)
-configuration:
-  micronaut:
-    http:
-      client:
-        proxy-address: "your.proxy.net:8000"
-        proxy-type: HTTP
-
-  server:
-    ssl:
-      clientAuthentication: want
-      trustStore:
-        path: "file:/app/ssl/truststore.jks"
-        password: "changeit"
-        type: "JKS"
+## values.yaml
+configurations:
+  application:
+    micronaut:
+      http:
+        client:
+          proxy-address: "your.proxy.net:8000"
+          proxy-type: HTTP
+      server:
+        ssl:
+          clientAuthentication: want
+          trustStore:
+            path: "file:/app/ssl/truststore.jks"
+            password: "changeit"
+            type: "JKS"
 ```
 
 ### 2. Mount the truststore inside the container
@@ -83,15 +83,15 @@ configuration:
 **Kubernetes (Helm `values.yaml`)**
 
 ```yaml
-extraVolumeMounts:
-  - name: ssl-secret
-    mountPath: "/app/ssl"
-    readOnly: true
-
-extraVolumes:
-  - name: ssl-secret
-    secret:
-      secretName: kestra-ssl
+common:
+  extraVolumeMounts:
+    - name: ssl-secret
+      mountPath: "/app/ssl"
+      readOnly: true
+  extraVolumes:
+    - name: ssl-secret
+      secret:
+        secretName: kestra-ssl
 ```
 
 **Docker Compose**
@@ -111,17 +111,18 @@ services:
 **Kubernetes (values.yaml)**
 
 ```yaml
-extraEnv:
-  - name: JAVA_OPTS
-    value: >-
-      -Djavax.net.ssl.trustStore=/app/ssl/truststore.jks
-      -Djavax.net.ssl.trustStorePassword=changeit
-      -Djavax.net.ssl.trustStoreType=JKS
-      -Dhttp.proxyHost=your.proxy.net
-      -Dhttp.proxyPort=8000
-      -Dhttps.proxyHost=your.proxy.net
-      -Dhttps.proxyPort=8000
-      -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|kestra-minio
+common:
+  extraEnv:
+    - name: JAVA_OPTS
+      value: >-
+        -Djavax.net.ssl.trustStore=/app/ssl/truststore.jks
+        -Djavax.net.ssl.trustStorePassword=changeit
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dhttp.proxyHost=your.proxy.net
+        -Dhttp.proxyPort=8000
+        -Dhttps.proxyHost=your.proxy.net
+        -Dhttps.proxyPort=8000
+        -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|kestra-minio
 ```
 
 **Docker Compose**

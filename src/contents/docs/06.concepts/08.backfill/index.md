@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Backfills are replays of missed schedule intervals between a defined start and end date.
 
-## Backfill – Replay missed schedules
-
 Let's take the following flow as an example:
 
 ```yaml
