@@ -9,8 +9,6 @@ version: ">= 0.18.0"
 
 Use purge tasks to remove old executions, logs, and key-value pairs, helping reduce storage usage.
 
-## Purge old execution data safely
-
 To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
 - `PurgeExecutions`: deletes execution records
 - `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk
