@@ -1,7 +1,7 @@
 ---
 title: "Migrating from Airflow to Kestra with AI Coding Agents"
 description: "Learn how to migrate Apache Airflow DAGs to Kestra flows using AI coding agents like Claude Code, with step-by-step guidance on the kestra-flow and kestra-ops agent skills."
-date: 2026-04-22T09:00:00
+date: 2026-05-07T09:00:00
 category: Solutions
 image: ./main.png
 author:
@@ -9,7 +9,7 @@ author:
   image: bpimpaud
 ---
 
-Airflow 2 reached end of life today. For most teams, the easiest path is to upgrade to [Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) and move on. I think that's a mistake worth pausing on. The Airflow 3 [open issue tracker](https://github.com/apache/airflow/issues?q=is%3Aissue+is%3Aopen+airflow+3+upgrade) hints at a non-trivial migration even within the ecosystem, and the end of a major version is one of the few moments where the switching cost is low enough to seriously evaluate alternatives.
+Airflow 2 recently reached end of life. For most teams, the easiest path is to upgrade to [Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) and move on. I think that's a mistake worth pausing on. The Airflow 3 [open issue tracker](https://github.com/apache/airflow/issues?q=is%3Aissue+is%3Aopen+airflow+3+upgrade) hints at a non-trivial migration even within the ecosystem, and the end of a major version is one of the few moments where the switching cost is low enough to seriously evaluate alternatives.
 
 The reason most teams won't evaluate is the same reason I [failed to migrate a data team to dbt](https://medium.pimpaudben.fr/how-i-failed-to-implement-dbt-in-my-previous-job-0b168f59e150) a few years ago. I had a working prototype, benchmarks, and a migration plan. What I didn't have was a working example in front of the people who needed to say yes, before they'd already mentally committed to the status quo. Airflow migrations replay this pattern: the translation work kills most evaluations before they start. Most teams look at years of accumulated DAGs and decide the upgrade is easier. They never get to the working demo stage.
 
