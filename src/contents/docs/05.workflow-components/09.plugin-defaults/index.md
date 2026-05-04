@@ -9,17 +9,13 @@ docId: plugin-defaults
 
 Plugin defaults are default values applied to every task of a given type within one or more flows.
 
-## Plugin Defaults – set task-level defaults
-
 They work like default function arguments, helping you avoid repetition when tasks or plugins frequently use the same values.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/9zQTUeL0KMc?si=xOAqec_9X79-7YDp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
-## Plugin Defaults on a flow-level
+## Plugin defaults at the flow level
 
 You can define plugin defaults in the `pluginDefaults` section to avoid repeating properties across multiple tasks of the same type. For example:
 
@@ -70,7 +66,7 @@ pluginDefaults:
       containerImage: python:slim
 ```
 
-In this example, Docker and Python configurations are defined once in `pluginDefaults`, instead of being repeated in every task. This approach helps to streamline the configuration process and reduce the chances of errors caused by inconsistent settings across different tasks.
+In this example, Docker and Python configurations are defined once in `pluginDefaults` rather than repeated in every task.
 
 :::alert{type="info"}
 If you move required attributes into `pluginDefaults`, the UI code editor may show warnings about missing arguments, because defaults are only resolved at runtime. As long as `pluginDefaults` contains the relevant arguments, you can save the flow and ignore the warning displayed in the editor.
@@ -79,13 +75,9 @@ If you move required attributes into `pluginDefaults`, the UI code editor may sh
 
 :::
 
-### `forced` attribute in `pluginDefaults`
-
-Setting `forced: true` in `pluginDefaults` ensures that default values override any properties defined directly in the task. By default, the value of the `forced` attribute is `false`.
-
 ## Plugin defaults in a global configuration
 
-Plugin defaults can also be defined globally in your Kestra configuration, applying the same values across all flows. This is useful when you want to apply the same defaults across multiple flows. Let's say that you want to centrally manage the default values for the `io.kestra.plugin.aws` plugin to reuse the same credentials and region across all your flows. You can add the following to your Kestra configuration:
+Plugin defaults can also be defined globally in your Kestra configuration, applying the same values across all flows. To centrally manage credentials for the `io.kestra.plugin.aws` plugin, add the following to your Kestra configuration:
 
 ```yaml
 kestra:
@@ -104,7 +96,7 @@ Global plugin defaults must be configured under `kestra.plugins.defaults`.
 The legacy `kestra.tasks.defaults` property is still supported for backward compatibility, but it is deprecated. Use `kestra.plugins.defaults` for all new configurations.
 :::
 
-If you want to set defaults only for a specific task, you can do that too:
+To set defaults for a specific task type only:
 
 ```yaml
 kestra:
@@ -125,9 +117,9 @@ Kestra applies plugin defaults in this order:
 2. Flow-level `pluginDefaults`
 3. Properties defined directly on the task
 
-That means flow-level defaults override global defaults, and task properties override non-forced defaults.
+That means flow-level defaults override global defaults, and task properties override flow-level defaults.
 
-If `forced: true` is set on a plugin default, that default overrides properties defined directly on the task. This is especially useful for governance and isolation use cases such as enforcing a task runner.
+Global configuration and namespace-level plugin defaults support a `forced` property. Setting `forced: true` on a global or namespace-level default makes it override any value set directly on the task. This is intended for governance use cases — for example, enforcing a specific task runner across all flows in a namespace.
 
 ## Plugin Defaults Enterprise Edition
 
