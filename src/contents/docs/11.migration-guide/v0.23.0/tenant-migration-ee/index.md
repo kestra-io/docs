@@ -313,6 +313,47 @@ echo "Tenant migration finished!"
 
 - `BUCKET` is configured under `kestra.storage.s3.bucket`.
 
+### S3 Storage using `mv` (cost-effective)
+
+If you prefer to move objects instead of copying them to avoid additional storage costs, use the following script. Unlike the `cp`-based script above, this deletes the source object after a successful transfer.
+
+```bash
+#!/bin/bash
+
+BUCKET="mybucket"
+DEST_TENANT="${1:-main}"
+TENANTS=("main" "tenant1" "tenant2") # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
+
+echo "Starting S3 tenant migration → destination tenant: $DEST_TENANT"
+
+## List all keys, no leading slash
+aws s3 ls s3://$BUCKET --recursive | awk '{print $4}' | sed 's|^/||' | grep -v '^$' | while read -r key; do
+    # Check top-level folder or file
+    top_level=$(echo "$key" | cut -d'/' -f1)
+
+    # Skip if key is already under an existing tenant
+    skip=false
+    for tenant in "${TENANTS[@]}"; do
+        if [[ "$top_level" == "$tenant" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if [ "$skip" = false ]; then
+        new_key="$DEST_TENANT/$key"
+        echo "Moving s3://$BUCKET/$key → s3://$BUCKET/$new_key"
+
+        # Move object to tenant folder
+        aws s3 mv "s3://$BUCKET/$key" "s3://$BUCKET/$new_key"
+    fi
+done
+
+echo "Tenant migration finished!"
+```
+
+- `BUCKET` is configured under `kestra.storage.s3.bucket`.
+
 ---
 
 ## GCS storage
@@ -380,6 +421,79 @@ for folder in "${!top_folders[@]}"; do
         echo "Batch copying folder $BUCKET/$folder/** → $BUCKET/$DEST_TENANT/"
         gsutil cp -r "$BUCKET/$folder" "$BUCKET/$DEST_TENANT/"
         # Optional: gsutil rm -r "$BUCKET/$folder"
+    fi
+done
+
+echo "Tenant migration finished!"
+```
+
+- `BUCKET` is configured under `kestra.storage.gcs.bucket`.
+
+### GCS Storage using `mv` (cost-effective)
+
+If you prefer to move objects instead of copying them to avoid additional storage costs, use the following script. Unlike the `cp`-based script above, this deletes the source object after a successful transfer.
+
+```bash
+#!/bin/bash
+BUCKET="gs://bucket"
+DEST_TENANT="${1:-main}"  # Default tenant is 'main' if not specified
+TENANTS=("main" "tenant1" "tenant2")  # List of known tenant folders. If you use defaultTenant with no multitenancy enabled, you only need one listed tenant ID (i.e., main).
+
+echo "Starting GCS tenant migration on $BUCKET → destination tenant: $DEST_TENANT"
+
+## Get all object keys (strip bucket prefix)
+all_keys=$(gsutil ls "$BUCKET/**" | sed "s|$BUCKET/||")
+
+## Collect top-level folders and files
+declare -A top_folders
+declare -a top_files
+
+for key in $all_keys; do
+    # Skip folder markers (end with /)
+    if [[ "$key" == */ ]]; then
+        top_folder=$(echo "$key" | cut -d'/' -f1)
+        top_folders["$top_folder"]=1
+    else
+        top_level=$(echo "$key" | cut -d'/' -f1)
+        if [[ "$key" != */* ]]; then
+            # Root-level file (no folder)
+            top_files+=("$key")
+        else
+            top_folders["$top_level"]=1
+        fi
+    fi
+done
+
+## Process top-level files
+for file in "${top_files[@]}"; do
+    skip=false
+    for tenant in "${TENANTS[@]}"; do
+        if [[ "$file" == "$tenant" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if [ "$skip" = false ]; then
+        new_key="$DEST_TENANT/$file"
+        echo "Moving file $BUCKET/$file → $BUCKET/$new_key"
+        gsutil mv "$BUCKET/$file" "$BUCKET/$new_key"
+    fi
+done
+
+## Process top-level folders
+for folder in "${!top_folders[@]}"; do
+    skip=false
+    for tenant in "${TENANTS[@]}"; do
+        if [[ "$folder" == "$tenant" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if [ "$skip" = false ]; then
+        echo "Moving folder $BUCKET/$folder/** → $BUCKET/$DEST_TENANT/"
+        gsutil mv -r "$BUCKET/$folder" "$BUCKET/$DEST_TENANT/"
     fi
 done
 
