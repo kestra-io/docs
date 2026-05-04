@@ -28,7 +28,7 @@ This feature requires the [Enterprise Edition](../../../07.enterprise/index.mdx)
 
 A **Kubernetes operator** is an application-specific controller that extends the functionality of the Kubernetes API to create, configure, and manage instances of applications or their components on behalf of a Kubernetes user. It is a custom Kubernetes controller that uses custom resources (CR).
 
-To define and manage these components, operators leverage Custom Resource Definitions (CRDs). CRDs allow you to extend the Kubernetes API with new resource types that are specific to your application or service.
+To define and manage these components, operators use Custom Resource Definitions (CRDs). CRDs allow you to extend the Kubernetes API with new resource types that are specific to your application or service.
 
 The Kestra Kubernetes Operator manages Kestra flows, namespace files, and key-value store entries as Kubernetes resources.
 

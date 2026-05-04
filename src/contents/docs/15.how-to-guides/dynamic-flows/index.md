@@ -113,7 +113,7 @@ tasks:
             header: true
 ```
 
-In order to generate this flow dynamically for any number of items, we will use the following python code.
+To generate this flow dynamically for any number of items, use the following Python code.
 
 ```python
 import os

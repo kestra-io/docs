@@ -26,7 +26,7 @@ There are three GitHub Actions available:
 
 ## Validate Your Flows
 
-Using the Validate Flows Action, we can set up our workflow to check all flows in the specified `directory` when a commit is pushed to `main` or a Pull Request is opened for the `main` branch. For the full list of inputs, check out the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#validate-flows-action-inputs).
+The Validate Flows Action sets up a workflow to check all flows in the specified `directory` when a commit is pushed to `main` or a Pull Request is opened for the `main` branch. For the full list of inputs, see the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#validate-flows-action-inputs).
 
 In the example below:
 1. Triggers when a commit is pushed to `main` or when a PR is opened for the `main` branch.
@@ -58,7 +58,7 @@ jobs:
 
 ## Deploy Your Flows
 
-Using the Deploy Flows Action, we can set up our workflow to deploy when new commits are pushed to our `main` branch. We need to specify a `directory` containing your flows and optionally a `namespace` to deploy them to. For the full list of inputs, check out the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#deploy-flows-action-inputs).
+The Deploy Flows Action sets up a workflow to deploy when new commits are pushed to the `main` branch. Specify a `directory` containing your flows and optionally a `namespace` to deploy them to. For the full list of inputs, see the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#deploy-flows-action-inputs).
 
 If you want to deploy flows to multiple namespaces, you can add multiple steps using the Deploy Flows Action, each with a different `namespace` and `directory`.
 

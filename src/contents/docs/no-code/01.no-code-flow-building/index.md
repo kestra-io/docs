@@ -75,5 +75,5 @@ Use the **Documentation** panel for property descriptions and examples. With mul
 
 ## FAQ
 
-- **Can I build everything No Code?** Most flows, yes; complex cases may be faster in YAML. You can mix both seamlessly.
+- **Can I build everything No Code?** Most flows, yes; complex cases may be faster in YAML. You can mix both.
 - **Do I lose control vs. YAML?** No — the No Code editor writes standard Kestra YAML that you can export, version, and run anywhere Kestra runs.
