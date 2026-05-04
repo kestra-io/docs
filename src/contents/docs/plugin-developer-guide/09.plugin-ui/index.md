@@ -116,6 +116,83 @@ ui/
 
 The component file is the only file you need to edit. The rest of the scaffolding is boilerplate that wires up the local dev server, Storybook, and the production build.
 
+## Calling the Kestra API
+
+Plugin components often need to fetch data from Kestra — task outputs, execution metrics, flow definitions — to render meaningful information. Use the [`@kestra-io/kestra-sdk`](https://www.npmjs.com/package/@kestra-io/kestra-sdk) package for all API calls instead of raw `fetch()`.
+
+### Why not raw `fetch()`?
+
+Kestra EE uses cookie-based authentication with JWT access tokens and automatic token refresh. Raw `fetch()` bypasses this entirely: it won't include the right credentials in cross-origin contexts, and it won't retry on 401 by refreshing the token. This causes silent failures or authentication errors in production EE deployments.
+
+The SDK wraps every call in an axios instance that the Kestra host configures at startup with `withCredentials: true`, a 401 → token-refresh interceptor, and impersonation support. Any SDK function you call in your component automatically inherits this configuration — no extra setup needed.
+
+### Installation
+
+```bash
+cd ui
+npm install @kestra-io/kestra-sdk
+```
+
+### Why your plugin doesn't call `configureAxios`
+
+The Kestra host application calls `configureAxios()` once at boot, passing it the auth store, router, and other runtime dependencies. This call registers the EE-aware axios instance globally inside the SDK. Your plugin component only needs to import and call the typed API functions — the auth layer is already wired up by the time your component loads.
+
+```ts
+// ✅ correct — import the typed function and call it
+import { execution, searchByExecution } from "@kestra-io/kestra-sdk";
+
+// ❌ do not call configureAxios yourself — that's the host's responsibility
+// import { configureAxios } from "@kestra-io/kestra-sdk";
+// configureAxios(...);
+```
+
+### Usage example
+
+The SDK exposes flat async functions, one per API operation. Tenant is injected automatically (the host sets it via `setSelectedTenant` at boot):
+
+```ts
+import { ref, watch, computed } from "vue";
+import { execution, searchByExecution } from "@kestra-io/kestra-sdk";
+
+// Fetch task outputs from the full execution
+const fetchedOutputs = ref<Record<string, any> | null>(null);
+const executionId = computed(() => props.execution?.id as string | undefined);
+
+watch(executionId, async (id) => {
+  if (!id) return;
+  try {
+    const exec = await execution({ path: { executionId: id } });
+    const tr = exec.taskRunList?.filter((r: any) => r.taskId === props.task.id).at(-1);
+    fetchedOutputs.value = (tr as any)?.outputs ?? null;
+  } catch { /* best-effort */ }
+}, { immediate: true });
+
+// Fetch execution metrics
+const metrics = ref<Array<{ name: string; value: number }>>([]);
+
+watch(executionId, async (id) => {
+  if (!id) return;
+  try {
+    const resp = await searchByExecution({ path: { executionId: id } });
+    metrics.value = resp.results ?? [];
+  } catch { /* best-effort */ }
+}, { immediate: true });
+```
+
+Key API functions for topology and log components:
+
+| Function | Import | Description |
+|---|---|---|
+| `flow` | `@kestra-io/kestra-sdk` | Fetch a flow definition (namespace, task config) |
+| `execution` | `@kestra-io/kestra-sdk` | Fetch a full execution with task run list |
+| `searchByExecution` | `@kestra-io/kestra-sdk/metrics` | Fetch all metrics for an execution |
+| `listLogsFromExecution` | `@kestra-io/kestra-sdk/logs` | Fetch log entries for an execution |
+| `taskRunOutputs` | `@kestra-io/kestra-sdk/outputs` | Fetch outputs for a specific task run |
+
+:::alert{type="info"}
+Wrap every SDK call in `try { … } catch { /* best-effort */ }`. In Storybook and the local dev server (`npm run dev`) there is no Kestra host, so calls will fail — the component should degrade gracefully and fall back to whatever static data the stories or dev harness provides via props.
+:::
+
 ## Configuring the exposed components
 
 The `vite.config.ts` file declares which components are exposed and under which task types:
