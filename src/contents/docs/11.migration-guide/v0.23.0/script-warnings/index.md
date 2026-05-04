@@ -1,6 +1,7 @@
 ---
 title: "Script Tasks: WARNING State Removed for ERROR Logs"
 h1: Script Tasks No Longer Enter WARNING State When ERROR Logs Are Present
+sidebarTitle: Script WARNING State Removed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
@@ -10,7 +11,7 @@ description: Information on the removal of the WARNING state for script tasks wh
 
 ## No more WARNING state on script tasks when ERROR logs are present
 
-We no longer set the task-run state to `Warning` if the script task emits some ERROR or WARNING logs and the `warningOnStdErr` [property is deprecated](https://github.com/kestra-io/plugin-scripts/issues/233). Script tasks will now always report a **SUCCESS** state if the Docker container exits with code 0, and a **FAILED** state for any non-zero exit code — ERROR or WARNING logs no longer influence the task run state.
+The task-run state is no longer set to `Warning` if the script task emits ERROR or WARNING logs, and the `warningOnStdErr` [property is deprecated](https://github.com/kestra-io/plugin-scripts/issues/233). Script tasks now always report a **SUCCESS** state if the Docker container exits with code 0, and a **FAILED** state for any non-zero exit code — ERROR or WARNING logs no longer influence the task run state.
 
 Example flow:
 

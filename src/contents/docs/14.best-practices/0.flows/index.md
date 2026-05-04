@@ -33,10 +33,10 @@ Depending on the internal queue and repository implementation, there may be a ha
 
 While a flow can contain many tasks, it’s not recommended to include a large number of tasks within a single execution.
 
-A flow can contain either manually defined tasks or dynamically generated ones. While [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) and [ForEachItem](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem) are powerful for looping over results, they can easily create hundreds of TaskRuns if used on large datasets. For example, a nested loop of 20 × 20 tasks results in **400 TaskRuns**.
+A flow can contain either manually defined tasks or dynamically generated ones. While [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) and [ForEachItem](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem) are powerful for looping over results, they can create hundreds of TaskRuns if used on large datasets. For example, a nested loop of 20 × 20 tasks results in **400 TaskRuns**.
 
 :::alert{type="warning"}
-In our experience, flows with **over 100 tasks** tend to experience performance degradation and longer execution times.
+Flows with **over 100 tasks** tend to experience performance degradation and longer execution times.
 :::
 
 To avoid this, consider breaking the workflow into subflows using the [Subflow task](../../05.workflow-components/10.subflows/index.md). Since a `Subflow` task creates a new execution, its tasks are **isolated** and do not affect the parent flow’s performance.

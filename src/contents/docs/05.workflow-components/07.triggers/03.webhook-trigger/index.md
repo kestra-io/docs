@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger flows automatically in response to web-based events.
 
-## Webhook trigger – start flows via HTTP
-
 A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) automatically start new executions in Kestra.
 
 Each webhook URL requires a secret `key` to secure it. This prevents unauthorized access and ensures only trusted systems can trigger your flow.

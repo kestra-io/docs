@@ -1,6 +1,7 @@
 ---
 title: "Singer Tap Plugin Removed: Migrate to Airbyte or dlt"
 h1: Migrating Away from the Removed Singer Tap Plugin
+sidebarTitle: Singer Plugin Removed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -20,7 +21,7 @@ Singer was once a promising open-source technology for building and sharing data
 - After Meltano shut down, there is no longer a company backing the ecosystem.
 - As a result, compatibility, security, and reliability cannot be guaranteed going forward.
 
-To ensure Kestra users have reliable, well-maintained data ingestion options, we recommend migrating to other open-source alternatives. For example, Kestra provides plugins for:
+To ensure Kestra users have reliable, well-maintained data ingestion options, migrate to other open-source alternatives. For example, Kestra provides plugins for:
 - Airbyte: Large connector ecosystem for databases, SaaS apps, and warehouses. Runs in both **Cloud** and **OSS** modes.
 - dlt: Flexible **Python-based** ingestion framework, great for custom pipelines and lightweight ingestion.
 - CloudQuery: Purpose-built for cloud asset discovery and syncing metadata to databases or warehouses.

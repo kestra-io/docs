@@ -221,7 +221,7 @@ testimonials:
         name: "Platform for data, infra, and business workflows"
       - value: "70%"
         name: "Reduction in manual operations"
-    storyLink: "/use-cases/stories/28-governed-selfservice-cloud-automation-in-regulated-environments-with-kestra"
+    storyLink: "/use-cases/stories/governed-self-service-cloud-automation-in-regulated-environments-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

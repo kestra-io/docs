@@ -8,6 +8,9 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger one flow based on the execution of another flow.
 
+A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
+
+
 ```yaml
 type: io.kestra.plugin.core.trigger.Flow
 ```

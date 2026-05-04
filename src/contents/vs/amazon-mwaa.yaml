@@ -195,7 +195,7 @@ testimonials:
         name: Faster workflow creation
       - value: "0"
         name: Pipeline failures
-    storyLink: "/use-cases/stories/32-apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for Teams Who Need More Than AWS
@@ -229,7 +229,7 @@ decisionGuide:
 
 commonQuestions:
   - question: How do I migrate from MWAA to Kestra?
-    answer: "Kestra doesn't require you to refactor your business logic. Extract Python code from your Airflow DAG files and run it directly as a Script task in Kestra. SQL queries and Shell commands work as-is. Define orchestration in YAML. Most teams migrate incrementally, using Kestra's HTTP trigger to call remaining MWAA DAGs during transition, so there's no hard cutover."
+    answer: "Kestra doesn't require you to refactor your business logic. Extract Python code from your Airflow DAG files and run it directly as a Script task in Kestra. SQL queries and Shell commands work as-is. Define orchestration in YAML. Most teams migrate incrementally, using Kestra's HTTP trigger to call remaining MWAA DAGs during transition, so there's no hard cutover. For a detailed breakdown of both upgrade and migration paths, see our <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a>."
   - question: Does Kestra integrate with AWS services?
     answer: "Yes. Kestra has native plugins for S3, SQS, SNS, DynamoDB, Glue, Redshift, Lambda, and more. The S3 trigger lets Kestra react to file arrivals natively, without polling. AWS credentials are managed through Kestra's secrets management, and Kestra deployments on AWS typically run on EKS or ECS with the same IAM-based access patterns your team already uses."
   - question: What happens to my Airflow version on MWAA when Airflow 3 ships?

@@ -25,8 +25,6 @@ You can implement error handling at the flow level or namespace level:
 1. **Flow-level**: Useful to implement custom alerting for a specific flow or task. This can be accomplished by adding the `errors` property.
 2. **Namespace-level**: Useful to send a notification for any failed Execution within a given namespace. This approach allows you to implement centralized error handling for all flows within a given namespace.
 
----
-
 ## Flow-level error handling using `errors`
 
 The `errors` property of a flow accepts a list of tasks to execute when an error occurs. You can add as many tasks as you want, and they will be executed sequentially similar to the `tasks` block.
@@ -120,17 +118,15 @@ triggers:
 
 Now if there is an error, say our API endpoint is unreachable, we'll get a Slack alert notifying a team to investigate. For more, check the [error handling](../../05.workflow-components/11.errors/index.md) page.
 
----
-
 ## Namespace-level error handling using a flow trigger
 
-To get notified on a workflow failure, you can leverage Kestra's built-in notification tasks, including among others (_the list keeps growing with new releases_):
+To get notified on a workflow failure, you can leverage Kestra's built-in notification tasks, including:
 
 - [Slack](/plugins/plugin-slack)
 - [Microsoft Teams](/plugins/plugin-teams)
 - [Email](/plugins/plugin-mail)
 
-For a centralized namespace-level alerting, we recommend adding a dedicated monitoring workflow with one of the above mentioned notification tasks and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in the namespace `company.team` fails or finishes with warnings.
+For centralized namespace-level alerting, add a dedicated monitoring workflow with one of the notification tasks above and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in the namespace `company.team` fails or finishes with warnings.
 
 ```yaml
 id: failure_alert
@@ -153,8 +149,6 @@ triggers:
 Adding this flow ensures you receive a Slack alert for any flow failure in the `company.team` namespace.
 
 ![alert notification](./alert-notification.png)
-
----
 
 ## Retries
 

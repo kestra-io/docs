@@ -13,14 +13,12 @@ description: Implement observability in Kestra with OpenTelemetry to export trac
 **OpenTelemetry** is a vendor-neutral, tool-agnostic framework and toolkit for creating and managing telemetry data.
 It helps implement observability in software applications.
 
-## Implement OpenTelemetry observability in Kestra
-
 OpenTelemetry defines three different kinds of telemetry data:
 - **Traces** provide a high-level view of what happens when a request is made to an application. A trace can contain multiple [spans](https://opentelemetry.io/docs/concepts/signals/traces/#spans).
 - **Metrics** are measurements of a service captured at runtime.
 - **Logs** are timestamped text records, either structured (recommended) or unstructured, with optional metadata.
 
-Starting with version 0.21, Kestra supports all three kinds of telemetry data thanks to OpenTelemetry-compatible exporters. For more details, check out the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
+Kestra supports all three kinds of telemetry data via OpenTelemetry-compatible exporters. For more details, see the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
 
 ## Traces
 

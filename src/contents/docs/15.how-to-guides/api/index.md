@@ -14,8 +14,6 @@ Extend Kestra by using the API.
   <iframe src="https://www.youtube.com/embed/uf-b7r_38Zk?si=jytDjFPxqiomcveI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Kestra is API-first, so it’s straightforward to connect external systems to your flows or call the platform directly. This guide focuses on the Kestra API itself and how you can extend or integrate Kestra from other services.
 
 ## Using the API Reference
@@ -45,7 +43,7 @@ The remaining examples assume authentication is disabled.
 
 To create a flow via API, open the **Flows** section and look for the `/api/v1/main/flows` [POST endpoint](https://kestra.io/docs/api-reference/open-source#post-/api/v1/flows). It expects a YAML payload containing the flow definition.
 
-Our body of Content-Type `application/x-yaml` will look like the example below:
+The request body uses Content-Type `application/x-yaml`:
 ```yaml
 id: created_by_api
 namespace: company.team
@@ -160,6 +158,8 @@ The response includes execution metadata and a link to the UI:
     "url": "http://localhost:8080//ui/executions/company.team/hello_world/MYkTmLrI36s10iVXHwRbR"
 }
 ```
+
+For end-to-end idempotency using a stable business key, set `system.correlationId` when you create the execution and add a guard as shown in [Idempotency with correlation IDs](../idempotency/index.md).
 
 See the [Executions documentation](../../05.workflow-components/03.execution/index.md#execute-a-flow-via-an-api-call) for additional examples.
 
@@ -518,7 +518,7 @@ curl -X POST 'http://localhost:8080/api/v1/main/namespaces/company.team/files?pa
 ```
 
 :::alert{type="info"}
-**Note:** Make sure `fileContent` has the correct path to your file.
+Ensure `fileContent` has the correct path to your file.
 :::
 
 After the upload, the file appears in the Namespace editor:

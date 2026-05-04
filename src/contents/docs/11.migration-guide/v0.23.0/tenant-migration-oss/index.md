@@ -1,6 +1,7 @@
 ---
 title: "OSS Migration: Introducing the defaultTenant Context"
 h1: "Open-Source Migration Guide: Introducing defaultTenant in 0.23.0"
+sidebarTitle: "OSS: defaultTenant Context"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS"]
@@ -41,7 +42,7 @@ kestra migrate default-tenant --dry-run
 ```
 
 :::alert{type="info"}
-Before running the migrate script, we recommend to do a complete database dump to preserve a restore point in case of any issues during the process.
+Before running the migrate script, do a complete database dump to preserve a restore point in case of any issues during the process.
 - Use `--dry-run` to preview changes without modifying data.
 - Re-run without the flag to execute the migration.
 :::
@@ -70,7 +71,7 @@ This section explains how to migrate internal storage data to ensure the tenant 
 
 ## Local storage
 
-The following script ensures that the `main` tenand ID is added to the internal storage path for your configuration. For OSS, this ID is immutable, so there is no need to adjust the name or path.
+The following script ensures that the `main` tenant ID is added to the internal storage path for your configuration. For OSS, this ID is immutable, so there is no need to adjust the name or path.
 
 ```bash
 for f in base-path/*; do
@@ -84,11 +85,9 @@ done
 - Your `base-path` is configured under the configuration section `kestra.storage.local.base-path`.
 - For OSS users, the destination tenant ID is always `main`, thus you should keep the `base-path/main/` intact.
 
----
-
 ## MinIO Storage
 
-For MinIO, we recommend keeping the `undefined` option due to the different handling of storage paths.
+For MinIO, keep the `undefined` option due to the different handling of storage paths.
 
 ### OSS Users
 
@@ -102,8 +101,6 @@ done
 ```
 
 - Replace `mybucket` with the bucket name from `kestra.storage.minio.bucket`.
-
----
 
 ## Azure Blob Storage
 
@@ -201,8 +198,6 @@ echo "Migration finished!"
 - `BUCKET_NAME` is configured under `kestra.storage.azure.container`.
 - For OSS users, the destination tenant is always `main`.
 
----
-
 ## S3 Storage
 
 ```bash
@@ -242,8 +237,6 @@ echo "Tenant migration finished!"
 
 - `BUCKET` is configured under `kestra.storage.s3.bucket`.
 - For OSS users, the destination tenant is always `main`.
-
----
 
 ## GCS Storage
 

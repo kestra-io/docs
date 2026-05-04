@@ -1,6 +1,7 @@
 ---
 title: "State Store Deprecated in Kestra 0.19.0: Use KV Store"
 h1: Migrate from State Store to KV Store for Better Data Management
+sidebarTitle: State Store → KV
 description: Migrate from State Store to KV Store in Kestra 0.19.0. Learn why State Store is deprecated and how to transition to the KV Store for better data management.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.19.0
@@ -39,15 +40,15 @@ The [State Store tasks](/plugins/core#state) are deprecated in favor of equivale
 
 ## How to migrate
 
-All plugins that were using State Store now leverage KV Store under the hood. This includes:
+All plugins that used State Store now use KV Store under the hood. This includes:
 - all [Singer plugins](/plugins)
 - all [Debezium plugins](https://github.com/kestra-io/plugin-debezium)
 - [CloudQuery plugin](/plugins/plugin-cloudquery)
 
-If you were using one of those plugins, make sure to run this command after upgrading to Kestra 0.19.0:
+If you were using one of those plugins, run this command after upgrading to Kestra 0.19.0:
 
 ```bash
 /app/kestra sys state-store migrate
 ```
 
-Additionally, if you were using the [State Store tasks](/plugins/core#state) directly in your flows, make sure to update your flows to use the equivalent [KV Store tasks](/plugins/core#kv).
+Additionally, if you were using the [State Store tasks](/plugins/core#state) directly in your flows, update them to use the equivalent [KV Store tasks](/plugins/core#kv).

@@ -177,8 +177,6 @@ In this execution, you can access:
 - The output of a sibling task using the syntax `{{ outputs.sibling[taskrun.value].value }}`
 - The output from a previous iteration using `iterationOutput()`, for example `{{ iterationOutput() }}` for the same task or `{{ iterationOutput('taskId', taskrun.iteration - 1) }}` for a sibling task in an earlier iteration
 
----
-
 This example shows how to run tasks in parallel for each value in the list. All child tasks of the parallel task run in parallel. However, due to the `concurrencyLimit` property set to 2, only two parallel task groups run at any given time.
 
 ```yaml
@@ -285,7 +283,6 @@ Read more about performance optimization in our [best practices guides](../../..
   <iframe src="https://www.youtube.com/embed/mkZcdbgxSWA?si=DXGrFU6m6XEOtZSN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
 
 ### Loop
 
@@ -468,7 +465,6 @@ tasks:
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
 
----
 
 ### LoopUntil
 
@@ -503,8 +499,6 @@ tasks:
 ```
 
 For more details, refer to the [LoopUntil Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil).
-
----
 
 ### AllowFailure
 
@@ -637,7 +631,7 @@ For more details, refer to the [Subflow Task documentation](/plugins/core/flow/i
 
 By default, Kestra launches each task in a new working directory, possibly on different workers if multiple ones exist.
 
-The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. In order to share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
+The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. To share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
 
 This task can be particularly useful for compute-intensive file system operations.
 

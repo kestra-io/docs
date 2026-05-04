@@ -16,13 +16,11 @@ import Faq from "~/components/common/Faq.vue"
 
 import tinesLogo from "~/components/versus/assets/tines.svg?raw"
 import tinesMonogram from "~/components/versus/assets/tines-monograme.svg?raw"
-import hcImage from "~/components/versus/assets/hc.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import tinesImg from "~/components/versus/assets/tines-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_tines.webp"
 
 const entry = await getEntry("vs", "tines")
 if (!entry) throw new Error("Could not find vs/tines collection entry")
@@ -46,14 +44,13 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<Layout {title} description={shortDescription}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: tinesMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}

@@ -15,8 +15,6 @@ Configure alerts that fire whenever a workflow fails.
   <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Alerting is essential to keeping production systems reliable. Kestra makes it easy with multiple ways to attach alerts to workflows so you always know what’s happening.
 
 Kestra’s Notifications plugin group ships tasks for popular platforms such as Slack, Teams, and PagerDuty, making it straightforward to configure alerts directly inside workflows.

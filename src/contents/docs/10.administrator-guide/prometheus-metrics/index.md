@@ -8,8 +8,6 @@ description: Explore the available Prometheus metrics in Kestra to monitor the p
 
 This page provides an overview of all available [Prometheus](https://prometheus.io/) metrics in Kestra.
 
-## Monitor Kestra with Prometheus metrics
-
 Prometheus metrics are enabled by default in Kestra, in contrast to [OpenTelemetry](../open-telemetry/index.md), which must be explicitly enabled in the configuration file.
 
 Metrics include custom metrics defined within the application and framework-provided metrics collected via [Micrometer](https://micrometer.io/).
@@ -27,8 +25,6 @@ executor_active_threads 4
 :::alert{type="info"}
 For deeper details on Micrometer metrics integration, see the [Micronaut Micrometer documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/).
 :::
-
----
 
 ## Kestra
 

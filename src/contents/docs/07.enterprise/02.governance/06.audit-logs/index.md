@@ -53,8 +53,6 @@ For example, you can filter for all events related to a specific namespace by ty
 
 To further filter for a specific event, you can click on the relevant tag in the `Details` column, and it automatically adds the filter to the view.
 
----
-
 ## How to Purge Audit Logs
 
 The Enterprise Edition of Kestra generates an audit log for _every action_ taken on the platform. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up a significant amount of space in the database.

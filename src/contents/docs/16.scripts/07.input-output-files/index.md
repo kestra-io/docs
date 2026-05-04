@@ -35,7 +35,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-You can also leverage [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
+You can also use [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
 
 ```yaml
 id: ansible
@@ -105,13 +105,13 @@ triggers:
 
 ```
 
-Note that nothing is hardcoded specifically to Kestra in the Python script from GitHub. That script remains pure Python that you can run anywhere. Kestra's trigger logic is stored along with orchestration and infrastructure configuration in the YAML flow definition.
+Nothing is hardcoded specifically to Kestra in the Python script from GitHub. That script remains pure Python that you can run anywhere. Kestra's trigger logic is stored along with orchestration and infrastructure configuration in the YAML flow definition.
 
 This separation of concerns (*i.e., not mixing orchestration and business logic*) makes your code easier to test and keeps your business logic vendor-agnostic.
 
 ## Output files
 
-If you want to generate files in your script to make them available for download and usable in downstream tasks, you can leverage either the `outputFiles` property.
+To generate files in your script and make them available for download and use in downstream tasks, use the `outputFiles` property.
 
 ### Generating outputs from a script task using `outputFiles`
 

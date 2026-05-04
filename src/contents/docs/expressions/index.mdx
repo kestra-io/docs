@@ -836,7 +836,7 @@ Escapes special characters in a string. The `type` argument controls which style
 :::alert{type="warning"}
 Regex filter operations are subject to a **10-second timeout** to prevent ReDoS (catastrophic backtracking). If a pattern takes longer than the limit, the task fails with an error message.
 
-Patterns with nested quantifiers such as `(a+)+` applied to large inputs are most likely to trigger this. Use anchored, non-ambiguous patterns to avoid it. The timeout can be adjusted with [`kestra.regex.timeout`](../../configuration/05.security-and-secrets/index.md#regex-timeout) in your Kestra configuration.
+Patterns with nested quantifiers such as `(a+)+` applied to large inputs are most likely to trigger this. Use anchored, non-ambiguous patterns to avoid it. The timeout can be adjusted with [`kestra.regex.timeout`](/docs/configuration/security-and-secrets#regex-timeout) in your Kestra configuration.
 :::
 
 #### Worked string filter example

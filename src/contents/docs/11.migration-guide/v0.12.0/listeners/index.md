@@ -1,6 +1,7 @@
 ---
 title: "Listeners Deprecated in Kestra 0.12.0: Use Flow Triggers"
 h1: How to Migrate from Listeners to Flow Triggers in Kestra 0.12.0
+sidebarTitle: Listeners → Flow Triggers
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.12.0
 description: Information on the deprecation of Listeners in Kestra 0.12.0 and the transition to Flow triggers.
@@ -9,7 +10,7 @@ description: Information on the deprecation of Listeners in Kestra 0.12.0 and th
 
 ## Deprecation of Listeners
 
-Listeners are deprecated and disabled by default starting from the 0.12.0 release. Please use [Flow triggers](../../../05.workflow-components/07.triggers/02.flow-trigger/index.md) instead.
+Listeners are deprecated and disabled by default starting from the 0.12.0 release. Use [Flow triggers](../../../05.workflow-components/07.triggers/02.flow-trigger/index.md) instead.
 
 1. The listener is a **redundant** concept. Flow triggers allow you to do all that listeners can accomplish and more. The only difference between listeners and triggers is that listeners are defined inline within the same flow code and are, therefore, more tightly coupled with the flow. In contrast, a Flow trigger is defined in a separate independent flow that can simultaneously listen to the condition of multiple flows that satisfy specific `conditions`. This gives you more flexibility.
 2. It is an extra concept that you, as a user, would need to learn even though you may not have to if you already know Flow triggers.
@@ -24,7 +25,7 @@ kestra:
     enabled: true
 ```
 
-Then, make sure to also add the following plugin defaults to your configuration to ensure that your conditions are working properly after the upgrade to any version after 0.12.0:
+Also add the following plugin defaults to your configuration to ensure that conditions work properly after upgrading to any version after 0.12.0:
 
 ```yaml
 kestra:
@@ -47,9 +48,7 @@ kestra:
         date: "{{ now(format='iso_local_date') }}"
 ```
 
-Due to listeners' deprecation, we changed the default behavior of various `io.kestra.core.models.conditions`-type conditions to use the `{{trigger.date}}` as default value for the `date` property instead of using `"{{ now(format='iso_local_date') }}"`. To ensure that your conditions are working properly after the upgrade to any version after 0.12.0, you need to add the above plugin defaults to your Kestra configuration.
-
----
+Due to listeners' deprecation, the default behavior of various `io.kestra.core.models.conditions`-type conditions changed to use `{{trigger.date}}` as the default value for the `date` property instead of `"{{ now(format='iso_local_date') }}"`. To ensure conditions work properly after upgrading to any version after 0.12.0, add the above plugin defaults to your Kestra configuration.
 
 ## Listeners :warning:
 
@@ -81,8 +80,6 @@ listeners:
 This flow will fail and the listener tasks will be triggered anytime the flow reaches the specified execution status condition — here, the `FAILED` status.
 
 The next section shows how you can accomplish the same using Flow triggers.
-
----
 
 ## Flow trigger ✅
 
@@ -127,9 +124,7 @@ tasks:
     type: io.kestra.plugin.core.execution.Fail
 ```
 
-Anytime you execute that `demo` flow, the Slack notification will be sent, thanks to the Flow trigger. Additionally, the **Dependencies** tab of both flows will make it clear that they depend on each other.
-
----
+Anytime you execute that `demo` flow, the Slack notification will be sent via the Flow trigger. Additionally, the **Dependencies** tab of both flows will make it clear that they depend on each other.
 
 ## Side-by-side comparison
 
@@ -137,9 +132,7 @@ You can look at both a flow with a listener and a flow with a Flow trigger side 
 
 ![listeners-vs-flow-triggers](./listeners-vs-flow-triggers.png)
 
-If you still have questions about migrating from listeners to flow triggers, reach out via our [Community Slack](/slack).
-
----
+If you still have questions about migrating from listeners to flow triggers, reach out via [Community Slack](/slack).
 
 ## Documentation of the deprecated feature
 
@@ -171,7 +164,7 @@ listeners:
 * **SubType:** ==Condition==
 * **Required:** ❌
 
-> A list of Conditions that must be validated in order to execute the listener `tasks`. If you don't provide any conditions, the listeners will always be executed.
+> A list of Conditions that must be validated to execute the listener `tasks`. If you don't provide any conditions, the listeners will always be executed.
 
 **`tasks`**
 

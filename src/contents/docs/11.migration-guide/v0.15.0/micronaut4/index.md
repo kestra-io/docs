@@ -1,6 +1,7 @@
 ---
 title: "Micronaut 4.3 Migration in Kestra 0.15.0: Plugin Update"
 h1: Update Custom Plugins for Micronaut 4.3 Compatibility
+sidebarTitle: Micronaut 4.3 Compatibility
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
 description: Guide for migrating custom plugins to be compatible with Micronaut 4.3 in Kestra 0.15.0.
@@ -11,9 +12,9 @@ description: Guide for migrating custom plugins to be compatible with Micronaut 
 
 Kestra 0.15.0 has been migrated to Micronaut 4.3 for improved security. This page explains how to make your custom plugins compatible with this new version.
 
-Custom plugins need to be migrated to Micronaut 4.3 in order to be compatible with Kestra 0.15.0 and later.
+Custom plugins need to be migrated to Micronaut 4.3 to be compatible with Kestra 0.15.0 and later.
 
-Make sure to upgrade your `gradle.properties` to the following library versions:
+Upgrade your `gradle.properties` to the following library versions:
 
 ```properties
 version=0.15.0-SNAPSHOT
@@ -46,11 +47,11 @@ dependencies {
 }
 ```
 
-Note that some libraries are no longer included by default in Micronaut 4.3. For instance:
+Some libraries are no longer included by default in Micronaut 4.3. For instance:
 - if you use Jackson in your custom plugin, you need to add ` compileOnly "io.micronaut:micronaut-jackson-databind"`
 - if you use the HTTP client, you need to add `compileOnly "io.micronaut:micronaut-http-client"`.
 
-Make sure to remove the following Gradle configuration, as Kestra now uses SLF4J 2:
+Remove the following Gradle configuration, as Kestra now uses SLF4J 2:
 
 ```groovy
 configurations.all {
@@ -91,7 +92,7 @@ dependencies {
 
 ### Jakarta migration
 
-Make sure to adjust the imports from `javax.*` to `jakarta.*` — this is due to the migration from Java EE to Jakarta EE.
+Adjust the imports from `javax.*` to `jakarta.*` — this is due to the migration from Java EE to Jakarta EE.
 
 Some IDEs do this automatically. For example, IntelliJ has a command `Refactor` -> `Migrate Packages and Classes` -> `Java EE to Jakarta EE`). Alternatively, you can use the [OpenRewrite](https://docs.openrewrite.org/recipes/java/migrate/jakarta/javaxmigrationtojakarta) project.
 
@@ -99,7 +100,7 @@ Some IDEs do this automatically. For example, IntelliJ has a command `Refactor` 
 
 Our reactive stack has been migrated from the deprecated RxJava 2 to the Project Reactor.
 
-If your plugin uses RxJava, make sure to migrate it to the Project Reactor.
+If your plugin uses RxJava, migrate it to Project Reactor.
 
 Replace the library `io.micronaut.rxjava2:micronaut-rxjava2` by `io.micronaut.reactor:micronaut-reactor`.
 
@@ -107,4 +108,4 @@ Then, update your code to use the Project Reactor types:
 - `Flux` (instead of `Flowable`)
 - `Mono` (instead of `Single`).
 
-Lastly, if you were using the reactive HTTP client, make sure to replace the `io.micronaut.rxjava2:micronaut-rxjava2-http-client` by `io.micronaut.reactor:micronaut-reactor-http-client`.
+Lastly, if you were using the reactive HTTP client, replace `io.micronaut.rxjava2:micronaut-rxjava2-http-client` with `io.micronaut.reactor:micronaut-reactor-http-client`.

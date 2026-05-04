@@ -8,8 +8,6 @@ description: Best practices for hardening Kestra security, including network iso
 
 Security hardening options for Kestra.
 
-## Harden Kestra with isolation and network controls
-
 By design, Kestra allows arbitrary HTTP calls and script execution. To prevent misuse of link-local metadata services (IMDS), isolate and block access at the network layer:
 
 - **Network ACLs or security groups** — configure your VPC or firewall to deny all requests to link-local ranges (e.g., `169.254.169.254/32`).

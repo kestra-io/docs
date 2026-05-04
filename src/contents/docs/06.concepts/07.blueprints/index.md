@@ -10,13 +10,9 @@ docId: blueprints
 
 Ready-to-use examples designed to kickstart your workflow.
 
-## Blueprints – reusable workflow templates
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5mvYVLKLzGk?si=Ga4ndYv_pI3NIlLK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Blueprints are a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow.
 

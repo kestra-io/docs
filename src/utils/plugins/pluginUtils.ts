@@ -19,7 +19,7 @@ export const formatPluginName = (raw?: string): string => {
     const words = (raw.split(".").pop() ?? raw)
         .replace(/^plugins?[-_]/i, "")
         .split(/[-_]/)
-        .filter(Boolean)
+        .filter((w) => w && w.toLowerCase() !== "ee")
     if (words.length === 0) return ""
     if (words.length === 1) {
         const w = words[0]!

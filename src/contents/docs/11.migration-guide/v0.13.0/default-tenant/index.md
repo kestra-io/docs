@@ -1,6 +1,7 @@
 ---
 title: Sync User Access to Default Tenant in Kestra 0.13.0
 h1: How to Sync User Access to the Default Tenant After Multitenancy
+sidebarTitle: Sync Default Tenant Access
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.13.0
 editions: ["EE", "Cloud"]
@@ -12,7 +13,7 @@ description: Instructions for syncing user access to the default tenant followin
 
 Adjusting users' access to the default tenant.
 
-In the [v0.13.0 release](../../../../blogs/2023-11-16-release-0-13/index.md), we introduced multitenancy. As a result, user's access is now managed at the tenant level.
+In the [v0.13.0 release](../../../../blogs/2023-11-16-release-0-13/index.md), Kestra introduced multitenancy. As a result, user access is now managed at the tenant level.
 
 ## Migration
 
