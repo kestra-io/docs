@@ -11,4 +11,4 @@ description: Announcement regarding the removal of support for the SQL Server ba
 
 ## SQL Server backend is no longer supported
 
-We dropped support for the SQL Server backend. Previously we allowed SQL Server as a possible backend option for Kestra architecture configuration, but due to low demand, it is not worth maintaining for the time being.
+Support for the SQL Server backend has been dropped. SQL Server was an available backend option, but due to low demand, it is no longer maintained.
