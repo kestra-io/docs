@@ -30,7 +30,7 @@ The image below shows how to choose the right pattern based on your needs:
 
 ![git](./git.png)
 
-Let's dive into each of these patterns and when to use them.
+The following sections cover each pattern and when to use it.
 
 ## Git SyncFlows and SyncNamespaceFiles
 

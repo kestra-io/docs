@@ -164,7 +164,7 @@ listeners:
 * **SubType:** ==Condition==
 * **Required:** ❌
 
-> A list of Conditions that must be validated in order to execute the listener `tasks`. If you don't provide any conditions, the listeners will always be executed.
+> A list of Conditions that must be validated to execute the listener `tasks`. If you don't provide any conditions, the listeners will always be executed.
 
 **`tasks`**
 

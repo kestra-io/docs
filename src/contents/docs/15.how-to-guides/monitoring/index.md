@@ -23,7 +23,7 @@ Use the [docker-compose.yml](https://github.com/kestra-io/kestra/blob/develop/do
 docker compose up
 ```
 
-Once Kestra is up and running, you can check out the available metrics by going to `http://localhost:8081/prometheus` on your browser. The metrics should appear as below:
+Once Kestra is up and running, view the available metrics at `http://localhost:8081/prometheus` in your browser. The metrics should appear as below:
 
 ![prometheus_metrics](./prometheus_metrics.png)
 
@@ -31,9 +31,9 @@ Create a few flows and execute them to generate some metrics for visualization. 
 
 ## Setting up Prometheus
 
-Now that the metrics are available from Kestra, we need to setup Prometheus server to scrape these metrics, and store them in a timeseries DB.
+With metrics available from Kestra, set up a Prometheus server to scrape them and store them in a time-series DB.
 
-Firstly, let us create a `prometheus.yml` file for scraping the metrics. Create a file `prometheus.yml` with the following contents:
+Create a `prometheus.yml` file for scraping the metrics:
 
 ```yaml
 global:

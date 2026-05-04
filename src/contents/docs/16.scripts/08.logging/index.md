@@ -72,7 +72,7 @@ beforeCommands:
  - npm i @kestra-io/libs
 ```
 
-Then, simply use the `require` function to import the Kestra package and emit logs:
+Then use the `require` function to import the Kestra package and emit logs:
 
 ```js
 const Kestra = require("@kestra-io/libs");

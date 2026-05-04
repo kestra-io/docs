@@ -22,22 +22,22 @@ The [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.pushnamespacef
 
 The process is simple: you can **build your flows and files** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 
-The task allows you to easily push one or more files from a given namespace (and optionally also child namespaces) to any Git-based Version Control System.
+The task pushes one or more files from a given namespace (and optionally also child namespaces) to any Git-based Version Control System.
 
 Additionally, the `dryRun` property will help you see what files will be added, modified, or deleted without overwriting the files on Git yet.
 
-Let's look at a few common patterns of using the `PushNamespaceFiles` task.
+The following examples cover common patterns for the `PushNamespaceFiles` task.
 
 ## Before you begin
 
-Before you start using the `PushNamespaceFiles` task, make sure you have the following prerequisites in place:
+Before you start using the `PushNamespaceFiles` task, ensure the following prerequisites are in place:
 1. A Git repository where you want to push your files.
 2. A Personal Access Token (PAT) for Git authentication.
 3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../../06.concepts/04.secret/index.md) within the Kestra instance.
 
 ## Using the `dryRun` property
 
-Let's start by creating a single `example.py` file in the `dev` namespace and pushing it to a Git repository. We'll initially set the `dryRun` property to `true` to validate the changes before committing them to Git. To do this, we'll need to have a flow already in the `dev` namespace in order to create a new file.
+Start by creating a single `example.py` file in the `dev` namespace and pushing it to a Git repository. Initially set the `dryRun` property to `true` to validate changes before committing to Git. You'll need a flow already in the `dev` namespace to create a new file.
 
 ```python
 print("Hello, World")
@@ -70,7 +70,7 @@ Given that the `dryRun` property is set to `true`, the task will only output mod
 
 ## Pushing a single file to Git
 
-Let's now set the `dryRun` property to `false` and push the `example.py` file to Git:
+Set the `dryRun` property to `false` and push the `example.py` file to Git:
 
 ```yaml
 id: push_to_git
@@ -101,7 +101,7 @@ Now, you can create a pull request and merge the changes to the main branch.
 
 ## Pushing all files from a single namespace to Git
 
-To see how you can push all files from a given namespace to Git, let's create two more files in the `dev` namespace:
+To push all files from a given namespace to Git, create two more files in the `dev` namespace:
 
 `example.sh` file:
 ```sh
@@ -115,7 +115,7 @@ console.log("Hello, World")
 
 ![git6_all_files.png](./git6_all_files.png)
 
-Let's now adjust the system flow to push all files from the `dev` namespace to the `dev` branch:
+Adjust the system flow to push all files from the `dev` namespace to the `dev` branch:
 
 ```yaml
 id: push_to_git
