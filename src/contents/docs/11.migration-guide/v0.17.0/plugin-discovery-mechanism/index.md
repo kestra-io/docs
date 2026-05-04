@@ -16,13 +16,13 @@ Plugins are now discovered and loaded using the standard *Java Service Loader*.
 
 So far, Kestra heavily relied on the _Bean Introspection_ mechanism provided by the Micronaut Framework for loading plugins (_Micronaut is the JVM-based API framework used by Kestra_).
 
-However, we have repeatedly encountered some limitations in maintaining the backward compatibility of plugins during major version upgrades of Micronaut. In addition, this implementation was limiting our ability to introduce future enhancements around the plugin mechanism.
+However, this implementation encountered limitations in maintaining backward compatibility of plugins during major Micronaut version upgrades, and was limiting the ability to introduce future enhancements around the plugin mechanism.
 
-Thanks to this new implementation, we reduced the number of dependencies required for developing custom plugins, and these plugins now load twice as fast as before.
+This new implementation reduces the number of dependencies required for developing custom plugins, and plugins now load twice as fast.
 
 Finally, this change is part of a wider effort to improve the developer experience around plugins, and to reduce Micronaut's exposure outside the Kestra core.
 
-Unfortunately, we've had to introduce some minor breaking-changes to the way custom plugins should be built.
+This change introduces minor breaking changes to how custom plugins are built.
 
 Below are the changes required to migrate to Kestra 0.17.0.
 

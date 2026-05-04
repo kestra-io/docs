@@ -16,7 +16,7 @@ If you are on Kestra 0.14.4 or earlier, passing data between subflows required u
 
 ## Example
 
-Let's say you have a following subflow (aka child flow) with a task `mytask` generating an output called `value`:
+Consider a subflow (also called a child flow) with a task `mytask` generating an output called `value`:
 
 ```yaml
 id: flow_outputs
@@ -52,7 +52,7 @@ You can see that the `outputs` property is used to define the output of the subf
 
 ## How to keep the old subflow outputs behavior
 
-Before looking at how the same is achieved in Kestra 0.15.0, let's look at how you can keep this behavior **if you are not ready to migrate** to the new subflow outputs behavior.
+Before looking at how the same is achieved in Kestra 0.15.0, here is how to keep this behavior **if you are not ready to migrate** to the new subflow outputs behavior.
 
 To keep the old behavior with the `outputs` property, you can set the following configuration in your `application.yml`:
 
@@ -78,13 +78,13 @@ Once the `outputs` configuration is set to `enabled: true`, you can use the old 
 Kestra 0.15.0 introduced a concept of flow-level `outputs` to make it easier to pass data between flows. Until now, the parent flow had to know the internals of the subflow to access its outputs. This introduced a **tight coupling** as the parent flow was **dependent on the subflow's internal logic**, which can change over time, potentially breaking the parent flow. Also, it was **exposing all outputs** from child flows (producers) to all parent flows (consumers), which is not always desirable. Often you don't want to expose all outputs of a subflow to the parent flow.
 
 ### Benefits of the new subflow outputs
-Now, you have **more control** over what subflow outputs do you want to expose to other flows. The parent flow does not need to know the internals of the child flow — it can simply access the subflow outputs by key. This **more decoupled** approach means that the parent flow is less dependent on the subflow, and **the subflow can change its implementation without breaking the parent flow**.
+Now, you have **more control** over what subflow outputs do you want to expose to other flows. The parent flow does not need to know the internals of the child flow — it can access the subflow outputs by key. This **more decoupled** approach means that the parent flow is less dependent on the subflow, and **the subflow can change its implementation without breaking the parent flow**.
 
 You can think of flow outputs as **data contracts** between flows. The subflow defines what data it produces, and the parent flow defines what data it consumes. This makes it easier to understand the dataflow between workflows and improves maintainability of both flows over time.
 
 
 ### How to use the new subflow outputs
-Since 0.15.0, the flow can produce `outputs` simply by defining them in the flow file. Here is an example of a flow that produces an output:
+Since 0.15.0, the flow can produce `outputs` by defining them in the flow file. Here is an example of a flow that produces an output:
 
 ```yaml
 id: flow_outputs

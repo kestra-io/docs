@@ -17,7 +17,7 @@ Because of that, purging data in Kestra is not a single decision. The right appr
 - what kind of data you want to remove
 - why the data exists
 - how long you need to keep it
-- whether you want hard deletion or simply to hide it from the UI
+- whether you want hard deletion or to hide it from the UI
 
 ## Quick recommendation
 
