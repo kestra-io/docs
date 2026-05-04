@@ -1,0 +1,162 @@
+---
+import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+import { tagLabel, tagStyle, type ResourceTag } from "~/components/resources/tags"
+
+import dataMobile from "~/assets/landing/data/mob-bkg-Data.webp"
+import dataDesktop from "~/assets/landing/data/desk-bkg-Data.webp"
+import aiMobile from "~/assets/landing/ai/mob-bkg-AI.webp"
+import aiDesktop from "~/assets/landing/ai/desk-bkg-AI.webp"
+import infraMobile from "~/assets/landing/infrastructure/mob-bkg-infra.webp"
+import infraDesktop from "~/assets/landing/infrastructure/desk-bkg-infra.webp"
+import infraGlow from "~/assets/landing/infrastructure/glow.svg"
+
+interface Props {
+    tag: ResourceTag
+    title: string
+    description?: string
+}
+
+const { tag, title, description } = Astro.props
+
+const bgByTag: Partial<Record<ResourceTag, { mobile: string; desktop: string; glow: string | null }>> = {
+    data: { mobile: dataMobile.src, desktop: dataDesktop.src, glow: null },
+    ai: { mobile: aiMobile.src, desktop: aiDesktop.src, glow: null },
+    infrastructure: {
+        mobile: infraMobile.src,
+        desktop: infraDesktop.src,
+        glow: infraGlow.src,
+    },
+}
+
+const bg = bgByTag[tag] ?? bgByTag.data!
+const bgStyle = `--hero-bg-mobile: url(${bg.mobile}); --hero-bg-desktop: url(${bg.desktop});${bg.glow ? ` --hero-bg-glow: url(${bg.glow});` : ""}`
+---
+
+<section class="resource-hero" style={bgStyle}>
+    <div class="background">
+        {bg.glow && <div class="glow" />}
+    </div>
+    <div class="inner">
+        <a href="/resources" class="breadcrumb">
+            Resources
+            <ChevronRight class="fs-5" />
+            <span class="tag-pill" style={tagStyle(tag)}>
+                {tagLabel[tag]}
+            </span>
+        </a>
+        <h1 class="title" set:html={title} />
+        {description && <p class="description">{description}</p>}
+    </div>
+</section>
+
+<style lang="scss">
+    .resource-hero {
+        position: relative;
+        width: 100%;
+        padding: 5rem 1.25rem 4rem;
+        overflow: hidden;
+        color: $white;
+
+        @include media-breakpoint-down(md) {
+            padding: 3rem 1.25rem 2.5rem;
+        }
+
+        .background {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-image: var(--hero-bg-mobile);
+            background-position: top center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            pointer-events: none;
+
+            @include media-breakpoint-up(md) {
+                background-image: var(--hero-bg-desktop);
+            }
+
+            .glow {
+                position: absolute;
+                inset: 0;
+                background-image: var(--hero-bg-glow);
+                background-position: top left;
+                background-size: cover;
+                background-repeat: no-repeat;
+                pointer-events: none;
+                display: none;
+
+                @include media-breakpoint-up(xl) {
+                    display: block;
+                }
+            }
+        }
+
+        .inner {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            width: fit-content;
+            font-size: $font-size-xs;
+            color: rgba($white, 0.75);
+            text-decoration: none;
+        }
+
+        .title {
+            margin: 0;
+            color: $white;
+            max-width: 52rem;
+        }
+
+        .description {
+            color: rgba($white, 0.85);
+            font-size: $font-size-md;
+            margin: 0;
+            max-width: 52rem;
+        }
+
+        .tag-pill {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            padding: 4px 0.75rem;
+            border-radius: 2.5rem;
+            background: #0e0e11;
+            color: var(--tag-text, #fdffce);
+            font-weight: 600;
+            font-size: $font-size-xs;
+            margin-left: 0.25rem;
+            z-index: 1;
+
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 2.5rem;
+                padding: 1px;
+                background: linear-gradient(
+                    90deg,
+                    var(--tag-border-from, #e6c359) 0%,
+                    var(--tag-border-to, #fffee9) 100%
+                );
+                -webkit-mask:
+                    linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                z-index: -1;
+            }
+        }
+    }
+</style>

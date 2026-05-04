@@ -16,8 +16,6 @@ Push your Flows to a Git Repository with the PushFlows Task.
   <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## How it works
 
 The [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.pushflows) task is a powerful integration that allows you to **push your code to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.

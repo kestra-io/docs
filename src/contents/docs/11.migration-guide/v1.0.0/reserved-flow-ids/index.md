@@ -32,8 +32,6 @@ If your flows use one of these IDs, you will not be able to edit them after upgr
 
 See the [commit introducing this change](https://github.com/kestra-io/kestra/commit/d4e7b0cde4cf5cfad99b3fb39bff5728e056a049) for details.
 
----
-
 ## Migration
 
 ### 1. Identify impacted flows
@@ -67,8 +65,6 @@ tasks:
 ### 3. Remove the old flow
 
 Once you have validated the new flow, delete the old flow with the reserved keyword `id`.
-
----
 
 ## Recommendation
 

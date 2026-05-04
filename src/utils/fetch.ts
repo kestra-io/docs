@@ -70,6 +70,15 @@ export async function $fetchCached<T = any>(
     return await $fetch<T>(url, cachingConfig)
 }
 
+export async function $fetchCachedRaw(
+    url: string,
+    init: RequestInit = {},
+): Promise<Response> {
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
+
+    return await internalFetch(url, cachingConfig)
+}
+
 export async function $fetchApi<T = any>(
     url: string,
     init: RequestInit = {},

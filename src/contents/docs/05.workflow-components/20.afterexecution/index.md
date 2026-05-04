@@ -9,8 +9,6 @@ version: "0.22.0"
 
 Run tasks after a flow execution completes.
 
-## `afterExecution` tasks – post-run actions
-
 `afterExecution` tasks run once a flow has finished, allowing you to act on the final execution status.
 
 <div class="video-container">

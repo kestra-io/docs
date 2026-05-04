@@ -25,6 +25,7 @@ const { featureGrid, id, columns } = Astro.props
                         <th></th>
                         <th>
                             <div
+                                class="th-logo"
                                 set:html={kestraLogo}
                                 role="img"
                                 aria-label="Kestra"
@@ -36,6 +37,7 @@ const { featureGrid, id, columns } = Astro.props
                             ) : (
                                 <th>
                                     <div
+                                        class="th-logo"
                                         set:html={featureGrid.competitorLogo}
                                         role="img"
                                         aria-label="Competitor"
@@ -140,6 +142,17 @@ const { featureGrid, id, columns } = Astro.props
                 color: var(--ks-content-primary);
                 height: 70px;
                 padding: 14px 20px 8px;
+            }
+
+            .th-logo {
+                display: inline-flex;
+                align-items: center;
+
+                :global(svg) {
+                    width: auto;
+                    height: 40px;
+                    max-width: 180px;
+                }
             }
 
             tr:last-child {

@@ -10,8 +10,6 @@ Detailed breakdown of the server components behind Kestra.
 
 Kestra consists of multiple server components that can be scaled independently.
 
-## Understand Kestra server components
-
 Each server component interacts with internal components ([Internal Storage](../data-components/index.md#internal-storage), [Queue](../01.main-components/index.md#queue), and [Repository](../01.main-components/index.md#repository)).
 
 ## Executor
@@ -25,7 +23,7 @@ The Executor plays a central role in coordinating workflows based on the informa
 - Templates *(deprecated)*
 - Listeners *(deprecated)*
 
-Although the Executor oversees all executions, it generally never interacts directly with your data.
+Although the Executor oversees all executions, it never interacts directly with your data.
 
 Because of its low resource usage, the Executor rarely needs to be scaled. However, in deployments with a very large number of executions, you can scale Executors horizontally to meet demand.
 
@@ -50,7 +48,7 @@ In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-editio
 To specify a worker group for a task, use the `workerGroup.key` property in the task definition to point the task to a specific worker group key. If no worker group is specified, the task will be executed on the default worker group.
 
 :::alert{type="info"}
-Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
+Worker Groups are available in Kestra Enterprise Edition only, not in Kestra Cloud.
 :::
 
 ## Scheduler
@@ -68,7 +66,7 @@ Polling Triggers have specific constraints:
 Internally, the Scheduler checks every second to determine whether any trigger needs evaluation.
 
 :::alert{type="info"}
-**Note:** By default, Kestra handles all date and time values using your system's timezone. You can override this behavior using [JVM options](../../configuration/02.runtime-and-storage/index.md)
+By default, Kestra handles all date and time values using your system's timezone. You can override this behavior using [JVM options](../../configuration/02.runtime-and-storage/index.md)
 :::
 
 ## Indexer
@@ -91,5 +89,5 @@ It consists of two main modules:
 The Webserver primarily interacts with the [Repository](../01.main-components/index.md#repository) to serve content through the API and UI. It also connects to the [Queue](../01.main-components/index.md#queue) to submit new executions and stream real-time updates on flow progress.
 
 :::alert{type="info"}
-**Note:** As long as the [Queue](../01.main-components/index.md#queue) is operational, most server components — including the Webserver — will continue to function. While the Repository is essential for rendering the UI, workloads can still be processed even if the Repository is temporarily unavailable.
+As long as the [Queue](../01.main-components/index.md#queue) is operational, most server components — including the Webserver — will continue to function. While the Repository is essential for rendering the UI, workloads can still be processed even if the Repository is temporarily unavailable.
 :::

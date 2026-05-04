@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/flow.svg
 
 Subflows let you build **modular** and **reusable** workflow components.
 
-## Subflows – modularize and reuse flows
-
 They work like function calls: executing a subflow creates a new flow run from within another flow.
 
 <div class="video-container">
@@ -112,9 +110,7 @@ Flows can emit outputs that can be accessed by the parent flow. Using the `io.ke
 
 Outputs include the execution ID, extracted outputs, and the final state (if `wait` is true).
 
-:::alert{type="info"}
-To sum up, subflows improve maintainability of complex workflows. They allow you to build modular and reusable workflow components and share them across multiple namespaces, projects, and teams.
-:::
+Subflows improve maintainability of complex workflows. Use them to build modular, reusable components that can be shared across namespaces, projects, and teams.
 
 Here’s an example of a subflow with explicitly defined outputs.
 
