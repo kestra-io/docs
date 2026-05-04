@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/dev.svg
 description: Learn how to write unit tests for your Kestra plugins using JUnit and the Kestra testing framework.
 ---
 
-To avoid regression, we recommend adding unit tests for all your tasks.
+To avoid regression, add unit tests for all your tasks.
 
 There are two main ways to test your tasks. In both cases, annotate your tests with `@KestraTest` so the required Kestra components start correctly.
 

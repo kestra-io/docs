@@ -316,7 +316,7 @@ Everything from this Python upgrade to other machine diagnostics are aggregated 
 
 ### Run it locally
 
-Make sure Ansible is installed and save the YAML as `system_info.yml`, run it against localhost, and peek at the output:
+Ensure Ansible is installed and save the YAML as `system_info.yml`, run it against localhost, and inspect the output:
 - `ansible-playbook -i localhost, -c local system_info.yml`
 - Optionally inspect the JSON: `jq '.' system_info.json`
 
@@ -386,7 +386,7 @@ Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files
 
 ![Namespace Files](./flow-namespace-files.png)
 
-Also make sure to add the `inventory.ini` file to the Namespace as well (`localhost ansible_connection=local`). For simplicity, this guide checks the local machine, but of course this example can be expanded to utilize Ansible's capability to SSH into multiple servers and perform operations:
+Also add the `inventory.ini` file to the Namespace (`localhost ansible_connection=local`). For simplicity, this guide checks the local machine, but of course this example can be expanded to utilize Ansible's capability to SSH into multiple servers and perform operations:
 
 ```yaml
 id: system_report

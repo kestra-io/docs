@@ -43,7 +43,7 @@ Next are the steps to publishing your plugin to Maven Central.
 The plugin template includes a [GitHub Actions](https://github.com/features/actions) workflow to test and publish your plugin. You can extend it by adding any additional testing or deployment steps.
 
 ### Publish to Maven Central
-The template includes a Gradle task that will publish the plugin to Maven Central. You need a Maven Central account in order to publish your plugin.
+The template includes a Gradle task that publishes the plugin to Maven Central. You need a Maven Central account to publish your plugin.
 
 You only need to configure the `gradle.properties` to have all required properties:
 
