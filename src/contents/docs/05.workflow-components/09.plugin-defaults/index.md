@@ -107,6 +107,25 @@ kestra:
           region: "us-east-1"
 ```
 
+### Nested property values
+
+For plugins with nested properties, define the values using the same nested YAML structure you would use in a flow. For example, to set resource limits for the Kubernetes task runner:
+
+```yaml
+kestra:
+  plugins:
+    defaults:
+      - type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+        forced: true
+        values:
+          resources:
+            limit:
+              cpu: "1"
+              memory: "128Mi"
+```
+
+This is equivalent to writing the same nested structure directly in a task. The `forced: true` attribute ensures these defaults override any values set at the task level.
+
 ## Plugin Defaults Enterprise Edition
 
 :::alert{type="info"}
