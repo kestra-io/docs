@@ -291,6 +291,29 @@ taskRunner:
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
 ```
 
+## Connection and concurrency settings
+
+At high concurrency, each task opens multiple WebSocket connections against the API server — one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and make timeout issues worse by slowing API server responses.
+
+Three properties on the `config:` block let you cap concurrent connections and tune reconnect backoff:
+
+| Property | Default | Description |
+|---|---|---|
+| `maxConcurrentRequests` | `64` | Maximum total concurrent HTTP requests per client. |
+| `maxConcurrentRequestsPerHost` | `5` | Maximum concurrent HTTP requests to the API server host. |
+| `watchReconnectInterval` | `PT1S` | Backoff between watch reconnects. Increase to prevent reconnect storms under API pressure. |
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+    maxConcurrentRequests: 32
+    maxConcurrentRequestsPerHost: 3
+    watchReconnectInterval: PT5S
+```
+
 ## Pod and container customization
 
 The Kubernetes task runner exposes several properties for customizing the pod spec beyond standard options like `resources` and `namespace`. These are advanced properties intended for cases such as security hardening, shared volumes, custom sidecars, or node scheduling constraints.
