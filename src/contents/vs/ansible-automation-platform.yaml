@@ -3,6 +3,10 @@ description: "Compare Kestra vs Red Hat Ansible Automation Platform (formerly An
 competitorName: "Ansible AAP"
 category: Infrastructure Automation
 shortDescription: "Playbook execution management vs. full-lifecycle IT orchestration with approvals and audit trails."
+seeHowTitle: "Getting Started with Ansible Orchestration"
+seeHowBody: "See how Kestra extends Ansible into full IT lifecycle orchestration."
+logoFile: "ansible"
+imgFile: "ansible"
 
 brandColor:
   color: "#ee0000"

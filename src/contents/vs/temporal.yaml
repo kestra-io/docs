@@ -3,6 +3,8 @@ description: "Compare Kestra vs Temporal: declarative YAML workflow orchestratio
 competitorName: Temporal
 category: Infrastructure Automation
 shortDescription: "Code-first durable execution for engineers vs. declarative YAML orchestration for every team."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond durable execution."
 
 brandColor:
   color: "#444CE7"

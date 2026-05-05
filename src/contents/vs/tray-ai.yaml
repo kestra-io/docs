@@ -3,6 +3,8 @@ description: "Compare Kestra vs Tray.ai: Open-source workflow orchestration for 
 competitorName: Tray.ai
 category: Business Automation
 shortDescription: "Enterprise SaaS integration and AI agent platform vs. engineering-grade orchestration with self-hosting and GitOps."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond enterprise iPaaS."
 
 brandColor:
   color: "#1E3A8A"
