@@ -16,13 +16,11 @@ import Faq from "~/components/common/Faq.vue"
 
 import snowflakeLogo from "~/components/versus/assets/snowflake-tasks.svg?raw"
 import snowflakeMonogram from "~/components/versus/assets/snowflake-tasks-monograme.svg?raw"
-import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import snowflakeImg from "~/components/versus/assets/snowflake-tasks-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_snowflake-tasks.webp"
 
 const entry = await getEntry("vs", "snowflake-tasks")
 if (!entry) throw new Error("Could not find vs/snowflake-tasks collection entry")
@@ -46,14 +44,13 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<Layout {title} description={shortDescription}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: snowflakeMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}

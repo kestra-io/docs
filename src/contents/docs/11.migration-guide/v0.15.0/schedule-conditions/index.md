@@ -12,7 +12,7 @@ description: Deprecation of the scheduleConditions property in favor of conditio
 
 The `scheduleConditions` property of `Schedule` trigger is deprecated. Instead, use `conditions` to define custom scheduling conditions.
 
-This change is implemented in a non-breaking way, so you don't need to immediately change your existing flows in order to successfully migrate to 0.15.0. However, we recommend using the `conditions` property at least for new flows. The `scheduleConditions` property will be removed in the future.
+This change is non-breaking, so existing flows do not need to be changed immediately to migrate to 0.15.0. Use the `conditions` property for new flows. The `scheduleConditions` property will be removed in the future.
 
 :::alert{type="info"}
 All you need to do is to rename `scheduleConditions` to `conditions` in your flow configuration — no other changes are required.

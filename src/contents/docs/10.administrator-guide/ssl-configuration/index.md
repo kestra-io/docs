@@ -8,9 +8,7 @@ description: Configure SSL/TLS encryption for Kestra to secure the UI and API ac
 
 Configure secure access to the Kestra UI via HTTPS.
 
-## Secure the Kestra UI with TLS
-
-This guide walks through the steps to configure secure access via https to the Kestra UI.
+This page explains how to configure secure access via HTTPS to the Kestra UI.
 
 ## Why use SSL/TLS encryption
 

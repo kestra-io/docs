@@ -43,7 +43,7 @@ The remaining examples assume authentication is disabled.
 
 To create a flow via API, open the **Flows** section and look for the `/api/v1/main/flows` [POST endpoint](https://kestra.io/docs/api-reference/open-source#post-/api/v1/flows). It expects a YAML payload containing the flow definition.
 
-Our body of Content-Type `application/x-yaml` will look like the example below:
+The request body uses Content-Type `application/x-yaml`:
 ```yaml
 id: created_by_api
 namespace: company.team
@@ -518,7 +518,7 @@ curl -X POST 'http://localhost:8080/api/v1/main/namespaces/company.team/files?pa
 ```
 
 :::alert{type="info"}
-**Note:** Make sure `fileContent` has the correct path to your file.
+Ensure `fileContent` has the correct path to your file.
 :::
 
 After the upload, the file appears in the Namespace editor:

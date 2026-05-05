@@ -56,11 +56,48 @@
                 </div>
             </div>
 
-            <div class="nav-items d-flex align-items-center">
+            <div
+                class="header-actions d-flex align-items-center ms-auto order-xl-last"
+            >
+                <a
+                    @click="globalClick(true)"
+                    href="https://kestra.io/slack"
+                    target="_blank"
+                    class="d-none d-lg-inline-flex align-items-center slack-link me-2"
+                    aria-label="Slack"
+                >
+                    <span
+                        class="slack-icon"
+                        :class="{
+                            'slack-icon--dark':
+                                isScrolled || props.scrolled || isOpen,
+                        }"
+                        v-html="SlackIcon"
+                    />
+                </a>
+                <GithubButton
+                    :small="true"
+                    class="d-none d-lg-inline-block"
+                />
+                <a
+                    @click="globalClick(true)"
+                    class="d-none d-md-inline-block btn btn-sm btn-secondary me-2"
+                    href="/demo"
+                >
+                    <span>Contact Sales</span>
+                </a>
+                <a
+                    @click="globalClick(true)"
+                    class="d-none d-sm-inline-block btn btn-primary btn-sm get-started"
+                    href="/get-started"
+                >
+                    <span>Get Started</span>
+                </a>
                 <button
                     type="button"
                     @click="globalClick(true)"
-                    class="btn btn-sm icon-button p-0 d-xl-none"
+                    id="header-search-button"
+                    class="btn btn-sm icon-button p-0 ms-2"
                     data-bs-toggle="modal"
                     data-bs-target="#search-modal"
                     title="Search"
@@ -69,7 +106,7 @@
                     <Magnify />
                 </button>
                 <button
-                    class="navbar-toggler d-flex d-xl-none align-items-center gap-2"
+                    class="navbar-toggler d-flex d-xl-none align-items-center gap-2 ms-2"
                     @click="globalClick(isOpen)"
                     type="button"
                     aria-controls="main-header"
@@ -344,39 +381,20 @@
                     </li>
                 </ul>
 
-                <ul class="navbar-nav mb-2 mb-xl-0 nav-button nav-footer">
+                <ul class="navbar-nav mb-2 mb-xl-0 nav-button nav-footer d-xl-none">
                     <li class="nav-item">
                         <a
                             @click="globalClick(true)"
-                            href="https://kestra.io/slack"
-                            target="_blank"
-                            class="d-none d-xl-inline-flex mb-1 align-items-center me-3 slack-link"
+                            class="d-block d-sm-none mb-1 btn btn-primary btn-sm get-started"
+                            href="/get-started"
                         >
-                            <span
-                                class="slack-icon"
-                                :class="{
-                                    'slack-icon--dark':
-                                        isScrolled || props.scrolled || isOpen,
-                                }"
-                                v-html="SlackIcon"
-                            />
-                        </a>
-                        <GithubButton
-                            :small="true"
-                            class="d-block d-sm-inline-block mb-1"
-                        />
-                        <a
-                            @click="globalClick(true)"
-                            class="d-none mb-1 btn btn-sm btn-secondary me-0 me-sm-2 d-xl-inline-block"
-                            href="/demo"
-                        >
-                            <span> Contact Sales</span>
+                            <span>Get Started</span>
                         </a>
                         <a
                             @click="globalClick(true)"
                             href="https://kestra.io/slack"
                             target="_blank"
-                            class="d-xl-none d-flex justify-content-center mb-1 btn btn-sm btn-outline-dark align-items-center gap-2"
+                            class="d-flex justify-content-center mb-1 btn btn-sm btn-outline-dark align-items-center gap-2"
                         >
                             <span
                                 class="slack-icon slack-icon--dark slack-icon--hover"
@@ -386,28 +404,11 @@
                         </a>
                         <a
                             @click="globalClick(true)"
-                            class="d-block d-sm-inline-block mb-1 btn btn-primary btn-sm get-started"
-                            href="/get-started"
-                        >
-                            <span> Get Started </span>
-                        </a>
-                        <a
-                            @click="globalClick(true)"
-                            class="d-xl-none d-sm-inline-block mb-1 btn btn-secondary btn-md"
+                            class="d-block d-sm-inline-block mb-1 btn btn-secondary btn-md"
                             href="/demo"
                         >
-                            <span> Book a Demo</span>
+                            <span>Book a Demo</span>
                         </a>
-                        <button
-                            @click="globalClick(true)"
-                            id="header-search-button"
-                            class="btn btn-sm d-none d-xl-inline-block icon-button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#search-modal"
-                            title="Search"
-                        >
-                            <Magnify />
-                        </button>
                     </li>
                 </ul>
             </div>
@@ -1082,12 +1083,17 @@
                     margin: 0 0 calc($spacer * 0.75) $spacer;
                 }
 
-                .nav-items {
-                    margin: 0 $spacer calc($spacer * 0.75) 0;
+                .header-actions {
+                    margin: 0 $spacer 0 0;
+                    gap: 0.5rem;
 
                     span.menu-text {
                         margin-top: calc($spacer * 0.3);
                         color: var(--ks-content-tertiary) !important;
+                    }
+
+                    .btn {
+                        margin-bottom: 0;
                     }
                 }
             }
@@ -1191,13 +1197,22 @@
             }
         }
 
-        div.nav-items {
-            a {
-                margin-top: calc($spacer * 0.4);
+        div.header-actions {
+            flex-shrink: 0;
+            white-space: nowrap;
+
+            @include media-breakpoint-up(xl) {
+                padding-left: 1.5rem;
             }
 
-            a,
-            button {
+            > a,
+            > button,
+            > :deep(.github-button-wrapper) {
+                flex-shrink: 0;
+            }
+
+            .icon-button,
+            .navbar-toggler {
                 :deep(.material-design-icon) {
                     width: calc($spacer * 1.5);
                     height: calc($spacer * 1.5);
@@ -1207,12 +1222,39 @@
                         height: calc($spacer * 1.5);
                     }
                 }
+            }
 
+            a,
+            button {
                 &:focus-visible {
                     outline: 2px solid currentColor;
                     outline-offset: 2px;
                     border-radius: $border-radius;
                 }
+            }
+
+            .btn.icon-button {
+                font-size: 1.5rem;
+                color: var(--ks-content-primary);
+
+                &:hover {
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+
+            .slack-link {
+                padding: 0.25rem;
+            }
+
+            @include media-breakpoint-between(xl, xxl) {
+                .btn:not(.icon-button) {
+                    padding-inline: 0.5rem;
+                    font-size: $font-size-sm;
+                }
+            }
+
+            :deep(.github-button-wrapper) {
+                margin-bottom: 0 !important;
             }
         }
 

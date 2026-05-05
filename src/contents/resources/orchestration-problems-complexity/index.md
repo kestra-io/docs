@@ -88,7 +88,7 @@ The principle: every new tool must remove at least two sources of complexity, no
 
 Concretely, this means:
 
-- **Consolidate triggers**. Schedules, events, webhooks, and manual runs should all produce the same execution type, observable in the same UI — the foundation of [event-driven orchestration](/resources/event-driven-orchestration) done right.
+- **Consolidate triggers**. Schedules, events, webhooks, and manual runs should all produce the same execution type, observable in the same UI — the foundation of [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) done right.
 - **Consolidate retries and error handling**. One declaration of retry policy that applies everywhere, not three different libraries' conventions.
 - **Consolidate state**. Execution state — inputs, outputs, logs, timing — should live in one place regardless of task type.
 
