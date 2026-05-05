@@ -14,8 +14,6 @@ Make HTTP Requests to fetch data and generate outputs.
   <iframe src="https://www.youtube.com/embed/sI-BDbb1aPI?si=ygTv9ZVoHPwYMaty" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 You can make HTTP Requests directly inside a flow as well as get outputs from the responses. In this guide, we'll walk you through what HTTP Requests are and how you can use the most common request methods in Kestra.
 
 ## What is a HTTP Request?
@@ -33,7 +31,7 @@ Requests can send or request data, with common methods known as GET, POST, PUT a
 
 There are many other request methods too, which you can read more about on the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods).
 
-When you make a request, you will receive a [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_responses) from the server with the answer. We can use this answer with Kestra to create powerful automations. However first, let's understand a bit more about what makes up a request!
+When you make a request, you will receive a [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_responses) from the server with the answer. This answer can drive Kestra automations. First, here is what makes up a request.
 
 ### Status Code
 
@@ -76,7 +74,7 @@ In the example below, we can use Postman to make a POST Request to [dummyjson.co
 }
 ```
 
-In Postman, we'll need to add our URL: `https://dummyjson.com/products/add`. On top of that, we will need to set our request type to `POST` and add the body above as a `raw` option and then change the type to JSON. Once we've done this, we can press send:
+In Postman, add the URL `https://dummyjson.com/products/add`, set the request type to `POST`, add the body above as a `raw` option, and change the type to JSON. Then press send:
 
 ![postman](./postman.png)
 
@@ -137,7 +135,7 @@ We can see the response from the Logs task in the Logs page:
 
 ![http_get_logs](./http_get_logs.png)
 
-However if we want to view the outputs from tasks without needing to use Log tasks, we can easily view our output using the Outputs page inside the UI:
+To view task outputs without Log tasks, use the Outputs page in the UI:
 
 ![http_get_outputs](./http_get_outputs.png)
 
@@ -190,7 +188,7 @@ As we can see, this generates the same output from our earlier example but with 
 
 ### PUT Request
 
-Similar to our `POST` Request, we can change the `method` property to `PUT`. As the `PUT` request will replace the content, we'll need to adjust our body to have the data we want to update with. As we can see from the `GET` Request, `id` 1 is an `iPhone 9` so let's change it to an `iPhone 10`:
+Similar to the `POST` request, change the `method` property to `PUT`. Since the `PUT` request replaces content, adjust the body with the data to update. From the `GET` request, `id` 1 is an `iPhone 9` — change it to an `iPhone 10`:
 
 ```yaml
 id: http_put_request_example
@@ -246,7 +244,7 @@ tasks:
 
 ```
 
-By adding an input, we can change which product we will remove by asking for the `id` at execution.
+Adding an input lets you specify which product to remove by providing the `id` at execution.
 
 ![http_delete_outputs](./http_delete_input.png)
 

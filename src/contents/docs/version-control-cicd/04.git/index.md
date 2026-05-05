@@ -14,8 +14,6 @@ Learn how to pair Kestra with Git so you can version flows, namespace files, and
   <iframe src="https://www.youtube.com/embed/videoseries?si=wOyAUkgChRUuJxcy&amp;list=PLEK3H8YwZn1p7tyd9RV5-WDxh_ZGpMpA3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Kestra supports version control with Git. You can use one or more repositories to store your [flows](../../05.workflow-components/01.flow/index.md), [namespace files](../../06.concepts/02.namespace-files/index.md), [apps](../../07.enterprise/04.scalability/apps/index.md), [tests](../../07.enterprise/02.governance/unit-tests/index.md), and [dashboards](../../09.ui/00.dashboard/index.md), tracking changes through Git history.
 
 There are multiple ways to combine Kestra with Git:
@@ -32,7 +30,7 @@ The image below shows how to choose the right pattern based on your needs:
 
 ![git](./git.png)
 
-Let's dive into each of these patterns and when to use them.
+The following sections cover each pattern and when to use it.
 
 ## Git SyncFlows and SyncNamespaceFiles
 

@@ -1,5 +1,8 @@
 ---
 import CardGrid from "~/components/card/CardGrid.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const ITEMS = [
     {
@@ -16,7 +19,7 @@ const ITEMS = [
     },
     {
         icon: "mdi:puzzle-outline",
-        title: "1200+ Plugins",
+        title: `${totalPlugins}+ Plugins`,
         description:
             "Connect to databases, cloud services, APIs, and SaaS tools. No custom integrations required.",
     },

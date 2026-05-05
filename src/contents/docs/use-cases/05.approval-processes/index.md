@@ -329,7 +329,7 @@ Why this is robust:
 - Downstream automation is cleanly decoupled and reacts only after the first flow completes successfully.
 
 :::alert{type="info"}
-Note that the Flow trigger cannot react to a `RESUMED` state as this state is not observable. While you could react to the `RESTARTED` state, this state is used not only for resumed executions after paused but also for executions restarted after a failure, which may not be what you want. Therefore, we recommend that you design your Flow trigger to react directly to the `SUCCESS` state as shown above.
+The Flow trigger cannot react to a `RESUMED` state as this state is not observable. While you could react to the `RESTARTED` state, this state is used not only for resumed executions after paused but also for executions restarted after a failure, which may not be what you want. Design your Flow trigger to react directly to the `SUCCESS` state as shown above.
 :::
 
 ---

@@ -18,7 +18,7 @@ Below is an example of how the storage path looks like before and after the chan
 - Before 0.23: `gs://ee-default-22//company/team/_files/test.txt`
 - After 0.23: `gs://ee-default-22/company/team/_files/test.txt`
 
-Make sure to run the following script for your provider. Otherwise, Kestra won’t be able to find your internal storage files anymore.
+Run the following script for your provider. Otherwise, Kestra won’t be able to find your internal storage files.
 
 :::alert{type="warning"}
 Before taking any action to fix the double slash issue, Open-source users **MUST** follow the steps in the [OSS Tenant Migration Guide](../tenant-migration-oss/index.md) and Enterprise users **MUST** follow the steps in the [EE Tenant Migration Guide](../tenant-migration-ee/index.md).

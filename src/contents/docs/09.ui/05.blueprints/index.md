@@ -8,17 +8,13 @@ icon: /src/contents/docs/icons/ui.svg
 
 Ready-to-use examples designed to kickstart your workflow.
 
-## Jumpstart workflows with blueprints
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5mvYVLKLzGk?si=Ga4ndYv_pI3NIlLK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Blueprints are a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow. Each Blueprint combines code and documentation and can be assigned several tags for organization and discoverability.
 
-All Blueprints are validated and documented. You can easily customize and integrate them into your new or existing flows with a single click on the **Use** button.
+All Blueprints are validated and documented. You can customize and integrate them into your flows with a single click on the **Use** button.
 
 ![Blueprint](../../06.concepts/07.blueprints/blueprints.png)
 

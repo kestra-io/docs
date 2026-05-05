@@ -21,7 +21,6 @@ import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import competitorImg from "~/components/versus/assets/rundeck-full-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_rundeck.webp"
 
 const entry = await getEntry("vs", "rundeck")
 if (!entry) throw new Error("Could not find vs/rundeck collection entry")
@@ -45,14 +44,13 @@ const {
 } = entry.data
 ---
 
-<VsLayout {title} description={shortDescription} headerTheme="lightText" {commonQuestions}>
+<VsLayout {title} description={shortDescription} {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: competitorMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}

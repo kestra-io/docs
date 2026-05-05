@@ -9,6 +9,10 @@ description: Manage Kestra resources declaratively using the Kestra Kubernetes O
 
 How to use the Kestra Kubernetes Operator to provision and manage changes to Kestra resources, including flows, namespace files, and key-value store entries.
 
+:::alert{type="warning"}
+The Kestra Kubernetes Operator is no longer maintained. It will not receive further updates or bug fixes. For declarative flow management, consider using the [Terraform provider](../03.terraform/index.md) or the [Kestra CLI](../../../kestra-cli/index.mdx) as alternatives.
+:::
+
 ## Manage Kestra with the Kubernetes Operator
 
 :::alert{type="info"}
@@ -24,13 +28,13 @@ This feature requires the [Enterprise Edition](../../../07.enterprise/index.mdx)
 
 A **Kubernetes operator** is an application-specific controller that extends the functionality of the Kubernetes API to create, configure, and manage instances of applications or their components on behalf of a Kubernetes user. It is a custom Kubernetes controller that uses custom resources (CR).
 
-To define and manage these components, operators leverage Custom Resource Definitions (CRDs). CRDs allow you to extend the Kubernetes API with new resource types that are specific to your application or service.
+To define and manage these components, operators use Custom Resource Definitions (CRDs). CRDs allow you to extend the Kubernetes API with new resource types that are specific to your application or service.
 
 The Kestra Kubernetes Operator manages Kestra flows, namespace files, and key-value store entries as Kubernetes resources.
 
 ## Installing the Kestra Kubernetes Operator
 
-We provide a Helm chart to install Kestra in Kubernetes; see the [installation guide](../../../02.installation/03.kubernetes/index.md). The [Kestra Operator](https://github.com/kestra-io/helm-charts/tree/master/charts/kestra-operator) can be installed with the `kestra-operator` chart. To install the chart with the release name `my-kestra-operator` use:
+We provide a Helm chart to install Kestra in Kubernetes; see the [installation guide](../../../02.installation/03.kubernetes/index.md). The [Kestra Operator](https://github.com/kestra-io/kestra/tree/develop/charts/kestra-operator) can be installed with the `kestra-operator` chart. To install the chart with the release name `my-kestra-operator` use:
 
 ```bash
 $ helm repo add kestra https://helm.kestra.io/

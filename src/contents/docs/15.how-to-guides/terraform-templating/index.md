@@ -11,9 +11,9 @@ topics:
 
 Scale your codebase using Terraform to template and define flows
 
-This article will show you how to leverage terraform in your Kestra codebase and its powerful templating features brought by HCL (Hashicorp Configuration Language).
+This guide shows how to use Terraform's HCL (Hashicorp Configuration Language) templating features in a Kestra codebase.
 
-In order to make your codebase easy to use for users unfamiliar with Kestra syntax, you may want to encapsulate most of the logic and DSL (Domain-specific programming language) into [Terraform modules](https://developer.hashicorp.com/terraform/language/modules).
+To make your codebase accessible to users unfamiliar with Kestra syntax, encapsulate most of the logic and DSL (Domain-specific programming language) into [Terraform modules](https://developer.hashicorp.com/terraform/language/modules).
 
 This quick tutorial, will show you how templating capabilities brought by Terraform can help you :
 
@@ -24,7 +24,7 @@ This quick tutorial, will show you how templating capabilities brought by Terraf
 
 You can check the [kestra-flows-template](https://github.com/kestra-io/kestra-flows-template) repo which contains a set of modules and subflows to help you get started with Terraform.
 
-Below we will cover the creation of a single Terraform module and a subflow, and how to use them in your codebase.
+This guide covers creating a Terraform module and a subflow, and how to use them in your codebase.
 
 ## Code structure
 
@@ -56,7 +56,7 @@ Inside a module, you can define a `main.tf` file that will define the resources 
 
 ## Creating a module, example with Airbyte
 
-Let's create a module that will define a Kestra flow that will sync data from Airbyte.
+Create a module that defines a Kestra flow to sync data from Airbyte.
 
 ## Tree structure of a Terraform module
 
@@ -168,7 +168,7 @@ variable "late_maximum_delay" {
 ```
 
 
-## `tasks.yml` will contain the flow definition in YAML format, we can leverage jinja as supported by Terraform templatefile.
+## `tasks.yml`: flow definition with Terraform templatefile jinja syntax
 
 ```yaml
 tasks:
@@ -239,7 +239,7 @@ It is now easy to instantiate the module in your `main.tf` file, and to expose o
 - `cron_expression`: the cron expression to trigger the flow
 - `late_maximum_delay`: the maximum delay to wait for the flow to start, in case of missed schedules (backfill)
 
-In case of changes in the way you want to implement the underlying tasks, you can easily modify the Terraform module without changing the interface (variables).
+In case of changes in the way you want to implement the underlying tasks, you can modify the Terraform module without changing the interface (variables).
 
 ## Subflow example: query and display results for a given Postgres database
 

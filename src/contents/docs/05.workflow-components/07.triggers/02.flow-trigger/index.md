@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger one flow based on the execution of another flow.
 
-## Flow trigger – chain flow executions
-
 A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
 
 ```yaml
