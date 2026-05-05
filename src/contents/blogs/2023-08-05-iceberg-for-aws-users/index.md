@@ -1,7 +1,7 @@
 ---
-title: "Apache Iceberg Crash Course for AWS users: Amazon S3, Athena & AWS Glue ❤️ Iceberg"
-description: "How to turn AWS data lake into a data lakehouse using Iceberg, the open table format"
-date: 2023-08-03T15:00:00
+title: "Apache Iceberg on AWS: Athena, S3, and Glue Tutorial"
+description: "A hands-on guide to Apache Iceberg on AWS using Amazon Athena, S3, and Glue. Learn how to create tables, run upserts, time travel, and automate ingestion with Kestra."
+date: 2026-05-05T15:00:00
 category: Solutions
 author:
   name: Anna Geller
@@ -16,7 +16,7 @@ This crash course will guide you on how to get started with [Apache Iceberg](htt
 
 ## What is Iceberg
 
-Iceberg is an open [table format](https://iceberg.apache.org/spec/). It’s a metadata layer that brings reliable transactions, schema evolution, version history, and data management to files in a data lake at a petabyte scale. You can think of Iceberg as an API between storage (*e.g., parquet files on S3)* and compute *(Spark, Flink, DuckDB, Trino, Presto, Amazon Athena, Hive, BigQuery, Snowflake warehouse, etc.*). You can define your table structure once on the API layer and then simultaneously query that table from anywhere (*Snowflake, Spark, DuckDB, and more*) without having to think about where data is physically located or [how it is partitioned](https://iceberg.apache.org/docs/latest/partitioning/#icebergs-hidden-partitioning).
+Iceberg is an open [table format](https://iceberg.apache.org/spec/). It’s a metadata layer that brings reliable transactions, schema evolution, version history, and data management to files in a data lake at a petabyte scale. You can think of Iceberg as an API between storage (*e.g., parquet files on S3)* and compute *([Spark](/plugins/plugin-spark), Flink, [DuckDB](/plugins/plugin-jdbc-duckdb), Trino, Presto, Amazon Athena, Hive, BigQuery, Snowflake warehouse, etc.*). You can define your table structure once on the API layer and then simultaneously query that table from anywhere (*Snowflake, Spark, DuckDB, and more*) without having to think about where data is physically located or [how it is partitioned](https://iceberg.apache.org/docs/latest/partitioning/#icebergs-hidden-partitioning).
 
 It still may sound too abstract, so let’s see it in action.
 
@@ -543,7 +543,7 @@ When you execute the flow, you should see the following output in the logs:
 
 ![iceberg12b](./iceberg12b.png)
 
-Once you push [your script to Git](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py), your pipeline can be simplified as follows:
+Once you push [your script to Git](https://github.com/kestra-io/scripts/blob/main/etl/aws_iceberg_fruit.py) and use the [Git plugin](/plugins/plugin-git) to clone it at runtime, your pipeline can be simplified as follows:
 
 ```yaml
 id: ingestToDataLakeGit
@@ -740,4 +740,6 @@ All Kestra workflows covered in this post are available as [Blueprints](../../do
 
 This tutorial demonstrated how to use Apache Iceberg with Amazon Athena, AWS Glue and Amazon S3, and how to manage a scheduled and event-driven data ingestion process with Kestra.
 
-If you have any questions about what we've covered in this post, reach out via [our community Slack](/slack). Lastly, if you like the project, give us a [star on GitHub](https://github.com/kestra-io/kestra).
+If you want to go further, check the [AWS plugin docs](/plugins/plugin-aws) for the full list of Kestra tasks that integrate with S3, Athena, Glue, and other AWS services. You can also browse [DuckDB blueprints](/blueprints?q=duckdb) to see how Kestra handles local and cloud analytics workflows.
+
+If you have any questions, reach out via [Slack](/slack) or give us a [star on GitHub](https://github.com/kestra-io/kestra).
