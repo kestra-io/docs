@@ -15,7 +15,7 @@ Migrating usage of worker group keys
 
 By default, a task configured to run on a worker group where no workers are available will wait for the worker to be available. The previous behavior was to fail.
 
-This behavior is configurable. To keep the previous behavior, simply set the `fallback` behavior to `FAIL` as follows:
+This behavior is configurable. To keep the previous behavior, set the `fallback` behavior to `FAIL`:
 ```yaml
   - id: hello
     type: io.kestra.plugin.core.log.Log
@@ -25,4 +25,4 @@ This behavior is configurable. To keep the previous behavior, simply set the `fa
       fallback: FAIL #  possible values are WAIT (default), FAIL or CANCEL
 ```
 
-If you want to set a custom `workerGroup` `key` and `behavior` per plugin type and/or namespace, you can leverage `pluginDefaults`.
+To set a custom `workerGroup` `key` and `behavior` per plugin type and/or namespace, use `pluginDefaults`.

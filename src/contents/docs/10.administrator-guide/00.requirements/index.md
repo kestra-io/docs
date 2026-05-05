@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/admin.svg
 
 This page outlines the software and hardware requirements for running Kestra.
 
-## Confirm Kestra software and hardware requirements
-
 ## Software requirements
 
 The table below lists the software requirements for Kestra.

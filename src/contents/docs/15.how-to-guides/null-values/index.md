@@ -51,7 +51,7 @@ tasks:
     message: processing data from {{ render(vars.start_date) }} to {{ render(vars.end_date) }}
 ```
 
-Note that you need to use the `render` function to recursively render variables containing Pebble expressions.
+Use the `render` function to recursively render variables containing Pebble expressions.
 
 ## Providing default values for optional and undefined inputs
 

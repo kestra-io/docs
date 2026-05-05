@@ -210,7 +210,7 @@ testimonials:
         name: "Agents to install and maintain"
       - value: "10x"
         name: "More workflows automated"
-    storyLink: "/use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment"
+    storyLink: "/use-cases/stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

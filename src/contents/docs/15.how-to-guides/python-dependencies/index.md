@@ -107,10 +107,10 @@ tasks:
 
 ## Build Docker Image and set it with Docker Task Runner
 
-If we can't find an image with the dependencies we need readily available, we can build our own using the `docker.Build` task.
-We can specify a Dockerfile that uses a `python:3.10` image as the base, and then install our specific dependencies on top of that.
+If an image with the required dependencies isn't available, build your own using the `docker.Build` task.
+Specify a Dockerfile that uses a `python:3.10` image as the base and installs the required dependencies on top.
 
-In the example below, we are using `pip install` to install both `kestra` and `pandas`. Once our image has been built, we can reference it in an expression in our Python task:
+The example below uses `pip install` to install both `kestra` and `pandas`. Once the image is built, reference it in an expression in the Python task:
 
 ```yaml
 id: container_image_build
