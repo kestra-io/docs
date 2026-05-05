@@ -176,7 +176,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 
 ## Enterprise Edition Copilot configurations
 
-Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Add one or more of the snippets below as entries inside `kestra.ai.providers` (set `isDefault: true` on the default provider). Each configuration has slight differences, so make sure to adjust for your provider.
+Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Add one or more of the snippets below as entries inside `kestra.ai.providers` (set `isDefault: true` on the default provider). Each configuration has slight differences, so adjust it for your provider.
 Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
 
 ### Amazon Bedrock

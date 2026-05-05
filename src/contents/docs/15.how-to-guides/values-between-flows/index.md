@@ -47,7 +47,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.subflow_output }}"
 ```
 
-As we can see in the subflow directly, we have explicitly defined the output to make it easier to access in our parent flow. This example uses the input to generate the output sent to the parent flow.
+In the subflow, the output is explicitly defined to make it accessible in the parent flow. This example uses the input to generate the output sent to the parent flow.
 
 ```yaml
 id: subflow

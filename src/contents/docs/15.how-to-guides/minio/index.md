@@ -128,7 +128,7 @@ You can now validate that the output file is stored in the MinIO bucket:
 mc cat local/your-bucket/main/company/team/alligator-743987/executions/23z9cJWEa23kNAxu6sm0CT/tasks/py-outputs/5kxYRM7UqUurvnpVNvHca7/1noPFEiCFGPf2hcqjVzywu-myoutput.json
 ```
 
-Note that you may need to replace the following placeholders with your own values:
+Replace the following placeholders with your own values:
 - the bucket name (here `your-bucket`)
 - the path (namespace) (here `company/team`)
 - the flow id (here `alligator-743987`)

@@ -23,8 +23,8 @@ kestra:
       password: Admin1234
 ```
 
-Now that basic authentication is required, the `enabled` flag is ignored (ideally, don't use it anymore), and credentials must be set to interact with Kestra UI or API. For new users, simply follow the Setup Page that will appear when you start Kestra UI.
+Now that basic authentication is required, the `enabled` flag is ignored (ideally, don't use it anymore), and credentials must be set to interact with Kestra UI or API. For new users, follow the Setup Page that appears when you start the Kestra UI.
 
-For production deployments, we recommend setting a valid email address and a strong password in the configuration file.
+For production deployments, set a valid email address and a strong password in the configuration file.
 
 If you upgrade to version 0.24, there are three possible scenarios for existing users. For the details, refer to the [Basic Authentication Troubleshooting guide](../../../10.administrator-guide/basic-auth-troubleshooting/index.md).

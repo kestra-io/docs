@@ -84,7 +84,7 @@ For a production-grade installation, we recommend a managed database service suc
 
 **Update Kestra configuration**
 
-Configure Azure Database in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11) like in the following example:
+Configure Azure Database in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) like in the following example:
 
 ```yaml
 configurations:
@@ -125,7 +125,7 @@ This section guides you on how to change the storage backend to Azure Blob Stora
 11. Now, click **Access keys** from the left-side navigation menu.
 12. For one of the keys, either key1 or key2, click **Show** for the **Connection string** and click the **Copy to clipboard** button.
 13. Make a note of the connection string for later use. We will require this for configuring the storage backend.
-14. Add Blob Storage configuration in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11) like in the following example:
+14. Add Blob Storage configuration in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) like in the following example:
 
 ```yaml
 configurations:

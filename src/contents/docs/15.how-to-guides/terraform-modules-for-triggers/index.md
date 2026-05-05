@@ -11,7 +11,7 @@ description: Scale your Kestra codebase by modularizing triggers and schedules u
 
 Scale your codebase using Terraform to template and make scheduling a breeze
 
-As seen in this [terraform templating](../terraform-templating/index.md) guide, you can leverage Terraform to template and define flows.
+As shown in the [terraform templating](../terraform-templating/index.md) guide, you can use Terraform to template and define flows.
 
 Managing triggers and schedules can be a **tedious task**, especially when you have a lot of flows generating **peak hours** due to reuse of same trigger schedules.
 
@@ -38,8 +38,8 @@ Note: we created the repo [kestra-flows-template](https://github.com/kestra-io/k
 
 ```
 
-We will leverage `null_resource` to create reusable resources to DRY (Do not Repeat Yourself) your trigger definitions.
-With Terraform version >= 1.4, you can directly use `terraform_data` if preferred. For backward compatbility we will use `null_resource`.
+Use `null_resource` to create reusable resources to DRY (Do not Repeat Yourself) your trigger definitions.
+With Terraform version >= 1.4, you can use `terraform_data` instead. For backward compatibility, this guide uses `null_resource`.
 
 ## Example of Cron schedule implementation
 

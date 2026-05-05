@@ -198,7 +198,7 @@ testimonials:
         name: Active users
       - value: "+5000"
         name: Workflows created
-    storyLink: /use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent
+    storyLink: /use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent
 
 platformStrengths:
   title: Kestra Is Built for Production Workloads
