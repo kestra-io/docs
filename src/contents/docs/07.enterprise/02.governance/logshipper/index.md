@@ -492,7 +492,7 @@ tasks:
 
 ### Dash0
 
-This example exports logs to [Dash0](https://www.dash0.com/). The following example flow triggers a daily batch and exports to Dash0 via OTLP/HTTP. Set the `endpoint` to the ingestion URL for your Dash0 region and the `dataset` to route logs to a specific Dash0 dataset (defaults to `default` when omitted).
+This example exports logs to [Dash0](https://www.dash0.com/) via OTLP/HTTP. Set `endpoint` to the ingestion URL for your Dash0 region. Set `dataset` to route logs to a named dataset, or omit it to use the Dash0 `default` dataset.
 
 ```yaml
 id: log_shipper

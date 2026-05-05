@@ -15,7 +15,7 @@ Flows that call `io.kestra.plugin.fs.local.Delete` on a directory without settin
 
 ## Why the change
 
-The previous default of `true` made directory deletions recursive without any explicit opt-in. A misconfigured `from` path could wipe an entire directory tree. The new default of `false` matches the behavior of every other `Delete` task in `plugin-fs` (SFTP, FTP, NFS, SMB) and requires users to opt in to recursive deletion deliberately.
+The previous default of `true` made directory deletions recursive without any explicit opt-in. A misconfigured `from` path could wipe an entire directory tree. The new default of `false` matches the behavior of every other `Delete` task in `plugin-fs` (SFTP, FTP, NFS, SMB) and requires an explicit opt-in for recursive deletion.
 
 ## Migration steps
 
@@ -31,7 +31,7 @@ The previous default of `true` made directory deletions recursive without any ex
   from: /data/uploads/processed/
 ```
 
-**After** (opt in explicitly to keep the same behavior)
+**After** (opt in to keep the same behavior)
 
 ```yaml
 - id: cleanup

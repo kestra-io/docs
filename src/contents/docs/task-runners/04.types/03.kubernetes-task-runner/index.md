@@ -293,7 +293,7 @@ taskRunner:
 
 ## Connection and concurrency settings
 
-At high concurrency, each task opens multiple WebSocket connections against the API server — one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and make timeout issues worse by slowing API server responses.
+At high concurrency, each task opens multiple WebSocket connections against the API server — one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and slow API server responses, compounding timeout issues.
 
 Three properties on the `config:` block let you cap concurrent connections and tune reconnect backoff:
 
