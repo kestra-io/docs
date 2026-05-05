@@ -15,7 +15,7 @@ SQLMesh is an open source python data transformation and modelling framework. It
 
 SQLMesh enables data teams to efficiently run and deploy data transformations written in SQL or Python.
 
-In this guide, we will learn how to run dbt projects based on BigQuery using SQLMesh with Kestra.
+This guide shows how to run dbt projects on BigQuery using SQLMesh with Kestra.
 
 ## Example
 
@@ -29,11 +29,11 @@ Our Flow will do the following steps:
 
 SQLMesh supports integration with a variety of tools like Airflow, dbt, dlt, etc. One of the common use-cases of SQLMesh is to run dbt projects.
 
-You can choose to pull your dbt project from a Git repository as mentioned in the [How-to guide on dbt](../dbt/index.md) or create [namespace files](../../06.concepts/02.namespace-files/index.md) for the project. Here, we will create the complete project using namespace files which we will create as we go. You can later choose to push all the namespace files to a GitHub repository using [PushNamespaceFiles](../pushnamespacefiles/index.md).
+You can choose to pull your dbt project from a Git repository as mentioned in the [How-to guide on dbt](../dbt/index.md) or create [namespace files](../../06.concepts/02.namespace-files/index.md) for the project. This guide creates the complete project using namespace files built up step by step. You can later choose to push all the namespace files to a GitHub repository using [PushNamespaceFiles](../pushnamespacefiles/index.md).
 
-### Creating our Flow with SQLMeshCLI Task
+### Creating the flow with the SQLMeshCLI task
 
-Based on the steps mentioned in the description, let's create tasks for each step.
+Create tasks for each step:
 
 ```yaml
 id: sqlmesh_transform
@@ -100,7 +100,7 @@ tasks:
 
 It's important that we have the following properties configured:
 - `namespaceFiles` property has `enabled` set to `true` to ensure that the task has access to your namespace files.
-- Provide the GCP service account JSON file so that the task is able to connect to your GCP account in order to access BigQuery. Check out the [dedicated guide](../google-credentials/index.md) on how to add it. This file is referenced in the dbt project file.
+- Provide the GCP service account JSON file so that the task can connect to your GCP account to access BigQuery. See the [dedicated guide](../google-credentials/index.md) on how to add it. This file is referenced in the dbt project file.
 - Install the `sqlmesh[bigquery]` and `dbt-bigquery` depenedencies with `beforeCommands`. These allow SQLMesh and dbt to perform operations on BigQuery.
 
 Once the task is created and configured correctly, save the flow.
@@ -154,10 +154,10 @@ models:
 ```
 
 :::alert{type="info"}
-Note that `models` require a start date for backfilling data through use of the `start` configuration parameter.
+`models` require a start date for backfilling data through use of the `start` configuration parameter.
 :::
 
-Now create a folder called `models` in the namespace. In the `models` folder, we will create `sources.yml` which will define the source models, with the following content:
+Now create a folder called `models` in the namespace. In the `models` folder, create `sources.yml` to define the source models:
 
 ```yaml
 version: 2
@@ -170,7 +170,7 @@ sources:
       - name: orders
 ```
 
-Lastly, we will create `stg_orders.sql` which will materialize the `stg_orders` view for the `orders` table.
+Lastly, create `stg_orders.sql` to materialize the `stg_orders` view for the `orders` table.
 
 ```sql
 {{ config(materialized="view") }}

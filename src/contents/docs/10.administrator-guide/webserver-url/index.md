@@ -8,16 +8,12 @@ description: Configure the Kestra webserver URL and proxy settings to ensure cor
 
 Configure the URL of your Kestra webserver.
 
-## Configure the Kestra webserver URL and proxies
-
 Some notification services require a URL configuration to add links from alert messages. Use a full URI with a trailing `/` (excluding `ui` or `api`).
 
 ```yaml
 kestra:
   url: https://www.my-host.com/kestra/
 ```
-
----
 
 ## Proxy configuration
 
@@ -29,7 +25,7 @@ A forward proxy serves as an intermediary for requests from clients seeking reso
 
 In a forward proxy, the client connects to the proxy server, requesting some service (such as Kestra API) available from a different server.
 
-To set up a proxy in your Kestra installation, adjust the `micronaut.http.services.api` configuration to include a proxy address, username, and password. This will allow you to make requests to the Kestra API through the proxy in order to fetch data for the Kestra UI, such as Blueprints. Here is how you can adjust your `config.yml` file to include the necessary configuration:
+To set up a proxy in your Kestra installation, adjust the `micronaut.http.services.api` configuration to include a proxy address, username, and password. This will allow you to make requests to the Kestra API through the proxy to fetch data for the Kestra UI, such as Blueprints. Here is how you can adjust your `config.yml` file to include the necessary configuration:
 
 ```yaml
 micronaut:
@@ -44,17 +40,15 @@ micronaut:
         follow-redirects: true
 ```
 
-Make sure to check the [Micronaut HttpClient Configuration](https://docs.micronaut.io/latest/guide/configurationreference.html#io.micronaut.http.client.DefaultHttpClientConfiguration) for more information on how to configure the `DefaultHttpClientConfiguration` in your `config.yml` file.
+See the [Micronaut HttpClient Configuration](https://docs.micronaut.io/latest/guide/configurationreference.html#io.micronaut.http.client.DefaultHttpClientConfiguration) for more details on configuring `DefaultHttpClientConfiguration` in your `config.yml` file.
 
 Another way to authenticate is by providing `micronaut.http.client.proxy-authorization: Basic <base64-encoded username:password>` and `micronaut.http.services.*.proxy-authorization: Basic <base64-encoded username:password>`, which prevents the password from being displayed in plain text in the config file.
-
----
 
 ### Reverse proxy configuration
 
 Reverse proxies hide the server’s identity from clients and may perform tasks such as load balancing, authentication, decryption, and caching. A reverse proxy acts on behalf of the server, taking requests from the external network, and directing them to the internal server(s) that can fulfill those requests.
 
-If you want to host Kestra behind a reverse proxy, make sure to use the [Server Send Event (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) to display executions in real-time.
+To display executions in real-time when hosting Kestra behind a reverse proxy, enable [Server-sent events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events).
 
 On some reverse proxies, such as Nginx, you need to disable buffering to enable real-time updates.
 
@@ -79,9 +73,7 @@ location / {
 }
 ```
 
-Should you wish to access Kestra via a separate context path via the reverse proxy, a change will be required in the Micronaut settings of Kestra.
-
-For example, if you want to access the Kestra UI through `mycompany.com/kestra`, add the following to your Kestra startup configuration:
+To access Kestra via a separate context path, add the following to your Kestra startup configuration (for example, to serve the UI at `mycompany.com/kestra`):
 
 ```yaml
 micronaut:

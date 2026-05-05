@@ -10,7 +10,7 @@ description: Announcement of the renaming of the maxAttempt retry property to ma
 
 ## maxAttempt renamed maxAttempts
 
-For [retries](../../../05.workflow-components/12.retries/index.md), the `maxAttempt` property has been renamed with an alias to `maxAttempts` to promote proper English grammar. This is a non-breaking change, but we recommend to update all your flows to use the correctly named property as a long-term safeguard.
+For [retries](../../../05.workflow-components/12.retries/index.md), the `maxAttempt` property has been renamed with an alias to `maxAttempts` to promote proper English grammar. This is a non-breaking change, but update all flows to use the correctly named property as a long-term safeguard.
 
 ## Before
 

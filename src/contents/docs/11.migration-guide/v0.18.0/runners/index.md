@@ -27,10 +27,10 @@ To migrate from the `runner` property to `taskRunner`, update your flow code as 
 3. Update any other properties in the `taskRunner` configuration as needed, e.g. to configure Docker image pull policies, CPU and memory limits, or to provide credentials to private Docker registries.
 
 :::alert{type="info"}
-Note that all other script task's properties, such as the `beforeCommands`, `commands`, `inputFiles`, `outputFiles`, `interpreter`, `env`, `workerGroup`, and more, remain the same. **You only need to replace the `runner` property with `taskRunner` and adjust the Docker image configuration if needed.**
+All other script task properties, such as `beforeCommands`, `commands`, `inputFiles`, `outputFiles`, `interpreter`, `env`, `workerGroup`, and more, remain the same. **You only need to replace the `runner` property with `taskRunner` and adjust the Docker image configuration if needed.**
 :::
 
-Let's look at some examples to make this clearer.
+The following examples clarify the migration.
 
 ### From `PROCESS` runner to `taskRunner`
 

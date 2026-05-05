@@ -88,6 +88,27 @@ tasks:
       key: "{{ inputs.my_worker_group }}"
 ```
 
+If the expression resolves to `null` or a blank string, the task is routed to the default worker group — the same behavior as omitting `workerGroup` entirely. This makes `null` a useful sentinel for conditional routing:
+
+```yaml
+id: worker_group_conditional
+namespace: company.team
+
+inputs:
+  - id: use_gpu
+    type: BOOLEAN
+    defaults: false
+
+tasks:
+  - id: train
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ taskrun.startDate }}"
+    workerGroup:
+      key: "{{ inputs.use_gpu ? 'gpu' : null }}"
+```
+
+When `inputs.use_gpu` is `false`, the key resolves to `null` and the task runs on the default worker group. When `true`, it targets the `gpu` worker group.
+
 ## Worker Group fallback behavior
 
 :::badge{version=">=0.20" editions="EE"}
