@@ -1,6 +1,6 @@
 ---
-title: "Introducing AI Agents: Autonomous Orchestration with Declarative Workflows"
-description: "AI Agents in Kestra 1.0 turn workflows from static lists of tasks to dynamic decision engines. By combining LLMs, memory, and tools, they enable agentic orchestration that can reason and adapt autonomously."
+title: "Kestra AI Agents: Autonomous Workflow Orchestration with LLMs"
+description: "Kestra AI Agents combine LLMs, memory, and tools to create autonomous orchestration workflows. Learn how to build agentic pipelines that reason and adapt without predefined task sequences."
 date: 2025-09-10T13:00:00
 category: News & Product Updates
 authors:
@@ -42,9 +42,9 @@ AI Agents can remember information across executions, providing context for subs
 
 Agents can use a rich ecosystem of tools to augment their capabilities:
 
-- **Web Search** - use Tavily or Google Custom Search to retrieve up-to-date information.
+- **Web Search** - use Tavily or Google Custom Search to retrieve up-to-date information. See the [AI plugin docs](/plugins/plugin-ai) for the full list of supported tools.
 - **Code Execution** - agents rely on Judge0 to run code when needed; this tool comes in handy when your agent needs to perform mathematical operations.
-- **Kestra Tasks** - call any Kestra task dynamically and integrate your agents with external systems using Kestra's built-in plugin ecosystem.
+- **Kestra Tasks** - call any Kestra task dynamically and integrate your agents with external systems using Kestra's [plugin ecosystem](/plugins).
 - **Kestra Flows** - orchestrate other flows dynamically.
 - **MCP Clients** - integrate external systems via Model Context Protocol (MCP) clients.
 - **File System Operations** - pass output files via Docker container bind-mounts.
@@ -257,9 +257,11 @@ With Kestra, you get the best of both worlds: traditional task-based orchestrati
 
 Ready to get started? Check out our [AI Agent documentation](../../docs/ai-tools/ai-agents/index.md) for detailed examples and configuration options.
 
-If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra).
 
 For questions or feedback, join [our Slack community](/slack) or open an issue on GitHub.
+
+For RAG pipelines and document-grounded AI workflows, see our guide on [building a RAG pipeline with Google Gemini and LangChain4J](../rag-with-gemini-and-langchain4j/index.md).
 
 For a demo of AI Agents in action, check out the video below:
 

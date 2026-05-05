@@ -1,7 +1,7 @@
 ---
-title: "DuckDB vs. MotherDuck — should you switch to the cloud version?"
-description: "Why and when to use MotherDuck over local DuckDB"
-date: 2023-07-28T14:00:00
+title: "DuckDB vs. MotherDuck: When to Move to the Cloud"
+description: "DuckDB is fast and free. MotherDuck adds cloud storage, collaboration, and scale. Here's how to decide which one fits your use case and how to orchestrate both with Kestra."
+date: 2026-05-05T14:00:00
 category: Solutions
 author:
   name: Anna Geller
@@ -12,7 +12,7 @@ image: ./main.png
 ---
 
 
-MotherDuck has [recently launched](https://motherduck.com/blog/announcing-motherduck-duckdb-in-the-cloud/) the managed DuckDB product, which is currently in Beta. This post shares how to get started with both DuckDB and MotherDuck, what are key differences between them, and when to choose each of these options. Before diving into details, let’s clarify what DuckDB and MotherDuck are.
+MotherDuck is the managed cloud version of DuckDB, now generally available and used in production by engineering teams worldwide. This post covers how to get started with both DuckDB and MotherDuck, the key differences between them, and when to choose each option. Before diving in, let’s clarify what each product is.
 
 ## DuckDB
 
@@ -46,9 +46,7 @@ MotherDuck adds several features, including the following:
 
 ## When to switch from DuckDB to MotherDuck
 
-First off, MotherDuck is still in Beta at the time of writing. You can already play with it and invite up to five colleagues, but I’d rather wait until GA (*General Availability*) before running production workloads.
-
-You can start by running DuckDB just on your laptop, and when you hit the limits of what you can query on a **single machine**, the managed version in the cloud might be worth considering, especially to take advantage of the hybrid execution.
+Start with local DuckDB. When you hit the limits of what you can query on a **single machine**, the managed cloud version is worth considering, especially for hybrid execution between local and cloud-stored data.
 
 Similarly, **sharing data** is already possible when persisting query results, e.g., to S3. However, MotherDuck offers a convenient way of organizing data into databases and tables accessible from anywhere, which is another advantage of MotherDuck over DuckDB.
 
@@ -236,7 +234,7 @@ FROM bestsellers;
 
 ## Using MotherDuck and DuckDB in ETL pipelines
 
-So far, we’ve executed standalone queries. Let’s now cover some end-to-end use cases that will leverage MotherDuck for reporting and ETL data pipelines. The examples shown below use [Kestra](https://github.com/kestra-io/kestra) — an open-source orchestration tool. However, note that MotherDuck also integrates with other orchestrators, such as [Apache Airflow](https://www.astronomer.io/blog/three-ways-to-use-airflow-with-motherduck-and-duckdb/).
+So far, we’ve executed standalone queries. Let’s now cover some end-to-end use cases that will leverage MotherDuck for reporting and ETL data pipelines. The examples shown below use [Kestra](https://github.com/kestra-io/kestra) — an open-source orchestration tool with a dedicated [DuckDB plugin](/plugins/plugin-jdbc-duckdb). However, note that MotherDuck also integrates with other orchestrators, such as [Apache Airflow](https://www.astronomer.io/blog/three-ways-to-use-airflow-with-motherduck-and-duckdb/).
 
 To get started with Kestra, you can download the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml), run `docker compose up -d` and launch the UI from http://localhost:8080. From here, you can find several built-in DuckDB examples available in the UI as [Blueprints](../../docs/09.ui/05.blueprints/index.md).
 
@@ -248,7 +246,7 @@ I found the blueprint “[Extract data, mask sensitive columns using DuckDB and 
 
 Here is a brief summary of other data pipeline blueprints using DuckDB:
 
-- **[Git workflow for dbt with DuckDB](/blueprints/dbt-duckdb)** and **[MotherDuck](/blueprints/dbt-motherduck)** — this flow uses DuckDB for data transformations in SQL, but this time combines it with [dbt](https://www.getdbt.com/) models and tests.
+- **[Git workflow for dbt with DuckDB](/blueprints/dbt-duckdb)** and **[MotherDuck](/blueprints/dbt-motherduck)** — uses the [dbt plugin](/plugins/plugin-dbt) for SQL transformations — this flow uses DuckDB for data transformations in SQL, but this time combines it with [dbt](https://www.getdbt.com/) models and tests.
 - **[Email Report](/blueprints/monthly-sales-report)—** every first day of the month, this flow sends current sales numbers to business stakeholders via email. To do that, the workflow reads raw data from S3 and aggregates it using a DuckDB query. The final result is then stored as a CSV file and sent as an email attachment.
 - **[Send KPIs via Slack](/blueprints/csv-duckdb-slack):** if a certain KPI is outside of a valid threshold, the flow sends a Slack message to a given channel every Monday at 9 AM. To check whether KPI is valid or not, the flow uses a DuckDB query.
 - **[Event-driven anomaly detection](/blueprints/s3-trigger-duckdb):** any time a new file arrives in S3, a DuckDB query checks for anomalies in the data and sends an alert if outliers are detected.
