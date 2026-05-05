@@ -64,4 +64,9 @@ export const vsSchema = z.object({
     platformStrengths: z.object({ title: z.string(), features: z.array(strengthItem) }),
     decisionGuide: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide }),
     commonQuestions: z.array(qaItem),
+    seeHowTitle: z.string().optional(),
+    seeHowBody: z.string().optional(),
+    secondaryCta: z.object({ label: z.string(), href: z.string() }).optional(),
+    logoFile: z.string().optional(),
+    imgFile: z.string().optional(),
 })

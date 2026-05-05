@@ -3,6 +3,8 @@ description: "Compare Kestra vs Camunda: declarative YAML orchestration for data
 competitorName: Camunda
 category: Business Automation
 shortDescription: "BPMN-based enterprise process orchestration vs. declarative YAML orchestration for engineering teams."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your business processes—and scale beyond BPMN."
 
 brandColor:
   color: "#FC5D0D"

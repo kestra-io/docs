@@ -3,6 +3,8 @@ description: "Compare Kestra vs Google Cloud Composer: YAML-first universal orch
 competitorName: Cloud Composer
 category: Data Orchestration
 shortDescription: "GCP-managed Apache Airflow vs. open-source, multi-cloud YAML orchestration without vendor lock-in."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and run them on any cloud, not just GCP."
 
 brandColor:
   color: "#4285F4"

@@ -3,6 +3,8 @@ description: "Compare Kestra vs Databricks Workflows: Open-source, multi-cloud w
 competitorName: Databricks Workflows
 category: Data Orchestration
 shortDescription: "Databricks-native lakehouse job scheduling vs. universal YAML orchestration for any cloud and stack."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data workflows—and orchestrate across the full stack, not just Databricks."
 
 brandColor:
   color: "#FF3621"

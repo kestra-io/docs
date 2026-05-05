@@ -3,6 +3,10 @@ description: "Compare Kestra vs Rundeck: declarative YAML orchestration with eve
 competitorName: "Rundeck"
 category: Infrastructure Automation
 shortDescription: "SSH-based runbook automation vs. declarative YAML orchestration with event-driven triggers."
+seeHowTitle: "Getting Started with Modern Runbook Orchestration"
+seeHowBody: "See how Kestra modernizes operational runbooks with declarative YAML and event-driven triggers."
+logoFile: "rundeck-full"
+imgFile: "rundeck-full"
 
 brandColor:
   color: "#f73f39"

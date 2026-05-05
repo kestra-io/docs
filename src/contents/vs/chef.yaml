@@ -3,6 +3,8 @@ description: "Compare Kestra vs Chef Enterprise Automation Stack (Progress Softw
 competitorName: Chef
 category: Infrastructure Automation
 shortDescription: "Agent-based Ruby configuration management vs. event-driven workflow orchestration in declarative YAML."
+seeHowTitle: "From Configuration Management to Workflow Orchestration"
+seeHowBody: "See how Kestra can orchestrate your infrastructure automation—including Chef—in declarative YAML workflows."
 
 brandColor:
   color: "#5ce500"
