@@ -80,7 +80,7 @@ State is first-class: the processor often needs to maintain rolling aggregates, 
 
 - **Low latency**: results are available within milliseconds to seconds of the event occurring.
 - **Continuous insight**: dashboards, monitors, and reactive workflows get a live view of the system rather than periodic snapshots.
-- **Reactive workflows**: streaming enables use cases that are impossible with batch — fraud blocking, dynamic pricing, real-time recommendations, [event-driven orchestration](/resources/event-driven-orchestration) that kicks off downstream work the instant an event lands.
+- **Reactive workflows**: streaming enables use cases that are impossible with batch — fraud blocking, dynamic pricing, real-time recommendations, [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) that kicks off downstream work the instant an event lands.
 
 ### Weaknesses
 
@@ -165,7 +165,7 @@ Hybrid is the default for any system that serves both analytical and operational
 - **ML training**: most training pipelines run on bounded historical data and do not benefit from streaming input.
 - **Historical backfills**: recomputing a year of aggregates is a batch job by definition, regardless of how the live pipeline is implemented.
 - **Regulatory exports**: formal deliverables to regulators on a fixed schedule.
-- **Classic ETL**: source-to-warehouse pipelines feeding BI tools that refresh hourly or daily — the core of most [data pipeline](/resources/data-pipeline) work.
+- **Classic ETL**: source-to-warehouse pipelines feeding BI tools that refresh hourly or daily — the core of most [data pipeline](/resources/data/data-pipeline) work.
 
 ### Streaming-first
 
