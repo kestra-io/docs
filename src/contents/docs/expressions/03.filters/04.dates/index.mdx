@@ -1,0 +1,93 @@
+---
+title: "Date and Time Filters in Kestra Expressions"
+h1: "Temporal Filters"
+description: Reference for Kestra's date and time filters — date, dateAdd, timestamp, timestampMilli, timestampMicro, and timestampNano — for formatting dates and converting to Unix timestamps.
+sidebarTitle: Date Filters
+icon: /src/contents/docs/icons/expression.svg
+---
+
+These are the most common filters in scheduled flows and integrations. Reach for them whenever a downstream system expects a specific date format or timestamp precision rather than Kestra's native datetime value.
+
+## `date`
+
+```twig
+{{ execution.startDate | date("yyyy-MM-dd") }}
+```
+
+You can also provide existing and target formats with named arguments:
+
+```twig
+{{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
+```
+
+When you are formatting an already parsed datetime, only `format` is usually needed. Use `existingFormat` when the source is still a plain string.
+
+### Time zones
+
+Specify a target time zone when downstream systems require a local representation rather than UTC:
+
+```twig
+{{ now() | date("yyyy-MM-dd'T'HH:mm:ssX", timeZone="UTC") }}
+```
+
+Supported arguments include:
+
+- `format`
+- `existingFormat`
+- `timeZone`
+- `locale`
+
+## `dateAdd`
+
+Adds or subtracts time from a date. Arguments:
+
+- `amount`: integer specifying how much to add or subtract
+- `unit`: time unit such as `DAYS`, `HOURS`, `MONTHS`, or `YEARS`
+
+```twig
+{{ now() | dateAdd(-1, 'DAYS') }}
+```
+
+## Timestamp helpers
+
+Convert a date to a Unix timestamp at a specific precision:
+
+- `timestamp` — seconds
+- `timestampMilli` — milliseconds
+- `timestampMicro` — microseconds
+- `timestampNano` — nanoseconds
+
+:::alert{type="warning"}
+`timestampMicro` previously returned a nanosecond-precision value due to a bug. If you are migrating an older flow, verify the precision your downstream system expects.
+:::
+
+All timestamp filters accept the same arguments as the `date` filter: `existingFormat` and `timeZone`.
+
+```twig
+{{ now() | timestamp(timeZone="Europe/Paris") }}
+{{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
+```
+
+Supported date formats include standard Java `DateTimeFormatter` patterns and shortcuts such as `iso`, `sql`, `iso_date_time`, and `iso_zoned_date_time`.
+
+## Worked example
+
+```yaml
+id: temporal_dates
+namespace: company.team
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Present timestamp: {{ now() }}"
+      - "Formatted timestamp: {{ now() | date('yyyy-MM-dd') }}"
+      - "Previous day: {{ now() | dateAdd(-1, 'DAYS') }}"
+      - "Next day: {{ now() | dateAdd(1, 'DAYS') }}"
+      - "Timezone (seconds): {{ now() | timestamp(timeZone='Asia/Kolkata') }}"
+      - "Timezone (microseconds): {{ now() | timestampMicro(timeZone='Asia/Kolkata') }}"
+      - "Timezone (milliseconds): {{ now() | timestampMilli(timeZone='Asia/Kolkata') }}"
+      - "Timezone (nanoseconds): {{ now() | timestampNano(timeZone='Asia/Kolkata') }}"
+```
+
+This kind of example is a good sanity check when you are validating timestamp precision before sending values to an external API.

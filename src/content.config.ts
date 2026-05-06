@@ -15,6 +15,7 @@ export const collections = {
             z.object({
                 title: z.string(),
                 h1: z.string().optional(),
+                updated: z.coerce.date().optional(),
                 sidebarTitle: z.string().optional(),
                 description: z.string().optional(),
                 icon: z.string().optional(),
@@ -68,6 +69,7 @@ export const collections = {
                     )
                     .optional(),
                 image: image().optional(),
+                updated: z.coerce.date().optional(),
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
                 schema: z.record(z.string(), z.unknown()).optional(),
