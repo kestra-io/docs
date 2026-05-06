@@ -1,0 +1,85 @@
+---
+title: "Data Access Functions in Kestra Expressions"
+h1: "Data Access Functions"
+description: Reference for Kestra's data access functions — secret(), credential(), read(), fileURI(), kv(), encrypt(), and decrypt() — for resolving secrets, files, and stored values at runtime.
+sidebarTitle: Data Access Functions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+These functions bridge expressions to external or stored data. Use them when the value is not already present in the execution context and must be resolved at runtime.
+
+## `secret()`
+
+Use `secret()` for sensitive values that should not appear in the flow definition:
+
+```twig
+{{ secret('API_KEY') }}
+{{ secret('GITHUB_ACCESS_TOKEN') }}
+```
+
+## `credential()`
+
+In Enterprise Edition, use `credential()` to inject a short-lived token from a managed credential:
+
+```twig
+{{ credential('my_oauth') }}
+```
+
+`credential()` returns the token only, while the credential definition itself is managed in the Kestra UI:
+
+```yaml
+tasks:
+  - id: request
+    type: io.kestra.plugin.core.http.Request
+    method: GET
+    uri: https://api.example.com/v1/ping
+    auth:
+      type: BEARER
+      token: "{{ credential('my_oauth') }}"
+```
+
+## `read()`
+
+`read()` is the simplest way to turn a file URI back into inline content for a later expression:
+
+```twig
+{{ read(outputs.someTask.uri) }}
+{{ read('subdir/file.txt') }}
+```
+
+`read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs.
+
+## `fileURI()`
+
+Returns the internal URI of a namespace file without reading its contents. Use `fileURI()` when a task parameter expects a URI rather than inline content:
+
+```twig
+{{ fileURI('my_file.txt') }}
+```
+
+Use `read()` instead when you need to embed the file contents inline in a later expression.
+
+## `kv()`
+
+Reads a value from the KV store by key. The namespace defaults to the flow's namespace; set `errorOnMissing` to `false` to return `null` instead of throwing when the key is absent:
+
+```twig
+{{ kv('MY_KEY') }}
+{{ kv('MY_KEY', 'other.namespace') }}
+{{ kv('OPTIONAL_KEY', namespace, false) }}
+```
+
+Arguments:
+
+- `key` — the KV store key
+- `namespace` — defaults to the flow's namespace
+- `errorOnMissing` — defaults to `true`
+
+## `encrypt()` and `decrypt()`
+
+Encrypt and decrypt string values using Kestra's encryption service. Both require a `key` argument that identifies which encryption key to use:
+
+```twig
+{{ encrypt('MY_ENCRYPTION_KEY', inputs.sensitiveValue) }}
+{{ decrypt('MY_ENCRYPTION_KEY', outputs.encryptTask.value) }}
+```
