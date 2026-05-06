@@ -8,8 +8,6 @@ description: Best practices for upgrading Kestra, performing rolling updates, an
 
 Kestra evolves quickly. This page explains how to upgrade your installation.
 
-## Plan safe Kestra upgrades and rollbacks
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -97,7 +95,7 @@ If you use Docker Compose, update your compose file to the desired [Docker image
 
 ## Migration in Kubernetes using Helm
 
-If you use Helm, set the [Helm chart `image.tag` value](https://github.com/kestra-io/helm-charts/blob/3fb8eda4f71bd9128669a550b8cc56a82b3068aa/charts/kestra/values.yaml#L18) to the desired version. For example:
+If you use Helm, set the [Helm chart `image.tag` value](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) to the desired version. For example:
 
 ```bash
 helm upgrade kestra kestra/kestra --set image.tag=v1.0.0
@@ -119,7 +117,7 @@ During rollout, each component creates a new pod (the old one keeps running). Af
 
 Upgrading workers is more involved because they handle data-processing tasks that can run from seconds to hours. Define the desired behavior for in-flight tasks.
 
-By default, Kestra workers wait for all task runs to complete before shutting down during a migration. You can override this behavior if needed. Kestra [Helm charts](https://github.com/kestra-io/helm-charts/blob/3fb8eda4f71bd9128669a550b8cc56a82b3068aa/charts/kestra/values.yaml#L98) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
+By default, Kestra workers wait for all task runs to complete before shutting down during a migration. You can override this behavior if needed. Kestra [Helm charts](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
 
 If the worker has no running tasks, or finishes them before the grace period, it shuts down immediately. If the pod cannot finish tasks before `terminationGracePeriodSeconds`, Kubernetes kills the pod, and those tasks are resubmitted to another worker.
 
@@ -199,4 +197,4 @@ If you have questions about the upgrade process:
 - If you are a [Kestra Enterprise](/enterprise) customer, submit a [support ticket](https://support.kestra.io/).
 - Or reach out [via Slack](/slack).
 
-We understand upgrades can be challenging. If you need more help, [contact us](/contact-us) and we’ll assist with migration based on your environment and use case.
+For further help, [contact us](/contact-us) for assistance with migration based on your environment and use case.

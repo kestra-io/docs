@@ -35,6 +35,8 @@ interface Props {
     headerBg?: string
     /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
     canonical?: string
+    /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
+    noindex?: boolean
 }
 
 const props = Astro.props
@@ -182,7 +184,9 @@ const organizationSchema = {
         />
         <meta
             name="robots"
-            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+            content={props.noindex
+                ? "noindex, follow"
+                : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
         <BreadcrumbList url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl} pageTitle={props.title} />
