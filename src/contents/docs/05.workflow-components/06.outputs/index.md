@@ -356,7 +356,7 @@ tasks:
     message: "{{ outputs.second['alpha'].values.data }}"
 ```
 
-You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/index.mdx#function-reference) for more details.
+You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.functions/index.mdx) for more details.
 
 If you need the output from a previous iteration of the same task, or from a sibling task in a previous iteration, use `iterationOutput()` instead.
 
