@@ -1,0 +1,113 @@
+---
+title: "JSON and Structured Data Filters in Kestra"
+h1: "JSON and Structured Data Filters"
+description: Reference for Kestra's JSON and structured data filters — toJson, toIon, and jq — for serializing, reshaping, and extracting fields from task outputs and API responses.
+sidebarTitle: JSON Filters
+icon: /src/contents/docs/icons/expression.svg
+---
+
+Use these filters when the value you already have is structured and you need to reshape it, serialize it, or extract one field from a larger payload. They are especially common when working with task outputs and API responses.
+
+## `toJson`
+
+Convert an object into JSON:
+
+```twig
+{{ [1, 2, 3] | toJson }}
+{{ true | toJson }}
+{{ "foo" | toJson }}
+```
+
+## `toIon`
+
+Convert an object into Ion:
+
+```twig
+{{ myObject | toIon }}
+```
+
+## `jq`
+
+Apply a JQ expression to a value. The result is always an array, so combine it with `first` when appropriate:
+
+```twig
+{{ outputs | jq('.task1.value') | first }}
+```
+
+Examples:
+
+```twig
+{{ [1, 2, 3] | jq('.') }}
+{{ [1, 2, 3] | jq('.[0]') | first }}
+```
+
+Example flow using `jq` inside a `ForEach`:
+
+```yaml
+id: jq_with_foreach
+namespace: company.team
+
+tasks:
+  - id: generate
+    type: io.kestra.plugin.core.debug.Return
+    format: |
+      [
+        {"name": "alpha", "value": 1},
+        {"name": "bravo", "value": 2}
+      ]
+
+  - id: foreach
+    type: io.kestra.plugin.core.flow.ForEach
+    values: "{{ fromJson(outputs.generate.value) }}"
+    tasks:
+      - id: log_filtered
+        type: io.kestra.plugin.core.log.Log
+        message: |
+          Name: {{ fromJson(taskrun.value).name }}
+          Doubled value: {{ fromJson(taskrun.value) | jq('.value * 2') | first }}
+```
+
+The practical rule with `jq` is that it is great for extracting or transforming a small part of a larger payload, but it is usually overkill when plain dot access already gets you the value you need.
+
+## Worked JSON payload example
+
+This larger example is useful when you need to mix accessors, math, collection helpers, and JSON-aware filters in one expression flow:
+
+```yaml
+id: json_payload_example
+namespace: company.team
+
+inputs:
+  - id: payload
+    type: JSON
+    defaults: |-
+      {
+        "name": "John Doe",
+        "score": {
+          "English": 72,
+          "Maths": 88,
+          "French": 95,
+          "Spanish": 85,
+          "Science": 91
+        },
+        "address": {
+          "city": "Paris",
+          "country": "France"
+        },
+        "graduation_years": [2020, 2021, 2022, 2023]
+      }
+
+tasks:
+  - id: print_status
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Student name: {{ inputs.payload.name }}"
+      - "Score in languages: {{ inputs.payload.score.English + inputs.payload.score.French + inputs.payload.score.Spanish }}"
+      - "Total subjects: {{ inputs.payload.score | length }}"
+      - "Total score: {{ inputs.payload.score | values | jq('reduce .[] as $num (0; .+$num)') | first }}"
+      - "Complete address: {{ inputs.payload.address.city }}, {{ inputs.payload.address.country | upper }}"
+      - "Started college in: {{ inputs.payload.graduation_years | first }}"
+      - "Completed college in: {{ inputs.payload.graduation_years | last }}"
+```
+
+Use a pattern like this when the payload already arrives as JSON input and you want to keep the manipulation inside expressions instead of adding a preprocessing task.
