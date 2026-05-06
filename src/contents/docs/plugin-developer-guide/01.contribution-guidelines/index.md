@@ -73,7 +73,7 @@ Use the standard serializers and avoid breaking changes from upstream APIs.
 
 Keep new packages aligned with project conventions and metadata.
 
-- Make sure your new plugin is configured like mentioned in the [Gradle mandatory configuration guide](https://kestra.io/docs/plugin-developer-guide/gradle#mandatory-configuration).
+- Ensure your new plugin is configured as described in the [Gradle mandatory configuration guide](https://kestra.io/docs/plugin-developer-guide/gradle#mandatory-configuration).
 - Add a `package-info.java` under each sub package respecting [this format](https://github.com/kestra-io/plugin-odoo/blob/main/src/main/java/io/kestra/plugin/odoo/package-info.java) and choosing the right category.
 - Every time you use `runContext.metric(...)` you have to add a `@Metric` ([see this doc](https://kestra.io/docs/plugin-developer-guide/document#document-the-plugin-metrics))
 - Docs don't support to have both tasks/triggers in the root package (e.g. `io.kestra.plugin.kubernetes`) and in a sub package (e.g. `io.kestra.plugin.kubernetes.kubectl`), whether it's: all tasks/triggers in the root package OR only tasks/triggers in sub packages.

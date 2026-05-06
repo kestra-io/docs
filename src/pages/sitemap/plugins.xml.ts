@@ -1,5 +1,7 @@
+export const prerender = false
+
 import type { APIRoute } from "astro"
-import { sitemapResponse } from "~/utils/sitemap.ts"
+import { sitemapResponse, formatLastMod } from "~/utils/sitemap.ts"
 import {
     isEntryAPluginElementPredicate,
     subGroupName,
@@ -25,6 +27,8 @@ export const GET: APIRoute = async () => {
             urls.push(`/plugins/${pluginName}/${slugify(subGroupName(plugin))}`)
         }
 
+        const pluginUpdated = (plugin as any).updatedAt ?? (plugin as any).updated ?? null
+
         return urls.concat(
             Object.entries(plugin)
                 .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
@@ -36,10 +40,24 @@ export const GET: APIRoute = async () => {
                         return t.deprecated ? null : url
                     }).filter(url => url !== null)
                 }),
-        )
+        ).map((url) => ({
+            loc: `https://kestra.io${url}`,
+            lastmod: formatLastMod(pluginUpdated),
+        }))
     })
 
-    const urls = [...new Set(allPages)].map((e) => `https://kestra.io${e}`)
+    // Remove duplicates (can happen when a plugin is in multiple subgroups)
+    // and get the most recent lastmod for each URL if there are duplicates
+    const uniquePages = new Map<string, { loc: string; lastmod: string | null }>()
+    for (const page of allPages) {
+        if (!uniquePages.has(page.loc)) {
+            uniquePages.set(page.loc, page)
+        } else if (page.lastmod && (!uniquePages.get(page.loc)?.lastmod || (page.lastmod > (uniquePages.get(page.loc)!.lastmod ?? "")))) {
+            uniquePages.set(page.loc, page)
+        }
+    }
+
+    const urls = Array.from(uniquePages.values())
 
     return sitemapResponse(urls)
 }

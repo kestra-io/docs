@@ -1,0 +1,42 @@
+---
+title: "Kestra Function Reference: Generate and Retrieve Values"
+h1: "Function Reference"
+description: Complete reference for Kestra Pebble functions — rendering, data access, parsing, workflow helpers, utilities, and date/calendar functions.
+sidebarTitle: Function Reference
+icon: /src/contents/docs/icons/expression.svg
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Use functions when you need to generate or retrieve a value dynamically with syntax such as `{{ functionName(...) }}`.
+
+Functions are best thought of as helpers that either fetch something, compute something, or force evaluation behavior that plain variables and filters cannot provide on their own.
+
+## Function groups
+
+- [Rendering and debugging](./01.rendering/index.mdx) — `render()`, `renderOnce()`, `printContext()`, template inheritance helpers
+- [Data access](./02.data-access/index.mdx) — `secret()`, `credential()`, `read()`, `fileURI()`, `kv()`, `encrypt()`, `decrypt()`
+- [Data parsing](./03.parsing/index.mdx) — `fromJson()`, `fromIon()`, `yaml()`
+- [Workflow helpers](./04.workflow/index.mdx) — `errorLogs()`, `currentEachOutput()`, `tasksWithState()`, `iterationOutput()`, `parentOutput()`, `appLink()`
+- [Utilities](./05.utilities/index.mdx) — `now()`, `uuid()`, `randomInt()`, `http()`, `fileSize()`, `fileExists()`, and more
+- [Date and calendar](./06.dates/index.mdx) — `isWeekend()`, `isPublicHoliday()`, `dayOfWeek()`, `monthOfYear()`, and more
+
+## Worked example
+
+This flow uses several runtime functions together: `now()` for a timestamp, `uuid()` for a unique run identifier, `secret()` for a credential, and `render()` to evaluate a namespace variable containing Pebble:
+
+```yaml
+id: function_reference_example
+namespace: company.team
+
+tasks:
+  - id: log_context
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Run ID: {{ uuid() }}"
+      - "Started at: {{ now() | date('yyyy-MM-dd HH:mm:ss') }}"
+      - "API key: {{ secret('MY_API_KEY') }}"
+      - "Config value: {{ render(namespace.my_config) }}"
+```
+
+<ChildCard />

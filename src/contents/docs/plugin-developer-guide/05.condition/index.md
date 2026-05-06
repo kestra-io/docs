@@ -59,9 +59,9 @@ You can have any properties you want for any task such as validation or document
 The `test` will receive a `ConditionContext` that will expose:
 - `conditionContext.getFlow()`: the current flow.
 - `conditionContext.getExecution()`: the current execution that can be null for [Triggers](../04.trigger/index.md).
-- `conditionContext.getRunContext()`: a RunContext in order to render your properties.
+- `conditionContext.getRunContext()`: a RunContext to render your properties.
 
-This method must simply return a boolean in order to validate the condition.
+This method must return a boolean to validate the condition.
 
 ## Documentation
 
