@@ -5,6 +5,7 @@ date: 2024-11-06T18:00:00
 category: Solutions
 author:
   name: Will Russell
+  linkedin: https://www.linkedin.com/in/wrussell1999/
   image: "wrussell"
 image: ./main.jpg
 ---
@@ -154,7 +155,7 @@ tasks:
         }
 ```
 
-[Check out the Blueprint here](/blueprints/shell-execute-code)
+[Check out the Blueprint here](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.codeexecution)
 
 ## Access Your Git repositories Inside of Your Workflows
 
@@ -166,7 +167,7 @@ Orchestrating your code is useful, but being able to sync that with your Git rep
 
 Starting with **Clone**, we can clone our repository and then have other tasks access it as if we were using it on our local machine.
 
-This example also uses the [WorkingDirectory task](../../docs/16.scripts/working-directory.md) to create an environment where we can write files and easily access them between tasks. Without this, we'd have to pass them between tasks as [output files]((../../docs/16.scripts/input-output-files.md), which can become tedious for larger outputs, like a repository. This means we're always using the most up to date code when we run this workflow.
+This example also uses the [WorkingDirectory task](../../docs/16.scripts/working-directory/index.md) to create an environment where we can write files and easily access them between tasks. Without this, we'd have to pass them between tasks as [output files](../../docs/16.scripts/07.input-output-files/index.md), which can become tedious for larger outputs, like a repository. This means we're always using the most up to date code when we run this workflow.
 
 ```yaml
 id: git-python
@@ -239,7 +240,7 @@ We have official plugins for [AWS](/plugins/plugin-aws), [Google Cloud](/plugins
 
 ### Detect New Files in S3 and process them in Python
 
-Jumping right in, this workflow is event driven based on files arriving in an S3 bucket using the [S3 Trigger](/plugins/aws/triggers/io.kestra.plugin.aws.s3.trigger). This is a great way to allow Kestra to make your existing code event driven.
+Jumping right in, this workflow is event driven based on files arriving in an S3 bucket using the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger). This is a great way to allow Kestra to make your existing code event driven.
 
 ```yaml
 id: s3-trigger-python
@@ -314,7 +315,7 @@ triggers:
     serdeType: JSON
 ```
 
-[Check out the Blueprint here](/blueprints/pubsub-realtime-trigger)
+[Check out the Blueprint here](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
 
 ### Run a Python script on Azure with Azure Batch VMs
 
@@ -381,7 +382,7 @@ tasks:
           print_environment_info()
 ```
 
-[Check out the Blueprint here](/blueprints/azure-batch-runner)
+[Check out the Blueprint here](/plugins/plugin-ee-azure/runner/io.kestra.plugin.ee.azure.runner.batch)
 
 ## Add Alerts to Your Workflows
 
@@ -397,7 +398,7 @@ namespace: company.team
 
 tasks:
   - id: slack
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     payload: >
       {
@@ -406,7 +407,7 @@ tasks:
       }
 ```
 
-[Check out the Blueprint here](/blueprints/slack-incoming-webhook)
+[Check out the Blueprint here](/plugins/plugin-slack/notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook)
 
 ### Set up alerts for failed workflow executions using Discord
 

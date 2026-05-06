@@ -1,0 +1,270 @@
+title: "Stonebranch UAC vs Kestra for Enterprise Workload Automation"
+description: "Compare Kestra vs Stonebranch Universal Automation Center: Open-source, developer-first orchestration in YAML vs. proprietary enterprise workload automation with agent-based architecture. See features, setup, and migration path."
+competitorName: Stonebranch
+category: Infrastructure Automation
+shortDescription: "Proprietary agent-based workload automation vs. open-source, developer-first orchestration."
+
+brandColor:
+  color: "#156de0"
+
+intro:
+  title: "Kestra vs. Stonebranch UAC: Open Orchestration vs. Enterprise Workload Automation"
+  description: "Stonebranch Universal Automation Center centralizes workload automation behind agents and a Universal Controller. Kestra lets any engineer build and ship workflows in YAML. No agents, no proprietary licensing, no vendor lock-in."
+
+philosophy:
+  mainTitle: Two Approaches to Automation
+  kestra:
+    title: "Developer Self-Service Orchestration"
+    description: "Declarative YAML workflows versioned in Git, executed in isolated containers, deployed through CI/CD. Existing scripts, ETL jobs, and file transfers run as-is. Any engineer can build and ship workflows without filing a ticket or installing an agent."
+    subCardText: '"How do we let every team build and ship workflows without a central automation team or agents on every host?"'
+  competitor:
+    title: Enterprise Workload Automation
+    description: "Universal Automation Center combines a Universal Controller for centralized scheduling with Universal Agents deployed across target systems. Jobs are defined through the UAC web interface, scheduled by the Controller, and executed by agents on each host. Changes flow through the operations team."
+    shadowColor: "#156de0"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do we schedule and automate workloads across our hybrid IT environment from a single control point?"'
+
+businessValue:
+  mainTitle: "Developer Self-Service vs. Agent-Based Operations"
+  kestra:
+    title: Self-Service Automation
+    list:
+      - "Data pipelines, infrastructure automation, business processes, and AI workflows"
+      - "Any engineer ships workflows in YAML through Git and CI/CD"
+      - "Event-driven at core: react to real events, not just cron schedules"
+      - "Open source with 1200+ plugins, no per-job licensing, and a thriving community of contributors"
+      - "Self-service for non-engineers via Kestra Apps"
+  competitor:
+    title: Centralized Workload Automation
+    list:
+      - "Cross-platform job scheduling across mainframe, SAP, and distributed systems"
+      - "Central operations team defines and manages jobs through the Universal Controller"
+      - "Event-driven triggers for file arrivals, emails, and system events"
+      - "Proprietary licensing with per-agent and capacity-based pricing"
+      - "Managed file transfer with SFTP, FTP/SSL, and PGP encryption"
+    shadowColor: "#156de0"
+    bulletColor: "#156de0"
+  footerText: "Stonebranch UAC fits organizations with heavy mainframe and SAP workloads managed by a centralized ops team. Kestra is the right choice if you want developers to own their own workflows, need a lightweight event-driven platform without agents on every host, or want open-source transparency without proprietary lock-in."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Stonebranch UAC requires deploying the Universal Controller, configuring a database backend, and installing Universal Agents on each target host before any job can execute. Kestra's single Docker Compose command stands up everything in a format that's already production-shaped."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "Days to"
+      two: Weeks
+    description: "Production deployment requires installing the Universal Controller (scheduling engine), configuring the backend database, and deploying Universal Agents on every target host. Network connectivity, firewall rules, and security certificates must be configured between each agent and the controller. Trial downloads are gated behind a sales contact form."
+    shadowColor: "#156de0"
+    command: |
+      # 1. Request trial access through Stonebranch sales
+      # 2. Install Universal Controller (scheduling engine)
+      # 3. Configure backend database (Oracle, SQL Server, or PostgreSQL)
+      # 4. Install Universal Agent on each target host
+      # 5. Configure agent-controller connectivity and certificates
+      # 6. Set up security policies, user roles, and credentials
+      # 7. Define jobs through the UAC web interface
+    lang: sh
+
+easeOfUse:
+  title: YAML Anyone Can Read vs. GUI Behind an Ops Team
+  kestra:
+    title: "Kestra: Any engineer, any language"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Engineers deploy through Git, same as application code."
+    code: |
+      id: server_provision
+      namespace: infra.ops
+
+      inputs:
+        - id: vm_name
+          type: STRING
+        - id: environment
+          type: SELECT
+          values: [dev, staging, prod]
+
+      tasks:
+        - id: request_approval
+          type: io.kestra.plugin.core.flow.Pause
+          onResume:
+            - id: approved_by
+              type: STRING
+
+        - id: provision
+          type: io.kestra.plugin.terraform.cli.TerraformCLI
+          commands:
+            - terraform apply -auto-approve
+          env:
+            TF_VAR_vm_name: "{{ inputs.vm_name }}"
+            TF_VAR_env: "{{ inputs.environment }}"
+
+        - id: configure
+          type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          commands:
+            - ansible-playbook configure.yml
+              -i "{{ outputs.provision.vars.ip }}"
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          payload: |
+            {"text": "Server {{ inputs.vm_name }} provisioned in {{ inputs.environment }}"}
+    lang: yaml
+  competitor:
+    title: "Stonebranch: GUI-driven task definitions"
+    description: "Jobs are primarily defined through the UAC web interface with form-based task creation. Universal Tasks and Universal Templates allow reuse, but orchestration logic is configured through the GUI and stored in the controller database. Exporting jobs for version control requires additional tooling."
+    shadowColor: "#156de0"
+    code: |
+      {
+        "type": "taskWindows",
+        "name": "ServerProvision",
+        "agent": "prod-agent-01",
+        "credentials": "infra_svc_account",
+        "command": "terraform apply -auto-approve",
+        "actions": [
+          {
+            "exitCodes": "0",
+            "status": "Success",
+            "description": "Provision completed"
+          },
+          {
+            "exitCodes": "1-99",
+            "status": "Fail",
+            "notifyActions": {
+              "notifyEmails": "ops-team@company.com"
+            }
+          }
+        ],
+        "dependencies": [
+          {
+            "task": "ApprovalGate",
+            "condition": "Success"
+          }
+        ]
+      }
+    lang: json
+
+visualPreview:
+  mainTitle: Open Platform vs. Proprietary Lock-In
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from a single open-source platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
+  competitor:
+    description: "Enterprise workload automation across mainframe, SAP, and hybrid cloud environments. Strong legacy system coverage with Universal Connectors for SAP, PeopleSoft, and managed file transfer. Proprietary platform with agent-based architecture and capacity-based licensing."
+    shadowColor: "#156de0"
+
+featureGrid:
+  title: Kestra vs. Stonebranch at a Glance
+  tableData:
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: "GUI-based task definitions in Universal Controller"
+    - feature: Architecture
+      kestra: Event-driven at core
+      competitor: "Event-driven triggers with agent-based execution"
+    - feature: Deployment model
+      kestra: "Single Docker Compose (self-hosted or Kestra Cloud)"
+      competitor: "Universal Controller + Universal Agents on each host"
+    - feature: Licensing
+      kestra: "Open source (Enterprise tier available)"
+      competitor: "Proprietary (capacity-based and per-agent licensing)"
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, R, Bash, Go, Node.js)"
+      competitor: "Shell scripts, Python, PowerShell via Universal Tasks"
+    - feature: Self-service for developers
+      kestra: "Engineers build and deploy via Git"
+      competitor: "Ops-mediated (developers can use REST API for integration)"
+    - feature: Self-service for non-engineers
+      kestra: "Kestra Apps"
+      competitor: "Self-Service Portal for job triggering and monitoring"
+    - feature: SAP integration
+      kestra: "Via plugins and scripting"
+      competitor: "Native SAP job scheduling (BW, ABAP, PI)"
+    - feature: Managed file transfer
+      kestra: "Via plugins (S3, GCS, SFTP)"
+      competitor: "Native MFT with SFTP, FTP/SSL, PGP, AS2"
+    - feature: Mainframe support
+      kestra: "Not a primary use case"
+      competitor: "Native mainframe job scheduling (z/OS, AS/400)"
+    - feature: Time to production
+      kestra: "Minutes (Docker Compose)"
+      competitor: "Days to weeks (multi-component install)"
+
+testimonials:
+  - quote: "Moving from a legacy workload automation tool to Kestra was transformative. We went from managing agents on every server and routing every change through the ops team to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
+    author: "IT Automation Architect @ Global Financial Services Firm"
+    kpis:
+      - value: "80%"
+        name: "Reduction in automation lead time"
+      - value: "0"
+        name: "Agents to install and maintain"
+      - value: "10x"
+        name: "More workflows automated"
+    storyLink: "/use-cases/stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment"
+
+platformStrengths:
+  title: Kestra Is Built for How Modern Teams Work
+  features:
+    - title: No agents, no ops tickets
+      description: "Stonebranch requires installing and maintaining Universal Agents on every target host, with changes routed through a central operations team. Kestra runs tasks in isolated Docker containers. Engineers deploy through Git and CI/CD, the same way they deploy application code."
+    - title: Open source, transparent pricing
+      description: "Kestra's open-source core is free with 1200+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-agent metering. Stonebranch's proprietary licensing uses capacity-based pricing with per-agent costs that scale with your infrastructure footprint."
+    - title: Event-driven from day one
+      description: "Kestra was built event-driven from the start: webhooks, S3 uploads, Kafka messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows in open source. Stonebranch offers event-driven triggers for file arrivals and system events, but the core architecture centers on the Universal Controller as a centralized scheduling engine."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You want developers to build and ship workflows themselves, not file tickets with a central automation team."
+      - "You need event-driven orchestration that reacts to real-time events across cloud-native infrastructure."
+      - "You want open source and transparent pricing without per-agent fees or proprietary lock-in."
+      - "You need to orchestrate across data pipelines, infrastructure, business processes, and AI workflows in one platform."
+      - "Non-engineers need to trigger and monitor workflows without learning a new tool."
+  competitor:
+    title: Choose Stonebranch When
+    list:
+      - "You have mainframe workloads (z/OS, AS/400) that need scheduling alongside distributed and cloud jobs."
+      - "A centralized operations team manages all automation and you want a single Universal Controller."
+      - "You need native managed file transfer with SFTP, AS2, and PGP encryption for regulated industries."
+      - "Native SAP job scheduling (BW process chains, ABAP jobs, PI interfaces) is a core requirement."
+      - "Your organization needs a single vendor for hybrid IT workload automation across legacy and modern systems."
+    shadowColor: "#156de0"
+    bulletColor: "#156de0"
+
+commonQuestions:
+  - question: How hard is it to migrate from Stonebranch UAC to Kestra?
+    answer: "Kestra doesn't require you to rewrite your business logic. Shell scripts, Python code, SQL queries, and file transfer operations work as-is in Kestra's Script and plugin tasks. The migration is mostly about translating Stonebranch task definitions into Kestra's YAML format and replacing agent-based execution with containerized tasks. Most teams start new workflows in Kestra and migrate existing jobs incrementally."
+  - question: We have thousands of Stonebranch jobs. Is incremental migration realistic?
+    answer: "Yes. Kestra and Stonebranch UAC can run side by side. Start by building new workflows in Kestra while existing Stonebranch jobs continue running. Migrate jobs in batches, starting with the simplest ones. Kestra's webhook and API triggers can bridge the two systems during the transition, letting Stonebranch trigger Kestra workflows or vice versa."
+  - question: Stonebranch has native mainframe support. Does Kestra?
+    answer: "Kestra is not designed for mainframe job scheduling. If you have significant z/OS or AS/400 workloads, Stonebranch or a dedicated mainframe scheduler is the right tool for that layer. However, many organizations use Kestra for everything except mainframe, reducing their Stonebranch footprint and licensing costs to only where it's truly needed."
+  - question: How does Kestra's pricing compare to Stonebranch UAC?
+    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-agent metering. Stonebranch UAC uses proprietary licensing with capacity-based pricing that includes per-agent costs, scaling with the number of target hosts in your infrastructure."
+  - question: Does Kestra support the same integrations as Stonebranch?
+    answer: "Kestra's 1200+ plugin library covers cloud providers (AWS, Azure, GCP), data warehouses (Snowflake, BigQuery, Databricks), databases, message queues (Kafka, RabbitMQ, Pulsar), and CI/CD tools. Stonebranch has native Universal Connectors for SAP, PeopleSoft, mainframe systems, and managed file transfer that Kestra doesn't replicate directly. For cloud-native and data platform integrations, both tools cover similar ground."
+  - question: Stonebranch offers a Self-Service Portal. How does Kestra compare?
+    answer: "Stonebranch's Self-Service Portal allows business users to trigger predefined jobs and view their status without accessing the full UAC interface. Kestra Apps provide similar self-service capability but go further: any workflow can be exposed as a form-based application with custom inputs, approvals, and outputs. Non-engineers can trigger, monitor, and interact with workflows without any training on the underlying orchestration platform."
+  - question: How does Kestra handle file transfers compared to Stonebranch's MFT?
+    answer: "Kestra handles file transfers through plugins for S3, GCS, Azure Blob, SFTP, and HTTP. For organizations that need enterprise MFT features like AS2 protocol support, PGP encryption, FTP over SSL with compliance audit trails, and guaranteed delivery, Stonebranch's native MFT module is purpose-built for that. Many teams keep Stonebranch for regulated file transfers while using Kestra for everything else."
+  - question: Stonebranch supports event-driven triggers. How is Kestra different?
+    answer: "Stonebranch supports event-driven triggers for file arrivals, emails, database changes, and system events through its Universal Controller. Kestra was event-driven from the start with a broader trigger ecosystem: webhooks, S3 and GCS uploads, Kafka and Pulsar messages, database changes, API events, and custom event sources are all first-class YAML triggers. Unlimited event-driven workflows are available in the open-source version, with no execution caps or overage fees."
+  - question: How does Kestra's architecture compare to Stonebranch's agent-based model?
+    answer: "Stonebranch deploys Universal Agents on every target host. Agents communicate with the Universal Controller for job scheduling and execution. This means installing, updating, and maintaining agent software across your infrastructure. Kestra uses Docker containers for task execution with no agents to deploy or maintain. Tasks run in ephemeral containers that are pulled, executed, and cleaned up automatically."
+  - question: Can Kestra handle SAP job scheduling like Stonebranch?
+    answer: "Stonebranch has native SAP connectors for BW process chains, ABAP job scheduling, and PI interface monitoring. Kestra can interact with SAP through its HTTP, scripting, and CLI plugins, but it doesn't have native SAP task types. If SAP job scheduling is a core requirement, Stonebranch's native integration is more mature. Many organizations use Kestra alongside their SAP automation layer for non-SAP workloads."
+  - question: We use Stonebranch for compliance and audit trails. What does Kestra offer?
+    answer: "Kestra provides full execution audit logs, namespace-level RBAC, SSO/SAML integration, and secrets management with AWS Secrets Manager, HashiCorp Vault, and Azure Key Vault. Every workflow execution is logged with inputs, outputs, task durations, and who triggered it. Stonebranch offers similar audit capabilities through its Universal Controller, but Kestra's audit data is accessible via API and can be exported to your SIEM or compliance tooling."
+  - question: Can we replace Stonebranch UAC with IaC tools like Ansible or Terraform instead of an orchestrator like Kestra?
+    answer: "Teams sometimes reach for config management or IaC tools as a Stonebranch replacement because they're already in the stack. These tools excel at provisioning and deployment, but they lack workflow orchestration fundamentals: event-driven triggers, DAG-based dependency management, retries with backoff, real-time execution monitoring, and cross-job observability. The result is usually cron jobs wrapped around playbooks with no visibility into failures. Kestra is purpose-built for orchestration and can call Ansible playbooks or Terraform plans as tasks within a workflow."

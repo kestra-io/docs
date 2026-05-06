@@ -1,25 +1,51 @@
 <template>
     <section>
         <div class="container">
-            <h2 class="text-center mb-4">Our contributors</h2>
+            <h2 class="text-center">Our contributors</h2>
             <div ref="topOfSection" />
-            <div v-if="contributors" class="contributors d-flex flex-wrap justify-content-center">
-                <template v-for="(contributor, index) in displayedContributors" :key="contributor.name">
-                    <a :href="'https://github.com/' + contributor.name" target="_blank"
-                        class="d-flex flex-column gap-3 align-items-center" data-usal="zoomin">
-                        <img width="90px" height="90px" loading="lazy" class="rounded-circle" :src="contributor.avatar"
-                            :alt="contributor.name" />
+            <div
+                v-if="contributors"
+                class="contributors d-flex flex-wrap justify-content-center"
+            >
+                <template
+                    v-for="(contributor, index) in displayedContributors"
+                    :key="contributor.name"
+                >
+                    <a
+                        :href="'https://github.com/' + contributor.name"
+                        target="_blank"
+                        class="d-flex flex-column gap-3 align-items-center"
+                        data-usal="zoomin"
+                    >
+                        <img
+                            width="90px"
+                            height="90px"
+                            loading="lazy"
+                            class="rounded-circle"
+                            :src="contributor.avatar"
+                            :alt="contributor.name"
+                        />
                         <p>{{ contributor.name }}</p>
                     </a>
                 </template>
             </div>
             <div v-if="contributors && moreCount > 0" class="text-center mt-4">
-                <button v-if="!isExpanded" type="button" class="btn btn-animated btn-dark-animated"
-                    @click="isExpanded = true" data-usal="zoomin">
+                <button
+                    v-if="!isExpanded"
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="isExpanded = true"
+                    data-usal="zoomin"
+                >
                     {{ moreCount }} more contributors
                 </button>
-                <button v-else type="button" class="btn btn-animated btn-purple-animated" @click="collapse"
-                    data-usal="zoomin">
+                <button
+                    v-else
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="collapse"
+                    data-usal="zoomin"
+                >
                     Show less
                 </button>
             </div>
@@ -28,11 +54,13 @@
 </template>
 
 <script>
-    import { useApi } from "~/composables/useApi.ts"
+    import { $fetchApiCached } from "~/utils/fetch.ts"
+    import { NO_RANDOM_ORDER } from "astro:env/client"
+    import { randomSortFunction } from "~/utils/random"
 
     export default {
         setup() {
-            return { useApi }
+            return {}
         },
         data() {
             return {
@@ -54,13 +82,17 @@
                 )
                 if (hasContribField) {
                     return [...this.contributors].sort(
-                        (a, b) => (b.contributions || 0) - (a.contributions || 0),
+                        (a, b) =>
+                            (b.contributions || 0) - (a.contributions || 0),
                     )
                 }
                 return this.contributorsRand || []
             },
             regularContributors() {
-                return (this.sortedByContributions || []).slice(0, this.regularCount)
+                return (this.sortedByContributions || []).slice(
+                    0,
+                    this.regularCount,
+                )
             },
             displayedContributors() {
                 if (this.isExpanded) {
@@ -70,16 +102,21 @@
             },
             moreCount() {
                 const total = this.contributors ? this.contributors.length : 0
-                const shown = this.regularContributors ? this.regularContributors.length : 0
+                const shown = this.regularContributors
+                    ? this.regularContributors.length
+                    : 0
                 const remaining = total - shown
                 return remaining > 0 ? remaining : 0
             },
         },
         async created() {
             try {
-                const { data } = await this.useApi().get("/communities/github/contributors")
+                const data = await $fetchApiCached(
+                    "/communities/github/contributors",
+                )
                 this.contributors = data
-                this.contributorsRand = this.contributors.toSorted(() => 0.5 - Math.random())
+                this.contributorsRand =
+                    this.contributors.toSorted(randomSortFunction)
             } catch (e) {
                 this.contributors = []
             }
@@ -102,25 +139,30 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-
     section {
-        padding: $rem-3 $rem-1;
+        padding: 7.5rem $rem-1;
+        background: var(--ks-background-secondary);
+
+        h2 {
+            margin-bottom: 3rem;
+        }
     }
-    
+
     .contributors {
         height: 100%;
         max-height: 100%;
         overflow: hidden;
         text-align: center;
-        padding: $spacer;
-        column-gap: 2rem;
-        row-gap: 4rem;
+        gap: 2rem;
         a {
             width: fit-content;
-            color: var(--ks-content-link);
+            color: var(--ks-content-primary);
+            text-decoration: none;
+            font-size: $font-size-md;
             img {
-                width: 100px;
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
             }
         }
     }

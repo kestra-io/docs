@@ -1,5 +1,6 @@
 ---
-title: Dynamic Dropdown for Inputs
+title: Create a Dynamic Dropdown for Inputs
+h1: Populate Input Dropdowns Dynamically from APIs or Databases
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -9,15 +10,13 @@ description: Create dynamic dropdown menus for flow inputs that populate from ex
 
 Support dynamic dropdown for inputs based on data from external source.
 
-## Dynamic Dropdown for Inputs
-
 In this guide, we show how you can create a dynamic dropdown list for inputs. The dropdown retrieves the values from an external source. It is possible to do so by storing the values in the [KV store](../../06.concepts/05.kv-store/index.md), and also to directly integrate the external source with the HTTP Pebble function, `http()`.
 
 ## Update KV store on schedule
 
 To get started, we create a flow that fetches the data from the external source and set the value in the KV store. The value will be in the form of a list of strings.
 
-In this example, the flow fetches data from a PostgreSQL table on an hourly schedule. You can change the `cron` property to run at a different frequency depending on how frequently you expect the data at the source to change. If the external source is in a database that supports change data capture, as in this case where we use PostgreSQL table, you can also leverage [debezium trigger](/plugins/debezium%20postgresql/triggers/io.kestra.plugin.debezium.postgres.trigger) and immediately update the KV store.
+In this example, the flow fetches data from a PostgreSQL table on an hourly schedule. You can change the `cron` property to run at a different frequency depending on how frequently you expect the data at the source to change. If the external source is in a database that supports change data capture, as in this case where we use PostgreSQL table, you can also use the [debezium trigger](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.trigger) and immediately update the KV store.
 
 ```yaml
 id: update_kv_store

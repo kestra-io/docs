@@ -11,13 +11,15 @@
             :kpi2="story.kpi2"
             :kpi3="story.kpi3"
         />
-        <TwoColumnStickyLayout>
-            <template #sidebar>
-                <Sidebar :story />
-            </template>
-            <Main :story :content />
-        </TwoColumnStickyLayout>
-        <Change />
+        <div class="column-sticky">
+            <TwoColumnStickyLayout>
+                <template #sidebar>
+                    <Sidebar :story />
+                </template>
+                <Main :story :content />
+            </TwoColumnStickyLayout>
+        </div>
+        <slot name="change" />
         <More :related />
     </div>
 </template>
@@ -25,7 +27,6 @@
 <script setup lang="ts">
     import Header from "~/components/stories/Header.vue"
     import More from "~/components/stories/More.vue"
-    import Change from "~/components/stories/Change.vue"
     import Sidebar from "~/components/stories/Sidebar.vue"
     import Main from "~/components/stories/Main.vue"
     import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
@@ -39,9 +40,21 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
     .-row {
         align-items: stretch;
+    }
+
+    .column-sticky {
+        :deep(.container) {
+            max-width: 1140px;
+            gap: 4rem;
+        }
+
+        :deep(.left) {
+            min-width: 0 !important;
+            @include media-breakpoint-up(lg) {
+                max-width: 209px;
+            }
+        }
     }
 </style>

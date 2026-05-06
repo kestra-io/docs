@@ -1,5 +1,7 @@
 ---
-title: Singer Tap Plugin Removal
+title: "Singer Tap Plugin Removed: Migrate to Airbyte or dlt"
+h1: Migrating Away from the Removed Singer Tap Plugin
+sidebarTitle: Singer Plugin Removed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -9,7 +11,7 @@ description: Guide to migrating from the removed Singer tap plugin to supported 
 
 ## Singer Tap Plugin Removal
 
-Singer support is being deprecated in Kestra 0.24 and fully removed in Kestra 1.0. This guide walks you through migrating existing Singer pipelines to supported alternatives in Kestra, such as [Airbyte](/plugin/plugin-airbyte), [dlt](/blueprints?page=1&size=24&q=dlt), and [CloudQuery](/plugin/plugin-cloudquery).
+Singer support is being deprecated in Kestra 0.24 and fully removed in Kestra 1.0. This guide walks you through migrating existing Singer pipelines to supported alternatives in Kestra, such as [Airbyte](/plugins/plugin-airbyte), [dlt](/blueprints?page=1&size=24&q=dlt), and [CloudQuery](/plugins/plugin-cloudquery).
 
 ## Why is Singer support being removed?
 
@@ -19,7 +21,7 @@ Singer was once a promising open-source technology for building and sharing data
 - After Meltano shut down, there is no longer a company backing the ecosystem.
 - As a result, compatibility, security, and reliability cannot be guaranteed going forward.
 
-To ensure Kestra users have reliable, well-maintained data ingestion options, we recommend migrating to other open-source alternatives. For example, Kestra provides plugins for:
+To ensure Kestra users have reliable, well-maintained data ingestion options, migrate to other open-source alternatives. For example, Kestra provides plugins for:
 - Airbyte: Large connector ecosystem for databases, SaaS apps, and warehouses. Runs in both **Cloud** and **OSS** modes.
 - dlt: Flexible **Python-based** ingestion framework, great for custom pipelines and lightweight ingestion.
 - CloudQuery: Purpose-built for cloud asset discovery and syncing metadata to databases or warehouses.

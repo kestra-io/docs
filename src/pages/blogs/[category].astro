@@ -1,0 +1,119 @@
+---
+import type { GetStaticPaths } from "astro"
+import { getCollection } from "astro:content"
+import { ALL_NEWS } from "~/components/blogs/categories"
+import BlogList from "~/components/blogs/BlogList.astro"
+import { getImage } from "astro:assets"
+import Mesh from "~/components/layout/Mesh.vue"
+import Layout from "~/components/layout.astro"
+import Subscribe from "~/components/layout/Subscribe.vue"
+import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
+import { allBlogCategories } from "~/components/blogs/categories"
+
+export const getStaticPaths = (() => {
+    return Array.from(allBlogCategories.keys()).map((category) => ({
+        params: { category },
+    }))
+}) satisfies GetStaticPaths
+
+const { category } = Astro.params
+
+const blogs = await getCollection("blogs")
+
+const sortedBlogs = await Promise.all(
+    blogs
+        .sort((a, b) => {
+            return (
+                new Date(b.data.date).getTime() -
+                new Date(a.data.date).getTime()
+            )
+        })
+        .map(async (blog) => {
+            const image = await getImage({
+                src: blog.data.image ?? "",
+                format: "webp",
+                width: 800,
+            })
+            return {
+                ...blog,
+                data: {
+                    ...blog.data,
+                    image: image.src,
+                },
+            }
+        }),
+)
+
+const allExternalBlogs = await getCollection("externalBlogs")
+
+const externalNews = await Promise.all(
+    allExternalBlogs
+        .sort(
+            (a, b) =>
+                b.data.publicationDate.getTime() -
+                a.data.publicationDate.getTime(),
+        )
+        .slice(0, 4)
+        .map(async (entry) => {
+            const image = await getImage({
+                src: entry.data.image,
+                format: "webp",
+                width: 800,
+            })
+            return {
+                id: entry.id,
+                path: entry.data.link,
+                image: image.src,
+                category: entry.data.media,
+                author: { name: entry.data.author },
+                title: entry.data.title,
+                date: entry.data.publicationDate,
+            }
+        }),
+)
+
+const internalBlogs = sortedBlogs.map((blog) => ({
+    ...blog.data,
+    slug: blog.id,
+    path: `/blogs/${blog.id}`,
+}))
+
+const allTutorialVideos = await getCollection("tutorialVideos")
+const tutorialVideoResults = allTutorialVideos
+    .sort(
+        (a, b) =>
+            b.data.publicationDate.getTime() - a.data.publicationDate.getTime(),
+    )
+    .slice(0, 3)
+    .map((v) => ({
+        ...v.data,
+        publicationDate: v.data.publicationDate.toISOString(),
+    }))
+---
+
+<Layout
+    canonical={category === ALL_NEWS ? "/blogs" : undefined}
+    title="Kestra Blog: Orchestration Insights & Product Updates"
+    description="Explore the Kestra Blog for the latest articles, product updates, engineering deep dives, and workflow orchestration insights."
+>
+    <Mesh>
+        <div>
+            <h1>All things Kestra.</h1>
+            <p>The latest updates, guides and stories</p>
+        </div>
+        <Subscribe client:visible class="margin" />
+    </Mesh>
+    <BlogList
+        blogs={internalBlogs}
+        externalNews={externalNews}
+        videos={tutorialVideoResults}
+        category={category}
+    />
+    <SubscribeToNewsletter client:visible />
+</Layout>
+
+<style lang="scss">
+    .margin {
+        margin-top: 44px;
+    }
+</style>

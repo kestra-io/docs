@@ -18,30 +18,24 @@ interface Props {
     }
 }
 
-const {
-    mainTitle,
-    kestra,
-    competitor,
-} = Astro.props as Props
+const { mainTitle, kestra, competitor } = Astro.props as Props
 ---
 
 <section>
     <div class="container">
         <h2 set:html={mainTitle} />
         <div class="comparison-box d-flex flex-column flex-lg-row">
-            <Card
-                isKestra={true}
-                logo={kestraLogo}
-                logoAlt="Kestra logo"
-            >
+            <Card isKestra={true} logo={kestraLogo} logoAlt="Kestra logo">
                 <h5>{kestra?.title}</h5>
                 <ul>
-                    {kestra?.list?.map(item => (
-                        <li>
-                            <Icon name="mdi:check-bold" class="icon" />
-                            <span>{item}</span>
-                        </li>
-                    ))}
+                    {
+                        kestra?.list?.map((item) => (
+                            <li>
+                                <Icon name="mdi:check-bold" class="icon" />
+                                <span>{item}</span>
+                            </li>
+                        ))
+                    }
                 </ul>
             </Card>
 
@@ -52,21 +46,24 @@ const {
             >
                 <h5>{competitor?.title}</h5>
                 <ul>
-                    {competitor?.list?.map((item: any) => (
-                        <li>
-                            <Icon name="mdi:check-bold" class="icon" />
-                            <span>{item}</span>
-                        </li>
-                    ))}
+                    {
+                        competitor?.list?.map((item: any) => (
+                            <li>
+                                <Icon name="mdi:check-bold" class="icon" />
+                                <span>{item}</span>
+                            </li>
+                        ))
+                    }
                 </ul>
             </Card>
         </div>
     </div>
 </section>
 
-<style lang="scss" define:vars={{ competitorBulletColor: competitor?.bulletColor }}>
-    @import "~/assets/styles/variable";
-
+<style
+    lang="scss"
+    define:vars={{ competitorBulletColor: competitor?.bulletColor }}
+>
     section {
         padding: $spacer * 4 0;
         background: var(--ks-background-body);
@@ -98,7 +95,7 @@ const {
             :global(.comparison-item) {
                 &.kestra {
                     .icon {
-                        color: #02BE8A;
+                        color: #02be8a;
                     }
                 }
 

@@ -5,6 +5,7 @@ date: 2024-11-25T18:00:00
 category: Solutions
 author:
   name: Will Russell
+  linkedin: https://www.linkedin.com/in/wrussell1999/
   image: "wrussell"
 image: ./main.jpg
 ---
@@ -14,8 +15,6 @@ Jenkins is a well known open source automation server, commonly used for CI/CD.
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/TKdfkGiRzxM?si=-xBNjKS0yoflSSfL" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Through this article, we're going to look at a few common use cases in both Kestra and Jenkins and see how they compare.
 
@@ -111,7 +110,7 @@ tasks:
           - pytest demos/jenkins-vs-kestra/1-tests
 
   - id: slack
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```
 
@@ -293,7 +292,7 @@ namespace: system
 
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{ trigger.executionId }}"

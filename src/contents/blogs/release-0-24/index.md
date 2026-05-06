@@ -5,6 +5,8 @@ date: 2025-08-05T17:00:00
 category: News & Product Updates
 authors:
   - name: Anna Geller
+    linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+    medium: https://annageller.medium.com/
     image: ageller
     role: Product Lead
 image: ./main.jpg
@@ -322,7 +324,7 @@ tasks:
           country: "{{ inputs.country_code }}"
 
   - id: send_via_slack
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK_URL') }}"
     messageText: "Current news from {{ inputs.city }}: {{ outputs.news.outputText }}"
 ```
@@ -483,7 +485,7 @@ The Apps catalog is offered as a dedicated page without showing any typical Kest
 
 ## Custom UI Links (EE only)
 
-In the Enterprise Edition, admins can add custom links that will be displayed in Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. You can set this up in your [Kestra configuration](../../docs/configuration/index.md) file as follows:
+In the Enterprise Edition, admins can add custom links that will be displayed in Kestra's UI sidebar. These links can point to internal documentation, support portals, or other relevant resources. You can set this up in your [Kestra configuration](../../docs/configuration/index.mdx) file as follows:
 
 ```yaml
 kestra:

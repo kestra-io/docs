@@ -1,5 +1,6 @@
 ---
 title: Flow Trigger in Kestra – Chain Flow Executions
+h1: Automate Workflow Dependencies by Chaining Flows
 description: Chain workflows in Kestra using the Flow Trigger. Automate dependencies by triggering flows upon the completion, success, or failure of other flows.
 sidebarTitle: Flow Trigger
 icon: /src/contents/docs/icons/flow.svg
@@ -7,24 +8,22 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger one flow based on the execution of another flow.
 
-## Flow trigger – chain flow executions
-
 A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Flow"
+type: io.kestra.plugin.core.trigger.Flow
 ```
 
 Kestra can automatically start a flow as soon as another flow ends. This allows you to create dependencies between flows, even when those flows are owned by different teams.
 
-Check the [Flow trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow) documentation for the list of all properties.
+Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
 ## Preconditions
 
 A Flow trigger requires preconditions to filter which upstream executions can trigger the flow, often within a defined time window.
 
 :::alert{type="info"}
-[Pebble expressions](../../../expressions/index.md) cannot be used in Flow Trigger (pre)conditions. You must declaratively define any condition variables.
+[Pebble expressions](../../../expressions/index.mdx) cannot be used in Flow Trigger (pre)conditions. You must declaratively define any condition variables.
 :::
 
 ### Filters
@@ -212,7 +211,7 @@ id: alert
 namespace: system
 tasks:
   - id: send_alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{secret('SLACK_WEBHOOK')}}" # format: https://hooks.slack.com/services/xzy/xyz/xyz
     channel: "#general"
     executionId: "{{trigger.executionId}}"

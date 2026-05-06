@@ -6,3 +6,5 @@
   to: "/enterprise-license-agreement"
 - regexp: "/blog"
   to: "/blogs"
+- regexp: "/changelog"
+  to: "/docs/changelog"

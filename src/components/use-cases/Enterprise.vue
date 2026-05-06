@@ -3,7 +3,7 @@
         <div class="container">
             <div class="enterprise">
                 <div class="text-center pb-3">
-                    <img src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg" />
+                    <img src="/landing/usecases/provisioning-and-deployment/monograme-kestra.svg" alt="Kestra monograme" />
                 </div>
                 <div class="heading mx-auto">
                     <h2 class="title text-center">
@@ -14,8 +14,8 @@
                     </h6>
                 </div>
                 <div class="text-center rounded">
-                    <a class="btn btn-primary mx-2 mt-2" href="/docs/quickstart#start-kestra">
-                        Get started
+                    <a class="btn btn-primary mx-2 mt-2" href="/get-started">
+                        Get Started
                     </a>
                 </div>
             </div>
@@ -31,7 +31,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "~/assets/styles/variable";
+
 
 .container-fluid {
     padding: calc($spacer * 2);

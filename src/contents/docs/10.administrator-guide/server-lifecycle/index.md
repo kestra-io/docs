@@ -1,5 +1,6 @@
 ---
-title: Server Component Liveness in Kestra – Heartbeats and Recovery
+title: Server Heartbeats and Job Recovery in Kestra
+h1: How Kestra detects server failures and recovers stalled jobs
 sidebarTitle: Server Components Liveness
 icon: /src/contents/docs/icons/admin.svg
 description: Understand Kestra's server liveness mechanism, heartbeats, and how it handles component failures and recovery.
@@ -7,19 +8,17 @@ description: Understand Kestra's server liveness mechanism, heartbeats, and how 
 
 Kestra is separated into several components that can be deployed independently or inside a single process (a standalone deployment).
 
-## Monitor Kestra server liveness and recovery
-
-We refer to these components as **server components** or just **servers**.
+These components are called **server components** or just **servers**.
 
 See the [server components](../../08.architecture/02.server-components/index.md) and [deployment](../../08.architecture/03.deployment-architecture/index.md) sections for more information.
 
-Kestra has a built-in liveness mechanism. Each server will send a periodical heartbeat stored inside the database, and other servers will check if the server is still alive.
+Kestra has a built-in liveness mechanism. Each server sends a periodic heartbeat stored inside the database, and other servers check whether the server is still alive.
 
 When a server is not alive, Kestra runs maintenance routines such as [worker job resubmission](#worker-job-resubmission).
 
 ## The liveness mechanism
 
-When a server starts, it will send a heartbeat to the database with a `RUNNING` status.
+When a server starts, it sends a heartbeat to the database with a `RUNNING` status.
 When it stops, it first transitions to `TERMINATING`. If the server has pending tasks, it waits up to the configured `kestra.server.terminationGracePeriod` for them to finish. If it completes within that window, it sends a `TERMINATED_GRACEFULLY` heartbeat; otherwise the process is terminated with status `TERMINATED_FORCED`.
 
 Other servers detect missing heartbeats and run maintenance tasks:
@@ -28,11 +27,11 @@ Other servers detect missing heartbeats and run maintenance tasks:
 
 By default, liveness checks run every 10 seconds.
 
-`NOT_RUNNING` servers will be transitioned to `INACTIVE` at the next liveness check.
+`NOT_RUNNING` servers transition to `INACTIVE` at the next liveness check.
 
 If a server does not send a heartbeat within `kestra.server.liveness.timeout`, it is marked `DISCONNECTED` and then `NOT_RUNNING` at the next check. If that server is still alive, it self-terminates after detecting that other components classified it as `NOT_RUNNING`, preventing “resurrection.”
 
-For configuration details, see the [server configuration](../../configuration/index.md#server-liveness--heartbeats).
+For configuration details, see the [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md).
 
 ## Worker job resubmission
 
@@ -48,6 +47,10 @@ Configure this behavior via `kestra.server.workerTaskRestartStrategy`:
 - `AFTER_TERMINATION_GRACE_PERIOD` (default): wait another grace period before resubmitting jobs, preventing a terminated worker from returning.
 - `IMMEDIATELY`: resubmit jobs right away.
 - `NEVER`: never resubmit jobs (tasks remain incomplete and flows stay `RUNNING`).
+
+::alert{type="info"}
+This resubmission mechanism also applies to **Realtime Triggers**. If the worker running a Realtime Trigger listener is stopped gracefully, Kestra waits for the `terminationGracePeriod` before reassigning the trigger to another worker. See [Worker failover for Realtime Triggers](../../05.workflow-components/07.triggers/05.realtime-trigger/index.md#worker-failover-for-realtime-triggers) for more details.
+::
 
 Resubmitted task runs show multiple attempts in the UI.
 

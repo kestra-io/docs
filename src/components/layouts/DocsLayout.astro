@@ -1,11 +1,10 @@
 ---
-
-import "~/assets/styles/custom-elements.scss"
 import NavSideBar from "~/components/docs/NavSideBar.vue"
 import Layout from "~/components/layout.astro"
 import { buildDocsNavigation } from "~/utils/buildDocsNavigation"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
+import squaredGrid from "~/assets/squared-grid.svg"
 
 const navigation = await buildDocsNavigation()
 
@@ -25,8 +24,21 @@ const props = Astro.props as Props
 ---
 
 <Layout title={props.title} description={props.description} image={props.image}>
+    <link rel="preload" as="image" href={squaredGrid.src} />
     <div
-        class={`container-fluid bd-gutter bd-layout type-docs ${props.isHomePage ? "homepage" : ""}`}
+        style={{
+            backgroundImage: `url(${squaredGrid.src})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top center",
+            backgroundSize: "1400px auto",
+        }}
+        class:list={[
+            "container-fluid",
+            "bd-gutter",
+            "bd-layout",
+            "type-docs",
+            { homepage: props.isHomePage },
+        ]}
     >
         <NavSideBar
             type="docs"
@@ -36,7 +48,12 @@ const props = Astro.props as Props
             transition:persist
         />
         <article
-            class={`bd-main order-1 docs ${props.isHomePage ? "homepage" : ""}`}
+            class:list={[
+                "bd-main",
+                "order-1",
+                "docs",
+                { homepage: props.isHomePage },
+            ]}
         >
             <div class="bd-title">
                 <Breadcrumb
@@ -47,7 +64,6 @@ const props = Astro.props as Props
                 />
                 <slot name="title" />
             </div>
-
             <slot name="headings" />
 
             <div class="layout-docs">
@@ -60,12 +76,12 @@ const props = Astro.props as Props
 </Layout>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
     .container-fluid {
+        background-color: var(--ks-background-body);
         gap: calc($spacer * 4);
         padding-left: 1rem;
         padding-right: 1rem;
-        max-width: 100%;
+        max-width: 1520px;
         width: 100%;
         overflow: clip !important;
         z-index: 10;
@@ -129,42 +145,8 @@ const props = Astro.props as Props
         }
     }
 
-
-
     :global(.medium-zoom-image) {
         max-width: 100%;
         max-height: 100%;
-    }
-    .homepage {
-        .bd-content {
-            background:
-                radial-gradient(
-                        ellipse closest-side,
-                        color-mix(
-                                in srgb,
-                                var(--ks-content-color-highlight) 10%,
-                                transparent
-                            )
-                            0%,
-                        #ddc4ff00 100%
-                    )
-                    no-repeat,
-                url("~/components/docs/assets/homepage-bg.webp") no-repeat;
-            background-size:
-                500px 250px,
-                1261px 984px;
-            background-position:
-                top 110px right -30px,
-                top -200px right -350px;
-        }
-
-        :global(a):not(.btn-primary) {
-            color: var(--ks-content-primary) !important;
-
-            &:hover {
-                background-color: var(--ks-background-tertiary);
-                color: var(--ks-content-secondary) !important;
-            }
-        }
     }
 </style>

@@ -1,14 +1,17 @@
 ---
 import Layout from "~/components/layout.astro"
-import CTA from "~/components/common/CTA.astro"
 import Hero from "~/components/overview/Hero.vue"
-import HeaderBox from "~/components/common/HeaderBox.vue"
+import Link from "~/components/common/Link.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
 import StickySteps from "~/components/layout/StickySteps.vue"
-import FooterContact from "~/components/layout/FooterContact.astro"
-import FeatureSections from "~/components/layout/FeatureSections.vue"
+import FeatureSections from "~/components/overview/FeatureSections.astro"
 
-import { usePluginsCount } from "~/composables/usePluginsCount"
-const { totalPlugins } = usePluginsCount()
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+import { $fetchApiCached } from "~/utils/fetch"
+import type { Plugin } from "@kestra-io/ui-libs"
+
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
+const totalPlugins = `${Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100}+`
 
 const title = "Kestra Platform Overview"
 const description =
@@ -70,128 +73,9 @@ const WORKFLOW_STEPS = [
         labelColor: "#c051f4",
     },
 ]
-
-const WORKFLOW_SECTIONS = [
-    {
-        id: "definition",
-        title: "Define Workflows Your Way",
-        description:
-            "Whether you prefer YAML, or a visual approach, you have everything you need to rapidly outline and orchestrate every step.",
-        mainFeature: {
-            id: "main-def",
-            title: "Everything As Code and From the UI",
-            description:
-                "Create workflows both from the interface or version control. Navigate between code and visual to fit your preferred workflow.",
-            image: "/landing/overview/define.png",
-        },
-        subFeatures: [
-            {
-                id: "simplified",
-                title: "Simplified Workflow Definition",
-                description:
-                    "Use simple declarative YAML syntax to define complex workflows without boilerplate code or custom wrappers.",
-                image: "/landing/overview/simplified.png",
-            },
-            {
-                id: "interactive",
-                title: "Interactive Topology View",
-                description:
-                    "Visualize workflow logic via a graphical representation of your workflow structure and dependencies between tasks.",
-                image: "/landing/overview/interactive.png",
-            },
-        ],
-    },
-    {
-        id: "dynamic",
-        title: "Workflows That Think for Themselves",
-        description:
-            "Create workflows that adapt to business logic, handle errors gracefully, and scale based on your dynamic requirements.",
-        mainFeature: {
-            id: "main-dyn",
-            title: "Dynamic Control Flow",
-            description:
-                "Implement conditional logic, retry mechanisms, or parallel flows. Your workflows can adapt in real-time based on data and business logic.",
-            image: "/landing/overview/think.png",
-        },
-        subFeatures: [
-            {
-                id: "langs",
-                title: "Native Scripting Across Languages",
-                description:
-                    "Execute scripts in Python, R, Node.js, Shell and more without needing Docker or additional dependencies.",
-                image: "/landing/overview/langs.png",
-            },
-            {
-                id: "reusable",
-                title: "Reusable Logic with Subflows",
-                description:
-                    "Build modular workflows with subflows that can be reused across multiple workflows and teams.",
-                image: "/landing/overview/reusable.png",
-            },
-        ],
-    },
-    {
-        id: "execution",
-        title: "Flexible Execution, Built for Scale",
-        description:
-            "From force-triggered jobs to long-running, complex, resilient, event-driven orchestrations. Fit any scale from development servers.",
-        mainFeature: {
-            id: "main-exe",
-            title: "Event Driven Orchestration",
-            description:
-                "Schedule executions, react to real-time events, or call workflows through API and webhooks. Get results when they are needed with monitoring.",
-            image: "/landing/overview/flexible.png",
-        },
-        subFeatures: [
-            {
-                id: "longrunning",
-                title: "Long Running & Resilient Executions",
-                description:
-                    "Handle long-running processes with pause/resume capabilities, retries, and failure recovery mechanisms.",
-                image: "/landing/overview/longrunning.png",
-            },
-            {
-                id: "ondemand",
-                title: "On-Demand & At-First Execution",
-                description:
-                    "Execute workflows manually, via API calls, or trigger them based on external events and system changes.",
-                image: "/landing/overview/ondemand.png",
-            },
-        ],
-    },
-    {
-        id: "observability",
-        title: "Full Observability, Built In",
-        description:
-            "From historical data to logs and execution statuses with Kestra gives you the visibility to optimize at scale.",
-        mainFeature: {
-            id: "main-obs",
-            title: "Intuitive Visibility",
-            description:
-                "Complete visibility over all workflows, executions and metrics via dedicated interface including real-time monitoring.",
-            image: "/landing/overview/full.png",
-        },
-        subFeatures: [
-            {
-                id: "timeline",
-                title: "Execution Timeline & Logs",
-                description:
-                    "Track every step of your workflow execution with detailed logs and timeline views for debugging and optimization.",
-                image: "/landing/overview/timeline.png",
-            },
-            {
-                id: "output",
-                title: "Outputs and Metrics Visualization",
-                description:
-                    "Visualize workflow outputs, performance metrics, and system health with built-in charts and dashboards.",
-                image: "/landing/overview/output.png",
-            },
-        ],
-    },
-]
 ---
 
-<Layout {title} {description} headerTheme="lightHero">
+<Layout {title} {description} headerTheme="lightText">
     <Hero client:load />
     <StickySteps
         client:load
@@ -199,19 +83,24 @@ const WORKFLOW_SECTIONS = [
             steps: WORKFLOW_STEPS,
             title: "Language-Agnostic Workflows",
             subheading: "At Any Scale",
-            footerSubtitle:
-                "With native triggers, declarative flows, and built-in monitoring, Kestra gives you a clear path from workflow creation to reliable execution across your stack",
         }}
     />
-
     <section class="workflows">
-        <FeatureSections client:visible sections={WORKFLOW_SECTIONS} />
-        <FooterContact
-            subtitle="By using Kestra as your orchestrator, you can easily automate complex workflows, integrate with your existing data stack, and improve the speed and efficiency of your data processing."
-        />
+        <FeatureSections />
     </section>
-    <HeaderBox client:visible />
-    <CTA />
+    <SeeHow
+        cta={{
+            href: "/get-started",
+            text: "Get Started",
+        }}
+    >
+        <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
+        Built for Enterprises and SMBs, with strong governance, enterprise-grade security,
+        seamless scalability, and dedicated enterprise support backed by SLAs.
+        <Link slot="footer" href="/demo" class="btn btn-secondary">
+            Book a Demo
+        </Link>
+    </SeeHow>
 </Layout>
 
 <style lang="scss">

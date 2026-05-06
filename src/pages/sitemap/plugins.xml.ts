@@ -8,12 +8,12 @@ import {
     type Plugin,
     type PluginElement,
 } from "@kestra-io/ui-libs"
-import { $fetch } from "~/utils/fetch.ts"
-import { API_URL } from "astro:env/client"
+import { $fetchApiCached } from "~/utils/fetch.ts"
 import { slugify } from "@kestra-io/ui-libs/src/utils/url.ts"
 
 export const GET: APIRoute = async () => {
-    const allPlugins = await $fetch<Plugin[]>(`${API_URL}/plugins/subgroups`)
+    const allPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
+
     const mapping = buildPluginMappings(allPlugins)
     const subgroups = Object.values(mapping.clsToSubgroup)
     const allPages = filterPluginsWithoutDeprecated(allPlugins).flatMap((plugin) => {
@@ -32,8 +32,9 @@ export const GET: APIRoute = async () => {
                 .flatMap((value) => {
                     return value.map((t: PluginElement) => {
                         const subgroup = mapping.clsToSubgroup[t.cls]
-                        return `/plugins/${pluginName}${subgroup ? "/" + subgroup : ""}/${t.cls.toLocaleLowerCase()}`
-                    })
+                        const url = `/plugins/${pluginName}${subgroup ? "/" + subgroup : ""}/${t.cls.toLocaleLowerCase()}`
+                        return t.deprecated ? null : url
+                    }).filter(url => url !== null)
                 }),
         )
     })

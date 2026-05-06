@@ -1,51 +1,34 @@
 ---
-import { API_URL } from "astro:env/client"
-import { formatPluginName } from "~/utils/pluginUtils"
-
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
-import SocialProof from "~/components/common/SocialProof.astro"
+import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
 
-import Blueprints from "~/components/blueprints/Blueprints.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
 import Explore from "~/components/layout/Explore.astro"
 import LifecycleLayout from "~/components/layout/Lifecycle.astro"
-import SectionCard from "~/components/layout/SectionCard.astro"
 import Versus from "~/components/layout/Versus.astro"
 
 import Arcade from "~/components/infrastructure/Arcade.astro"
 import Architecture from "~/components/infrastructure/Architecture.astro"
 import Built from "~/components/infrastructure/Built.astro"
-import Connect from "~/components/infrastructure/Connect.astro"
+import InfraPlugins from "~/components/infrastructure/InfraPlugins.astro"
 import Intro from "~/components/infrastructure/Intro.astro"
+import Govern from "~/components/infrastructure/Govern.astro"
 import Operation from "~/components/infrastructure/Operation.astro"
 
-import storyImg from "~/assets/landing/infrastructure/story.webp"
-import iac from "~/assets/landing/infrastructure/iac.png"
-import deploy from "~/assets/landing/infrastructure/deploy.png"
-import loop from "~/assets/landing/infrastructure/loop.png"
 import infraUi from "~/assets/landing/infrastructure/infra-ui.png"
+import { $fetchApiCached } from "~/utils/fetch.ts"
 
-const TITLE =
+const title =
     "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
-const DESCRIPTION =
+const description =
     "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
 
-const { results: blueprints } = await fetch(
-    `${API_URL}/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
-).then((res) => res.json())
-
-const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
-    (res) => res.json(),
+const { results: blueprints } = await $fetchApiCached(
+    `/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
 )
 
-const plugins = Object.entries(
-    (await import.meta.glob("/src/contents/docs/icons/plugins/*.svg", {
-        eager: true,
-    })) as Record<string, { default: { src: string } }>,
-).map(([key, mod]) => ({
-    name: formatPluginName(key.split("/").pop()?.replace(".svg", "") ?? ""),
-    logo: mod.default,
-}))
+const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
 
 const VERSUS_CONTENT = {
     title: 'Infrastructure Teams Deserve <br class="d-none d-lg-block"> a Better Way to Operate',
@@ -76,34 +59,6 @@ const VERSUS_CONTENT = {
     },
 }
 
-const FORTUNE_METRICS = [
-    { value: "-90%", label: "In licensing cost" },
-    { value: "One", label: "Control Plane" },
-    { value: "x10", label: "Time to value" },
-]
-
-const GOVERN_CARDS = [
-    {
-        title: "Standardize IaC Pipeline",
-        description:
-            "Run IaC the same way every time. kestra orchestrates the full lifecycle with shared parameters, secrets, retries, and evidence-grade logs across all environments.",
-        image: iac,
-    },
-    {
-        title: "Deploy to Any Target, On-Prem or Cloud",
-        description:
-            "Provision and evolve workloads anywhere. Kestra workflows drive K8s, vSphere, cloud, and network APIs with consistent sequencing, execution, and traceability.",
-        image: deploy,
-        reverse: true,
-    },
-    {
-        title: "Integrated Human-in-the-Loop",
-        description:
-            "Pause workflows for critical checks. Kestra offers relying Business Decisions with audit trail and controlled executions.",
-        image: loop,
-    },
-]
-
 const LIFECYCLE_CARDS = [
     {
         title: "Ansible Playbooks, Automated the Right Way",
@@ -113,8 +68,6 @@ const LIFECYCLE_CARDS = [
             href: "/docs/how-to-guides/ansible",
             text: "Automate your Playbooks with Kestra",
         },
-        background: "#0D0D0D",
-        animation: "slide-r delay-50 duration-600 ease-out",
     },
     {
         title: "Automated Infrastructure Ticketing Lifecycle",
@@ -124,30 +77,17 @@ const LIFECYCLE_CARDS = [
             href: "/docs/how-to-guides/servicenow-trigger",
             text: "Manage your full ticket lifecycle",
         },
-        background: "#631BFF",
-        animation: "slide-l delay-100 duration-600 ease-out",
     },
 ]
 ---
 
-<Layout title={TITLE} description={DESCRIPTION} headerTheme="lightHero">
+<Layout {title} {description} headerTheme="lightText">
     <div class="infra">
         <Intro />
         <Versus {...VERSUS_CONTENT} />
-        <SocialProof
-            image={{ src: storyImg, alt: "Fortune 500", width: 347 }}
-            quote={{
-                text: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra",
-                author: "PRINCIPAL HOSTING LEAD, Fortune 500",
-            }}
-            metrics={FORTUNE_METRICS}
-            cta={{
-                text: "How much risk and cost are you still accepting today?",
-                link: "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra",
-            }}
-        />
+        <CustomerQuotes />
         <Architecture />
-        <SectionCard cards={GOVERN_CARDS}>
+        <Govern>
             <Fragment slot="title">
                 <span class="gradient">Orchestrate</span> And
                 <br class="d-none d-xl-block" />
@@ -156,7 +96,7 @@ const LIFECYCLE_CARDS = [
                     Lifecycle
                 </span>
             </Fragment>
-        </SectionCard>
+        </Govern>
         <LifecycleLayout
             title='<span class="gradient">Governed</span> Configuration & <span class="gradient">ITSM</span> Orchestration'
             cards={LIFECYCLE_CARDS}
@@ -169,21 +109,21 @@ const LIFECYCLE_CARDS = [
             image={{ src: infraUi }}
         />
         <Operation />
-        <Blueprints
+        <BlueprintsGrid
             title='Ready-to-Use <span class="gradient">Automation</span> Patterns'
             {blueprints}
             {tags}
             link={{
-                href: "/blueprints?tags=infrastructure",
+                href: "/blueprints?tags=Infrastructure",
                 text: "View more Infrastructure blueprints",
             }}
         />
-        <Connect {plugins} />
+        <InfraPlugins />
         <Built />
         <SeeHow>
-            <Fragment slot="title"
-                >Ready to modernize Your Infrastructure Lifecycle?</Fragment
-            >
+            <Fragment slot="title">
+                Ready to modernize Your Infrastructure Lifecycle?
+            </Fragment>
             Teams replace vRO, Rundeck, Cron, Jenkins, and manual scripts with Kestra
         </SeeHow>
     </div>

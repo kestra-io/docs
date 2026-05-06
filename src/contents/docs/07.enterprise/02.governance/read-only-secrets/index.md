@@ -1,5 +1,6 @@
 ---
 title: Read-Only Secret Manager in Kestra Enterprise
+h1: Integrate External Secret Stores in Immutable (Read-Only) Mode
 description: Enhance security with Read-Only Secret Managers in Kestra. Integrate external secret stores like Vault or AWS Secrets Manager in immutable mode.
 sidebarTitle: Read-only Secret Manager
 icon: /src/contents/docs/icons/admin.svg
@@ -101,7 +102,7 @@ With [Vault](../secrets-manager/index.md#vault-configuration), secrets are store
 
 Here’s an example directory structure of a Vault secret engine used with Kestra:
 
-```
+```plaintext
 secret/
   ├── app1/
   │   ├── db/ <-- SECRET
@@ -119,7 +120,7 @@ secret/
 - `db`, `api`, and `config`: These are the secret names visible in the Kestra UI. `api` could be the Vault Secret that contains all API Keys for an application's external services.
 - `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `keys`, `API_TOKEN`: These are the `subkey` key value pairs that can be used in a Kestra flow.
 
-To configure access to secrets under `app1`, use the following [Kestra configuration](../../../configuration/index.md) with the added property `secret-path-prefix`:
+To configure access to secrets under `app1`, use the following [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) with the added property `secret-path-prefix`:
 
 ```yaml
 address: https://my-vault:8200/

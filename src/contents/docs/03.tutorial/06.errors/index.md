@@ -1,6 +1,7 @@
 ---
-title: Tutorial – Handle Errors in Kestra – Retries and Alerts
-description: Build resilient workflows in Kestra with robust error handling. Learn to configure retries, set up alerts, and manage failures at the flow and namespace levels.
+title: "Handle Errors in Kestra: Retries and Alerts"
+h1: Build Resilient Workflows with Retries, Alerts & Failure Handling
+description: Build resilient Kestra workflows with robust error handling. Configure retries, set up alerts, and manage failures at the flow and namespace levels.
 sidebarTitle: Error Handling
 icon: /src/contents/docs/icons/tutorial.svg
 ---
@@ -10,7 +11,7 @@ Handle errors with automatic retries and notifications.
 Failure is inevitable. Kestra offers automatic retries and error handling to help you build resilient workflows.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/fjq4z19PZ5w?si=ca80qvdamP6g1hWO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/1XzHGwkSrsI?si=r9NWv4e6Dk-VMXZ0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Handle errors with retries and alerts
@@ -24,13 +25,11 @@ You can implement error handling at the flow level or namespace level:
 1. **Flow-level**: Useful to implement custom alerting for a specific flow or task. This can be accomplished by adding the `errors` property.
 2. **Namespace-level**: Useful to send a notification for any failed Execution within a given namespace. This approach allows you to implement centralized error handling for all flows within a given namespace.
 
----
-
 ## Flow-level error handling using `errors`
 
 The `errors` property of a flow accepts a list of tasks to execute when an error occurs. You can add as many tasks as you want, and they will be executed sequentially similar to the `tasks` block.
 
-The following example workflow automatically sends a Slack alert via the [SlackIncomingWebhook](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook) whenever any flow in the `company.team` namespace fails or finishes with warnings.
+The following example workflow automatically sends a Slack alert via the [SlackIncomingWebhook](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook) whenever any flow in the `company.team` namespace fails or finishes with warnings.
 
 ```yaml
 id: unreliable_flow
@@ -42,7 +41,7 @@ tasks:
 
 errors:
   - id: alert_on_failure
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}" # https://hooks.slack.com/services/xyz/xyz/xyz
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
 ```
@@ -107,7 +106,7 @@ tasks:
 
 errors:
   - id: alert_on_failure
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
 
@@ -119,17 +118,15 @@ triggers:
 
 Now if there is an error, say our API endpoint is unreachable, we'll get a Slack alert notifying a team to investigate. For more, check the [error handling](../../05.workflow-components/11.errors/index.md) page.
 
----
-
 ## Namespace-level error handling using a flow trigger
 
-To get notified on a workflow failure, you can leverage Kestra's built-in notification tasks, including among others (_the list keeps growing with new releases_):
+To get notified on a workflow failure, you can leverage Kestra's built-in notification tasks, including:
 
-- [Slack](/plugins/plugin-slack/io.kestra.plugin.slack.slackexecution)
-- [Microsoft Teams](/plugins/plugin-teams/io.kestra.plugin.teams.teamsexecution)
-- [Email](/plugins/plugin-mail/io.kestra.plugin.mail.mailexecution)
+- [Slack](/plugins/plugin-slack)
+- [Microsoft Teams](/plugins/plugin-teams)
+- [Email](/plugins/plugin-mail)
 
-For a centralized namespace-level alerting, we recommend adding a dedicated monitoring workflow with one of the above mentioned notification tasks and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in the namespace `company.team` fails or finishes with warnings.
+For centralized namespace-level alerting, add a dedicated monitoring workflow with one of the notification tasks above and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in the namespace `company.team` fails or finishes with warnings.
 
 ```yaml
 id: failure_alert
@@ -137,7 +134,7 @@ namespace: system
 
 tasks:
   - id: send
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     executionId: "{{ trigger.executionId }}"
 
@@ -157,8 +154,6 @@ triggers:
 Adding this flow ensures you receive a Slack alert for any flow failure in the `company.team` namespace.
 
 ![alert notification](./alert-notification.png)
-
----
 
 ## Retries
 
@@ -282,7 +277,7 @@ tasks:
 
 errors:
   - id: alert_on_failure
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
 

@@ -1,0 +1,38 @@
+---
+title: "Data Parsing Functions in Kestra Expressions"
+h1: "Data Parsing Functions"
+description: Reference for Kestra's data parsing functions — fromJson(), fromIon(), and yaml() — for deserializing task outputs and working with structured data in expressions.
+sidebarTitle: Parsing Functions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+These helpers are most useful when a task output is still a serialized string and you want to treat it like structured data in later expressions.
+
+## `fromJson()`
+
+Parses a JSON string into an object so you can access its fields with dot or bracket notation:
+
+```twig
+{{ fromJson(outputs.myTask.value).name }}
+{{ fromJson('[1, 2, 3]')[0] }}
+```
+
+Use `fromJson()` when a task output arrives as a serialized JSON string rather than a structured object. To go the other direction, use the [`toJson` filter](../03.filters/01.json/index.mdx#tojson).
+
+## `fromIon()`
+
+Use `fromIon()` when a previous task or serializer produces Ion rather than JSON:
+
+```twig
+{{ fromIon(read(outputs.serialize.uri)).someField }}
+```
+
+## `yaml()`
+
+Parses a YAML string into an object so you can access its fields with dot or array notation:
+
+```twig
+{{ yaml('foo: [666, 1, 2]').foo[0] }}
+```
+
+`yaml()` is available both as a function and as a filter (`{{ value | yaml }}`). Use the function form when you are working with a raw YAML string literal or a variable containing YAML text. See the [`yaml` filter](../03.filters/05.yaml/index.mdx) for additional options including `indent` and `nindent` for template formatting.

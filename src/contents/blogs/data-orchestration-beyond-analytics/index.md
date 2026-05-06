@@ -5,6 +5,8 @@ date: 2024-09-10T13:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
 image: ./main.png
 ---
@@ -30,7 +32,7 @@ Airflow works for data engineering, but it struggles when you need to automate w
 
 If next to data pipelines, you're also automating customer-facing processes, business operations, or DevOps tasks, that's where Kestra shines.
 
-For example, **Airpaz**, a travel platform, [needed to orchestrate](/use-cases/stories/5-airpaz-optimizes-travel-data-workflows-with-kestra) data movement between booking systems, payment gateways, and CRM tools. Their workflows extended far beyond analytics and reporting — they needed to ensure reliable coordination across multiple critical applications. Kestra allowed them to keep their operational systems in sync, providing a reliable booking experience for millions of customers.
+For example, **Airpaz**, a travel platform, [needed to orchestrate](/use-cases/stories/airpaz-optimizes-travel-data-workflows-with-kestra) data movement between booking systems, payment gateways, and CRM tools. Their workflows extended far beyond analytics and reporting — they needed to ensure reliable coordination across multiple critical applications. Kestra allowed them to keep their operational systems in sync, providing a reliable booking experience for millions of customers.
 
 ### Why Choose Kestra: Simplicity and Flexibility
 
@@ -38,19 +40,19 @@ One of the key advantages of Kestra is how **simple** it makes orchestrating com
 
 Unlike Airflow, which requires boilerplate Python DAGs for everything, Kestra doesn’t lock you into a single language or way of working. You can define your workflows in [**a declarative configuration**](../2023-11-27-yaml-crashcourse) and only introduce custom code when more complex logic is required for the problem at hand. This API-first approach allows software engineering teams to [automate their workflows end-to-end](../2023-06-26-end-to-end-data-orchestration/index.md) using their preferred languages, including Java, Node.js, Python, R, Go, Rust, Shell, PowerShell, or simply running Docker containers.
 
-Consider **Gorgias**, which [chose Kestra](/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra) because it fits perfectly with their [Infrastructure as Code (IaC) approach](../2024-01-16-gorgias/index.md). Using Kestra, they could not only orchestrate their analytical data workflows involving tools like Airbyte, dbt, and Hightouch, but also automate operational tasks like infrastructure builds, CI/CD pipelines, and event triggers across systems. They didn’t need to write repetitive code — they used a mix of YAML and Terraform configurations for the bulk of their workflows and added custom logic only when absolutely necessary.
+Consider **Gorgias**, which [chose Kestra](/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra) because it fits perfectly with their [Infrastructure as Code (IaC) approach](../2024-01-16-gorgias/index.md). Using Kestra, they could not only orchestrate their analytical data workflows involving tools like Airbyte, dbt, and Hightouch, but also automate operational tasks like infrastructure builds, CI/CD pipelines, and event triggers across systems. They didn’t need to write repetitive code — they used a mix of YAML and Terraform configurations for the bulk of their workflows and added custom logic only when absolutely necessary.
 
 ### Unified Platform from Development to Production
 
 One of the standout features of Kestra is how it [**unifies Everything-as-Code with a user-friendly UI**](../2023-12-14-orchestration-problems-and-complexity/index.md). Users can start building workflows from the embedded editor in the UI, test them, and iterate quickly. Once everything works as expected, you can easily push the underlying workflow code to Git and promote it to staging and production environments. This iterative approach helps teams move faster without being locked into a specific deployment model.
 
-For **Leroy Merlin France**, [combining Kestra’s user-friendly UI](/use-cases/stories/14-achieving-agility-and-efficiency-in-data-architecture-with-kestra) with its Everything-as-Code approach made it possible to use the UI for development, and integrate Terraform and GitHub Actions for production deployments. This helped Leroy Merlin to scale their operations and enable hundreds of end users to work together across development and production environments without friction.
+For **Leroy Merlin France**, [combining Kestra’s user-friendly UI](/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent) with its Everything-as-Code approach made it possible to use the UI for development, and integrate Terraform and GitHub Actions for production deployments. This helped Leroy Merlin to scale their operations and enable hundreds of end users to work together across development and production environments without friction.
 
 ### Lower Barrier to Entry
 
 Kestra is designed with a **low barrier to entry**. You don’t need to be an expert in any single programming language to start orchestrating workflows. Our system is approachable to [a wide range of users](../2023-07-12-your-private-app-store-for-data-pipelines/index.md), including a.o. domain experts, developers, DevOps, data engineers, and business analysts. By allowing users to mix simple YAML configurations with custom code when needed, Kestra reduces complexity and empowers teams to focus on solving business challenges instead of getting stuck in technical details.
 
-For example, **Quadis**, a car dealership, [transitioned from legacy systems](/use-cases/stories/4-quadis-drives-innovation:-transforming-car-retail-operations-with-kestra) to Kestra. In just three months, they onboarded five developers, deployed multiple instances, and began orchestrating workflows ranging from financial reporting to ERP and CRM integrations. Kestra’s simplicity helped them get up and running quickly, automating critical business operations with minimal coding.
+For example, **Quadis**, a car dealership, [transitioned from legacy systems](/use-cases/stories/quadis-drives-innovation-transforming-car-retail-operations-with-kestra) to Kestra. In just three months, they onboarded five developers, deployed multiple instances, and began orchestrating workflows ranging from financial reporting to ERP and CRM integrations. Kestra’s simplicity helped them get up and running quickly, automating critical business operations with minimal coding.
 
 ### When to Choose Kestra Over Apache Airflow
 

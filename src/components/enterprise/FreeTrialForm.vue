@@ -4,44 +4,104 @@
             <div class="col-lg-6 column left-column">
                 <div class="form-container">
                     <h2 class="form-title mb-6">
-                        Request Access for a Free Trial of Kestra Enterprise Team Edition
+                        Request Access for a Free Trial of Kestra Enterprise
+                        Team Edition
                     </h2>
 
                     <div v-if="valid" v-html="validMessage" class="success" />
-                    <form v-else ref="enterprise-form" novalidate @submit.prevent="onSubmit">
-                        <div v-if="message" class="alert alert-danger">{{ message }}</div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstname">First Name <span class="required-field">*</span></label>
-                                <input id="firstname" type="text" class="form-control" name="firstname" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="lastname">Last Name <span class="required-field">*</span></label>
-                                <input id="lastname" type="text" class="form-control" name="lastname" required />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Company Mail <span class="required-field">*</span></label>
-                            <input id="email" type="email" class="form-control" name="email" required />
+                    <form
+                        v-else
+                        ref="enterprise-form"
+                        novalidate
+                        @submit.prevent="onSubmit"
+                    >
+                        <div v-if="message" class="alert alert-danger">
+                            {{ message }}
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="company">Company <span class="required-field">*</span></label>
-                                <input id="company" type="text" class="form-control" name="company" required />
+                                <label for="firstname"
+                                    >First Name
+                                    <span class="required-field">*</span></label
+                                >
+                                <input
+                                    id="firstname"
+                                    type="text"
+                                    class="form-control"
+                                    name="firstname"
+                                    required
+                                />
                             </div>
                             <div class="form-group">
-                                <label for="jobtitle">Job Title <span class="required-field">*</span></label>
-                                <input id="jobtitle" type="text" class="form-control" name="jobtitle" required />
+                                <label for="lastname"
+                                    >Last Name
+                                    <span class="required-field">*</span></label
+                                >
+                                <input
+                                    id="lastname"
+                                    type="text"
+                                    class="form-control"
+                                    name="lastname"
+                                    required
+                                />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>What's Your Use Case <span class="required-field">*</span></label>
+                            <label for="email"
+                                >Company Mail
+                                <span class="required-field">*</span></label
+                            >
+                            <input
+                                id="email"
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                required
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="company"
+                                    >Company
+                                    <span class="required-field">*</span></label
+                                >
+                                <input
+                                    id="company"
+                                    type="text"
+                                    class="form-control"
+                                    name="company"
+                                    required
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="jobtitle"
+                                    >Job Title
+                                    <span class="required-field">*</span></label
+                                >
+                                <input
+                                    id="jobtitle"
+                                    type="text"
+                                    class="form-control"
+                                    name="jobtitle"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label
+                                >What's Your Use Case
+                                <span class="required-field">*</span></label
+                            >
                             <div class="radio-options">
-                                <div v-for="(opt, i) in useCases" :key="opt.id" class="radio-option">
+                                <div
+                                    v-for="(opt, i) in useCases"
+                                    :key="opt.id"
+                                    class="radio-option"
+                                >
                                     <input
                                         :id="opt.id"
                                         type="radio"
@@ -54,32 +114,123 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="country">Country <span class="required-field">*</span></label>
-                            <select id="country" class="form-control" name="country" required>
-                                <option v-for="c in countryList" :key="c.code" :value="c.name" :selected="c.name === 'France'">
+                            <label
+                                >Have you Used Kestra Open Source
+                                <span class="required-field">*</span></label
+                            >
+                            <div class="radio-options">
+                                <div class="radio-option">
+                                    <input
+                                        id="kestra-oss-yes"
+                                        type="radio"
+                                        value="Yes"
+                                        name="have_you_used_kestra_open_source"
+                                        required
+                                    />
+                                    <label for="kestra-oss-yes">Yes</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input
+                                        id="kestra-oss-no"
+                                        type="radio"
+                                        value="No"
+                                        name="have_you_used_kestra_open_source"
+                                        required
+                                    />
+                                    <label for="kestra-oss-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="country"
+                                >Country
+                                <span class="required-field">*</span></label
+                            >
+                            <select
+                                id="country"
+                                class="form-control"
+                                name="country"
+                                required
+                            >
+                                <option
+                                    v-for="c in countryList"
+                                    :key="c.code"
+                                    :value="c.name"
+                                    :selected="c.name === 'France'"
+                                >
                                     {{ c.name }}
                                 </option>
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <label for="orchestration_needs">What are you automating ? (one sentence)</label>
-                            <textarea id="orchestration_needs" class="form-control" name="orchestration_needs" rows="2" />
+                            <label for="free_trial_start_date">
+                                When would you like to start your free trial?
+                                <span class="required-field">*</span>
+                            </label>
+                            <select
+                                id="free_trial_start_date"
+                                class="form-control"
+                                name="free_trial_start_date"
+                                required
+                            >
+                                <option value="" disabled selected>
+                                    Select an option
+                                </option>
+                                <option value="As soon as possible">
+                                    As soon as possible
+                                </option>
+                                <option value="In the next 2 weeks">
+                                    In the next 2 weeks
+                                </option>
+                                <option value="Within 1 month">
+                                    Within 1 month
+                                </option>
+                                <option value="Within 3 months">
+                                    Within 3 months
+                                </option>
+                                <option value="Not sure yet">
+                                    Not sure yet
+                                </option>
+                            </select>
                         </div>
-
-                        <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+                        <div class="form-group">
+                            <label for="orchestration_needs"
+                                >What are you automating ? (one sentence)</label
+                            >
+                            <textarea
+                                id="orchestration_needs"
+                                class="form-control"
+                                name="orchestration_needs"
+                                rows="2"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 mt-3"
+                        >
+                            Submit
+                        </button>
                     </form>
                 </div>
             </div>
             <div class="col-lg-6 column right-column">
                 <div class="right-content">
                     <p class="quote">
-                        “We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.”
+                        “We switched from Airflow because we want engineers
+                        solving problems, not coding orchestration. Kestra
+                        delivers end-to-end automation with the robustness we
+                        need at our scale. Few companies operate at this level,
+                        especially in AI/ML.”
                     </p>
-                    <span class="attribution">Senior Engineering Manager @Apple</span>
-                    <img :src="appleLogo.src" alt="Apple" class="company-logo" />
+                    <span class="attribution"
+                        >Senior Engineering Manager @Apple</span
+                    >
+                    <img
+                        :src="appleLogo.src"
+                        alt="Apple"
+                        class="company-logo"
+                    />
                 </div>
                 <img :src="freeTrialUi.src" alt="" class="img-fluid" />
             </div>
@@ -89,12 +240,12 @@
 
 <script setup lang="ts">
     import { ref, computed, useTemplateRef } from "vue"
-    import axios from "axios"
     import { countries } from "countries-list"
     import { getHubspotTracking } from "~/utils/hubspot"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
+    import { $fetch } from "~/utils/fetch"
     import appleLogo from "~/assets/teams/apple.svg"
     import freeTrialUi from "~/components/enterprise/assets/free-trial-ui.webp"
 
@@ -134,22 +285,40 @@
             message.value = "Invalid form: Please review the fields."
             return
         }
-
-        const { firstname, lastname, email, company, jobtitle, country, orchestration_needs } = form
+        const kestraOssRadio = form.querySelector(
+            'input[name="have_you_used_kestra_open_source"]:checked',
+        ) as HTMLInputElement | null
+        const {
+            firstname,
+            lastname,
+            email,
+            company,
+            jobtitle,
+            country,
+            free_trial_start_date,
+            orchestration_needs,
+        } = form
         const kuid = localStorage.getItem("KUID")
-        const useCaseRadio = form.querySelector('input[name="use_case"]:checked') as HTMLInputElement | null
+        const useCaseRadio = form.querySelector(
+            'input[name="use_case"]:checked',
+        ) as HTMLInputElement | null
 
-        hsq.push(["identify", {
-            email: email.value,
-            firstname: firstname.value,
-            lastname: lastname.value,
-            company: company.value,
-            jobtitle: jobtitle.value,
-            country: country.value,
-            kuid,
-        }])
+        hsq.push([
+            "identify",
+            {
+                email: email.value,
+                firstname: firstname.value,
+                lastname: lastname.value,
+                company: company.value,
+                jobtitle: jobtitle.value,
+                country: country.value,
+                kuid,
+            },
+        ])
 
-        const { data: ipData } = await axios.get("https://api.ipify.org?format=json")
+        const ipData = await $fetch<{ ip: string }>(
+            "https://api.ipify.org?format=json",
+        )
 
         const formData = {
             fields: [
@@ -160,9 +329,23 @@
                 field("0-1", "jobtitle", jobtitle.value),
                 field("0-2", "vertical_selector", useCaseRadio?.value ?? ""),
                 field("0-2", "countriesall", country.value),
+                field(
+                    "0-1",
+                    "have_you_used_kestra_open_source",
+                    kestraOssRadio?.value ?? "",
+                ),
+                field(
+                    "0-1",
+                    "free_trial_start_date",
+                    free_trial_start_date.value,
+                ),
                 field("0-1", "orchestration_needs", orchestration_needs.value),
                 field("0-1", "kuid", kuid),
-                field("0-1", "form_submission_identifier", "Enterprise Free Trial Form"),
+                field(
+                    "0-1",
+                    "form_submission_identifier",
+                    "Enterprise Free Trial Form",
+                ),
             ],
             context: {
                 hutk: getHubspotTracking(),
@@ -173,12 +356,24 @@
         }
 
         posthog.capture("enterprise_trial_form")
-        hsq.push(["trackCustomBehavioralEvent", { name: "enterprise_trial_form" }])
-        gtm?.trackEvent({ event: "enterprise_trial_form", noninteraction: false })
+        hsq.push([
+            "trackCustomBehavioralEvent",
+            { name: "enterprise_trial_form" },
+        ])
+        gtm?.trackEvent({
+            event: "enterprise_trial_form",
+            noninteraction: false,
+        })
         identify(email.value)
 
         try {
-            await axios.post(HUBSPOT_URL, formData)
+            await $fetch(HUBSPOT_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            })
             valid.value = true
             validMessage.value =
                 "Thanks for your interest in Kestra Enterprise! We will get back to you as soon as possible! \ud83d\udc4d"
@@ -189,14 +384,12 @@
             )
             message.value = isBlocked
                 ? "Please use a professional email address"
-                : error.response?.data?.message || "Form submission error"
+                : (error.response?.data?.message ?? "Form submission error")
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-
     .free-trial {
         overflow-x: hidden;
 
@@ -223,7 +416,8 @@
             flex-direction: column;
             justify-content: center;
             padding: 5rem 0 5rem 32px;
-            background: url('./assets/free-trial-bg.svg') center / cover no-repeat;
+            background: url("./assets/free-trial-bg.svg") center / cover
+                no-repeat;
 
             @include media-breakpoint-up(xl) {
                 padding-left: 80px;
@@ -362,7 +556,8 @@
             border: 1px solid var(--ks-border-alert-success);
             border-radius: $border-radius-lg;
             animation:
-                successAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                successAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+                    forwards,
                 glowEffect 2s ease-in-out infinite;
         }
 
@@ -377,13 +572,24 @@
         }
 
         @keyframes successAppear {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes glowEffect {
-            0%, 100% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.1); }
-            50% { box-shadow: 0 0 25px rgba(76, 175, 80, 0.2); }
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(76, 175, 80, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(76, 175, 80, 0.2);
+            }
         }
     }
 </style>

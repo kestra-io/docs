@@ -2,50 +2,51 @@
 import Link from "~/components/common/Link.astro"
 
 interface Card {
-    title: string;
-    description: string;
-    link: {
-        href: string;
-        text: string;
-    };
-    background: string;
-    animation: string;
+    title?: string
+    description?: string
+    link?: {
+        href: string
+        text: string
+    }
 }
 
 interface Props {
-    title: string;
-    cards: Card[];
+    title?: string
+    cards?: Card[]
 }
 
-const { title, cards } = Astro.props;
+const { title, cards } = Astro.props
 ---
 
 <section class="lifecycle">
     <div class="container">
-        <div class="row align-items-center" data-usal="fade-u delay-0 duration-500 ease-out">
+        <div
+            class="row align-items-center"
+            data-usal="fade-u delay-0 duration-500 ease-out"
+        >
             <div class="col-12">
-                <h2 set:html={title} />
+                {title && <h2 set:html={title} />}
             </div>
         </div>
 
         <div class="new-section d-flex flex-column flex-xl-row">
-            {cards.map((card) => (
-                <div class="card-item" data-usal={card.animation} style={{ background: card.background }}>
-                    <h2 set:html={card.title} />
-                    <p set:html={card.description} />
-                    <Link
-                        href={card.link.href}
-                        text={card.link.text}
-                    />
-                </div>
-            ))}
+            {
+                cards?.map((card) => {
+                    return (
+                        <div class="card-item" data-usal="slide-r">
+                            {card.title && <h2 set:html={card.title} />}
+                            {card.description && <p set:html={card.description} />}
+                            {card.link && <Link href={card.link.href} text={card.link.text} />}
+                        </div>
+                    )
+                })
+            }
         </div>
     </div>
 </section>
 
-<style lang="scss">
-    @import "~/assets/styles/variable";
 
+<style lang="scss">
     .lifecycle {
         width: 100%;
         padding: 4rem 1rem;
@@ -99,6 +100,14 @@ const { title, cards } = Astro.props;
                     width: 562px;
                     height: 351px;
                     gap: 4rem;
+                }
+
+                &:nth-child(odd) {
+                    background-color: #0d0d0d;
+                }
+
+                &:nth-child(even) {
+                    background-color: #631bff;
                 }
 
                 border-radius: 12px;

@@ -1,10 +1,12 @@
 ---
-title: "Kestra 1.3: LTS, Built for Production Control"
-link: "Read more"
-href: "https://go.kestra.io/release-1-3-newsfeed"
+title: "Conapi X Kestra: Building Data-Rich APIs with Gravitee and Kestra"
+link: "Join us"
+href: "https://watch.getcontrast.io/register/kestra-conapi-x-kestra-building-data-rich-apis-with-gravitee-and-kestra"
 image: ./image.jpg
-publicationDate: 2026-03-03T23:00:00
-addedDate: 2026-03-03T08:50:15.141
+publicationDate: 2026-02-01T23:00:00
+addedDate: 2026-02-02T08:50:15.141
 ---
 
-This release introduces Kill Switch for production control, reusable OAuth Credentials, operational Assets with events and freshness monitoring, the new kestractl CLI, a GitHub Action for CI workflows, and new infrastructure plugins including MAAS, NetBox, Nutanix, and Open Policy Agent.
+Join Will Russell (Developer Advocate at Kestra) and Stefan Fritz (CEO at conapi GmbH) on Thursday, February 12 at 12pm EST/5pm GMT for a live demonstration of orchestrating data-enriched APIs using workflow automation and API management together.
+
+You'll learn how to visualize complex data dependencies, optimize response times through parallel execution, and debug workflows efficiently using expressions.

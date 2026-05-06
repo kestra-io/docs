@@ -5,6 +5,8 @@ date: 2025-01-24T13:00:00
 category: Solutions
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -15,8 +17,6 @@ Many trends that began shaping [data engineering in 2024](../2024-01-24-2024-dat
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/JMfRRP_2Bs8?si=W1SSyqcwRGw-sfZV" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## **1. Generative AI as an Efficiency Driver**
 

@@ -1,5 +1,6 @@
 ---
-title: Automate Manual Approval Processes
+title: Automate Manual Approval Processes in Kestra
+h1: Add Human-in-the-Loop Approvals to Automated Workflows
 sidebarTitle: Approval Processes
 description: Integrate Human-in-the-Loop approvals into critical steps of automated workflows
 icon: /src/contents/docs/icons/kestra.svg
@@ -49,7 +50,7 @@ inputs:
 
 tasks:
   - id: notify_manager
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_HR_WEBHOOK') }}"
     payload: |
       {
@@ -328,7 +329,7 @@ Why this is robust:
 - Downstream automation is cleanly decoupled and reacts only after the first flow completes successfully.
 
 :::alert{type="info"}
-Note that the Flow trigger cannot react to a `RESUMED` state as this state is not observable. While you could react to the `RESTARTED` state, this state is used not only for resumed executions after paused but also for executions restarted after a failure, which may not be what you want. Therefore, we recommend that you design your Flow trigger to react directly to the `SUCCESS` state as shown above.
+The Flow trigger cannot react to a `RESUMED` state as this state is not observable. While you could react to the `RESTARTED` state, this state is used not only for resumed executions after paused but also for executions restarted after a failure, which may not be what you want. Design your Flow trigger to react directly to the `SUCCESS` state as shown above.
 :::
 
 ---

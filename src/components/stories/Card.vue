@@ -14,15 +14,14 @@
         <hr class="card-hr" />
         <div class="bottom">
             <Link
-                :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`"
-                text="Read the story"
+                :href="`/use-cases/stories/${story.id}`"
+                text="Read the Story"
             />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { slugify } from "@kestra-io/ui-libs"
     import TaskIcon from "~/components/common/TaskIcon.vue"
     import Link from "~/components/common/Link.vue"
 
@@ -32,8 +31,6 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
     .story-card {
         height: 434px;
         border-radius: 0.75rem;

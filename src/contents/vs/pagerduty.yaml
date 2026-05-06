@@ -1,0 +1,244 @@
+title: "PagerDuty Process Automation vs Kestra for Runbook Automation"
+description: "Compare Kestra vs PagerDuty Process Automation (formerly Rundeck): event-driven workflow orchestration vs. click-to-run runbook tools. See why SRE and platform teams replace PagerDuty PA with Kestra."
+competitorName: "PagerDuty PA"
+category: Infrastructure Automation
+shortDescription: "Click-to-run runbook tools vs. event-driven multi-step orchestration with approvals and audit trails."
+
+brandColor:
+  color: "#06ac38"
+
+intro:
+  title: "Kestra vs. PagerDuty Process Automation: Orchestration vs. Runbooks"
+  description: "PagerDuty Process Automation (formerly Rundeck) makes it easy to give ops teams click-to-run access to scripts and Ansible playbooks. But when incidents demand multi-step remediation across cloud APIs, Kubernetes, and ITSM—Kestra's event-driven orchestration engine handles it all in declarative YAML, with approvals, retries, and full audit trails built in."
+
+philosophy:
+  mainTitle: "Full Incident Orchestration vs. Click-to-Run Runbooks"
+  kestra:
+    title: "End-to-End Incident & Ops Automation"
+    description: "Define every incident workflow in YAML—from alert ingestion to automated diagnosis, human-in-the-loop approval, remediation, and ITSM ticket closure. Kestra triggers on webhooks, PagerDuty alerts, Kafka events, or schedules. Every execution is logged, versioned, and auditable."
+    subCardText: '"How do I automate the full incident lifecycle—from detection to resolution—with a clear audit trail?"'
+  competitor:
+    title: "Runbook Catalog, Limited Orchestration"
+    description: "PagerDuty Process Automation excels at giving operators self-service access to scripts and Ansible playbooks via a job catalog. But multi-step logic, conditional branching, data passing between steps, and complex event-driven triggers require workarounds. Version control is available only on Enterprise tier."
+    shadowColor: "#06AC38"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"My runbook worked, but the next step failed silently. How do I orchestrate the whole remediation flow?"'
+
+businessValue:
+  mainTitle: "Replace Manual Runbooks<br />with Intelligent Automation"
+  kestra:
+    title: "Incident Orchestration Platform"
+    list:
+      - "Trigger workflows from PagerDuty alerts, webhooks, or Kafka events automatically"
+      - "Multi-step remediation with conditions, retries, and parallel execution"
+      - "Inline approval gates—pause for human review before impactful changes"
+      - "Full audit trail and evidence logging for compliance and post-mortems"
+      - "Git-native—every workflow reviewed, versioned, and deployed through CI/CD"
+  competitor:
+    title: "Job Catalog & Runbook Tool"
+    list:
+      - "Click-to-run job catalog—great for individual runbooks, not complex flows"
+      - "Limited conditional logic and data passing between job steps"
+      - "Version control only available on Enterprise tier"
+      - "No native IaC integration—Terraform and complex pipelines require extra tooling"
+      - "Per-host licensing costs compound as infrastructure scales"
+    shadowColor: "#06AC38"
+    bulletColor: "#10B981"
+  footerText: "Teams like Mercy Health replaced Rundeck/PagerDuty PA after experiencing dropped jobs, HA issues, and the inability to build multi-step remediation flows. Kestra handled their entire incident-to-resolution lifecycle—including human approval gates and ITSM ticket closure—in a single YAML workflow that could be reviewed in pull requests."
+
+setupSpeed:
+  title: "Time to First Incident Automation Workflow"
+  subtitle: "Kestra starts in minutes with Docker Compose. PagerDuty Process Automation (Rundeck) requires Java, database configuration, and node setup before running a single job."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, run it, open the UI, and pick an incident automation Blueprint. Your first workflow includes a webhook trigger, automatic diagnosis step, approval gate, and ITSM ticket update—all in readable YAML."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick an Incident Automation Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: Hours
+      two: of setup
+    description: "PagerDuty Process Automation (formerly Rundeck) requires Java, a relational database, and node/agent configuration before running a single job. The Enterprise tier adds version control—meaning basic GitOps requires an upgrade."
+    shadowColor: "#06AC38"
+    command: |
+      # PagerDuty Process Automation (Rundeck)
+      docker run -d -p 4440:4440 rundeck/rundeck:latest
+      # Then configure: DB backend, node executor,
+      # ACL policies, SSH credentials, project structure...
+      # Version control (Git) requires Enterprise tier
+    lang: sh
+
+easeOfUse:
+  title: "Declarative Orchestration vs. UI-First Job Templates"
+  kestra:
+    title: "Kestra: Readable, reviewable, deployable"
+    description: "YAML workflows read like documentation. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes them for you. Every workflow goes through Git and CI/CD—no hidden state in a UI. Approvals, retries, PagerDuty alert triggers, and ITSM integration are first-class YAML constructs."
+    code: |
+      id: incident_auto_remediate
+      namespace: ops.incident
+
+      triggers:
+        - id: pagerduty_alert
+          type: io.kestra.plugin.pagerduty.triggers.Incident
+          severity: [critical, high]
+
+      tasks:
+        - id: diagnose
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            import subprocess
+            result = subprocess.run(["kubectl", "top", "pods"], capture_output=True, text=True)
+            print(result.stdout)
+
+        - id: approval_gate
+          type: io.kestra.plugin.core.flow.Pause
+          onResume:
+            form:
+              fields:
+                - id: action
+                  type: SELECT
+                  values: [restart_pod, scale_up, escalate]
+
+        - id: remediate
+          type: io.kestra.plugin.kubernetes.PodCreate
+          namespace: production
+          spec:
+            restartPolicy: Never
+
+        - id: close_ticket
+          type: io.kestra.plugin.servicenow.table.Update
+          table: incident
+          id: "{{ trigger.incidentId }}"
+          data:
+            state: resolved
+    lang: yaml
+  competitor:
+    title: "Rundeck: UI-first, limited orchestration"
+    description: "PagerDuty Process Automation job definitions live in the UI by default. Multi-step flows require chaining jobs or writing inline scripts. Complex conditional logic is awkward, data passing between steps is limited, and version control requires the Enterprise tier."
+    shadowColor: "#06AC38"
+    code: |
+      # PagerDuty/Rundeck YAML job definition (UI-first)
+      # Limited multi-step orchestration
+      - defaultTab: nodes
+        description: Restart failing pod
+        executionEnabled: true
+        id: restart-pod
+        name: Restart Failing Pod
+        nodeFilterEditable: false
+        sequence:
+          commands:
+          - exec: kubectl rollout restart deployment/$DEPLOYMENT
+          - exec: ./notify-slack.sh "$DEPLOYMENT restarted"
+          # No conditional logic, no data passing,
+          # no approval gates without extra configuration
+        scheduleEnabled: true
+    lang: yaml
+
+visualPreview:
+  mainTitle: "Incident Orchestration Platform vs. Runbook Catalog"
+  kestra:
+    description: "One platform for alert-triggered workflows, multi-step remediation, human approval gates, and ITSM ticket closure. Works on-prem, in Kubernetes, and in air-gapped environments."
+  competitor:
+    description: "PagerDuty Process Automation provides a self-service runbook catalog with SSH-based execution and RBAC. Excellent for click-to-run ops tasks—but limited when incident workflows need conditional logic, event-driven triggers, or data pipelines between steps."
+    shadowColor: "#06AC38"
+
+featureGrid:
+  title: "Kestra vs. PagerDuty Process Automation at a Glance"
+  tableData:
+    - feature: Primary use case
+      kestra: Full incident lifecycle orchestration (detect, diagnose, remediate, close)
+      competitor: Self-service runbook catalog and job automation
+    - feature: Workflow definition
+      kestra: Declarative YAML (code-first, Git-native)
+      competitor: UI-based job templates (Git requires Enterprise tier)
+    - feature: Event-driven triggers
+      kestra: PagerDuty alerts, webhooks, Kafka, schedules, file detection, flow triggers
+      competitor: Webhooks and schedules (limited queue-based triggers)
+    - feature: Multi-step orchestration
+      kestra: Conditions, loops, parallelism, data passing, sub-flows
+      competitor: Job chaining (limited conditionals and data passing)
+    - feature: Approval gates
+      kestra: Inline Pause tasks with dynamic forms and resume logic
+      competitor: Manual job inputs (basic, no dynamic forms)
+    - feature: IaC integration
+      kestra: Native Terraform, Ansible, PowerShell, Python, Pulumi
+      competitor: Ansible as standalone job step (no native Terraform/IaC)
+    - feature: Observability
+      kestra: Full execution logs, artifact storage, Gantt view, clear error messages
+      competitor: Basic job output logs (limited structured observability)
+    - feature: Air-gapped deployment
+      kestra: "✓ Fully supported (on-prem, Kubernetes)"
+      competitor: Partial (Runbook Automation Cloud requires connectivity)
+    - feature: Version control
+      kestra: Native (Git, CI/CD, Terraform provider)
+      competitor: Enterprise tier only
+    - feature: Multi-tenancy
+      kestra: Native namespace isolation with per-namespace RBAC
+      competitor: Project-based RBAC (no namespace isolation)
+    - feature: Licensing model
+      kestra: Flat instance + worker-based pricing
+      competitor: Per-host pricing—costs compound as infrastructure scales
+
+testimonials:
+  - quote: "We replaced Rundeck after it dropped jobs in HA mode and gave us no visibility. Kestra handles our entire incident automation pipeline—from PagerDuty alert to ITSM closure—with full audit trails and approval gates."
+    author: "SRE Lead @ Private Healthcare"
+    kpis:
+      - value: "100%"
+        name: "Audit coverage for incident workflows"
+      - value: "0"
+        name: "Dropped jobs since migration"
+      - value: "3x"
+        name: "Faster mean time to resolution"
+    storyLink: "/use-cases/stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows"
+
+platformStrengths:
+  title: "Kestra Is Built for the Full Incident Lifecycle"
+  features:
+    - title: "Event-Driven from Alert to Resolution"
+      description: "Kestra triggers on PagerDuty alerts, Kafka events, webhooks, and file detection. Automated diagnosis, conditional remediation, human approval gates, and ITSM ticket closure all happen in a single declarative workflow—no handoffs between tools."
+    - title: "Git-Native Runbooks That Actually Scale"
+      description: "Every workflow is YAML you can commit, review in a pull request, and deploy through CI/CD. When Mercy Health's team needed to update their incident response playbook, it was a PR—not a UI change on a live production system."
+    - title: "Works Anywhere: Cloud, On-Prem, Air-Gapped"
+      description: "Deploy Kestra on Kubernetes, Docker, or bare metal. Run remote workers close to targets in hybrid and OT environments. Air-gap deployments supported for regulated industries—the Austrian Ministry of Defense runs Kestra fully disconnected from the internet."
+
+decisionGuide:
+  mainTitle: "When to Choose Kestra vs. PagerDuty Process Automation"
+  kestra:
+    title: "Choose Kestra When"
+    list:
+      - "Your incident workflows require multi-step logic, conditions, and data passing between steps."
+      - "You need event-driven triggers from PagerDuty alerts, Kafka, or message queues."
+      - "Audit trails, compliance logging, and post-mortem evidence are requirements."
+      - "You want self-service Apps with dynamic approval forms—not just click-to-run scripts."
+      - "Version control and GitOps matter to your team today, not as an Enterprise upgrade."
+  competitor:
+    title: "Consider PagerDuty PA When"
+    list:
+      - "Your use case is purely self-service access to simple ops scripts and Ansible playbooks."
+      - "PagerDuty on-call integration is already deeply embedded and a catalog of runbooks is sufficient."
+      - "Your workflows are single-step or two-step with no complex logic or data dependencies."
+      - "You don't need Git-native workflow management and are comfortable with UI-first definitions."
+    shadowColor: "#06AC38"
+    bulletColor: "#10B981"
+
+commonQuestions:
+  - question: "How does Kestra compare to PagerDuty Process Automation (formerly Rundeck)?"
+    answer: "PagerDuty Process Automation is a runbook automation tool focused on giving operations teams click-to-run access to scripts and Ansible playbooks with SSH-based execution and RBAC. Kestra provides all of that—plus complex multi-step orchestration, event-driven triggers from PagerDuty alerts and Kafka, dynamic approval forms, and built-in IaC integration. Where PagerDuty PA chains jobs with limited logic, Kestra orchestrates entire incident workflows with conditions, parallelism, retries, and data passing between steps."
+  - question: "Can Kestra trigger directly from PagerDuty alerts?"
+    answer: "Yes. Kestra has a native PagerDuty plugin that can trigger workflows when incidents are created or escalated. This allows fully automated first-response flows: diagnose the issue, attempt automated remediation, and only page a human if automation fails—reducing alert fatigue and mean time to resolution."
+  - question: "Why did Mercy Health replace Rundeck with Kestra?"
+    answer: "Mercy Health's team experienced dropped jobs in Rundeck's HA configuration and had poor visibility into what failed and why. After migrating to Kestra, they gained full execution logs, approval gates for sensitive operations, and Git-native workflow management. Their incident automation pipeline—from detection to ITSM ticket closure—now runs as a single auditable YAML workflow reviewed in pull requests."
+  - question: "Does Kestra support Ansible for ops automation?"
+    answer: "Yes. Kestra has a native Ansible plugin that runs playbooks as workflow tasks. Unlike PagerDuty PA where Ansible is a standalone job, in Kestra you can chain Ansible execution with pre-flight checks, approval gates, post-run validation, and ITSM updates—all in one coordinated workflow with full execution context passed between steps."
+  - question: "How does Kestra handle self-service ops for non-developers?"
+    answer: "Kestra Apps provide dynamic, data-backed forms for self-service operations. Forms can be populated from APIs, databases, or CMDBs—giving operators dropdowns with live infrastructure data rather than static values. Approval gates are inline YAML tasks that pause execution for human review. This gives every team member safe self-service access to powerful automation without writing code."
+  - question: "Is Kestra suitable for air-gapped and regulated environments?"
+    answer: "Yes. Kestra was designed for compliance-first deployments. It runs fully on-prem with no external dependencies, supports internal Postgres and S3-compatible storage, integrates with AD/OIDC for SSO, and works with enterprise secrets managers like CyberArk and HashiCorp Vault. The Austrian Ministry of Defense runs Kestra fully air-gapped—chosen specifically for its audit capabilities and on-prem readiness."

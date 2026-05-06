@@ -69,13 +69,13 @@
                 type: Object,
                 default: () => ({
                     dark: {
-                        text: "Talk to Us",
+                        text: "Book a Demo",
                         href: "/demo",
                         target: "_self",
                     },
                     purple: {
-                        text: "Get started",
-                        href: "/docs/getting-started/quickstart",
+                        text: "Get Started",
+                        href: "/get-started",
                         target: "_self",
                     },
                 }),
@@ -85,7 +85,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .container-fluid {
         background: url("/landing/usecases/cicd/bg.svg") no-repeat center;

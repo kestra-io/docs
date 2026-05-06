@@ -1,0 +1,34 @@
+---
+import CardGrid from "~/components/card/CardGrid.astro"
+
+const title = `<span class="highlight">Customer Success</span> Program & Support with SLA
+               <br class="d-none d-lg-block" />to ensure your success at every step.`
+
+const items = [
+    {
+        title: "Onboarding",
+        icon: "mdi:rocket-launch-outline",
+        description: "Training, installation, and expert services.",
+    },
+    {
+        title: "Partnership",
+        icon: "mdi:handshake-outline",
+        description:
+            "Tailored business cases and clear quotations to drive your growth.",
+    },
+    {
+        title: "Customer Success",
+        icon: "mdi:face-agent",
+        description:
+            "Support, office hours, and roadmap previews to keep you ahead.",
+    },
+]
+---
+
+<CardGrid title={title} items={items} />
+
+<style lang="scss">
+    :global(.card-grid-section) {
+        background: var(--ks-background-secondary) !important;
+    }
+</style>

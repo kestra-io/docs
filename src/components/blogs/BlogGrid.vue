@@ -1,8 +1,9 @@
 <template>
     <div class="contain">
-        <BlogTabs
+        <Tabs
             v-model="activeCategory"
-            :categories="allCategories"
+            :categories="allBlogCategories"
+            root-href="/blogs"
             class="m-0 mb-4"
         />
 
@@ -24,26 +25,23 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed } from 'vue'
-    import BlogTabs from './BlogTabs.vue'
+    import { ref, computed, watch } from 'vue'
+    import Tabs from '~/components/common/Tabs.vue'
     import BlogCard from './BlogCard.vue'
+    import { allBlogCategories, ALL_NEWS, categoryMap } from "~/components/blogs/categories"
 
     const props = defineProps<{
-        blogs: any[]
+        blogs: {
+            path: string
+            title: string
+            category: string
+            description: string
+            publicationDate: string
+        }[]
+        slug: string
     }>()
 
-    const ALL_NEWS = "All news"
-    
-    const categoryMap: Record<string, string> = {
-        "Company News": "Company news",
-        "News & Products Updates": "News & Products Updates",
-        "News & Product Updates": "News & Products Updates",
-        "Solutions": "Solutions",
-        "Solution": "Solutions"
-    }
-
-    const allCategories = [ALL_NEWS, "Company news", "News & Products Updates", "Solutions"]
-    const activeCategory = ref(ALL_NEWS)
+    const activeCategory = ref(props.slug || ALL_NEWS)
     const visibleCount = ref(8)
 
     const normalizedBlogs = computed(() => {
@@ -57,7 +55,16 @@
         if (activeCategory.value === ALL_NEWS) {
             return normalizedBlogs.value
         }
-        return normalizedBlogs.value.filter(blog => blog.normalizedCategory === activeCategory.value)
+        return normalizedBlogs.value.filter(blog => blog.normalizedCategory === allBlogCategories.get(activeCategory.value))
+    })
+
+    watch(() => props.slug, (newSlug) => {
+        activeCategory.value = newSlug || ALL_NEWS
+    })
+
+    watch(activeCategory, () => {
+        // update the URL without reloading the page
+        window.history.pushState(null, '', `/blogs/${activeCategory.value}`)
     })
 
     const showMore = () => {
@@ -66,7 +73,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .contain {
         width: 100%;

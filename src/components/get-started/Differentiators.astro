@@ -1,0 +1,64 @@
+---
+import CardGrid from "~/components/card/CardGrid.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const ITEMS = [
+    {
+        icon: "mdi:file-document-outline",
+        title: "Declarative YAML",
+        description:
+            "Define workflows as code. Version control, code review, and reuse — built in from day one.",
+    },
+    {
+        icon: "mdi:code-tags",
+        title: "Any Language",
+        description:
+            "Python, Bash, Node.js, Go, SQL — use what you already know. No framework wrappers, no refactoring.",
+    },
+    {
+        icon: "mdi:puzzle-outline",
+        title: `${totalPlugins}+ Plugins`,
+        description:
+            "Connect to databases, cloud services, APIs, and SaaS tools. No custom integrations required.",
+    },
+    {
+        icon: "mdi:api",
+        title: "API-First",
+        description:
+            "Trigger, manage, and monitor workflows programmatically. Everything in the UI is available via API.",
+    },
+    {
+        icon: "mdi:lightning-bolt-outline",
+        title: "Event-Driven",
+        description:
+            "React to file changes, messages, webhooks, and database events in real time. Or schedule with cron.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "Production-Ready",
+        description:
+            "SOC 2 Type II certified. SSO, RBAC, audit logs, multi-tenancy. From startup to enterprise.",
+    },
+]
+---
+
+<CardGrid
+    title='Built Different. <span class="highlight">On Purpose.</span>'
+    subtitle="Kestra was designed from scratch for teams that need orchestration without the overhead."
+    items={ITEMS}
+>
+    <div slot="cta" data-usal="fade-up">
+        <p class="cta-text">Want to see Kestra with your actual use case?</p>
+        <a href="/demo" class="btn btn-primary btn-lg">Book a Demo</a>
+    </div>
+</CardGrid>
+
+<style lang="scss">
+    .cta-text {
+        color: var(--ks-content-secondary);
+        font-size: $font-size-md;
+        margin: 0 0 1rem;
+    }
+</style>

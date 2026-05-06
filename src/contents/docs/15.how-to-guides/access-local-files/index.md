@@ -1,5 +1,6 @@
 ---
-title: Access Files on your Local Machine in Kestra
+title: "Access Local Files in Kestra: Bind Mounts Guide"
+h1: Read and Process Local Machine Files Using Bind Mounts
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -9,8 +10,6 @@ description: Access and process files stored on your local machine within Kestra
 ---
 
 Access locally stored files on your machine inside Kestra workflows.
-
-## Access Files on your Local Machine in Kestra
 
 In Kestra, you can access files stored on your local machine from within your flows.
 This is useful when you have a directory of files to process or scripts to execute without needing to copy them into Kestra.

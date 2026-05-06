@@ -1,4 +1,5 @@
-import { $fetchApi } from "~/utils/fetch.ts"
+import { $fetchApiCached } from "~/utils/fetch.ts"
+import { randomSortFunction } from "~/utils/random"
 
 interface BlueprintsOptions {
     page?: number
@@ -7,7 +8,9 @@ interface BlueprintsOptions {
     q?: string
 }
 
-export async function useBlueprintsList(options: BlueprintsOptions = {}): Promise<any> {
+export async function useBlueprintsList(
+    options: BlueprintsOptions = {},
+): Promise<any> {
     const { page = 1, size = 24, tags = "", q = "" } = options
     const PARAMS = new URLSearchParams({
         page: page.toString(),
@@ -19,8 +22,10 @@ export async function useBlueprintsList(options: BlueprintsOptions = {}): Promis
     if (q) {
         PARAMS.append("q", q)
     }
-    return await $fetchApi(`/blueprints/versions/latest?${PARAMS}`).then((DATA) => ({
-        ...DATA,
-        results: [...DATA.results].sort(() => Math.random() - 0.5),
-    }))
+    return await $fetchApiCached(`/blueprints/versions/latest?${PARAMS}`).then(
+        (DATA) => ({
+            ...DATA,
+            results: [...DATA.results].sort(randomSortFunction),
+        }),
+    )
 }

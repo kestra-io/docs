@@ -1,13 +1,12 @@
 ---
-title: Execution States in Kestra – Lifecycle Reference
+title: "Execution States in Kestra: Full Lifecycle Guide"
+h1: Understand Every Execution State from Created to Success
 description: Understand the Kestra Execution Lifecycle. Reference guide to all execution and task run states, including Created, Running, Success, Failed, and more.
 sidebarTitle: States
 icon: /src/contents/docs/icons/flow.svg
 ---
 
 States control the status of your workflow execution.
-
-## Execution states – lifecycle reference
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h5AigXBAs6Y?si=ftaD1zM24b7BDUMo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -36,7 +35,7 @@ Here is a brief description of each state:
 8. **RETRIED**: This terminal state indicates that the execution has been retried according to the [flow-level retry policy](../12.retries/index.md#flow-level-retries) set to the `CREATE_NEW_EXECUTION` behavior. This means that the original execution (which failed and has been retried) is marked as `RETRIED`, and a new execution is created to run the flow again.
 9. **PAUSED**: This transient state indicates that the execution is awaiting manual approval or has been paused for a fixed duration before continuing the execution. There are no `RESUMING` or `RESUMED` states. A paused execution transitions directly from `PAUSED` to `RUNNING` when resumed.
 10. **RESTARTED**: This transient state is equivalent to the `CREATED` state but for a failed execution that has been restarted e.g., from the UI. These executions transition to `RUNNING` once the restart is processed.
-11. **CANCELLED**: This terminal state indicates that the execution has been automatically cancelled by the system, usually because the `concurrency` limit was reached and the [concurrency](../14.concurrency/index.md) `behavior` was set to `CANCEL` in order to cancel all executions that exceed the concurrency limit.
+11. **CANCELLED**: This terminal state indicates that the execution has been automatically cancelled by the system, usually because the `concurrency` limit was reached and the [concurrency](../14.concurrency/index.md) `behavior` was set to `CANCEL`, which cancels all executions that exceed the concurrency limit.
 12. **KILLING**: This transient state indicates that the user has issued a command to kill the execution, e.g., via a task or by clicking on the `Kill` button in the UI. The system is terminating (killing) any task runs still in progress. As soon as all task runs are terminated, the execution will transition to the `KILLED` state.
 13. **KILLED**: This terminal state indicates that the execution has been killed upon request by the user. No more tasks will be able to run, and the execution is considered terminated.
 

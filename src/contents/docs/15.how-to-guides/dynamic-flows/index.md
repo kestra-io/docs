@@ -1,5 +1,7 @@
 ---
-title: Dynamic Flows
+title: Build Dynamic Flows in Kestra
+h1: Use Inputs and Expressions to Build Flexible Dynamic Flows
+description: Create dynamic Kestra flows at runtime using inputs and Pebble expressions. Generate flow configurations on the fly for data-driven, adaptive orchestration.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -111,13 +113,13 @@ tasks:
             header: true
 ```
 
-In order to generate this flow dynamically for any number of items, we will use the following python code.
+To generate this flow dynamically for any number of items, use the following Python code.
 
 ```python
 import os
 from ruamel.yaml import YAML
 
-## Get the items from the environment variable and split it by comma(,)
+## Get the items from the environment variable and split them by commas
 items = os.getenv('EXTRACT_ITEMS', "products,orders").split(",")
 
 def http_download_task(idx, item):

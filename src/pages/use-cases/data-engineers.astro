@@ -1,22 +1,52 @@
 ---
+import { $fetchApiCached } from "~/utils/fetch"
+
 import Layout from "~/components/layout.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Blueprints from "~/components/common/BlueprintsRender.vue"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
-import HeaderBox from "~/components/common/HeaderBox.vue"
-import Cards from "~/components/use-cases/Cards.astro"
-import { $fetchApi } from "~/utils/fetch"
+import SeeHow from "~/components/common/SeeHow.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
 
-const TITLE = "Simplify Your Data Engineering Challenges with Kestra"
-const DESCRIPTION =
-    "Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
+import heroFront from "~/assets/use-cases/data/hero-front.svg"
+import dataCapture from "~/assets/use-cases/capabilities/data-capture.svg"
+import dataStack from "~/assets/use-cases/capabilities/data-stack.svg"
+import ciCd from "~/assets/use-cases/capabilities/continuous-integration.svg"
 
-const response = await $fetchApi<{ results: Blueprint[] }>(
-    "/blueprints/versions/latest?page=1&size=20",
+const response = await $fetchApiCached<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?tags=data&page=1&size=20",
 )
 const blueprints = response.results
 
-const CARDS_DATA = [
+const title = "Simplify Your Data Engineering Challenges with Kestra"
+const description =
+    "Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
+
+const CAPABILITIES = [
+    {
+        title: "Change data capture",
+        description:
+            "Streamline Complex Data Pipelines and Automate Repetitive Tasks for Enhanced Efficiency",
+        image: dataCapture,
+        pageHref: "/use-cases/change-data-capture",
+    },
+    {
+        title: "Modern Data Stack Integration",
+        description:
+            "Integrate leading data tools from the Modern Data Stack with Kestra",
+        image: dataStack,
+        pageHref: "/use-cases/modern-data-stack",
+    },
+    {
+        title: "CI/CD for your Kestra Workflows",
+        description:
+            "Embrace software engineering practices for versioning, deploying, and maintaining data workflows",
+        image: ciCd,
+        pageHref: "/use-cases/ci-cd",
+    },
+]
+
+const ITEMS = [
     {
         number: "01",
         title: "Automate Your Data Pipelines",
@@ -66,34 +96,35 @@ const CARDS_DATA = [
             "Manage the entire data lifecycle, from ingestion to reporting, with Kestra’s powerful orchestration capabilities.",
     },
 ]
-
-const CAPABILITIES = [
-    "Change data capture",
-    "Modern Data Stack Integration",
-    "CI/CD for your Kestra Workflows",
-]
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <DetailsHero
-        client:load
-        title="Kestra for<br><span>Data Engineers</span>"
-        description="Orchestrate your Data Pipelines, Automate Processes, and Harness the Power of Your Data"
-        image={{
-            src: "/landing/usecases/data-engineers/header-hero.svg",
-            alt: "Kestra for Data Engineers",
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Kestra for <br /> Data Engineers"
+        {description}
+        image={heroFront}
+    />
+
+    <CardGrid
+        title="Built for the Way Data Teams Work"
+        subtitle="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains."
+        items={ITEMS}
+    />
+
+    <BlueprintsGrid
+        title='Explore <span class="highlight">Data</span> blueprints'
+        {blueprints}
+        link={{
+            href: "/blueprints?tags=data",
+            text: "View more Data Blueprints",
         }}
     />
-    <Cards
-        title="Simplify your Data Engineering <span class='highlight'>Challenges</span>"
-        description="From automating data pipelines to accelerating machine learning model deployment, Kestra streamlines complex workflows across a wide range of industries and domains. Dive into the wide array of use cases Kestra efficiently addresses."
-        cards={CARDS_DATA}
-    />
-    <Blueprints {blueprints} client:visible />
-    <Capabilities
-        client:visible
-        title="for Data Orchestration"
-        capabilities={CAPABILITIES}
-    />
-    <HeaderBox client:visible />
+
+    <Capabilities title="for Data Orchestration" capabilities={CAPABILITIES} />
+
+    <SeeHow>
+        <Fragment slot="title"> Scale With Kestra Enterprise Edition </Fragment>
+        Built for Enterprises and SMBs, with strong governance, enterprise-grade security,
+        seamless scalability, and dedicated enterprise support backed by SLAs.
+    </SeeHow>
 </Layout>

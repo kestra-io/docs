@@ -1,0 +1,183 @@
+---
+title: "Number and Collection Filters in Kestra"
+h1: "Numbers and Collections Filters"
+description: Reference for Kestra's number and collection filters — abs, number, first, last, sort, chunk, distinct, slice, merge, flatten, keys, values, and more.
+sidebarTitle: Collections Filters
+icon: /src/contents/docs/icons/expression.svg
+---
+
+These filters are the everyday cleanup tools for expression values. Use them when you already have the right data but need to reformat it, count it, sort it, or coerce it into the type another task expects.
+
+## `abs`
+
+Returns the absolute value of a number:
+
+```twig
+{{ -7 | abs }}
+{# output: 7 #}
+```
+
+## `number`
+
+Parses a string into a numeric type. Supports `INT`, `FLOAT`, `LONG`, `DOUBLE`, `BIGDECIMAL`, and `BIGINTEGER`. When no type is specified, the type is inferred:
+
+```twig
+{{ "12.3" | number | className }}
+{# output: java.lang.Float #}
+{{ "9223372036854775807" | number('BIGDECIMAL') | className }}
+{# output: java.math.BigDecimal #}
+```
+
+Use `BIGDECIMAL` or `BIGINTEGER` when values exceed standard long or double precision.
+
+## `className`
+
+Returns the Java class name of an object. Useful for debugging type inference when combined with `number`:
+
+```twig
+{{ "12.3" | number | className }}
+{# output: java.lang.Float #}
+```
+
+## `numberFormat`
+
+Formats a number using a Java `DecimalFormat` pattern:
+
+```twig
+{{ 3.141592653 | numberFormat("#.##") }}
+{# output: 3.14 #}
+```
+
+## `first` and `last`
+
+Returns the first or last element of a collection, or the first or last character of a string:
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | first }}
+{# output: apple #}
+{{ ['apple', 'banana', 'cherry'] | last }}
+{# output: cherry #}
+{{ 'Kestra' | first }}
+{# output: K #}
+{{ 'Kestra' | last }}
+{# output: a #}
+```
+
+## `length`
+
+Returns the number of elements in a collection, or the number of characters in a string:
+
+```twig
+{{ ['apple', 'banana'] | length }}
+{# output: 2 #}
+{{ 'Kestra' | length }}
+{# output: 6 #}
+```
+
+## `join`
+
+Concatenates a collection into a single string with an optional delimiter:
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | join(', ') }}
+{# output: apple, banana, cherry #}
+```
+
+## `split`
+
+Splits a string into a list using a delimiter. The delimiter is a regex, so escape special characters:
+
+```twig
+{{ 'apple,banana,cherry' | split(',') }}
+{# output: ['apple', 'banana', 'cherry'] #}
+{{ 'a.b.c' | split('\\.') }}
+```
+
+The optional `limit` argument controls how many splits are performed:
+
+- **Positive**: limits the array size; the last entry contains the remaining content
+- **Zero**: no limit; trailing empty strings are discarded
+- **Negative**: no limit; trailing empty strings are included
+
+```twig
+{{ 'apple,banana,cherry,grape' | split(',', 2) }}
+{# output: ['apple', 'banana,cherry,grape'] #}
+```
+
+## `sort` and `rsort`
+
+Sort a collection in ascending or descending order:
+
+```twig
+{{ [3, 1, 2] | sort }}
+{# output: [1, 2, 3] #}
+{{ [3, 1, 2] | rsort }}
+{# output: [3, 2, 1] #}
+```
+
+## `reverse`
+
+Reverses the order of a collection:
+
+```twig
+{{ [1, 2, 3] | reverse }}
+{# output: [3, 2, 1] #}
+```
+
+## `chunk`
+
+Splits a collection into groups of a specified size:
+
+```twig
+{{ [1, 2, 3, 4, 5] | chunk(2) }}
+{# output: [[1, 2], [3, 4], [5]] #}
+```
+
+## `distinct`
+
+Returns only unique values from a collection:
+
+```twig
+{{ [1, 2, 2, 3, 1] | distinct }}
+{# output: [1, 2, 3] #}
+```
+
+## `slice`
+
+Extracts a portion of a collection or string using `fromIndex` (inclusive) and `toIndex` (exclusive):
+
+```twig
+{{ ['apple', 'banana', 'cherry'] | slice(1, 2) }}
+{# output: [banana] #}
+{{ 'Kestra' | slice(1, 3) }}
+{# output: es #}
+```
+
+## `merge`
+
+Merges two collections into one:
+
+```twig
+{{ [1, 2] | merge([3, 4]) }}
+{# output: [1, 2, 3, 4] #}
+```
+
+## `flatten`
+
+Removes one level of nesting from a collection:
+
+```twig
+{{ [[1, 2], [3, 4], [5]] | flatten }}
+{# output: [1, 2, 3, 4, 5] #}
+```
+
+## `keys` and `values`
+
+Return the keys or values of a map:
+
+```twig
+{{ {'foo': 'bar', 'baz': 'qux'} | keys }}
+{# output: [foo, baz] #}
+{{ {'foo': 'bar', 'baz': 'qux'} | values }}
+{# output: [bar, qux] #}
+```

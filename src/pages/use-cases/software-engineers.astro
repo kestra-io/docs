@@ -1,24 +1,52 @@
 ---
+import { $fetchApiCached } from "~/utils/fetch"
+
 import Layout from "~/components/layout.astro"
-import Cards from "~/components/use-cases/Cards.astro"
-import DetailsHero from "~/components/use-cases/DetailsHero.vue"
-import Blueprints from "~/components/common/BlueprintsRender.vue"
-import Capabilities from "~/components/use-cases/Capabilities.vue"
-import HeaderBox from "~/components/common/HeaderBox.vue"
-import { $fetchApi } from "~/utils/fetch"
+import TopHero from "~/components/layout/TopHero.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
+import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
 
-const TITLE = "Orchestrate Your Software Development with Kestra"
-const DESCRIPTION =
-    "Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment"
+import heroFront from "~/assets/use-cases/software/hero-front.svg"
+import microserviceManagement from "~/assets/use-cases/capabilities/microservice-management.svg"
+import databaseManagement from "~/assets/use-cases/capabilities/database-management.svg"
+import apiOrchestration from "~/assets/use-cases/capabilities/api-orchestration.svg"
 
-const CHALLENGES_TITLE = `Orchestrate <span class='highlight'>Your Software</span><br/>Development with <span class='highlight'>Kestra</span>`
-
-const response = await $fetchApi<{ results: Blueprint[] }>(
-    "/blueprints/versions/latest?page=1&size=20",
+const response = await $fetchApiCached<{ results: Blueprint[] }>(
+    "/blueprints/versions/latest?tags=core&page=1&size=20",
 )
 const blueprints = response.results
 
-const CARDS_DATA = [
+const title = "Orchestrate Your Software Development with Kestra"
+const description =
+    "Boost Productivity, Simplify Processes, and Accelerate Microservice Deployment"
+
+const CAPABILITIES = [
+    {
+        title: "Microservice Management",
+        description:
+            "Simplify the orchestration of microservices, ensuring efficient communication and coordination.",
+        image: microserviceManagement,
+        pageHref: "/use-cases/microservices-orchestration",
+    },
+    {
+        title: "Database Management",
+        description:
+            "Orchestrate database migrations, backups, and restorations seamlessly within your development pipeline.",
+        image: databaseManagement,
+        pageHref: "/use-cases/databases-management",
+    },
+    {
+        title: "API Orchestration",
+        description:
+            "Manage and automate API deployments, scaling, and monitoring to ensure high availability and performance.",
+        image: apiOrchestration,
+        pageHref: "/use-cases/provisioning-and-deployment",
+    },
+]
+
+const ITEMS = [
     {
         number: "01",
         title: "Automated Testing and QA",
@@ -74,38 +102,37 @@ const CARDS_DATA = [
             "Set up automated feedback loops to collect and integrate user feedback into the development process, enabling continuous improvement and user-centric development.",
     },
 ]
-
-const CAPABILITIES = [
-    "Microservice Management",
-    "Database Management",
-    "API Orchestration",
-]
 ---
 
-<Layout title={TITLE} description={DESCRIPTION}>
-    <DetailsHero
-        client:visible
-        title="Kestra for<br><span>Software Engineers</span>"
-        description={DESCRIPTION}
-        image={{
-            src: "/landing/usecases/software-engineers/header-hero.svg",
-            alt: "Kestra Microservice",
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Kestra for <br /> Software Engineers"
+        {description}
+        image={heroFront}
+    />
+    <CardGrid
+        title="Built for the Way Software Teams Work"
+        subtitle="Kestra tackles the challenges software engineers face by automating development workflows, enhancing microservice orchestration, and ensuring seamless integrations."
+        items={ITEMS}
+    />
+
+    <BlueprintsGrid
+        title='Explore <span class="highlight">Software</span> blueprints'
+        {blueprints}
+        link={{
+            href: "/blueprints?tags=core",
+            text: "View more Core Blueprints",
         }}
     />
 
-    <Cards
-        title={CHALLENGES_TITLE}
-        description="Kestra tackles the challenges software engineers face by automating development workflows, enhancing microservice orchestration, and ensuring seamless integrations."
-        cards={CARDS_DATA}
-    />
-
-    <Blueprints blueprints={blueprints} client:visible />
-
     <Capabilities
-        client:visible
-        title="for Software Engineering"
+        title="for Software Orchestration"
         capabilities={CAPABILITIES}
     />
 
-    <HeaderBox client:visible />
+    <SeeHow>
+        <Fragment slot="title"> Scale With Kestra Enterprise Edition </Fragment>
+        Built for Enterprises and SMBs, with strong governance, enterprise-grade security,
+        seamless scalability, and dedicated enterprise support backed by SLAs.
+    </SeeHow>
 </Layout>

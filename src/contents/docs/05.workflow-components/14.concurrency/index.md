@@ -1,5 +1,6 @@
 ---
-title: Flow Concurrency Limits in Kestra – Control Parallel Runs
+title: "Flow Concurrency in Kestra: Limit Parallel Runs"
+h1: Control How Many Flow Executions Run in Parallel
 description: Manage workflow load with Concurrency Limits in Kestra. Control the number of parallel executions for a flow to protect resources and downstream systems.
 sidebarTitle: Concurrency Limits
 icon: /src/contents/docs/icons/flow.svg
@@ -7,8 +8,6 @@ version: ">= 0.13.0"
 ---
 
 Control how many executions of a flow can run at the same time.
-
-## Flow concurrency limits – control parallel runs
 
 The flow-level `concurrency` property lets you limit how many executions of a flow can run concurrently by setting the `limit` key.
 
@@ -23,8 +22,6 @@ Use concurrency when you need to protect downstream systems (rate limits, databa
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/lDGOqqMyQEo?si=01KzCswO3dHdhYdt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 For example, if you set the concurrency `limit` to 2, only two executions of that flow will be allowed to run at the same time. If you try to trigger a third execution, it will be queued until one of the two running executions is completed.
 

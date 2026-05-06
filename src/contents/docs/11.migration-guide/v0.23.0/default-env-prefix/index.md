@@ -1,5 +1,7 @@
 ---
-title: Default environment variable prefix changed from KESTRA_ to ENV_ for security
+title: "Env Variable Prefix Changed: KESTRA_ to ENV_ (0.23.0)"
+h1: Default Environment Variable Prefix Changed from KESTRA_ to ENV_
+sidebarTitle: "Env Prefix: KESTRA_ → ENV_"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
@@ -50,4 +52,4 @@ kestra:
 
 ## Required Action
 
-Review and update any existing environment variables that used the `KESTRA_` prefix for flow variables and make sure that you now use `ENV_` or your custom prefix. No changes are needed for configuration properties that use `KESTRA_CONFIGURATION`. For more details, check the [Environment Variables Prefix documentation](../../../configuration/index.md#environment-variables-prefix).
+Review and update any existing environment variables that used the `KESTRA_` prefix for flow variables and use `ENV_` or your custom prefix instead. No changes are needed for configuration properties that use `KESTRA_CONFIGURATION`. For more details, check the [Runtime and Storage configuration](../../../configuration/02.runtime-and-storage/index.md).

@@ -1,10 +1,10 @@
 ---
 interface Props {
-    isKestra?: boolean;
-    logo?: string;
-    logoAlt?: string;
-    shadowColor?: string;
-    maxWidth?: string;
+    isKestra?: boolean
+    logo?: string
+    logoAlt?: string
+    shadowColor?: string
+    maxWidth?: string
 }
 
 const {
@@ -13,24 +13,27 @@ const {
     logoAlt = "logo",
     shadowColor,
     maxWidth = "554px",
-} = Astro.props as Props;
+} = Astro.props as Props
 ---
 
 <div class:list={["comparison-item", isKestra ? "kestra" : "competitor"]}>
-    {logo && (
-        <div
-            class="logo-wrapper"
-            set:html={logo}
-            role="img"
-            aria-label={logoAlt}
-        />
-    )}
+    {
+        logo && (
+            <div
+                class="logo-wrapper"
+                set:html={logo}
+                role="img"
+                aria-label={logoAlt}
+            />
+        )
+    }
     <slot />
 </div>
 
-<style lang="scss" define:vars={{ competitorShadowColor: shadowColor, maxWidth }}>
-    @import "~/assets/styles/variable";
-
+<style
+    lang="scss"
+    define:vars={{ competitorShadowColor: shadowColor, maxWidth }}
+>
     .comparison-item {
         flex: 1;
         @include media-breakpoint-up(xl) {
@@ -48,6 +51,17 @@ const {
         color: var(--ks-content-primary);
         background-color: var(--ks-background-primary);
 
+        .logo-wrapper {
+            display: inline-flex;
+            align-items: center;
+
+            :global(svg) {
+                width: auto;
+                height: 50px;
+                max-width: 200px;
+            }
+        }
+
         html.light & {
             background-color: $white;
         }
@@ -61,4 +75,3 @@ const {
         }
     }
 </style>
-

@@ -1,14 +1,13 @@
 ---
 export const prerender = false
-import Layout from "~/components/layout.astro"
-import PluginsLists from "~/components/plugins/PluginsLists.vue"
 import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "@kestra-io/ui-libs"
 import { filterPluginsWithoutDeprecated } from "@kestra-io/ui-libs"
-import {
-    prunePluginsForCards,
-    calculateTotalPluginCount,
-} from "~/utils/plugins/pruneForClient"
+import { prunePluginsForCards, calculateTotalPluginCount } from "~/utils/plugins/pruneForClient"
+
+import Layout from "~/components/layout.astro"
+import Faq from "~/components/common/Faq.vue"
+import PluginsLists from "~/components/plugins/PluginsLists.vue"
 
 const rawPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
 const rawPluginsData = await $fetchApiCached(`/plugins/pluginsInformation`)
@@ -26,30 +25,75 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
 })
 
 const totalPluginCount = calculateTotalPluginCount(rawPlugins)
-const prunedPluginsData = Object.fromEntries(
-    Object.entries(rawPluginsData.byPlugin).map(([k, v]: [string, any]) => [
-        k,
-        {
-            className: v.className,
-            elementCounts: v.elementCounts,
-            blueprints: v.blueprints,
-            title: v.title,
-            description: v.description,
-            categories: v.categories,
-        },
-    ]),
+const cardPlugins = prunePluginsForCards(
+    filteredPlugins,
+    rawPluginsData.byPlugin,
 )
-
-const cardPlugins = prunePluginsForCards(filteredPlugins, prunedPluginsData)
 const categories = [
     ...new Set(cardPlugins.flatMap((p) => p.categories ?? [])),
 ].sort()
 
 const title = "Hundreds of Plugins For All Your Orchestrations Needs"
 const description = "Connect Kestra with tools you already know and love"
+
+const pluginsIndexSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "https://kestra.io/plugins",
+    name: title,
+    description: description,
+    url: "https://kestra.io/plugins",
+    about: {
+        "@type": "SoftwareApplication",
+        "@id": "https://kestra.io/#software",
+    },
+    hasPart: cardPlugins.slice(0, 50).map((p) => ({
+        "@type": "SoftwareApplication",
+        "@id": `https://kestra.io/plugins/${p.name}#${p.name}`,
+        name: p.title ?? p.name,
+        url: `https://kestra.io/plugins/${p.name}`,
+    })),
+}
+
+const ITEMS = [
+    {
+        question: "What is a Kestra plugin?",
+        answer: "A Kestra plugin is a packaged extension that adds new tasks, triggers, or capabilities to the platform. Plugins allow workflows to interact with external systems, run specific types of logic, or expose higher-level platform features without custom code.",
+    },
+    {
+        question: "How is a plugin different from a workflow?",
+        answer: "A workflow defines orchestration logic: when things run, in what order, and under which conditions. A plugin provides the execution capability itself. Workflows compose plugins; plugins do not replace workflows.",
+    },
+
+    {
+        question: "Are plugins language-specific?",
+        answer: "No. Kestra plugins are language-agnostic from a workflow perspective. A plugin may internally execute SQL, Python, Shell, PowerShell, Terraform, or API calls, but workflows interact with plugins in a uniform YAML syntax, regardless of the underlying runtime.",
+    },
+
+    {
+        question: "How are plugins configured?",
+        answer: "Plugins are configured directly in workflow definitions using YAML. Configuration is explicit, versioned, and can be managed like code (Git, CI/CD, reviews). No external SDKs or code instrumentation are required.",
+    },
+
+    {
+        question: "Are plugins open source?",
+        answer: "Most Kestra plugins are open source and available on GitHub. Some advanced plugins or capabilities are part of the Enterprise Edition, typically when they involve governance, security, or cross-tenant visibility.",
+    },
+
+    {
+        question: "Can I build my own plugin?",
+        answer: "Yes. Kestra provides a plugin SDK that allows teams to build and maintain custom plugins when needed. Custom plugins integrate the same way as native ones and can be shared internally or contributed back to the community.",
+    },
+]
 ---
 
-<Layout {title} {description} headerTheme="lightHero">
+<Layout {title} {description}>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(pluginsIndexSchema)}
+        />
+    </Fragment>
     <PluginsLists
         client:idle
         plugins={cardPlugins}
@@ -57,5 +101,6 @@ const description = "Connect Kestra with tools you already know and love"
         {totalPluginCount}
         fullPath={Astro.request.url}
     />
+    <Faq items={ITEMS} client:idle />
 </Layout>
 

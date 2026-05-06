@@ -1,5 +1,6 @@
 ---
 title: Webhook Trigger in Kestra – Start Flows via HTTP
+h1: Trigger Flows from External Apps via Secure Webhook URLs
 description: Trigger Kestra flows via HTTP with the Webhook Trigger. Learn to start executions from external applications using secure webhook URLs and payloads.
 sidebarTitle: Webhook Trigger
 icon: /src/contents/docs/icons/flow.svg
@@ -7,14 +8,12 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger flows automatically in response to web-based events.
 
-## Webhook trigger – start flows via http
-
 A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) automatically start new executions in Kestra.
 
 Each webhook URL requires a secret `key` to secure it. This prevents unauthorized access and ensures only trusted systems can trigger your flow.
 
 ```yaml
-type: "io.kestra.plugin.core.trigger.Webhook"
+type: io.kestra.plugin.core.trigger.Webhook
 ```
 
 A Webhook trigger enables triggering a flow from a webhook URL.
@@ -75,17 +74,13 @@ Behavior:
 - `wait: true` keeps the HTTP connection open until the flow finishes or hits the trigger’s timeout.
 - `returnOutputs: true` returns the flow outputs as the HTTP response body (JSON by default). Override with `responseContentType` for plaintext or other formats.
 
----
-
 ## Webhook trigger testing
 
 If your flow uses trigger variables (such as `{{ trigger.body }})`, you can test it directly from the execution modal. Kestra generates a ready-to-use `cURL` command that lets you trigger the flow with a custom JSON payload.
 
 ![Webhook Trigger Test](./webhook-trigger-test.png)
 
----
-
-See the [Webhook trigger plugin documentation](/plugins/core/triggers/io.kestra.plugin.core.trigger.Webhook) for a full list of properties and outputs.
+See the [Webhook trigger plugin documentation](/plugins/core/trigger/io.kestra.plugin.core.trigger.webhook) for a full list of properties and outputs.
 
 ### Return flow outputs in the webhook response
 

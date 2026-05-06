@@ -1,7 +1,8 @@
 ---
-title: Orchestrate Python Workflows
+title: Orchestrate Python Workflows in Kestra
+h1: Automate, Schedule & Scale Python Workflows Declaratively
 sidebarTitle: Python Workflows
-description: Automate, schedule and scale Python workflows in a declarative way
+description: Automate, schedule, and scale Python workflows declaratively with Kestra. Run scripts in Docker containers with full dependency management and observability.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 
@@ -71,7 +72,7 @@ tasks:
       Kestra.counter("unique_products", int(df['product_id'].nunique()))
 
   - id: notify
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "https://kestra.io/api/mock"
     payload: |
       {
@@ -161,7 +162,7 @@ Alert on failures via email, Slack, and other [notification plugins](https://kes
 ```yaml
 errors:
   - id: send_alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{secret('SLACK_WEBHOOK_URL')}}"
     executionId: "{{execution.id}}"
 ```

@@ -1,11 +1,12 @@
 ---
 import { Image } from "astro:assets"
-import FilaLogo from "~/assets/companies/fila.svg?raw"
+import FilaLogo from "./assets/fila.svg?raw"
 import AppleLogo from "~/assets/teams/apple.svg?raw"
 import AcxiomLogo from "~/assets/teams/acxiom.svg?raw"
 import BattelleLogo from "~/assets/teams/Battelle.svg?raw"
 import LorealLogo from "~/assets/teams/loreal.svg?raw"
 import TeamImage from "~/assets/teams/team.png"
+import { optimizeSvgIcon } from "~/utils/svgo"
 
 const CompanyLogos = [
     {
@@ -54,7 +55,7 @@ const CompanyLogos = [
                 />
                 <Image
                     src={TeamImage}
-                    alt="Team Image"
+                    alt="The Kestra team"
                     class="image"
                     width={554}
                     height={414}
@@ -83,8 +84,7 @@ const CompanyLogos = [
         <div class="container" data-usal="fade-u">
             <div class="content">
                 <h2 class="title" data-usal="fade-u delay-200">
-                    Trusted by
-                    <span class="gradient">Enterprises</span> Worldwide
+                    <span class="gradient">Trusted</span> by Enterprises Worldwide
                 </h2>
 
                 <p data-usal="fade-u delay-300">
@@ -108,7 +108,10 @@ const CompanyLogos = [
                             CompanyLogos.map((logo) => (
                                 <div
                                     class="logo-item"
-                                    set:html={logo.src}
+                                    set:html={optimizeSvgIcon(
+                                        logo.src,
+                                        logo.alt.replace(/[^a-zA-Z0-9]/g, ""),
+                                    )}
                                     style={`width: ${logo.width}px; height: ${logo.height}px;`}
                                     aria-label={logo.alt}
                                     role="img"
@@ -123,8 +126,6 @@ const CompanyLogos = [
 </main>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     .orchestrate {
         width: 100%;
         position: relative;
@@ -149,7 +150,11 @@ const CompanyLogos = [
                 position: fixed;
                 top: -470px;
                 right: 30%;
-                background: radial-gradient(circle, #581FD38F 0%, rgba(88, 31, 211, 0) 70%);
+                background: radial-gradient(
+                    circle,
+                    #581fd38f 0%,
+                    rgba(88, 31, 211, 0) 70%
+                );
                 width: 659px;
                 height: 629px;
             }
@@ -159,7 +164,11 @@ const CompanyLogos = [
                 position: absolute;
                 bottom: -250px;
                 left: -80px;
-                background: radial-gradient(circle, #581FD38F 0%, rgba(88, 31, 211, 0) 70%);
+                background: radial-gradient(
+                    circle,
+                    #581fd38f 0%,
+                    rgba(88, 31, 211, 0) 70%
+                );
                 width: 659px;
                 height: 629px;
             }
@@ -248,6 +257,10 @@ const CompanyLogos = [
 
                         @include media-breakpoint-down(md) {
                             font-size: $h2-font-size;
+                        }
+
+                        .highlight {
+                            color: #a796ff;
                         }
                     }
 
@@ -348,6 +361,10 @@ const CompanyLogos = [
                     line-height: 1.2;
                 }
 
+                .gradient {
+                    color: var(--ks-content-color-highlight);
+                }
+
                 .text-primary,
                 .text-secondary {
                     line-height: 1.6;
@@ -391,4 +408,3 @@ const CompanyLogos = [
         }
     }
 </style>
-

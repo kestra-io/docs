@@ -1,5 +1,7 @@
 ---
-title: Safeguard Microservices With Unit Tests
+title: Safeguard Microservices with Unit Tests
+h1: Write Unit Tests to Protect Your Microservices
+description: Write unit tests for Kestra Enterprise workflows. Create test suites, mock task dependencies, and assert flow behavior before deploying to production.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -9,8 +11,6 @@ editions: ["EE"]
 ---
 
 Build an automated guardrail that pings a microservice endpoint, alerts Slack when it fails, and runs only when its unit tests pass.
-
-## Safeguard Microservices With Unit Tests
 
 Modern microservices and API backends often expose health endpoints. With Kestra you can monitor those endpoints, write unit tests to validate the monitoring flow, and gate downstream automations on the test results. This guide walks through:
 
@@ -54,7 +54,7 @@ tasks:
     condition: "{{ outputs.http_request.code != 200 }}"
     then:
       - id: server_unreachable_alert
-        type: io.kestra.plugin.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ inputs.slack_webhook_uri }}"
         payload: |
           {

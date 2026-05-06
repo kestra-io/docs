@@ -1,13 +1,12 @@
 ---
 title: Task Retries in Kestra – Handle Transient Failures
+h1: Configure Retry Strategies for Transient Task Failures
 description: Configure Retries in Kestra to handle transient failures. Learn about constant, exponential, and random retry strategies for tasks and flows.
 sidebarTitle: Retries
 icon: /src/contents/docs/icons/flow.svg
 ---
 
 Retries handle transient failures in your workflows.
-
-## Task retries – handle transient failures
 
 They are defined at the task level and can be configured to retry a task a certain number of times or with a delay between attempts.
 
@@ -91,8 +90,6 @@ Durations use [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) forma
 | PT3.5H   | 3 hours, 30 minutes |
 | P6DT4H   | 6 days, 4 hours |
 
----
-
 ## Retry types
 
 ### `constant`
@@ -122,8 +119,6 @@ Randomized delays within bounds.
 | `minInterval` | Duration | Minimum delay. |
 | `maxInterval` | Duration | Maximum delay. |
 
----
-
 ## Configuring retries globally
 
 You can configure retries globally for all tasks in Kestra:
@@ -141,8 +136,6 @@ kestra:
 ```
 
 This applies a constant retry policy with up to 3 attempts every 30 seconds.
-
----
 
 ## Flow-level retries
 
@@ -177,8 +170,6 @@ tasks:
 Flow-level retries also restart Subflows as new executions.
 :::
 
----
-
 ## Retry vs. Restart vs. Replay
 
 ### Automatic vs. manual
@@ -209,5 +200,3 @@ After a Replay, you can still track which Execution triggered this new run thank
 | Retry   | Task level             | Automatic| No |
 | Restart | Flow level             | Manual   | No |
 | Replay  | Flow or task level     | Manual   | Yes |
-
----

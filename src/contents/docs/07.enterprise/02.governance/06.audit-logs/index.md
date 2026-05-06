@@ -1,5 +1,6 @@
 ---
-title: Audit Logs in Kestra – Governance and Compliance Guide
+title: "Audit Logs in Kestra: Governance and Compliance"
+h1: Track User Activity and Flow Executions with Audit Logs
 description: Ensure compliance with Kestra Audit Logs. Track and monitor all user activities, flow executions, and system changes for security and governance.
 sidebarTitle: Audit Logs
 icon: /src/contents/docs/icons/admin.svg
@@ -51,8 +52,6 @@ For example, you can filter for all events related to a specific namespace by ty
 ![Filter by Namespace](./audit-logs-filter.png)
 
 To further filter for a specific event, you can click on the relevant tag in the `Details` column, and it automatically adds the filter to the view.
-
----
 
 ## How to Purge Audit Logs
 

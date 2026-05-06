@@ -10,7 +10,7 @@
 
 html {
     height: 100%;
-    scroll-padding-top: var(--top-bar-height);
+    scroll-padding-top: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px));
 }
 
 pre {
@@ -18,46 +18,25 @@ pre {
 }
 
 body {
+    --announce-height: 0px;
     min-width: 320px;
     min-height: 100%;
     position: relative;
     background-color: var(--ks-background-body);
     color: var(--ks-content-primary);
 
-    &::after {
-        content: "";
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100vw;
-        height: 100px;
-        background: rgba(var(--ks-background-body), 0.06);
-        backdrop-filter: blur(2px);
-        z-index: 10;
-        pointer-events: none;
-        mask-image: linear-gradient(
-            180deg,
-            transparent 0%,
-            var(--ks-content-primary) 100%
-        );
-        -webkit-mask-image: linear-gradient(
-            180deg,
-            transparent 0%,
-            var(--ks-content-primary) 100%
-        );
-    }
-
     &.has-annonces {
-        padding-top: 46px;
+        --announce-height: 40px;
+        padding-top: 40px;
 
         #top-bar {
-            top: 46px;
+            top: 40px;
         }
     }
 }
 
-.headers-body-bg {
-    background: #111113 !important;
+.astro-loading-indicator {
+    z-index: 9999 !important;
 }
 
 :root {
@@ -88,6 +67,7 @@ h4,
 h5,
 h6 {
     font-weight: 600;
+    scroll-margin-top: 100px;
 }
 
 @include media-breakpoint-down(lg) {
@@ -413,16 +393,7 @@ blockquote.blockquote {
 
     &.card-centered {
         text-align: center;
-        background: url("/landing/shadow.svg") no-repeat center center;
         justify-content: center;
-
-        @include media-breakpoint-down(xl) {
-            background-size: contain;
-        }
-
-        @include media-breakpoint-down(lg) {
-            background: none;
-        }
 
         .card-title {
             font-size: $font-size-lg;
@@ -817,7 +788,8 @@ small.agree {
     initial-value: 0turn;
 }
 
-@media only screen and (max-width: 768px) {
+// mixin to remove all usal animations
+@mixin disable-usal-animation {
     [data-usal] {
         opacity: 1 !important;
         transform: translate(0) scale(1) !important;
@@ -825,7 +797,31 @@ small.agree {
     }
 }
 
+@media only screen and (max-width: 768px) {
+    @include disable-usal-animation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @include disable-usal-animation;
+}
+
+html.no-animation {
+    @include disable-usal-animation;
+}
+
 .highlight {
     color: var(--ks-content-color-highlight);
 }
 
+.department-tag {
+    font-weight: normal !important;
+    background: var(--ks-background-info);
+    border: 1px solid var(--ks-border-info);
+    color: var(--ks-content-info);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--bs-border-radius);
+}
+
+.mermaid {
+    margin-bottom: 1.5rem;
+}

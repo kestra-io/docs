@@ -1,25 +1,25 @@
 ---
-title: Run Ruby inside of your Flow
+title: Run Ruby Inside Your Flows
+h1: Execute Ruby Scripts in Kestra Workflows
+description: Execute Ruby scripts in Kestra. Automate tasks with Ruby code, install gems at runtime, and pass outputs to downstream tasks for flexible scripting.
 icon: /src/contents/docs/icons/ruby.svg
 stage: Getting Started
 topics:
   - Scripting
 ---
 
-Run Ruby code directly inside of your Flows and generate outputs.
-
-## Run Ruby inside of your Flow
+Run Ruby code directly in your flows and generate outputs.
 
 Ruby is well known for web development but has many other powerful use cases too, such as automation, web scraping, data processing and command-line tools. With Kestra, you can effortlessly automate data ingestion, as well as manage complex automations. Kestra's robust orchestration capabilities ensure that your Ruby scripts run smoothly and efficiently, streamlining your data-driven projects.
 
-This guide is going to walk you through how to get Ruby running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+This guide is going to walk you through how to get Ruby running in a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
-Kestra has an official plugin for Ruby allowing you to execute R code inside of a flow by either writing your Ruby code inline or by executing an `.rb` file. You can get outputs and metrics from your Ruby code too.
+Kestra has an official plugin for Ruby allowing you to execute Ruby code in a flow by either writing your Ruby code inline or by executing an `.rb` file. You can get outputs and metrics from your Ruby code too.
 
 
 ## Scripts
 
-If you want to write a short amount of Ruby code to perform a task, you can use the `io.kestra.plugin.scripts.ruby.Script` type to write it directly inside of your flow. This allows you to keep everything in one place.
+If you want to write a short amount of Ruby code to perform a task, you can use the `io.kestra.plugin.scripts.ruby.Script` type to write it directly in your flow. This allows you to keep everything in one place.
 
 ```yaml
 id: ruby_output_file
@@ -167,7 +167,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: ruby_metrics
@@ -191,8 +191,8 @@ Once this has executed, both the metrics can be viewed under **Metrics**.
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Ruby code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.eval)
-- [FileTransform](/plugins/plugin-graalvm/ruby/io.kestra.plugin.graalvm.ruby.filetransform)
+- [Eval](/plugins/plugin-graalvm/ruby-graalvm/io.kestra.plugin.graalvm.ruby.eval)
+- [FileTransform](/plugins/plugin-graalvm/ruby-graalvm/io.kestra.plugin.graalvm.ruby.filetransform)
 
 In this example, the `Eval` is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 

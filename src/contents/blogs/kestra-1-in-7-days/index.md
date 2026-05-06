@@ -5,6 +5,7 @@ date: 2025-09-02T13:00:00
 category: News & Product Updates
 author:
  name: Emmanuel Darras
+ linkedin: https://www.linkedin.com/in/emmanuel-darras/
  image: edarras
  role: CEO & Co-Founder
 image: ./main.jpg
@@ -18,7 +19,7 @@ As the world turns to AI, orchestration faces a new inflection point. The stakes
 
 ## Already trusted worldwide
 
-Kestra already powers **billions of workflows** for some of the world’s largest organizations, from **Apple to Toyota, Bloomberg, JPMorgan Chase, SoftBank, Deutsche Telekom, BHP, and many other Fortune 500 companies**.
+Kestra already powers **billions of workflows** for some of the world’s largest organizations, from **Apple to Amdocs, Bloomberg, JPMorgan Chase, Deutsche Telekom, BHP, and many other Fortune 500 companies**.
 
 - **Fila** runs 2.5M workflows every month with just 25 engineers.
 - **Acxiom** orchestrates for more than 50 enterprise clients and hundreds of teams.

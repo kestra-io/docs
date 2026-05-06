@@ -1,0 +1,48 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="458" height="260" rx="8" fill="#1A1D2E"/>
+  <rect x="0" y="0" width="458" height="38" rx="8" fill="#111320"/>
+  <rect x="0" y="24" width="458" height="14" fill="#111320"/>
+  <rect x="16" y="10" width="50" height="18" rx="3" fill="#4c00ff" opacity="0.9"/>
+  <text x="20" y="23" font-family="monospace" font-size="9" font-weight="bold" fill="white">Puppet</text>
+  <rect x="74" y="14" width="120" height="10" rx="2" fill="#2D3250"/>
+  <rect x="0" y="38" width="80" height="222" fill="#0D0F1C"/>
+  <rect x="10" y="52" width="60" height="10" rx="2" fill="#4c00ff" opacity="0.7"/>
+  <rect x="10" y="70" width="60" height="10" rx="2" fill="#2D3250"/>
+  <rect x="10" y="88" width="60" height="10" rx="2" fill="#2D3250"/>
+  <rect x="10" y="106" width="60" height="10" rx="2" fill="#2D3250"/>
+  <!-- Node inventory view -->
+  <rect x="92" y="48" width="354" height="30" rx="3" fill="#161829"/>
+  <rect x="100" y="54" width="80" height="8" rx="2" fill="#4c00ff" opacity="0.6"/>
+  <rect x="200" y="54" width="60" height="8" rx="2" fill="#2D3250"/>
+  <rect x="280" y="54" width="80" height="8" rx="2" fill="#2D3250"/>
+  <!-- Node list -->
+  <rect x="92" y="84" width="354" height="24" rx="3" fill="#1E2035"/>
+  <circle cx="108" cy="96" r="6" fill="#48C774"/>
+  <rect x="120" y="91" width="100" height="8" rx="2" fill="#2D3250"/>
+  <rect x="240" y="91" width="60" height="8" rx="2" fill="#2D3250"/>
+  <rect x="320" y="91" width="40" height="8" rx="2" fill="#48C774" opacity="0.5"/>
+  <rect x="92" y="112" width="354" height="24" rx="3" fill="#161829"/>
+  <circle cx="108" cy="124" r="6" fill="#48C774"/>
+  <rect x="120" y="119" width="80" height="8" rx="2" fill="#2D3250"/>
+  <rect x="240" y="119" width="60" height="8" rx="2" fill="#2D3250"/>
+  <rect x="320" y="119" width="40" height="8" rx="2" fill="#48C774" opacity="0.5"/>
+  <rect x="92" y="140" width="354" height="24" rx="3" fill="#1E2035"/>
+  <circle cx="108" cy="152" r="6" fill="#4c00ff"/>
+  <rect x="120" y="147" width="110" height="8" rx="2" fill="#2D3250"/>
+  <rect x="240" y="147" width="60" height="8" rx="2" fill="#2D3250"/>
+  <rect x="320" y="147" width="40" height="8" rx="2" fill="#4c00ff" opacity="0.5"/>
+  <rect x="92" y="168" width="354" height="24" rx="3" fill="#161829"/>
+  <circle cx="108" cy="180" r="6" fill="#48C774"/>
+  <rect x="120" y="175" width="90" height="8" rx="2" fill="#2D3250"/>
+  <rect x="240" y="175" width="60" height="8" rx="2" fill="#2D3250"/>
+  <rect x="320" y="175" width="40" height="8" rx="2" fill="#48C774" opacity="0.5"/>
+  <!-- Resource graph -->
+  <rect x="92" y="200" width="354" height="42" rx="4" fill="#161829" stroke="#2D3250" stroke-width="1"/>
+  <rect x="100" y="208" width="60" height="6" rx="2" fill="#4c00ff" opacity="0.5"/>
+  <rect x="120" y="220" width="40" height="14" rx="2" fill="#4c00ff" opacity="0.4"/>
+  <line x1="160" y1="227" x2="200" y2="227" stroke="#3D4466" stroke-width="1.5"/>
+  <rect x="200" y="220" width="40" height="14" rx="2" fill="#2D3250"/>
+  <line x1="240" y1="227" x2="280" y2="227" stroke="#3D4466" stroke-width="1.5"/>
+  <rect x="280" y="220" width="40" height="14" rx="2" fill="#2D3250"/>
+  <rect x="92" y="246" width="354" height="8" rx="2" fill="#0D0F1C"/>
+</svg>

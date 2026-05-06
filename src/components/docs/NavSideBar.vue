@@ -114,7 +114,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .bd-sidebar {
         &::-webkit-scrollbar-thumb {
@@ -124,7 +124,7 @@
         @include media-breakpoint-up(lg) {
             margin-top: 4rem;
             position: sticky;
-            top: 8rem;
+            top: calc(8rem + var(--announce-height));
             display: block !important;
             height: fit-content;
             max-height: subtract(100vh, 9rem);

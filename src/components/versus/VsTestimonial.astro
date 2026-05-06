@@ -1,0 +1,20 @@
+---
+import Quotes from "~/components/common/Quotes.vue"
+
+interface Props {
+    quotes: {
+        quote: string
+        author: string
+        bigLogoSrc?: string
+        kpis?: {
+            name: string
+            value: string
+        }[]
+        storyLink?: string
+    }[]
+}
+
+const { quotes } = Astro.props
+---
+
+<Quotes quotes={quotes} client:load />

@@ -1,13 +1,12 @@
 ---
 title: Subflows in Kestra – Modularize and Reuse Flows
+h1: Call Flows from Other Flows and Build Reusable Components
 description: Modularize your Kestra workflows with Subflows. Learn to call flows from other flows, pass inputs and outputs, and build reusable orchestration components.
 sidebarTitle: Subflows
 icon: /src/contents/docs/icons/flow.svg
 ---
 
 Subflows let you build **modular** and **reusable** workflow components.
-
-## Subflows – modularize and reuse flows
 
 They work like function calls: executing a subflow creates a new flow run from within another flow.
 
@@ -22,7 +21,7 @@ Subflows allow you to build modular and reusable components that you can use acr
 :::alert{type="warning"}
 Recursive flows are not supported. Kestra doesn’t allow a flow to call itself (directly or indirectly). Any cycle **(flowA→flowA)** makes the flow invalid. Recursive execution can create infinite loops and unbounded fan-out.
 
-**Do instead:** Use **[ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach**)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
+**Do instead:** Use **[ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
 :::
 
 ## How to declare a subflow
@@ -111,9 +110,7 @@ Flows can emit outputs that can be accessed by the parent flow. Using the `io.ke
 
 Outputs include the execution ID, extracted outputs, and the final state (if `wait` is true).
 
-:::alert{type="info"}
-To sum up, subflows improve maintainability of complex workflows. They allow you to build modular and reusable workflow components and share them across multiple namespaces, projects, and teams.
-:::
+Subflows improve maintainability of complex workflows. Use them to build modular, reusable components that can be shared across namespaces, projects, and teams.
 
 Here’s an example of a subflow with explicitly defined outputs.
 

@@ -31,7 +31,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <Link href="/tutorial-videos" text="More videos" />
+            <Link href="/tutorial-videos" text="More Videos" />
         </div>
 
         <div
@@ -123,7 +123,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
+
 
     .section {
         display: flex;

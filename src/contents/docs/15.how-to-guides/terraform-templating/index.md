@@ -1,5 +1,7 @@
 ---
-title: Leverage Terraform for flow modularity
+title: Terraform for Flow Modularity in Kestra
+h1: Make Flows Modular and Reusable with Terraform Templates
+description: Combine Kestra with Terraform for IaC workflows. Template and provision cloud resources automatically as part of your CI/CD automation pipelines.
 icon: /src/contents/docs/icons/terraform.svg
 stage: Advanced
 topics:
@@ -9,11 +11,9 @@ topics:
 
 Scale your codebase using Terraform to template and define flows
 
-## Leverage Terraform for flow modularity
+This guide shows how to use Terraform's HCL (Hashicorp Configuration Language) templating features in a Kestra codebase.
 
-This article will show you how to leverage terraform in your Kestra codebase and its powerful templating features brought by HCL (Hashicorp Configuration Language).
-
-In order to make your codebase easy to use for users unfamiliar with Kestra syntax, you may want to encapsulate most of the logic and DSL (Domain-specific programming language) into [Terraform modules](https://developer.hashicorp.com/terraform/language/modules).
+To make your codebase accessible to users unfamiliar with Kestra syntax, encapsulate most of the logic and DSL (Domain-specific programming language) into [Terraform modules](https://developer.hashicorp.com/terraform/language/modules).
 
 This quick tutorial, will show you how templating capabilities brought by Terraform can help you :
 
@@ -24,11 +24,11 @@ This quick tutorial, will show you how templating capabilities brought by Terraf
 
 You can check the [kestra-flows-template](https://github.com/kestra-io/kestra-flows-template) repo which contains a set of modules and subflows to help you get started with Terraform.
 
-Below we will cover the creation of a single Terraform module and a subflow, and how to use them in your codebase.
+This guide covers creating a Terraform module and a subflow, and how to use them in your codebase.
 
 ## Code structure
 
-```
+```plaintext
 .
 └── environment/
     ├── development
@@ -36,7 +36,7 @@ Below we will cover the creation of a single Terraform module and a subflow, and
     │   ├── airbyte/
     │   ├── dbt/
     │   ├── triggers/
-    │   ├── main.tf # Instanciate each folder (airbyte, dbt ...)
+    │   ├── main.tf # Instantiate each folder (airbyte, dbt ...)
     │   └── ...
     ├── modules/ # Terraform modules to be used in environments
     │   ├── airbyte_sync/
@@ -56,11 +56,11 @@ Inside a module, you can define a `main.tf` file that will define the resources 
 
 ## Creating a module, example with Airbyte
 
-Let's create a module that will define a Kestra flow that will sync data from Airbyte.
+Create a module that defines a Kestra flow to sync data from Airbyte.
 
-## tree structure of a terraform module :
+## Tree structure of a Terraform module
 
-```
+```plaintext
 .
 └── airbyte_sync/
     ├── main.tf
@@ -168,7 +168,7 @@ variable "late_maximum_delay" {
 ```
 
 
-## `tasks.yml` will contain the flow definition in YAML format, we can leverage jinja as supported by Terraform templatefile.
+## `tasks.yml`: flow definition with Terraform templatefile jinja syntax
 
 ```yaml
 tasks:
@@ -239,9 +239,9 @@ It is now easy to instantiate the module in your `main.tf` file, and to expose o
 - `cron_expression`: the cron expression to trigger the flow
 - `late_maximum_delay`: the maximum delay to wait for the flow to start, in case of missed schedules (backfill)
 
-In case of changes in the way you want to implement the underlying tasks, you can easily modify the Terraform module without changing the interface (variables).
+In case of changes in the way you want to implement the underlying tasks, you can modify the Terraform module without changing the interface (variables).
 
-## Sublfow example: query and display results for a given Postgres database
+## Subflow example: query and display results for a given Postgres database
 
 Subflows are a way to encapsulate logic and make it reusable across your codebase.
 
@@ -284,7 +284,7 @@ outputs:
   type: JSON
 ```
 
-You can either execute this sublow as is, or use it in another flow to avoid repeating the same logic.
+You can either execute this subflow as is, or use it in another flow to avoid repeating the same logic.
 
 Executing the subflow will prompt you to enter the SQL query you want to execute :
 

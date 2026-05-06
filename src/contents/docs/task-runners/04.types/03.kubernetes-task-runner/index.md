@@ -1,5 +1,7 @@
 ---
-title: Kubernetes Task Runner – Run Tasks as Kubernetes Pods
+title: Kubernetes Task Runner – Run Tasks as K8s Pods
+h1: Run Kestra Tasks as Kubernetes Pods
+description: Run Kestra tasks as Kubernetes pods with the K8s Task Runner. Configure pod templates, namespaces, and resource limits for scalable container-based execution.
 sidebarTitle: Kubernetes Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -8,13 +10,13 @@ editions: ["EE", "Cloud"]
 
 Run tasks as Kubernetes pods.
 
-## Run tasks as Kubernetes pods
+## Overview
 
-This plugin is available only in the [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md) (EE) and Kestra Cloud. The task runner is container-based, so the `containerImage` property must be set. To access the task's working directory, use either the `{{workingDir}}` Pebble expression or the `WORKING_DIR` environment variable. Input files and namespace files are available in this directory.
+This plugin is available only in the [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md) (EE) and Kestra Cloud. The task runner is container-based, so the `containerImage` property must be set. To access the task's working directory, use either the `{{ workingDir }}` Pebble expression or the `WORKING_DIR` environment variable. Input files and namespace files are available in this directory.
 
 To generate output files, you can either:
-- Use the `outputFiles` property of the task and create a file with the same name in the task’s working directory, or
-- Create any file in the output directory, accessible via the `{{outputDir}}` Pebble expression or the `OUTPUT_DIR` environment variable.
+- Use the `outputFiles` property of the task and create a file with the same name in the task's working directory, or
+- Create any file in the output directory, accessible via the `{{ outputDir }}` Pebble expression or the `OUTPUT_DIR` environment variable.
 
 When the Kestra Worker running this task is terminated, the pod continues until completion. After restarting, the Worker resumes processing on the existing pod unless `resume` is set to `false`.
 
@@ -24,7 +26,7 @@ If your cluster is configured with [RBAC](https://kubernetes.io/docs/reference/a
 - `pods/log`: get, watch
 - `pods/exec`: get, watch
 
-Here is an example role that grants these authorizations:
+The following role grants these authorizations:
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -43,11 +45,11 @@ rules:
   verbs: ["get", "watch"]
 ```
 
+Use the `serviceAccountName` property to assign a custom service account to the pod. When omitted, the namespace default service account is used, which must carry the required RBAC permissions above.
+
 ## How to use the Kubernetes task runner
 
-The Kubernetes task runner executes tasks in a specified Kubernetes cluster. It is useful for declaring resource limits and resource requests.
-
-Here is an example of a workflow with a task running shell commands in a Kubernetes pod:
+The following example connects to a cluster using certificate-based authentication, uploads an input file, runs a shell command, and retrieves the output:
 
 ```yaml
 id: kubernetes_task_runner
@@ -60,7 +62,7 @@ description: |
   - clientKeyData: client-key-data
   - clientCertData: client-certificate-data
   - caCertData: certificate-authority-data
-  - masterUrl: server, e.g., https://docker-for-desktop:6443
+  - masterUrl: server
   - oauthToken: token (if using OAuth, e.g., GKE/EKS)
 
 inputs:
@@ -78,19 +80,19 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
       config:
-        clientKeyData: client-key-data
-        clientCertData: client-certificate-data
-        caCertData: certificate-authority-data
-        masterUrl: server e.g. https://docker-for-desktop:6443
+        clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
+        clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+        masterUrl: https://docker-for-desktop:6443
     commands:
       - echo "Hello from a Kubernetes task runner!"
       - cp data.txt out.txt
 ```
 
 :::alert{type="info"}
-To deploy Kubernetes with Docker Desktop, see [this guide](https://docs.docker.com/desktop/kubernetes/#install-and-turn-on-kubernetes).
+To deploy Kubernetes with Docker Desktop, see the [Docker Desktop Kubernetes guide](https://docs.docker.com/desktop/kubernetes/#install-and-turn-on-kubernetes).
 
-To install `kubectl`, see [this guide](https://kubernetes.io/docs/tasks/tools/#kubectl).
+To install `kubectl`, see the [kubectl installation guide](https://kubernetes.io/docs/tasks/tools/#kubectl).
 :::
 
 <div class="video-container">
@@ -99,23 +101,111 @@ To install `kubectl`, see [this guide](https://kubernetes.io/docs/tasks/tools/#k
 
 ## File handling
 
-If your script task has `inputFiles` or `namespaceFiles` configured, an **init container** uploads files into the main container.
+When a task has `inputFiles` or `namespaceFiles` configured, Kestra adds an **init container** to the pod as a synchronization gate. The Worker transfers files directly to the pod using `kubectl cp`, then signals the init container, which exits and allows the main container to start.
 
-If your script task has `outputFiles` configured, a **sidecar container** downloads files from the main container.
+When a task has `outputFiles` configured, a **sidecar container** is added to the pod that waits for the main container to finish before downloading output files back to the Worker.
 
-All containers use an in-memory `emptyDir` volume for file exchange.
+All containers in the pod share an in-memory `emptyDir` volume for file exchange.
+
+### Syncing the full working directory
+
+By default, only files listed in `outputFiles` are downloaded after task completion. Set `syncWorkingDirectory: true` to download the entire working directory, which is useful when tasks produce files dynamically without knowing their names in advance:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  syncWorkingDirectory: true
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
 
 ## Failure scenarios
 
-If a task is resubmitted (for example, due to a retry or a Worker crash), the new Worker will reattach to the existing (or completed) pod instead of starting a new one.
+If a task is resubmitted (for example, due to a retry or a Worker crash), the new Worker reattaches to the existing (or completed) pod instead of starting a new one.
 
-## Specifying resource requests for Python scripts
+Set `resume: false` to force a new pod to be created on every execution attempt rather than reattaching to an existing pod.
 
-Some Python scripts may require more resources than others. You can specify resource requests in the `resources` property of the task runner.
+By default, pods are deleted after the task completes. Set `delete: false` to keep the pod alive after completion, which is useful when debugging failures — you can then inspect the pod with `kubectl exec` or `kubectl logs`:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  delete: false
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
+### Exec timeout and residual `InterruptedIOException` errors
+
+The sequence diagram below illustrates a failure mode that occurs when the `waitUntilRunning` timeout expires while the OkHttp dispatcher is still retrying the `/exec` WebSocket upgrade in the background.
+
+```mermaid
+sequenceDiagram
+    participant W as Kestra Worker (Main Thread)
+    participant OK as OkHttp Dispatcher (Background Threads)
+    participant API as EKS API Server (Control Plane)
+    participant P as Target Task Pod (Worker Node)
+
+    Note over W: Task Start: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+    W->>API: 1. POST /api/v1/namespaces/default/pods (Create Pod)
+    API-->>P: Schedule & Initialize Container
+
+    Note over W: Wait for 'waitUntilRunning' (Default PT10M)
+
+    W->>OK: 2. Initiate /exec Handshake (File/Marker Upload)
+
+    loop Background Retry Loop
+        OK->>API: 3. GET /api/v1/.../exec (WebSocket Upgrade)
+        API-->>OK: 500 Internal Server Error (Kubelet/Node not ready)
+        Note over OK: Wait for retry interval
+    end
+
+    Note over W: 4. Main Thread Timeout Reached
+    W->>W: Mark TaskRun as FAILED
+
+    par Cleanup Phase
+        W->>API: 5. DELETE /api/v1/namespaces/default/pods/{name}
+        API-->>P: Terminate Pod
+        W->>W: 6. SHUTDOWN OkHttp Thread Pool (Executor)
+    and Residual Logging
+        Note over OK: 7. Background Thread wakes for Attempt 3
+        OK->>OK: Thread INTERRUPTED (Pool is Terminated)
+        Note right of OK: Log: java.io.InterruptedIOException: executor rejected
+        Note right of OK: Log: ERROR Stop retry, attempts 3 elapsed after 24 seconds
+    end
+```
+
+
+The task is already marked `FAILED` at step 4. The `java.io.InterruptedIOException: executor rejected` and `ERROR Stop retry` log lines emitted at step 7 are residual — they confirm the cleanup path ran correctly and can be safely ignored. If the `waitUntilRunning` timeout fires before the pod is ready (for example, due to slow image pulls or kubelet initialization on a cold node), increase the value to give the cluster more time:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  waitUntilRunning: PT20M
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
+## Specifying resource requests
+
+Use the `resources` property to set CPU and memory requests and limits on the main task container. Both `cpu` and `memory` accept static values or Pebble expressions, so you can drive them from flow inputs at runtime.
+
+The following example sizes the pod dynamically based on inputs:
 
 ```yaml
 id: kubernetes_resources
 namespace: company.team
+
+inputs:
+  - id: cpu_count
+    type: INT
+    defaults: 2
+  - id: memory_per_cpu
+    type: INT
+    defaults: 4
 
 tasks:
   - id: python_script
@@ -126,15 +216,17 @@ tasks:
       namespace: default
       pullPolicy: ALWAYS
       config:
-        username: docker-desktop
         masterUrl: https://docker-for-desktop:6443
-        caCertData: xxx
-        clientCertData: xxx
-        clientKeyData: xxx
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+        clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
+        clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
       resources:
         request:
-          cpu: "500m"
-          memory: "128Mi"
+          cpu: "{{ inputs.cpu_count }}"
+          memory: "{{ inputs.cpu_count * inputs.memory_per_cpu }}Gi"
+        limit:
+          cpu: "{{ inputs.cpu_count }}"
+          memory: "{{ inputs.cpu_count * inputs.memory_per_cpu }}Gi"
     outputFiles:
       - "*.json"
     script: |
@@ -173,8 +265,199 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-kubernetes/runner/io.kestra.plugin.ee.kubernetes.runner.Kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
+For a full list of Kubernetes task runner properties, see the [Kubernetes plugin documentation](/plugins/plugin-ee-kubernetes/io.kestra.plugin.ee.kubernetes.runner.kubernetes) or explore them in the built-in Code Editor in the Kestra UI.
 :::
+
+## Timeout configuration
+
+Three properties control how long the runner waits at different stages of pod execution:
+
+| Property | Default | Description |
+|---|---|---|
+| `waitUntilRunning` | `PT10M` | Maximum time to wait for the pod to be scheduled, the image to be pulled, and containers to start. |
+| `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. |
+| `waitForLogs` | `PT30S` | Extra time after containers exit to allow the log stream to flush completely. |
+
+Increase `waitUntilRunning` for clusters that pull large images or have slow scheduling. Increase `waitUntilCompletion` for long-running tasks. Decrease `waitForLogs` when you know logs are always flushed quickly and want to reduce idle time at the end of each task.
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  waitUntilRunning: PT20M
+  waitUntilCompletion: PT4H
+  waitForLogs: PT10S
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
+## Pod and container customization
+
+The Kubernetes task runner exposes several properties for customizing the pod spec beyond standard options like `resources` and `namespace`. These are advanced properties intended for cases such as security hardening, shared volumes, custom sidecars, or node scheduling constraints.
+
+### `podSpec` — overlay the full pod spec
+
+`podSpec` accepts a freeform YAML map that is merged into the generated pod's spec. Use it for anything not covered by a first-class property: tolerations, affinity, priority classes, additional volumes, or user-defined sidecar containers.
+
+Any container listed under `podSpec.containers` whose name is **not** `"main"` is added as a user-defined sidecar alongside the Kestra main container. A container named `"main"` has its fields (such as `ports` and `env`) merged as defaults into the Kestra-built main container, with Kestra-injected values taking precedence on collision.
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+  podSpec:
+    tolerations:
+      - key: "gpu"
+        operator: "Exists"
+        effect: "NoSchedule"
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: cloud.google.com/gke-accelerator
+                  operator: Exists
+    volumes:
+      - name: shared-data
+        emptyDir: {}
+    containers:
+      - name: sidecar
+        image: busybox
+        command: ["sh", "-c", "while true; do sleep 5; done"]
+        volumeMounts:
+          - name: shared-data
+            mountPath: /data
+```
+
+Template expressions, including `{{ workingDir }}` (which resolves to `/kestra/working-dir` when file I/O is enabled), are supported inside `podSpec`.
+
+### `containerSpec` — augment the main container
+
+`containerSpec` is merged into the Kestra-generated main container. Use it for additional environment variables, a custom security context, or other per-container settings. Kestra-injected values (such as `WORKING_DIR` and `OUTPUT_DIR`) always take precedence over values defined here.
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+  containerSpec:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      allowPrivilegeEscalation: false
+    env:
+      - name: MY_CUSTOM_VAR
+        value: "hello"
+```
+
+### `containerDefaultSpec` — apply settings to all containers
+
+`containerDefaultSpec` is merged into every container in the pod: the main task container, any user-defined sidecars in `podSpec.containers`, and the Kestra file-transfer init and sidecar containers. This is the right place for settings that must be uniform across all containers, such as:
+
+- `volumeMounts` — mount a shared volume into every container without repeating it per container
+- `securityContext` — enforce a consistent security posture
+- `resources` — set default resource requests that individual containers can override
+- `env` — inject common environment variables
+
+Container-specific values always win over the defaults. For list fields (`volumeMounts`, `env`), defaults are prepended to any container-specific entries.
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+  containerDefaultSpec:
+    securityContext:
+      allowPrivilegeEscalation: false
+    volumeMounts:
+      - name: docker-socket
+        mountPath: /var/run/docker.sock
+  podSpec:
+    volumes:
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+```
+
+### `fileSideCarSpec` — customize file transfer containers
+
+`fileSideCarSpec` is merged only into the init and sidecar containers that Kestra uses for file transfer. Use it when the file transfer containers need different settings from the main container, such as a stricter security context or an additional volume mount:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+  fileSideCarSpec:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 65534
+```
+
+### `fileSidecar` — file transfer container image and resources
+
+The `fileSidecar` property controls the container image, resource requests, and default spec used by the init and sidecar containers that handle file transfer. By default these containers use `busybox`. Use this when your cluster's security policy restricts which images can be used, or when you need to limit the resources consumed by file transfer:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+  fileSidecar:
+    image: gcr.io/my-project/busybox:latest
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "32Mi"
+      limits:
+        cpu: "200m"
+        memory: "64Mi"
+```
+
+`fileSidecar.defaultSpec` applies additional container spec fields to the file transfer containers only, and takes precedence over `containerDefaultSpec` for those containers:
+
+```yaml
+fileSidecar:
+  image: busybox
+  defaultSpec:
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+    volumeMounts:
+      - name: tmp
+        mountPath: /tmp
+```
+
+## OAuth token refresh for long-running tasks
+
+When authenticating via `oauthToken`, the token is used as-is for the lifetime of the task runner. This works for short tasks but fails with an `Unauthorized` error for tasks that run longer than the token's validity period (typically one hour on GKE and EKS).
+
+Use `oauthTokenProvider` to automatically refresh the token. The provider executes a Kestra task each time the Kubernetes client needs to re-authenticate, and caches the result for a configurable duration to avoid unnecessary token fetches:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: "https://{{ outputs.metadata.endpoint }}"
+    caCertData: "{{ outputs.metadata.masterAuth.clusterCertificate }}"
+    oauthTokenProvider:
+      cache: PT5M
+      task:
+        type: io.kestra.plugin.gcp.auth.OauthAccessToken
+      output: "{{ accessToken.tokenValue }}"
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `task` | — | Any Kestra `RunnableTask` whose output contains the token. |
+| `output` | — | A Pebble expression evaluated against the task's output map to extract the token string. |
+| `cache` | `PT5M` | How long the fetched token is reused before the provider runs the task again. Set to `PT0S` to disable caching. |
 
 ## Using plugin defaults to avoid repetition
 
@@ -200,8 +483,8 @@ tasks:
         script: |
           import socket
 
-          ip_address = socket.gethostbyname(hostname)
-          print("Hello from AWS EKS and Kestra!")
+          ip_address = socket.gethostbyname(socket.gethostname())
+          print("Hello from Kubernetes and Kestra!")
           print(f"Host IP Address: {ip_address}")
 
 pluginDefaults:
@@ -213,19 +496,15 @@ pluginDefaults:
         namespace: default
         pullPolicy: ALWAYS
         config:
-          username: docker-desktop
           masterUrl: https://docker-for-desktop:6443
-          caCertData: |-
-            placeholder
-          clientCertData: |-
-            placeholder
-          clientKeyData: |-
-            placeholder
+          caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+          clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
+          clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
 ```
 
 ## Guides
 
-Below are several guides to help you set up the Kubernetes task runner on different platforms.
+The following guides can help you set up the Kubernetes task runner on different platforms.
 
 ### Google Kubernetes Engine (GKE)
 
@@ -235,9 +514,8 @@ Below are several guides to help you set up the Kubernetes task runner on differ
 
 #### Before you begin
 
-Before starting, ensure you have the following:
 1. A Google Cloud account.
-2. A Kestra instance (version 0.18.0 or later) with Google credentials stored as [secrets](../../../06.concepts/04.secret/index.md) or environment variables.
+2. A Kestra instance with Google credentials stored as [secrets](../../../06.concepts/04.secret/index.md) or environment variables.
 
 #### Set up Google Cloud
 
@@ -255,7 +533,7 @@ To authenticate with Google Cloud, create a service account and add a JSON key t
 
 #### Creating a flow
 
-Here's an example flow using the Kubernetes task runner with GKE. To authenticate, use OAuth with a service account.
+The following flow authenticates with GKE using a service account OAuth token:
 
 ```yaml
 id: gke_task_runner
@@ -280,10 +558,14 @@ tasks:
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
       namespace: default
       config:
-        caCertData: "{{ outputs.metadata.masterAuth.clusterCertificat }}"
+        caCertData: "{{ outputs.metadata.masterAuth.clusterCertificate }}"
         masterUrl: "https://{{ outputs.metadata.endpoint }}"
         oauthToken: "{{ outputs.auth.accessToken['tokenValue'] }}"
 ```
+
+:::alert{type="info"}
+For tasks that run longer than one hour, replace the static `oauthToken` with an `oauthTokenProvider` so that the token is refreshed automatically. See [OAuth token refresh for long-running tasks](#oauth-token-refresh-for-long-running-tasks).
+:::
 
 Use the `gcloud` CLI to get credentials such as `masterUrl` and `caCertData`:
 
@@ -300,7 +582,7 @@ After running the command, access your config with `kubectl config view --minify
 
 ### Amazon Elastic Kubernetes Service (EKS)
 
-Here's an example flow using the Kubernetes task runner with AWS EKS. To authenticate, you need an OAuth token.
+The following flow authenticates with EKS using an OAuth token:
 
 ```yaml
 id: eks_task_runner
@@ -313,10 +595,10 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
       config:
-        caCertData: "{{ secret('certificate-authority-data') }}"
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
         masterUrl: https://xxx.xxx.region.eks.amazonaws.com
         username: arn:aws:eks:region:xxx:cluster/cluster_name
-        oauthToken: xxx
+        oauthToken: "{{ secret('K8S_OAUTH_TOKEN') }}"
     commands:
       - echo "Hello from a Kubernetes task runner!"
 ```

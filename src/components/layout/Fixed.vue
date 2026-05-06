@@ -2,48 +2,38 @@
     <div id="fixed-container">
         <div class="text-end">
             <Transition>
-                <a
-                    href="#"
+                <button
+                    type="button"
                     class="btn btn-sm btn-primary mb-2"
                     @click="backToTop"
                     v-if="yScroll > 200"
+                    aria-label="Scroll to top"
                 >
                     <ChevronUp />
-                </a>
+                </button>
             </Transition>
-            <div v-if="displaySlack && mounted" class="widget-chat">
-                <a
-                    href="https://kestra.io/slack"
-                    target="_blank"
-                    class="btn btn-sm btn-primary rounded"
+            <div class="widget-chat">
+                <button
+                    class="btn"
+                    title="Ask Kestra AI"
+                    data-bs-toggle="modal"
+                    data-bs-target="#search-ai-modal"
                 >
-                    <Slack title="" />
-                    Slack
-                    <span v-if="online" class="online">{{ onlineText }} members</span>
-                </a>
+                    <img :src="AIGenImg.src" alt="Kestra AI" width="25" height="25" />
+                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted, onUnmounted } from "vue"
+    import { ref, onMounted, onUnmounted } from "vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
-    import Slack from "vue-material-design-icons/Slack.vue"
+    import AIGenImg from "../docs/assets/ai-generate-lined.svg"
 
-    const props = withDefaults(
-        defineProps<{
-            displaySlack?: boolean
-            online?: number
-        }>(),
-        {
-            displaySlack: true,
-            online: 0,
-        },
-    )
 
     const yScroll = ref(0)
-    const mounted = ref(false)
 
     const handleScroll = () => {
         yScroll.value = window.scrollY
@@ -57,9 +47,9 @@
     }
 
     onMounted(() => {
-        mounted.value = true
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", handleScroll)
+            handleScroll()
         }
     })
 
@@ -69,14 +59,10 @@
         }
     })
 
-    const onlineText = computed(() => {
-        return props.online === undefined ? "" : Intl.NumberFormat("en-US").format(props.online)
-    })
+    
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/styles/variable";
-
     #fixed-container {
         position: fixed;
         z-index: 9999;
@@ -94,6 +80,23 @@
             a {
                 background-color: var(--ks-background-button-primary-hover);
                 border-color: var(--ks-border-active);
+            }
+            button {
+                display: inline-flex;
+                align-items: center;
+                width: 137px;
+                height: 36px;
+                padding: 8px 16px;
+                border-radius: 44px;
+                background: $white;
+                border: 1px solid var(--ks-border-active);
+                box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: $black;
+            }
+            img {
+                border-radius: 6px;
             }
         }
         span.online {

@@ -1,5 +1,7 @@
 ---
-title: Deprecation of Templates
+title: "Templates Deprecated in Kestra 0.11.0: Migrate to Subflows"
+h1: How to Migrate from Templates to Subflows in Kestra 0.11.0
+sidebarTitle: Templates → Subflows
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.11.0
 description: Information on the deprecation of Templates in Kestra 0.11.0 and how to migrate to Subflows.
@@ -8,22 +10,20 @@ description: Information on the deprecation of Templates in Kestra 0.11.0 and ho
 
 ## Deprecation of Templates
 
-Since 0.11.0, Templates are deprecated and disabled by default. Please use subflows instead.
+Since 0.11.0, Templates are deprecated and disabled by default. Use subflows instead.
 
-If you still rely on templates, you can re-enable them in your [configuration](../../../configuration/index.md#enabling-templates).
+If you still rely on templates, you can re-enable them in your [Plugins and Execution configuration](../../../configuration/04.plugins-and-execution/index.md).
 
 1. Subflows are more powerful — subflows provide the same functionality as templates while simultaneously being more flexible than templates. For instance, `inputs` are not allowed in a template because a template is only a list of tasks that get copied to another flow that references it. In contrast, when invoking a subflow, you can parametrize it with custom parameters. This way, subflows allow you to define workflow logic once and invoke it in other flows with custom parameters.
 2. Subflows are more transparently reflected in the topology view and don't require copying tasks.
 
-If you are using templates, and you are not ready to migrate to subflows yet, add the following [Kestra configuration](../../../configuration/index.md) option to still be able to use them:
+If you are using templates, and you are not ready to migrate to subflows yet, add the following [Plugins and Execution configuration](../../../configuration/04.plugins-and-execution/index.md) option to still be able to use them:
 
 ```yaml
 kestra:
   templates:
     enabled: true
 ```
-
----
 
 ## Templates :warning:
 
@@ -88,8 +88,6 @@ tasks:
 ```
 
 This example shows that templates are quite restrictive — you can only invoke them as-is. You cannot set custom input values, and there is no link from this flow to the template. In contrast, subflows can be parametrized, and you can navigate to the subflow in the topology view. From the 0.11.0 release, you can also expand and collapse a subflow (child flow) to inspect the available tasks directly from the parent flow.
-
----
 
 ## Subflows ✅
 
@@ -159,17 +157,13 @@ tasks:
     message: last task
 ```
 
----
-
 ## Side-by-side comparison
 
 You can look at both a flow with a template task and a flow with a subflow task side by side to see the difference in syntax:
 
 ![template-vs-subflow](./template-vs-subflow.png)
 
-If you still have questions about migrating from templates to subflows, reach out via our [Community Slack](/slack).
-
----
+If you still have questions about migrating from templates to subflows, reach out via [Community Slack](/slack).
 
 ## Documentation of the deprecated feature
 
@@ -177,7 +171,7 @@ Templates are lists of tasks that can be shared between flows. You can define a 
 
 All tasks in a template will be executed sequentially; you can provide the same tasks that are found in a *standard* flow, including an *errors* branch.
 
-Templates can have arguments passed via the `args` property — see the [Template Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Template).
+Templates can have arguments passed via the `args` property — see the [Template Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.template).
 
 ### Example
 

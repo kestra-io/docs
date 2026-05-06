@@ -1,5 +1,5 @@
 ---
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 import type { Plugin } from "@kestra-io/ui-libs"
 
@@ -15,7 +15,10 @@ const { content } = Astro.props
 
 const PLUGINS = [
     { src: "/icons/io.kestra.plugin.fivetran-white.svg", alt: "Fivetran" },
-    { src: "/icons/io.kestra.plugin.jdbc.snowflake-white.svg", alt: "Snowflake" },
+    {
+        src: "/icons/io.kestra.plugin.jdbc.snowflake-white.svg",
+        alt: "Snowflake",
+    },
     { src: "/icons/io.kestra.plugin.aws-white.svg", alt: "AWS" },
     { src: "/icons/io.kestra.plugin.databricks-white.svg", alt: "Databricks" },
     { src: "/icons/io.kestra.plugin.azure-white.svg", alt: "Azure" },
@@ -27,7 +30,7 @@ const PLUGINS = [
     { src: "/icons/io.kestra.plugin.github-white.svg", alt: "GitHub" },
 ]
 
-const pluginGroups = await $fetchApi<Plugin[]>("/plugins/subgroups")
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
 const displayDescription = content.description.replace(
     "{count}",
@@ -57,7 +60,7 @@ const displayDescription = content.description.replace(
             </div>
             <div class="d-flex justify-content-center" data-usal="zoomin">
                 <a class="btn btn-primary text-white" href="/plugins"
-                    >See all plugins</a
+                    >See All Plugins</a
                 >
             </div>
         </div>
@@ -65,8 +68,6 @@ const displayDescription = content.description.replace(
 </section>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     section {
         background-color: var(--ks-background-secondary);
         border-top: $block-border;

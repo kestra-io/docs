@@ -1,5 +1,6 @@
 ---
-title: Build and Publish a Plugin
+title: Build and Publish a Kestra Plugin
+h1: How to Build and Publish Your Kestra Plugin to Maven Central
 icon: /src/contents/docs/icons/dev.svg
 description: Learn how to build and publish your Kestra plugins to Maven Central using Gradle and GitHub Actions.
 ---
@@ -16,7 +17,7 @@ To build your plugin, execute the `./gradlew shadowJar` command from the plugin 
 
 The resulting JAR file will be generated in the `build/libs` directory.
 
-To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../kestra-cli/index.mdx#plugin-commands).
+To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins path](../../kestra-cli/kestra-server/index.md#plugin-commands).
 
 ### Use a custom docker image with your plugin
 
@@ -42,7 +43,7 @@ Next are the steps to publishing your plugin to Maven Central.
 The plugin template includes a [GitHub Actions](https://github.com/features/actions) workflow to test and publish your plugin. You can extend it by adding any additional testing or deployment steps.
 
 ### Publish to Maven Central
-The template includes a Gradle task that will publish the plugin to Maven Central. You need a Maven Central account in order to publish your plugin.
+The template includes a Gradle task that publishes the plugin to Maven Central. You need a Maven Central account to publish your plugin.
 
 You only need to configure the `gradle.properties` to have all required properties:
 

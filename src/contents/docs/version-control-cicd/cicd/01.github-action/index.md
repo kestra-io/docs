@@ -1,5 +1,6 @@
 ---
 title: GitHub Actions for Kestra – CI/CD Workflow Examples
+h1: Automate Kestra Flow Validation and Deployment via GitHub Actions
 sidebarTitle: GitHub Actions
 icon: /src/contents/docs/icons/dev.svg
 description: Automate Kestra flow validation and deployment directly from your GitHub repository using official Kestra GitHub Actions.
@@ -29,8 +30,6 @@ labels:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4MqtD9VtGVs?si=eMqBQFumZG9P4OHb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## Official Kestra Actions
 
@@ -162,6 +161,7 @@ jobs:
 with:
   server: ${{ secrets.KESTRA_HOSTNAME }}
   apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+---
 # Using basic auth
 with:
   server: ${{ secrets.KESTRA_HOSTNAME }}

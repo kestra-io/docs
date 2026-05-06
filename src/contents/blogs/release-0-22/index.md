@@ -5,6 +5,7 @@ date: 2025-04-01T17:00:00
 category: News & Product Updates
 author:
   name: Benoit Pimpaud
+  linkedin: https://www.linkedin.com/in/pimpaudben/
   image: bpimpaud
 image: ./main.jpg
 ---
@@ -28,8 +29,6 @@ Check the video below for a quick overview of all enhancements.
     <iframe src="https://www.youtube.com/embed/pLVpimXVJ8Y?si=Rx2Zx0UyZ9Vd5I-K" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Let's dive into these highlights and other enhancements in more detail.
 
 ## Feature Highlights
@@ -46,8 +45,6 @@ To enable that capability, Kestra now stores plugins in internal storage and aut
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=_BoEZRxeVvxpXXnG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 For detailed instructions on how to use and configure plugin versioning, check out our [comprehensive documentation on Plugin Versioning](../../docs/07.enterprise/05.instance/versioned-plugins/index.md).
 
@@ -66,8 +63,6 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../../docs/07.enterprise/02.governance/read-only-secrets/index.md).
 
@@ -95,7 +90,7 @@ tasks:
 afterExecution:
   - id: onSuccess
     runIf: "{{execution.state == 'SUCCESS'}}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     payload: |
       {
@@ -104,7 +99,7 @@ afterExecution:
 
   - id: onFailure
     runIf: "{{execution.state == 'FAILED'}}"
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     payload: |
       {
@@ -122,8 +117,6 @@ You might use `afterExecution` to send custom notifications after a flow complet
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/7PCOvxOl9LI?si=opJjV_Drs-dsjy_L" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 For detailed instructions on how to configure and use this feature, check out our [comprehensive documentation on afterExecution](../../docs/05.workflow-components/20.afterexecution/index.md).
 
@@ -195,8 +188,6 @@ Once LDAP integration is set up, users logging into Kestra for the first time wi
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/lGdoZf2SZrE?si=uPe9e-oO6e7NgKMM" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 For detailed information on setting up and configuring LDAP in Kestra, check our [LDAP documentation](../../docs/07.enterprise/03.auth/sso/ldap/index.md).
 
@@ -372,8 +363,8 @@ Kestra 0.22.0 introduces several new Pebble functions that enhance your workflow
 - **fileSize**: `{{ fileSize(outputs.download.uri) }}` — Returns the size of the file present at the given URI location.
 - **fileExists**: `{{ fileExists(outputs.download.uri) }}` — Returns true if file is present at the given URI location.
 - **fileEmpty**: `{{ isFileEmpty(outputs.download.uri) }}` — Returns true if file present at the given URI location is empty.
-- **Environment Name**: `{{ kestra.environment }}` — Returns the name given to your environment. This value should be configured in the [Kestra configuration](../../docs/configuration/index.md).
-- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the [Kestra configuration](../../docs/configuration/index.md).
+- **Environment Name**: `{{ kestra.environment }}` — Returns the name given to your environment. This value should be configured in the [Kestra configuration](../../docs/configuration/index.mdx).
+- **Environment URL**: `{{ kestra.url }}` — Returns the environment's configured URL. This value should be configured in the [Kestra configuration](../../docs/configuration/index.mdx).
 
 
 ## Thanks to Our Contributors
@@ -389,4 +380,3 @@ This post covered new features and enhancements added in Kestra 0.22.0. Which of
 If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
-

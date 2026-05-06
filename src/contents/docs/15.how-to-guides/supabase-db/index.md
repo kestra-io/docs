@@ -1,5 +1,6 @@
 ---
-title: Connect Supabase Database to Kestra
+title: Connect a Supabase Database to Kestra
+h1: Query and Manage Supabase Data from Your Workflows
 icon: /src/contents/docs/icons/supabase.svg
 stage: Intermediate
 topics:
@@ -8,8 +9,6 @@ description: Learn how to connect your Supabase Database to Kestra workflows usi
 ---
 
 Connect your Supabase Database to your workflows using the PostgreSQL plugin.
-
-## Connect Supabase Database to Kestra
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/DZcOlumKrtc?si=48PCtEOZwSgehiZ6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -21,7 +20,7 @@ There is a dedicated [Supabase plugin](/plugins/plugin-supabase) to replace thes
 
 Supabase is an open-source Backend-as-a-service (BaaS) platform that helps developers build applications faster and more efficiently. They provide a number of services, including hosted PostgreSQL databases, which can be used within Flows in Kestra.
 
-To get started, make sure you have a [Supabase account](https://supabase.com/) set up and an [installation of Kestra](../../02.installation/index.mdx) running.
+Before you begin, ensure you have a [Supabase account](https://supabase.com/) set up and a [Kestra installation](../../02.installation/index.mdx) running.
 
 ## Setting up a Database in Supabase
 
@@ -29,11 +28,11 @@ Once you've logged into Supabase, you'll need to set up an organization where yo
 
 ![supabase-1](./supabase-1.png)
 
-Once your organization is created, you'll be prompted to create a new project. You will need to set a password for this project which we will use later to authenticate with the database inside of Kestra.
+Once your organization is created, you'll be prompted to create a new project. Set a password for this project to use later for authenticating with the database in Kestra.
 
 ![supabase-2](./supabase-2.png)
 
-Once your project is created, you will now be able to access resources inside of Supabase. Head to the menu on the left side and select **Database**. You will be prompted to create a new table inside of your database, as well as configure any columns you want to use. We can leave the columns blank for now and modify these later once we know what data we want to copy into our database.
+Once your project is created, you will now be able to access resources in Supabase. Head to the menu on the left side and select **Database**. You will be prompted to create a new table in your database, as well as configure any columns you want to use. Leave the columns blank for now and modify them later once you know what data to copy into the database.
 
 ![supabase-3](./supabase-3.png)
 
@@ -47,7 +46,7 @@ Inside of Supabase, select the **Connect** button at the top to get information 
 
 To connect, we can copy the URL provided for the Transaction pooler and replace `[YOUR-PASSWORD]` with the password set earlier. To prevent exposing the password in our flow, store it as a [secret](../../06.concepts/04.secret/index.md).
 
-By using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md), we can configure our connection to Supabase once for all tasks inside of our flow rather than individually for each task.
+By using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md), we can configure our connection to Supabase once for all tasks in our flow rather than individually for each task.
 
 Once configured, our connection in Kestra will look like the example below:
 
@@ -75,7 +74,7 @@ pluginDefaults:
 
 :::
 
-## Copying a CSV file into Supabase DB inside of a Flow
+## Copying a CSV File into Supabase DB in a Flow
 
 Using this [example CSV](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv), we can copy the data into our table directly from Kestra. You can either set up the columns directly in Supabase or add a task in Kestra to add them automatically like this:
 

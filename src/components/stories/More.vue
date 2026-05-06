@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <Link href="/use-cases/stories" text="See all stories" class="read-link" />
+                <Link href="/use-cases/stories" text="See All Stories" class="read-link" />
             </div>
         </div>
     </section>
@@ -30,8 +30,6 @@
 </script>
 
 <style scoped lang="scss">
-    @import "~/assets/styles/variable";
-
     .more {
         padding: 2.5rem 1rem;
         @include media-breakpoint-up(lg) {
@@ -41,10 +39,8 @@
         background: var(--ks-background-secondary) url("/stories/grid.png") no-repeat center;
         background-size: cover;
         h2 {
-            text-align: center;
             width: 100%;
             margin: 0 auto;
-            margin-bottom: 2rem;
         }
     }
 

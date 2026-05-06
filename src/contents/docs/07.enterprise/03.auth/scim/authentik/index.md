@@ -1,5 +1,6 @@
 ---
-title: authentik SCIM Provisioning
+title: authentik SCIM Provisioning in Kestra
+h1: Set Up authentik SCIM Provisioning for User Sync
 description: Configure SCIM provisioning with authentik. Learn how to automatically sync users and groups from authentik to your Kestra Enterprise instance.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -43,7 +44,7 @@ The above steps will generate a SCIM endpoint URL and a Secret Token that you wi
 
 The endpoint should look as follows:
 
-```
+```plaintext
 https://<your_kestra_host>/api/v1/<your_tenantID>/integrations/integration_id/scim/v2
 ```
 
@@ -75,8 +76,6 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 :::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
 :::
-
----
 
 ## authentik SCIM 2.0 setup
 
@@ -112,8 +111,6 @@ Once groups and users are created, they should be visible in the Kestra UI under
 ![scim-for-authentik-12](./authentik12.png)
 
 Then, to verify access, log in as one of those new authentik users in a separate browser or incognito mode and verify that the user has the permissions you expect.
-
----
 
 ## Additional resources
 

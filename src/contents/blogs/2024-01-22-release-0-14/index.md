@@ -5,6 +5,8 @@ date: 2024-01-22T11:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -19,7 +21,7 @@ We've heard from many of you that you'd like to use Git to [version control](../
 
 ### GitOps with `git.Sync`
 
-The new `git.Sync` task makes it easy to [sync your code](/plugins/plugin-git/io.kestra.plugin.git.sync) from a Git repository to Kestra. This task facilitates GitOps in a simple and straightforward manner.
+The new `git.Sync` task makes it easy to [sync your code](/plugins/plugin-git) from a Git repository to Kestra. This task facilitates GitOps in a simple and straightforward manner.
 
 You can use `git.Sync` in two ways:
 1. **Event-driven (webhook trigger)**: a system flow will automatically sync your code whenever a new commit is pushed to the Git repository
@@ -29,7 +31,7 @@ Check the [Git Sync](../../docs/version-control-cicd/04.git/index.md#git-syncflo
 
 ### Push to Git from Kestra with `git.Push`
 
-Apart from syncing your code from Git to Kestra, you can also [push your code](/plugins/plugin-git/io.kestra.plugin.git.push) from Kestra to Git using the new `git.Push` task. This pattern is particularly useful for business users who want to leverage Git without having to use the terminal and complex Git workflows.
+Apart from syncing your code from Git to Kestra, you can also [push your code](/plugins/plugin-git) from Kestra to Git using the new `git.Push` task. This pattern is particularly useful for business users who want to leverage Git without having to use the terminal and complex Git workflows.
 
 Check the [Version Control with Git](../../docs/version-control-cicd/04.git/index.md) documentation for a deep dive into multiple ways to version control your code with Git and when to use them.
 
@@ -46,7 +48,7 @@ We've made several improvements to our embedded VS Code Editor and the [VS Code 
 
 ## Recursive rendering of Pebble expressions
 
-So far, the templating engine has been rendering all [expressions](../../docs/expressions/index.md) **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions, or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
+So far, the templating engine has been rendering all [expressions](../../docs/expressions/index.mdx) **recursively**. While recursive rendering enabled many flexible usage patterns, it also opened up the door to some unintended behavior. For example, if you wanted to parse JSON elements of a webhook payload that contained a templated string from other applications (such as GitHub Actions, or dbt core), the recursive rendering would attempt to parse those expressions, resulting in an error.
 
 Starting from this release, the default rendering behavior is **not recursive**. We've also introduced a new `render()` function that gives you more control over which expressions should be rendered and how.
 
@@ -56,7 +58,7 @@ Note that this is a **breaking change**. If you want to keep the old behavior, y
 
 ## Execution labels can now be set from a task
 
-This feature has been highly requested. You can now set [execution labels](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Labels) from a task. This allows you to dynamically set labels based on flow inputs or task outputs, which is particularly useful for observability, debugging and monitoring purposes.
+This feature has been highly requested. You can now set [execution labels](/plugins/core/execution/io.kestra.plugin.core.execution.labels) from a task. This allows you to dynamically set labels based on flow inputs or task outputs, which is particularly useful for observability, debugging and monitoring purposes.
 
 Here is how that works:
 
@@ -116,7 +118,7 @@ You should see that the default song label has been overridden by a [new song](h
 
 ## The Allow Failure pattern is now available as a core task property
 
-So far, the `AllowFailure` workflow pattern was only available as [a dedicated task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.AllowFailure). We've now added it as a [core task property](../../docs/05.workflow-components/01.tasks/index.mdx) called `allowFailure` allowing you to easily configure it on any task without complicated nesting. Here is how that works:
+So far, the `AllowFailure` workflow pattern was only available as [a dedicated task](/plugins/core/flow/io.kestra.plugin.core.flow.allowfailure). We've now added it as a [core task property](../../docs/05.workflow-components/01.tasks/index.mdx) called `allowFailure` allowing you to easily configure it on any task without complicated nesting. Here is how that works:
 
 ```yaml
 id: allow_failure
@@ -138,7 +140,7 @@ The ``continue`` task won't be blocked by the failure of the ``fail`` task.
 
 Based on a community request, this release [introduces](https://github.com/kestra-io/kestra/issues/2629) a new scheduling condition to allow executing your flows:
 1. Only during public holidays in your country
-2. Only during working days in your country — excluding [weekends](/plugins/core/conditions/io.kestra.plugin.core.condition.weekend) and [public holidays](/plugins/core/conditions/io.kestra.plugin.core.condition.publicholiday).
+2. Only during working days in your country — excluding [weekends](/plugins/core/condition/io.kestra.plugin.core.condition.weekend) and [public holidays](/plugins/core/condition/io.kestra.plugin.core.condition.publicholiday).
 
 The example below shows the latter use case i.e. executing the workflow only during weekdays:
 
@@ -179,7 +181,7 @@ Tenants can now be assigned a default [worker group](../../docs/07.enterprise/04
 
 The `Flow` task got renamed to `Subflow` for clarity. We've also added [a dedicated page for Subflows](../../docs/05.workflow-components/10.subflows/index.md) in the docs.
 
-Also, the `FlowCondition` got [deprecated](https://github.com/kestra-io/kestra/issues/2327) in favor of [`ExecutionFlow`](/plugins/core/conditions/io.kestra.plugin.core.condition.executionflow) condition.
+Also, the `FlowCondition` got [deprecated](https://github.com/kestra-io/kestra/issues/2327) in favor of [`ExecutionFlow`](/plugins/core/condition/io.kestra.plugin.core.condition.executionflow) condition.
 
 
 ## Plugins
@@ -250,7 +252,7 @@ You should see that OpenAI classifies all reviews astoundingly well and provides
 
 ### Google Vertex AI plugin now supports multimodal completion with Gemini
 
-The [GCP plugin](/plugins/plugin-gcp) now supports [multimodal completion](/plugins/tasks/vertexai/io.kestra.plugin.gcp.vertexai.MultimodalCompletion), allowing you to process text, image, video and audio content based on a prompt passed to [Google Gemini LLM](https://deepmind.google/technologies/gemini). This feature is particularly useful for generating captions for images or transcripts for audio and video files.
+The [GCP plugin](/plugins/plugin-gcp) now supports [multimodal completion](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.multimodalcompletion), allowing you to process text, image, video and audio content based on a prompt passed to [Google Gemini LLM](https://deepmind.google/technologies/gemini). This feature is particularly useful for generating captions for images or transcripts for audio and video files.
 
 Here is an example of a workflow that uses multimodal completion to describe an image:
 

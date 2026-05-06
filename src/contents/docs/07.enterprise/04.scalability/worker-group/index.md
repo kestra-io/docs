@@ -1,5 +1,6 @@
 ---
-title: Worker Groups in Kestra Enterprise – Configure Targeted Workers
+title: "Worker Groups in Kestra Enterprise: Target Workers"
+h1: Route Tasks to Specific Workers by Hardware or Region
 description: Manage workloads with Kestra Worker Groups. Target specific workers for tasks based on hardware, region, or security requirements for optimized execution.
 sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
@@ -41,7 +42,7 @@ The Worker Groups UI tracks the health of worker groups, showing how many worker
 ![Worker Group UI Details](./worker-group-details.png)
 
 :::alert{type="info"}
-In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../../kestra-cli/index.mdx#kestra-with-server-components-in-different-services).
+In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../../kestra-cli/kestra-server/index.md#kestra-with-server-components-in-different-services).
 :::
 
 ## Using Worker Groups
@@ -86,6 +87,27 @@ tasks:
     workerGroup:
       key: "{{ inputs.my_worker_group }}"
 ```
+
+If the expression resolves to `null` or a blank string, the task is routed to the default worker group — the same behavior as omitting `workerGroup` entirely. This makes `null` a useful sentinel for conditional routing:
+
+```yaml
+id: worker_group_conditional
+namespace: company.team
+
+inputs:
+  - id: use_gpu
+    type: BOOLEAN
+    defaults: false
+
+tasks:
+  - id: train
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ taskrun.startDate }}"
+    workerGroup:
+      key: "{{ inputs.use_gpu ? 'gpu' : null }}"
+```
+
+When `inputs.use_gpu` is `false`, the key resolves to `null` and the task runs on the default worker group. When `true`, it targets the `gpu` worker group.
 
 ## Worker Group fallback behavior
 

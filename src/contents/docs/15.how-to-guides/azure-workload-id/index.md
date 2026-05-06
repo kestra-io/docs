@@ -1,5 +1,6 @@
 ---
-title: Use Azure Managed Workload on Kestra
+title: Use Azure Managed Workload Identity with Kestra
+h1: Access Azure Resources Securely Without Managing Secrets
 icon: /src/contents/docs/icons/azure-aks.svg
 stage: Advanced
 topics:
@@ -12,10 +13,8 @@ description: Configure Azure Workload Identity on Kestra Enterprise to securely 
 
 How to use Azure Workload identity to provide access to resources such as Azure Key Vault in Kestra
 
-## Use Azure Managed Workload on Kestra
-
 :::alert{type="info"}
-Note that this page is only relevant for the Enterprise Edition of Kestra. Should you require features such as integrations with Cloud-based secret managers, please contact us on sales@kestra.io or chat with us in our Slack community.
+This page is only relevant for the Enterprise Edition of Kestra. For Cloud-based secret manager integrations, contact us at sales@kestra.io or chat with us in our [Slack community](https://kestra.io/slack).
 :::
 
 ## Pre-Requisites
@@ -78,7 +77,7 @@ az keyvault create \
 
 ### Managed Identity
 
-This creates the user-assigned managed identity we will use to provision access to resources within the Kubernetes cluster.
+This creates the user-assigned managed identity used to provision access to resources within the Kubernetes cluster.
 
 ```shell
 az identity create --name $ID_NAME \
@@ -145,7 +144,7 @@ metadata:
 EOF
 ```
 
-Finally, we need to link this service account to the OIDC issuer associated with our managed identity. We do this by creating federated credentials:
+Finally, link this service account to the OIDC issuer associated with the managed identity by creating federated credentials:
 
 ```shell
 az identity federated-credential create \
@@ -159,28 +158,29 @@ az identity federated-credential create \
 
 ## Deploying Kestra
 
-Before we deploy Kestra, we need to modify the `values.yaml` of the helm chart using some of the information above.
+Before deploying Kestra, modify the `values.yaml` of the Helm chart using the information above.
 
 ### Configure Secrets Manager
 
 ```yaml
-configuration:
-  kestra:
-    secret:
-      type: azure-key-vault
-      azureKeyVault:
-        vaultName: ${KEYVAULT_NAME}
-        workloadIdentityClientId: ${MANAGED_CLIENT_ID}
+configurations:
+  application:
+    kestra:
+      secret:
+        type: azure-key-vault
+        azureKeyVault:
+          vaultName: ${KEYVAULT_NAME}
+          workloadIdentityClientId: ${MANAGED_CLIENT_ID}
 ```
 
 ### Service Account
 
-Make sure to add the service account name to the `values.yaml` file. Since a value is already present, overwrite it with your value defined above.
+Add the service account name to the `values.yaml` file. Since a value is already present, overwrite it with the value you defined above.
 
 ```yaml
-### Global Deployement
-nameOverride: ""
-serviceAccountName: ${SERVICE_ACCOUNT_NAME}
+serviceAccount:
+  create: false
+  name: ${SERVICE_ACCOUNT_NAME}
 ```
 
 ## Deployment
@@ -212,7 +212,7 @@ Should you be unable to upgrade at this time, here is a workaround:
 - Navigate to file `templates/_helpers.tpl`
 - In the section `kestra.selectorsLabels`, add the required label to the list, e.g.:
 
-```
+```yaml
 {{- define "kestra.selectorsLabels" -}}
 app.kubernetes.io/name: {{ include "kestra.name" . }}
 app.kubernetes.io/component: {{ .Component }}
@@ -229,4 +229,4 @@ helm install -f values.yaml kestra ~/helm/kestra
 
 ## Next steps
 
-Following the steps above, you can leverage Azure Workload Identity in your Kestra Enterprise Edition instance. If you have any issues replicating this setup, don't hesitate to reach out [via Slack](https://kestra.io/slack) or open a support ticket.
+Following the steps above, you can use Azure Workload Identity in your Kestra Enterprise Edition instance. If you have any issues replicating this setup, don't hesitate to reach out [via Slack](https://kestra.io/slack) or open a support ticket.

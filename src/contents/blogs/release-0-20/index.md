@@ -5,6 +5,8 @@ date: 2024-12-03T17:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -59,7 +61,7 @@ You can think of Apps as **custom UIs for flows**, allowing your end users to in
 
 ## Team-Level Isolation for Storage and Secrets
 
-Kestra Enterprise has built-in [multitenancy](../../docs/07.enterprise/02.governance/tenants/index.md), providing *virtual* isolation across teams or business units. By default, each tenant uses the same [internal storage](../../docs/configuration/index.md#internal-storage) and [secrets backend](../../docs/configuration/index.md#secret-managers) configured in your Kestra instance.
+Kestra Enterprise has built-in [multitenancy](../../docs/07.enterprise/02.governance/tenants/index.md), providing *virtual* isolation across teams or business units. By default, each tenant uses the same [internal storage](../../docs/configuration/02.runtime-and-storage/index.md#internal-storage) and [secrets backend](../../docs/configuration/05.security-and-secrets/index.md#secret-backends) configured in your Kestra instance.
 
 However, teams often need *physical* data isolation per organizational unit. Starting with version 0.20, Kestra now supports team-level isolation for internal storage and secrets. This means you can configure dedicated storage and secrets managers per tenant or namespace, providing stricter data isolation for your business units. This capability is particularly useful for organizations requiring infrastructure isolation across teams or customers.
 
@@ -93,7 +95,7 @@ Announcements appear as banners of the chosen type (`Info`, `Warning`, `Error`) 
 
 [System Labels](../../docs/06.concepts/system-labels/index.md) provide a powerful way to add extra metadata to manage executions. For example, they allow you to disable edits from the UI by making workflows read-only or track cross-execution dependencies using correlation IDs.
 
-Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your [Kestra configuration](../../docs/configuration/index.md).
+Labels prefixed with `system.` are hidden in the UI unless you explicitly filter for them. If you prefer to display them by default, remove the `system.` prefix from the list of hidden prefixes in your [Kestra configuration](../../docs/configuration/index.mdx).
 
 
 ## Flow-Level SLA (Beta)
@@ -173,7 +175,7 @@ namespace: system
 
 tasks:
   - id: alert_task
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{secret('SLACK_WEBHOOK')}}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -197,7 +199,7 @@ triggers:
 :::
 
 
-Check the [Flow trigger docs](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md) and [plugin examples](/plugins/core/triggers/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
+Check the [Flow trigger docs](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md) and [plugin examples](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) to learn more about the new Flow trigger `preconditions`.
 
 ## Task conditions with `runIf`
 
@@ -299,7 +301,7 @@ The filter and search bars have been improved to better handle more complex filt
 
 Kestra can now persist the dbt manifest in the KV Store, which allows you to rebuild only those models that have changed since the last run.
 
-Check the [plugin example](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli) showing how to use it.
+Check the [plugin example](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli) showing how to use it.
 
 ## Thanks to Our Contributors
 
