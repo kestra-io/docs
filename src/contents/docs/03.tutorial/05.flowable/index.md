@@ -1,5 +1,6 @@
 ---
-title: Tutorial – Flowable Tasks in Kestra – Branch, Loop, Parallelize
+title: "Flowable Tasks in Kestra: Branch, Loop, Parallelize"
+h1: Master Branching, Looping & Parallel Execution with Flowable Tasks
 description: Master Kestra's Flowable tasks to control workflow logic. Learn how to implement branching, loops, and parallel execution for complex orchestration scenarios.
 sidebarTitle: Flowable tasks
 icon: /src/contents/docs/icons/tutorial.svg
@@ -8,18 +9,16 @@ icon: /src/contents/docs/icons/tutorial.svg
 Run tasks or subflows in parallel, create loops, and conditional branching.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/PupBvX35PZQ?si=x9q_j4c8tEE8fZD4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/pRRAz5l2WWw?si=WJ_0RW2LVAVtXtgQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Branch, Loop, and Parallelize with Flowable Tasks
-
-To this point, our flow extracts data from an API, uses that data in a Python script, executes a SQL query, and generates a downloadable artifact all on a predefined schedule. While some workflows may work so linearly, many real life use cases require conditioning, looping, or several tasks running simultaneously. Kestra handles these requirements with Flowable tasks.
+The example flow from earlier in this tutorial extracts data from an API, processes it in a Python script, executes a SQL query, and generates a downloadable artifact on a predefined schedule. Many real-world use cases require branching, looping, or running several tasks simultaneously. Kestra handles these requirements with Flowable tasks.
 
 Tasks from the [Core Flow plugin](/plugins/core/flow) control flow logic. Use them to run tasks in parallel or sequentially, branch conditionally, iterate over items, pause, or allow specific tasks to fail without stopping the execution.
 
-For example, you can use the [If task](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.if) to specify your conditions and define what action to take based on whether those conditions are met.
+For example, you can use the [If task](/plugins/core/flow/io.kestra.plugin.core.flow.if) to specify your conditions and define what action to take based on whether those conditions are met.
 
-Let's take our previous example, and modify it to incorporate the If task for conditional logic. Below, we have redesigned the flow to be based on a product `SELET` input rather than a `STRING` URI, but it still calles back to [dummyjson](https://dummyjson.com), and an API request is made based on the product category input of either `beauty` or `notebook` (one does not exist).
+The example below redesigns the flow to use a `SELECT` input for product category rather than a `STRING` URI, while still calling [dummyjson](https://dummyjson.com). An API request is made based on the selected category — `beauty` or `notebooks` (one does not exist).
 
 The `check_products` If task has a `condition` of `"{{ json(outputs.api.body).products | length > 0 }}"` (i.e., checking whether the API body is not empty and contains at least one product). The log message then depends on whether the actual product category exists or not. The `then` property defines the action for a true condition, and the `else` property defines the action for a false result.
 
@@ -86,7 +85,7 @@ Execute the flow twice, once with `beauty` and once with `notebooks` to examine 
 
 ## Add a loop to a flow using Flowable tasks
 
-It is a common process in orchestration to have a set of values you want to operate on. In Kestra, there are several ways to do this depending on your use case. Below are several standalone examples to demonstrate each type independent of the flow we have been iterating on to this point.
+A common orchestration pattern is operating on a set of values. Kestra offers several approaches depending on your use case. The standalone examples below demonstrate each type.
 
 ### ForEach
 
@@ -94,7 +93,7 @@ The **ForEach** flowable task executes a group of tasks for each value in the li
 
 As an introduction to the feature, the below example demonstrates using ForEach to make an API call to [OpenLibrary](https://openlibrary.org/dev/docs/api/search) to get a list of associated titles for each author in the list. The values are defined as a JSON string or an array, i.e., a list of string values `["value1", "value2"]` or a list of key-value pairs `[{"key": "value1"}, {"key": "value2"}]`.
 
-You can access the current iteration value using the variable {{ taskrun.value }}:
+You can access the current iteration value using the variable `{{ taskrun.value }}`:
 
 ```yaml
 id: for_loop_example
@@ -139,10 +138,10 @@ tasks:
       - id: healthCheck
         type: io.kestra.plugin.core.http.Request
         method: GET
-        uri: https://kestra.io/api/mock
+        uri: https://kestra.io
 ```
 
-This flow checks an HTTP endpoint every 30 seconds and stops either when it returns 200 or after 50 attempts, whichever comes first. You can reference the child task outputs (here `outputs.healthCheck.code`) inside the `condition` expression. See the [LoopUntil task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.LoopUntil) for additional options.
+This flow checks an HTTP endpoint every 30 seconds and stops either when it returns 200 or after 50 attempts, whichever comes first. You can reference the child task outputs (here `outputs.healthCheck.code`) inside the `condition` expression. See the [LoopUntil task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil) for additional options.
 
 ## Add parallelism using Flowable tasks
 
@@ -180,7 +179,8 @@ tasks:
         type: io.kestra.plugin.scripts.python.Script
         taskRunner:
           type: io.kestra.plugin.scripts.runner.docker.Docker
-        containerImage: ghcr.io/kestra-io/pydata:latest
+        dependencies:
+          - kestra
         script: |
           import random
           import time

@@ -1,5 +1,6 @@
 ---
-title: Run Go inside of your Flows
+title: Run Go Inside Your Flows
+h1: Execute Go Scripts in Kestra Flows Using the Go Plugin
 icon: /src/contents/docs/icons/golang.svg
 stage: Getting Started
 topics:
@@ -9,15 +10,13 @@ description: Run Go code directly within Kestra flows for high-performance scrip
 
 Run Go code directly inside your Flows and generate outputs.
 
-## Run Go inside of your Flows
-
 <div class="video-container">
     <iframe src="https://youtube.com/embed/flGQZeP1MmA" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Go is a powerful programming language often used for cloud-native development, CLI utilities and more. As Go is complied, it's often much more performant than Python making it a great alternative for heavy compute workloads. Combining Go's and Kestra's performance, you can build incredibly fast workflows.
+Go is a powerful programming language often used for cloud-native development, CLI utilities, and more. As Go is compiled, it's often much more performant than Python, making it a great alternative for heavy compute workloads. Combining Go's and Kestra's performance, you can build incredibly fast workflows.
 
-This guide is going to walk you through how to get Go running inside of a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
+This guide is going to walk you through how to get Go running in a workflow, how to manage input and output files, and how you can pass outputs and metrics back to Kestra to use in later tasks.
 
 ## Commands Task
 
@@ -192,7 +191,7 @@ tasks:
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Golang code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Golang code. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: golang

@@ -1,5 +1,6 @@
 ---
-title: Manage dbt projects with Kestra's Code Editor
+title: Manage dbt Projects with Kestra's Code Editor
+h1: Clone, Edit, Test, and Push dbt Models from Kestra
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -10,13 +11,7 @@ description: Clone dbt projects from Git, edit models in Kestra's Code Editor, r
 
 Edit dbt code from Kestra's Code Editor
 
-## Manage dbt projects with Kestra's Code Editor
-
-Kestra's built-in Code Editor allows you to easily manage dbt projects by cloning the Git repository with the dbt code, and uploading it to your Kestra namespace. You can make changes to the dbt models directly from the Kestra UI, test them as part of an end-to-end workflow, and push the changes to the desired Git branch when you are ready.
-
-Let's look at how you can use Kestra's Code Editor to manage dbt projects.
-
----
+Kestra's built-in Code Editor allows you to manage dbt projects by cloning the Git repository with the dbt code and uploading it to your Kestra namespace. You can make changes to the dbt models directly from the Kestra UI, test them as part of an end-to-end workflow, and push the changes to the desired Git branch when you are ready.
 
 ## Clone a dbt project from Git
 
@@ -50,11 +45,9 @@ You can use this flow as an initial setup:
 
 ![dbt-code-editor](./dbt-code-editor.png)
 
----
-
 ## Run dbt CLI commands
 
-Let's create a flow that runs dbt CLI commands:
+Create a flow that runs dbt CLI commands:
 
 ```yaml
 id: dbt_build
@@ -88,13 +81,13 @@ tasks:
       type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
-Note how by using the `namespaceFiles` property, we can run dbt commands on the files uploaded to the namespace. This allows you to test the dbt models without having to build the entire project every time.
+The `namespaceFiles` property lets you run dbt commands on the files uploaded to the namespace. This allows you to test the dbt models without having to build the entire project every time.
 
 Execute the flow using the default value for the `dbt_command` input.
 
 ## Edit dbt files
 
-You can now open the dbt files in the Code Editor and make changes as needed. For example, let's add a new model `my_third_dbt_model.sql`:
+You can now open the dbt files in the Code Editor and make changes as needed. For example, add a new model `my_third_dbt_model.sql`:
 
 ```sql
 select *
@@ -131,4 +124,4 @@ tasks:
     commitMessage: "{{ inputs.commit_message }}"
 ```
 
-Make sure to adjust the `url`, `branch`, and `gitDirectory` properties to match your dbt Git repository structure. If the branch does not exist, it will be created. If you want to test this step more incrementally, you can set the `dryRun` property to `true` to validate the changes before committing them to Git.
+Adjust the `url`, `branch`, and `gitDirectory` properties to match your dbt Git repository structure. If the branch does not exist, it will be created. If you want to test this step more incrementally, you can set the `dryRun` property to `true` to validate the changes before committing them to Git.

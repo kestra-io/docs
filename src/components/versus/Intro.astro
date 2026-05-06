@@ -1,0 +1,197 @@
+---
+import ksIcon from "./assets/ks-icon.svg?raw"
+import swordSvg from "./assets/sword.svg?raw"
+import Link from "~/components/common/Link.astro"
+
+interface Props {
+    title?: string | null
+    description?: string
+    competitor?: {
+        name?: string
+        monogram?: string
+    }
+    secondaryCta?: {
+        label: string
+        href: string
+    }
+}
+
+const {
+    title,
+    description,
+    competitor,
+    secondaryCta = { label: "Book a Demo", href: "/demo" },
+} = Astro.props as Props
+
+const renderedTitle = (title ?? "").replace(
+    /^Kestra\b/,
+    '<span class="highlight">Kestra</span>',
+)
+---
+
+<section class="hero">
+    <div class="container">
+        <div class="content">
+            <h1 set:html={renderedTitle} />
+            <p>{description}</p>
+            <div class="ctas">
+                <Link
+                    href="/get-started"
+                    class="btn btn-primary text-white"
+                >
+                    Get Started
+                </Link>
+                <Link href={secondaryCta.href} class="btn btn-secondary">
+                    {secondaryCta.label}
+                </Link>
+            </div>
+        </div>
+        <div class="pictos">
+            <div class="picto ks" set:html={ksIcon} />
+            <div class="sword" set:html={swordSvg} aria-hidden="true" />
+            {
+                competitor?.monogram && (
+                    <div
+                        class="picto"
+                        set:html={competitor.monogram}
+                        aria-label={competitor.name}
+                    />
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .hero {
+        position: relative;
+        background:
+            var(--ks-background-secondary)
+            url("~/assets/header-grid.svg") no-repeat center / cover;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        padding-inline: 1rem;
+        overflow: hidden;
+
+        .container {
+            position: relative;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding-block: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+
+            @include media-breakpoint-down(lg) {
+                padding-block: 2.5rem;
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                gap: 2rem;
+            }
+        }
+
+        .content {
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 600px;
+
+            h1 {
+                color: var(--ks-content-primary);
+                font-weight: 600;
+                margin-bottom: 1rem;
+                font-size: 2.5rem;
+                line-height: 1.15;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 2rem;
+                }
+
+                :global(.highlight) {
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+                margin-bottom: 1.5rem;
+            }
+
+            .ctas {
+                display: flex;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+
+                .btn-secondary {
+                    background-color: transparent !important;
+                    color: var(--ks-content-primary) !important;
+                    border-color: var(--ks-border-button-secondary) !important;
+                }
+            }
+        }
+
+        .pictos {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+
+            .picto {
+                width: 170px;
+                height: 170px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid var(--ks-border-secondary);
+                border-radius: 12px;
+                padding: 38px;
+                background: $white;
+                box-shadow: inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1));
+
+                :global(svg) {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+
+                &.ks {
+                    overflow: hidden;
+                    padding: 24px;
+                }
+            }
+
+            .sword {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 56px;
+                height: 60px;
+                flex-shrink: 0;
+
+                :global(svg) {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                gap: 0.5rem;
+
+                .picto {
+                    width: 110px;
+                    height: 110px;
+                    padding: 22px;
+
+                    &.ks {
+                        padding: 14px;
+                    }
+                }
+
+                .sword {
+                    width: 36px;
+                    height: 40px;
+                }
+            }
+        }
+    }
+</style>

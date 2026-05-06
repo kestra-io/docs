@@ -1,5 +1,7 @@
 ---
-title: Tutorial – Build a Hello World Flow in Kestra
+title: Build a Hello World Flow in Kestra
+h1: Create Your First Hello World Flow
+description: Build your first Hello World flow in Kestra. Follow a step-by-step tutorial to learn declarative workflow design and core Kestra concepts from scratch.
 sidebarTitle: Fundamentals
 icon: /src/contents/docs/icons/tutorial.svg
 ---
@@ -12,8 +14,8 @@ If you haven't already, follow the [Quickstart Guide](../../01.quickstart/index.
 
 ## Build your first Hello World Flow
 
-<div class=video-container>
-  <iframe src="https://www.youtube.com/embed/6kV6OqadU90?si=hmEcf3dZGOm8xIV3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/Foq3RZfwV90?si=uO7xdC5TXZxMGShB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Flows
@@ -68,7 +70,7 @@ tasks:
 You can optionally add a [description](../../05.workflow-components/15.descriptions/index.md) property to document your flow's purpose or other useful information. The `description` is a string that supports **markdown** syntax. This markdown description is rendered and displayed in the UI.
 
 :::alert{type="info"}
-Not only flows can have a description. You can also add a `description` property to `tasks` and `triggers` to document all the components of your workflow.
+You can also add a `description` property to `tasks` and `triggers` to document all the components of your workflow.
 :::
 
 Here is the same flow as before, but with labels and descriptions:
@@ -94,8 +96,6 @@ tasks:
 ```
 
 Learn more about flows in the [Flows page](../../05.workflow-components/01.flow/index.md).
-
----
 
 ## Tasks
 
@@ -139,15 +139,17 @@ tasks:
       print("Hello World!")
 ```
 
+### Iterate quickly with Playground
+
+When you want to tweak a flow step by step without rerunning everything, use the **Playground** in the editor. It lets you play tasks one at a time, keep prior outputs, and iterate like a notebook. See the short guide in [UI → Playground](../../09.ui/10.playground/index.md) and try it with the `getting_started` example above before moving on.
+
 ### Autocompletion
 
-Kestra supports [hundreds of tasks](/plugins) integrating with various external systems. It's not necessary nor possible to memorize all potential tasks or properties (maybe one day) Use the shortcut `CTRL + SPACE` on Windows/Linux or `fn + control + SPACE` on macOS to trigger autocompletion to list available tasks or properties of a given task. Kestra also has built-in documentation accessible through the UI for Flow, Task, and Trigger properties, so you don't have to context switch between building a flow and learning the ins and outs of a component.
+Kestra supports [hundreds of tasks](/plugins) integrating with various external systems. It's neither necessary nor possible to memorize all potential tasks or properties, maybe one day. Use the shortcut `CTRL + SPACE` on Windows/Linux or `fn + control + SPACE` on macOS to trigger autocompletion and list available tasks or properties for a given task. Kestra also has built-in documentation accessible through the UI for Flow, Task, and Trigger properties, so you don't have to context switch between building a flow and learning the ins and outs of a component.
 
 :::alert{type="info"}
-If you want to comment out part of your code, use `CTRL + K + C` on Windows/Linux or `⌘ + fn + K + C` on macOS. To uncomment, use `CTRL + K + U` on Windows/Linux or `⌘ + fn + K + U` on macOS. All available keyboard shortcuts are listed in the code editor context menu.
+If you want to comment or uncomment out part of your code, use `CTRL + /` on Windows/Linux or `⌘ + /` on macOS. All available keyboard shortcuts are listed in the code editor context menu.
 :::
-
----
 
 ## Create and run a flow
 
@@ -179,4 +181,4 @@ After execution, you’ll be directed to the Gantt view to see the stages of you
 
 ![gantt view](./gantt-view.png)
 
-While fetching data is a great first step, it is just that, a first step. In the next sections, with a basic understanding of flows and tasks under our belt, we introduce other critical components to Kestra Flows: Inputs, Outputs, Triggers, and more.
+While fetching data is a great first step, it is just that, a first step. In the next sections, you'll explore the other critical components of Kestra flows: Inputs, Outputs, Triggers, and more.

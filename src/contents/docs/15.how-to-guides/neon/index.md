@@ -1,5 +1,6 @@
 ---
-title: Connect Neon Database to Kestra
+title: Connect a Neon Database to Kestra
+h1: Query and Manage Neon PostgreSQL from Your Workflows
 icon: /src/contents/docs/icons/neon.svg
 stage: Intermediate
 topics:
@@ -9,11 +10,9 @@ description: Connect your serverless Neon PostgreSQL database to Kestra workflow
 
 Connect your Neon serverless database to your workflows using the PostgreSQL plugin.
 
-## Connect Neon Database to Kestra
-
 Neon is an open-source database company whose mission is to take everything that developers love about Postgres — reliability, performance, extensibility — and deliver it as a serverless product.
 
-To get started, make sure you have a [Neon account](https://neon.tech/home) set up and an [installation of Kestra](../../02.installation/index.mdx) running.
+Before you begin, ensure you have a [Neon account](https://neon.tech/home) set up and a [Kestra installation](../../02.installation/index.mdx) running.
 
 ## Setting up a Database in Neon
 
@@ -27,15 +26,15 @@ Once your project is created, you'll arrive at the Project Dashboard page. From 
 
 ## Connecting Neon to Kestra
 
-For our example, we want Kestra to supply the data, so you can select to connect to your database. We'll leave the Branch, Compute, Database, and Role as their defaults, but feel free to adjust as needed. Click on the **Connection string** dropdown list, and select Java. This is the connection string we will use in Kestra to connect to our Neon database. Make note of the password and save it for later steps.
+To have Kestra supply the data, connect to your database. Leave the Branch, Compute, Database, and Role as their defaults, or adjust as needed. Click on the **Connection string** dropdown list and select Java. This is the connection string used in Kestra to connect to the Neon database. Make note of the password and save it for later steps.
 
 ![neon-3](./neon-3.png)
 
-Now that we have a database set up in Neon, we need to create a table for our incoming data. Click on **Tables** on the left sidebar.
+With a database set up in Neon, create a table for the incoming data. Click on **Tables** on the left sidebar.
 
 ![neon-4](./neon-4.png)
 
-Next, click on the '+' icon to add a table, name it, and create it. You can leave just the default `id` column or add in the columns of your data set now. We are going to use Kestra to alter the table, so we will leave the table empty for now.
+Next, click on the '+' icon to add a table, name it, and create it. You can leave just the default `id` column or add in the columns of your data set now. Kestra will alter the table, so leave it empty for now.
 
 ![neon-5](./neon-5.png)
 
@@ -44,7 +43,7 @@ With the setup in Neon done, we can go Kestra to set up our connection. While th
 
 To connect, we can copy the URL provided from before. To prevent exposing the password in our flow, take the password saved earlier and store it as a [secret](../../06.concepts/04.secret/index.md). Then, in the URL, switch out the password for the secret expression: `{{ secret('NEON_PASSWORD') }}`.
 
-By using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md), we can configure our connection to Neon once for all tasks inside of our flow rather than individually for each task.
+By using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md), we can configure our connection to Neon once for all tasks in our flow rather than individually for each task.
 
 Once configured, our connection in Kestra will look like the example below:
 
@@ -72,7 +71,7 @@ pluginDefaults:
 
 :::
 
-## Copying a CSV file into Neon inside of a Flow
+## Copying a CSV File into Neon in a Flow
 
 Using this [example CSV](https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv), we can copy the data into our table directly from Kestra. You can either set up the columns directly in Neon in the earlier steps or add a task in Kestra to add them automatically like this:
 

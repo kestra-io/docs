@@ -1,5 +1,6 @@
 ---
-title: Service Accounts in Kestra Enterprise – Non-Human Access
+title: "Service Accounts in Kestra Enterprise: CI/CD Auth"
+h1: Create Service Accounts for Programmatic and CI/CD Access
 description: Create and manage Service Accounts in Kestra. Securely authenticate external applications and CI/CD pipelines with programmatic access tokens.
 sidebarTitle: Service Accounts
 icon: /src/contents/docs/icons/admin.svg
@@ -14,8 +15,6 @@ How to create and manage Service Accounts.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5_rVseynye4?si=LdgbY4LOwYLgIat2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 A Service Account represents an **application** that can access Kestra. It is not tied to a specific person and does not have personal information (such as the first name, last name, or email) attached to it. Instead, it only has a name, an optional description, an optional allocation to a group, and a list of Roles that grant it permissions to access specific resources.
 
@@ -63,14 +62,14 @@ Speaking of CI/CD, note that Kestra currently supports authenticating with eithe
 
 1. Use the `--api-token=mytoken` CLI property to allow authenticating with a service account token:
 
-```
+```bash
 ./kestra namespace files update prod scripts . \
 --server=https://demo.kestra.io --api-token yourtoken
 ```
 
 2. Use the `--user user_email:password` flag to the CLI to allow authenticating with a Basic Authentication access:
 
-```
+```bash
 ./kestra namespace files update prod scripts . \
 --server=https://demo.kestra.io --user=rick.astely@kestra.io:password42
 ```

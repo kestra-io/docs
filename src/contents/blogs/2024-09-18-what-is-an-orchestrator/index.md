@@ -15,8 +15,6 @@ If you're an engineer looking to scale your automation - maybe because your comp
   <iframe src="https://www.youtube.com/embed/ZV6CPZDiJFA?si=AnX2FAvAOITG8q8X" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Here, we’ll break down what an orchestrator is, why you might need one, and provide a practical example using Kestra.
 
 Let’s dive in!
@@ -219,7 +217,7 @@ triggers:
 
 errors:
   - id: alert
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     channel: "#general"
     url: "{{ secret('SLACK_WEBHOOK') }}"
 ```

@@ -1,0 +1,70 @@
+---
+import Layout from "~/components/layout.astro"
+
+import Hero from "~/components/enterprise/Hero.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import ScrollSpy from "~/components/enterprise/Scroll.vue"
+import Success from "~/components/enterprise/Success.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import Capabilities from "~/components/enterprise/Capabilities.vue"
+import StatsHeader from "~/components/enterprise/StatsHeader.astro"
+import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
+
+const title = "Get More Out of Your Data With the Enterprise Edition"
+const description =
+    "Get full access of all the Open source features and unlock the full potential with Enterprise only features"
+
+const STATS = [
+    {
+        category: "PRODUCTIVITY",
+        value: "10x",
+        label: "Faster Workflow Completion",
+    },
+    {
+        category: "PROFITABILITY",
+        value: "75%",
+        label: "Reduction in Operational costs",
+    },
+    {
+        category: "EFFICIENCY",
+        value: "80%",
+        label: "Boost in Team Efficiency",
+    },
+    {
+        category: "TIME TO MARKET",
+        value: "5x",
+        label: "Deployment Speed",
+    },
+]
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <Hero client:load />
+    <div class="enterprise">
+        <ScrollSpy client:load />
+    </div>
+    <Success />
+    <Capabilities />
+    <StatsHeader stats={STATS} />
+    <PluginsBlock />
+    <CustomerQuotes />
+    <SeeHow
+        cta={{
+            text: "Let's Talk",
+            href: "/demo",
+        }}
+    >
+        <Fragment slot="title">Ready to Scale Your Workflows</Fragment>
+        Teams replace vRO, Rundeck, Cron, Jenkins, and manual scripts with Kestra
+    </SeeHow>
+</Layout>
+
+<style lang="scss">
+    .enterprise {
+        overflow: clip;
+
+        :global(.card-grid-section) {
+            background: var(--ks-background-secondary);
+        }
+    }
+</style>

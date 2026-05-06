@@ -1,5 +1,6 @@
 ---
-title: Okta SCIM Provisioning
+title: Okta SCIM Provisioning in Kestra Enterprise
+h1: Sync Okta Users and Groups with SCIM Provisioning
 description: Enable SCIM provisioning with Okta. Learn how to automatically synchronize Okta users and groups with your Kestra Enterprise instance.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -43,7 +44,7 @@ The above steps will generate a SCIM endpoint URL and a Secret Token that you wi
 
 The endpoint should look as follows:
 
-```
+```plaintext
 https://<your_kestra_host>/api/v1/<your_tenant>/integrations/integration_id/scim/v2
 ```
 

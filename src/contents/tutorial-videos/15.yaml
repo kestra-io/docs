@@ -1,0 +1,7 @@
+title: "Kestra Tutorial: Triggers"
+description: "Will guides you through the essential functionality of triggers in Kestra, a powerful feature for automating workflows based on specific events. This tutorial covers setting up and managing different triggers such as schedules, API requests, and webhooks. Learn how to configure a schedule trigger to activate a flow every minute during weekdays, and explore the integration of multiple triggers for robust workflow automation."
+category: "Quick Start Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=x5_VEkhQARU"
+publicationDate: "2024-04-24T00:00:00.000"
+contentType: "Quick Start Tutorials"

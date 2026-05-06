@@ -1,19 +1,54 @@
 ---
+export const prerender = false
+
 import Layout from "~/components/layout.astro"
-import CareersHeader from "~/components/careers/Header.vue"
-import CareersPositionsRenderer from "~/components/careers/PositionsRenderer.vue"
-import CareersPerks from "~/components/careers/Perks.vue"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
-import { $fetch } from "~/utils/fetch"
-import { type Job, mapJob } from "~/utils/careers.ts"
+import Header from "~/components/careers/Header.astro"
+import Positions from "~/components/careers/Positions.vue"
+import CardGrid from "~/components/card/CardGrid.astro"
+import imgSrc from "~/components/careers/assets/see_how.png"
+import { type AshbyJob, fetchJobs } from "~/utils/careers.ts"
+import SeeHow from "~/components/common/SeeHow.astro"
 
-const jobsList = await $fetch<{ results: Job[] }>(
-    `https://app.dover.com/api/v1/careers-page/1fbbcad7-3e1b-4b61-96d4-f45f0b51c100/jobs?limit=300&offset=0`,
-)
+const positions: AshbyJob[] = await fetchJobs()
 
-const positions = jobsList.results.map((job) => {
-    return mapJob(job)
-})
+const PERKS = [
+    {
+        title: "Work from anywhere",
+        icon: "mdi:earth",
+        description:
+            "We're a remote-first and completely distributed team, so you can work wherever home is.",
+    },
+    {
+        title: "Flexible working hours",
+        icon: "mdi:calendar-clock",
+        description:
+            "Flexibility in schedule to be there for life’s important moments.",
+    },
+    {
+        title: "Work/life balance",
+        icon: "mdi:scale-balance",
+        description:
+            "Prioritize work-life balance in the way that works best for you and a generous vacation policy.",
+    },
+    {
+        title: "Expanded health benefits",
+        icon: "mdi:medical-bag",
+        description:
+            "Including premium medical, dental, and vision coverage for employees and their dependent loved ones.",
+    },
+    {
+        title: "Office costs covered",
+        icon: "mdi:chair-rolling",
+        description:
+            "Work from home or any other coworking space - we’ll cover the costs.",
+    },
+    {
+        title: "Up-to-date always",
+        icon: "mdi:laptop",
+        description:
+            "We’ll cover all hardware and software needed so you’re always with the latest versions.",
+    },
+]
 
 const title = "Join Us and Shape the Future of Data Orchestration"
 const description =
@@ -21,15 +56,35 @@ const description =
 ---
 
 <Layout title={title} description={description}>
-    <CareersHeader client:load fullPath="/careers" />
-    <CareersPositionsRenderer client:visible positions={positions} />
-    <CareersPerks client:visible />
-    <LayoutFooterContact
-        client:visible
-        title="Join our community"
-        darkButtonText="Join our Slack"
-        darkButtonHref="/slack"
-        purpleButtonText="Contribute"
-        purpleButtonHref="/docs/plugin-developer-guide"
+    <Header {positions} client:idle />
+    <Positions {positions} client:load />
+    <CardGrid
+        title="Committed to Excellence"
+        subtitle="We take care of everything you need to help you grow and do the best work of your career."
+        items={PERKS}
     />
+    <SeeHow
+        cta={{
+            text: "Send an Open Application",
+            href: "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application",
+        }}
+        imgSrc={imgSrc}
+    >
+        <h2 slot="title">
+            Open Application: Shape the Future of Workflow Orchestration
+        </h2>
+        <p>
+            Interested in joining us but not able to find what you are looking
+            for? Let's talk anyway.
+        </p>
+    </SeeHow>
 </Layout>
+
+<style lang="scss">
+    h2 {
+        font-size: 1.5rem;
+    }
+    p {
+        font-size: 1rem;
+    }
+</style>

@@ -55,6 +55,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MiscController.Configuration"
+  /api/v1/main/ai/generate/dashboard:
+    post:
+      tags:
+      - AI
+      summary: Generate or regenerate a dashboard based on a prompt
+      operationId: generateDashboard
+      requestBody:
+        description: Prompt and context required for dashboard generation
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiController.DashboardGenerationPrompt"
+        required: true
+      responses:
+        "200":
+          description: generateDashboard 200 response
+          content:
+            application/yaml:
+              schema:
+                type: string
   /api/v1/main/ai/generate/flow:
     post:
       tags:
@@ -66,7 +86,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FlowGenerationPrompt"
+              $ref: "#/components/schemas/AiController.FlowGenerationPrompt"
         required: true
       responses:
         "200":
@@ -75,6 +95,51 @@ paths:
             application/yaml:
               schema:
                 type: string
+  /api/v1/main/ai/providers:
+    get:
+      tags:
+      - AI
+      summary: List available AI providers
+      operationId: getProviders
+      responses:
+        "200":
+          description: getProviders 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AiController.AiProviderResponse"
+  /api/v1/pebble/filters:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve the list of available Pebble expression filters.
+      operationId: getExpressionFilters
+      responses:
+        "200":
+          description: getExpressionFilters 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/pebble/functions:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve the list of available Pebble expression functions.
+      operationId: getExpressionFunctions
+      responses:
+        "200":
+          description: getExpressionFunctions 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
   /api/v1/plugins:
     get:
       tags:
@@ -241,7 +306,6 @@ paths:
       - name: all
         in: query
         description: Include all the properties
-        required: true
         explode: false
         schema:
           type: boolean
@@ -295,7 +359,6 @@ paths:
       - name: all
         in: query
         description: Include all the properties
-        required: true
         explode: false
         schema:
           type: boolean
@@ -362,7 +425,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -372,7 +434,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -614,7 +675,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -624,7 +684,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -658,7 +717,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedResults_Dashboard_"
+                $ref: "#/components/schemas/PagedResults_DashboardController.DashboardResponse_"
     post:
       tags:
       - Dashboards
@@ -683,7 +742,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dashboard"
+                $ref: "#/components/schemas/DashboardController.DashboardResponse"
   /api/v1/{tenant}/dashboards/charts/export/to-csv:
     post:
       tags:
@@ -811,7 +870,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dashboard"
+                $ref: "#/components/schemas/DashboardController.DashboardResponse"
     put:
       tags:
       - Dashboards
@@ -842,7 +901,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dashboard"
+                $ref: "#/components/schemas/DashboardController.DashboardResponse"
     delete:
       tags:
       - Dashboards
@@ -966,7 +1025,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -976,7 +1034,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -2710,7 +2767,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -2720,7 +2776,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -2887,7 +2942,6 @@ paths:
       - name: wait
         in: query
         description: If the server will wait the end of the execution
-        required: true
         explode: false
         schema:
           type: boolean
@@ -3139,7 +3193,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
     put:
       tags:
       - Executions
@@ -3175,7 +3229,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
     post:
       tags:
       - Executions
@@ -3211,7 +3265,137 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExecutionController.WebhookResponse"
+                $ref: "#/components/schemas/WebhookResponse"
+  /api/v1/{tenant}/executions/webhook/{namespace}/{id}/{key}/{path}:
+    get:
+      tags:
+      - Executions
+      summary: Trigger a new execution by GET webhook trigger
+      operationId: triggerExecutionByGetWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
+    put:
+      tags:
+      - Executions
+      summary: Trigger a new execution by PUT webhook trigger
+      operationId: triggerExecutionByPutWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
+    post:
+      tags:
+      - Executions
+      summary: Trigger a new execution by POST webhook trigger
+      operationId: triggerExecutionByPostWebhookWithPath
+      parameters:
+      - name: namespace
+        in: path
+        description: The flow namespace
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: The flow id
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: The webhook trigger uid
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: path
+        description: Optional additional path segments
+        required: true
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: On success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
   /api/v1/{tenant}/executions/{executionId}:
     get:
       tags:
@@ -3313,6 +3497,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Execution"
+  /api/v1/{tenant}/executions/{executionId}/eval:
+    post:
+      tags:
+      - Executions
+      summary: Evaluate a variable expression for this execution
+      operationId: evalExpression
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The Pebble expression that should be evaluated
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: evalExpression 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutionController.EvalResult"
   /api/v1/{tenant}/executions/{executionId}/eval/{taskRunId}:
     post:
       tags:
@@ -3450,7 +3666,6 @@ paths:
       - name: encoding
         in: query
         description: The file encoding as Java charset name. Defaults to UTF-8
-        required: true
         explode: false
         schema:
           type: string
@@ -3477,7 +3692,7 @@ paths:
       parameters:
       - name: executionId
         in: path
-        description: The execution that you want flow informations
+        description: The execution that you want flow information
         required: true
         schema:
           type: string
@@ -3538,7 +3753,6 @@ paths:
         in: query
         description: "If true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -3546,7 +3760,6 @@ paths:
       - name: expandAll
         in: query
         description: "If true, expand all dependencies recursively"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -3642,7 +3855,6 @@ paths:
         in: query
         description: Specifies whether killing the execution also kill all subflow
           executions.
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4057,7 +4269,6 @@ paths:
       - name: wait
         in: query
         description: If the server will wait the end of the execution
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4218,7 +4429,6 @@ paths:
       - name: delete
         in: query
         description: If missing flow should be deleted
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4233,7 +4443,6 @@ paths:
       - name: allowNamespaceChild
         in: query
         description: If namespace child should are allowed to be updated
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4244,7 +4453,7 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flows source code splitted with "---"
+        description: A list of flows source code split with "---"
         content:
           application/x-yaml:
             schema:
@@ -4350,6 +4559,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkResponse"
+  /api/v1/{tenant}/flows/deprecated:
+    get:
+      tags:
+      - Flows
+      summary: List flows containing deprecated tasks
+      operationId: listDeprecated
+      parameters:
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listDeprecated 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlowController.FlowWithDeprecatedTasks"
   /api/v1/{tenant}/flows/disable/by-ids:
     post:
       tags:
@@ -4731,7 +4968,6 @@ paths:
       - name: failOnError
         in: query
         description: If should fail on invalid flows
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4776,7 +5012,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -4786,7 +5021,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -4868,7 +5102,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -4878,7 +5111,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -4933,11 +5165,14 @@ paths:
         schema:
           type: string
       requestBody:
-        description: A list of flow files
+        description: Flows as YAML string or multipart files
         content:
           application/x-yaml:
             schema:
               type: string
+          multipart/form-data:
+            schema:
+              type: object
         required: true
       responses:
         "200":
@@ -5047,22 +5282,20 @@ paths:
         Existing flows missing from `flows` will be deleted if the query delete is `true`
       operationId: updateFlowsInNamespace
       parameters:
-      - name: override
-        in: query
-        description: If namespace of all provided flows should be overridden
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
       - name: delete
         in: query
-        description: If missing flow should be deleted
-        required: true
+        description: If missing flows should be deleted
         explode: false
         schema:
           type: boolean
           default: true
+      - name: override
+        in: query
+        description: If namespace of all provided flows should be overridden
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: namespace
         in: path
         description: The flow namespace
@@ -5112,7 +5345,6 @@ paths:
       - name: source
         in: query
         description: Include the source code
-        required: true
         explode: false
         schema:
           type: boolean
@@ -5128,7 +5360,6 @@ paths:
       - name: allowDeleted
         in: query
         description: Get flow even if deleted
-        required: true
         explode: false
         schema:
           type: boolean
@@ -5231,7 +5462,6 @@ paths:
         in: query
         description: "If true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -5239,7 +5469,6 @@ paths:
       - name: expandAll
         in: query
         description: "If true, expand all dependencies recursively"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -5325,7 +5554,6 @@ paths:
           type: string
       - name: allowDelete
         in: query
-        required: true
         explode: false
         schema:
           type: boolean
@@ -5482,7 +5710,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -5491,7 +5718,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -5537,7 +5763,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -5547,7 +5772,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -5913,7 +6137,6 @@ paths:
       - name: aggregation
         in: query
         description: "The type of aggregation: avg, sum, min or max"
-        required: true
         explode: false
         schema:
           type: string
@@ -5978,7 +6201,6 @@ paths:
       - name: aggregation
         in: query
         description: "The type of aggregation: avg, sum, min or max"
-        required: true
         explode: false
         schema:
           type: string
@@ -6111,7 +6333,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -6121,7 +6342,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -6215,7 +6435,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -6225,7 +6444,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -6247,7 +6465,6 @@ paths:
         explode: false
         schema:
           type: boolean
-          nullable: true
           default: false
       - name: tenant
         in: path
@@ -6303,7 +6520,6 @@ paths:
         in: query
         description: "if true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -6879,7 +7095,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -6888,7 +7103,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -6935,7 +7149,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -6944,7 +7157,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -7391,7 +7603,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -7401,7 +7612,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -7505,7 +7715,6 @@ paths:
       - name: disabled
         in: query
         description: The disabled state
-        required: true
         explode: false
         schema:
           type: boolean
@@ -7628,7 +7837,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -7638,7 +7846,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -7839,6 +8046,10 @@ components:
           minimum: 1
           type: integer
           format: int32
+        updated:
+          type: string
+          description: The timestamp when this revision was created or last updated.
+          format: date-time
         description:
           type: string
         inputs:
@@ -7898,8 +8109,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    AbstractRetry:
-      type: object
     AbstractTrigger:
       required:
       - id
@@ -7965,7 +8174,7 @@ components:
             if a previous run is still in progress.
           type: boolean
         assets:
-          $ref: "#/components/schemas/Property_AssetsDeclaration_"
+          $ref: "#/components/schemas/AssetsDeclaration"
     AbstractTriggerForExecution:
       required:
       - id
@@ -7993,6 +8202,31 @@ components:
               - A MAJOR.MINOR version (e.g., `1.1`).
               - A MAJOR.MINOR.PATCH version, optionally with any qualifier
                 (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
+    AiController.AiProviderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        isDefault:
+          type: boolean
+    AiController.DashboardGenerationPrompt:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/DashboardGenerationPrompt"
+      - type: object
+        properties:
+          providerId:
+            type: string
+    AiController.FlowGenerationPrompt:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/FlowGenerationPrompt"
+      - type: object
+        properties:
+          providerId:
+            type: string
     ApiAutocomplete:
       type: object
       properties:
@@ -8064,12 +8298,13 @@ components:
           type: string
     AssetsDeclaration:
       type: object
-      allOf:
-      - $ref: "#/components/schemas/AssetsInOut"
-      - type: object
-        properties:
-          enableAuto:
-            type: boolean
+      properties:
+        enableAuto:
+          $ref: "#/components/schemas/Property_Boolean_"
+        inputs:
+          $ref: "#/components/schemas/Property_List_AssetIdentifier__"
+        outputs:
+          $ref: "#/components/schemas/Property_List_Asset__"
     AssetsInOut:
       type: object
       properties:
@@ -8402,11 +8637,19 @@ components:
         count:
           type: integer
           format: int64
-    Dashboard:
+    DashboardController.DashboardResponse:
       required:
+      - deleted
+      - id
       - title
       type: object
       properties:
+        tenantId:
+          pattern: "^[a-z0-9][a-z0-9_-]*"
+          type: string
+        id:
+          minLength: 1
+          type: string
         title:
           minLength: 1
           type: string
@@ -8418,6 +8661,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Chart_ChartOption_"
+        deleted:
+          type: boolean
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
         sourceCode:
           type: string
     DashboardController.PreviewRequest:
@@ -8432,11 +8683,18 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ChartFiltersOverrides"
-    DeletedInterface:
+    DashboardGenerationPrompt:
+      required:
+      - conversationId
+      - userPrompt
       type: object
       properties:
-        deleted:
-          type: boolean
+        conversationId:
+          type: string
+        userPrompt:
+          type: string
+        yaml:
+          type: string
     DependsOn:
       type: object
       properties:
@@ -8673,35 +8931,6 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/State.Type"
-    ExecutionController.WebhookResponse:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        id:
-          type: string
-        namespace:
-          type: string
-        flowId:
-          type: string
-        flowRevision:
-          type: integer
-          format: int32
-        trigger:
-          $ref: "#/components/schemas/ExecutionTrigger"
-        outputs:
-          type: object
-          additionalProperties:
-            type: object
-        labels:
-          type: array
-          items:
-            $ref: "#/components/schemas/Label"
-        state:
-          $ref: "#/components/schemas/State"
-        url:
-          type: string
-          format: uri
     ExecutionKind:
       type: string
       enum:
@@ -8897,7 +9126,9 @@ components:
             items:
               $ref: "#/components/schemas/Output"
           retry:
-            $ref: "#/components/schemas/AbstractRetry"
+            title: Retry
+            type: object
+            description: Retry policy applied when the flow fails.
           sla:
             type: array
             items:
@@ -8909,6 +9140,20 @@ components:
               \ is executed.  If no checks are defined, the flow executes normally."
             items:
               $ref: "#/components/schemas/Check"
+    FlowController.FlowWithDeprecatedTasks:
+      type: object
+      properties:
+        namespace:
+          type: string
+        flowId:
+          type: string
+        revision:
+          type: integer
+          format: int32
+        deprecatedTasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/FlowService.TaskDeprecation"
     FlowController.TaskValidationType:
       type: string
       enum:
@@ -8995,7 +9240,9 @@ components:
           type: string
         userPrompt:
           type: string
-        flowYaml:
+        yaml:
+          type: string
+        namespace:
           type: string
     FlowGraph:
       type: object
@@ -9058,7 +9305,7 @@ components:
       type: object
       allOf:
       - $ref: "#/components/schemas/FlowId"
-      - $ref: "#/components/schemas/DeletedInterface"
+      - $ref: "#/components/schemas/SoftDeletable_FlowInterface_"
       - $ref: "#/components/schemas/TenantInterface"
       - type: object
         properties:
@@ -9115,6 +9362,16 @@ components:
       enum:
       - USER
       - SYSTEM
+    FlowService.TaskDeprecation:
+      type: object
+      properties:
+        taskId:
+          type: string
+        taskType:
+          type: string
+        replacement:
+          type: string
+          nullable: true
     FlowTopologyGraph:
       type: object
       properties:
@@ -9381,7 +9638,6 @@ components:
             $ref: "#/components/schemas/Task"
     LogEntry:
       required:
-      - deleted
       - flowId
       - namespace
       type: object
@@ -9415,8 +9671,6 @@ components:
           type: string
         message:
           type: string
-        deleted:
-          type: boolean
         executionKind:
           nullable: true
           allOf:
@@ -9478,7 +9732,6 @@ components:
             $ref: "#/components/schemas/MetricAggregation"
     MetricEntry:
       required:
-      - deleted
       - flowId
       - name
       - namespace
@@ -9515,8 +9768,6 @@ components:
           additionalProperties:
             type: string
           nullable: true
-        deleted:
-          type: boolean
         executionKind:
           nullable: true
           allOf:
@@ -9566,6 +9817,8 @@ components:
             type: string
         isAiEnabled:
           type: boolean
+        isAiApiKeyConfigured:
+          type: boolean
         isBasicAuthInitialized:
           type: boolean
         pluginsHash:
@@ -9597,15 +9850,12 @@ components:
           format: int32
     NamespaceLight:
       required:
-      - deleted
       - id
       type: object
       properties:
         id:
           pattern: "^[a-z0-9][a-z0-9._-]*"
           type: string
-        deleted:
-          type: boolean
     Output:
       required:
       - id
@@ -9655,7 +9905,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_Dashboard_:
+    PagedResults_DashboardController.DashboardResponse_:
       required:
       - results
       - total
@@ -9664,7 +9914,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/Dashboard"
+            $ref: "#/components/schemas/DashboardController.DashboardResponse"
         total:
           type: integer
           format: int64
@@ -9964,13 +10214,16 @@ components:
       - CORE
       - INGESTION
       - BI
-    Property_AssetsDeclaration_:
+      - BUSINESS
+      - DATA
+      - INFRASTRUCTURE
+    Property_Boolean_:
       type: object
       properties:
         expression:
           type: string
         value:
-          $ref: "#/components/schemas/AssetsDeclaration"
+          type: boolean
       oneOf:
       - type: object
       - type: string
@@ -9981,6 +10234,30 @@ components:
           type: string
         value:
           type: string
+      oneOf:
+      - type: object
+      - type: string
+    Property_List_AssetIdentifier__:
+      type: object
+      properties:
+        expression:
+          type: string
+        value:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetIdentifier"
+      oneOf:
+      - type: object
+      - type: string
+    Property_List_Asset__:
+      type: object
+      properties:
+        expression:
+          type: string
+        value:
+          type: array
+          items:
+            $ref: "#/components/schemas/Asset"
       oneOf:
       - type: object
       - type: string
@@ -10031,6 +10308,7 @@ components:
       - UPDATED
       - START_DATE
       - END_DATE
+      - EXPIRATION_DATE
       - STATE
       - TIME_RANGE
       - TRIGGER_EXECUTION_ID
@@ -10046,6 +10324,7 @@ components:
       - PATH
       - PARENT_PATH
       - VERSION
+      - USERNAME
       x-type: String
     QueryFilter.Op:
       type: string
@@ -10168,6 +10447,13 @@ components:
           type: string
           default: 3s
     ServerInstance:
+      required:
+      - hostname
+      - id
+      - metrics
+      - props
+      - type
+      - version
       type: object
       properties:
         id:
@@ -10259,9 +10545,17 @@ components:
       - WEBSERVER
       - WORKER
       - INVALID
+    SoftDeletable_FlowInterface_:
+      type: object
+      properties:
+        deleted:
+          type: boolean
     State:
       required:
       - current
+      - getDuration
+      - getEndDate
+      - getStartDate
       type: object
       properties:
         duration:
@@ -10283,6 +10577,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/State.History"
+        getDuration:
+          type: string
+          readOnly: true
+        getStartDate:
+          type: string
+          format: date-time
+          readOnly: true
+        getEndDate:
+          type: string
+          format: date-time
+          readOnly: true
     State.History:
       required:
       - date
@@ -10345,7 +10650,9 @@ components:
         description:
           type: string
         retry:
-          $ref: "#/components/schemas/AbstractRetry"
+          title: Retry
+          type: object
+          description: Retry policy applied when the task fails.
         timeout:
           $ref: "#/components/schemas/Property_Duration_"
         disabled:
@@ -10367,7 +10674,7 @@ components:
         assets:
           nullable: true
           allOf:
-          - $ref: "#/components/schemas/Property_AssetsDeclaration_"
+          - $ref: "#/components/schemas/AssetsDeclaration"
     TaskFixture:
       required:
       - id
@@ -10631,6 +10938,35 @@ components:
           type: array
           items:
             type: string
+    WebhookResponse:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        id:
+          type: string
+        namespace:
+          type: string
+        flowId:
+          type: string
+        flowRevision:
+          type: integer
+          format: int32
+        trigger:
+          $ref: "#/components/schemas/ExecutionTrigger"
+        outputs:
+          type: object
+          additionalProperties:
+            type: object
+        labels:
+          type: array
+          items:
+            $ref: "#/components/schemas/Label"
+        state:
+          $ref: "#/components/schemas/State"
+        url:
+          type: string
+          format: uri
     WorkerGroup:
       type: object
       properties:

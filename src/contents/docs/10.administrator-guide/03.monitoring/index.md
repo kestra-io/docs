@@ -1,5 +1,6 @@
 ---
-title: Alerting and Monitoring Kestra – Best Practices
+title: "Kestra Monitoring: Prometheus, Alerts, and Health Checks"
+h1: Set up alerts and monitor your Kestra instance in production
 description: Monitor and alert on Kestra health. Best practices for setting up Prometheus metrics, health checks, and failure notifications for your instance.
 sidebarTitle: Alerting & Monitoring
 icon: /src/contents/docs/icons/admin.svg
@@ -7,13 +8,11 @@ icon: /src/contents/docs/icons/admin.svg
 
 This page provides best practices for setting up alerting and monitoring in your Kestra instance.
 
-## Set up alerting and monitoring for Kestra
-
 Failure alerts are essential. When a production workflow fails, you should be notified immediately. To implement failure alerting, you can use Kestra’s built-in notification tasks, such as:
 
-- [Slack](/plugins/plugin-slack/io.kestra.plugin.slack.slackexecution)
-- [Microsoft Teams](/plugins/plugin-teams/io.kestra.plugin.teams.teamsexecution)
-- [Email](/plugins/plugin-mail/io.kestra.plugin.mail.mailexecution)
+- [Slack](/plugins/plugin-slack)
+- [Microsoft Teams](/plugins/plugin-teams)
+- [Email](/plugins/plugin-mail)
 
 
 Technically, you can add custom failure alerts to each flow separately using the `errors` tasks:
@@ -28,14 +27,14 @@ tasks:
 
 errors:
   - id: slack
-    type: io.kestra.plugin.slack.SlackIncomingWebhook
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: "Failure alert for flow `{{ flow.namespace }}.{{ flow.id }}` with ID `{{ execution.id }}`. Here is a bit more context about why the execution failed: `{{ errorLogs() }}`"
 ```
 
-However, this can lead to some boilerplate code if you start copy-pasting this `errors` configuration to multiple flows.
+However, this can lead to boilerplate code when this `errors` configuration is duplicated across multiple flows.
 
-For centralized namespace-level alerting, we recommend creating a dedicated monitoring workflow with a notification task and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `company.analytics` fails or finishes with warnings.
+For centralized namespace-level alerting, create a dedicated monitoring workflow with a notification task and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in a namespace `company.analytics` fails or finishes with warnings.
 
 ```yaml
 id: failureAlertToSlack
@@ -43,7 +42,7 @@ namespace: company.monitoring
 
 tasks:
   - id: send
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -66,14 +65,14 @@ Adding this single flow will ensure that you receive a Slack alert on any flow f
 ![alert notification](../../03.tutorial/06.errors/alert-notification.png)
 
 :::alert{type="warning"}
-Note that if you want this alert to be sent on failure across multiple namespaces, you will need to add an ``OrCondition`` to the ``conditions`` list. See the example below:
+To send this alert on failure across multiple namespaces, add an `OrCondition` to the `conditions` list. See the example below:
 ```yaml
 id: alert
 namespace: company.system
 
 tasks:
   - id: send
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -106,7 +105,7 @@ description: This example will not work
 
 tasks:
   - id: send
-    type: io.kestra.plugin.slack.SlackExecution
+    type: io.kestra.plugin.slack.notifications.SlackExecution
     url: "{{ secret('SLACK_WEBHOOK') }}"
     channel: "#general"
     executionId: "{{trigger.executionId}}"
@@ -127,11 +126,11 @@ triggers:
         namespace: company.system
 ```
 
-Here, there's no overlap between the two conditions. The first condition will only match executions in the `company.product` namespace, while the second condition will only match executions from the `cleanup` flow in the `company.system` namespace. If you want to match executions from the `cleanup` flow in the `company.system` namespace **or** any execution in the `product` namespace, make sure to add the `OrCondition`.
+Here, there's no overlap between the two conditions. The first condition will only match executions in the `company.product` namespace, while the second condition will only match executions from the `cleanup` flow in the `company.system` namespace. To match executions from the `cleanup` flow in the `company.system` namespace **or** any execution in the `product` namespace, use `OrCondition`.
 
 ## Monitoring
 
-Kestra exposes a monitoring endpoint on port 8081 by default. You can change this port using the `endpoints.all.port` property in the [configuration options](../../configuration/index.md).
+Kestra exposes a monitoring endpoint on port 8081 by default. You can change this port using the `endpoints.all.port` property in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 This monitoring endpoint provides invaluable information for troubleshooting and monitoring, including Prometheus metrics and several Kestra's internal routes. For instance, the `/health` endpoint exposed by default on port 8081 (e.g., http://localhost:8081/health) generates a similar response as shown below as long as your Kestra instance is healthy:
 
@@ -192,9 +191,9 @@ For a complete list of available metrics, refer to the [Prometheus metrics page]
 
 ### Kestra's metrics
 
-You can leverage Kestra's internal metrics to configure custom alerts. Each metric provides multiple time series with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
+Use Kestra's internal metrics to configure custom alerts. Each metric provides multiple time series with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
 
-Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [configuration options](../../configuration/index.md#metrics).
+Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 Each task type can expose custom metrics that will be also exposed on Prometheus.
 
@@ -264,13 +263,13 @@ Kestra also exposes all internal metrics from the following sources:
 - Thread pools of the application
 - JVM
 
-Check out the [Micronaut documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/) for more information.
+See the [Micronaut documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/) for more information.
 
 ## Grafana and Kibana
 
-Kestra uses Elasticsearch to store all executions and metrics. Therefore, you can easily create a dashboard with [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) to monitor the health of your Kestra instance.
+Kestra uses Elasticsearch to store all executions and metrics. You can create a dashboard with [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) to monitor the health of your Kestra instance.
 
-We'd love to see what dashboards you will build. Feel free to share a screenshot or a template of your dashboard with [the community](/slack). Meanwhile, here is an example of a Grafana dashboard that we use internally to monitor Kestra - feel free to use it as a starting point for your own dashboard:
+Share your dashboard with [the community](/slack). Below is an example Grafana dashboard you can use as a starting point:
 
 ![grafana](./grafana.png)
 
@@ -2033,7 +2032,7 @@ logger:
 
 ## Capture some java dump
 
-As we run a JRE not a JVM, there is no monitoring tools available, so first you need to install [Jattach](https://github.com/jattach/jattach#installation):
+Kestra runs on a JRE rather than a JDK, so JVM monitoring tools are not included. Install [Jattach](https://github.com/jattach/jattach#installation) first:
 
 :::alert{type="info"}
 Jattach is included in the Kestra image, so there is no need to install it separately. If you're running an older version, continue to follow the steps below.

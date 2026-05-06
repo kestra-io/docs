@@ -1,5 +1,6 @@
 ---
 title: Set Up Secrets from a Helm Chart
+h1: Pass Kubernetes Secrets and Env Vars via Helm Chart
 icon: /src/contents/docs/icons/helm.svg
 stage: Getting Started
 topics:
@@ -11,17 +12,15 @@ description: Learn how to pass secrets to your Kestra deployment via Helm Chart 
 
 How to add Kestra Secrets to your Helm Chart deployment.
 
-## Set Up Secrets from a Helm Chart
-
 :::alert{type="info"}
-Note that this page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../../07.enterprise/02.governance/secrets/index.md) functionality allowing you to securely store your secrets in an [external secret manager](../../07.enterprise/02.governance/secrets-manager/index.md) of your choice.
+This page is only relevant for the Open-Source edition of Kestra. For the Enterprise Edition, you can use the built-in [Secrets](../../07.enterprise/02.governance/secrets/index.md) functionality allowing you to securely store your secrets in an [external secret manager](../../07.enterprise/02.governance/secrets-manager/index.md) of your choice.
 :::
 
 ## Pass environment variables directly
 
-The simplest way to pass secrets to Kestra is to use environment variables referenced using the `common.extraEnv` property. Make sure that each environment variable's key starts with `SECRET_`.
+The simplest way to pass secrets to Kestra is to use environment variables referenced using the `common.extraEnv` property. Each environment variable's key must start with `SECRET_`.
 
-Let's assume you want to add two secrets to your Helm Chart:
+To add two secrets to your Helm Chart:
 1. `DB_USERNAME` with the value `admin`
 2. `DB_PASSWORD` with the value `password`
 
@@ -115,13 +114,13 @@ helm upgrade kestra kestra/kestra -f values.yaml
 
 And test the secrets in a flow as described in the previous section.
 
-Note that in this method, the Kubernetes Secret's keys must start with `SECRET_` to be recognized as Kestra Secrets.
+In this method, the Kubernetes Secret's keys must start with `SECRET_` to be recognized as Kestra Secrets.
 
 ---
 
 ## Use Kubernetes Secrets as Kestra Secrets with `configurations.secrets`
 
-An alternative is to mount an entire Kubernetes Secret as a [Kestra configuration](../../configuration/index.md) file using the `configurations.secrets` property.
+An alternative is to mount an entire Kubernetes Secret as a [Kestra configuration](../../configuration/01.configuration-basics/index.md) file using the `configurations.secrets` property.
 
 For example, in `values.yaml`:
 

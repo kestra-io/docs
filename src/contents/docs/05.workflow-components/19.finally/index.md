@@ -1,5 +1,6 @@
 ---
 title: Finally Tasks in Kestra – Always-Run Cleanup
+h1: Guarantee Cleanup at Flow End with Finally Tasks
 description: Ensure cleanup with Finally tasks in Kestra. Execute specific tasks at the end of a flow regardless of success or failure, perfect for resource teardown.
 sidebarTitle: Finally
 icon: /src/contents/docs/icons/flow.svg
@@ -7,8 +8,6 @@ version: "0.21.0"
 ---
 
 Define a block of tasks that always run at the end of a flow, regardless of task status.
-
-## Finally tasks – always-run cleanup
 
 `finally` tasks are useful for cleanup operations that must run at the end of your flow, whether the execution ends in success or failure.
 
@@ -26,10 +25,21 @@ For example, you might use a `finally` block to turn off a cloud service when th
 Note that `finally` tasks run while the execution is still `RUNNING`. If you need to trigger tasks after an execution finishes with a specific status (`SUCCESS` or `FAILED`), use the [`afterExecution` property](../20.afterexecution/index.md).
 :::
 
+## `finally` vs `errors`
+
+`finally` and `errors` can both run near the end of a flow, but they are meant for different jobs.
+
+- Use `finally` for cleanup and teardown that must happen every time.
+- Use `errors` for failure-specific handling such as alerts, remediation, or fallback actions.
+
+Unlike `errors`, `finally` is not tied to a failure path. It runs whether the flow succeeds or fails, and it runs while the execution is still in the `RUNNING` state.
+
+For failure-specific handling, including local handlers inside flowable tasks, see the [`errors` documentation](../11.errors/index.md). For post-run actions based on the final execution state, see the [`afterExecution` documentation](../20.afterexecution/index.md).
+
 
 ## `finally` example
 
-In the example below, a task is programmed to fail, and an error task logs a message as an alert communicating the failure. The `finally` task runs after the other tasks have finished regardless of the failure, in this case logging another message, but could alternatively be used to shut down any resources specifically spun up to use in the flow.
+In the example below, one task is designed to fail, and an `errors` task logs a message to signal the failure. The `finally` task still runs after the other tasks finish. Here it logs another message, but in practice it could be used to shut down resources started for the flow.
 
 ```yaml
 
@@ -52,7 +62,7 @@ finally:
   message: cleaning up resources
 ```
 
-Change the example to ensure the end state of the first task is a success, like below, and you can see that the `finally` task runs the same as before:
+If you change the example so the first task succeeds, as shown below, the `finally` task still runs in the same way:
 
 ```yaml
 
@@ -75,9 +85,9 @@ finally:
   message: cleaning up resources
 ```
 
-Like in the first iteration of the flow, the `finally` task runs at the end despite the `errors` task not sending an alert, ensuring any cleanup operations still take place regardless of status.
+As in the first example, the `finally` task runs at the end even though the `errors` task does not send an alert, ensuring cleanup still happens regardless of status.
 
-Beyond simple cleanup, `finally` can manage external services. For example, you might spin up Redis, Elasticsearch, or Kafka to run queries or QA checks, and then ensure the service is stopped when the flow ends. The below example demonstrates spinning up a Docker container with Redis to run some database operations and then stop the container when the flow is finished.
+Beyond simple cleanup, `finally` can manage external services. For example, you might spin up Redis, Elasticsearch, or Kafka to run queries or QA checks, and then ensure the service is stopped when the flow ends. The following example shows how to start a Redis Docker container, run some database operations, and then stop the container when the flow finishes.
 
 ```yaml
 id: dockerRedis

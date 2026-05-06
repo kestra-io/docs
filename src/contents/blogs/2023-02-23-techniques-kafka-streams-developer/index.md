@@ -5,6 +5,7 @@ date: 2023-02-23T08:00:00
 category: Solutions
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg
@@ -101,7 +102,7 @@ This way, you will have a fully distributed system thanks to Kafka without the p
 
 ## Partitions to Detect Dead Kafka Consumers
 
-In Kestra, [workers](../../docs/server-cli/index.md#kestra-server-worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
+In Kestra, [workers](../../docs/kestra-cli/kestra-server/index.md#kestra-server-worker) are Kafka Consumers that process tasks submitted to it and will handle all the computing (connect and query a database, fetch data from external services, etc.) and are long-running processes. We need to detect when a worker was processing a task and died. The reasons for the process "dying" could range from an outage to a simple restart during processing.
 
 Thanks to the Kafka consumer mechanism, we can know the specific partitions affected by a died consumer. We use these features to detect dead workers:
 - We create a `UUID` on startup for the worker.

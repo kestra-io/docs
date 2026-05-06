@@ -1,5 +1,7 @@
 ---
-title: Reserved keywords cannot be used as Flow IDs
+title: Reserved Keywords Cannot Be Used as Flow IDs (1.0.0)
+h1: Reserved Keywords Are Now Blocked as Flow IDs
+sidebarTitle: Reserved Keywords as Flow IDs
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -13,7 +15,7 @@ Starting with Kestra 1.0, certain keywords are reserved and **cannot be used as 
 
 **Reserved keywords:**
 
-```
+```plaintext
 pause
 resume
 force-run
@@ -29,8 +31,6 @@ enable
 If your flows use one of these IDs, you will not be able to edit them after upgrading. To avoid disruption, you must rename the flows **before upgrading**.
 
 See the [commit introducing this change](https://github.com/kestra-io/kestra/commit/d4e7b0cde4cf5cfad99b3fb39bff5728e056a049) for details.
-
----
 
 ## Migration
 
@@ -65,8 +65,6 @@ tasks:
 ### 3. Remove the old flow
 
 Once you have validated the new flow, delete the old flow with the reserved keyword `id`.
-
----
 
 ## Recommendation
 

@@ -1,5 +1,7 @@
 ---
-title: Input defaults are now dynamic
+title: Input Default Values Are Now Dynamically Rendered
+h1: Input Default Values Now Support Dynamic Rendering in 1.0.0
+sidebarTitle: "Input Defaults: Dynamic Rendering"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -9,7 +11,7 @@ description: Details on the change to dynamic rendering for input default values
 
 ## Input defaults are now dynamic
 
-The `defaults` property of all inputs is now dynamic. This change has implications for users who use a Pebble [expression](../../../expressions/index.md) as a default value. Consider this use case:
+The `defaults` property of all inputs is now dynamic. This change has implications for users who use a Pebble [expression](../../../expressions/index.mdx) as a default value. Consider this use case:
 
 ```yaml
 id: session

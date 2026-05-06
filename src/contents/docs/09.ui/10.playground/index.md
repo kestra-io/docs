@@ -1,5 +1,6 @@
 ---
-title: Playground in the Kestra UI – Build Flows Task by Task
+title: "Playground in Kestra UI: Build Flows Task by Task"
+h1: Experiment and Debug Workflows with Kestra Playground
 description: Experiment in the Kestra Playground. Build and test tasks iteratively in the UI to debug and refine workflows without full execution.
 sidebarTitle: Playground
 icon: /src/contents/docs/icons/ui.svg
@@ -8,8 +9,6 @@ version: "0.24.0"
 ---
 
 Iteratively build and test flows task by task without running the entire workflow.
-
-## Iterate on flows with Playground mode
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/p7UXd66GI1M?si=1Dzc6cjghO8BGAhh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -23,7 +22,7 @@ If you've ever worked with a [Jupyter](https://jupyter.org/) notebook, you might
 
 ## Use Playground mode
 
-How does Playground mode work? Follow the steps below to try it out:
+To use Playground mode:
 
 1. Enable the Playground mode.
 2. Add a task to your flow and hit **Play** to run it.
@@ -34,7 +33,7 @@ How does Playground mode work? Follow the steps below to try it out:
 
 Kestra tracks up to 10 recent playground runs, so you can go back to inspect the outputs of previously executed tasks. Older runs are purged automatically. Playground runs won't appear in the regular execution list to avoid confusion with production executions.
 
-Note that Playground mode requires a DAG (Directed Acyclic Graph) structure. So, you won't be able to run the second task before the first task has been played. Also, if you change the flow-level `inputs`, `variables`, `pluginDefaults`, or `outputs` properties while in Playground mode, the existing task runs will be automatically reset, and you will need to rerun them. Kestra does it to ensure that the outputs of the tasks are consistent with the flow-level properties.
+Playground mode requires a DAG (Directed Acyclic Graph) structure, so you cannot run a task before its upstream tasks have been played. If you change flow-level `inputs`, `variables`, `pluginDefaults`, or `outputs` properties while in Playground mode, existing task runs are automatically reset and must be rerun. Kestra resets them to ensure that task outputs remain consistent with the flow-level properties.
 
 To see Playground in action, check out the demo below.
 

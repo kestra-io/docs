@@ -1,0 +1,22 @@
+---
+import bgGlow from "~/assets/landing/infrastructure/glow.svg"
+import bgMobile from "~/assets/landing/infrastructure/mob-bkg-infra.webp"
+import bgDesktop from "~/assets/landing/infrastructure/desk-bkg-infra.webp"
+
+import VerticalsIntro from "~/components/common/VerticalsIntro.astro"
+---
+
+<VerticalsIntro
+    badge={{
+        icon: "mdi:cog-sync-outline",
+        label: "Infrastructure Engineering",
+    }}
+    title={`Modernize Infrastructure Automation With One<br class="d-none d-xl-block" />Unified Control Plane`}
+    description="Standardize provisioning and Day 2 operations with less risk and operational overhead. Get full visibility and control across all infrastructure workflows."
+    iframeSrc="https://demo.arcade.software/cuDf2qq3l9LX1WgP52Fp?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true"
+    bg={{
+        mobile: bgMobile.src,
+        desktop: bgDesktop.src,
+        glow: bgGlow.src,
+    }}
+/>

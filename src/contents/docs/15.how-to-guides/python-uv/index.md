@@ -1,5 +1,6 @@
 ---
-title: Manage Python Dependencies with uv
+title: Manage Python Dependencies with uv in Kestra
+h1: Speed Up Python Dependency Management with uv
 icon: /src/contents/docs/icons/python.svg
 stage: Intermediate
 topics:
@@ -7,9 +8,7 @@ topics:
 description: Use uv in Kestra to manage Python dependencies and virtual environments for faster and more reliable script execution.
 ---
 
-Manage your Python Dependecies inside of Kestra using `uv`.
-
-## Manage Python Dependencies with uv
+Manage your Python Dependencies in Kestra using `uv`.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/tyEbyhg6jmY?si=v_vQVfBUvKJD7-rn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -17,7 +16,7 @@ Manage your Python Dependecies inside of Kestra using `uv`.
 
 `uv` is a new Python package and project manager designed to be extremely fast. Written in rust, it aims to fix some of the pitfalls of pip while also combining multiple python dependency management tools like `virtualenv`, `poetry`, and more into one unified tool.
 
-`uv` can be used inside of Kestra to install dependencies as well as manage virtual environments in combination with the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md).
+`uv` can be used in Kestra to install dependencies as well as manage virtual environments in combination with the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md).
 
 ## Install Dependencies
 
@@ -98,4 +97,4 @@ RUN pip install uv
 CMD ["server", "standalone"]
 ```
 
-Learn more about configuring a custom Docker image for Kestra [here](../../14.best-practices/4.managing-pip-dependencies/index.md#installing-pip-package-dependencies-at-server-startup).
+Learn more about [installing pip package dependencies at server startup](../../14.best-practices/4.managing-pip-dependencies/index.md#installing-pip-package-dependencies-at-server-startup).

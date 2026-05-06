@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra on AWS EKS – RDS and S3 Setup
+title: Deploy on AWS EKS with RDS and S3 in Kestra
+h1: AWS EKS Setup with RDS PostgreSQL and S3
 sidebarTitle: Kubernetes on AWS EKS with Amazon RDS and S3
 icon: /src/contents/docs/icons/aws-eks.svg
 description: Deploy Kestra on Amazon EKS with RDS PostgreSQL and S3 for a scalable, cloud-native orchestration platform.
@@ -7,11 +8,8 @@ description: Deploy Kestra on Amazon EKS with RDS PostgreSQL and S3 for a scalab
 
 Deploy Kestra to AWS EKS with a PostgreSQL RDS database and an S3 internal storage backend.
 
-## Deploy Kestra on AWS EKS with RDS and S3
+## Prerequisites
 
-This guide provides detailed instructions for deploying Kestra to AWS Elastic Kubernetes Service (EKS) with a PostgreSQL RDS database backend and AWS S3 for internal storage.
-
-**Prerequisites:**
 - Basic command-line interface (CLI) skills.
 - Familiarity with AWS EKS, RDS, S3, and Kubernetes.
 
@@ -33,7 +31,7 @@ kubectl get svc
 Navigate to the RDS console to create a PostgreSQL database. Once your database is created, configure the settings, ensuring the database is accessible from your EKS cluster. Make note of the database endpoint and port after creation for later use.
 
 ## Prepare an AWS S3 Bucket
-Create a private S3 bucket (i.e., with public access blocked). Keep a record of the bucket name as this is needed for the [Kestra configuration](../../configuration/index.md).
+Create a private S3 bucket (i.e., with public access blocked). Keep a record of the bucket name as this is needed for the [Kestra runtime and storage configuration](../../configuration/02.runtime-and-storage/index.md).
 
 
 ## Install Kestra on AWS EKS
@@ -46,7 +44,7 @@ helm install my-kestra kestra/kestra
 
 In the deployment configuration, integrate RDS and S3 as the database and storage backends, respectively. Set the database connection under `datasources` and S3 details under `storage` in your Helm values.
 
-Here is how you can configure RDS in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11):
+Here is how you can configure RDS in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml):
 
 ```yaml
 configurations:
@@ -64,7 +62,7 @@ configurations:
         password: <your_password>
 ```
 
-Add the S3 configuration in the [Helm chart's values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml#L11) like in the following example:
+Add the S3 configuration in the [Helm chart's values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) like in the following example:
 
 ```yaml
 configurations:
@@ -99,7 +97,5 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 Once the ALB is configured and deployed, access the Kestra UI using the ALB endpoint.
 
 ## Next steps
-
-This guide walked you through installing Kestra to [AWS EKS](https://docs.aws.amazon.com/eks/) with PostgreSQL RDS database and S3 storage backend.
 
 Reach out via [Slack](/slack) if you encounter any issues or have questions about deploying Kestra to production.

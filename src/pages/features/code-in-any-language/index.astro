@@ -1,30 +1,189 @@
 ---
+import { $fetchApiCached } from "~/utils/fetch"
+import type { Plugin } from "@kestra-io/ui-libs"
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+
 import Layout from "~/components/layout.astro"
-import Header from "~/components/features/language/Header.vue"
-import Features from "~/components/features/language/Features.vue"
-import GitOptions from "~/components/features/language/GitOptions.vue"
-import IntegrationsInfo from "~/components/features/language/IntegrationsInfo.vue"
-import Plugins from "~/components/features/language/Plugins.vue"
-import AgnosticOrchestration from "~/components/features/language/AgnosticOrchestration.vue"
-import FooterContact from "~/components/layout/FooterContact.vue"
+import TopHero from "~/components/layout/TopHero.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import Powerful from "~/components/features/declarative/Powerful.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import Capabilities from "~/components/use-cases/Capabilities.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Link from "~/components/common/Link.astro"
+
+import visualHero from "~/assets/landing/features/code-in-any-lang/any-lang-hero.svg"
+import visualsImg from "~/assets/landing/features/code-in-any-lang/Visuals.svg"
+import anyLanguage1 from "~/assets/landing/features/code-in-any-lang/any-language-1.webp"
+import anyLanguage2 from "~/assets/landing/features/code-in-any-lang/any-language-2.webp"
+import pythonImg from "~/assets/landing/features/code-in-any-lang/python.webp"
+import rImg from "~/assets/landing/features/code-in-any-lang/r.webp"
+import juliaImg from "~/assets/landing/features/code-in-any-lang/julia.webp"
+
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
+const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+
+const title = "Language Agnostic Orchestration"
+const description =
+    "Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools"
+
+const MAIN_ITEMS = [
+    {
+        icon: "mdi:leak",
+        title: "Code in any language",
+        description:
+            "Orchestrate custom business logic in Python, R, Java, Julia, Ruby, and any kind of language, thanks to Docker.",
+    },
+    {
+        icon: "mdi:hub-outline",
+        title: "Script Management with Embedded Code Editor",
+        description:
+            "Our built-in code editor simplifies script editing and management directly within Kestra.",
+    },
+    {
+        icon: "mdi:checkbox-multiple-marked-circle-outline",
+        title: "Separation of Concerns",
+        description:
+            "Kestra's design ensures a clear distinction between orchestration and business logic, keeping your code portable and platform-independent.",
+    },
+    {
+        icon: "mdi:git",
+        title: "Built-in Version Control with Git",
+        description:
+            "Synchronize your code changes between Git and Kestra in both directions — sync code from Git or push your code built in Kestra’s IDE to Git.",
+    },
+    {
+        icon: "mdi:docker",
+        title: "Docker enabled by default",
+        description:
+            "No need to worry about building Docker images and managing the container lifecycle, we’ll do that automatically for you.",
+    },
+]
+
+const GITOPS_FEATURES = [
+    {
+        icon: "mdi:sync",
+        title: "Git Sync for Continuous GitOps",
+        description:
+            "Synchronize your code changes between Git and Kestra in both directions, sync code from Git or push your code built in Kestra’s IDE to Git. Keeps your code up-to-date and enables seamless collaboration via Pull Requests.",
+    },
+    {
+        icon: "mdi:code-tags",
+        title: "Flexibility Across Development Environments",
+        description:
+            "From the Kestra UI to VS Code extensions and Terraform providers, choose the tools that fit your deployment pattern. Our platform's API-first approach ensures you can easily interface with Git, no matter your preferred environment.",
+    },
+]
+
+const SCRIPT_FEATURES = [
+    {
+        title: "Manage your Scripts with the Embedded Code Editor",
+        description: `
+            Develop orchestration and business logic directly in the Kestra UI. Edit scripts and YAML side by side, no tool switching required.
+            <ul>
+                <li class='mt-2'><strong>One workspace:</strong> Scripts and workflows in a single interface</li>
+                <li class='mt-2'><strong>Built for developers:</strong> Syntax highlighting, autocompletion, validation</li>
+                <li class='mt-2'><strong>Any language:</strong> Orchestrate existing code without rewrites</li>
+            </ul>
+        `,
+        image: anyLanguage1,
+    },
+    {
+        title: "Docker Integration for Script Execution",
+        description:
+            "Run your scripts in isolated Docker environments for consistent execution across development and production. Dependencies are handled automatically, and Docker settings can be defined directly within your workflow for full flexibility, without managing containers yourself.",
+        image: anyLanguage2,
+        reverse: true,
+    },
+]
+
+const CAPABILITIES = [
+    {
+        title: "Orchestrate your Python Scripts",
+        description:
+            "Dive deeper to discover how Kestra optimizes Python script execution across diverse environments.",
+        image: pythonImg,
+        pageHref: "/features/code-in-any-language/python",
+    },
+    {
+        title: "Orchestrate your R Scripts",
+        description:
+            "Discover Kestra's powerful orchestration capabilities for R scripts, simplifying complex data analytics.",
+        image: rImg,
+        pageHref: "/features/code-in-any-language/r",
+    },
+    {
+        title: "Orchestrate your Julia Scripts",
+        description:
+            "Learn about Kestra's support for Julia, optimizing high-performance numerical analysis and computational projects.",
+        image: juliaImg,
+        pageHref: "/features/code-in-any-language/julia",
+    },
+]
 ---
 
-<Layout
-    title="Language Agnostic Orchestration"
-    description="Separate your business logic from your orchestration logic with a versatile set of language-agnostic developer tools"
->
-    <Header client:load />
-    <Features client:visible />
-    <GitOptions client:visible />
-    <IntegrationsInfo client:visible />
-    <Plugins client:visible />
-    <AgnosticOrchestration client:visible />
-    <FooterContact
-        client:visible
-        title="Getting Started with  Declarative Orchestration"
-        darkButtonText="Get started"
-        darkButtonHref="/docs/quickstart#start-kestra"
-        purpleButtonText="Talk to us"
-        purpleButtonHref="/demo"
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Orchestrate Your Code. Don’t Rewrite It."
+        description="Kestra separates orchestration logic from business logic so you can run existing scripts as-is while the platform handles execution control, scheduling, retries, logging, and observability."
+        image={visualHero}
+    >
+        <Link
+            slot="cta"
+            href="/get-started"
+            class="btn btn-primary"
+        >
+            Get Started
+        </Link>
+    </TopHero>
+    <CardGrid
+        title="Declarative Orchestration.<br class='d-none d-md-block' />Business Logic in Any Language."
+        items={MAIN_ITEMS}
     />
+    <div class="gitops">
+        <Powerful
+            title="GitOps Native"
+            text="Kestra treats workflows as code, versioned, reviewed, and deployed through Git just like the rest of your infrastructure and applications."
+            image={visualsImg}
+            features={GITOPS_FEATURES}
+        >
+            <Link
+                slot="button"
+                href="/docs/version-control-cicd/git"
+                class="btn btn-primary"
+            >
+                Learn More
+            </Link>
+        </Powerful>
+    </div>
+    <SectionCard cards={SCRIPT_FEATURES}>
+        <Fragment slot="title">Orchestrating Scripts with Kestra</Fragment>
+    </SectionCard>
+    <PluginsBlock>
+        <Fragment slot="title">Platform Independent</Fragment>
+        <Fragment slot="description">
+            Select from {totalPlugins}+ integrations and swap tools when needed
+        </Fragment>
+    </PluginsBlock>
+    <Capabilities title="Language Agnostic Orchestration" capabilities={CAPABILITIES} />
+    <SeeHow cta={{ text: "Contact Sales", href: "/demo" }}>
+        <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
+        Replace legacy schedulers, brittle scripts, and disconnected automation tools
+        with a unified orchestration platform.
+    </SeeHow>
 </Layout>
+
+<style lang="scss">
+    .gitops {
+        :global(.powerful),
+        :global(.partner-capability),
+        :global(.feat) {
+            background: var(--ks-background-secondary) !important;
+        }
+
+        :global(hr) {
+            border: 1px solid var(--ks-border-secondary) !important;
+        }
+    }
+</style>

@@ -5,6 +5,7 @@ date: 2026-01-18T13:00:00
 category: Solutions
 author:
   name: Elliot Gunn
+  linkedin: https://www.linkedin.com/in/elliotgunn/
   image: egunn
   role: Product Marketing Manager
 image: ./main.png
@@ -25,6 +26,10 @@ So what are your actual options in 2026?
 | **Control-M** | Regulated industries with existing mainframe/batch workloads |
 | **AWS Step Functions** | AWS-native shops orchestrating serverless and microservices |
 | **Azure Data Factory** | Microsoft-centric enterprises with hybrid on-prem/cloud data movement |
+
+:::alert{type="info"}
+📘 **Airflow 2 reached end of life on April 22, 2026.** For a structured framework to decide between upgrading to Airflow 3, going managed, or switching to declarative orchestration — download our free [Airflow 2 end-of-life guide](/resources/airflow-2-eol-whitepaper).
+:::
 
 ## What enterprise teams need from Airflow alternatives
 
@@ -110,11 +115,11 @@ In practice, this means:
 
 ### What this enables
 
-- **Multi-team orchestration:** [Leroy Merlin France](https://kestra.io/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent), the global home improvement retailer, runs a single Kestra instance with 250+ active users and 5000+ workflows across teams. Their Data Mesh architecture lets different data domains manage their own pipelines independently while [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md) and namespace isolation ensure teams only see their own workflows—enabling a 900% increase in data production.
-- **Legacy modernization:** [FILA](https://kestra.io/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated), the global sportswear brand, migrated their PLM and ERP integrations from manual batch scripts to 2000+ Kestra workflows. With 25+ engineers now managing 2.5 million monthly executions, they've replaced fragile legacy processes with event-driven orchestration that handles complex multi-system data flows across SQL Server, APIs, and file transfers.
-- **Declarative data stack orchestration:** [Gorgias](https://kestra.io/use-cases/stories/13-gorgias-using-declarative-data-engineering-orchestration-with-kestra), the AI customer experience platform, uses Kestra to orchestrate their entire data stack—triggering Airbyte syncs, running dbt transformations, and coordinating Hightouch reverse-ETL jobs. Their IaC approach with YAML-based configuration eliminated manual interventions and enabled seamless CI/CD for data workflows.
+- **Multi-team orchestration:** [Leroy Merlin France](https://kestra.io/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent), the global home improvement retailer, runs a single Kestra instance with 250+ active users and 5000+ workflows across teams. Their Data Mesh architecture lets different data domains manage their own pipelines independently while [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md) and namespace isolation ensure teams only see their own workflows—enabling a 900% increase in data production.
+- **Legacy modernization:** [FILA](https://kestra.io/use-cases/stories/erp-transformation-smarter-faster-fully-automated), the global sportswear brand, migrated their PLM and ERP integrations from manual batch scripts to 2000+ Kestra workflows. With 25+ engineers now managing 2.5 million monthly executions, they've replaced fragile legacy processes with event-driven orchestration that handles complex multi-system data flows across SQL Server, APIs, and file transfers.
+- **Declarative data stack orchestration:** [Gorgias](https://kestra.io/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra), the AI customer experience platform, uses Kestra to orchestrate their entire data stack—triggering Airbyte syncs, running dbt transformations, and coordinating Hightouch reverse-ETL jobs. Their IaC approach with YAML-based configuration eliminated manual interventions and enabled seamless CI/CD for data workflows.
 
-For enterprise deployment, Kestra runs anywhere: any cloud, on-premises, or air-gapped. [Kestra Cloud](https://kestra.io/cloud) offers a fully managed option for teams that don't want to handle infrastructure, while the [self-hosted version](../../docs/02.installation/index.mdx) gives you complete control. For faster cloud deployment, Kestra is available on [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg), [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official), and [Google Cloud Marketplace](https://kestra.io/docs/installation/gcp). You can deploy a production-ready instance in minutes through your existing cloud billing.
+For enterprise deployment, Kestra runs anywhere: any cloud, on-premises, or air-gapped. [Kestra Cloud](https://kestra.io/cloud) offers a fully managed option for teams that don't want to handle infrastructure, while the [self-hosted version](../../docs/02.installation/index.mdx) gives you complete control. For faster cloud deployment, Kestra is available on [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-uilmngucs45cg), [Azure Marketplace](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official), and [Google Cloud Marketplace](https://kestra.io/docs/installation/gcp-vm). You can deploy a production-ready instance in minutes through your existing cloud billing.
 
 The event-driven architecture handles [real-time triggers](https://kestra.io/blogs/2024-06-27-realtime-triggers) natively rather than bolting them onto a batch-oriented scheduler. [Governance features](https://kestra.io/docs/enterprise/governance) like [namespace isolation](../../docs/07.enterprise/02.governance/07.namespace-management/index.md), [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md), and [audit logging](../../docs/07.enterprise/02.governance/06.audit-logs/index.md) are built into the core rather than reserved for a cloud tier.
 

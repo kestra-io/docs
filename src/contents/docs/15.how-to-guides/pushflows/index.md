@@ -1,5 +1,6 @@
 ---
 title: Push Flows to a Git Repository
+h1: Use PushFlows to Sync Your Flows to Git
 icon: /src/contents/docs/icons/git.svg
 stage: Getting Started
 topics:
@@ -11,36 +12,32 @@ description: Use the PushFlows task to push your Kestra flows to a Git repositor
 
 Push your Flows to a Git Repository with the PushFlows Task.
 
-## Push Flows to a Git Repository
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/OPlNKQZFeho?si=ZvRQfLjnhjDYk1qN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## How it works
 
-The [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.PushFlows) task is a powerful integration that allows you to **push your code to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
+The [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.pushflows) task is a powerful integration that allows you to **push your code to Git from the UI while still managing this process entirely in code**! Kestra unifies the development experience between the UI and code so you can combine the best of both worlds without sacrificing the benefits of version control.
 
-The process is simple: you can **build your flows** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
+You can **build your flows** in a development namespace using all **productivity features of the Kestra UI** (_such as the built-in code editor, autocompletion, syntax validation, documentation, blueprint examples, live-updating topology view, output previews, replays, execution and revision history_) and then **push them to Git** after you have tested and validated them.
 
-The task allows you to easily push one or more flows from a given namespace (and optionally also child namespaces) to any Git-based Version Control System.
+The task pushes one or more flows from a given namespace (and optionally also child namespaces) to any Git-based Version Control System.
 
 Additionally, the `dryRun` property will help you see what files will be added, modified, or deleted without overwriting the files on Git yet.
 
-Let's look at a few common patterns of using the `PushFlows` task.
+The following examples cover common patterns for the `PushFlows` task.
 
 ## Before you begin
 
-Before you start using the `PushFlows` task, make sure you have the following prerequisites in place:
+Before you start using the `PushFlows` task, ensure the following prerequisites are in place:
 1. A Git repository where you want to push your flows.
 2. A Personal Access Token (PAT) for Git authentication.
 3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../../06.concepts/04.secret/index.md) within the Kestra instance.
 
 ## Using the `dryRun` property
 
-Let's start by creating a single `hello_world` flow in the `dev` namespace and pushing it to a Git repository. We'll initially set the `dryRun` property to `true` to validate the changes before committing them to Git.
+Start by creating a single `hello_world` flow in the `dev` namespace and pushing it to a Git repository. Initially set the `dryRun` property to `true` to validate the changes before committing them to Git.
 
 ```yaml
 id: hello_world
@@ -85,7 +82,7 @@ Given that the `dryRun` property is set to `true`, the task will only output mod
 
 ## Pushing a single flow to Git
 
-Let's now set the `dryRun` property to `false` and push the `hello_world` flow to Git:
+Set the `dryRun` property to `false` and push the `hello_world` flow to Git:
 
 ```yaml
 id: push_to_git
@@ -116,7 +113,7 @@ Now, you can create a pull request and merge the changes to the main branch.
 
 ## Pushing all flows from a single namespace to Git
 
-To see how you can push all flows from a given namespace to Git, let's create two more flows in the `dev` namespace:
+To push all flows from a given namespace to Git, create two more flows in the `dev` namespace:
 
 ```yaml
 id: flow1
@@ -139,7 +136,7 @@ tasks:
 
 ![git6_all_flows.png](./git6_all_flows.png)
 
-Let's now adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
+Adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
 
 ```yaml
 id: push_to_git
@@ -159,7 +156,7 @@ tasks:
     dryRun: true
 ```
 
-Again, we can set the `dryRun` property to `true` to see what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
+Setting `dryRun` to `true` shows what files will be added, modified, or deleted based on the Git version without overwriting the files in Git yet:
 
 ![git7.png](./git7.png)
 
@@ -172,7 +169,7 @@ Now if you change the `dryRun` property to `false` and run the system flow again
 
 Finally, we get to the fun part of pushing all flows from the `dev` namespace **including all child namespaces**. Kestra will automatically create a subfolder for each child namespace and push the flows there to keep everything organized.
 
-Let's create two more flows in the `dev.tutorial` namespace:
+Create two more flows in the `dev.tutorial` namespace:
 
 1. `hello_world_1` flow:
 ```yaml
@@ -253,7 +250,7 @@ You can see that each child namespace is represented as a subfolder in the Git r
 - The `branch` property allows you to specify the branch to which files should be committed and pushed. If the branch doesn’t exist yet, it will be created.
 - The `commitMessage` property allows you to specify the Git commit message. You can use templating to include dynamic values in your commit message.
 - The `gitDirectory` property allows you to specify the directory to which flows should be pushed. If not set, flows will be pushed to a Git directory named `_flows` and will optionally also include subdirectories named after the child namespaces. If you prefer, you can specify an arbitrary path, e.g. `kestra/flows`, allowing you to push flows to that specific Git directory.
-- If you omit the `targetNamespace`, the `sourceNamespace` will be used as the `targetNamespace` by default. The `targetNamespace` is an optional mechanism to help you prepare your development flows to be merged into the production branch/namespace. If you set the `targetNamespace`, the `sourceNamespace` in the source code will be overwritten by the `targetNamespace` so that you can seamlessy sync the flows to production.
+- If you omit the `targetNamespace`, the `sourceNamespace` will be used as the `targetNamespace` by default. The `targetNamespace` is an optional mechanism to help you prepare your development flows to be merged into the production branch/namespace. If you set the `targetNamespace`, the `sourceNamespace` in the source code will be overwritten by the `targetNamespace` so that you can sync the flows to production.
 - If you try to add the Personal Access Token (PAT) directly in your source code in the `password` property, you will get an error message. This is a safety mechanism to prevent you and your users from accidentally exposing your PAT in the source code. You should store the PAT as a Kestra Secret, environment variable, namespace variable or as a SECRET-type input in your flow.
 - Git does not guarantee the order of push operations to a remote repository, which can lead to potential conflicts when multiple users or flows attempt to push changes simultaneously. To minimize the risk of data loss and merge conflicts, it is strongly recommended to use sequential workflows or push changes to separate branches.
 

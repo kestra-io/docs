@@ -1,5 +1,6 @@
 ---
-title: Install Only Selected Plugins in Kestra Open Source
+title: Install Only Selected Plugins in Kestra OSS
+h1: Install Specific Plugins for a Lightweight Kestra Build
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -8,8 +9,6 @@ description: Learn how to install specific Kestra plugins in the open-source ver
 ---
 
 Install a selection of Kestra plugins in the open-source version.
-
-## Install only selected Plugins in Kestra Open Source
 
 Pick and choose Kestra plugins to create lightweight builds and achieve a faster startup. This guide explains how to:
 
@@ -81,7 +80,7 @@ volumes:
   - ./local-plugins:/app/plugins
 ```
 
-You may also use a scripted alias to automate this process. Below is an example for referral:
+You may also use a scripted alias to automate this process. Below is an example for reference:
 
 ```bash
 alias dl="rm -rf ./jar-plugins/* && docker run -d kestra/kestra:develop server local \

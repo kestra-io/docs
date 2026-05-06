@@ -1,5 +1,6 @@
 ---
 title: Configure Local MinIO Storage for Kestra
+h1: Set Up MinIO as Your Local Object Storage Backend
 icon: /src/contents/docs/icons/minio.svg
 stage: Intermediate
 topics:
@@ -9,8 +10,6 @@ description: Configure MinIO as a local object storage backend for Kestra using 
 ---
 
 Set up and verify a local [MinIO](https://min.io/) storage backend for Kestra using the `mc` CLI and Docker.
-
-## Configure Local MinIO Storage for Kestra
 
 ---
 
@@ -129,7 +128,7 @@ You can now validate that the output file is stored in the MinIO bucket:
 mc cat local/your-bucket/main/company/team/alligator-743987/executions/23z9cJWEa23kNAxu6sm0CT/tasks/py-outputs/5kxYRM7UqUurvnpVNvHca7/1noPFEiCFGPf2hcqjVzywu-myoutput.json
 ```
 
-Note that you may need to replace the following placeholders with your own values:
+Replace the following placeholders with your own values:
 - the bucket name (here `your-bucket`)
 - the path (namespace) (here `company/team`)
 - the flow id (here `alligator-743987`)

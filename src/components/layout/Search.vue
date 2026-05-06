@@ -13,12 +13,15 @@
     >
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
-                <div class="modal-body row bg-dark-4">
+                <div class="modal-body row">
                     <div class="search">
-                        <label class="visually-hidden" for="search-input">Search</label>
+                        <label class="visually-hidden" for="search-input"
+                            >Search</label
+                        >
                         <div class="input-group">
                             <span class="input-group-text"
-                                ><Magnify v-if="!loading" /><MagnifyExpand v-if="loading"
+                                ><Magnify v-if="!loading" /><MagnifyExpand
+                                    v-if="loading"
                             /></span>
                             <input
                                 type="text"
@@ -28,56 +31,76 @@
                                 autocomplete="off"
                                 placeholder="Search Kestra.io"
                             />
-                            <div class="align-items-center d-flex input-group-append">
-                                <div class="ai-button-wrapper me-2">
-                                    <button
-                                        class="ai-button"
-                                        title="Ask Kestra AI"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#search-ai-modal"
+                            <div
+                                class="align-items-center d-flex input-group-append"
+                            >
+                                <button
+                                    class="btn btn-sm btn-primary"
+                                    title="Ask Kestra AI"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#search-ai-modal"
+                                >
+                                    <img
+                                        :src="KSAIImg.src"
+                                        alt="Kestra AI"
+                                        width="30"
+                                        height="30"
+                                    />
+                                    <span class="title d-none d-md-inline"
+                                        >Ask Kestra AI</span
                                     >
-                                        <img
-                                            :src="KSAIImg.src"
-                                            alt="Kestra AI"
-                                            width="30"
-                                            height="30"
-                                        />
-                                        <span class="title d-none d-md-inline">Ask Kestra AI</span>
-                                        <span class="title d-md-none">Ask AI</span>
-                                    </button>
-                                </div>
+                                    <span class="title d-md-none">Ask AI</span>
+                                </button>
                                 <span class="esc">ESC</span>
                             </div>
                         </div>
                     </div>
-                    <div class="facets overflow-x-auto overflow-y-hidden p-0">
-                        <div
+                    <div
+                        class="facets overflow-x-auto overflow-y-hidden p-0"
+                        role="tablist"
+                    >
+                        <button
                             class="facet"
                             :class="{
                                 'facet-active': selectedFacet === undefined,
                             }"
+                            role="tab"
                             @click="() => selectFacet(undefined)"
                         >
                             <span>All</span>
                             <span>({{ allSum }})</span>
-                        </div>
-                        <div
+                        </button>
+                        <button
                             class="facet"
                             v-for="(result, key, index) in searchFacets"
                             @click="() => selectFacet(key)"
                             :class="{ 'facet-active': selectedFacet === key }"
+                            role="tab"
                             :key="index"
                         >
                             <span>{{
-                                key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()
+                                key.charAt(0).toUpperCase() +
+                                key.slice(1).toLowerCase()
                             }}</span>
                             <span>({{ result }})</span>
-                        </div>
+                        </button>
                     </div>
                     <div :class="{ loading: loading }">
-                        <div class="row" v-if="searchResults && searchResults.length === 0">
+                        <div
+                            class="d-flex justify-content-center mt-5 mb-5"
+                            v-if="initialLoad === false"
+                        >
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+
+                        <div
+                            class="row"
+                            v-else-if="
+                                searchResults && searchResults.length === 0
+                            "
+                        >
                             <div
-                                class="col-12 not-found-content d-flex flex-column justify-content-center bg-dark-2"
+                                class="col-12 not-found-content d-flex flex-column justify-content-center"
                             >
                                 <img
                                     src="/search/emoticon-dead-icon.svg"
@@ -93,7 +116,9 @@
                             <div class="search-result col-12 col-md-6">
                                 <div
                                     v-for="(result, index) in searchResults"
-                                    @mouseover="() => onItemMouseOver(result, index)"
+                                    @mouseover="
+                                        () => onItemMouseOver(result, index)
+                                    "
                                 >
                                     <a
                                         :href="'/' + result.url"
@@ -105,12 +130,18 @@
                                         <div class="result">
                                             <div class="w-100">
                                                 <span class="type">{{
-                                                    result.type.charAt(0).toUpperCase() +
-                                                    result.type.slice(1).toLowerCase()
+                                                    result.type
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    result.type
+                                                        .slice(1)
+                                                        .toLowerCase()
                                                 }}</span>
                                                 <h5
                                                     v-if="result.highlightTitle"
-                                                    v-html="result.highlightTitle"
+                                                    v-html="
+                                                        result.highlightTitle
+                                                    "
                                                 ></h5>
                                                 <h5 v-else>
                                                     {{ result.title }}
@@ -120,7 +151,9 @@
                                                         :class="{
                                                             first: index === 0,
                                                         }"
-                                                        v-for="(item, index) in breadcrumb(
+                                                        v-for="(
+                                                            item, index
+                                                        ) in breadcrumb(
                                                             result.url,
                                                         )"
                                                         :key="item"
@@ -133,12 +166,21 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="search-detail p-3 col-6 d-none d-md-flex">
-                                <div class="rounded-3 w-100" v-if="selectedItem">
+                            <div
+                                class="search-detail p-3 col-6 d-none d-md-flex"
+                            >
+                                <div
+                                    class="rounded-3 w-100"
+                                    v-if="selectedItem"
+                                >
                                     <div>
                                         <span class="type">{{
-                                            selectedItem.type.charAt(0).toUpperCase() +
-                                            selectedItem.type.slice(1).toLowerCase()
+                                            selectedItem.type
+                                                .charAt(0)
+                                                .toUpperCase() +
+                                            selectedItem.type
+                                                .slice(1)
+                                                .toLowerCase()
                                         }}</span>
                                         <h5>
                                             {{ selectedItem.title }}
@@ -146,7 +188,9 @@
                                         <div class="slug">
                                             <span
                                                 :class="{ first: index === 0 }"
-                                                v-for="(item, index) in breadcrumb(
+                                                v-for="(
+                                                    item, index
+                                                ) in breadcrumb(
                                                     selectedItem.url,
                                                 )"
                                                 :key="item"
@@ -155,7 +199,9 @@
                                             </span>
                                         </div>
                                         <p
-                                            v-for="(highlight, index) in selectedItem.highlights"
+                                            v-for="(
+                                                highlight, index
+                                            ) in selectedItem.highlights"
                                             :key="index"
                                             v-html="highlight"
                                             class="extract"
@@ -184,9 +230,13 @@
     >
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
-                <div class="modal-body row bg-dark-4">
+                <div class="modal-body row">
                     <Suspense>
-                        <AiChatDialog @close="closeAiDialog" @backToSearch="backToSearch" />
+                        <AiChatDialog
+                            :randomAiQuestions
+                            @close="closeAiDialog"
+                            @backToSearch="backToSearch"
+                        />
                     </Suspense>
                 </div>
             </div>
@@ -202,16 +252,21 @@
 </script>
 
 <script>
-    import axios from "axios"
     import PostOutline from "vue-material-design-icons/PostOutline.vue"
     import TextBoxOutline from "vue-material-design-icons/TextBoxOutline.vue"
     import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue"
     import PowerPlugOutline from "vue-material-design-icons/PowerPlugOutline.vue"
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import posthog from "posthog-js"
-    import { API_URL } from "astro:env/client"
+    import { $fetchApi } from "~/utils/fetch"
 
     export default {
+        props: {
+            randomAiQuestions: {
+                type: Array,
+                required: true,
+            },
+        },
         data() {
             return {
                 searchResults: [],
@@ -220,9 +275,10 @@
                 selectedIndex: 0,
                 selectedItem: null,
                 searchValue: undefined,
-                cancelToken: undefined,
                 loading: true,
                 showAiDialog: false,
+                initialLoad: false,
+                abortController: undefined,
             }
         },
         mounted() {
@@ -230,13 +286,15 @@
         },
         unmounted() {
             window.removeEventListener("keydown", this.handleKeyboard)
-            document.documentElement.style.removeProperty("--top-bar-height")
         },
         computed: {
             allSum() {
-                return Object.values(this.searchFacets).reduce((accumulator, currentValue) => {
-                    return accumulator + currentValue
-                }, 0)
+                return Object.values(this.searchFacets).reduce(
+                    (accumulator, currentValue) => {
+                        return accumulator + currentValue
+                    },
+                    0,
+                )
             },
         },
         methods: {
@@ -260,33 +318,41 @@
             },
             onHiddenAi() {},
             search(value) {
-                if (this.cancelToken !== undefined) {
-                    this.cancelToken.cancel("cancel all")
+                // https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+                if (this.abortController) {
+                    this.abortController.abort("Search restarted")
                 }
-                this.cancelToken = axios.CancelToken.source()
+                this.abortController = new AbortController()
                 this.loading = true
 
                 this.searchValue = value
-                return axios
-                    .get(`${API_URL}/search`, {
-                        params: {
-                            q: value,
-                            type: this.selectedFacet,
-                        },
-                        cancelToken: this.cancelToken.token,
-                    })
+                const params = new URLSearchParams()
+                params.append("q", value)
+                if (this.selectedFacet) {
+                    params.append("type", this.selectedFacet)
+                }
+                return $fetchApi(`/search?${params.toString()}`, {
+                    signal: this.abortController.signal,
+                })
                     .then((response) => {
-                        if (response?.data?.results?.length) {
-                            this.searchResults = response.data.results.map((result) => {
-                                const searchTerm = value?.trim()?.toLowerCase()
-                                if (searchTerm) {
-                                    const index = result.title.toLowerCase().indexOf(searchTerm)
-                                    if (index !== -1) {
-                                        result.highlightTitle = `${result.title.slice(0, index)}<mark>${result.title.slice(index, index + searchTerm.length)}</mark>${result.title.slice(index + searchTerm.length)}`
+                        this.initialLoad = true
+                        if (response?.results?.length) {
+                            this.searchResults = response.results.map(
+                                (result) => {
+                                    const searchTerm = value
+                                        ?.trim()
+                                        ?.toLowerCase()
+                                    if (searchTerm) {
+                                        const index = result.title
+                                            .toLowerCase()
+                                            .indexOf(searchTerm)
+                                        if (index !== -1) {
+                                            result.highlightTitle = `${result.title.slice(0, index)}<mark>${result.title.slice(index, index + searchTerm.length)}</mark>${result.title.slice(index + searchTerm.length)}`
+                                        }
                                     }
-                                }
-                                return result
-                            })
+                                    return result
+                                },
+                            )
 
                             this.selectedIndex = 0
                             this.selectedItem = this.searchResults[0]
@@ -295,14 +361,14 @@
                             this.resetData()
                         }
 
-                        if (response?.data.facets) {
-                            this.searchFacets = this.sortFacet(response.data.facets)
+                        if (response?.facets) {
+                            this.searchFacets = this.sortFacet(response.facets)
                         }
 
                         posthog.capture("search", {
                             text: value,
                             type: this.selectedFacet,
-                            resultsCount: response?.data?.results?.length || 0,
+                            resultsCount: response?.results?.length || 0,
                         })
                     })
                     .catch((e) => {
@@ -310,18 +376,31 @@
                             this.resetData()
                         }
                     })
+                    .finally(() => {
+                        this.abortController = undefined
+                        this.loading = false
+                    })
             },
             sortFacet(facets) {
                 const result = new Map(
                     Object.entries(facets).sort((a, b) => {
-                        return this.sortFacetIndex(a[0]) - this.sortFacetIndex(b[0])
+                        return (
+                            this.sortFacetIndex(a[0]) -
+                            this.sortFacetIndex(b[0])
+                        )
                     }),
                 )
 
                 return Object.fromEntries(result.entries())
             },
             sortFacetIndex(value) {
-                const index = ["PLUGINS", "DOCS", "BLUEPRINTS", "BLOGS", "JOBS"].indexOf(value)
+                const index = [
+                    "PLUGINS",
+                    "DOCS",
+                    "BLUEPRINTS",
+                    "BLOGS",
+                    "JOBS",
+                ].indexOf(value)
 
                 return index === -1 ? Number.MAX_SAFE_INTEGER : index
             },
@@ -352,7 +431,8 @@
                 }
 
                 if (e.key === "ArrowUp") {
-                    this.selectedIndex = this.selectedIndex <= 1 ? 0 : this.selectedIndex - 1
+                    this.selectedIndex =
+                        this.selectedIndex <= 1 ? 0 : this.selectedIndex - 1
                     this.selectedItem = this.searchResults[this.selectedIndex]
                     this.handleSearchScroll()
                 }
@@ -387,7 +467,10 @@
                 let container = document.querySelector(".search-result")
 
                 if (active) {
-                    if (active.offsetTop + active.offsetHeight >= container.offsetHeight) {
+                    if (
+                        active.offsetTop + active.offsetHeight >=
+                        container.offsetHeight
+                    ) {
                         container.scrollTop = active.offsetTop
                     } else if (active.offsetTop < container.offsetHeight) {
                         container.scrollTop = 0
@@ -435,7 +518,9 @@
             },
             close() {
                 if (this.$refs.modal) {
-                    const modal = window.$bootstrap.Modal.getInstance(this.$refs.modal)
+                    const modal = window.$bootstrap.Modal.getInstance(
+                        this.$refs.modal,
+                    )
                     if (modal) {
                         modal.hide()
                     }
@@ -452,7 +537,9 @@
                 this.showAiDialog = false
 
                 if (this.$refs.modal) {
-                    const searchModal = new window.$bootstrap.Modal(this.$refs.modal)
+                    const searchModal = new window.$bootstrap.Modal(
+                        this.$refs.modal,
+                    )
                     searchModal.show()
                 }
             },
@@ -461,118 +548,108 @@
 </script>
 
 <style lang="scss">
-    @import "~/assets/styles/variable";
-
     #search-modal {
         .not-found-content {
-            color: $white;
+            color: var(--ks-content-primary);
             padding: 3.125rem 0;
-            border-top: 1px solid $black-6;
+            border-top: 1px solid var(--ks-border-primary);
             img {
                 width: 1.5rem;
             }
         }
-
         .search {
             width: 100%;
-            border: 1px solid $black-6;
+            border: 1px solid var(--ks-border-primary);
             padding: 8px 16px;
             gap: 8px;
-            background: $black-4;
+            background: var(--ks-background-body);
             opacity: 1;
-
             .input-group-text {
                 background: transparent;
                 font-size: 1.25rem;
                 border-bottom-left-radius: 0;
                 border-top-left-radius: $border-radius-lg;
                 border: none;
-                color: $white-3;
+                color: var(--ks-content-secondary);
                 padding: 0;
             }
-
             .magnify-icon {
                 font-size: 20px;
                 color: var(--ks-content-secondary);
                 margin-top: -4px;
             }
-
             .ai-button {
                 padding: 4px 12px;
             }
-
             .esc {
-                color: $black-10;
+                color: var(--ks-content-tertiary);
                 font-size: 0.563rem;
+                margin-left: 0.5rem;
             }
         }
-
         .form-control {
             border-left: 0;
             background: transparent !important;
             border-bottom-right-radius: 0;
             border: none;
             padding-left: 8px;
-
             &,
             &::placeholder {
-                color: $white-3;
+                color: var(--ks-content-secondary);
                 font-size: $font-size-md;
                 font-weight: 400;
             }
         }
-
         .form-control:focus {
             box-shadow: none;
         }
-
         .badge {
             font-weight: normal;
-
             &.bg-light {
                 background: var(--bs-gray-400) !important;
             }
         }
-
         .icon-wrapper {
             width: 16px;
             height: 16px;
             margin-right: 0.375rem;
         }
-
         .modal-body {
             .search,
             .facets {
-                color: $white-3;
-                background: $black-4;
+                color: var(--ks-content-secondary);
+                background: var(--ks-background-body);
             }
-
             .facets {
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 padding: 0 1rem;
                 font-size: $font-size-sm;
-                border-top: 1px solid $black-6;
-
+                border-top: 1px solid var(--ks-border-primary);
                 @include media-breakpoint-down(md) {
                     width: 97%;
                 }
-
                 .facet {
                     display: flex;
                     align-items: center;
                     padding: 0.5rem 1rem;
                     gap: 5px;
                     cursor: pointer;
+                    background-color: transparent;
+                    appearance: none;
+                    border: none;
                     border-top: 1px solid transparent;
-                    color: $white;
+                    color: var(--ks-content-primary);
                     -ms-overflow-style: none;
                     scrollbar-width: none;
-
                     &-active {
-                        border-top: 1px solid $purple-36;
-                        color: $purple-36;
+                        border-top: 1px solid var(--ks-border-active);
+                        color: var(--ks-content-color-highlight);
+                    }
+                    &:focus-visible {
+                        outline: none;
+                        text-decoration: underline;
                     }
                 }
                 &::-webkit-scrollbar {
@@ -580,46 +657,38 @@
                 }
             }
         }
-
         .search-result,
         .search-detail {
             overflow-x: hidden;
             overflow-y: auto;
             height: calc(100vh - 175px);
-            background: $black-4;
-
+            background: var(--ks-background-body);
             &::-webkit-scrollbar {
                 width: 4px;
                 height: 4px;
             }
-
             &::-webkit-scrollbar-track {
                 background: transparent;
             }
-
             &::-webkit-scrollbar-thumb {
-                background: $primary-1;
+                background: var(--ks-background-button-primary-hover);
             }
-
             &::-webkit-scrollbar-thumb:hover {
                 background: #370883;
             }
-
             .type {
-                color: $white-3;
+                color: var(--ks-content-secondary);
                 font-size: $font-size-sm;
                 font-weight: 400;
                 line-height: 14px;
             }
-
             h5 {
-                color: $white;
+                color: var(--ks-content-primary);
                 font-size: $font-size-sm;
                 font-weight: 700;
                 line-height: 22px;
                 margin-bottom: 0;
             }
-
             .slug {
                 white-space: nowrap;
                 overflow: hidden;
@@ -628,88 +697,73 @@
                 font-size: $font-size-xs;
                 color: var(--bs-gray-600);
                 margin-bottom: calc($spacer / 3);
-
                 span {
-                    color: $black-8;
+                    color: var(--ks-content-tertiary);
                     font-size: 0.688rem;
                     font-weight: 400;
                     margin-right: 0.25rem;
                     line-height: 14px;
-
                     &:before {
                         content: "/";
                         margin-right: 0.25rem;
                     }
-
                     &:first-child {
                         &:before {
                             display: none;
                         }
                     }
                 }
-
                 .breadcrumb-item + .breadcrumb-item::before {
                     color: $pink;
                 }
             }
         }
-
         .search-result {
-            border-right: 1px solid $black-6;
+            border-right: 1px solid var(--ks-border-primary);
             padding: 0 !important;
-
             .result {
                 transition: background-color 0.2s ease;
                 padding: 1rem;
                 display: flex;
                 cursor: pointer;
-                border-bottom: 1px solid $black-6;
-
+                border-bottom: 1px solid var(--ks-border-primary);
                 > div {
                     flex-grow: 1;
                 }
-
                 span.material-design-icon.arrow {
                     font-size: 1rem;
                     opacity: 0;
                     transition: opacity 0.2s ease;
                 }
             }
-
             .active .result,
             .result:hover {
-                background: $black-3;
+                background: var(--ks-background-primary);
             }
         }
-
         .search-detail {
             .extract {
                 margin-top: 1rem;
                 font-family: var(--bs-font-monospace);
                 font-size: 80%;
                 max-width: 100%;
-                color: $white;
-
+                color: var(--ks-content-primary);
                 p {
                     white-space: pre;
                     word-break: break-all;
                 }
             }
         }
-
         .loading {
             opacity: 0.6;
         }
-
         .search-results {
-            border-top: 1px solid $black-6;
+            border-top: 1px solid var(--ks-border-primary);
         }
-
         mark {
             background-color: transparent;
-            color: $purple-36;
-            font-family: $font-family-sans-serif;
-            font-weight: 800;
+            color: var(--ks-content-color-highlight);
+            font-weight: 700;
             padding: 0;
             margin: 0;
         }

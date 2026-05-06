@@ -1,5 +1,6 @@
 ---
-title: Run Kestra from Standalone JAR – No Docker Deployment
+title: "Run from Standalone JAR in Kestra: No Docker"
+h1: Running Kestra Without Docker via Standalone JAR
 sidebarTitle: Standalone Server
 icon: /src/contents/docs/icons/java.svg
 description: Run Kestra directly from a standalone executable JAR file, suitable for environments where Docker is not available.
@@ -15,15 +16,13 @@ Make sure that you have [Java](https://adoptium.net/en-GB/temurin/releases) inst
 
 The latest JAR can be downloaded [via Kestra API](https://api.kestra.io/v1/versions/download).
 
-This is an executable JAR:
-- For Linux & MacOS, run it with `./kestra-VERSION <command>`.
-- For Windows, rename the file `./kestra-VERSION` to `./kestra-VERSION.bat`, and run it from `CMD`.
+This is an executable JAR. For Linux & MacOS, run it with `./kestra-VERSION <command>`.
 
 For example, to launch Kestra:
 - In local mode (with an H2 local file database), you run `./kestra-VERSION server local`.
 - In standalone mode (you need to provide a configuration with a connection to a database) , you run `./kestra-VERSION server standalone`.
 
-For more information on database configuration, check out the [configuration reference](../../configuration/index.md#database)
+For more information on database configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md)
 
 :::alert{type="warning"}
 Running the jar version comes without any [plugins](/plugins). You need to install them manually with the `kestra plugins install directory_with_plugins/` command. Alternatively, point to a directory with the plugins in the configuration file or an environment variable `KESTRA_PLUGINS_PATH` (e.g., `KESTRA_PLUGINS_PATH=/Users/anna/dev/plugins`).
@@ -46,7 +45,7 @@ By default, Kestra looks for `${HOME}/.kestra/config.yaml`. Use absolute paths f
 
 When using `KESTRA_CONFIGURATION`, ensure a `confs/` directory exists in the working directory: Kestra persists the generated configuration file there on startup. Quote multi-line values (as shown in the [Docker deployment guide](../02.docker/index.md#using-the-kestra_configuration-environment-variable)) so the YAML structure remains intact.
 
-Configuration options are available in the [Configuration Reference](../../configuration/index.md). You can also review the default settings on [GitHub](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yaml).
+Configuration options are available in the [Configuration landing page](../../configuration/index.mdx). You can also review the default settings on [GitHub](https://github.com/kestra-io/kestra/blob/develop/cli/src/main/resources/application.yaml).
 
 ## Deploy as a systemd service
 
@@ -92,19 +91,61 @@ docker rm $id
 
 ## Installation on Windows
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/Pyr0AKLFfBc?si=sdgYcOftlDoq5_Cs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+For comprehensive Windows-specific installation steps including plugin installation, see the [Windows installation guide](../13.windows/index.md). See below for a basic configuration example.
 
----
+### Configuration
 
-Below are the steps to launch a Standalone Kestra server on Windows:
+Kestra is configured via a YAML file passed with `--config` (or `-c`). If no flag is provided, Kestra looks for `%USERPROFILE%\.kestra\config.yaml` by default.
 
-1. Install [Java JRE 21](https://adoptium.net/temurin/releases/?os=windows&version=21) -- use the `x64` version in the MSI format.
-2. Go to the [Releases](https://github.com/kestra-io/kestra/releases) page on the main Kestra repository.
-3. Select the desired version and download the binary from the `Assets` section.
-4. Rename the downloaded file to `kestra.bat`.
-5. Install the plugins you need from the [following list](https://github.com/kestra-io/kestra/blob/develop/.plugins) using the command `kestra.bat plugins install io.kestra.plugin:plugin-script-powershell:LATEST io.kestra.plugin:plugin-script-python:LATEST` or copy the plugins from a Docker container to your local machine, as described in the section above.
-6. Start the server using the command `kestra.bat server local`.
+A minimal configuration for local testing:
 
-You can also use [Docker Compose](../03.docker-compose/index.md) through WSL 2.
+```yaml
+kestra:
+  repository:
+    type: memory
+  storage:
+    type: local
+    local:
+      base-path: "C:\\kestra\\storage"
+  queue:
+    type: memory
+```
+
+For a production setup or Enterprise installation, your configuration requires at minimum:
+
+```yaml
+kestra:
+  encryption:
+    secret-key: "<base64-encoded-32-char-key>"  # generate with: openssl rand -base64 32
+  secret:
+    type: jdbc
+    jdbc:
+      secret: "<your-jdbc-secret-key>"
+  repository:
+    type: postgres
+  queue:
+    type: postgres
+  storage:
+    type: s3
+    s3:
+      endpoint: "<your-s3-endpoint>"
+      access-key: "<your-aws-access-key-id>"
+      secret-key: "<your-aws-secret-access-key>"
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+  ee:
+    license:
+      id: "<your-license-id>"
+      fingerprint: "<your-license-fingerprint>"
+      key: |
+        <your-license-key>
+
+datasources:
+  postgres:
+    url: jdbc:postgresql://<host>:<port>/<db>
+    driver-class-name: org.postgresql.Driver
+    username: "<username>"
+    password: "<password>"
+```
+
+For the full list of configuration options, see the [Configuration guide](../../configuration/index.mdx).

@@ -1,13 +1,12 @@
 ---
-title: Execution States in Kestra – Lifecycle Reference
+title: "Execution States in Kestra: Full Lifecycle Guide"
+h1: Understand Every Execution State from Created to Success
 description: Understand the Kestra Execution Lifecycle. Reference guide to all execution and task run states, including Created, Running, Success, Failed, and more.
 sidebarTitle: States
 icon: /src/contents/docs/icons/flow.svg
 ---
 
 States control the status of your workflow execution.
-
-## Execution states – lifecycle reference
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h5AigXBAs6Y?si=ftaD1zM24b7BDUMo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -36,47 +35,9 @@ Here is a brief description of each state:
 8. **RETRIED**: This terminal state indicates that the execution has been retried according to the [flow-level retry policy](../12.retries/index.md#flow-level-retries) set to the `CREATE_NEW_EXECUTION` behavior. This means that the original execution (which failed and has been retried) is marked as `RETRIED`, and a new execution is created to run the flow again.
 9. **PAUSED**: This transient state indicates that the execution is awaiting manual approval or has been paused for a fixed duration before continuing the execution. There are no `RESUMING` or `RESUMED` states. A paused execution transitions directly from `PAUSED` to `RUNNING` when resumed.
 10. **RESTARTED**: This transient state is equivalent to the `CREATED` state but for a failed execution that has been restarted e.g., from the UI. These executions transition to `RUNNING` once the restart is processed.
-11. **CANCELLED**: This terminal state indicates that the execution has been automatically cancelled by the system, usually because the `concurrency` limit was reached and the [concurrency](../14.concurrency/index.md) `behavior` was set to `CANCEL` in order to cancel all executions that exceed the concurrency limit.
+11. **CANCELLED**: This terminal state indicates that the execution has been automatically cancelled by the system, usually because the `concurrency` limit was reached and the [concurrency](../14.concurrency/index.md) `behavior` was set to `CANCEL`, which cancels all executions that exceed the concurrency limit.
 12. **KILLING**: This transient state indicates that the user has issued a command to kill the execution, e.g., via a task or by clicking on the `Kill` button in the UI. The system is terminating (killing) any task runs still in progress. As soon as all task runs are terminated, the execution will transition to the `KILLED` state.
 13. **KILLED**: This terminal state indicates that the execution has been killed upon request by the user. No more tasks will be able to run, and the execution is considered terminated.
-
-:::collapse{title="Mermaid source code for the Execution States diagram"}
-
-```mermaid
-graph LR;
-    classDef transient fill:#0ff,stroke:#333,stroke-width:2px;
-    classDef terminal fill:#f9f,stroke:#333,stroke-width:2px;
-
-    subgraph Legend
-        direction TB
-        L1[Transient State]:::transient
-        L2[Terminal State]:::terminal
-    end
-
-    A[CREATED] -->|Wait for free slot| B[QUEUED]
-    A -->|Start execution| C[RUNNING]
-    B -->|Slot available| C[RUNNING]
-    C -->|Execution completed without errors| D[SUCCESS]
-    C -->|Tasks emitted warnings| E[WARNING]
-    C -->|One or more tasks failed| F[FAILED]
-    F -->|Retry failed tasks| G[RETRYING]
-    G -->|Retry succeeded| D[SUCCESS]
-    G -->|Retry exhausted| F[FAILED]
-    F -->|Retry by creating a new execution| H[RETRIED]
-    C -->|Manual approval or pause| I[PAUSED]
-    I -->|Resume execution| C[RUNNING]
-    F -->|Restart execution| J[RESTARTED]
-    J -->|Restart processed| C[RUNNING]
-    A -->|System cancelled execution| K[CANCELLED]
-    C -->|User  killed execution| L[KILLING]
-    L -->|Tasks terminated| M[KILLED]
-
-    class A,B,C,G,I,J,L transient;
-    class D,E,F,H,K,M terminal;
-
-    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 stroke:#2a9d8f, stroke-width:3px;
-```
-:::
 
 ## What is the difference between the `CANCELLED` and `KILLED` states?
 
@@ -92,47 +53,15 @@ Task run states represent the status of a single task run within an execution.
 
 Each task run can be in one of the following states:
 1. **CREATED**: The task run has been created but not yet started.
-2. **RUNNING**: The task run is currently in progress.
-3. **SUCCESS**: The task run has completed successfully.
-4. **WARNING**: The task run has completed successfully but with warnings.
-5. **FAILED**: The task run has failed.
-6. **RETRYING**: The task run is currently being retried.
-7. **RETRIED**: The task run has been retried.
-8. **RESTARTED**: The task run is currently being restarted.
-9. **KILLING**: The task run is in the process of being killed.
-10. **KILLED**: The task run has been killed upon request by the user.
+2. **SUBMITTED**: The task run has been submitted to a Worker but has not started running yet.
+3. **RUNNING**: The task run is currently in progress.
+4. **SUCCESS**: The task run has completed successfully.
+5. **WARNING**: The task run has completed successfully but with warnings.
+6. **FAILED**: The task run has failed.
+7. **RETRYING**: The task run is currently being retried.
+8. **RETRIED**: The task run has been retried.
+9. **RESTARTED**: The task run is currently being restarted.
+10. **KILLING**: The task run is in the process of being killed.
+11. **KILLED**: The task run has been killed upon request by the user.
 
 Note how there is no `QUEUED`, `CANCELLED`, or `PAUSED` states for task runs.
-
-:::collapse{title="Mermaid source code for the Task Run States diagram"}
-
-```mermaid
-graph LR;
-    classDef transient fill:#0ff,stroke:#333,stroke-width:2px;
-    classDef terminal fill:#f9f,stroke:#333,stroke-width:2px;
-
-    subgraph Legend
-        direction TB
-        L1[Transient State]:::transient
-        L2[Terminal State]:::terminal
-    end
-
-    A[CREATED] -->| Start task run | B[RUNNING]
-    B -->| Completed without errors | C[SUCCESS]
-    B -->| Completed with warnings | D[WARNING]
-    B -->| Completed with errors | E[FAILED]
-    E -->| Retry task run | F[RETRYING]
-    F -->| Retry succeeded | C[SUCCESS]
-    F -->| Retry exhausted | E[FAILED]
-    E -->| Retry by creating new task run | G[RETRIED]
-    B -->| Requested to be killed | H[KILLING]
-    H -->| Task run terminated | I[KILLED]
-    E -->| Restart/replay | J[RESTARTED]
-    J -->| Restart processed | B[RUNNING]
-
-    class A,B,F,H,J transient;
-    class C,D,E,G,I terminal;
-
-    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11 stroke:#2a9d8f, stroke-width:3px;
-```
-:::

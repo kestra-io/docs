@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content"
 import { getNavigationTree } from "~/utils/getNavigationTree"
 import type { NavigationItem } from "~/utils/getNavigationTree"
-import ChildTableOfContentsRender from "~/components/content/ChildTableOfContents.vue"
 
 const { pageUrl, max } = Astro.props
 
@@ -50,4 +49,29 @@ if (found && found.children) {
 }
 ---
 
-<ChildTableOfContentsRender navigation={navigation} max={max} client:load />
+<ul>
+    {
+        navigation.map((link) => {
+            const hasChildren =
+                link.children &&
+                (max === undefined || 0 < max) &&
+                (link.children.length > 1 ||
+                    (link.children.length === 1 && link.children[0].path !== link.path));
+
+            return (
+                <li>
+                    <a href={link.path}>{link.sidebarTitle || link.title}</a>
+                    {hasChildren && link.children && (
+                        <ul data-level="1">
+                            {link.children.map((child) => (
+                                <li>
+                                    <a href={child.path}>{child.sidebarTitle || child.title}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </li>
+            );
+        })
+    }
+</ul>

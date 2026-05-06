@@ -50,8 +50,8 @@ tasks:
     type: io.kestra.plugin.serdes.json.IonToJson
     from: "{{ inputs.product }}"
 
-  - id: "put_item"
-    type: "io.kestra.plugin.aws.dynamodb.PutItem"
+  - id: put_item
+    type: io.kestra.plugin.aws.dynamodb.PutItem
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
     secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
     region: "eu-central-1"
@@ -109,8 +109,8 @@ We will now proceed to the data pipeline. We need to load the products from Dyna
 id: aws_data_pipeline
 namespace: company.team
 tasks:
-  - id: "redshift_create_table_products"
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+  - id: redshift_create_table_products
+    type: io.kestra.plugin.jdbc.redshift.Query
     url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev
     username: redshift_username
     password: redshift_passwd
@@ -122,8 +122,8 @@ tasks:
           category     varchar(100),
           brand        varchar(100)
       );
-  - id: "redshift_create_table_orders"
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+  - id: redshift_create_table_orders
+    type: io.kestra.plugin.jdbc.redshift.Query
     url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev
     username: redshift_username
     password: redshift_passwd
@@ -138,8 +138,8 @@ tasks:
           quantity        int,
           total           float
       );
-  - id: "redshift_insert_into_products"
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+  - id: redshift_insert_into_products
+    type: io.kestra.plugin.jdbc.redshift.Query
     url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev
     username: redshift_username
     password: redshift_passwd
@@ -149,8 +149,8 @@ tasks:
       credentials
       'aws_access_key_id=<access-key>;aws_secret_access_key=<secret-key>'
       readratio 50;
-  - id: "redshift_insert_into_orders"
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+  - id: redshift_insert_into_orders
+    type: io.kestra.plugin.jdbc.redshift.Query
     url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev
     username: redshift_username
     password: redshift_passwd
@@ -162,7 +162,7 @@ tasks:
       ignoreheader 1
       csv;
   - id: join_orders_and_products
-    type: "io.kestra.plugin.jdbc.redshift.Query"
+    type: io.kestra.plugin.jdbc.redshift.Query
     url: jdbc:redshift://<redshift-cluster>.eu-central-1.redshift.amazonaws.com:5439/dev
     username: redshift_username
     password: redshift_passwd
@@ -192,7 +192,7 @@ You can also check the detailed orders by going to the Outputs tab and using the
 
 This example demonstrated how we can orchestrate data pipelines using Kestra. Kestra can orchestrate any kind of workflow, exposing a rich UI that monitors all executions.
 
-![](/ui.gif)
+![Kestra UI showing flow executions and monitoring dashboard](/ui.gif)
 
 Join the Slack [community](/slack) if you have any questions or need assistance.
 Follow us on [Twitter](https://x.com/kestra_io) for the latest news.

@@ -2,9 +2,21 @@
     <div
         id="nav-toc-global"
         class="bd-toc d-lg-flex justify-content-end"
-        :class="{ plugin: isPluginPage }"
     >
         <div>
+            <a
+                v-if="markdownBody"
+                role="button"
+                class="copy-md"
+                :class="{ copied: isCopied }"
+                @click.prevent="copyPageContent"
+            >
+                <div class="copy-md-content">
+                    <component :is="isCopied ? Check : ContentCopy" class="copy-icon" />
+                    <span class="copy-text">{{ isCopied ? 'Copied!' : 'Copy as Markdown' }}</span>
+                </div>
+            </a>
+
             <template v-if="links?.length" class="bd-contents-list">
                 <button
                     class="btn toc-toggle d-lg-none"
@@ -23,19 +35,11 @@
                     </span>
                 </button>
 
-                <OverviewPanel
-                    v-show="isPluginPage"
-                    :version
-                    :releasesUrl
-                    :categories
-                    :metadata="props.metadata"
-                />
-
                 <div class="collapse bd-toc-collapse" id="tocContents">
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
-                        <ul class="ps-0 pt-2 pt-lg-0 mb-2" v-for="tableOfContent in links">
+                        <ul v-for="tableOfContent in links">
                             <li
                                 v-if="
                                     (tableOfContent.depth ?? 0) > 1 &&
@@ -48,21 +52,26 @@
                                 <a
                                     @click.prevent="menuNavigate"
                                     :href="`#${tableOfContent.id}`"
-                                    :class="`depth-${tableOfContent.depth}`"
+                                    :class="{
+                                        [`depth-${tableOfContent.depth}`]: true,
+                                        active: tableOfContent.id === activeLinkId
+                                    }"
                                     >{{ tableOfContent.text }}</a
                                 >
                             </li>
-                            <ul class="ps-0 pt-2 pt-lg-0" v-if="tableOfContent?.children?.length">
+                            <ul v-if="tableOfContent?.children?.length">
                                 <template v-for="item in tableOfContent?.children">
                                     <li
                                         v-if="(item.depth ?? 0) > 1 && (item.depth ?? 0) < 6"
                                         @click="closeToc"
-                                        :class="{ 'mt-3': item.depth === 2 }"
                                     >
                                         <a
                                             @click.prevent="menuNavigate"
                                             :href="`#${item.id}`"
-                                            :class="`depth-${item.depth}`"
+                                            :class="{
+                                                [`depth-${item.depth}`]: true,
+                                                active: item.id === activeLinkId
+                                            }"
                                             >{{ item.text }}</a
                                         >
                                     </li>
@@ -81,14 +90,13 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from "vue"
-    import type { PluginMetadata } from "@kestra-io/ui-libs"
-    import { useEventListener, useScroll } from "@vueuse/core"
+    import { nextTick, ref, onUnmounted } from "vue"
+    import { useClipboard, useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+    import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
+    import Check from "vue-material-design-icons/Check.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
-    import OverviewPanel from "~/components/plugins/OverviewPanel.vue"
-    import type { ReleaseInfo } from "../../pages/api/github-releases"
 
     export interface TocLink {
         id: string
@@ -99,238 +107,189 @@
 
     const props = withDefaults(
         defineProps<{
-            links?: TocLink[]
-            editLink?: boolean
-            extension?: string
-            stem?: string
-            editUrl?: string
-            capitalize?: boolean
-            version?: { versions?: ReleaseInfo[] } | null
-            releasesUrl?: string | null
-            categories?: string[]
-            metadata?: PluginMetadata[]
-            isPluginPage?: boolean
-            class?: string
+            links?: TocLink[],
+            editLink?: boolean,
+            extension?: string,
+            stem?: string,
+            editUrl?: string,
+            capitalize?: boolean,
+            class?: string,
+            markdownBody?: string,
+
         }>(),
         {
             links: () => [],
-            version: null,
-            releasesUrl: null,
-            categories: () => [],
-            metadata: () => [],
-        },
+        }
     )
 
     const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined)
-
     const tableOfContentsExpanded = ref(false)
+    const activeLinkId = ref("")
+    const isManualScrolling = ref(false)
+    let manualScrollTimer: ReturnType<typeof setTimeout> | undefined
 
-    const removeActiveClasses = (): void => {
-        document.querySelectorAll("#nav-toc a").forEach((item) => {
-            item.classList.remove("active")
-        })
-    }
-
-    const getFixedHeaderOffset = (): number => {
+    const getFixedHeaderOffset = () => {
         const selectors = [
             "header",
             ".site-header",
             ".navbar",
             ".topbar",
             ".bd-title",
-            ".page-header",
+            ".page-header"
         ]
         for (const sel of selectors) {
             const el = document.querySelector(sel) as HTMLElement | null
             if (el) {
                 const style = window.getComputedStyle(el)
-                const isFixed =
-                    style.position === "fixed" ||
-                    style.position === "sticky" ||
-                    Math.round(el.getBoundingClientRect().top) === 0
+                const isFixed = ["fixed", "sticky"].includes(style.position) ||
+                               Math.round(el.getBoundingClientRect().top) === 0
                 if (isFixed) return el.getBoundingClientRect().height
             }
         }
         return 160
     }
 
-    const scrollToElement = (id: string): void => {
+    const scrollToElement = (id: string) => {
         const element = document.getElementById(id)
         if (!element) return
 
         const offset = getFixedHeaderOffset()
         const rectTop = element.getBoundingClientRect().top + window.pageYOffset
         const top = Math.max(0, rectTop - offset - 8)
+
         window.scrollTo({ top, behavior: "smooth" })
     }
 
-    let timeOut: ReturnType<typeof setTimeout> | undefined
+    const updateActiveLink = (id: string) => {
+        if (activeLinkId.value === id) return
+        activeLinkId.value = id
 
-    const updateActiveLink = (id: string): void => {
-        removeActiveClasses()
-        const link = document.querySelector(`#nav-toc a[href="#${id}"]`) as HTMLElement
-        link?.classList.add("active")
-        link?.scrollIntoView({ block: "nearest" })
+        nextTick(() => {
+            const container = document.querySelector("#nav-toc")
+            const link = document.querySelector(`#nav-toc a.active`) as HTMLElement
+
+            if (container && link) {
+                const cRect = container.getBoundingClientRect()
+                const lRect = link.getBoundingClientRect()
+
+                if (lRect.top < cRect.top || lRect.bottom > cRect.bottom) {
+                    link.scrollIntoView({ block: "nearest" })
+                }
+            }
+        })
     }
 
-    function updateActiveLinkDelayed(id: string, delay: number): void {
-        if (timeOut) {
-            clearTimeout(timeOut)
-            timeOut = undefined
-        }
-        timeOut = setTimeout(() => {
-            updateActiveLink(id)
-        }, delay)
-    }
-
-    const menuNavigate = (e: Event): void => {
-        const anchor = (e.target as HTMLElement)?.closest("a") as HTMLAnchorElement | null
-        const href = anchor?.getAttribute("href")
-        const id = href?.startsWith("#") ? href.substring(1) : anchor?.name || ""
-
+    const menuNavigate = (e: Event) => {
+        const id = (e.currentTarget as HTMLAnchorElement).getAttribute("href")?.substring(1)
         if (!id) return
-
+        isManualScrolling.value = true
+        if (manualScrollTimer) clearTimeout(manualScrollTimer)
         scrollToElement(id)
-
+        updateActiveLink(id)
         try {
             history.pushState(null, "", `#${id}`)
             window.dispatchEvent(new Event("hashchange"))
         } catch {
-            if (window?.location) {
-                window.location.hash = id
-            }
+            if (window?.location) window.location.hash = id
         }
-
-        // wait until scroll is finished
-        updateActiveLinkDelayed(id, 600)
+        manualScrollTimer = setTimeout(() => isManualScrolling.value = false, 1000)
     }
 
-    const closeToc = (): void => {
+    const closeToc = () => {
         tableOfContentsExpanded.value = false
         document.getElementById("tocContents")?.classList.remove("show")
     }
 
-    const activateMenuItem = (item: TocLink, index: number, linkArray: TocLink[]): void => {
-        if (!item?.id) return
-
-        const currEl = document.querySelector(`#${item.id}`)?.getBoundingClientRect()
-        const prevEl =
-            index > 0 && linkArray[index - 1]?.id
-                ? document.querySelector(`#${linkArray[index - 1]!.id}`)?.getBoundingClientRect()
-                : null
-
-        if (typeof currEl?.top === "number" && currEl.top <= 160) {
-            const prevTop = prevEl?.top ?? -1
-            if (prevTop === -1 || prevTop <= 0) {
-                if (linkArray.length < index + 1) {
-                    updateActiveLink(item.id)
-                }
-            }
-        }
-    }
-
-    const handleScroll = (): void => {
-        if (scrollY.value === 0) {
-            removeActiveClasses()
+    const handleScroll = useThrottleFn(() => {
+        if (isManualScrolling.value || scrollY.value === 0) {
+            if (scrollY.value === 0) activeLinkId.value = ""
             return
         }
 
-        props.links?.forEach((link, i) => {
-            activateMenuItem(link, i, props.links)
-            link.children?.forEach((child, idx) => {
-                activateMenuItem(child, idx, link.children || [])
-            })
-        })
-    }
+        const offset = getFixedHeaderOffset() + 20
+        const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
+
+        let currentActive = ""
+        for (const link of allLinks) {
+            const el = document.getElementById(link.id)
+            if (el && el.getBoundingClientRect().top <= offset) {
+                currentActive = link.id
+            } else if (el) {
+                break
+            }
+        }
+
+        if (currentActive) updateActiveLink(currentActive)
+    }, 100)
 
     useEventListener("scroll", handleScroll)
+    onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))
+
+    const { copy, copied: isCopied } = useClipboard()
+    const copyPageContent = () => props.markdownBody && copy(props.markdownBody.trim())
 </script>
 
 <style lang="scss" scoped>
     @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-    @import "~/assets/styles/variable";
 
     .bd-toc {
-        transition: all ease 0.2s;
-
         @include media-breakpoint-down(lg) {
             margin: $rem-1 0;
             width: 100%;
             box-sizing: border-box;
         }
-
         @include media-breakpoint-up(lg) {
             padding: 2rem 0;
             max-height: 100%;
             min-width: 250px;
             z-index: 10;
-
-            &:not(.plugin) {
-                border: 0;
-                border-left-width: 1px;
-                border-style: solid;
-                border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
-            }
-
-            &.plugin {
-                border-left: 1px solid $black-3;
+            border: 0;
+            border-left-width: 1px;
+            border-style: solid;
+            border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
+            html.light & {
+                border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
             }
         }
-
         &::-webkit-scrollbar {
             display: none;
         }
-
         > div {
             height: fit-content;
             @include media-breakpoint-up(lg) {
                 position: sticky;
-                top: 80px;
+                top: calc(80px + var(--announce-height));
                 width: 100%;
                 overflow-x: hidden;
                 overflow-y: auto;
             }
         }
-
-        &.plugin > div {
-            @include media-breakpoint-up(lg) {
-                top: 0;
-            }
-        }
-
         nav {
             @include font-size(0.875rem);
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid $black-6;
+            border-bottom: 1px solid var(--ks-border-primary);
             position: relative;
-
             @include media-breakpoint-up(lg) {
                 overflow-y: auto;
                 max-height: 600px;
                 overflow-x: hidden;
             }
-
             @include media-breakpoint-down(lg) {
                 overflow: visible;
             }
-
             &::-webkit-scrollbar {
                 width: 4px;
                 height: 4px;
             }
-
             &::-webkit-scrollbar-track {
                 background: transparent;
             }
-
             &::-webkit-scrollbar-thumb {
-                background: $purple-39;
-
+                background: var(--ks-content-color-highlight);
                 &:hover {
                     background: color-palette.$base-purple-600;
                 }
             }
-
             a {
                 display: block;
                 padding: 0 0.75rem;
@@ -338,59 +297,88 @@
                 text-decoration: none;
                 font-size: 12px;
                 border-left: 1px solid transparent;
-
                 code {
                     font: inherit;
                 }
             }
-
             ul {
-                margin-bottom: 0;
                 list-style: none;
-
-                &:has(a.active) {
-                    .table-content a {
-                        color: $purple;
-                        font-weight: 500;
-                        border-left: 1px solid $purple !important;
-                    }
+                padding-top: 0.5rem;
+                padding-left: 0;
+                margin-block: 0.3rem;
+                @include media-breakpoint-up(lg) {
+                    padding-top: 0;
                 }
-
                 li {
                     font-size: 0.875rem;
-                    line-height: var(--bs-body-line-height) !important;
+                    line-height: 1.5rem;
                 }
-
                 li a {
                     padding-left: 0.75rem;
-                    color: var(--ks-content-secondary);
+                    color: var(--ks-content-tertiary);
                     font-weight: 500;
                     cursor: pointer;
                     scroll-margin: 3rem;
-
                     @for $i from 2 through 6 {
                         &.depth-#{$i} {
-                            padding-left: calc(0.5rem + 2rem);
+                            font-size: if($i == 2, 14px, if($i == 3, 13px, 12px));
+                            padding-left: ($i - 2) * 1rem + 1.5rem;
                         }
                     }
-
                     &:hover,
                     &.active {
-                        color: $purple;
-                        border-left: 1px solid $purple-36 !important;
+                        color: var(--ks-content-link);
+                    }
+                }
+            }
+            @for $i from 3 through 6 {
+                .depth-#{$i}{
+                    position: relative;
+                    &:before{
+                        display: block;
+                        content: "";
+                        position: absolute;
+                        left: 1.5rem;
+                        top: 0;
+                        bottom: 0;
+                        width: 1px;
+                        background-color: var(--ks-border-primary);
+                    }
+                    &:hover:before{
+                        background-color: var(--ks-content-link);
                     }
                 }
             }
         }
-
         .h6 {
-            color: $white-1;
+            color: var(--ks-content-primary);
             font-size: $font-size-sm;
             line-height: 1.875rem;
             font-weight: 600;
             padding-top: 0;
         }
 
+        .copy-md {
+            display: flex;
+            padding: 1.25rem 0;
+            @include media-breakpoint-up(lg) {
+                padding: 1.25rem;
+            }
+            cursor: pointer;
+            color: var(--ks-content-primary);
+            &:hover, &.copied {
+                color: var(--ks-content-link);
+            }
+            .copy-md-content {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                border: $block-border;
+                padding: 0.35rem $rem-1;
+                border-radius: 0.25rem;
+                font-size: $font-size-xs;
+            }
+        }
         hr {
             border-color: var(--bs-gray-600);
         }
@@ -400,25 +388,23 @@
         display: inline-block;
         width: 100%;
         padding: 0;
-        border: 1px solid var(--kestra-io-token-color-border-secondary);
+        border: 1px solid var(--ks-border-secondary);
         border-radius: 8px;
-        background: $black-4;
-        color: var(--bs-gray-500);
+        background: var(--ks-background-body);
+        color: var(--ks-content-secondary);
         font-size: $font-size-sm;
         text-align: center;
-
         &.collapsed {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
         &:hover,
         &:focus,
         &:active,
         &[aria-expanded="true"] {
-            background: $black-4;
-            color: $white;
+            background: var(--ks-background-body);
+            color: var(--ks-content-primary);
             font-size: 16px;
         }
     }
@@ -427,33 +413,28 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        color: $white;
+        color: var(--ks-content-primary);
         border-radius: 8px 8px 0 0;
     }
 
     .bd-toc-collapse {
         border-radius: var(--bs-border-radius, 8px);
         overflow: hidden;
-
         strong {
             margin-left: 1.5rem;
         }
-
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: 1px solid var(--ks-border-secondary);
             border-radius: 0 0 8px 8px;
-
             nav {
                 padding-bottom: $spacer;
                 border-radius: inherit;
             }
         }
-
         @include media-breakpoint-up(lg) {
             display: block !important;
         }
-
         &.show {
             border-radius: 0 0 8px 8px;
         }
@@ -462,22 +443,19 @@
     .bd-social-list {
         @include media-breakpoint-down(lg) {
             border-top-width: 0 !important;
-            border: 1px solid var(--kestra-io-token-color-border-secondary);
+            border: 1px solid var(--ks-border-secondary);
             border-radius: 0 0 8px 8px;
         }
-
         button:hover {
-            color: $purple-36 !important;
+            color: var(--ks-content-color-highlight) !important;
         }
-
         ul,
         :deep(ul) {
             li a {
                 font-weight: 500;
-
                 &:hover {
-                    color: $purple-36 !important;
-                    border-left: 1px solid $purple-36 !important;
+                    color: var(--ks-content-color-highlight) !important;
+                    border-left: 1px solid var(--ks-content-color-highlight) !important;
                 }
             }
         }

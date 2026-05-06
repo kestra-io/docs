@@ -1,5 +1,6 @@
 ---
-title: Configure Google Service Account
+title: Configure a Google Service Account in Kestra
+h1: Authenticate Google Cloud and Workspace Apps with a Service Account
 icon: /src/contents/docs/icons/gcp-compute.svg
 stage: Getting Started
 topics:
@@ -8,19 +9,17 @@ topics:
 description: Securely configure Google Service Accounts in Kestra to authenticate and access Google Cloud resources and Workspace apps.
 ---
 
-Setup a Google Service Account inside of Kestra.
+Set Up a Google Service Account in Kestra.
 
-## Configure Google Service Account
+When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate in Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly in Kestra.
 
-When you're using Google Cloud (and for some Google Workspace apps), you're going to need to authenticate inside of Kestra. The best way to do this is by using a Service Account. However, there's a few ways you can set this up. This guide will walk you through the best way to get your service account working correctly inside of Kestra.
-
-## Create Service Account inside of Google Cloud
+## Create Service Account in Google Cloud
 
 Inside of Google Cloud, head to `IAM` and then `Service Accounts`. In here you can add the specific roles to the service account before creating it (this will depend on your use case).
 
 Once you've done that, you can go to `Keys` and click on `Add Key`. From the dropdown, select `Create New Key`. Select the Key type as `JSON` and click on `Create`. Download this as we'll need this in a second.
 
-For more information on Google Cloud Service Accounts, check out the [documentation](https://cloud.google.com/iam/docs/service-account-overview).
+For more information on Google Cloud Service Accounts, see the [documentation](https://cloud.google.com/iam/docs/service-account-overview).
 
 ## Configuring a task with a Service Account
 
@@ -57,7 +56,7 @@ This is not recommended as you might expose your key. We'd recommend using [secr
 
 ## Add Service Account as a Secret
 
-We can add our Service Account with the `serviceAccount` property to any of our Google Cloud or Workspaces tasks. To do this, we'll need to add it as a secret to Kestra. There's a number of ways to add secrets, but we're going to add it via environment variables which will link to our Docker Compose file. If you want more information regarding how secrets work, check out the [secrets page](../../06.concepts/04.secret/index.md).
+Add the Service Account with the `serviceAccount` property to any Google Cloud or Workspaces task. To do this, add it as a secret to Kestra. There are several ways to add secrets; this guide uses environment variables linked to the Docker Compose file. For more information on how secrets work, see the [secrets page](../../06.concepts/04.secret/index.md).
 
 Once you have the service account file downloaded, you can rename it to `service-account.json`. Then we'll encode the service account JSON and store it inside a file named `.env_encoded` which will hold all of our encoded secrets:
 
@@ -80,16 +79,16 @@ done < .env > $ENV_FILENAME
 echo "SECRET_GCP_SERVICE_ACCOUNT=$(cat service-account.json | base64 -w 0)" >> $ENV_FILENAME
 ```
 
-You can then set the `.env_encoded` file inside of your `docker-compose.yml`:
+You can then set the `.env_encoded` file in your `docker-compose.yml`:
 
 ```yaml
 kestra:
   env_file: .env_encoded
 ```
 
-## Access Service Account inside of Kestra
+## Access Service Account in Kestra
 
-You can now access this inside of Kestra with the following pebble expression:
+You can now access this in Kestra with the following pebble expression:
 
 ```yaml
 "{{ secret('GCP_SERVICE_ACCOUNT') }}"
@@ -125,8 +124,8 @@ With this, we can add this to the `serviceAccount` property like so:
 If you're using multiple tasks that will require the service account secret, you can set up a Plugin Default to apply this property to all tasks of this type. For example:
 ```yaml
 tasks:
-  - id: "upload"
-    type: "io.kestra.plugin.googleworkspace.drive.Upload"
+  - id: upload
+    type: io.kestra.plugin.googleworkspace.drive.Upload
     from: "{{ inputs.file }}"
     parents:
       - "1HuxzpLt1b0111MuKMgy8wAv-m9Myc1E_"
@@ -142,7 +141,7 @@ pluginDefaults:
 
 ## Configuring Secrets in the Enterprise Edition
 
-In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, check out the [secrets page](../../06.concepts/04.secret/index.md#secrets-in-the-enterprise-edition).
+In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, see the [secrets page](../../06.concepts/04.secret/index.md#secrets-in-the-enterprise-edition).
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
@@ -150,7 +149,7 @@ By setting the `GOOGLE_APPLICATION_CREDENTIALS` environment variable on the node
 
 While you can use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable, this is not advised as you'll need to mount the JSON file to Docker which isn't always possible depending on how you've setup Kestra.
 
-To set it up, you will need to make sure Kestra has access to the JSON file containing the service account details. If you're using Docker, you'll need to create a bind mount like the example below:
+To set it up, ensure Kestra has access to the JSON file containing the service account details. If you're using Docker, you'll need to create a bind mount like the example below:
 
 ```yaml
 kestra:
@@ -166,7 +165,7 @@ kestra:
   ...
 ```
 
-The xample uses a file in the location `~/.gcp/workflow-orchestration-credentials.json` so make sure to change this to the location of your JSON file. It maps it to `/.gcp/credentials.json` inside the container, which we'll need to reference in the environment variable.
+The example uses a file at `~/.gcp/workflow-orchestration-credentials.json`. Update this path to the location of your JSON file. It maps it to `/.gcp/credentials.json` inside the container, which we'll need to reference in the environment variable.
 
 After that, add an environment variable under `environment` called `GOOGLE_APPLICATION_CREDENTIALS`
 
@@ -253,8 +252,8 @@ services:
 
 ## Google App Passwords
 
-For some Google applications, like Gmail, you won't use a service account for authenticating. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has 2 factor authenication enabled. In this case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then go to **Security**. Select the **App Passwords** option and you'll be able to Generate a new one. This can be used where you'd put your normal password to connect it to Kestra.
+For some Google applications, such as Gmail, you won't use a service account for authentication. Instead, you'll use a normal username and password associated with a Google account. However, this doesn't work if your account has two-factor authentication enabled. In that case, you'll need to generate an **App Password**. You can do this by going to **Manage your Google Account**, then **Security**. Select the **App Passwords** option, and you'll be able to generate a new one. This can be used wherever you would normally enter your password to connect it to Kestra.
 
 :::alert{type="info"}
 If your account is associated with Google Workspaces, you might need your Administrator to enable App Passwords in the Admin Console.
-::::
+:::

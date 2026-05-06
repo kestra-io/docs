@@ -1,5 +1,6 @@
 ---
-title: Connect Web Apps to Kestra
+title: Connect Web Apps to Kestra via Webhooks
+h1: Trigger Kestra Flows from Your Web Application
 icon: /src/contents/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
@@ -9,8 +10,6 @@ description: Integrate your web applications with Kestra using Webhook triggers 
 ---
 
 Integrate Kestra into your JavaScript App using Webhooks.
-
-## Connect Web Apps to Kestra
 
 With Kestra's API First Design, you can build web applications to integrate with Kestra acting as a backend server.
 
@@ -24,7 +23,7 @@ In this guide, we'll walk through how you can set up Kestra to receive webhooks 
 
 ## Configuring CORS
 
-To make sure we can make requests to Kestra from our JavaScript application locally, we'll need to enable CORS in our Kestra Configuration. We can do that by adding the following configuration:
+To allow requests to Kestra from a JavaScript application running locally, enable CORS in your Kestra configuration:
 
 ```yaml
 micronaut:
@@ -33,11 +32,11 @@ micronaut:
       enabled: true
 ```
 
-More information can be found in the [configuration documentation](../../configuration/index.md#configuring-cors).
+More information can be found in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 ## Building a Workflow with a Webhook Trigger
 
-Our JavaScript application will need a workflow to trigger. To do this, we will use a [Webhook Trigger](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) to receive our requests and start our executions.
+The JavaScript application needs a workflow with a [Webhook Trigger](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) to receive requests and start executions.
 
 Once we've added it, we can add any tasks to run. In this example, we have a log message that will log the request body field `dataField` from the webhook:
 
@@ -60,23 +59,23 @@ triggers:
 
 In this example, I am using React.js to interact with Kestra but this will work with any web framework that can make requests.
 
-We can create our application using `create-react-app`.
+Create the application using `create-react-app`:
 
 ```bash
 npx create-react-app example
 ```
 
-Once it's installed, we can start it with:
+Start it with:
 
 ```bash
 npm start
 ```
 
-We can now navigate to our web application at `locahost:3000`.
+Navigate to the application at `localhost:3000`.
 
-Now we have a running web application, we will modify `App.js` to make a request to Kestra.
+With the application running, modify `App.js` to make a request to Kestra.
 
-To start with, we will install axios to make our POST Request to Kestra:
+First, install axios to make the POST request:
 
 ```bash
 npm install axios
@@ -109,15 +108,15 @@ function App() {
 }
 ```
 
-We can get our Webhook URL by going to **Triggers** at the top of our Flow in Kestra and hovering over webhook icon on the right:
+Get the Webhook URL by navigating to **Triggers** at the top of the flow in Kestra and hovering over the webhook icon on the right:
 
 ![trigger_copy](./trigger_copy.png)
 
-This current example will make a request with data from a form (which we will add later) using the `useState` hook. We will store the state in `formData` and update it using `setFormData`.
+This example makes a request with data from a form (added later) using the `useState` hook, storing state in `formData` and updating it using `setFormData`.
 
-Now we need to add some UI elements to allow us to set our state variable `formData`, make the request and display the response back to us.
+Add UI elements to set `formData`, make the request, and display the response.
 
-We will now modify the JSX in the return statement to include a form which will handle our request.
+Modify the JSX in the return statement to include a form that handles the request:
 
 ```js
 function App() {
@@ -180,7 +179,7 @@ function App() {
 }
 ```
 
-Now our example will collect the data inside of the `input` field as `dataField` and send it in our request as a key value pair: `dataField: {the input value}`. For example, if I type "Hello" and press **Submit**, it will send the body `{dataField: "Hello"}`.
+Now our example will collect the data in the `input` field as `dataField` and send it in our request as a key value pair: `dataField: {the input value}`. For example, if I type "Hello" and press **Submit**, it will send the body `{dataField: "Hello"}`.
 
 ![js-final](./js-final.png)
 

@@ -1,9 +1,50 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
-import contentSecurityPolicyConfig from "../content-security-policy.config"
-// import {middlewareISRCache} from "./utils/middlewareISRCache";
-import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
-import { $fetchApi } from "./utils/fetch.ts"
+import YAML from "yaml"
+
+const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
+    eager: true,
+    import: "default",
+    query: "?raw",
+})
+
+const redirectCollection: {
+    id: string
+    data: { regexp: string; to: string }
+}[] = Object.entries(redirectFileCollection).map(([path, raw]) => ({
+    id: path.split("/").slice(-1)[0].split(".")[0],
+    data: YAML.parse(raw as string),
+}))
+
+const legacyCustomerStoryIdToSlug: Record<string, string> = {
+    "2": "ntico-manage-geospatial-data-operations-with-kestra",
+    "3": "cleverconnect-enhances-hr-integration-platform-with-kestra",
+    "4": "quadis-drives-innovation-transforming-car-retail-operations-with-kestra",
+    "5": "airpaz-optimizes-travel-data-workflows-with-kestra",
+    "6": "clever-cloud-offloading-terabytes-of-data-with-kestra-every-month",
+    "8": "copines-de-voyage-enhancing-travel-experiences-through-advanced-data-orchestration-with-kestra",
+    "9": "displayce-optimized-workflow-orchestration-and-enhanced-data-management",
+    "10": "reglo-automating-etl-process-with-a-simple-slack-command",
+    "11": "htch-building-the-best-architect-collaborative-web-tool-with-kestra",
+    "12": "bouygues-immobilier-platform-orchestrate-its-marketing-data-with-kestra",
+    "13": "gorgias-using-declarative-data-engineering-orchestration-with-kestra",
+    "14": "datamesh-at-scale-increased-its-data-production-by-900percent",
+    "15": "a-solopreneurs-journey-how-networklessons-leverage-kestra-to-automate-his-business",
+    "17": "erp-transformation-smarter-faster-fully-automated",
+    "18": "sopht-scales-its-green-itops-platform-with-kestra",
+    "19": "scaling-secure-infrastructure-at-credit-agricole-with-kestra",
+    "22": "scaling-big-data-operations",
+    "23": "boosted-productivity-slashed-costs-and-accelerated-delivery",
+    "25": "when-your-api-writes-its-own-docs-with-kestra",
+    "26": "orchestrating-cybersecurity-for-100-users-and-billions-of-rows",
+    "27": "securing-hybrid-cloud-automation-across-it-and-ot-with-kestra",
+    "28": "governed-self-service-cloud-automation-in-regulated-environments-with-kestra",
+    "29": "modernizing-mission-critical-workflows-in-a-highly-regulated-environment",
+    "30": "building-a-government-grade-orchestration-control-plane-with-kestra",
+    "31": "modernizing-mission-critical-e-commerce-integrations-with-kestra",
+    "32": "apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra",
+    "33": "amdocs-delivers-integration-environments-as-a-service-with-kestra",
+}
 
 const sendRedirect = (redirectUrl: string) => {
     return new Response("", {
@@ -32,7 +73,9 @@ const logger = defineMiddleware(async (context, next) => {
         method: context.request.method,
         url: context.request.url,
         status: response.status,
-        ip: !context.isPrerendered ? context.request.headers.get("x-real-ip") : null,
+        ip: !context.isPrerendered
+            ? context.request.headers.get("x-real-ip")
+            : null,
         length: response.headers.get("content-length"),
         route: context.routePattern,
         routeParams: context.params,
@@ -55,24 +98,6 @@ const logger = defineMiddleware(async (context, next) => {
     return response
 })
 
-const noIndex = defineMiddleware(async (context, next) => {
-    // disable for tracking
-    if (context.url.pathname.startsWith("/t/")) {
-        return next()
-    }
-
-    // Check if the request is coming from the .workers.dev domain or others
-    if (context.url.host !== "kestra.io") {
-        const response = (await next()).clone()
-
-        response.headers.set("X-Robots-Tag", "noindex, nofollow")
-
-        return response
-    }
-
-    return next()
-})
-
 const incomingRedirect = defineMiddleware(async (context, next) => {
     // disable for tracking
     if (context.url.pathname.startsWith("/t/")) {
@@ -81,13 +106,6 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 
     const originalUrl = context.url.toString()
 
-    // we don't want trailing slashes (but allow the root path '/')
-    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare
-    // manage with "html_handling": "drop-trailing-slash"
-    // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
-    //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
-    // }
-
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
         return sendRedirect(
@@ -95,6 +113,13 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
                 .substring(0, originalUrl.length - 5)
                 .toLocaleLowerCase(),
         )
+    }
+
+    // we don't want trailing slashes (but allow the root path '/')
+    // static pages are handled by Cloudflare's asset handler (drop-trailing-slash),
+    // this covers SSR (non-prerendered) pages that reach the worker
+    if (!context.isPrerendered && context.url.pathname !== "/" && originalUrl.endsWith("/")) {
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     }
 
     // all urls should be lowercase
@@ -122,63 +147,15 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
         return sendRedirect(replace.toString())
     }
 
+    // Double query string is invalid redirect without query string (historical reason, but can happen with some bots)
+    const doubleQuery = context.url.search.match(/\?/g)?.length
+    if (doubleQuery !== undefined && doubleQuery > 1) {
+        return sendRedirect(
+            context.url.pathname + "?" + context.url.search.split("?")[1],
+        )
+    }
+
     return next()
-})
-
-const securityHeaders = defineMiddleware(async (context, next) => {
-    // disable for tracking
-    if (context.url.pathname.startsWith("/t/")) {
-        return next()
-    }
-
-    const localhost: string[] = []
-    if (import.meta.env.DEV) {
-        localhost.push(context.url.protocol + "//" + context.url.host)
-    }
-
-    const response = (await next()).clone()
-
-    const contentSecurityPolicy: string = Object.entries(
-        contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
-    )
-        .filter(([key]) => import.meta.env.DEV && key !== "upgrade-insecure-requests")
-        .map(([key, value]) => {
-            let line = key
-
-            if (typeof value !== "boolean") {
-                if (value.length === 1 && value[0] === "'none'") {
-                    line += " " + value.join(" ")
-                } else {
-                    line += " " + localhost.concat(value).join(" ")
-                }
-            }
-
-            return line
-        })
-        .join("; ")
-
-    response.headers.set("x-frame-options", import.meta.env.DEV ? "SAMEORIGIN" : "DENY")
-    response.headers.set("x-content-type-options", "nosniff")
-    response.headers.set("x-download-options", "nosniff")
-    response.headers.set(
-        "access-control-allow-origin",
-        context.url.protocol + "//" + context.url.host,
-    )
-    response.headers.set("cross-origin-opener-policy", "same-origin")
-    response.headers.set("cross-origin-resource-policy", "same-origin")
-    response.headers.set(
-        "permissions-policy",
-        "camera=(), display-capture=(), fullscreen=(*), geolocation=(), microphone=()",
-    )
-    response.headers.set("referrer-policy", "strict-origin-when-cross-origin")
-    response.headers.set("x-permitted-cross-domain-policies", "none")
-    response.headers.set("content-security-policy", contentSecurityPolicy)
-
-    if (!import.meta.env.DEV) {
-        response.headers.set("strict-transport-security", "max-age=15552000")
-    }
-
-    return response
 })
 
 const notFoundRedirect = defineMiddleware(async (context, next) => {
@@ -193,19 +170,33 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         return response
     }
 
-    const originalUrl = new URL(context.url)
-
-    try {
-        const result = await $fetchApi<{ to: string | null }>(
-            `/redirects?${new URLSearchParams({
-                from: originalUrl.pathname,
-            }).toString()}`,
-        )
-        if (result && result.to && result.to !== originalUrl.pathname) {
-            return sendRedirect(result.to)
+    const storyIdMatch = context.url.pathname.match(/^\/use-cases\/stories\/(\d+)(?:-|$)/)
+    if (storyIdMatch) {
+        const slug = legacyCustomerStoryIdToSlug[storyIdMatch[1]]
+        if (slug) {
+            return sendRedirect(`/use-cases/stories/${slug}`)
         }
-    } catch (e) {
-        console.error("Error fetching redirect:", e)
+    }
+
+    const originalUrl = new URL(context.url)
+    const split = originalUrl.pathname.split("/")
+
+    const allEntries = redirectCollection
+        .filter((item) => item.id === (split.length > 2 ? split[1] : "index"))
+        .flatMap((item) => item.data)
+        .map((item) => {
+            const regexp = new RegExp(item.regexp)
+            const match = originalUrl.pathname.match(regexp)
+            if (match) {
+                return originalUrl.pathname.replace(regexp, item.to)
+            }
+
+            return null
+        })
+        .filter((item) => item !== null)
+
+    if (allEntries.length > 0) {
+        return sendRedirect(allEntries[0])
     }
 
     return response
@@ -213,10 +204,6 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
 export const onRequest = sequence(
     logger,
-    cloudflareJwt,
-    noIndex,
     incomingRedirect,
-    securityHeaders,
     notFoundRedirect,
-    // middlewareISRCache,
 )

@@ -1,5 +1,6 @@
 ---
 title: Develop a Kestra Task Plugin
+h1: "How to Build a Custom Task Plugin: Properties, Logic & Outputs"
 sidebarTitle: Develop a Task
 icon: /src/contents/docs/icons/dev.svg
 description: Step-by-step guide to developing custom Task plugins for Kestra, including properties, run logic, outputs, and validation.
@@ -56,10 +57,10 @@ public class ReverseString extends Task implements RunnableTask<ReverseString.Ou
 :::
 
 :::alert{type="info"}
-Note that all optional properties will be displayed within the "Optional properties" section in the No-Code Editor in the Kestra UI.
+All optional properties are displayed within the "Optional properties" section in the No-Code Editor in the Kestra UI.
 :::
 
-Let's look at this one more deeply.
+Look at this more closely.
 
 ### Class annotations
 ```java
@@ -199,7 +200,7 @@ You can access a logger via the run context. The run context will provide a logg
 String rendered = runContext.render(string).as(String.class).orElse(null);
 ```
 
-Kestra supports [expressions](../../expressions/index.md) as tasks parameters. To use them, your task attribute must be encapsulated into the `Property` carrier type.
+Kestra supports [expressions](../../expressions/index.mdx) as tasks parameters. To use them, your task attribute must be encapsulated into the `Property` carrier type.
 
 A dynamic property must be rendered before usage; this will use our templating engine, Pebble, to render the property into the target type. Rendering properties using the `Property` carrier type via the run context is null-safe, it will return an empty Optional or an empty collection for lists and maps.
 
@@ -299,14 +300,14 @@ data:
 
 #### Static properties or the old `@PluginProperty` annotation
 
-Alternatively to using the `Property` carrier type, if you don't want or can't use dynamic properties using the `Property` carrier type, you can define you task property like this:
+Prefer the `Property` carrier type for inputs. If you can't use it (for example you need legacy dynamic rendering support), you can still declare the task property this way:
 
 ```java
 @PluginProperty
 private String string;
 ```
 
-Always use the `@PluginProperty` if you don't use the `Property` carrier type for the task JSON Schema and documentation to be property generated. You can even use `@PluginProperty(dynamic = true)` and render the property __in other ways__ that I will not explain here, this was the old way to deal with dynamic properties, but it's now strongly dis-encouraged.
+Use the `@PluginProperty` annotation when you cannot rely on the `Property` carrier type so the task JSON Schema and documentation are generated correctly. When a field must be rendered dynamically, add `@PluginProperty(dynamic = true)`. Keep this fallback for those edge cases—`Property<T>` remains the recommended default.
 
 #### Kestra internal storage
 
@@ -420,4 +421,4 @@ When developing such tasks, you must make it fault-tolerant as an exception thro
 
 Keep in mind that a flowable task will be evaluated very frequently inside the Executor and must have low CPU usage; no I/O should be done by this kind of task.
 
-In the future, complete documentation will be available here. In the meantime, you can find all the actual Flowable tasks [here](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/plugin/core/flow) to have some inspiration for Sequential or Parallel tasks development.
+In the future, complete documentation will be available here. In the meantime, you can find all the actual [Flowable task source files](https://github.com/kestra-io/kestra/tree/develop/core/src/main/java/io/kestra/plugin/core/flow) to have some inspiration for Sequential or Parallel tasks development.

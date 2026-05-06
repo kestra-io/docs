@@ -1,5 +1,6 @@
 ---
-title: Kestra Architecture – Server Components Explained
+title: Server Components in Kestra Architecture Explained
+h1: Executor, Worker, Scheduler, Webserver, and Indexer Roles
 description: Explore Kestra server components. Learn about the Executor, Worker, Scheduler, Webserver, and Indexer roles in the orchestration engine.
 sidebarTitle: Server components
 icon: /src/contents/docs/icons/architecture.svg
@@ -8,8 +9,6 @@ icon: /src/contents/docs/icons/architecture.svg
 Detailed breakdown of the server components behind Kestra.
 
 Kestra consists of multiple server components that can be scaled independently.
-
-## Understand Kestra server components
 
 Each server component interacts with internal components ([Internal Storage](../data-components/index.md#internal-storage), [Queue](../01.main-components/index.md#queue), and [Repository](../01.main-components/index.md#repository)).
 
@@ -24,7 +23,7 @@ The Executor plays a central role in coordinating workflows based on the informa
 - Templates *(deprecated)*
 - Listeners *(deprecated)*
 
-Although the Executor oversees all executions, it generally never interacts directly with your data.
+Although the Executor oversees all executions, it never interacts directly with your data.
 
 Because of its low resource usage, the Executor rarely needs to be scaled. However, in deployments with a very large number of executions, you can scale Executors horizontally to meet demand.
 
@@ -38,6 +37,10 @@ You can deploy multiple Worker instances across different servers to scale horiz
 
 Because Workers directly execute tasks and triggers, they are the **only** server components that require access to external systems — such as databases, REST APIs, message brokers, and any other services your flows interact with.
 
+:::alert{type="info"}
+Looking for runtime status? The **Instance – Services** view shows live health for each component. See [Instance – services](../../07.enterprise/05.instance/index.mdx#services).
+:::
+
 ## Worker Group (EE)
 
 In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md), [Worker Groups](../../07.enterprise/04.scalability/worker-group/index.md) allow tasks and [Polling Triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md) to be executed on specific worker sets. They can be beneficial in various scenarios, such as using compute instances with GPUs, executing tasks on a specific OS, restricting backend access, and region-specific execution. A default worker group is recommended per [tenant](../10.multi-tenancy/index.md) or namespace.
@@ -45,7 +48,7 @@ In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-editio
 To specify a worker group for a task, use the `workerGroup.key` property in the task definition to point the task to a specific worker group key. If no worker group is specified, the task will be executed on the default worker group.
 
 :::alert{type="info"}
-Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
+Worker Groups are available in Kestra Enterprise Edition only, not in Kestra Cloud.
 :::
 
 ## Scheduler
@@ -63,7 +66,7 @@ Polling Triggers have specific constraints:
 Internally, the Scheduler checks every second to determine whether any trigger needs evaluation.
 
 :::alert{type="info"}
-**Note:** By default, Kestra handles all date and time values using your system's timezone. You can override this behavior using [JVM options](../../configuration/index.md)
+By default, Kestra handles all date and time values using your system's timezone. You can override this behavior using [JVM options](../../configuration/02.runtime-and-storage/index.md)
 :::
 
 ## Indexer
@@ -86,5 +89,5 @@ It consists of two main modules:
 The Webserver primarily interacts with the [Repository](../01.main-components/index.md#repository) to serve content through the API and UI. It also connects to the [Queue](../01.main-components/index.md#queue) to submit new executions and stream real-time updates on flow progress.
 
 :::alert{type="info"}
-**Note:** As long as the [Queue](../01.main-components/index.md#queue) is operational, most server components — including the Webserver — will continue to function. While the Repository is essential for rendering the UI, workloads can still be processed even if the Repository is temporarily unavailable.
+As long as the [Queue](../01.main-components/index.md#queue) is operational, most server components — including the Webserver — will continue to function. While the Repository is essential for rendering the UI, workloads can still be processed even if the Repository is temporarily unavailable.
 :::

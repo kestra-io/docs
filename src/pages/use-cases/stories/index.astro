@@ -1,41 +1,42 @@
 ---
-export const prerender = false
-import StoriesList from "~/components/stories/StoriesList.vue"
+import { getCollection } from "astro:content"
+
 import Layout from "~/components/layout.astro"
-import LayoutFooterContact from "~/components/layout/FooterContact.vue"
-import { $fetchApi } from "~/utils/fetch"
+import SeeHow from "~/components/common/SeeHow.astro"
+import StoriesList from "~/components/stories/StoriesList.vue"
+import StoryGallery from "~/components/stories/StoryGallery.astro"
 
 const title = "Kestra's Customers Stories"
 const description =
     "Learn how we helped companies manage their critical operations."
 
-const currentPage = Astro.url.searchParams.get("page") ?? 1
-const itemsPerPage = Astro.url.searchParams.get("page") ?? 25
+const allEntries = (await getCollection("customerStories")).sort(
+    (a, b) => a.data.rank - b.data.rank,
+)
 
-const data = await $fetchApi<{
-    results: Array<Story>
-    total: number
-}>(`/customer-stories-v2?page=${currentPage}&size=${itemsPerPage}`)
-const stories = data.results
-const totalStories = data.total
+const totalStories = allEntries.length
+const stories = allEntries.map((e) => ({
+    id: e.id,
+    ...e.data,
+    heroImage: e.data.heroImage.src,
+    featuredImage: e.data.featuredImage.src,
+    logo: e.data.logo?.src,
+    logoDark: e.data.logoDark?.src,
+    content: e.body ?? "",
+}))
 ---
 
 <Layout title={title} description={description}>
-    <div class="main">
+    <StoryGallery>
         <StoriesList
-            client:load
-            fullPath={Astro.request.url}
+            slot="stories"
             stories={stories}
             totalStories={totalStories}
+            client:idle
         />
-        <LayoutFooterContact
-            client:visible
-            title="Getting started with Kestra"
-            subtitle="Start building with Kestra — Automate Everything Everywhere All at Once."
-            darkButtonText="Get started"
-            darkButtonHref="/docs/quickstart#start-kestra"
-            purpleButtonText="Read the docs"
-            purpleButtonHref="/docs"
-        />
-    </div>
+    </StoryGallery>
+    <SeeHow cta={{ text: "Get Started", href: "/docs/quickstart" }}>
+        <Fragment slot="title"> Getting started with Kestra </Fragment>
+        Start building with Kestra — Automate Everything Everywhere All at Once.
+    </SeeHow>
 </Layout>

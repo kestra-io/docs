@@ -19,9 +19,16 @@
     rapi-doc {
         background: transparent;
         width: 100%;
-        --font-mono: var(--font-family-source-code-pro);
-        --font-regular: var(--font-family-public-sans);
-
+        --font-mono: var(--font-family-jetbrains-mono);
+        --font-regular: var(--font-family-mono-sans);
+        --light-border-color: var(--ks-border-primary);
+        --light-green: var(--ks-background-secondary);
+        --light-blue: var(--ks-background-secondary);
+        --light-orange: var(--ks-background-secondary);
+        --light-red: var(--ks-background-secondary);
+        --input-bg: var(--ks-background-input);
+        --border-color: var(--ks-border-primary);
+        --fg: var(--ks-content-primary);
         &::part(section-endpoint) {
             white-space: normal;
         }

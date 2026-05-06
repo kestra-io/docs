@@ -1,0 +1,21 @@
+---
+import { filterPluginsWithoutDeprecated } from "@kestra-io/ui-libs"
+import type { Plugin } from "@kestra-io/ui-libs"
+import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
+import Similar from "./SimilarPlugins.vue"
+
+const { allPlugins, pluginsData, categories, pluginName } = Astro.props
+
+const MAX_SIMILAR = 12
+
+const similarPlugins = filterPluginsWithoutDeprecated(allPlugins ?? [])
+    .filter((p: Plugin) => {
+        if (p.name === pluginName) return false
+        return (p.categories ?? []).some((cat: string) => categories.includes(cat))
+    })
+    .slice(0, MAX_SIMILAR)
+
+const cardPlugins = prunePluginsForCards(similarPlugins, pluginsData ?? {})
+---
+
+<Similar plugins={cardPlugins} client:visible />

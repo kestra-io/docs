@@ -1,5 +1,6 @@
 ---
 title: Task Runners vs Worker Groups – When to Use Each
+h1: Choosing Between Task Runners and Worker Groups in Kestra
 sidebarTitle: Task Runner vs. Worker Group
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -23,7 +24,7 @@ For instance, if you need to query an on-premise SQL Server database running on 
 Worker groups are always-on servers that can run any task in Kestra, while task runners are ephemeral containers that are spun up only when a task is executed. This has implications with respect to latency and cost:
 - Worker groups are running on dedicated servers, so they can start executing tasks immediately with millisecond latency. Task runners, on the other hand, need to be spun up before they can execute a task, which can introduce latency up to minutes. For example, the AWS Batch task runner can take up to 50 seconds to register a task definition and start a container on AWS ECS Fargate. With the Google Batch task runner, it can take up to 90 seconds if you don't use a compute reservation because GCP spins up a new compute instance for each task run.
 - Task runners can be more cost-effective for infrequent short-lived tasks, while worker groups are more cost-effective for frequent and long-running tasks.
-- Worker Groups work at the task level whereas Task Runner is only available for some task types such as Scripts, Commands, CLI.
+- Worker Groups work at the task level, whereas Task Runners are only available for some task types, such as Scripts, Commands, and CLI tasks.
 
 The table below summarizes the differences between task runners and worker groups.
 
@@ -37,7 +38,7 @@ The table below summarizes the differences between task runners and worker group
 | **Cost Efficiency**   | Suitable for infrequent tasks         | Suitable for frequent or long-running tasks |
 
 :::alert{type="info"}
-Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
+Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
 :::
 
 ## Use cases
@@ -56,13 +57,13 @@ Here are common use cases in which **Task Runners** can be beneficial:
 
 ### Worker Groups usage
 
-First, make sure you start the worker with the `--worker-group myWorkerGroupKey` flag. It's important for the new worker to have a configuration similar to that of your principal Kestra server and to have access to the same backend database and internal storage. The configuration file will be passed via the `--config` flag, as shown in the example below.
+First, start the worker with the `--worker-group myWorkerGroupKey` flag. It's important for the new worker to have a configuration similar to that of your principal Kestra server and to have access to the same backend database and internal storage. The configuration file will be passed via the `--config` flag, as shown in the example below.
 
 ```shell
 kestra server worker --worker-group=myWorkerGroupKey --config=/path/to/kestra-config.yaml
 ```
 
-To assign a task to the desired worker group, simply add a `workerGroup.key` property. This will ensure that the task or polling trigger is executed on a worker in the specified worker group.
+To assign a task to the desired worker group, add a `workerGroup.key` property. This will ensure that the task or polling trigger is executed on a worker in the specified worker group.
 
 ```yaml
 id: myflow

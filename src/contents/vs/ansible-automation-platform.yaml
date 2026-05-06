@@ -1,0 +1,252 @@
+title: "Ansible Automation Platform vs Kestra for IT Automation"
+description: "Compare Kestra vs Red Hat Ansible Automation Platform (formerly Ansible Tower / AWX + Automation Controller): full-lifecycle IT orchestration vs playbook execution management. See how Kestra complements and extends Ansible at scale."
+competitorName: "Ansible AAP"
+category: Infrastructure Automation
+shortDescription: "Playbook execution management vs. full-lifecycle IT orchestration with approvals and audit trails."
+
+brandColor:
+  color: "#ee0000"
+
+intro:
+  title: "Kestra vs. Ansible Automation Platform: From Playbook Runner to Full Orchestrator"
+  description: "Ansible Automation Platform (formerly Ansible Tower) excels at executing playbooks and managing Ansible inventory at scale. Kestra takes that further—orchestrating Ansible as one step in multi-tool workflows that span Terraform, PowerShell, ServiceNow, and cloud APIs, with approvals, audit trails, and self-service Apps built in."
+
+philosophy:
+  mainTitle: "Playbook Execution Engine vs. Full IT Orchestration Control Plane"
+  kestra:
+    title: "Orchestrate Everything, Including Ansible"
+    description: "Kestra is the control plane that sits above your tools. Run Ansible playbooks as tasks inside multi-step workflows that include Terraform provisioning, API calls, approvals, and ITSM updates. Define every workflow in YAML, version it in Git, and deploy through CI/CD. Ansible does what it does best—Kestra coordinates the rest."
+    subCardText: '"How do I chain Ansible with Terraform, ServiceNow, and approvals in one auditable flow?"'
+  competitor:
+    title: "Ansible-First Automation Platform"
+    description: "Red Hat Ansible Automation Platform (AAP, formerly Ansible Tower) centrally manages Ansible playbook execution with Tower/Controller, a private content hub, and Event-Driven Ansible. It's the standard for scriptable infrastructure automation—excellent for teams running playbooks at scale but limited when workflows need to span multiple tools or require complex orchestration logic."
+    shadowColor: "#EE0000"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I centrally run and manage Ansible playbooks across my fleet?"'
+
+businessValue:
+  mainTitle: "Ansible Runs Your Playbooks.<br />Kestra Orchestrates Your Operations."
+  kestra:
+    title: "Cross-Tool IT Orchestration"
+    list:
+      - "Ansible as one task in multi-step workflows (alongside Terraform, PowerShell, scripts)"
+      - "Dynamic self-service Apps with approval gates and RBAC"
+      - "Full audit trail and evidence logging per execution"
+      - "Event-driven triggers from webhooks, ServiceNow, queues, or schedules"
+      - "Works with existing AAP—complement or replace as needed"
+  competitor:
+    title: "Ansible-Centric Execution"
+    list:
+      - "Centralized playbook execution and inventory management"
+      - "Workflow templates for chaining Ansible jobs (limited branching)"
+      - "Event-Driven Ansible for reactive automation (separate component)"
+      - "Strong for Ansible-native teams, thinner outside the Ansible ecosystem"
+      - "Per-managed-node subscription model scales with fleet size"
+    shadowColor: "#EE0000"
+    bulletColor: "#EE0000"
+  footerText: "Ansible Automation Platform is the right choice when your primary need is centralized Ansible playbook execution with inventory management and RBAC. Kestra is the right choice when Ansible is one piece of a larger automation puzzle—when you need to chain it with Terraform, add approval workflows, integrate with ServiceNow, or build self-service portals for ops teams. Many Kestra customers use both: AAP for Ansible execution, Kestra as the orchestration layer on top."
+
+setupSpeed:
+  title: "Time to First Orchestrated Workflow"
+  subtitle: "Kestra starts in minutes with a single Docker Compose command. Ansible Automation Platform requires RHEL, an active Red Hat subscription, and a multi-component installation (Controller, Hub, EDA) that typically takes hours for dev and days for production."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download Docker Compose, start it up, and pick an IT automation Blueprint. Your first Ansible-integrated workflow is YAML with parameters, secrets, and retries already built in—the same format it will run in production."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick an Ansible Blueprint, customize it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: Hours
+      two: to days
+    description: "AAP requires a RHEL subscription, installation of Automation Controller, Private Automation Hub, and optionally Event-Driven Ansible as separate components. Production HA setup with clustered controllers, execution environments, and receptor nodes takes significant configuration time."
+    shadowColor: "#EE0000"
+    command: |
+      # Ansible Automation Platform requires:
+      # - Active Red Hat subscription
+      # - RHEL 8/9 infrastructure
+      # - Ansible Automation Platform installer
+
+      # Installation steps:
+      # 1. Download AAP setup bundle
+      # 2. Configure inventory file
+      # 3. Run setup.sh (installs Controller + Hub + EDA)
+      # 4. Configure organizations, credentials, inventories...
+    lang: sh
+
+easeOfUse:
+  title: "Unified Orchestration YAML vs. Multi-Component AAP Configuration"
+  kestra:
+    title: "Kestra: Ansible as a First-Class Workflow Step"
+    description: "Include Ansible playbooks as tasks in YAML workflows alongside any other tool. Pass data between steps, add approval gates, handle errors with retries, and write results back to ServiceNow—all in one readable file you can review in a pull request."
+    code: |
+      id: patch_and_verify
+      namespace: ops.patching
+
+      inputs:
+        - id: target_hosts
+          type: STRING
+        - id: patch_type
+          type: SELECT
+          values: [security, full, kernel]
+
+      tasks:
+        - id: request_approval
+          type: io.kestra.plugin.core.flow.Pause
+          onResume:
+            form:
+              fields:
+                - id: approved_by
+                  type: STRING
+
+        - id: run_patch_playbook
+          type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          commands:
+            - ansible-playbook patch.yml -i "{{ inputs.target_hosts }}"
+              -e "patch_type={{ inputs.patch_type }}"
+          env:
+            ANSIBLE_HOST_KEY_CHECKING: "False"
+
+        - id: verify_patch
+          type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          commands:
+            - ansible-playbook verify.yml -i "{{ inputs.target_hosts }}"
+
+        - id: notify_team
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Patching complete for {{ inputs.target_hosts }}"
+    lang: yaml
+  competitor:
+    title: "AAP: Job Templates + Workflow Templates in Tower UI"
+    description: "AAP defines jobs as templates in the Tower/Controller UI, chained via Workflow Templates with a visual editor. Git integration is available but workflows are primarily UI-configured. Integrating Ansible with non-Ansible tools (Terraform, scripts, ServiceNow) requires custom scripts or external orchestration."
+    shadowColor: "#EE0000"
+    code: |
+      # AAP Workflow Template (UI-configured, exported as JSON)
+      # Chains Ansible jobs with limited branching logic
+
+      # Job Template: patch-servers
+      # Inventory: production-linux
+      # Playbook: patch.yml
+      # Survey variables: patch_type (dropdown)
+
+      # Workflow Template visualization (UI-only):
+      #   [Approval Node] -> [patch-servers] -> [verify-servers]
+      #                              |-> (on failure) [rollback]
+
+      # To integrate with Terraform or ServiceNow:
+      # - Use webhook notifications (limited data passing)
+      # - Write custom Python/Bash to bridge tools
+      # - Or buy a separate orchestration layer
+    lang: yaml
+
+visualPreview:
+  mainTitle: "Ansible Execution Management vs. Full IT Orchestration"
+  kestra:
+    description: "Orchestrate Ansible playbooks alongside Terraform, PowerShell, cloud APIs, and ITSM tools in unified YAML workflows. Self-service Apps let ops teams trigger parameterized runbooks without touching YAML."
+  competitor:
+    description: "Ansible Automation Platform centralizes playbook execution with strong inventory management, credential vaulting, and job scheduling. Workflow Templates chain Ansible jobs with limited cross-tool orchestration. Event-Driven Ansible adds reactive triggers as a separate component."
+    shadowColor: "#EE0000"
+
+featureGrid:
+  title: "Kestra vs. Ansible Automation Platform at a Glance"
+  tableData:
+    - feature: Primary use case
+      kestra: Cross-tool IT orchestration (Ansible + Terraform + APIs + scripts)
+      competitor: Centralized Ansible playbook execution and management
+    - feature: Workflow definition
+      kestra: Declarative YAML (code-first, Git-native)
+      competitor: Job Templates + Workflow Templates (UI-first, exportable JSON)
+    - feature: Cross-tool orchestration
+      kestra: Native—Ansible, Terraform, PowerShell, Python, APIs in one flow
+      competitor: Ansible-centric—external tools require custom scripting
+    - feature: Multi-step logic
+      kestra: Full DAG with conditions, parallelism, retries, error branches
+      competitor: Linear Workflow Templates with basic success/failure branching
+    - feature: Self-service Apps
+      kestra: Built-in dynamic forms with API-backed fields and approval gates
+      competitor: Surveys (basic form variables on job templates)
+    - feature: Event-driven triggers
+      kestra: Webhooks, schedules, file detection, queues, flow triggers (built-in)
+      competitor: Event-Driven Ansible (EDA)—separate component, Ansible-specific
+    - feature: Secrets management
+      kestra: Built-in + CyberArk, HashiCorp Vault, AWS Secrets Manager
+      competitor: Credential Manager + HashiCorp Vault integration
+    - feature: Observability
+      kestra: Full execution logs, artifacts, audit trail per step
+      competitor: Job output logs, activity stream, per-job stdout
+    - feature: Air-gapped deployment
+      kestra: "✓ Supported (on-prem, Kubernetes, disconnected)"
+      competitor: Supported (RHEL required, Private Automation Hub for offline content)
+    - feature: Licensing
+      kestra: Flat instance + worker-based pricing
+      competitor: Per-managed-node subscription (Red Hat)
+    - feature: Language support
+      kestra: "Python, Bash, Go, SQL, Ansible, PowerShell, R, and more"
+      competitor: "Ansible (YAML playbooks) + Script/Command modules"
+    - feature: Open source
+      kestra: Apache 2.0
+      competitor: "AAP is subscription-only; Ansible Engine is GPL"
+
+testimonials:
+  - quote: "Kestra gave us the orchestration layer we were missing. We kept our Ansible playbooks and added Terraform, approvals, and ServiceNow integration—all in one workflow. The team was up and running in a day."
+    author: "Infrastructure Automation Lead @ Enterprise Healthcare"
+    kpis:
+      - value: "70%"
+        name: "Fewer manual approvals"
+      - value: "3x"
+        name: "Faster incident remediation"
+      - value: "100%"
+        name: "Audit trail coverage"
+    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
+
+platformStrengths:
+  title: "Kestra Extends What Ansible Does Best"
+  features:
+    - title: "Ansible as a Task, Not a Platform"
+      description: "Keep your existing Ansible playbooks and inventory. Kestra wraps them in YAML workflows that add approvals, Terraform provisioning, ServiceNow updates, and PowerShell steps—without rewriting a single playbook."
+    - title: "Self-Service Without the Portal Tax"
+      description: "Kestra Apps give ops teams dynamic, data-backed forms for triggering workflows—no separate service catalog software required. Forms pull live data from APIs or databases, approvals are inline, and every execution is logged."
+    - title: "Built for Regulated Environments"
+      description: "Full audit trails, secrets via enterprise vaults (CyberArk, HashiCorp Vault), AD/OIDC SSO, and air-gapped deployment. Kestra passes compliance requirements in healthcare, government, and financial services—where both execution evidence and access controls are mandatory."
+
+decisionGuide:
+  mainTitle: "When to Choose Kestra vs. Ansible Automation Platform"
+  kestra:
+    title: "Choose Kestra When"
+    list:
+      - "Workflows span multiple tools—Terraform, Ansible, PowerShell, ServiceNow, cloud APIs."
+      - "You need approval gates, dynamic self-service forms, or multi-step branching logic."
+      - "Full audit trails and compliance evidence are non-negotiable requirements."
+      - "Your team works in Python, Bash, Go, or SQL alongside Ansible."
+      - "You want to use Ansible as an execution engine without locking into the AAP ecosystem."
+  competitor:
+    title: "Choose Ansible AAP When"
+    list:
+      - "Your automation is entirely Ansible-native with no need for cross-tool orchestration."
+      - "Central inventory management, credential vaulting, and RBAC for Ansible are the primary needs."
+      - "Your organization is already deeply invested in the Red Hat ecosystem."
+      - "Event-Driven Ansible for reactive Ansible-only workflows is the core requirement."
+    shadowColor: "#EE0000"
+    bulletColor: "#EE0000"
+
+commonQuestions:
+  - question: "Is Kestra a replacement for Ansible Automation Platform?"
+    answer: "Not necessarily. Many teams use Kestra as the orchestration layer above AAP—Kestra manages the multi-step workflow while AAP executes the Ansible playbooks. However, if your primary need is running Ansible playbooks with RBAC and inventory management, AAP covers that well. Kestra becomes the better choice when workflows need to span multiple tools, require complex approval logic, or need to integrate deeply with Terraform, ServiceNow, or cloud APIs."
+  - question: "Can I use my existing Ansible playbooks with Kestra?"
+    answer: "Yes. Kestra's Ansible plugin runs any existing playbook with the same parameters, inventory, and vault secrets you use today. You don't need to rewrite anything. Kestra adds orchestration on top: chain the playbook run with pre-approval steps, Terraform provisioning, post-execution verification, and ITSM ticket closure—all in one YAML workflow."
+  - question: "How does Kestra compare to AWX (the open-source version of AAP)?"
+    answer: "AWX is the upstream open-source project for Ansible Automation Platform—it provides Controller UI, job templates, and workflow templates without a subscription. Kestra differs fundamentally in scope: where AWX manages Ansible execution, Kestra orchestrates cross-tool workflows. AWX is Ansible-centric by design; Kestra is language- and tool-agnostic. If you outgrow AWX's Ansible-only model, Kestra is a natural next step."
+  - question: "Does Kestra support Event-Driven Ansible (EDA) style automation?"
+    answer: "Yes, and without requiring a separate component. Kestra has built-in event-driven triggers—webhooks, message queues (Kafka, SQS, Pub/Sub), file detection, and polling triggers—that can kick off any workflow, including ones that run Ansible playbooks. EDA in AAP is Ansible-specific; Kestra's event system works across all tools in a workflow."
+  - question: "How does Kestra handle Ansible secrets and inventory?"
+    answer: "Kestra integrates with enterprise secrets managers (CyberArk, HashiCorp Vault, AWS Secrets Manager, Azure Key Vault) to inject credentials at runtime. Inventory can be passed as inputs, read from files, or fetched from an API as a workflow step. You maintain your existing inventory management and simply reference secrets via Kestra's secrets manager integration in the workflow YAML."
+  - question: "Is Kestra suitable for large-scale Ansible fleet management?"
+    answer: "Kestra scales horizontally with worker groups, allowing you to run Ansible against different network segments, data centers, or cloud regions using dedicated workers. For pure Ansible fleet management at massive scale, AAP's Controller with execution environments is well-optimized. For workflows that combine Ansible with other tools—which most enterprise automation requires—Kestra's architecture handles both the orchestration and execution at scale."

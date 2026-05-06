@@ -1,11 +1,10 @@
 ---
-title: Plugins in Kestra – Tasks, Triggers, and Integrations
+title: "Plugins in Kestra: Tasks, Triggers, Integrations"
+h1: Find, Choose, and Use Kestra Plugins for Any Integration
 description: Understand how Kestra plugins work, how to choose versions, and where to find or build the right integration.
 sidebarTitle: Plugins
 icon: /src/contents/docs/icons/flow.svg
 ---
-
-## Plugins - tasks, triggers, and integrations
 
 Plugins power every task and trigger in Kestra. They wrap external systems, expose orchestration primitives, and let you extend the platform with custom code. Think of them as the "integrations" or “drivers” that let flows talk to databases, queues, SaaS APIs, file systems, and runtime environments.
 
@@ -71,7 +70,7 @@ Handling large outputs? Prefer `STORE`/`storeType` and see [Managing output data
 
 Some configuration properties such as "Database Password" are obvious secrets and should be protected, but consider using secrets for connection URLs, database names, user or service account names, and similar. Remember using these values in the flow code even once will appear in a [revision](../../06.concepts/03.revision/index.md).
 
-Check out the how to guide for [Secrets in Open Source](../../15.how-to-guides/secrets/index.md), or [Secret Managers](../../07.enterprise/02.governance/secrets-managers/index.md) in Enterprise Edition.
+Check out the how-to guide for [Secrets in Open Source](../../15.how-to-guides/secrets/index.md), or [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) in Enterprise Edition.
 
 ## Installing plugins
 

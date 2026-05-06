@@ -1,5 +1,6 @@
 ---
 title: Build a Custom Docker Image for Script Tasks
+h1: Package Dependencies into a Custom Docker Image for Kestra Scripts
 sidebarTitle: Building a Custom Docker Image
 icon: /src/contents/docs/icons/dev.svg
 description: Build and use custom Docker images to package dependencies and environments for your Kestra script tasks.
@@ -188,6 +189,6 @@ tasks:
       - "*.parquet"
 ```
 
-Note how the `pullPolicy: NEVER` property is used to make sure that Kestra uses the local image instead of trying to pull it from DockerHub.
+The `pullPolicy: NEVER` property ensures that Kestra uses the local image instead of trying to pull it from DockerHub.
 
 If you want to run languages other than Python using a custom Docker image, here is an example with [Go](../00.languages/index.md#run-any-language-using-a-custom-docker-image).

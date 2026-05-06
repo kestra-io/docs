@@ -1,0 +1,246 @@
+title: "Kestra vs. Make: Universal Orchestration vs. Visual Scenario Automation"
+description: "Compare Kestra vs Make: Open-source workflow orchestration for engineering teams vs. visual no-code automation for business teams. See features, execution limits, pricing, and use cases."
+competitorName: Make
+category: Business Automation
+shortDescription: "Visual no-code scenario builder with operation credits and a 40-minute execution limit vs. production-grade orchestration with no ceiling."
+
+brandColor:
+  color: "#7B2FBE"
+  gradient: "linear-gradient(90deg, #7B2FBE, #A855F7, #6D28D9)"
+
+intro:
+  title: "Kestra vs. Make: Universal Orchestration vs. Visual Scenario Automation"
+  description: "Make (formerly Integromat) is a visual automation platform built around a flowchart-style scenario builder with 3,000+ app integrations and a free tier. Kestra is a workflow orchestration platform for engineering and data teams that need data pipelines, infrastructure automation, and production workflows at scale, with version control and the option to self-host."
+
+philosophy:
+  mainTitle: Two Platforms, Two Automation Models
+  kestra:
+    title: "Engineering-Grade Orchestration for Any Workflow"
+    description: "Declarative YAML orchestration platform for engineering and data teams. Define data pipelines, infrastructure automation, and business workflows in version-controlled YAML. Any event, any language, self-hosted or on Kestra Cloud, with no operation-credit billing and no execution time ceiling."
+    subCardText: '"How do I build production workflows my engineering team can version, test, and operate without hitting execution ceilings?"'
+  competitor:
+    title: Visual Scenario Automation for Business Teams
+    description: "No-code visual automation platform built around a flowchart interface. Drag-and-drop modules connect 3,000+ apps into multi-step scenarios. A free tier and low entry price make it accessible to teams that need complex multi-app automation without writing code."
+    shadowColor: "#EDE0FF"
+    subCardBg: "var(--ks-background-purple-light)"
+    subCardText: '"How do I build a complex multi-step automation between our apps visually, without engineering help?"'
+
+businessValue:
+  mainTitle: "Scenario Automation Connects Apps.<br />Orchestration Runs Your Business."
+  kestra:
+    title: Production-Grade Workflow Orchestration
+    list:
+      - Automate data pipelines, infrastructure, and business processes in one platform
+      - Self-hosted or cloud, with full data residency control
+      - "GitOps-native: version control, CI/CD, and Terraform for all workflows"
+      - RBAC, audit logs, and multi-tenancy for enterprise compliance
+      - Handles 100,000+ concurrent tasks with no per-operation billing ceiling
+  competitor:
+    title: Visual No-Code Scenario Automation
+    list:
+      - 3,000+ pre-built app integrations in a visual flowchart builder
+      - Free tier limited to 1,000 operations/month and 2 active scenarios
+      - Paid plans start at $9/month with 10,000 operations and 1-minute scheduling
+      - Maximum scenario execution time of 40 minutes on all plans
+      - Cloud-first with limited on-premises agent support for Enterprise
+    shadowColor: "#EDE0FF"
+    bulletColor: "#7B2FBE"
+  footerText: "For teams that need to automate complex multi-step app workflows visually without writing code, Make's flowchart builder is more capable than simpler two-step tools. When workflows involve data pipelines, long-running computations, infrastructure automation, or volumes beyond operation-credit quotas, Kestra is built for that scope."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Make is cloud-first SaaS, so there is no infrastructure to configure. Scenarios are built entirely in the browser. The free tier limits active scenarios to two and scheduling to 15-minute intervals, which constrains how much you can test before needing a paid plan."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No cloud account required, no operation credits, no scenario limits."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~15"
+      two: Minutes
+    description: "Sign up at make.com, create a scenario, add modules for your trigger app and action apps, connect each via OAuth, and configure the data mappings. Free tier allows 2 active scenarios with 15-minute minimum scheduling intervals."
+    shadowColor: "#EDE0FF"
+    command: |
+      # Sign up at make.com
+      # Create a scenario, add modules:
+
+      [Trigger] Schedule
+        Every day at 8:00 AM
+
+      [Module] HTTP - Make a request
+        URL: https://cloud.getdbt.com/api/v2/.../run/
+        Method: POST
+        Headers: Authorization: Token {{dbt_token}}
+
+      [Module] Slack - Create a message
+        Channel: #data-team
+        Text: "Daily report ready"
+
+      # Free tier: 2 ops/run, ~62 ops/month.
+      # Max execution time: 40 min on all paid plans.
+    lang: yaml
+
+easeOfUse:
+  title: Version-Controlled Workflows vs. Visual Scenario Builder
+  kestra:
+    title: "Kestra: Readable by Your Whole Team"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows live in Git and deploy through your existing CI/CD pipeline."
+    code: |
+      id: daily_report
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 8 * * *"
+
+      tasks:
+        - id: run_dbt
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select reporting
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily report ready"
+    lang: yaml
+  competitor:
+    title: "Make: Flowchart scenarios for visual builders"
+    description: "Make scenarios are built by connecting modules in a visual flowchart. Each module represents an app action or data transform. Scenarios support iterators, routers, aggregators, and filters for complex logic. All configuration happens in the browser with no local files."
+    shadowColor: "#EDE0FF"
+    code: |
+      # Make scenario (built visually in-browser)
+      # Conceptual structure:
+
+      [Schedule trigger]
+        Every day at 8:00 AM
+
+      [HTTP module] Make an API call
+        URL: https://cloud.getdbt.com/api/v2/.../run/
+        Method: POST
+        Headers:
+          Authorization: "Token {{dbt_token}}"
+        Body: {"cause": "Make scheduled run"}
+
+      [Slack module] Create a message
+        Channel: "#data-team"
+        Message: "Daily report ready"
+
+      # 2 operations per run. Scenario stored in Make cloud.
+      # No local files. No native Git integration.
+    lang: yaml
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure provisioning, business processes, and event-driven automations in one platform. No operation-credit ceiling, no execution time limit. Self-host with full control or use Kestra Cloud."
+  competitor:
+    description: "Build complex multi-step automations visually across 3,000+ apps. More capable than two-step tools for routing, filtering, and data transformation. Not designed for data pipeline workloads, long-running computations over 40 minutes, or infrastructure automation."
+    shadowColor: "#EDE0FF"
+
+featureGrid:
+  title: Kestra vs Make at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Visual multi-step app automation
+    - feature: Workflow definition
+      kestra: Declarative YAML (version-controlled)
+      competitor: Visual flowchart builder (cloud-stored, no files)
+    - feature: Deployment model
+      kestra: Self-hosted or Kestra Cloud
+      competitor: "Cloud-first (on-prem agents for Enterprise only)"
+    - feature: Languages supported
+      kestra: "Agnostic (Python, R, Bash, Node.js, SQL & more)"
+      competitor: "No-code (custom functions available on Enterprise)"
+    - feature: Execution time limit
+      kestra: No limit
+      competitor: "40 minutes maximum on all plans"
+    - feature: Data pipeline support
+      kestra: "✓ Native support (ETL, dbt, Spark, Airbyte)"
+      competitor: Not designed for data pipeline or compute-heavy workloads
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: "✓ Visual scenario builder requires no coding"
+    - feature: GitOps and version control
+      kestra: "✓ Native Git sync, Terraform provider"
+      competitor: No native version control (scenario blueprints only)
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Enterprise namespace isolation"
+      competitor: Team roles on Teams plan; advanced controls on Enterprise
+    - feature: Pricing model
+      kestra: Infrastructure cost (no per-operation billing)
+      competitor: "Per-operation credits; free tier caps at 1,000 ops/month"
+    - feature: Open source
+      kestra: "✓ Open source (Apache 2.0)"
+      competitor: Closed source SaaS
+
+testimonials:
+  - quote: "Kestra made the data mesh possible. We produce far more data now, and deliver it nearly 10 times faster."
+    author: "Julien Henrion, CDO @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: In data production
+      - value: "+250"
+        name: Active users
+      - value: "+5000"
+        name: Workflows created
+    storyLink: /use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent
+
+platformStrengths:
+  title: Kestra Is Built for Production Workloads
+  features:
+    - title: No platform-imposed execution limits
+      description: "Kestra flows run for as long as the task requires, from seconds to hours, with no ceiling on execution time. A dbt run against a large model, a Spark job processing overnight data, or a file export from cloud storage all complete at their natural pace. Retry logic, timeout configuration, and execution monitoring are available as YAML-level settings on every workflow."
+    - title: Data pipelines as native workflows
+      description: "1,200+ plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, cloud provider, and message queue. Data engineers define ETL pipelines in the same declarative YAML they use for event-driven automations and business process workflows. DAG visualization and data-specific retry semantics are built in, not bolted on."
+    - title: Version control for every workflow change
+      description: "Kestra flows are YAML files in a repository. Every modification is a commit, deployments are tracked, and rolling back a broken workflow is a git revert. Teams review automation changes in a pull request before they go live, the same process they use for any other production change."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your workflows involve data pipelines, ETL, or infrastructure automation that runs longer than 40 minutes."
+      - "Execution volume exceeds what per-operation credit billing can sustain at reasonable cost."
+      - "Workflows must live in version control, pass code review, and deploy through CI/CD."
+      - "Self-hosting is required for data residency, compliance, or full infrastructure control."
+      - "Non-engineers need to trigger and monitor workflows through Kestra Apps, not build scenarios."
+  competitor:
+    title: Choose Make When
+    list:
+      - "Your automations connect multiple apps with complex routing, filtering, and data transformation, all under 40 minutes."
+      - "Non-technical users need to build and modify scenarios without any engineering involvement."
+      - "You need a visual representation of your automation logic to share with non-engineers."
+      - "Operation volumes fit within a credit plan at predictable cost."
+      - "Your use case is app-to-app integration, not data pipeline execution or infrastructure provisioning."
+    shadowColor: "#EDE0FF"
+    bulletColor: "#7B2FBE"
+
+commonQuestions:
+  - question: How do I migrate from Make to Kestra?
+    answer: "Map each Make module to the equivalent Kestra plugin. Schedule triggers, HTTP modules, and Slack/email notifications translate directly. For Make's pre-built app connectors, Kestra's 1,200+ plugin library covers the most common targets. For anything without a native plugin, the HTTP plugin handles any REST API. Most teams migrate incrementally, starting with scenarios that are hitting Make's 40-minute execution limit or that involve data workloads better suited to a dedicated orchestration platform."
+  - question: Can Kestra handle complex multi-step automation the way Make does?
+    answer: "Yes. Kestra supports multi-step flows with conditional branching, parallel task execution, iterators, error handling, and subflows as first-class YAML constructs. Make's visual strength is that non-engineers can build complex routing and filtering logic without code. In Kestra, engineers write that logic in YAML, which makes it version-controllable and reviewable but requires technical ownership. If the primary requirement is non-technical users building complex automation independently, Make's visual builder has an advantage."
+  - question: What is Make's 40-minute execution limit and how does it affect data workflows?
+    answer: "Every Make scenario has a hard 40-minute maximum execution time across all paid plans. For simple app-to-app automation, this is not a constraint. For data workflows that run dbt models against large datasets, execute Spark jobs, or process large file exports, 40 minutes is often not enough. Kestra has no platform-imposed execution time limit, so long-running analytical workloads complete without being cut off."
+  - question: How does operation-credit pricing in Make compare to Kestra's model?
+    answer: "Make counts each module execution as one operation against your monthly credit quota. A scenario with five modules running hourly consumes 3,600 operations per day across a 30-day month. Free-tier users get 1,000 operations/month total; Core plan users get 10,000. Kestra's open-source version is free to self-host with no operation counting. Kestra Cloud pricing is based on execution resources rather than per-operation counting, which makes cost more predictable as workflow complexity and frequency grow."
+  - question: Does Kestra have version control that Make doesn't?
+    answer: "Kestra flows are YAML files in Git, so every change is a commit, every deployment is tracked, and rollbacks are a git revert away. Make scenarios are stored in Make's cloud. You can export a scenario as a JSON blueprint for manual backup, but there is no native Git integration, no pull request review process, and no structured way to compare what changed between two versions of a scenario."
+  - question: Can Kestra and Make run in parallel during a transition?
+    answer: "The two tools operate independently and do not conflict. Most teams use Make for existing app-to-app scenarios while moving data and infrastructure workflows to Kestra first. Kestra can also trigger Make scenarios via webhook if you need cross-platform orchestration during a transition period. Once the team is comfortable with Kestra's YAML model, the remaining Make scenarios can follow."

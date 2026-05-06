@@ -5,6 +5,7 @@ date: 2024-03-14T08:00:00
 category: Company News
 author:
   name: Emmanuel Darras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   image: "edarras"
 image: ./main.jpg
 ---
@@ -41,7 +42,6 @@ Kestra and Dremio can help data practitioners to be more productive by simplifyi
 If you want to learn more about Kestra and Dremio capabilities, you can read this article about [Data lakehouse orchestration](../2023-12-07-dremio-kestra-integration/index.md) with Kestra, Dremio, dbt and Python.
 
 You can also kickstart your Kestra & Dremio journey with our [Community Blueprints](/blueprints?page=1&size=24&q=dremio).
-
 
 If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
 

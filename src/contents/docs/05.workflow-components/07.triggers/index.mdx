@@ -1,5 +1,6 @@
 ---
-title: Triggers in Kestra – Workflow Component Reference
+title: "Triggers in Kestra: Schedule, Events, Webhooks"
+h1: Start Flows Automatically with Scheduled, Event, and Webhook Triggers
 description: Automate flow execution with Kestra Triggers. Explore scheduled, event-based, and webhook triggers to start workflows based on time or external events.
 icon: /src/contents/docs/icons/flow.svg
 docId: triggers
@@ -10,8 +11,6 @@ import ChildCard from "~/components/docs/ChildCard.astro"
 
 A trigger is a mechanism that automatically starts the execution of a flow.
 
-## Triggers – workflow component reference
-
 <div class="video-container">
     <iframe
         src="https://www.youtube.com/embed/qDiQtsVEETs?si=BxrYa-Z1ntqsPvbu"
@@ -21,8 +20,6 @@ A trigger is a mechanism that automatically starts the execution of a flow.
         allowfullscreen
     ></iframe>
 </div>
-
----
 
 Triggers can be either scheduled or event-based, giving you flexibility in how you automate workflow execution.
 
@@ -53,8 +50,6 @@ The following properties are common to all triggers:
 | `allowConcurrent` | Set it to `true` to allow multiple executions from this trigger to run at the same time. |
 | `workerGroup.key` | To execute this trigger on a specific Worker Group (EE).                                 |
 
----
-
 ## Trigger variables
 
 Triggers expose metadata through expressions. For example:
@@ -82,9 +77,9 @@ triggers:
 ```
 
 :::alert{type="warning"}
-Keep in mind that the above-mentioned **templated variables** are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
+The **templated variables** above are only available when the execution is created **automatically** by the trigger. You'll get an error if you try to run a flow containing such variables **manually**.
 
-Also, note that **you don't need an extra task to consume** the file or message from the event. Kestra downloads those automatically to the **internal storage** and makes those available in your flow using `{{ trigger.uri }}` variable. Therefore, you don't need any additional task to e.g. consume a message from the SQS queue or to download a file from S3 when using those event triggers. The trigger already consumes and downloads those, making them directly available for further processing. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
+**You don't need an extra task to consume** the file or message from the event. Kestra downloads it automatically to **internal storage** and makes it available in your flow via the `{{ trigger.uri }}` variable. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
 :::
 
 Each trigger ID is limited to a single active execution at a time. If a scheduled execution is still running, the next one will be queued instead of started immediately. For instance, if an execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled executions will not be affected.
@@ -112,16 +107,16 @@ You can pass a list of conditions; in this case, all the conditions must match t
 
 Available conditions include:
 
-- [HasRetryAttempt](/plugins/core/conditions/io.kestra.plugin.core.condition.hasretryattempt)
-- [MultipleCondition](/plugins/core/conditions/io.kestra.plugin.core.condition.multiplecondition)
-- [Not](/plugins/core/conditions/io.kestra.plugin.core.condition.Not)
-- [Or](/plugins/core/conditions/io.kestra.plugin.core.condition.Or)
-- [ExecutionFlow](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionFlow)
-- [ExecutionNamespace](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionNamespace)
-- [ExecutionLabels](/plugins/core/conditions/io.kestra.plugin.core.condition.executionlabels)
-- [ExecutionStatus](/plugins/core/conditions/io.kestra.plugin.core.condition.ExecutionStatus)
-- [ExecutionOutputs](/plugins/core/conditions/io.kestra.plugin.core.condition.executionoutputs)
-- [Expression](/plugins/core/conditions/io.kestra.plugin.core.condition.Expression)
+- [HasRetryAttempt](/plugins/core/condition/io.kestra.plugin.core.condition.hasretryattempt)
+- [MultipleCondition](/plugins/core)
+- [Not](/plugins/core/condition/io.kestra.plugin.core.condition.not)
+- [Or](/plugins/core/condition/io.kestra.plugin.core.condition.or)
+- [ExecutionFlow](/plugins/core/condition/io.kestra.plugin.core.condition.executionflow)
+- [ExecutionNamespace](/plugins/core/condition/io.kestra.plugin.core.condition.executionnamespace)
+- [ExecutionLabels](/plugins/core/condition/io.kestra.plugin.core.condition.executionlabels)
+- [ExecutionStatus](/plugins/core/condition/io.kestra.plugin.core.condition.executionstatus)
+- [ExecutionOutputs](/plugins/core/condition/io.kestra.plugin.core.condition.executionoutputs)
+- [Expression](/plugins/core/condition/io.kestra.plugin.core.condition.expression)
 
 You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger/index.md#schedule-conditions).
 
@@ -247,7 +242,7 @@ triggers:
           - FAILED
 ```
 
-The above flow will be triggered every day at 9:00 AM, but if it fails, the schedule will be paused so that you can manually reenable the trigger once the issue is fixed. This is useful for business-critical flows that should not continue running the next scheduled executions if a previous execution has failed.
+The above flow will be triggered every day at `9:00` AM, but if it fails, the schedule will be paused so that you can manually reenable the trigger once the issue is fixed. This is useful for business-critical flows that should not continue running the next scheduled executions if a previous execution has failed.
 
 ### Disable the HTTP trigger after the first successful execution
 
@@ -259,7 +254,7 @@ namespace: company.team
 
 tasks:
     - id: slack
-      type: io.kestra.plugin.slack.SlackIncomingWebhook
+      type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
       url: "{{ secret('SLACK_WEBHOOK') }}"
       messageText: "The price is now: {{ json(trigger.body).price }}"
 

@@ -1,5 +1,6 @@
 ---
 title: Flows in the Kestra UI – Browse, Edit, Execute
+h1: Manage and Edit Flows from the Kestra UI
 description: Manage flows in the Kestra UI. Browse, edit, and execute workflows using the code editor, topology view, and version history tools.
 sidebarTitle: Flows
 docId: flowEditor
@@ -8,11 +9,9 @@ icon: /src/contents/docs/icons/ui.svg
 
 Manage your flows in one place.
 
-## Manage and edit flows from the UI
+On the **Flows** page, you see a list of flows that you can edit and execute. You can also create a new flow in the top-right corner.
 
-On the **Flows** page, you see a list of flows which you can edit and execute. You can also create a new flow in the top right hand corner.
-
-By clicking on a flow id or on the eye icon, you can open a flow.
+Click a flow ID or the eye icon to open a flow.
 
 ![Kestra User Interface Flows Page](./04-Flows.png)
 
@@ -44,13 +43,13 @@ Additionally, from the **Actions** menu, you can export your flow as a YAML file
 
 ### Flow code view
 
-The **Flow** code view allows you to edit your workflows with YAML. Autocomplete makes writing workflows simple. As new tasks are added, they will automatically appear in the No-code and topology view.
+The **Flow** code view allows you to edit your workflows with YAML. Autocomplete is available as you write. As new tasks are added, they automatically appear in the No-code and topology views.
 
 ![Flow Code](./flow-editor.png)
 
 ### No-code view
 
-The **No-code** view allows you to edit your workflows directly from the UI. As you modify your flow, YAML code will be generated in real time in the flow code view allowing you to swap between the two seamlessly.
+The **No-code** view allows you to edit your workflows directly from the UI. As you modify your flow, YAML code is generated in real time in the flow code view, and you can switch between both views at any time.
 
 ![No-code](./no-code-editor.png)
 
@@ -62,12 +61,12 @@ The **Topology** view allows you to visualize the structure of your flow. This i
 
 ### Documentation view
 
-The **Documentation** view displays Kestra's documentation right inside of the editor. As you move your type cursor around the editor, the documentation page updates to reflect the specific task type documentation.
+The **Documentation** view displays Kestra's documentation directly inside the editor. As you move your cursor around the editor, the documentation panel updates to reflect the specific task type documentation.
 
 ![Docs](./docs-editor.png)
 
 :::alert{type="warning"}
-Note that if you use the [Brave browser](https://brave.com/), you may need to disable the Brave Shields to make the editor work as expected. Specifically, to view the task documentation, you need to set the `Block cookies` option to `Disabled` in the Shields settings: `brave://settings/shields`.
+If you use the [Brave browser](https://brave.com/), you may need to disable Brave Shields to make the editor work as expected. To view task documentation, set the `Block cookies` option to `Disabled` in Shields settings: `brave://settings/shields`.
 
 ![Brave cookies](./brave.png)
 :::
@@ -80,7 +79,7 @@ The **Files** view allows you to create, edit and delete [Namespaces Files](../.
 
 ### Blueprints view
 
-The **Blueprints** view gives you example flows to copy directly into your flow. Blueprints are especially useful if you're using a new plugin where you want to work off of an existing example.
+The **Blueprints** view gives you example flows to copy directly into your flow. Blueprints are especially useful when working with a new plugin, since you can start from a working example.
 
 ![Blueprints Editor](./blueprints-editor.png)
 
@@ -100,7 +99,7 @@ You can view the history of your flow code changes under the **Revisions** tab. 
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/k3WASzX7Oi0F1kRHOBKj?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dependencies | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-The **Dependencies** page shows the relationship dependencies between other flows and the selected flow. It gives you an easy way to navigate between them as well.
+The **Dependencies** page shows the relationship dependencies between other flows and the selected flow, and lets you navigate between them.
 
 ![Dependencies](./flow-dependencies-1-0.png)
 
@@ -124,12 +123,12 @@ To use the JSON Schema in Visual Studio Code (VSCode), follow these steps:
 ```json
 {
   "yaml.schemas": {
-    "https://your-kestra-instance.com/api/v1/main/schemas/flow.json": "/*.yaml"
+    "https://your-kestra-instance.com/api/v1/schemas/flow.json": "/*.yaml"
   }
 }
 ```
 
-Replace `https://your-kestra-instance.com/api/v1/main/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
+Replace `https://your-kestra-instance.com/api/v1/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
 
 ### Example of using JSON Schema in flow editor
 
@@ -144,13 +143,13 @@ tasks:
     message: "Hello, World!"
 ```
 
-When you open this flow in the editor, the JSON Schema validates the structure and provide autocompletion and error checking.
+When you open this flow in the editor, the JSON Schema validates the structure and provides autocompletion and error checking.
 
 ### Globally available location for JSON Schema
 
 The JSON Schema for Kestra flows is available at the following URL:
 
-```
+```plaintext
 https://your-kestra-instance.com/api/v1/main/schemas/flow.json
 ```
 

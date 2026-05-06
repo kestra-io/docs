@@ -1,11 +1,12 @@
 ---
-title: Contribute to the Kestra Codebase – Issues and PRs
+title: "Contribute to the Kestra Codebase: Issues and PRs"
+h1: "How to Contribute to Kestra: Fix Bugs, Add Features, and Submit PRs"
 description: Guide to contributing to the Kestra codebase. Learn how to report bugs, request features, build plugins, and submit pull requests to help improve the platform.
 sidebarTitle: Kestra Codebase
 icon: /src/contents/docs/icons/contributing.svg
 ---
 
-Contribute to our open-source community.
+Contribute to the Kestra open-source project.
 
 ## Contribute to the Kestra codebase
 
@@ -22,17 +23,13 @@ Check out our [Plugin Developer Guide](../../plugin-developer-guide/index.mdx) f
 
 ## Contribute to the documentation
 
-We love documentation contributions. To contribute to the documentation, make sure to fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes.
+To contribute to the documentation, fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes.
 
-Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.md) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
-
----
+Check out the [Contribute to Kestra Documentation page](../04.docs-contributor-guide/index.mdx) for more information about building the documentation site locally, how we write the documentation, and contributing to the product and plugin documentation.
 
 ## Write a blog post
 
 You can contribute an article about how you use Kestra to our [blog](/blogs). Email [hello@kestra.io](mailto:hello@kestra.io) to start the collaboration. If you wrote a post mentioning Kestra on your personal blog, we'd be happy to feature it in our community section.
-
----
 
 ## Other ways to show support
 
@@ -40,14 +37,12 @@ You can contribute an article about how you use Kestra to our [blog](/blogs). Em
 - Follow us on [X](https://twitter.com/kestra_io) and [LinkedIn](https://www.linkedin.com/company/kestra).
 - Join the [Slack](/slack) community.
 
----
-
 ## Build Kestra locally
 
 ### Requirements
 
 The following dependencies are required to build Kestra locally:
-- Java 21+
+- JDK 25 (runtime) with source/target set to Java 21
 - Node 14+ and npm
 - Docker & Docker Compose
 - an IDE (Intellij IDEA, Eclipse or VS Code)
@@ -69,6 +64,7 @@ Open the cloned repository in your favorite IDE. In many IDEs, Gradle build will
 
 You can also build it from a terminal using `./gradlew build`. The Gradle wrapper will automatically download the correct Gradle version to use.
 
+- Set your IDE language level to **Java 21** while using the **JDK 25** toolchain; builds are compiled with `--release 21`.
 - You may need to enable Java annotation processors since we use it a lot.
 - The main class is `io.kestra.cli.App` from module `kestra.cli.main`.
 - Pass as program arguments the server you want to develop, for example `server standalone` starts a standalone Kestra server.
@@ -92,7 +88,7 @@ python3 -m pip install virtualenv
 
 All frontend code is located in the `/ui` folder.
 
-Our front-end uses [Vue.js](https://vuejs.org/). But we do not need deep knowledge of Vue.js to contribute.
+The front-end uses [Vue.js](https://vuejs.org/). Deep knowledge of Vue.js is not required to contribute.
 To run Kestra's frontend in development mode, you will need Node.js version `22.12.0`.
 The repository has a `.nvmrc` file.
 
@@ -111,7 +107,7 @@ npm run dev
 This will start a local server on port `5173`.
 You will need to open the Kestra UI in a browser at http://localhost:5173
 
-#### Open Storybook (what we use for testing components)
+#### Open Storybook
 
 You can also run the [Storybook](https://storybook.js.org/) to view the components in isolation.
 
@@ -139,7 +135,7 @@ Now that you can run the frontend, if opened, you will see a loading screen runn
 It waits for a backend to answer.
 To set it up:
 
-- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Kestra configuration](../../configuration/index.md) YAML definition:
+- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) YAML definition:
 
 ```yaml
 micronaut:
@@ -181,9 +177,7 @@ Finally, install the dependencies with `npm install`, and serve the UI with hot 
 
 Thanks to the Kestra community, if you are using VSCode, you can start development on either the frontend or backend with a bootstrapped Docker container without the need to manually set up the environment.
 
-Check out the [README](https://github.com/kestra-io/kestra/tree/develop/.devcontainer) for set-up instructions and the associated [Dockerfile](https://github.com/kestra-io/kestra/blob/develop/.devcontainer/Dockerfile) in the respository to get started.
-
----
+Check out the [README](https://github.com/kestra-io/kestra/tree/develop/.devcontainer) for set-up instructions and the associated [Dockerfile](https://github.com/kestra-io/kestra/blob/develop/.devcontainer/Dockerfile) in the repository to get started.
 
 ## Code of conduct
 
