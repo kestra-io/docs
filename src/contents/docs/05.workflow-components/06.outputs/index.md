@@ -1,13 +1,12 @@
 ---
-title: Workflow Outputs in Kestra – Sharing Data Between Tasks
+title: "Workflow Outputs in Kestra: Share Data Between Tasks"
+h1: Capture and Reuse Execution Results Across Tasks and Flows
 description: Leverage Outputs in Kestra to share data between tasks and flows. Learn to capture, store, and reuse execution results and artifacts in your workflows.
 icon: /src/contents/docs/icons/flow.svg
 sidebarTitle: Outputs
 ---
 
 Outputs let you pass data between tasks and flows.
-
-## Workflow Outputs – sharing data between tasks
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/j6Iyn5rCeRI?si=2al6ZgqzfNqAJ0Wf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -29,7 +28,7 @@ For secure handling of secrets, **exclusively** use [Secrets](../../06.concepts/
 
 ## Using outputs
 
-Below is an example of how to use the output of the `produce_output` task in the `use_output` task. We use the [Return](/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.Return) task that has one output attribute named `value`.
+Below is an example of how to use the output of the `produce_output` task in the `use_output` task. We use the [Return](/plugins/core/debug/io.kestra.plugin.core.debug.return) task that has one output attribute named `value`.
 
 ```yaml
 id: task_outputs_example
@@ -214,7 +213,7 @@ namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
@@ -285,7 +284,7 @@ namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
@@ -293,7 +292,7 @@ tasks:
 
   - id: end
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ outputs.inner['value 1'].value }}"
+    format: "{{ task.id }} > {{ outputs.inner['alpha'].value }}"
 ```
 
 It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` in  `[VALUE]` is called the subscript notation; it enables using special chars like space or '-' in task identifiers or output attributes.
@@ -302,7 +301,7 @@ It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` i
 
 Sometimes it is useful to access outputs from other tasks in the same task tree, known as sibling tasks.
 
-If the task tree is static, for example when using the [Sequential](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id` is the identifier of the sibling task, as you would outside of the task tree.
+If the task tree is static, for example when using the [Sequential](/plugins/core/flow/io.kestra.plugin.core.flow.sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id` is the identifier of the sibling task, as you would outside of the task tree.
 
 For example:
 
@@ -312,7 +311,7 @@ namespace: company.team
 
 tasks:
   - id: sequential
-    type: io.kestra.core.tasks.flows.Sequential
+    type: io.kestra.plugin.core.flow.Sequential
     tasks:
       - id: first
         type: io.kestra.plugin.core.output.OutputValues
@@ -325,11 +324,11 @@ tasks:
           data: "{{ outputs.first.values.data }}"
 
   - id: log_siblings
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "{{ outputs.second.values.data }}"
 ```
 
-If the task tree is dynamic, for example when using the [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) task, you need to use `{{ outputs.task_id[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the ForEach task.
+If the task tree is dynamic, for example when using the [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task, you need to use `{{ outputs.task_id[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the ForEach task.
 
 For example:
 
@@ -340,7 +339,7 @@ namespace: company.team
 tasks:
   - id: foreach
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: first
         type: io.kestra.plugin.core.output.OutputValues
@@ -353,15 +352,17 @@ tasks:
           data: "{{ outputs.first[taskrun.value].values.data }}"
 
   - id: log_output_from_foreach
-    type: io.kestra.core.tasks.log.Log
-    message: "{{ outputs.second['value 1'].values.data }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.second['alpha'].values.data }}"
 ```
 
-You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.function-reference/index.md) for more details.
+You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.functions/index.mdx) for more details.
 
 :::alert{type="warning"}
-Accessing sibling task outputs is impossible on [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) as it runs tasks in parallel.
+Accessing sibling task outputs is impossible on [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) as it runs tasks in parallel.
 :::
+
+For more examples and guidance on accessing sibling outputs inside `ForEach`, including how to read them both inside and outside the loop, see [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach).
 
 ## Outputs preview
 
@@ -412,7 +413,6 @@ You can now use Pebble expressions to evaluate and analyze the output data furth
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/SPGmXSJN3VE?si=c2RkQJdidKig90Ot" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
----
 
 :::alert{type="info"}
 Note: This was previously called **Render expression**.

@@ -1,5 +1,6 @@
 ---
-title: Kestra Architecture – Data Storage Components
+title: Data Storage Components in Kestra Architecture
+h1: How Kestra Stores Inputs, Outputs, Logs, and Metadata
 description: Dive into Kestra's Data Architecture. Learn how inputs, outputs, logs, and metadata are stored across Repositories and Internal Storage systems.
 sidebarTitle: Data Storage in Kestra
 icon: /src/contents/docs/icons/architecture.svg
@@ -7,11 +8,9 @@ icon: /src/contents/docs/icons/architecture.svg
 
 Understand where different data components ([inputs](../../05.workflow-components/05.inputs/index.md), [outputs](../../05.workflow-components/06.outputs/index.md), logs, and more) are stored in Kestra’s architecture.
 
-## See where Kestra stores data components
-
 Kestra processes and stores a variety of data, including [flow definitions](../../05.workflow-components/01.flow/index.md), workflow inputs, outputs, logs, execution metadata, and more. Understanding how these components are stored helps optimize performance, configure persistence, and integrate with external storage systems.
 
-Kestra data is stored in either the [repository](../01.main-components/index.md#repository), such as PostgreSQL, or in [internal storage](../data-components/index.md#internal-storage). By default, internal storage is local, but it can be configured to use services like [AWS S3](https://aws.amazon.com/s3/) or [MinIO](https://min.io/).
+Kestra data is stored in either the [repository](../01.main-components/index.md#repository), such as PostgreSQL, or in [internal storage](../data-components/index.md#internal-storage). By default, internal storage is local, but you can configure it to use services like [AWS S3](https://aws.amazon.com/s3/) or [MinIO](https://min.io/).
 
 :::alert{type="info"}
 See [Kestra architecture](../../08.architecture/03.deployment-architecture/index.md) and [internal storage](../data-components/index.md#internal-storage) for more details.
@@ -111,13 +110,6 @@ See [secret managers](../../07.enterprise/02.governance/secrets-manager/index.md
 
 ### Database maintenance
 
-Since databases accumulate large amounts of execution and log data, it’s recommended to use [purge tasks](../../10.administrator-guide/purge/index.md) to free up storage and maintain performance.
+Use [purge tasks](../../10.administrator-guide/purge/index.md) to free up storage and maintain performance as databases accumulate execution and log data.
 
-## Conclusion
-
-Kestra separates structured execution data from file-based artifacts to keep performance optimal:
-- **Database**: Stores flows, metadata, logs, and secrets.
-- **Internal storage**: Stores inputs, outputs, and files.
-
-For large-scale deployments, cloud storage backends ensure scalability.
 To further separate data across business units or environments, see the [governance features](../../07.enterprise/02.governance/index.mdx) in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md), including [tenants](../../07.enterprise/02.governance/tenants/index.md).

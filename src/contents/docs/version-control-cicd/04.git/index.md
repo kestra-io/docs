@@ -1,5 +1,6 @@
 ---
-title: Version Control with Git – Manage Flows and Namespace Files
+title: "Version Control with Git: Sync, Push, and Clone Flows"
+h1: Version Kestra Flows and Namespace Files with Git
 sidebarTitle: Version Control with Git
 icon: /src/contents/docs/icons/dev.svg
 description: Learn patterns for versioning Kestra flows and namespace files with Git, including Sync, Push, and Clone strategies.
@@ -13,16 +14,14 @@ Learn how to pair Kestra with Git so you can version flows, namespace files, and
   <iframe src="https://www.youtube.com/embed/videoseries?si=wOyAUkgChRUuJxcy&amp;list=PLEK3H8YwZn1p7tyd9RV5-WDxh_ZGpMpA3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Kestra supports version control with Git. You can use one or more repositories to store your [flows](../../05.workflow-components/01.flow/index.md), [namespace files](../../06.concepts/02.namespace-files/index.md), [apps](../../07.enterprise/04.scalability/apps/index.md), [tests](../../07.enterprise/02.governance/unit-tests/index.md), and [dashboards](../../09.ui/00.dashboard/index.md), tracking changes through Git history.
 
 There are multiple ways to combine Kestra with Git:
 - [SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) implements GitOps with Git as the single source of truth for flows.
 - [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) syncs namespace files the same way.
-- [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.PushFlows) commits and pushes flow edits from the UI to Git, useful when you rely on the built-in editor but still want version history.
+- [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.pushflows) commits and pushes flow edits from the UI to Git, useful when you rely on the built-in editor but still want version history.
 - [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.pushnamespacefiles) does the same for namespace files.
-- [Clone](https://kestra.io/plugins/git/io.kestra.plugin.git.clone) clones a repository directly into a flow so scripts are available at runtime.
+- [Clone](https://kestra.io/plugins/plugin-git/io.kestra.plugin.git.clone) clones a repository directly into a flow so scripts are available at runtime.
 - [TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) synchronizes all namespaces in a tenant, including flows, files, apps, tests, and dashboards.
 - [NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) keeps a single namespace in sync with a Git repo.
 - A custom [CI/CD](../cicd/index.md) pipeline lets you manage deployments yourself (GitHub Actions, Terraform, etc.) while keeping Git authoritative.
@@ -31,7 +30,7 @@ The image below shows how to choose the right pattern based on your needs:
 
 ![git](./git.png)
 
-Let's dive into each of these patterns and when to use them.
+The following sections cover each pattern and when to use it.
 
 ## Git SyncFlows and SyncNamespaceFiles
 
@@ -185,7 +184,7 @@ Use this pattern to push to a feature branch and open a pull request for review.
 ## Git Clone
 
 The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a repository at runtime so you can orchestrate code managed elsewhere, for example:
-- dbt projects via the [dbt CLI task](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli)
+- dbt projects via the [dbt CLI task](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli)
 - Infrastructure deployments via [Terraform CLI](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli), [OpenTofu CLI](/plugins/plugin-opentofu/cli/io.kestra.plugin.opentofu.cli.opentofucli), [Terragrunt CLI](/plugins/plugin-terragrunt/cli/io.kestra.plugin.terragrunt.cli.terragruntcli), or [Ansible CLI](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli)
 - Docker builds via the [Docker Build task](/plugins/plugin-docker/io.kestra.plugin.docker.build)
 
@@ -193,8 +192,8 @@ The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a
 
 Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [Git NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) give you full control over synchronizing Kestra objects with your Git repository.
 
-- **`TenantSync`** – synchronizes **all namespaces** in a tenant, including flows, files, apps, tests, and dashboards.
-  - Requires `kestraUrl` and `auth` so the task can validate tenant-wide RBAC.
+- **`TenantSync`** – synchronizes **all namespaces** in a tenant, including flows, files, apps, tests, dashboards, and custom blueprints.
+  - Requires `kestraUrl` and `auth` so the task can call Kestra's API with tenant-wide RBAC.
   - Useful when you need to back up the entire tenant to Git and promote environments through pull requests.
 
 - **`NamespaceSync`** – synchronizes objects within a **single namespace** with your Git repository.
@@ -204,7 +203,7 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
 Both plugins support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
-- An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace.
+- An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
 - `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted when `sourceOfTruth` is `GIT`.
 - Validation rules requiring explicit Git `branch` and optional `gitDirectory`.
 - Options like `dryRun` and `onInvalidSyntax` for safe rollouts and error handling.
@@ -246,4 +245,52 @@ tasks:
     branch: main
     protectedNamespaces:
       - system
+```
+
+### Git directory structure
+
+Both `TenantSync` and `NamespaceSync` expect a specific folder structure inside your Git repository. The optional `gitDirectory` property sets a base folder within the repo; if omitted the repo root is used. Under that base, Kestra uses a fixed layout organized by namespace and resource type:
+
+| Resource type | Path in Git |
+| --- | --- |
+| Flows | `<namespace>/flows/<flowId>.yaml` |
+| Namespace files | `<namespace>/files/<path>` |
+| Apps | `<namespace>/apps/<appId>.yaml` |
+| Unit tests | `<namespace>/tests/<testId>.yaml` |
+| Dashboards | `_global/dashboards/<dashboardId>.yaml` |
+| Custom blueprints | `_global/blueprints/<blueprintId>.yaml` |
+
+If you set `gitDirectory: monorepo`, the full path for a flow in the `company.team` namespace becomes `monorepo/company.team/flows/my-flow.yaml`.
+
+#### How resource identity works
+
+**The filename stem is the resource ID.** For flows, apps, unit tests, and dashboards the part of the filename before `.yaml` is used as the object's ID during sync — not the `id` field written inside the YAML. Custom blueprints are an exception: the sync reads the `id` field from the YAML content and falls back to the filename stem only when the field is absent. Namespace files use their full relative path under `<namespace>/files/` as the file path identity.
+
+This has an important consequence: **the filename must match the `id` inside the YAML**. When Kestra pushes objects from the UI to Git (for example with `sourceOfTruth: KESTRA`), it generates filenames from the object's ID automatically. If you later rename a file in Git, the sync treats the old filename as a deleted object and the new filename as a new object. When it tries to create the new object, Kestra rejects it because a resource with that ID already exists in the instance — resulting in an error like:
+
+```
+Invalid entity: App already exists for id 'solutions_ai_search_annual_report'
+```
+
+To avoid this error, keep filenames in sync with the `id` field inside each YAML. If you need to rename a file, also update the `id` inside the YAML at the same time.
+
+#### Handling mismatched filenames with `onInvalidSyntax`
+
+If you encounter files whose names do not match the expected ID (for example after a manual rename), you can control how the sync reacts using the `onInvalidSyntax` property:
+
+| Value | Behavior |
+| --- | --- |
+| `FAIL` (default) | Throws an exception and stops the sync |
+| `WARN` | Logs a warning and continues |
+| `SKIP` | Logs an info message and continues |
+
+Use `WARN` or `SKIP` as a short-term workaround while you correct the naming in Git:
+
+```yaml
+tasks:
+  - id: sync
+    type: io.kestra.plugin.git.TenantSync
+    sourceOfTruth: GIT
+    onInvalidSyntax: WARN
+    # ... other properties
 ```

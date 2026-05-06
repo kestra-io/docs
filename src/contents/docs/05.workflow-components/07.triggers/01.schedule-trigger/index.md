@@ -1,13 +1,12 @@
 ---
 title: Schedule Trigger in Kestra – Cron-Based Scheduling
+h1: Run Flows on a Cron Schedule with Backfills and Conditions
 description: Schedule Kestra workflows with the Schedule Trigger. Learn to use cron expressions, backfills, and conditions to run flows at precise times.
 sidebarTitle: Schedule Trigger
 icon: /src/contents/docs/icons/flow.svg
 ---
 
 Schedule flows using cron expressions.
-
-## Schedule trigger – cron-based scheduling
 
 The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
 
@@ -19,7 +18,7 @@ Kestra can trigger flows on a defined schedule. If you need to wait for another 
 
 Kestra can automatically handle [backfills](../../../06.concepts/08.backfill/index.md) to recover missed executions.
 
-Check the [Schedule task](/plugins/core/triggers/io.kestra.plugin.core.trigger.Schedule) documentation for the list of the task properties and outputs.
+Check the [Schedule task](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule) documentation for the list of the task properties and outputs.
 
 :::alert{type="warning"}
 To avoid unexpected differences, keep your Kestra server and database timezones aligned. If this isn’t possible, account for timezone implications such as Daylight Saving Time or regional variations.
@@ -106,14 +105,14 @@ This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.ne
 
 The list of core conditions that can be used are:
 
- - [DateTimeBetween](/plugins/core/conditions/io.kestra.plugin.core.condition.DateTimeBetween)
- - [DayWeek](/plugins/core/conditions/io.kestra.plugin.core.condition.DayWeek)
- - [DayWeekInMonth](/plugins/core/conditions/io.kestra.plugin.core.condition.DayWeekInMonth)
- - [Not](/plugins/core/conditions/io.kestra.plugin.core.condition.Not)
- - [Or](/plugins/core/conditions/io.kestra.plugin.core.condition.Or)
- - [Weekend](/plugins/core/conditions/io.kestra.plugin.core.condition.Weekend)
- - [PublicHoliday](/plugins/core/conditions/io.kestra.plugin.core.condition.publicholiday)
- - [TimeBetween](/plugins/core/conditions/io.kestra.plugin.core.condition.timebetween)
+ - [DateTimeBetween](/plugins/core/condition/io.kestra.plugin.core.condition.datetimebetween)
+ - [DayWeek](/plugins/core/condition/io.kestra.plugin.core.condition.dayweek)
+ - [DayWeekInMonth](/plugins/core/condition/io.kestra.plugin.core.condition.dayweekinmonth)
+ - [Not](/plugins/core/condition/io.kestra.plugin.core.condition.not)
+ - [Or](/plugins/core/condition/io.kestra.plugin.core.condition.or)
+ - [Weekend](/plugins/core/condition/io.kestra.plugin.core.condition.weekend)
+ - [PublicHoliday](/plugins/core/condition/io.kestra.plugin.core.condition.publicholiday)
+ - [TimeBetween](/plugins/core/condition/io.kestra.plugin.core.condition.timebetween)
 
 Here's an example using the `DayWeek` condition:
 
@@ -253,7 +252,7 @@ triggers:
 
 ## Detect stuck Schedule Triggers
 
-Kestra has a plugin, [ScheduleMonitor](/plugins/plugin-kestra/triggers/io.kestra.plugin.kestra.triggers.ScheduleMonitor), for detecting stuck or misconfigured Schedule Triggers. It checks periodically and can run at the Tenant level, for a specific Namespace, or for a single Flow.
+Kestra has a plugin, [ScheduleMonitor](/plugins/plugin-kestra/kestra-triggers/io.kestra.plugin.kestra.triggers.schedulemonitor), for detecting stuck or misconfigured Schedule Triggers. It checks periodically and can run at the Tenant level, for a specific Namespace, or for a single Flow.
 
 For example, set this up as a [System Flow](../../../06.concepts/system-flows/index.md) and send an alert if any Schedule Triggers come back showing an issue:
 

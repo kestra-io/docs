@@ -1,5 +1,6 @@
 ---
 title: Configure Secrets in Kestra
+h1: Securely Store and Use Secrets in Your Flows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -17,7 +18,7 @@ Secrets are sensitive values that should not be exposed in plain text, such as p
 For a detailed overview, see the [Secrets](../../06.concepts/04.secret/index.md) documentation.
 
 This guide demonstrates how to add secrets to your Kestra server using an environment file (`.env`).
-If you prefer a simpler, UI-based experience, check out the [Enterprise Edition](../../oss-vs-paid/index.md), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
+If you prefer a simpler, UI-based experience, see the [Enterprise Edition](../../oss-vs-paid/index.md), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
 
 ---
 

@@ -1,5 +1,6 @@
 ---
-title: Set Up Okta OIDC SSO for Kestra
+title: Set Up Okta OIDC SSO in Kestra
+h1: Authenticate Users via Okta OpenID Connect
 description: Set up Okta OIDC SSO for Kestra. Securely authenticate users via Okta OpenID Connect for centralized access management.
 sidebarTitle: Okta OIDC SSO
 icon: /src/contents/docs/icons/admin.svg

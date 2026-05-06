@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -21,7 +21,6 @@ import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import awsStepFunctionsImg from "~/components/versus/assets/aws-step-functions-img.svg"
-import heroUI from "~/components/versus/assets/step_hero_ui.webp"
 
 const entry = await getEntry("vs", "aws-step-functions")
 if (!entry)
@@ -46,14 +45,13 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<VsLayout {title} description={shortDescription} {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: awsStepFunctionsMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}
@@ -126,4 +124,4 @@ const {
         See how Kestra can orchestrate workflows across any cloud, any language, and
         your entire stack.
     </SeeHow>
-</Layout>
+</VsLayout>

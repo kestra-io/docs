@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Elliot Gunn
   image: egunn
+  linkedin: https://www.linkedin.com/in/elliotgunn/
   role: Product Marketing Manager
 image: ./main.png
 ---

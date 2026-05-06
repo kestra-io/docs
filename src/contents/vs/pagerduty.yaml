@@ -197,7 +197,7 @@ testimonials:
         name: "Dropped jobs since migration"
       - value: "3x"
         name: "Faster mean time to resolution"
-    storyLink: "/use-cases/stories/26-orchestrating-cybersecurity-for-100+-users-and-billions-of-rows"
+    storyLink: "/use-cases/stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows"
 
 platformStrengths:
   title: "Kestra Is Built for the Full Incident Lifecycle"

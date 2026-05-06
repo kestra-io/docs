@@ -1,5 +1,8 @@
 ---
 import CardGrid from "~/components/card/CardGrid.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const ITEMS = [
     {
@@ -9,7 +12,7 @@ const ITEMS = [
             "Flows are declarative definitions of what should run and in what order: tasks, dependencies, conditions, triggers, and runtime parameters.",
     },
     {
-        title: "Integrate with 1200+ Tools",
+        title: `Integrate with ${totalPlugins}+ Tools`,
         icon: "mdi:puzzle-check-outline",
         description:
             "Everything is plugin, from core building blocks to integrations with your stack. That's how Kestra stays universal without becoming a monolith.",

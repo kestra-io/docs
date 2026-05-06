@@ -12,6 +12,7 @@ import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
+import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
@@ -50,6 +51,7 @@ export default defineConfig({
     ],
     markdown: {
         remarkPlugins: [
+            remarkMermaid,
             remarkClassname,
             remarkDirective,
             remarkCustomElements,
@@ -213,6 +215,56 @@ export default defineConfig({
             "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
     },
     vite: {
+        plugins: [
+            {
+                // debug has no `exports` field in package.json and its source
+                // files use CJS globals (`module`, `exports`) which are not
+                // available in an ESM context (Vite 8 / Cloudflare worker env).
+                // This plugin wraps every debug source file with a local CJS
+                // shim so the globals are defined, then re-exports as ESM.
+                name: "cjs-debug-shim",
+                apply: "serve",
+                enforce: "pre",
+                transform(code, id) {
+                    if (
+                        /node_modules\/debug\/src\//.test(id) ||
+                        /node_modules\/ms\//.test(id)
+                    ) {
+                        // Convert every require('x') call to a named ESM
+                        // import so that `require` itself is never accessed
+                        // at runtime (CJS globals are unavailable in the
+                        // Cloudflare worker environment / Vite 8 ESM context).
+                        const deps = new Map()
+                        let depIndex = 0
+                        const transformed = code.replace(
+                            /\brequire\((['"])([^'"]+)\1\)/g,
+                            (_, _q, dep) => {
+                                if (!deps.has(dep)) {
+                                    deps.set(dep, `__cjs_dep_${depIndex++}`)
+                                }
+                                return deps.get(dep)
+                            },
+                        )
+                        const imports = [...deps.entries()]
+                            .map(
+                                ([dep, name]) =>
+                                    `import ${name} from '${dep}';`,
+                            )
+                            .join("\n")
+                        return {
+                            code: [
+                                imports,
+                                "var module = { exports: {} };",
+                                "var exports = module.exports;",
+                                transformed,
+                                "export default module.exports;",
+                            ].join("\n"),
+                            map: null,
+                        }
+                    }
+                },
+            },
+        ],
         resolve: {
             alias: {
                 "#mdc-imports": path.resolve(
