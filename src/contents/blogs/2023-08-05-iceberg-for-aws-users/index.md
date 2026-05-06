@@ -1,7 +1,7 @@
 ---
 title: "Apache Iceberg on AWS: Athena, S3, and Glue Tutorial"
 description: "A hands-on guide to Apache Iceberg on AWS using Amazon Athena, S3, and Glue. Learn how to create tables, run upserts, time travel, and automate ingestion with Kestra."
-date: 2026-05-05T15:00:00
+date: 2026-02-18T15:00:00
 category: Solutions
 author:
   name: Anna Geller

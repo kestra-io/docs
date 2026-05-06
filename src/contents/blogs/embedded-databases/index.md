@@ -1,7 +1,7 @@
 ---
 title: "Embedded Databases in 2026: DuckDB, SQLite, Polars, and chDB"
 description: "A developer's guide to embedded databases in 2026. Compare DuckDB, Polars, SQLite, and chDB for analytics, ETL pipelines, and real-time data processing."
-date: 2026-05-04T16:00:00
+date: 2026-04-15T16:00:00
 category: Solutions
 author:
   name: Martin-Pierre Roset
