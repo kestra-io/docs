@@ -1,5 +1,6 @@
 ---
 title: Build a Custom Plugin for Kestra
+h1: Extend Kestra by Packaging a Custom Java Plugin
 icon: /src/contents/docs/icons/plugins.svg
 stage: Advanced
 topics:
@@ -10,7 +11,7 @@ description: Learn how to build, package, and test a custom Kestra plugin in Jav
 
 Build your own Custom Plugin for Kestra.
 
-In this tutorial, we will be building a custom plugin in Kestra.
+This tutorial walks through building a custom plugin for Kestra.
 
 ## Use-case for Custom Plugin
 
@@ -250,7 +251,7 @@ public class Fetch extends Task implements RunnableTask<Fetch.Output> {
 
 ### Compile the plugin
 
-Now that the plugin is developed, let us see how we can package it and test it on Kestra instance. Use the included Gradle task to build the plugin.
+Now that the plugin is developed, package and test it on a Kestra instance. Use the included Gradle task to build the plugin.
 
 To build your plugin, execute the `./gradlew shadowJar` command from the plugin directory.
 
@@ -260,9 +261,9 @@ To use this plugin in your Kestra instance, add this JAR to the [Kestra plugins 
 
 ## Writing unit tests
 
-Let us refactor the file names from `ExampleRunnerTest.java` and `ExampleTest.java` to `FetchRunnerTest.java` and `FetchTest.java` respectively. Under the `tests/resources/flows` folder, we have a file `example.yaml`, which we will rename to `pokemonFetch.yaml`.
+Refactor the file names from `ExampleRunnerTest.java` and `ExampleTest.java` to `FetchRunnerTest.java` and `FetchTest.java` respectively. Under the `tests/resources/flows` folder, rename `example.yaml` to `pokemonFetch.yaml`.
 
-Let us use a relevant flow in `pokemonFetch.yaml`.
+Use the following flow in `pokemonFetch.yaml`:
 
 :::collapse{title="Contents of pokemonFetch.yaml"}
 ```yaml
@@ -279,7 +280,7 @@ tasks:
 ```
 :::
 
-Let us now amend the `FetchRunnerTest.java`. In this test, we try to load the flow file `pokemonFetch.yaml`, and run this flow. We then test if all the tasks in this flow were executed.
+Update `FetchRunnerTest.java` to load `pokemonFetch.yaml` and run the flow, then assert that all tasks were executed.
 
 :::collapse{title="Contents of FetchRunnerTest.java"}
 ```java
@@ -338,7 +339,7 @@ class FetchRunnerTest {
 ```
 :::
 
-Let’s test the actual logic of the plugin in `FetchTest.java`. Here, we are creating the input and invoking the logic present in the task, and then verifying the output returned by the task.
+Test the plugin logic in `FetchTest.java` by creating the input, invoking the task, and verifying the output.
 
 :::collapse{title="Contents of FetchTest.java"}
 ```java
@@ -399,7 +400,7 @@ Now that the plugin is developed and tested, its time to see the plugin in actio
 
 Add this `Dockerfile` to the root of your plugin project:
 
-```
+```dockerfile
 FROM kestra/kestra:develop
 
 COPY build/libs/* /app/plugins/
@@ -425,7 +426,7 @@ tasks:
   pokemon: "pikachu"
 ```
 
-On executing the flow, you can go to the `Outputs` tab, and check out the output.
+On executing the flow, navigate to the `Outputs` tab to view the output.
 
 ![custom_plugin_output](./custom_plugin_output.png)
 

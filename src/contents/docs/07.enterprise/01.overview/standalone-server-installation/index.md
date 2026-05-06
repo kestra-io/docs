@@ -1,6 +1,7 @@
 ---
 title: Install Kestra Enterprise from Standalone JAR
-description: Install Kestra on a standalone server with a simple executable file.
+h1: Run Kestra Enterprise Without Docker Using a JAR File
+description: Install Kestra Enterprise on a standalone server using an executable JAR file. Run the platform without Docker where containerization is unavailable.
 sidebarTitle: Standalone Server Installation Guide
 icon: /src/contents/docs/icons/installation.svg
 editions: ["EE"]
@@ -15,8 +16,6 @@ To deploy Kestra without Docker, there's a standalone JAR available that allows 
 ## Instructions
 
 The following is a quick start guide to get your Kestra Enterprise Edition up and running in standalone mode.
-
----
 
 ## Standalone JAR
 
@@ -58,8 +57,6 @@ The file is then executable with:
 You need to provide a configuration with a connection to a database.
 :::
 
----
-
 For Windows users:
 
 ```powershell
@@ -71,8 +68,6 @@ Or with a file path assuming execution from the current directory:
 ```powershell
 java -jar kestra-ee-VERSION server standalone -c ./application.yaml -p ./plugins --port=8080 # Replace VERSION with your version
 ```
-
----
 
 ## Plugins
 
@@ -89,8 +84,6 @@ This installs task plugins in the `plugins` directory. To install them elsewhere
 
 Additional Enterprise Edition plugins that are not task related may also be required -- such as secrets or storage plugins.
 
----
-
 ## Secret plugins
 
 Secret plugins must be downloaded from the Kestra registry using the same credentials, and placed in your `plugins` directory.
@@ -102,8 +95,6 @@ Secret plugins must be downloaded from the Kestra registry using the same creden
 | GCP | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-gcp/0.24.0/secret-gcp-0.24.0.jar |
 | Azure | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-azure/0.24.0/secret-azure-0.24.0.jar |
 
----
-
 ## MinIO Internal Storage
 
 To enable MinIO storage, install the storage plugin:
@@ -112,8 +103,6 @@ To enable MinIO storage, install the storage plugin:
 ## Install MinIO internal storage plugin
 kestra plugins install io.kestra.storage:storage-minio:LATEST
 ```
-
----
 
 ## Enterprise deployment configuration
 
@@ -133,15 +122,11 @@ To enable Kestra Enterprise features, configure the following parameters:
 | LDAP | No | [LDAP](../../03.auth/sso/ldap/index.md)                                                                                            | Connect to an existing LDAP provider |
 | SCIM | No | [SCIM](../../03.auth/scim/index.mdx)                                                                                               | Sync user/group membership with SCIM 2.0 |
 
----
-
 ## Starting Kestra
 
 Kestra can be started in **standalone mode** or in a **distributed setup** for production.
 
 Make sure to have a database configured and your Enterprise credentials stored in the `application.yaml` file.
-
----
 
 ## Standalone server
 
@@ -150,8 +135,6 @@ kestra server standalone -c ./application.yaml -p ./plugins --port=8080
 ```
 
 This starts Kestra as a standalone service on port `8080`.
-
----
 
 ## Distributed mode
 

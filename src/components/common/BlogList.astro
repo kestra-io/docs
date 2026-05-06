@@ -1,9 +1,9 @@
 ---
+import { Image } from "astro:assets"
+
 export interface BlogPost {
     path: string
-    image?: {
-        src: string
-    }
+    image?: ImageMetadata
     title: string
     date: string
     category?: string
@@ -32,8 +32,8 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                     {index > 0 && <hr />}
                     <a href={post.path} class="post-card">
                         {post.image && (
-                            <img
-                                src={post.image.src}
+                            <Image
+                                src={post.image}
                                 class="card-img-left"
                                 alt={post.title}
                             />
@@ -83,6 +83,9 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
 
             &:hover {
                 background-color: var(--ks-background-secondary);
+                .card-title {
+                    color: var(--ks-content-secondary);
+                }
             }
 
             .card-img-left {

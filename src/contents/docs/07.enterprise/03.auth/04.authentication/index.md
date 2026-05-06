@@ -1,5 +1,6 @@
 ---
-title: Authentication in Kestra Enterprise – Configure Login and OIDC
+title: "Authentication in Kestra Enterprise: OIDC Setup"
+h1: Configure Basic Auth and OIDC Login in Kestra
 description: Configure Authentication in Kestra. Set up Basic Auth and OpenID Connect (OIDC) for secure user login and access management.
 sidebarTitle: Authentication
 icon: /src/contents/docs/icons/admin.svg
@@ -13,8 +14,6 @@ How to configure authentication for your Kestra instance.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/MNXewBufBw0?si=CGjEVa-KEDN5N5ii" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Kestra provides two authentication methods:
 

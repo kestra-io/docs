@@ -1,6 +1,7 @@
 ---
-title: Permissions Reference for Kestra Enterprise API
-description: Map RBAC permissions and CRUD actions to API endpoints.
+title: RBAC Permissions Reference for Kestra Enterprise
+h1: RBAC Permissions Mapped to API Endpoints
+description: Reference for Kestra RBAC permissions and CRUD actions mapped to API endpoints. Use this to configure precise access controls for users and service accounts.
 sidebarTitle: Permissions Reference
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

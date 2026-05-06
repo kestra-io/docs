@@ -5,6 +5,7 @@ date: 2023-03-02T18:00:00
 category: News & Product Updates
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg
@@ -114,7 +115,7 @@ If you’d still like to use the high availability and scalability provided by K
 *   Stay with the current version of Kestra (0.6.0).
 *   [Contact us](http://hello@kestra.io) to get access to Kestra Enterprise Edition. **We’d happily give you six months of free access to the Enterprise Edition**.
 
-More information on the Kestra Enterprise Edition can be found [here](/features/enterprise).
+More information on the Kestra Enterprise Edition can be found [here](/enterprise).
 
 ## Plugins
 

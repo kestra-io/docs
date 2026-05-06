@@ -1,5 +1,6 @@
 ---
-title: Best Practices for Secrets in Kestra
+title: "Secrets Management in Kestra: Avoid Accidental Exposure"
+h1: Securely Manage and Use Secrets in Kestra Workflows
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/best-practices.svg
 editions: ["EE", "Cloud"]
@@ -15,7 +16,7 @@ Kestra provides a built-in [secret manager](../../07.enterprise/02.governance/se
 ## Secret obfuscation in logs is best effort
 
 Kestra attempts to mask secrets in logs and during expression evaluation, but masking is not foolproof.
-Current log obfuscation replaces full secret matches with `****`. However, if a secret is modified — for example, through substring extraction, concatenation, encoding, or interpolation — it may bypass obfuscation and appear in logs. Refer to the [Filter Reference](../../expressions/03.filter-reference/index.md) for a list of possible transformations.
+Current log obfuscation replaces full secret matches with `****`. However, if a secret is modified — for example, through substring extraction, concatenation, encoding, or interpolation — it may bypass obfuscation and appear in logs. Refer to the [Filter Reference](../../expressions/03.filters/index.mdx) for a list of possible transformations.
 
 For example, the following flow uses `jq()` in a log message to return a partial value associated with a secret:
 

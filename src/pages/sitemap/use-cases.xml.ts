@@ -1,6 +1,3 @@
-export const prerender = false
-
-import { slugify } from "@kestra-io/ui-libs"
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
 import { sitemapResponse } from "~/utils/sitemap.ts"
@@ -10,7 +7,7 @@ export const GET: APIRoute = async () => {
 
     const urls = allUseCases.map(
         (story) =>
-            `https://kestra.io/use-cases/stories/${story.id}-${slugify(story.data.title ?? "--")}`,
+            `https://kestra.io/use-cases/stories/${story.id}`,
     )
 
     return sitemapResponse(urls)

@@ -1,5 +1,6 @@
 ---
-title: Worker Isolation in Kestra Enterprise – Enforce Separation
+title: "Worker Isolation in Kestra Enterprise: Separation"
+h1: Enforce Execution Isolation for Secure Multi-Tenant Operations
 description: Enforce security with Worker Isolation in Kestra. Isolate execution environments, file systems, and processes for secure multi-tenant operations.
 sidebarTitle: Worker Isolation
 icon: /src/contents/docs/icons/admin.svg
@@ -14,7 +15,7 @@ When dealing with multiple teams, you can add extra security measures to your Ke
 
 ## Java security
 
-By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](/plugins/plugin-graalvm/python), and more. This is because the worker shares the same file system.
+By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](/plugins/plugin-graalvm/python-graalvm), and more. This is because the worker shares the same file system.
 
 You can use the following to opt in to real isolation of file systems using advanced Kestra EE Java security:
 

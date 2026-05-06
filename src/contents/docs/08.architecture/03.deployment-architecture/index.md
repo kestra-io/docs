@@ -1,5 +1,6 @@
 ---
-title: Kestra Deployment Architectures – JDBC and Kafka
+title: "Deployment Architectures in Kestra: JDBC and Kafka"
+h1: Compare Standalone, Medium, and High-Availability Deployments
 description: Choose your Kestra deployment architecture. Compare Standalone (JDBC), Medium (Database), and High-Availability (Kafka & Elasticsearch) models.
 sidebarTitle: Deployment architecture
 icon: /src/contents/docs/icons/architecture.svg
@@ -12,8 +13,6 @@ Kestra is a Java application distributed as an executable. It supports multiple 
 - [Docker](../../02.installation/02.docker/index.md)
 - [Kubernetes](../../02.installation/03.kubernetes/index.md)
 - Manual deployment
-
-## Compare Kestra deployment architectures
 
 Kestra’s plugin system allows you to choose the dependency types that best match your requirements.
 Below are three common deployment architectures.

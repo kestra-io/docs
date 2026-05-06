@@ -1,12 +1,11 @@
 ---
-title: Configure DinD Behind MITM Proxy for Kestra
+title: "Docker-in-Docker Behind a Proxy: Kestra on Kubernetes"
+h1: Run Docker-in-Docker behind a corporate proxy on Kubernetes
 sidebarTitle: MITM Proxy for DinD
 icon: /src/contents/docs/icons/padlock.svg
 description: Configure Docker-in-Docker (DinD) to run securely behind a corporate or MITM proxy within your Kestra deployment.
 ---
 Configure Docker-in-Docker (DinD) to run behind a Proxy in a Kubernetes-based Kestra deployment.
-
-## Run Docker-in-Docker behind a proxy
 
 This guide describes how to configure Docker-in-Docker (DinD) to work **behind a corporate or MITM (Man-in-the-Middle) proxy** in a **rootless** setup, within a Kestra deployment.
 
@@ -18,7 +17,7 @@ If your environment uses a proxy that intercepts HTTPS traffic (such as an MITM 
 
 Without this, you'll see errors like:
 
-```text
+```plaintext
 x509: certificate signed by unknown authority
 ```
 
@@ -62,35 +61,22 @@ kubectl create configmap dind-ca-certs \
 Here is a configuration sample you can include in your Helm `values.yaml`:
 
 ```yaml
-configuration:
-  kestra:
-    plugins:
-      configurations:
-        - type:  io.kestra.plugin.scripts.runner.docker.Docker
-          values:
-            volume-enabled: true
-extraVolumes:
-  - name: docker-daemon-config
-    configMap:
-      name: dind-daemon-config
-  - name: ca-cert-volume
-    configMap:
-      name: dind-ca-certs
-dind:
-  enabled: true
-  image:
-    image: docker
-    tag: dind-rootless
-    pullPolicy: IfNotPresent
-  socketPath: /dind/
-  tmpPath: /tmp/
-  resources: {}
-  args:
-    - --log-level=fatal
-    - --group=1000
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
+configurations:
+  application:
+    kestra:
+      plugins:
+        configurations:
+          - type: io.kestra.plugin.scripts.runner.docker.Docker
+            values:
+              volume-enabled: true
+common:
+  extraVolumes:
+    - name: docker-daemon-config
+      configMap:
+        name: dind-daemon-config
+    - name: ca-cert-volume
+      configMap:
+        name: dind-ca-certs
   extraVolumeMounts:
     - name: docker-daemon-config
       mountPath: /home/rootless/.config/docker
@@ -101,6 +87,23 @@ dind:
     - name: ca-cert-volume
       mountPath: /home/rootless/mitmproxy
       readOnly: true
+dind:
+  enabled: true
+  base:
+    rootless:
+      image:
+        repository: docker
+        tag: dind-rootless
+        pullPolicy: IfNotPresent
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      args:
+        - --log-level=fatal
+        - --group=1000
+  socketPath: /dind/
+  tmpPath: /tmp/
+  resources: {}
   extraEnv:
     - name: SSL_CERT_FILE
       value: /home/rootless/mitmproxy/ca.crt

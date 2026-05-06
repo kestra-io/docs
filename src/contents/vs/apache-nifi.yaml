@@ -1,0 +1,256 @@
+title: "Kestra vs. Apache NiFi: Workflow Orchestration Beyond Data Flow"
+description: "Compare Kestra vs Apache NiFi: Declarative YAML orchestration for any workload vs. visual drag-and-drop data flow routing. See architecture, setup, version control, and use cases."
+competitorName: Apache NiFi
+category: Data Orchestration
+shortDescription: "Visual drag-and-drop data flow routing vs. declarative YAML orchestration for any workload."
+
+brandColor:
+  color: "#728e9b"
+  gradient: "linear-gradient(90deg, #728e9b, #b9c6cd)"
+
+intro:
+  title: "Kestra vs. Apache NiFi: Workflow Orchestration Beyond Data Flow"
+  description: "Apache NiFi excels at real-time data routing and transformation with a visual canvas. Kestra orchestrates workflows across data pipelines, infrastructure, and AI workloads in declarative YAML. One moves data between systems. The other coordinates everything your business runs on."
+
+philosophy:
+  mainTitle: Two Different Problems, Two Different Tools
+  kestra:
+    title: "Universal Workflow Orchestration"
+    description: "Declarative YAML workflows versioned in Git, executed in isolated containers, deployed through CI/CD. Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes across any language and any cloud. Event-driven at core."
+    subCardText: '"How do I orchestrate production workflows across teams and systems, not just move data between them?"'
+  competitor:
+    title: Visual Data Flow Routing
+    description: "Flow-based data routing and transformation platform built around a visual canvas. Connect processors to route, transform, and distribute data in real time. Purpose-built for data in motion: streaming ingestion, edge collection, and data provenance tracking."
+    shadowColor: "#1A9FB9"
+    subCardBg: "var(--ks-background-blue-light)"
+    subCardText: '"How do I route and transform data in real time across my systems?"'
+
+businessValue:
+  mainTitle: "Data Flow Routes Data Between Systems.<br />Orchestration Runs the Business That Depends on Them."
+  kestra:
+    title: Universal Orchestration
+    list:
+      - "Data pipelines, infrastructure automation, AI workloads, and business processes"
+      - "YAML-first, Git-native, deployed through CI/CD like application code"
+      - "Event-driven at core: react to webhooks, S3 uploads, Kafka messages, and database changes"
+      - "Language-agnostic: Python, SQL, Bash, Go, R, Node.js in isolated containers"
+      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+  competitor:
+    title: Data Flow and Routing
+    list:
+      - "Real-time data routing, transformation, and distribution between systems"
+      - "Visual drag-and-drop canvas with Java-based processors"
+      - "Strong for streaming ingestion and edge device data collection"
+      - "Built-in data provenance tracking for every packet through the flow"
+      - "Limited support for non-data orchestration (infrastructure, business logic)"
+    shadowColor: "#1A9FB9"
+    bulletColor: "#0EACCC"
+  footerText: "Use Kestra when orchestration needs to extend beyond data routing into infrastructure, AI, and business processes, all managed in Git and deployed through CI/CD. NiFi is a strong fit when packet-level provenance tracking is a hard requirement, edge-to-cloud data collection via MiNiFi is critical, or your team needs a visual canvas for managing continuous, high-throughput data flows."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "NiFi's single Docker command gets you to a running instance, but production deployments require ZooKeeper or embedded clustering, SSL certificate configuration, and authorization policies. Kestra's Docker Compose bundles the database and UI in a single file — spin it up locally and run your first workflow in minutes."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready. Database and config included. Open the UI, pick a Blueprint, run it. Your first workflow is the same YAML format it will be in production."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~30"
+      two: Minutes
+    description: "NiFi runs in Docker for development, but production requires configuring clustering (ZooKeeper or embedded), SSL certificates, and user authentication. The visual canvas is ready immediately; the surrounding infrastructure takes significantly more time."
+    shadowColor: "#1A9FB9"
+    command: |
+      # Development: single node
+      docker run --name nifi \
+        -p 8443:8443 \
+        -e SINGLE_USER_CREDENTIALS_USERNAME=admin \
+        -e SINGLE_USER_CREDENTIALS_PASSWORD=password \
+        apache/nifi:latest
+
+      # Production requires:
+      # - ZooKeeper cluster (or embedded clustering)
+      # - SSL certificates and keystore/truststore setup
+      # - Authorization policies (file-based or Apache Ranger)
+    lang: sh
+
+easeOfUse:
+  title: "Code You Can Version Control vs. a Visual Canvas"
+  kestra:
+    title: "Kestra: Readable YAML, Git-native by default"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow lives in a file you can commit, review, and deploy through CI/CD."
+    code: |
+      id: daily_ingestion
+      namespace: data.pipelines
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 6 * * *"
+
+      tasks:
+        - id: extract
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            import requests, json
+            data = requests.get("{{ secret('API_ENDPOINT') }}/transactions").json()
+            with open('transactions.json', 'w') as f:
+                json.dump(data, f)
+
+        - id: transform
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select staging.transactions
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Ingestion complete"
+    lang: yaml
+  competitor:
+    title: "NiFi: Visual canvas backed by JSON export"
+    description: "Flows are built by dragging processors onto a canvas and connecting them. NiFi Registry supports version control by exporting flows as JSON, but the source of truth is the visual canvas, not a file you can diff in a pull request."
+    shadowColor: "#1A9FB9"
+    code: |
+      // NiFi flows are authored visually on a canvas.
+      // NiFi Registry exports flows as versioned JSON:
+      {
+        "flowContents": {
+          "name": "Daily Ingestion",
+          "processors": [
+            {
+              "name": "FetchFromAPI",
+              "type": "org.apache.nifi.processors.standard.InvokeHTTP",
+              "schedulingStrategy": "TIMER_DRIVEN",
+              "schedulingPeriod": "1 day"
+            },
+            {
+              "name": "TransformJSON",
+              "type": "org.apache.nifi.processors.standard.JoltTransformJSON",
+              "properties": { "Jolt Specification": "[...]" }
+            },
+            {
+              "name": "LoadToDatabase",
+              "type": "org.apache.nifi.processors.standard.PutDatabaseRecord"
+            }
+          ],
+          "connections": [
+            { "source": "FetchFromAPI", "destination": "TransformJSON" },
+            { "source": "TransformJSON", "destination": "LoadToDatabase" }
+          ]
+        }
+      }
+    lang: json
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
+  competitor:
+    description: "Ingest data from any source, route FlowFiles through a directed graph of processors, transform content in motion, and mediate between disparate systems in real time. NiFi's visual canvas connects processors for continuous data flow with built-in back-pressure and provenance tracking."
+    shadowColor: "#1A9FB9"
+
+featureGrid:
+  title: Kestra vs. Apache NiFi at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: Real-time data flow routing and transformation
+    - feature: Workflow definition
+      kestra: Declarative YAML (code-first)
+      competitor: Visual canvas (JSON export via NiFi Registry)
+    - feature: Version control
+      kestra: "Native Git and CI/CD"
+      competitor: "NiFi Registry (JSON export, not file-based Git)"
+    - feature: Architecture
+      kestra: Event-driven orchestrator
+      competitor: Flow-based data routing engine
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, Bash, Go, R, Node.js)"
+      competitor: "Java processors (scripting via ExecuteScript processor)"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Business process automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Web UI for flow monitoring and management
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation + RBAC out-of-box"
+      competitor: Multi-tenant requires separate NiFi clusters
+    - feature: Air-gapped deployment
+      kestra: "✓ Supported"
+      competitor: "✓ Supported"
+    - feature: Streaming data
+      kestra: "Via Kafka and Pulsar triggers and plugins"
+      competitor: "✓ Purpose-built for real-time data streams"
+    - feature: Data provenance
+      kestra: "Execution logs and topology view per workflow"
+      competitor: "✓ Built-in lineage for every data packet"
+
+testimonials:
+  - quote: "We looked at Airflow and NiFi, but Kestra's architecture made the most sense for us in terms of scalability. The wide range of plugins and the ability to integrate with our systems was a key factor in our decision."
+    author: "John Kim, IT Lead @ FILA"
+    kpis:
+      - value: "2.5M"
+        name: "Monthly executions"
+      - value: "2,000+"
+        name: "Active workflows"
+      - value: "25+"
+        name: "Engineers using Kestra"
+    storyLink: "/use-cases/stories/erp-transformation-smarter-faster-fully-automated"
+
+platformStrengths:
+  title: Kestra Is Built for How Modern Teams Work
+  features:
+    - title: Git-native from day one
+      description: "Kestra workflows are YAML files that live in your Git repository from day one. Commit them, review them in pull requests, and deploy through CI/CD — the same process as application code. Every change is a readable diff and every deployment is traceable."
+    - title: Bring your own scripts, any language
+      description: "Kestra runs Python, Bash, SQL, Go, R, and Node.js in isolated Docker containers. Your existing scripts work without modification — no wrappers, no rewrites, no language constraints. Each task gets its own container so dependencies never conflict."
+    - title: Orchestrate beyond data movement
+      description: "One YAML workflow can ingest data, run a dbt model, provision a cloud resource, and notify a team — with retry logic and audit logs across every step. Kestra coordinates the full lifecycle: data pipelines, infrastructure updates, model training, approvals, and downstream notifications in a single unified definition."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You need to orchestrate workflows that combine data pipelines with infrastructure, AI, or business logic."
+      - "Your team works in multiple languages and needs orchestration that does not require Java expertise."
+      - "Workflows need to live in Git, go through pull requests, and deploy via CI/CD."
+      - "Event-driven triggers (webhooks, Kafka, S3, database changes) are core to your architecture."
+      - "Non-engineers need to trigger and monitor workflows through a self-service interface."
+  competitor:
+    title: Choose Apache NiFi When
+    list:
+      - "Packet-level data provenance is a compliance or audit requirement — you need to track exactly where every record came from, what transformed it, and where it went through the flow."
+      - "Edge-to-cloud data collection is central to your architecture. NiFi's MiNiFi agent runs on edge devices and streams data back to a central NiFi instance."
+      - "Non-engineering teams need to build and manage data flows visually without writing code or YAML."
+      - "Your workload is continuous, high-throughput data streaming that benefits from NiFi's built-in back-pressure and priority queuing at the processor level."
+    shadowColor: "#1A9FB9"
+    bulletColor: "#0EACCC"
+
+commonQuestions:
+  - question: How is Kestra different from Apache NiFi?
+    answer: "NiFi is a data flow platform: it routes and transforms data in real time using a visual canvas of connected processors. Kestra is a workflow orchestration platform: it coordinates tasks across data pipelines, infrastructure, AI workloads, and business processes using declarative YAML. NiFi moves data between systems. Kestra orchestrates the workflows that use that data."
+  - question: Can Kestra replace NiFi for data ingestion?
+    answer: "For scheduled batch ingestion and event-triggered pipelines, yes. Kestra handles data movement via plugins for S3, Azure Blob, GCS, Kafka, databases, and HTTP APIs. Where NiFi has a clear advantage is real-time streaming data flows and per-record data provenance. If your ingestion problem is primarily batch or event-triggered, Kestra covers it. If you need to route continuous data streams with millisecond latency and packet-level lineage, NiFi is purpose-built for that."
+  - question: How does Kestra handle version control compared to NiFi?
+    answer: "Kestra workflows are YAML files. They live in your Git repository from the start, go through pull requests, and deploy through CI/CD. Every change is a commit with a diff you can read. NiFi flows are stored on the visual canvas and require NiFi Registry for version control. The exported format is JSON, which is reviewable but verbose and harder to diff than YAML. Kestra's approach matches how engineering teams already manage application code."
+  - question: FILA evaluated NiFi before choosing Kestra. What drove the decision?
+    answer: "FILA needed a platform that could scale with their global expansion and handle complex multi-step workflows involving databases, file transfers, and API calls across multiple continents. The decision came down to architecture and plugin breadth. Kestra's event-driven model, wide plugin ecosystem, and ability to orchestrate complex ERP workflows across external systems fit their requirements better than combining Airflow and NiFi."
+  - question: Can Kestra and NiFi work together?
+    answer: "Yes. A common pattern is using NiFi for continuous data collection and routing (especially from edge sources or streaming feeds) with Kestra handling downstream orchestration: transformations, warehouse loads, data quality checks, and notifications. Kestra can trigger on data arriving in a landing zone, pick up where NiFi left off, and coordinate the rest of the pipeline."
+  - question: How does Kestra handle streaming data compared to NiFi?
+    answer: "NiFi was purpose-built for streaming: it processes individual FlowFiles in real time with configurable back-pressure and priority queuing. Kestra handles event-driven workflows through Kafka and Pulsar triggers, S3 event triggers, and webhook endpoints, and is better suited for orchestrating what happens after data arrives than for continuous stream processing. For high-throughput streaming with per-record transformations, NiFi wins. For coordinating the workflows that consume that data, Kestra is the right layer."

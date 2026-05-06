@@ -1,5 +1,6 @@
 ---
-title: No Code Flow Development in Kestra – Build Without YAML
+title: "No Code Flow Building in Kestra: Skip the YAML"
+h1: Create and Edit Kestra Flows Visually with No Code
 sidebarTitle: No Code Flow Development
 icon: /src/contents/docs/icons/flow.svg
 description: Create and edit Kestra flows visually using the No Code flow builder, streamlining workflow development.
@@ -74,5 +75,5 @@ Use the **Documentation** panel for property descriptions and examples. With mul
 
 ## FAQ
 
-- **Can I build everything No Code?** Most flows, yes; complex cases may be faster in YAML. You can mix both seamlessly.
+- **Can I build everything No Code?** Most flows, yes; complex cases may be faster in YAML. You can mix both.
 - **Do I lose control vs. YAML?** No — the No Code editor writes standard Kestra YAML that you can export, version, and run anywhere Kestra runs.

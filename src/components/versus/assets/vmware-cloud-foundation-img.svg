@@ -1,0 +1,49 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="458" height="260" rx="8" fill="#1A1D2E"/>
+  <rect x="0" y="0" width="458" height="38" rx="8" fill="#0D1622"/>
+  <rect x="0" y="24" width="458" height="14" fill="#0D1622"/>
+  <rect x="16" y="10" width="60" height="18" rx="3" fill="#00B135" opacity="0.85"/>
+  <text x="20" y="23" font-family="monospace" font-size="9" fill="white">VMware Aria</text>
+  <!-- Sidebar nav -->
+  <rect x="0" y="38" width="80" height="222" fill="#0A1018"/>
+  <rect x="10" y="54" width="60" height="8" rx="2" fill="#00B135" opacity="0.6"/>
+  <rect x="10" y="70" width="60" height="8" rx="2" fill="#1E2A38"/>
+  <rect x="10" y="86" width="60" height="8" rx="2" fill="#1E2A38"/>
+  <rect x="10" y="102" width="60" height="8" rx="2" fill="#1E2A38"/>
+  <rect x="10" y="118" width="60" height="8" rx="2" fill="#1E2A38"/>
+  <!-- Service catalog cards -->
+  <rect x="92" y="48" width="116" height="78" rx="4" fill="#161E2B" stroke="#1E2A38" stroke-width="1"/>
+  <rect x="100" y="58" width="50" height="8" rx="2" fill="#00B135" opacity="0.6"/>
+  <rect x="100" y="72" width="90" height="7" rx="2" fill="#2A3548"/>
+  <rect x="100" y="84" width="70" height="7" rx="2" fill="#2A3548"/>
+  <rect x="100" y="104" width="54" height="14" rx="3" fill="#00B135" opacity="0.4"/>
+  <rect x="216" y="48" width="116" height="78" rx="4" fill="#161E2B" stroke="#1E2A38" stroke-width="1"/>
+  <rect x="224" y="58" width="70" height="8" rx="2" fill="#00B135" opacity="0.6"/>
+  <rect x="224" y="72" width="90" height="7" rx="2" fill="#2A3548"/>
+  <rect x="224" y="84" width="60" height="7" rx="2" fill="#2A3548"/>
+  <rect x="224" y="104" width="54" height="14" rx="3" fill="#2A3548"/>
+  <rect x="340" y="48" width="106" height="78" rx="4" fill="#161E2B" stroke="#1E2A38" stroke-width="1"/>
+  <rect x="348" y="58" width="60" height="8" rx="2" fill="#00B135" opacity="0.6"/>
+  <rect x="348" y="72" width="80" height="7" rx="2" fill="#2A3548"/>
+  <rect x="348" y="84" width="55" height="7" rx="2" fill="#2A3548"/>
+  <rect x="348" y="104" width="54" height="14" rx="3" fill="#2A3548"/>
+  <!-- Provisioning pipeline below -->
+  <rect x="92" y="138" width="354" height="24" rx="3" fill="#0A1018"/>
+  <rect x="100" y="144" width="80" height="10" rx="2" fill="#2A3548"/>
+  <!-- Flow nodes -->
+  <rect x="92" y="172" width="70" height="32" rx="4" fill="#00B135" opacity="0.7"/>
+  <rect x="100" y="182" width="54" height="10" rx="2" fill="white" opacity="0.5"/>
+  <line x1="162" y1="188" x2="180" y2="188" stroke="#2A3548" stroke-width="2"/>
+  <rect x="180" y="172" width="70" height="32" rx="4" fill="#1E2A38" stroke="#00B135" stroke-width="1"/>
+  <rect x="188" y="182" width="54" height="10" rx="2" fill="#2A3548"/>
+  <line x1="250" y1="188" x2="268" y2="188" stroke="#2A3548" stroke-width="2"/>
+  <rect x="268" y="172" width="70" height="32" rx="4" fill="#1E2A38" stroke="#00B135" stroke-width="1"/>
+  <rect x="276" y="182" width="54" height="10" rx="2" fill="#2A3548"/>
+  <line x1="338" y1="188" x2="356" y2="188" stroke="#2A3548" stroke-width="2"/>
+  <rect x="356" y="172" width="80" height="32" rx="4" fill="#1E2A38" stroke="#2A3548" stroke-width="1"/>
+  <rect x="364" y="182" width="62" height="10" rx="2" fill="#2A3548"/>
+  <!-- Status bar -->
+  <rect x="92" y="218" width="354" height="22" rx="3" fill="#0D1622"/>
+  <circle cx="108" cy="229" r="5" fill="#00B135"/>
+  <rect x="120" y="224" width="90" height="8" rx="2" fill="#1E2A38"/>
+</svg>

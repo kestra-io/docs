@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra on Kubernetes with Helm
+title: Deploy on Kubernetes with Helm in Kestra
+h1: Kubernetes Deployment with Helm Charts
 sidebarTitle: Kubernetes
 icon: /src/contents/docs/icons/kubernetes.svg
 description: Deploy Kestra on Kubernetes using the official Helm chart, scalable for production with PostgreSQL and object storage.
@@ -11,18 +12,12 @@ Install Kestra in a Kubernetes cluster using a Helm chart.
   <iframe src="https://www.youtube.com/embed/SV7C2eHiuV0?si=jq8sgQgilYspGosx" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Deploy Kestra on Kubernetes with Helm Charts
-
-Kestra provides an official Helm chart to simplify deployment on Kubernetes. This guide walks you through adding the chart repository, installing Kestra, accessing the UI, and scaling services for production-grade deployments.
-
-Before you begin, ensure you have the following tools installed:
+## Prerequisites
 
 - **kubectl** — to interact with your cluster
 - **Helm** — to install and manage charts
 
-Refer to their documentation if installation is required.
-
----
+Refer to the respective documentation if these tools are not yet installed.
 
 ## Helm chart repository
 
@@ -34,7 +29,8 @@ Kestra maintains three Helm charts:
 
 Chart sources:
 - Repository: [helm.kestra.io](https://helm.kestra.io/)
-- Source code: [kestra-io/helm-charts](https://github.com/kestra-io/helm-charts)
+- Source code: [kestra helm chart](https://github.com/kestra-io/kestra/tree/develop/charts/kestra)
+- ArtifactHub: [kestra](https://artifacthub.io/packages/helm/kestra/kestra) · [kestra-starter](https://artifacthub.io/packages/helm/kestra/kestra-starter)
 
 :::alert{type="info"}
 All default image tags are listed in the [Docker installation guide](../02.docker/index.md).
@@ -45,7 +41,7 @@ All default image tags are listed in the [Docker installation guide](../02.docke
 To understand available configuration options and compare versions:
 
 - **Compare versions**: See differences between two Helm chart versions on [ArtifactHub](https://artifacthub.io/packages/helm/kestra/kestra?modal=values) using the values comparison modal.
-- **Full values reference**: Review all available configuration options in the [values.yaml](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml) file on GitHub.
+- **Full values reference**: Review all available configuration options in the [values.yaml](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) file on GitHub.
 
 ### Starter chart dependencies
 
@@ -55,8 +51,6 @@ The `kestra-starter` chart installs:
 - PostgreSQL (database)
 
 These are not suitable for production.
-
----
 
 ### Enterprise Edition
 
@@ -77,8 +71,6 @@ Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if y
 :::alert{type="info"}
 To manage flows declaratively using CRDs, install the [Kestra Kubernetes Operator](../../version-control-cicd/cicd/07.kubernetes-operator/index.md) (Enterprise Edition).
 :::
-
----
 
 ## Install Kestra
 
@@ -108,8 +100,6 @@ This deploys Kestra in **standalone mode**—all core components run in a single
 :::alert{type="warning"}
 The `kestra` chart does not include PostgreSQL or object storage. Configure these before production deployment.
 :::
-
----
 
 ## Access the Kestra UI
 
@@ -155,8 +145,6 @@ kubectl port-forward $POD_NAME 8080:8080
 ```
 
 Open **http://localhost:8080** in your browser and create your user.
-
----
 
 ## Scaling Kestra on Kubernetes
 
@@ -219,8 +207,6 @@ configurations:
         driverClassName: org.h2.Driver
 ```
 
----
-
 ## Using secrets
 
 Secrets can be mounted into Kestra through the `secrets` section and referenced via manifests.
@@ -256,8 +242,6 @@ extraManifests:
                 bootstrap.servers: "localhost:9092"
 ```
 
----
-
 ## Environment variables
 
 Use `extraEnv` or `extraEnvFrom` to load values from existing Secrets or ConfigMaps.
@@ -289,131 +273,15 @@ extraManifests:
               password: ChangeMe1234!
 ```
 
----
-
 ## Docker-in-Docker (DinD)
 
 Kestra workers support rootless Docker-in-Docker by default. Some clusters restrict this.
 
+On Google Kubernetes Engine (GKE), using a node pool based on `UBUNTU_CONTAINERD` works well with rootless Docker DinD.
+
 ### Disable rootless mode
 
-```yaml
-dind:
-  image:
-    repository: docker
-    pullPolicy: IfNotPresent
-    tag: dind
-  args:
-    - --log-level=fatal
-```
-
-### Troubleshooting DinD
-
-```bash
-docker run -it --privileged docker:dind sh
-docker logs <container-id>
-docker inspect <container-id>
-```
-
----
-
-## Disable DinD and use Kubernetes task runner
-
-```yaml
-dind:
-  enabled: false
-```
-
-Use the Kubernetes task runner instead:
-
-```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.scripts
-    forced: true
-    values:
-      taskRunner:
-        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-```
-```yaml
-        type: local
-        local:
-          basePath: "/app/storage"
-    datasources:
-      h2:
-        url: jdbc:h2:mem:public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-        username: kestra
-        password: kestra
-        driverClassName: org.h2.Driver
-```
-
-Below is an example that shows how to enable Kafka as the queue implementation and configure its server property using a secret:
-
-```yaml
-configurations:
-  application:
-    kestra:
-      queue:
-        type: kafka
-
-  secrets:
-    - name: kafka-server
-      key: kafka.yml
-```
-
-The Kafka secret key then points towards a secret in `extraManifests`:
-
-```yaml
-extraManifests:
-  - apiVersion: v1
-    kind: Secret
-    metadata:
-      name: kafka-server
-    stringData:
-      kafka.yml: |
-        kestra:
-          kafka:
-            client:
-              properties:
-                bootstrap.servers: "localhost:9092"
-```
-
-There are multiple ways to configure and access secrets in a Kubernetes installation. Use whichever method fits your environment.
-
-## Docker in Docker (DinD) Worker side car
-
-By default, Docker in Docker (DinD) is installed on the worker in the rootless version.
-This can be restricted on some environments due to security limitations.
-
-Some solutions you may try:
-- On Google Kubernetes Engine (GKE), use a node pool based on `UBUNTU_CONTAINERD` that works well with Docker DinD, even rootless.
-- Some Kubernetes clusters only support a root version of DinD; to make your Kestra deployment work, [disable the rootless version](https://github.com/kestra-io/helm-charts/blob/master/chart_kestra/charts/kestra/README.md#kestra-dind-rootless) using the following Helm chart values:
-
-```yaml
-dind:
-  image:
-    repository: docker
-    pullPolicy: IfNotPresent
-    tag: dind
-  args:
-    - --log-level=fatal
-```
-
-## Docker in Docker (DinD)
-
-If you encounter issues using Docker in Docker (e.g., with [Script tasks](../../16.scripts/index.mdx) using `io.kestra.plugin.scripts.runner.docker.Docker` Task Runner), start troubleshooting by attaching the terminal: ``docker run -it --privileged docker:dind sh``. Next, use `docker logs container_ID` to get the container logs. Also, try `docker inspect container_ID` to get more information about your Docker container. The output from this command displays details about the container, its environments, network settings, etc. This information can help you identify what might be wrong.
-
-### Docker in Docker using Helm charts
-
-On some Kubernetes deployments, using DinD with our default Helm charts can lead to errors like below:
-
-```bash
-Device "ip_tables" does not exist.
-ip_tables              24576  4 iptable_raw,iptable_mangle,iptable_nat,iptable_filter
-modprobe: can't change directory to '/lib/modules': No such file or directory
-error: attempting to run rootless dockerd but need 'kernel.unprivileged_userns_clone' (/proc/sys/kernel/unprivileged_userns_clone) set to 1
-```
-
-The example below shows `dind` configuration properties and how to use the [insecure mode](https://github.com/kestra-io/helm-charts/blob/master/chart_kestra/charts/kestra/values.yaml#L257) for DinD:
+Some clusters only support a root version of DinD. To enable insecure (privileged) mode instead, use the [insecure mode](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) Helm values:
 
 ```yaml
 dind:
@@ -461,9 +329,28 @@ dind:
         - '--log-level=fatal'
 ```
 
-### Disable Docker in Docker and use Kubernetes task runner
+### Troubleshooting DinD
 
-To avoid using `root` to spin up containers via DinD, disable DinD by setting the following [Helm chart values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/README.md#kestra-dind):
+If you encounter errors like the following on some Kubernetes deployments:
+
+```bash
+Device "ip_tables" does not exist.
+ip_tables              24576  4 iptable_raw,iptable_mangle,iptable_nat,iptable_filter
+modprobe: can't change directory to '/lib/modules': No such file or directory
+error: attempting to run rootless dockerd but need 'kernel.unprivileged_userns_clone' (/proc/sys/kernel/unprivileged_userns_clone) set to 1
+```
+
+Attach to the DinD container to inspect logs:
+
+```bash
+docker run -it --privileged docker:dind sh
+docker logs <container-id>
+docker inspect <container-id>
+```
+
+## Disable DinD and use Kubernetes task runner
+
+To avoid using `root` to spin up containers via DinD, disable DinD by setting the following [Helm chart values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/README.md#kestra-dind):
 
 ```yaml
 dind:

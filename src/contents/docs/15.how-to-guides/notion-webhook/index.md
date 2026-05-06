@@ -1,5 +1,6 @@
 ---
 title: Integrate Notion Webhooks with Kestra
+h1: Automate Notion Updates and Slack Alerts via Webhooks
 icon: /src/contents/docs/icons/notion.svg
 stage: Getting Started
 topics:
@@ -97,7 +98,7 @@ For more details, see the [Notion Webhooks API documentation](https://developers
 
 Your Kestra webhook URL follows this pattern:
 
-```
+```plaintext
 http://your-kestra-host:8080/api/v1/main/executions/webhook/{namespace}/{flow_id}/{key}
 ```
 
@@ -107,7 +108,7 @@ For this example:
 - **Key**: `my-notion-product-alert-key`
 
 Complete URL:
-```
+```plaintext
 http://your-kestra-host:8080/api/v1/main/executions/webhook/company.team/notion-webhook/my-notion-product-alert-key
 ```
 

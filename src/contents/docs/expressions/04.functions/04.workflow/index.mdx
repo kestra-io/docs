@@ -1,0 +1,66 @@
+---
+title: "Workflow Helper Functions in Kestra Expressions"
+h1: "Workflow Helper Functions"
+description: Reference for Kestra's workflow and execution helper functions — errorLogs(), currentEachOutput(), tasksWithState(), iterationOutput(), parentOutput(), and appLink().
+sidebarTitle: Workflow Functions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+This group is more situational, but it becomes valuable in complex flows where you need to inspect sibling results, build links back into Kestra, or summarize failures.
+
+## `errorLogs()`
+
+Prints all error logs from the current execution:
+
+```twig
+{{ errorLogs() }}
+```
+
+It is most useful in `errors` blocks, where you need a compact summary of what failed without manually traversing task state objects.
+
+## `currentEachOutput()`
+
+Use it inside `ForEach` flows to avoid manual `taskrun.value` indexing:
+
+```twig
+{{ currentEachOutput(outputs.make_data).values.data }}
+```
+
+## `tasksWithState()`
+
+Returns a list of task run objects matching the given state. Use it in error handlers or notifications to report which tasks failed:
+
+```twig
+{{ tasksWithState('FAILED') }}
+```
+
+Useful for building conditional logic or failure summaries based on task outcomes.
+
+## `iterationOutput()`
+
+Retrieves the output of a specific iteration from a previous task. Both arguments are optional — `taskId` defaults to the current task and `iteration` defaults to the previous iteration:
+
+```twig
+{{ iterationOutput(outputs.myTask).value }}
+{{ iterationOutput(outputs.myTask, 2).value }}
+```
+
+## `parentOutput()`
+
+Retrieves the output of a parent task. The optional `index` argument specifies which ancestor to target; omitting it returns the direct parent's output:
+
+```twig
+{{ parentOutput() }}
+{{ parentOutput(1) }}
+```
+
+## `appLink()`
+
+Enterprise Edition's `appLink()` builds links back to Kestra Apps:
+
+```twig
+{{ appLink(appId='com.example.my-app') }}
+{{ appLink(baseUrl=true) }}
+```
+
+Use it in notifications when you want recipients to jump directly into the related app rather than the generic flow UI.

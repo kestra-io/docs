@@ -13,7 +13,9 @@ import DataTestimonial from "~/components/data/DataTestimonial.astro"
 import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
 import { $fetchApiCached } from "~/utils/fetch"
 
-const { results: blueprints } = await $fetchApiCached(`/blueprints/versions/latest?tags=data&page=1&size=20`)
+const { results: blueprints } = await $fetchApiCached(
+    `/blueprints/versions/latest?tags=data&page=1&size=20`,
+)
 
 const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
 
@@ -28,7 +30,7 @@ const items = [
     },
     {
         question: "Can I migrate from Airflow without rewriting everything?",
-        answer: "Yes. Most teams migrate incrementally. We provide conversion utilities, Blueprint templates matching common Airflow patterns, and a <a href='/docs/migration-guide/airflow'>migration guide</a>",
+        answer: "Yes. Most teams migrate incrementally. We provide conversion utilities, Blueprint templates matching common Airflow patterns, a <a href='/vs/airflow'>migration guide</a>, and an <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a> covering both the upgrade and migration paths.",
     },
     {
         question: "How does pricing work?",
@@ -79,7 +81,7 @@ const items = [
         {blueprints}
         {tags}
         link={{
-            href: "/blueprints?tags=data",
+            href: "/blueprints?tags=Data",
             text: "View more Data blueprints",
         }}
     />

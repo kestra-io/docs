@@ -6,6 +6,8 @@ import Header from "~/components/blueprints/Header.astro"
 import Detail from "~/components/blueprints/Detail.vue"
 import Related from "~/components/blueprints/Related.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
+import { NO_RANDOM_ORDER } from "astro:env/client"
+import { randomSortFunction } from "~/utils/random"
 
 const { id } = Astro.params
 
@@ -36,7 +38,7 @@ if (pageData.tags && pageData.tags.length > 0) {
         if (data && data.results.length > 0) {
             const rowBlueprints = data.results
                 .filter((b) => b.id !== pageData.id)
-                .sort(() => Math.random() - 0.5)
+                .sort(randomSortFunction)
                 .slice(0, 6)
 
             if (rowBlueprints.length > 0) {
@@ -50,7 +52,7 @@ if (pageData.tags && pageData.tags.length > 0) {
     }
 }
 
-const title = pageData.title
+const title = pageData.metaTitle || pageData.title
 const description = pageData.metaDescription
 ---
 
@@ -75,8 +77,8 @@ const description = pageData.metaDescription
     }
     <SeeHow
         cta={{
-            text: "Get started",
-            href: "/docs/quickstart#start-kestra",
+            text: "Get Started",
+            href: "/get-started",
         }}
     >
         <Fragment slot="title">New to Kestra?</Fragment>

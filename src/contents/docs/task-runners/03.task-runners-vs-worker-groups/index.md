@@ -1,5 +1,6 @@
 ---
 title: Task Runners vs Worker Groups – When to Use Each
+h1: Choosing Between Task Runners and Worker Groups in Kestra
 sidebarTitle: Task Runner vs. Worker Group
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -56,13 +57,13 @@ Here are common use cases in which **Task Runners** can be beneficial:
 
 ### Worker Groups usage
 
-First, make sure you start the worker with the `--worker-group myWorkerGroupKey` flag. It's important for the new worker to have a configuration similar to that of your principal Kestra server and to have access to the same backend database and internal storage. The configuration file will be passed via the `--config` flag, as shown in the example below.
+First, start the worker with the `--worker-group myWorkerGroupKey` flag. It's important for the new worker to have a configuration similar to that of your principal Kestra server and to have access to the same backend database and internal storage. The configuration file will be passed via the `--config` flag, as shown in the example below.
 
 ```shell
 kestra server worker --worker-group=myWorkerGroupKey --config=/path/to/kestra-config.yaml
 ```
 
-To assign a task to the desired worker group, simply add a `workerGroup.key` property. This will ensure that the task or polling trigger is executed on a worker in the specified worker group.
+To assign a task to the desired worker group, add a `workerGroup.key` property. This will ensure that the task or polling trigger is executed on a worker in the specified worker group.
 
 ```yaml
 id: myflow

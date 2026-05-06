@@ -1,5 +1,6 @@
 ---
-title: Install Only Selected Plugins in Kestra Open Source
+title: Install Only Selected Plugins in Kestra OSS
+h1: Install Specific Plugins for a Lightweight Kestra Build
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

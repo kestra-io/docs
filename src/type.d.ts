@@ -10,6 +10,7 @@ interface Blueprint {
     namespace: string
     name: string
     description: string
+    metaTitle: string
     metaDescription: string
     flow: string
     tasks: Array<{ id: string; type: string }>
@@ -64,7 +65,6 @@ interface PluginInformation {
 
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace
 type ENV = {
-    ISR_CACHE: KVNamespace
     ICON_CACHE: KVNamespace
 }
 

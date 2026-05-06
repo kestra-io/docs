@@ -5,6 +5,8 @@ date: 2025-09-09T09:30:00
 category: News & Product Updates
 authors:
   - name: Anna Geller
+    linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+    medium: https://annageller.medium.com/
     image: ageller
     role: Product Lead
 image: ./main.jpg
@@ -35,8 +37,6 @@ Check the video below for a quick overview of all enhancements:
   <iframe src="https://www.youtube.com/embed/FpKuP3Y8uuM?si=T2RUT5fsfdYZ1wQD" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## AI Copilot
 
 We're excited to announce the **AI Copilot** in Kestra 1.0, designed to help you build and modify flows directly from natural language prompts. Simply describe what you want to accomplish and Copilot will generate the YAML flow code for you. Once your initial flow is created, you can iteratively refine it with Copilot's help, adding new tasks or adjusting triggers without touching unrelated parts of the flow. The AI Copilot gives you the speed and convenience of AI while keeping everything as code in Kestra's declarative syntax.
@@ -51,8 +51,6 @@ Check the video below for a demo of how to use AI Copilot:
   <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=XUmI_BG4MulVamd2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## AI Agents
 
 To simplify orchestration, Kestra 1.0 introduces **AI Agents**, a new way to bring autonomy and adaptability to your workflows. With AI Agents, workflows are no longer limited to a predefined sequence of tasks. An AI Agent task launches an autonomous process with the help of an LLM, memory, and tools such as web search, task execution, and flow calling, and can dynamically decide which actions to take and in what order. Unlike traditional flows, an AI Agent can loop tasks until a condition is met, adapt to new information, and orchestrate complex multi-step objectives on its own. This enables agentic orchestration patterns in Kestra, where agents can operate independently or collaborate in multi-agent systems, all while remaining fully observable and manageable in code.
@@ -66,8 +64,6 @@ The video below shows how to use AI Agents in Kestra:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/osrS9mi5-eg?si=POI9pQyGefA0RhjQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ### Why AI Copilot and AI Agents?
 
@@ -200,8 +196,6 @@ The video below shows how to use Playground to build a flow step by step:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/p7UXd66GI1M?si=uoOlWJXedBnsrj1N" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## Plugin Versioning (GA)
 
@@ -536,8 +530,6 @@ This post highlighted the new features and enhancements introduced in Kestra 1.0
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/KXmvXAmNx5c?si=u-Jxo70O9lT-4Rte" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) ⭐️.
 

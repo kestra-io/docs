@@ -1,4 +1,5 @@
 import type { JSONProperty, JSONSchema, Plugin } from "@kestra-io/ui-libs"
+import type { TocLink } from "./types"
 
 export function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
     return {
@@ -14,47 +15,32 @@ export function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
 }
 
 export function nuxtBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
+    const first = subGroupsWrappers[0]
     return {
-        title: subGroupsWrappers?.[0]?.title,
-        description: subGroupsWrappers?.[0]?.description,
+        title: first?.title,
+        description: first?.description,
         body: {
             plugins: subGroupsWrappers,
-            group: subGroupsWrappers?.[0]?.group,
+            group: first?.group,
         },
     }
 }
 
-interface TocLink {
-    id: string
-    depth: number
-    text: string
-    children?: TocLink[]
+function buildPropertiesToc(prefix: string, properties: Record<string, JSONProperty>): TocLink[] {
+    return Object.entries(properties)
+        .sort(([, a], [, b]) => Number(Boolean(b.$required)) - Number(Boolean(a.$required)))
+        .map(([key]) => ({
+            id: prefix + key,
+            depth: 3,
+            text: key.split("_")[0],
+        }))
 }
 
-const tocFromJsonSchema = (schema: JSONSchema) => {
-    const buildPropertiesToc = (
-        prefix: string,
-        properties: Record<string, JSONProperty>,
-    ): TocLink[] => {
-        return Object.entries(properties)
-            .sort(([_, a], [__, b]) => {
-                return Boolean(b.$required) === Boolean(a.$required) ? 0 : a.$required ? 1 : -1
-            })
-            .map(([key, _prop]) => ({
-                id: prefix + key,
-                depth: 3,
-                text: key.split("_")[0],
-            }))
-    }
-
+function tocFromJsonSchema(schema: JSONSchema): TocLink[] {
     const links: TocLink[] = []
 
     if (schema.properties?.["$examples"]) {
-        links.push({
-            id: "examples",
-            depth: 2,
-            text: "Examples",
-        })
+        links.push({ id: "examples", depth: 2, text: "Examples" })
     }
 
     if (schema.properties?.properties) {
@@ -76,12 +62,9 @@ const tocFromJsonSchema = (schema: JSONSchema) => {
     }
 
     if (schema.properties?.["$metrics"]) {
-        links.push({
-            id: "metrics",
-            depth: 2,
-            text: "Metrics",
-        })
+        links.push({ id: "metrics", depth: 2, text: "Metrics" })
     }
 
     return links
 }
+

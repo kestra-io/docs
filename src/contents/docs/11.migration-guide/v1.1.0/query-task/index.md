@@ -1,5 +1,8 @@
 ---
-title: The Query Task Now Supports Only One SQL Statement
+title: Query Task Now Supports Only One SQL Statement
+h1: Single SQL Statement Limit Now Enforced in the Query Task
+sidebarTitle: "Query Task: Single Statement"
+description: JDBC Query tasks in Kestra 1.1.0 now accept only a single SQL statement. Learn how to split multi-statement queries to update your flows for compatibility.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
@@ -21,7 +24,7 @@ To execute multiple statements:
 ### Impact
 
 Workflows containing multiple SQL statements in one `Query` task will fail with the following error:
-```
+```plaintext
 Query task supports only a single SQL statement. Use the Queries task to run multiple statements.
 ```
 

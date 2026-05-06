@@ -1,5 +1,6 @@
 ---
 title: Synchronize Local Flows in Kestra
+h1: Sync Flows from a Local Directory with File Watching
 icon: /src/contents/docs/icons/admin.svg
 stage: Getting Started
 topics:
