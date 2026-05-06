@@ -1,5 +1,6 @@
 ---
-title: Check Machine Resources and Tool Versions with Ansible and Kestra
+title: Audit Machines and Tool Versions with Ansible in Kestra
+h1: Use Ansible Playbooks to Check Resources and Automate Updates
 icon: /src/contents/docs/icons/ansiblecli.svg
 stage: Intermediate
 description: Use Ansible playbooks orchestrated by Kestra to audit machine resources, check tool versions, and automate infrastructure updates.
@@ -315,7 +316,7 @@ Everything from this Python upgrade to other machine diagnostics are aggregated 
 
 ### Run it locally
 
-Make sure Ansible is installed and save the YAML as `system_info.yml`, run it against localhost, and peek at the output:
+Ensure Ansible is installed and save the YAML as `system_info.yml`, run it against localhost, and inspect the output:
 - `ansible-playbook -i localhost, -c local system_info.yml`
 - Optionally inspect the JSON: `jq '.' system_info.json`
 
@@ -385,7 +386,7 @@ Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files
 
 ![Namespace Files](./flow-namespace-files.png)
 
-Also make sure to add the `inventory.ini` file to the Namespace as well (`localhost ansible_connection=local`). For simplicity, this guide checks the local machine, but of course this example can be expanded to utilize Ansible's capability to SSH into multiple servers and perform operations:
+Also add the `inventory.ini` file to the Namespace (`localhost ansible_connection=local`). For simplicity, this guide checks the local machine, but of course this example can be expanded to utilize Ansible's capability to SSH into multiple servers and perform operations:
 
 ```yaml
 id: system_report
@@ -442,7 +443,7 @@ The `upload_output_to_s3` task pushes the generated JSON to S3 using secrets for
 
 ### Add a Slack notification
 
-To include a separate notification to the relevant channels, add the [Slack Incoming Webhook task](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook) after the upload with a message alerting that "Machine X" had outdated software and patched an upgrade. You can swap Slack for any other notifier in the Plugin catalog or chain multiple notifications if needed:
+To include a separate notification to the relevant channels, add the [Slack Incoming Webhook task](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook) after the upload with a message alerting that "Machine X" had outdated software and patched an upgrade. You can swap Slack for any other notifier in the Plugin catalog or chain multiple notifications if needed:
 
 ```yaml
   - id: slack_notification

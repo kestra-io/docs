@@ -1,5 +1,6 @@
 ---
 title: Checks in Kestra – Pre-Execution Validations
+h1: Validate Inputs Before Any Task Runs with Checks
 description: Implement Checks in Kestra for pre-execution validation. Guard your workflows by enforcing conditions on inputs before any task begins execution.
 sidebarTitle: Checks
 icon: /src/contents/docs/icons/flow.svg

@@ -9,6 +9,9 @@ import CloudIcon from "./assets/hero/cloud.svg"
 import HeroAnimation from "./hero-animation.astro"
 import AnimatedWord from "./AnimatedWord.vue"
 import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 import LogoBar from "./LogoBar.astro"
 import LogoCarousel from "~/components/common/LogoCarousel.astro"
 import JPMorganIcon from "./assets/companies/jpmorgan.svg"
@@ -17,7 +20,7 @@ import XiaomiIcon from "./assets/companies/xiaomi.svg"
 import BloombergIcon from "./assets/companies/bloomberg.svg"
 import FilaIcon from "./assets/companies/fila.svg"
 import AppleIcon from "./assets/companies/apple.svg"
-import ToyotaIcon from "./assets/companies/toyota.svg"
+import AmdocsIcon from "./assets/companies/amdocs.svg"
 ---
 
 <section aria-labelledby="hero">
@@ -40,7 +43,7 @@ import ToyotaIcon from "./assets/companies/toyota.svg"
             <span><DeclarativeIcon />Declarative</span>
             <span><AnyLangIcon />Any Language</span>
             <span><ApiFirstIcon />API-First</span>
-            <span><PluginsIcon />1200+ Plugins</span>
+            <span><PluginsIcon />{totalPlugins}+ Plugins</span>
             <span><LockInIcon />No Lock-in</span>
             <span><SelfHostedIcon />Self-Hosted</span>
             <span><CloudIcon />Cloud</span>

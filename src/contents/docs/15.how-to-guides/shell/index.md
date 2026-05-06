@@ -1,5 +1,7 @@
 ---
 title: Run Shell Scripts Inside Your Flows
+h1: Execute Bash and Shell Commands in Kestra Workflows
+description: Run Bash and shell scripts in Kestra workflows. Execute multi-step commands, chain scripts with pipes, and handle errors in automated shell tasks.
 icon: /src/contents/docs/icons/bash.svg
 stage: Getting Started
 topics:
@@ -150,7 +152,7 @@ _This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kes
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: shell_metrics

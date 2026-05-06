@@ -1,5 +1,6 @@
 ---
-title: Keycloak SCIM Provisioning
+title: Keycloak SCIM Provisioning in Kestra
+h1: Set Up Keycloak SCIM Provisioning for Identity Sync
 description: Configure SCIM provisioning with Keycloak. Synchronize users and groups from Keycloak to Kestra Enterprise for centralized identity management.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -76,8 +77,6 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 :::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user using our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
 :::
-
----
 
 ## Keycloak SCIM setup
 

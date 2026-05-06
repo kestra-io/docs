@@ -1,7 +1,7 @@
 title: "n8n vs Kestra for Workflow Automation"
 description: "Compare Kestra vs n8n: Code-first universal orchestration in any language with YAML vs visual drag-and-drop app automation. See features, architecture, and use cases."
 competitorName: n8n
-category: Data Orchestration
+category: Business Automation
 shortDescription: "Visual low-code app automation vs. code-first universal orchestration at enterprise scale."
 
 brandColor:
@@ -197,7 +197,7 @@ testimonials:
         name: "Faster workflow creation"
       - value: "0"
         name: "Pipeline failures"
-    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Actually Work

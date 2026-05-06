@@ -1,5 +1,6 @@
 ---
-title: Tutorial – Pass Outputs Between Tasks in Kestra
+title: Pass Outputs Between Tasks in Kestra
+h1: Share Data Between Tasks and Flows Using Outputs
 sidebarTitle: Outputs
 icon: /src/contents/docs/icons/tutorial.svg
 description: Learn how to pass data between tasks and flows in Kestra using Outputs, enabling complex data processing pipelines.
@@ -49,8 +50,6 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "API Status Code: {{ outputs.api.code }}"
 ```
-
----
 
 ## Use outputs in your flow
 
@@ -111,8 +110,6 @@ You can test `{{ outputs.task_id.body | jq('.products') | first }}` and any othe
 
 ![Debug Expression](./eval_expressions.png)
 
----
-
 ## Passing data between tasks
 
 So now our flow is able to handle different API endpoints through an input, extract that API's data as an output, and pass that output to a custom Python script to package the data into a usable CSV file.
@@ -163,7 +160,7 @@ This example flow passes data between tasks using Outputs. The `inputFiles` argu
 
 ![Preview](./preview.png)
 
-To sum up, our flow extracts data from an API, uses that data in a Python script, executes a SQL query, and generates a downloadable artifact.
+This flow extracts data from an API, processes it in a Python script, executes a SQL query, and generates a downloadable artifact.
 
 :::alert{type="info"}
 If you encounter any issues while executing the above flow, this might be a Docker-related issue (i.e., Docker-in-Docker setup, which can be difficult to configure on Windows). Set the runner property to `PROCESS` to run the Python script task in the same process as the flow rather than in a Docker container, as shown in the example below. This will avoid any Docker related issues.

@@ -1,5 +1,7 @@
 ---
 title: Build ETL Pipelines in Kestra
+h1: Design and Automate ETL Pipelines Using DuckDB and Kestra
+description: Build end-to-end ETL pipelines in Kestra. Extract data from any source, transform it, and load to your target data warehouse with full observability.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -16,7 +18,7 @@ We have used AWS access key and secret key in the example workflows below. To kn
 
 ## Using DuckDB
 
-DuckDB can be leveraged to transform the data directly using SQL queries.
+DuckDB transforms data directly using SQL queries.
 
 In the example below, we fetch CSV files, perform the join transformation using DuckDB Query task, store the result, upload the detailed orders onto S3, perform another transformation on the stored result, and finally upload the file as CSV onto S3.
 
@@ -246,9 +248,9 @@ tasks:
 
 ## Using dbt
 
-We can create a similar pipeline based on a ELT model using dbt via Kestra. We can leverage the namespace files for creating the dbt models.
+You can create a similar pipeline based on an ELT model using dbt via Kestra, using namespace files for the dbt models.
 
-In this example, we will be using dbt + BigQuery and perform the ELT process where we will load data from a http request to Hugging Face into BigQuery tables, perform transformations such as join and aggregates using dbt, and then query the newly generated tables as a result of dbt transformation.
+This example uses dbt + BigQuery to perform the ELT process: it loads data from an HTTP request to Hugging Face into BigQuery tables, performs join and aggregate transformations using dbt, and then queries the resulting tables.
 
 ```yaml
 id: dbt_transformations
@@ -413,7 +415,7 @@ models:
 
 Next, create `models` folder. All the upcoming files will be created under the `models` folder.
 
-We will create `sources.yml` which defines the source tables that will be referenced in other models.
+Create `sources.yml`, which defines the source tables referenced in other models.
 
 ```yaml
 version: 2
@@ -427,7 +429,7 @@ sources:
       - name: products
 ```
 
-Next, we will create two files `stg_orders.sql` and `stg_products.sql` which will materialize as views on top of the source tables. The contents of these files respectively will be:
+Next, create two files — `stg_orders.sql` and `stg_products.sql` — which materialize as views on top of the source tables:
 
 **stg_orders.sql**
 
@@ -457,7 +459,7 @@ brand
 from {{ source('ecommerce', 'products') }}
 ```
 
-Next, we will create `detailed_orders.sql` which will create the `detailed_orders` table. This model will join the `stg_orders` and `stg_products` view based on `product_id`. The contents of `detailed_orders.sql` file will be as follows:
+Next, create `detailed_orders.sql`, which creates the `detailed_orders` table by joining the `stg_orders` and `stg_products` views on `product_id`:
 
 ```sql
 {{ config(materialized="table") }}
@@ -477,7 +479,7 @@ from {{ ref('stg_orders') }} o join {{ ref('stg_products') }} p
 on o.product_id = p.product_id
 ```
 
-Next, we will create `order_per_product.sql` which will create the `order_per_product` table. This model demonstrates aggregation performed on `detailed_orders` table. The contents of `order_per_product.sql` file will be as follows:
+Next, create `order_per_product.sql`, which creates the `order_per_product` table by aggregating the `detailed_orders` table:
 
 ```sql
 {{ config(materialized="table") }}

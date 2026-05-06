@@ -1,5 +1,6 @@
 ---
-title: Namespace Management in Kestra Enterprise – Secure Configuration
+title: "Namespace Management in Kestra Enterprise: Isolation"
+h1: Configure Isolated Namespaces with Secrets and Plugin Defaults
 description: Secure your Kestra instance with Namespace Management. Configure isolated environments, manage secrets, and set Namespace-level plugin defaults.
 sidebarTitle: Namespace Management
 icon: /src/contents/docs/icons/admin.svg
@@ -137,8 +138,6 @@ The video below shows how you can create a Namespace from the Kestra UI. After c
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/rHMAAADQQN8?si=V-yUnGzWJfkB-ONt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
----
-
 
 ### From Terraform
 

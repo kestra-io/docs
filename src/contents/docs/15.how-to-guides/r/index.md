@@ -1,5 +1,7 @@
 ---
 title: Run R Inside Your Flows
+h1: Execute R Scripts in Kestra Workflows
+description: Run R scripts in Kestra for statistical computing and data analysis. Use Docker to manage package dependencies and capture outputs for downstream tasks.
 icon: /src/contents/docs/icons/r.svg
 stage: Getting Started
 topics:
@@ -162,7 +164,7 @@ _This example works for both `io.kestra.plugin.scripts.r.Script` and `io.kestra.
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your R script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your R script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: r_metrics

@@ -18,13 +18,13 @@ import { buildPluginPageProps } from "~/utils/plugins/buildPluginPageProps"
 import { resolveGithubReleaseRepo } from "~/utils/plugins/resolveGithubRepo"
 import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
-import { generateSubgroupPluginData } from "~/utils/plugins/generateSubgroupPluginData"
+import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import {
-    fetchArborescence,
     fetchInitialPluginData,
     fetchPageDefinition,
     fetchSecondaryData,
 } from "~/utils/plugins/fetchPluginPageData"
+import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
 
 const splitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -51,6 +51,10 @@ const { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
         isEePlugin,
     )
 
+if (subGroup && allPlugins.filter((p) => p.name === pluginName && p.subGroup).length === 1) {
+    return Astro.redirect(`/plugins/${[pluginName, ...splitRouteSlug.slice(2)].join("/")}`, 301)
+}
+
 const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 const pageList = recursivePages(navigation[0])
@@ -76,23 +80,20 @@ try {
     // do nothing if plugin not found
 }
 
-const subgroupPluginData = generateSubgroupPluginData(
+const sidebarPluginData = generateSidebarPluginData(
     allPlugins.filter((r) => r.name === pluginName),
     allPluginMetadata,
 )
 
-const [page, { blueprintCounts, relatedBlogs }, arborescencePlugins] =
-    await Promise.all([
-        pluginType
-            ? fetchPageDefinition(pluginType)
-            : Promise.resolve(subgroupPluginData),
-        fetchSecondaryData(pluginName),
-        fetchArborescence(
-            allPlugins.find((p) => p.name === pluginName)?.group ?? "",
-        ).catch(() => undefined),
-    ])
+const [page, { blueprintCounts, relatedBlogs }] = await Promise.all([
+    pluginType
+        ? fetchPageDefinition(pluginType)
+        : Promise.resolve(sidebarPluginData),
+    fetchSecondaryData(pluginName),
+])
 
 const {
+    effectiveSubGroup,
     pluginsWithoutDeprecated,
     rootPlugin,
     rootPluginTitle,
@@ -124,16 +125,12 @@ const {
     blueprintCounts,
     relatedBlogs,
     page,
-    subgroupPluginData,
-    arborescencePlugins,
+    sidebarPluginData,
 })
 
 if (
     page === null ||
-    !pluginsWithoutDeprecated.some(
-        (p: any) =>
-            subGroup === undefined || slugify(subGroupName(p)) === subGroup,
-    )
+    !pluginsWithoutDeprecated.some(p => matchesSubGroup(p, effectiveSubGroup))
 ) {
     console.warn("Redirecting due to no content")
     return Astro.redirect(
@@ -141,9 +138,83 @@ if (
         301,
     )
 }
+
+const latestVersion = githubVersions.versions?.[0]
+const imageUrl = `${Astro.site}${ogImage.replace(/^\//, "")}`
+
+const pluginSchema = pluginType
+    ? {
+          "@context": "https://schema.org",
+          "@type": "TechArticle",
+          "@id": Astro.url.href,
+          headline: headingTitle,
+          ...(headingDescription ? { description: headingDescription } : {}),
+          url: Astro.url.href,
+          image: imageUrl,
+          inLanguage: "en",
+          about: {
+              "@type": "SoftwareApplication",
+              "@id": `https://kestra.io/plugins/${pluginName}#${pluginName}`,
+          },
+          isPartOf: {
+              "@type": "WebSite",
+              "@id": "https://kestra.io/#website",
+          },
+          author: { "@id": "https://kestra.io/#organization" },
+          publisher: { "@id": "https://kestra.io/#organization" },
+      }
+    : {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "@id": effectiveSubGroup
+              ? `https://kestra.io/plugins/${pluginName}/${effectiveSubGroup}#${effectiveSubGroup}`
+              : `https://kestra.io/plugins/${pluginName}#${pluginName}`,
+          name: headingTitle,
+          url: Astro.url.href,
+          image: imageUrl,
+          ...(headingDescription ? { description: headingDescription } : {}),
+          applicationCategory: "DeveloperApplication",
+          ...(currentPluginCategories.length > 0
+              ? { applicationSubCategory: currentPluginCategories.join(", ") }
+              : {}),
+          operatingSystem: "Linux, macOS, Windows, Docker, Kubernetes",
+          ...(latestVersion?.version ? { softwareVersion: latestVersion.version } : {}),
+          ...(latestVersion?.minCoreCompatibilityVersion
+              ? { softwareRequirements: `Kestra Core >= ${latestVersion.minCoreCompatibilityVersion}` }
+              : {}),
+          offers: isEePlugin
+              ? {
+                    "@type": "Offer",
+                    priceSpecification: {
+                        "@type": "UnitPriceSpecification",
+                        priceType: "https://schema.org/InvoicePrice",
+                        description: "Enterprise Edition — contact sales",
+                    },
+                    availability: "https://schema.org/InStock",
+                    url: "https://kestra.io/demo",
+                }
+              : {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                    availability: "https://schema.org/InStock",
+                    url: Astro.url.href,
+                },
+          isPartOf: {
+              "@type": "SoftwareApplication",
+              "@id": "https://kestra.io/#software",
+          },
+          author: { "@id": "https://kestra.io/#organization" },
+      }
 ---
 
 <Layout title={headingTitle} description={headingDescription} image={ogImage}>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(pluginSchema)}
+        />
+    </Fragment>
     <PluginLayout>
         <PluginSidebar
             slot="sidebar"
@@ -184,7 +255,7 @@ if (
                         {pluginsWithoutDeprecated}
                         {subGroupsIcons}
                         {pluginName}
-                        {subGroup}
+                        subGroup={effectiveSubGroup}
                         {pathname}
                         {subgroupBlueprintCounts}
                         {metadataMap}

@@ -1,11 +1,12 @@
 ---
-title: Kestra Architecture – Components and Deployment Models
+title: "Architecture in Kestra: Components and Deployment Models"
+h1: Kestra's Scalable, Event-Driven Architecture Explained
 description: Overview of Kestra's Architecture. Explore the scalable, event-driven design connecting server components, storage, and external systems.
 sidebarTitle: Architecture
 icon: /src/contents/docs/icons/architecture.svg
 ---
 
-Kestra's architecture is designed to be scalable, flexible, and fault-tolerant. Depending on your needs, you can choose between two different architectures: **JDBC** and **Kafka**.
+Kestra's architecture is designed to be scalable and fault-tolerant. Depending on your needs, you can choose between two different architectures: **JDBC** and **Kafka**.
 
 ## Choose the right Kestra architecture
 
@@ -39,8 +40,6 @@ The scalable design of the architecture allows you to run multiple instances of 
 
 The JDBC Backend can be scaled too, either through clustering or sharding, to handle larger volumes of data and a higher number of requests from the [Server components](./02.server-components/index.md). Most cloud providers offer managed database services that can be scaled up and down as needed.
 
----
-
 ## Architecture with Kafka and Elasticsearch backend
 
 The following diagram shows the main components of Kestra using the [Kafka](https://kafka.apache.org/) and [Elasticsearch](https://www.elastic.co/elasticsearch) backend.
@@ -48,13 +47,13 @@ The following diagram shows the main components of Kestra using the [Kafka](http
 ![Kestra OSS Architecture](./kafka.gif "Kestra Architecture")
 
 :::alert{type="info"}
-Note that this architecture is only available in the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition/index.md) of Kestra.
+This architecture is only available in the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition/index.md) of Kestra.
 See [Open Source vs Enterprise](../oss-vs-paid/index.md) for a comparison of editions.
 :::
 
-This architecture is designed to provide the enhanced scalability, high availability, and fault tolerance required to meet the needs of large-scale enterprise deployments.
+This architecture provides enhanced scalability, high availability, and fault tolerance for large-scale deployments.
 
-1. **Kafka**: serves as the messaging backend, which communicates between different components of the system and allows for robust scalability and fault tolerance
+1. **Kafka**: serves as the messaging backend, which communicates between different components of the system and provides scalability and fault tolerance
 
 2. **Microservices**: This layer includes several services:
     - [**Webserver**](./02.server-components/index.md#webserver): serves the [API](../api-reference/index.mdx) and the [User Interface](../09.ui/index.mdx) for interaction with the system
@@ -74,18 +73,16 @@ This architecture is designed to provide the enhanced scalability, high availabi
 
 ### Scalability with Kafka and Elasticsearch
 
-Kafka's messaging backend allows handling large volumes of data with the ability to scale out as needed. You can run multiple (_horizontally scaled_) instances of services such as Workers, Schedulers, Webservers and Executors to ensure fault tolerance, distribute the load and maintain system performance as demand increases.
+Kafka's messaging backend handles large volumes of data and scales horizontally. You can run multiple instances of Workers, Schedulers, Webservers, and Executors to distribute load, ensure fault tolerance, and maintain performance as demand increases.
 
-Elasticsearch contributes to scalability by providing a robust, horizontally scalable UI backend that can efficiently search across large amounts of data.
-
----
+Elasticsearch contributes to scalability by providing a horizontally scalable UI backend that can efficiently search across large amounts of data.
 
 ## Comparison between JDBC and Kafka architectures
 
-When comparing both diagrams, the main difference between the **JDBC** and **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
+The main difference between the **JDBC** and **Kafka** architectures is the data layer (_JDBC Database vs. Kafka and Elasticsearch_).
 
 :::alert{type="info"}
-Note that it's possible to use the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition/index.md) with a JDBC database backend for smaller deployments. In fact, it's often easier to start with a JDBC backend and migrate to Kafka and Elasticsearch when your deployment grows.
+You can use the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition/index.md) with a JDBC database backend for smaller deployments. It's often more practical to start with JDBC and migrate to Kafka and Elasticsearch as your deployment grows.
 :::
 
 The **Worker** is the only component communicating with your private data sources to extract and transform data. The Worker also interacts with [**Internal Storage**](./data-components/index.md#internal-storage) to persist intermediary results and store the final task run outputs.
@@ -100,7 +97,7 @@ The **data layer** is decoupled from the application layer and provides a separa
 - storing execution metadata — (Kafka/JDBC) [**Queue**](./01.main-components/index.md#queue) is used as the orchestration backend
 - storing logs and user-facing data — the (Elasticsearch/JDBC) [**Repository**](./01.main-components/index.md#repository) is used to store data needed to serve Kestra UI and API.
 
-The Indexer, available only in the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition/index.md), indexes content from Kafka topics (_such as the flows and executions topics_) to the Elasticsearch repositories. Thanks to the separation between Queue and Repository in the Kafka Architecture, even if your Elasticsearch instance experiences downtime, your executions will continue to work by relying on the Kafka backend.
+The Indexer, available only in the [Enterprise Edition](../07.enterprise/01.overview/01.enterprise-edition/index.md), indexes content from Kafka topics (_such as the flows and executions topics_) to the Elasticsearch repositories. Because the Queue and Repository are separate in the Kafka architecture, executions continue even if Elasticsearch experiences downtime.
 
 ## Components in detail
 

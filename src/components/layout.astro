@@ -33,6 +33,10 @@ interface Props {
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
+    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
+    canonical?: string
+    /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
+    noindex?: boolean
 }
 
 const props = Astro.props
@@ -69,16 +73,31 @@ const query = new URLSearchParams(
 const currentUrlNoQS = new URL(
     currentUrl.toString().replace(currentUrl.search, ""),
 )
-const canonicalUrl = new URL(
-    currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
-    Astro.site,
-)
+const canonicalUrl = props.canonical
+    ? new URL(props.canonical, Astro.site)
+    : new URL(
+          currentUrlNoQS.toString() +
+              (query.size > 0 ? "?" + query.toString() : ""),
+          Astro.site,
+      )
 
 const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
 const hasAnnounce = isHomepage && annonces.length > 0
+
+const websiteSchema = isHomepage
+    ? {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://kestra.io/#website",
+          "url": "https://kestra.io",
+          "name": "Kestra",
+          "description":
+              "Open-source declarative orchestration platform for data, AI, and infrastructure workflows",
+      }
+    : null
 
 const organizationSchema = {
     "@context": "https://schema.org",
@@ -165,10 +184,12 @@ const organizationSchema = {
         />
         <meta
             name="robots"
-            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+            content={props.noindex
+                ? "noindex, follow"
+                : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
-        <BreadcrumbList url={currentUrl} pageTitle={props.title} />
+        <BreadcrumbList url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl} pageTitle={props.title} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />
@@ -207,6 +228,7 @@ const organizationSchema = {
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
         <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+        {websiteSchema && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
 
         <slot name="head" />
 
@@ -226,6 +248,7 @@ const organizationSchema = {
         <script src="../scripts/zoom.js"></script>
         <script src="../scripts/theme.ts"></script>
         <script src="../scripts/ec-collapsible.ts"></script>
+        <script src="../scripts/mermaid.ts"></script>
     </head>
     <body
         data-header-theme={{

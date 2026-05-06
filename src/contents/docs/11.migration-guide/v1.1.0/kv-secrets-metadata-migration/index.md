@@ -1,5 +1,7 @@
 ---
-title: Key-value Store and Secrets Metadata Migration
+title: KV Store and Secrets Metadata Migration in Kestra 1.1
+h1: Run Metadata Migration for Key-Value Store and Secrets
+sidebarTitle: KV & Secrets Metadata Migration
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]
@@ -9,12 +11,10 @@ description: Required metadata migration for Key-Value Store and Secrets to enab
 
 ## Key-value Store and Secrets Metadata Migration
 
-In version **1.1.0**, we improved the backend logic that powers **Key-Value Pairs** and **Secrets** (Enterprise Edition) search in the Kestra UI.
+Version **1.1.0** improves the backend logic that powers **Key-Value Pairs** and **Secrets** (Enterprise Edition) search in the Kestra UI.
 Previously, the UI fetched *all* stored pairs, which could become resource-intensive and inefficient in environments with a large number of entries.
 
 To enhance performance and scalability, this release introduces **metadata indexing** that allows the backend to query these resources more efficiently.
-
----
 
 ## Impact
 
@@ -58,6 +58,6 @@ Similarly, for Kubernetes installations, run a pod with the migration script (`-
 If you upgrade to **1.1.0** without running the migration script, the **Key-Value Store** and **Secrets** pages in the UI will appear empty.
 This is only a **UI issue** — your flows and tasks will continue to run normally and access their values as expected.
 
-To fix the UI display, simply run the migration command above.
+To fix the UI display, run the migration command above.
 It’s safe to execute this migration **retroactively** after the upgrade if needed.
 :::

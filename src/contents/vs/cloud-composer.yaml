@@ -198,7 +198,7 @@ testimonials:
         name: Faster workflow creation
       - value: "0"
         name: Pipeline failures
-    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
 
 platformStrengths:
   title: Kestra Is Built for Teams Who Orchestrate Beyond GCP
@@ -232,7 +232,7 @@ decisionGuide:
 
 commonQuestions:
   - question: How do I migrate from Cloud Composer to Kestra?
-    answer: "Kestra doesn't require you to refactor your business logic. Extract Python code from your Airflow DAG files and run it directly as a Script task in Kestra. SQL queries and Shell commands work as-is. Define orchestration in YAML. Most teams migrate incrementally, running both platforms in parallel: Kestra's HTTP trigger can call remaining Composer DAGs during transition so there's no hard cutover."
+    answer: "Kestra doesn't require you to refactor your business logic. Extract Python code from your Airflow DAG files and run it directly as a Script task in Kestra. SQL queries and Shell commands work as-is. Define orchestration in YAML. Most teams migrate incrementally, running both platforms in parallel: Kestra's HTTP trigger can call remaining Composer DAGs during transition so there's no hard cutover. For a detailed breakdown of both upgrade and migration paths, see our <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a>."
   - question: Does Kestra integrate with GCP services?
     answer: "Yes. Kestra has native plugins for BigQuery, Cloud Storage, Pub/Sub, Cloud Run, Dataflow, Firestore, and more. The GCS trigger lets Kestra react to file arrivals natively without polling. GCP credentials are managed through Kestra's secrets management, and Kestra deployments on GCP typically run on GKE using the same IAM service account patterns your team already uses."
   - question: Cloud Composer handles Airflow upgrades for me. What does Kestra offer?

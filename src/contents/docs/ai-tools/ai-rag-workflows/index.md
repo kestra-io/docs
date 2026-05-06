@@ -1,5 +1,6 @@
 ---
 title: RAG Workflows in Kestra – Retrieval-Augmented Generation
+h1: Build RAG Workflows to Ground LLM Responses in Your Own Data
 sidebarTitle: RAG Workflows
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"

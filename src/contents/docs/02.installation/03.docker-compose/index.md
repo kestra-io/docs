@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra with Docker Compose – PostgreSQL Backend
+title: Deploy Kestra with Docker Compose – PostgreSQL
+h1: Set Up Kestra Locally with Docker Compose and PostgreSQL
 sidebarTitle: Docker Compose
 icon: /src/contents/docs/icons/docker.svg
 description: Get started with Kestra quickly using Docker Compose with a PostgreSQL backend for a robust local or server deployment.
@@ -10,8 +11,6 @@ Start Kestra with a PostgreSQL database backend by using a Docker Compose file.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/SGL8ywf3OJQ?si=Ww-JsVKvceR_n08j" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
-This guide shows how to start Kestra with Docker Compose and PostgreSQL for a local or server deployment.
 
 ## Prerequisites
 
@@ -301,7 +300,7 @@ services:
 ```
 :::
 
-### Postgres 16 not compatible with 17 error
+### PostgreSQL 16 incompatibility error
 
 By default, the Docker Compose template uses the latest image for PostgreSQL. However, if you initialized your Kestra database on an older version of PostgreSQL, you might encounter the following error:
 

@@ -13,6 +13,7 @@ export type CardPlugin = {
     elementCounts?: number
     blueprints?: number
     isEnterprise?: boolean
+    classes?: string
 }
 
 export function prunePluginsForCards(
@@ -23,6 +24,13 @@ export function prunePluginsForCards(
         const key = p.subGroup ?? p.group ?? p.name
         const info = pluginsData[key] ?? {}
         const groupInfo = pluginsData[p.group]
+
+        const classes = Object.entries(p)
+            .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+            .flatMap(([, v]) => (v as PluginElement[]).map((el) => el.cls))
+            .join(" ")
+            .replace(/io\.kestra\.plugin\./g, "")
+
         return {
             name: p.name,
             title: info.title ?? p.title ?? p.name,
@@ -35,7 +43,35 @@ export function prunePluginsForCards(
             elementCounts: info.elementCounts,
             blueprints: info.blueprints,
             isEnterprise: p.group?.includes('.ee.') ?? false,
+            classes,
         }
+    })
+}
+
+/**
+ * Strip heavy fields (descriptions, aliases, manifest) from plugins
+ * before sending to client-side components that only need navigation data.
+ */
+export function prunePluginsForSidebar(plugins: Plugin[]): Plugin[] {
+    return plugins.map((p) => {
+        const pruned: Record<string, any> = {
+            name: p.name,
+            title: p.title,
+            group: p.group,
+            subGroup: p.subGroup,
+            categories: p.categories,
+        }
+
+        for (const [key, value] of Object.entries(p)) {
+            if (isEntryAPluginElementPredicate(key, value)) {
+                pruned[key] = (value as PluginElement[]).map((el) => ({
+                    cls: el.cls,
+                    deprecated: el.deprecated,
+                }))
+            }
+        }
+
+        return pruned as Plugin
     })
 }
 
@@ -51,4 +87,3 @@ export function calculateTotalPluginCount(plugins: Plugin[]): string {
     const rounded = Math.floor(classes.size / 100) * 100
     return `${rounded}+`
 }
-
