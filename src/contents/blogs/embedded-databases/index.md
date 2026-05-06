@@ -73,8 +73,8 @@ import chdb
 
 data = chdb.query("""
 SELECT sum(total) as total, avg(quantity) as avg_quantity
-FROM url(‘https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv’);
-""", ‘PrettyCompact’)
+FROM url('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv');
+""", 'PrettyCompact')
 print(data)
 ```
 
@@ -119,13 +119,13 @@ The core advantage is its streaming engine. Where pandas loads entire datasets i
 import polars as pl
 
 # Lazy scan — nothing executes yet
-df = pl.scan_parquet(“data/sales.parquet”)
+df = pl.scan_parquet("data/sales.parquet")
 
 result = (
-    df.filter(pl.col(“region”) == “EU”)
-    .group_by(“product_name”)
-    .agg(pl.col(“total”).sum().alias(“total_revenue”))
-    .sort(“total_revenue”, descending=True)
+    df.filter(pl.col("region") == "EU")
+    .group_by("product_name")
+    .agg(pl.col("total").sum().alias("total_revenue"))
+    .sort("total_revenue", descending=True)
     .limit(10)
     .collect()  # execute the full plan here
 )
