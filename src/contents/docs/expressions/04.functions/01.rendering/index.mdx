@@ -1,0 +1,79 @@
+---
+title: "Rendering and Debugging Functions in Kestra"
+h1: "Rendering and Debugging Functions"
+description: Reference for Kestra's rendering and debugging functions — render(), renderOnce(), printContext(), block(), and parent() — for evaluating nested expressions and inspecting execution context.
+sidebarTitle: Rendering Functions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+This group matters when expressions stop behaving the way you expect. `render()` and `printContext()` are often the quickest way to understand whether a value is missing, nested, or still just a string.
+
+## `render()`
+
+Use `render()` when a variable itself contains Pebble and must be evaluated:
+
+```twig
+{{ render(namespace.github.token) }}
+{{ render("{{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}") }}
+```
+
+Without `render()`, namespace or flow variables that contain Pebble are treated as plain strings.
+
+This pattern is especially useful with namespace variables, composed flow variables, and fallback logic based on trigger context:
+
+```yaml
+variables:
+  trigger_or_yesterday: "{{ trigger.date ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
+
+tasks:
+  - id: yesterday
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ render(vars.trigger_or_yesterday) }}"
+```
+
+## `renderOnce()`
+
+Equivalent to `render(expression, recursive=false)`. Use `renderOnce()` when you need one extra evaluation pass but do not want recursive expansion to keep walking nested Pebble content:
+
+```twig
+{{ renderOnce(namespace.github.token) }}
+```
+
+`renderOnce()` is the safer choice when you need one extra evaluation pass but do not want recursive expansion to keep walking nested Pebble content.
+
+## `printContext()`
+
+Outputs the full execution context as a string. Use it in the Debug Expression console to inspect every variable available at that point in the execution:
+
+```twig
+{{ printContext() }}
+```
+
+This is the fastest way to discover the exact key names and structure of `inputs`, `outputs`, `trigger`, and other context variables when an expression is not resolving as expected.
+
+## Template inheritance helpers
+
+These are less common than runtime-oriented helpers, but they matter when you are using Pebble blocks and template inheritance directly.
+
+### `block()`
+
+`block()` renders the contents of a named block multiple times. It is different from the Pebble `block` tag, which declares the block:
+
+```twig
+{% block "post" %}content{% endblock %}
+
+{{ block("post") }}
+```
+
+### `parent()`
+
+Use `parent()` inside an overriding block to include the original block content from the parent template:
+
+```twig
+{% extends "parent.peb" %}
+
+{% block "content" %}
+child content
+{{ parent() }}
+{% endblock %}
+```
