@@ -29,7 +29,7 @@ export const GET: APIRoute = async () => {
 
         const pluginUpdated = (plugin as any).updatedAt ?? (plugin as any).updated ?? null
 
-        const pluginUrls = urls.concat(
+        return urls.concat(
             Object.entries(plugin)
                 .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
                 .map(([_, value]) => value as PluginElement[])
@@ -40,21 +40,24 @@ export const GET: APIRoute = async () => {
                         return t.deprecated ? null : url
                     }).filter(url => url !== null)
                 }),
-        )
-
-        // Attach plugin-level updatedAt to top-level plugin pages where possible
-        return pluginUrls.map((u) => ({ loc: u as string, lastmod: formatLastMod(pluginUpdated) }))
-    })
-    // allPages now is array of objects or arrays; flatten and unique by loc
-    const flat = ([] as any[]).concat(...allPages)
-    const mapByLoc: Record<string, { loc: string; lastmod?: string | null }> = {}
-    flat.forEach((p) => {
-        const loc = typeof p === "string" ? p : p.loc
-        const lastmod = typeof p === "string" ? null : p.lastmod
-        mapByLoc[loc] = mapByLoc[loc] || { loc, lastmod }
+        ).map((url) => ({
+            loc: `https://kestra.io${url}`,
+            lastmod: formatLastMod(pluginUpdated),
+        }))
     })
 
-    const urls = Object.values(mapByLoc).map((e) => ({ loc: `https://kestra.io${e.loc}`, lastmod: e.lastmod }))
+    // Remove duplicates (can happen when a plugin is in multiple subgroups)
+    // and get the most recent lastmod for each URL if there are duplicates
+    const uniquePages = new Map<string, { loc: string; lastmod: string | null }>()
+    for (const page of allPages) {
+        if (!uniquePages.has(page.loc)) {
+            uniquePages.set(page.loc, page)
+        } else if (page.lastmod && (!uniquePages.get(page.loc)?.lastmod || (page.lastmod > (uniquePages.get(page.loc)!.lastmod ?? "")))) {
+            uniquePages.set(page.loc, page)
+        }
+    }
+
+    const urls = Array.from(uniquePages.values())
 
     return sitemapResponse(urls)
 }
