@@ -59,7 +59,7 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     response.headers.set("content-security-policy", contentSecurityPolicy)
 
     if (!import.meta.env.DEV) {
-        response.headers.set("strict-transport-security", "max-age=15552000")
+        response.headers.set("strict-transport-security", "max-age=31536000")
     }
 
     return response
