@@ -6,9 +6,7 @@ sidebarTitle: Executions
 icon: /src/contents/docs/icons/ui.svg
 ---
 
-Manage your Flow executions all in one place.
-
-## Inspect and manage execution history
+Inspect and manage flow executions.
 
 On the **Executions** page, you see a list of all your completed flow executions.
 
@@ -18,7 +16,7 @@ You can select multiple checkboxes to choose executions for bulk actions, such a
 
 ## Overview
 
-An **Execution's Overview** page displays the details of a flow execution. There is a wealth of information available here at a glance separated into compartments. For reference, below is an example flow and its **Execution Overview**.
+An **Execution's Overview** page displays the details of a flow execution, organized into the following sections. For reference, below is an example flow and its **Execution Overview**.
 
 ```yaml
 id: conditionallyReturnOutputs
@@ -64,15 +62,15 @@ triggers:
 From the **Overview** tab, you can:
 - Set Labels: give a label to the execution for tracking or filtering.
 - Change State: change the execution state.
-- Force Run: forces the execution to run. It is possible that this action creates duplicate task executions so use with caution or take another action if possible.
+- Force Run: forces the execution to run. This may create duplicate task executions — use with caution.
 
 The **Previous and Next Execution** buttons navigate you through past and future (if there's a trigger) flow executions.
 
 - Execution **state** is displayed along with a timestamped state history from `CREATED` to `RUNNING` to `SUCCESS` (or any other possible state).
 - Flow [Variables](../../05.workflow-components/04.variables/index.md) and [Inputs](../../05.workflow-components/05.inputs/index.md) are clearly listed along with execution details including dates and the corresponding namespace and flow.
-- Flow Output and Trigger data is captured with expression rendering
+- Flow outputs and trigger data are captured with expression rendering.
 
-Additionally, from the **Overview** page, you can also take actions on your execution such as [**Replay**](../../06.concepts/10.replay/index.md) or **Pause** and view the executions over time, switching between previous runs for comparison.
+From the **Overview** page, you can also take actions such as [**Replay**](../../06.concepts/10.replay/index.md) or **Pause**, and view executions over time to compare previous runs.
 
 ## Filters
 
@@ -102,7 +100,7 @@ For failed tasks, click the three dots to **"Fix with AI"**. This option reopens
 
 ## Topology
 
-Similar to the Editor view, you can see your execution's topology. **Topology** provides a graphical view to access specific task logs, replay certain tasks, or change task status. Tasks' state progression is shown and updated as the status changes. For example, green indicates a task has reached **SUCCESS** while red indicated **FAILED**.
+Similar to the Editor view, you can see your execution's topology. **Topology** provides a graphical view to access specific task logs, replay certain tasks, or change task status. Tasks' state progression is shown and updated as the status changes. For example, green indicates a task has reached **SUCCESS** while red indicates **FAILED**.
 
 ![Kestra User Interface Execution Topology](./execution-topology-view.png)
 
@@ -114,13 +112,11 @@ The **Outputs** tab presents the execution's generated outputs. All tasks and th
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/BTW4jefHMCoxw5VgY9mB?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Execution Outputs | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-The **Debug Expression** button allows you to evaluate [expressions](../../expressions/index.mdx) on those task outputs. It's a great way to ensure your actual output aligns with your expected output, and if not, it provides a place to debug your flows.
-
-> Note: You have to select one task to be able to use the **Debug Expression** button.
+The **Debug Expression** button lets you evaluate [expressions](../../expressions/index.mdx) against task outputs to verify they match what you expect. Select a task first to enable it.
 
 ![Kestra User Interface Execution Debug Expression](./execution-debug-expression.png)
 
-For example, you can use the **Debug Expression** feature to deep-dive into your tasks' outputs and play directly with expressions.
+Use **Debug Expression** to inspect task outputs and test expressions interactively.
 
 ## Metrics
 

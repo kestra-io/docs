@@ -10,15 +10,15 @@ description: List of renamed plugins and task runners in Kestra 0.17.0 and how t
 
 ## Renamed Plugins
 
-Many core plugins have been renamed in Kestra 0.17.0, and `taskDefaults` are now `pluginDefaults`. While these are non-breaking changes, we recommend updating your flows to use the new names.
+Many core plugins have been renamed in Kestra 0.17.0, and `taskDefaults` are now `pluginDefaults`. While these are non-breaking changes, update your flows to use the new names.
 
 Multiple plugin types have been moved to a new package structure under `io.kestra.plugin.core` to make the plugin system more consistent and intuitive.
 
 :::alert{type="warning"}
-We've also renamed `taskDefaults` to `pluginDefaults` to highlight that you can set default values for all plugins (_including triggers, task runners and more_), not just tasks.
+Kestra also renamed `taskDefaults` to `pluginDefaults` to highlight that you can set default values for all plugins (_including triggers, task runners and more_), not just tasks.
 :::
 
-All of these are non-breaking changes as we leverage **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
+All of these are non-breaking changes as Kestra uses **aliases** for backward compatibility. You will see a friendly warning in the UI code editor if you use the old names.
 
 ![renamed-core-plugins](./renamed-core-plugins.png)
 
@@ -105,7 +105,7 @@ Below you can see the full list of renamed plugins:
 
 ## Renamed Serdes Plugins
 
-We've also renamed [serialization tasks](https://github.com/kestra-io/kestra/issues/2298) from `Readers` and `Writers` to explicit conversion tasks to make it more explicit that these tasks are intended to either convert from or to [Ion](https://amazon-ion.github.io/ion-docs/) — the primary data format used in Kestra to serialize data between tasks and storage systems. For example, `CsvReader` is now `CsvToIon` and the `CsvWriter` is now `IonToCsv`.
+[Serialization tasks](https://github.com/kestra-io/kestra/issues/2298) have also been renamed from `Readers` and `Writers` to explicit conversion tasks to make it clear that these tasks convert from or to [Ion](https://amazon-ion.github.io/ion-docs/) — the primary data format used in Kestra to serialize data between tasks and storage systems. For example, `CsvReader` is now `CsvToIon` and `CsvWriter` is now `IonToCsv`.
 
 A full list of the renamed serialization tasks:
 - `CsvReader` → `CsvToIon`
@@ -118,8 +118,6 @@ A full list of the renamed serialization tasks:
 - `XmlWriter` → `IonToXml`
 - `ParquetReader` → `ParquetToIon`
 - `ParquetWriter` → `IonToParquet`
-
----
 
 The table shows full paths of the renamed serialization tasks:
 
@@ -139,7 +137,7 @@ The table shows full paths of the renamed serialization tasks:
 
 ## Renamed Task Runners
 
-We've also renamed the task runners to make them more readable and easier to use. For example, `io.kestra.plugin.aws.runner.AwsBatchTaskRunner` is now `io.kestra.plugin.ee.aws.runner.Batch`. The updated names are as follows:
+Task runners have also been renamed for readability. For example, `io.kestra.plugin.aws.runner.AwsBatchTaskRunner` is now `io.kestra.plugin.ee.aws.runner.Batch`. The updated names are as follows:
 
 | Old Path Before Kestra 0.17.0                                 | New Path After Kestra 0.17.0                    |
 |---------------------------------------------------------------|-------------------------------------------------|

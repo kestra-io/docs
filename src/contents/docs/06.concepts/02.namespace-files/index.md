@@ -12,8 +12,6 @@ Manage Namespace Files and how to use them in your flows.
   <iframe src="https://www.youtube.com/embed/BeQNI2XRddA?si=nvoIqA1SIrMaKyYs" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Namespace Files – manage project assets
-
 Namespace Files are files tied to a given namespace. You can think of Namespace Files as the equivalent of a project in your local IDE or a copy of your Git repository.
 
 Namespace Files can hold Python files, R or Node.js scripts, SQL queries, dbt or Terraform projects, and much more.
@@ -51,8 +49,7 @@ triggers:
 ```
 
 :::alert{type="info"}
-Note: we didn't have to use the `namespaceFiles.enabled: true` property — that property is only required to inject the entire directory of files from the namespace into the working directory of a script (e.g., a Python task). There are more details in the subsequent sections of this page.
-If you only need to read a file’s contents, use `read()` without mounting; mounting is for when the task needs files on disk.
+The `namespaceFiles.enabled: true` property is not required here — it is only needed to inject an entire directory of namespace files into the working directory of a script task. If you only need to read a file’s contents, use `read()` without mounting; mounting is for when the task needs files on disk.
 :::
 
 ## Why use Namespace Files
@@ -112,7 +109,7 @@ From the history, view, compare, and restore prior versions.
 
 From the **Revisions** list, you can delete a given revision or all revisions older than the selected one. You will be prompted to confirm this choice, as there is no possible way to restore a revision once is has been deleted. 
 
-The keep your version history clean, you can purge "N" number of Namespace File revisions or revisions older than a certain date. Refer to the [Purge documentation](../../10.administrator-guide/purge/index.md#purge-namespace-files).
+To keep your version history clean, you can purge "N" number of Namespace File revisions or revisions older than a certain date. Refer to the [Purge documentation](../../10.administrator-guide/purge/index.md#purge-namespace-files).
 
 ### PushNamespaceFiles and SyncNamespaceFiles tasks
 
@@ -233,7 +230,7 @@ The `--override` flag replaces existing files; `--fail-fast` stops on the first 
 There are multiple ways to use Namespace Files in your flows. You can use the `read()` function to read the content of a file as a string, point to the file path in the supported tasks, or use a dedicated task to retrieve it as an output.
 
 :::alert{type="info"}
-In version 0.24, we introduced a universal file protocol that simplifies accessing files — local or namespace — in your flow. For more details, refer to the [File Access documentation page](../file-access/index.md).
+Kestra 0.24 introduced a universal file protocol that simplifies accessing files — local or namespace — in your flow. For more details, refer to the [File Access documentation page](../file-access/index.md).
 :::
 
 Usually, pointing to a file location, rather than reading the file's content, is required when you want to use a file as an input to a CLI command (e.g., in a `Commands` task such as `io.kestra.plugin.scripts.python.Commands` or `io.kestra.plugin.scripts.node.Commands`). In all other cases, the `read()` function can be used to read the content of a file as a string (e.g., in `Query` or `Script` tasks).
@@ -242,7 +239,7 @@ You can also use the `io.kestra.plugin.core.flow.WorkingDirectory` task to read 
 
 ### The `read()` function
 
-Note how the script in the first section used the `read()` function to read the content of the `scripts/hello.py` file as a string using the expression `"{{ read('scripts/hello.py') }}"`. It's important to remember that this function reads **the content of the file as a string**. Therefore, you should use that function only in tasks that expect a string as an input like `io.kestra.plugin.scripts.python.Script` or `io.kestra.plugin.scripts.node.Script`, rather than `io.kestra.plugin.scripts.python.Commands` or `io.kestra.plugin.scripts.node.Commands`.
+The script in the first section used the `read()` function to read the content of the `scripts/hello.py` file as a string using the expression `"{{ read('scripts/hello.py') }}"`. It's important to remember that this function reads **the content of the file as a string**. Therefore, you should use that function only in tasks that expect a string as an input like `io.kestra.plugin.scripts.python.Script` or `io.kestra.plugin.scripts.node.Script`, rather than `io.kestra.plugin.scripts.python.Commands` or `io.kestra.plugin.scripts.node.Commands`.
 
 The `read()` function allows you to read the content of a Namespace File stored in the Kestra's internal storage backend. The `read()` function takes a single argument, which is the absolute path to the file you want to read. The path must point to a file stored in the **same namespace** as the flow you are executing.
 

@@ -18,8 +18,9 @@ import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.v
 import FileDocumentCheckOutline from "vue-material-design-icons/FileDocumentCheckOutline.vue"
 import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
 import Git from "vue-material-design-icons/Git.vue"
+import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 
-import LeroyMerlinLogo from "~/contents/customer-stories/14/logo.svg?raw"
+import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
 import LeroyMerlinLogoImg from "~/assets/trusted-companies/LeroyMerlin.svg"
 import GorgiasLogoImg from "~/assets/trusted-companies/Gorgias.svg"
 import AuchanLogoImg from "~/assets/trusted-companies/Auchan.svg"
@@ -28,67 +29,71 @@ import IntersportLogoImg from "~/assets/trusted-companies/Intersport.svg"
 import DiorLogoImg from "~/assets/trusted-companies/Dior.svg"
 import FilaLogoImg from "~/assets/trusted-companies/Fila.svg"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const HERO_TAGS = [
-    { label: "Peak-season scale", icon: "mdi:flash-outline" },
-    { label: "Event-driven orders", icon: "mdi:shopping-outline" },
-    { label: "Shopify, SAP, Manhattan", icon: "mdi:store-outline" },
-    { label: "BOPIS & omnichannel", icon: "mdi:swap-horizontal-bold" },
-    { label: "PCI-friendly", icon: "mdi:shield-check-outline" },
-    { label: "Replayable launches", icon: "mdi:history" },
+    { label: "Self-hosted & EU residency", icon: "mdi:earth" },
+    { label: "Apache 2.0 licensed", icon: "mdi:code-tags" },
+    { label: "Kubernetes & Docker native", icon: "mdi:server-network-outline" },
+    { label: "DataMesh-ready multi-tenant", icon: "mdi:account-group-outline" },
+    { label: "Approval gates & RBAC", icon: "mdi:account-supervisor-outline" },
+    { label: "Apps for self-service UIs", icon: "mdi:application-outline" },
+    { label: `${totalPlugins}+ open-source plugins`, icon: "mdi:puzzle-outline" },
 ]
 
 const title = "Kestra for Retail & Commerce"
 const description =
-    "Kestra keeps orders, inventory, returns, and customers in sync across OMS, WMS, storefront, POS, and partner APIs. Peak-season ready. Queue-backed. Always replayable. Built for retailers who can't afford silent failures during launch day or Black Friday."
+    "The data and workflow control plane for modern retail. Scale data platforms across teams, automate business workflows, and modernize legacy ERP and supply-chain integration. From DataMesh at scale to ERP modernization to AI-assisted customer service automation."
 
 const FLOW_STAGES = [
     {
         id: "trigger",
         label: "TRIGGER",
         items: [
-            "Order / return / cart event",
-            "API / webhook / storefront",
-            "POS / store / inventory event",
-            "Supplier feed / EDI / drop",
-            "Schedule / promo cutoff",
-            "Queue / stream event",
+            "API request / portal call",
+            "Schedule / batch window",
+            "Supplier file drop / EDI",
+            "ERP / CRM event",
+            "Ticket / case update",
+            "Approval / human action",
         ],
     },
     {
         id: "ingest",
         label: "INGEST",
         items: [
-            "Shopify / Salesforce Commerce",
-            "SAP / Oracle / Manhattan",
-            "Snowflake / BigQuery / lakehouse",
-            "S3 / ADLS / GCS / SFTP",
-            "POS / OMS / WMS / PIM",
-            "CRM, service & partner APIs",
+            "SAP / Oracle / mainframe ERP",
+            "Supplier SFTP, EDI, AS2",
+            "Shopify, Salesforce Commerce",
+            "Salesforce, Gorgias, Zendesk",
+            "Lakehouse / dbt / warehouse",
+            "Identity (LDAP, Keycloak, AD)",
         ],
     },
     {
         id: "process",
         label: "PROCESS",
         items: [
-            "Business rules & validations",
             "dbt / SQL / Python / R / Spark",
-            "Exception handling",
-            "OCR / LLM document review",
-            "Human approval gates",
-            "Vault / KMS / policy controls",
+            "Business rules & validations",
+            "OCR / LLM / AI extraction",
+            "Approval gates per role",
+            "Sanctions / integrity screening",
+            "Vault / secret & policy controls",
         ],
     },
     {
         id: "act",
         label: "ACT",
         items: [
-            "Update OMS / WMS / PIM",
-            "Create case / task / ticket",
-            "Trigger fulfillment / refund",
-            "Update pricing / promo / loyalty",
-            "Generate report / audit package",
-            "Notify teams / downstream platforms",
+            "Update ERP / CRM / PIM",
+            "Publish data product / dashboard",
+            "Sync inventory / dispatch supplier",
+            "Notify on-call / merch / ops",
+            "Archive signed audit bundle",
+            "Trigger downstream workflow",
         ],
     },
 ]
@@ -104,88 +109,88 @@ const quotes = [
             { value: "+250", name: "active users" },
             { value: "+5,000", name: "workflows created" },
         ],
-        storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent",
+        storyLink: "/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent",
     },
 ]
 
 const WORKLOAD_CATEGORIES = [
     {
-        name: "Orders, Fulfillment & Returns",
+        name: "Data Platforms & Analytics at Scale",
         items: [
             {
-                icon: "mdi:shopping-outline",
-                title: "Order Orchestration & Fulfillment",
-                description: "Validate carts, reserve inventory, route to warehouses or stores, dispatch carriers, and sync status back to storefronts. One declarative flow across OMS, WMS, and partner APIs.",
+                icon: "mdi:database-sync-outline",
+                title: "DataMesh & Departmental Analytics",
+                description: "Per-domain data pipelines with namespace isolation, signed lineage, and per-team governance. The pattern that takes modern retail data teams to thousands of workflows, hundreds of active users, and dramatic gains in data production on one open platform.",
             },
             {
-                icon: "mdi:keyboard-return",
-                title: "Returns & Reverse Logistics",
-                description: "Authorize returns, route items to the right reverse hub, issue refunds or replacements, and reconcile inventory. Keep refunds, restock, and finance books in sync.",
+                icon: "mdi:chart-line",
+                title: "dbt, SQL, Python & Spark Pipelines",
+                description: "Run modern data stacks alongside legacy ETL on the same engine. dbt builds, Spark jobs, Python transforms, and SQL workloads coexist with full lineage and replayability per run.",
             },
+            {
+                icon: "mdi:swap-horizontal-bold",
+                title: "Cross-Department Data Movement",
+                description: "Move and transform data across departmental warehouses, lakehouses, and operational systems. Java-based engine handles enterprise scale where Python-only tools struggle.",
+            },
+        ],
+    },
+    {
+        name: "Business Workflow & Approval Automation",
+        items: [
+            {
+                icon: "mdi:application-outline",
+                title: "Approval Workflows & Self-Service Apps",
+                description: "Build a UI in front of any flow with Apps. Forms for data entry, approval buttons, controlled output views. Workflow managers grow from dozens to hundreds of users without rebuilding the platform.",
+            },
+            {
+                icon: "mdi:brain",
+                title: "AI-Assisted Operations & Insights Routing",
+                description: "Orchestrate transcription, document review, and customer-insight extraction with humans in the loop. Route findings to product, merchandising, or operations teams automatically. Reduce manual follow-up.",
+            },
+            {
+                icon: "mdi:account-multiple-check-outline",
+                title: "Multi-User Workflow Management",
+                description: "Approval roles, namespace-scoped RBAC, SSO via SAML and OIDC, SCIM provisioning. Each business unit, brand, or region owns its flows and runtime on a shared, governed platform.",
+            },
+        ],
+    },
+    {
+        name: "Supplier, Inventory & Supply Chain Integration",
+        items: [
             {
                 icon: "mdi:truck-delivery-outline",
-                title: "Supplier & Partner Coordination",
-                description: "Ingest supplier feeds via EDI, API, or SFTP. Validate, route exceptions, update POs, and publish status back. Works across dropship, wholesale, and marketplace partners.",
+                title: "Supplier File Normalization & EDI",
+                description: "Receive supplier files in any format from SFTP, email, or AS2. Normalize with Python or shell, validate against rules, and load to your back-office systems. Replace bespoke mapping scripts with declarative flows.",
             },
-        ],
-    },
-    {
-        name: "Inventory, Merchandising & Pricing",
-        items: [
             {
                 icon: "mdi:package-variant",
-                title: "Inventory & Stock Sync",
-                description: "Sync stock positions across stores, warehouses, marketplaces, and partners in near real time. Resolve conflicts, handle exceptions, and publish authoritative counts.",
+                title: "Inventory Sync Across Channels",
+                description: "Reconcile stock positions across stores, warehouses, marketplaces, and partners. Resolve conflicts, route exceptions to merch ops, and publish authoritative counts back to storefronts and PIM.",
             },
             {
-                icon: "mdi:tag-outline",
-                title: "Pricing, Promotions & Loyalty",
-                description: "Propagate price, promo, and loyalty changes across PIM, storefronts, POS, and partners. Support time-bound campaigns with staged cutovers and rollbacks.",
-            },
-            {
-                icon: "mdi:image-multiple-outline",
-                title: "Product Content & PIM Workflows",
-                description: "Enrich product data, orchestrate translation, run image and copy reviews, and publish to every channel. Keep content, inventory, and pricing in lockstep.",
+                icon: "mdi:cart-outline",
+                title: "Procurement, PO & Supply-Chain Workflows",
+                description: "Coordinate purchase orders, ASNs, dispute handling, and performance reporting across tier-N suppliers. Wrap legacy mapping pipelines first, then modernize incrementally.",
             },
         ],
     },
     {
-        name: "Customer, Service & Loyalty",
+        name: "ERP, CRM & Customer Service Operations",
         items: [
             {
+                icon: "mdi:cog-refresh-outline",
+                title: "ERP & Mission-Critical Modernization",
+                description: "Modernize ERP and supply-chain integration without rip-and-replace. The pattern global retail brands use to transform ERP and supply-chain workflows. Faster, fully automated, audit-ready.",
+            },
+            {
                 icon: "mdi:face-agent",
-                title: "Customer Service & Case Management",
-                description: "Route cases across Gorgias, Zendesk, Salesforce Service Cloud, and internal tools. Assemble order, shipment, and refund evidence. Escalate with full context.",
+                title: "Customer Service & Case Routing",
+                description: "Native integrations with Gorgias, Zendesk, Salesforce Service Cloud, and Intercom. Assemble order, shipment, and refund context automatically. Agents resolve tickets without opening five tabs.",
             },
             {
                 icon: "mdi:heart-outline",
-                title: "Loyalty, CRM & Personalization Data",
-                description: "Coordinate customer events across CRM, marketing, analytics, and loyalty platforms. Trigger personalized campaigns from real operational signals, not batch dumps.",
-            },
-            {
-                icon: "mdi:shield-search",
-                title: "Fraud, Disputes & Trust Operations",
-                description: "Screen orders, route disputes, enrich with device and behavioural signals, score with ML, and hand off to human review. Keep chargeback evidence one click away.",
-            },
-        ],
-    },
-    {
-        name: "Store, Data & Platform Operations",
-        items: [
-            {
-                icon: "mdi:store-outline",
-                title: "Store Operations & Omnichannel Handoffs",
-                description: "Orchestrate BOPIS, click-and-collect, ship-from-store, and cross-channel returns. Keep store, e-commerce, and fulfillment systems in one operational loop.",
-            },
-            {
-                icon: "mdi:database-sync-outline",
-                title: "Operational Data Workflows",
-                description: "Move, transform, and operationalize data across dbt, lakehouse, SQL, Python, and Spark to support live retail operations, not just analytics.",
-            },
-            {
-                icon: "mdi:security-network",
-                title: "Platform, CI/CD & Security Automation",
-                description: "Automate certificate management, store rollouts, vulnerability scans, and incident response. The same engine that runs your business runs your platform.",
+                title: "CRM, Loyalty & Customer Data Workflows",
+                description: "Coordinate customer events across CRM, CDP, marketing, analytics, and loyalty platforms. Trigger personalized actions from real operational signals like orders, returns, service cases, store visits.",
             },
         ],
     },
@@ -194,235 +199,279 @@ const WORKLOAD_CATEGORIES = [
 const ENTERPRISE_FEATURES = [
     {
         icon: ShieldCheckOutline,
-        title: "Peak-Season Ready Deployment",
-        description: "Self-hosted, VPC, or cloud. Horizontal worker scaling absorbs Black Friday and launch-day spikes without architectural surgery. PCI-friendly segmentation built in.",
+        title: "Self-Hosted, EU Residency & PCI-Friendly",
+        description: "Self-hosted, VPC, or fully managed. Kestra Cloud runs in EU or US regions with no cross-region data transfer. PCI-friendly segmentation for payment-adjacent workflows.",
+    },
+    {
+        icon: ServerNetworkOutline,
+        title: "Kubernetes, Docker & Hybrid Workers",
+        description: "Docker, Helm, or Kubernetes. Worker groups isolate Linux, Windows, GPU, and PCI-zone runtimes on one shared control plane. PostgreSQL backend handles millions of executions.",
     },
     {
         icon: Git,
         title: "Immutable, Replayable Execution",
-        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical order, price change, or campaign cutover with the exact code, secrets, and inputs.",
-    },
-    {
-        icon: FileDocumentCheckOutline,
-        title: "Human-in-the-Loop Controls",
-        description: "Pause any workflow pending merchandiser, finance, or ops sign-off. Enforce dual control on price changes, large refunds, promo go-lives, and production rollouts.",
+        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical order, price change, supplier batch, or data pipeline run with the exact code, secrets, and inputs.",
     },
     {
         icon: AccountGroupOutline,
-        title: "RBAC & Multi-Tenant Isolation",
-        description: "Namespace-scoped RBAC with SSO/SAML/SCIM. Every brand, region, or business line owns its secrets and runtime on a shared platform. Zero blast radius.",
+        title: "Multi-Tenant by Namespace, RBAC by Default",
+        description: "Each brand, region, business line, or data team owns its flows, secrets, and runtime on a shared platform. Namespace-scoped RBAC with SSO, SAML, OIDC, and SCIM. Zero blast radius.",
+    },
+    {
+        icon: FileDocumentCheckOutline,
+        title: "Approval Gates, Apps & Kill Switch",
+        description: "Pause any workflow pending merchandiser, finance, or ops sign-off. Build self-service UIs with Apps. Stop or contain a runaway execution from the UI in one click. Governance at the speed of operations.",
     },
     {
         icon: CodeTagsCheck,
-        title: "Audit Logs & Observability",
+        title: "Audit Logs, Lineage & SIEM Integration",
         description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, Datadog, or your preferred SIEM for PCI and SOC 2 evidence.",
     },
 ]
 
 const BUILD_TABS = [
     {
-        name: "Order orchestration",
-        title: "From webhook to warehouse, with the exceptions routed automatically.",
+        name: "DataMesh per-domain pipeline",
+        title: "Per-domain data pipeline with namespace isolation and signed lineage. The DataMesh-at-scale pattern.",
         description:
-            "An order lands on the webhook. Kestra validates it, reserves inventory, triggers fulfillment, and syncs status back to the storefront. Failures open Gorgias cases. Every step auditable.",
-        code: `id: order-orchestration
-namespace: company.retail.orders
+            "Each business domain owns its namespace, secrets, and runtime. The same flow shape runs per domain: extract from operational systems, transform with dbt, validate quality, publish to the lakehouse, register in the catalog. The pattern that scales modern retail data teams to thousands of workflows and hundreds of users.",
+        code: `id: domain-data-pipeline
+namespace: company.retail.domain_supply
 
-inputs:
-  - id: order
-    type: JSON
-    displayName: Order payload from storefront
+triggers:
+  - id: nightly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 3 * * *"
 
 tasks:
-  - id: persist_order
+  - id: extract_source
     type: io.kestra.plugin.jdbc.postgresql.Query
-    url: "jdbc:postgresql://oms:5432/orders"
+    url: "jdbc:postgresql://ops-{{ flow.namespace }}:5432/data"
     username: "{{ secret('PG_USER') }}"
     password: "{{ secret('PG_PASSWORD') }}"
-    sql: |
-      INSERT INTO orders.new (payload, received_at, status)
-      VALUES ('{{ inputs.order | toJson }}', NOW(), 'received')
-      RETURNING order_id
+    fetchType: STORE
+    sql: "SELECT * FROM events WHERE event_date = CURRENT_DATE - 1"
 
-  - id: reserve_inventory
+  - id: dbt_build
+    type: io.kestra.plugin.dbt.cli.Build
+    projectDir: "./dbt"
+    commands:
+      - dbt build --target {{ flow.namespace }}
+
+  - id: quality_checks
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python validate.py --domain {{ flow.namespace }}
+
+  - id: publish_to_lakehouse
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "retail-lakehouse"
+    key: "{{ flow.namespace }}/{{ execution.startDate | date('yyyy/MM/dd') }}/output.parquet"
+    from: "{{ outputs.dbt_build.outputFiles.results }}"
+
+  - id: register_in_catalog
     type: io.kestra.plugin.core.http.Request
-    uri: "https://wms.example/api/reserve"
-    method: POST
-    contentType: application/json
-    body: "{{ inputs.order | toJson }}"
-    headers:
-      Authorization: "Bearer {{ secret('WMS_TOKEN') }}"
-
-  - id: route_fulfillment
-    type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs.reserve_inventory.body.in_stock == true }}"
-    then:
-      - id: dispatch
-        type: io.kestra.plugin.core.http.Request
-        uri: "https://carriers.example/dispatch"
-        method: POST
-        contentType: application/json
-        body: |
-          { "order_id": "{{ outputs.persist_order.row.order_id }}" }
-    else:
-      - id: backorder_case
-        type: io.kestra.plugin.core.http.Request
-        uri: "https://api.gorgias.com/api/tickets"
-        method: POST
-        contentType: application/json
-        headers:
-          Authorization: "Basic {{ secret('GORGIAS_TOKEN') }}"
-        body: |
-          {
-            "subject": "Backorder — order {{ outputs.persist_order.row.order_id }}",
-            "channel": "email"
-          }
-
-  - id: notify_customer
-    type: io.kestra.plugin.email.MailSend
-    host: smtp.retail.example
-    port: 465
-    username: "{{ secret('SMTP_USER') }}"
-    password: "{{ secret('SMTP_PASSWORD') }}"
-    from: orders@retail.example
-    to: "{{ inputs.order.customer_email }}"
-    subject: "Order {{ outputs.persist_order.row.order_id }} confirmed"
-    htmlTextContent: "Your order is being prepared."`,
-        plugins: [
-            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
-            { cls: "io.kestra.plugin.core.http.Request" },
-            { cls: "io.kestra.plugin.core.flow.If" },
-            { cls: "io.kestra.plugin.email.MailSend" },
-        ],
-        href: "/blueprints",
-    },
-    {
-        name: "Returns & reverse logistics",
-        title: "Return, restock, refund. One flow keeps OMS, WMS, and finance aligned.",
-        description:
-            "Authorize a return, route to the right reverse hub, trigger the refund, and update inventory. Breaks open cases in ServiceNow. Reconciliation bundles land in S3 for finance.",
-        code: `id: returns-reverse-logistics
-namespace: company.retail.returns
-
-inputs:
-  - id: return_request
-    type: JSON
-    displayName: Return request from storefront
-
-tasks:
-  - id: validate_return
-    type: io.kestra.plugin.jdbc.postgresql.Query
-    url: "jdbc:postgresql://oms:5432/orders"
-    username: "{{ secret('PG_USER') }}"
-    password: "{{ secret('PG_PASSWORD') }}"
-    fetchType: FETCH_ONE
-    sql: |
-      SELECT order_id, total, currency, status
-      FROM orders.completed
-      WHERE order_id = '{{ inputs.return_request.order_id }}'
-
-  - id: route_hub
-    type: io.kestra.plugin.core.http.Request
-    uri: "https://wms.example/api/reverse-route"
-    method: POST
-    contentType: application/json
-    body: "{{ inputs.return_request | toJson }}"
-
-  - id: human_review
-    type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs.validate_return.row.total > 500 }}"
-    then:
-      - id: finance_review
-        type: io.kestra.plugin.core.flow.Pause
-        description: "High-value refund requires finance sign-off."
-
-  - id: issue_refund
-    type: io.kestra.plugin.core.http.Request
-    uri: "https://payments.example/v1/refunds"
+    uri: "https://catalog.internal/api/datasets"
     method: POST
     contentType: application/json
     body: |
       {
-        "order_id": "{{ outputs.validate_return.row.order_id }}",
-        "amount": {{ outputs.validate_return.row.total }}
-      }
-
-  - id: update_inventory
-    type: io.kestra.plugin.core.http.Request
-    uri: "https://wms.example/api/restock"
-    method: POST
-    contentType: application/json
-    body: "{{ inputs.return_request | toJson }}"
-
-  - id: publish_recon
-    type: io.kestra.plugin.aws.s3.Upload
-    bucket: "retail-audit"
-    key: "returns/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ outputs.validate_return.row.order_id }}.json"
-    from: "{{ outputs.route_hub.body }}"`,
+        "domain": "{{ flow.namespace }}",
+        "execution_id": "{{ execution.id }}",
+        "completed_at": "{{ execution.endDate }}"
+      }`,
         plugins: [
             { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.dbt.cli.Build" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
             { cls: "io.kestra.plugin.core.http.Request" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Approval workflow with Apps",
+        title: "Self-service approval workflow in front of operations. Forms, gates, and audit out of the box.",
+        description:
+            "A buyer submits a price change via an App form. Kestra validates against margin policy, pauses for merchandiser approval, applies the change to the PIM, notifies the team, and archives the audit bundle. The pattern retailers use to scale workflow managers from dozens to hundreds.",
+        code: `id: price-change-approval
+namespace: company.retail.merch
+
+inputs:
+  - id: change
+    type: JSON
+    displayName: Price change request (SKU, new price, justification)
+
+tasks:
+  - id: validate_margin
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python check_margin.py --change '{{ inputs.change | toJson }}'
+
+  - id: route_approval
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.validate_margin.vars.margin_pct < 10 }}"
+    then:
+      - id: merchandiser_approval
+        type: io.kestra.plugin.core.flow.Pause
+        description: |
+          Merchandiser must approve price change for SKU
+          {{ inputs.change.sku }}. Margin below 10 percent threshold.
+
+  - id: apply_to_pim
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://pim.internal/api/products/{{ inputs.change.sku }}/price"
+    method: PUT
+    contentType: application/json
+    body: |
+      {
+        "price": {{ inputs.change.new_price }},
+        "currency": "{{ inputs.change.currency }}"
+      }
+    headers:
+      Authorization: "Bearer {{ secret('PIM_TOKEN') }}"
+
+  - id: notify_team
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_MERCH_URL') }}"
+    payload: |
+      { "text": "Price change applied for {{ inputs.change.sku }}. Run {{ execution.id }}." }
+
+  - id: archive_audit
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "merch-audit"
+    key: "price-changes/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ inputs.change.sku }}.json"
+    from: "{{ outputs.validate_margin.outputFiles.report }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
             { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.core.http.Request" },
             { cls: "io.kestra.plugin.aws.s3.Upload" },
         ],
         href: "/blueprints",
     },
     {
-        name: "Inventory sync & exceptions",
-        title: "Keep stock positions true across stores, marketplaces, and partners.",
+        name: "Supplier file normalization",
+        title: "Suppliers drop files in any format. Kestra normalizes them and loads them to ERP.",
         description:
-            "Pull stock snapshots from WMS and partners, reconcile in Python, publish to storefronts and marketplaces, and route conflicts to merch ops. Peak-season scale, years of replay.",
-        code: `id: inventory-sync
-namespace: company.retail.inventory
+            "Suppliers drop order or ASN files on the SFTP. Kestra polls the inbox, normalizes each file with a Python script, validates against rules, loads to your ERP staging table, and routes exceptions to the right ops queue. Replace bespoke mapping pipelines with one declarative flow.",
+        code: `id: supplier-file-ingestion
+namespace: company.retail.supply
 
 triggers:
-  - id: every_5_min
+  - id: every_15_min
     type: io.kestra.plugin.core.trigger.Schedule
-    cron: "*/5 * * * *"
+    cron: "*/15 * * * *"
 
 tasks:
-  - id: snapshot_wms
-    type: io.kestra.plugin.jdbc.postgresql.Query
-    url: "jdbc:postgresql://wms:5432/wms"
-    username: "{{ secret('PG_USER') }}"
-    password: "{{ secret('PG_PASSWORD') }}"
-    fetchType: STORE
-    sql: "SELECT sku, location, qty FROM wms.stock"
+  - id: list_files
+    type: io.kestra.plugin.fs.sftp.List
+    host: "supplier-feed.internal"
+    port: "22"
+    username: "{{ secret('SFTP_USER') }}"
+    password: "{{ secret('SFTP_PASSWORD') }}"
+    from: "/inbound/orders/"
 
-  - id: pull_partners
-    type: io.kestra.plugin.core.http.Request
-    uri: "https://marketplace.example/api/stock"
-    method: GET
-    headers:
-      Authorization: "Bearer {{ secret('MARKET_TOKEN') }}"
-
-  - id: reconcile
+  - id: normalize
     type: io.kestra.plugin.scripts.python.Commands
     commands:
-      - python reconcile_stock.py --wms {{ outputs.snapshot_wms.uri }} --partner {{ outputs.pull_partners.uri }}
+      - python normalize_suppliers.py --listing {{ outputs.list_files.uri }}
 
-  - id: publish_storefront
+  - id: load_to_erp
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://erp-staging:5432/staging"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    sql: |
+      INSERT INTO staging.supplier_batch (batch_id, file_count, loaded_at)
+      VALUES ('{{ execution.id }}', {{ outputs.normalize.vars.file_count }}, NOW())
+
+  - id: route_exceptions
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.normalize.vars.errors > 0 }}"
+    then:
+      - id: notify_ops
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        url: "{{ secret('SLACK_SUPPLY_URL') }}"
+        payload: |
+          { "text": "{{ outputs.normalize.vars.errors }} supplier file errors. Batch {{ execution.id }}." }
+
+  - id: archive_batch
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "supply-archive"
+    key: "orders/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ execution.id }}.json"
+    from: "{{ outputs.normalize.outputFiles.batch }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.fs.sftp.List" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Customer service automation",
+        title: "Gorgias ticket lands. Kestra assembles context. Agent gets the answer one click away.",
+        description:
+            "A Gorgias ticket fires a webhook. Kestra pulls the order, shipment, and refund history, scores the customer tier, assembles the agent context, and posts back to the ticket. No more agents opening five tabs to resolve one issue.",
+        code: `id: gorgias-context-assembly
+namespace: company.retail.cs
+
+triggers:
+  - id: gorgias_webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "gorgias-events"
+
+inputs:
+  - id: ticket
+    type: JSON
+    displayName: Gorgias ticket payload
+
+tasks:
+  - id: fetch_orders
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://oms:5432/orders"
+    username: "{{ secret('PG_USER') }}"
+    password: "{{ secret('PG_PASSWORD') }}"
+    fetchType: FETCH
+    sql: |
+      SELECT order_id, total, currency, status, fulfilled_at
+      FROM orders.completed
+      WHERE customer_email = '{{ inputs.ticket.customer.email }}'
+      ORDER BY fulfilled_at DESC
+      LIMIT 5
+
+  - id: score_tier
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python score_tier.py --customer '{{ inputs.ticket.customer | toJson }}' --orders {{ outputs.fetch_orders.uri }}
+
+  - id: post_context
     type: io.kestra.plugin.core.http.Request
-    uri: "https://shop.example/admin/api/inventory"
+    uri: "https://api.gorgias.com/api/tickets/{{ inputs.ticket.id }}/internal-notes"
     method: POST
     contentType: application/json
-    body: "{{ outputs.reconcile.outputFiles.reconciled }}"
+    headers:
+      Authorization: "Basic {{ secret('GORGIAS_TOKEN') }}"
+    body: |
+      {
+        "body_html": "Customer tier: {{ outputs.score_tier.vars.tier }}. Recent orders attached. Run {{ execution.id }}.",
+        "channel": "internal-note"
+      }
 
-  - id: route_conflicts
+  - id: route_high_value
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs.reconcile.vars.conflicts > 0 }}"
+    condition: "{{ outputs.score_tier.vars.tier == 'platinum' }}"
     then:
-      - id: notify_merch
+      - id: notify_vip_team
         type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-        url: "{{ secret('SLACK_MERCH_URL') }}"
+        url: "{{ secret('SLACK_VIP_URL') }}"
         payload: |
-          { "text": "Inventory conflicts: {{ outputs.reconcile.vars.conflicts }}" }`,
+          { "text": "Platinum customer ticket {{ inputs.ticket.id }}. Customer: {{ inputs.ticket.customer.email }}." }`,
         plugins: [
+            { cls: "io.kestra.plugin.core.trigger.Webhook" },
             { cls: "io.kestra.plugin.jdbc.postgresql.Query" },
-            { cls: "io.kestra.plugin.core.http.Request" },
             { cls: "io.kestra.plugin.scripts.python.Commands" },
-            { cls: "io.kestra.plugin.core.flow.If" },
-            { cls: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook" },
+            { cls: "io.kestra.plugin.core.http.Request" },
         ],
         href: "/blueprints",
     },
@@ -430,44 +479,52 @@ tasks:
 
 const FAQ = [
     {
-        question: "Can Kestra orchestrate order, return, and fulfillment workflows without replacing our OMS or WMS?",
-        answer: "Yes. Kestra sits alongside Shopify, Salesforce Commerce, SAP Commerce, Oracle Retail, Manhattan, and custom OMS/WMS stacks. It connects them to payments, carriers, partners, and customer-facing systems with declarative flows, retries, and full audit. You modernize incrementally without rebuilding core commerce.",
+        question: "Can Kestra power data engineering at retail scale (DataMesh, departmental analytics)?",
+        answer: "Yes. Per-domain data pipelines with namespace isolation, signed lineage, and per-team governance. Modern retail data teams scale to thousands of workflows, hundreds of active users, and dramatic gains in data production on Kestra. Java-based engine handles enterprise scale where Python-only tools struggle. dbt builds, Spark jobs, Python transforms, and SQL workloads coexist on one platform.",
     },
     {
-        question: "Does Kestra handle omnichannel workflows: BOPIS, click-and-collect, ship-from-store, cross-channel returns?",
-        answer: "Yes. Orchestrate handoffs across e-commerce, POS, store fulfillment, and reverse logistics. Kestra coordinates inventory reservation, associate notification, customer communication, and finance reconciliation so the same operational workflow spans every channel.",
+        question: "How does Kestra handle approval workflows and self-service apps for retail operations?",
+        answer: "Approval gates are a first-class flow primitive. Pause any workflow pending merchandiser, finance, ops, or buyer sign-off. Build self-service UIs in front of any flow with Apps: forms for data entry, approval buttons, controlled output views. The pattern retailers use to scale workflow managers from dozens to hundreds without rebuilding the platform.",
     },
     {
-        question: "Can Kestra scale through Black Friday, product launches, and peak seasons?",
-        answer: "Yes. Horizontal worker scaling absorbs traffic spikes without architectural changes. Queue-backed triggers and per-namespace rate controls protect downstream systems. Pre-peak dry runs are replayable against production code, so launch-day behaviour is known before launch day.",
+        question: "Can Kestra orchestrate supplier file normalization and EDI integration?",
+        answer: "Yes. Receive supplier files in any format from SFTP, email, AS2, or API. Normalize with Python or shell scripts, validate against rules, load to your ERP staging table, and route exceptions to the right ops queue. Replace bespoke mapping pipelines and fragile broker code with declarative flows that survive when the engineer who wrote them leaves.",
     },
     {
-        question: "How does Kestra handle high-value refunds, price changes, and promo go-lives?",
-        answer: "Four-eyes Pause tasks are first-class flow primitives. Any refund over a threshold, any price change, any promo go-live can pause for merchandiser, finance, or ops sign-off. Namespace-scoped RBAC enforces segregation of duties; every decision is versioned.",
+        question: "Can Kestra modernize legacy ERP and mission-critical retail integrations?",
+        answer: "Yes. Wrap existing integration platforms, Cron jobs, and legacy scripts as Kestra flows, then modernize incrementally. The pattern global retail brands use to transform ERP and supply-chain workflows: faster to write, easier to own, fully auditable. No big-bang rewrite, no production freeze.",
     },
     {
-        question: "Can Kestra power personalization, loyalty, and customer-data workflows?",
-        answer: "Yes. Coordinate events across CRM, CDP, marketing, analytics, and loyalty platforms. Trigger personalized campaigns from real operational signals — orders, returns, service cases, store visits — not yesterday's batch dumps. Segment membership changes become actions in seconds, not days.",
+        question: "Does Kestra integrate with Gorgias, Zendesk, Salesforce Service Cloud, and Intercom for customer service workflows?",
+        answer: "Yes. Native HTTP plugins plus dedicated integrations for Slack and email mean Gorgias, Zendesk, Salesforce Service Cloud, or Intercom sit naturally in a flow. Assemble order, shipment, and refund context automatically. Agents resolve tickets without opening five tabs.",
     },
     {
-        question: "Does Kestra help with fraud, disputes, and chargebacks?",
-        answer: "Yes. Screen orders against vendor and internal signals, score with ML, route to manual review, and assemble chargeback evidence automatically. Kestra keeps the full decision trail one click away for dispute teams and acquirers.",
+        question: "Can Kestra build self-service apps and forms in front of flows for non-technical retail users?",
+        answer: "Yes. Apps let you build a UI in front of any flow: forms for data entry, approval buttons, controlled output views. The flow remains the backend. Combined with namespace-scoped RBAC, you can give merchandisers, finance, or store managers controlled access to specific operations without writing a custom app.",
     },
     {
-        question: "How does Kestra integrate with CS tools like Gorgias, Zendesk, and Salesforce Service Cloud?",
-        answer: "Native HTTP plugins + dedicated integrations for Slack and email mean Gorgias, Zendesk, Intercom, or Service Cloud sit naturally in a flow. Assemble order, shipment, and refund context automatically so agents never open five tabs to resolve one ticket.",
+        question: "How does Kestra handle multi-brand, multi-region, or multi-business-unit isolation?",
+        answer: "Namespace-scoped RBAC and multi-tenant isolation let each brand, region, or business line own its flows, secrets, and runtime on a shared platform. Subflows and triggers coordinate work across boundaries when needed. Zero blast radius between environments. A single platform team operates the control plane while consuming teams self-serve.",
     },
     {
-        question: "How is Kestra different from Airflow, Control-M, or custom cron scripts?",
-        answer: "Airflow and Control-M were built for batch data pipelines, not event-driven commerce. Kestra is declarative YAML over an event-first engine: webhooks, streams, and schedules are equals, retries and exception routing are built in, and every run is auditable out of the box.",
+        question: "Can Kestra coordinate omnichannel, BOPIS, and store fulfillment workflows?",
+        answer: "Yes, when you need it. Native HTTP, Kafka, and webhook triggers handle order, return, and inventory events across e-commerce, POS, store fulfillment, and reverse logistics. But this is not where Kestra is most distinctive. The strongest Kestra retail customers use the platform for data engineering at scale, business workflow automation, and supply-chain integration first.",
     },
     {
-        question: "What deployment options exist and how are secrets handled?",
-        answer: "Self-hosted in your private cloud or VPC, Kestra Cloud in EU or US, or fully air-gapped. Secrets come from Vault, AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, or CyberArk. PCI-friendly segmentation is built in.",
+        question: "Does Kestra support AI-assisted workflows for retail (transcription, document review, customer insights)?",
+        answer: "Yes. Orchestrate OCR, LLM extraction, classification, and decision-support models alongside rule-based checks. Route customer insights from transcribed calls to product or merchandising teams automatically. Pause for human review at any decision point. Models, prompts, and PII stay inside your environment.",
     },
     {
-        question: "Is Kestra open source, and what does the licensing model look like?",
-        answer: "Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
+        question: "How does Kestra fit alongside SAP, Oracle Retail, Shopify, Salesforce Commerce, and Manhattan?",
+        answer: "Kestra sits alongside your commerce stack. It connects them to data platforms, supplier and partner systems, identity providers, and AI services with declarative, replayable flows. You modernize integration and data workflows incrementally without rebuilding core commerce. Wrap existing jobs first, then modernize at your own pace.",
+    },
+    {
+        question: "Is Kestra open source, and what does the licensing model look like for retail?",
+        answer: "Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, Apps for self-service UIs, Kill Switch, and 24x7 support. Open standards (YAML, REST, OIDC, OpenTelemetry), no proprietary runtime lock-in, transparent licensing. Procurement-friendly for retail framework agreements.",
+    },
+    {
+        question: "How does Kestra scale through Black Friday, product launches, and peak-season spikes?",
+        answer: "Horizontal worker scaling absorbs traffic spikes without architectural changes. Queue-backed triggers and per-namespace rate controls protect downstream systems. Pre-peak dry runs are replayable against production code, so launch-day behaviour is known before launch day. Real customers run business-critical pipelines on the same engine year-round.",
     },
 ]
 
@@ -485,14 +542,13 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    Kestra keeps retail operations<br />
-                    <span class="gradient">in sync, even on launch day.</span>
+                    The data + workflow control plane<br />
+                    <span class="gradient">for modern retail.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
-                    Retailers use Kestra to move orders, returns, inventory, and customers across OMS, WMS, storefront,
-                    POS, and partner APIs without silent failures. Peak-season ready, queue-backed, replayable, and
-                    audit-ready from supplier to storefront.
+                    Scale data platforms across teams. Automate approval workflows and operations.
+                    Modernize legacy ERP and supply-chain integration. One open-source engine, on infrastructure you control.
                 </p>
 
                 <div class="tags" data-usal="fade-l">
@@ -508,56 +564,56 @@ const FAQ = [
                     <div class="exec-panel">
                         <div class="exec-panel__header">
                             <span class="exec-panel__dot"></span>
-                            <span class="exec-panel__title">order-orchestration</span>
-                            <span class="exec-panel__meta">namespace · company.retail.orders</span>
-                            <span class="exec-panel__duration">1.1s</span>
+                            <span class="exec-panel__title">domain-data-pipeline</span>
+                            <span class="exec-panel__meta">namespace · company.retail.domain_supply</span>
+                            <span class="exec-panel__duration">2.1s</span>
                         </div>
 
                         <div class="exec-panel__body">
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">receive_order</span>
-                                <span class="exec-row__type">core.http.Webhook</span>
-                                <span class="exec-row__result">accepted</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">persist_order</span>
+                                <span class="exec-row__name">extract_source</span>
                                 <span class="exec-row__type">jdbc.postgresql.Query</span>
-                                <span class="exec-row__result">order #40821</span>
+                                <span class="exec-row__result">14,322 rows</span>
                             </div>
                             <div class="exec-row">
                                 <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">reserve_inventory</span>
+                                <span class="exec-row__name">dbt_build</span>
+                                <span class="exec-row__type">dbt.cli.Build</span>
+                                <span class="exec-row__result">42 models</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">quality_checks</span>
+                                <span class="exec-row__type">scripts.python.Commands</span>
+                                <span class="exec-row__result">passed</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">merch_approval</span>
+                                <span class="exec-row__type">core.flow.Pause</span>
+                                <span class="exec-row__result">Approved</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">publish_lakehouse</span>
+                                <span class="exec-row__type">aws.s3.Upload</span>
+                                <span class="exec-row__result">parquet ok</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">register_catalog</span>
                                 <span class="exec-row__type">core.http.Request</span>
-                                <span class="exec-row__result">in stock</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">dispatch_carrier</span>
-                                <span class="exec-row__type">core.http.Request</span>
-                                <span class="exec-row__result">tracking #</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">update_storefront</span>
-                                <span class="exec-row__type">core.http.Request</span>
-                                <span class="exec-row__result">synced</span>
-                            </div>
-                            <div class="exec-row">
-                                <span class="exec-row__check">✓</span>
-                                <span class="exec-row__name">notify_customer</span>
-                                <span class="exec-row__type">email.MailSend</span>
-                                <span class="exec-row__result">sent</span>
+                                <span class="exec-row__result">cataloged</span>
                             </div>
                         </div>
 
                         <div class="exec-panel__footer">
-                            <span class="exec-footer__item">Peak-ready</span>
+                            <span class="exec-footer__item">Multi-tenant</span>
                             <span class="exec-footer__sep">·</span>
                             <span class="exec-footer__item">Replayable</span>
                             <span class="exec-footer__sep">·</span>
-                            <span class="exec-footer__item">Exception-routed</span>
+                            <span class="exec-footer__item">Audit-ready</span>
                         </div>
                     </div>
                 </div>
@@ -567,15 +623,15 @@ const FAQ = [
                 </div>
 
                 <div class="hero-logos" data-usal="fade-u">
-                    <span class="hero-logos__label">Used by retail, e-commerce, and consumer-goods teams</span>
+                    <span class="hero-logos__label">Trusted by retail, commerce, and consumer-goods teams</span>
                     <div class="hero-logos__row">
-                        <Image src={LeroyMerlinLogoImg} alt="Leroy Merlin" class="hero-logos__item" />
-                        <Image src={AuchanLogoImg} alt="Auchan" class="hero-logos__item" />
-                        <Image src={DecathlonLogoImg} alt="Decathlon" class="hero-logos__item" />
-                        <Image src={IntersportLogoImg} alt="Intersport" class="hero-logos__item" />
-                        <Image src={DiorLogoImg} alt="Dior" class="hero-logos__item" />
-                        <Image src={GorgiasLogoImg} alt="Gorgias" class="hero-logos__item" />
-                        <Image src={FilaLogoImg} alt="Fila" class="hero-logos__item" />
+                        <Image src={LeroyMerlinLogoImg} alt="Leroy Merlin" class="hero-logos__item hero-logos__item--leroy" />
+                        <Image src={GorgiasLogoImg} alt="Gorgias" class="hero-logos__item hero-logos__item--gorgias" />
+                        <Image src={AuchanLogoImg} alt="Auchan" class="hero-logos__item hero-logos__item--auchan" />
+                        <Image src={DecathlonLogoImg} alt="Decathlon" class="hero-logos__item hero-logos__item--decathlon" />
+                        <Image src={IntersportLogoImg} alt="Intersport" class="hero-logos__item hero-logos__item--intersport" />
+                        <Image src={DiorLogoImg} alt="Dior" class="hero-logos__item hero-logos__item--dior" />
+                        <Image src={FilaLogoImg} alt="FILA" class="hero-logos__item hero-logos__item--fila" />
                     </div>
                 </div>
             </div>
@@ -584,10 +640,12 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                    One control plane for the workflows <span class="highlight">retail teams actually run</span>.
                 </h2>
                 <p class="flow__lead">
-                    Order, return, stock change, promo go-live, customer case, or supplier feed. The orchestration job is the same: connect systems, route exceptions, trigger actions, keep the books aligned.
+                    Data pipelines per business domain. Approval workflows in front of merchandising and ops.
+                    Supplier file normalization. ERP modernization. Whether you're scaling a DataMesh, automating
+                    price-change approvals, or migrating off a legacy integration platform, the engine is the same.
                 </p>
 
                 <div class="flow__grid">
@@ -616,7 +674,7 @@ const FAQ = [
                 </div>
 
                 <h5 class="flow__footer text-center">
-                    Each step is a declarative YAML task. Change the source system, workflow step, or destination without rebuilding the whole process.
+                    Each step is a declarative YAML task. Wrap an existing legacy job today. Modernize it in place tomorrow. No rewrite of the whole estate.
                 </h5>
             </div>
         </section>
@@ -624,8 +682,8 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>Every critical workflow in retail and commerce.</h2>
-                    <p>Orders and returns, inventory and pricing, customer and loyalty, store and platform operations. One engine runs them all.</p>
+                    <h2>What retail teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <p>Real workloads from real retail and commerce teams. DataMesh at enterprise scale. ERP modernization at global brands. Workflow automation across DIY, fashion, and consumer goods. Customer service context one click away. Mission-critical integration replaced one workflow at a time.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
                     <div class="workloads__group">
@@ -649,7 +707,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    <span class="highlight">Enterprise-Grade</span> Orchestration for Every Retail Workload.
+                    Built to the bar <span class="highlight">retail platform teams</span> actually need.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -663,15 +721,15 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2><span class="highlight">Blueprints</span> for retail and commerce.</h2>
-                <p class="build__lead">Production workflows, from order orchestration to inventory sync. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
+                <h2>Patterns from real <span class="highlight">retail deployments</span>.</h2>
+                <p class="build__lead">Real workflows running today inside retail, commerce, and consumer-goods teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
                 <div class="wrapper">
                     <div class="inner">
                         <div class="header row g-0">
                             {BUILD_TABS.map((tab, idx) => (
                                 <div
                                     class:list={[
-                                        "col-6 col-md-4 header-tab",
+                                        "col-6 col-md-3 header-tab",
                                         { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
                                     ]}
                                     data-tab-target={idx}
@@ -711,18 +769,19 @@ const FAQ = [
 
         <PluginsBlock>
             <Fragment slot="title">
-                Integrates with the <span class="highlight">systems retail teams</span> already rely on.
+                Integrates with the <span class="highlight">systems retail teams</span> already run.
             </Fragment>
             <Fragment slot="description">
                 Connect OMS, WMS, POS, storefronts, PIM, payment gateways, carriers, CS tools, loyalty platforms,
-                and analytics stacks through 1,200+ plugins. Or build the exact integration your environment requires.
+                and analytics stacks through {totalPlugins}+ plugins. Or build the exact integration your environment requires.
             </Fragment>
         </PluginsBlock>
 
         <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
-            <Fragment slot="title">One platform for retail and commerce.</Fragment>
-            Modernize commerce stacks, connect the tools your teams already use, and add lineage, approvals,
-            and observability across orders, returns, inventory, pricing, customer service, and store operations.
+            <Fragment slot="title">Run retail data and operations on a platform you fully own.</Fragment>
+            Self-hosted, EU-ready, and procurement-friendly. Scale data platforms across teams,
+            automate business workflows, and modernize legacy integrations incrementally.
+            One open-source engine.
         </SeeHow>
 
         <Faq items={FAQ} client:visible />
@@ -730,11 +789,14 @@ const FAQ = [
 </Layout>
 
 <style lang="scss">
+    // ── Retail palette: brand purple ─────────────────────────────────
+    // Distinct from FSI (yellow), Healthcare (green), Public Services
+    // (cobalt), Automotive (red). Reads as commerce, brand, premium.
     $rt-purple:        #7C3AED;
     $rt-purple-bright: #A78BFA;
     $rt-purple-light:  #EDE9FE;
     $rt-purple-deep:   #581C87;
-    $rt-platinum:    #E8EDF0;
+    $rt-platinum:      #E8EDF0;
 
     .retail { overflow: clip; }
 
@@ -755,7 +817,7 @@ const FAQ = [
     .hero {
         position: relative;
         overflow: hidden;
-        background: #060a0c;
+        background: #0a0514;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -775,7 +837,7 @@ const FAQ = [
             transform: translateX(-50%);
             width: 1100px;
             height: 520px;
-            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.20) 0%, rgba(124, 58, 237, 0) 70%);
+            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.32) 0%, rgba(124, 58, 237, 0) 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -843,7 +905,7 @@ const FAQ = [
         padding: 4px 1.125rem;
         gap: 0.5rem;
         border-radius: 2.5rem;
-        background: #060b0d;
+        background: #0a0514;
         position: relative;
         z-index: 1;
         font-size: $font-size-xs;
@@ -877,16 +939,16 @@ const FAQ = [
         gap: 6px;
         padding: 6px 14px;
         border-radius: 9999px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.04);
-        color: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.78);
         font-size: $font-size-xs;
         white-space: nowrap;
         transition: all 0.2s ease;
 
         &:hover {
-            border-color: rgba(167, 139, 250, 0.4);
-            background: rgba(124, 58, 237, 0.08);
+            border-color: rgba(167, 139, 250, 0.55);
+            background: rgba(124, 58, 237, 0.14);
             color: $white;
 
             :global(.tag-icon) { color: $rt-purple-light; }
@@ -900,38 +962,38 @@ const FAQ = [
         }
     }
 
-    @property --fs-neon-angle {
+    @property --rt-neon-angle {
         syntax: '<angle>';
         inherits: false;
         initial-value: 0deg;
     }
 
-    @keyframes fs-neon-trace {
-        to { --fs-neon-angle: 360deg; }
+    @keyframes rt-neon-trace {
+        to { --rt-neon-angle: 360deg; }
     }
 
     .exec-panel-wrapper {
-        --fs-neon-angle: 0deg;
+        --rt-neon-angle: 0deg;
         border-radius: 10px;
         background: conic-gradient(
-            from var(--fs-neon-angle),
-            rgba(124, 58, 237, 0.12) 0deg,
-            rgba(124, 58, 237, 0.12) 320deg,
+            from var(--rt-neon-angle),
+            rgba(124, 58, 237, 0.16) 0deg,
+            rgba(124, 58, 237, 0.16) 320deg,
             #{$rt-purple}              340deg,
-            $rt-platinum             350deg,
+            $rt-platinum               350deg,
             #{$rt-purple}              360deg
         );
         padding: 1px;
         box-shadow:
-            0 1.214px 10.321px 0 rgba(124, 58, 237, 0.22) inset,
-            -6.667px -7.143px 31.334px 3.333px rgba(124, 58, 237, 0.55);
+            0 1.214px 10.321px 0 rgba(124, 58, 237, 0.28) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(124, 58, 237, 0.6);
         width: 100%;
         max-width: 640px;
-        animation: fs-neon-trace 5s linear infinite;
+        animation: rt-neon-trace 5s linear infinite;
     }
 
     .exec-panel {
-        background: #06100f;
+        background: #110a1d;
         border-radius: 9px;
         overflow: hidden;
         backdrop-filter: blur(12px);
@@ -943,7 +1005,7 @@ const FAQ = [
             gap: 0.75rem;
             padding: 12px 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(124, 58, 237, 0.04);
+            background: rgba(124, 58, 237, 0.08);
             flex-wrap: wrap;
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
@@ -985,7 +1047,7 @@ const FAQ = [
         &__footer {
             padding: 10px 16px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(124, 58, 237, 0.03);
+            background: rgba(124, 58, 237, 0.06);
             font-family: $font-family-monospace;
             font-size: $font-size-xs;
             color: $rt-purple-light;
@@ -1008,7 +1070,7 @@ const FAQ = [
         font-size: $font-size-xs;
         transition: background 0.2s;
 
-        &:hover { background: rgba(124, 58, 237, 0.06); }
+        &:hover { background: rgba(124, 58, 237, 0.10); }
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: 20px 1fr auto;
@@ -1053,16 +1115,19 @@ const FAQ = [
         }
     }
 
+    // ── Hero logo strip ──────────────────────────────────────────────
+    // 7 logos, 4+3 grid at md+, 2-col stack on mobile. Per-logo
+    // sizing tuned to each SVG's aspect ratio.
     .hero-logos {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1.5rem;
         align-items: center;
         justify-content: center;
         margin-top: 1rem;
         padding-top: 2rem;
         width: 100%;
-        max-width: 52rem;
+        max-width: 56rem;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
 
@@ -1071,7 +1136,7 @@ const FAQ = [
             font-weight: 600;
             letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(255, 255, 255, 0.6);
         }
 
         &__row {
@@ -1080,15 +1145,13 @@ const FAQ = [
             align-items: center;
             justify-items: center;
             column-gap: 0.5rem;
-            row-gap: 1.25rem;
+            row-gap: 1.5rem;
             width: 100%;
-            max-width: 48rem;
-            margin: 0 auto;
 
             @include media-breakpoint-down(md) {
                 grid-template-columns: repeat(2, 1fr);
-                column-gap: 1rem;
-                row-gap: 1.25rem;
+                column-gap: 1.5rem;
+                row-gap: 1.5rem;
             }
         }
 
@@ -1097,15 +1160,16 @@ const FAQ = [
             height: auto;
             display: block;
             filter: brightness(0) invert(1);
-            opacity: 0.8;
+            opacity: 0.85;
             transition: opacity 0.2s;
+            object-fit: contain;
             max-width: 100%;
 
             &:hover { opacity: 1; }
 
             // Row 1: 4 logos, each spans 3 of 12 cols
             &:nth-child(-n+4) { grid-column: span 3; }
-            // Row 2: 3 logos, each spans 4 of 12 cols (3×4=12 centers naturally)
+            // Row 2: 3 logos, each spans 4 of 12 cols
             &:nth-child(n+5)  { grid-column: span 4; }
 
             @include media-breakpoint-down(md) {
@@ -1113,17 +1177,26 @@ const FAQ = [
                 &:nth-child(n+5) { grid-column: auto; }
             }
 
-            // Normalised optical sizing: text-logos ≈ 28–32px tall,
-            // icon-centric logos ≈ 40–44px tall so they read at the same weight.
-            // Normalised optical sizing: text-logos ≈ 28–32px tall,
-            // icon-centric logos ≈ 40–44px tall so they read at the same weight.
-            &:nth-child(1) { max-height: 30px; max-width: 150px; }  // Leroy Merlin
-            &:nth-child(2) { max-height: 32px; max-width: 150px; }  // Auchan
-            &:nth-child(3) { max-height: 28px; max-width: 150px; }  // Decathlon
-            &:nth-child(4) { max-height: 36px; max-width: 160px; }  // Intersport
-            &:nth-child(5) { max-height: 30px; max-width: 140px; }  // Dior
-            &:nth-child(6) { max-height: 32px; max-width: 160px; }  // Gorgias
-            &:nth-child(7) { max-height: 28px; max-width: 120px; }  // Fila
+            // Unified optical sizing across all industry pages:
+            // text wordmarks 36px, small text 32px, compact icon+text
+            // 42px, stacked vertically icon+text 52–56px.
+            &--leroy      { max-height: 36px; max-width: 180px; }  // text
+            &--gorgias    { max-height: 36px; max-width: 160px; }  // text
+            &--auchan     { max-height: 36px; max-width: 140px; }  // text
+            &--decathlon  { max-height: 36px; max-width: 180px; }  // text wide
+            &--intersport { max-height: 36px; max-width: 180px; }  // text wide
+            &--dior       { max-height: 32px; max-width: 110px; }  // small text
+            &--fila       { max-height: 32px; max-width: 120px; }  // small text
+
+            @include media-breakpoint-down(md) {
+                &--leroy      { max-height: 40px; max-width: 200px; }
+                &--gorgias    { max-height: 40px; max-width: 180px; }
+                &--auchan     { max-height: 40px; max-width: 160px; }
+                &--decathlon  { max-height: 40px; max-width: 200px; }
+                &--intersport { max-height: 40px; max-width: 200px; }
+                &--dior       { max-height: 36px; max-width: 130px; }
+                &--fila       { max-height: 36px; max-width: 140px; }
+            }
         }
     }
 
@@ -1176,8 +1249,8 @@ const FAQ = [
         &__grid {
             width: 100%;
             padding: 2rem 1rem;
-            background-color: rgba(124, 58, 237, 0.04);
-            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%2314B8A6' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            background-color: rgba(124, 58, 237, 0.06);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%237C3AED' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
             border-radius: 10px;
         }
 
@@ -1369,6 +1442,13 @@ const FAQ = [
             p { color: var(--ks-content-secondary); font-size: $font-size-lg; margin: 0; }
         }
 
+        &__highlight {
+            background: linear-gradient(90deg, #{$rt-purple}, #{$rt-purple-bright});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         &__group {
             max-width: 72rem;
             margin: 0 auto 3rem;
@@ -1401,16 +1481,18 @@ const FAQ = [
         background: var(--ks-background-primary);
         border: 1px solid var(--ks-border-secondary);
         border-radius: 10px;
-        transition: border-color 0.2s, transform 0.2s;
+        box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 
         &:hover {
             border-color: $rt-purple;
             transform: translateY(-2px);
+            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
         }
 
         &__icon {
             font-size: 1.375rem;
-            color: $rt-purple-deep;
+            color: $rt-purple;
             margin-bottom: 0.75rem;
             width: 1.375rem;
             height: 1.375rem;

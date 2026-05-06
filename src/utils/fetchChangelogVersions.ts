@@ -39,7 +39,7 @@ export async function fetchMajorReleases(limit = 20): Promise<GitHubRelease[]> {
         const data = await $fetchCached(
             `https://api.github.com/repos/kestra-io/kestra/releases?per_page=150`,
         )
-        const majorReleases = data.filter((r: any) => !r.draft && !r.prerelease)
+        const majorReleases = data.filter((r: any) => !r.draft && !r.prerelease && !r.tag_name.includes("/"))
 
         return majorReleases.slice(0, limit).map((release: any) => ({
             ...release,

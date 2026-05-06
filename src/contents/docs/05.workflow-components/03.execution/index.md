@@ -9,8 +9,6 @@ docId: executions
 
 Execute flows and view the results.
 
-## Executions – run and monitor flows
-
 An execution is a single run of a flow with a specific state.
 
 <div class="video-container">
@@ -120,8 +118,6 @@ You can trigger a flow manually from the Kestra UI by clicking the **Execute** b
 
 ![execute_button](./execute_button.png)
 
----
-
 ## Use automatic triggers
 
 You can add a **Schedule trigger** to automatically launch a flow execution at a regular time interval.
@@ -146,8 +142,6 @@ http://localhost:8080/api/v1/main/executions/webhook/dev/hello-world/secretWebho
 ```
 
 You can also pass inputs to the flow using the `inputs` query parameter.
-
----
 
 ## Execute a flow via an API call
 

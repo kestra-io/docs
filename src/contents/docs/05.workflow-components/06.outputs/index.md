@@ -8,8 +8,6 @@ sidebarTitle: Outputs
 
 Outputs let you pass data between tasks and flows.
 
-## Workflow Outputs – sharing data between tasks
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/j6Iyn5rCeRI?si=2al6ZgqzfNqAJ0Wf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -215,7 +213,7 @@ namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
@@ -286,7 +284,7 @@ namespace: company.team
 tasks:
   - id: each
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
@@ -294,7 +292,7 @@ tasks:
 
   - id: end
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ outputs.inner['value 1'].value }}"
+    format: "{{ task.id }} > {{ outputs.inner['alpha'].value }}"
 ```
 
 It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` in  `[VALUE]` is called the subscript notation; it enables using special chars like space or '-' in task identifiers or output attributes.
@@ -313,7 +311,7 @@ namespace: company.team
 
 tasks:
   - id: sequential
-    type: io.kestra.core.tasks.flows.Sequential
+    type: io.kestra.plugin.core.flow.Sequential
     tasks:
       - id: first
         type: io.kestra.plugin.core.output.OutputValues
@@ -341,7 +339,7 @@ namespace: company.team
 tasks:
   - id: foreach
     type: io.kestra.plugin.core.flow.ForEach
-    values: ["value 1", "value 2", "value 3"]
+    values: ["alpha", "beta", "gamma"]
     tasks:
       - id: first
         type: io.kestra.plugin.core.output.OutputValues
@@ -355,7 +353,7 @@ tasks:
 
   - id: log_output_from_foreach
     type: io.kestra.plugin.core.log.Log
-    message: "{{ outputs.second['value 1'].values.data }}"
+    message: "{{ outputs.second['alpha'].values.data }}"
 ```
 
 You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.functions/index.mdx) for more details.
@@ -415,7 +413,6 @@ You can now use Pebble expressions to evaluate and analyze the output data furth
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/SPGmXSJN3VE?si=c2RkQJdidKig90Ot" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
----
 
 :::alert{type="info"}
 Note: This was previously called **Render expression**.

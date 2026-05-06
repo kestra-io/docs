@@ -13,8 +13,6 @@ Learn about the Enterprise Edition and how it can help you run Kestra securely a
 
 Designed for production workloads with high security and compliance requirements, deployed wherever you need.
 
----
-
 ## Key Features
 
 Kestra Enterprise is built on top of the [Open Source Edition](https://github.com/kestra-io/kestra) but features a different architecture. Below are the key differences between the two.

@@ -17,8 +17,6 @@ How to use GitHub Actions to automatically validate and deploy your flows to Kes
   <iframe src="https://www.youtube.com/embed/4MqtD9VtGVs?si=eMqBQFumZG9P4OHb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 If you're version controlling your flows in a Git repository, it can be useful to automatically validate that they're in the correct format before merging into your `main` branch. On top of that, you can automatically deploy your flows in your `main` branch to your Kestra instance.
 
 There are three GitHub Actions available:
@@ -28,7 +26,7 @@ There are three GitHub Actions available:
 
 ## Validate Your Flows
 
-Using the Validate Flows Action, we can set up our workflow to check all flows in the specified `directory` when a commit is pushed to `main` or a Pull Request is opened for the `main` branch. For the full list of inputs, check out the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#validate-flows-action-inputs).
+The Validate Flows Action sets up a workflow to check all flows in the specified `directory` when a commit is pushed to `main` or a Pull Request is opened for the `main` branch. For the full list of inputs, see the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#validate-flows-action-inputs).
 
 In the example below:
 1. Triggers when a commit is pushed to `main` or when a PR is opened for the `main` branch.
@@ -60,7 +58,7 @@ jobs:
 
 ## Deploy Your Flows
 
-Using the Deploy Flows Action, we can set up our workflow to deploy when new commits are pushed to our `main` branch. We need to specify a `directory` containing your flows and optionally a `namespace` to deploy them to. For the full list of inputs, check out the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#deploy-flows-action-inputs).
+The Deploy Flows Action sets up a workflow to deploy when new commits are pushed to the `main` branch. Specify a `directory` containing your flows and optionally a `namespace` to deploy them to. For the full list of inputs, see the [GitHub Actions reference](../../version-control-cicd/cicd/01.github-action/index.md#deploy-flows-action-inputs).
 
 If you want to deploy flows to multiple namespaces, you can add multiple steps using the Deploy Flows Action, each with a different `namespace` and `directory`.
 

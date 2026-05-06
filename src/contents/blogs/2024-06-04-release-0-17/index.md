@@ -180,8 +180,6 @@ With this new feature, you can orchestrate business-critical processes and micro
     <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## Human in the loop with Pause task
 
 The Pause task now supports `onResume` [inputs](https://github.com/kestra-io/kestra/issues/1581), allowing you to pause a workflow execution and resume it later with custom input values. This is particularly useful for human-in-the-loop processes where you need to collect additional information from a user before proceeding with the workflow.

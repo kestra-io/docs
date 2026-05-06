@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/concepts.svg
 
 Manage data processed by tasks.
 
-## Data storage and processing
-
 Kestra's primary purpose is to orchestrate data processing via tasks, so data is central to each flow's execution.
 
 Depending on the task, data can be stored inside the execution context or inside Kestra's internal storage. You can also manually store data inside Kestra's KV store by using [dedicated tasks](/plugins/core/kv/io.kestra.plugin.core.kv.set).
@@ -313,8 +311,6 @@ The script can access a logger to log messages. Each row is available in a `row`
   <iframe src="https://www.youtube.com/embed/XiPegyF6uJY?si=5OQgTZBqMBcu4gHZ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 The PurgeExecution task can purge all the files stored inside the internal context by a flow execution.
 It can be used at the end of a flow to purge all its generated files.
 
@@ -425,8 +421,6 @@ tasks:
 ```
 :::
 
----
-
 #### How to read a Namespace File as a string?
 
 So far, you've seen how to read a file from the internal storage as a string. However, you can use the same `read()` function to read a Namespace File as a string. This is especially useful when you want to execute a Python script or a long SQL query stored in a dedicated SQL file.
@@ -446,8 +440,6 @@ tasks:
 ```
 
 The same syntax applies to SQL queries, custom scripts, and many more. Check the [Namespace Files](../../06.concepts/02.namespace-files/index.md) documentation for more details.
-
----
 
 #### How to read a file from the internal storage as a JSON object?
 

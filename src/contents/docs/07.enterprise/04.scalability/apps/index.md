@@ -33,11 +33,9 @@ Most Apps fall into one of these two patterns:
 - **Execution forms**: users submit a form that starts a new execution with input parameters. For example, a requester can specify resources that need to be provisioned, and those inputs feed directly into a flow.
 - **Approval or resume interfaces**: users review a paused execution and approve, reject, or resume it. For example, a platform team can validate a provisioning request before the flow continues.
 
----
-
 ## App benefits
 
-Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. **With Apps, you can generate a custom UI for any flow in seconds, and let Kestra handle the heavy lifting.**
+Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. Apps generate a custom UI for any flow without custom frontend development.
 
 Here are some common scenarios where a custom UI is useful:
 
@@ -47,9 +45,7 @@ Here are some common scenarios where a custom UI is useful:
 - **User Feedback & Signups**: workflows that collect feedback or allow users to sign up for events or email lists.
 - **Data Entry**: workflows where business users enter data that is processed and either sent back to them or stored in a database.
 
-In short, Apps make it easy to turn your Kestra workflows into simple applications that anyone can use.
-
----
+Apps let non-technical users interact with workflows without editing YAML or flow configuration.
 
 ## How App stages map to execution progress
 
@@ -99,8 +95,6 @@ If you want inspiration beyond the examples on this page, browse the Apps-focuse
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 To create a new app, go to the **Apps** page in the main UI and click **+ Create**. Add your app configuration as YAML and click **Save**. Like flows, apps have multiple editor views — you can configure the app while viewing documentation, previewing the layout, or searching the blueprint repository.
 

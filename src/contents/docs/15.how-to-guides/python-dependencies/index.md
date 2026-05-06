@@ -14,8 +14,6 @@ Manage your Python dependencies in Kestra.
   <iframe src="https://www.youtube.com/embed/iZeDizdrpMI?si=af1byHzZcxvUL-DQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Managing Python Dependencies can be frustrating. There's several ways you can manage your dependencies in Kestra.
 
 ## Install with pip using `beforeCommands`
@@ -56,8 +54,6 @@ Since Kestra 0.23, you can also use the `dependencies` property allowing you to 
 <div class="video-container">
   <iframe src="https://youtube.com/embed/g9Jt5zt9wI4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 With this feature, Python dependencies are cached and reused across executions of different flows. The [uv package manager](../python-uv/index.md) installs the dependencies on the [worker](../../08.architecture/02.server-components/index.md#worker) under the hood. These cached dependencies will be available for subsequent executions, leading to performance improvements. This method is recommended for smaller tasks that require only a few dependencies, which you don't want to add each time. For more complex workflows, you can continue to use `beforeCommands`.
 
@@ -111,10 +107,10 @@ tasks:
 
 ## Build Docker Image and set it with Docker Task Runner
 
-If we can't find an image with the dependencies we need readily available, we can build our own using the `docker.Build` task.
-We can specify a Dockerfile that uses a `python:3.10` image as the base, and then install our specific dependencies on top of that.
+If an image with the required dependencies isn't available, build your own using the `docker.Build` task.
+Specify a Dockerfile that uses a `python:3.10` image as the base and installs the required dependencies on top.
 
-In the example below, we are using `pip install` to install both `kestra` and `pandas`. Once our image has been built, we can reference it in an expression in our Python task:
+The example below uses `pip install` to install both `kestra` and `pandas`. Once the image is built, reference it in an expression in the Python task:
 
 ```yaml
 id: container_image_build
@@ -150,8 +146,6 @@ tasks:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/mLcoLK0y1m0?si=0H4XW_s-aayEJDi8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 You can also build packages directly in Kestra and then use that package between different flows in the same namespace. This works for zip files and wheels.
 

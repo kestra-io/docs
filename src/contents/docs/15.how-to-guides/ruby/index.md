@@ -167,7 +167,7 @@ _This example works for both `io.kestra.plugin.scripts.ruby.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Ruby script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: ruby_metrics

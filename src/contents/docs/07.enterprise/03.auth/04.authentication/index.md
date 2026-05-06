@@ -15,8 +15,6 @@ How to configure authentication for your Kestra instance.
   <iframe src="https://www.youtube.com/embed/MNXewBufBw0?si=CGjEVa-KEDN5N5ii" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Kestra provides two authentication methods:
 
 - Basic Auth – enabled by default

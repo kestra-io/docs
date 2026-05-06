@@ -7,7 +7,7 @@ author:
   name: François Delbrayelle
   linkedin: https://www.linkedin.com/in/fdelbrayelle/
   image: fdelbrayelle
-  role: 
+  role: Lead Software Engineer
 image: ./control-vmware-with-kestra.jpg
 ---
 

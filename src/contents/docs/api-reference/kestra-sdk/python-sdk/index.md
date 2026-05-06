@@ -13,7 +13,7 @@ Interact with Kestra's API via Python SDK.
 ## Install the Python SDK
 
 This guide demonstrates how to use the Kestra Python SDK to create and execute flows programmatically.
-Before starting, make sure your Kestra instance is running and accessible via the `KESTRA_HOST` environment variable.
+Before starting, ensure your Kestra instance is running and accessible via the `KESTRA_HOST` environment variable.
 You can store credentials in an `.env` file:
 
 ```bash
