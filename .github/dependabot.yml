@@ -21,7 +21,6 @@ updates:
     commit-message:
       prefix: "build(deps)"
       prefix-development: "build(deps)"
-      include: "scope"
     schedule:
       interval: "weekly"
       day: "wednesday"
