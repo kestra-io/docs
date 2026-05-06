@@ -46,9 +46,11 @@ Use this section when writing, editing, or understanding the structure of a Kest
 
 Use this section when you need to write or debug a `{{ ... }}` expression — to access runtime values, transform data, or apply conditional logic inside a flow property.
 
-- [Expressions reference](https://kestra.io/docs/expressions): Full reference for `{{ ... }}` syntax — context variables, filters, functions, operators, and tags
-- [Execution context variables](https://kestra.io/docs/expressions#execution-context-variables): Everything available at runtime: `inputs`, `outputs`, `vars`, `trigger`, `execution`, `flow`, `taskrun`, `envs`, `globals`, `namespace` (EE only)
-- [Pebble templating](https://kestra.io/docs/concepts/pebble): Filters (`date`, `json`, `first`, `last`, `keys`, `values`, `chunk`, etc.), conditionals, loops, and string manipulation inside expressions
+- [Expressions overview](https://kestra.io/docs/expressions): Entry point for `{{ ... }}` Pebble expression syntax — links to context variables, filters, functions, and syntax reference
+- [Execution context variables](https://kestra.io/docs/expressions/context): Everything available at runtime: `inputs`, `outputs`, `vars`, `trigger`, `execution`, `flow`, `taskrun`, `envs`, `globals`, `namespace` (EE only)
+- [Pebble syntax](https://kestra.io/docs/expressions/syntax): Conditionals, loops, operators, tags, tests, and multiline JSON bodies
+- [Filter reference](https://kestra.io/docs/expressions/filters): `date`, `json`, `first`, `last`, `keys`, `values`, `chunk`, and all other Pebble filters with examples
+- [Function reference](https://kestra.io/docs/expressions/functions): `render()`, `printContext()`, `secret()`, `kv()`, `currentEachOutput()`, and all built-in functions
 
 ## Finding and using plugins
 
