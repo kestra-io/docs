@@ -26,11 +26,13 @@
         width: 100%;
         height: 100%;
         position: relative;
+        aspect-ratio: 1 / 1;
 
         .icon {
             width: 100%;
             height: 100%;
             display: block;
+            aspect-ratio: 1 / 1;
             background-size: contain !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;

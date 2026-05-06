@@ -28,8 +28,6 @@ Check the video below for a quick overview of the new features.
     <iframe src="https://www.youtube.com/embed/C8sBlcAHi-k?si=QDhbv7TUa7hDR5DO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Let's dive into these highlights and other enhancements in more detail.
 
 ## Feature Highlights

@@ -17,7 +17,7 @@
         <div class="sidebar-content">
             <h3 v-if="pluginWrapper" class="plugin-title">{{ title }}</h3>
 
-            <div v-if="subGroupWrappers.length > 0" class="subgroups-list">
+            <div v-if="subGroupWrappers.length > 1" class="subgroups-list">
                 <details
                     v-for="sub in subGroupWrappers"
                     :key="sub.subGroup"
@@ -102,9 +102,12 @@
         pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined),
     )
 
-    const groupedDirectElements = computed(() =>
-        pluginWrapper ? groupPluginElements(pluginWrapper) : {},
-    )
+    const groupedDirectElements = computed(() => {
+        const source = subGroupWrappers.value.length === 1
+            ? subGroupWrappers.value[0]
+            : pluginWrapper
+        return source ? groupPluginElements(source) : {}
+    })
 
     const groupPluginElements = (plugin: Plugin): Record<string, PluginElement[]> =>
         Object.fromEntries(

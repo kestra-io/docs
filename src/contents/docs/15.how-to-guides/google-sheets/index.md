@@ -1,5 +1,7 @@
 ---
 title: Connect Google Sheets to Kestra
+h1: Integrate Google Sheets Data into Your Kestra Workflows
+description: Integrate Google Sheets with Kestra workflows. Read spreadsheet data, write pipeline outputs, and trigger flows automatically from sheet updates.
 icon: /src/contents/docs/icons/gsheets.svg
 stage: Getting Started
 topics:
@@ -38,7 +40,7 @@ Now that we have the spreadsheet ready, let us proceed to assign appropriate aut
 
 ![create_service_account_2](./create_service_account_2.png)
 
-The new service account has been created. Let's add a key to the service account.
+The new service account has been created. Add a key to the service account.
 
 1. Click on the corresponding service account from the Service Accounts page.
 2. Navigate to `Keys` tab, and click on `Add Key` -> `Create new key`.

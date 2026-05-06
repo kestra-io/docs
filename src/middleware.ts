@@ -10,20 +10,40 @@ const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
 
 const redirectCollection: {
     id: string
-    data: {
-        regexp: string
-        to: string
-    }
-}[] = []
+    data: { regexp: string; to: string }
+}[] = Object.entries(redirectFileCollection).map(([path, raw]) => ({
+    id: path.split("/").slice(-1)[0].split(".")[0],
+    data: YAML.parse(raw as string),
+}))
 
-for (const path in redirectFileCollection) {
-    const id = path.split("/").slice(-1)[0].split(".")[0]
-    const data = redirectFileCollection[path] as string
-
-    redirectCollection.push({
-        id,
-        data: YAML.parse(data),
-    })
+const legacyCustomerStoryIdToSlug: Record<string, string> = {
+    "2": "ntico-manage-geospatial-data-operations-with-kestra",
+    "3": "cleverconnect-enhances-hr-integration-platform-with-kestra",
+    "4": "quadis-drives-innovation-transforming-car-retail-operations-with-kestra",
+    "5": "airpaz-optimizes-travel-data-workflows-with-kestra",
+    "6": "clever-cloud-offloading-terabytes-of-data-with-kestra-every-month",
+    "8": "copines-de-voyage-enhancing-travel-experiences-through-advanced-data-orchestration-with-kestra",
+    "9": "displayce-optimized-workflow-orchestration-and-enhanced-data-management",
+    "10": "reglo-automating-etl-process-with-a-simple-slack-command",
+    "11": "htch-building-the-best-architect-collaborative-web-tool-with-kestra",
+    "12": "bouygues-immobilier-platform-orchestrate-its-marketing-data-with-kestra",
+    "13": "gorgias-using-declarative-data-engineering-orchestration-with-kestra",
+    "14": "datamesh-at-scale-increased-its-data-production-by-900percent",
+    "15": "a-solopreneurs-journey-how-networklessons-leverage-kestra-to-automate-his-business",
+    "17": "erp-transformation-smarter-faster-fully-automated",
+    "18": "sopht-scales-its-green-itops-platform-with-kestra",
+    "19": "scaling-secure-infrastructure-at-credit-agricole-with-kestra",
+    "22": "scaling-big-data-operations",
+    "23": "boosted-productivity-slashed-costs-and-accelerated-delivery",
+    "25": "when-your-api-writes-its-own-docs-with-kestra",
+    "26": "orchestrating-cybersecurity-for-100-users-and-billions-of-rows",
+    "27": "securing-hybrid-cloud-automation-across-it-and-ot-with-kestra",
+    "28": "governed-self-service-cloud-automation-in-regulated-environments-with-kestra",
+    "29": "modernizing-mission-critical-workflows-in-a-highly-regulated-environment",
+    "30": "building-a-government-grade-orchestration-control-plane-with-kestra",
+    "31": "modernizing-mission-critical-e-commerce-integrations-with-kestra",
+    "32": "apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra",
+    "33": "amdocs-delivers-integration-environments-as-a-service-with-kestra",
 }
 
 const sendRedirect = (redirectUrl: string) => {
@@ -86,13 +106,6 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 
     const originalUrl = context.url.toString()
 
-    // we don't want trailing slashes (but allow the root path '/')
-    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare
-    // manage with "html_handling": "drop-trailing-slash"
-    // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
-    //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
-    // }
-
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
         return sendRedirect(
@@ -100,6 +113,13 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
                 .substring(0, originalUrl.length - 5)
                 .toLocaleLowerCase(),
         )
+    }
+
+    // we don't want trailing slashes (but allow the root path '/')
+    // static pages are handled by Cloudflare's asset handler (drop-trailing-slash),
+    // this covers SSR (non-prerendered) pages that reach the worker
+    if (!context.isPrerendered && context.url.pathname !== "/" && originalUrl.endsWith("/")) {
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     }
 
     // all urls should be lowercase
@@ -138,8 +158,6 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     return next()
 })
 
-
-
 const notFoundRedirect = defineMiddleware(async (context, next) => {
     // disable for tracking
     if (context.url.pathname.startsWith("/t/")) {
@@ -150,6 +168,14 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
     if (response.status !== 404) {
         return response
+    }
+
+    const storyIdMatch = context.url.pathname.match(/^\/use-cases\/stories\/(\d+)(?:-|$)/)
+    if (storyIdMatch) {
+        const slug = legacyCustomerStoryIdToSlug[storyIdMatch[1]]
+        if (slug) {
+            return sendRedirect(`/use-cases/stories/${slug}`)
+        }
     }
 
     const originalUrl = new URL(context.url)

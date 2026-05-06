@@ -1,13 +1,12 @@
 ---
-title: Caching in Kestra – Speed Up Repeated Tasks
-description: Manage file caching inside Kestra.
+title: "Caching in Kestra: Speed Up Repeated Tasks"
+h1: Speed Up Your Workflows with File Caching
+description: Speed up repeated tasks with file caching in Kestra. Use the WorkingDirectory task to cache dependencies and skip redundant downloads across flow executions.
 sidebarTitle: Caching
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
 Manage file caching inside Kestra.
-
-## Caching in Kestra – speed up repeated tasks
 
 Kestra provides file caching, which is especially useful when you work with sizable package dependencies that don't change often.
 

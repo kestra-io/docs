@@ -1,7 +1,7 @@
 title: "Kestra vs. Tines: Universal Orchestration vs. Security Automation"
 description: "Compare Kestra vs Tines: Open-source workflow orchestration for engineering teams vs. no-code security and IT automation. See features, deployment options, and use cases."
 competitorName: Tines
-category: Infrastructure Automation
+category: Business Automation
 shortDescription: "No-code security and IT automation vs. open-source YAML orchestration for engineering teams at scale."
 
 brandColor:
@@ -189,7 +189,7 @@ testimonials:
         name: Dropped jobs since migration
       - value: "3x"
         name: Faster mean time to resolution
-    storyLink: "/use-cases/stories/26-orchestrating-cybersecurity-for-100+-users-and-billions-of-rows"
+    storyLink: "/use-cases/stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows"
 
 platformStrengths:
   title: Kestra Is Built for Engineering Teams, Not Just Operations

@@ -1,6 +1,7 @@
 ---
 title: Input and Output Files in Script Tasks
-description: Learn how to manage input and output files within Kestra script tasks. Pass additional files to scripts using `inputFiles` (including Namespace Files or trigger data) and generate files for downstream tasks with the `outputFiles` property, supporting glob patterns.
+h1: Pass Files Into Scripts and Capture Output with inputFiles & outputFiles
+description: Manage input and output files in Kestra script tasks. Pass extra files using inputFiles (including Namespace Files) and capture task outputs with outputFiles.
 sidebarTitle: Input and Output Files
 icon: /src/contents/docs/icons/dev.svg
 ---
@@ -22,7 +23,8 @@ tasks:
       inventory.ini: |
         localhost ansible_connection=local
       myplaybook.yml: |
-        ---
+        
+---
         - hosts: localhost
           tasks:
             - name: Print Hello World
@@ -33,7 +35,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-You can also leverage [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
+You can also use [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
 
 ```yaml
 id: ansible
@@ -103,13 +105,13 @@ triggers:
 
 ```
 
-Note that nothing is hardcoded specifically to Kestra in the Python script from GitHub. That script remains pure Python that you can run anywhere. Kestra's trigger logic is stored along with orchestration and infrastructure configuration in the YAML flow definition.
+Nothing is hardcoded specifically to Kestra in the Python script from GitHub. That script remains pure Python that you can run anywhere. Kestra's trigger logic is stored along with orchestration and infrastructure configuration in the YAML flow definition.
 
 This separation of concerns (*i.e., not mixing orchestration and business logic*) makes your code easier to test and keeps your business logic vendor-agnostic.
 
 ## Output files
 
-If you want to generate files in your script to make them available for download and usable in downstream tasks, you can leverage either the `outputFiles` property.
+To generate files in your script and make them available for download and use in downstream tasks, use the `outputFiles` property.
 
 ### Generating outputs from a script task using `outputFiles`
 

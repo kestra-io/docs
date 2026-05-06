@@ -1,5 +1,6 @@
 ---
-title: Task Runner Overview – Capabilities and Supported Plugins
+title: Task Runner Capabilities & Supported Plugins in Kestra
+h1: Understand Task Runner Capabilities and Plugin Support
 sidebarTitle: Task Runner Overview
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"

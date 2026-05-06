@@ -1,6 +1,7 @@
 ---
 title: AI Agents in Kestra – Autonomous Orchestration
-description: Build autonomous AI agents in Kestra for dynamic, LLM-powered orchestration. Integrate AI-driven tasks that can think, remember, and use tools like web search to automate complex, multi-step workflows. Leverage agentic patterns for flexible and adaptive process automation.
+h1: Build LLM-Powered AI Agents That Think, Remember & Use Tools
+description: Build autonomous AI agents in Kestra for LLM-powered orchestration. Create agents that think, remember, and use tools like web search for complex workflows.
 sidebarTitle: AI Agents
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"
@@ -25,8 +26,6 @@ To start using this feature, you can add an [**AI Agent**](/plugins/plugin-ai/ag
 ## AI Agent flow example
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/KL8TVCdgVc4nS5OTS6VS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="AI Agent 3 | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
-
----
 
 To demonstrate, below is a flow that summarizes arbitrary text with controllable length and language. Each component of the flow is broken down.
 
@@ -123,4 +122,4 @@ These outputs can then be passed on as notifications or system messages to exter
 
 ### Plugin defaults
 
-Each task using the AI Agent requires the `provider` property. To avoid repetition and simplify the flow building experience, first consider using [Kestra's AI Copilot](../ai-copilot/index.md), next consider using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md) to ensure consistency and remove repetition. Additionally, for your provider API key, make sure to secure it either through the [Key-Value Store](../../06.concepts/05.kv-store/index.md) or as a [Secret](../../06.concepts/04.secret/index.md) if using [Kestra Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).
+Each task using the AI Agent requires the `provider` property. To avoid repetition and simplify the flow building experience, first consider using [Kestra's AI Copilot](../ai-copilot/index.md), next consider using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md) to ensure consistency and remove repetition. Additionally, for your provider API key, secure it either through the [Key-Value Store](../../06.concepts/05.kv-store/index.md) or as a [Secret](../../06.concepts/04.secret/index.md) if using [Kestra Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).

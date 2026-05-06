@@ -49,10 +49,10 @@ export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): Nav
             const root = wrappers.find((p) => p.subGroup === undefined)!
             const rootUrl = `/plugins/${slugify(root.name)}`
 
-            const children = wrappers.length > 1
-                ? wrappers
-                    .filter((p) => p.subGroup !== undefined)
-                    .map((p) => {
+            const subGroups = wrappers.filter((p) => p.subGroup !== undefined)
+
+            const children = subGroups.length > 1
+                ? subGroups.map((p) => {
                         const url = `${rootUrl}/${slugify(subGroupName(p))}`
                         return {
                             title: toNavTitle(p.title),
@@ -60,7 +60,7 @@ export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): Nav
                             children: buildElementNav(p, url),
                         }
                     })
-                : buildElementNav(wrappers[0], rootUrl)
+                : buildElementNav(subGroups[0] ?? wrappers[0], rootUrl)
 
             return {
                 title: toNavTitle(root.title),

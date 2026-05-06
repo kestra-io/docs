@@ -1,5 +1,7 @@
 ---
-title: Enterprise Edition API changes
+title: Service Account API Changes in Kestra 0.22.0 EE
+h1: "Enterprise Service Account API: Non-Unique Names Across Tenants"
+sidebarTitle: Service Account Non-Unique Names
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.22.0
 editions: ["EE"]
@@ -13,7 +15,7 @@ Service Account name uniqueness is no longer enforced.
 
 Before Kestra 0.22, the Service Account name had to be globally unique within the instance. As a result, attempting to create a Service Account `cicd` in a `dev` tenant would raise an error `"Username already exists"` if your `prod` tenant also has a Service Account with the name `cicd`.
 
-To support multiple service accounts with the same name, we’ve renamed the `username` property to `name` in the JSON payload for the following REST API endpoint: `POST /api/v1{/tenant}/users/service-accounts{/id}`.
+To support multiple service accounts with the same name, the `username` property was renamed to `name` in the JSON payload for the following REST API endpoint: `POST /api/v1{/tenant}/users/service-accounts{/id}`.
 
 ## Before Kestra 0.22
 
