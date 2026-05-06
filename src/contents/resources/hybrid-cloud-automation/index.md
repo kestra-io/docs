@@ -121,4 +121,4 @@ Two trends are reshaping the space:
 
 Hybrid cloud automation works when there's one orchestration layer spanning every environment — and breaks down when each environment gets its own automation stack. Picking the orchestration layer is the most consequential decision in a hybrid strategy.
 
-For teams evaluating options, Kestra is open-source, self-hostable, and runs the same way across cloud, on-prem, and air-gapped environments. Start with the [infrastructure automation hub](/infra-automation), read the [Fortune 500 hybrid migration case study](/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra), or explore the [declarative infrastructure approach](/blogs/infra-automation).
+For teams evaluating options, Kestra is open-source, self-hostable, and runs the same way across cloud, on-prem, and air-gapped environments. Start with the [infrastructure automation hub](/infra-automation), read the [Fortune 500 hybrid migration case study](/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra), or explore the [declarative infrastructure approach](/blogs/infra-automation).

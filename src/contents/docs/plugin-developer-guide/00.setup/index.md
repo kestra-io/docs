@@ -14,12 +14,12 @@ This quick setup guide gets you ready to build and publish Kestra plugins.
 
 ## Plugin Template
 
-To get started with building a new plugin, make sure to use the [plugin-template](https://github.com/kestra-io/plugin-template), as it comes prepackaged with the standardized repository structure and deployment workflows.
+To get started with building a new plugin, use the [plugin-template](https://github.com/kestra-io/plugin-template), which comes prepackaged with the standardized repository structure and deployment workflows.
 
 That template will create a project hosting a group of plugins — we usually create multiple subplugins for a given service. For example, there's only one plugin for AWS, but it includes many subplugins for specific AWS services.
 
 :::alert{type="warning"}
-Note that the Kestra plugin library **version** must align with your Kestra instance. You may encounter validation issues during flow creation (e.g., `Invalid bean` response with status 422) when some plugins are on an older version of the Kestra plugin library. In that case, you may want to update the file `plugin-yourplugin/gradle.properties` and set the `version` property to the correct Kestra version like below:
+The Kestra plugin library **version** must align with your Kestra instance. You may encounter validation issues during flow creation (e.g., `Invalid bean` response with status 422) when some plugins are on an older version of the Kestra plugin library. In that case, you may want to update the file `plugin-yourplugin/gradle.properties` and set the `version` property to the correct Kestra version like below:
 
 ```properties
 version=0.20.0-SNAPSHOT

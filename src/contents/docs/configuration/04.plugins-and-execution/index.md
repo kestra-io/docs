@@ -209,7 +209,7 @@ kestra:
       path: /tmp/kestra-wd/tmp
 ```
 
-Make sure your container or VM volume mounts line up with that path:
+Ensure your container or VM volume mounts align with that path:
 
 ```yaml
 volumes:

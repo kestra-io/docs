@@ -9,8 +9,6 @@ docId: variables
 
 Variables are key-value pairs that let you reuse values across tasks.
 
-## Variables – reuse values across flows
-
 You can also store variables at the namespace level to reuse them across multiple flows in that namespace.
 
 <div class="video-container">
@@ -52,8 +50,6 @@ Variables are no longer rendered recursively. Learn more about this change — a
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/IOoND_WDzkY?si=CPAX9sPHlndM2FbI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 If a variable contains an expression, wrap it with `render` when using it in a task.
 
@@ -139,7 +135,7 @@ After executing the flow, the only remaining variable is `nested.unchanged` with
 
 ### How do I escape a block in Pebble syntax to ensure that it won't be parsed?
 
-To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../../expressions/index.mdx#raw). For example, the following returns the string `{{ myvar }}` instead of the value of `myvar`:
+To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../../expressions/02.syntax/index.mdx#raw). For example, the following returns the string `{{ myvar }}` instead of the value of `myvar`:
 
 ```yaml
 {% raw %}{{ myvar }}{% endraw %}

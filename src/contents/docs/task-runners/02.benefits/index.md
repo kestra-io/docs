@@ -10,8 +10,6 @@ description: Explore the benefits of using Task Runners in Kestra for isolated e
 
 Discover how Task Runners simplify resource allocation, environment management, and deployment across environments.
 
-## Manage resources and deployments with task runners
-
 ## Docker in development, Kubernetes in production
 
 Many Kestra users develop their scripts locally using **Docker containers** and deploy the same code in production as **Kubernetes pods**.

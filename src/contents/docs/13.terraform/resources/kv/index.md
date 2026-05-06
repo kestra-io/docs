@@ -23,7 +23,7 @@ Manages a Kestra Key-value pair.
 
 ### Optional
 
-- `type` (String) The type of the value. If not provided, we will try to deduce the type based on the value. Useful in case you provide numbers, booleans, dates or json that you want to be stored as string. Accepted values are: STRING, NUMBER, BOOLEAN, DATETIME, DATE, DURATION, JSON.
+- `type` (String) The type of the value. If not provided, Kestra will attempt to deduce the type based on the value. Useful in case you provide numbers, booleans, dates or json that you want to be stored as string. Accepted values are: STRING, NUMBER, BOOLEAN, DATETIME, DATE, DURATION, JSON.
 
 ### Read-Only
 

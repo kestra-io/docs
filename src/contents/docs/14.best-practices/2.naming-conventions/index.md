@@ -10,7 +10,7 @@ Common naming conventions to keep your flows and tasks well-organized and consis
 
 ## Name namespaces and flows consistently
 
-We recommend following a `company.team` structure for namespaces to maintain a clean, scalable, and consistent hierarchy across your workflows.
+Follow a `company.team` structure for namespaces to maintain a clean, scalable, and consistent hierarchy across your workflows.
 This approach helps with:
 
 1. Centralized governance for credentials and configurations
@@ -43,7 +43,7 @@ mycompany
 
 ## Should you use environment-specific namespaces?
 
-We generally recommend **avoiding environment-specific namespaces** (e.g., `dev`, `staging`, `prod`) because they can introduce several issues:
+Avoid **environment-specific namespaces** (e.g., `dev`, `staging`, `prod`) because they can introduce several issues:
 
 - **Shared risk:** Development workflows can unintentionally impact production.
 - **Configuration drift:** Duplicating configurations across environments can lead to inconsistencies.
@@ -55,11 +55,9 @@ Instead, run **separate Kestra instances** (or tenants in Enterprise Edition) fo
 Using a `company.team` namespace structure creates a clear, maintainable hierarchy that mirrors your organization’s structure and simplifies Git synchronization.
 To separate environments reliably, use distinct Kestra instances or tenants rather than environment-based namespaces.
 
----
-
 ## ID naming convention
 
-We recommend using a consistent naming pattern across all identifiers in Kestra, including:
+Use a consistent naming pattern across all identifiers in Kestra, including:
 
 - Flows
 - Tasks
@@ -78,7 +76,7 @@ This means:
   `{{ outputs.task_id["your-custom-value"].attribute }}`
 
 :::alert{type="info"}
-We recommend using **snake_case** or **camelCase** instead of `kebab-case`, as they avoid the need for subscript notation and improve readability.
+Use **snake_case** or **camelCase** instead of `kebab-case` to avoid the need for subscript notation and improve readability.
 :::
 
 ### Snake case

@@ -63,17 +63,15 @@ You can also copy the formed Webhook URL from the **Triggers** tab.
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## Webhooks in Kestra EE
 
-Let us leverage Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on the `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Once you've done that, save the secret.
+Use Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on the `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Once you've done that, save the secret.
 
 ![navigate_to_secrets](./navigate_to_secrets.png)
 
 ![assign_secret_value](./assign_secret_value.png)
 
-Now, we will create the flow in the same namespace under which we have defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, like this:
+Create the flow in the same namespace where you defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, like this:
 
 ```yaml
 id: webhook_ee_example
@@ -96,7 +94,7 @@ triggers:
     key: "{{ secret('WEBHOOK_KEY') }}"
 ```
 
-Note that in the `triggers` section of the flow, we have referenced the secret in the `key` as `{{ secret('WEBHOOK_KEY') }}` instead of directly putting in the webhook key.
+In the `triggers` section of the flow, the secret is referenced in the `key` as `{{ secret('WEBHOOK_KEY') }}` rather than hardcoding the webhook key directly.
 
 The format of the Webhook URL follows:
 

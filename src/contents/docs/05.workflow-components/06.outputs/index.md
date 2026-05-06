@@ -8,8 +8,6 @@ sidebarTitle: Outputs
 
 Outputs let you pass data between tasks and flows.
 
-## Workflow Outputs – sharing data between tasks
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/j6Iyn5rCeRI?si=2al6ZgqzfNqAJ0Wf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -313,7 +311,7 @@ namespace: company.team
 
 tasks:
   - id: sequential
-    type: io.kestra.core.tasks.flows.Sequential
+    type: io.kestra.plugin.core.flow.Sequential
     tasks:
       - id: first
         type: io.kestra.plugin.core.output.OutputValues
@@ -358,7 +356,7 @@ tasks:
     message: "{{ outputs.second['alpha'].values.data }}"
 ```
 
-You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/index.mdx#function-reference) for more details.
+You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.functions/index.mdx) for more details.
 
 :::alert{type="warning"}
 Accessing sibling task outputs is impossible on [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) as it runs tasks in parallel.
@@ -415,7 +413,6 @@ You can now use Pebble expressions to evaluate and analyze the output data furth
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/SPGmXSJN3VE?si=c2RkQJdidKig90Ot" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
----
 
 :::alert{type="info"}
 Note: This was previously called **Render expression**.

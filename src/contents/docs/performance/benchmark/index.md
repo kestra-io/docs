@@ -229,7 +229,7 @@ tasks:
 ```
 
 **Observations**
-The `ForEach` task is executed on each iteration, so we will end up with 200 task executions.
+The `ForEach` task is executed on each iteration, resulting in 200 task executions.
 
 On average, the execution time for the OSS JDBC backend is 5s, that is about 40 tasks/s or 3600 tasks/mn which is on par with the throughput of the previous benchmarks.
 
@@ -370,9 +370,9 @@ While this adds overhead compared to lightweight tools, performance is balanced 
 
 Kestra is designed for high performance in workflow orchestration and task dispatching, ensuring minimal time spent in the orchestrator and more time in actual task execution. Thanks to continuous performance tuning by the engineering team, Kestra remains among the fastest, most high-performing workflow orchestrators in every release.
 
-To further note, Kestra is built to scale horizontally. When a use case demands it, seamlessly add Executor/Worker nodes to further increase throughput.
+Kestra is built to scale horizontally. When a use case demands it, add Executor/Worker nodes to increase throughput.
 
 :::alert{type="info"}
-We will try our best to keep this page up to date with each new Kestra release.
+This page is updated with each new Kestra release.
 For more details on how to run this benchmark yourself, refer to our [Benchmarks](https://github.com/kestra-io/benchmarks) repository on GitHub.
 :::

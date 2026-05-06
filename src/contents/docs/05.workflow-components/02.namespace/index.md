@@ -9,15 +9,11 @@ docId: namespaces
 
 Namespaces are logical groupings of flows and their components.
 
-## Namespaces – organize and secure workflows
-
 Use namespaces to organize workflows and manage access to secrets, key-value pairs, plugin defaults, variables and more.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/_HGz2qePYqY?si=QiIRTXasyJyyjWX4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 You can think of a namespace as a **folder for your flows**. Similar to folders on your file system, namespaces can be used to organize flows into logical categories. Similar to filesystems, namespaces can be indefinitely nested.
 

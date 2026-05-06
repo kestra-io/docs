@@ -179,5 +179,5 @@ tasks:
 ```
 
 :::alert{type="info"}
-Note that Worker Groups are an Enterprise Edition feature. To try them out, please [reach out](/demo).
+Worker Groups are an Enterprise Edition feature. To try them out, please [reach out](/demo).
 :::
