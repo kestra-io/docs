@@ -1,5 +1,6 @@
 ---
-title: Version Control with Git – Manage Flows and Namespace Files
+title: "Version Control with Git: Sync, Push, and Clone Flows"
+h1: Version Kestra Flows and Namespace Files with Git
 sidebarTitle: Version Control with Git
 icon: /src/contents/docs/icons/dev.svg
 description: Learn patterns for versioning Kestra flows and namespace files with Git, including Sync, Push, and Clone strategies.
@@ -13,16 +14,14 @@ Learn how to pair Kestra with Git so you can version flows, namespace files, and
   <iframe src="https://www.youtube.com/embed/videoseries?si=wOyAUkgChRUuJxcy&amp;list=PLEK3H8YwZn1p7tyd9RV5-WDxh_ZGpMpA3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Kestra supports version control with Git. You can use one or more repositories to store your [flows](../../05.workflow-components/01.flow/index.md), [namespace files](../../06.concepts/02.namespace-files/index.md), [apps](../../07.enterprise/04.scalability/apps/index.md), [tests](../../07.enterprise/02.governance/unit-tests/index.md), and [dashboards](../../09.ui/00.dashboard/index.md), tracking changes through Git history.
 
 There are multiple ways to combine Kestra with Git:
 - [SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) implements GitOps with Git as the single source of truth for flows.
 - [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) syncs namespace files the same way.
-- [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.PushFlows) commits and pushes flow edits from the UI to Git, useful when you rely on the built-in editor but still want version history.
+- [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.pushflows) commits and pushes flow edits from the UI to Git, useful when you rely on the built-in editor but still want version history.
 - [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.pushnamespacefiles) does the same for namespace files.
-- [Clone](https://kestra.io/plugins/git/io.kestra.plugin.git.clone) clones a repository directly into a flow so scripts are available at runtime.
+- [Clone](https://kestra.io/plugins/plugin-git/io.kestra.plugin.git.clone) clones a repository directly into a flow so scripts are available at runtime.
 - [TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) synchronizes all namespaces in a tenant, including flows, files, apps, tests, and dashboards.
 - [NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) keeps a single namespace in sync with a Git repo.
 - A custom [CI/CD](../cicd/index.md) pipeline lets you manage deployments yourself (GitHub Actions, Terraform, etc.) while keeping Git authoritative.
@@ -31,7 +30,7 @@ The image below shows how to choose the right pattern based on your needs:
 
 ![git](./git.png)
 
-Let's dive into each of these patterns and when to use them.
+The following sections cover each pattern and when to use it.
 
 ## Git SyncFlows and SyncNamespaceFiles
 
@@ -185,7 +184,7 @@ Use this pattern to push to a feature branch and open a pull request for review.
 ## Git Clone
 
 The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a repository at runtime so you can orchestrate code managed elsewhere, for example:
-- dbt projects via the [dbt CLI task](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli)
+- dbt projects via the [dbt CLI task](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli)
 - Infrastructure deployments via [Terraform CLI](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli), [OpenTofu CLI](/plugins/plugin-opentofu/cli/io.kestra.plugin.opentofu.cli.opentofucli), [Terragrunt CLI](/plugins/plugin-terragrunt/cli/io.kestra.plugin.terragrunt.cli.terragruntcli), or [Ansible CLI](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli)
 - Docker builds via the [Docker Build task](/plugins/plugin-docker/io.kestra.plugin.docker.build)
 

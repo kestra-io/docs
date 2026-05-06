@@ -3,6 +3,7 @@
         id="top-bar"
         ref="navbar"
         class="navbar navbar-expand-xl fixed-top"
+        aria-label="Menu"
         :class="{
             open: isOpen,
             scrolled: isScrolled || props.scrolled,
@@ -55,19 +56,57 @@
                 </div>
             </div>
 
-            <div class="nav-items d-flex align-items-center">
+            <div
+                class="header-actions d-flex align-items-center ms-auto order-xl-last"
+            >
                 <a
                     @click="globalClick(true)"
-                    href="#"
-                    class="btn btn-sm icon-button p-0 d-xl-none"
+                    href="https://kestra.io/slack"
+                    target="_blank"
+                    class="d-none d-lg-inline-flex align-items-center slack-link me-2"
+                    aria-label="Slack"
+                >
+                    <span
+                        class="slack-icon"
+                        :class="{
+                            'slack-icon--dark':
+                                isScrolled || props.scrolled || isOpen,
+                        }"
+                        v-html="SlackIcon"
+                    />
+                </a>
+                <GithubButton
+                    :small="true"
+                    class="d-none d-lg-inline-block"
+                />
+                <a
+                    @click="globalClick(true)"
+                    class="d-none d-md-inline-block btn btn-sm btn-secondary me-2"
+                    href="/demo"
+                >
+                    <span>Contact Sales</span>
+                </a>
+                <a
+                    @click="globalClick(true)"
+                    class="d-none d-sm-inline-block btn btn-primary btn-sm get-started"
+                    href="/get-started"
+                >
+                    <span>Get Started</span>
+                </a>
+                <button
+                    type="button"
+                    @click="globalClick(true)"
+                    id="header-search-button"
+                    class="btn btn-sm icon-button p-0 ms-2"
                     data-bs-toggle="modal"
                     data-bs-target="#search-modal"
                     title="Search"
+                    aria-label="Search"
                 >
                     <Magnify />
-                </a>
+                </button>
                 <button
-                    class="navbar-toggler d-flex d-xl-none align-items-center gap-2"
+                    class="navbar-toggler d-flex d-xl-none align-items-center gap-2 ms-2"
                     @click="globalClick(isOpen)"
                     type="button"
                     aria-controls="main-header"
@@ -89,21 +128,26 @@
                         @mouseover="mouseOver('product', $event)"
                         @mouseleave="mouseOut('product')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-product"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'product' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'product' && showMenu) || false
+                            "
+                            :aria-controls="isMobile ? undefined : 'product'"
+                            @click="onTriggerClick('product', $event)"
+                            @keydown="onTriggerKeydown('product', $event)"
                         >
                             Product
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
@@ -138,21 +182,27 @@
                         @mouseover="mouseOver('solutions', $event)"
                         @mouseleave="mouseOut('solutions')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-solutions"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'solutions' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'solutions' && showMenu) ||
+                                false
+                            "
+                            :aria-controls="isMobile ? undefined : 'solutions'"
+                            @click="onTriggerClick('solutions', $event)"
+                            @keydown="onTriggerKeydown('solutions', $event)"
                         >
                             Solutions
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <p class="column-caption">Use-cases</p>
@@ -225,21 +275,27 @@
                         @mouseover="mouseOver('resources', $event)"
                         @mouseleave="mouseOut('resources')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-resources"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'resources' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'resources' && showMenu) ||
+                                false
+                            "
+                            :aria-controls="isMobile ? undefined : 'resources'"
+                            @click="onTriggerClick('resources', $event)"
+                            @keydown="onTriggerKeydown('resources', $event)"
                         >
                             Learn
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
@@ -265,21 +321,26 @@
                         @mouseover="mouseOver('company', $event)"
                         @mouseleave="mouseOut('company')"
                     >
-                        <a
+                        <button
+                            type="button"
+                            id="trigger-company"
                             class="nav-link dropdown-toggle"
                             :class="{
                                 show: showMenuId === 'company' && showMenu,
                             }"
-                            href="#"
-                            role="button"
                             :data-bs-toggle="isMobile ? 'dropdown' : undefined"
-                            aria-expanded="false"
+                            :aria-expanded="
+                                (showMenuId === 'company' && showMenu) || false
+                            "
+                            :aria-controls="isMobile ? undefined : 'company'"
+                            @click="onTriggerClick('company', $event)"
+                            @keydown="onTriggerKeydown('company', $event)"
                         >
                             Company
                             <ChevronDown
                                 class="d-inline-block dropdown-chevron"
                             />
-                        </a>
+                        </button>
                         <div class="dropdown-menu d-xl-none">
                             <ul class="dropdown-column">
                                 <li
@@ -320,39 +381,20 @@
                     </li>
                 </ul>
 
-                <ul class="navbar-nav mb-2 mb-xl-0 nav-button nav-footer">
+                <ul class="navbar-nav mb-2 mb-xl-0 nav-button nav-footer d-xl-none">
                     <li class="nav-item">
                         <a
                             @click="globalClick(true)"
-                            href="https://kestra.io/slack"
-                            target="_blank"
-                            class="d-none d-xl-inline-flex mb-1 align-items-center me-3 slack-link"
+                            class="d-block d-sm-none mb-1 btn btn-primary btn-sm get-started"
+                            href="/get-started"
                         >
-                            <span
-                                class="slack-icon"
-                                :class="{
-                                    'slack-icon--dark':
-                                        isScrolled || props.scrolled || isOpen,
-                                }"
-                                v-html="SlackIcon"
-                            />
-                        </a>
-                        <GithubButton
-                            :small="true"
-                            class="d-block d-sm-inline-block mb-1"
-                        />
-                        <a
-                            @click="globalClick(true)"
-                            class="d-none mb-1 btn btn-sm btn-secondary me-0 me-sm-2 d-xl-inline-block"
-                            href="/demo"
-                        >
-                            <span> Contact Sales</span>
+                            <span>Get Started</span>
                         </a>
                         <a
                             @click="globalClick(true)"
                             href="https://kestra.io/slack"
                             target="_blank"
-                            class="d-xl-none d-flex justify-content-center mb-1 btn btn-sm btn-outline-dark align-items-center gap-2"
+                            class="d-flex justify-content-center mb-1 btn btn-sm btn-outline-dark align-items-center gap-2"
                         >
                             <span
                                 class="slack-icon slack-icon--dark slack-icon--hover"
@@ -362,28 +404,11 @@
                         </a>
                         <a
                             @click="globalClick(true)"
-                            class="d-block d-sm-inline-block mb-1 btn btn-primary btn-sm get-started"
-                            href="/get-started"
-                        >
-                            <span> Get Started </span>
-                        </a>
-                        <a
-                            @click="globalClick(true)"
-                            class="d-xl-none d-sm-inline-block mb-1 btn btn-secondary btn-md"
+                            class="d-block d-sm-inline-block mb-1 btn btn-secondary btn-md"
                             href="/demo"
                         >
-                            <span> Book a Demo</span>
+                            <span>Book a Demo</span>
                         </a>
-                        <button
-                            @click="globalClick(true)"
-                            id="header-search-button"
-                            class="btn btn-sm d-none d-xl-inline-block icon-button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#search-modal"
-                            title="Search"
-                        >
-                            <Magnify />
-                        </button>
                     </li>
                 </ul>
             </div>
@@ -419,6 +444,12 @@
                                                 class="dropdown-item"
                                                 :href="item.link"
                                                 @click="globalClick(true)"
+                                                @keydown="
+                                                    onMenuKeydown(
+                                                        'product',
+                                                        $event,
+                                                    )
+                                                "
                                             >
                                                 <div>
                                                     <div class="same-row">
@@ -468,6 +499,12 @@
                                                     class="dropdown-item"
                                                     :href="item.link"
                                                     @click="globalClick(true)"
+                                                    @keydown="
+                                                        onMenuKeydown(
+                                                            'solutions',
+                                                            $event,
+                                                        )
+                                                    "
                                                 >
                                                     <div>
                                                         <div class="same-row">
@@ -497,6 +534,12 @@
                                                     class="dropdown-item"
                                                     :href="item.link"
                                                     @click="globalClick(true)"
+                                                    @keydown="
+                                                        onMenuKeydown(
+                                                            'solutions',
+                                                            $event,
+                                                        )
+                                                    "
                                                 >
                                                     <div>
                                                         <div class="same-row">
@@ -528,6 +571,12 @@
                                                     class="dropdown-item"
                                                     :href="item.link"
                                                     @click="globalClick(true)"
+                                                    @keydown="
+                                                        onMenuKeydown(
+                                                            'solutions',
+                                                            $event,
+                                                        )
+                                                    "
                                                 >
                                                     <div>
                                                         <div class="same-row">
@@ -559,6 +608,12 @@
                                                 class="dropdown-item"
                                                 :href="item.link"
                                                 @click="globalClick(true)"
+                                                @keydown="
+                                                    onMenuKeydown(
+                                                        'resources',
+                                                        $event,
+                                                    )
+                                                "
                                             >
                                                 <div>
                                                     <div class="same-row">
@@ -601,6 +656,12 @@
                                                 class="dropdown-item"
                                                 :href="item.link"
                                                 @click="globalClick(true)"
+                                                @keydown="
+                                                    onMenuKeydown(
+                                                        'company',
+                                                        $event,
+                                                    )
+                                                "
                                             >
                                                 <div>
                                                     <div class="same-row">
@@ -840,6 +901,87 @@
         globalClick(true)
     }
 
+    function getDropdownItems(id: string): HTMLElement[] {
+        const container = document.getElementById(id)
+        if (!container) return []
+        return Array.from(
+            container.querySelectorAll<HTMLElement>(".dropdown-item"),
+        )
+    }
+
+    function openDesktopMenu(id: string) {
+        const trigger = document.getElementById(`trigger-${id}`)
+        if (!trigger) return
+        mouseOver(id, {
+            currentTarget: trigger,
+        } as unknown as MouseEvent)
+    }
+
+    function closeDesktopMenu() {
+        if (closeMenuTimeout.value) {
+            clearTimeout(closeMenuTimeout.value)
+            closeMenuTimeout.value = null
+        }
+        showMenu.value = false
+        showMenuId.value = null
+        mouseoverMenu.value = false
+        headerMenuPointerEvents.value = "none"
+    }
+
+    function onTriggerClick(id: string, event: MouseEvent) {
+        if (isMobile.value) return
+        event.preventDefault()
+        if (showMenuId.value === id && showMenu.value) {
+            closeDesktopMenu()
+        } else {
+            openDesktopMenu(id)
+        }
+    }
+
+    function onTriggerKeydown(id: string, event: KeyboardEvent) {
+        if (isMobile.value) return
+        const isExpanded = showMenuId.value === id && showMenu.value
+        const { key } = event
+
+        if (key === "Escape" && isExpanded) {
+            event.preventDefault()
+            closeDesktopMenu()
+        } else if (key === "ArrowDown" || key === "ArrowUp") {
+            event.preventDefault()
+            if (!isExpanded) openDesktopMenu(id)
+            nextTick(() => {
+                const items = getDropdownItems(id)
+                items[key === "ArrowUp" ? items.length - 1 : 0]?.focus()
+            })
+        }
+    }
+
+    function onMenuKeydown(id: string, event: KeyboardEvent) {
+        if (isMobile.value) return
+        const items = getDropdownItems(id)
+        if (!items.length) return
+
+        const { key } = event
+        const idx = items.indexOf(event.currentTarget as HTMLElement)
+        const targets: Record<string, number> = {
+            ArrowDown: (idx + 1) % items.length,
+            ArrowUp: (idx - 1 + items.length) % items.length,
+            Home: 0,
+            End: items.length - 1,
+        }
+
+        if (key in targets) {
+            event.preventDefault()
+            items[targets[key]]?.focus()
+        } else if (key === "Escape") {
+            event.preventDefault()
+            closeDesktopMenu()
+            document.getElementById(`trigger-${id}`)?.focus()
+        } else if (key === "Tab") {
+            closeDesktopMenu()
+        }
+    }
+
     function showDownloadLogosModal(event: Event) {
         event.preventDefault()
         showDownloadLogos.value = true
@@ -853,7 +995,9 @@
 <style lang="scss" scoped>
     @mixin dark-nav-content($color: $white) {
         a.nav-link:not(.btn),
+        button.nav-link:not(.btn),
         .nav-item a:not(.btn),
+        .nav-item button:not(.btn),
         div.nav-items a:not(.btn),
         .navbar-toggler {
             color: $color;
@@ -939,12 +1083,17 @@
                     margin: 0 0 calc($spacer * 0.75) $spacer;
                 }
 
-                .nav-items {
-                    margin: 0 $spacer calc($spacer * 0.75) 0;
+                .header-actions {
+                    margin: 0 $spacer 0 0;
+                    gap: 0.5rem;
 
                     span.menu-text {
                         margin-top: calc($spacer * 0.3);
                         color: var(--ks-content-tertiary) !important;
+                    }
+
+                    .btn {
+                        margin-bottom: 0;
                     }
                 }
             }
@@ -988,7 +1137,8 @@
             }
         }
 
-        a.nav-link {
+        a.nav-link,
+        button.nav-link {
             display: flex !important;
             align-items: center;
             gap: 4px;
@@ -999,6 +1149,21 @@
             padding-left: 12px !important;
             border-radius: $border-radius;
             transition: background-color 0.2s ease;
+
+            &[type="button"] {
+                appearance: none;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+                cursor: pointer;
+                font-family: inherit;
+                justify-content: flex-start;
+                line-height: inherit;
+                margin: 0;
+                text-align: left;
+                text-decoration: none;
+                white-space: nowrap;
+            }
 
             @include media-breakpoint-between(xl, xxl) {
                 padding-left: 8px !important;
@@ -1011,6 +1176,12 @@
                     background-color: var(--ks-background-tertiary);
                     border-color: var(--ks-border-primary);
                 }
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+                border-radius: $border-radius;
             }
 
             .dropdown-chevron {
@@ -1026,13 +1197,22 @@
             }
         }
 
-        div.nav-items {
-            a {
-                margin-top: calc($spacer * 0.4);
+        div.header-actions {
+            flex-shrink: 0;
+            white-space: nowrap;
+
+            @include media-breakpoint-up(xl) {
+                padding-left: 1.5rem;
             }
 
-            a,
-            button {
+            > a,
+            > button,
+            > :deep(.github-button-wrapper) {
+                flex-shrink: 0;
+            }
+
+            .icon-button,
+            .navbar-toggler {
                 :deep(.material-design-icon) {
                     width: calc($spacer * 1.5);
                     height: calc($spacer * 1.5);
@@ -1042,6 +1222,39 @@
                         height: calc($spacer * 1.5);
                     }
                 }
+            }
+
+            a,
+            button {
+                &:focus-visible {
+                    outline: 2px solid currentColor;
+                    outline-offset: 2px;
+                    border-radius: $border-radius;
+                }
+            }
+
+            .btn.icon-button {
+                font-size: 1.5rem;
+                color: var(--ks-content-primary);
+
+                &:hover {
+                    color: var(--ks-content-color-highlight);
+                }
+            }
+
+            .slack-link {
+                padding: 0.25rem;
+            }
+
+            @include media-breakpoint-between(xl, xxl) {
+                .btn:not(.icon-button) {
+                    padding-inline: 0.5rem;
+                    font-size: $font-size-sm;
+                }
+            }
+
+            :deep(.github-button-wrapper) {
+                margin-bottom: 0 !important;
             }
         }
 
@@ -1053,6 +1266,12 @@
 
             &:focus {
                 box-shadow: none;
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+                border-radius: $border-radius;
             }
         }
 
@@ -1087,7 +1306,8 @@
                     font-size: $font-size-md;
                 }
 
-                a.nav-link {
+                a.nav-link,
+                button.nav-link {
                     border-radius: $border-radius;
 
                     span.material-design-icon {
@@ -1102,6 +1322,7 @@
 
                     @include media-breakpoint-down(xl) {
                         display: flex;
+                        width: 100%;
                         justify-content: space-between;
                         border-radius: 0;
                         color: var(--ks-content-primary) !important;
@@ -1523,3 +1744,4 @@
         }
     }
 </style>
+

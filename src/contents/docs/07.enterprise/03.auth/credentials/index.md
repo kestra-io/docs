@@ -1,6 +1,7 @@
 ---
-title: Credentials in Kestra – Secure Authentication to External Systems
-description: Authenticate to external systems securely.
+title: "Credentials in Kestra: Authenticate External Systems"
+h1: Securely Connect Flows to External Systems with Credentials
+description: Authenticate to external systems securely with Kestra Credentials. Store and manage server-to-server auth tokens for use across flows and namespaces.
 sidebarTitle: Credentials
 icon: /src/contents/docs/icons/concepts.svg
 editions: ["EE"]

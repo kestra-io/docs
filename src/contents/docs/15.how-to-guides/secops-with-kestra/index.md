@@ -1,5 +1,7 @@
 ---
 title: Build SecOps Workflows with Kestra
+h1: Automate Security Operations Workflows in Kestra
+description: Automate security operations with Kestra. Build SecOps workflows for incident response, vulnerability scanning, and compliance automation.
 icon: /src/contents/docs/icons/servicenow.svg
 stage: Intermediate
 topics:

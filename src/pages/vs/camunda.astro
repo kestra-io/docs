@@ -16,13 +16,11 @@ import Faq from "~/components/common/Faq.vue"
 
 import camundaLogo from "~/components/versus/assets/camunda.svg?raw"
 import camundaMonogram from "~/components/versus/assets/camunda-monograme.svg?raw"
-import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import camundaImg from "~/components/versus/assets/camunda-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_camunda.webp"
 
 const entry = await getEntry("vs", "camunda")
 if (!entry) throw new Error("Could not find vs/camunda collection entry")
@@ -46,14 +44,13 @@ const {
 } = entry.data
 ---
 
-<Layout {title} description={shortDescription} headerTheme="lightText">
+<Layout {title} description={shortDescription}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: camundaMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
     />
     <Philosophy
         {...philosophy}

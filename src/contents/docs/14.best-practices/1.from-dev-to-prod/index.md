@@ -1,5 +1,6 @@
 ---
-title: Moving from Development to Production
+title: "Dev to Production in Kestra: Promote Flows Safely"
+h1: Promote Kestra Flows from Development to Production with Git
 sidebarTitle: Dev to Prod
 icon: /src/contents/docs/icons/best-practices.svg
 description: Recommended patterns for promoting Kestra flows from development to production environments using Git and CI/CD.
@@ -63,8 +64,6 @@ CI/CD deployment to production can be automated with:
 
 For more details on CI/CD automation, refer to the [CI/CD guide](../../version-control-cicd/cicd/index.md).
 
----
-
 ## Git example
 
 <div class="video-container">
@@ -84,13 +83,11 @@ See the [dedicated SyncFlows guide](../../15.how-to-guides/syncflows/index.md) f
 To push flows from development to Git, use the [`git.PushFlows` task](/plugins/plugin-git/io.kestra.plugin.git.pushflows).
 This ensures flows are validated before being saved — Kestra will reject invalid flows automatically.
 
-You can also automate pull requests with the [`create.Pulls` task](/plugins/github/tasks/io.kestra.plugin.github.pulls.create), which creates a PR to `main` for review before deploying to production.
+You can also automate pull requests with the [`create.Pulls` task](/plugins/plugin-github/github-pull-requests/io.kestra.plugin.github.pulls.create), which creates a PR to `main` for review before deploying to production.
 
 :::alert{type="info"}
 While Kestra validates flow syntax, it does not detect logical or runtime errors. Always test flows thoroughly before promoting them to production.
 :::
-
----
 
 ## CI/CD example
 
@@ -106,5 +103,5 @@ You can pair this with the [Validate Action](../../version-control-cicd/cicd/01.
 By enforcing required status checks on pull requests, you can prevent invalid flows from being merged and deployed to production.
 
 :::alert{type="info"}
-**Note:** If a flow contains invalid syntax, the **Deploy Action** will fail.
+If a flow contains invalid syntax, the **Deploy Action** will fail.
 :::

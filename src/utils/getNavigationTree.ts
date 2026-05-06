@@ -17,7 +17,7 @@ const navigationTree = {
         "Concepts",
         "Multi-Language Script Tasks",
         "AI Tools",
-        "No-Code",
+        "No Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
         "Use Cases",
@@ -25,7 +25,7 @@ const navigationTree = {
     ],
     "Scale with Kestra": [
         "Cloud & Enterprise Edition",
-        "Kestra Task Runners – Offload and Isolate Compute",
+        "Task Runners in Kestra: Offload & Isolate Compute",
         // "Worker Groups",
         "Best Practices",
     ],

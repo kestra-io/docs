@@ -1,5 +1,6 @@
 ---
-title: Microsoft Entra ID SCIM Provisioning
+title: Microsoft Entra ID SCIM Provisioning in Kestra
+h1: Sync Users and Groups from Entra ID with SCIM
 description: Set up SCIM provisioning with Microsoft Entra ID. Automatically sync users and groups from Entra ID to Kestra for streamlined user management.
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -72,8 +73,6 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 :::alert{type="info"}
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
 :::
-
----
 
 ## Microsoft Entra ID SCIM setup
 

@@ -174,4 +174,9 @@ Here's a simple framework:
 
 Whatever you decide, don't wait until April 2026. Either path requires planning, testing, and coordination time you don't want to compress into a few frantic weeks.
 
+:::alert{type="info"}
+📘 **Get the full migration analysis.** Our free Airflow 2 EOL guide covers upgrade paths, breaking changes in detail, and a side-by-side comparison of staying vs. switching.
+[Download the Guide →](/resources/airflow-2-eol-whitepaper)
+:::
+
 If you're reconsidering your orchestration strategy and want to see how Kestra addresses the gaps we've discussed, [book a demo](/demo) with our team. We'll walk through your specific use cases and help you determine if it's the right fit.

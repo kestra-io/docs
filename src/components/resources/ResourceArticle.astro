@@ -1,0 +1,170 @@
+---
+import { render, type CollectionEntry } from "astro:content"
+import { getImage } from "astro:assets"
+import Layout from "~/components/layout.astro"
+import BlogToc from "~/components/blogs/BlogToc.vue"
+import BlogSocials from "~/components/blogs/BlogSocials.vue"
+import ResourceDetails from "~/components/resources/ResourceDetails.vue"
+import ResourceHero from "~/components/resources/ResourceHero.astro"
+import SimilarResources from "~/components/resources/SimilarResources.astro"
+import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
+import Faq from "~/components/common/Faq.vue"
+
+interface Props {
+    post: CollectionEntry<"resources">
+}
+
+const { post } = Astro.props
+const { Content, headings } = await render(post)
+const page = post.data
+
+const links = headings.map((h) => ({
+    text: h.text,
+    id: h.slug,
+    depth: h.depth,
+}))
+
+const editUrl = `https://github.com/kestra-io/docs/edit/main/src/contents/resources/${post.id}/index.md`
+
+const { image, date } = page
+const metaTitle = page.metaTitle ?? page.title
+const metaDescription =
+    page.metaDescription ??
+    page.description ??
+    "Practical orchestration resource from Kestra — guides, playbooks, and evergreen references."
+
+const staticImage = image
+    ? await getImage({ src: image, format: "webp" })
+    : null
+
+const jsonLinkedData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": Astro.url.href,
+    },
+    headline: metaTitle,
+    image: staticImage ? [`${Astro.url.origin}${staticImage.src}`] : undefined,
+    ...(date ? { datePublished: date } : {}),
+    publisher: {
+        "@type": "Organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description: metaDescription,
+}
+
+const faqItems = page.faq ?? []
+const faqSchema =
+    faqItems.length > 0
+        ? {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: faqItems.map((item) => ({
+                  "@type": "Question",
+                  name: item.question,
+                  acceptedAnswer: { "@type": "Answer", text: item.answer },
+              })),
+          }
+        : null
+---
+
+<Layout
+    title={metaTitle}
+    description={metaDescription}
+    image={staticImage?.src}
+>
+    <section>
+        <Fragment slot="head">
+            <meta property="og:type" content="article" />
+            {date && (
+                <meta
+                    property="article:published_time"
+                    content={new Date(date).toISOString()}
+                />
+            )}
+            <script
+                type="application/ld+json"
+                set:html={JSON.stringify(jsonLinkedData)}
+            />
+            {page.schema && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(page.schema)}
+                />
+            )}
+            {faqSchema && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(faqSchema)}
+                />
+            )}
+        </Fragment>
+        <ResourceHero
+            tag={page.tag}
+            title={page.title}
+            description={page.description}
+        />
+        <TwoColumnStickyLayout>
+            <div slot="sidebar" class="resource-sidebar">
+                <ResourceDetails resource={post} />
+                <BlogToc client:load links={links} />
+                <div class="socials-desktop">
+                    <BlogSocials
+                        client:load
+                        post={{ editUrl, title: metaTitle, url: Astro.url.href }}
+                    />
+                </div>
+            </div>
+            <div class="bd-content">
+                <Content />
+            </div>
+            <div class="socials-mobile">
+                <BlogSocials
+                    client:load
+                    post={{ editUrl, title: metaTitle, url: Astro.url.href }}
+                />
+            </div>
+        </TwoColumnStickyLayout>
+        <SimilarResources currentId={post.id} tag={page.tag} />
+        {faqItems.length > 0 && (
+            <div class="resource-faq">
+                <Faq
+                    title="Frequently asked questions"
+                    items={faqItems}
+                    client:visible
+                />
+            </div>
+        )}
+    </section>
+</Layout>
+
+<style lang="scss">
+    .resource-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @include media-breakpoint-down(lg) {
+            gap: 1rem;
+        }
+    }
+
+    .socials-desktop {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    .socials-mobile {
+        display: none;
+        @include media-breakpoint-down(md) {
+            display: block;
+            margin-top: 4rem;
+        }
+    }
+
+    .resource-faq :global(section.faq) {
+        background: var(--ks-background-secondary);
+    }
+</style>

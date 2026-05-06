@@ -1,5 +1,6 @@
 ---
-title: Kestra Plugins and Execution Configuration
+title: Plugins & Execution Configuration in Kestra
+h1: Configure Plugin Defaults, Retries & System Flows
 description: Configure plugin installation, plugin defaults, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
 sidebarTitle: Plugins and Execution
 icon: /src/contents/docs/icons/admin.svg
@@ -208,7 +209,7 @@ kestra:
       path: /tmp/kestra-wd/tmp
 ```
 
-Make sure your container or VM volume mounts line up with that path:
+Ensure your container or VM volume mounts align with that path:
 
 ```yaml
 volumes:

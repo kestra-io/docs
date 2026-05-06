@@ -1,5 +1,7 @@
 ---
-title: Purge Old Data in Kestra – Executions, Logs, Key-Value Store, Files
+title: Purge Executions, Logs, and Files in Kestra
+h1: Delete old executions, logs, and files to reclaim storage
+description: Reclaim storage by purging old executions, logs, KV entries, and files in Kestra. Configure scheduled purge jobs to keep your database lean in production.
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 version: ">= 0.18.0"
@@ -7,9 +9,7 @@ version: ">= 0.18.0"
 
 Use purge tasks to remove old executions, logs, and key-value pairs, helping reduce storage usage.
 
-## Purge old execution data safely
-
-To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/tasks/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
+To keep storage optimized, use [`io.kestra.plugin.core.execution.PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`io.kestra.plugin.core.log.PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), and [`io.kestra.plugin.core.kv.PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv).
 - `PurgeExecutions`: deletes execution records
 - `PurgeLogs`: removes both `Execution` and `Trigger` logs in bulk
 - `PurgeKV`: deletes expired keys globally for a specific namespace
@@ -160,6 +160,6 @@ We've [improved](https://github.com/kestra-io/kestra/pull/4298) the mechanism of
 
 Here are the main `Purge` plugin changes in Kestra 0.18.0:
 
-- `io.kestra.plugin.core.storage.Purge` has been renamed to `io.kestra.plugin.core.execution.PurgeExecutions` to reflect that it only purges data related to executions (e.g., it doesn't include trigger logs; use the `PurgeLogs` task for those). We've added an alias so that using the old task type will still work but it will emit a warning. We recommend using the new task type.
-- `io.kestra.plugin.core.storage.PurgeExecution` has been renamed to `io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles` to reflect that it purges all data from the current execution, including inputs and outputs. We've also added an alias for backward compatibility, but we recommend updating your flows to use the new task type.
+- `io.kestra.plugin.core.storage.Purge` has been renamed to `io.kestra.plugin.core.execution.PurgeExecutions` to reflect that it only purges data related to executions (e.g., it doesn't include trigger logs; use the `PurgeLogs` task for those). An alias has been added so that using the old task type will still work, but it will emit a warning. Use the new task type going forward.
+- `io.kestra.plugin.core.storage.PurgeExecution` has been renamed to `io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles` to reflect that it purges all data from the current execution, including inputs and outputs. An alias has been added for backward compatibility, but update your flows to use the new task type.
 :::

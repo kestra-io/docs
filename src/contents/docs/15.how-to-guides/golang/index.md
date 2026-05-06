@@ -1,5 +1,6 @@
 ---
 title: Run Go Inside Your Flows
+h1: Execute Go Scripts in Kestra Flows Using the Go Plugin
 icon: /src/contents/docs/icons/golang.svg
 stage: Getting Started
 topics:
@@ -190,7 +191,7 @@ tasks:
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Golang code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Golang code. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: golang

@@ -1,0 +1,516 @@
+---
+title: "Pebble Syntax in Kestra: Tags, Operators & Control Flow"
+h1: "Pebble Syntax, Operators, Tags, and Tests"
+description: Complete reference for writing Kestra expressions — delimiters, attribute access, nested rendering, control flow, comparisons, logic operators, and Pebble type tests.
+sidebarTitle: Pebble Syntax
+icon: /src/contents/docs/icons/expression.svg
+---
+
+Use this page when you need help writing expressions — delimiters, attribute access, nested rendering, control flow, fallback patterns, comparisons, logic operators, and type tests.
+
+## Pebble basics
+
+Pebble templates use two primary delimiters:
+
+- `{{ ... }}` to output the result of an expression
+- `{% ... %}` to control template flow with tags such as `if`, `for`, or `set`
+
+Examples:
+
+```twig
+{{ flow.id }}
+{% if inputs.region == "eu" %}Europe{% endif %}
+```
+
+To escape Pebble syntax literally, use the `raw` tag described in [Tags](#raw).
+
+## Accessing values
+
+Use dot notation for standard property access:
+
+```twig
+{{ foo.bar }}
+```
+
+Use bracket notation for special characters or indexed access:
+
+```twig
+{{ foo['foo-bar'] }}
+{{ items[0] }}
+```
+
+:::alert{type="warning"}
+If a task ID, output key, or attribute contains a hyphen, use bracket notation. To avoid that, prefer `camelCase` or `snake_case`.
+:::
+
+## Parsing nested expressions
+
+Kestra renders expressions once by default. If a variable contains Pebble that should be evaluated later, use `render()`:
+
+```yaml
+variables:
+  trigger_or_yesterday: "{{ trigger.date ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
+  input_or_yesterday: "{{ inputs.mydate ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}"
+
+tasks:
+  - id: yesterday
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ render(vars.trigger_or_yesterday) }}"
+
+  - id: input_or_yesterday
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ render(vars.input_or_yesterday) }}"
+```
+
+This pattern is especially useful with namespace variables, composed flow variables, and fallback logic based on trigger context.
+
+### Multiline JSON bodies
+
+When an HTTP request body contains multiline user input, avoid partial string interpolation. Instead, build the whole payload as a single Pebble expression so JSON escaping happens correctly.
+
+```yaml
+id: multiline_input_passed_to_json_body
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: This is my title
+  - id: message
+    type: STRING
+    defaults: |-
+      This is my long
+      multiline message.
+  - id: priority
+    type: INT
+    defaults: 5
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.http.Request
+    uri: https://kestra.io/api/mock
+    method: POST
+    body: |
+      {{ {
+        "title": inputs.title,
+        "message": inputs.message,
+        "priority": inputs.priority
+      } | toJson }}
+```
+
+## Common syntax patterns
+
+### Comments
+
+Use Pebble comments with `{# ... #}`:
+
+```twig
+{# This is a comment #}
+{{ "Visible content" }}
+```
+
+In YAML, continue to use `#` for comments outside the expression itself.
+
+### Literals and collections
+
+Pebble supports:
+
+- strings: `"Hello World"`
+- numbers such as `100 + 10l * 2.5`
+- booleans: `true`, `false`
+- null: `null`
+- lists: `["apple", "banana"]`
+- maps: `{"apple":"red", "banana":"yellow"}`
+
+### Named arguments
+
+Filters, functions, and macros can accept named arguments:
+
+```twig
+{{ stringDate | date(existingFormat="yyyy-MMMM-d", format="yyyy/MMMM/d") }}
+```
+
+## Control flow and fallbacks
+
+Common patterns:
+
+- `if` and `elseif` for branching
+- `for` for iteration
+- `??` for fallback values
+- `? :` for ternary expressions
+
+Examples:
+
+```twig
+{{ inputs.mydate ?? (execution.startDate | dateAdd(-1, 'DAYS')) }}
+```
+
+```twig
+{% for article in articles %}
+  {{ article.title }}
+{% else %}
+  No articles available.
+{% endfor %}
+```
+
+Inside a `for` loop, Pebble provides a `loop` object with properties such as `loop.index`, `loop.first`, `loop.last`, and `loop.length`. For the full table and examples, see [for](#for).
+
+```twig
+{% if category == "news" %}
+  {{ news }}
+{% elseif category == "sports" %}
+  {{ sports }}
+{% else %}
+  Select a category
+{% endif %}
+```
+
+## Operators
+
+### Comparisons
+
+Supported comparison operators:
+
+- `==`
+- `!=`
+- `<`
+- `>`
+- `<=`
+- `>=`
+
+```twig
+{% if execution.state == "SUCCESS" %}
+  Flow completed successfully.
+{% endif %}
+
+{% if taskrun.attemptsCount >= 3 %}
+  Max retries reached.
+{% endif %}
+```
+
+### Logic and boolean checks
+
+Use:
+
+- `and`
+- `or`
+- `not`
+- `is`
+- `contains`
+
+Use parentheses to group expressions and make precedence explicit:
+
+```twig
+{% if 2 is even and 3 is odd %}
+  ...
+{% endif %}
+
+{% if (3 is not even) and (2 is odd or 3 is even) %}
+  ...
+{% endif %}
+```
+
+### `contains`
+
+Checks whether an item exists within a list, string, map, or array:
+
+```twig
+{% if ["apple", "pear", "banana"] contains "apple" %}
+  ...
+{% endif %}
+```
+
+For maps, `contains` checks for a matching key:
+
+```twig
+{% if {"apple": "red", "banana": "yellow"} contains "banana" %}
+  ...
+{% endif %}
+```
+
+To check for multiple items at once, pass a list on the right-hand side:
+
+```twig
+{% if ["apple", "pear", "banana", "peach"] contains ["apple", "peach"] %}
+  ...
+{% endif %}
+```
+
+`contains` also works inline in output expressions:
+
+```twig
+{{ inputs.mainString contains inputs.subString }}
+```
+
+### `isIn`
+
+Use `isIn` to test whether a value matches any item in a list. It reads more clearly than chaining multiple equality checks in `runIf`, SLAs, or alert conditions:
+
+```twig
+{{ execution.state isIn ['SUCCESS', 'KILLED', 'CANCELLED'] }}
+```
+
+### Math and concatenation
+
+Use:
+
+- `+`, `-`, `*`, `/`, `%`
+- `~` for string concatenation
+
+Example:
+
+```twig
+{{ "apple" ~ "pear" ~ "banana" }}
+{{ 2 + 2 / (10 % 3) * (8 - 1) }}
+```
+
+### Fallbacks and conditionals
+
+Use:
+
+- `??` for null-coalescing: returns the first non-null value
+- `???` for undefined-coalescing: returns the right-hand side only when the left is undefined (not just null)
+- `? :` for ternary expressions
+
+Examples:
+
+```twig
+{{ foo ?? bar ?? "default" }}     {# first non-null value #}
+{{ foo ??? "default" }}           {# only if foo is undefined #}
+{{ foo == null ? bar : baz }}
+{{ foo ?? bar ?? raise }}         {# raises an exception if all are undefined #}
+```
+
+For detailed null vs undefined behavior, see the [Handling null and undefined values](/docs/how-to-guides/null-values) guide.
+
+### Operator precedence
+
+Pebble operators are evaluated in this order:
+
+1. `.`
+2. `|`
+3. `%`, `/`, `*`
+4. `-`, `+`
+5. `==`, `!=`, `>`, `<`, `>=`, `<=`
+6. `is`, `is not`
+7. `and`
+8. `or`
+
+## Tags
+
+Pebble tags are enclosed in `{% %}` and control template flow.
+
+### `set`
+
+Defines a variable in the template context:
+
+```twig
+{% set header = "Welcome Page" %}
+{{ header }}
+{# output: Welcome Page #}
+```
+
+### `if`
+
+Evaluates conditional logic. Use `elseif` and `else` for multiple branches:
+
+```twig
+{% if users is empty %}
+  No users available.
+{% elseif users.length == 1 %}
+  One user found.
+{% else %}
+  Multiple users found.
+{% endif %}
+```
+
+### `for`
+
+Iterates over arrays, maps, or any `java.lang.Iterable`.
+
+**Iterating over a list:**
+
+```twig
+{% for user in users %}
+  {{ user.name }} lives in {{ user.city }}.
+{% else %}
+  No users found.
+{% endfor %}
+```
+
+The `else` block runs when the collection is empty.
+
+**Iterating over a map:**
+
+```twig
+{% for entry in map %}
+  {{ entry.key }}: {{ entry.value }}
+{% endfor %}
+```
+
+**Loop special variables:**
+
+Inside any `for` loop, Pebble provides a `loop` object with these properties:
+
+| Variable | Description |
+| --- | --- |
+| `loop.index` | Zero-based index of the current iteration |
+| `loop.length` | Total number of items in the iterable |
+| `loop.first` | `true` on the first iteration |
+| `loop.last` | `true` on the last iteration |
+| `loop.revindex` | Number of iterations remaining |
+
+Example:
+
+```twig
+{% for user in users %}
+  {{ loop.index }}: {{ user.name }}{% if loop.last %} (last){% endif %}
+{% endfor %}
+```
+
+### `filter`
+
+Applies a filter to a block of content. Filters can be chained:
+
+```twig
+{% filter upper %}
+  hello
+{% endfilter %}
+{# output: HELLO #}
+
+{% filter lower | title %}
+  hello world
+{% endfilter %}
+{# output: Hello World #}
+```
+
+### `raw`
+
+Prevents Pebble from parsing its content — useful when you need to output literal `{{ }}` syntax:
+
+```twig
+{% raw %}{{ user.name }}{% endraw %}
+{# output: {{ user.name }} #}
+```
+
+### `macro`
+
+Defines a reusable template snippet. Macros only have access to their own arguments by default:
+
+```twig
+{% macro input(type="text", name, value="") %}
+  type: "{{ type }}", name: "{{ name }}", value: "{{ value }}"
+{% endmacro %}
+
+{{ input(name="country") }}
+{# output: type: "text", name: "country", value: "" #}
+```
+
+To access variables from the outer template context, pass `_context` explicitly:
+
+```twig
+{% set foo = "bar" %}
+
+{% macro display(_context) %}
+  {{ _context.foo }}
+{% endmacro %}
+
+{{ display(_context) }}
+{# output: bar #}
+```
+
+### `block`
+
+Defines a named, reusable template block. Use the `block()` function to render the block elsewhere:
+
+```twig
+{% block "header" %}
+  Introduction
+{% endblock %}
+
+{{ block("header") }}
+```
+
+## Tests
+
+Tests are used with `is` and `is not` to perform type and value checks.
+
+### `defined`
+
+Checks whether a variable exists in the context (regardless of its value):
+
+```twig
+{% if missing is not defined %}
+  Variable is not defined.
+{% endif %}
+```
+
+### `empty`
+
+Returns `true` when a variable is null, an empty string, an empty collection, or an empty map:
+
+```twig
+{% if user.email is empty %}
+  No email on record.
+{% endif %}
+```
+
+### `null`
+
+Checks whether a variable is null:
+
+```twig
+{% if user.email is null %}
+  ...
+{% endif %}
+
+{% if name is not null %}
+  ...
+{% endif %}
+```
+
+### `even` and `odd`
+
+Check whether an integer is even or odd:
+
+```twig
+{% if 2 is even %}
+  ...
+{% endif %}
+
+{% if 3 is odd %}
+  ...
+{% endif %}
+```
+
+### `iterable`
+
+Returns `true` when a variable implements `java.lang.Iterable`. Use this to guard a `for` loop when the collection may not always be present:
+
+```twig
+{% if users is iterable %}
+  {% for user in users %}
+    {{ user.name }}
+  {% endfor %}
+{% endif %}
+```
+
+### `json`
+
+Returns `true` when a variable is a valid JSON string:
+
+```twig
+{% if '{"test": 1}' is json %}
+  ...
+{% endif %}
+```
+
+### `map`
+
+Returns `true` when a variable is a map:
+
+```twig
+{% if {"apple": "red", "banana": "yellow"} is map %}
+  ...
+{% endif %}
+```

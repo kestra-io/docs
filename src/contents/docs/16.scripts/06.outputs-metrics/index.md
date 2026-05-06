@@ -1,5 +1,6 @@
 ---
-title: Outputs and Metrics from Scripts – Send Data Back to Kestra
+title: "Script Outputs & Metrics: Send Data Back to Kestra"
+h1: Track Metadata and Pass Data Between Tasks via Script Outputs
 sidebarTitle: Outputs and Metrics
 icon: /src/contents/docs/icons/dev.svg
 description: Send outputs and metrics from your scripts back to Kestra to track metadata, pass data between tasks, and visualize performance.
@@ -33,7 +34,7 @@ This example automatically emits output metadata, such as the status `code`, fil
 The [Scripts Plugin](https://github.com/kestra-io/plugin-scripts) provides convenient methods to send outputs and metrics to the Kestra backend during flow Execution. Under the hood, Kestra tracks outputs and metrics from script tasks by searching standard output and standard error for `::{}::` patterns that allow you to specify outputs and metrics using a JSON request payload:
 - `::{}::` for JSON objects.
 
-> Note that `outputs` require a **dictionary**, while `metrics` expect a **list of dictionaries**.
+> `outputs` require a **dictionary**, while `metrics` expect a **list of dictionaries**.
 
 Below is an example showing an `outputs` object with key-value pairs:
 
@@ -211,5 +212,5 @@ Metrics are intended to track custom **numeric** (metric type: `counter`) or **d
 
 Examples of metadata you may want to track as `metrics`:
 - the **number of rows** processed in a given task (e.g., during data ingestion or transformation)
-- the **accuracy score** of a trained ML model in order to compare this result across multiple workflow runs (*e.g., you can see the average or max value across multiple executions*)
+- the **accuracy score** of a trained ML model to compare this result across multiple workflow runs (*e.g., you can see the average or max value across multiple executions*)
 - other pieces of **metadata** that you can track across executions of a flow (e.g., a duration of a certain function execution within a Python ETL script).

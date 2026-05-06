@@ -1,5 +1,6 @@
 ---
-title: Document Your Plugin
+title: Document Your Kestra Plugin with Annotations
+h1: How to Document a Kestra Plugin for the UI and Website
 icon: /src/contents/docs/icons/dev.svg
 description: Document your Kestra plugins using annotations and schemas to generate documentation for the UI and website.
 ---
@@ -64,7 +65,7 @@ If there is a file `src/main/resources/doc/<plugin-group>`, it will be inlined i
 
 For example, for the GCP group of plugins, the file is `src/main/resources/doc/io.kestra.plugin.gcp`, and it contains authentication information that applies to all tasks.
 
-If there are files inside the `src/main/resources/doc/guides` directory, we will list them in a `Guides` section on the documentation for the group of plugins.
+If there are files inside the `src/main/resources/doc/guides` directory, they are listed in a `Guides` section on the documentation for the group of plugins.
 
 ### Group Icon
 
