@@ -13,7 +13,7 @@ How to React to events as they happen with millisecond latency.
 
 As soon as you add a Realtime Trigger to your workflow, Kestra starts an always-on thread that listens to the external system for new events. When a new event occurs, Kestra starts a workflow execution to process the event.
 
-Let us understand how we can implement Realtime Trigger for some of the messaging systems.
+The following examples show how to implement Realtime Triggers for common messaging systems.
 
 ## Apache Kafka
 
@@ -172,10 +172,10 @@ When any message is published into the `logs` Pub/Sub topic, this flow will get 
 
 ## Azure Event Hubs
 
-For this, we will create an Event Hub and a container for checkpoint storage. For this,
+Create an Event Hub and a container for checkpoint storage:
 
 1. Go to [Event Hubs](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.EventHub%2Fnamespaces) in the Azure portal.
-2. Click on "Create". We will be creating an Event Hubs namespace.
+2. Click on "Create" to create an Event Hubs namespace.
 3. On the Create Namespace page, choose an appropriate Subscription and Resource Group.
 4. Put an appropriate Namespace name, Location, Pricing tier and Throughput units.
 5. Click on "Review + Create". Once the validation is successful, click on "Create".
@@ -208,7 +208,7 @@ For this, we will create an Event Hub and a container for checkpoint storage. Fo
 
 ![event_hubs_create_event_hub_6](./event_hubs_create_event_hub_6.png)
 
-14. Let's now create the container. Go to [Storage accounts](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts) page.
+14. Create the container. Go to [Storage accounts](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts).
 15. Click on "Create storage account".
 16. On the "Create storage account" page, choose an appropriate Subscription and Resource Group.
 17. Put an appropriate Storage account name, Region, Performance, and Redundancy.
@@ -266,4 +266,4 @@ On the particular Event Hubs page, you can click on "Generate Data" under "Featu
 
 ![event_hubs_generate_data_2](./event_hubs_generate_data_2.png)
 
-This is how you can leverage the realtime triggers to react to events in real time to orchestrate business-critical processes.
+Realtime triggers let you react to events in real time to orchestrate business-critical processes.

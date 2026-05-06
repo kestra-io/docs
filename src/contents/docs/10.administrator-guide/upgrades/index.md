@@ -8,8 +8,6 @@ description: Best practices for upgrading Kestra, performing rolling updates, an
 
 Kestra evolves quickly. This page explains how to upgrade your installation.
 
-## Plan safe Kestra upgrades and rollbacks
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -199,4 +197,4 @@ If you have questions about the upgrade process:
 - If you are a [Kestra Enterprise](/enterprise) customer, submit a [support ticket](https://support.kestra.io/).
 - Or reach out [via Slack](/slack).
 
-We understand upgrades can be challenging. If you need more help, [contact us](/contact-us) and we’ll assist with migration based on your environment and use case.
+For further help, [contact us](/contact-us) for assistance with migration based on your environment and use case.

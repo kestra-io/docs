@@ -25,7 +25,7 @@ Managing Python Dependencies can be frustrating. There's 3 ways you can manage y
 - Set Container Image with Docker Task Runner
 - Build Docker Image and set it with Docker Task Runner
 
-For more information, check out the [dedicated guide here](../python-dependencies/index.md).
+For more information, see the [dedicated guide](../python-dependencies/index.md).
 
 ## Script Task
 
@@ -132,9 +132,9 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 If you want to get a variable or file from your Python code, you can use an [output](../../05.workflow-components/06.outputs/index.md).
 
-You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs and executing/polling flows. For example, The Kestra ION extra (`kestra[ion]`) provides a method to read files and convert them to a list of dictionaries, which can be easily converted into a dataframe in Python (using any Python library supporting dataframes, e.g., Pandas or Polars).
+Install the [`kestra` python module](https://pypi.org/project/kestra/) to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs and executing/polling flows. For example, The Kestra ION extra (`kestra[ion]`) provides a method to read files and convert them to a list of dictionaries, which can be converted into a dataframe in Python (using any Python library supporting dataframes, e.g., Pandas or Polars).
 
-Check out the [README](https://github.com/kestra-io/libs/blob/main/python/README.md) for more details and examples.
+See the [README](https://github.com/kestra-io/libs/blob/main/python/README.md) for more details and examples.
 
 ```bash
 pip install kestra
@@ -250,7 +250,7 @@ _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.ke
   <iframe src="https://www.youtube.com/embed/0FT3iZKgxYg?si=c162iQbg79R_IEa9" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-If your Python code needs to log something to the console, we recommend using the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
+If your Python code needs to log something to the console, use the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
 
 ```yaml
 id: python_logs
@@ -322,7 +322,7 @@ Once this has executed, `duration` will be viewable under **Metrics**.
 
 ## Execute Flows in Python
 
-Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor. However, we recommend using [Subflows](../../05.workflow-components/10.subflows/index.md) to execute flows from other flows for a more integrated experience.
+Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor. However, using [Subflows](../../05.workflow-components/10.subflows/index.md) to execute flows from other flows provides a more integrated experience.
 
 You can trigger a flow execution by calling the `execute()` method. Here is an example for the same `python_scripts` flow in the namespace `example` as above:
 

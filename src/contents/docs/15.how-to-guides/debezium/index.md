@@ -8,9 +8,7 @@ topics:
 description: Enable Change Data Capture (CDC) in your databases to use Debezium tasks and triggers in Kestra for real-time data ingestion.
 ---
 
-How to enable databases to leverage Debezium tasks and triggers.
-
-In order to ensure the change data capture works seamlessly and to get the Debezium tasks and triggers running, you need to perform the necessary setup on the database. Below are instructions on how to set this up.
+To use Debezium tasks and triggers, perform the necessary database setup described below.
 
 ## Creating a user
 

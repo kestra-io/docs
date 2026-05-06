@@ -1,0 +1,167 @@
+---
+title: "String Filters in Kestra Expressions"
+h1: "String Filters"
+description: Reference for Kestra's string filters — casing, trimming, encoding, hashing, regex, and substring extraction. Use them for display formatting, filename shaping, and API-compatible encodings.
+sidebarTitle: String Filters
+icon: /src/contents/docs/icons/expression.svg
+---
+
+String filters are where most small presentation fixes happen. They are usually the right tool for display formatting, filename shaping, templated messages, and API-compatible encodings.
+
+## Case and whitespace
+
+`lower`, `upper`, `title`, and `capitalize` normalize casing. `trim` removes leading and trailing whitespace.
+
+```twig
+{{ "LOUD TEXT" | lower }}           {# loud text #}
+{{ "quiet text" | upper }}          {# QUIET TEXT #}
+{{ "article title" | title }}       {# Article Title #}
+{{ "hello world" | capitalize }}    {# Hello world #}
+{{ "  padded  " | trim }}           {# padded #}
+```
+
+## `abbreviate`
+
+Truncates a string to a maximum length and appends an ellipsis. The length argument includes the ellipsis:
+
+```twig
+{{ "this is a long sentence." | abbreviate(7) }}    {# this... #}
+```
+
+Useful when you need to keep log messages or notification subjects within a character limit.
+
+## `replace`
+
+Substitutes one or more substrings using a map. Pass `regexp=true` to use regex patterns in the keys:
+
+```twig
+{{ "I like %this% and %that%." | replace({'%this%': foo, '%that%': "bar"}) }}
+```
+
+## `substringBefore`, `substringAfter`, and their `Last` variants
+
+Extract the portion of a string before or after a delimiter. The `Last` variants match the final occurrence:
+
+```twig
+{{ "a.b.c" | substringBefore(".") }}       {# a #}
+{{ "a.b.c" | substringAfter(".") }}        {# b.c #}
+{{ "a.b.c" | substringBeforeLast(".") }}   {# a.b #}
+{{ "a.b.c" | substringAfterLast(".") }}    {# c #}
+```
+
+These are particularly useful for extracting file extensions, path segments, or identifier prefixes from task output values.
+
+## `slugify`
+
+Converts a string into a URL-safe slug:
+
+```twig
+{{ "Hello World!" | slugify }}    {# hello-world #}
+```
+
+## `default`
+
+Returns a fallback value when the expression is null or empty:
+
+```twig
+{{ user.phoneNumber | default("No phone number") }}
+```
+
+## `startsWith`
+
+Returns `true` if the string begins with the given prefix:
+
+```twig
+{{ "kestra://file.csv" | startsWith("kestra://") }}    {# true #}
+```
+
+## `endsWith`
+
+Returns `true` if the string ends with the given suffix:
+
+```twig
+{{ "report.csv" | endsWith(".csv") }}    {# true #}
+```
+
+## Encoding and hashing
+
+`base64encode` and `base64decode` handle Base64 encoding. `urlencode` and `urldecode` percent-encode strings for use in URLs. `sha1`, `sha512`, and `md5` produce hex-encoded hashes of the corresponding algorithms.
+
+```twig
+{{ "test" | base64encode }}
+{# output: dGVzdA== #}
+{{ "dGVzdA==" | base64decode }}
+{# output: test #}
+{{ "The string ü@foo-bar" | urlencode }}
+{# output: The+string+%C3%BC%40foo-bar #}
+{{ "The+string+%C3%BC%40foo-bar" | urldecode }}
+{# output: The string ü@foo-bar #}
+{{ "test" | sha1 }}
+{{ "test" | sha512 }}
+{{ "test" | md5 }}
+```
+
+## `string`
+
+Coerces any value to its string representation:
+
+```twig
+{{ 42 | string }}
+```
+
+Use this when chaining filters that expect string input on a value that may arrive as a number or boolean.
+
+## `escapeChar`
+
+Escapes special characters in a string. The `type` argument controls which style of escaping is applied: `single`, `double`, or `shell`:
+
+```twig
+{{ "Can't be here" | escapeChar('single') }}
+{# output: Can\'t be here #}
+```
+
+## Regex filters
+
+`regexMatch(regex)` returns `true` if the input contains a substring matching the pattern. `regexReplace(regex, replacement)` replaces all matching substrings. `regexExtract(regex, group)` returns the first match or a specific capture group (`group` defaults to `0`; returns `null` if no match):
+
+```twig
+{{ "hello world" | regexMatch("w[a-z]+") }}
+{# output: true #}
+{{ "2024-01-15" | regexReplace("(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1") }}
+{# output: 15/01/2024 #}
+{{ "order-12345-done" | regexExtract("\\d+") }}
+{# output: 12345 #}
+{{ "2024-01-15" | regexExtract("(\\d{4})-(\\d{2})-(\\d{2})", 1) }}
+{# output: 2024 #}
+```
+
+:::alert{type="warning"}
+Regex filter operations are subject to a **10-second timeout** to prevent ReDoS (catastrophic backtracking). If a pattern takes longer than the limit, the task fails with an error message.
+
+Patterns with nested quantifiers such as `(a+)+` applied to large inputs are most likely to trigger this. Use anchored, non-ambiguous patterns to avoid it. The timeout can be adjusted with [`kestra.regex.timeout`](../../../configuration/05.security-and-secrets/index.md#regex-timeout) in your Kestra configuration.
+:::
+
+## Worked string filter example
+
+This flow builds a sanitized filename and a display-safe summary from a raw input title:
+
+```yaml
+id: string_filter_example
+namespace: company.team
+
+inputs:
+  - id: title
+    type: STRING
+    defaults: "  Quarterly Report: Q1 2025 (FINAL)  "
+
+tasks:
+  - id: format_output
+    type: io.kestra.plugin.core.log.Log
+    message:
+      - "Trimmed: {{ inputs.title | trim }}"
+      - "Normalized: {{ inputs.title | trim | lower }}"
+      - "Slug (for filename): {{ inputs.title | trim | slugify }}"
+      - "Abbreviated (for subject line): {{ inputs.title | trim | abbreviate(30) }}"
+      - "Prefix check: {{ inputs.title | trim | startsWith('Quarterly') }}"
+      - "After colon: {{ inputs.title | trim | substringAfter(':') | trim }}"
+```

@@ -64,8 +64,6 @@ CI/CD deployment to production can be automated with:
 
 For more details on CI/CD automation, refer to the [CI/CD guide](../../version-control-cicd/cicd/index.md).
 
----
-
 ## Git example
 
 <div class="video-container">
@@ -91,8 +89,6 @@ You can also automate pull requests with the [`create.Pulls` task](/plugins/plug
 While Kestra validates flow syntax, it does not detect logical or runtime errors. Always test flows thoroughly before promoting them to production.
 :::
 
----
-
 ## CI/CD example
 
 <div class="video-container">
@@ -107,5 +103,5 @@ You can pair this with the [Validate Action](../../version-control-cicd/cicd/01.
 By enforcing required status checks on pull requests, you can prevent invalid flows from being merged and deployed to production.
 
 :::alert{type="info"}
-**Note:** If a flow contains invalid syntax, the **Deploy Action** will fail.
+If a flow contains invalid syntax, the **Deploy Action** will fail.
 :::
